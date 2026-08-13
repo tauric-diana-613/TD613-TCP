@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { GIVING_SEARCH_MIN_TIMEOUT_MS } from '../app/giving/history/giving-api.js';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
 import { _fecInternals } from '../server/giving/adapters/fec.js';
+import { maxDuration as GIVING_FUNCTION_MAX_DURATION_SECONDS } from '../api/giving.js';
 
 function mockResponse({ status = 200, json, text = '', headers = {} }) {
   const normalized = Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), String(value)]));
@@ -14,9 +15,12 @@ function mockResponse({ status = 200, json, text = '', headers = {} }) {
   };
 }
 
-assert.equal(GIVING_SEARCH_MIN_TIMEOUT_MS, 28_000, 'source search client window must outlive two ordinary 12s upstream exchanges');
-assert.ok(GIVING_SEARCH_MIN_TIMEOUT_MS < 30_000, 'source search client window must remain below the Giving Vercel function ceiling');
-assert.equal(_fecInternals.FEC_PAGE_SIZE_CAP, 50, 'OpenFEC first-page work stays bounded');
+assert.equal(GIVING_FUNCTION_MAX_DURATION_SECONDS, 60, 'Giving function code must admit the sixty-second retrieval envelope');
+assert.equal(GIVING_SEARCH_MIN_TIMEOUT_MS, 58_000, 'source search client window must stay alive through the bounded OpenFEC retrieval');
+assert.ok(GIVING_SEARCH_MIN_TIMEOUT_MS < GIVING_FUNCTION_MAX_DURATION_SECONDS * 1000, 'browser timeout must leave a bounded response-serialization margin');
+assert.equal(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS, 55_000, 'OpenFEC gets a materially longer common-name retrieval window');
+assert.ok(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS < GIVING_SEARCH_MIN_TIMEOUT_MS, 'OpenFEC boundary must settle before the browser aborts');
+assert.equal(_fecInternals.FEC_PAGE_SIZE_CAP, 25, 'OpenFEC common-name first-page work stays tightly bounded');
 
 let fecCalls = 0;
 const broadFec = await searchSourcePage({
@@ -26,7 +30,7 @@ const broadFec = await searchSourcePage({
   fetchImpl: async (url) => {
     fecCalls += 1;
     const value = String(url);
-    assert.match(value, /per_page=50/);
+    assert.match(value, /per_page=25/);
     assert.match(value, /min_date=2020-01-01/);
     assert.match(value, /max_date=2026-08-12/);
     assert.doesNotMatch(value, /two_year_transaction_period=/, 'broad date windows must not repeat transaction-period filters');
@@ -36,11 +40,25 @@ const broadFec = await searchSourcePage({
 assert.equal(fecCalls, 1);
 assert.equal(broadFec.source_status, 'READY');
 
-const floridaTsv = 'Committee Name\tContributor Name\tContribution Date\tAmount\tAmendment\nNeighbors for Florida\tDOE, JANE\t08/01/2026\t20.00\tN';
+let multiStateFecCalls = 0;
+await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Jane Doe', states: ['FL', 'GA', 'MA', 'DC'], start_date: '2020-01-01', end_date: '2026-08-12', page_size: 25 }
+}, {
+  fetchImpl: async (url) => {
+    multiStateFecCalls += 1;
+    const parsed = new URL(String(url));
+    assert.deepEqual(parsed.searchParams.getAll('contributor_state'), ['FL', 'GA', 'MA', 'DC']);
+    return mockResponse({ json: { pagination: { last_indexes: null }, results: [] } });
+  }
+});
+assert.equal(multiStateFecCalls, 1, 'multi-state FEC filter remains one upstream request');
+
+const floridaTsv = 'Committee Name\tContributor Name\tContributor Address\tContributor City\tContributor State\tContributor Zip\tContribution Date\tAmount\tAmendment\nNeighbors for Florida\tDOE JANE Q\t1 Main St\tTallahassee\tFL\t32301\t08/01/2026\t20.00\tN';
 let floridaCalls = 0;
 const florida = await searchSourcePage({
   source_instance_id: 'florida-state-contributions',
-  query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'Jane Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
 }, {
   fetchImpl: async (_url, options) => {
     floridaCalls += 1;
@@ -52,6 +70,11 @@ const florida = await searchSourcePage({
 });
 assert.equal(floridaCalls, 1, 'ordinary Florida contributor search must remain one bounded upstream POST');
 assert.equal(florida.records.length, 1);
+assert.equal(florida.records[0].contributor_name_raw, 'DOE, JANE Q', 'Florida person display must use LAST, FIRST MIDDLE comma order');
+assert.equal(florida.records[0].address, '1 Main St');
+assert.equal(florida.records[0].city, 'Tallahassee');
+assert.equal(florida.records[0].state, 'FL');
+assert.equal(florida.records[0].zip, '32301');
 
 const headers17 = [
   'Candidate/Committee', 'Candidate Name', 'Office', 'Election', 'Report',
@@ -66,7 +89,7 @@ const row17 = [
 let voterFocusCalls = 0;
 const voterFocus = await searchSourcePage({
   source_instance_id: 'voterfocus-leon',
-  query: { name: 'John Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
 }, {
   fetchImpl: async (_url, options) => {
     voterFocusCalls += 1;
@@ -77,51 +100,28 @@ const voterFocus = await searchSourcePage({
 assert.equal(voterFocusCalls, 1, 'VoterFocus must stop after the first donor projection returns evidence');
 assert.equal(voterFocus.records.length, 1);
 assert.equal(voterFocus.records[0].contributor_name_raw, 'DOE, JOHN');
+assert.equal(voterFocus.records[0].address, '1 Main St');
 
-const row17LastFirst = [
+const row17FirstOnly = [
   'Jane for Tallahassee', 'Jane Candidate', 'Tallahassee City Commission', '2010 General', 'M7',
-  'DOE JOHN Q', '1 Main St', 'Tallahassee', 'FL', '32301', 'Acme',
-  'Engineer', '08/10/2010', 'CHE', '100.00', 'N', 'report-2'
+  'JOHN', '1 Main St', 'Tallahassee', 'FL', '32301', 'Acme',
+  'Engineer', '08/10/2010', 'CHE', '100.00', 'N', 'report-first-only'
 ];
-const voterFocusLastFirst = await searchSourcePage({
+const voterFocusFirstOnly = await searchSourcePage({
   source_instance_id: 'voterfocus-leon',
-  query: { name: 'John Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
 }, {
-  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17LastFirst.join(',')}` })
+  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17FirstOnly.join(',')}` })
 });
-assert.equal(voterFocusLastFirst.records.length, 1);
-assert.equal(
-  voterFocusLastFirst.records[0].contributor_name_raw,
-  'DOE, JOHN Q',
-  'VoterFocus LAST FIRST MIDDLE serialization must be projected into exact-match-safe comma order'
-);
-assert.equal(
-  voterFocusLastFirst.records[0].lineage.voterfocus_exact_match_projection,
-  'QUERY_DISAMBIGUATED_PERSON_ORDER'
-);
-
-const row17FirstLast = [
-  'Jane for Tallahassee', 'Jane Candidate', 'Tallahassee City Commission', '2010 General', 'M7',
-  'JOHN Q DOE', '1 Main St', 'Tallahassee', 'FL', '32301', 'Acme',
-  'Engineer', '08/10/2010', 'CHE', '100.00', 'N', 'report-3'
-];
-const voterFocusFirstLast = await searchSourcePage({
-  source_instance_id: 'voterfocus-leon',
-  query: { name: 'John Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
-}, {
-  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17FirstLast.join(',')}` })
-});
-assert.equal(voterFocusFirstLast.records.length, 1);
-assert.equal(
-  voterFocusFirstLast.records[0].contributor_name_raw,
-  'DOE, JOHN Q',
-  'VoterFocus FIRST MIDDLE LAST serialization must not be reversed into JOHN, MIDDLE LAST'
-);
+assert.equal(voterFocusFirstOnly.records.length, 1);
+assert.equal(voterFocusFirstOnly.records[0].contributor_name_raw, 'DOE, JOHN');
+assert.equal(voterFocusFirstOnly.records[0].evidence_status, 'DERIVED');
+assert.equal(voterFocusFirstOnly.records[0].lineage.voterfocus_exact_match_projection, 'QUERY_ASSISTED_FIRST_ONLY_SOURCE_ROW');
 
 let easyVoteCalls = 0;
 const easyVote = await searchSourcePage({
   source_instance_id: 'easyvote-lakeland',
-  query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 100 }
+  query: { name: 'Jane Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 100 }
 }, {
   fetchImpl: async (url, options) => {
     easyVoteCalls += 1;
@@ -132,11 +132,29 @@ const easyVote = await searchSourcePage({
       return mockResponse({ json: { UserId: 'u-1', CustomerId: 'c-1', ZumoToken: null } });
     }
     assert.equal(options.headers['Easy-Vote-Authenticated-User'], 'UserId:u-1|CustomerId:c-1|ZumoToken:null');
-    return mockResponse({ json: { data: [], hasNextPage: false } });
+    return mockResponse({
+      json: {
+        data: [{
+          Contributor: {
+            FirstName: 'Jane', MiddleName: 'Q', LastName: 'Doe',
+            Address: { AddressLine1: '9 Lake Ave', City: 'Lakeland', State: 'FL', ZipCode: '33801' }
+          },
+          Amount: 25,
+          ContributionDate: '2026-08-01'
+        }],
+        hasNextPage: false
+      }
+    });
   }
 });
 assert.equal(easyVoteCalls, 2, 'EasyVote tenant remains bootstrap-plus-search when the preferred public tenant succeeds');
 assert.equal(easyVote.source_status, 'READY');
+assert.equal(easyVote.records.length, 1);
+assert.equal(easyVote.records[0].contributor_name_raw, 'DOE, JANE Q');
+assert.equal(easyVote.records[0].address, '9 Lake Ave');
+assert.equal(easyVote.records[0].city, 'Lakeland');
+assert.equal(easyVote.records[0].state, 'FL');
+assert.equal(easyVote.records[0].zip, '33801');
 
 const easyVoteObservedUrls = [];
 const easyVoteFallback = await searchSourcePage({
