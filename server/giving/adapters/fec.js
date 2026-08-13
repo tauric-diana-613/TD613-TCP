@@ -197,17 +197,9 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       ({ response, attempts } = await fetchFecWithRetry(url, fetchImpl, keyMode, deadline));
     } catch (error) {
-      if (rows.length && RETRYABLE_FEC_ERRORS.has(error?.code)) {
+      if (RETRYABLE_FEC_ERRORS.has(error?.code)) {
         salvageError = error;
         break;
-      }
-      if (error?.code === 'upstream-timeout') {
-        throw new GivingError(
-          'upstream-timeout',
-          `OpenFEC Schedule A did not return its first provider page within the ${Math.round(FEC_GIVING_PAGE_BUDGET_MS / 1000)}-second Giving budget after bounded retries`,
-          504,
-          { api_key_mode: keyMode, page_size: targetPageSize }
-        );
       }
       throw error;
     }
@@ -218,7 +210,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       finalRateLimit = await assertFecResponse(response, { keyMode, attempts });
     } catch (error) {
-      if (rows.length && SALVAGEABLE_FEC_ERRORS.has(error?.code)) {
+      if (SALVAGEABLE_FEC_ERRORS.has(error?.code)) {
         salvageError = error;
         break;
       }
@@ -243,8 +235,13 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
 
   const retrievedAt = new Date().toISOString();
   const records = rows.slice(0, targetPageSize).map((row) => normalizeFecRow(row, { source, queryDigest: digest, retrievedAt }));
-  const next = !exhausted && continuationIndexes?.last_index
-    ? encodeContinuation({ source_instance_id: source.id, sequence: sequence + 1, last_indexes: continuationIndexes })
+  const continuationAvailable = !exhausted && Boolean(continuationIndexes?.last_index || salvageError);
+  const next = continuationAvailable
+    ? encodeContinuation({
+      source_instance_id: source.id,
+      sequence: sequence + 1,
+      last_indexes: continuationIndexes || lastIndexes || null
+    })
     : null;
 
   return {
@@ -263,7 +260,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
       digest,
       startedAt,
       state: salvageError ? 'PARTIAL' : 'READY',
-      upstreamStatus: finalResponse?.status || 200,
+      upstreamStatus: finalResponse?.status || null,
       page: sequence,
       continuation: next,
       count: records.length,
