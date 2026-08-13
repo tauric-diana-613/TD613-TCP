@@ -7,7 +7,7 @@ export const SESSION_COOKIE = '__Host-td613-giving';
 export const SESSION_TTL_SECONDS = 20 * 60;
 export const MAX_REQUEST_BYTES = 3_000_000;
 export const MAX_RESPONSE_BYTES = 3_750_000;
-export const MAX_SOURCE_PAGE_SIZE = 200;
+export const MAX_SOURCE_PAGE_SIZE = 300;
 export const UPSTREAM_TIMEOUT_MS = 12_000;
 
 export const OPERATIONS = Object.freeze([
