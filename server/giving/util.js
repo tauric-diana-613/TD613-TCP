@@ -5,6 +5,8 @@ import {
   UPSTREAM_TIMEOUT_MS
 } from './constants.js';
 
+const MAX_UPSTREAM_TIMEOUT_MS = 55_000;
+
 export class GivingError extends Error {
   constructor(code, message, status = 400, details = undefined) {
     super(message);
@@ -154,7 +156,7 @@ export function assertAllowedUrl(value) {
 
 export async function fetchWithBoundary(url, options = {}, boundary = {}) {
   const target = assertAllowedUrl(url);
-  const timeoutMs = clampInteger(boundary.timeoutMs, 1_000, 20_000, UPSTREAM_TIMEOUT_MS);
+  const timeoutMs = clampInteger(boundary.timeoutMs, 1_000, MAX_UPSTREAM_TIMEOUT_MS, UPSTREAM_TIMEOUT_MS);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new Error('upstream-timeout')), timeoutMs);
   try {
@@ -215,3 +217,5 @@ function bodyChunkForJson(value) {
   if (value instanceof ArrayBuffer) return Buffer.from(value).toString('utf8');
   return String(value ?? '');
 }
+
+export const _utilInternals = Object.freeze({ MAX_UPSTREAM_TIMEOUT_MS });
