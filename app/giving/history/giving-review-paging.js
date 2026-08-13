@@ -1,4 +1,5 @@
 import './giving-page-size.js?v=20260813-3';
+import './giving-fec-resilience.js?v=20260813-4';
 import './giving-review-paging-core.js?v=20260813-3';
 
 if (!document.getElementById('givingReviewPagingStylesheet')) {
