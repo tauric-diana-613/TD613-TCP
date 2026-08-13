@@ -1,8 +1,8 @@
 // One deployable Giving dispatcher. Supporting source and custody modules remain outside /api.
-// Vercel Node API routes read maxDuration from the exported config object. Keep
-// the named export as a testable compatibility constant, but make the runtime
-// contract explicit so broad FEC retrieval cannot fall through to a 30s default.
-export const maxDuration = 60;
+// Keep the route-level contract aligned with the explicit 30-second Vercel function
+// override. Source adapters must settle before this wall and preserve continuation
+// rather than allowing the platform to terminate the request generically.
+export const maxDuration = 30;
 export const config = Object.freeze({ maxDuration });
 
 export { default } from '../server/giving/dispatcher.js';
