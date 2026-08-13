@@ -10,8 +10,8 @@ import {
 const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_FEC_ATTEMPTS = 2;
 const MAX_RETRY_DELAY_MS = 1200;
-const FEC_UPSTREAM_TIMEOUT_MS = 26_000;
-const FEC_GIVING_PAGE_BUDGET_MS = 52_000;
+const FEC_UPSTREAM_TIMEOUT_MS = 24_000;
+const FEC_GIVING_PAGE_BUDGET_MS = 27_000;
 const FEC_UPSTREAM_PAGE_SIZE = 100;
 
 function boundedRetryDelay(response) {
