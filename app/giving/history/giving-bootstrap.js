@@ -24,9 +24,6 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
-// Reload the shared identity model under this epoch before any dependent
-// surfaces execute. Giving is served no-store, and the epoch additionally
-// severs every root module URL from older browser graphs.
 try {
   await fetch(epochUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' });
 } catch {
@@ -38,6 +35,7 @@ await import(epochUrl('./giving-contact-queue.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
+await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-app.js'));
 await import(epochUrl('./giving-search-controls.js'));
 await import(epochUrl('./giving-campaign-tools-v2.js'));
