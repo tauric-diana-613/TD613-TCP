@@ -10,10 +10,10 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
-// OpenFEC common-name searches can materially outlive the old 20s upstream
-// boundary. Keep the browser request alive nearly to the Giving function's 60s
-// ceiling while leaving a small margin for response serialization and cleanup.
-export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
+// The deployed Giving function currently has a 30-second platform ceiling.
+// Keep the browser alive through the full bounded server retrieval while leaving
+// a small margin for response serialization and cleanup.
+export const GIVING_SEARCH_MIN_TIMEOUT_MS = 29_000;
 
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {
