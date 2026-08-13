@@ -10,11 +10,10 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
-// Source adapters may perform more than one bounded upstream exchange (EasyVote
-// bootstrap + search, for example). Keep the browser observation window below
-// the 30s Vercel Giving function ceiling while no longer aborting valid source
-// work at the old 18s client default.
-export const GIVING_SEARCH_MIN_TIMEOUT_MS = 28_000;
+// OpenFEC common-name searches can materially outlive the old 20s upstream
+// boundary. Keep the browser request alive nearly to the Giving function's 60s
+// ceiling while leaving a small margin for response serialization and cleanup.
+export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
 
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {
