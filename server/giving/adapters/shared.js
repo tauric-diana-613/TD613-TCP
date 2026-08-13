@@ -8,16 +8,29 @@ import {
   sha256
 } from '../util.js';
 
+const ADMITTED_STATES = new Set([
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'
+]);
+
+function normalizedStates(raw = {}) {
+  const supplied = Array.isArray(raw.states) ? raw.states : raw.state ? [raw.state] : [];
+  return [...new Set(supplied
+    .map((value) => cleanText(value, 40)?.toUpperCase())
+    .filter((value) => ADMITTED_STATES.has(value)))];
+}
+
 export function validateSearchQuery(raw = {}) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
     throw new GivingError('invalid-search-query', 'payload.query must be an object');
   }
+  const states = normalizedStates(raw);
   const query = {
     name: cleanText(raw.name || raw.contributor_name, 240),
     first_name: cleanText(raw.first_name, 120),
     last_name: cleanText(raw.last_name, 160),
     city: cleanText(raw.city, 120),
-    state: cleanText(raw.state, 40),
+    state: states.length === 1 ? states[0] : null,
+    states,
     zip: cleanText(raw.zip, 20),
     employer: cleanText(raw.employer, 180),
     occupation: cleanText(raw.occupation, 180),
@@ -27,6 +40,7 @@ export function validateSearchQuery(raw = {}) {
     end_date: isoDate(raw.end_date),
     election: cleanText(raw.election, 80),
     election_year: raw.election_year ? clampInteger(raw.election_year, 1990, 2100, new Date().getUTCFullYear()) : null,
+    exact_match: Boolean(raw.exact_match),
     min_amount_cents: raw.min_amount_cents === null || raw.min_amount_cents === undefined ? null : clampInteger(raw.min_amount_cents, -1_000_000_000_00, 1_000_000_000_00, 0),
     max_amount_cents: raw.max_amount_cents === null || raw.max_amount_cents === undefined ? null : clampInteger(raw.max_amount_cents, -1_000_000_000_00, 1_000_000_000_00, 0),
     page_size: clampInteger(raw.page_size, 1, MAX_SOURCE_PAGE_SIZE, 100)
@@ -111,3 +125,5 @@ export function failedSourceResult(source, query, error) {
     }
   };
 }
+
+export const _sharedInternals = Object.freeze({ ADMITTED_STATES, normalizedStates });

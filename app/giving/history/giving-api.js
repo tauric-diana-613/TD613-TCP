@@ -10,11 +10,9 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
-// Source adapters may perform more than one bounded upstream exchange (EasyVote
-// bootstrap + search, for example). Keep the browser observation window below
-// the 30s Vercel Giving function ceiling while no longer aborting valid source
-// work at the old 18s client default.
-export const GIVING_SEARCH_MIN_TIMEOUT_MS = 28_000;
+// Giving's Node function is explicitly admitted for 60 seconds. Keep the browser
+// alive through the upstream window while leaving two seconds for serialization.
+export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
 
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {

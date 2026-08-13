@@ -65,9 +65,25 @@ function normalizedHeader(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
+function scalarText(value, max = 300) {
+  if (value === null || value === undefined || value === '' || typeof value === 'object') return null;
+  return cleanText(value, max);
+}
+
 function firstNonEmpty(row, aliases) {
-  const value = pick(row, aliases);
-  return cleanText(value, 300);
+  return scalarText(pick(row, aliases), 300);
+}
+
+function inferredContributorPart(row, predicate) {
+  for (const [key, value] of Object.entries(row || {})) {
+    const header = normalizedHeader(key);
+    if (header.includes('candidate') || header.includes('committee')) continue;
+    const contributorish = header.includes('contributor') || header.includes('vendor') || header.includes('donor') || header.includes('payor');
+    if (!contributorish || !predicate(header)) continue;
+    const inferred = scalarText(value, 300);
+    if (inferred) return inferred;
+  }
+  return null;
 }
 
 function voterFocusFirstName(row) {
@@ -77,7 +93,38 @@ function voterFocusFirstName(row) {
     'Contributor/Vendor First',
     'First Name',
     'First'
-  ]);
+  ]) || inferredContributorPart(row, (header) => header.includes('first'));
+}
+
+function voterFocusMiddleName(row) {
+  return firstNonEmpty(row, [
+    'Contributor Middle Name',
+    'Contributor/Vendor Middle Name',
+    'Contributor/Vendor Middle',
+    'Middle Name',
+    'Middle',
+    'MI'
+  ]) || inferredContributorPart(row, (header) => header.includes('middle') || header.endsWith('mi'));
+}
+
+function voterFocusLastOrCompany(row) {
+  return firstNonEmpty(row, [
+    'Contributor Last Name',
+    'Contributor/Vendor Last Name',
+    'Contributor Last Name/Company Name',
+    'Contributor/Vendor Last Name/Company Name',
+    'Contributor/Vendor Last/Company',
+    'Contributor Last/Company',
+    'Last Name',
+    'Last Name/Company Name',
+    'Last Name/Company',
+    'Last/Company Name',
+    'Last/Company',
+    'Last Name or Company Name',
+    'Company/Last Name',
+    'Company Name',
+    'Organization Name'
+  ]) || inferredContributorPart(row, (header) => header.includes('last') || header.includes('company'));
 }
 
 function voterFocusContributorKind(row) {
@@ -92,34 +139,9 @@ function voterFocusContributorKind(row) {
 }
 
 function voterFocusContributorName(row) {
-  // VoterFocus county exports can expose a generic “Contributor Name” column that
-  // contains only the given name while the family/company name lives in a
-  // separate column. Split name evidence therefore has precedence whenever a
-  // family/company field exists; the generic combined field remains the fallback
-  // for counties that genuinely export a full contributor name in one column.
   const first = voterFocusFirstName(row);
-  const middle = firstNonEmpty(row, [
-    'Contributor Middle Name',
-    'Contributor/Vendor Middle Name',
-    'Contributor/Vendor Middle',
-    'Middle Name',
-    'Middle',
-    'MI'
-  ]);
-  const lastOrCompany = firstNonEmpty(row, [
-    'Contributor Last Name',
-    'Contributor/Vendor Last Name',
-    'Contributor Last Name/Company Name',
-    'Contributor/Vendor Last Name/Company Name',
-    'Last Name',
-    'Last Name/Company Name',
-    'Last Name/Company',
-    'Last/Company Name',
-    'Last Name or Company Name',
-    'Company/Last Name',
-    'Company Name',
-    'Organization Name'
-  ]);
+  const middle = voterFocusMiddleName(row);
+  const lastOrCompany = voterFocusLastOrCompany(row);
 
   if (lastOrCompany && (first || middle)) {
     return `${lastOrCompany}, ${[first, middle].filter(Boolean).join(' ')}`;
@@ -138,17 +160,171 @@ function voterFocusContributorName(row) {
   if (combined) return combined;
   if (first || middle) return [first, middle].filter(Boolean).join(' ');
 
+  return inferredContributorPart(row, (header) =>
+    header.includes('name') || header === 'contributorvendor' || header === 'contributor'
+  );
+}
+
+function voterFocusAddress(row) {
+  return firstNonEmpty(row, [
+    'Contributor Address',
+    'Contributor/Vendor Address',
+    'Contributor Street Address',
+    'Contributor/Vendor Street Address',
+    'Contributor Address 1',
+    'Contributor/Vendor Address 1',
+    'Address',
+    'Street Address',
+    'Address 1',
+    'Address1'
+  ]) || inferredContributorPart(row, (header) =>
+    header.includes('address') && !header.includes('city') && !header.includes('state') && !header.includes('zip')
+  );
+}
+
+function nameToken(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .toLocaleUpperCase('en-US')
+    .replace(/[^\p{L}\p{N}'-]/gu, '');
+}
+
+function queryPersonParts(query = {}) {
+  const raw = cleanText(query?.name, 300) || '';
+  if (!raw) return { given: '', family: '' };
+  if (raw.includes(',')) {
+    const [familyPart, givenPart = ''] = raw.split(',', 2).map((part) => part.trim());
+    return { family: nameToken(familyPart), given: nameToken(givenPart.split(/\s+/)[0]) };
+  }
+  const tokens = raw.split(/\s+/).filter(Boolean);
+  return { given: nameToken(tokens[0]), family: nameToken(tokens.at(-1)) };
+}
+
+function floridaContributorName(row, query = {}) {
+  const first = firstNonEmpty(row, ['Contributor First Name', 'First Name', 'First']);
+  const middle = firstNonEmpty(row, ['Contributor Middle Name', 'Middle Name', 'Middle', 'MI']);
+  const last = firstNonEmpty(row, [
+    'Contributor Last Name', 'Contributor Last Name/Company', 'Contributor Last/Company',
+    'Last Name', 'Last Name/Company', 'Last Name/Company Name', 'Company Name'
+  ]);
+  if (last && (first || middle)) return `${last}, ${[first, middle].filter(Boolean).join(' ')}`;
+  if (last && ORGANIZATION_MARKERS.test(last)) return last;
+
+  const combined = firstNonEmpty(row, ['Contributor Name', 'Contributor', 'Name', 'Last Name']);
+  if (!combined || combined.includes(',') || ORGANIZATION_MARKERS.test(combined)) return combined || last;
+
+  const tokens = combined.split(/\s+/).filter(Boolean);
+  const queryParts = queryPersonParts(query);
+  if (tokens.length >= 2 && queryParts.given && queryParts.family) {
+    const sourceFirst = nameToken(tokens[0]);
+    const sourceSecond = nameToken(tokens[1]);
+    const sourceLast = nameToken(tokens.at(-1));
+    if (sourceFirst === queryParts.family && sourceSecond === queryParts.given) {
+      return `${tokens[0]}, ${tokens.slice(1).join(' ')}`;
+    }
+    if (sourceFirst === queryParts.given && sourceLast === queryParts.family) {
+      return `${tokens.at(-1)}, ${tokens.slice(0, -1).join(' ')}`;
+    }
+  }
+  return combined;
+}
+
+function floridaLocation(row) {
+  let city = firstNonEmpty(row, ['Contributor City', 'City']);
+  let state = firstNonEmpty(row, ['Contributor State', 'State']);
+  let zip = firstNonEmpty(row, ['Contributor Zip', 'Contributor Zip Code', 'Zip', 'Zip Code', 'Zipcode', 'Postal Code']);
+  const combined = firstNonEmpty(row, [
+    'Contributor City State Zip', 'Contributor City/State/Zip', 'City State Zip', 'City/State/Zip', 'City, State Zip'
+  ]);
+  if (combined && (!city || !state || !zip)) {
+    const match = combined.match(/^(.*?)[,\s]+([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/i);
+    if (match) {
+      city ||= cleanText(match[1].replace(/[\s,]+$/, ''), 160);
+      state ||= cleanText(match[2], 80);
+      zip ||= cleanText(match[3], 24);
+    }
+  }
+  return { city, state, zip };
+}
+
+function floridaAddress(row) {
+  const line1 = firstNonEmpty(row, [
+    'Contributor Address', 'Contributor Street Address', 'Contributor Address 1',
+    'Address', 'Street Address', 'Address 1', 'Address1'
+  ]);
+  const line2 = firstNonEmpty(row, ['Contributor Address 2', 'Address 2', 'Address2']);
+  return [line1, line2].filter(Boolean).join(', ') || null;
+}
+
+function easyVoteObjects(row) {
+  const objects = [row];
+  for (const key of ['Contributor', 'contributor', 'Donor', 'donor', 'Payor', 'payor', 'ContributorAddress', 'contributorAddress', 'Address', 'address']) {
+    const value = row?.[key];
+    if (value && typeof value === 'object' && !Array.isArray(value)) objects.push(value);
+  }
+  return [...new Set(objects)];
+}
+
+function easyVoteValue(row, aliases, max = 300) {
+  for (const object of easyVoteObjects(row)) {
+    const value = scalarText(pick(object, aliases), max);
+    if (value) return value;
+  }
+  return null;
+}
+
+function easyVoteContributorName(row) {
+  const first = easyVoteValue(row, ['ContributorFirstName', 'Contributor First Name', 'FirstName', 'First Name', 'First']);
+  const middle = easyVoteValue(row, ['ContributorMiddleName', 'Contributor Middle Name', 'MiddleName', 'Middle Name', 'Middle', 'MI']);
+  const last = easyVoteValue(row, [
+    'ContributorLastName', 'Contributor Last Name', 'ContributorLastNameCompanyName',
+    'Contributor Last Name/Company Name', 'LastName', 'Last Name', 'LastNameCompanyName',
+    'Last Name/Company Name', 'CompanyName', 'Company Name', 'ContributorCompanyName'
+  ]);
+  if (last && (first || middle)) return `${last}, ${[first, middle].filter(Boolean).join(' ')}`;
+  if (last && ORGANIZATION_MARKERS.test(last)) return last;
+
+  const combined = easyVoteValue(row, [
+    'ContributorName', 'ContributorFullName', 'ContributorDisplayName', 'ContributorVendorName',
+    'FullName', 'DisplayName', 'Contributor', 'Name'
+  ]);
+  if (combined) return combined;
+  if (last) return last;
+  if (first || middle) return [first, middle].filter(Boolean).join(' ');
+
   for (const [key, value] of Object.entries(row || {})) {
     const header = normalizedHeader(key);
-    if (!value || header.includes('candidate') || header.includes('committee')) continue;
-    const contributorish = header.includes('contributor') || header.includes('vendor') || header.includes('donor') || header.includes('payor');
-    const nameish = header.includes('name') || header === 'contributorvendor' || header === 'contributor';
-    if (contributorish && nameish) {
-      const inferred = cleanText(value, 300);
+    if (header.includes('candidate') || header.includes('committee')) continue;
+    const contributorish = header.includes('contributor') || header.includes('donor') || header.includes('payor');
+    if (contributorish && (header.includes('fullname') || header.includes('displayname'))) {
+      const inferred = scalarText(value, 300);
       if (inferred) return inferred;
     }
   }
   return null;
+}
+
+function easyVoteContributorKind(row) {
+  const explicit = easyVoteValue(row, [
+    'ContributorType', 'Contributor Type', 'ContributorEntityType', 'Contributor Entity Type', 'EntityType', 'Entity Type'
+  ], 120);
+  if (contributorKindHint(explicit)) return explicit;
+  const first = easyVoteValue(row, ['ContributorFirstName', 'FirstName', 'First Name']);
+  const last = easyVoteValue(row, ['ContributorLastName', 'LastName', 'Last Name']);
+  return first && last ? 'PERSON' : null;
+}
+
+function easyVoteAddress(row) {
+  const line1 = easyVoteValue(row, [
+    'ContributorAddressLine1', 'Contributor Address Line 1', 'ContributorAddress1', 'Contributor Address 1',
+    'ContributorStreetAddress', 'Contributor Street Address', 'ContributorAddress',
+    'AddressLine1', 'Address 1', 'Address1', 'StreetAddress', 'Street Address', 'Street1'
+  ], 500);
+  const line2 = easyVoteValue(row, [
+    'ContributorAddressLine2', 'Contributor Address Line 2', 'ContributorAddress2', 'Contributor Address 2',
+    'AddressLine2', 'Address 2', 'Address2', 'Street2'
+  ], 500);
+  return [line1, line2].filter(Boolean).join(', ') || null;
 }
 
 function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fields = {}, lineage = {} }) {
@@ -255,8 +431,9 @@ export function normalizeFecRow(row, context) {
   });
 }
 
-export function normalizeFloridaRow(row, context) {
+export function normalizeFloridaRow(row, context = {}) {
   const amendment = pick(row, ['Amendment', 'Amendment Indicator', 'Amd']);
+  const location = floridaLocation(row);
   return baseRecord({
     ...context,
     raw: row,
@@ -271,14 +448,14 @@ export function normalizeFloridaRow(row, context) {
       election: pick(row, ['Election', 'Election Year']),
       cycle: pick(row, ['Election Year', 'Cycle']),
       reportingContext: pick(row, ['Report', 'Report Type', 'Period']),
-      contributorName: pick(row, ['Contributor Name', 'Contributor', 'Name', 'Last Name']),
+      contributorName: floridaContributorName(row, context.query),
       contributorKind: pick(row, ['Contributor Type', 'Contributor Entity Type', 'Entity Type']),
-      address: pick(row, ['Address', 'Street Address', 'Address 1']),
-      city: pick(row, ['City']),
-      state: pick(row, ['State']),
-      zip: pick(row, ['Zip', 'Zip Code', 'Postal Code']),
-      employer: pick(row, ['Employer']),
-      occupation: pick(row, ['Occupation']),
+      address: floridaAddress(row),
+      city: location.city,
+      state: location.state,
+      zip: location.zip,
+      employer: pick(row, ['Employer', 'Contributor Employer']),
+      occupation: pick(row, ['Occupation', 'Contributor Occupation']),
       date: pick(row, ['Date', 'Contribution Date', 'Receipt Date']),
       type: pick(row, ['Contribution Type', 'Type', 'Contributor Type']),
       amendmentStatus: amendment,
@@ -287,6 +464,7 @@ export function normalizeFloridaRow(row, context) {
     },
     lineage: {
       source_methodology: 'FLORIDA_DIVISION_OF_ELECTIONS_TSV_ROW',
+      contributor_name_derivation: floridaContributorName(row, context.query) ? 'FLORIDA_SOURCE_ORDER_RESOLVED' : 'MISSING_FROM_SOURCE_ROW',
       amendment_marker: cleanText(amendment, 80),
       provisional: !amendment,
       supersession_applied: false
@@ -312,11 +490,11 @@ export function normalizeVoterFocusRow(row, context) {
       reportingContext: pick(row, ['Report', 'Report Type']),
       contributorName: voterFocusContributorName(row),
       contributorKind: voterFocusContributorKind(row),
-      address: pick(row, ['Address', 'Street Address']),
-      city: pick(row, ['City']),
-      state: pick(row, ['State']),
-      zip: pick(row, ['Zip', 'Zip Code']),
-      employer: pick(row, ['Employer']),
+      address: voterFocusAddress(row),
+      city: pick(row, ['Contributor City', 'Contributor/Vendor City', 'City']),
+      state: pick(row, ['Contributor State', 'Contributor/Vendor State', 'State']),
+      zip: pick(row, ['Contributor Zip', 'Contributor/Vendor Zip', 'Zip', 'Zip Code']),
+      employer: pick(row, ['Employer', 'Contributor Employer']),
       occupation: pick(row, ['Occupation', 'Contributor Occupation']),
       date: pick(row, ['Date', 'Item Date', 'Contribution Date']),
       type: pick(row, ['Contribution Type', 'Transaction Type', 'Type']),
@@ -336,37 +514,38 @@ export function normalizeVoterFocusRow(row, context) {
 }
 
 export function normalizeEasyVoteRow(row, context) {
-  const amendment = pick(row, ['Amendment', 'IsAmended', 'Amended']);
+  const amendment = easyVoteValue(row, ['Amendment', 'IsAmended', 'Amended'], 80);
   return baseRecord({
     ...context,
     raw: row,
     nativeIds: {
-      contribution_id: cleanText(pick(row, ['ContributionId', 'Id', 'RecordId']), 120),
-      report_id: cleanText(pick(row, ['ReportId', 'Report ID']), 120)
+      contribution_id: easyVoteValue(row, ['ContributionId', 'ContributionID', 'Id', 'RecordId'], 120),
+      report_id: easyVoteValue(row, ['ReportId', 'Report ID', 'FilingId', 'Filing ID'], 120)
     },
     fields: {
-      committee: pick(row, ['CandidateCommitteeName', 'Candidate/Committee', 'CommitteeName']),
-      candidate: pick(row, ['CandidateName', 'Candidate']),
-      office: pick(row, ['OfficeName', 'Office']),
-      election: pick(row, ['ElectionName', 'Election']),
-      cycle: pick(row, ['ElectionYear', 'Cycle']),
-      reportingContext: pick(row, ['ReportName', 'ReportType']),
-      contributorName: pick(row, ['ContributorName', 'Contributor', 'Name']),
-      contributorKind: pick(row, ['ContributorType', 'Contributor Type', 'ContributorEntityType', 'Contributor Entity Type', 'EntityType', 'Entity Type']),
-      address: pick(row, ['ContributorAddress', 'Address', 'Address1']),
-      city: pick(row, ['ContributorCity', 'City']),
-      state: pick(row, ['ContributorState', 'State']),
-      zip: pick(row, ['ContributorZip', 'Zip', 'ZipCode']),
-      employer: pick(row, ['Employer']),
-      occupation: pick(row, ['Occupation']),
-      date: pick(row, ['ContributionDate', 'Date', 'TransactionDate']),
-      type: pick(row, ['ContributionType', 'Type']),
+      committee: easyVoteValue(row, ['CandidateCommitteeName', 'CandidateCommittee', 'Candidate/Committee', 'CommitteeName', 'FilerName', 'Filer']),
+      candidate: easyVoteValue(row, ['CandidateName', 'Candidate']),
+      office: easyVoteValue(row, ['OfficeName', 'Office']),
+      election: easyVoteValue(row, ['ElectionName', 'Election']),
+      cycle: easyVoteValue(row, ['ElectionYear', 'Cycle']),
+      reportingContext: easyVoteValue(row, ['ReportName', 'ReportType', 'Report']),
+      contributorName: easyVoteContributorName(row),
+      contributorKind: easyVoteContributorKind(row),
+      address: easyVoteAddress(row),
+      city: easyVoteValue(row, ['ContributorCity', 'ContributorAddressCity', 'City']),
+      state: easyVoteValue(row, ['ContributorState', 'ContributorAddressState', 'State']),
+      zip: easyVoteValue(row, ['ContributorZip', 'ContributorZipCode', 'ContributorPostalCode', 'Zip', 'ZipCode', 'PostalCode']),
+      employer: easyVoteValue(row, ['Employer', 'ContributorEmployer']),
+      occupation: easyVoteValue(row, ['Occupation', 'ContributorOccupation']),
+      date: easyVoteValue(row, ['ContributionDate', 'DateReceived', 'ReceiptDate', 'Date', 'TransactionDate']),
+      type: easyVoteValue(row, ['ContributionType', 'TransactionType', 'Type']),
       amendmentStatus: amendment,
-      amount: pick(row, ['Amount', 'ContributionAmount']),
+      amount: easyVoteValue(row, ['Amount', 'ContributionAmount', 'ReceiptAmount']),
       provisional: !amendment
     },
     lineage: {
       source_methodology: 'EASYVOTE_ANONYMOUS_JSON_ROW',
+      contributor_name_derivation: easyVoteContributorName(row) ? 'EASYVOTE_SPLIT_OR_COMBINED_NAME_RESOLUTION' : 'MISSING_FROM_SOURCE_ROW',
       amendment_marker: cleanText(amendment, 80),
       provisional: !amendment,
       supersession_applied: false
