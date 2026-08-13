@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { GIVING_SEARCH_MIN_TIMEOUT_MS } from '../app/giving/history/giving-api.js';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
 import { _fecInternals } from '../server/giving/adapters/fec.js';
 import { maxDuration as GIVING_FUNCTION_MAX_DURATION_SECONDS } from '../api/giving.js';
+import { MAX_SOURCE_PAGE_SIZE } from '../server/giving/constants.js';
 
 function mockResponse({ status = 200, json, text = '', headers = {} }) {
   const normalized = Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), String(value)]));
@@ -15,24 +17,46 @@ function mockResponse({ status = 200, json, text = '', headers = {} }) {
   };
 }
 
-assert.equal(GIVING_FUNCTION_MAX_DURATION_SECONDS, 60, 'Giving function code must admit the sixty-second retrieval envelope');
-assert.equal(GIVING_SEARCH_MIN_TIMEOUT_MS, 58_000, 'source search client window must stay alive through the bounded OpenFEC retrieval');
-assert.ok(GIVING_SEARCH_MIN_TIMEOUT_MS < GIVING_FUNCTION_MAX_DURATION_SECONDS * 1000, 'browser timeout must leave a bounded response-serialization margin');
-assert.equal(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS, 55_000, 'OpenFEC gets a materially longer common-name retrieval window');
-assert.ok(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS < GIVING_SEARCH_MIN_TIMEOUT_MS, 'OpenFEC boundary must settle before the browser aborts');
-assert.equal(_fecInternals.FEC_PAGE_SIZE_CAP, 25, 'OpenFEC common-name first-page work stays tightly bounded');
+const bootstrap = fs.readFileSync('app/giving/history/giving-bootstrap.js', 'utf8');
+const pagingEntry = fs.readFileSync('app/giving/history/giving-review-paging.js', 'utf8');
+const pagingCore = fs.readFileSync('app/giving/history/giving-review-paging-core.js', 'utf8');
+const pagingCss = fs.readFileSync('app/giving/history/giving-review-paging.css', 'utf8');
+const pageSizeModule = fs.readFileSync('app/giving/history/giving-page-size.js', 'utf8');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260813-3'/, 'Giving must carry one coordinated eviction epoch');
+assert.match(bootstrap, /document\.title = 'TD613 Giving'/, 'browser title must be TD613 Giving');
+assert.match(bootstrap, /ingressTitle\.textContent = 'TD613 Giving'/, 'ingress title must be TD613 Giving');
+assert.match(bootstrap, /shellTitle\.textContent = 'TD613 Giving'/, 'unlocked masthead must be TD613 Giving');
+assert.match(bootstrap, /retrievalLabel\.textContent = 'GIVING HISTORY'/, 'search panel eyebrow must become GIVING HISTORY');
+assert.match(pagingEntry, /giving-page-size\.js\?v=20260813-3/, '300-row request normalizer must load before core Giving');
+assert.match(pagingEntry, /giving-review-paging-core\.js\?v=20260813-3/, 'review paging core must share the eviction epoch');
+assert.match(pageSizeModule, /PAGE_SIZE = 300/, 'source search envelope must request 300 rows');
+assert.match(pagingCore, /PAGE_SIZE = 300/, 'Contributions UI must paginate at 300 cards');
+assert.match(pagingCore, /data-review-page/, 'Contributions pagination must expose clickable page numbers');
+assert.match(pagingCore, /Previous contribution page/, 'Contributions pagination must expose previous navigation');
+assert.match(pagingCore, /Next contribution page/, 'Contributions pagination must expose next navigation');
+assert.match(pagingCss, /review-pagination/, 'Contributions pager must have its own compact stylesheet');
+assert.doesNotMatch(`${bootstrap}\n${pagingEntry}\n${pagingCore}\n${pageSizeModule}`, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/, 'asset eviction must never destroy local dossier custody');
+
+assert.equal(GIVING_FUNCTION_MAX_DURATION_SECONDS, 30, 'Giving function code must match the explicit 30-second Vercel override');
+assert.equal(GIVING_SEARCH_MIN_TIMEOUT_MS, 58_000, 'browser may remain patient while the server settles inside its own bounded envelope');
+assert.equal(MAX_SOURCE_PAGE_SIZE, 300, 'Giving source pages must admit the 300-record UI page');
+assert.equal(_fecInternals.FEC_GIVING_PAGE_BUDGET_MS, 27_000, 'FEC must settle before the 30-second Vercel wall');
+assert.equal(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS, 24_000, 'one OpenFEC request must leave serialization/fallback margin');
+assert.equal(_fecInternals.FEC_UPSTREAM_PAGE_SIZE, 100, 'OpenFEC provider pages stay at the provider-friendly 100-row size');
+assert.ok(_fecInternals.FEC_GIVING_PAGE_BUDGET_MS < GIVING_FUNCTION_MAX_DURATION_SECONDS * 1000, 'server FEC budget must stay below the platform wall');
 
 let fecCalls = 0;
 const broadFec = await searchSourcePage({
   source_instance_id: 'fec-schedule-a',
-  query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
 }, {
   fetchImpl: async (url) => {
     fecCalls += 1;
     const value = String(url);
-    assert.match(value, /per_page=25/);
+    assert.match(value, /per_page=100/);
     assert.match(value, /min_date=2020-01-01/);
     assert.match(value, /max_date=2026-08-12/);
+    assert.doesNotMatch(value, /per_page=25/, 'the retired 25-row common-name cap must stay gone');
     assert.doesNotMatch(value, /two_year_transaction_period=/, 'broad date windows must not repeat transaction-period filters');
     return mockResponse({ json: { pagination: { last_indexes: null }, results: [] } });
   }
@@ -40,10 +64,36 @@ const broadFec = await searchSourcePage({
 assert.equal(fecCalls, 1);
 assert.equal(broadFec.source_status, 'READY');
 
+let aggregateFecCalls = 0;
+const aggregatedFec = await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Common Name', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
+}, {
+  fetchImpl: async (url) => {
+    aggregateFecCalls += 1;
+    const page = aggregateFecCalls;
+    const parsed = new URL(String(url));
+    assert.equal(parsed.searchParams.get('per_page'), '100');
+    if (page > 1) assert.equal(parsed.searchParams.get('last_index'), `cursor-${page - 1}`);
+    const results = Array.from({ length: 100 }, (_, index) => ({
+      sub_id: `${page}-${index}`,
+      contributor_name: 'COMMON, NAME',
+      contribution_receipt_amount: 10 + index,
+      contribution_receipt_date: `2026-08-${String((index % 28) + 1).padStart(2, '0')}`,
+      committee: { name: 'Example Committee' },
+      committee_id: 'C00000001'
+    }));
+    return mockResponse({ json: { pagination: { last_indexes: { last_index: `cursor-${page}` } }, results } });
+  }
+});
+assert.equal(aggregateFecCalls, 3, 'fast common-name retrieval must aggregate three provider pages into one Giving page');
+assert.equal(aggregatedFec.records.length, 300, 'Giving must retain the complete 300-record page');
+assert.ok(aggregatedFec.continuation, 'a full 300-row page must preserve seek continuation when more FEC evidence exists');
+
 let multiStateFecCalls = 0;
 await searchSourcePage({
   source_instance_id: 'fec-schedule-a',
-  query: { name: 'Jane Doe', states: ['FL', 'GA', 'MA', 'DC'], start_date: '2020-01-01', end_date: '2026-08-12', page_size: 25 }
+  query: { name: 'Jane Doe', states: ['FL', 'GA', 'MA', 'DC'], start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
 }, {
   fetchImpl: async (url) => {
     multiStateFecCalls += 1;
@@ -52,13 +102,13 @@ await searchSourcePage({
     return mockResponse({ json: { pagination: { last_indexes: null }, results: [] } });
   }
 });
-assert.equal(multiStateFecCalls, 1, 'multi-state FEC filter remains one upstream request');
+assert.equal(multiStateFecCalls, 1, 'multi-state FEC filter remains one upstream request when the provider returns no rows');
 
 const floridaTsv = 'Committee Name\tContributor Name\tContributor Address\tContributor City\tContributor State\tContributor Zip\tContribution Date\tAmount\tAmendment\nNeighbors for Florida\tDOE JANE Q\t1 Main St\tTallahassee\tFL\t32301\t08/01/2026\t20.00\tN';
 let floridaCalls = 0;
 const florida = await searchSourcePage({
   source_instance_id: 'florida-state-contributions',
-  query: { name: 'Jane Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'Jane Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
 }, {
   fetchImpl: async (_url, options) => {
     floridaCalls += 1;
@@ -89,7 +139,7 @@ const row17 = [
 let voterFocusCalls = 0;
 const voterFocus = await searchSourcePage({
   source_instance_id: 'voterfocus-leon',
-  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
 }, {
   fetchImpl: async (_url, options) => {
     voterFocusCalls += 1;
@@ -109,7 +159,7 @@ const row17FirstOnly = [
 ];
 const voterFocusFirstOnly = await searchSourcePage({
   source_instance_id: 'voterfocus-leon',
-  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+  query: { name: 'John Doe', exact_match: true, start_date: '2020-01-01', end_date: '2026-08-12', page_size: 300 }
 }, {
   fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17FirstOnly.join(',')}` })
 });
