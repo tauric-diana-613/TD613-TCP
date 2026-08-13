@@ -10,7 +10,7 @@ import {
 const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_FEC_ATTEMPTS = 2;
 const MAX_RETRY_DELAY_MS = 1200;
-const FEC_UPSTREAM_TIMEOUT_MS = 28_000;
+const FEC_UPSTREAM_TIMEOUT_MS = 55_000;
 const FEC_PAGE_SIZE_CAP = 25;
 
 function boundedRetryDelay(response) {
@@ -104,7 +104,8 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   url.searchParams.set('sort', '-contribution_receipt_date');
   if (query.name || query.last_name) url.searchParams.set('contributor_name', query.name || query.last_name);
   if (query.city) url.searchParams.set('contributor_city', query.city);
-  if (query.state) url.searchParams.set('contributor_state', query.state);
+  const states = Array.isArray(query.states) && query.states.length ? query.states : query.state ? [query.state] : [];
+  for (const state of states) url.searchParams.append('contributor_state', state);
   if (query.zip) url.searchParams.set('contributor_zip', query.zip);
   if (query.employer) url.searchParams.set('contributor_employer', query.employer);
   if (query.occupation) url.searchParams.set('contributor_occupation', query.occupation);
@@ -127,9 +128,9 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     if (error?.code === 'upstream-timeout') {
       throw new GivingError(
         'upstream-timeout',
-        `OpenFEC Schedule A did not complete within ${Math.round(FEC_UPSTREAM_TIMEOUT_MS / 1000)} seconds; continue with a narrower date window if the common-name search still exceeds the bounded function window`,
+        `OpenFEC Schedule A did not complete within ${Math.round(FEC_UPSTREAM_TIMEOUT_MS / 1000)} seconds; narrow the date or state range only if this unusually broad search still exceeds the bounded function window`,
         504,
-        { api_key_mode: keyMode, timeout_ms: FEC_UPSTREAM_TIMEOUT_MS, page_size: perPage }
+        { api_key_mode: keyMode, timeout_ms: FEC_UPSTREAM_TIMEOUT_MS, page_size: perPage, states }
       );
     }
     throw error;
