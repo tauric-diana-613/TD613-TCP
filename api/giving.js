@@ -1,8 +1,9 @@
 // One deployable Giving dispatcher. Supporting source and custody modules remain outside /api.
-// Function-code configuration takes precedence over the legacy 30-second vercel.json
-// override on current Vercel Node runtimes, so broad OpenFEC searches can use a
-// real bounded retrieval window rather than dying at the old platform ceiling.
+// Vercel Node API routes read maxDuration from the exported config object. Keep
+// the named export as a testable compatibility constant, but make the runtime
+// contract explicit so broad FEC retrieval cannot fall through to a 30s default.
 export const maxDuration = 60;
+export const config = Object.freeze({ maxDuration });
 
 export { default } from '../server/giving/dispatcher.js';
 export * from '../server/giving/dispatcher.js';
