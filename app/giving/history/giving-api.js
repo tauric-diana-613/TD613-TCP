@@ -10,10 +10,9 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
-// The deployed Giving function currently has a 30-second platform ceiling.
-// Keep the browser alive through the full bounded server retrieval while leaving
-// a small margin for response serialization and cleanup.
-export const GIVING_SEARCH_MIN_TIMEOUT_MS = 29_000;
+// Giving's Node function is explicitly admitted for 60 seconds. Keep the browser
+// alive through the upstream window while leaving two seconds for serialization.
+export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
 
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {
