@@ -10,7 +10,7 @@ import {
 const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_FEC_ATTEMPTS = 2;
 const MAX_RETRY_DELAY_MS = 1200;
-const FEC_UPSTREAM_TIMEOUT_MS = 20_000;
+const FEC_UPSTREAM_TIMEOUT_MS = 52_000;
 const FEC_PAGE_SIZE_CAP = 50;
 
 function boundedRetryDelay(response) {
@@ -115,10 +115,6 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   if (query.min_amount_cents !== null) url.searchParams.set('min_amount', String(query.min_amount_cents / 100));
   if (query.max_amount_cents !== null) url.searchParams.set('max_amount', String(query.max_amount_cents / 100));
 
-  // A single two-year period is useful partition evidence. Repeating several
-  // periods on a broad donor/date query made OpenFEC materially heavier while
-  // min_date/max_date already preserve the requested coverage. Broad windows
-  // therefore rely on the date bounds alone.
   const periods = transactionPeriods(query.start_date, query.end_date);
   if (periods.length === 1) url.searchParams.set('two_year_transaction_period', String(periods[0]));
   appendSeekCursor(url, cursor);
@@ -194,4 +190,4 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   };
 }
 
-export const _fecInternals = Object.freeze({ FEC_PAGE_SIZE_CAP, transactionPeriods });
+export const _fecInternals = Object.freeze({ FEC_PAGE_SIZE_CAP, FEC_UPSTREAM_TIMEOUT_MS, transactionPeriods });
