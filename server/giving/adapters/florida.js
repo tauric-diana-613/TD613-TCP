@@ -40,9 +40,6 @@ function floridaPayload(query) {
   parameters.set('committee', 'All');
   parameters.set('namesearch', '2');
   parameters.set('cfname', query.first_name || contributor.given);
-  // Florida exposes contributor first name and last/company as separate form fields.
-  // Project person-shaped names into those fields; organization-shaped names remain
-  // intact in the last/company field.
   parameters.set('clname', query.last_name || contributor.family || query.name || '');
   parameters.set('ccity', query.city || '');
   parameters.set('cstate', query.state || '');
@@ -81,7 +78,7 @@ export async function searchFloridaPage({ source, query, continuation, fetchImpl
   }
   const objects = rowsToObjects(splitDelimited(text, '\t'));
   const retrievedAt = new Date().toISOString();
-  const records = objects.map((row) => normalizeFloridaRow(row, { source, queryDigest: digest, retrievedAt }));
+  const records = objects.map((row) => normalizeFloridaRow(row, { source, queryDigest: digest, retrievedAt, query }));
   return {
     records,
     continuation: null,
