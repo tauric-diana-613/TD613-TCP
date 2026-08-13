@@ -1,0 +1,10 @@
+import './giving-page-size.js?v=20260813-3';
+import './giving-review-paging-core.js?v=20260813-3';
+
+if (!document.getElementById('givingReviewPagingStylesheet')) {
+  const link = document.createElement('link');
+  link.id = 'givingReviewPagingStylesheet';
+  link.rel = 'stylesheet';
+  link.href = new URL('./giving-review-paging.css?v=20260813-3', import.meta.url).href;
+  document.head.appendChild(link);
+}
