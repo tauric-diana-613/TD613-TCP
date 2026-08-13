@@ -190,9 +190,12 @@
 }
 .target-lineage { color: var(--gold); font-weight: 700; }
 
+.review-sort-header,
+.record-main {
+  grid-template-columns: minmax(150px, .82fr) minmax(200px, 1.12fr) minmax(92px, .42fr) minmax(115px, .5fr) auto;
+}
 .review-sort-header {
   display: grid;
-  grid-template-columns: minmax(150px, .82fr) minmax(210px, 1.25fr) minmax(115px, .5fr) auto;
   gap: 12px;
   align-items: center;
   margin: 0 0 7px;
@@ -218,6 +221,20 @@
   border-bottom-color: rgba(118, 234, 212, .42);
 }
 .review-sort-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.record-date strong {
+  display: block;
+  color: var(--bright);
+  font: 650 11px/1.25 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.record-date small { display: block; margin-top: 2px; }
+.ledger-date-sort-button {
+  min-width: 76px;
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-date-sort-button[data-direction="asc"] { color: var(--gold); }
 
 .campaign-target-panel {
   display: grid;
@@ -251,7 +268,8 @@
     min-height: 40px;
     padding: 6px 11px;
   }
-  .review-sort-header { grid-template-columns: 1fr 1fr; }
+  .review-sort-header,
+  .record-main { grid-template-columns: 1fr 1fr; }
   .review-sort-button[data-review-sort="amount"] { text-align: left; }
 }
 
@@ -304,6 +322,7 @@
   }
   .review-hold-button { width: 100%; min-height: 38px; }
   .review-sort-header { grid-template-columns: 1fr 1fr; gap: 5px 10px; padding: 0; }
+  .record-main { grid-template-columns: 1fr; }
   .review-sort-button { padding: 7px 4px; }
   .contact-queue-item { grid-template-columns: minmax(0, 1fr) auto; }
   .contact-queue-item-actions { grid-column: 1 / -1; justify-self: start; }
