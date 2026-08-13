@@ -1,42 +1,46 @@
-import './giving-left-rail-order.js?v=20260812-1';
-import './giving-contact-queue.js?v=20260812-5';
-import './giving-export-menu.js?v=20260812-5';
+const GIVING_ASSET_EPOCH = '20260813-3';
+const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
-if (!document.getElementById('givingCampaignToolsStylesheet')) {
+// Apply the product name before loading the heavier module graph so even a
+// browser arriving from an older Giving build sees the current membrane name.
+document.title = 'TD613 Giving';
+const ingressTitle = document.querySelector('#sessionTitle');
+if (ingressTitle) ingressTitle.textContent = 'TD613 Giving';
+const shellTitle = document.querySelector('.masthead .brand-block h1');
+if (shellTitle) shellTitle.textContent = 'TD613 Giving';
+const retrievalLabel = document.querySelector('.search-control .panel-heading .eyebrow');
+if (retrievalLabel) retrievalLabel.textContent = 'GIVING HISTORY';
+
+afterStylesheet('givingCampaignToolsStylesheet', './giving-campaign-tools-v2.css');
+afterStylesheet('givingSearchControlsStylesheet', './giving-search-controls.css');
+afterStylesheet('givingStateFilterStylesheet', './giving-state-filter.css');
+
+function afterStylesheet(id, path) {
+  if (document.getElementById(id)) return;
   const link = document.createElement('link');
-  link.id = 'givingCampaignToolsStylesheet';
+  link.id = id;
   link.rel = 'stylesheet';
-  link.href = new URL('./giving-campaign-tools-v2.css?v=20260812-1', import.meta.url).href;
+  link.href = epochUrl(path);
   document.head.appendChild(link);
 }
 
-if (!document.getElementById('givingSearchControlsStylesheet')) {
-  const link = document.createElement('link');
-  link.id = 'givingSearchControlsStylesheet';
-  link.rel = 'stylesheet';
-  link.href = new URL('./giving-search-controls.css?v=20260812-2', import.meta.url).href;
-  document.head.appendChild(link);
-}
-
-if (!document.getElementById('givingStateFilterStylesheet')) {
-  const link = document.createElement('link');
-  link.id = 'givingStateFilterStylesheet';
-  link.rel = 'stylesheet';
-  link.href = new URL('./giving-state-filter.css?v=20260813-1', import.meta.url).href;
-  document.head.appendChild(link);
-}
-
+// Reload the shared identity model under this epoch before any dependent
+// surfaces execute. Giving is served no-store, and the epoch additionally
+// severs every root module URL from older browser graphs.
 try {
-  await fetch(new URL('./giving-model.js?v=20260813-1', import.meta.url), { cache: 'reload', credentials: 'same-origin' });
-} catch (error) {
-  // The application import below remains authoritative; this is cache hygiene only.
+  await fetch(epochUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' });
+} catch {
+  // Dynamic imports below remain authoritative.
 }
 
-await import('./giving-contribution-amount-filter.js?v=20260812-2');
-await import('./giving-state-filter.js?v=20260813-2');
-await import('./giving-app.js?v=20260813-1');
-await import('./giving-search-controls.js?v=20260812-7');
-await import('./giving-campaign-tools-v2.js?v=20260812-1');
-await import('./giving-contributions-copy.js?v=20260812-1');
-await import('./giving-date-sort.js?v=20260813-1');
-await import('./giving-dossier-help.js?v=20260812-8');
+await import(epochUrl('./giving-left-rail-order.js'));
+await import(epochUrl('./giving-contact-queue.js'));
+await import(epochUrl('./giving-export-menu.js'));
+await import(epochUrl('./giving-contribution-amount-filter.js'));
+await import(epochUrl('./giving-state-filter.js'));
+await import(epochUrl('./giving-app.js'));
+await import(epochUrl('./giving-search-controls.js'));
+await import(epochUrl('./giving-campaign-tools-v2.js'));
+await import(epochUrl('./giving-contributions-copy.js'));
+await import(epochUrl('./giving-date-sort.js'));
+await import(epochUrl('./giving-dossier-help.js'));
