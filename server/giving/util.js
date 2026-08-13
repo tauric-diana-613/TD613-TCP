@@ -5,7 +5,7 @@ import {
   UPSTREAM_TIMEOUT_MS
 } from './constants.js';
 
-const MAX_UPSTREAM_TIMEOUT_MS = 55_000;
+const MAX_UPSTREAM_TIMEOUT_MS = 28_000;
 
 export class GivingError extends Error {
   constructor(code, message, status = 400, details = undefined) {
