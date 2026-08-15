@@ -24,6 +24,7 @@ assert.match(pagingLoader, /giving-page-size\.js\?v=20260814-1/, 'FEC page-size 
 assert.match(pagingLoader, /giving-fec-resilience\.js\?v=20260814-1/, 'FEC resilience repair must use a fresh browser asset epoch');
 
 const bootstrap = read('app/giving/history/giving-bootstrap.js');
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-3'/, 'Giving bootstrap must refresh the repaired module graph');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260815-1'/, 'Giving bootstrap must refresh the repaired module graph');
 
 console.log('giving-fec-boundary-page.test.mjs passed: one OpenFEC provider page per boundary with a one-replay no-progress fuse.');
+
