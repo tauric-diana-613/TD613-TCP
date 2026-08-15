@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
+import { _floridaInternals } from '../server/giving/adapters/florida.js';
 import { normalizeVoterFocusRow } from '../server/giving/normalize.js';
 import { linkExisting, createConfirmed, withhold } from '../server/giving/campaign-deputy.js';
 
@@ -143,6 +144,19 @@ const florida = await searchSourcePage({
   }
 });
 assert.equal(florida.records[0].amount_cents, 2000);
+
+const floridaCandidatePayload = _floridaInternals.floridaPayload({
+  candidate: 'Jane Q. Doe',
+  start_date: '2020-01-01',
+  end_date: '2026-08-11',
+  page_size: 50,
+  min_amount_cents: null,
+  max_amount_cents: null
+});
+assert.equal(floridaCandidatePayload.get('search_on'), '2');
+assert.equal(floridaCandidatePayload.get('CanFName'), 'Jane');
+assert.equal(floridaCandidatePayload.get('CanLName'), 'Doe');
+assert.equal(floridaCandidatePayload.get('ComName'), '');
 
 const headers17 = [
   'Candidate/Committee', 'Candidate Name', 'Office', 'Election', 'Report',
@@ -305,3 +319,4 @@ assert.ok(createdCalls.every((call) => !call.value.includes('/contribution')));
 assert.equal(withhold({ dossier_id: 'dossier-2' }).external_mutation, false);
 
 console.log('giving-adapters.test.mjs passed');
+

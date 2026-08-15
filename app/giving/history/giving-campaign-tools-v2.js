@@ -200,17 +200,40 @@ function renderActivity(data) {
   </article>`).join('') : '<span class="muted">No activity rows were observed within this exact source, query, and requested date window. This is not a universal zero-activity claim.</span>';
 }
 
+function mergeActivityResults(results, { queryFacets = [] } = {}) {
+  const admitted = results.filter(Boolean);
+  const records = [];
+  const seen = new Set();
+  for (const result of admitted) {
+    for (const record of Array.isArray(result?.records) ? result.records : []) {
+      const key = record.record_digest || JSON.stringify(record);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      records.push(record);
+    }
+  }
+  return {
+    ...(admitted[0] || {}),
+    records,
+    record_count: records.length,
+    query_facets: queryFacets,
+    bounded_request_count: admitted.length,
+    retrieved_at: admitted.map((result) => result.retrieved_at).filter(Boolean).sort().at(-1) || new Date().toISOString()
+  };
+}
+
 function renderLocalDirectory(data) {
   const records = Array.isArray(data?.records) ? data.records : [];
   const names = [...new Set(records.map((record) => String(record.filer || '').trim()).filter(Boolean))].slice(0, 50);
   const sourceId = data?.source_instance_id || selectedSourceId();
-  $('#campaignDirectoryCandidates').innerHTML = '<span class="muted">Local identities are transaction-derived from the selected filing custodian; candidate and committee legal identity are not inferred beyond the returned filer label.</span>';
+  $('#campaignDirectoryCandidates').innerHTML = '<span class="muted">State/local identities are transaction-derived from the selected filing custodian; candidate and committee legal identity are not inferred beyond the returned filer label.</span>';
   $('#campaignDirectoryCommittees').innerHTML = names.length ? names.map((name) => `<button type="button" class="campaign-committee-result" data-load-campaign data-kind="local" data-committee-name="${escapeHtml(name)}" data-source-id="${escapeHtml(sourceId)}"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(sourceId)} · transaction-derived local filer identity</small><span>Load context → Contributions</span></button>`).join('') : '<span class="muted">No local filer identities were observed in the selected lane.</span>';
   $('#campaignDirectoryOpenSecrets').innerHTML = '<span class="muted">OpenSecrets aggregate context is limited to the Federal lookup lane.</span>';
   $('#campaignDirectoryOpenSecretsSummary').innerHTML = '';
   renderActivity(data);
   bindDynamicActions();
-  lookupStatus(`${records.length} ${activityLabel(data?.activity_type)} returned from exactly one selected source · ${names.length} transaction-derived filer identit${names.length === 1 ? 'y' : 'ies'}.`, 'success');
+  const requestNote = data?.bounded_request_count > 1 ? ` · ${data.bounded_request_count} bounded candidate/committee projections` : '';
+  lookupStatus(`${records.length} ${activityLabel(data?.activity_type)} returned from exactly one selected source${requestNote} · ${names.length} transaction-derived filer identit${names.length === 1 ? 'y' : 'ies'}.`, 'success');
 }
 
 async function inspectCommitteeActivity(button) {
@@ -258,18 +281,33 @@ async function searchDirectory(event) {
     } else {
       const sourceId = selectedSourceId();
       if (!sourceId) throw new Error(`Choose one ${jurisdiction === 'CITY' ? 'city' : 'county'} source before searching.`);
-      lookupStatus(`Searching exactly one selected source (${sourceId}) for ${activityLabel()}…`);
-      const result = await api.call('committee-activity.search', {
+      const basePayload = {
         source_instance_id: sourceId,
-        activity_type: campaignActivityType(),
-        query: {
-          committee: query,
-          start_date: $('#dateFrom')?.value || '2020-01-01',
-          end_date: $('#dateTo')?.value || new Date().toISOString().slice(0, 10),
-          page_size: 100
-        }
-      }, { mutation: false, purpose: 'search one jurisdiction-scoped committee activity lane' });
-      renderLocalDirectory(result?.data || result);
+        activity_type: campaignActivityType()
+      };
+      const dateWindow = {
+        start_date: $('#dateFrom')?.value || '2020-01-01',
+        end_date: $('#dateTo')?.value || new Date().toISOString().slice(0, 10),
+        page_size: 100
+      };
+      if (jurisdiction === 'FLORIDA_STATE') {
+        lookupStatus(`Searching Florida's one selected source for candidate and committee ${activityLabel()}…`);
+        const [candidateResult, committeeResult] = await Promise.all([
+          api.call('committee-activity.search', { ...basePayload, query: { ...dateWindow, candidate: query } }, { mutation: false, purpose: 'search one Florida source candidate activity projection' }),
+          api.call('committee-activity.search', { ...basePayload, query: { ...dateWindow, committee: query } }, { mutation: false, purpose: 'search one Florida source committee activity projection' })
+        ]);
+        renderLocalDirectory(mergeActivityResults(
+          [candidateResult?.data || candidateResult, committeeResult?.data || committeeResult],
+          { queryFacets: ['CANDIDATE', 'COMMITTEE'] }
+        ));
+      } else {
+        lookupStatus(`Searching exactly one selected source (${sourceId}) for ${activityLabel()}…`);
+        const result = await api.call('committee-activity.search', {
+          ...basePayload,
+          query: { ...dateWindow, committee: query }
+        }, { mutation: false, purpose: 'search one jurisdiction-scoped committee activity lane' });
+        renderLocalDirectory(result?.data || result);
+      }
     }
   } catch (error) {
     lookupStatus(error?.message || 'Campaign / PC lookup did not complete.', 'error');

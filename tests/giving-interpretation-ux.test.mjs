@@ -83,6 +83,10 @@ assert.match(clarity, /transition: opacity 90ms ease 200ms/);
 assert.match(clarity, /\.contact-queue-list\.contact-queue-scrollbox/);
 assert.match(campaign, /one jurisdiction-scoped committee activity lane/);
 assert.match(campaign, /TRANSIENT_SEPARATE_CAMPAIGN_ACTIVITY|Expenditures remain separate from donor Giving History/);
+assert.match(campaign, /jurisdiction === 'FLORIDA_STATE'/);
+assert.match(campaign, /query: \{ \.\.\.dateWindow, candidate: query \}/);
+assert.match(campaign, /query: \{ \.\.\.dateWindow, committee: query \}/);
+assert.match(campaign, /bounded candidate\/committee projections/);
 
 console.log('giving-interpretation-ux.test.mjs passed');
 
