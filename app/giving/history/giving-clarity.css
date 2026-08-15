@@ -135,6 +135,24 @@
   border-radius: 0.55rem;
 }
 
+.committee-workspace-row > div:first-child {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.committee-workspace-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.committee-workspace-actions button {
+  min-height: 1.7rem;
+  padding: 0.25rem 0.45rem;
+  font-size: 0.68rem;
+}
+
 .committee-workspace-row small {
   grid-column: 1 / -1;
   color: var(--muted, #9ca3af);

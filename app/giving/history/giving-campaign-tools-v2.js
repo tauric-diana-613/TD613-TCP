@@ -63,23 +63,26 @@ function committeeWorkspaceData() {
   for (const snapshot of committeeSearchSnapshots) {
     for (const candidate of Array.isArray(snapshot.data?.candidates) ? snapshot.data.candidates : []) {
       const key = `candidate:${candidate.candidate_id || committeeSnapshotKey(candidate.name)}`;
-      identities.set(key, { kind: 'Candidate', name: candidate.name, meta: [candidate.candidate_id, candidate.office, candidate.state, candidate.party].filter(Boolean).join(' · ') });
+      identities.set(key, { kind: 'Candidate', name: candidate.name, meta: [candidate.candidate_id, candidate.office, candidate.state, candidate.party].filter(Boolean).join(' · '), candidate });
       for (const committee of candidate.principal_committees || []) {
         const committeeKey = `committee:${committee.committee_id || committeeSnapshotKey(committee.name)}`;
-        identities.set(committeeKey, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · ') });
+        identities.set(committeeKey, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate, source_id: 'fec-schedule-a' });
       }
     }
     for (const committee of Array.isArray(snapshot.data?.committees) ? snapshot.data.committees : []) {
       const key = `committee:${committee.committee_id || committeeSnapshotKey(committee.name)}`;
-      identities.set(key, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · ') });
+      identities.set(key, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate: {}, source_id: 'fec-schedule-a' });
     }
     for (const organization of snapshot.data?.opensecrets?.organizations || []) {
       const key = `organization:${organization.org_id || committeeSnapshotKey(organization.name)}`;
-      identities.set(key, { kind: 'Organization', name: organization.name, meta: organization.org_id || 'OpenSecrets' });
+      identities.set(key, { kind: 'Organization', name: organization.name, meta: organization.org_id || 'OpenSecrets', organization });
     }
     for (const record of Array.isArray(snapshot.data?.records) ? snapshot.data.records : []) {
       const filerKey = `filer:${committeeSnapshotKey(record.filer, record.source_instance_id)}`;
-      if (record.filer && !identities.has(filerKey)) identities.set(filerKey, { kind: 'Filer', name: record.filer, meta: [record.jurisdiction, record.source_instance_id].filter(Boolean).join(' · ') });
+      if (record.filer && !identities.has(filerKey)) identities.set(filerKey, {
+        kind: 'Filer', name: record.filer, meta: [record.jurisdiction, record.source_instance_id].filter(Boolean).join(' · '),
+        committee: { name: record.filer }, candidate: {}, source_id: record.source_instance_id || snapshot.data?.source_instance_id
+      });
     }
   }
   return { identities: [...identities.values()] };
@@ -101,10 +104,19 @@ function renderCommitteeWorkspace() {
   summary.textContent = committeeSearchSnapshots.length
     ? `${identities.length} campaign/committee identit${identities.length === 1 ? 'y' : 'ies'} · ${committeeSearchSnapshots.length} search${committeeSearchSnapshots.length === 1 ? '' : 'es'} loaded`
     : 'No committee search loaded.';
-  const identityMarkup = identities.map((identity) => `<article class="committee-workspace-row" data-kind="identity">
-    <strong>${escapeHtml(identity.name || 'Identity not stated')}</strong><span>${escapeHtml(identity.kind)}</span><small>${escapeHtml(identity.meta || '')}</small>
-  </article>`).join('');
+  const identityMarkup = identities.map((identity) => {
+    let actions = '';
+    if (identity.kind === 'Filer') actions = `<button type="button" class="campaign-committee-result" data-load-campaign data-kind="local" data-committee-name="${escapeHtml(identity.name)}" data-source-id="${escapeHtml(identity.source_id || '')}"><strong>${escapeHtml(identity.name)}</strong><span>Load context → Contributions</span></button>${activityInspectButton(identity.committee, identity.candidate, identity.source_id)}`;
+    else if (identity.committee) actions = `${committeeLoadButton(identity.committee, identity.candidate)}${activityInspectButton(identity.committee, identity.candidate, identity.source_id)}`;
+    else if (identity.candidate) actions = candidateLoadButton(identity.candidate);
+    else if (identity.organization) actions = `<button type="button" class="opensecrets-result" data-opensecrets-summary data-org-id="${escapeHtml(identity.organization.org_id || '')}"><strong>${escapeHtml(identity.organization.name || 'Organization')}</strong><small>${escapeHtml(identity.organization.org_id || 'OpenSecrets')}</small></button>`;
+    return `<article class="committee-workspace-row" data-kind="identity">
+      <div><strong>${escapeHtml(identity.name || 'Identity not stated')}</strong><span>${escapeHtml(identity.kind)}</span><small>${escapeHtml(identity.meta || '')}</small></div>
+      <div class="committee-workspace-actions">${actions}</div>
+    </article>`;
+  }).join('');
   list.innerHTML = identityMarkup || '<span class="muted">No campaign or committee identities were observed in the loaded search.</span>';
+  bindDynamicActions();
 }
 
 function captureCommitteeSearch(data, kind) {
