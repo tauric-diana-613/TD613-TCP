@@ -110,6 +110,8 @@ assert.match(campaign, /query: \{ \.\.\.dateWindow, committee: query \}/);
 assert.match(campaign, /bounded candidate\/committee projections/);
 assert.match(campaign, /let committeeHold = false/);
 assert.match(campaign, /if \(!committeeHold\) committeeSearchSnapshots = \[\]/);
+assert.match(campaign, /campaign\/committee identit/);
+assert.doesNotMatch(campaign, /captureCommitteeActivity|data-kind="activity"/);
 assert.match(campaign, /window\.confirm\('Clear List\?'\)/);
 assert.match(campaign, /clearCommitteeWorkspace/);
 assert.doesNotMatch(campaign, /holdReviewButton/);

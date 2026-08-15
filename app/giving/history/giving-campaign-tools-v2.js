@@ -60,7 +60,6 @@ function committeeSnapshotKey(value, fallback = '') {
 
 function committeeWorkspaceData() {
   const identities = new Map();
-  const activity = new Map();
   for (const snapshot of committeeSearchSnapshots) {
     for (const candidate of Array.isArray(snapshot.data?.candidates) ? snapshot.data.candidates : []) {
       const key = `candidate:${candidate.candidate_id || committeeSnapshotKey(candidate.name)}`;
@@ -81,11 +80,9 @@ function committeeWorkspaceData() {
     for (const record of Array.isArray(snapshot.data?.records) ? snapshot.data.records : []) {
       const filerKey = `filer:${committeeSnapshotKey(record.filer, record.source_instance_id)}`;
       if (record.filer && !identities.has(filerKey)) identities.set(filerKey, { kind: 'Filer', name: record.filer, meta: [record.jurisdiction, record.source_instance_id].filter(Boolean).join(' · ') });
-      const recordKey = record.record_digest || JSON.stringify(record);
-      activity.set(recordKey, record);
     }
   }
-  return { identities: [...identities.values()], activity: [...activity.values()] };
+  return { identities: [...identities.values()] };
 }
 
 function renderCommitteeHoldState() {
@@ -100,29 +97,19 @@ function renderCommitteeWorkspace() {
   const summary = $('#committeeSearchWorkspaceSummary');
   const list = $('#committeeSearchWorkspaceList');
   if (!summary || !list) return;
-  const { identities, activity } = committeeWorkspaceData();
+  const { identities } = committeeWorkspaceData();
   summary.textContent = committeeSearchSnapshots.length
-    ? `${activity.length} activity row${activity.length === 1 ? '' : 's'} · ${identities.length} candidate/committee identit${identities.length === 1 ? 'y' : 'ies'} · ${committeeSearchSnapshots.length} search${committeeSearchSnapshots.length === 1 ? '' : 'es'} loaded`
+    ? `${identities.length} campaign/committee identit${identities.length === 1 ? 'y' : 'ies'} · ${committeeSearchSnapshots.length} search${committeeSearchSnapshots.length === 1 ? '' : 'es'} loaded`
     : 'No committee search loaded.';
-  const activityMarkup = activity.map((record) => `<article class="committee-workspace-row" data-kind="activity">
-    <strong>${escapeHtml(record.counterparty || 'Counterparty not stated')}</strong>
-    <span>${record.amount_cents === null || record.amount_cents === undefined ? 'amount unavailable' : escapeHtml(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(record.amount_cents / 100))}</span>
-    <small>${escapeHtml([record.filer, record.date, record.jurisdiction, record.activity_type].filter(Boolean).join(' · '))}</small>
-  </article>`).join('');
   const identityMarkup = identities.map((identity) => `<article class="committee-workspace-row" data-kind="identity">
     <strong>${escapeHtml(identity.name || 'Identity not stated')}</strong><span>${escapeHtml(identity.kind)}</span><small>${escapeHtml(identity.meta || '')}</small>
   </article>`).join('');
-  list.innerHTML = activityMarkup + identityMarkup || '<span class="muted">Run Candidate &amp; committee lookup to load this list.</span>';
+  list.innerHTML = identityMarkup || '<span class="muted">No campaign or committee identities were observed in the loaded search.</span>';
 }
 
 function captureCommitteeSearch(data, kind) {
   if (!committeeHold) committeeSearchSnapshots = [];
   committeeSearchSnapshots.push({ kind, data, captured_at: new Date().toISOString() });
-  renderCommitteeWorkspace();
-}
-
-function captureCommitteeActivity(data) {
-  committeeSearchSnapshots.push({ kind: 'ACTIVITY', data, captured_at: new Date().toISOString() });
   renderCommitteeWorkspace();
 }
 
@@ -357,7 +344,6 @@ async function inspectCommitteeActivity(button) {
     }, { mutation: false, purpose: `inspect separate ${type.toLowerCase()} committee activity` });
     const data = result?.data || result;
     renderActivity(data);
-    captureCommitteeActivity(data);
     lookupStatus(`${data.record_count || 0} ${activityLabel(type)} returned from ${sourceId}.`, 'success');
   } catch (error) {
     lookupStatus(error?.message || 'Committee activity lookup did not complete.', 'error');
