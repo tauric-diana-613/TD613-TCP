@@ -127,15 +127,19 @@ async function openSecretsOrganizations(searchPhrase, context) {
 
 export async function searchCampaignDirectory(payload = {}, context = {}) {
   const searchPhrase = phrase(payload.query);
+  const state = cleanText(payload.state, 2)?.toUpperCase() || null;
+  if (state && !/^[A-Z]{2}$/.test(state)) throw new GivingError('invalid-campaign-directory-state', 'Campaign directory state must use a two-letter postal code', 400);
   const key = fecKey();
   const candidateUrl = new URL(`${OPENFEC_BASE}/candidates/search/`);
   candidateUrl.searchParams.set('api_key', key);
   candidateUrl.searchParams.set('q', searchPhrase);
   candidateUrl.searchParams.set('per_page', '20');
+  if (state) candidateUrl.searchParams.set('state', state);
   const committeeUrl = new URL(`${OPENFEC_BASE}/committees/`);
   committeeUrl.searchParams.set('api_key', key);
   committeeUrl.searchParams.set('q', searchPhrase);
   committeeUrl.searchParams.set('per_page', '20');
+  if (state) committeeUrl.searchParams.set('state', state);
 
   const [candidateBody, committeeBody, openSecrets] = await Promise.all([
     jsonFetch(candidateUrl, { headers: { Accept: 'application/json', 'User-Agent': 'TD613-Giving/1.0 operator research' } }, context),
@@ -148,6 +152,7 @@ export async function searchCampaignDirectory(payload = {}, context = {}) {
   return {
     schema: 'td613.giving.campaign-directory/v1',
     query: searchPhrase,
+    state,
     fec_api_key_mode: String(process.env.FEC_API_KEY || '').trim() ? 'configured' : 'demo',
     candidates: candidateBody.results.map(normalizeCandidate).filter((item) => item.candidate_id && item.name),
     committees: committeeBody.results.map(normalizeCommittee).filter((item) => item.committee_id && item.name),
@@ -278,3 +283,4 @@ export function campaignDirectoryReadiness() {
     campaign_deputy_committee: { configured: Boolean(String(process.env.CAMPAIGN_DEPUTY_API_KEY || '').trim()), representation: 'listType=list', historical_contribution_writeback_used: false }
   };
 }
+

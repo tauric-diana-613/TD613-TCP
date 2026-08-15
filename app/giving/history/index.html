@@ -44,7 +44,10 @@
       <div class="mast-actions">
         <span class="session-pill" id="sessionPill"><span></span> signed session</span>
         <button class="button quiet mobile-control-toggle" id="mobileControlToggle" type="button" aria-controls="givingControlRail" aria-expanded="false">Query</button>
-        <button class="button quiet" id="readinessButton" type="button">Readiness</button>
+        <span class="readiness-control">
+          <button class="button quiet" id="readinessButton" type="button" aria-describedby="readinessTooltip">Readiness</button>
+          <span class="readiness-tooltip" id="readinessTooltip" role="tooltip">Read-only check: verifies the current Giving session and source registry, then adds a receipt. It does not search, sync, create, upload, or deploy anything.</span>
+        </span>
         <button class="button quiet danger" id="signOutButton" type="button">Close session</button>
       </div>
     </header>
@@ -98,7 +101,7 @@
             </label>
             <label class="giving-exact-match" for="exactMatchToggle">
               <input id="exactMatchToggle" type="checkbox">
-              <span><strong>Exact Match</strong><small>Keep only records whose normalized contributor name exactly matches the submitted name or alias.</small></span>
+              <span><strong>Normalized exact match</strong><small>Normalizes punctuation and name order, allows compatible middle initials, and preserves suffix conflicts before matching the submitted name or alias.</small></span>
             </label>
             <label class="field">
               <span>Aliases <small>one per line</small></span>
@@ -116,6 +119,7 @@
               <label class="field"><span>Beginning date</span><input id="dateFrom" name="date_from" type="date" required></label>
               <label class="field"><span>Ending date</span><input id="dateTo" name="date_to" type="date" required></label>
             </div>
+            <div class="coverage-scope-chip" id="dateCoverageChip" role="status">Requested coverage: 2020 → today · actual coverage is source-receipt bounded.</div>
             <fieldset class="source-picker">
               <legend>Electronic source instances</legend>
               <div class="source-picker-actions">
@@ -134,18 +138,25 @@
         <section class="panel campaign-directory-panel" id="campaignDirectoryPanel">
           <div class="campaign-directory-heading">
             <div><p class="eyebrow">CAMPAIGN / PC IDENTITY</p><h2>Candidate &amp; committee lookup</h2></div>
-            <span>OpenFEC + OpenSecrets</span>
+            <span>FEC + OpenSecrets + Florida sources</span>
           </div>
           <form id="campaignDirectoryForm" class="campaign-directory-form">
-            <label class="field"><span>Candidate, campaign, PAC or political committee</span><input id="campaignDirectoryQuery" type="search" autocomplete="off" placeholder="Search federal candidate or committee"></label>
+            <label class="field"><span>Candidate, campaign, PAC or political committee</span><input id="campaignDirectoryQuery" type="search" autocomplete="off" placeholder="Search the selected filing jurisdiction"></label>
+            <div class="campaign-directory-scope-grid">
+              <label class="field"><span>Jurisdiction</span><select id="campaignDirectoryJurisdiction"><option value="FEDERAL">Federal</option><option value="FLORIDA_STATE">Florida statewide</option><option value="COUNTY">County</option><option value="CITY">City</option></select></label>
+              <details class="giving-state-filter campaign-state-picker" id="campaignDirectoryState"><summary><span>State</span><strong id="campaignDirectoryStateCount">FL</strong></summary><div class="giving-state-filter-menu" id="campaignDirectoryStateMenu" role="radiogroup" aria-label="Campaign lookup state"></div></details>
+              <details class="giving-state-filter campaign-local-picker" id="campaignDirectoryLocal" hidden><summary><span id="campaignDirectoryLocalLabel">County</span><strong id="campaignDirectoryLocalCount"></strong></summary><div class="giving-state-filter-menu" id="campaignDirectoryLocalMenu" role="radiogroup" aria-label="Local filing jurisdiction"></div></details>
+              <label class="field"><span>Ledger lane</span><select id="campaignDirectoryActivity"><option value="CONTRIBUTIONS">Contribution receipts</option><option value="EXPENDITURES">Expenditure receipts</option></select></label>
+            </div>
             <button class="button primary wide" id="campaignDirectorySearchButton" type="submit">Search</button>
           </form>
-          <p class="fine-print">Load a reviewed federal candidate or committee into Contributions first. Campaign Deputy can then sync that loaded identity with one explicit gesture. OpenSecrets remains aggregate context only.</p>
+          <p class="fine-print">One selected jurisdiction is queried per local search. Local identities may be transaction-derived from that custodian. Expenditure receipts remain a separate campaign-activity lane and never enter donor Giving History. Campaign Deputy sync remains limited to reviewed FEC committee identities.</p>
           <div class="campaign-directory-columns">
             <section><h4>Candidates + principal committees</h4><div id="campaignDirectoryCandidates" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
             <section><h4>Committees / campaigns / PCs</h4><div id="campaignDirectoryCommittees" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
             <section><h4>OpenSecrets organizations</h4><div id="campaignDirectoryOpenSecrets" class="campaign-directory-results"><span class="muted">Search to begin.</span></div><div id="campaignDirectoryOpenSecretsSummary"></div></section>
           </div>
+          <section class="campaign-activity-results" id="campaignActivitySection" hidden><h4 id="campaignActivityHeading">Committee activity</h4><div id="campaignActivityResults" class="campaign-directory-results"></div></section>
           <div id="campaignToolsStatus" class="campaign-tools-status" role="status">Ready for campaign / PC lookup.</div>
         </section>
       </aside>
@@ -160,6 +171,7 @@
       </nav>
 
       <div class="ledger-column">
+        <div class="coverage-executive-line" id="coverageExecutiveLine" role="status">No source coverage receipt yet.</div>
         <section class="view active" id="view-search" data-view-panel="search">
           <div class="section-head">
             <div>
@@ -183,12 +195,12 @@
               <h2>Contributions</h2>
             </div>
             <div class="legend" aria-label="Identity states">
-              <span data-state="CANDIDATE">candidate</span><span data-state="CONFIRMED">confirmed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">unreviewed</span>
+              <span data-state="CANDIDATE">candidate</span><span data-state="CONFIRMED">identity confirmed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">unreviewed</span>
             </div>
           </div>
           <div class="review-toolbar">
             <label class="field compact"><span>Contact</span><select id="reviewTargetFilter"><option value="ALL">All contacts</option></select></label>
-            <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
+            <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Identity confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
             <label class="field compact grow"><span>Filter contributions</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
             <button class="button review-hold-button" id="holdReviewButton" type="button" aria-pressed="false" data-held="false">Hold</button>
           </div>
@@ -213,24 +225,28 @@
         <section class="view" id="view-ledger" data-view-panel="ledger" hidden>
           <div class="section-head">
             <div>
-              <p class="eyebrow">CONFIRMED RECORDS ONLY</p>
+              <p class="eyebrow">IDENTITY-CONFIRMED RECORDS ONLY</p>
               <h2>Committee-first ledger</h2>
             </div>
             <div class="button-row align-end">
               <button class="button ledger-date-sort-button" id="ledgerDateSortButton" type="button" aria-pressed="true" data-direction="desc">Date ↓</button>
               <button class="button" id="exportCampaignDeputyBundleButton" type="button">CD Giving History .zip</button>
-              <button class="button" id="exportSpreadsheetButton" type="button">Export spreadsheet</button>
-              <button class="button" id="exportCsvButton" type="button">Export CSV</button>
+              <button class="button" id="exportReviewedSummaryButton" type="button">Reviewed summary .csv</button>
+              <button class="button" id="exportSpreadsheetButton" type="button">Forensic spreadsheet</button>
+              <button class="button" id="exportCsvButton" type="button">Forensic CSV</button>
               <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
             </div>
           </div>
           <div class="total-banner">
-            <span>Confirmed across committees</span>
+            <span id="confirmedTotalLabel">Identity-confirmed contributions</span>
             <strong id="confirmedTotal">$0.00</strong>
-            <small id="confirmedRecordCount">0 records</small>
+            <b class="filing-total-state" id="filingTotalState">No filing total yet</b>
+            <small id="confirmedRecordCount">0 identity-confirmed records</small>
+            <small class="total-breakdown" id="confirmedTotalBreakdown">Deterministic-lineage $0.00 · provisional-lineage $0.00</small>
           </div>
+          <p class="identity-ceiling">Identity confirmation is a research determination, not a legal compliance determination.</p>
           <div class="committee-list" id="committeeLedger">
-            <div class="empty-state"><strong>No confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>
+            <div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>
           </div>
         </section>
 
@@ -284,7 +300,7 @@
               <label class="field"><span>Filter the loaded index</span><input id="peopleFilter" type="search" placeholder="Name, email, phone"></label>
               <div id="peopleIndex" class="people-list"><span class="muted">No Campaign Deputy people loaded into this dossier.</span></div>
               <button class="button wide" id="morePeopleButton" type="button" hidden>Load next page</button>
-              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select a confirmed committee</option></select></label>
+              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select an identity-confirmed committee</option></select></label>
               <button class="button wide" id="linkExistingButton" type="button" disabled>Link selected committee only</button>
               <button class="button primary wide" id="syncTargetButton" type="button" disabled>Sync all reviewed committees for this contact</button>
             </section>
@@ -292,7 +308,7 @@
             <section class="inner-panel">
               <h3>2. Explicitly create a contact</h3>
               <p>Only after duplicate review. Choose each public field you intend to copy.</p>
-              <label class="field"><span>Confirmed source record</span><select id="createRecordSelect"><option value="">Select a confirmed record</option></select></label>
+              <label class="field"><span>Identity-confirmed source record</span><select id="createRecordSelect"><option value="">Select an identity-confirmed record</option></select></label>
               <div class="field-choice-grid" id="createFieldChoices">
                 <label><input type="checkbox" value="name" checked> name</label>
                 <label><input type="checkbox" value="email" checked> email</label>
@@ -309,7 +325,7 @@
             <div>
               <p class="eyebrow">GIVING HISTORY · SAFE STAGING</p>
               <h3>3. Prepare individual-gift batch</h3>
-              <p>Download a held, API-ready JSON package with every confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
+              <p>Download a held, API-ready JSON package with every identity-confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
             </div>
             <div class="button-row">
               <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
@@ -347,7 +363,7 @@
         </section>
         <footer class="signal-wake" aria-label="Current dossier state">
           <span><i data-signal="source"></i><b id="wakeSourceState">sources quiet</b></span>
-          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 confirmed</b></span>
+          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 identity confirmed</b></span>
           <span><i data-signal="custody"></i><b id="wakeCustodyState">local custody</b></span>
         </footer>
       </div>
@@ -355,6 +371,7 @@
   </div>
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
-  <script type="module" src="./giving-bootstrap.js?v=20260814-3"></script>
+  <script type="module" src="./giving-bootstrap.js?v=20260815-1"></script>
 </body>
 </html>
+

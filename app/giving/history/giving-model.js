@@ -369,18 +369,56 @@ export function committeeLedger(dossier, targetId = null) {
       office: compactText(record.office),
       cycle: compactText(record.cycle || record.election),
       amount_cents: 0,
+      deterministic_amount_cents: 0,
+      provisional_amount_cents: 0,
       records: [],
+      deterministic_records: [],
+      provisional_records: [],
       provisional: false
     };
-    current.amount_cents += Number.isSafeInteger(record.amount_cents) ? record.amount_cents : parseMoneyToCents(record.amount ?? 0);
-    current.records.push(record);
-    current.provisional ||= Boolean(
+    const amountCents = Number.isSafeInteger(record.amount_cents) ? record.amount_cents : parseMoneyToCents(record.amount ?? 0);
+    const recordIsProvisional = Boolean(
       record.provisional || record.amendment_uncertain || record.supersession_uncertain ||
       record.lineage?.provisional || record.lineage?.analytical_total_status === 'PROVISIONAL'
     );
+    current.amount_cents += amountCents;
+    current.records.push(record);
+    if (recordIsProvisional) {
+      current.provisional_amount_cents += amountCents;
+      current.provisional_records.push(record);
+    } else {
+      current.deterministic_amount_cents += amountCents;
+      current.deterministic_records.push(record);
+    }
+    current.provisional ||= recordIsProvisional;
     groups.set(key, current);
   }
   return [...groups.values()].sort((a, b) => Math.abs(b.amount_cents) - Math.abs(a.amount_cents) || a.committee.localeCompare(b.committee));
+}
+
+function shareSafeSourceLocator(value) {
+  const raw = compactText(value);
+  if (!raw) return '';
+  try {
+    const url = new URL(raw);
+    if (!['http:', 'https:'].includes(url.protocol)) return '';
+    const voterFocusTenant = /(^|\.)voterfocus\.com$/i.test(url.hostname) && /\/CampaignFinance\/cand_srch\.php$/i.test(url.pathname)
+      ? url.searchParams.get('c')
+      : null;
+    url.username = '';
+    url.password = '';
+    url.search = '';
+    if (voterFocusTenant && /^[a-z0-9_-]+$/i.test(voterFocusTenant)) url.searchParams.set('c', voterFocusTenant);
+    url.hash = '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function spreadsheetSafeText(value) {
+  const text = String(value ?? '');
+  return /^[\u0000-\u0020]*[=+\-@]/.test(text) ? `'${text}` : text;
 }
 
 export function formatCurrency(cents) {
@@ -408,6 +446,25 @@ export function dossierCsv(dossier) {
   return `${fields.join(',')}\r\n${rows.join('\r\n')}\r\n`;
 }
 
+export function reviewedSummaryCsv(dossier) {
+  const fields = ['name', 'committee', 'date', 'amount', 'jurisdiction', 'status', 'source_link'];
+  const rows = dossier.records
+    .filter((record) => dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED)
+    .map((record) => [
+      spreadsheetSafeText(record.contributor_name_display || record.contributor_name_raw || record.source_contributor_name_raw),
+      spreadsheetSafeText(recordCommittee(record)),
+      record.contribution_date,
+      Number.isSafeInteger(record.amount_cents) ? (record.amount_cents / 100).toFixed(2) : '',
+      spreadsheetSafeText(record.jurisdiction),
+      'IDENTITY_CONFIRMED',
+      spreadsheetSafeText(shareSafeSourceLocator(record.source_locator))
+    ].map(csvCell).join(','));
+  return `${fields.join(',')}\r\n${rows.join('\r\n')}${rows.length ? '\r\n' : ''}`;
+}
+
 export function safeFilename(value) {
   return compactText(value).replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'giving-history';
 }
+
+export const _reviewedSummaryInternals = Object.freeze({ shareSafeSourceLocator, spreadsheetSafeText });
+

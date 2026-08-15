@@ -26,10 +26,11 @@ function contributorParts(value) {
 function floridaPayload(query) {
   const parameters = new URLSearchParams();
   const contributor = contributorParts(query.name);
+  const candidate = contributorParts(query.candidate);
   parameters.set('election', query.election || (query.election_year ? `${query.election_year}1103-GEN` : 'All'));
-  parameters.set('search_on', '4');
-  parameters.set('CanFName', '');
-  parameters.set('CanLName', '');
+  parameters.set('search_on', query.candidate ? '2' : '4');
+  parameters.set('CanFName', candidate.given);
+  parameters.set('CanLName', candidate.family);
   parameters.set('CanNameSrch', '2');
   parameters.set('office', 'All');
   parameters.set('cdistrict', '');
@@ -95,3 +96,4 @@ export async function searchFloridaPage({ source, query, continuation, fetchImpl
 }
 
 export const _floridaInternals = Object.freeze({ floridaPayload, contributorParts });
+

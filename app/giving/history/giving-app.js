@@ -10,6 +10,7 @@ import {
   formatCurrency,
   recordBelongsToTarget,
   recordDigest,
+  reviewedSummaryCsv,
   safeFilename,
   searchTargetFromQuery,
   setIdentityDecision
@@ -47,6 +48,13 @@ const state = {
   reviewTargetId: 'ALL',
   campaignTargetId: null
 };
+
+function identityStatusLabel(status) {
+  if (status === IDENTITY_STATUS.CONFIRMED) return 'Identity confirmed';
+  if (status === IDENTITY_STATUS.EXCLUDED) return 'Excluded';
+  if (status === IDENTITY_STATUS.CANDIDATE) return 'Candidate';
+  return 'Unreviewed';
+}
 
 function updateField(view) {
   const sources = (state.dossier.source_ids || []).map((id) => ({
@@ -187,7 +195,7 @@ function renderTargetSelectors() {
     if (!target) summary.textContent = 'Search and review a contact before Campaign Deputy handoff.';
     else {
       const confirmed = state.dossier.records.filter((record) => recordBelongsToTarget(record, target.id) && state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED).length;
-      summary.textContent = `${target.name} · ${targetRecordCount(target.id)} retrieved · ${confirmed} confirmed`;
+      summary.textContent = `${target.name} · ${targetRecordCount(target.id)} retrieved · ${confirmed} identity confirmed`;
     }
   }
 }
@@ -566,15 +574,31 @@ function renderSourceProgress() {
     $('#sourceProgress').innerHTML = '<div class="empty-state"><strong>Waiting for a query.</strong><span>Choose searchable electronic custodians from the left rail.</span></div>';
     $('#runSummary').textContent = 'No search has run.';
     $('#coverageWarning').hidden = true;
+    $('#coverageExecutiveLine').textContent = 'No source coverage receipt yet.';
+    $('#coverageExecutiveLine').dataset.state = 'empty';
     updateField();
     return;
   }
   const states = ids.map((id) => state.dossier.source_states[id] || { status: 'NOT_RUN', count: 0 });
-  const completed = states.filter((item) => ['COMPLETE', 'PARTIAL'].includes(item.status)).length;
-  const failed = states.filter((item) => ['FAILED', 'ERROR', 'DRIFTED', 'UNAVAILABLE', 'CANCELLED'].includes(item.status)).length;
+  const completed = states.filter((item) => item.status === 'COMPLETE').length;
+  const partial = states.filter((item) => item.status === 'PARTIAL').length;
+  const unavailable = states.filter((item) => ['FAILED', 'ERROR', 'DRIFTED', 'UNAVAILABLE', 'CANCELLED'].includes(item.status)).length;
   const running = states.filter((item) => item.status === 'RUNNING').length;
-  $('#runSummary').textContent = `${completed}/${ids.length} returned · ${running} active · ${failed} held`;
-  $('#coverageWarning').hidden = failed === 0 && !states.some((item) => item.status === 'PARTIAL');
+  const pending = ids.length - completed - partial - unavailable;
+  const receiptTimes = states
+    .map((item) => item.receipt?.completed_at || item.receipt?.at || null)
+    .filter(Boolean)
+    .map((value) => new Date(value))
+    .filter((value) => !Number.isNaN(value.getTime()));
+  const retrieved = receiptTimes.length
+    ? new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(Math.max(...receiptTimes.map((value) => value.getTime()))))
+    : 'not yet';
+  const activeText = pending ? ` · ${pending} active or pending` : '';
+  const coverageText = `${completed}/${ids.length} selected sources complete · ${partial} partial · ${unavailable} unavailable${activeText} · retrieved ${retrieved}`;
+  $('#runSummary').textContent = `${completed}/${ids.length} complete · ${partial} partial · ${running} active · ${unavailable} unavailable`;
+  $('#coverageExecutiveLine').textContent = coverageText;
+  $('#coverageExecutiveLine').dataset.state = unavailable || partial ? 'qualified' : completed === ids.length ? 'complete' : 'running';
+  $('#coverageWarning').hidden = unavailable === 0 && partial === 0;
   $('#sourceProgress').innerHTML = ids.map((id) => {
     const source = sourceById(id);
     const item = state.dossier.source_states[id] || { status: 'NOT_RUN', count: 0 };
@@ -691,17 +715,18 @@ function renderReview() {
     const comparison = cluster?.comparisons?.find((item) => item.left === digest || item.right === digest);
     const amount = Number.isSafeInteger(record.amount_cents) ? formatCurrency(record.amount_cents) : 'amount missing';
     const targetLabel = targetNameForRecord(record);
-    return `<article class="record-card" data-record="${escapeHtml(digest)}">
+    return `<article class="record-card" data-record="${escapeHtml(digest)}" data-identity-status="${escapeHtml(status)}">
+      <button class="record-exclude-button" type="button" data-exclude-record="${escapeHtml(digest)}" aria-label="Exclude this record from ordinary exports and committee totals" title="Exclude from ordinary exports; keep in audit trail" ${status === IDENTITY_STATUS.EXCLUDED ? 'disabled' : ''}>×</button>
       <div class="record-main">
         <div class="record-person"><strong>${escapeHtml(recordName(record))}</strong><small>${escapeHtml([record.address, record.city, record.state, record.zip].filter(Boolean).join(' · '))}</small></div>
         <div class="record-committee"><strong>${escapeHtml(recordCommittee(record))}</strong><small>${escapeHtml([record.office, record.election || record.cycle, record.contribution_date].filter(Boolean).join(' · '))}</small></div>
         <div class="record-amount"><strong>${escapeHtml(amount)}</strong><small>${escapeHtml(record.contribution_type || record.amendment_status || '')}</small></div>
         <div class="record-actions">
-          ${Object.values(IDENTITY_STATUS).map((choice) => `<button class="decision-button" type="button" data-decision="${choice}" data-digest="${escapeHtml(digest)}" ${choice === status ? 'disabled' : ''}>${choice}</button>`).join('')}
+          ${Object.values(IDENTITY_STATUS).filter((choice) => choice !== IDENTITY_STATUS.EXCLUDED).map((choice) => `<button class="decision-button" type="button" data-decision="${choice}" data-digest="${escapeHtml(digest)}" ${choice === status ? 'disabled' : ''}>${escapeHtml(identityStatusLabel(choice))}</button>`).join('')}
         </div>
       </div>
       <div class="record-lineage">
-        <span class="identity-state" data-state="${escapeHtml(status)}">${escapeHtml(status)}</span>
+        <span class="identity-state" data-state="${escapeHtml(status)}">${escapeHtml(identityStatusLabel(status))}</span>
         ${targetLabel ? ` · <span class="target-lineage">target ${escapeHtml(targetLabel)}</span>` : ''}
         · ${escapeHtml(record.source_family)} / ${escapeHtml(record.source_instance_id || record.source_instance)}
         · ${escapeHtml(record.evidence_status || 'OBSERVED')}
@@ -722,6 +747,19 @@ function renderReview() {
       toast(humanError(error), 'error');
     }
   }));
+  $$('[data-exclude-record]').forEach((button) => button.addEventListener('click', () => {
+    try {
+      state.dossier = setIdentityDecision(state.dossier, button.dataset.excludeRecord, IDENTITY_STATUS.EXCLUDED, 'Excluded from ordinary exports and committee totals by operator. Evidence retained.');
+      markDirty();
+      renderReview();
+      renderLedger();
+      renderCampaign();
+      renderReceipts();
+      toast('Record excluded from ordinary exports and totals. The evidence remains in the dossier and forensic exports.');
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  }));
 }
 
 function exportCampaignDeputyCommitteeCsv(group) {
@@ -738,7 +776,7 @@ function exportCampaignDeputyCommitteeCsv(group) {
     record_count: group.records.length,
     one_committee_per_import: true
   }, 'export');
-  toast(`${group.records.length} confirmed record${group.records.length === 1 ? '' : 's'} prepared in Campaign Deputy's official Giving History format for ${group.committee}.`);
+  toast(`${group.records.length} identity-confirmed record${group.records.length === 1 ? '' : 's'} prepared in Campaign Deputy's official Giving History format for ${group.committee}.`);
 }
 
 function exportCampaignDeputyBundle(records, { preparedBatch = null, targetMode = 'DOSSIER_CONFIRMED_RECORDS', title = state.dossier.title } = {}) {
@@ -760,19 +798,28 @@ function exportCampaignDeputyBundle(records, { preparedBatch = null, targetMode 
 function renderLedger() {
   const groups = committeeLedger(state.dossier);
   const total = groups.reduce((sum, group) => sum + group.amount_cents, 0);
+  const deterministicTotal = groups.reduce((sum, group) => sum + group.deterministic_amount_cents, 0);
+  const provisionalTotal = groups.reduce((sum, group) => sum + group.provisional_amount_cents, 0);
   const recordCount = groups.reduce((sum, group) => sum + group.records.length, 0);
   $('#ledgerCount').textContent = String(groups.length);
   $('#confirmedTotal').textContent = formatCurrency(total);
-  $('#confirmedRecordCount').textContent = `${recordCount} confirmed record${recordCount === 1 ? '' : 's'}`;
+  $('#confirmedRecordCount').textContent = `${recordCount} identity-confirmed record${recordCount === 1 ? '' : 's'}`;
+  $('#confirmedTotalBreakdown').textContent = `Deterministic-lineage ${formatCurrency(deterministicTotal)} · provisional-lineage ${formatCurrency(provisionalTotal)}`;
+  $('#filingTotalState').textContent = provisionalTotal
+    ? 'Identity confirmed · filing total provisional'
+    : groups.length ? 'Identity confirmed · filing totals deterministic within retrieved receipts' : 'No filing total yet';
+  $('#filingTotalState').dataset.provisional = provisionalTotal ? 'true' : 'false';
   if (!groups.length) {
-    $('#committeeLedger').innerHTML = '<div class="empty-state"><strong>No confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>';
+    $('#committeeLedger').innerHTML = '<div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>';
     return;
   }
   $('#committeeLedger').innerHTML = groups.map((group, index) => `<article class="committee-card">
     <div class="committee-summary">
       <strong>${escapeHtml(group.committee)}</strong>
       <span class="money">${escapeHtml(formatCurrency(group.amount_cents))}</span>
-      <small>${escapeHtml([group.jurisdiction, group.office, group.cycle].filter(Boolean).join(' · '))} · ${group.records.length} confirmed${group.provisional ? ' · ' : ''}${group.provisional ? '<span class="provisional">PROVISIONAL LINEAGE</span>' : ''}</small>
+      <b class="committee-filing-state" data-provisional="${group.provisional ? 'true' : 'false'}">${group.provisional ? 'IDENTITY CONFIRMED · FILING TOTAL PROVISIONAL' : 'IDENTITY CONFIRMED · DETERMINISTIC WITHIN RECEIPTS'}</b>
+      <small>${escapeHtml([group.jurisdiction, group.office, group.cycle].filter(Boolean).join(' · '))} · ${group.records.length} identity-confirmed</small>
+      <small class="committee-total-breakdown">Deterministic-lineage ${escapeHtml(formatCurrency(group.deterministic_amount_cents))} · provisional-lineage ${escapeHtml(formatCurrency(group.provisional_amount_cents))}</small>
       <button class="button committee-cd-export" type="button" data-cd-committee-index="${index}">CD Giving History .csv</button>
     </div>
     <div class="committee-records">${group.records.map((record) => `${escapeHtml(record.contribution_date || 'date missing')} · ${escapeHtml(formatCurrency(record.amount_cents || 0))} · ${escapeHtml(record.source_family)}${targetNameForRecord(record) ? ` · ${escapeHtml(targetNameForRecord(record))}` : ''}`).join('<br>')}</div>
@@ -996,11 +1043,11 @@ function renderCampaign() {
   const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
   const currentRecord = $('#createRecordSelect')?.value;
   const currentCommittee = $('#committeeSelect')?.value;
-  $('#createRecordSelect').innerHTML = '<option value="">Select a confirmed record</option>' + records.map((record) =>
+  $('#createRecordSelect').innerHTML = '<option value="">Select an identity-confirmed record</option>' + records.map((record) =>
     `<option value="${escapeHtml(recordDigest(record))}">${escapeHtml(recordName(record))} · ${escapeHtml(recordCommittee(record))}</option>`
   ).join('');
   if (records.some((record) => recordDigest(record) === currentRecord)) $('#createRecordSelect').value = currentRecord;
-  $('#committeeSelect').innerHTML = '<option value="">Select a confirmed committee</option>' + groups.map((group) =>
+  $('#committeeSelect').innerHTML = '<option value="">Select an identity-confirmed committee</option>' + groups.map((group) =>
     `<option value="${escapeHtml(group.committee)}">${escapeHtml(group.committee)} · ${escapeHtml(formatCurrency(group.amount_cents))} · ${group.records.length} records</option>`
   ).join('');
   if (groups.some((group) => group.committee === currentCommittee)) $('#committeeSelect').value = currentCommittee;
@@ -1310,7 +1357,7 @@ function renderAll() {
     : returned
       ? `${returned} source${returned === 1 ? '' : 's'} returned`
       : 'sources quiet';
-  $('#wakeIdentityState').textContent = `${confirmed} confirmed`;
+  $('#wakeIdentityState').textContent = `${confirmed} identity confirmed`;
   $('#wakeCustodyState').textContent = `${String(state.dossier.custody || CUSTODY_MODE.LOCAL).toLowerCase()} custody`;
   updateField();
 }
@@ -1411,25 +1458,32 @@ function bindEvents() {
   });
   $$('[data-review-sort]').forEach((button) => button.addEventListener('click', () => setReviewSort(button.dataset.reviewSort)));
   $('#exactMatchToggle').addEventListener('change', () => markDirty());
+  $('#exportReviewedSummaryButton').addEventListener('click', () => {
+    updateDossierFromForm();
+    const confirmedCount = state.dossier.records.filter((record) => state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED).length;
+    download(`${safeFilename(state.dossier.title)}-reviewed-summary.csv`, reviewedSummaryCsv(state.dossier), 'text/csv;charset=utf-8');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'REVIEWED_SUMMARY_CSV', dossier_id: state.dossier.id, record_count: confirmedCount, excluded_records_omitted: true, raw_fields_omitted: true, donor_query_parameters_omitted: true }, 'export');
+    toast(`Reviewed summary prepared with ${confirmedCount} identity-confirmed record${confirmedCount === 1 ? '' : 's'}; excluded and raw forensic fields were omitted.`);
+  });
   $('#exportCsvButton').addEventListener('click', () => {
     updateDossierFromForm();
     download(`${safeFilename(state.dossier.title)}.csv`, dossierCsv(state.dossier), 'text/csv;charset=utf-8');
     addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'CSV', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
-    toast('CSV export prepared with contact targets, identity state, and source lineage.');
+    toast('Forensic CSV prepared with the complete evidence and decision trail, including excluded records.');
   });
   $('#exportSpreadsheetButton').addEventListener('click', () => {
     updateDossierFromForm();
     const workbook = buildDossierXlsx(state.dossier);
     download(`${safeFilename(state.dossier.title)}.xlsx`, workbook, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'XLSX', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
-    toast('Excel spreadsheet prepared with frozen headers, filters, contact targets, identity state, and source lineage.');
+    toast('Forensic spreadsheet prepared with frozen headers, filters, contact targets, identity state, and source lineage.');
   });
   $('#exportCampaignDeputyBundleButton').addEventListener('click', () => {
     try {
       updateDossierFromForm();
       const records = confirmedRecords();
       const bundle = exportCampaignDeputyBundle(records);
-      toast(`${records.length} confirmed Giving History record${records.length === 1 ? '' : 's'} prepared as ${bundle.partitions.length} Campaign Deputy committee import file${bundle.partitions.length === 1 ? '' : 's'}.`);
+      toast(`${records.length} identity-confirmed Giving History record${records.length === 1 ? '' : 's'} prepared as ${bundle.partitions.length} Campaign Deputy committee import file${bundle.partitions.length === 1 ? '' : 's'}.`);
     } catch (error) {
       toast(humanError(error), 'error');
     }
@@ -1497,3 +1551,4 @@ async function boot() {
 }
 
 boot();
+

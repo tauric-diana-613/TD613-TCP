@@ -155,7 +155,9 @@ function renderQueue() {
   runButton.disabled = queueRunning || queue.length === 0;
   clearButton.disabled = queueRunning || queue.length === 0;
   stopButton.disabled = !queueRunning || stopRequested;
-  stopButton.textContent = queueRunning && stopRequested ? 'Stopping…' : 'Stop after current';
+  stopButton.hidden = !queueRunning;
+  stopButton.textContent = stopRequested ? 'Stopping…' : 'Stop queue';
+  list.classList.toggle('contact-queue-scrollbox', queue.length >= 5);
   list.replaceChildren();
   if (!queue.length) {
     const empty = document.createElement('span');
@@ -182,6 +184,7 @@ function renderQueue() {
     const state = document.createElement('span');
     state.className = 'contact-queue-state';
     state.textContent = item.status;
+    state.hidden = item.status === 'QUEUED';
 
     const actions = document.createElement('div');
     actions.className = 'contact-queue-item-actions';
@@ -189,8 +192,21 @@ function renderQueue() {
     review.type = 'button';
     review.className = 'mini-button';
     review.textContent = 'Review';
-    review.disabled = item.status === 'QUEUED' || item.status === 'RUNNING';
+    review.hidden = item.status === 'QUEUED' || item.status === 'RUNNING';
     review.addEventListener('click', () => selectTarget(item));
+
+    const exact = document.createElement('button');
+    exact.type = 'button';
+    exact.className = `mini-button contact-queue-exact${item.exactMatch ? ' active' : ''}`;
+    exact.textContent = 'Exact';
+    exact.setAttribute('aria-pressed', String(Boolean(item.exactMatch)));
+    exact.title = 'Use the same normalized exact-match rule as the individual contribution search for this contact.';
+    exact.disabled = queueRunning;
+    exact.addEventListener('click', () => {
+      item.exactMatch = !item.exactMatch;
+      queueMessage(`${item.name} will use ${item.exactMatch ? 'normalized exact match' : 'broad matching'} when searched.`);
+      renderQueue();
+    });
 
     const remove = document.createElement('button');
     remove.type = 'button';
@@ -203,7 +219,7 @@ function renderQueue() {
       queueMessage(`${item.name} removed from the queue.`);
       renderQueue();
     });
-    actions.append(review, remove);
+    actions.append(review, exact, remove);
 
     row.append(copy, state, actions);
     list.append(row);
@@ -374,7 +390,7 @@ function installContactQueue() {
     <div class="button-row contact-queue-actions">
       <button class="button" id="addContactQueueButton" type="button">Add contact</button>
       <button class="button primary" id="runContactQueueButton" type="button" disabled>Search queue</button>
-      <button class="button" id="stopContactQueueButton" type="button" disabled>Stop after current</button>
+      <button class="button" id="stopContactQueueButton" type="button" disabled hidden>Stop queue</button>
       <button class="text-button" id="clearContactQueueButton" type="button" disabled>Clear queue</button>
     </div>
     <p class="contact-queue-message" id="contactQueueMessage" role="status" hidden></p>
@@ -407,3 +423,4 @@ function installContactQueue() {
 installFetchDiagnostics();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installContactQueue, { once: true });
 else installContactQueue();
+

@@ -1,4 +1,4 @@
-const GIVING_ASSET_EPOCH = '20260814-3';
+const GIVING_ASSET_EPOCH = '20260815-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
@@ -14,6 +14,7 @@ if (retrievalLabel) retrievalLabel.textContent = 'GIVING HISTORY';
 afterStylesheet('givingCampaignToolsStylesheet', './giving-campaign-tools-v2.css');
 afterStylesheet('givingSearchControlsStylesheet', './giving-search-controls.css');
 afterStylesheet('givingStateFilterStylesheet', './giving-state-filter.css');
+afterStylesheet('givingClarityStylesheet', './giving-clarity.css');
 
 function afterStylesheet(id, path) {
   if (document.getElementById(id)) return;
@@ -42,3 +43,4 @@ await import(epochUrl('./giving-campaign-tools-v2.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(epochUrl('./giving-date-sort.js'));
 await import(epochUrl('./giving-dossier-help.js'));
+
