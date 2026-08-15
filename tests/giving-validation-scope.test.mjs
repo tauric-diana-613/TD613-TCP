@@ -5,6 +5,8 @@ assert.equal(classifyValidationScope([
   'app/giving/history/giving-app.js',
   'server/giving/campaign-deputy-giving-history.js',
   'tests/giving-campaign-deputy-import.test.mjs',
+  'scripts/giving-production-readiness.mjs',
+  'tests/giving-production-readiness.test.mjs',
   'tests/giving-client-preview-server.mjs',
   'docs/GIVING_HISTORY_ENGINE.md',
   '.github/workflows/td613-ci.yml',

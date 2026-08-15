@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { waitForGivingProductionSurface } from './giving-production-readiness.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium, firefox, webkit } = require('playwright');
@@ -13,6 +14,7 @@ if (!engine) throw new Error(`Unsupported Giving browser engine: ${engineName}`)
 
 const baseUrl = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6136').replace(/\/$/, '');
 const production = process.env.TD613_PRODUCTION_OBSERVATION === 'true';
+const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || `artifacts/giving-${engineName}`;
 await fs.mkdir(artifactDir, { recursive: true });
 
@@ -32,7 +34,20 @@ page.on('pageerror', (error) => consoleErrors.push(error.message));
 page.on('response', (response) => { if (response.status() >= 400) failedResources.push({ status: response.status(), url: response.url() }); });
 
 try {
-  const response = await page.goto(`${baseUrl}/giving/history/${production ? '' : '?surface=operator'}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  const readiness = production
+    ? await waitForGivingProductionSurface({
+        baseUrl,
+        sourceCommit: sourcePacketCommit,
+        attempts: process.env.TD613_GIVING_PROBE_ATTEMPTS,
+        delayMs: process.env.TD613_GIVING_PROBE_DELAY_MS,
+        requestTimeoutMs: process.env.TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS,
+        onAttempt: ({ attempt, attempts, ready, status, observation }) => {
+          console.log(`[giving-production-readiness] attempt=${attempt}/${attempts} ready=${ready} status=${status ?? 'none'} observation=${observation}`);
+        }
+      })
+    : null;
+  const routeUrl = production ? readiness.url : `${baseUrl}/giving/history/?surface=operator`;
+  const response = await page.goto(routeUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
   assert(response?.ok(), `Giving returned HTTP ${response?.status()}`);
   await page.waitForSelector('#exportCampaignDeputyBundleButton', { state: 'attached', timeout: 30000 });
   assert.equal(await page.title(), 'TD613 Giving');
@@ -92,6 +107,8 @@ try {
     engine: engineName,
     production,
     route: '/giving/history/',
+    source_packet_commit: sourcePacketCommit || null,
+    production_readiness_attempt: readiness?.attempt || null,
     campaign_deputy_exports: 'PASS',
     official_template_columns: 12,
     one_committee_per_import: true,
