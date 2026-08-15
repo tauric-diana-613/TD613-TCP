@@ -62,7 +62,7 @@ assert.match(workflow, /TD613_GIVING_PROBE_DELAY_MS: '5000'/);
 assert.match(workflow, /Materialize the Giving exact-source receipt/);
 assert.match(workflow, /app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /source_packet_commit: sourcePacketCommit/);
-assert.match(workflow, /git add vercel\.json app\/giving\/history\/release-source\.json/);
+assert.match(workflow, /git add vercel\.json[\s\S]*steps\.scope\.outputs\.validation_scope[\s\S]*git add app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(workflow, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflow, /ash-lifecycle-production-probe\.mjs/);

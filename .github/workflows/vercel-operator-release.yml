@@ -192,7 +192,10 @@ jobs:
           NODE
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add vercel.json app/giving/history/release-source.json
+          git add vercel.json
+          if [[ "${{ steps.scope.outputs.validation_scope }}" == 'giving' ]]; then
+            git add app/giving/history/release-source.json
+          fi
           git commit -m "release: enable one Vercel deployment for ${{ steps.authorize.outputs.selected_sha }}"
           RELEASE_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
