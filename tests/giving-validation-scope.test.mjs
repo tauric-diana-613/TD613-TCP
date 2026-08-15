@@ -6,6 +6,7 @@ assert.equal(classifyValidationScope([
   'server/giving/campaign-deputy-giving-history.js',
   'tests/giving-campaign-deputy-import.test.mjs',
   'tests/giving-client-preview-server.mjs',
+  'docs/GIVING_HISTORY_ENGINE.md',
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
