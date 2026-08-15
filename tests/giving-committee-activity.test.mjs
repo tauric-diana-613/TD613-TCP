@@ -35,6 +35,42 @@ assert.equal(result.records[0].activity_type, 'EXPENDITURES');
 assert.equal(result.records[0].counterparty, 'Vendor One');
 assert.equal(result.records[0].amount_cents, 41250);
 assert.doesNotMatch(result.records[0].source_locator, /api_key=/);
+assert.equal(result.page_boundary_reached, false);
+
+const boundaryResult = await searchCommitteeActivity({
+  source_instance_id: 'fec-schedule-a',
+  activity_type: 'EXPENDITURES',
+  query: { committee: 'C12345678', page_size: 1 }
+}, { fetchImpl });
+assert.equal(boundaryResult.page_boundary_reached, true);
+assert.equal(boundaryResult.results_may_be_incomplete, true);
+assert.match(boundaryResult.coverage_warning, /More rows may exist/);
+assert.match(boundaryResult.source_browse_url, /^https:\/\//);
+
+await assert.rejects(() => searchCommitteeActivity({
+  source_instance_id: 'fec-schedule-a',
+  activity_type: 'CONTRIBUTIONS',
+  query: { committee: 'C12345678', page_size: 25 }
+}, {
+  fetchImpl: async () => new Response('upstream unavailable', { status: 503 })
+}), /OpenFEC returned HTTP 503/);
+
+const contributionPage = await searchCommitteeActivity({
+  source_instance_id: 'fec-schedule-a',
+  activity_type: 'CONTRIBUTIONS',
+  query: { committee: 'C12345678', page_size: 1 }
+}, {
+  fetchImpl: async () => new Response(JSON.stringify({
+    pagination: { last_indexes: { last_index: 'sub-next', last_contribution_receipt_date: '2026-08-01' } },
+    results: [{
+      sub_id: 'sub-next', transaction_id: 'txn-next', amendment_indicator: 'N', committee_name: 'Precision Committee',
+      contributor_name: 'DOE, JANE', contribution_receipt_date: '2026-08-01', contribution_receipt_amount: 25
+    }]
+  }), { status: 200, headers: { 'content-type': 'application/json' } })
+});
+assert.ok(contributionPage.continuation, 'committee contribution activity preserves the source continuation token');
+assert.equal(contributionPage.page_boundary_reached, true);
+assert.equal(contributionPage.source_status, 'READY');
 
 await assert.rejects(() => searchCommitteeActivity({
   source_instance_id: 'fec-schedule-a',

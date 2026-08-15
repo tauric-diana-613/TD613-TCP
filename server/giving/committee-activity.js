@@ -215,21 +215,53 @@ export async function searchCommitteeActivity(payload = {}, context = {}) {
   const type = activityType(payload.activity_type);
   const query = validateSearchQuery({ ...(payload.query || {}), page_size: Math.min(Number(payload.query?.page_size) || ACTIVITY_LIMIT, ACTIVITY_LIMIT) });
   let records;
+  let continuation = null;
+  let sourceStatus = 'READY';
+  let sourceError = null;
+  let sourceReceipt = null;
   if (type === 'CONTRIBUTIONS') {
-    const result = await searchSourcePage({ source_instance_id: source.id, query }, context);
+    const result = await searchSourcePage({
+      source_instance_id: source.id,
+      query,
+      continuation: payload.continuation || null
+    }, context);
+    if (!['READY', 'PARTIAL'].includes(result.source_status)) {
+      throw new GivingError(
+        result.error?.code || 'committee-activity-source-failed',
+        result.error?.message || 'The selected public-record source did not complete this activity search',
+        502,
+        { source_instance_id: source.id, source_status: result.source_status, receipt: result.receipt || null }
+      );
+    }
     records = (result.records || []).map((record) => fromContributionRecord(record, source));
+    continuation = result.continuation || null;
+    sourceStatus = result.source_status;
+    sourceError = result.error || result.retryable_error || null;
+    sourceReceipt = result.receipt || null;
   } else if (source.adapter === 'fec') records = await fecExpenditures(source, query, context.fetchImpl);
   else if (source.adapter === 'florida') records = await floridaExpenditures(source, query, context.fetchImpl);
   else if (source.adapter === 'voterfocus') records = await voterFocusExpenditures(source, query, context.fetchImpl);
   else if (source.adapter === 'easyvote') records = await easyVoteExpenditures(source, query, context.fetchImpl);
   else throw new GivingError('committee-activity-adapter-unavailable', 'This source does not expose the selected committee activity lane', 503);
+  const pageBoundaryReached = Boolean(continuation) || records.length >= query.page_size;
   return {
     schema: 'td613.giving.committee-activity/v1',
     activity_type: type,
     source_instance_id: source.id,
     records,
     record_count: records.length,
-    continuation: null,
+    continuation,
+    source_status: sourceStatus,
+    source_error: sourceError,
+    source_receipt: sourceReceipt,
+    page_boundary_reached: pageBoundaryReached,
+    results_may_be_incomplete: pageBoundaryReached || sourceStatus === 'PARTIAL',
+    coverage_warning: pageBoundaryReached
+      ? 'The response reached its page boundary. More rows may exist; use the continuation when available or continue at the public-record source.'
+      : sourceStatus === 'PARTIAL'
+        ? 'The public-record source returned only a partial page. Do not interpret these rows as complete activity.'
+        : null,
+    source_browse_url: source.locator,
     storage_semantics: 'TRANSIENT_SEPARATE_CAMPAIGN_ACTIVITY_NOT_DONOR_GIVING_HISTORY',
     coverage: source.electronic_scope,
     retrieved_at: new Date().toISOString()

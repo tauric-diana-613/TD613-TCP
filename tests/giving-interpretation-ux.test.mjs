@@ -87,6 +87,9 @@ assert.match(campaign, /jurisdiction === 'FLORIDA_STATE'/);
 assert.match(campaign, /query: \{ \.\.\.dateWindow, candidate: query \}/);
 assert.match(campaign, /query: \{ \.\.\.dateWindow, committee: query \}/);
 assert.match(campaign, /bounded candidate\/committee projections/);
+assert.match(campaign, /Source page boundary reached; more rows may exist/);
+assert.match(campaign, /Continue at the public-record source/);
+assert.match(clarity, /campaign-activity-coverage-warning/);
 
 console.log('giving-interpretation-ux.test.mjs passed');
 

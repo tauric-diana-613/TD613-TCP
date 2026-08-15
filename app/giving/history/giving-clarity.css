@@ -69,6 +69,21 @@
   overscroll-behavior: contain;
   scrollbar-width: thin;
 }
+
+.campaign-activity-coverage-warning {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--warning, #b7791f) 52%, transparent);
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--warning, #b7791f) 10%, transparent);
+}
+
+.campaign-activity-coverage-warning span {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
 .contact-queue-exact.active,
 .contact-queue-exact[aria-pressed="true"] { border-color: rgba(118, 234, 212, .55); color: var(--bright); background: rgba(118, 234, 212, .11); }
 .contact-queue-state[hidden] { display: none; }

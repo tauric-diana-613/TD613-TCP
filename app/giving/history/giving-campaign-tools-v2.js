@@ -192,12 +192,17 @@ function renderActivity(data) {
   const section = $('#campaignActivitySection');
   section.hidden = false;
   $('#campaignActivityHeading').textContent = `${data?.activity_type === 'EXPENDITURES' ? 'Expenditure' : 'Contribution'} receipts · separate committee activity lane`;
-  $('#campaignActivityResults').innerHTML = records.length ? records.map((record) => `<article class="campaign-activity-row">
+  const sourceBrowseUrl = /^https?:\/\//i.test(String(data?.source_browse_url || '')) ? String(data.source_browse_url) : '';
+  const coverageWarning = data?.results_may_be_incomplete
+    ? `<div class="campaign-activity-coverage-warning"><strong>Source page boundary reached; more rows may exist.</strong><span>${escapeHtml(data.coverage_warning || 'These results are not a completeness claim.')}${sourceBrowseUrl ? ` <a href="${escapeHtml(sourceBrowseUrl)}" target="_blank" rel="noreferrer">Continue at the public-record source.</a>` : ''}</span></div>`
+    : '';
+  const rows = records.length ? records.map((record) => `<article class="campaign-activity-row">
     <strong>${escapeHtml(record.filer || 'Filer not stated')}</strong>
     <strong>${record.amount_cents === null || record.amount_cents === undefined ? 'amount unavailable' : escapeHtml(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(record.amount_cents / 100))}</strong>
     <span>${escapeHtml(record.counterparty || 'Counterparty not stated')}</span>
     <small>${escapeHtml([record.date, record.purpose, record.jurisdiction].filter(Boolean).join(' · '))}${record.source_locator ? ` · <a href="${escapeHtml(record.source_locator)}" target="_blank" rel="noreferrer">source</a>` : ''}</small>
   </article>`).join('') : '<span class="muted">No activity rows were observed within this exact source, query, and requested date window. This is not a universal zero-activity claim.</span>';
+  $('#campaignActivityResults').innerHTML = coverageWarning + rows;
 }
 
 function mergeActivityResults(results, { queryFacets = [] } = {}) {
@@ -218,6 +223,12 @@ function mergeActivityResults(results, { queryFacets = [] } = {}) {
     record_count: records.length,
     query_facets: queryFacets,
     bounded_request_count: admitted.length,
+    source_status: admitted.some((result) => result.source_status === 'PARTIAL') ? 'PARTIAL' : admitted[0]?.source_status,
+    source_error: admitted.map((result) => result.source_error).find(Boolean) || null,
+    continuations: admitted.map((result, index) => result.continuation ? { facet: queryFacets[index] || `QUERY_${index + 1}`, token: result.continuation } : null).filter(Boolean),
+    page_boundary_reached: admitted.some((result) => result.page_boundary_reached),
+    results_may_be_incomplete: admitted.some((result) => result.results_may_be_incomplete),
+    coverage_warning: admitted.map((result) => result.coverage_warning).find(Boolean) || null,
     retrieved_at: admitted.map((result) => result.retrieved_at).filter(Boolean).sort().at(-1) || new Date().toISOString()
   };
 }
