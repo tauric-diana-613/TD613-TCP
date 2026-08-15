@@ -64,6 +64,25 @@ const registry = await call(request('registry.read', {}, { cookie }));
 assert.equal(registry.body.data.source_instance_count, 23);
 assert.equal(registry.body.data.municipalities.unique_count, 62);
 
+const preparedGivingHistory = await call(request('campaign-deputy.prepare-giving-history', {
+  confirmed: true,
+  dossier_id: 'dossier-1',
+  person_id: 'person-exact-1',
+  records: [{
+    record_digest: 'record:confirmed-1',
+    identity_status: 'CONFIRMED',
+    committee_name: 'Example Committee',
+    committee_id: 'C00123456',
+    contribution_date: '2026-07-15',
+    amount_cents: 5000,
+    source_instance_id: 'fec-schedule-a'
+  }]
+}, { cookie }));
+assert.equal(preparedGivingHistory.res.statusCode, 200);
+assert.equal(preparedGivingHistory.body.data.record_count, 1);
+assert.equal(preparedGivingHistory.body.data.external_mutation, false);
+assert.equal(preparedGivingHistory.body.receipt.custody, 'CAMPAIGN_DEPUTY_GIVING_HISTORY_STAGING_NO_EXTERNAL_WRITE');
+
 const wrongNonce = await call(request('campaign-deputy.withhold', { dossier_id: 'dossier-1' }, { cookie, nonce: 'wrong' }));
 assert.equal(wrongNonce.res.statusCode, 403);
 assert.equal(wrongNonce.body.error.code, 'intent-nonce-withheld');
@@ -82,3 +101,4 @@ assert.equal(logout.body.data.closed, true);
 assert.match(logout.res.headers['set-cookie'], /Max-Age=0/);
 
 console.log('giving-dispatcher.test.mjs passed');
+

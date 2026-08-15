@@ -967,7 +967,58 @@ function updateCampaignButtons() {
   const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
   $('#linkExistingButton').disabled = !state.selectedPersonId || !committee || !targetId;
   $('#syncTargetButton').disabled = !state.selectedPersonId || !targetId || groups.length === 0;
+  $('#prepareGivingHistoryButton').disabled = !state.selectedPersonId || !targetId || confirmedRecords(targetId).length === 0;
   $('#createContactButton').disabled = !$('#createRecordSelect')?.value || !committee || !targetId;
+}
+
+function givingHistoryPackageRecord(record) {
+  return {
+    record_digest: recordDigest(record),
+    identity_status: 'CONFIRMED',
+    committee_name: recordCommittee(record),
+    committee_id: record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id || record.candidate_or_committee_id || null,
+    contribution_date: record.contribution_date,
+    amount_cents: record.amount_cents,
+    cycle: record.cycle,
+    election: record.election,
+    jurisdiction: record.jurisdiction,
+    source_instance_id: record.source_instance_id,
+    source_native_ids: record.source_native_ids,
+    source_locator: record.source_locator,
+    retrieved_at: record.retrieved_at,
+    query_digest: record.query_digest
+  };
+}
+
+async function prepareGivingHistoryBatch() {
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
+  const records = targetId ? confirmedRecords(targetId) : [];
+  if (!state.selectedPersonId || !target || !records.length) return;
+  if (!window.confirm(`Prepare a held Campaign Deputy Giving History package for ${target.name} with ${records.length} confirmed individual gift${records.length === 1 ? '' : 's'}? This will not write to Campaign Deputy.`)) return;
+  try {
+    const result = await api.call('campaign-deputy.prepare-giving-history', {
+      dossier_id: state.dossier.id,
+      person_id: state.selectedPersonId,
+      confirmed: true,
+      records: records.map(givingHistoryPackageRecord)
+    }, { mutation: false, purpose: 'prepare held Campaign Deputy Giving History batch without external write' });
+    const batch = dataOf(result);
+    download(`${safeFilename(state.dossier.title)}-campaign-deputy-giving-history-held.json`, JSON.stringify(batch, null, 2), 'application/json');
+    appendCampaignReceipt({
+      schema: 'td613.giving.campaign-deputy-giving-history-stage-receipt/v1',
+      at: new Date().toISOString(),
+      action: 'GIVING_HISTORY_BATCH_PREPARED_AND_HELD',
+      batch_id: batch.batch_id,
+      record_count: batch.record_count,
+      committee_count: batch.committees?.length || 0,
+      external_mutation: false,
+      search_target_id: targetId
+    });
+    toast(`${batch.record_count} individual Giving History record${batch.record_count === 1 ? '' : 's'} prepared and held; Campaign Deputy was not mutated.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
 }
 
 function appendCampaignReceipt(receipt, { render = true } = {}) {
@@ -1281,6 +1332,7 @@ function bindEvents() {
   $('#createRecordSelect').addEventListener('change', updateCampaignButtons);
   $('#linkExistingButton').addEventListener('click', linkExisting);
   $('#syncTargetButton').addEventListener('click', syncSelectedTarget);
+  $('#prepareGivingHistoryButton').addEventListener('click', prepareGivingHistoryBatch);
   $('#createContactButton').addEventListener('click', createContact);
   $('#withholdButton').addEventListener('click', withholdWriteback);
   $('#copyReceiptsButton').addEventListener('click', async () => {
@@ -1326,3 +1378,4 @@ async function boot() {
 }
 
 boot();
+

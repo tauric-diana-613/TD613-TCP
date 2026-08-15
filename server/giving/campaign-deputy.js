@@ -309,8 +309,16 @@ export function campaignDeputyReadiness() {
     people_index: 'PAGINATED_NO_SEARCH_FILTER',
     create_method: 'PUT /v1/people',
     asynchronous_match_endpoint_used: false,
-    historical_contribution_writeback_used: false
+    historical_contribution_writeback_used: false,
+    giving_history: {
+      staging_available_without_api_key: true,
+      staging_operation: 'campaign-deputy.prepare-giving-history',
+      write_status: 'HELD_AWAITING_CAMPAIGN_DEPUTY_CONTRACT',
+      public_write_endpoint_documented: false,
+      contribution_endpoint_allowed: false
+    }
   };
 }
 
 export const _campaignDeputyInternals = Object.freeze({ sanitizePhone, selectedPerson, syncReceipt, opaqueCursor, isPersonAvailabilityLag });
+

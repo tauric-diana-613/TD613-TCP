@@ -1,4 +1,4 @@
-const GIVING_ASSET_EPOCH = '20260814-1';
+const GIVING_ASSET_EPOCH = '20260814-2';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
@@ -42,3 +42,4 @@ await import(epochUrl('./giving-campaign-tools-v2.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(epochUrl('./giving-date-sort.js'));
 await import(epochUrl('./giving-dossier-help.js'));
+

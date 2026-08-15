@@ -23,6 +23,14 @@ Campaign Deputy integration is deliberately a reviewed handoff, not an automatic
 6. **Create explicitly:** when no candidate is correct, choose a confirmed source record and make a separate create gesture. Select the fields to copy; public street address is off by default. Giving uses the documented `PUT /v1/people` no-match path, then adds the returned person to the committee list. Campaign Deputy notes that a returned person ID can take a short time to become available, so only this post-creation membership write receives a bounded retry; it never searches recent people by email.
 7. **Withhold:** choose this when research should remain in Giving. It records the operator decision and performs no Campaign Deputy mutation.
 
+### Giving History staging contract
+
+After an operator selects an exact Campaign Deputy person, Giving can prepare a held JSON batch for that contact. The package keeps each confirmed gift separate and includes the committee name and regulatory ID when the source supplies one, date, amount in cents, cycle/election, source lineage, and a deterministic idempotency key. Duplicate source records collapse by that key.
+
+The package status is `HELD_AWAITING_CAMPAIGN_DEPUTY_GIVING_HISTORY_CONTRACT`. Preparing or downloading it makes no external request and does not require the Campaign Deputy API key. Release remains impossible until Campaign Deputy confirms that Giving History is enabled for the account/API user and supplies an approved write endpoint or bulk-import schema, committee matching rules, scopes, and retry receipts. `/v1/contribution` is a forbidden destination for this package; ordinary list membership remains optional CRM segmentation and is not represented as Giving History.
+
+The requested Campaign Deputy contract is one-touch for either one exact person or the existing exact-match multi-contact workflow: accept the reviewed gifts, match or create missing committees by stable regulatory ID in the same job, attach the individual Giving History rows, and return per-person, per-committee, and per-record receipts. If an atomic batch is not supported, the acceptable design is a preflight that returns the person/committee resolution plan followed by an operator-confirmed asynchronous commit. An approved bulk-import schema with committee upsert and a granular result file is the fallback. Missing or ambiguous people are always held; the multi-contact path never silently creates or merges them.
+
 Every successful handoff stores an idempotent receipt containing the dossier, person, list, and committee identifiers. Repeating the same reviewed link reuses the list and does not intentionally duplicate membership. Upstream failures are receipts, not implied successes.
 
 Giving does **not** send historical public donations to `/v1/contribution`: that endpoint records contributions belonging to the current Campaign Deputy account, not outside giving history. It also avoids the asynchronous `POST /v1/people` match endpoint because the supplied API specification has no reliable request-status resolver. The explicit no-match create path plus human duplicate review is the safer contract.
@@ -79,3 +87,4 @@ Optional capability variables:
 - `TD613_GIVING_NEON_DATABASE_URL` for encrypted hosted or hybrid custody.
 
 Gemini is not in the retrieval, identity-confirmation, or CRM-authorization path. Historical public contributions are not written to Campaign Deputy's contribution endpoint; committee-list membership is the reviewed relationship record.
+

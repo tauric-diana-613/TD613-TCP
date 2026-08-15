@@ -66,6 +66,7 @@ assert.match(html, /id="reviewTargetFilter"/);
 assert.match(html, /id="campaignTargetSelect"/);
 assert.match(html, /id="campaignTargetSummary"/);
 assert.match(html, /id="syncTargetButton"/);
+assert.match(html, /id="prepareGivingHistoryButton"/);
 assert.match(html, /id="exportSpreadsheetButton"/);
 for (const key of ['contributor', 'committee', 'amount', 'status']) {
   assert.match(html, new RegExp(`data-review-sort="${key}"`));
@@ -92,6 +93,8 @@ assert.match(app, /recordBelongsToTarget/);
 assert.match(app, /searchTargetFromQuery/);
 assert.match(app, /syncTargetCommittees/);
 assert.match(app, /syncSelectedTarget/);
+assert.match(app, /prepareGivingHistoryBatch/);
+assert.match(app, /campaign-deputy\.prepare-giving-history/);
 assert.match(app, /buildDossierXlsx/);
 assert.match(app, /campaign-deputy\.link-existing/);
 assert.match(app, /confirmed: true/);
@@ -237,3 +240,4 @@ const clientIdReferences = [...app.matchAll(/\$\('#([^']+)'\)/g)].map((match) =>
 assert.deepEqual([...new Set(clientIdReferences.filter((id) => !htmlIds.has(id)))], [], 'every direct core-client DOM reference exists in the private shell');
 
 console.log('giving-client-surface.test.mjs passed');
+
