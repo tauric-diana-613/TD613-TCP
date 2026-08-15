@@ -40,6 +40,7 @@ assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_
 assert.match(consolidated, /Full-product exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Giving-only exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Classify exact-head browser witness scope/);
+assert.match(consolidated, /contracts:\n\s+name: Static, constitutional, and release contracts\n\s+needs: scope/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
@@ -81,6 +82,9 @@ assert.equal((consolidated.match(/Full-product exact-head Chromium Firefox WebKi
 assert.equal((consolidated.match(/Giving-only exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Giving browser estate must remain one bounded owner.');
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
+for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase IV static surfaces', 'Validate Ash core and ingress surfaces', 'Validate Ash A9 Work', 'Validate Flow-Core P0-P10 completion']) {
+  assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: needs\\.scope\\.outputs\\.validation_scope != 'giving'`));
+}
 
 const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8');
 assert.match(pages, /workflow_dispatch:/);

@@ -58,6 +58,7 @@ jobs:
 
   contracts:
     name: Static, constitutional, and release contracts
+    needs: scope
     if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -99,10 +100,12 @@ jobs:
           node tests/giving-client-vault.test.mjs
           node tests/giving-client-surface.test.mjs
       - name: Validate Dome-World static surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
       - name: Validate Phase IV static surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
           python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
@@ -110,6 +113,7 @@ jobs:
           node tests/phase4-deployment-probe.test.mjs
           node tests/phase4-release-sync.test.mjs
       - name: Validate Ash core and ingress surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
@@ -118,34 +122,43 @@ jobs:
           node tests/ash-ingress-polish.test.mjs
           node tests/ash-reviewability.test.mjs
       - name: Validate Ash A2-A8 surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
           node tests/ash-flowcore-live-field.test.mjs
       - name: Validate Ash A9 Work
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a9-work-recompilation.test.mjs
       - name: Validate Ash A10 Choir
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a10-choir-recompilation.test.mjs
       - name: Validate Ash A11 Capsule and postclosure cache law
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
       - name: Validate Ash A12 command rationalization
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a12-command-rationalization.test.mjs
       - name: Validate Ash A13 unified registry and workflow collapse
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a13-unified-demo-registry.test.mjs
       - name: Validate Ash A14 Archive accession
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
       - name: Validate Ash A15 empirical profile journeys
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
           node tests/ash-a15-empirical-profile-journeys.test.mjs
       - name: Validate Ash demo hydration surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
           node tests/ash-final-rehydration-boundaries.test.mjs
@@ -154,26 +167,36 @@ jobs:
           node tests/ash-legal-ux.test.mjs
           node tests/ash-legal-control-state.test.mjs
       - name: Validate Ash production-closure surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
       - name: Validate Flow-Core P0-P7 seam closure
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p7-seam-closure.test.mjs
       - name: Validate Flow-Core P0-P10 completion
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p10-completion.test.mjs
       - name: Flow-Core claim · exact-head matrix placement
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · bounded production confirmation
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · empirical authority separation
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · executable dependency closure
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact-source observation follows" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · static rewrite parity
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact static Vercel rewrites" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · concurrent station packages
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="independent station packages" tests/flowcore-production-observation.test.mjs
       - name: Validate Flow-Core runtime browser contract
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Preserve diagnostics only when held
         if: failure()

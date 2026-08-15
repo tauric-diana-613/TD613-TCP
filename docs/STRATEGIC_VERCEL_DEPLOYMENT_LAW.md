@@ -43,7 +43,7 @@ Giving-only production confirmation = one Giving Chromium witness
 full-product production confirmation = one Chromium desktop/mobile witness + Ash lifecycle observation
 ```
 
-The premerge witness must cover every principal journey affected by the classified packet, plus static truth, reduced motion, accessibility-relevant controls, and the relevant generation contracts. A Giving-only diff invokes only the Giving export journey across Chromium, Firefox, and WebKit. A full-product diff invokes the full Ash, Dome-World, Flow-Core, and related matrix. Classification fails closed to the full-product witness whenever any changed application file falls outside Giving.
+The premerge witness must cover every principal journey affected by the classified packet, plus static truth, reduced motion, accessibility-relevant controls, and the relevant generation contracts. A Giving-only diff runs the common release membrane, Giving contracts, and the Giving export journey across Chromium, Firefox, and WebKit; it does not invoke Ash, Dome-World, or Flow-Core product suites. A full-product diff invokes the full Ash, Dome-World, Flow-Core, and related matrix. Classification fails closed to the full-product witness whenever any changed application file falls outside Giving.
 
 The production confirmation follows the same classification. Giving-only releases run the bounded Giving Chromium probe and do not start Ash. Full-product releases retain the bounded registry, Archive, desktop/mobile, and Ash lifecycle observation. Production verifies deployment identity and a bounded live consequence path; it does not replay the entire cross-browser estate.
 

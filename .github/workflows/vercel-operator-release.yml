@@ -107,6 +107,18 @@ jobs:
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+
+      - name: Verify Giving-only release contracts
+        if: steps.scope.outputs.validation_scope == 'giving'
+        run: |
+          node tests/giving-history-package.test.mjs
+          node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-dispatcher.test.mjs
+          node tests/giving-client-surface.test.mjs
+
+      - name: Verify full-product release contracts
+        if: steps.scope.outputs.validation_scope == 'full'
+        run: |
           node tests/ash-a12-command-rationalization.test.mjs
           node tests/ash-a13-unified-demo-registry.test.mjs
           node tests/ash-a14-archive-accession.test.mjs

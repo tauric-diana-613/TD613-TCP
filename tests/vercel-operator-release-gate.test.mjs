@@ -19,6 +19,10 @@ assert.match(workflow, /config\.git\?\.deploymentEnabled !== false/);
 assert.match(workflow, /Classify the authorized release witness scope/);
 assert.match(workflow, /classify-validation-scope\.mjs --github-output/);
 assert.match(workflow, /validation_scope = \$\{\{ steps\.scope\.outputs\.validation_scope \}\}/);
+assert.match(workflow, /Verify Giving-only release contracts[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'giving'/);
+assert.match(workflow, /Verify full-product release contracts[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'full'/);
+const givingReleaseContracts = workflow.match(/- name: Verify Giving-only release contracts[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
+assert.doesNotMatch(givingReleaseContracts, /ash-|dome-world|flowcore/i, 'Giving release contracts must not invoke another product lane');
 assert.match(workflow, /^\s{2}contents: write$/m);
 assert.match(workflow, /mode=direct-token/);
 assert.match(workflow, /mode=git-fallback/);
@@ -74,6 +78,7 @@ assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_
 assert.match(consolidated, /Full-product exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Giving-only exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Classify exact-head browser witness scope/);
+assert.match(consolidated, /contracts:\n\s+name: Static, constitutional, and release contracts\n\s+needs: scope/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
@@ -83,6 +88,9 @@ assert.match(consolidated, /for browser in chromium firefox webkit/);
 assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(consolidated, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(consolidated, /giving-browser-probe\.mjs/);
+for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase IV static surfaces', 'Validate Ash core and ingress surfaces', 'Validate Ash A9 Work', 'Validate Flow-Core P0-P10 completion']) {
+  assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: needs\\.scope\\.outputs\\.validation_scope != 'giving'`));
+}
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
