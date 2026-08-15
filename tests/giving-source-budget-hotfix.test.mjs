@@ -22,7 +22,7 @@ const pagingEntry = fs.readFileSync('app/giving/history/giving-review-paging.js'
 const pagingCore = fs.readFileSync('app/giving/history/giving-review-paging-core.js', 'utf8');
 const pagingCss = fs.readFileSync('app/giving/history/giving-review-paging.css', 'utf8');
 const pageSizeModule = fs.readFileSync('app/giving/history/giving-page-size.js', 'utf8');
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-1'/, 'Giving must carry one coordinated eviction epoch');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-2'/, 'Giving must carry one coordinated eviction epoch');
 assert.match(bootstrap, /document\.title = 'TD613 Giving'/, 'browser title must be TD613 Giving');
 assert.match(bootstrap, /ingressTitle\.textContent = 'TD613 Giving'/, 'ingress title must be TD613 Giving');
 assert.match(bootstrap, /shellTitle\.textContent = 'TD613 Giving'/, 'unlocked masthead must be TD613 Giving');
@@ -249,3 +249,4 @@ assert.equal(easyVoteFallback.records.length, 1);
 assert.equal(easyVoteFallback.records[0].amount_cents, 2500);
 
 console.log('giving-source-budget-hotfix.test.mjs passed');
+
