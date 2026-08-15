@@ -22,14 +22,15 @@ const pagingEntry = fs.readFileSync('app/giving/history/giving-review-paging.js'
 const pagingCore = fs.readFileSync('app/giving/history/giving-review-paging-core.js', 'utf8');
 const pagingCss = fs.readFileSync('app/giving/history/giving-review-paging.css', 'utf8');
 const pageSizeModule = fs.readFileSync('app/giving/history/giving-page-size.js', 'utf8');
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260813-3'/, 'Giving must carry one coordinated eviction epoch');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-1'/, 'Giving must carry one coordinated eviction epoch');
 assert.match(bootstrap, /document\.title = 'TD613 Giving'/, 'browser title must be TD613 Giving');
 assert.match(bootstrap, /ingressTitle\.textContent = 'TD613 Giving'/, 'ingress title must be TD613 Giving');
 assert.match(bootstrap, /shellTitle\.textContent = 'TD613 Giving'/, 'unlocked masthead must be TD613 Giving');
 assert.match(bootstrap, /retrievalLabel\.textContent = 'GIVING HISTORY'/, 'search panel eyebrow must become GIVING HISTORY');
-assert.match(pagingEntry, /giving-page-size\.js\?v=20260813-3/, '300-row request normalizer must load before core Giving');
-assert.match(pagingEntry, /giving-review-paging-core\.js\?v=20260813-3/, 'review paging core must share the eviction epoch');
-assert.match(pageSizeModule, /PAGE_SIZE = 300/, 'source search envelope must request 300 rows');
+assert.match(pagingEntry, /giving-page-size\.js\?v=20260814-1/, 'FEC-aware request normalizer must load before core Giving');
+assert.match(pagingEntry, /giving-review-paging-core\.js\?v=20260813-3/, 'review paging core must retain its stable paging epoch');
+assert.match(pageSizeModule, /PAGE_SIZE = 300/, 'source search envelope must retain the 300-row non-FEC page size');
+assert.match(pageSizeModule, /FEC_BOUNDARY_PAGE_SIZE = 100/, 'FEC search envelope must stay to one provider page per boundary');
 assert.match(pagingCore, /PAGE_SIZE = 300/, 'Contributions UI must paginate at 300 cards');
 assert.match(pagingCore, /data-review-page/, 'Contributions pagination must expose clickable page numbers');
 assert.match(pagingCore, /Previous contribution page/, 'Contributions pagination must expose previous navigation');
@@ -86,9 +87,9 @@ const aggregatedFec = await searchSourcePage({
     return mockResponse({ json: { pagination: { last_indexes: { last_index: `cursor-${page}` } }, results } });
   }
 });
-assert.equal(aggregateFecCalls, 3, 'fast common-name retrieval must aggregate three provider pages into one Giving page');
-assert.equal(aggregatedFec.records.length, 300, 'Giving must retain the complete 300-record page');
-assert.ok(aggregatedFec.continuation, 'a full 300-row page must preserve seek continuation when more FEC evidence exists');
+assert.equal(aggregateFecCalls, 3, 'server adapter still supports three provider pages when explicitly requested outside the browser boundary shim');
+assert.equal(aggregatedFec.records.length, 300, 'server adapter must retain the complete explicitly requested 300-record page');
+assert.ok(aggregatedFec.continuation, 'a full 300-row server page must preserve seek continuation when more FEC evidence exists');
 
 let multiStateFecCalls = 0;
 await searchSourcePage({

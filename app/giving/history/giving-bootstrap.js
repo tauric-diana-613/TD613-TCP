@@ -1,4 +1,4 @@
-const GIVING_ASSET_EPOCH = '20260813-3';
+const GIVING_ASSET_EPOCH = '20260814-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a

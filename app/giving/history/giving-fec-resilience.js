@@ -1,6 +1,7 @@
 const FEC_SOURCE_ID = 'fec-schedule-a';
 const TARGET_RECORDS = 300;
 const MAX_BOUNDARY_PAGES = 3;
+const MAX_ZERO_PROGRESS_REPLAYS = 1;
 const priorFetch = globalThis.fetch.bind(globalThis);
 
 function parseEnvelope(init) {
@@ -64,6 +65,7 @@ globalThis.fetch = async (input, init = {}) => {
   let lastResponse = firstResponse;
   let lastBody = firstBody;
   let partialError = null;
+  let zeroProgressReplays = 0;
 
   while (continuation && records.length < TARGET_RECORDS && pages < MAX_BOUNDARY_PAGES) {
     const followEnvelope = {
@@ -90,11 +92,29 @@ globalThis.fetch = async (input, init = {}) => {
         partialError = { code: 'FEC_PAGE_CONTRACT_DRIFT', message: 'FEC continuation did not contain a Giving page' };
         break;
       }
-      records.push(...page.records);
-      continuation = page.continuation || null;
+
+      const pageRecords = Array.isArray(page.records) ? page.records : [];
+      records.push(...pageRecords);
+      const nextContinuation = page.continuation || null;
       pages += 1;
       lastResponse = response;
       lastBody = body;
+
+      if (pageRecords.length === 0 && nextContinuation) {
+        zeroProgressReplays += 1;
+        if (zeroProgressReplays >= MAX_ZERO_PROGRESS_REPLAYS) {
+          partialError = {
+            code: page.retryable_error?.code || 'FEC_NO_PROGRESS',
+            message: page.retryable_error?.message || 'OpenFEC made no progress across a fresh Giving boundary; continuation replay stopped.'
+          };
+          continuation = null;
+          break;
+        }
+      } else {
+        zeroProgressReplays = 0;
+      }
+
+      continuation = nextContinuation;
     } catch (error) {
       partialError = {
         code: 'FEC_CONTINUATION_BOUNDARY_FAILED',
@@ -114,10 +134,16 @@ globalThis.fetch = async (input, init = {}) => {
       boundary_pages: pages,
       requested_records: TARGET_RECORDS,
       retained_raw_records: Math.min(records.length, TARGET_RECORDS),
+      zero_progress_replays: zeroProgressReplays,
       partial: Boolean(partialError),
       ...(partialError ? { error: partialError } : {})
     }
   }));
 };
 
-export const _givingFecResilience = Object.freeze({ FEC_SOURCE_ID, MAX_BOUNDARY_PAGES, TARGET_RECORDS });
+export const _givingFecResilience = Object.freeze({
+  FEC_SOURCE_ID,
+  MAX_BOUNDARY_PAGES,
+  MAX_ZERO_PROGRESS_REPLAYS,
+  TARGET_RECORDS
+});
