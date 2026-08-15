@@ -71,17 +71,20 @@ function committeeWorkspaceData() {
     }
     for (const committee of Array.isArray(snapshot.data?.committees) ? snapshot.data.committees : []) {
       const key = `committee:${committee.committee_id || committeeSnapshotKey(committee.name)}`;
-      identities.set(key, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate: {}, source_id: 'fec-schedule-a' });
+      const existing = identities.get(key);
+      const candidate = existing?.candidate && Object.keys(existing.candidate).length ? existing.candidate : {};
+      identities.set(key, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate, source_id: 'fec-schedule-a' });
     }
     for (const organization of snapshot.data?.opensecrets?.organizations || []) {
       const key = `organization:${organization.org_id || committeeSnapshotKey(organization.name)}`;
       identities.set(key, { kind: 'Organization', name: organization.name, meta: organization.org_id || 'OpenSecrets', organization });
     }
     for (const record of Array.isArray(snapshot.data?.records) ? snapshot.data.records : []) {
-      const filerKey = `filer:${committeeSnapshotKey(record.filer, record.source_instance_id)}`;
+      const sourceId = record.source_instance_id || snapshot.data?.source_instance_id || '';
+      const filerKey = `filer:${sourceId}:${committeeSnapshotKey(record.filer, sourceId)}`;
       if (record.filer && !identities.has(filerKey)) identities.set(filerKey, {
         kind: 'Filer', name: record.filer, meta: [record.jurisdiction, record.source_instance_id].filter(Boolean).join(' · '),
-        committee: { name: record.filer }, candidate: {}, source_id: record.source_instance_id || snapshot.data?.source_instance_id
+        committee: { name: record.filer }, candidate: {}, source_id: sourceId
       });
     }
   }
@@ -668,6 +671,7 @@ function install() {
   });
   $('#campaignDirectoryActivity')?.addEventListener('change', () => {
     $('#campaignActivitySection').hidden = true;
+    renderCommitteeWorkspace();
     lookupStatus(`${activityLabel()} selected. Expenditures remain separate from donor Giving History.`);
   });
   $('#campaignDirectoryLocalMenu')?.addEventListener('change', (event) => {
@@ -698,4 +702,3 @@ function install() {
 }
 
 install();
-

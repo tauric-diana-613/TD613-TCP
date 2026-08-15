@@ -116,6 +116,9 @@ assert.match(campaign, /committeeLoadButton\(identity\.committee, identity\.cand
 assert.match(campaign, /activityInspectButton\(identity\.committee, identity\.candidate, identity\.source_id\)/);
 assert.match(campaign, /identity\.kind === 'Filer'[\s\S]*Load context → Contributions/);
 assert.match(campaign, /bindDynamicActions\(\)/);
+assert.match(campaign, /existing\?\.candidate[\s\S]*Object\.keys\(existing\.candidate\)\.length/);
+assert.match(campaign, /const filerKey = `filer:\$\{sourceId\}:\$\{committeeSnapshotKey\(record\.filer, sourceId\)\}`/);
+assert.match(campaign, /campaignDirectoryActivity'[\s\S]*renderCommitteeWorkspace\(\)/);
 assert.match(campaign, /window\.confirm\('Clear List\?'\)/);
 assert.match(campaign, /clearCommitteeWorkspace/);
 assert.doesNotMatch(campaign, /holdReviewButton/);
@@ -127,4 +130,3 @@ assert.match(clarity, /committee-hold-button/);
 assert.match(clarity, /committee-search-workspace-list[\s\S]*max-height: 22rem/);
 
 console.log('giving-interpretation-ux.test.mjs passed');
-
