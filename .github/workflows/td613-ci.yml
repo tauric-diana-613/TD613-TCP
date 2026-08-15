@@ -32,6 +32,30 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  scope:
+    name: Classify exact-head browser witness scope
+    runs-on: ubuntu-latest
+    outputs:
+      validation_scope: ${{ steps.classify.outputs.validation_scope }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Select Giving-only or full-product witness
+        id: classify
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+            git diff --name-only -z "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" \
+              | node scripts/classify-validation-scope.mjs --github-output "$GITHUB_OUTPUT"
+          else
+            echo 'validation_scope=full' >> "$GITHUB_OUTPUT"
+          fi
+
   contracts:
     name: Static, constitutional, and release contracts
     if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
@@ -64,6 +88,16 @@ jobs:
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
+          node tests/giving-validation-scope.test.mjs
+      - name: Validate Giving and Campaign Deputy import contracts
+        run: |
+          node tests/giving-history-package.test.mjs
+          node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-dispatcher.test.mjs
+          node tests/giving-client-api.test.mjs
+          node tests/giving-client-model.test.mjs
+          node tests/giving-client-vault.test.mjs
+          node tests/giving-client-surface.test.mjs
       - name: Validate Dome-World static surfaces
         run: |
           npm run test:dome-world:art
@@ -152,12 +186,12 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-  browser:
-    name: One exact-head Chromium Firefox WebKit witness
-    needs: contracts
+  ash_browser:
+    name: Full-product exact-head Chromium Firefox WebKit witness
+    needs: [contracts, scope]
     if: >-
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review')
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -291,6 +325,57 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: td613-exact-head-browser-receipts
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
+
+  giving_browser:
+    name: Giving-only exact-head Chromium Firefox WebKit witness
+    needs: [contracts, scope]
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'ready_for_review' &&
+      needs.scope.outputs.validation_scope == 'giving'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Giving dependencies and all browser engines once
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Start bounded offline Giving runtime
+        run: |
+          mkdir -p artifacts
+          node tests/giving-client-preview-server.mjs 6136 > artifacts/giving-server.log 2>&1 &
+          echo $! > artifacts/giving-server.pid
+          for attempt in $(seq 1 40); do
+            curl -fsS --max-time 2 'http://127.0.0.1:6136/giving/history/?surface=operator' >/dev/null && exit 0
+            sleep 1
+          done
+          cat artifacts/giving-server.log
+          exit 1
+      - name: Witness Campaign Deputy exports through every engine
+        run: |
+          set -euo pipefail
+          for browser in chromium firefox webkit; do
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6136'
+            TD613_ARTIFACT_DIR="artifacts/giving-$browser" timeout --foreground --signal=INT --kill-after=15s 300s node scripts/giving-browser-probe.mjs
+          done
+      - name: Stop Giving runtime
+        if: always()
+        run: test ! -f artifacts/giving-server.pid || kill "$(cat artifacts/giving-server.pid)" 2>/dev/null || true
+      - name: Preserve Giving-only exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-giving-exact-head-browser-receipts
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7

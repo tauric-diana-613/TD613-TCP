@@ -37,13 +37,18 @@ const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
 assert.match(consolidated, /name:\s*TD613 Consolidated Validation/);
 assert.match(consolidated, /cancel-in-progress:\s*true/);
 assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
-assert.match(consolidated, /One exact-head Chromium Firefox WebKit witness/);
+assert.match(consolidated, /Full-product exact-head Chromium Firefox WebKit witness/);
+assert.match(consolidated, /Giving-only exact-head Chromium Firefox WebKit witness/);
+assert.match(consolidated, /Classify exact-head browser witness scope/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
 assert.match(consolidated, /Explicit self-hosted calibration/);
 assert.match(consolidated, /Explicit full-repository validation/);
-assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/, 'Ordinary PR synchronization must not authorize browsers.');
+const ashBrowserGate = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+const givingBrowserGate = consolidated.match(/  giving_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+assert.doesNotMatch(ashBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the full-product browser witness.');
+assert.doesNotMatch(givingBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the Giving browser witness.');
 assert.doesNotMatch(consolidated, /strategy:\s*[\s\S]*matrix:\s*[\s\S]*browser:/, 'Browser engines must share one installation and one bounded job.');
 
 for (const token of [
@@ -72,7 +77,10 @@ for (const token of [
 ]) assert.ok(consolidated.includes(token), `Consolidated closure preflight omitted ${token}`);
 assert.match(consolidated, /Aggregate changed-risk A8 and A12 entry witnesses across every engine[\s\S]*Run changed-risk lifecycle closure preflight[\s\S]*Run the complete Ash witness through each installed engine/, 'A8, A12 entry, and lifecycle closure risk must resolve before the expensive full Ash estate.');
 assert.equal((consolidated.match(/Run changed-risk lifecycle closure preflight/g) || []).length, 1, 'Lifecycle closure preflight must have one owner.');
-assert.equal((consolidated.match(/One exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Browser estate must remain one bounded owner.');
+assert.equal((consolidated.match(/Full-product exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Full-product browser estate must remain one bounded owner.');
+assert.equal((consolidated.match(/Giving-only exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Giving browser estate must remain one bounded owner.');
+assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
+assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
 
 const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8');
 assert.match(pages, /workflow_dispatch:/);
@@ -84,4 +92,4 @@ const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 
-console.log('Workflow estate closed at 4/4 durable workflows with aggregate A8, A12-entry, and lifecycle-closure risk gates inside the consolidated browser owner.');
+console.log('Workflow estate closed at 4/4 durable workflows with mutually exclusive Giving-only and full-product browser owners.');

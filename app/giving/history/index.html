@@ -218,6 +218,7 @@
             </div>
             <div class="button-row align-end">
               <button class="button ledger-date-sort-button" id="ledgerDateSortButton" type="button" aria-pressed="true" data-direction="desc">Date ↓</button>
+              <button class="button" id="exportCampaignDeputyBundleButton" type="button">CD Giving History .zip</button>
               <button class="button" id="exportSpreadsheetButton" type="button">Export spreadsheet</button>
               <button class="button" id="exportCsvButton" type="button">Export CSV</button>
               <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
@@ -312,6 +313,7 @@
             </div>
             <div class="button-row">
               <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
+              <button class="button" id="bulkGivingHistoryButton" type="button">Prepare all exact-match contacts</button>
             </div>
           </section>
           <section class="campaign-deputy-sync-tools">
@@ -353,7 +355,6 @@
   </div>
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
-  <script type="module" src="./giving-bootstrap.js?v=20260814-2"></script>
+  <script type="module" src="./giving-bootstrap.js?v=20260814-3"></script>
 </body>
 </html>
-

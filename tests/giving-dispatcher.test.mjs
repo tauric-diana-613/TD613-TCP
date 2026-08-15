@@ -73,6 +73,7 @@ const preparedGivingHistory = await call(request('campaign-deputy.prepare-giving
     identity_status: 'CONFIRMED',
     committee_name: 'Example Committee',
     committee_id: 'C00123456',
+    contributor: { first_name: 'Jane', last_name: 'Doe' },
     contribution_date: '2026-07-15',
     amount_cents: 5000,
     source_instance_id: 'fec-schedule-a'
@@ -101,4 +102,3 @@ assert.equal(logout.body.data.closed, true);
 assert.match(logout.res.headers['set-cookie'], /Max-Age=0/);
 
 console.log('giving-dispatcher.test.mjs passed');
-

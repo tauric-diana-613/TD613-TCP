@@ -19,6 +19,11 @@ import { openGivingStore } from './giving-store.js';
 import { decryptDossier, encryptDossier, fromHostedVaultRow, toHostedVaultPayload } from './giving-vault.js';
 import { createGivingField } from './giving-field.js';
 import { buildDossierXlsx } from './giving-xlsx.js';
+import {
+  buildCampaignDeputyGivingHistoryBundle,
+  campaignDeputyGivingHistoryCsv,
+  campaignDeputyGivingHistoryRow
+} from './giving-campaign-deputy-import.js';
 
 const MAX_SOURCE_CONCURRENCY = 3;
 const MAX_REVIEW_RENDER = 300;
@@ -719,6 +724,39 @@ function renderReview() {
   }));
 }
 
+function exportCampaignDeputyCommitteeCsv(group) {
+  const identity = group.records.find((record) => record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id);
+  const suffix = identity?.committee_id || identity?.fec_committee_id || identity?.raw_source_row?.committee_id || group.cycle || 'committee';
+  const filename = `${safeFilename(group.committee)}-${safeFilename(suffix)}-campaign-deputy-giving-history.csv`;
+  download(filename, campaignDeputyGivingHistoryCsv(group.records), 'text/csv;charset=utf-8');
+  addReceipt({
+    schema: 'td613.giving.export-receipt/v1',
+    at: new Date().toISOString(),
+    kind: 'CAMPAIGN_DEPUTY_GIVING_HISTORY_COMMITTEE_CSV',
+    dossier_id: state.dossier.id,
+    committee: group.committee,
+    record_count: group.records.length,
+    one_committee_per_import: true
+  }, 'export');
+  toast(`${group.records.length} confirmed record${group.records.length === 1 ? '' : 's'} prepared in Campaign Deputy's official Giving History format for ${group.committee}.`);
+}
+
+function exportCampaignDeputyBundle(records, { preparedBatch = null, targetMode = 'DOSSIER_CONFIRMED_RECORDS', title = state.dossier.title } = {}) {
+  const bundle = buildCampaignDeputyGivingHistoryBundle({ records, preparedBatch, targetMode, title });
+  download(bundle.filename, bundle.bytes, 'application/zip');
+  addReceipt({
+    schema: 'td613.giving.export-receipt/v1',
+    at: new Date().toISOString(),
+    kind: 'CAMPAIGN_DEPUTY_GIVING_HISTORY_COMMITTEE_BUNDLE',
+    dossier_id: state.dossier.id,
+    record_count: records.length,
+    committee_file_count: bundle.partitions.length,
+    batch_id: preparedBatch?.batch_id || null,
+    external_mutation: false
+  }, 'export');
+  return bundle;
+}
+
 function renderLedger() {
   const groups = committeeLedger(state.dossier);
   const total = groups.reduce((sum, group) => sum + group.amount_cents, 0);
@@ -730,14 +768,24 @@ function renderLedger() {
     $('#committeeLedger').innerHTML = '<div class="empty-state"><strong>No confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>';
     return;
   }
-  $('#committeeLedger').innerHTML = groups.map((group) => `<article class="committee-card">
+  $('#committeeLedger').innerHTML = groups.map((group, index) => `<article class="committee-card">
     <div class="committee-summary">
       <strong>${escapeHtml(group.committee)}</strong>
       <span class="money">${escapeHtml(formatCurrency(group.amount_cents))}</span>
       <small>${escapeHtml([group.jurisdiction, group.office, group.cycle].filter(Boolean).join(' · '))} · ${group.records.length} confirmed${group.provisional ? ' · ' : ''}${group.provisional ? '<span class="provisional">PROVISIONAL LINEAGE</span>' : ''}</small>
+      <button class="button committee-cd-export" type="button" data-cd-committee-index="${index}">CD Giving History .csv</button>
     </div>
     <div class="committee-records">${group.records.map((record) => `${escapeHtml(record.contribution_date || 'date missing')} · ${escapeHtml(formatCurrency(record.amount_cents || 0))} · ${escapeHtml(record.source_family)}${targetNameForRecord(record) ? ` · ${escapeHtml(targetNameForRecord(record))}` : ''}`).join('<br>')}</div>
   </article>`).join('');
+  $$('[data-cd-committee-index]').forEach((button) => button.addEventListener('click', () => {
+    const group = groups[Number(button.dataset.cdCommitteeIndex)];
+    if (!group) return;
+    try {
+      exportCampaignDeputyCommitteeCsv(group);
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  }));
 }
 
 async function exportEncrypted() {
@@ -972,21 +1020,39 @@ function updateCampaignButtons() {
 }
 
 function givingHistoryPackageRecord(record) {
+  const importRow = campaignDeputyGivingHistoryRow(record);
+  const sourceIds = record.source_native_ids || {};
+  const committeeName = compactText(record.committee || record.committee_name || record.candidate || record.candidate_name || '');
   return {
     record_digest: recordDigest(record),
     identity_status: 'CONFIRMED',
-    committee_name: recordCommittee(record),
-    committee_id: record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id || record.candidate_or_committee_id || null,
+    committee_name: committeeName || null,
+    committee_id: record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id || record.candidate_or_committee_id || sourceIds.committee_id || sourceIds.candidate_or_committee_id || null,
     contribution_date: record.contribution_date,
     amount_cents: record.amount_cents,
+    contributor: {
+      first_name: importRow[0],
+      last_name: importRow[1],
+      organization_name: importRow[2],
+      address_line_1: importRow[3],
+      address_city: importRow[4],
+      address_state: importRow[5],
+      address_zip: importRow[6],
+      occupation: importRow[7],
+      employer: importRow[8]
+    },
     cycle: record.cycle,
     election: record.election,
+    election_type: /primary/i.test(record.election || '') ? 'Primary' : /general/i.test(record.election || '') ? 'General' : /special/i.test(record.election || '') ? 'Special' : null,
+    office: record.office,
     jurisdiction: record.jurisdiction,
     source_instance_id: record.source_instance_id,
     source_native_ids: record.source_native_ids,
     source_locator: record.source_locator,
     retrieved_at: record.retrieved_at,
-    query_digest: record.query_digest
+    query_digest: record.query_digest,
+    amendment_status: record.amendment_status,
+    lineage: record.lineage
   };
 }
 
@@ -1000,11 +1066,12 @@ async function prepareGivingHistoryBatch() {
     const result = await api.call('campaign-deputy.prepare-giving-history', {
       dossier_id: state.dossier.id,
       person_id: state.selectedPersonId,
+      dossier_target_id: targetId,
       confirmed: true,
       records: records.map(givingHistoryPackageRecord)
     }, { mutation: false, purpose: 'prepare held Campaign Deputy Giving History batch without external write' });
     const batch = dataOf(result);
-    download(`${safeFilename(state.dossier.title)}-campaign-deputy-giving-history-held.json`, JSON.stringify(batch, null, 2), 'application/json');
+    const bundle = exportCampaignDeputyBundle(records, { preparedBatch: batch, targetMode: 'SINGLE_EXACT_PERSON', title: `${state.dossier.title}-${target.name}` });
     appendCampaignReceipt({
       schema: 'td613.giving.campaign-deputy-giving-history-stage-receipt/v1',
       at: new Date().toISOString(),
@@ -1015,7 +1082,48 @@ async function prepareGivingHistoryBatch() {
       external_mutation: false,
       search_target_id: targetId
     });
-    toast(`${batch.record_count} individual Giving History record${batch.record_count === 1 ? '' : 's'} prepared and held; Campaign Deputy was not mutated.`);
+    toast(`${batch.record_count} individual Giving History record${batch.record_count === 1 ? '' : 's'} prepared in ${bundle.partitions.length} committee import file${bundle.partitions.length === 1 ? '' : 's'} and held; Campaign Deputy was not mutated.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function prepareMultiContactGivingHistory(event) {
+  const exactTargets = Array.isArray(event?.detail?.targets) ? event.detail.targets : [];
+  const targets = exactTargets.map((target) => ({
+    person_id: target.person_id,
+    dossier_target_id: target.dossier_target_id,
+    exact_match: true,
+    records: confirmedRecords(target.dossier_target_id)
+  })).filter((target) => target.records.length > 0);
+  if (!targets.length) return toast('No exact Campaign Deputy contacts also have confirmed Giving History records.', 'error');
+  const recordCount = targets.reduce((sum, target) => sum + target.records.length, 0);
+  if (!window.confirm(`Prepare a held Campaign Deputy Giving History bundle for ${targets.length} exact contact${targets.length === 1 ? '' : 's'} and ${recordCount} confirmed gift${recordCount === 1 ? '' : 's'}? This will not write to Campaign Deputy.`)) return;
+  try {
+    const result = await api.call('campaign-deputy.prepare-giving-history', {
+      dossier_id: state.dossier.id,
+      confirmed: true,
+      targets: targets.map((target) => ({
+        person_id: target.person_id,
+        dossier_target_id: target.dossier_target_id,
+        exact_match: true,
+        records: target.records.map(givingHistoryPackageRecord)
+      }))
+    }, { mutation: false, purpose: 'prepare held multi-contact Campaign Deputy Giving History batch without external write' });
+    const batch = dataOf(result);
+    const records = targets.flatMap((target) => target.records);
+    const bundle = exportCampaignDeputyBundle(records, { preparedBatch: batch, targetMode: 'MULTI_CONTACT_EXACT_MATCH_BATCH' });
+    appendCampaignReceipt({
+      schema: 'td613.giving.campaign-deputy-giving-history-stage-receipt/v1',
+      at: new Date().toISOString(),
+      action: 'MULTI_CONTACT_GIVING_HISTORY_BATCH_PREPARED_AND_HELD',
+      batch_id: batch.batch_id,
+      target_count: batch.target_count,
+      record_count: batch.record_count,
+      committee_count: bundle.partitions.length,
+      external_mutation: false
+    });
+    toast(`${batch.target_count} exact contacts and ${batch.record_count} Giving History records prepared and held across ${bundle.partitions.length} committee files.`);
   } catch (error) {
     toast(humanError(error), 'error');
   }
@@ -1316,6 +1424,16 @@ function bindEvents() {
     addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'XLSX', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
     toast('Excel spreadsheet prepared with frozen headers, filters, contact targets, identity state, and source lineage.');
   });
+  $('#exportCampaignDeputyBundleButton').addEventListener('click', () => {
+    try {
+      updateDossierFromForm();
+      const records = confirmedRecords();
+      const bundle = exportCampaignDeputyBundle(records);
+      toast(`${records.length} confirmed Giving History record${records.length === 1 ? '' : 's'} prepared as ${bundle.partitions.length} Campaign Deputy committee import file${bundle.partitions.length === 1 ? '' : 's'}.`);
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  });
   $('#exportEncryptedButton').addEventListener('click', exportEncrypted);
   $('#syncVaultButton').addEventListener('click', () => saveDossier({ forceVault: true }));
   $('#refreshVaultButton').addEventListener('click', listVaultVersions);
@@ -1333,6 +1451,7 @@ function bindEvents() {
   $('#linkExistingButton').addEventListener('click', linkExisting);
   $('#syncTargetButton').addEventListener('click', syncSelectedTarget);
   $('#prepareGivingHistoryButton').addEventListener('click', prepareGivingHistoryBatch);
+  window.addEventListener('td613:prepare-campaign-deputy-giving-history', prepareMultiContactGivingHistory);
   $('#createContactButton').addEventListener('click', createContact);
   $('#withholdButton').addEventListener('click', withholdWriteback);
   $('#copyReceiptsButton').addEventListener('click', async () => {
@@ -1378,4 +1497,3 @@ async function boot() {
 }
 
 boot();
-

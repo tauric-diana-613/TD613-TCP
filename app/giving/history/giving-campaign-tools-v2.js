@@ -37,7 +37,7 @@ function deputyStatus(message, kind = 'info') {
 }
 
 function setBusy(busy) {
-  for (const button of $$('#campaignDirectorySearchButton, #syncLoadedCommitteeButton, #bulkExactContactsButton, [data-load-campaign], [data-opensecrets-summary]')) {
+  for (const button of $$('#campaignDirectorySearchButton, #syncLoadedCommitteeButton, #bulkExactContactsButton, #bulkGivingHistoryButton, [data-load-campaign], [data-opensecrets-summary]')) {
     button.disabled = Boolean(busy) || (button.id === 'syncLoadedCommitteeButton' && !loadedContext?.committee_id);
   }
 }
@@ -297,6 +297,42 @@ async function bulkSyncExactContacts() {
   }
 }
 
+async function prepareBulkGivingHistoryExactContacts() {
+  const button = $('#bulkGivingHistoryButton');
+  const targetSelect = $('#campaignTargetSelect');
+  if (!button || !targetSelect) return;
+  const originalTarget = targetSelect.value;
+  const exactTargets = [];
+  const held = [];
+  setBusy(true);
+  button.textContent = 'Resolving exact contacts…';
+  deputyStatus('Loading the complete Campaign Deputy people index for exact Giving History targets…');
+  try {
+    await loadAllCampaignDeputyPeople();
+    const targets = [...targetSelect.options].filter((option) => option.value).map((option) => ({ id: option.value, name: targetNameFromOption(option) }));
+    for (let index = 0; index < targets.length; index += 1) {
+      const target = targets[index];
+      button.textContent = `Resolving ${index + 1}/${targets.length}…`;
+      const matches = exactPersonCandidates(target.name);
+      if (matches.length !== 1) {
+        held.push(`${target.name}: ${matches.length ? 'ambiguous exact Campaign Deputy name' : 'no exact Campaign Deputy person'}`);
+        continue;
+      }
+      exactTargets.push({ dossier_target_id: target.id, person_id: matches[0].radio.value, display_name: target.name });
+    }
+    if (originalTarget && [...targetSelect.options].some((option) => option.value === originalTarget)) await selectTarget(originalTarget);
+    if (!exactTargets.length) throw new Error('No unique exact Campaign Deputy person matches were found.');
+    window.dispatchEvent(new CustomEvent('td613:prepare-campaign-deputy-giving-history', { detail: { targets: exactTargets, held } }));
+    const holdText = held.length ? ` · ${held.length} ambiguous or missing contact${held.length === 1 ? '' : 's'} held` : '';
+    deputyStatus(`${exactTargets.length} exact Giving History contact target${exactTargets.length === 1 ? '' : 's'} resolved${holdText}.`, held.length ? 'warning' : 'success');
+  } catch (error) {
+    deputyStatus(`Multi-contact Giving History preparation held: ${error?.message || error}`, 'error');
+  } finally {
+    button.textContent = 'Prepare all exact-match contacts';
+    setBusy(false);
+  }
+}
+
 function bindDynamicActions() {
   $$('[data-load-campaign]').forEach((button) => {
     if (button.dataset.bound === 'true') return;
@@ -314,6 +350,7 @@ function install() {
   $('#campaignDirectoryForm')?.addEventListener('submit', searchDirectory);
   $('#syncLoadedCommitteeButton')?.addEventListener('click', syncLoadedCommittee);
   $('#bulkExactContactsButton')?.addEventListener('click', bulkSyncExactContacts);
+  $('#bulkGivingHistoryButton')?.addEventListener('click', prepareBulkGivingHistoryExactContacts);
   renderLoadedContext();
 }
 
