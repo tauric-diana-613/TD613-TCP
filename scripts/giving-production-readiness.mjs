@@ -1,5 +1,5 @@
 const REQUIRED_GIVING_MARKERS = Object.freeze([
-  '<title>TD613 Giving</title>',
+  '<title>TD613 Giving History</title>',
   'id="exportCampaignDeputyBundleButton"',
   'id="bulkGivingHistoryButton"',
   'id="sessionMembrane"'
@@ -94,3 +94,4 @@ export async function waitForGivingProductionSurface({
 }
 
 export const _givingProductionReadinessInternals = Object.freeze({ REQUIRED_GIVING_MARKERS, positiveInteger });
+
