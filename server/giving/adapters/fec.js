@@ -107,7 +107,7 @@ async function fetchFecWithRetry(url, fetchImpl, keyMode, deadline) {
       if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
       continue;
     }
-    if (!RETRYABLE_FEC_STATUSES.has(response.status) || attempts === MAX_FEC_ATTEMPTS) break;
+    if (!RETRYABLE_FEC_STATUSES.has(response.status) || attempts === MAX_FEC_ATTEMPTS || (response.status === 429 && keyMode === 'demo')) break;
     const delay = Math.min(boundedRetryDelay(response), Math.max(0, deadline - Date.now() - 1_500));
     if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
   }
@@ -197,7 +197,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       ({ response, attempts } = await fetchFecWithRetry(url, fetchImpl, keyMode, deadline));
     } catch (error) {
-      if (RETRYABLE_FEC_ERRORS.has(error?.code)) {
+      if (RETRYABLE_FEC_ERRORS.has(error?.code) && rows.length) {
         salvageError = error;
         break;
       }
@@ -210,7 +210,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       finalRateLimit = await assertFecResponse(response, { keyMode, attempts });
     } catch (error) {
-      if (SALVAGEABLE_FEC_ERRORS.has(error?.code)) {
+      if (SALVAGEABLE_FEC_ERRORS.has(error?.code) && rows.length) {
         salvageError = error;
         break;
       }
@@ -280,3 +280,4 @@ export const _fecInternals = Object.freeze({
   fecUrl,
   transactionPeriods
 });
+

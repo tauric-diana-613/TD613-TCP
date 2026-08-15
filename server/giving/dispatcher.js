@@ -8,6 +8,7 @@ import {
   PUBLIC_OPERATIONS
 } from './constants.js';
 import { searchSourcePage } from './adapters/index.js';
+import { searchCommitteeActivity } from './committee-activity.js';
 import {
   campaignDeputyReadiness,
   createConfirmed,
@@ -52,6 +53,7 @@ function custodyForOperation(operation) {
   if (operation === 'campaign-deputy.prepare-giving-history') return 'CAMPAIGN_DEPUTY_GIVING_HISTORY_STAGING_NO_EXTERNAL_WRITE';
   if (operation.startsWith('campaign-deputy.')) return 'CAMPAIGN_DEPUTY_REVIEWED_WRITE_BOUNDARY';
   if (operation.startsWith('campaign-directory.')) return 'TRANSIENT_CAMPAIGN_DIRECTORY_RESEARCH';
+  if (operation.startsWith('committee-activity.')) return 'TRANSIENT_SEPARATE_CAMPAIGN_ACTIVITY_NOT_DONOR_GIVING_HISTORY';
   if (operation === 'search.page') return 'TRANSIENT_SERVER_RESPONSE_CLIENT_SELECTED_DOSSIER_CUSTODY';
   if (operation === 'registry.read') return 'PUBLIC_SOURCE_REGISTRY_NO_DONOR_DATA';
   return 'SIGNED_OPERATOR_SESSION';
@@ -123,6 +125,7 @@ async function dispatch(envelope, session, context) {
     case 'vault.resolve-conflict': return vaultResolveConflict(envelope.payload, session, context);
     case 'campaign-directory.search': return searchCampaignDirectory(envelope.payload, context);
     case 'campaign-directory.opensecrets-summary': return openSecretsOrganizationSummary(envelope.payload, context);
+    case 'committee-activity.search': return searchCommitteeActivity(envelope.payload, context);
     case 'campaign-deputy.people-page': return peoplePage(envelope.payload, context);
     case 'campaign-deputy.link-existing': return linkExisting(envelope.payload, context);
     case 'campaign-deputy.create-confirmed': return createConfirmed(envelope.payload, context);

@@ -48,7 +48,7 @@
     "test:hush:packets": "node scripts/run-hush-packet-integration.mjs",
     "test:hush:packets:check": "node scripts/run-hush-packet-integration.mjs --check",
     "test:release": "node tests/release-manifest.test.mjs && node tests/docs-surface.test.mjs && node tests/release-hardening.test.mjs && node tests/release-plumbing.test.mjs && node tests/vercel-deploy-hygiene.test.mjs && node tests/amari-patch-lane.test.mjs && npm run test:giving",
-    "test:giving": "node tests/aperture-patch-bay.test.mjs && node tests/giving-backend.test.mjs && node tests/giving-history-package.test.mjs && node tests/giving-campaign-deputy-import.test.mjs && node tests/giving-production-readiness.test.mjs && node tests/giving-adapters.test.mjs && node tests/giving-dispatcher.test.mjs && node tests/giving-client-api.test.mjs && node tests/giving-client-model.test.mjs && node tests/giving-client-vault.test.mjs && node tests/giving-client-surface.test.mjs",
+    "test:giving": "node tests/aperture-patch-bay.test.mjs && node tests/giving-backend.test.mjs && node tests/giving-history-package.test.mjs && node tests/giving-campaign-deputy-import.test.mjs && node tests/giving-production-readiness.test.mjs && node tests/giving-adapters.test.mjs && node tests/giving-dispatcher.test.mjs && node tests/giving-client-api.test.mjs && node tests/giving-client-model.test.mjs && node tests/giving-client-vault.test.mjs && node tests/giving-client-surface.test.mjs && node tests/giving-interpretation-ux.test.mjs && node tests/giving-committee-activity.test.mjs",
     "test:safe-harbor": "node tests/td613-flight-desktop-clipboard.test.mjs && node tests/safe-harbor-runtime-boot.test.mjs && node tests/safe-harbor-binding-provenance.test.mjs && node tests/td613-flight-mobile-layout.test.mjs && node tests/td613-flight-date-refresh.test.mjs && node tests/safe-harbor-phase9-1c-restore.test.mjs && node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-stylometry-v3.test.mjs && node tests/safe-harbor-phase4-authority.test.mjs && node tests/safe-harbor-phase5-replay-hardening.test.mjs && node tests/safe-harbor-phase6-native-spine.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
     "test:safe-harbor:phase7": "node tests/safe-harbor-phase7-outside-witness-alignment.test.mjs",
     "test:safe-harbor:phase8": "node tests/safe-harbor-phase8-public-default-gate.test.mjs",
@@ -113,3 +113,4 @@
     "@vercel/speed-insights": "^2.0.0"
   }
 }
+

@@ -16,6 +16,7 @@ const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/givin
 const searchControlsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.css'), 'utf8');
 const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.js'), 'utf8');
 const campaignToolsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.css'), 'utf8');
+const clarityCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-clarity.css'), 'utf8');
 const amountFilter = fs.readFileSync(path.join(root, 'app/giving/history/giving-contribution-amount-filter.js'), 'utf8');
 const contributionsCopy = fs.readFileSync(path.join(root, 'app/giving/history/giving-contributions-copy.js'), 'utf8');
 const dossierHelp = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.js'), 'utf8');
@@ -29,14 +30,14 @@ assert.doesNotMatch(html, /analytics\.js|speed-insights\.js|https?:\/\//, 'priva
 assert.match(html, /id="sessionMembrane"/);
 assert.doesNotMatch(html, /id="sessionMembrane"[^>]*\shidden/);
 assert.match(html, /id="operatorShell" hidden/);
-assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260814-3"><\/script>/);
+assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260815-1"><\/script>/);
 assert.match(html, /href="\.\/giving-polish\.css\?v=20260813-1"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-3'/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260815-1'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-contact-queue.js', 'giving-export-menu.js', 'giving-app.js',
   'giving-search-controls.js', 'giving-search-controls.css', 'giving-contribution-amount-filter.js',
-  'giving-campaign-tools-v2.js', 'giving-campaign-tools-v2.css', 'giving-contributions-copy.js', 'giving-dossier-help.js'
+  'giving-campaign-tools-v2.js', 'giving-campaign-tools-v2.css', 'giving-contributions-copy.js', 'giving-dossier-help.js', 'giving-clarity.css'
 ]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated epoch`);
 assert.ok(bootstrap.indexOf('giving-left-rail-order.js') < bootstrap.indexOf('giving-contact-queue.js'), 'left rail DOM order is established before other Giving controls install');
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'), 'amount filter installs at the API boundary before the core client is constructed');
@@ -65,6 +66,7 @@ assert.match(html, /id="prepareGivingHistoryButton"/);
 assert.match(html, /id="bulkGivingHistoryButton"/);
 assert.match(html, /id="exportCampaignDeputyBundleButton"/);
 assert.match(html, /id="exportSpreadsheetButton"/);
+assert.match(html, /id="exportReviewedSummaryButton"/);
 for (const key of ['contributor', 'committee', 'amount', 'status']) {
   assert.match(html, new RegExp(`data-review-sort="${key}"`));
 }
@@ -138,6 +140,9 @@ assert.match(contactQueue, /if \(index > 0\) setHold\(true\)/, 'later queued con
 assert.match(contactQueue, /td613:giving-select-target/);
 assert.match(contactQueue, /td613:giving-clear-all/);
 assert.match(contactQueue, /fec-schedule-a/, 'OpenFEC client diagnostics are surfaced beside retryable source failures');
+assert.match(contactQueue, /queue\.length >= 5/);
+assert.match(contactQueue, /exact\.textContent = 'Exact'/);
+assert.match(contactQueue, /stopButton\.hidden = !queueRunning/);
 
 assert.match(searchControls, /DEFAULT_DATE_FROM = '2020-01-01'/);
 assert.match(searchControls, /id = 'clearSearchButton'/);
@@ -190,6 +195,8 @@ assert.doesNotMatch(campaignTools, /createElement\('style'\)/, 'campaign tools s
 assert.match(campaignToolsCss, /\.campaign-directory-panel/);
 assert.match(campaignToolsCss, /\.campaign-deputy-sync-tools/);
 assert.match(campaignToolsCss, /\.loaded-campaign-context/);
+assert.match(clarityCss, /\.readiness-tooltip/);
+assert.match(clarityCss, /\.contact-queue-list\.contact-queue-scrollbox/);
 
 assert.match(dossierHelp, /Research Dossier/);
 assert.match(dossierHelp, /🛈︎/);
@@ -239,3 +246,4 @@ const clientIdReferences = [...app.matchAll(/\$\('#([^']+)'\)/g)].map((match) =>
 assert.deepEqual([...new Set(clientIdReferences.filter((id) => !htmlIds.has(id)))], [], 'every direct core-client DOM reference exists in the private shell');
 
 console.log('giving-client-surface.test.mjs passed');
+

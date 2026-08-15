@@ -136,14 +136,14 @@ function admitVoterFocusName(record, row, query = {}) {
   };
 }
 
-function voterFocusPayload(query, projection = 'CONTRIBUTOR_ENTITY') {
+function voterFocusPayload(query, projection = 'CONTRIBUTOR_ENTITY', activityType = 'CONTRIBUTIONS') {
   if (!query.start_date || !query.end_date) {
     throw new GivingError('explicit-dates-required', 'VoterFocus historical searches require explicit start_date and end_date values', 400);
   }
   const from = dateParts(query.start_date);
   const to = dateParts(query.end_date);
   const params = new URLSearchParams();
-  params.set('srch_tp', 'C');
+  params.set('srch_tp', activityType === 'EXPENDITURES' ? 'E' : 'C');
   const person = candidateParts(query.candidate || query.name);
   params.set('c_lastname', projection === 'CONTRIBUTOR_PERSON'
     ? (query.last_name || person.family)
@@ -189,7 +189,7 @@ function extractCsv(text) {
   throw new GivingError('voterfocus-contract-drift', 'VoterFocus did not return its CSV export contract', 502);
 }
 
-export async function searchVoterFocusPage({ source, query, continuation, fetchImpl }) {
+export async function searchVoterFocusPage({ source, query, continuation, fetchImpl, activityType = 'CONTRIBUTIONS' }) {
   const startedAt = new Date().toISOString();
   const digest = queryDigest(source.id, query);
   const cursor = decodeContinuation(continuation, source.id);
@@ -219,7 +219,7 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
         'User-Agent': 'TD613-Giving/1.0 operator research'
       },
       body: (() => {
-        const parameters = voterFocusPayload(query, projection);
+        const parameters = voterFocusPayload(query, projection, activityType);
         parameters.set('c', source.code);
         return parameters.toString();
       })()
@@ -281,3 +281,4 @@ export const _voterFocusInternals = Object.freeze({
   exactMatchContributorProjection,
   admitVoterFocusName
 });
+

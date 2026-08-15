@@ -5,6 +5,21 @@ const api = new GivingApiClient({ timeoutMs: 22000 });
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let loadedContext = null;
+let campaignRegistry = null;
+let selectedCampaignState = 'FL';
+let selectedLocalSourceId = null;
+
+function campaignActivityType() {
+  return $('#campaignDirectoryActivity')?.value || 'CONTRIBUTIONS';
+}
+
+function campaignJurisdiction() {
+  return $('#campaignDirectoryJurisdiction')?.value || 'FEDERAL';
+}
+
+function activityLabel(value = campaignActivityType()) {
+  return value === 'EXPENDITURES' ? 'expenditure receipts' : 'contribution receipts';
+}
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
@@ -37,9 +52,78 @@ function deputyStatus(message, kind = 'info') {
 }
 
 function setBusy(busy) {
-  for (const button of $$('#campaignDirectorySearchButton, #syncLoadedCommitteeButton, #bulkExactContactsButton, #bulkGivingHistoryButton, [data-load-campaign], [data-opensecrets-summary]')) {
+  for (const button of $$('#campaignDirectorySearchButton, #syncLoadedCommitteeButton, #bulkExactContactsButton, #bulkGivingHistoryButton, [data-load-campaign], [data-opensecrets-summary], [data-inspect-activity]')) {
     button.disabled = Boolean(busy) || (button.id === 'syncLoadedCommitteeButton' && !loadedContext?.committee_id);
   }
+}
+
+function localSources(kind = campaignJurisdiction()) {
+  const instances = campaignRegistry?.instances || [];
+  if (kind === 'COUNTY') return instances.filter((source) => source.family === 'VOTERFOCUS');
+  if (kind === 'CITY') return instances.filter((source) => source.family === 'EASYVOTE');
+  return [];
+}
+
+function localSourceLabel(source, kind) {
+  if (kind === 'CITY') return String(source.jurisdiction || source.custodian || source.id).split(',')[0];
+  return String(source.jurisdiction || source.custodian || source.id).replace(/ County.*$/i, '');
+}
+
+function renderCampaignStateMenu() {
+  const menu = $('#campaignDirectoryStateMenu');
+  if (!menu) return;
+  const states = window.TD613_GIVING_STATES || [['FL', 'Florida']];
+  menu.innerHTML = states.map(([code, name]) => `<label><input type="radio" name="campaign-directory-state" value="${escapeHtml(code)}" ${code === selectedCampaignState ? 'checked' : ''}><span>${escapeHtml(code)}</span><small>${escapeHtml(name)}</small></label>`).join('');
+  menu.addEventListener('change', (event) => {
+    const input = event.target.closest?.('input[type="radio"]');
+    if (!input) return;
+    selectedCampaignState = input.value;
+    $('#campaignDirectoryStateCount').textContent = input.value;
+    $('#campaignDirectoryState').open = false;
+  });
+}
+
+function renderLocalSourceMenu() {
+  const kind = campaignJurisdiction();
+  const details = $('#campaignDirectoryLocal');
+  const menu = $('#campaignDirectoryLocalMenu');
+  const label = $('#campaignDirectoryLocalLabel');
+  const count = $('#campaignDirectoryLocalCount');
+  if (!details || !menu || !label || !count) return;
+  const sources = localSources(kind);
+  details.hidden = !['COUNTY', 'CITY'].includes(kind);
+  if (details.hidden) return;
+  label.textContent = kind === 'CITY' ? 'City' : 'County';
+  if (!sources.some((source) => source.id === selectedLocalSourceId)) selectedLocalSourceId = sources[0]?.id || null;
+  menu.innerHTML = sources.map((source) => `<label><input type="radio" name="campaign-directory-local" value="${escapeHtml(source.id)}" ${source.id === selectedLocalSourceId ? 'checked' : ''}><span>${kind === 'CITY' ? 'CITY' : 'CO'}</span><small>${escapeHtml(localSourceLabel(source, kind))}</small></label>`).join('') || '<span class="muted">No wired source is registered for this scope.</span>';
+  count.textContent = localSourceLabel(sources.find((source) => source.id === selectedLocalSourceId), kind) || '';
+}
+
+function syncCampaignScopeControls() {
+  const kind = campaignJurisdiction();
+  if (kind !== 'FEDERAL') selectedCampaignState = 'FL';
+  $('#campaignDirectoryStateCount').textContent = selectedCampaignState;
+  const stateInputs = $$('#campaignDirectoryStateMenu input');
+  stateInputs.forEach((input) => {
+    input.checked = input.value === selectedCampaignState;
+    input.disabled = kind !== 'FEDERAL' && input.value !== 'FL';
+  });
+  renderLocalSourceMenu();
+}
+
+async function hydrateCampaignRegistry() {
+  if (campaignRegistry) return campaignRegistry;
+  const result = await api.call('registry.read', {}, { mutation: false, purpose: 'load the bounded campaign lookup jurisdiction menu' });
+  campaignRegistry = result?.data || result;
+  renderLocalSourceMenu();
+  return campaignRegistry;
+}
+
+function selectedSourceId() {
+  const kind = campaignJurisdiction();
+  if (kind === 'FLORIDA_STATE') return 'florida-state-contributions';
+  if (kind === 'COUNTY' || kind === 'CITY') return selectedLocalSourceId;
+  return 'fec-schedule-a';
 }
 
 function committeeLoadButton(committee, candidate = {}) {
@@ -56,6 +140,15 @@ function committeeLoadButton(committee, candidate = {}) {
       <small>${escapeHtml(committee.committee_id)}${committee.committee_type_full || committee.committee_type ? ` · ${escapeHtml(committee.committee_type_full || committee.committee_type)}` : ''}</small>
       <span>Load committee → Contributions</span>
     </button>`;
+}
+
+function activityInspectButton(committee, candidate = {}, sourceId = 'fec-schedule-a') {
+  if (!committee?.committee_id && !committee?.name) return '';
+  return `<button type="button" class="campaign-activity-inspect" data-inspect-activity
+    data-source-id="${escapeHtml(sourceId)}"
+    data-committee-id="${escapeHtml(committee.committee_id || '')}"
+    data-committee-name="${escapeHtml(committee.name || '')}"
+    data-candidate-name="${escapeHtml(candidate.name || '')}">Inspect ${escapeHtml(activityLabel())}</button>`;
 }
 
 function candidateLoadButton(candidate) {
@@ -75,11 +168,11 @@ function renderDirectory(data) {
   $('#campaignDirectoryCandidates').innerHTML = candidates.length ? candidates.map((candidate) => `<article class="campaign-directory-card">
     <div><strong>${escapeHtml(candidate.name)}</strong><small>${escapeHtml([candidate.candidate_id, candidate.office, candidate.state, candidate.district, candidate.party].filter(Boolean).join(' · '))}</small></div>
     ${candidateLoadButton(candidate)}
-    <div class="campaign-committee-results">${(candidate.principal_committees || []).map((committee) => committeeLoadButton(committee, candidate)).join('') || '<span class="muted">No principal committee returned in this OpenFEC result.</span>'}</div>
+    <div class="campaign-committee-results">${(candidate.principal_committees || []).map((committee) => `${committeeLoadButton(committee, candidate)}${activityInspectButton(committee, candidate)}`).join('') || '<span class="muted">No principal committee returned in this OpenFEC result.</span>'}</div>
   </article>`).join('') : '<span class="muted">No candidate matches returned.</span>';
 
   $('#campaignDirectoryCommittees').innerHTML = committees.length
-    ? committees.map((committee) => committeeLoadButton(committee)).join('')
+    ? committees.map((committee) => `${committeeLoadButton(committee)}${activityInspectButton(committee)}`).join('')
     : '<span class="muted">No committee / PC matches returned.</span>';
 
   $('#campaignDirectoryOpenSecrets').innerHTML = openSecrets.configured
@@ -91,7 +184,62 @@ function renderDirectory(data) {
     : '<span class="muted">OpenSecrets available after OPENSECRETS_API_KEY is configured in production.</span>';
 
   bindDynamicActions();
-  lookupStatus(`${candidates.length} candidates · ${committees.length} committees/PCs · ${(openSecrets.organizations || []).length} OpenSecrets organizations.`);
+  lookupStatus(`${candidates.length} candidates · ${committees.length} committees/PCs · ${(openSecrets.organizations || []).length} OpenSecrets organizations. Select a committee to inspect ${activityLabel()}.`);
+}
+
+function renderActivity(data) {
+  const records = Array.isArray(data?.records) ? data.records : [];
+  const section = $('#campaignActivitySection');
+  section.hidden = false;
+  $('#campaignActivityHeading').textContent = `${data?.activity_type === 'EXPENDITURES' ? 'Expenditure' : 'Contribution'} receipts · separate committee activity lane`;
+  $('#campaignActivityResults').innerHTML = records.length ? records.map((record) => `<article class="campaign-activity-row">
+    <strong>${escapeHtml(record.filer || 'Filer not stated')}</strong>
+    <strong>${record.amount_cents === null || record.amount_cents === undefined ? 'amount unavailable' : escapeHtml(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(record.amount_cents / 100))}</strong>
+    <span>${escapeHtml(record.counterparty || 'Counterparty not stated')}</span>
+    <small>${escapeHtml([record.date, record.purpose, record.jurisdiction].filter(Boolean).join(' · '))}${record.source_locator ? ` · <a href="${escapeHtml(record.source_locator)}" target="_blank" rel="noreferrer">source</a>` : ''}</small>
+  </article>`).join('') : '<span class="muted">No activity rows were observed within this exact source, query, and requested date window. This is not a universal zero-activity claim.</span>';
+}
+
+function renderLocalDirectory(data) {
+  const records = Array.isArray(data?.records) ? data.records : [];
+  const names = [...new Set(records.map((record) => String(record.filer || '').trim()).filter(Boolean))].slice(0, 50);
+  const sourceId = data?.source_instance_id || selectedSourceId();
+  $('#campaignDirectoryCandidates').innerHTML = '<span class="muted">Local identities are transaction-derived from the selected filing custodian; candidate and committee legal identity are not inferred beyond the returned filer label.</span>';
+  $('#campaignDirectoryCommittees').innerHTML = names.length ? names.map((name) => `<button type="button" class="campaign-committee-result" data-load-campaign data-kind="local" data-committee-name="${escapeHtml(name)}" data-source-id="${escapeHtml(sourceId)}"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(sourceId)} · transaction-derived local filer identity</small><span>Load context → Contributions</span></button>`).join('') : '<span class="muted">No local filer identities were observed in the selected lane.</span>';
+  $('#campaignDirectoryOpenSecrets').innerHTML = '<span class="muted">OpenSecrets aggregate context is limited to the Federal lookup lane.</span>';
+  $('#campaignDirectoryOpenSecretsSummary').innerHTML = '';
+  renderActivity(data);
+  bindDynamicActions();
+  lookupStatus(`${records.length} ${activityLabel(data?.activity_type)} returned from exactly one selected source · ${names.length} transaction-derived filer identit${names.length === 1 ? 'y' : 'ies'}.`, 'success');
+}
+
+async function inspectCommitteeActivity(button) {
+  setBusy(true);
+  const type = campaignActivityType();
+  const sourceId = button.dataset.sourceId || selectedSourceId();
+  const committeeId = button.dataset.committeeId || '';
+  const committeeName = button.dataset.committeeName || '';
+  lookupStatus(`Inspecting ${activityLabel(type)} for ${committeeName || committeeId}…`);
+  try {
+    const result = await api.call('committee-activity.search', {
+      source_instance_id: sourceId,
+      activity_type: type,
+      query: {
+        committee: sourceId === 'fec-schedule-a' ? committeeId : committeeName,
+        candidate: button.dataset.candidateName || '',
+        start_date: $('#dateFrom')?.value || '2020-01-01',
+        end_date: $('#dateTo')?.value || new Date().toISOString().slice(0, 10),
+        page_size: 100
+      }
+    }, { mutation: false, purpose: `inspect separate ${type.toLowerCase()} committee activity` });
+    const data = result?.data || result;
+    renderActivity(data);
+    lookupStatus(`${data.record_count || 0} ${activityLabel(type)} returned from ${sourceId}.`, 'success');
+  } catch (error) {
+    lookupStatus(error?.message || 'Committee activity lookup did not complete.', 'error');
+  } finally {
+    setBusy(false);
+  }
 }
 
 async function searchDirectory(event) {
@@ -99,10 +247,30 @@ async function searchDirectory(event) {
   const query = String($('#campaignDirectoryQuery')?.value || '').trim();
   if (query.length < 2) return lookupStatus('Enter at least two characters to search candidates, campaigns, and PCs.', 'error');
   setBusy(true);
-  lookupStatus('Searching OpenFEC and OpenSecrets…');
   try {
-    const result = await api.call('campaign-directory.search', { query }, { mutation: false, purpose: 'search reviewed campaign and committee identities' });
-    renderDirectory(result?.data || result);
+    await hydrateCampaignRegistry();
+    const jurisdiction = campaignJurisdiction();
+    $('#campaignActivitySection').hidden = true;
+    if (jurisdiction === 'FEDERAL') {
+      lookupStatus(`Searching OpenFEC and OpenSecrets in ${selectedCampaignState}…`);
+      const result = await api.call('campaign-directory.search', { query, state: selectedCampaignState }, { mutation: false, purpose: 'search reviewed federal campaign and committee identities' });
+      renderDirectory(result?.data || result);
+    } else {
+      const sourceId = selectedSourceId();
+      if (!sourceId) throw new Error(`Choose one ${jurisdiction === 'CITY' ? 'city' : 'county'} source before searching.`);
+      lookupStatus(`Searching exactly one selected source (${sourceId}) for ${activityLabel()}…`);
+      const result = await api.call('committee-activity.search', {
+        source_instance_id: sourceId,
+        activity_type: campaignActivityType(),
+        query: {
+          committee: query,
+          start_date: $('#dateFrom')?.value || '2020-01-01',
+          end_date: $('#dateTo')?.value || new Date().toISOString().slice(0, 10),
+          page_size: 100
+        }
+      }, { mutation: false, purpose: 'search one jurisdiction-scoped committee activity lane' });
+      renderLocalDirectory(result?.data || result);
+    }
   } catch (error) {
     lookupStatus(error?.message || 'Campaign / PC lookup did not complete.', 'error');
   } finally {
@@ -344,14 +512,42 @@ function bindDynamicActions() {
     button.dataset.bound = 'true';
     button.addEventListener('click', () => showOpenSecretsSummary(button));
   });
+  $$('[data-inspect-activity]').forEach((button) => {
+    if (button.dataset.bound === 'true') return;
+    button.dataset.bound = 'true';
+    button.addEventListener('click', () => inspectCommitteeActivity(button));
+  });
 }
 
 function install() {
+  renderCampaignStateMenu();
+  syncCampaignScopeControls();
   $('#campaignDirectoryForm')?.addEventListener('submit', searchDirectory);
+  $('#campaignDirectoryJurisdiction')?.addEventListener('change', () => {
+    syncCampaignScopeControls();
+    lookupStatus('Jurisdiction changed. The next search will query only the selected lane.');
+  });
+  $('#campaignDirectoryActivity')?.addEventListener('change', () => {
+    $('#campaignActivitySection').hidden = true;
+    lookupStatus(`${activityLabel()} selected. Expenditures remain separate from donor Giving History.`);
+  });
+  $('#campaignDirectoryLocalMenu')?.addEventListener('change', (event) => {
+    const input = event.target.closest?.('input[type="radio"]');
+    if (!input) return;
+    selectedLocalSourceId = input.value;
+    const source = localSources().find((item) => item.id === selectedLocalSourceId);
+    $('#campaignDirectoryLocalCount').textContent = localSourceLabel(source, campaignJurisdiction());
+    $('#campaignDirectoryLocal').open = false;
+  });
   $('#syncLoadedCommitteeButton')?.addEventListener('click', syncLoadedCommittee);
   $('#bulkExactContactsButton')?.addEventListener('click', bulkSyncExactContacts);
   $('#bulkGivingHistoryButton')?.addEventListener('click', prepareBulkGivingHistoryExactContacts);
   renderLoadedContext();
+  const sessionObserver = new MutationObserver(() => {
+    if (document.documentElement.dataset.session === 'open') hydrateCampaignRegistry().then(syncCampaignScopeControls).catch(() => {});
+  });
+  sessionObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-session'] });
 }
 
 install();
+

@@ -22,6 +22,7 @@ export const OPERATIONS = Object.freeze([
   'vault.resolve-conflict',
   'campaign-directory.search',
   'campaign-directory.opensecrets-summary',
+  'committee-activity.search',
   'campaign-deputy.people-page',
   'campaign-deputy.link-existing',
   'campaign-deputy.create-confirmed',
