@@ -229,6 +229,8 @@
               <h2>Committee-first ledger</h2>
             </div>
             <div class="button-row align-end">
+              <button class="button committee-hold-button" id="holdCommitteeButton" type="button" aria-pressed="false" data-held="false">Hold</button>
+              <button class="button committee-clear-button" id="clearCommitteeListButton" type="button">Clear</button>
               <button class="button ledger-date-sort-button" id="ledgerDateSortButton" type="button" aria-pressed="true" data-direction="desc">Date ↓</button>
               <button class="button" id="exportCampaignDeputyBundleButton" type="button">CD Giving History .zip</button>
               <button class="button" id="exportReviewedSummaryButton" type="button">Reviewed summary .csv</button>
@@ -237,6 +239,15 @@
               <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
             </div>
           </div>
+          <section class="committee-search-workspace" id="committeeSearchWorkspace" aria-live="polite">
+            <div class="committee-search-workspace-head">
+              <strong>Committee search list</strong>
+              <small id="committeeSearchWorkspaceSummary">No committee search loaded.</small>
+            </div>
+            <div class="committee-search-workspace-list" id="committeeSearchWorkspaceList">
+              <span class="muted">Run Candidate &amp; committee lookup to load this list.</span>
+            </div>
+          </section>
           <div class="total-banner">
             <span id="confirmedTotalLabel">Identity-confirmed contributions</span>
             <strong id="confirmedTotal">$0.00</strong>
@@ -371,7 +382,7 @@
   </div>
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
-  <script type="module" src="./giving-bootstrap.js?v=20260815-1"></script>
+  <script type="module" src="./giving-bootstrap.js?v=20260815-2"></script>
 </body>
 </html>
 

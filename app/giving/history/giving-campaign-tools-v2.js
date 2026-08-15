@@ -8,6 +8,8 @@ let loadedContext = null;
 let campaignRegistry = null;
 let selectedCampaignState = 'FL';
 let selectedLocalSourceId = null;
+let committeeHold = false;
+let committeeSearchSnapshots = [];
 
 function campaignActivityType() {
   return $('#campaignDirectoryActivity')?.value || 'CONTRIBUTIONS';
@@ -49,6 +51,93 @@ function deputyStatus(message, kind = 'info') {
   if (!node) return;
   node.textContent = message;
   node.dataset.kind = kind;
+}
+
+function committeeSnapshotKey(value, fallback = '') {
+  const text = String(value || fallback || '').trim();
+  return text ? exactNameKey(text) : '';
+}
+
+function committeeWorkspaceData() {
+  const identities = new Map();
+  for (const snapshot of committeeSearchSnapshots) {
+    for (const candidate of Array.isArray(snapshot.data?.candidates) ? snapshot.data.candidates : []) {
+      const key = `candidate:${candidate.candidate_id || committeeSnapshotKey(candidate.name)}`;
+      identities.set(key, { kind: 'Candidate', name: candidate.name, meta: [candidate.candidate_id, candidate.office, candidate.state, candidate.party].filter(Boolean).join(' · '), candidate });
+      for (const committee of candidate.principal_committees || []) {
+        const committeeKey = `committee:${committee.committee_id || committeeSnapshotKey(committee.name)}`;
+        identities.set(committeeKey, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate, source_id: 'fec-schedule-a' });
+      }
+    }
+    for (const committee of Array.isArray(snapshot.data?.committees) ? snapshot.data.committees : []) {
+      const key = `committee:${committee.committee_id || committeeSnapshotKey(committee.name)}`;
+      const existing = identities.get(key);
+      const candidate = existing?.candidate && Object.keys(existing.candidate).length ? existing.candidate : {};
+      identities.set(key, { kind: 'Committee', name: committee.name, meta: [committee.committee_id, committee.committee_type_full || committee.committee_type].filter(Boolean).join(' · '), committee, candidate, source_id: 'fec-schedule-a' });
+    }
+    for (const organization of snapshot.data?.opensecrets?.organizations || []) {
+      const key = `organization:${organization.org_id || committeeSnapshotKey(organization.name)}`;
+      identities.set(key, { kind: 'Organization', name: organization.name, meta: organization.org_id || 'OpenSecrets', organization });
+    }
+    for (const record of Array.isArray(snapshot.data?.records) ? snapshot.data.records : []) {
+      const sourceId = record.source_instance_id || snapshot.data?.source_instance_id || '';
+      const filerKey = `filer:${sourceId}:${committeeSnapshotKey(record.filer, sourceId)}`;
+      if (record.filer && !identities.has(filerKey)) identities.set(filerKey, {
+        kind: 'Filer', name: record.filer, meta: [record.jurisdiction, record.source_instance_id].filter(Boolean).join(' · '),
+        committee: { name: record.filer }, candidate: {}, source_id: sourceId
+      });
+    }
+  }
+  return { identities: [...identities.values()] };
+}
+
+function renderCommitteeHoldState() {
+  const button = $('#holdCommitteeButton');
+  if (!button) return;
+  button.dataset.held = committeeHold ? 'true' : 'false';
+  button.setAttribute('aria-pressed', String(committeeHold));
+  button.title = committeeHold ? 'Later committee searches append to this list.' : 'The next committee search replaces this list.';
+}
+
+function renderCommitteeWorkspace() {
+  const summary = $('#committeeSearchWorkspaceSummary');
+  const list = $('#committeeSearchWorkspaceList');
+  if (!summary || !list) return;
+  const { identities } = committeeWorkspaceData();
+  summary.textContent = committeeSearchSnapshots.length
+    ? `${identities.length} campaign/committee identit${identities.length === 1 ? 'y' : 'ies'} · ${committeeSearchSnapshots.length} search${committeeSearchSnapshots.length === 1 ? '' : 'es'} loaded`
+    : 'No committee search loaded.';
+  const identityMarkup = identities.map((identity) => {
+    let actions = '';
+    if (identity.kind === 'Filer') actions = `<button type="button" class="campaign-committee-result" data-load-campaign data-kind="local" data-committee-name="${escapeHtml(identity.name)}" data-source-id="${escapeHtml(identity.source_id || '')}"><strong>${escapeHtml(identity.name)}</strong><span>Load context → Contributions</span></button>${activityInspectButton(identity.committee, identity.candidate, identity.source_id)}`;
+    else if (identity.committee) actions = `${committeeLoadButton(identity.committee, identity.candidate)}${activityInspectButton(identity.committee, identity.candidate, identity.source_id)}`;
+    else if (identity.candidate) actions = candidateLoadButton(identity.candidate);
+    else if (identity.organization) actions = `<button type="button" class="opensecrets-result" data-opensecrets-summary data-org-id="${escapeHtml(identity.organization.org_id || '')}"><strong>${escapeHtml(identity.organization.name || 'Organization')}</strong><small>${escapeHtml(identity.organization.org_id || 'OpenSecrets')}</small></button>`;
+    return `<article class="committee-workspace-row" data-kind="identity">
+      <div><strong>${escapeHtml(identity.name || 'Identity not stated')}</strong><span>${escapeHtml(identity.kind)}</span><small>${escapeHtml(identity.meta || '')}</small></div>
+      <div class="committee-workspace-actions">${actions}</div>
+    </article>`;
+  }).join('');
+  list.innerHTML = identityMarkup || '<span class="muted">No campaign or committee identities were observed in the loaded search.</span>';
+  bindDynamicActions();
+}
+
+function captureCommitteeSearch(data, kind) {
+  if (!committeeHold) committeeSearchSnapshots = [];
+  committeeSearchSnapshots.push({ kind, data, captured_at: new Date().toISOString() });
+  renderCommitteeWorkspace();
+}
+
+function clearCommitteeWorkspace() {
+  committeeSearchSnapshots = [];
+  renderCommitteeWorkspace();
+  $('#campaignDirectoryCandidates').innerHTML = '<span class="muted">Search to begin.</span>';
+  $('#campaignDirectoryCommittees').innerHTML = '<span class="muted">Search to begin.</span>';
+  $('#campaignDirectoryOpenSecrets').innerHTML = '<span class="muted">Search to begin.</span>';
+  $('#campaignDirectoryOpenSecretsSummary').innerHTML = '';
+  $('#campaignActivityResults').innerHTML = '';
+  $('#campaignActivitySection').hidden = true;
+  lookupStatus('Committee list cleared.');
 }
 
 function setBusy(busy) {
@@ -184,6 +273,7 @@ function renderDirectory(data) {
     : '<span class="muted">OpenSecrets available after OPENSECRETS_API_KEY is configured in production.</span>';
 
   bindDynamicActions();
+  captureCommitteeSearch(data, 'FEDERAL');
   lookupStatus(`${candidates.length} candidates · ${committees.length} committees/PCs · ${(openSecrets.organizations || []).length} OpenSecrets organizations. Select a committee to inspect ${activityLabel()}.`);
 }
 
@@ -243,6 +333,7 @@ function renderLocalDirectory(data) {
   $('#campaignDirectoryOpenSecretsSummary').innerHTML = '';
   renderActivity(data);
   bindDynamicActions();
+  captureCommitteeSearch(data, 'LOCAL');
   const requestNote = data?.bounded_request_count > 1 ? ` · ${data.bounded_request_count} bounded candidate/committee projections` : '';
   lookupStatus(`${records.length} ${activityLabel(data?.activity_type)} returned from exactly one selected source${requestNote} · ${names.length} transaction-derived filer identit${names.length === 1 ? 'y' : 'ies'}.`, 'success');
 }
@@ -569,6 +660,8 @@ function bindDynamicActions() {
 }
 
 function install() {
+  renderCommitteeHoldState();
+  renderCommitteeWorkspace();
   renderCampaignStateMenu();
   syncCampaignScopeControls();
   $('#campaignDirectoryForm')?.addEventListener('submit', searchDirectory);
@@ -578,6 +671,7 @@ function install() {
   });
   $('#campaignDirectoryActivity')?.addEventListener('change', () => {
     $('#campaignActivitySection').hidden = true;
+    renderCommitteeWorkspace();
     lookupStatus(`${activityLabel()} selected. Expenditures remain separate from donor Giving History.`);
   });
   $('#campaignDirectoryLocalMenu')?.addEventListener('change', (event) => {
@@ -591,6 +685,15 @@ function install() {
   $('#syncLoadedCommitteeButton')?.addEventListener('click', syncLoadedCommittee);
   $('#bulkExactContactsButton')?.addEventListener('click', bulkSyncExactContacts);
   $('#bulkGivingHistoryButton')?.addEventListener('click', prepareBulkGivingHistoryExactContacts);
+  $('#holdCommitteeButton')?.addEventListener('click', () => {
+    committeeHold = !committeeHold;
+    renderCommitteeHoldState();
+    lookupStatus(committeeHold ? 'Committee list held. Later committee searches append.' : 'Committee hold released. The next committee search replaces the list.');
+  });
+  $('#clearCommitteeListButton')?.addEventListener('click', () => {
+    if (!window.confirm('Clear List?')) return;
+    clearCommitteeWorkspace();
+  });
   renderLoadedContext();
   const sessionObserver = new MutationObserver(() => {
     if (document.documentElement.dataset.session === 'open') hydrateCampaignRegistry().then(syncCampaignScopeControls).catch(() => {});
@@ -599,4 +702,3 @@ function install() {
 }
 
 install();
-

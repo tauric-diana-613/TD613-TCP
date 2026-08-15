@@ -30,10 +30,10 @@ assert.doesNotMatch(html, /analytics\.js|speed-insights\.js|https?:\/\//, 'priva
 assert.match(html, /id="sessionMembrane"/);
 assert.doesNotMatch(html, /id="sessionMembrane"[^>]*\shidden/);
 assert.match(html, /id="operatorShell" hidden/);
-assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260815-1"><\/script>/);
+assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260815-2"><\/script>/);
 assert.match(html, /href="\.\/giving-polish\.css\?v=20260813-1"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260815-1'/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260815-2'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-contact-queue.js', 'giving-export-menu.js', 'giving-app.js',
   'giving-search-controls.js', 'giving-search-controls.css', 'giving-contribution-amount-filter.js',
