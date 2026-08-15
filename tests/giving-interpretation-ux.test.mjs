@@ -82,6 +82,10 @@ assert.match(html, /id="campaignDirectoryJurisdiction"/);
 assert.match(html, /id="campaignDirectoryStateMenu"/);
 assert.match(html, /id="campaignDirectoryLocalMenu"/);
 assert.match(html, /value="EXPENDITURES">Expenditure receipts/);
+assert.match(html, /id="holdCommitteeButton"/);
+assert.match(html, /id="clearCommitteeListButton"[^>]*>Clear</);
+assert.match(html, /class="button committee-clear-button" id="clearCommitteeListButton"/);
+assert.match(html, /id="committeeSearchWorkspaceList"/);
 assert.match(app, /data-exclude-record/);
 assert.match(app, /Excluded from ordinary exports and committee totals by operator/);
 assert.match(app, /identityStatusLabel/);
@@ -104,9 +108,16 @@ assert.match(campaign, /jurisdiction === 'FLORIDA_STATE'/);
 assert.match(campaign, /query: \{ \.\.\.dateWindow, candidate: query \}/);
 assert.match(campaign, /query: \{ \.\.\.dateWindow, committee: query \}/);
 assert.match(campaign, /bounded candidate\/committee projections/);
+assert.match(campaign, /let committeeHold = false/);
+assert.match(campaign, /if \(!committeeHold\) committeeSearchSnapshots = \[\]/);
+assert.match(campaign, /window\.confirm\('Clear List\?'\)/);
+assert.match(campaign, /clearCommitteeWorkspace/);
+assert.doesNotMatch(campaign, /holdReviewButton/);
 assert.match(campaign, /Source page boundary reached; more rows may exist/);
 assert.match(campaign, /Continue at the public-record source/);
 assert.match(clarity, /campaign-activity-coverage-warning/);
+assert.match(clarity, /committee-hold-button/);
+assert.match(clarity, /committee-search-workspace-list[\s\S]*max-height: 22rem/);
 
 console.log('giving-interpretation-ux.test.mjs passed');
 
