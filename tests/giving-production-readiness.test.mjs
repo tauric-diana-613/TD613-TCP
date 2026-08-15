@@ -6,14 +6,14 @@ import {
   waitForGivingProductionSurface
 } from '../scripts/giving-production-readiness.mjs';
 
-const readyHtml = `<!doctype html><html><head><title>TD613 Giving</title></head><body>
+const readyHtml = `<!doctype html><html><head><title>TD613 Giving History</title></head><body>
   <section id="sessionMembrane"></section>
   <button id="exportCampaignDeputyBundleButton"></button>
   <button id="bulkGivingHistoryButton"></button>
 </body></html>`;
 
 assert.equal(hasGivingProductionSurface(readyHtml), true);
-assert.equal(hasGivingProductionSurface('<title>TD613 Giving</title>'), false);
+assert.equal(hasGivingProductionSurface('<title>TD613 Giving History</title>'), false);
 
 const releaseUrl = new URL(givingProductionSurfaceUrl('https://td613.com', {
   sourceCommit: 'a'.repeat(40),
@@ -83,3 +83,4 @@ await assert.rejects(
 );
 
 console.log('giving-production-readiness.test.mjs passed');
+
