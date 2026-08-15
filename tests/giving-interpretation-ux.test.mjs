@@ -115,6 +115,7 @@ assert.doesNotMatch(campaign, /captureCommitteeActivity|data-kind="activity"/);
 assert.match(campaign, /window\.confirm\('Clear List\?'\)/);
 assert.match(campaign, /clearCommitteeWorkspace/);
 assert.doesNotMatch(campaign, /holdReviewButton/);
+assert.doesNotMatch(campaign, /clearReviewForNewSearch|state\.dossier\.records\s*=|td613:giving-clear-all/);
 assert.match(campaign, /Source page boundary reached; more rows may exist/);
 assert.match(campaign, /Continue at the public-record source/);
 assert.match(clarity, /campaign-activity-coverage-warning/);
