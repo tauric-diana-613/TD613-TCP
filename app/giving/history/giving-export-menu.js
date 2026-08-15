@@ -10,11 +10,13 @@ if (!document.querySelector('link[data-giving-export-actions-style]')) {
 const xlsxButton = document.querySelector('#exportSpreadsheetButton');
 const csvButton = document.querySelector('#exportCsvButton');
 const encryptedButton = document.querySelector('#exportEncryptedButton');
+const campaignDeputyBundleButton = document.querySelector('#exportCampaignDeputyBundleButton');
 
 const exports = [
   { source: csvButton, label: '.csv', id: 'reviewExportCsvButton' },
   { source: xlsxButton, label: '.xlsx', id: 'reviewExportXlsxButton' },
-  { source: encryptedButton, label: 'encrypted json', id: 'reviewExportEncryptedButton' }
+  { source: encryptedButton, label: 'encrypted json', id: 'reviewExportEncryptedButton' },
+  { source: campaignDeputyBundleButton, label: 'CD Giving History .zip', id: 'reviewExportCampaignDeputyButton' }
 ];
 
 if (exports.every(({ source }) => source)) {

@@ -17,13 +17,13 @@ repeating the same browser matrix after deployment ≠ stronger evidence
 
 1. Develop and validate without Vercel deployment.
 2. Complete the packet on an exact pull-request head.
-3. Require full three-engine evidence before merge through `TD613 Consolidated Validation`.
+3. Require scope-aligned three-engine evidence before merge through `TD613 Consolidated Validation`.
 4. Merge the exact green head and identify the exact current `main` commit.
 5. Receive one explicit operator release gesture in chat.
 6. The assistant/Codex invokes issue #405 with that exact SHA.
 7. One Vercel deployment is attempted.
 8. The deployed application bytes are compared with the authorized packet.
-9. One bounded Chromium production confirmation observes desktop, mobile, and Ash lifecycle continuity.
+9. One scope-aligned bounded Chromium production confirmation observes the released surface: Giving for Giving-only packets, or desktop/mobile and Ash lifecycle continuity for full-product packets.
 10. The Git deployment lock is restored and independently checked.
 
 ```text
@@ -37,11 +37,15 @@ The operator is not required to operate Vercel, GitHub Actions, or deployment pl
 The costly cross-browser proof belongs before merge, where a defect can still stop promotion without creating a public release.
 
 ```text
-premerge authority = Chromium + Firefox + WebKit
-production confirmation = one Chromium desktop/mobile witness + lifecycle observation
+Giving-only premerge authority = Giving Chromium + Firefox + WebKit
+full-product premerge authority = full-product Chromium + Firefox + WebKit
+Giving-only production confirmation = one Giving Chromium witness
+full-product production confirmation = one Chromium desktop/mobile witness + Ash lifecycle observation
 ```
 
-The premerge consolidated witness must cover the current principal journeys, static truth, reduced motion, mobile geometry, accessibility-relevant controls, closure, and current generation contracts. The production confirmation verifies deployment identity and a bounded live consequence path. It does not replay the entire cross-browser estate.
+The premerge witness must cover every principal journey affected by the classified packet, plus static truth, reduced motion, accessibility-relevant controls, and the relevant generation contracts. A Giving-only diff runs the common release membrane, Giving contracts, and the Giving export journey across Chromium, Firefox, and WebKit; it does not invoke Ash, Dome-World, or Flow-Core product suites. A full-product diff invokes the full Ash, Dome-World, Flow-Core, and related matrix. Classification fails closed to the full-product witness whenever any changed application file falls outside Giving.
+
+The production confirmation follows the same classification. Giving-only releases run the bounded Giving Chromium probe and do not start Ash. Full-product releases retain the bounded registry, Archive, desktop/mobile, and Ash lifecycle observation. Production verifies deployment identity and a bounded live consequence path; it does not replay the entire cross-browser estate.
 
 This separation preserves evidence while avoiding repeated browser downloads, duplicated local servers, repeated fixture construction, and parallel workflows proving the same source packet.
 
@@ -137,8 +141,10 @@ source_packet_commit = <40-character-current-main-sha>
 deployment_count = 1
 exact_source_content = PASS
 premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
-production_chromium_desktop_mobile = PASS
-ash_lifecycle_deployed_observation = PASS
+validation_scope = giving OR full
+production_giving_history = PASS OR NOT_APPLICABLE
+production_chromium_desktop_mobile = PASS OR NOT_APPLICABLE
+ash_lifecycle_deployed_observation = PASS OR NOT_APPLICABLE
 application_tree_drift = none
 git_auto_deploy = disabled
 ```

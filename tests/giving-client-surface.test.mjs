@@ -29,20 +29,15 @@ assert.doesNotMatch(html, /analytics\.js|speed-insights\.js|https?:\/\//, 'priva
 assert.match(html, /id="sessionMembrane"/);
 assert.doesNotMatch(html, /id="sessionMembrane"[^>]*\shidden/);
 assert.match(html, /id="operatorShell" hidden/);
-assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260812-3"><\/script>/);
-assert.match(html, /href="\.\/giving-polish\.css\?v=20260812-3"/);
+assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260814-3"><\/script>/);
+assert.match(html, /href="\.\/giving-polish\.css\?v=20260813-1"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /giving-left-rail-order\.js\?v=20260812-1/);
-assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-5/);
-assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
-assert.match(bootstrap, /giving-app\.js\?v=20260812-6/);
-assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-7/);
-assert.match(bootstrap, /giving-search-controls\.css\?v=20260812-2/);
-assert.match(bootstrap, /giving-contribution-amount-filter\.js\?v=20260812-2/);
-assert.match(bootstrap, /giving-campaign-tools-v2\.js\?v=20260812-1/);
-assert.match(bootstrap, /giving-campaign-tools-v2\.css\?v=20260812-1/);
-assert.match(bootstrap, /giving-contributions-copy\.js\?v=20260812-1/);
-assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-8/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260814-3'/);
+for (const asset of [
+  'giving-left-rail-order.js', 'giving-contact-queue.js', 'giving-export-menu.js', 'giving-app.js',
+  'giving-search-controls.js', 'giving-search-controls.css', 'giving-contribution-amount-filter.js',
+  'giving-campaign-tools-v2.js', 'giving-campaign-tools-v2.css', 'giving-contributions-copy.js', 'giving-dossier-help.js'
+]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated epoch`);
 assert.ok(bootstrap.indexOf('giving-left-rail-order.js') < bootstrap.indexOf('giving-contact-queue.js'), 'left rail DOM order is established before other Giving controls install');
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'), 'amount filter installs at the API boundary before the core client is constructed');
 assert.match(leftRailOrder, /rail\.insertBefore\(searchTerms, rail\.firstElementChild\)/);
@@ -66,6 +61,9 @@ assert.match(html, /id="reviewTargetFilter"/);
 assert.match(html, /id="campaignTargetSelect"/);
 assert.match(html, /id="campaignTargetSummary"/);
 assert.match(html, /id="syncTargetButton"/);
+assert.match(html, /id="prepareGivingHistoryButton"/);
+assert.match(html, /id="bulkGivingHistoryButton"/);
+assert.match(html, /id="exportCampaignDeputyBundleButton"/);
 assert.match(html, /id="exportSpreadsheetButton"/);
 for (const key of ['contributor', 'committee', 'amount', 'status']) {
   assert.match(html, new RegExp(`data-review-sort="${key}"`));
@@ -92,6 +90,10 @@ assert.match(app, /recordBelongsToTarget/);
 assert.match(app, /searchTargetFromQuery/);
 assert.match(app, /syncTargetCommittees/);
 assert.match(app, /syncSelectedTarget/);
+assert.match(app, /prepareGivingHistoryBatch/);
+assert.match(app, /prepareMultiContactGivingHistory/);
+assert.match(app, /campaignDeputyGivingHistoryCsv/);
+assert.match(app, /campaign-deputy\.prepare-giving-history/);
 assert.match(app, /buildDossierXlsx/);
 assert.match(app, /campaign-deputy\.link-existing/);
 assert.match(app, /confirmed: true/);
@@ -105,8 +107,8 @@ assert.match(app, /td613:giving-select-target/);
 assert.match(app, /application\/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet/);
 assert.match(html, /Source failures and partial coverage/i);
 
-assert.match(apiClient, /FEC_SEARCH_MIN_TIMEOUT_MS = 23_000/);
-assert.match(apiClient, /source_instance_id === 'fec-schedule-a'/);
+assert.match(apiClient, /GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000/);
+assert.match(apiClient, /operation === 'search\.page'/);
 assert.match(apiClient, /campaign-deputy\.ensure-committee/);
 
 assert.match(css, /@media \(max-width: 760px\)/);

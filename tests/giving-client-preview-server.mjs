@@ -23,7 +23,7 @@ function json(response, data) {
 }
 
 const server = http.createServer(async (request, response) => {
-  if (request.url === '/api/giving' && request.method === 'POST') {
+  if (['/api/giving', '/api/td613-ledger'].includes(request.url) && request.method === 'POST') {
     const chunks = [];
     for await (const chunk of request) chunks.push(chunk);
     const envelope = JSON.parse(Buffer.concat(chunks).toString('utf8'));
@@ -34,12 +34,16 @@ const server = http.createServer(async (request, response) => {
   }
   const previewOperator = request.url?.includes('surface=operator');
   const requestPath = request.url?.split('?')[0];
-  const requested = requestPath === '/app/giving/history/' ? '/app/giving/history/index.html' : requestPath;
+  const requested = ['/giving/history', '/giving/history/', '/app/giving/history/'].includes(requestPath)
+    ? '/app/giving/history/index.html'
+    : requestPath?.startsWith('/giving/history/')
+      ? `/app/giving/history/${requestPath.slice('/giving/history/'.length)}`
+      : requestPath;
   const target = path.resolve(root, `.${requested.split('?')[0]}`);
   if (!target.startsWith(root)) { response.writeHead(403); return response.end(); }
   try {
     let body = await fs.readFile(target);
-    if (previewOperator && target.endsWith('app\\giving\\history\\index.html')) {
+    if (previewOperator && target.replaceAll('\\', '/').endsWith('/app/giving/history/index.html')) {
       body = Buffer.from(body.toString('utf8')
         .replace('data-session="checking"', 'data-session="open"')
         .replace('<section class="session-membrane"', '<section hidden class="session-membrane"')

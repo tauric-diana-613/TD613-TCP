@@ -15,6 +15,7 @@ import {
   peoplePage,
   withhold
 } from './campaign-deputy.js';
+import { prepareGivingHistoryBatch } from './campaign-deputy-giving-history.js';
 import {
   campaignDirectoryReadiness,
   ensureCampaignDeputyCommittee,
@@ -48,6 +49,7 @@ function setHeaders(res, headers = {}) {
 
 function custodyForOperation(operation) {
   if (operation.startsWith('vault.')) return 'HOSTED_CIPHERTEXT_ONLY';
+  if (operation === 'campaign-deputy.prepare-giving-history') return 'CAMPAIGN_DEPUTY_GIVING_HISTORY_STAGING_NO_EXTERNAL_WRITE';
   if (operation.startsWith('campaign-deputy.')) return 'CAMPAIGN_DEPUTY_REVIEWED_WRITE_BOUNDARY';
   if (operation.startsWith('campaign-directory.')) return 'TRANSIENT_CAMPAIGN_DIRECTORY_RESEARCH';
   if (operation === 'search.page') return 'TRANSIENT_SERVER_RESPONSE_CLIENT_SELECTED_DOSSIER_CUSTODY';
@@ -124,6 +126,7 @@ async function dispatch(envelope, session, context) {
     case 'campaign-deputy.people-page': return peoplePage(envelope.payload, context);
     case 'campaign-deputy.link-existing': return linkExisting(envelope.payload, context);
     case 'campaign-deputy.create-confirmed': return createConfirmed(envelope.payload, context);
+    case 'campaign-deputy.prepare-giving-history': return prepareGivingHistoryBatch(envelope.payload);
     case 'campaign-deputy.ensure-committee': return ensureCampaignDeputyCommittee(envelope.payload, context);
     case 'campaign-deputy.withhold': return withhold(envelope.payload);
     case 'readiness': {
@@ -213,3 +216,4 @@ export async function givingHandler(req, res, context = {}) {
 export default givingHandler;
 
 export const _dispatcherInternals = Object.freeze({ dispatch, responseReceipt, custodyForOperation });
+

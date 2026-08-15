@@ -157,7 +157,7 @@ function join(parts) {
   return out;
 }
 
-function storedZip(files) {
+export function buildStoredZip(files) {
   const local = [];
   const central = [];
   let offset = 0;
@@ -185,7 +185,7 @@ function storedZip(files) {
 }
 
 export function buildDossierXlsx(dossier) {
-  return storedZip([
+  return buildStoredZip([
     { name: '[Content_Types].xml', data: CONTENT_TYPES },
     { name: '_rels/.rels', data: ROOT_RELS },
     { name: 'xl/workbook.xml', data: WORKBOOK },

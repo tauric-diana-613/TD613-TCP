@@ -25,6 +25,7 @@ export const OPERATIONS = Object.freeze([
   'campaign-deputy.people-page',
   'campaign-deputy.link-existing',
   'campaign-deputy.create-confirmed',
+  'campaign-deputy.prepare-giving-history',
   'campaign-deputy.ensure-committee',
   'campaign-deputy.withhold',
   'readiness'
@@ -82,3 +83,4 @@ export const EVIDENCE_STATUSES = Object.freeze([
 export const IDENTITY_STATUSES = Object.freeze([
   'CANDIDATE', 'CONFIRMED', 'EXCLUDED', 'UNREVIEWED'
 ]);
+

@@ -32,8 +32,33 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  scope:
+    name: Classify exact-head browser witness scope
+    runs-on: ubuntu-latest
+    outputs:
+      validation_scope: ${{ steps.classify.outputs.validation_scope }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Select Giving-only or full-product witness
+        id: classify
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+            git diff --name-only -z "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" \
+              | node scripts/classify-validation-scope.mjs --github-output "$GITHUB_OUTPUT"
+          else
+            echo 'validation_scope=full' >> "$GITHUB_OUTPUT"
+          fi
+
   contracts:
     name: Static, constitutional, and release contracts
+    needs: scope
     if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -64,11 +89,23 @@ jobs:
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
+          node tests/giving-validation-scope.test.mjs
+      - name: Validate Giving and Campaign Deputy import contracts
+        run: |
+          node tests/giving-history-package.test.mjs
+          node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-dispatcher.test.mjs
+          node tests/giving-client-api.test.mjs
+          node tests/giving-client-model.test.mjs
+          node tests/giving-client-vault.test.mjs
+          node tests/giving-client-surface.test.mjs
       - name: Validate Dome-World static surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
       - name: Validate Phase IV static surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
           python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
@@ -76,6 +113,7 @@ jobs:
           node tests/phase4-deployment-probe.test.mjs
           node tests/phase4-release-sync.test.mjs
       - name: Validate Ash core and ingress surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
@@ -84,34 +122,43 @@ jobs:
           node tests/ash-ingress-polish.test.mjs
           node tests/ash-reviewability.test.mjs
       - name: Validate Ash A2-A8 surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
           node tests/ash-flowcore-live-field.test.mjs
       - name: Validate Ash A9 Work
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a9-work-recompilation.test.mjs
       - name: Validate Ash A10 Choir
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a10-choir-recompilation.test.mjs
       - name: Validate Ash A11 Capsule and postclosure cache law
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
       - name: Validate Ash A12 command rationalization
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a12-command-rationalization.test.mjs
       - name: Validate Ash A13 unified registry and workflow collapse
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a13-unified-demo-registry.test.mjs
       - name: Validate Ash A14 Archive accession
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
       - name: Validate Ash A15 empirical profile journeys
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
           node tests/ash-a15-empirical-profile-journeys.test.mjs
       - name: Validate Ash demo hydration surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
           node tests/ash-final-rehydration-boundaries.test.mjs
@@ -120,26 +167,36 @@ jobs:
           node tests/ash-legal-ux.test.mjs
           node tests/ash-legal-control-state.test.mjs
       - name: Validate Ash production-closure surfaces
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
       - name: Validate Flow-Core P0-P7 seam closure
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p7-seam-closure.test.mjs
       - name: Validate Flow-Core P0-P10 completion
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p10-completion.test.mjs
       - name: Flow-Core claim · exact-head matrix placement
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · bounded production confirmation
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · empirical authority separation
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · executable dependency closure
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact-source observation follows" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · static rewrite parity
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact static Vercel rewrites" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · concurrent station packages
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="independent station packages" tests/flowcore-production-observation.test.mjs
       - name: Validate Flow-Core runtime browser contract
+        if: needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Preserve diagnostics only when held
         if: failure()
@@ -152,12 +209,12 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-  browser:
-    name: One exact-head Chromium Firefox WebKit witness
-    needs: contracts
+  ash_browser:
+    name: Full-product exact-head Chromium Firefox WebKit witness
+    needs: [contracts, scope]
     if: >-
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review')
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -291,6 +348,57 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: td613-exact-head-browser-receipts
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
+
+  giving_browser:
+    name: Giving-only exact-head Chromium Firefox WebKit witness
+    needs: [contracts, scope]
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'ready_for_review' &&
+      needs.scope.outputs.validation_scope == 'giving'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install Giving dependencies and all browser engines once
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Start bounded offline Giving runtime
+        run: |
+          mkdir -p artifacts
+          node tests/giving-client-preview-server.mjs 6136 > artifacts/giving-server.log 2>&1 &
+          echo $! > artifacts/giving-server.pid
+          for attempt in $(seq 1 40); do
+            curl -fsS --max-time 2 'http://127.0.0.1:6136/giving/history/?surface=operator' >/dev/null && exit 0
+            sleep 1
+          done
+          cat artifacts/giving-server.log
+          exit 1
+      - name: Witness Campaign Deputy exports through every engine
+        run: |
+          set -euo pipefail
+          for browser in chromium firefox webkit; do
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6136'
+            TD613_ARTIFACT_DIR="artifacts/giving-$browser" timeout --foreground --signal=INT --kill-after=15s 300s node scripts/giving-browser-probe.mjs
+          done
+      - name: Stop Giving runtime
+        if: always()
+        run: test ! -f artifacts/giving-server.pid || kill "$(cat artifacts/giving-server.pid)" 2>/dev/null || true
+      - name: Preserve Giving-only exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-giving-exact-head-browser-receipts
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7

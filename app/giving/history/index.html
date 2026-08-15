@@ -218,6 +218,7 @@
             </div>
             <div class="button-row align-end">
               <button class="button ledger-date-sort-button" id="ledgerDateSortButton" type="button" aria-pressed="true" data-direction="desc">Date ↓</button>
+              <button class="button" id="exportCampaignDeputyBundleButton" type="button">CD Giving History .zip</button>
               <button class="button" id="exportSpreadsheetButton" type="button">Export spreadsheet</button>
               <button class="button" id="exportCsvButton" type="button">Export CSV</button>
               <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
@@ -272,7 +273,7 @@
             </div>
             <span class="state-badge">human gesture required</span>
           </div>
-          <div class="writeback-warning">Historical public contributions remain in Giving. Campaign Deputy receives only reviewed contact-to-committee relationships, partitioned by the selected Giving contact.</div>
+          <div class="writeback-warning">Giving History and Contributions are separate in Campaign Deputy. Contact-to-list sync below is CRM segmentation only; the held Giving History batch preserves each reviewed gift without sending it to either destination.</div>
           <section class="campaign-target-panel">
             <label class="field compact"><span>Giving contact target</span><select id="campaignTargetSelect"><option value="">No reviewed contact target</option></select></label>
             <div class="campaign-target-summary" id="campaignTargetSummary">Search and review a contact before Campaign Deputy handoff.</div>
@@ -306,8 +307,19 @@
           </div>
           <section class="campaign-deputy-sync-tools">
             <div>
+              <p class="eyebrow">GIVING HISTORY · SAFE STAGING</p>
+              <h3>3. Prepare individual-gift batch</h3>
+              <p>Download a held, API-ready JSON package with every confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
+              <button class="button" id="bulkGivingHistoryButton" type="button">Prepare all exact-match contacts</button>
+            </div>
+          </section>
+          <section class="campaign-deputy-sync-tools">
+            <div>
               <p class="eyebrow">LOADED CAMPAIGN HANDOFF</p>
-              <h3>3. Committee + multi-contact sync</h3>
+              <h3>4. Committee-list + multi-contact sync</h3>
               <p id="campaignDeputyLoadedContext">Load a candidate or committee from the left rail first.</p>
             </div>
             <div class="button-row">
@@ -317,7 +329,7 @@
             <div id="campaignDeputyToolsStatus" class="campaign-tools-status" role="status">No loaded committee waiting for Campaign Deputy.</div>
           </section>
           <section class="withhold-panel">
-            <div><strong>4. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
+            <div><strong>5. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
             <button class="button" id="withholdButton" type="button">Record WITHHOLD</button>
           </section>
           <div id="campaignReceipts" class="receipt-list"></div>
@@ -343,6 +355,6 @@
   </div>
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
-  <script type="module" src="./giving-bootstrap.js?v=20260813-1"></script>
+  <script type="module" src="./giving-bootstrap.js?v=20260814-3"></script>
 </body>
 </html>
