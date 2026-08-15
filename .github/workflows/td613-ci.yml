@@ -94,6 +94,7 @@ jobs:
         run: |
           node tests/giving-history-package.test.mjs
           node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-production-readiness.test.mjs
           node tests/giving-dispatcher.test.mjs
           node tests/giving-client-api.test.mjs
           node tests/giving-client-model.test.mjs
