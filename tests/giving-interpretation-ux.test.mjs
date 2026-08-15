@@ -49,6 +49,23 @@ const summary = reviewedSummaryCsv(dossier);
 assert.match(summary, /Jane Doe/);
 assert.doesNotMatch(summary, /Jane Excluded|123 Private Street|Private Employer|Private Occupation|contributor=/);
 assert.match(summary, /https:\/\/example\.gov\/records/);
+
+const guardedSummary = reviewedSummaryCsv({
+  records: [{
+    ...confirmed,
+    local_digest: 'guarded-row',
+    contributor_name_display: '=WEBSERVICE("https://example.test")',
+    committee: '+Formula Committee',
+    jurisdiction: '@Florida',
+    source_locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=leon&contributor=Jane#result'
+  }],
+  decisions: { 'guarded-row': IDENTITY_STATUS.CONFIRMED }
+});
+assert.match(guardedSummary, /"'=WEBSERVICE/);
+assert.match(guardedSummary, /"'\+Formula Committee"/);
+assert.match(guardedSummary, /"'@Florida"/);
+assert.match(guardedSummary, /cand_srch\.php\?c=leon/);
+assert.doesNotMatch(guardedSummary, /contributor=Jane|#result/);
 const ledger = committeeLedger(dossier);
 assert.equal(ledger.length, 1);
 assert.equal(ledger[0].amount_cents, 12500);

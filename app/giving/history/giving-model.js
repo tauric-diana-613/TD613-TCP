@@ -402,14 +402,23 @@ function shareSafeSourceLocator(value) {
   try {
     const url = new URL(raw);
     if (!['http:', 'https:'].includes(url.protocol)) return '';
+    const voterFocusTenant = /(^|\.)voterfocus\.com$/i.test(url.hostname) && /\/CampaignFinance\/cand_srch\.php$/i.test(url.pathname)
+      ? url.searchParams.get('c')
+      : null;
     url.username = '';
     url.password = '';
     url.search = '';
+    if (voterFocusTenant && /^[a-z0-9_-]+$/i.test(voterFocusTenant)) url.searchParams.set('c', voterFocusTenant);
     url.hash = '';
     return url.toString();
   } catch {
     return '';
   }
+}
+
+function spreadsheetSafeText(value) {
+  const text = String(value ?? '');
+  return /^[\u0000-\u0020]*[=+\-@]/.test(text) ? `'${text}` : text;
 }
 
 export function formatCurrency(cents) {
@@ -442,13 +451,13 @@ export function reviewedSummaryCsv(dossier) {
   const rows = dossier.records
     .filter((record) => dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED)
     .map((record) => [
-      record.contributor_name_display || record.contributor_name_raw || record.source_contributor_name_raw,
-      recordCommittee(record),
+      spreadsheetSafeText(record.contributor_name_display || record.contributor_name_raw || record.source_contributor_name_raw),
+      spreadsheetSafeText(recordCommittee(record)),
       record.contribution_date,
       Number.isSafeInteger(record.amount_cents) ? (record.amount_cents / 100).toFixed(2) : '',
-      record.jurisdiction,
+      spreadsheetSafeText(record.jurisdiction),
       'IDENTITY_CONFIRMED',
-      shareSafeSourceLocator(record.source_locator)
+      spreadsheetSafeText(shareSafeSourceLocator(record.source_locator))
     ].map(csvCell).join(','));
   return `${fields.join(',')}\r\n${rows.join('\r\n')}${rows.length ? '\r\n' : ''}`;
 }
@@ -457,5 +466,5 @@ export function safeFilename(value) {
   return compactText(value).replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'giving-history';
 }
 
-export const _reviewedSummaryInternals = Object.freeze({ shareSafeSourceLocator });
+export const _reviewedSummaryInternals = Object.freeze({ shareSafeSourceLocator, spreadsheetSafeText });
 
