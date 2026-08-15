@@ -22,6 +22,13 @@ export function givingProductionSurfaceUrl(baseUrl, { sourceCommit = '', attempt
   return url.href;
 }
 
+export function givingProductionReceiptUrl(baseUrl, { sourceCommit = '', attempt = 1 } = {}) {
+  const url = new URL('/giving/history/release-source.json', String(baseUrl || '').replace(/\/$/, ''));
+  url.searchParams.set('td613-giving-release', String(sourceCommit || 'unspecified'));
+  url.searchParams.set('readiness-attempt', String(positiveInteger(attempt, 1)));
+  return url.href;
+}
+
 export async function waitForGivingProductionSurface({
   baseUrl,
   sourceCommit = '',
@@ -33,6 +40,8 @@ export async function waitForGivingProductionSurface({
   onAttempt = () => {}
 } = {}) {
   if (typeof fetchImpl !== 'function') throw new Error('Giving production readiness requires fetch.');
+  const expectedCommit = String(sourceCommit || '').trim();
+  if (!/^[0-9a-f]{40}$/.test(expectedCommit)) throw new Error('Giving production readiness requires the authorized 40-character source commit.');
   const boundedAttempts = positiveInteger(attempts, 72);
   const boundedDelayMs = positiveInteger(delayMs, 5000);
   const boundedRequestTimeoutMs = positiveInteger(requestTimeoutMs, 15000);
@@ -40,23 +49,43 @@ export async function waitForGivingProductionSurface({
 
   for (let attempt = 1; attempt <= boundedAttempts; attempt += 1) {
     const url = givingProductionSurfaceUrl(baseUrl, { sourceCommit, attempt });
+    const receiptUrl = givingProductionReceiptUrl(baseUrl, { sourceCommit, attempt });
     try {
-      const response = await fetchImpl(url, {
+      const receiptResponse = await fetchImpl(receiptUrl, {
         cache: 'no-store',
         redirect: 'follow',
         headers: { 'cache-control': 'no-cache' },
         signal: AbortSignal.timeout(boundedRequestTimeoutMs)
       });
-      const html = await response.text();
-      const ready = response.ok && hasGivingProductionSurface(html);
-      lastObservation = response.ok
-        ? (ready ? 'required Giving markers present' : 'required Giving markers absent')
-        : `HTTP ${response.status}`;
-      onAttempt({ attempt, attempts: boundedAttempts, ready, status: response.status, observation: lastObservation, url });
-      if (ready) return { attempt, attempts: boundedAttempts, status: response.status, url, sourceCommit: String(sourceCommit || '') };
+      const receiptText = await receiptResponse.text();
+      let releaseReceipt = null;
+      try { releaseReceipt = JSON.parse(receiptText); } catch {}
+      const receiptMatches = receiptResponse.ok && releaseReceipt?.source_packet_commit === expectedCommit;
+      let ready = false;
+      let status = receiptResponse.status;
+      if (!receiptResponse.ok) {
+        lastObservation = `release receipt HTTP ${receiptResponse.status}`;
+      } else if (!receiptMatches) {
+        lastObservation = `release receipt commit ${releaseReceipt?.source_packet_commit || 'missing'} does not match ${expectedCommit}`;
+      } else {
+        const response = await fetchImpl(url, {
+          cache: 'no-store',
+          redirect: 'follow',
+          headers: { 'cache-control': 'no-cache' },
+          signal: AbortSignal.timeout(boundedRequestTimeoutMs)
+        });
+        const html = await response.text();
+        ready = response.ok && hasGivingProductionSurface(html);
+        status = response.status;
+        lastObservation = response.ok
+          ? (ready ? 'authorized release receipt and required Giving markers present' : 'required Giving markers absent')
+          : `Giving HTML HTTP ${response.status}`;
+      }
+      onAttempt({ attempt, attempts: boundedAttempts, ready, status, observation: lastObservation, url, receiptUrl });
+      if (ready) return { attempt, attempts: boundedAttempts, status, url, receiptUrl, sourceCommit: expectedCommit, releaseReceipt };
     } catch (error) {
       lastObservation = error instanceof Error ? error.message : String(error);
-      onAttempt({ attempt, attempts: boundedAttempts, ready: false, status: null, observation: lastObservation, url });
+      onAttempt({ attempt, attempts: boundedAttempts, ready: false, status: null, observation: lastObservation, url, receiptUrl });
     }
     if (attempt < boundedAttempts) await sleep(boundedDelayMs);
   }
