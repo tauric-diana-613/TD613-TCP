@@ -86,6 +86,8 @@ async function compileCycle(fixture, options) {
 
 export async function compilePedagogueDesignReview(fixture, options = {}) {
   if (!fixture || fixture.schema !== PEDAGOGUE_DESIGN_FIXTURE_SCHEMA) throw new Error(`Expected ${PEDAGOGUE_DESIGN_FIXTURE_SCHEMA}.`);
+  if (typeof fixture.surface_reference !== 'string' || !fixture.surface_reference.trim()) throw new Error('Design fixture requires a Dome-hosted surface_reference.');
+  if (fixture.scene_input?.station_owner !== 'Dome-World') throw new Error('Pedagogue design scenes remain hosted by Dome-World; use surface_reference for nested product surfaces.');
   if (!Array.isArray(fixture.baseline_route_steps) || !fixture.baseline_route_steps.length) throw new Error('Design fixture requires baseline_route_steps.');
   if (!Array.isArray(fixture.scene_input?.route_topology?.steps) || !fixture.scene_input.route_topology.steps.length) throw new Error('Design fixture requires proposed scene_input.route_topology.steps.');
 
@@ -108,6 +110,9 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
   return Object.freeze({
     schema: PEDAGOGUE_DESIGN_REVIEW_SCHEMA,
     design_id: fixture.design_id,
+    surface_reference: fixture.surface_reference,
+    scene_host: 'Dome-World',
+    governance_context: fixture.governance_context || 'TD613',
     scene: cycle.scene,
     phases: cycle.transitions.map((item) => item.phase),
     rest: cycle.restState,
