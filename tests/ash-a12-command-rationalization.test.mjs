@@ -80,11 +80,16 @@ assert.doesNotMatch(browserProbe, /localStorage\.(?:removeItem|clear)/);
 assert.doesNotMatch(browserProbe, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(browserProbe, /page\.evaluate\([^)]*localStorage\.clear/s);
 
-assert.match(workflow, /Aggregate changed-risk A8 and A12 entry witnesses across every engine/);
+assert.match(workflow, /ash_browser_shard:/);
+assert.match(workflow, /needs: scope/);
+assert.match(workflow, /browser: \[chromium, firefox, webkit\]/);
+assert.match(workflow, /Run front-line A8 A12 and lifecycle preflight for this engine/);
 assert.match(workflow, /TD613_A12_ENTRY_PREFLIGHT='true'/);
-assert.match(workflow, /scope:\['A8','A12_ENTRY'\]/);
+assert.match(workflow, /scope:\['A8','A12_ENTRY','LIFECYCLE'\]/);
 assert.match(workflow, /fail_fast:false/);
-assert.match(workflow, /all_engines_observed:true/);
+assert.match(workflow, /per_engine_observed:true/);
+assert.match(workflow, /max-parallel: 3/);
+assert.match(workflow, /Run core extended and Flow-Core lanes in parallel/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
@@ -94,4 +99,4 @@ assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
 assert.match(amendment, /mass eviction.*A15 postclosure/is);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under post-click case settlement, present-state convergence, canonical-field settlement, and stateful failure diagnostics.');
+console.log('Ash A12 command rationalization contract passed under front-line per-engine preflight, parallel browser shards, post-click case settlement, present-state convergence, canonical-field settlement, and stateful failure diagnostics.');
