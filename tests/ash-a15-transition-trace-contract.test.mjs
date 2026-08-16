@@ -104,24 +104,24 @@ const inheritedStart = workflow.indexOf(inheritedMarker);
 const stopStart = workflow.indexOf(stopMarker);
 
 assert.ok(runtimeStart >= 0, 'Bounded sharded runtimes must remain present.');
-assert.ok(calibrationStart > runtimeStart, 'A15 calibration may depend on runtime readiness only.');
-assert.ok(riskStart > calibrationStart, 'A8/lifecycle/A12 promotion preflight must not erase A15-R0 measurement.');
-assert.ok(inheritedStart > riskStart, 'Inherited Ash witness must follow the independent calibration and front-line preflight.');
-assert.ok(stopStart > inheritedStart, 'The inherited Ash browser chamber must have a bounded end marker.');
+assert.ok(inheritedStart > runtimeStart, 'The expensive inherited Ash witness must begin immediately after runtime readiness for early failure discovery.');
+assert.ok(calibrationStart > inheritedStart, 'Independent A15 calibration must follow the front-loaded expensive witness without becoming its prerequisite.');
+assert.ok(riskStart > calibrationStart, 'A8/lifecycle/A12 promotion preflight must remain downstream of independent calibration.');
+assert.ok(stopStart > riskStart, 'The full browser shard must have a bounded end marker after all witness and gating chambers.');
 assert.match(workflow, /browser: \[chromium, firefox, webkit\]/, 'Chromium, Firefox, and WebKit must remain explicit independent shards.');
 assert.match(workflow, /max-parallel: 3/, 'All three engine shards must remain independently runnable.');
 
-const runtimeChamber = workflow.slice(runtimeStart, calibrationStart);
+const runtimeChamber = workflow.slice(runtimeStart, inheritedStart);
+const inheritedChamber = workflow.slice(inheritedStart, calibrationStart);
 const calibrationChamber = workflow.slice(calibrationStart, riskStart);
-const riskChamber = workflow.slice(riskStart, inheritedStart);
-const inheritedChamber = workflow.slice(inheritedStart, stopStart);
+const riskChamber = workflow.slice(riskStart, stopStart);
 
 assert.match(runtimeChamber, /for spec in core:6130 extended:6131 flowcore:6132; do/,
   'Each engine shard must start the declared isolated runtime set.');
 assert.match(runtimeChamber, /node scripts\/ash-keep-local-closure-server\.mjs "\$port"/,
   'The bounded Ash runtime launcher must remain executable in every engine shard.');
 assert.match(runtimeChamber, /__ash_keep_closure\/readiness/,
-  'Calibration may begin only after the bounded runtime readiness endpoint settles.');
+  'Expensive witness execution may begin only after the bounded runtime readiness endpoint settles.');
 assert.match(runtimeChamber, /if \[\[ "\$ready" -ne 1 \]\]; then/,
   'Missing runtime readiness must remain a fatal prerequisite failure.');
 
@@ -175,9 +175,9 @@ assert.match(inheritedChamber, /timeout --signal=INT --kill-after=15s 420s node 
 const r0Index = calibrationChamber.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
 const traceIndex = calibrationChamber.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
 const a15Index = inheritedChamber.indexOf('node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs');
-assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent per-engine calibration prepass.');
-assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent per-engine calibration prepass.');
-assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present as a later promotion gate.');
+assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent per-engine calibration chamber.');
+assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent per-engine calibration chamber.');
+assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present in the front-loaded expensive lane.');
 assert.ok(r0Index < traceIndex, 'A15-R0 preview evidence must precede transition calibration within each engine.');
 assert.equal(inheritedChamber.includes('node scripts/ash-a15-r0-preview-probe.mjs'), false,
   'Inherited witness must not own A15-R0 evidence acquisition.');
@@ -185,11 +185,12 @@ assert.equal(inheritedChamber.includes('node scripts/ash-a15-transition-trace-br
   'Inherited witness must not own transition-trace evidence acquisition.');
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.14-sharded-runtime-readiness',
+  contract:'td613.ash.a15-transition-trace-contract/v0.15-front-loaded-expensive-witness',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
   runtime_readiness_precedes_measurement:true,
+  expensive_witness_front_loaded:true,
   per_engine_runtime_and_calibration:true,
   all_engines_declared:['chromium','firefox','webkit'],
   profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
