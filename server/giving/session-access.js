@@ -156,11 +156,11 @@ export async function setSharedAccess({ enabled, ownerSecret, session, fetchImpl
       503
     );
   }
-  assertOwnerSecret(ownerSecret);
   if (!session?.sid) throw new GivingError('invalid-session', 'A signed Giving session is required for shared-access control', 401);
-  if (enabled && session?.role !== SESSION_ROLES.OWNER) {
-    throw new GivingError('owner-session-required', 'Reopening shared Giving access requires a signed owner session', 403);
+  if (session?.role !== SESSION_ROLES.OWNER) {
+    throw new GivingError('owner-session-required', 'Changing shared Giving access requires a signed owner session', 403);
   }
+  assertOwnerSecret(ownerSecret);
   await ensureTable(fetchImpl);
   const cutoff = Date.now();
   const rows = await neonSql(`UPDATE ${TABLE}
