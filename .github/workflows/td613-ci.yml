@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 env:
@@ -37,15 +37,36 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
+      head_is_current: ${{ steps.freshness.outputs.head_is_current }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Reject stale PR-event heads
+        id: freshness
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" != 'pull_request' ]]; then
+            echo 'head_is_current=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          event_head='${{ github.event.pull_request.head.sha }}'
+          head_ref='${{ github.event.pull_request.head.ref }}'
+          live_head="$(git ls-remote origin "refs/heads/$head_ref" 2>/dev/null | awk 'NR==1 {print $1}' || true)"
+          if [[ -n "$live_head" && "$live_head" == "$event_head" ]]; then
+            echo 'head_is_current=true' >> "$GITHUB_OUTPUT"
+          else
+            printf 'stale PR event held: event_head=%s live_head=%s\n' "$event_head" "${live_head:-UNRESOLVED}"
+            echo 'head_is_current=false' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.freshness.outputs.head_is_current == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Select Giving-only or full-product witness
         id: classify
+        if: steps.freshness.outputs.head_is_current == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -59,7 +80,9 @@ jobs:
   contracts:
     name: Static, constitutional, and release contracts
     needs: scope
-    if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      (github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -214,8 +237,9 @@ jobs:
     name: Front-line exact-head browser shard · ${{ matrix.browser }}
     needs: scope
     if: >-
-      (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving')
+      needs.scope.outputs.head_is_current == 'true' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
@@ -471,6 +495,7 @@ jobs:
     needs: [contracts, scope, ash_browser_shard]
     if: >-
       always() &&
+      needs.scope.outputs.head_is_current == 'true' &&
       needs.contracts.result == 'success' &&
       needs.ash_browser_shard.result == 'success' &&
       ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
@@ -547,6 +572,7 @@ jobs:
     name: Giving-only exact-head Chromium Firefox WebKit witness
     needs: [contracts, scope]
     if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
       github.event.action == 'ready_for_review' &&
       needs.scope.outputs.validation_scope == 'giving'
