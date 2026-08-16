@@ -50,7 +50,7 @@ assert.match(premiumCss, /grid-template-columns:repeat\(5,1fr\)/);
 assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(premiumCompatibility, /display:none!important/);
 assert.match(premiumCompatibility, /Exact chambers/);
-for (const token of ['td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations','orientationMs < 10_000','method_first_arrival: true','qualified_route_projections: 6','real_surveillance_probability','MOIRE_REPLAY_VERIFIED','horizontal_overflow','clipped_controls','item.height >= 48','production_promotion_authorized: false']) assert.ok(premiumFlight.includes(token), `Premium UI browser flight omitted ${token}`);
+for (const token of ['td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations','orientationMs < 10_000','method_first_arrival: true','qualified_route_projections: 6','real_surveillance_probability','MOIRE_REPLAY_VERIFIED','horizontal_overflow','clipped_controls','item.height >= 48','production_promotion_authorized: false']) assert.ok(premiumFlight.includes(token));
 assert.doesNotMatch(premium, /recipient_transport\s*:\s*true|automatic_ash_action\s*:\s*true/);
 assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*true/);
 
