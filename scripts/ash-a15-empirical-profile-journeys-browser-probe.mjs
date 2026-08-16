@@ -136,12 +136,26 @@ source = replaceExactly(
 );
 source = replaceExactly(
   source,
+  `    minimum_workspace_transitions_per_profile:4,
+    route_landing_workspace:'work',`,
+  `    canonical_primary_dock_navigation:true,
+    exact_failure_witness_context:true,
+    state_derived_transition_receipts:true,
+    minimum_workspace_transitions_per_profile:4,
+    route_landing_workspace:'work',`,
+  'A15 historical navigation and failure receipt claims'
+);
+source = replaceExactly(
+  source,
   `    real_route_navigation:true,
     real_world_answer_gesture:true,`,
   `    real_route_navigation:true,
     real_route_gestures:true,
+    route_selected_before_target_workspace:true,
+    real_visible_orientation_gesture:true,
+    command_menu_mappings_verified:true,
     real_world_answer_gesture:true,`,
-  'A15 real route gesture receipt claim'
+  'A15 historical visible gesture receipt claims'
 );
 
 source = replaceExactly(
