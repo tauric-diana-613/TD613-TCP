@@ -1,6 +1,6 @@
-const PAGE_SIZE = 300;
+const PAGE_SIZE = 50;
 const FEC_SOURCE_ID = 'fec-schedule-a';
-const FEC_BOUNDARY_PAGE_SIZE = 100;
+const FEC_BOUNDARY_PAGE_SIZE = 50;
 const priorFetch = globalThis.fetch.bind(globalThis);
 
 globalThis.fetch = async (input, init = {}) => {
@@ -8,9 +8,13 @@ globalThis.fetch = async (input, init = {}) => {
   try {
     const body = typeof init?.body === 'string' ? JSON.parse(init.body) : null;
     if (body?.operation === 'search.page' && body?.payload?.query) {
-      const pageSize = body.payload.source_instance_id === FEC_SOURCE_ID
+      const requested = Number(body.payload.query.page_size);
+      const sourceCeiling = body.payload.source_instance_id === FEC_SOURCE_ID
         ? FEC_BOUNDARY_PAGE_SIZE
         : PAGE_SIZE;
+      const pageSize = Number.isFinite(requested) && requested > 0
+        ? Math.min(sourceCeiling, Math.floor(requested))
+        : sourceCeiling;
       nextInit = {
         ...init,
         body: JSON.stringify({
