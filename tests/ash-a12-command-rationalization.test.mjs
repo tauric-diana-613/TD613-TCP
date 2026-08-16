@@ -65,7 +65,9 @@ assert.doesNotMatch(browserWrapper, /td613\.ash\.a12-browser-witness\/v1\.3-a15-
 assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
 assert.match(browserProbe, /TD613_A12_ENTRY_PREFLIGHT/);
-assert.match(browserProbe, /ENTRY_ATTEMPT_CEILING = 3/);
+assert.match(browserProbe, /ENTRY_ATTEMPT_CEILING = entryPreflightOnly \? 1 : 3/);
+assert.match(browserProbe, /ENTRY_PREFLIGHT_WAIT_MS = 30_000/);
+assert.match(browserProbe, /ENTRY_NAVIGATION_TIMEOUT_MS = entryPreflightOnly \? 45_000 : 90_000/);
 assert.match(browserProbe, /ENTRY_QUIET_MS = 500/);
 assert.match(browserProbe, /__td613A12EntryStability/);
 assert.match(browserProbe, /__td613AshDemoEntryConvergence\?\.current/);
@@ -99,4 +101,4 @@ assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
 assert.match(amendment, /mass eviction.*A15 postclosure/is);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under front-line per-engine preflight, parallel browser shards, post-click case settlement, present-state convergence, canonical-field settlement, and stateful failure diagnostics.');
+console.log('Ash A12 command rationalization contract passed under bounded single-attempt front-line preflight, parallel browser shards, post-click case settlement, present-state convergence, canonical-field settlement, and stateful failure diagnostics.');
