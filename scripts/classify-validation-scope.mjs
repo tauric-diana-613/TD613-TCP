@@ -22,11 +22,17 @@ const SCOPE_NEUTRAL = new Set([
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
+  'docs/PEDAGOGUE_DESIGN_GATE.md',
   'scripts/classify-validation-scope.mjs',
   'scripts/giving-browser-probe.mjs',
+  'scripts/run-pedagogue-design-gate.mjs',
   'tests/giving-validation-scope.test.mjs',
   'tests/vercel-operator-release-gate.test.mjs',
-  'tests/workflow-estate.test.mjs'
+  'tests/workflow-estate.test.mjs',
+  'app/engine/pedagogue-design-gate.js',
+  'app/engine/aia-cistern-law.js',
+  'tests/fixtures/pedagogue/giving-vault-design.json',
+  'tests/fixtures/pedagogue/giving-research-dossier-design.json'
 ]);
 
 function normalizedPath(value) {
