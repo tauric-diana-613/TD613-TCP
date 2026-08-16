@@ -7,7 +7,7 @@ async function fixture(name) {
   return JSON.parse(await readFile(new URL(`./fixtures/pedagogue/${name}`, import.meta.url), 'utf8'));
 }
 
-for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.json']) {
+for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.json', 'cistern-boundary-design.json']) {
   test(`${name} passes the generic Pedagogue design gate without product authority`, async () => {
     const input = await fixture(name);
     const review = await compilePedagogueDesignReview(input);
