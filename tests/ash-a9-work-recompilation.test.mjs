@@ -56,7 +56,7 @@ for (const pattern of [
 ]) assert.doesNotMatch(probe, pattern, 'A8 browser witness must not batch hidden assignments behind one synthetic capture event.');
 for (const marker of ['node tests/ash-a9-work-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A9 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.match(workflow, /github\.event_name == 'pull_request' && needs\.scope\.outputs\.validation_scope != 'giving'/);
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
 console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.4-replaceable-control-witness',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_replaceable_control_retry_is_witness_only:true,a8_concurrent_staging_verified:true,post_sync_restore_arbitration:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
