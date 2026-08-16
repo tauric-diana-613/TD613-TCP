@@ -63,6 +63,16 @@ jobs:
           NODE
           echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
 
+      - name: Classify the authorized release witness scope
+        id: scope
+        shell: bash
+        env:
+          SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-only -z "${SELECTED_SHA}^1" "$SELECTED_SHA" \
+            | node scripts/classify-validation-scope.mjs --github-output "$GITHUB_OUTPUT"
+
       - name: Record accepted release gesture
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
@@ -73,8 +83,9 @@ jobs:
           target = PRODUCTION
           selected_commit = ${{ steps.authorize.outputs.selected_sha }}
           deployment_ceiling = 1
-          premerge_browser_authority = Chromium + Firefox + WebKit consolidated witness
-          production_confirmation = Chromium desktop + mobile + lifecycle
+          validation_scope = ${{ steps.scope.outputs.validation_scope }}
+          premerge_browser_authority = scope-aligned Chromium + Firefox + WebKit witness
+          production_confirmation = scope-aligned Chromium witness
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
@@ -95,6 +106,20 @@ jobs:
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
+          node tests/giving-validation-scope.test.mjs
+
+      - name: Verify Giving-only release contracts
+        if: steps.scope.outputs.validation_scope == 'giving'
+        run: |
+          node tests/giving-history-package.test.mjs
+          node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-production-readiness.test.mjs
+          node tests/giving-dispatcher.test.mjs
+          node tests/giving-client-surface.test.mjs
+
+      - name: Verify full-product release contracts
+        if: steps.scope.outputs.validation_scope == 'full'
+        run: |
           node tests/ash-a12-command-rationalization.test.mjs
           node tests/ash-a13-unified-demo-registry.test.mjs
           node tests/ash-a14-archive-accession.test.mjs
@@ -109,6 +134,22 @@ jobs:
           else
             echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Materialize the Giving exact-source receipt
+        if: steps.scope.outputs.validation_scope == 'giving'
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('Giving release receipt requires the authorized source commit.');
+          const receipt = {
+            schema: 'td613.giving.release-source/v1',
+            source_packet_commit: sourcePacketCommit
+          };
+          fs.writeFileSync('app/giving/history/release-source.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          NODE
 
       - name: Link exact repository to the existing Vercel project
         if: steps.mode.outputs.mode == 'direct-token'
@@ -152,6 +193,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add vercel.json
+          if [[ "${{ steps.scope.outputs.validation_scope }}" == 'giving' ]]; then
+            git add app/giving/history/release-source.json
+          fi
           git commit -m "release: enable one Vercel deployment for ${{ steps.authorize.outputs.selected_sha }}"
           RELEASE_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
@@ -183,7 +227,21 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
 
+      - name: Confirm deployed Campaign Deputy Giving History exports on Chromium
+        if: steps.scope.outputs.validation_scope == 'giving'
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_GIVING_PROBE_ATTEMPTS: '72'
+          TD613_GIVING_PROBE_DELAY_MS: '5000'
+          TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS: '15000'
+          TD613_ARTIFACT_DIR: artifacts/giving-production
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
+
       - name: Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile
+        if: steps.scope.outputs.validation_scope == 'full'
         env:
           TD613_BROWSER: chromium
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
@@ -192,6 +250,7 @@ jobs:
           TD613_ARTIFACT_DIR=artifacts/a14-production-archive timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a14-archive-browser-probe.mjs
 
       - name: Observe deployed Ash lifecycle without promotion
+        if: steps.scope.outputs.validation_scope == 'full'
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_ARTIFACT_DIR: artifacts/lifecycle-production
@@ -207,6 +266,7 @@ jobs:
             artifacts/a14-production-registry/
             artifacts/a14-production-archive/
             artifacts/lifecycle-production/
+            artifacts/giving-production/
           if-no-files-found: warn
           retention-days: 7
 
@@ -243,11 +303,13 @@ jobs:
           target = PRODUCTION
           deployment_count = 1
           deployment_url = ${{ steps.deployed.outputs.url }}
+          validation_scope = ${{ steps.scope.outputs.validation_scope }}
           exact_source_content = PASS
-          premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
-          production_a14_registry_archive = PASS
-          production_chromium_desktop_mobile = PASS
-          ash_lifecycle_deployed_observation = PASS
+          premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+          production_giving_history = ${{ steps.scope.outputs.validation_scope == 'giving' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_a14_registry_archive = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
+          ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
@@ -255,7 +317,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          Production confirmation does not repeat the full pre-merge browser matrix and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
+          Production confirmation follows the classified change scope, does not repeat the full pre-merge browser matrix, and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -272,6 +334,7 @@ jobs:
           release_commit = ${{ steps.fallback_release.outputs.release_sha || 'not-created' }}
           relock_commit = ${{ steps.relock.outputs.relock_sha || 'not-created' }}
           target = PRODUCTION
+          validation_scope = ${{ steps.scope.outputs.validation_scope || 'unresolved' }}
           deployment_ceiling = 1
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`

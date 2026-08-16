@@ -10,8 +10,8 @@
     "api/khonapolit.js": {
       "maxDuration": 60
     },
-    "api/gemini-readiness.js": {
-      "maxDuration": 20
+    "api/giving.js": {
+      "maxDuration": 30
     },
     "api/marrowline.js": {
       "maxDuration": 10
@@ -38,6 +38,13 @@
       "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
     }
   },
+  "redirects": [
+    {
+      "source": "/giving/history",
+      "destination": "/giving/history/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/",
@@ -688,6 +695,123 @@
       ]
     },
     {
+      "source": "/giving/history",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/giving/history/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/app/giving/history/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/api/giving",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/api/td613-ledger",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
       "source": "/api/gemini-readiness",
       "headers": [
         {
@@ -898,6 +1022,14 @@
       "destination": "/api/khonapolit"
     },
     {
+      "source": "/api/gemini-readiness",
+      "destination": "/api/khonapolit?operation=gemini-readiness"
+    },
+    {
+      "source": "/api/td613-ledger",
+      "destination": "/api/giving"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
@@ -908,6 +1040,18 @@
     {
       "source": "/app/safe-harbor/td613-flight.html",
       "destination": "/api/flight-html"
+    },
+    {
+      "source": "/giving/history",
+      "destination": "/app/giving/history/index.html"
+    },
+    {
+      "source": "/giving/history/",
+      "destination": "/app/giving/history/index.html"
+    },
+    {
+      "source": "/giving/history/(.*)",
+      "destination": "/app/giving/history/$1"
     },
     {
       "source": "/app/(.*)",

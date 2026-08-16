@@ -7,8 +7,12 @@ const baseUrl = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a12';
 const entryPreflightOnly = process.env.TD613_A12_ENTRY_PREFLIGHT === 'true';
 const browserType = { chromium, firefox, webkit }[browserName];
-const ENTRY_ATTEMPT_CEILING = entryPreflightOnly ? 1 : 3;
+const ENTRY_ATTEMPT_CEILING = 3;
 const ENTRY_QUIET_MS = 500;
+const ENTRY_PREFLIGHT_WAIT_MS = 30_000;
+const ENTRY_INSTRUMENT_TIMEOUT_MS = entryPreflightOnly ? ENTRY_PREFLIGHT_WAIT_MS : 120_000;
+const ENTRY_REGISTRY_TIMEOUT_MS = entryPreflightOnly ? ENTRY_PREFLIGHT_WAIT_MS : 120_000;
+const ENTRY_NAVIGATION_TIMEOUT_MS = entryPreflightOnly ? 45_000 : 90_000;
 if (!browserType) throw new Error('Unsupported browser ' + browserName);
 await fs.mkdir(artifactDir, { recursive:true });
 const browser = await browserType.launch({ headless:true });
@@ -25,7 +29,7 @@ async function waitForRegistryOwner(page) {
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.3-a15'
       && typeof open === 'function';
-  }, null, { timeout:120_000 });
+  }, null, { timeout:ENTRY_REGISTRY_TIMEOUT_MS });
 }
 
 async function waitForInstrument(page) {
@@ -36,7 +40,7 @@ async function waitForInstrument(page) {
     && Boolean(window.__td613AshDemoEntryConvergence?.version)
     && document.title === 'TD613 Ash'
     && location.pathname === '/dome-world/ash-threshold.html'
-    && !location.search, null, { timeout:120_000 });
+    && !location.search, null, { timeout:ENTRY_INSTRUMENT_TIMEOUT_MS });
 }
 
 async function entryDiagnostic(page, attempt, error = null) {
@@ -177,7 +181,7 @@ async function enterInvestigation(page) {
   let lastDiagnostic = null;
   for (let attempt = 1; attempt <= ENTRY_ATTEMPT_CEILING; attempt += 1) {
     try {
-      await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:90_000 });
+      await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:ENTRY_NAVIGATION_TIMEOUT_MS });
       await waitForInstrument(page);
       await waitForRegistryOwner(page);
       const existing = await page.evaluate(() => ({

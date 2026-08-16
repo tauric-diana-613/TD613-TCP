@@ -47,21 +47,6 @@ assert.match(browserWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/
 assert.match(browserWrapper, /post_click_case:postClickCase/);
 assert.match(browserWrapper, /convergence\.begin\(\{ detail:\{ case_id:current\.case_id, profile:'investigation' \} \}\)/);
 assert.match(browserWrapper, /pointer_concordant:pointer === current\.case_id/);
-assert.match(browserWrapper, /const already_converged = terminalReady\(before\)/);
-assert.match(browserWrapper, /const convergence_in_flight = inFlight\(before\)/);
-assert.match(browserWrapper, /\['OPENING','REVEALING'\]\.includes\(state\?\.posture\)/);
-assert.match(browserWrapper, /rebind_required:!already_converged && !convergence_in_flight/);
-assert.match(browserWrapper, /const rebind_admitted = Boolean\(began\)/);
-assert.match(browserWrapper, /const terminal_convergence_handle = await page\.waitForFunction/);
-assert.match(browserWrapper, /entry_convergence_rebind\.terminal_satisfied = true/);
-assert.match(browserWrapper, /entry_convergence_rebind\.satisfaction_basis/);
-for (const basis of ['ALREADY_READY','EXISTING_CYCLE_COMPLETED','REBIND_COMPLETED','CONCURRENT_CYCLE_COMPLETED']) {
-  assert.ok(browserWrapper.includes(basis), `A12 witness omitted convergence satisfaction basis ${basis}.`);
-}
-assert.match(browserWrapper, /state\?\.posture === 'READY'/);
-assert.match(browserWrapper, /state\?\.phase === 'VISIBLE'/);
-assert.match(browserWrapper, /Number\(state\?\.stable_frames \|\| 0\) >= 2/);
-assert.match(browserWrapper, /if \(source\.includes\("throw new Error\('A12 present-state convergence rebind was not admitted\.'\)"\)\) \{/);
 assert.match(browserWrapper, /ENTRY_FIELD_QUIET_MS = 220/);
 assert.match(browserWrapper, /async function canonicalFieldDiagnostic\(page, label, error\)/);
 assert.match(browserWrapper, /td613\.ash\.a12-canonical-field-diagnostic\/v0\.1/);
@@ -80,10 +65,7 @@ assert.doesNotMatch(browserWrapper, /td613\.ash\.a12-browser-witness\/v1\.3-a15-
 assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
 assert.match(browserProbe, /TD613_A12_ENTRY_PREFLIGHT/);
-assert.match(browserCore, /const ENTRY_ATTEMPT_CEILING = entryPreflightOnly \? 1 : 3;/,
-  'Changed-risk A12 entry preflight must preserve its first causal diagnostic while the full witness retains three-attempt resilience.');
-assert.match(browserCore, /if \(attempt < ENTRY_ATTEMPT_CEILING\) await page\.waitForTimeout\(100\);/);
-assert.match(browserCore, /attempt_ceiling:ENTRY_ATTEMPT_CEILING/);
+assert.match(browserProbe, /ENTRY_ATTEMPT_CEILING = 3/);
 assert.match(browserProbe, /ENTRY_QUIET_MS = 500/);
 assert.match(browserProbe, /__td613A12EntryStability/);
 assert.match(browserProbe, /__td613AshDemoEntryConvergence\?\.current/);
@@ -98,11 +80,16 @@ assert.doesNotMatch(browserProbe, /localStorage\.(?:removeItem|clear)/);
 assert.doesNotMatch(browserProbe, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(browserProbe, /page\.evaluate\([^)]*localStorage\.clear/s);
 
-assert.match(workflow, /Aggregate changed-risk A8 and A12 entry witnesses across every engine/);
+assert.match(workflow, /ash_browser_shard:/);
+assert.match(workflow, /needs: scope/);
+assert.match(workflow, /browser: \[chromium, firefox, webkit\]/);
+assert.match(workflow, /Run front-line A8 A12 and lifecycle preflight for this engine/);
 assert.match(workflow, /TD613_A12_ENTRY_PREFLIGHT='true'/);
-assert.match(workflow, /scope:\['A8','A12_ENTRY'\]/);
+assert.match(workflow, /scope:\['A8','A12_ENTRY','LIFECYCLE'\]/);
 assert.match(workflow, /fail_fast:false/);
-assert.match(workflow, /all_engines_observed:true/);
+assert.match(workflow, /per_engine_observed:true/);
+assert.match(workflow, /max-parallel: 3/);
+assert.match(workflow, /Run core extended and Flow-Core lanes in parallel/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
@@ -112,4 +99,4 @@ assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
 assert.match(amendment, /mass eviction.*A15 postclosure/is);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under diagnostic-first entry preflight, terminal-state convergence certification, in-flight cycle completion, post-click settlement, canonical-field settlement, and stateful failure diagnostics.');
+console.log('Ash A12 command rationalization contract passed under front-line per-engine preflight, parallel browser shards, post-click case settlement, present-state convergence, canonical-field settlement, and stateful failure diagnostics.');

@@ -114,8 +114,11 @@ assert.match(probe, /td613\.ash\.demo-registry\/v0\.1-a13/);
 assert.match(probe, /td613\.ash\.demo-registry\/v0\.2-a14/);
 assert.match(probeBase, /button\.dataset\.ashDemoRegistryOwner === 'td613\.ash\.demo-registry\/v0\.1-a13'/);
 assert.doesNotMatch(probe, /__td613AshResearchControlState/);
-assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
+assert.match(workflow, /ash_browser_shard:[\s\S]*?needs: scope/);
+assert.match(workflow, /browser: \[chromium, firefox, webkit\]/);
+assert.match(workflow, /playwright install --with-deps "\$\{\{ matrix\.browser \}\}"/);
+assert.match(workflow, /Run core extended and Flow-Core lanes in parallel/);
 assert.match(workflow, /node tests\/ash-research-ux-rehydration\.test\.mjs/);
 assert.match(workflow, /ash-research-ux-browser-probe\.mjs/);
 
-console.log('ash-research-ux-rehydration.test.mjs passed under A15 registry-owned entry and navigation');
+console.log('ash-research-ux-rehydration.test.mjs passed under A15 registry-owned entry/navigation and front-line browser shards');

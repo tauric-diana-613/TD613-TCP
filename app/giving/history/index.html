@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en" data-session="checking">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#03100d">
+  <title>TD613 Giving History</title>
+  <link rel="stylesheet" href="./giving.css?v=20260816-2">
+  <link rel="stylesheet" href="./giving-polish.css?v=20260816-2">
+</head>
+<body>
+  <noscript><div class="fatal-note">This private research ledger requires JavaScript.</div></noscript>
+  <canvas class="giving-field" id="givingFieldCanvas" aria-hidden="true"></canvas>
+
+  <section class="session-membrane" id="sessionMembrane" aria-labelledby="sessionTitle">
+    <div class="session-card">
+      <div class="seal" aria-hidden="true">⟐</div>
+      <p class="eyebrow">PRIVATE OPERATOR BOUNDARY</p>
+      <h1 id="sessionTitle">Giving History</h1>
+      <p class="session-copy">Open a short-lived signed session. The access secret is transmitted only to the same-origin Giving boundary and is never stored by this page.</p>
+      <form id="sessionForm" class="session-form">
+        <label>
+          <span>Operator access secret</span>
+          <input id="accessSecret" name="access_secret" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="button primary" type="submit">Open research ledger</button>
+      </form>
+      <p class="status-note" id="sessionMessage" role="status">Checking the operator session…</p>
+    </div>
+  </section>
+
+  <div class="operator-shell" id="operatorShell" hidden>
+    <header class="masthead">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">𝌋</div>
+        <div>
+          <p class="eyebrow">TD613 / PRIVATE RESEARCH LEDGER</p>
+          <h1>Giving History</h1>
+          <p>Federated contribution evidence with source lineage and human identity closure.</p>
+        </div>
+      </div>
+      <div class="mast-actions">
+        <span class="session-pill" id="sessionPill"><span></span> signed session</span>
+        <button class="button quiet mobile-control-toggle" id="mobileControlToggle" type="button" aria-controls="givingControlRail" aria-expanded="false">Query</button>
+        <span class="readiness-control">
+          <button class="button quiet" id="readinessButton" type="button" aria-describedby="readinessTooltip">Readiness</button>
+          <span class="readiness-tooltip" id="readinessTooltip" role="tooltip">Read-only check: verifies the current Giving session and source registry, then adds a receipt. It does not search, sync, create, upload, or deploy anything.</span>
+        </span>
+        <button class="button quiet danger" id="signOutButton" type="button">Close session</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="control-rail" id="givingControlRail">
+        <section class="panel dossier-control">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">DOSSIER CUSTODY</p>
+              <h2>Research file</h2>
+            </div>
+            <span class="state-badge" id="saveState">unsaved</span>
+          </div>
+          <label class="field">
+            <span>Dossier title</span>
+            <input id="dossierTitle" type="text" maxlength="100" placeholder="Donor or research question">
+          </label>
+          <label class="field">
+            <span>Custody mode</span>
+            <select id="custodyMode">
+              <option value="LOCAL">Local — IndexedDB</option>
+              <option value="HOSTED">Hosted — encrypted only</option>
+              <option value="HYBRID">Hybrid — local + encrypted branch</option>
+            </select>
+          </label>
+          <div class="button-row dossier-actions">
+            <button class="dossier-action-button" id="newDossierButton" type="button">New</button>
+            <button class="dossier-action-button primary" id="saveDossierButton" type="button">Save</button>
+          </div>
+          <label class="field">
+            <span>Local dossiers</span>
+            <select id="localDossierSelect"><option value="">No local dossier selected</option></select>
+          </label>
+          <button class="button wide" id="openDossierButton" type="button">Open selected dossier</button>
+          <p class="fine-print">Hosted custody never writes decrypted records to local storage. Vault decryption is a separate authority from session access.</p>
+        </section>
+
+        <section class="panel search-control">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">DETERMINISTIC RETRIEVAL</p>
+              <h2>Search terms</h2>
+            </div>
+            <span class="counter" id="selectedSourceCount">0 sources</span>
+          </div>
+          <form id="searchForm">
+            <label class="field">
+              <span>Contributor name</span>
+              <input id="searchName" name="name" type="text" maxlength="160" required autocomplete="off">
+            </label>
+            <label class="giving-exact-match" for="exactMatchToggle">
+              <input id="exactMatchToggle" type="checkbox">
+              <span><strong>Normalized exact match</strong><small>Normalizes punctuation and name order, allows compatible middle initials, and preserves suffix conflicts before matching the submitted name or alias.</small></span>
+            </label>
+            <label class="field">
+              <span>Aliases <small>one per line</small></span>
+              <textarea id="searchAliases" name="aliases" rows="3" maxlength="1000"></textarea>
+            </label>
+            <label class="field">
+              <span>Identity hints <small>city, employer, ZIP — never a forced match</small></span>
+              <input id="searchHints" name="hints" type="text" maxlength="300">
+            </label>
+            <div class="split-fields contribution-amount-filter" aria-label="Contribution amount range">
+              <label class="field"><span>Min contribution</span><input id="amountMin" name="amount_min" type="number" step="0.01" inputmode="decimal" placeholder="$ minimum"></label>
+              <label class="field"><span>Max contribution</span><input id="amountMax" name="amount_max" type="number" step="0.01" inputmode="decimal" placeholder="$ maximum"></label>
+            </div>
+            <div class="split-fields">
+              <label class="field"><span>Beginning date</span><input id="dateFrom" name="date_from" type="date" required></label>
+              <label class="field"><span>Ending date</span><input id="dateTo" name="date_to" type="date" required></label>
+            </div>
+            <div class="coverage-scope-chip" id="dateCoverageChip" role="status">Requested coverage: 2020 → today · actual coverage is source-receipt bounded.</div>
+            <fieldset class="source-picker">
+              <legend>Electronic source instances</legend>
+              <div class="source-picker-actions">
+                <button class="text-button" id="selectAllSources" type="button">Select available</button>
+                <button class="text-button" id="clearSources" type="button">Clear</button>
+              </div>
+              <div id="sourceRegistry" class="source-list" aria-live="polite"></div>
+            </fieldset>
+            <div class="button-row">
+              <button class="button primary" id="runSearchButton" type="submit">Search selected sources</button>
+              <button class="button danger" id="cancelSearchButton" type="button" disabled>Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel campaign-directory-panel" id="campaignDirectoryPanel">
+          <div class="campaign-directory-heading">
+            <div><p class="eyebrow">CAMPAIGN / PC IDENTITY</p><h2>Candidate &amp; committee lookup</h2></div>
+            <span>FEC + OpenSecrets + Florida sources</span>
+          </div>
+          <form id="campaignDirectoryForm" class="campaign-directory-form">
+            <label class="field"><span>Candidate, campaign, PAC or political committee</span><input id="campaignDirectoryQuery" type="search" autocomplete="off" placeholder="Search the selected filing jurisdiction"></label>
+            <div class="campaign-directory-scope-grid">
+              <label class="field"><span>Jurisdiction</span><select id="campaignDirectoryJurisdiction"><option value="FEDERAL">Federal</option><option value="FLORIDA_STATE">Florida statewide</option><option value="COUNTY">County</option><option value="CITY">City</option></select></label>
+              <details class="giving-state-filter campaign-state-picker" id="campaignDirectoryState"><summary><span>State</span><strong id="campaignDirectoryStateCount">FL</strong></summary><div class="giving-state-filter-menu" id="campaignDirectoryStateMenu" role="radiogroup" aria-label="Campaign lookup state"></div></details>
+              <details class="giving-state-filter campaign-local-picker" id="campaignDirectoryLocal" hidden><summary><span id="campaignDirectoryLocalLabel">County</span><strong id="campaignDirectoryLocalCount"></strong></summary><div class="giving-state-filter-menu" id="campaignDirectoryLocalMenu" role="radiogroup" aria-label="Local filing jurisdiction"></div></details>
+              <label class="field"><span>Ledger lane</span><select id="campaignDirectoryActivity"><option value="CONTRIBUTIONS">Contribution receipts</option><option value="EXPENDITURES">Expenditure receipts</option></select></label>
+            </div>
+            <button class="button primary wide" id="campaignDirectorySearchButton" type="submit">Search</button>
+          </form>
+          <p class="fine-print">One selected jurisdiction is queried per local search. Local identities may be transaction-derived from that custodian. Expenditure receipts remain a separate campaign-activity lane and never enter donor Giving History. Campaign Deputy sync remains limited to reviewed FEC committee identities.</p>
+          <div class="campaign-directory-columns">
+            <section><h4>Candidates + principal committees</h4><div id="campaignDirectoryCandidates" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
+            <section><h4>Committees / campaigns / PCs</h4><div id="campaignDirectoryCommittees" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
+            <section><h4>OpenSecrets organizations</h4><div id="campaignDirectoryOpenSecrets" class="campaign-directory-results"><span class="muted">Search to begin.</span></div><div id="campaignDirectoryOpenSecretsSummary"></div></section>
+          </div>
+          <section class="campaign-activity-results" id="campaignActivitySection" hidden><h4 id="campaignActivityHeading">Committee activity</h4><div id="campaignActivityResults" class="campaign-directory-results"></div></section>
+          <div id="campaignToolsStatus" class="campaign-tools-status" role="status">Ready for campaign / PC lookup.</div>
+        </section>
+      </aside>
+
+      <nav class="ledger-tabs" aria-label="Giving dossier sections">
+        <button class="tab active" type="button" data-view="search" data-step="01">Source run</button>
+        <button class="tab" type="button" data-view="review" data-step="02">Contributions <span id="reviewCount">0</span></button>
+        <button class="tab" type="button" data-view="ledger" data-step="03">Committee ledger <span id="ledgerCount">0</span></button>
+        <button class="tab" type="button" data-view="vault" data-step="04">Vault</button>
+        <button class="tab" type="button" data-view="campaign" data-step="05">Campaign Deputy</button>
+        <button class="tab" type="button" data-view="receipts" data-step="06">Receipts</button>
+      </nav>
+
+      <div class="ledger-column">
+        <div class="coverage-executive-line" id="coverageExecutiveLine" role="status">No source coverage receipt yet.</div>
+        <section class="view active" id="view-search" data-view-panel="search">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">SOURCE-BY-SOURCE EXECUTION</p>
+              <h2>Retrieval run</h2>
+            </div>
+            <div class="run-summary" id="runSummary">No search has run.</div>
+          </div>
+          <div class="coverage-warning" id="coverageWarning" hidden>
+            Source failures and partial coverage remain explicit. They are never converted into zero-giving claims.
+          </div>
+          <div class="source-progress-grid" id="sourceProgress">
+            <div class="empty-state"><strong>Waiting for a query.</strong><span>Choose searchable electronic custodians from the left rail.</span></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-review" data-view-panel="review" hidden>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">HUMAN CLOSURE REQUIRED</p>
+              <h2>Contributions</h2>
+            </div>
+            <div class="legend" aria-label="Identity states">
+              <span data-state="CANDIDATE">candidate</span><span data-state="CONFIRMED">identity confirmed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">unreviewed</span>
+            </div>
+          </div>
+          <div class="review-toolbar">
+            <label class="field compact"><span>Contact</span><select id="reviewTargetFilter"><option value="ALL">All contacts</option></select></label>
+            <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Identity confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
+            <label class="field compact grow"><span>Filter contributions</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
+            <button class="button review-hold-button" id="holdReviewButton" type="button" aria-pressed="false" data-held="false">Hold</button>
+          </div>
+          <div class="loaded-campaign-context" id="loadedCampaignContext" data-loaded="false">
+            <span class="eyebrow">LOADED CAMPAIGN / COMMITTEE</span>
+            <strong>No candidate or committee loaded.</strong>
+            <small>Use Candidate &amp; committee lookup in the left rail to place a reviewed campaign identity here.</small>
+          </div>
+          <div class="cluster-notice" id="clusterNotice">No candidate clusters have been proposed.</div>
+          <div class="review-sort-header" aria-label="Contributions sort columns">
+            <button class="review-sort-button" type="button" data-review-sort="contributor" data-label="Contributor" aria-pressed="false">Contributor</button>
+            <button class="review-sort-button" type="button" data-review-sort="committee" data-label="Committee" aria-pressed="false">Committee</button>
+            <button class="review-sort-button" type="button" data-review-sort="date" data-label="Date" aria-pressed="false">Date</button>
+            <button class="review-sort-button" type="button" data-review-sort="amount" data-label="Amount" aria-pressed="false">Amount</button>
+            <button class="review-sort-button" type="button" data-review-sort="status" data-label="Status / action" aria-pressed="false">Status / action</button>
+          </div>
+          <div class="record-list" id="recordList">
+            <div class="empty-state"><strong>No records yet.</strong><span>Search results will arrive with their source lineage intact.</span></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-ledger" data-view-panel="ledger" hidden>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">IDENTITY-CONFIRMED RECORDS ONLY</p>
+              <h2>Committee-first ledger</h2>
+            </div>
+            <div class="button-row align-end">
+              <button class="button committee-hold-button" id="holdCommitteeButton" type="button" aria-pressed="false" data-held="false">Hold</button>
+              <button class="button committee-clear-button" id="clearCommitteeListButton" type="button">Clear</button>
+              <button class="button ledger-date-sort-button" id="ledgerDateSortButton" type="button" aria-pressed="true" data-direction="desc">Date ↓</button>
+              <button class="button" id="exportCampaignDeputyBundleButton" type="button">CD Giving History .zip</button>
+              <button class="button" id="exportReviewedSummaryButton" type="button">Reviewed summary .csv</button>
+              <button class="button" id="exportSpreadsheetButton" type="button">Forensic spreadsheet</button>
+              <button class="button" id="exportCsvButton" type="button">Forensic CSV</button>
+              <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
+            </div>
+          </div>
+          <section class="committee-search-workspace" id="committeeSearchWorkspace" aria-live="polite">
+            <div class="committee-search-workspace-head">
+              <strong>Committee search list</strong>
+              <small id="committeeSearchWorkspaceSummary">No committee search loaded.</small>
+            </div>
+            <div class="committee-search-workspace-list" id="committeeSearchWorkspaceList">
+              <span class="muted">Run Candidate &amp; committee lookup to load this list.</span>
+            </div>
+          </section>
+          <div class="total-banner">
+            <span id="confirmedTotalLabel">Identity-confirmed contributions</span>
+            <strong id="confirmedTotal">$0.00</strong>
+            <b class="filing-total-state" id="filingTotalState">No filing total yet</b>
+            <small id="confirmedRecordCount">0 identity-confirmed records</small>
+            <small class="total-breakdown" id="confirmedTotalBreakdown">Deterministic-lineage $0.00 · provisional-lineage $0.00</small>
+          </div>
+          <p class="identity-ceiling">Identity confirmation is a research determination, not a legal compliance determination.</p>
+          <div class="committee-list" id="committeeLedger">
+            <div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-vault" data-view-panel="vault" hidden>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">SEPARATE DECRYPTION AUTHORITY</p>
+              <h2>Encrypted vault</h2>
+            </div>
+            <span class="state-badge">AES-GCM / PBKDF2</span>
+          </div>
+          <div class="vault-grid">
+            <section class="inner-panel">
+              <h3>Vault passphrase</h3>
+              <p>Used in browser memory for this operation only. It is never sent to TD613 or stored in the dossier.</p>
+              <label class="field"><span>Separate vault passphrase</span><input id="vaultPassphrase" type="password" autocomplete="new-password" minlength="12"></label>
+              <div class="button-row">
+                <button class="button primary" id="syncVaultButton" type="button">Encrypt &amp; save branch</button>
+                <button class="button" id="refreshVaultButton" type="button">List vault versions</button>
+              </div>
+            </section>
+            <section class="inner-panel">
+              <h3>Hosted versions</h3>
+              <p>Neon receives ciphertext, version metadata, digests, and ancestry only.</p>
+              <div id="vaultVersions" class="version-list"><span class="muted">No hosted versions loaded.</span></div>
+            </section>
+          </div>
+          <div class="conflict-panel" id="conflictPanel" hidden>
+            <strong>Parallel vault branches detected.</strong>
+            <p>No branch was overwritten. Open each candidate, reconcile in memory, then explicitly record the chosen ancestry.</p>
+            <div id="conflictActions" class="button-row"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-campaign" data-view-panel="campaign" hidden>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">EXPLICIT CRM WRITEBACK</p>
+              <h2>Campaign Deputy</h2>
+            </div>
+            <span class="state-badge">human gesture required</span>
+          </div>
+          <div class="writeback-warning">Giving History and Contributions are separate in Campaign Deputy. Contact-to-list sync below is CRM segmentation only; the held Giving History batch preserves each reviewed gift without sending it to either destination.</div>
+          <section class="campaign-target-panel">
+            <label class="field compact"><span>Giving contact target</span><select id="campaignTargetSelect"><option value="">No reviewed contact target</option></select></label>
+            <div class="campaign-target-summary" id="campaignTargetSummary">Search and review a contact before Campaign Deputy handoff.</div>
+          </section>
+          <div class="campaign-grid campaign-donor-actions">
+            <section class="inner-panel">
+              <div class="inner-heading"><h3>1. Find an existing person</h3><button class="button" id="loadPeopleButton" type="button">Load people page</button></div>
+              <label class="field"><span>Filter the loaded index</span><input id="peopleFilter" type="search" placeholder="Name, email, phone"></label>
+              <div id="peopleIndex" class="people-list"><span class="muted">No Campaign Deputy people loaded into this dossier.</span></div>
+              <button class="button wide" id="morePeopleButton" type="button" hidden>Load next page</button>
+              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select an identity-confirmed committee</option></select></label>
+              <button class="button wide" id="linkExistingButton" type="button" disabled>Link selected committee only</button>
+              <button class="button primary wide" id="syncTargetButton" type="button" disabled>Sync all reviewed committees for this contact</button>
+            </section>
+
+            <section class="inner-panel">
+              <h3>2. Explicitly create a contact</h3>
+              <p>Only after duplicate review. Choose each public field you intend to copy.</p>
+              <label class="field"><span>Identity-confirmed source record</span><select id="createRecordSelect"><option value="">Select an identity-confirmed record</option></select></label>
+              <div class="field-choice-grid" id="createFieldChoices">
+                <label><input type="checkbox" value="name" checked> name</label>
+                <label><input type="checkbox" value="email" checked> email</label>
+                <label><input type="checkbox" value="phone" checked> phone</label>
+                <label><input type="checkbox" value="employer" checked> employer</label>
+                <label><input type="checkbox" value="occupation" checked> occupation</label>
+                <label><input type="checkbox" value="city_state_zip" checked> city / state / ZIP</label>
+                <label class="sensitive"><input type="checkbox" value="street_address"> public street address</label>
+              </div>
+              <button class="button primary wide" id="createContactButton" type="button" disabled>Create person + sync reviewed committees</button>
+            </section>
+          </div>
+          <section class="campaign-deputy-sync-tools">
+            <div>
+              <p class="eyebrow">GIVING HISTORY · SAFE STAGING</p>
+              <h3>3. Prepare individual-gift batch</h3>
+              <p>Download a held, API-ready JSON package with every identity-confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
+              <button class="button" id="bulkGivingHistoryButton" type="button">Prepare all exact-match contacts</button>
+            </div>
+          </section>
+          <section class="campaign-deputy-sync-tools">
+            <div>
+              <p class="eyebrow">LOADED CAMPAIGN HANDOFF</p>
+              <h3>4. Committee-list + multi-contact sync</h3>
+              <p id="campaignDeputyLoadedContext">Load a candidate or committee from the left rail first.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="syncLoadedCommitteeButton" type="button" disabled>Sync loaded committee → Campaign Deputy</button>
+              <button class="button" id="bulkExactContactsButton" type="button">Sync all exact-match contacts</button>
+            </div>
+            <div id="campaignDeputyToolsStatus" class="campaign-tools-status" role="status">No loaded committee waiting for Campaign Deputy.</div>
+          </section>
+          <section class="withhold-panel">
+            <div><strong>5. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
+            <button class="button" id="withholdButton" type="button">Record WITHHOLD</button>
+          </section>
+          <div id="campaignReceipts" class="receipt-list"></div>
+        </section>
+
+        <section class="view" id="view-receipts" data-view-panel="receipts" hidden>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">LINEAGE / CUSTODY / REFUSALS</p>
+              <h2>Operator receipts</h2>
+            </div>
+            <button class="button" id="copyReceiptsButton" type="button">Copy receipts</button>
+          </div>
+          <div class="receipt-list" id="receiptList"><div class="empty-state"><strong>No receipts yet.</strong><span>Retrieval and operator decisions will be recorded here without donor search inputs.</span></div></div>
+        </section>
+        <footer class="signal-wake" aria-label="Current dossier state">
+          <span><i data-signal="source"></i><b id="wakeSourceState">sources quiet</b></span>
+          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 identity confirmed</b></span>
+          <span><i data-signal="custody"></i><b id="wakeCustodyState">local custody</b></span>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+  <script type="module" src="./giving-bootstrap.js?v=20260816-2"></script>
+</body>
+</html>

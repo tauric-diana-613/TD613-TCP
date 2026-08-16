@@ -26,6 +26,10 @@ function cacheControlValue(source) {
   const entry = findHeader(source);
   return (entry?.headers || []).find(item => String(item.key || '').toLowerCase() === 'cache-control')?.value || '';
 }
+function headerValue(source, key) {
+  const entry = findHeader(source);
+  return (entry?.headers || []).find(item => String(item.key || '').toLowerCase() === key.toLowerCase())?.value || '';
+}
 function assertRewrite(source, destination) {
   assert.equal(findRewrite(source)?.destination, destination, `missing Vercel rewrite: ${source} -> ${destination}`);
 }
@@ -53,8 +57,10 @@ function assertRevalidatingStatic(source) {
 assert.equal(vercel.version, 2);
 assert.equal(vercel.git?.deploymentEnabled, false, 'Vercel Git deployments must remain globally disabled; merge is not deployment consent');
 assert.equal(typeof vercel.git?.deploymentEnabled, 'boolean', 'branch maps are forbidden because they can silently re-enable main deployments');
-assert.ok(configuredFunctions.length <= 11, `configured Vercel function operating budget exceeded: ${configuredFunctions.length}/11 — ${configuredFunctions.join(', ')}`);
-assert.equal(deployedApiFiles.length, 11, `deployed Vercel function operating budget must remain 11 active + 1 reserved: ${deployedApiFiles.length}/11 — ${deployedApiFiles.join(', ')}`);
+assert.ok(configuredFunctions.length <= 10, `configured Vercel function override budget exceeded: ${configuredFunctions.length}/10 — ${configuredFunctions.join(', ')}`);
+assert.equal(deployedApiFiles.length, 11, `deployed Vercel function operating budget must remain exactly 11: ${deployedApiFiles.length}/11 — ${deployedApiFiles.join(', ')}`);
+assert.ok(deployedApiFiles.includes('giving.js'), 'Giving must occupy the consciously authorized eleventh function');
+assert.ok(!deployedApiFiles.includes('gemini-readiness.js'), 'Gemini readiness must share the Kʰonapolit dispatcher');
 assert.ok(!deployedApiFiles.includes('hush-generate-strict-pr124.js'), 'retired PR124 function must remain absent');
 assert.ok(!deployedApiFiles.includes('hush-generate.js'), 'rewritten Hush alias must not allocate a function');
 assert.ok(!deployedApiFiles.includes('hush-generate-budgeted.js'), 'budgeted Hush implementation must remain outside /api');
@@ -66,6 +72,8 @@ assert.ok(!configuredFunctions.includes('api/aperture-bridge.js'), 'Phase IV mus
 assert.ok(!configuredFunctions.includes('api/ash-keep-shell.js'), 'Ash Keep HTML must share the Dome shell function');
 assert.ok(!configuredFunctions.includes('api/ash-keep-js-shell.js'), 'Ash Keep JavaScript must share the Dome shell function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
+assert.equal(vercel.functions?.['api/giving.js']?.maxDuration, 30);
+assert.ok(!vercel.functions?.['api/gemini-readiness.js']);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
@@ -87,6 +95,7 @@ assertRewrite('/api/ash-local-commitment', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world-engine', '/api/dome-world-engine-guard');
 assertRewrite('/api/hush-generate-strict-pr124', '/api/hush-generate-strict');
 assertRewrite('/api/khonapolit-quality', '/api/khonapolit');
+assertRewrite('/api/gemini-readiness', '/api/khonapolit?operation=gemini-readiness');
 assertRewrite('/api/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/dome-world/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/aperture-bridge', '/api/dome-world-engine-guard?operation=aperture-bridge-readiness');
@@ -113,6 +122,9 @@ assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
 assertRewrite('/api/(.*)', '/api/$1');
 assertRewrite('/safe-harbor/td613-flight.html', '/api/flight-html');
 assertRewrite('/app/safe-harbor/td613-flight.html', '/api/flight-html');
+assertRewrite('/giving/history', '/app/giving/history/index.html');
+assertRewrite('/giving/history/', '/app/giving/history/index.html');
+assertRewrite('/giving/history/(.*)', '/app/giving/history/$1');
 assertRewrite('/app/(.*)', '/app/$1');
 assertRewrite('/(.*)', '/app/$1');
 
@@ -127,6 +139,7 @@ assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
 assertRewriteBefore('/api/hush-generate-strict-pr124', '/api/(.*)');
 assertRewriteBefore('/api/khonapolit-quality', '/api/(.*)');
+assertRewriteBefore('/api/gemini-readiness', '/api/(.*)');
 assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
 assertRewriteBefore('/api/aperture-bridge', '/api/(.*)');
 assertRewriteBefore('/dome-world', '/dome-world/(.*)');
@@ -138,6 +151,16 @@ assertRewriteBefore('/dome-world/reciprocal-bridge.html', '/dome-world/(.*)');
 assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
 assertRewriteBefore('/app/dome-world/ash-keep.html', '/app/(.*)');
 assertRewriteBefore('/app/dome-world/ash-keep.js', '/app/(.*)');
+assertRewriteBefore('/giving/history', '/(.*)');
+assertRewriteBefore('/giving/history/', '/(.*)');
+assertRewriteBefore('/giving/history/(.*)', '/(.*)');
+
+for (const givingSurface of ['/giving/history', '/giving/history/(.*)', '/app/giving/history/(.*)', '/api/giving']) {
+  assertNoStore(givingSurface);
+  assert.match(headerValue(givingSurface, 'X-Robots-Tag'), /\bnoindex\b/i, `missing noindex for ${givingSurface}`);
+  assert.match(headerValue(givingSurface, 'X-Robots-Tag'), /\bnoarchive\b/i, `missing noarchive for ${givingSurface}`);
+}
+assert.match(headerValue('/giving/history', 'Content-Security-Policy'), /frame-ancestors 'none'/i);
 
 [
   '/adversarial-bench.html', '/app/adversarial-bench.html',

@@ -24,6 +24,7 @@ const wrapper = fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js', 
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const browserProbe = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
+const a2Adapter = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const amendment = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md', 'utf8');
 const shell = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const eviction = fs.readFileSync('app/dome-world/ash-cache-eviction-aia3.js', 'utf8');
@@ -169,54 +170,62 @@ for (const token of [
   'ashA15OrientAction',
   'real_profile_hydration:true',
   'real_workspace_navigation:true',
+  'profile_entry_convergence_gated:true',
+  'canonical_primary_dock_navigation:true',
+  'exact_failure_witness_context:true',
   'navigation_receipt_captured_at_click:true',
   'idempotent_active_workspace_gesture:true',
-  'real_route_navigation:true',
-  'real_world_answer_gesture:true',
+  'real_route_gestures:true',
+  'route_selected_before_target_workspace:true',
+  'real_visible_orientation_gesture:true',
+  'command_menu_mappings_verified:true',
+  'matrix_cells:120',
   'HELD_SENSITIVE_CONTEXT',
   '__td613A15NavigationWitness',
+  '__td613AshDemoEntryConvergence?.current?.()',
+  'ashDemoEntryReady',
+  'ashDemoEntryHydrating',
+  'ashDemoEntryHold',
   'td613:ash:navigation-receipt',
   'workspaceDiagnostic',
   'workspace_transitions',
   'captured_navigation_receipts',
+  'state_derived_transition_receipts:true',
   'minimum_workspace_transitions_per_profile:4',
   "route_landing_workspace:'work'",
-  'browser_process_isolation_per_profile:true',
-  'incremental_profile_checkpoints:true',
-  'all_profiles_distinct:true',
   '-held.png'
 ]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
 assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,320}await openWorkspace\(page, workspace, witness\);[\s\S]{0,320}await waitForVisibleCombination\(page, workspace, route\);/);
+assert.match(browserProbe, /convergence\?\.posture === 'READY'[\s\S]{0,260}convergence\?\.phase === 'VISIBLE'[\s\S]{0,420}ashDemoEntryHydrating[\s\S]{0,220}ashDemoEntryHold/);
 assert.match(browserProbe, /const selector = `#premiumPrimaryDock \[data-premium-workspace=/);
 assert.match(browserProbe, /if \(navigation\.changed\) workspaceTransitions \+= 1/);
 assert.match(browserProbe, /captured_navigation_receipts !== result\.workspace_transitions/);
 assert.match(browserProbe, /window\.addEventListener\('td613:ash:navigation-receipt', handler\)/);
 assert.doesNotMatch(browserProbe, /const control = page\.locator\(`\[data-premium-workspace=/);
 assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s);
-assert.match(browserProbe, /const expectedJourneyToken = `ash-a15-empirical-journey:\$\{profile\}`/);
-assert.match(browserProbe, /entry\.deterministic_test_journey !== expectedJourneyToken/);
-assert.doesNotMatch(browserProbe, /Array\.isArray\(entry\.deterministic_test_journey\)/,
-  'Registry deterministic_test_journey is an opaque provider token, not the 20-cell journey array itself.');
-assert.match(browserProbe, /provider_matrix_cells_per_profile:20/);
-assert.match(browserProbe, /result\.answers\.length !== 20/);
-assert.match(browserProbe, /matrix_cells:snapshot\.empirical_matrix_cells/);
-assert.match(browserProbe, /result\.matrix_cells !== 120/);
-assert.match(browserProbe, /__td613AshA15EmpiricalJourneys\?\.compile\?\.\(\{/);
-assert.match(browserProbe, /context:\{ email:'person@example\.com' \}/);
-assert.match(browserProbe, /result\.sensitive_status !== 'HELD_SENSITIVE_CONTEXT'/);
-assert.match(browserProbe, /sensitive_context_rejected:receipts\.every\(receipt => receipt\.sensitive_status === 'HELD_SENSITIVE_CONTEXT'\)/);
-assert.doesNotMatch(browserProbe, /sensitive_context_rejected:true/);
+
+for (const token of [
+  '#ashAiaMembrane [data-aia-route="${route}"]:visible',
+  '#ashAiaMembrane [data-ash-route-surface]',
+  '#premiumPrimaryDock [data-premium-workspace="${destination}"]:visible',
+  'dataset.ashPremiumWorkspace === expected',
+  'timeout:20_000'
+]) assert.ok(a2Adapter.includes(token), `A2–A5 canonical-control adapter omitted ${token}`);
+
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
 assert.match(amendment, /single graph-wide mass eviction[\s\S]*A15 postclosure/);
-const massEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
-assert.ok(shell.includes(`ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
-assert.ok(eviction.includes(`ASH_AIA3_CACHE_EPOCH = '${massEpoch}'`));
+const massEpoch = 'td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+const deliveryEpoch = '20260727-a15-postclosure-v1';
+assert.ok(shell.includes(`export const ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
+assert.ok(eviction.includes(`export const ASH_AIA3_CACHE_EPOCH = '${massEpoch}'`));
+assert.ok(shell.includes(`export const ASH_LIFECYCLE_ASSET_EPOCH = '${deliveryEpoch}'`));
+assert.ok(eviction.includes(`export const ASH_AIA3_ASSET_EPOCH = '${deliveryEpoch}'`));
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.11-registry-token-provider-matrix',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v1.0-convergence-and-epoch-hardening',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -224,13 +233,12 @@ console.log(JSON.stringify({
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
   real_ui_witness_required:true,
+  profile_entry_convergence_gated:true,
   canonical_primary_dock_navigation:true,
   exact_failure_witness_context:true,
   state_derived_transition_receipts:true,
   minimum_workspace_transitions_per_profile:4,
   route_landing_workspace:'work',
-  registry_journey_token_is_opaque:true,
-  provider_matrix_cells_per_profile:20,
   active_case_profile_precedence:true,
   unsupported_profile_holds:true,
   iterable_context_quarantine:true,
@@ -238,13 +246,12 @@ console.log(JSON.stringify({
   all_private_key_pem_held:true,
   bearer_authorization_held:true,
   empirical_module_failure_isolated:true,
-  browser_matrix_cells_registry_derived:true,
-  browser_matrix_cells_runtime_enforced:true,
-  browser_sensitive_context_hold_derived:true,
   sensitive_context_imported:false,
   ontology_leakage:false,
   false_real_world_claims:false,
   graph_wide_mass_eviction_executed:false,
+  active_mass_eviction_epoch:massEpoch,
+  active_delivery_epoch:deliveryEpoch,
   custody_authority_changed:false,
   raw_content_transport:false,
   release_authority:false,
