@@ -1,4 +1,5 @@
 import { REQUEST_SCHEMA } from './giving-model.js';
+import { currentGivingApertureContext } from './giving-aperture-context.js';
 
 const MUTATIONS = new Set([
   'session.close',
@@ -34,12 +35,19 @@ function responseNonce(body) {
 }
 
 export class GivingApiClient {
-  constructor({ endpoint = '/api/td613-ledger', fetchImpl = globalThis.fetch, timeoutMs = 18000 } = {}) {
+  constructor({
+    endpoint = '/api/td613-ledger',
+    fetchImpl = globalThis.fetch,
+    timeoutMs = 18000,
+    apertureContextProvider = currentGivingApertureContext
+  } = {}) {
     if (typeof fetchImpl !== 'function') throw new TypeError('A fetch implementation is required.');
+    if (typeof apertureContextProvider !== 'function') throw new TypeError('Aperture context provider must be a function.');
     this.endpoint = endpoint;
     this.fetchImpl = fetchImpl.bind(globalThis);
     this.timeoutMs = timeoutMs;
     this.intentNonce = null;
+    this.apertureContextProvider = apertureContextProvider;
   }
 
   async call(operation, payload = {}, options = {}) {
@@ -55,13 +63,17 @@ export class GivingApiClient {
     const timer = setTimeout(() => controller.abort(new DOMException('Request timed out.', 'TimeoutError')), timeoutMs);
     const relayAbort = () => controller.abort(options.signal?.reason || new DOMException('Request cancelled.', 'AbortError'));
     options.signal?.addEventListener('abort', relayAbort, { once: true });
+    const apertureContext = options.apertureContext === undefined
+      ? this.apertureContextProvider(globalThis)
+      : options.apertureContext;
     const envelope = {
       schema: REQUEST_SCHEMA,
       request_id: requestId(),
       operation,
       intent: {
         purpose: options.purpose || operation,
-        nonce: mutation ? this.intentNonce : null
+        nonce: mutation ? this.intentNonce : null,
+        ...(apertureContext ? { aperture_context: apertureContext } : {})
       },
       payload
     };
