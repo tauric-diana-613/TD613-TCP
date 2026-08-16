@@ -12,7 +12,14 @@ Primary implementation:
 - `app/engine/flowcore-pedagogue-route-memory.js`
 - `app/engine/flowcore-route-burden.js`
 
-Agent runner:
+Preferred agent commands from repository root:
+
+```bash
+npm run pedagogue:design -- <fixture.json>
+npm run test:pedagogue
+```
+
+The direct runner remains available when npm script discovery is unavailable:
 
 ```bash
 node scripts/run-pedagogue-design-gate.mjs <fixture.json>
@@ -69,6 +76,8 @@ Do not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, or anoth
 AIA is repository information architecture. TD613 supplies governance. Cistern Law is an AIA-derived defensive boundary for consequential information and mutation routes.
 
 Cistern may consume Pedagogue route-memory output, but observed context never grants release authority. Aperture context is recommendation/context only unless a separate reviewed contract explicitly says otherwise.
+
+A nested product belongs inside the AIA by consequence only when it has an explicit Dome-hosted surface binding, the four canonical non-equivalent route projections, invariant verification, bounded authority, rest/exit, and a live structural receipt or equivalent runtime witness. Directory placement alone is not AIA integration.
 
 ## Fixtures stay outside core
 
