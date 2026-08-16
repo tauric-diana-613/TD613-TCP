@@ -262,7 +262,7 @@ export default async function givingHandler(req, res, context = {}) {
     if (operation !== 'session.close') await assertSharedSessionAdmitted(session, { fetchImpl });
 
     if (ACCESS_OPERATIONS.has(operation)) {
-      return handleAccessOperation(req, res, body, session, fetchImpl);
+      return await handleAccessOperation(req, res, body, session, fetchImpl);
     }
     return baseGivingHandler(req, res, context);
   } catch (error) {
