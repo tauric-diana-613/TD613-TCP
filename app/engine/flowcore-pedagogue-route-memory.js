@@ -1,7 +1,7 @@
 import { canonicalJson } from '../dome-world/ash/canonical-json.js';
 
-export const PEDAGOGUE_ROUTE_MEMORY_SCHEMA = 'td613.flowcore.pedagogue-route-memory/v0.1';
-export const PEDAGOGUE_ROUTE_COMPARISON_SCHEMA = 'td613.flowcore.pedagogue-route-comparison/v0.1';
+export const PEDAGOGUE_ROUTE_MEMORY_SCHEMA = 'td613.flowcore.pedagogue-route-memory/v0.2';
+export const PEDAGOGUE_ROUTE_COMPARISON_SCHEMA = 'td613.flowcore.pedagogue-route-comparison/v0.2';
 
 function boundedToken(value, label) {
   const text = String(value ?? '').trim();
@@ -51,6 +51,16 @@ function commonSuffixLength(left, right, prefixLength) {
   return count;
 }
 
+function normalizedDivergenceMillipoints(editDistance, leftLength, rightLength) {
+  const denominator = Math.max(leftLength, rightLength, 1);
+  return Math.max(0, Math.min(1000, Math.round((editDistance * 1000) / denominator)));
+}
+
+function retainedBoundaryMillipoints(prefix, suffix, leftLength, rightLength) {
+  const denominator = Math.max(leftLength, rightLength, 1);
+  return Math.max(0, Math.min(1000, Math.round(((prefix + suffix) * 1000) / denominator)));
+}
+
 export function compilePedagogueRouteMemory(route, { endpoint = null } = {}) {
   const steps = normalizeRoute(route, 'route');
   const declaredEndpoint = boundedToken(endpoint || steps.at(-1), 'endpoint');
@@ -82,6 +92,9 @@ export function comparePedagogueRouteMemory(expectedRoute, observedRoute, {
   const prefix = commonPrefixLength(expected.steps, observed.steps);
   const suffix = commonSuffixLength(expected.steps, observed.steps, prefix);
   const editDistance = levenshtein(expected.steps, observed.steps);
+  const routeDivergence = normalizedDivergenceMillipoints(editDistance, expected.steps.length, observed.steps.length);
+  const retainedBoundary = retainedBoundaryMillipoints(prefix, suffix, expected.steps.length, observed.steps.length);
+  const endpointHolonomyResidue = endpointEquivalent ? routeDivergence : null;
   const divergence = [];
   const max = Math.max(expected.steps.length, observed.steps.length);
   for (let index = 0; index < max; index += 1) {
@@ -106,6 +119,16 @@ export function comparePedagogueRouteMemory(expectedRoute, observedRoute, {
     exact_route_match: exactHistoryMatch,
     same_endpoint_not_same_history: endpointEquivalent && !exactHistoryMatch,
     edit_distance_steps: editDistance,
+    route_divergence_millipoints: routeDivergence,
+    retained_boundary_millipoints: retainedBoundary,
+    endpoint_holonomy_residue_millipoints: endpointHolonomyResidue,
+    math: Object.freeze({
+      model: 'DISCRETE_ROUTE_DIVERGENCE_SURROGATE',
+      equation_route_divergence: 'D_route = round(1000 * d_L(R_expected,R_observed) / max(|R_expected|,|R_observed|,1))',
+      equation_endpoint_residue: 'H_endpoint = D_route when endpoints are equal; otherwise unresolved',
+      geometric_holonomy_claim: false,
+      comparative_structural_measure_only: true
+    }),
     common_prefix_steps: prefix,
     common_suffix_steps: suffix,
     first_divergence_index: divergence.length ? divergence[0].index : null,
@@ -119,7 +142,7 @@ export function comparePedagogueRouteMemory(expectedRoute, observedRoute, {
           ? 'The destination and path both match.'
           : 'The destination and the path differ.',
       exact: divergence.length
-        ? `First route difference: step ${divergence[0].index + 1}.`
+        ? `First route difference: step ${divergence[0].index + 1}. Route divergence: ${routeDivergence}/1000.`
         : 'No route difference was observed.'
     }),
     authority: Object.freeze({
