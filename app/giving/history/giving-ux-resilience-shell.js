@@ -141,8 +141,21 @@ function installMatchLanguage() {
   if (cluster && /candidate clusters/i.test(cluster.textContent)) cluster.textContent = cluster.textContent.replace(/candidate clusters/ig, 'match clusters');
 }
 
+function installReadinessFocusState() {
+  const button = $('#readinessButton');
+  const control = button?.closest('.readiness-control');
+  if (!button || !control || button.dataset.focusStateBound === 'true') return;
+  button.dataset.focusStateBound = 'true';
+  const open = () => { control.dataset.focusOpen = 'true'; };
+  const close = () => { delete control.dataset.focusOpen; };
+  button.addEventListener('focus', open);
+  button.addEventListener('blur', close);
+  if (document.activeElement === button) open();
+}
+
 installCoverageNote();
 installCampaignLookupShell();
 installCommitteeToolbar();
 installVaultGuide();
 installMatchLanguage();
+installReadinessFocusState();
