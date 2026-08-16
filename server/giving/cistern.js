@@ -52,6 +52,16 @@ export function cisternPolicy(operation) {
   return POLICIES[operation] || null;
 }
 
+function contextWitnesses(envelope) {
+  const context = envelope?.aperture_context;
+  if (!context) return [];
+  return [{
+    source: context.source || 'TD613 Aperture',
+    digest: sha256(context),
+    authority_effect: 'NONE'
+  }];
+}
+
 function preflightReceipt(envelope, session, policy, spentIntent = null) {
   const payload = envelope?.payload || {};
   return compileCisternLawReceipt({
@@ -65,6 +75,7 @@ function preflightReceipt(envelope, session, policy, spentIntent = null) {
       separately_confirmed: policy.separatelyConfirmed,
       bounded_intent: Boolean(envelope?.intent?.nonce && session?.nonce)
     },
+    contexts: contextWitnesses(envelope),
     requestDigest: envelope?.request_digest || null,
     sessionDigest: session?.sid ? sha256(session.sid) : null,
     spentIntentDigest: spentIntent?.intent_digest || null,
@@ -139,6 +150,7 @@ export function finalizeGivingCisternReceipt(preflightReceipt, envelope, session
     expectedRoute: preflightReceipt.route.expected,
     observedRoute: preflightReceipt.route.observed,
     witness: preflightReceipt.witness,
+    contexts: preflightReceipt.context_witnesses || [],
     requestDigest: envelope.request_digest,
     sessionDigest: session?.sid ? sha256(session.sid) : null,
     spentIntentDigest: preflightReceipt.spent_intent_digest || (session?.nonce ? sha256(session.nonce) : null),
@@ -155,8 +167,10 @@ export function publicWriteAuthorizationReceipt(internalReceipt, rotatedSession)
     request_digest: internalReceipt.request_digest || null,
     egress_digest: internalReceipt.egress_digest || null,
     replay_protection: internalReceipt.durable_tombstone ? 'DURABLE_SPENT_INTENT' : 'SIGNED_SESSION_ROTATION_ONLY',
+    context_witness_count: internalReceipt.context_witnesses?.length || 0,
+    context_authority_effect: 'NONE',
     next_intent_issued: Boolean(rotatedSession)
   });
 }
 
-export const _cisternInternals = Object.freeze({ POLICIES, safeEgressProjection, preflightReceipt });
+export const _cisternInternals = Object.freeze({ POLICIES, safeEgressProjection, preflightReceipt, contextWitnesses });
