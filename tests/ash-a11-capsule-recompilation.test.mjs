@@ -34,7 +34,7 @@ assert.match(probe, /#ashA11CapsuleRecompilation/);
 for (const marker of ['What is preserved','What remains outside','Who may open it','What closes it','Where it may go','What sealing does not prove','Destination handoff']) assert.ok(probe.includes(`'${marker}'`));
 for (const marker of ['node tests/ash-a11-capsule-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A11 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.match(workflow, /github\.event_name == 'pull_request' && needs\.scope\.outputs\.validation_scope != 'giving'/);
 for (const marker of ['Capsule, Save Point, and Destination-Handoff Recompilation','Eight custody questions','Save Point recompilation','Destination handoff relation','Cache and deployment posture','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
 console.log(JSON.stringify({ok:true,schema:'td613.ash.a11-capsule-contract/v0.2-post-sync-guard-arbitration',custody_questions:8,destination_handoff_separate:true,post_sync_restore_arbitration:true,automatic_save:false,automatic_export:false,automatic_import:false,automatic_handoff:false,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
