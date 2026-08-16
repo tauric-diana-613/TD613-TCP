@@ -92,62 +92,106 @@ assert.match(
 );
 assert.match(inheritedRouteProbe, /route witness may not bypass the native route control owner/);
 
-const runtimeMarker = '- name: Start one bounded Ash and Dome-World runtime';
-const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering across every engine';
-const riskMarker = '- name: Aggregate changed-risk A8 and A12 entry witnesses across every engine';
-const lifecycleMarker = '- name: Run changed-risk lifecycle closure preflight';
-const inheritedMarker = '- name: Run the complete Ash witness through each installed engine';
-const flowcoreMarker = '- name: Run complete Flow-Core runtime evidence through the same browser installation';
+const runtimeMarker = '- name: Start isolated core extended and Flow-Core runtimes';
+const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering for this engine';
+const riskMarker = '- name: Run front-line A8 A12 and lifecycle preflight for this engine';
+const inheritedMarker = '- name: Run core extended and Flow-Core lanes in parallel';
+const stopMarker = '- name: Stop isolated runtimes';
 const runtimeStart = workflow.indexOf(runtimeMarker);
 const calibrationStart = workflow.indexOf(calibrationMarker);
 const riskStart = workflow.indexOf(riskMarker);
-const lifecycleStart = workflow.indexOf(lifecycleMarker);
 const inheritedStart = workflow.indexOf(inheritedMarker);
-const flowcoreStart = workflow.indexOf(flowcoreMarker);
-assert.ok(runtimeStart >= 0, 'Bounded runtime must remain present.');
-assert.ok(calibrationStart > runtimeStart, 'A15 calibration may depend on runtime readiness only.');
-assert.ok(riskStart > calibrationStart, 'A8/A12 promotion preflight must not erase A15-R0 measurement.');
-assert.ok(lifecycleStart > calibrationStart, 'Lifecycle promotion preflight must not erase A15-R0 measurement.');
-assert.ok(inheritedStart > calibrationStart, 'Inherited Ash witness must follow the independent calibration prepass.');
-assert.ok(flowcoreStart > inheritedStart, 'The inherited Ash browser chamber must have a bounded end marker.');
+const stopStart = workflow.indexOf(stopMarker);
 
-const calibrationChamber = workflow.slice(calibrationStart, Math.min(riskStart, lifecycleStart, inheritedStart));
-const inheritedChamber = workflow.slice(inheritedStart, flowcoreStart);
-const lifecycleChamber = workflow.slice(lifecycleStart, inheritedStart);
+assert.ok(runtimeStart >= 0, 'Bounded sharded runtimes must remain present.');
+assert.ok(calibrationStart > runtimeStart, 'A15 calibration may depend on runtime readiness only.');
+assert.ok(riskStart > calibrationStart, 'A8/lifecycle/A12 promotion preflight must not erase A15-R0 measurement.');
+assert.ok(inheritedStart > riskStart, 'Inherited Ash witness must follow the independent calibration and front-line preflight.');
+assert.ok(stopStart > inheritedStart, 'The inherited Ash browser chamber must have a bounded end marker.');
+assert.match(workflow, /browser: \[chromium, firefox, webkit\]/, 'Chromium, Firefox, and WebKit must remain explicit independent shards.');
+assert.match(workflow, /max-parallel: 3/, 'All three engine shards must remain independently runnable.');
+
+const runtimeChamber = workflow.slice(runtimeStart, calibrationStart);
+const calibrationChamber = workflow.slice(calibrationStart, riskStart);
+const riskChamber = workflow.slice(riskStart, inheritedStart);
+const inheritedChamber = workflow.slice(inheritedStart, stopStart);
+
+assert.match(runtimeChamber, /for spec in core:6130 extended:6131 flowcore:6132; do/,
+  'Each engine shard must start the declared isolated runtime set.');
+assert.match(runtimeChamber, /node scripts\/ash-keep-local-closure-server\.mjs "\$port"/,
+  'The bounded Ash runtime launcher must remain executable in every engine shard.');
+assert.match(runtimeChamber, /__ash_keep_closure\/readiness/,
+  'Calibration may begin only after the bounded runtime readiness endpoint settles.');
+assert.match(runtimeChamber, /if \[\[ "\$ready" -ne 1 \]\]; then/,
+  'Missing runtime readiness must remain a fatal prerequisite failure.');
+
 assert.doesNotMatch(calibrationChamber, /timeout\s+--foreground\b/,
   'A15-R0 calibration Playwright probes must keep browser descendants in the timeout process group.');
+assert.match(calibrationChamber, /TD613_BASE_URL='http:\/\/127\.0\.0\.1:6130'/,
+  'A15-R0 calibration must observe the already-readied core runtime.');
+assert.match(calibrationChamber, /browser='\$\{\{ matrix\.browser \}\}'/,
+  'A15-R0 calibration must inherit the exact engine shard being witnessed.');
 assert.match(calibrationChamber, /timeout --signal=INT --kill-after=15s 360s node scripts\/ash-a15-r0-preview-probe\.mjs/,
   'A15-R0 preview keeps its 360-second budget while using process-group timeout containment.');
 assert.match(calibrationChamber, /timeout --signal=INT --kill-after=15s 420s node scripts\/ash-a15-transition-trace-browser-probe\.mjs/,
   'A15 transition trace keeps its 420-second budget while using process-group timeout containment.');
-assert.doesNotMatch(inheritedChamber, /timeout\s+--foreground\b/,
-  'Canonical inherited Ash Playwright probes must keep browser descendants in the timeout process group.');
+assert.match(calibrationChamber, /measurement_before_gating:true/);
+assert.match(calibrationChamber, /per_engine_observed:true/);
+assert.match(calibrationChamber, /ok:failures\.length === 0/);
+assert.match(calibrationChamber, /fail_fast:false/);
+assert.match(calibrationChamber, /independent_from_inherited_a15:true/);
+assert.match(calibrationChamber, /promotion_authority:false/);
+assert.match(calibrationChamber, /production_mutation:false/);
+
+assert.match(riskChamber, /TD613_ASH_STAGES='A8'/);
+assert.match(riskChamber, /TD613_A12_ENTRY_PREFLIGHT='true'/);
+assert.match(riskChamber, /timeout --foreground --signal=INT --kill-after=15s 420s node scripts\/run-ash-keep-a1-production-probe\.mjs/,
+  'Lifecycle closure preflight retains its constitutionally declared foreground timeout law.');
+
+for (const probeName of [
+  'ash-a2-a5-browser-probe.mjs',
+  'ash-a7-a11-browser-probe.mjs',
+  'ash-a12-browser-probe.mjs',
+  'ash-research-ux-browser-probe.mjs',
+  'ash-reviewability-browser-probe.mjs',
+  'ash-ingress-polish-browser-probe.mjs',
+  'ash-a15-empirical-profile-journeys-browser-probe.mjs',
+  'ash-a13-demo-registry-browser-probe.mjs',
+  'ash-a14-archive-browser-probe.mjs',
+  'run-ash-flowcore-live-field-browser-probe.mjs'
+]) {
+  const commandLine = inheritedChamber.split('\n').find(line => line.includes('node scripts/' + probeName)) || '';
+  assert.ok(commandLine, `${probeName} must remain present in the canonical sharded Ash lane.`);
+  assert.match(commandLine, /timeout --signal=INT --kill-after=/,
+    `${probeName} must remain in a timeout-owned process group.`);
+  assert.doesNotMatch(commandLine, /--foreground/,
+    `${probeName} may not restore foreground timeout semantics.`);
+}
+assert.match(inheritedChamber, /timeout --foreground --signal=INT --kill-after=20s 1500s node scripts\/flowcore-runtime-browser-probe\.mjs/,
+  'Flow-Core runtime retains its separately governed foreground timeout contract.');
 assert.match(inheritedChamber, /timeout --signal=INT --kill-after=15s 420s node scripts\/ash-a12-browser-probe\.mjs/,
   'Canonical A12 retains its 420-second budget while using process-group timeout containment.');
-assert.match(lifecycleChamber, /timeout --foreground --signal=INT --kill-after=15s 420s node scripts\/run-ash-keep-a1-production-probe\.mjs/,
-  'Lifecycle closure preflight retains its constitutionally declared foreground timeout law.');
 
 const r0Index = calibrationChamber.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
 const traceIndex = calibrationChamber.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
 const a15Index = inheritedChamber.indexOf('node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs');
-assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent calibration prepass.');
-assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent calibration prepass.');
+assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent per-engine calibration prepass.');
+assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent per-engine calibration prepass.');
 assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present as a later promotion gate.');
 assert.ok(r0Index < traceIndex, 'A15-R0 preview evidence must precede transition calibration within each engine.');
-assert.equal(inheritedChamber.includes('node scripts/ash-a15-r0-preview-probe.mjs'), false, 'Inherited witness must not own A15-R0 evidence acquisition.');
-assert.equal(inheritedChamber.includes('node scripts/ash-a15-transition-trace-browser-probe.mjs'), false, 'Inherited witness must not own transition-trace evidence acquisition.');
-assert.match(calibrationChamber, /all_engines_observed:true/);
-assert.match(calibrationChamber, /ok:failures\.length === 0/);
-assert.match(calibrationChamber, /fail_fast:false/);
-assert.match(calibrationChamber, /independent_from_inherited_a15:true/);
-assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:true/);
-assert.match(calibrationChamber, /promotion_authority:false/);
+assert.equal(inheritedChamber.includes('node scripts/ash-a15-r0-preview-probe.mjs'), false,
+  'Inherited witness must not own A15-R0 evidence acquisition.');
+assert.equal(inheritedChamber.includes('node scripts/ash-a15-transition-trace-browser-probe.mjs'), false,
+  'Inherited witness must not own transition-trace evidence acquisition.');
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.13-scoped-process-group-containment',
+  contract:'td613.ash.a15-transition-trace-contract/v0.14-sharded-runtime-readiness',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
+  runtime_readiness_precedes_measurement:true,
+  per_engine_runtime_and_calibration:true,
+  all_engines_declared:['chromium','firefox','webkit'],
   profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
   profile_hydration_completion_required:true,
   hydration_authority_must_remain_closed:true,
@@ -168,6 +212,7 @@ console.log(JSON.stringify({
   a15_calibration_timeout_process_group_containment:true,
   inherited_ash_timeout_process_group_containment:true,
   lifecycle_closure_foreground_law_preserved:true,
+  flowcore_runtime_foreground_law_preserved:true,
   canonical_a12_timeout_budget_seconds:420,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
