@@ -13,6 +13,7 @@ const GIVING_EXACT = new Set([
   'api/giving.js',
   'docs/GIVING_HISTORY_ENGINE.md',
   'docs/GIVING_UX_RESILIENCE_ROADMAP.md',
+  'docs/CAMPAIGN_DEPUTY_API_KEY_SETUP.md',
   'package.json',
   'package-lock.json',
   'tests/aperture-patch-bay.test.mjs',
