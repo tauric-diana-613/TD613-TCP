@@ -50,6 +50,9 @@ test('campaign lookup uses compact multi-jurisdiction controls and independent s
   assert.match(tools, /localTask\(source, 'CANDIDATE', query, 'MUNICIPAL'\)/);
   assert.match(tools, /localTask\(source, 'COMMITTEE', query, 'MUNICIPAL'\)/);
   assert.match(tools, /include_opensecrets: index === 0/);
+  assert.match(tools, /const states = selectedCampaignStates\.size \? \[\.\.\.selectedCampaignStates\] : \[null\]/);
+  assert.match(tools, /if \(lanes\.has\('STATE'\) && !selectedCampaignStates\.size\)/);
+  assert.doesNotMatch(tools, /lanes\.has\('FEDERAL'\) \|\| lanes\.has\('STATE'\)/);
 });
 
 test('queue waits for canonical terminal search signal and isolates contact holds', async () => {
