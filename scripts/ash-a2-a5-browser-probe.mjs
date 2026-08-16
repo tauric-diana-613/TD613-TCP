@@ -17,7 +17,7 @@ function replaceExactly(source, marker, replacement, label) {
 let source = await fs.readFile(legacyPath, 'utf8');
 source = source
   .replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')
-  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.9-a15-profile-atomic-registry-gesture');
+  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.10-a15-route-owner-settlement');
 
 source = replaceExactly(
   source,
@@ -35,8 +35,8 @@ source = replaceExactly(
 source = replaceExactly(
   source,
   "    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
-  "    await page.waitForFunction(expected => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route === expected, route, { timeout:20_000 });",
-  'canonical AIA route surface settlement'
+  "    await page.waitForFunction(expected => window.__td613AshLiveAIA?.current?.()?.route === expected, route, { timeout:20_000 });\n    await page.evaluate(() => window.__td613AshWholeInstrument?.refresh?.('WITNESS_ROUTE_SETTLEMENT'));\n    await page.waitForFunction(expected => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route === expected, route, { timeout:20_000 });",
+  'canonical AIA route owner and surface settlement'
 );
 source = replaceExactly(
   source,
@@ -68,6 +68,8 @@ if (!source.includes('entry_exact_case_reconcile')
   || !source.includes("panel?.classList.contains('active')")
   || !source.includes('#premiumCommandGrid [data-command-action="profile"]')
   || !source.includes('#ashAiaMembrane [data-aia-route="${route}"]:visible')
+  || !source.includes("window.__td613AshLiveAIA?.current?.()?.route === expected")
+  || !source.includes("refresh?.('WITNESS_ROUTE_SETTLEMENT')")
   || !source.includes("#ashAiaMembrane [data-ash-route-surface]")
   || !source.includes('#premiumPrimaryDock [data-premium-workspace="${destination}"]:visible')
   || !source.includes("dataset.ashPremiumWorkspace === expected")
