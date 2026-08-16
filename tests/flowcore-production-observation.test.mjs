@@ -10,12 +10,19 @@ const stationEngine = fs.readFileSync('app/engine/flowcore-station-propagation.j
 const workflowDirectory = fs.readdirSync('.github/workflows');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
-test('Flow-Core cross-browser evidence starts at the front of one exact-head dispatch and converges once', () => {
+test('Flow-Core cross-browser evidence lives in front-line exact-head shards and converges once', () => {
   assert.match(consolidatedWorkflow, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
   assert.match(consolidatedWorkflow, /mode:\s*[\s\S]*full-browser/);
   assert.match(consolidatedWorkflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-  assert.match(consolidatedWorkflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-  assert.match(consolidatedWorkflow, /ash_browser_shard:[\s\S]*?needs: scope/);
+
+  const shardGate = consolidatedWorkflow.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
+  const convergenceGate = consolidatedWorkflow.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+  assert.match(shardGate, /needs: scope/);
+  assert.match(shardGate, /github\.event_name == 'pull_request'/);
+  assert.doesNotMatch(shardGate, /github\.event\.action|ready_for_review|contracts/, 'Full-product shards must begin after scope on ordinary PR synchronization, not behind contracts or an action transition.');
+  assert.match(convergenceGate, /github\.event_name == 'pull_request'/);
+  assert.doesNotMatch(convergenceGate, /github\.event\.action|ready_for_review/, 'Full-product convergence must follow every full-scope PR shard family.');
+
   assert.match(consolidatedWorkflow, /browser: \[chromium, firefox, webkit\]/);
   assert.match(consolidatedWorkflow, /max-parallel: 3/);
   assert.match(consolidatedWorkflow, /Run core extended and Flow-Core lanes in parallel/);
@@ -25,7 +32,6 @@ test('Flow-Core cross-browser evidence starts at the front of one exact-head dis
   assert.match(consolidatedWorkflow, /td613-browser-shard-\$\{\{ matrix\.browser \}\}/);
   assert.match(consolidatedWorkflow, /Collect surviving browser evidence shards/);
   assert.match(consolidatedWorkflow, /needs: \[contracts, scope, ash_browser_shard\]/);
-  assert.doesNotMatch(consolidatedWorkflow, /github\.event\.action == 'synchronize'[\s\S]*ash_browser_shard:[\s\S]*?playwright install/);
   assert.equal(workflowDirectory.includes('flowcore-production-observation.yml'), false,
     'Flow-Core production observation must not regain an independent workflow.');
   assert.equal(workflowDirectory.some(name => /repair-once|one-use|receipt-diagnostic/i.test(name)), false);
