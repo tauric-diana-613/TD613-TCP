@@ -5,7 +5,12 @@ import givingHandler from '../api/giving.js';
 process.env.TD613_GIVING_ACCESS_SECRET = 'operator-access-secret-that-is-long-enough';
 process.env.TD613_GIVING_SESSION_SECRET = 'independent-signing-secret-that-is-even-longer';
 
-function request(operation, payload = {}, { cookie = '', nonce = null, origin = 'https://td613.com' } = {}) {
+function request(operation, payload = {}, {
+  cookie = '',
+  nonce = null,
+  origin = 'https://td613.com',
+  apertureContext = null
+} = {}) {
   return {
     method: 'POST',
     url: '/api/giving',
@@ -19,7 +24,11 @@ function request(operation, payload = {}, { cookie = '', nonce = null, origin = 
       schema: 'td613.giving.request/v1',
       request_id: `request-${operation.replaceAll('.', '-')}-1234`,
       operation,
-      intent: nonce ? { nonce, purpose: 'test' } : { purpose: 'test' },
+      intent: {
+        purpose: 'test',
+        ...(nonce ? { nonce } : {}),
+        ...(apertureContext ? { aperture_context: apertureContext } : {})
+      },
       payload
     }
   };
@@ -39,6 +48,30 @@ async function call(req) {
   return { res, body: res.body ? JSON.parse(res.body) : null };
 }
 
+const apertureContext = Object.freeze({
+  schema: 'td613.giving.aperture-context/v0.1',
+  source: 'TD613 Aperture',
+  direction: 'APERTURE_TO_GIVING',
+  aperture_receipt_schema: 'td613.aperture.diagnostic-receipt/v3.0-alpha',
+  aperture_receipt_reference: 'apdiag_dispatcher_1234',
+  source_status: 'DERIVED',
+  task_intent: {
+    primary_route: 'REQUESTED_SYNTHESIS',
+    runtime_materiality: 'BACKGROUND',
+    automatic_redirect: false
+  },
+  missingness_count: 1,
+  contradiction_count: 0,
+  authority: {
+    recommendation_not_command: true,
+    reciprocal_authority: false,
+    giving_authority: false,
+    mutation_authority: false,
+    automatic_ash_action: false,
+    operator_closure_required: true
+  }
+});
+
 const login = await call(request('session.create', { access_secret: process.env.TD613_GIVING_ACCESS_SECRET }));
 assert.equal(login.res.statusCode, 200);
 assert.equal(login.body.ok, true);
@@ -56,9 +89,25 @@ assert.equal(streamedLogin.body.ok, true);
 
 const cookie = login.res.headers['set-cookie'].split(';', 1)[0];
 const nonce = login.body.data.intent_nonce;
-const status = await call(request('session.status', {}, { cookie }));
+const status = await call(request('session.status', {}, { cookie, apertureContext }));
 assert.equal(status.body.data.authenticated, true);
 assert.equal(status.body.data.intent_nonce, nonce);
+assert.equal(status.body.receipt.aperture_context.status, 'OBSERVED');
+assert.equal(status.body.receipt.aperture_context.source, 'TD613 Aperture');
+assert.equal(status.body.receipt.aperture_context.primary_route, 'REQUESTED_SYNTHESIS');
+assert.equal(status.body.receipt.aperture_context.runtime_materiality, 'BACKGROUND');
+assert.equal(status.body.receipt.aperture_context.missingness_count, 1);
+assert.equal(status.body.receipt.aperture_context.contradiction_count, 0);
+assert.match(status.body.receipt.aperture_context.context_digest, /^[a-f0-9]{64}$/);
+assert.equal('authority' in status.body.receipt.aperture_context, false, 'public context receipt must not project internal authority fields');
+
+const attemptedAuthorityContext = {
+  ...apertureContext,
+  authority: { ...apertureContext.authority, giving_authority: true }
+};
+const attemptedAuthority = await call(request('session.status', {}, { cookie, apertureContext: attemptedAuthorityContext }));
+assert.equal(attemptedAuthority.res.statusCode, 409);
+assert.equal(attemptedAuthority.body.error.code, 'aperture-context-authority-withheld');
 
 const registry = await call(request('registry.read', {}, { cookie }));
 assert.equal(registry.body.data.source_instance_count, 23);
@@ -88,10 +137,13 @@ const wrongNonce = await call(request('campaign-deputy.withhold', { dossier_id: 
 assert.equal(wrongNonce.res.statusCode, 403);
 assert.equal(wrongNonce.body.error.code, 'intent-nonce-withheld');
 
-const withheld = await call(request('campaign-deputy.withhold', { dossier_id: 'dossier-1' }, { cookie, nonce }));
+const withheld = await call(request('campaign-deputy.withhold', { dossier_id: 'dossier-1' }, { cookie, nonce, apertureContext }));
 assert.equal(withheld.body.data.action, 'WITHHOLD');
 assert.equal(withheld.body.data.external_mutation, false);
 assert.equal(withheld.body.receipt.write_authorization.replay_protection, 'SIGNED_SESSION_ROTATION_ONLY');
+assert.equal(withheld.body.receipt.write_authorization.context_witness_count, 1);
+assert.equal(withheld.body.receipt.write_authorization.context_authority_effect, 'NONE');
+assert.equal(withheld.body.receipt.aperture_context.status, 'OBSERVED');
 
 const crossOrigin = await call(request('session.status', {}, { cookie, origin: 'https://attacker.example' }));
 assert.equal(crossOrigin.res.statusCode, 403);
