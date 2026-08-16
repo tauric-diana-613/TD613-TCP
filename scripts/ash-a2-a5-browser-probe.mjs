@@ -17,13 +17,13 @@ function replaceExactly(source, marker, replacement, label) {
 let source = await fs.readFile(legacyPath, 'utf8');
 source = source
   .replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')
-  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.10-a15-route-owner-settlement');
+  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.11-a15-canonical-semantic-settlement');
 
 source = replaceExactly(
   source,
   "if (!/Cases & profiles/i.test((await page.locator('[data-command-action=\"profile\"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');",
-  "if (!/Cases & profiles/i.test((await page.locator('#premiumCommandGrid [data-command-action=\"profile\"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');",
-  'A12 command-sheet profile control ownership'
+  "const profileAction = page.locator('#premiumCommandGrid [data-a12-action=\"profile\"][data-command-action=\"profile\"]');\n  if (await profileAction.count() !== 1) throw new Error('Canonical Cases & Profiles command ownership was ambiguous.');\n  if (!/Cases & profiles/i.test((await profileAction.textContent()) || '')) throw new Error('Cases & profiles label drifted.');",
+  'A15 canonical A12 profile command ownership'
 );
 
 source = replaceExactly(
@@ -34,9 +34,68 @@ source = replaceExactly(
 );
 source = replaceExactly(
   source,
-  "    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
-  "    await page.waitForFunction(expected => window.__td613AshLiveAIA?.current?.()?.route === expected, route, { timeout:20_000 });\n    await page.evaluate(() => window.__td613AshWholeInstrument?.refresh?.('WITNESS_ROUTE_SETTLEMENT'));\n    await page.waitForFunction(expected => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route === expected, route, { timeout:20_000 });",
-  'canonical AIA route owner and surface settlement'
+  "    await button.click();\n    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
+  `    await button.focus();
+    await page.waitForFunction(expected => {
+      const control = document.querySelector('#ashAiaMembrane [data-aia-route="' + expected + '"]');
+      return control === document.activeElement
+        && control?.isConnected
+        && typeof control.onclick === 'function';
+    }, route);
+    await page.evaluate(expected => {
+      const control = document.querySelector('#ashAiaMembrane [data-aia-route="' + expected + '"]');
+      if (!control) throw new Error('A15 A2-A6 semantic route control unavailable before keyboard activation.');
+      const trace = {
+        expected_route:expected,
+        before_route:document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route || null,
+        control_connected:control.isConnected,
+        direct_onclick:typeof control.onclick === 'function',
+        active_before:control === document.activeElement,
+        events:[]
+      };
+      const observe = (type, phase, capture) => {
+        document.addEventListener(type, event => {
+          if (event.target !== control) return;
+          trace.events.push({
+            phase,
+            type:event.type,
+            key:event.key || null,
+            default_prevented:event.defaultPrevented,
+            route:document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route || null,
+            target_route:event.target?.dataset?.aiaRoute || null,
+            direct_onclick:typeof control.onclick === 'function'
+          });
+        }, { capture });
+      };
+      observe('keydown', 'KEYDOWN_CAPTURE', true);
+      observe('keydown', 'KEYDOWN_BUBBLE', false);
+      observe('keyup', 'KEYUP_CAPTURE', true);
+      observe('keyup', 'KEYUP_BUBBLE', false);
+      observe('click', 'CLICK_CAPTURE', true);
+      observe('click', 'CLICK_BUBBLE', false);
+      window.__td613A2A5SemanticRouteTrace = trace;
+    }, route);
+    await page.keyboard.press('Enter');
+    const activationAfterDispatch = await page.evaluate(expected => {
+      const trace = window.__td613A2A5SemanticRouteTrace || null;
+      return {
+        expected_route:expected,
+        before_route:trace?.before_route || null,
+        control_connected:trace?.control_connected === true,
+        direct_onclick:trace?.direct_onclick === true,
+        active_before:trace?.active_before === true,
+        events:[...(trace?.events || [])],
+        after_dispatch_route:document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route || null,
+        active_after:document.activeElement?.dataset?.aiaRoute || document.activeElement?.id || null
+      };
+    }, route);
+    report.observations.semantic_route_activation ||= {};
+    report.observations.semantic_route_activation[route] = activationAfterDispatch;
+    await page.waitForFunction(expected => window.__td613AshLiveAIA?.current?.()?.route === expected, route, { timeout:20_000 });
+    await page.evaluate(() => window.__td613AshWholeInstrument?.refresh?.('WITNESS_ROUTE_SETTLEMENT'));
+    await page.waitForFunction(expected => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route === expected, route, { timeout:20_000 });
+    report.observations.semantic_route_activation[route].settled_route = await page.evaluate(() => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route || null);`,
+  'geometry-independent native route activation with canonical owner settlement'
 );
 source = replaceExactly(
   source,
@@ -66,7 +125,7 @@ if (!source.includes('entry_exact_case_reconcile')
   || !source.includes("typeof convergence?.reconcile !== 'function'")
   || !source.includes("dataset.ashPremiumWorkspace === 'map'")
   || !source.includes("panel?.classList.contains('active')")
-  || !source.includes('#premiumCommandGrid [data-command-action="profile"]')
+  || !source.includes('#premiumCommandGrid [data-a12-action="profile"][data-command-action="profile"]')
   || !source.includes('#ashAiaMembrane [data-aia-route="${route}"]:visible')
   || !source.includes("window.__td613AshLiveAIA?.current?.()?.route === expected")
   || !source.includes("refresh?.('WITNESS_ROUTE_SETTLEMENT')")
@@ -84,6 +143,27 @@ if (!source.includes('entry_exact_case_reconcile')
   || !source.includes('release_receipt:convergence.releaseReceipt?.() || null')
   || !source.includes('td613.ash.a15-empirical-profile-journeys/v0.1')) {
   throw new Error('A15 A2-A6 canonical-control convergence adapter failed to compile.');
+}
+if (!source.includes('await button.focus()')
+  || !source.includes("await page.keyboard.press('Enter')")
+  || !source.includes('control === document.activeElement')
+  || !source.includes("typeof control.onclick === 'function'")) {
+  throw new Error('A15 A2-A6 native route activation adapter failed to compile.');
+}
+if (!source.includes('__td613A2A5SemanticRouteTrace')
+  || !source.includes("'KEYDOWN_CAPTURE'")
+  || !source.includes("'KEYUP_BUBBLE'")
+  || !source.includes("'CLICK_CAPTURE'")
+  || !source.includes("'CLICK_BUBBLE'")
+  || !source.includes('report.observations.semantic_route_activation[route] = activationAfterDispatch')) {
+  throw new Error('A15 A2-A6 semantic keyboard activation diagnostic failed to compile.');
+}
+if (!source.includes("page.locator('#premiumCommandGrid [data-a12-action=\"profile\"][data-command-action=\"profile\"]')")
+  || source.includes("page.locator('[data-command-action=\"profile\"]').textContent()")) {
+  throw new Error('A15 A2-A6 profile command witness must use the canonical A12-owned control.');
+}
+if (source.includes('__td613AshLiveAIA.setRoute(')) {
+  throw new Error('A15 A2-A6 route witness may not bypass the native route control owner.');
 }
 
 try {
