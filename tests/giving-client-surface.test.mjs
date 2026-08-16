@@ -4,42 +4,51 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const html = fs.readFileSync(path.join(root, 'app/giving/history/index.html'), 'utf8');
-const app = fs.readFileSync(path.join(root, 'app/giving/history/giving-app.js'), 'utf8');
-const apiClient = fs.readFileSync(path.join(root, 'app/giving/history/giving-api.js'), 'utf8');
-const css = fs.readFileSync(path.join(root, 'app/giving/history/giving.css'), 'utf8');
-const polish = fs.readFileSync(path.join(root, 'app/giving/history/giving-polish.css'), 'utf8');
-const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-bootstrap.js'), 'utf8');
-const leftRailOrder = fs.readFileSync(path.join(root, 'app/giving/history/giving-left-rail-order.js'), 'utf8');
-const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
-const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.js'), 'utf8');
-const searchControlsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.css'), 'utf8');
-const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.js'), 'utf8');
-const campaignToolsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.css'), 'utf8');
-const clarityCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-clarity.css'), 'utf8');
-const amountFilter = fs.readFileSync(path.join(root, 'app/giving/history/giving-contribution-amount-filter.js'), 'utf8');
-const contributionsCopy = fs.readFileSync(path.join(root, 'app/giving/history/giving-contributions-copy.js'), 'utf8');
-const dossierHelp = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.js'), 'utf8');
-const dossierHelpCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.css'), 'utf8');
-const campaignDirectory = fs.readFileSync(path.join(root, 'server/giving/campaign-directory.js'), 'utf8');
-const constants = fs.readFileSync(path.join(root, 'server/giving/constants.js'), 'utf8');
-const xlsx = fs.readFileSync(path.join(root, 'app/giving/history/giving-xlsx.js'), 'utf8');
+const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+const html = read('app/giving/history/index.html');
+const app = read('app/giving/history/giving-app.js');
+const apiClient = read('app/giving/history/giving-api.js');
+const css = read('app/giving/history/giving.css');
+const polish = read('app/giving/history/giving-polish.css');
+const bootstrap = read('app/giving/history/giving-bootstrap.js');
+const leftRailOrder = read('app/giving/history/giving-left-rail-order.js');
+const contactQueue = read('app/giving/history/giving-contact-queue-v2.js');
+const runSettled = read('app/giving/history/giving-run-settled.js');
+const searchControls = read('app/giving/history/giving-search-controls.js');
+const searchControlsCss = read('app/giving/history/giving-search-controls.css');
+const campaignTools = read('app/giving/history/giving-campaign-tools-v3.js');
+const campaignToolsCss = read('app/giving/history/giving-campaign-tools-v3.css');
+const uxShell = read('app/giving/history/giving-ux-resilience-shell.js');
+const uxCss = read('app/giving/history/giving-ux-resilience.css');
+const clarityCss = read('app/giving/history/giving-clarity.css');
+const amountFilter = read('app/giving/history/giving-contribution-amount-filter.js');
+const contributionsCopy = read('app/giving/history/giving-contributions-copy.js');
+const visibleLanguage = read('app/giving/history/giving-visible-language.js');
+const dossierHelp = read('app/giving/history/giving-dossier-help.js');
+const dossierHelpCss = read('app/giving/history/giving-dossier-help.css');
+const campaignDirectory = read('server/giving/campaign-directory.js');
+const constants = read('server/giving/constants.js');
+const xlsx = read('app/giving/history/giving-xlsx.js');
 
 assert.match(html, /noindex,nofollow,noarchive,nosnippet/);
 assert.doesNotMatch(html, /analytics\.js|speed-insights\.js|https?:\/\//, 'private shell loads no telemetry or third-party assets');
 assert.match(html, /id="sessionMembrane"/);
 assert.doesNotMatch(html, /id="sessionMembrane"[^>]*\shidden/);
 assert.match(html, /id="operatorShell" hidden/);
-assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260815-2"><\/script>/);
-assert.match(html, /href="\.\/giving-polish\.css\?v=20260813-1"/);
-assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260815-2'/);
+assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260816-2"><\/script>/);
+assert.match(html, /href="\.\/giving-polish\.css\?v=20260816-2"/);
+assert.match(html, /href="\.\/giving\.css\?v=20260816-2"/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-2'/);
 for (const asset of [
-  'giving-left-rail-order.js', 'giving-contact-queue.js', 'giving-export-menu.js', 'giving-app.js',
-  'giving-search-controls.js', 'giving-search-controls.css', 'giving-contribution-amount-filter.js',
-  'giving-campaign-tools-v2.js', 'giving-campaign-tools-v2.css', 'giving-contributions-copy.js', 'giving-dossier-help.js', 'giving-clarity.css'
+  'giving-left-rail-order.js', 'giving-export-menu.js', 'giving-contribution-amount-filter.js',
+  'giving-state-filter.js', 'giving-review-paging.js', 'giving-ux-resilience-shell.js',
+  'giving-run-settled.js', 'giving-contact-queue-v2.js', 'giving-app.js', 'giving-search-controls.js',
+  'giving-campaign-tools-v3.js', 'giving-visible-language.js', 'giving-contributions-copy.js',
+  'giving-date-sort.js', 'giving-dossier-help.js', 'giving-campaign-tools-v3.css',
+  'giving-search-controls.css', 'giving-state-filter.css', 'giving-clarity.css', 'giving-ux-resilience.css'
 ]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated epoch`);
-assert.ok(bootstrap.indexOf('giving-left-rail-order.js') < bootstrap.indexOf('giving-contact-queue.js'), 'left rail DOM order is established before other Giving controls install');
+assert.ok(bootstrap.indexOf('giving-left-rail-order.js') < bootstrap.indexOf('giving-ux-resilience-shell.js'), 'left rail DOM order is established before resilience shell composition');
+assert.ok(bootstrap.indexOf('giving-run-settled.js') < bootstrap.indexOf('giving-contact-queue-v2.js'), 'terminal run signal is installed before queued-search orchestration');
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'), 'amount filter installs at the API boundary before the core client is constructed');
 assert.match(leftRailOrder, /rail\.insertBefore\(searchTerms, rail\.firstElementChild\)/);
 assert.match(leftRailOrder, /searchTerms\.after\(campaignLookup\)/);
@@ -67,7 +76,7 @@ assert.match(html, /id="bulkGivingHistoryButton"/);
 assert.match(html, /id="exportCampaignDeputyBundleButton"/);
 assert.match(html, /id="exportSpreadsheetButton"/);
 assert.match(html, /id="exportReviewedSummaryButton"/);
-for (const key of ['contributor', 'committee', 'amount', 'status']) {
+for (const key of ['contributor', 'committee', 'date', 'amount', 'status']) {
   assert.match(html, new RegExp(`data-review-sort="${key}"`));
 }
 
@@ -112,6 +121,7 @@ assert.match(html, /Source failures and partial coverage/i);
 assert.match(apiClient, /GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000/);
 assert.match(apiClient, /operation === 'search\.page'/);
 assert.match(apiClient, /campaign-deputy\.ensure-committee/);
+assert.match(apiClient, /body\?\.session\?\.intent_nonce/, 'mutation client accepts rotated session intent from the response envelope');
 
 assert.match(css, /@media \(max-width: 760px\)/);
 assert.match(css, /@media \(max-width: 430px\)/);
@@ -136,13 +146,18 @@ assert.match(contactQueue, /one per line for a list; commas stay inside names/);
 assert.match(contactQueue, /use current sources at run/);
 assert.match(contactQueue, /queueMessage\('Enter a contact name first\.'/);
 assert.match(contactQueue, /Select at least one source before running the queue/);
-assert.match(contactQueue, /if \(index > 0\) setHold\(true\)/, 'later queued contacts accumulate as partitioned targets');
+assert.match(contactQueue, /setHold\(index > 0 \? true : originalHold\)/, 'later queued contacts accumulate as partitioned targets');
 assert.match(contactQueue, /td613:giving-select-target/);
 assert.match(contactQueue, /td613:giving-clear-all/);
-assert.match(contactQueue, /fec-schedule-a/, 'OpenFEC client diagnostics are surfaced beside retryable source failures');
+assert.match(contactQueue, /td613:giving-run-settled/);
+assert.match(contactQueue, /SOURCE HOLD/);
+assert.match(contactQueue, /CLIENT HOLD/);
 assert.match(contactQueue, /queue\.length >= 5/);
 assert.match(contactQueue, /exact\.textContent = 'Exact'/);
 assert.match(contactQueue, /stopButton\.hidden = !queueRunning/);
+assert.match(runSettled, /cardsTerminal/);
+assert.match(runSettled, /held_sources/);
+assert.match(runSettled, /td613:giving-run-settled/);
 
 assert.match(searchControls, /DEFAULT_DATE_FROM = '2020-01-01'/);
 assert.match(searchControls, /id = 'clearSearchButton'/);
@@ -178,12 +193,14 @@ assert.match(contributionsCopy, /Identity Review/);
 assert.match(contributionsCopy, /Contributions/);
 assert.match(contributionsCopy, /holdReviewButton/);
 assert.match(contributionsCopy, /toastStack/);
+assert.match(visibleLanguage, /textContent = 'Match'/);
 
+assert.match(campaignTools, /value="FEDERAL"|FEDERAL/);
+assert.match(campaignTools, /Promise\.allSettled/);
 assert.match(campaignTools, /Load committee → Contributions/);
 assert.match(campaignTools, /Load candidate → Contributions/);
 assert.match(campaignTools, /campaign-deputy\.ensure-committee/);
 assert.match(campaignTools, /syncLoadedCommittee/);
-assert.match(campaignTools, /id === 'syncLoadedCommitteeButton'/);
 assert.match(campaignTools, /bulkSyncExactContacts/);
 assert.match(campaignTools, /matches\.length !== 1/, 'multi-contact sync holds missing and ambiguous Campaign Deputy identities');
 assert.match(campaignTools, /no exact Campaign Deputy person/);
@@ -191,10 +208,18 @@ assert.match(campaignTools, /ambiguous exact Campaign Deputy name/);
 assert.match(campaignTools, /linkCommitteeForCurrentTarget/);
 assert.doesNotMatch(campaignTools, /create-confirmed|Create person/, 'bulk exact-contact gesture cannot silently create Campaign Deputy people');
 assert.match(campaignTools, /aggregate organization context/);
+assert.match(campaignTools, /include_opensecrets: index === 0/);
 assert.doesNotMatch(campaignTools, /createElement\('style'\)/, 'campaign tools styling cannot depend on CSP-blocked inline style injection');
 assert.match(campaignToolsCss, /\.campaign-directory-panel/);
 assert.match(campaignToolsCss, /\.campaign-deputy-sync-tools/);
 assert.match(campaignToolsCss, /\.loaded-campaign-context/);
+assert.match(uxShell, /campaign-directory-jurisdiction/);
+assert.match(uxShell, /campaignDirectoryStateAll/);
+assert.match(uxShell, /campaignDirectoryMunicipalAll/);
+assert.match(uxShell, /vaultChildLegibleGuide/);
+assert.match(uxShell, /committee-ledger-toolbar/);
+assert.match(uxCss, /\.vault-child-legible-guide/);
+assert.match(uxCss, /\.committee-ledger-toolbar/);
 assert.match(clarityCss, /\.readiness-tooltip/);
 assert.match(clarityCss, /\.contact-queue-list\.contact-queue-scrollbox/);
 
@@ -231,6 +256,7 @@ assert.match(campaignDirectory, /AGGREGATE_ORGANIZATION_INTELLIGENCE_NOT_INDIVID
 assert.match(campaignDirectory, /REVIEWED_FEC_COMMITTEE_IDENTITY_TO_CAMPAIGN_DEPUTY_LIST/);
 assert.match(campaignDirectory, /external_contribution_created: false/);
 assert.match(campaignDirectory, /fec_committee_id/);
+assert.match(campaignDirectory, /includeOpenSecrets = payload\.include_opensecrets !== false/);
 assert.match(constants, /OPENSECRETS_API_KEY/);
 assert.match(constants, /www\.opensecrets\.org/);
 assert.doesNotMatch(constants, /opensecrets[^\n]*source_instance/i, 'OpenSecrets enrichment is not registered as a donor-transaction source');
@@ -246,4 +272,3 @@ const clientIdReferences = [...app.matchAll(/\$\('#([^']+)'\)/g)].map((match) =>
 assert.deepEqual([...new Set(clientIdReferences.filter((id) => !htmlIds.has(id)))], [], 'every direct core-client DOM reference exists in the private shell');
 
 console.log('giving-client-surface.test.mjs passed');
-
