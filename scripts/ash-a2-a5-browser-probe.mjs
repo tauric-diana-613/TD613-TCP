@@ -37,13 +37,15 @@ source = replaceExactly(
   "    await button.click();\n    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
   `    await button.focus();
     await page.waitForFunction(expected => {
-      const control = document.querySelector('#ashAiaMembrane [data-aia-route="' + expected + '"]');
-      return control === document.activeElement
-        && control?.isConnected
+      const control = document.activeElement;
+      return control?.dataset?.aiaRoute === expected
+        && control.isConnected
         && typeof control.onclick === 'function';
-    }, route);
+    }, route, { timeout:5_000 });
     await page.evaluate(expected => {
-      const control = document.querySelector('#ashAiaMembrane [data-aia-route="' + expected + '"]');
+      const control = document.activeElement?.dataset?.aiaRoute === expected
+        ? document.activeElement
+        : null;
       if (!control) throw new Error('A15 A2-A6 semantic route control unavailable before keyboard activation.');
       const trace = {
         expected_route:expected,
@@ -146,7 +148,7 @@ if (!source.includes('entry_exact_case_reconcile')
 }
 if (!source.includes('await button.focus()')
   || !source.includes("await page.keyboard.press('Enter')")
-  || !source.includes('control === document.activeElement')
+  || !source.includes("control?.dataset?.aiaRoute === expected")
   || !source.includes("typeof control.onclick === 'function'")) {
   throw new Error('A15 A2-A6 native route activation adapter failed to compile.');
 }
