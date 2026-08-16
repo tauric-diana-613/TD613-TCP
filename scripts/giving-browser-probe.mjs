@@ -20,7 +20,7 @@ await fs.mkdir(artifactDir, { recursive: true });
 
 const executablePath = String(process.env.TD613_BROWSER_EXECUTABLE_PATH || '').trim();
 const browser = await engine.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
-const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+const context = await browser.newContext({ viewport: { width: 1600, height: 1000 }, reducedMotion: 'reduce' });
 const page = await context.newPage();
 const consoleErrors = [];
 const failedResources = [];
@@ -32,6 +32,127 @@ page.on('console', (message) => {
 });
 page.on('pageerror', (error) => consoleErrors.push(error.message));
 page.on('response', (response) => { if (response.status() >= 400) failedResources.push({ status: response.status(), url: response.url() }); });
+
+async function exposeOperatorShell() {
+  await page.evaluate(() => {
+    document.documentElement.dataset.session = 'open';
+    document.querySelector('#sessionMembrane')?.setAttribute('hidden', '');
+    document.querySelector('#operatorShell')?.removeAttribute('hidden');
+  });
+}
+
+async function witnessResilienceUi() {
+  await exposeOperatorShell();
+  await page.waitForSelector('.campaign-scope-block', { state: 'attached', timeout: 30000 });
+  await page.waitForSelector('#vaultGuide', { state: 'attached', timeout: 10000 });
+  await page.waitForSelector('.committee-ledger-toolbar', { state: 'attached', timeout: 10000 });
+
+  const structure = await page.evaluate(() => {
+    const scope = document.querySelector('#campaignDirectoryJurisdiction');
+    const stateCount = document.querySelector('#campaignDirectoryStateCount');
+    const stateInputs = [...document.querySelectorAll('#campaignDirectoryStateMenu input[type="checkbox"]')];
+    return {
+      jurisdictionTag: scope?.tagName,
+      scopeClass: scope?.className || '',
+      jurisdictions: [...document.querySelectorAll('[name="campaign-directory-jurisdiction"]')].map((input) => ({ value: input.value, checked: input.checked })),
+      activity: [...document.querySelectorAll('[name="campaign-directory-activity"]')].map((input) => ({ value: input.value, checked: input.checked })),
+      stateSummary: stateCount?.textContent?.trim() || '',
+      stateSummaryHidden: Boolean(stateCount?.hidden),
+      checkedStates: stateInputs.filter((input) => input.checked).map((input) => input.value),
+      vaultBeats: [...document.querySelectorAll('#vaultGuide .vault-beats strong')].map((node) => node.textContent.trim()),
+      matchOption: document.querySelector('#reviewFilter option[value="CANDIDATE"]')?.textContent?.trim() || '',
+      candidateLegend: document.querySelector('#view-review .legend [data-state="CANDIDATE"]')?.textContent?.trim() || '',
+      toolbar: Boolean(document.querySelector('.committee-ledger-toolbar')),
+      toolbarLabels: [...document.querySelectorAll('.committee-ledger-toolbar .committee-toolbar-group')].map((node) => node.dataset.label),
+      forensicLabel: document.querySelector('.committee-forensic-menu > summary')?.textContent?.trim() || '',
+      coverageNote: document.querySelector('#dateCoverageNote')?.textContent?.trim() || ''
+    };
+  });
+
+  assert.equal(structure.jurisdictionTag, 'DIV', 'legacy single-jurisdiction select must be replaced by the multi-select scope shell');
+  assert.match(structure.scopeClass, /campaign-scope-block/);
+  assert.deepEqual(structure.jurisdictions.map((item) => item.value), ['FEDERAL', 'STATE', 'MUNICIPAL']);
+  assert.equal(structure.jurisdictions.find((item) => item.value === 'FEDERAL')?.checked, true);
+  assert.deepEqual(structure.activity.map((item) => item.value), ['CONTRIBUTIONS', 'EXPENDITURES']);
+  assert.equal(structure.activity.find((item) => item.value === 'CONTRIBUTIONS')?.checked, true);
+  assert.equal(structure.stateSummary, 'FL');
+  assert.equal(structure.stateSummaryHidden, false);
+  assert.deepEqual(structure.checkedStates, ['FL']);
+  assert.deepEqual(structure.vaultBeats, ['Lock here', 'Store the sealed copy', 'Unlock here']);
+  assert.equal(structure.matchOption, 'Match');
+  assert.equal(structure.candidateLegend.toLowerCase(), 'match');
+  assert.equal(structure.toolbar, true);
+  assert.deepEqual(structure.toolbarLabels, ['List', 'View', 'Export']);
+  assert.equal(structure.forensicLabel, 'Forensic ▾');
+  assert.match(structure.coverageNote, /Each custodian receipt/);
+
+  await page.locator('#campaignDirectoryStateClear').click();
+  const cleared = await page.evaluate(() => ({
+    checked: [...document.querySelectorAll('#campaignDirectoryStateMenu input[type="checkbox"]:checked')].map((input) => input.value),
+    summaryHidden: Boolean(document.querySelector('#campaignDirectoryStateCount')?.hidden),
+    federalChecked: Boolean(document.querySelector('[name="campaign-directory-jurisdiction"][value="FEDERAL"]')?.checked),
+    stateLaneChecked: Boolean(document.querySelector('[name="campaign-directory-jurisdiction"][value="STATE"]')?.checked)
+  }));
+  assert.deepEqual(cleared.checked, [], 'Clear must not silently reselect a state');
+  assert.equal(cleared.summaryHidden, true, 'state summary disappears when nothing is selected');
+  assert.equal(cleared.federalChecked, true, 'clearing state filters must not disable Federal lookup');
+  assert.equal(cleared.stateLaneChecked, false, 'State lane remains independently opt-in');
+
+  const fl = page.locator('#campaignDirectoryStateMenu input[type="checkbox"][value="FL"]');
+  if (await fl.count()) await fl.check();
+
+  const tooltip = page.locator('#readinessTooltip');
+  const readinessButton = page.locator('#readinessButton');
+  const tooltipStyle = await tooltip.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return { width: node.getBoundingClientRect().width, transitionDelay: style.transitionDelay, opacity: style.opacity };
+  });
+  assert.ok(tooltipStyle.width <= 241, `readiness tooltip should remain narrow, observed ${tooltipStyle.width}px`);
+  assert.match(tooltipStyle.transitionDelay, /0\.5s|500ms/, 'hover path keeps the deliberate ~500ms delay');
+  await readinessButton.focus();
+  await page.waitForTimeout(90);
+  assert.equal(await tooltip.evaluate((node) => getComputedStyle(node).opacity), '1', 'keyboard focus reveals readiness help immediately');
+
+  await page.evaluate(() => {
+    document.querySelector('#view-review')?.setAttribute('hidden', '');
+    document.querySelector('#view-review')?.classList.remove('active');
+    document.querySelector('#view-ledger')?.removeAttribute('hidden');
+    document.querySelector('#view-ledger')?.classList.add('active');
+  });
+  await page.waitForSelector('.committee-ledger-toolbar', { state: 'visible', timeout: 10000 });
+  await page.waitForSelector('#exportCampaignDeputyBundleButton', { state: 'visible', timeout: 10000 });
+
+  const desktopOverflow = await page.evaluate(() => ({
+    viewport: window.innerWidth,
+    document: document.documentElement.scrollWidth,
+    body: document.body.scrollWidth,
+    toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0
+  }));
+  assert.ok(desktopOverflow.document <= desktopOverflow.viewport + 1, `desktop document overflowed: ${JSON.stringify(desktopOverflow)}`);
+  assert.ok(desktopOverflow.body <= desktopOverflow.viewport + 1, `desktop body overflowed: ${JSON.stringify(desktopOverflow)}`);
+  assert.ok(desktopOverflow.toolbarRight <= desktopOverflow.viewport + 1, `desktop Committee toolbar overflowed: ${JSON.stringify(desktopOverflow)}`);
+
+  await page.screenshot({ path: path.join(artifactDir, 'giving-history-desktop.png'), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(100);
+  const mobile = await page.evaluate(() => ({
+    viewport: window.innerWidth,
+    document: document.documentElement.scrollWidth,
+    body: document.body.scrollWidth,
+    toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0,
+    scopeRight: document.querySelector('.campaign-scope-block')?.getBoundingClientRect().right || 0,
+    vaultRight: document.querySelector('#vaultGuide')?.getBoundingClientRect().right || 0
+  }));
+  assert.ok(mobile.document <= mobile.viewport + 1, `mobile document overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.body <= mobile.viewport + 1, `mobile body overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.toolbarRight <= mobile.viewport + 1, `mobile Committee toolbar overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.scopeRight <= mobile.viewport + 1, `mobile campaign scope overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.vaultRight <= mobile.viewport + 1, `mobile Vault guide overflowed: ${JSON.stringify(mobile)}`);
+  await page.screenshot({ path: path.join(artifactDir, 'giving-history-mobile.png'), fullPage: true });
+  await page.setViewportSize({ width: 1600, height: 1000 });
+
+  return { desktop: desktopOverflow, mobile, structure };
+}
 
 try {
   const readiness = production
@@ -55,23 +176,8 @@ try {
   assert.equal(await page.locator('#exportCampaignDeputyBundleButton').count(), 1);
   assert.equal(await page.locator('#bulkGivingHistoryButton').count(), 1);
 
-  if (!production) {
-    await page.evaluate(() => {
-      document.documentElement.dataset.session = 'open';
-      document.querySelector('#sessionMembrane')?.setAttribute('hidden', '');
-      document.querySelector('#operatorShell')?.removeAttribute('hidden');
-      document.querySelector('#view-review')?.removeAttribute('hidden');
-      document.querySelector('#view-review')?.classList.add('active');
-    });
-    await page.waitForSelector('#reviewExportCampaignDeputyButton', { state: 'visible', timeout: 30000 });
-    await page.evaluate(() => {
-      document.querySelector('#view-review')?.setAttribute('hidden', '');
-      document.querySelector('#view-review')?.classList.remove('active');
-      document.querySelector('#view-ledger')?.removeAttribute('hidden');
-      document.querySelector('#view-ledger')?.classList.add('active');
-    });
-    await page.waitForSelector('#exportCampaignDeputyBundleButton', { state: 'visible', timeout: 10000 });
-  }
+  let resilienceWitness = null;
+  if (!production) resilienceWitness = await witnessResilienceUi();
 
   const mapper = await page.evaluate(async () => {
     const module = await import('/app/giving/history/giving-campaign-deputy-import.js');
@@ -101,15 +207,18 @@ try {
   assert.equal(mapper.oneCommitteePerImport, true);
   assert.deepEqual(mapper.zipMagic, [80, 75, 3, 4]);
 
-  await page.screenshot({ path: path.join(artifactDir, 'giving-history.png'), fullPage: true });
+  if (production) await page.screenshot({ path: path.join(artifactDir, 'giving-history.png'), fullPage: true });
   const receipt = {
-    schema: 'td613.giving.browser-witness/v1',
+    schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
     production,
     route: '/giving/history/',
     source_packet_commit: sourcePacketCommit || null,
     production_readiness_attempt: readiness?.attempt || null,
     campaign_deputy_exports: 'PASS',
+    resilience_ui: resilienceWitness ? 'PASS' : 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
+    desktop_viewport: resilienceWitness ? '1600x1000' : null,
+    mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,
     one_committee_per_import: true,
     person_id_mapping: false,
