@@ -209,7 +209,7 @@ export async function givingHandler(req, res, context = {}) {
     if (MUTATION_OPERATIONS.has(envelope.operation)) {
       requireIntentNonce(envelope, session);
       if (envelope.operation !== 'session.close') {
-        cisternPreflight = assertGivingCisternRoute(envelope, session);
+        cisternPreflight = await assertGivingCisternRoute(envelope, session, context);
         const rotated = rotateSessionIntent(session);
         rotatedSession = rotated.payload;
         rotatedCookie = rotated.cookie;
