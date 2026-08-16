@@ -35,7 +35,8 @@ const SCOPE_NEUTRAL = new Set([
   'app/engine/pedagogue-design-gate.js',
   'app/engine/aia-cistern-law.js',
   'tests/fixtures/pedagogue/giving-vault-design.json',
-  'tests/fixtures/pedagogue/giving-research-dossier-design.json'
+  'tests/fixtures/pedagogue/giving-research-dossier-design.json',
+  'tests/fixtures/pedagogue/cistern-boundary-design.json'
 ]);
 
 function normalizedPath(value) {
