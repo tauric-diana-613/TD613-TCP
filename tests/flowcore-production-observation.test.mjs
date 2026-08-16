@@ -10,17 +10,22 @@ const stationEngine = fs.readFileSync('app/engine/flowcore-station-propagation.j
 const workflowDirectory = fs.readdirSync('.github/workflows');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
-test('Flow-Core cross-browser evidence lives in one explicit exact-head dispatch', () => {
+test('Flow-Core cross-browser evidence starts at the front of one exact-head dispatch and converges once', () => {
   assert.match(consolidatedWorkflow, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
   assert.match(consolidatedWorkflow, /mode:\s*[\s\S]*full-browser/);
   assert.match(consolidatedWorkflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
   assert.match(consolidatedWorkflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-  assert.match(consolidatedWorkflow, /playwright install --with-deps chromium firefox webkit/);
+  assert.match(consolidatedWorkflow, /ash_browser_shard:[\s\S]*?needs: scope/);
+  assert.match(consolidatedWorkflow, /browser: \[chromium, firefox, webkit\]/);
+  assert.match(consolidatedWorkflow, /max-parallel: 3/);
+  assert.match(consolidatedWorkflow, /Run core extended and Flow-Core lanes in parallel/);
   assert.match(consolidatedWorkflow, /flowcore-runtime-browser-probe\.mjs/);
-  assert.match(consolidatedWorkflow, /TD613_BROWSERS: chromium,firefox,webkit/);
-  assert.match(consolidatedWorkflow, /TD613_PRODUCTION_OBSERVATION: 'false'/);
-  assert.match(consolidatedWorkflow, /td613-exact-head-browser-receipts/);
-  assert.doesNotMatch(consolidatedWorkflow, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
+  assert.match(consolidatedWorkflow, /TD613_BROWSERS="\$browser"/);
+  assert.match(consolidatedWorkflow, /TD613_PRODUCTION_OBSERVATION='false'/);
+  assert.match(consolidatedWorkflow, /td613-browser-shard-\$\{\{ matrix\.browser \}\}/);
+  assert.match(consolidatedWorkflow, /Collect surviving browser evidence shards/);
+  assert.match(consolidatedWorkflow, /needs: \[contracts, scope, ash_browser_shard\]/);
+  assert.doesNotMatch(consolidatedWorkflow, /github\.event\.action == 'synchronize'[\s\S]*ash_browser_shard:[\s\S]*?playwright install/);
   assert.equal(workflowDirectory.includes('flowcore-production-observation.yml'), false,
     'Flow-Core production observation must not regain an independent workflow.');
   assert.equal(workflowDirectory.some(name => /repair-once|one-use|receipt-diagnostic/i.test(name)), false);
