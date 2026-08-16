@@ -24,6 +24,7 @@ assert.match(pagingLoader, /giving-page-size\.js\?v=20260814-1/, 'FEC page-size 
 assert.match(pagingLoader, /giving-fec-resilience\.js\?v=20260814-1/, 'FEC resilience repair must use a fresh browser asset epoch');
 
 const bootstrap = read('app/giving/history/giving-bootstrap.js');
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-2'/, 'Giving bootstrap must refresh the complete coordinated module graph');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-3'/, 'Giving bootstrap must refresh the complete coordinated module graph');
+assert.match(bootstrap, /giving-shared-access\.js/, 'Giving shared-access control must ship inside the coordinated browser module graph');
 
 console.log('giving-fec-boundary-page.test.mjs passed: one OpenFEC provider page per boundary with a one-replay no-progress fuse.');
