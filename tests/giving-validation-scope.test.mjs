@@ -25,7 +25,8 @@ assert.equal(classifyValidationScope([
   'scripts/run-pedagogue-design-gate.mjs',
   'tests/fixtures/pedagogue/giving-vault-design.json',
   'tests/fixtures/pedagogue/giving-research-dossier-design.json',
-  'tests/giving-ux-resilience.test.mjs'
+  'tests/giving-ux-resilience.test.mjs',
+  'tests/pedagogue-design-gate.test.mjs'
 ]).scope, 'giving', 'narrow additive Giving design/security witnesses must stay inside the Giving release lane');
 
 for (const unsafePath of [
@@ -46,3 +47,8 @@ assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).sc
 assert.equal(classifyValidationScope([]).scope, 'full', 'an empty diff fails closed to full validation');
 
 console.log('giving-validation-scope.test.mjs passed');
+
+// These imported contracts are intentionally chained through this existing CI/release
+// membrane so additive Giving design/security witnesses do not create a fifth workflow.
+await import('./giving-ux-resilience.test.mjs');
+await import('./pedagogue-design-gate.test.mjs');
