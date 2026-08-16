@@ -17,7 +17,7 @@ const BROWSER_SURFACES = [
   'app/giving/history/giving-visible-language.js'
 ];
 
-const INTERNAL_UI_TERMS = /\b(?:anisotrop(?:y|ic)|pedagogue|pedagogy|tomograph(?:y|ic)|holonomy|cistern law|springald|marrowline|gluing obstruction|projection crossings?|route holonomy)\b/i;
+const INTERNAL_UI_TERMS = /(?:\bAIA\b|child[- ]legible|\bflow-core\b|\bpedagogue\b|\bpedagogy\b|tomograph(?:y|ic)|\bholonomy\b|\bcistern law\b|\bspringald\b|\bmarrowline\b|\bEO-RFD\b|\bACEDIT\b|\bKira\b|gluing obstruction|projection crossings?|route holonomy|route memory)/i;
 
 test('Giving browser surfaces do not leak internal architecture nomenclature', async () => {
   for (const path of BROWSER_SURFACES) {
@@ -39,6 +39,8 @@ test('campaign lookup uses compact multi-jurisdiction controls and independent s
   assert.match(shell, /campaignDirectoryStateAll/);
   assert.match(shell, /campaignDirectoryMunicipalAll/);
   assert.match(shell, /name="campaign-directory-activity" value="CONTRIBUTIONS"/);
+  assert.match(shell, /id = 'vaultGuide'/);
+  assert.doesNotMatch(shell, /ChildLegible|child-legible/i);
   assert.match(tools, /new Set\(\['FL'\]\)/);
   assert.match(tools, /new Set\(\)/);
   assert.match(tools, /Promise\.allSettled/);
