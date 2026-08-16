@@ -12,6 +12,7 @@ const GIVING_PREFIXES = Object.freeze([
 const GIVING_EXACT = new Set([
   'api/giving.js',
   'docs/GIVING_HISTORY_ENGINE.md',
+  'docs/GIVING_UX_RESILIENCE_ROADMAP.md',
   'package.json',
   'package-lock.json',
   'tests/aperture-patch-bay.test.mjs',
