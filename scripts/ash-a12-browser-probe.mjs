@@ -64,6 +64,12 @@ source = replaceExactly(
 
 source = replaceExactly(
   source,
+  'const ENTRY_ATTEMPT_CEILING = 3;',
+  'const ENTRY_ATTEMPT_CEILING = entryPreflightOnly ? 1 : 3;',
+  'A12 single-attempt entry preflight'
+);
+source = replaceExactly(
+  source,
   \`      const existing = await page.evaluate(() => ({
         case_id:window.__td613AshKeep?.current?.()?.case_id || null,
         pointer:localStorage.getItem('td613.ash-keep.current-case'),
@@ -87,7 +93,7 @@ source = replaceExactly(
   \`      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation' || existing.case_closed === true) {\`,
   'A12 closed Investigation case reactivation'
 );`,
-  'A12 closed-case source transform injection'
+  'A12 bounded preflight and closed-case source transform injection'
 );
 
 source = replaceExactly(
@@ -167,6 +173,9 @@ for (const marker of REQUIRED_A12_STATIC_MARKERS) {
 }
 if (!source.includes('existing.case_closed === true') || !source.includes("case_closed:document.body.dataset.ashCaseClosed === 'true'")) {
   throw new Error('A12 closed-case reactivation hardening did not compile into the wrapper.');
+}
+if (!source.includes('ENTRY_ATTEMPT_CEILING = entryPreflightOnly ? 1 : 3')) {
+  throw new Error('A12 single-attempt diagnostic preflight hardening did not compile into the wrapper.');
 }
 if (source.includes("throw new Error('A12 present-state convergence rebind was not admitted.')")) {
   throw new Error('A12 in-flight convergence hardening left the obsolete immediate begin() failure gate in generated witness source.');
