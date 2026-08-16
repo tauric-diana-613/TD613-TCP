@@ -43,8 +43,11 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-await import(epochUrl('./giving-review-paging.js'));
+// The consequence-first shell must hydrate independently of retrieval
+// instrumentation. A paging/fetch shim may fail closed without hiding the
+// child-legible Campaign/Research/Vault structure from the operator.
 await import(epochUrl('./giving-ux-resilience-shell.js'));
+await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-app.js'));
