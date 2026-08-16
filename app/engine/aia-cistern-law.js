@@ -1,5 +1,7 @@
-export const AIA_CISTERN_LAW_SCHEMA = 'td613.aia.cistern-law/v0.2';
-export const AIA_CISTERN_RECEIPT_SCHEMA = 'td613.aia.cistern-receipt/v0.2';
+import { comparePedagogueRouteMemory } from './flowcore-pedagogue-route-memory.js';
+
+export const AIA_CISTERN_LAW_SCHEMA = 'td613.aia.cistern-law/v0.3';
+export const AIA_CISTERN_RECEIPT_SCHEMA = 'td613.aia.cistern-receipt/v0.3';
 
 function cleanSteps(steps, label) {
   if (!Array.isArray(steps) || !steps.length) throw new TypeError(`${label} must contain at least one route step.`);
@@ -10,23 +12,43 @@ function cleanSteps(steps, label) {
   });
 }
 
+function cleanContexts(contexts = []) {
+  if (!Array.isArray(contexts)) throw new TypeError('contexts must be an array.');
+  return Object.freeze(contexts.map((context, index) => {
+    if (!context || typeof context !== 'object' || Array.isArray(context)) throw new TypeError(`contexts[${index}] must be an object.`);
+    const source = String(context.source || '').trim();
+    const digest = String(context.digest || '').trim();
+    const authorityEffect = String(context.authority_effect || 'NONE').trim().toUpperCase();
+    if (!source || source.length > 120) throw new TypeError(`contexts[${index}].source must be bounded.`);
+    if (digest && digest.length > 160) throw new TypeError(`contexts[${index}].digest must be bounded.`);
+    if (authorityEffect !== 'NONE') throw new TypeError('Observed context may not grant Cistern release authority.');
+    return Object.freeze({
+      source,
+      digest: digest || null,
+      authority_effect: 'NONE',
+      route_context_only: true
+    });
+  }));
+}
+
 export function compareCisternRouteMemory(expectedRoute, observedRoute) {
   const expected = cleanSteps(expectedRoute, 'expectedRoute');
   const observed = cleanSteps(observedRoute, 'observedRoute');
-  const max = Math.max(expected.length, observed.length);
-  const deltas = [];
-  for (let index = 0; index < max; index += 1) {
-    if (expected[index] !== observed[index]) {
-      deltas.push({ index, expected: expected[index] || null, observed: observed[index] || null });
-    }
-  }
+  const comparison = comparePedagogueRouteMemory(expected, observed, {
+    expectedEndpoint: 'CISTERN_GOVERNED_CONSEQUENCE',
+    observedEndpoint: 'CISTERN_GOVERNED_CONSEQUENCE'
+  });
   return Object.freeze({
     same_endpoint_not_same_history: true,
+    same_endpoint_history_diverged: comparison.same_endpoint_not_same_history,
     expected,
     observed,
-    exact_route_match: deltas.length === 0,
-    deltas,
-    route_holonomy_posture: deltas.length === 0 ? 'LAWFUL_ROUTE_MEMORY' : 'NON_EQUIVALENT_ROUTE_MEMORY'
+    exact_route_match: comparison.exact_route_match,
+    edit_distance_steps: comparison.edit_distance_steps,
+    first_divergence_index: comparison.first_divergence_index,
+    deltas: comparison.deltas,
+    route_holonomy_posture: comparison.exact_route_match ? 'LAWFUL_ROUTE_MEMORY' : 'NON_EQUIVALENT_ROUTE_MEMORY',
+    pedagogue_route_memory_schema: comparison.schema
   });
 }
 
@@ -36,6 +58,7 @@ export function compileCisternLawReceipt({
   expectedRoute,
   observedRoute,
   witness = {},
+  contexts = [],
   requestDigest = null,
   sessionDigest = null,
   spentIntentDigest = null,
@@ -47,6 +70,7 @@ export function compileCisternLawReceipt({
   const actionName = String(action || '').trim();
   if (!boundaryName || !actionName) throw new TypeError('Cistern receipt requires boundary and action.');
   const route = compareCisternRouteMemory(expectedRoute, observedRoute);
+  const contextWitnesses = cleanContexts(contexts);
   const witnessState = {
     human_required: witness.human_required !== false,
     human_observed: witness.human_observed === true,
@@ -70,6 +94,7 @@ export function compileCisternLawReceipt({
     fabricated_decoys: false,
     route,
     witness: witnessState,
+    context_witnesses: contextWitnesses,
     request_digest: requestDigest,
     session_digest: sessionDigest,
     spent_intent_digest: spentIntentDigest,
@@ -79,6 +104,7 @@ export function compileCisternLawReceipt({
     authority: {
       endpoint_equivalence_forbidden: true,
       route_equivalence_required_for_release: true,
+      context_cannot_grant_release: true,
       automatic_release_forbidden: true,
       human_closure_required: witnessState.human_required
     }
@@ -103,7 +129,8 @@ export const AIA_CISTERN_LAW = Object.freeze({
   internal_legibility: 'CHILD_LEGIBLE_NOW_WHY_EXACT',
   unauthorized_posture: 'LOW_INFORMATION_NON_AUTHORITATIVE_REFUSAL',
   fabricated_decoys: false,
-  route_memory: 'SAME_ENDPOINT_DOES_NOT_IMPLY_SAME_ROUTE_OR_SAME_AUTHORITY',
+  route_memory: 'PEDAGOGUE_CORE_ROUTE_MEMORY; SAME_ENDPOINT_DOES_NOT_IMPLY_SAME_ROUTE_OR_SAME_AUTHORITY',
+  observed_context: 'MAY_INFORM_OR_ANNOTATE; NEVER_GRANTS_RELEASE_AUTHORITY',
   replay: 'DURABLE_SPENT_INTENT_REQUIRED_FOR_NON_IDEMPOTENT_WRITES; SIGNED_SESSION_ROTATION_IS_NOT_A_TOMBSTONE',
   automatic_redesign: false,
   automatic_release: false,
