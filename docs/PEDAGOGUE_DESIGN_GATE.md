@@ -21,13 +21,13 @@ Do **not** use the gate to diagnose a user, assign a universal usability score, 
 Run a fixture through the existing Pedagogue cycle, AIA route compiler, and comparative route-burden models:
 
 ```bash
-npm run pedagogue:design -- tests/fixtures/pedagogue/giving-vault-design.json
+node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-vault-design.json
 ```
 
 For the complete machine-readable review:
 
 ```bash
-npm run pedagogue:design -- tests/fixtures/pedagogue/giving-vault-design.json --json
+node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-vault-design.json --json
 ```
 
 The runner returns PASS only when the fixture preserves consequence-before-ontology, rest/exit, AIA non-equivalence, non-worsening comparative route burden, the prohibition on user-level scoring/automatic redesign, and human closure.
