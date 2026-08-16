@@ -47,6 +47,7 @@ const REQUIRED_A15_STATIC_MARKERS = Object.freeze([
   'provider_matrix_cells_per_profile:20',
   'result.answers.length !== 20',
   'matrix_cells:snapshot.empirical_matrix_cells',
+  'matrix_cells:120',
   'result.matrix_cells !== 120',
   '__td613AshA15EmpiricalJourneys?.compile?.({',
   "context:{ email:'person@example.com' }",
