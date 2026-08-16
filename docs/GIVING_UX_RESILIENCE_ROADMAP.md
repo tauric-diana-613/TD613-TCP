@@ -2,7 +2,8 @@
 
 **PR:** #640 · `agent/giving-ux-resilience` → `main`  
 **Operator authorization:** implement all items below, merge to `main`, and deploy exactly once to Vercel after verification.  
-**Release scope:** Giving-only. Do not run Ash, Dome, Flow, A14, full-repository, or self-hosted product witnesses.
+**Original release scope:** Giving-only. Do not run Ash, Dome, Flow, A14, full-repository, or self-hosted product witnesses.  
+**Implementation amendment:** the operator later expanded the same PR to include generic Pedagogue/AIA/Cistern/Aperture mechanics. Preserve this original A1–B10 packet and read [`GIVING_UX_RESILIENCE_EXPANSION_20260816.md`](./GIVING_UX_RESILIENCE_EXPANSION_20260816.md) for the approved shared-engine scope and revised validation law.
 
 This file is the authoritative handoff if the originating agent runs out of usage. Preserve the operator’s order: complete Priority A before spending time on Priority B.
 
@@ -162,10 +163,10 @@ Browser:
 
 1. Commit Priority A first as a coherent continuation milestone.
 2. Complete Priority B and update this checklist.
-3. Run Giving-only CI; resolve every actionable PR thread.
+3. Run the validation scope required by the original packet plus the approved expansion amendment; do not force shared-core changes into a fake Giving-only classification.
 4. Mark ready; squash-merge exact reviewed head.
 5. Trigger exactly one `/td613-vercel-release PRODUCTION <merge_sha>` on established release issue.
-6. Require: `validation_scope = giving`, `deployment_count = 1`, `exact_source_content = PASS`, `production_giving_history = PASS`, unrelated witnesses `NOT_APPLICABLE`.
+6. Require: `deployment_count = 1`, `exact_source_content = PASS`, `production_giving_history = PASS`; report unchanged-product witness failures separately if the expanded shared-engine scope runs them.
 7. Verify relock commit and `"git": { "deploymentEnabled": false }` on `main`.
 
 ## Never regress
