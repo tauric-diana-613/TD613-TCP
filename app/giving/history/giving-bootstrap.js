@@ -32,6 +32,9 @@ try {
   // Dynamic imports below remain authoritative.
 }
 
+const apertureContext = await import(epochUrl('./giving-aperture-context.js'));
+apertureContext.installGivingApertureContext(globalThis);
+
 await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
