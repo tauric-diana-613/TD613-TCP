@@ -13,22 +13,73 @@ await fs.mkdir(artifactDir, { recursive:true });
 const browser = await browserType.launch({ headless:true });
 const receipts = [];
 
+async function activateInvestigationDemo(page) {
+  const profile = page.locator('#newProfile');
+  await profile.waitFor({ state:'attached', timeout:30_000 });
+  await profile.selectOption('investigation');
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.evaluate(() => { window.__td613A7A11EntryStability = null; });
+  await page.waitForFunction(() => {
+    const select = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
+    const ready = select?.value === 'investigation'
+      && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && button?.isConnected
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+    if (!ready) {
+      window.__td613A7A11EntryStability = null;
+      return false;
+    }
+    const signature = `${select.value}:${button.dataset.ashMethodDemoState}:${registry.control_owner}`;
+    const now = performance.now();
+    const prior = window.__td613A7A11EntryStability;
+    if (!prior || prior.signature !== signature || prior.button !== button || prior.select !== select) {
+      window.__td613A7A11EntryStability = { signature, button, select, since:now };
+      return false;
+    }
+    return now - prior.since >= 350;
+  }, null, { timeout:60_000, polling:25 });
+  await page.locator('#startDemo').click({ timeout:15_000 });
+}
+
 async function enterInvestigation(page) {
-  await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && Boolean(window.__td613AshPremiumUI?.version)
-    && document.getElementById('newProfile')
-    && document.getElementById('startDemo')
-    && document.title === 'TD613 Ash'
-    && location.pathname === '/dome-world/ash-threshold.html'
-    && !location.search, null, { timeout:90_000 });
-  await page.locator('#newProfile').selectOption('investigation');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60_000 });
-  await page.locator('#startDemo').click();
-  await page.waitForFunction(() => Boolean(window.__td613AshWholeInstrument?.version)
-    && Boolean(window.__td613AshA6Affordances?.version)
-    && document.documentElement.dataset.ashPremiumReady === 'true'
-    && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
+  let lastError = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
+      await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+        && Boolean(window.__td613AshPremiumUI?.version)
+        && Boolean(window.__td613AshDemoRegistry?.version)
+        && document.getElementById('newProfile')
+        && document.getElementById('startDemo')
+        && document.title === 'TD613 Ash'
+        && location.pathname === '/dome-world/ash-threshold.html'
+        && !location.search, null, { timeout:90_000 });
+      await page.waitForFunction(() => {
+        const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
+        return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
+          && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+          && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY';
+      }, null, { timeout:60_000 });
+      await activateInvestigationDemo(page);
+      await page.waitForFunction(() => Boolean(window.__td613AshWholeInstrument?.version)
+        && Boolean(window.__td613AshA6Affordances?.version)
+        && document.documentElement.dataset.ashPremiumReady === 'true'
+        && document.documentElement.dataset.ashPremiumWorkspace === 'home'
+        && (document.documentElement.dataset.ashDemoProfile === 'investigation'
+          || document.documentElement.dataset.ashDemoRegistryProfile === 'investigation'), null, { timeout:120_000 });
+      return;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await page.waitForTimeout(150);
+    }
+  }
+  throw new Error(`A7-A11 Investigation entry failed after 3 stable-registry attempts: ${String(lastError?.message || lastError)}`);
 }
 
 async function returnToMap(page, expectedFields = null) {

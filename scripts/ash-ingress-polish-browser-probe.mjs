@@ -16,19 +16,28 @@ const browser = await engine.launch({ headless:true });
 const context = await browser.newContext({ viewport:{ width:390, height:844 }, locale:'en-US', reducedMotion:'no-preference' });
 const page = await context.newPage();
 page.setDefaultTimeout(60_000);
-const errors = [], httpErrors = [], navigations = [];
+const errors = [], httpErrors = [], navigations = [], moduleFailures = [];
 page.on('pageerror', error => errors.push(error.message));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) httpErrors.push(`${response.status()} ${response.url()}`); });
+page.on('requestfailed', request => {
+  if (request.resourceType() === 'script') {
+    moduleFailures.push(`${request.failure()?.errorText || 'request failed'} ${request.url()}`);
+  }
+});
 page.on('framenavigated', frame => { if (frame === page.mainFrame()) navigations.push(frame.url()); });
 
 async function openKeep() {
   await page.goto(`${base}${canonicalPath}`, { waitUntil:'domcontentloaded' });
 }
 
-const report = { schema:'td613.ash.first-paint-browser/v0.4', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, navigations, observations:{} };
+const report = { schema:'td613.ash.first-paint-browser/v0.5-module-drain', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, module_failures:moduleFailures, navigations, observations:{} };
 try {
   await openKeep();
+  // The first navigation exists only to acquire this origin so storage can be reset.
+  // Let its ES-module graph settle before navigating away: WebKit otherwise reports a
+  // late aborted import after the evidence error buffer has been cleared.
+  await page.waitForFunction(() => document.documentElement.dataset.ashModuleGraph === 'ready');
   await page.evaluate(async () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -37,8 +46,10 @@ try {
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
   });
+  await page.goto('about:blank', { waitUntil:'load' });
   errors.length = 0;
   httpErrors.length = 0;
+  moduleFailures.length = 0;
   navigations.length = 0;
   await openKeep();
   await page.waitForFunction(() => window.__td613AshPostIngressMotionRestoration?.version
@@ -151,7 +162,8 @@ try {
   assert(workspace.overflow <= 2, `Mobile overflow after canonical-field repair: ${workspace.overflow}.`);
   await page.screenshot({ path:path.join(out, `${browserName}-single-canonical-field.png`), fullPage:true });
 
-  assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
+  assert(moduleFailures.length === 0, `Module request failures: ${moduleFailures.join(' | ')}`);
+  assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}${moduleFailures.length ? ` | module failures: ${moduleFailures.join(' | ')}` : ''}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
   report.observations = { ingress, selected, workspace };

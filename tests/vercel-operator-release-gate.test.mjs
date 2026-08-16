@@ -91,8 +91,15 @@ assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
-assert.match(consolidated, /for browser in chromium firefox webkit/);
+assert.match(consolidated, /ash_browser_shard:[\s\S]*?needs: scope/);
+assert.match(consolidated, /browser: \[chromium, firefox, webkit\]/);
+assert.match(consolidated, /max-parallel: 3/);
+assert.match(consolidated, /playwright install --with-deps "\$\{\{ matrix\.browser \}\}"/);
+assert.match(consolidated, /Run front-line A8 A12 and lifecycle preflight for this engine/);
+assert.match(consolidated, /Run core extended and Flow-Core lanes in parallel/);
+assert.match(consolidated, /td613-browser-shard-\$\{\{ matrix\.browser \}\}/);
+assert.match(consolidated, /Collect surviving browser evidence shards/);
+assert.match(consolidated, /needs: \[contracts, scope, ash_browser_shard\]/);
 assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(consolidated, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(consolidated, /giving-browser-probe\.mjs/);
@@ -110,4 +117,4 @@ assert.match(law, /scope-aligned three-engine evidence before merge/i);
 assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for A14');
+console.log('vercel-operator-release-gate.test.mjs passed for front-line shard premerge evidence and bounded A14 production confirmation');

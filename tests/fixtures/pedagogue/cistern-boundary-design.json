@@ -1,0 +1,99 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "aia-cistern-consequence-boundary",
+  "surface_reference": "AIA/Cistern Boundary",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-08-16T01:45:00Z",
+    "idSeed": "aia-cistern-consequence-boundary-v1",
+    "idScope": "AIA/Cistern Boundary"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "aia_cistern_boundary_v1",
+    "provenance": {
+      "source_references": ["app/engine/aia-cistern-law.js", "server/giving/cistern.js", "server/giving/intent-ledger.js"],
+      "evidence_basis": ["AIA route non-equivalence", "human-gated consequential release", "digest-only spent-intent refusal"],
+      "transformations": ["consequence before security terminology", "preserve route memory across endpoint arrival"],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "A consequential release waits until the operator can see what will cross, why it may cross, and which confirmation makes this exact route lawful.",
+      "surface_reference": "AIA/Cistern Boundary"
+    },
+    "available_affordances": [{
+      "action_id": "release_bounded_packet",
+      "purpose": "Release only the declared packet through the witnessed route and leave an inspectable receipt.",
+      "authorized_by_station": "Human",
+      "reversible": false
+    }],
+    "route_topology": {
+      "entry": "consequence notice",
+      "exit": "release receipt or refusal",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {"step_id":"cistern_notice","label":"See what would cross","phase":"NOTICE","required_fields":["destination","bounded consequence"],"dependencies":[],"legibility_millipoints":950,"affordance_millipoints":930,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+        {"step_id":"cistern_witness","label":"Witness the lawful route","phase":"ACT","required_fields":["identity/authority","route steps"],"dependencies":["cistern_notice"],"legibility_millipoints":930,"affordance_millipoints":940,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"cistern_confirm","label":"Confirm this consequence","phase":"WORLD_ANSWERS","required_fields":["short-lived intent","separate confirmation"],"dependencies":["cistern_witness"],"legibility_millipoints":940,"affordance_millipoints":950,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":2,"operator_action_required":true},
+        {"step_id":"cistern_receipt","label":"See release or refusal","phase":"TRANSFER","required_fields":["route result","egress digest","replay posture"],"dependencies":["cistern_confirm"],"legibility_millipoints":950,"affordance_millipoints":930,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":3,"operator_action_required":false}
+      ]
+    },
+    "causal_structure": {
+      "input": "declared consequential action plus human confirmation",
+      "operator": "AIA route-memory comparison and Cistern release gate",
+      "observable": "release or refusal receipt that preserves the route by which authority was acquired",
+      "authority": "TD613 governance; human closure; Dome-World scene host",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can a consequential security boundary remain child-legible internally while preserving non-equivalent route history and minimum disclosure externally?",
+      "hypothesis": "Consequence-first route disclosure plus explicit human confirmation will reduce operator burden without collapsing route authority into endpoint equivalence.",
+      "observable_behavior": ["operator can state what will cross before confirming","operator can distinguish release from refusal","operator can see that a replayed or alternate path lacks the original route authority"],
+      "alternative_explanations": ["shorter wording may improve scanability independently of AIA route structure","prior familiarity with confirmation dialogs may contribute to comprehension"],
+      "expected_failure_modes": ["endpoint arrival is treated as authorization","security jargon precedes consequence","a refusal leaks protected route structure","replay is inferred dead without a durable tombstone"],
+      "falsifier": ["operators cannot distinguish endpoint from route authority","an alternate path is accepted solely because it reaches the same endpoint","the system claims durable replay refusal without a persistent spent-intent record"],
+      "abstention_conditions": ["the consequential action cannot be represented as a bounded route","human confirmation is unavailable for the protected action"]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": ["route memory is compared before release","human confirmation remains required","non-idempotent replay can be refused when a durable spent-intent tombstone is recorded"],
+      "forbidden_claims": ["AIA alone is a firewall","a valid endpoint proves a valid route","all security failures are prevented","a rotated stateless cookie is itself a durable replay tombstone"]
+    },
+    "technical_terms_withheld": ["route holonomy","gluing obstruction","spent-intent tombstone","egress attestation"]
+  },
+  "baseline_route_steps": [
+    {"step_id":"baseline_policy","label":"Parse security policy first","phase":"NOTICE","required_fields":["policy classes","route operators","nonce state"],"dependencies":[],"legibility_millipoints":430,"affordance_millipoints":430,"gluing_obstruction_millipoints":220,"projection_crossings":1,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_payload","label":"Infer consequence from payload","phase":"ACT","required_fields":["payload","destination","authority"],"dependencies":["baseline_policy"],"legibility_millipoints":500,"affordance_millipoints":560,"gluing_obstruction_millipoints":180,"projection_crossings":2,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"baseline_confirm","label":"Confirm without route explanation","phase":"WORLD_ANSWERS","required_fields":["nonce","confirmation"],"dependencies":["baseline_payload"],"legibility_millipoints":520,"affordance_millipoints":610,"gluing_obstruction_millipoints":180,"projection_crossings":2,"route_memory_edges":2,"operator_action_required":true},
+    {"step_id":"baseline_result","label":"Interpret technical receipt","phase":"TRANSFER","required_fields":["digest","route state","replay state"],"dependencies":["baseline_confirm"],"legibility_millipoints":510,"affordance_millipoints":560,"gluing_obstruction_millipoints":210,"projection_crossings":3,"route_memory_edges":3,"operator_action_required":true}
+  ],
+  "action": {"action_id":"release_bounded_packet"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": ["the operator sees the bounded consequence","the route is compared against the lawful route memory","the operator separately confirms the consequential action","the system returns a release or refusal receipt without promoting endpoint sameness into authority"],
+    "losses": [],
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "unresolved_relations": ["future deployments may choose different persistent replay stores while preserving the same tombstone law"],
+    "glyph_candidates": [],
+    "static_equivalent": {"summary":"See what crosses, witness the route, confirm the consequence, and see release or refusal.","steps":["see consequence","witness route","confirm","receipt"]}
+  },
+  "name": {
+    "plain_language": "Reaching the same destination does not recreate the authority earned by the route that got there.",
+    "glyph_relation": null,
+    "technical_term": "route-memory authorization boundary",
+    "non_equivalence": ["same endpoint is not same route","same route shape is not human confirmation","session rotation is not a durable replay tombstone"]
+  },
+  "transfer_context": {
+    "context": {"surface":"generic consequential connector"},
+    "shared_relation_candidate": "authority depends on the witnessed path and not only the endpoint",
+    "observable_correspondence": ["an alternate or replayed path may reach the same connector target while remaining unauthorized"],
+    "alternative_explanations": ["destination-side idempotency may independently reduce duplicate effects"],
+    "abstention_conditions": ["route history is unavailable or the consequence cannot be bounded"]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "giving-research-dossier-consequence-first",
+  "surface_reference": "Giving/Research-Dossier",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-08-16T00:15:00Z",
+    "idSeed": "giving-research-dossier-design-v1",
+    "idScope": "Giving/Research-Dossier"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "giving_research_dossier_design_v1",
+    "provenance": {
+      "source_references": ["app/giving/history/index.html#givingControlRail", "app/giving/history/giving-app.js", "docs/GIVING_HISTORY_ENGINE.md"],
+      "evidence_basis": ["Giving dossier custody controls", "operator save/open workflow"],
+      "transformations": ["explain consequence before storage ontology", "keep save/open/exit visible"],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "A research file keeps this investigation's selected records, decisions, and receipts together so you can leave and return without mixing it with another person.",
+      "surface_reference": "Giving/Research-Dossier"
+    },
+    "available_affordances": [
+      {"action_id":"save_research_file","purpose":"Save the current research file without changing the reviewed evidence itself.","authorized_by_station":"Human","reversible":true}
+    ],
+    "route_topology": {
+      "entry": "Research file controls",
+      "exit": "Return to search or open another dossier",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {"step_id":"dossier_notice","label":"See what this file keeps together","phase":"NOTICE","required_fields":["records","decisions","receipts"],"dependencies":[],"legibility_millipoints":940,"affordance_millipoints":910,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+        {"step_id":"dossier_save","label":"Save this research file","phase":"ACT","required_fields":["title","custody mode","save"],"dependencies":["dossier_notice"],"legibility_millipoints":920,"affordance_millipoints":950,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"dossier_saved","label":"Saved state becomes visible","phase":"WORLD_ANSWERS","required_fields":["saved state","file identity"],"dependencies":["dossier_save"],"legibility_millipoints":950,"affordance_millipoints":930,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"dossier_return","label":"Open or return later","phase":"TRANSFER","required_fields":["saved file choice","return path"],"dependencies":["dossier_saved"],"legibility_millipoints":910,"affordance_millipoints":930,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true}
+      ]
+    },
+    "causal_structure": {
+      "input": "current dossier state and explicit save gesture",
+      "operator": "Giving dossier persistence",
+      "observable": "the current file is visibly saved and remains a distinct research target",
+      "authority": "TD613 custody law; human action; Dome-World scene host",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can the Research Dossier explain continuity and separation before exposing storage details?",
+      "hypothesis": "Consequence-first wording reduces route burden while preserving custody and return truth.",
+      "observable_behavior": ["operator can identify which research file is active", "operator can distinguish save from search", "operator can leave and return without merging files"],
+      "alternative_explanations": ["shorter labels may improve scanability independently of ordering"],
+      "expected_failure_modes": ["operator mistakes Save for a new search", "operator assumes dossiers automatically merge"],
+      "falsifier": ["operators cannot tell which file is active after save"],
+      "abstention_conditions": ["dossier persistence contract changes"]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": ["a dossier preserves research state", "save and search are separate actions", "files remain distinct unless explicitly changed"],
+      "forbidden_claims": ["the design proves comprehension", "saving proves identity accuracy"]
+    },
+    "technical_terms_withheld": ["IndexedDB", "ciphertext ancestry", "storage projection"]
+  },
+  "baseline_route_steps": [
+    {"step_id":"baseline_mode","label":"Interpret custody mode","phase":"NOTICE","required_fields":["LOCAL","HOSTED","HYBRID"],"dependencies":[],"legibility_millipoints":470,"affordance_millipoints":430,"gluing_obstruction_millipoints":160,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_title","label":"Infer dossier identity","phase":"ACT","required_fields":["title","save state","local selector"],"dependencies":["baseline_mode"],"legibility_millipoints":530,"affordance_millipoints":590,"gluing_obstruction_millipoints":130,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"baseline_save","label":"Save persistence state","phase":"WORLD_ANSWERS","required_fields":["save","custody","dirty state"],"dependencies":["baseline_mode","baseline_title"],"legibility_millipoints":510,"affordance_millipoints":600,"gluing_obstruction_millipoints":150,"projection_crossings":1,"route_memory_edges":2,"operator_action_required":true},
+    {"step_id":"baseline_open","label":"Interpret local dossier selector","phase":"TRANSFER","required_fields":["saved files","open selected dossier"],"dependencies":["baseline_save"],"legibility_millipoints":540,"affordance_millipoints":610,"gluing_obstruction_millipoints":150,"projection_crossings":2,"route_memory_edges":2,"operator_action_required":true}
+  ],
+  "action": {"action_id":"save_research_file"},
+  "world_delta": {
+    "observation_status":"OBSERVED",
+    "causal_trace":["operator chooses a file identity and custody mode","operator explicitly saves","Giving marks the file saved without starting a retrieval run","the file remains available as a separate research target"],
+    "losses":[],
+    "missingness":["human comprehension evidence is not yet observed"],
+    "contradictions":[],
+    "unresolved_relations":["saving does not establish identity correctness"],
+    "glyph_candidates":[],
+    "static_equivalent":{"summary":"Save this research file so its records, decisions, and receipts stay together without starting another search.","steps":["see active file","save file","return later"]}
+  },
+  "name": {
+    "plain_language":"A Research Dossier is the saved container for one investigation's state; saving it does not change the evidence or make a new search.",
+    "glyph_relation":null,
+    "technical_term":"research-state persistence",
+    "non_equivalence":["save is not search","file continuity is not identity confirmation"]
+  },
+  "transfer_context": {
+    "context":{"surface":"Giving/Research-Dossier return workflow"},
+    "shared_relation_candidate":"the same research file can be left and reopened while remaining distinct from other files",
+    "observable_correspondence":["opening a saved file restores its own dossier identity"],
+    "alternative_explanations":["browser persistence may affect return behavior"],
+    "abstention_conditions":["the saved file cannot be resolved by its dossier identity"]
+  }
+}

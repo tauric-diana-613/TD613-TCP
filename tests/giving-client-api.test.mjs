@@ -48,4 +48,13 @@ await assert.rejects(
   'server refusal JSON must not be flattened into boundary-unavailable'
 );
 
+// Keep the live AIA hydration witness inside the maintained Giving test lane.
+await import('./giving-aia-surface.test.mjs');
+
+if (process.env.GITHUB_ACTIONS === 'true') {
+  const { mkdir, writeFile } = await import('node:fs/promises');
+  await mkdir('artifacts/giving-contract-markers', { recursive: true });
+  await writeFile('artifacts/giving-contract-markers/client-aia.pass', 'PASS\n');
+}
+
 console.log('giving-client-api.test.mjs passed');

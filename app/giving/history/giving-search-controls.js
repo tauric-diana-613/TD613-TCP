@@ -1,7 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const DEFAULT_DATE_FROM = '2020-01-01';
-const EARLIEST_SUPPORTED_REQUEST_FROM = '1979-01-01';
 const today = () => new Date().toISOString().slice(0, 10);
 let initialDefaultSettled = false;
 
@@ -12,9 +11,9 @@ function emitInput(element) {
 function dateCoverageLabel() {
   const from = $('#dateFrom')?.value || DEFAULT_DATE_FROM;
   const to = $('#dateTo')?.value || today();
-  const start = from === EARLIEST_SUPPORTED_REQUEST_FROM ? 'earliest supported request' : from.slice(0, 4);
+  const start = from.slice(0, 4);
   const end = to === today() ? 'today' : to;
-  return `Requested coverage: ${start} → ${end} · actual coverage is source-receipt bounded.`;
+  return `Requested coverage: ${start} → ${end} · actual coverage is source-receipt bounded.*`;
 }
 
 function updateDateCoverageChip() {
@@ -80,7 +79,6 @@ function installDatePresets() {
   wrap.setAttribute('aria-label', 'Quick beginning date presets');
   wrap.innerHTML = `
     <span>Quick start</span>
-    <button type="button" data-history-preset="earliest">All electronically available*</button>
     <button type="button" data-start-year="2020">2020</button>
     <button type="button" data-start-year="2022">2022</button>
     <button type="button" data-start-year="2024">2024</button>
@@ -90,11 +88,6 @@ function installDatePresets() {
   $$('[data-start-year]').forEach((button) => button.addEventListener('click', () => {
     setDateWindow(`${button.dataset.startYear}-01-01`);
   }));
-  $('[data-history-preset="earliest"]')?.addEventListener('click', () => setDateWindow(EARLIEST_SUPPORTED_REQUEST_FROM));
-  const note = document.createElement('small');
-  note.className = 'giving-date-preset-note';
-  note.textContent = '*Requests the broadest shared date window; each custodian receipt remains authoritative for actual electronic coverage.';
-  wrap.insertAdjacentElement('afterend', note);
 }
 
 function scrollSearchToTop() {
@@ -139,9 +132,6 @@ function installClearSearch() {
     const title = $('#dossierTitle')?.value || '';
     const custody = $('#custodyMode')?.value || 'LOCAL';
 
-    // The app's New action is the authoritative in-memory reset for records,
-    // source states, identity decisions, targets, and Campaign Deputy selection.
-    // Preserve dossier-facing title/custody so this behaves like Clear Search.
     $('#newDossierButton')?.click();
     if ($('#dossierTitle')) {
       $('#dossierTitle').value = title;
@@ -180,4 +170,3 @@ watchSessionHydration();
 $('#dateFrom')?.addEventListener('input', updateDateCoverageChip);
 $('#dateTo')?.addEventListener('input', updateDateCoverageChip);
 updateDateCoverageChip();
-

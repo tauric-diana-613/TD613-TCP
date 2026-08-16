@@ -12,21 +12,33 @@ const GIVING_PREFIXES = Object.freeze([
 const GIVING_EXACT = new Set([
   'api/giving.js',
   'docs/GIVING_HISTORY_ENGINE.md',
+  'docs/GIVING_UX_RESILIENCE_ROADMAP.md',
+  'docs/CAMPAIGN_DEPUTY_API_KEY_SETUP.md',
   'package.json',
   'package-lock.json',
   'tests/aperture-patch-bay.test.mjs',
-  'tests/giving-client-preview-server.mjs'
+  'tests/giving-client-preview-server.mjs',
+  'vercel.json'
 ]);
 
 const SCOPE_NEUTRAL = new Set([
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
+  'docs/PEDAGOGUE_DESIGN_GATE.md',
+  'docs/AIA_CISTERN_LAW.md',
   'scripts/classify-validation-scope.mjs',
   'scripts/giving-browser-probe.mjs',
+  'scripts/run-pedagogue-design-gate.mjs',
   'tests/giving-validation-scope.test.mjs',
+  'tests/pedagogue-design-gate.test.mjs',
   'tests/vercel-operator-release-gate.test.mjs',
-  'tests/workflow-estate.test.mjs'
+  'tests/workflow-estate.test.mjs',
+  'app/engine/pedagogue-design-gate.js',
+  'app/engine/aia-cistern-law.js',
+  'tests/fixtures/pedagogue/giving-vault-design.json',
+  'tests/fixtures/pedagogue/giving-research-dossier-design.json',
+  'tests/fixtures/pedagogue/cistern-boundary-design.json'
 ]);
 
 function normalizedPath(value) {

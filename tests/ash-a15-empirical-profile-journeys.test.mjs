@@ -24,6 +24,7 @@ const wrapper = fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js', 
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const browserProbe = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
+const a2Adapter = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const amendment = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md', 'utf8');
 const shell = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const eviction = fs.readFileSync('app/dome-world/ash-cache-eviction-aia3.js', 'utf8');
@@ -169,6 +170,7 @@ for (const token of [
   'ashA15OrientAction',
   'real_profile_hydration:true',
   'real_workspace_navigation:true',
+  'profile_entry_convergence_gated:true',
   'canonical_primary_dock_navigation:true',
   'exact_failure_witness_context:true',
   'navigation_receipt_captured_at_click:true',
@@ -180,6 +182,10 @@ for (const token of [
   'matrix_cells:120',
   'HELD_SENSITIVE_CONTEXT',
   '__td613A15NavigationWitness',
+  '__td613AshDemoEntryConvergence?.current?.()',
+  'ashDemoEntryReady',
+  'ashDemoEntryHydrating',
+  'ashDemoEntryHold',
   'td613:ash:navigation-receipt',
   'workspaceDiagnostic',
   'workspace_transitions',
@@ -190,23 +196,36 @@ for (const token of [
   '-held.png'
 ]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
 assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,320}await openWorkspace\(page, workspace, witness\);[\s\S]{0,320}await waitForVisibleCombination\(page, workspace, route\);/);
+assert.match(browserProbe, /convergence\?\.posture === 'READY'[\s\S]{0,260}convergence\?\.phase === 'VISIBLE'[\s\S]{0,420}ashDemoEntryHydrating[\s\S]{0,220}ashDemoEntryHold/);
 assert.match(browserProbe, /const selector = `#premiumPrimaryDock \[data-premium-workspace=/);
 assert.match(browserProbe, /if \(navigation\.changed\) workspaceTransitions \+= 1/);
 assert.match(browserProbe, /captured_navigation_receipts !== result\.workspace_transitions/);
 assert.match(browserProbe, /window\.addEventListener\('td613:ash:navigation-receipt', handler\)/);
 assert.doesNotMatch(browserProbe, /const control = page\.locator\(`\[data-premium-workspace=/);
 assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s);
+
+for (const token of [
+  '#ashAiaMembrane [data-aia-route="${route}"]:visible',
+  '#ashAiaMembrane [data-ash-route-surface]',
+  '#premiumPrimaryDock [data-premium-workspace="${destination}"]:visible',
+  'dataset.ashPremiumWorkspace === expected',
+  'timeout:20_000'
+]) assert.ok(a2Adapter.includes(token), `A2–A5 canonical-control adapter omitted ${token}`);
+
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
 assert.match(amendment, /single graph-wide mass eviction[\s\S]*A15 postclosure/);
-const massEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
-assert.ok(shell.includes(`ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
-assert.ok(eviction.includes(`ASH_AIA3_CACHE_EPOCH = '${massEpoch}'`));
+const massEpoch = 'td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+const deliveryEpoch = '20260727-a15-postclosure-v1';
+assert.ok(shell.includes(`export const ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
+assert.ok(eviction.includes(`export const ASH_AIA3_CACHE_EPOCH = '${massEpoch}'`));
+assert.ok(shell.includes(`export const ASH_LIFECYCLE_ASSET_EPOCH = '${deliveryEpoch}'`));
+assert.ok(eviction.includes(`export const ASH_AIA3_ASSET_EPOCH = '${deliveryEpoch}'`));
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.9-context-and-registry-hardening',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v1.0-convergence-and-epoch-hardening',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -214,6 +233,7 @@ console.log(JSON.stringify({
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
   real_ui_witness_required:true,
+  profile_entry_convergence_gated:true,
   canonical_primary_dock_navigation:true,
   exact_failure_witness_context:true,
   state_derived_transition_receipts:true,
@@ -230,6 +250,8 @@ console.log(JSON.stringify({
   ontology_leakage:false,
   false_real_world_claims:false,
   graph_wide_mass_eviction_executed:false,
+  active_mass_eviction_epoch:massEpoch,
+  active_delivery_epoch:deliveryEpoch,
   custody_authority_changed:false,
   raw_content_transport:false,
   release_authority:false,

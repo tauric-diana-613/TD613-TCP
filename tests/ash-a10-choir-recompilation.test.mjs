@@ -26,7 +26,7 @@ assert.doesNotMatch(core, /MutationObserver|ash_epoch/);
 assert.match(probe, /if \(stage === 'A10'\)/);
 assert.match(probe, /#ashA10ChoirOrientation/);
 for (const marker of ['what appears only in combination','Shared','Pair-emergent','Contradictory','Missing','Unresolved','Can a Reader reconstruct what should remain hidden?']) assert.ok(probe.includes(`'${marker}'`));
-for (const marker of ['node tests/ash-a10-choir-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','One exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A10 witness missing ${marker}`);
+for (const marker of ['node tests/ash-a10-choir-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A10 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 for (const marker of ['Choir and Rebuild Test recompilation','singleton-first','Shared','Pair-emergent','Contradictory','Missing','Unresolved','human interpretation required: true','human closure required: true']) assert.ok(receipt.includes(marker));

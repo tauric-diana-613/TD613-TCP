@@ -14,14 +14,32 @@ import {
   sha256
 } from './util.js';
 
+export const SESSION_ROLES = Object.freeze({
+  OWNER: 'OWNER',
+  COLLABORATOR: 'COLLABORATOR'
+});
+
 function configuredSecrets() {
   const access = String(process.env.TD613_GIVING_ACCESS_SECRET || '');
   const signing = String(process.env.TD613_GIVING_SESSION_SECRET || '');
+  const owner = String(process.env.TD613_GIVING_OWNER_SECRET || '');
+  const accessReady = access.length >= 24;
+  const signingReady = signing.length >= 32;
+  const ownerLengthReady = owner.length >= 32;
+  const ownerSeparate = ownerLengthReady
+    && accessReady
+    && signingReady
+    && !constantTimeEqual(owner, access)
+    && !constantTimeEqual(owner, signing);
   return {
     access,
     signing,
-    access_ready: access.length >= 24,
-    signing_ready: signing.length >= 32
+    owner,
+    access_ready: accessReady,
+    signing_ready: signingReady,
+    owner_ready: ownerSeparate,
+    owner_length_ready: ownerLengthReady,
+    owner_separate: ownerSeparate
   };
 }
 
@@ -30,7 +48,10 @@ export function sessionConfiguration() {
   return {
     access_secret_configured: secrets.access_ready,
     session_secret_configured: secrets.signing_ready,
-    separate_authorities: secrets.access_ready && secrets.signing_ready && !constantTimeEqual(secrets.access, secrets.signing)
+    separate_authorities: secrets.access_ready && secrets.signing_ready && !constantTimeEqual(secrets.access, secrets.signing),
+    owner_secret_configured: secrets.owner_length_ready,
+    owner_secret_separate: secrets.owner_separate,
+    collaborator_eviction_authority_ready: secrets.owner_ready
   };
 }
 
@@ -40,6 +61,25 @@ function assertSessionConfiguration() {
     throw new GivingError('session-boundary-unavailable', 'Giving operator session boundary is not configured', 503);
   }
   return secrets;
+}
+
+export function classifySessionSecret(accessSecret) {
+  const secrets = assertSessionConfiguration();
+  const supplied = String(accessSecret || '');
+  if (secrets.owner_ready && constantTimeEqual(supplied, secrets.owner)) return SESSION_ROLES.OWNER;
+  if (constantTimeEqual(supplied, secrets.access)) return SESSION_ROLES.COLLABORATOR;
+  throw new GivingError('access-denied', 'Operator access secret was not accepted', 401);
+}
+
+export function assertOwnerSecret(ownerSecret) {
+  const secrets = assertSessionConfiguration();
+  if (!secrets.owner_ready) {
+    throw new GivingError('owner-authority-unavailable', 'Giving owner revocation authority is not configured', 503);
+  }
+  if (!constantTimeEqual(String(ownerSecret || ''), secrets.owner)) {
+    throw new GivingError('owner-authority-withheld', 'Giving owner authority was not accepted', 403);
+  }
+  return true;
 }
 
 export function expectedOrigin(req) {
@@ -80,6 +120,10 @@ function encodeSession(payload, secret) {
   return `${encoded}.${hmacSha256(secret, encoded)}`;
 }
 
+function sessionCookie(payload, secret, maxAge) {
+  return `${SESSION_COOKIE}=${encodeSession(payload, secret)}; Path=/; Max-Age=${Math.max(1, Math.floor(maxAge))}; Secure; HttpOnly; SameSite=Strict`;
+}
+
 function decodeSession(token, secret) {
   const [encoded, signature, extra] = String(token || '').split('.');
   if (!encoded || !signature || extra || !constantTimeEqual(signature, hmacSha256(secret, encoded))) {
@@ -92,7 +136,8 @@ function decodeSession(token, secret) {
     throw new GivingError('invalid-session', 'Operator session is not valid', 401);
   }
   const now = Math.floor(Date.now() / 1000);
-  if (payload?.v !== 1 || !payload?.sid || !payload?.nonce || !Number.isFinite(payload?.exp) || payload.exp <= now) {
+  const explicitRoleValid = payload?.role === undefined || Object.values(SESSION_ROLES).includes(payload.role);
+  if (payload?.v !== 1 || !payload?.sid || !payload?.nonce || !Number.isFinite(payload?.exp) || payload.exp <= now || !explicitRoleValid) {
     throw new GivingError(payload?.exp <= now ? 'session-expired' : 'invalid-session', 'Operator session has expired or is not valid', 401);
   }
   return payload;
@@ -100,22 +145,40 @@ function decodeSession(token, secret) {
 
 export function createSession(accessSecret, audience = null) {
   const secrets = assertSessionConfiguration();
-  if (!constantTimeEqual(accessSecret, secrets.access)) {
-    throw new GivingError('access-denied', 'Operator access secret was not accepted', 401);
-  }
-  const now = Math.floor(Date.now() / 1000);
+  const role = classifySessionSecret(accessSecret);
+  const nowMs = Date.now();
+  const now = Math.floor(nowMs / 1000);
   const payload = {
     v: 1,
     sid: randomId('session'),
     nonce: randomId('intent'),
     aud: audience ? sha256(String(audience)) : null,
+    role,
     iat: now,
+    iat_ms: nowMs,
     exp: now + SESSION_TTL_SECONDS
   };
   return {
     payload,
     token: encodeSession(payload, secrets.signing),
-    cookie: `${SESSION_COOKIE}=${encodeSession(payload, secrets.signing)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; Secure; HttpOnly; SameSite=Strict`
+    cookie: sessionCookie(payload, secrets.signing, SESSION_TTL_SECONDS)
+  };
+}
+
+export function rotateSessionIntent(session) {
+  const secrets = assertSessionConfiguration();
+  const now = Math.floor(Date.now() / 1000);
+  if (!session?.sid || !session?.aud || !Number.isFinite(session?.exp) || session.exp <= now) {
+    throw new GivingError('invalid-session', 'Operator session is not valid for intent rotation', 401);
+  }
+  const payload = {
+    ...session,
+    nonce: randomId('intent')
+  };
+  return {
+    payload,
+    token: encodeSession(payload, secrets.signing),
+    cookie: sessionCookie(payload, secrets.signing, session.exp - now)
   };
 }
 
@@ -246,10 +309,11 @@ export async function parseEnvelope(req) {
 export function publicSessionView(session) {
   return {
     authenticated: true,
+    role: Object.values(SESSION_ROLES).includes(session?.role) ? session.role : SESSION_ROLES.COLLABORATOR,
     intent_nonce: session.nonce,
     expires_at: new Date(session.exp * 1000).toISOString(),
     session_id_digest: sha256(session.sid)
   };
 }
 
-export const _sessionInternals = Object.freeze({ encodeSession, decodeSession });
+export const _sessionInternals = Object.freeze({ encodeSession, decodeSession, sessionCookie, configuredSecrets });

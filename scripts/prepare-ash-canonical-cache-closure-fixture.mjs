@@ -27,6 +27,17 @@ const sessionKeyReplacement = `  'td613.ash.cache-flush.epoch',
 const v7EpochTarget = `"${v6Epoch}"]);`;
 const v7EpochReplacement = `"${v6Epoch}","${v7Epoch}"]);`;
 
+async function atomicWriteUtf8(target, content) {
+  const temporary = `${target}.${process.pid}.${Date.now()}.tmp`;
+  await fs.mkdir(path.dirname(target), { recursive:true });
+  try {
+    await fs.writeFile(temporary, content, 'utf8');
+    await fs.rename(temporary, target);
+  } finally {
+    await fs.rm(temporary, { force:true });
+  }
+}
+
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
 let prepared = original;
 const transformations = [];
@@ -67,10 +78,9 @@ if (!prepared.includes('const cleanTransition = await page.evaluate')
   throw new Error('Canonical cache closure fixture did not isolate browser state or preserve the selected cache posture correctly.');
 }
 
-if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
-await fs.mkdir(path.dirname(manifestPath), { recursive: true });
-await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.canonical-cache-closure-fixture/v0.4-aia3-legacy-aware',
+if (prepared !== original) await atomicWriteUtf8(probePath, prepared);
+const manifest = `${JSON.stringify({
+  schema:'td613.ash-keep.canonical-cache-closure-fixture/v0.5-atomic-aia3-legacy-aware',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
@@ -78,6 +88,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   transformations,
   browser_state_read_via_page_evaluate:true,
   exact_legacy_bypass:exactLegacyBypass,
+  atomic_source_replacement:true,
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   permitted_active_session_key:'td613.ash.session.epoch',
@@ -86,6 +97,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   product_ui_mutated:false,
   promotion_authorized:false,
   transport_authorized:false
-}, null, 2)}\n`);
+}, null, 2)}\n`;
+await atomicWriteUtf8(manifestPath, manifest);
 
 console.log(`prepare-ash-canonical-cache-closure-fixture.mjs passed · ${transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED'}`);

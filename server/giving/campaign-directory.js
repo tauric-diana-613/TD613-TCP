@@ -128,6 +128,7 @@ async function openSecretsOrganizations(searchPhrase, context) {
 export async function searchCampaignDirectory(payload = {}, context = {}) {
   const searchPhrase = phrase(payload.query);
   const state = cleanText(payload.state, 2)?.toUpperCase() || null;
+  const includeOpenSecrets = payload.include_opensecrets !== false;
   if (state && !/^[A-Z]{2}$/.test(state)) throw new GivingError('invalid-campaign-directory-state', 'Campaign directory state must use a two-letter postal code', 400);
   const key = fecKey();
   const candidateUrl = new URL(`${OPENFEC_BASE}/candidates/search/`);
@@ -144,7 +145,9 @@ export async function searchCampaignDirectory(payload = {}, context = {}) {
   const [candidateBody, committeeBody, openSecrets] = await Promise.all([
     jsonFetch(candidateUrl, { headers: { Accept: 'application/json', 'User-Agent': 'TD613-Giving/1.0 operator research' } }, context),
     jsonFetch(committeeUrl, { headers: { Accept: 'application/json', 'User-Agent': 'TD613-Giving/1.0 operator research' } }, context),
-    openSecretsOrganizations(searchPhrase, context)
+    includeOpenSecrets
+      ? openSecretsOrganizations(searchPhrase, context)
+      : Promise.resolve({ configured: Boolean(String(process.env.OPENSECRETS_API_KEY || '').trim()), status: 'SKIPPED', reason: 'OpenSecrets aggregate lookup already ran for this logical search.', organizations: [] })
   ]);
   if (!Array.isArray(candidateBody?.results) || !Array.isArray(committeeBody?.results)) {
     throw new GivingError('campaign-directory-contract-drift', 'OpenFEC candidate / committee search did not match the expected result containers', 502);
@@ -283,4 +286,3 @@ export function campaignDirectoryReadiness() {
     campaign_deputy_committee: { configured: Boolean(String(process.env.CAMPAIGN_DEPUTY_API_KEY || '').trim()), representation: 'listType=list', historical_contribution_writeback_used: false }
   };
 }
-

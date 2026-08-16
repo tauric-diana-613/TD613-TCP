@@ -38,6 +38,13 @@
       "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
     }
   },
+  "redirects": [
+    {
+      "source": "/giving/history",
+      "destination": "/giving/history/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/",

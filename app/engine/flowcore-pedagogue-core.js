@@ -19,4 +19,10 @@ export {
   verifyPedagogueReceipt,
   serializePedagogueReceipt
 } from './flowcore-pedagogue-receipt.js';
+export {
+  PEDAGOGUE_ROUTE_MEMORY_SCHEMA,
+  PEDAGOGUE_ROUTE_COMPARISON_SCHEMA,
+  compilePedagogueRouteMemory,
+  comparePedagogueRouteMemory
+} from './flowcore-pedagogue-route-memory.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';

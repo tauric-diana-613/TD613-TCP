@@ -25,6 +25,7 @@ async function waitForInstrument(page) {
     const snapshot = window.__td613AshDemoRegistry?.snapshot?.();
     return window.__td613AshKeep?.version
       && window.__td613AshPremiumUI?.version
+      && window.__td613AshDemoEntryConvergence?.version
       && window.__td613AshDemoRegistry?.version === registry
       && snapshot?.version === registry
       && snapshot?.asset_epoch === epoch
@@ -72,6 +73,36 @@ async function activateProfile(page, profile) {
     entries_bound:Object.keys(window.__td613AshA15EmpiricalJourneys?.entries?.() || {}).length
   }));
   if (/Demo registry held\./i.test(state.status) || !state.case_id || state.profile !== profile || state.entries_bound !== 6) throw new Error(`A15 ${profile} hydration held: ${JSON.stringify(state)}`);
+
+  try {
+    await page.waitForFunction(selected => {
+      const current = window.__td613AshKeep?.current?.() || null;
+      const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
+      const workspace = convergence?.workspace || null;
+      const panel = workspace ? document.getElementById(`workspace-${workspace}`) : null;
+      return Boolean(current?.case_id)
+        && convergence?.case_id === current.case_id
+        && convergence?.profile === selected
+        && convergence?.posture === 'READY'
+        && convergence?.phase === 'VISIBLE'
+        && document.documentElement.dataset.ashDemoEntryReady === `${selected}:${workspace}`
+        && !document.documentElement.dataset.ashDemoEntryHydrating
+        && !document.documentElement.dataset.ashDemoEntryHold
+        && document.documentElement.dataset.ashPremiumWorkspace === workspace
+        && panel?.classList.contains('active') === true;
+    }, profile, { timeout:15_000 });
+  } catch (error) {
+    const diagnostic = await page.evaluate(() => ({
+      current_case:window.__td613AshKeep?.current?.()?.case_id || null,
+      convergence:window.__td613AshDemoEntryConvergence?.current?.() || null,
+      entry_ready:document.documentElement.dataset.ashDemoEntryReady || null,
+      entry_hydrating:document.documentElement.dataset.ashDemoEntryHydrating || null,
+      entry_hold:document.documentElement.dataset.ashDemoEntryHold || null,
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+      active:[...document.querySelectorAll('.workspace.active')].map(node => node.id)
+    }));
+    throw new Error(`A15 ${profile} demo-entry convergence did not settle before matrix navigation: ${JSON.stringify(diagnostic)}`, { cause:error });
+  }
 }
 
 async function armNavigationReceiptCapture(page, workspace) {
@@ -303,7 +334,7 @@ try {
   for (const receipt of receipts.filter(item => item.mode === 'desktop')) receipt.answers.forEach(answer => { const key = `${answer.workspace}:${answer.route}`; const values = answerSignatures.get(key) || []; values.push(answer.message); answerSignatures.set(key, values); });
   for (const [key, values] of answerSignatures) if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.6-canonical-primary-dock',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.7-entry-convergence-gated',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -312,6 +343,7 @@ try {
     receipts,
     matrix_cells:120,
     rendered_answer_observations:receipts.length * 20,
+    profile_entry_convergence_gated:true,
     canonical_primary_dock_navigation:true,
     exact_failure_witness_context:true,
     state_derived_transition_receipts:true,

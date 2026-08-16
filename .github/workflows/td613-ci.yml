@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 env:
@@ -37,15 +37,36 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
+      head_is_current: ${{ steps.freshness.outputs.head_is_current }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Reject stale PR-event heads
+        id: freshness
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" != 'pull_request' ]]; then
+            echo 'head_is_current=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          event_head='${{ github.event.pull_request.head.sha }}'
+          head_ref='${{ github.event.pull_request.head.ref }}'
+          live_head="$(git ls-remote origin "refs/heads/$head_ref" 2>/dev/null | awk 'NR==1 {print $1}' || true)"
+          if [[ -n "$live_head" && "$live_head" == "$event_head" ]]; then
+            echo 'head_is_current=true' >> "$GITHUB_OUTPUT"
+          else
+            printf 'stale PR event held: event_head=%s live_head=%s\n' "$event_head" "${live_head:-UNRESOLVED}"
+            echo 'head_is_current=false' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.freshness.outputs.head_is_current == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Select Giving-only or full-product witness
         id: classify
+        if: steps.freshness.outputs.head_is_current == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -59,7 +80,9 @@ jobs:
   contracts:
     name: Static, constitutional, and release contracts
     needs: scope
-    if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      (github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -210,14 +233,20 @@ jobs:
           if-no-files-found: ignore
           retention-days: 3
 
-  ash_browser:
-    name: Full-product exact-head Chromium Firefox WebKit witness
-    needs: [contracts, scope]
+  ash_browser_shard:
+    name: Front-line exact-head browser shard · ${{ matrix.browser }}
+    needs: scope
     if: >-
-      (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving')
+      needs.scope.outputs.head_is_current == 'true' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -227,59 +256,80 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install dependencies and all browser engines once
+      - name: Install one browser engine for this shard
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
           npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
-          npx playwright install --with-deps chromium firefox webkit
-      - name: Start one bounded Ash and Dome-World runtime
+          npx playwright install --with-deps "${{ matrix.browser }}"
+      - name: Start isolated core extended and Flow-Core runtimes
+        shell: bash
         run: |
-          mkdir -p artifacts
-          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-server.log 2>&1 &
-          echo $! > artifacts/ash-server.pid
-          for attempt in $(seq 1 40); do
-            curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-readiness.json && exit 0
-            sleep 1
+          set -euo pipefail
+          browser='${{ matrix.browser }}'
+          node scripts/prepare-ash-profile-closure-fixture-a13.mjs
+          node scripts/prepare-ash-premium-closure-fixture.mjs
+          node scripts/prepare-ash-canonical-cache-closure-fixture.mjs
+          for spec in core:6130 extended:6131 flowcore:6132; do
+            lane="${spec%%:*}"
+            port="${spec##*:}"
+            mkdir -p "artifacts/$browser/$lane"
+            node scripts/ash-keep-local-closure-server.mjs "$port" > "artifacts/$browser/$lane/server.log" 2>&1 &
+            echo $! > "artifacts/$browser/$lane/server.pid"
           done
-          cat artifacts/ash-server.log
-          exit 1
-      - name: Aggregate changed-risk A8 and A12 entry witnesses across every engine
+          for spec in core:6130 extended:6131 flowcore:6132; do
+            lane="${spec%%:*}"
+            port="${spec##*:}"
+            ready=0
+            for attempt in $(seq 1 40); do
+              if curl -fsS --max-time 2 "http://127.0.0.1:$port/__ash_keep_closure/readiness" > "artifacts/$browser/$lane/readiness.json"; then
+                ready=1
+                break
+              fi
+              sleep 1
+            done
+            if [[ "$ready" -ne 1 ]]; then
+              cat "artifacts/$browser/$lane/server.log"
+              exit 1
+            fi
+          done
+      - name: Run front-line A8 A12 and lifecycle preflight for this engine
+        shell: bash
         run: |
           set +e
-          mkdir -p artifacts/ash-risk-preflight
-          : > artifacts/ash-risk-preflight/failures.tsv
+          browser='${{ matrix.browser }}'
+          export TD613_BROWSER="$browser"
+          export TD613_BASE_URL='http://127.0.0.1:6130'
+          mkdir -p "artifacts/$browser/preflight"
+          : > "artifacts/$browser/preflight/failures.tsv"
           failures=0
-          for browser in chromium firefox webkit; do
-            export TD613_BROWSER="$browser"
-            export TD613_BASE_URL='http://127.0.0.1:6130'
-            TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/ash-risk-preflight/$browser/a8" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
-            status=$?
-            if [ "$status" -ne 0 ]; then
-              printf '%s\tA8\t%s\n' "$browser" "$status" >> artifacts/ash-risk-preflight/failures.tsv
-              failures=1
-            fi
-            TD613_A12_ENTRY_PREFLIGHT='true' TD613_ARTIFACT_DIR="artifacts/ash-risk-preflight/$browser/a12-entry" timeout --foreground --signal=INT --kill-after=15s 240s node scripts/ash-a12-browser-probe.mjs
-            status=$?
-            if [ "$status" -ne 0 ]; then
-              printf '%s\tA12_ENTRY\t%s\n' "$browser" "$status" >> artifacts/ash-risk-preflight/failures.tsv
-              failures=1
-            fi
-          done
-          node <<'NODE'
+
+          TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a8" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A8\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/preflight/lifecycle" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'LIFECYCLE\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          TD613_A12_ENTRY_PREFLIGHT='true' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a12-entry" timeout --foreground --signal=INT --kill-after=15s 240s node scripts/ash-a12-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A12_ENTRY\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          BROWSER="$browser" node <<'NODE'
           const fs = require('node:fs');
-          const path = 'artifacts/ash-risk-preflight/failures.tsv';
+          const browser = process.env.BROWSER;
+          const path = `artifacts/${browser}/preflight/failures.tsv`;
           const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
-            const [browser, seam, status] = line.split('\t');
-            return { browser, seam, status:Number(status) };
+            const [seam, status] = line.split('\t');
+            return { seam, status:Number(status) };
           });
-          fs.writeFileSync('artifacts/ash-risk-preflight/manifest.json', JSON.stringify({
-            schema:'td613.ash.changed-risk-preflight/v0.2-a8-a12-entry',
-            scope:['A8','A12_ENTRY'],
-            engines:['chromium','firefox','webkit'],
-            viewports:{ A8:['desktop','mobile-reduced'], A12_ENTRY:['desktop'] },
+          fs.writeFileSync(`artifacts/${browser}/preflight/manifest.json`, JSON.stringify({
+            schema:'td613.ash.front-line-preflight/v0.3-per-engine',
+            browser,
+            scope:['A8','A12_ENTRY','LIFECYCLE'],
             fail_fast:false,
-            all_engines_observed:true,
+            per_engine_observed:true,
             failures,
             ok:failures.length === 0,
             authority_changed:false,
@@ -287,76 +337,242 @@ jobs:
             human_closure_required:true
           }, null, 2));
           NODE
-          if [ "$failures" -ne 0 ]; then
-            cat artifacts/ash-risk-preflight/failures.tsv
+
+          if [[ "$failures" -ne 0 ]]; then
+            cat "artifacts/$browser/preflight/failures.tsv"
             exit 1
           fi
-      - name: Run changed-risk lifecycle closure preflight
-        env:
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ARTIFACT_DIR: artifacts/ash-closure-preflight
-        run: timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
-      - name: Run the complete Ash witness through each installed engine
+      - name: Run core extended and Flow-Core lanes in parallel
+        shell: bash
         run: |
-          set -euo pipefail
-          for browser in chromium firefox webkit; do
+          set +e
+          browser='${{ matrix.browser }}'
+
+          run_core() (
+            set +e
             export TD613_BROWSER="$browser"
             export TD613_BASE_URL='http://127.0.0.1:6130'
-            TD613_ARTIFACT_DIR="artifacts/ash-a2-a5-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
-            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/ash-a7-a11-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-research-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
-          done
-      - name: Run complete Flow-Core runtime evidence through the same browser installation
-        env:
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_FLOWCORE_ROUTE_PREFIX: app/dome-world
-          TD613_BROWSERS: chromium,firefox,webkit
-          TD613_ARTIFACT_DIR: artifacts/flowcore-runtime
-          TD613_PRODUCTION_OBSERVATION: 'false'
-        run: timeout --foreground --signal=INT --kill-after=20s 3600s node scripts/flowcore-runtime-browser-probe.mjs
-      - name: Run bounded closure and constitutional convergence once
-        env:
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ARTIFACT_DIR: artifacts/ash-closure
-        run: |
-          node scripts/run-ash-keep-a1-production-probe.mjs
-          TD613_ARTIFACT_DIR=artifacts/ash-convergence timeout --foreground --signal=INT --kill-after=15s 360s node scripts/run-ash-constitutional-convergence-handshake.mjs
-      - name: Stop Ash runtime
+            mkdir -p "artifacts/$browser/core"
+            : > "artifacts/$browser/core/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            status=$?; printf 'A2_A5\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            status=$?; printf 'A7_A11\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            if [[ "$browser" == 'chromium' ]]; then
+              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+              status=$?; printf 'A12\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            fi
+            exit "$failed"
+          )
+
+          run_extended_frontline() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6131'
+            mkdir -p "artifacts/$browser/extended/frontline"
+            : > "artifacts/$browser/extended/frontline/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+            status=$?; printf 'RESEARCH\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            status=$?; printf 'REVIEWABILITY\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            status=$?; printf 'INGRESS\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          run_extended_profiles() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6131'
+            mkdir -p "artifacts/$browser/extended/profiles"
+            : > "artifacts/$browser/extended/profiles/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+            status=$?; printf 'A15\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            status=$?; printf 'A13\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            status=$?; printf 'A14\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          run_flowcore() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6132'
+            mkdir -p "artifacts/$browser/flowcore"
+            : > "artifacts/$browser/flowcore/status.tsv"
+            failed=0
+
+            TD613_FLOWCORE_ROUTE_PREFIX='app/dome-world' TD613_BROWSERS="$browser" TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/runtime" TD613_PRODUCTION_OBSERVATION='false' timeout --foreground --signal=INT --kill-after=20s 1500s node scripts/flowcore-runtime-browser-probe.mjs
+            status=$?; printf 'RUNTIME\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            status=$?; printf 'LIVE_FIELD\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
+          run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
+          run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1 & extended_profiles_pid=$!
+          run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
+
+          wait "$core_pid"; core_status=$?
+          wait "$extended_frontline_pid"; extended_frontline_status=$?
+          wait "$extended_profiles_pid"; extended_profiles_status=$?
+          wait "$flowcore_pid"; flowcore_status=$?
+
+          printf 'core\t%s\nextended_frontline\t%s\nextended_profiles\t%s\nflowcore\t%s\n' "$core_status" "$extended_frontline_status" "$extended_profiles_status" "$flowcore_status" > "artifacts/$browser/lane-status.tsv"
+          BROWSER="$browser" CORE_STATUS="$core_status" EXTENDED_FRONTLINE_STATUS="$extended_frontline_status" EXTENDED_PROFILES_STATUS="$extended_profiles_status" FLOWCORE_STATUS="$flowcore_status" node <<'NODE'
+          const fs = require('node:fs');
+          const receipt = {
+            schema:'td613.exact-head.browser-shard/v0.3-early-failure-discovery',
+            browser:process.env.BROWSER,
+            lanes:{
+              core:Number(process.env.CORE_STATUS),
+              extended_frontline:Number(process.env.EXTENDED_FRONTLINE_STATUS),
+              extended_profiles:Number(process.env.EXTENDED_PROFILES_STATUS),
+              flowcore:Number(process.env.FLOWCORE_STATUS)
+            },
+            a12_full_witness:process.env.BROWSER === 'chromium',
+            a12_cross_engine_preflight:true,
+            fail_fast:false,
+            lane_parallelism:true,
+            extended_failure_isolation:true,
+            authority_changed:false,
+            source_bytes_moved:false,
+            human_closure_required:true
+          };
+          receipt.ok = Object.values(receipt.lanes).every(status => status === 0);
+          fs.writeFileSync(`artifacts/${process.env.BROWSER}/shard-receipt.json`, JSON.stringify(receipt, null, 2));
+          NODE
+
+          if [[ "$core_status" -ne 0 || "$extended_frontline_status" -ne 0 || "$extended_profiles_status" -ne 0 || "$flowcore_status" -ne 0 ]]; then
+            for log in \
+              "artifacts/$browser/core/lane.log" \
+              "artifacts/$browser/extended/frontline.log" \
+              "artifacts/$browser/extended/profiles.log" \
+              "artifacts/$browser/flowcore/lane.log"; do
+              echo "===== $browser / $log ====="
+              tail -n 120 "$log" || true
+            done
+            echo "===== $browser / seam status ====="
+            cat "artifacts/$browser/lane-status.tsv" || true
+            find "artifacts/$browser" -name status.tsv -print -exec cat {} \; || true
+            exit 1
+          fi
+      - name: Stop isolated runtimes
         if: always()
-        run: test ! -f artifacts/ash-server.pid || kill "$(cat artifacts/ash-server.pid)" 2>/dev/null || true
-      - name: Run Phase IV live and browser probe with the existing Chromium install
+        shell: bash
         run: |
-          python scripts/phase4-local-integration-server.py --port 6134 > artifacts/phase4-server.log 2>&1 &
-          echo $! > artifacts/phase4-server.pid
-          for attempt in $(seq 1 30); do
-            curl -fsS --max-time 2 http://127.0.0.1:6134/api/aperture-bridge > artifacts/phase4-readiness.json && break
-            sleep 1
+          browser='${{ matrix.browser }}'
+          for lane in core extended flowcore; do
+            pid_file="artifacts/$browser/$lane/server.pid"
+            test ! -f "$pid_file" || kill "$(cat "$pid_file")" 2>/dev/null || true
           done
-          TD613_BASE_URL=http://127.0.0.1:6134 TD613_FETCH_TIMEOUT_MS=12000 node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/phase4-live-probe.json
-          TD613_BASE_URL=http://127.0.0.1:6134 TD613_ARTIFACT_DIR=artifacts/phase4-browser node scripts/phase4-reciprocal-bridge-browser-probe.mjs
-      - name: Stop Phase IV runtime
-        if: always()
-        run: test ! -f artifacts/phase4-server.pid || kill "$(cat artifacts/phase4-server.pid)" 2>/dev/null || true
-      - name: Preserve the single exact-head browser evidence packet
+      - name: Preserve this engine evidence shard
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: td613-exact-head-browser-receipts
+          name: td613-browser-shard-${{ matrix.browser }}
+          path: artifacts/${{ matrix.browser }}/
+          if-no-files-found: warn
+          retention-days: 7
+
+  ash_browser:
+    name: Full-product exact-head Chromium Firefox WebKit witness
+    needs: [contracts, scope, ash_browser_shard]
+    if: >-
+      always() &&
+      needs.scope.outputs.head_is_current == 'true' &&
+      needs.contracts.result == 'success' &&
+      needs.ash_browser_shard.result == 'success' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install convergence dependencies and Chromium only
+        run: |
+          npm ci
+          python -m pip install --disable-pip-version-check pytest sympy
+          npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+      - name: Collect surviving browser evidence shards
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          pattern: td613-browser-shard-*
+          path: artifacts/browser-shards
+          merge-multiple: false
+      - name: Run bounded closure and constitutional convergence once
+        run: |
+          mkdir -p artifacts/convergence
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/convergence/ash-server.log 2>&1 &
+          echo $! > artifacts/convergence/ash-server.pid
+          for attempt in $(seq 1 40); do
+            curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/convergence/ash-readiness.json && break
+            sleep 1
+          done
+          TD613_BASE_URL=http://127.0.0.1:6130 TD613_ARTIFACT_DIR=artifacts/convergence/ash-closure timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
+          TD613_BASE_URL=http://127.0.0.1:6130 TD613_ARTIFACT_DIR=artifacts/convergence/ash-handshake timeout --foreground --signal=INT --kill-after=15s 360s node scripts/run-ash-constitutional-convergence-handshake.mjs
+      - name: Stop convergence Ash runtime
+        if: always()
+        run: test ! -f artifacts/convergence/ash-server.pid || kill "$(cat artifacts/convergence/ash-server.pid)" 2>/dev/null || true
+      - name: Run Phase IV live and browser probe with Chromium
+        run: |
+          python scripts/phase4-local-integration-server.py --port 6134 > artifacts/convergence/phase4-server.log 2>&1 &
+          echo $! > artifacts/convergence/phase4-server.pid
+          for attempt in $(seq 1 30); do
+            curl -fsS --max-time 2 http://127.0.0.1:6134/api/aperture-bridge > artifacts/convergence/phase4-readiness.json && break
+            sleep 1
+          done
+          TD613_BASE_URL=http://127.0.0.1:6134 TD613_FETCH_TIMEOUT_MS=12000 node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/convergence/phase4-live-probe.json
+          TD613_BASE_URL=http://127.0.0.1:6134 TD613_ARTIFACT_DIR=artifacts/convergence/phase4-browser node scripts/phase4-reciprocal-bridge-browser-probe.mjs
+      - name: Stop Phase IV runtime
+        if: always()
+        run: test ! -f artifacts/convergence/phase4-server.pid || kill "$(cat artifacts/convergence/phase4-server.pid)" 2>/dev/null || true
+      - name: Preserve convergence evidence packet
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-exact-head-browser-convergence
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7
+      - name: Enforce front-line shard convergence
+        if: always()
+        env:
+          CONTRACT_RESULT: ${{ needs.contracts.result }}
+          SHARD_RESULT: ${{ needs.ash_browser_shard.result }}
+        run: |
+          printf 'contracts=%s\nshards=%s\n' "$CONTRACT_RESULT" "$SHARD_RESULT"
+          [[ "$CONTRACT_RESULT" == 'success' && "$SHARD_RESULT" == 'success' ]]
 
   giving_browser:
     name: Giving-only exact-head Chromium Firefox WebKit witness
     needs: [contracts, scope]
     if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
       github.event.action == 'ready_for_review' &&
       needs.scope.outputs.validation_scope == 'giving'
