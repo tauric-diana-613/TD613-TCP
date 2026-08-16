@@ -86,6 +86,7 @@ async function witnessResilienceUi() {
   assert.equal(structure.forensicLabel, 'Forensic ▾');
   assert.match(structure.coverageNote, /Each custodian receipt/);
 
+  await page.locator('#campaignDirectoryState > summary').click();
   await page.locator('#campaignDirectoryStateClear').click();
   const cleared = await page.evaluate(() => ({
     checked: [...document.querySelectorAll('#campaignDirectoryStateMenu input[type="checkbox"]:checked')].map((input) => input.value),
