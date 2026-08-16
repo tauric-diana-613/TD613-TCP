@@ -30,7 +30,7 @@ function requestId() {
 }
 
 function responseNonce(body) {
-  return body?.data?.intent_nonce || body?.data?.session?.intent_nonce || body?.intent_nonce || null;
+  return body?.data?.intent_nonce || body?.data?.session?.intent_nonce || body?.session?.intent_nonce || body?.intent_nonce || null;
 }
 
 export class GivingApiClient {
