@@ -24,7 +24,7 @@ const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
 
-for (const marker of ['Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs','production_chromium_desktop_mobile = PASS','ash_lifecycle_deployed_observation = PASS']) assert.ok(releaseWorkflow.includes(marker), `Bounded release omitted ${marker}`);
+for (const marker of ['Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs',"production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}","ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}"]) assert.ok(releaseWorkflow.includes(marker), `Bounded release omitted ${marker}`);
 assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
 assert.match(compatibilityRunner, /await import\('\.\/ash-lifecycle-production-probe\.mjs'\)/);
 assert.doesNotMatch(compatibilityRunner, /run-ash-keep-a1-production-probe-base\.mjs/);
