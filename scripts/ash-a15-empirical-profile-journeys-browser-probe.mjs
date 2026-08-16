@@ -134,6 +134,15 @@ source = replaceExactly(
     incremental_profile_checkpoints:true,`,
   'A15 final receipt convergence claim'
 );
+source = replaceExactly(
+  source,
+  `    real_route_navigation:true,
+    real_world_answer_gesture:true,`,
+  `    real_route_navigation:true,
+    real_route_gestures:true,
+    real_world_answer_gesture:true,`,
+  'A15 real route gesture receipt claim'
+);
 
 source = replaceExactly(
   source,
