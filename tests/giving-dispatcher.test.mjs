@@ -91,6 +91,7 @@ assert.equal(wrongNonce.body.error.code, 'intent-nonce-withheld');
 const withheld = await call(request('campaign-deputy.withhold', { dossier_id: 'dossier-1' }, { cookie, nonce }));
 assert.equal(withheld.body.data.action, 'WITHHOLD');
 assert.equal(withheld.body.data.external_mutation, false);
+assert.equal(withheld.body.receipt.write_authorization.replay_protection, 'SIGNED_SESSION_ROTATION_ONLY');
 
 const crossOrigin = await call(request('session.status', {}, { cookie, origin: 'https://attacker.example' }));
 assert.equal(crossOrigin.res.statusCode, 403);
@@ -100,5 +101,7 @@ assert.equal(crossOrigin.res.headers['access-control-allow-origin'], undefined);
 const logout = await call(request('session.close', {}, { cookie, nonce }));
 assert.equal(logout.body.data.closed, true);
 assert.match(logout.res.headers['set-cookie'], /Max-Age=0/);
+
+await import('./giving-cistern-replay.test.mjs');
 
 console.log('giving-dispatcher.test.mjs passed');
