@@ -15,7 +15,8 @@ const GIVING_EXACT = new Set([
   'package.json',
   'package-lock.json',
   'tests/aperture-patch-bay.test.mjs',
-  'tests/giving-client-preview-server.mjs'
+  'tests/giving-client-preview-server.mjs',
+  'vercel.json'
 ]);
 
 const SCOPE_NEUTRAL = new Set([
