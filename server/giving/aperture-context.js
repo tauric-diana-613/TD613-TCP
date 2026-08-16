@@ -75,7 +75,12 @@ export function observeGivingApertureContext(value) {
     authority.automatic_ash_action !== false ||
     authority.operator_closure_required !== true
   ) {
-    throw new GivingError('aperture-context-withheld', 'Aperture context attempted an authority-bearing posture', 400);
+    throw new GivingError(
+      'aperture-context-authority-withheld',
+      'Aperture context attempted an authority-bearing posture',
+      409,
+      { authority_effect: 'NONE' }
+    );
   }
 
   return Object.freeze({
@@ -107,9 +112,10 @@ export function publicGivingApertureContextReceipt(context) {
   if (!context) return null;
   return Object.freeze({
     status: 'OBSERVED_NON_AUTHORITATIVE',
+    source: context.source,
     direction: context.direction,
     aperture_receipt_reference: context.aperture_receipt_reference,
-    task_intent_route: context.task_intent.primary_route,
+    primary_route: context.task_intent.primary_route,
     runtime_materiality: context.task_intent.runtime_materiality,
     missingness_count: context.missingness_count,
     contradiction_count: context.contradiction_count,
