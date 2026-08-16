@@ -43,45 +43,52 @@ assert.match(consolidated, /Classify exact-head browser witness scope/);
 assert.match(consolidated, /contracts:\n\s+name: Static, constitutional, and release contracts\n\s+needs: scope/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
 assert.match(consolidated, /Explicit self-hosted calibration/);
 assert.match(consolidated, /Explicit full-repository validation/);
-const ashBrowserGate = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+
+const shardGate = consolidated.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
+const convergenceGate = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
 const givingBrowserGate = consolidated.match(/  giving_browser:[\s\S]*?    runs-on:/)?.[0] || '';
-assert.doesNotMatch(ashBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the full-product browser witness.');
+assert.match(shardGate, /needs: scope/, 'Front-line browser shards must depend only on scope so empirical witnessing starts at the front of the run.');
+assert.doesNotMatch(shardGate, /needs:\s*\[[^\]]*contracts/, 'Front-line browser shards must not wait behind static contracts.');
+assert.doesNotMatch(shardGate, /synchronize/, 'Ordinary PR synchronization must not authorize the full-product browser shards.');
+assert.doesNotMatch(convergenceGate, /synchronize/, 'Ordinary PR synchronization must not authorize full-product convergence.');
 assert.doesNotMatch(givingBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the Giving browser witness.');
-assert.doesNotMatch(consolidated, /strategy:\s*[\s\S]*matrix:\s*[\s\S]*browser:/, 'Browser engines must share one installation and one bounded job.');
+assert.match(convergenceGate, /needs: \[contracts, scope, ash_browser_shard\]/, 'The canonical owner must converge static contracts with the front-line browser shards.');
 
 for (const token of [
-  'Aggregate changed-risk A8 and A12 entry witnesses across every engine',
-  'set +e',
-  'artifacts/ash-risk-preflight/failures.tsv',
-  "for browser in chromium firefox webkit",
+  'strategy:',
+  'fail-fast: false',
+  'max-parallel: 3',
+  'browser: [chromium, firefox, webkit]',
+  'timeout-minutes: 35',
+  'Install one browser engine for this shard',
+  'Start isolated core extended and Flow-Core runtimes',
+  'Run front-line A8 A12 and lifecycle preflight for this engine',
   "TD613_ASH_STAGES='A8'",
   "TD613_A12_ENTRY_PREFLIGHT='true'",
-  'A12_ENTRY',
-  'td613.ash.changed-risk-preflight/v0.2-a8-a12-entry',
-  "scope:['A8','A12_ENTRY']",
-  "engines:['chromium','firefox','webkit']",
-  "viewports:{ A8:['desktop','mobile-reduced'], A12_ENTRY:['desktop'] }",
+  "scope:['A8','A12_ENTRY','LIFECYCLE']",
   'fail_fast:false',
-  'all_engines_observed:true',
-  'artifacts/ash-risk-preflight/manifest.json'
-]) assert.ok(consolidated.includes(token), `Consolidated changed-risk preflight omitted ${token}`);
-assert.match(consolidated, /Aggregate changed-risk A8 and A12 entry witnesses across every engine[\s\S]*Run the complete Ash witness through each installed engine/, 'Changed-risk A8/A12-entry preflight must resolve before the expensive full estate.');
-assert.equal((consolidated.match(/Aggregate changed-risk A8 and A12 entry witnesses across every engine/g) || []).length, 1, 'Risk preflight must have one owner.');
+  'per_engine_observed:true',
+  'Run core extended and Flow-Core lanes in parallel',
+  'lane_parallelism:true',
+  "TD613_ASH_STAGES='A7,A8,A9,A10,A11'",
+  'td613-browser-shard-${{ matrix.browser }}',
+  'Collect surviving browser evidence shards',
+  'Enforce front-line shard convergence',
+]) assert.ok(consolidated.includes(token), `Front-line browser topology omitted ${token}`);
 
-for (const token of [
-  'Run changed-risk lifecycle closure preflight',
-  'artifacts/ash-closure-preflight',
-  'timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs'
-]) assert.ok(consolidated.includes(token), `Consolidated closure preflight omitted ${token}`);
-assert.match(consolidated, /Aggregate changed-risk A8 and A12 entry witnesses across every engine[\s\S]*Run changed-risk lifecycle closure preflight[\s\S]*Run the complete Ash witness through each installed engine/, 'A8, A12 entry, and lifecycle closure risk must resolve before the expensive full Ash estate.');
-assert.equal((consolidated.match(/Run changed-risk lifecycle closure preflight/g) || []).length, 1, 'Lifecycle closure preflight must have one owner.');
-assert.equal((consolidated.match(/Full-product exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Full-product browser estate must remain one bounded owner.');
+assert.match(
+  consolidated,
+  /ash_browser_shard:[\s\S]*?needs: scope[\s\S]*?Run front-line A8 A12 and lifecycle preflight for this engine[\s\S]*?Run core extended and Flow-Core lanes in parallel/,
+  'Per-engine preflight must occur before the expensive parallel lanes inside each front-line shard.',
+);
+assert.equal((consolidated.match(/Full-product exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Full-product browser estate must retain one canonical convergence owner.');
 assert.equal((consolidated.match(/Giving-only exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Giving browser estate must remain one bounded owner.');
+assert.equal((consolidated.match(/Front-line exact-head browser shard/g) || []).length, 1, 'One matrix definition must own the front-line browser shard family.');
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
+
 for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase IV static surfaces', 'Validate Ash core and ingress surfaces', 'Validate Ash A9 Work', 'Validate Flow-Core P0-P10 completion']) {
   assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: needs\\.scope\\.outputs\\.validation_scope != 'giving'`));
 }
@@ -96,4 +103,4 @@ const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 
-console.log('Workflow estate closed at 4/4 durable workflows with mutually exclusive Giving-only and full-product browser owners.');
+console.log('Workflow estate closed at 4/4 durable workflows with front-line three-engine shards, one convergence owner, and a distinct Giving-only witness.');
