@@ -26,7 +26,13 @@ const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
 
 for (const marker of ['Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs',"production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}","ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}"]) assert.ok(releaseWorkflow.includes(marker), `Bounded release omitted ${marker}`);
 assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
-assert.match(compatibilityRunner, /await import\('\.\/ash-lifecycle-production-probe\.mjs'\)/);
+for (const token of [
+  "const browserName = process.env.TD613_BROWSER || 'chromium'",
+  "if (!['chromium', 'firefox', 'webkit'].includes(browserName))",
+  "const adaptedGenerator = pathToFileURL(path.join(tempDir, 'ash-lifecycle-production-probe.mjs')).href",
+  'await import(`${adaptedGenerator}?engine=${browserName}&fixture=${Date.now()}`)',
+  'await fs.rm(tempDir, { recursive:true, force:true })'
+]) assert.ok(compatibilityRunner.includes(token), `Compatibility closure runner omitted bounded browser adapter contract ${token}`);
 assert.doesNotMatch(compatibilityRunner, /run-ash-keep-a1-production-probe-base\.mjs/);
 assert.match(compatibilityRunner, /retired pre-lifecycle A1 closure journey/);
 for (const token of [
@@ -157,4 +163,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, direct A15 convergence registry identity, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, direct A15 convergence registry identity, bounded multi-engine lifecycle adapter, and URL-specific failure diagnostics');
