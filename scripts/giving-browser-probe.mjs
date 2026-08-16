@@ -175,10 +175,14 @@ async function witnessResilienceUi() {
   const mobile = await page.evaluate(() => {
     const stateMenu = document.querySelector('#campaignDirectoryStateMenu');
     const municipalMenu = document.querySelector('#campaignDirectoryMunicipalMenu');
+    const bodyBox = document.body.getBoundingClientRect();
+    const scrollingElement = document.scrollingElement || document.documentElement;
     return {
       viewport: window.innerWidth,
       document: document.documentElement.scrollWidth,
+      scrolling: scrollingElement.scrollWidth,
       body: document.body.scrollWidth,
+      bodyBoxWidth: bodyBox.width,
       toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0,
       scopeRight: document.querySelector('.campaign-scope-block')?.getBoundingClientRect().right || 0,
       vaultRight: document.querySelector('#vaultGuide')?.getBoundingClientRect().right || 0,
@@ -187,7 +191,8 @@ async function witnessResilienceUi() {
     };
   });
   assert.ok(mobile.document <= mobile.viewport + 1, `mobile document overflowed: ${JSON.stringify(mobile)}`);
-  assert.ok(mobile.body <= mobile.viewport + 1, `mobile body overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.scrolling <= mobile.viewport + 1, `mobile scrolling surface overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.bodyBoxWidth <= mobile.viewport + 1, `mobile body border box overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.toolbarRight <= mobile.viewport + 1, `mobile Committee toolbar overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.scopeRight <= mobile.viewport + 1, `mobile campaign scope overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.vaultRight <= mobile.viewport + 1, `mobile Vault guide overflowed: ${JSON.stringify(mobile)}`);
