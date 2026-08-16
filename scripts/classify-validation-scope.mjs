@@ -27,6 +27,7 @@ const SCOPE_NEUTRAL = new Set([
   'scripts/giving-browser-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',
   'tests/giving-validation-scope.test.mjs',
+  'tests/pedagogue-design-gate.test.mjs',
   'tests/vercel-operator-release-gate.test.mjs',
   'tests/workflow-estate.test.mjs',
   'app/engine/pedagogue-design-gate.js',
