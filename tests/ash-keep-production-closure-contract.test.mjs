@@ -56,8 +56,14 @@ assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|tran
 
 for (const token of ['TD613 Consolidated Validation','tests/ash-keep-production-closure-contract.test.mjs','scripts/run-ash-constitutional-convergence-handshake.mjs','Run bounded closure and constitutional convergence once','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(consolidated.includes(token), `Consolidated closure omitted ${token}`);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
+const shardGate = consolidated.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
+const convergenceGate = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+assert.match(shardGate, /needs: scope/);
+assert.match(shardGate, /github\.event_name == 'pull_request'/);
+assert.doesNotMatch(shardGate, /contracts|github\.event\.action|ready_for_review/, 'Ash production closure requires full-product browser evidence to start immediately after scope on PR synchronization.');
+assert.match(convergenceGate, /needs: \[contracts, scope, ash_browser_shard\]/);
+assert.match(convergenceGate, /github\.event_name == 'pull_request'/);
+assert.doesNotMatch(convergenceGate, /github\.event\.action|ready_for_review/);
 assert.doesNotMatch(consolidated, /workflow_run:/);
 for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive =','production_chromium_desktop_mobile =','premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
 assert.doesNotMatch(releaseWorkflow, /for browser in chromium firefox webkit|playwright install --with-deps chromium firefox webkit|ash-keep-aia3-task-journey-v3\.mjs/);
@@ -70,4 +76,4 @@ assert.match(lifecycleProbe, /draft_body_sha256/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
-console.log('ash-keep-production-closure-contract.test.mjs passed under A14 consolidated and bounded release lanes');
+console.log('ash-keep-production-closure-contract.test.mjs passed under synchronize-safe front-line shards and bounded release lanes');
