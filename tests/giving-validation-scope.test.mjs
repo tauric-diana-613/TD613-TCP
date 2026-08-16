@@ -26,6 +26,7 @@ assert.equal(classifyValidationScope([
   'scripts/run-pedagogue-design-gate.mjs',
   'tests/fixtures/pedagogue/giving-vault-design.json',
   'tests/fixtures/pedagogue/giving-research-dossier-design.json',
+  'tests/fixtures/pedagogue/cistern-boundary-design.json',
   'tests/giving-ux-resilience.test.mjs',
   'tests/pedagogue-design-gate.test.mjs',
   'tests/giving-vercel-route.test.mjs'
