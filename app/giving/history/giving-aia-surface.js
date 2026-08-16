@@ -7,7 +7,8 @@ import {
 import { FLOWCORE_AIA_ROUTE_IDS } from '../../dome-world/data/flowcore-aia-route-registry-v01.js';
 
 export const GIVING_AIA_SURFACE_REFERENCE = 'td613.giving.history';
-export const GIVING_AIA_RUNTIME_SCHEMA = 'td613.giving.aia-runtime/v0.1';
+export const GIVING_AIA_RUNTIME_SCHEMA = 'td613.giving.aia-runtime/v0.2';
+export const GIVING_AIA_RUNTIME_RECEIPT_SCHEMA = 'td613.giving.aia-runtime-receipt/v0.1';
 
 export const GIVING_AIA_SURFACE_BINDING = compileAiaSurfaceBinding({
   surface_reference: GIVING_AIA_SURFACE_REFERENCE,
@@ -198,26 +199,127 @@ export function compileGivingAiaProjectionFamily(input = {}) {
   });
 }
 
+function stateFromSettledRun(detail = {}, apertureObserved = false) {
+  const sourceStates = Array.isArray(detail.source_states) ? detail.source_states : [];
+  const heldSources = Array.isArray(detail.held_sources) ? detail.held_sources : [];
+  const terminalReceipts = sourceStates.filter((item) => ['COMPLETE', 'PARTIAL', 'FAILED', 'ERROR', 'DRIFTED', 'UNAVAILABLE', 'CANCELLED'].includes(String(item?.status || '').toUpperCase())).length;
+  const heldCount = heldSources.length;
+  const settledStatus = String(detail.status || 'UNRESOLVED').toUpperCase();
+  const missingness = heldCount ? ['HELD_SOURCE_ROUTE_PRESENT'] : [];
+  if (detail.client_error) missingness.push('CLIENT_OBSERVER_HELD');
+  return {
+    governed_reference: boundedText(detail.cycle_id, 'giving-runtime-cycle'),
+    source_instance_count: sourceStates.length,
+    source_receipt_count: terminalReceipts,
+    held_route_count: heldCount,
+    source_families: [],
+    aperture_context_observed: apertureObserved,
+    source_status: 'OBSERVED',
+    observation_status: settledStatus === 'COMPLETE' ? 'OBSERVED' : settledStatus === 'HELD' ? 'UNRESOLVED' : settledStatus,
+    missingness,
+    contradictions: [],
+    authorized_actions: ['RESEARCH_REVIEW', 'DOSSIER_CUSTODY', 'HUMAN_LATCHED_WRITE'],
+    now: settledStatus === 'COMPLETE'
+      ? 'The research run reached terminal source states.'
+      : 'The research run reached terminal state with one or more held source routes.',
+    why: heldCount
+      ? 'Held source routes remain visible rather than being flattened into the returned record set.'
+      : 'Each source route settled independently and remains separately receipted.',
+    exact: `${terminalReceipts} terminal source receipt(s); ${heldCount} held source route(s).`,
+    next_action: heldCount ? 'Review or retry held source routes deliberately.' : 'Review the returned records or begin a new bounded research action.'
+  };
+}
+
+function runtimeReceipt(family, state, revision) {
+  return Object.freeze({
+    schema: GIVING_AIA_RUNTIME_RECEIPT_SCHEMA,
+    revision,
+    surface_reference: GIVING_AIA_SURFACE_REFERENCE,
+    host_station: 'Dome-World',
+    governance_context: 'TD613',
+    governed_reference: family.report.governed_reference,
+    source_instance_count: boundedCount(state.source_instance_count),
+    source_receipt_count: boundedCount(state.source_receipt_count),
+    held_route_count: boundedCount(state.held_route_count),
+    observation_status: boundedText(state.observation_status, 'UNRESOLVED', 32).toUpperCase(),
+    route_count: family.report.routes.length,
+    pair_count: family.report.pair_count,
+    all_invariants_preserved: family.report.all_invariants_preserved,
+    all_surfaces_non_equivalent: family.report.all_surfaces_non_equivalent,
+    route_inference_forbidden: family.report.route_inference_forbidden,
+    authority_transferred: family.report.authority_transferred,
+    human_closure_required: family.report.human_closure_required,
+    donor_identity_included: false,
+    raw_records_included: false
+  });
+}
+
 export function installGivingAiaSurface(runtime = globalThis) {
   const apertureObserved = runtime?.__TD613_GIVING_APERTURE_CONTEXT?.authority?.giving_authority === false;
-  const family = compileGivingAiaProjectionFamily({ aperture_context_observed: apertureObserved });
+  let revision = 0;
+  let currentState = {
+    governed_reference: 'giving-runtime-boot',
+    source_instance_count: 0,
+    source_receipt_count: 0,
+    held_route_count: 0,
+    source_families: [],
+    aperture_context_observed: apertureObserved,
+    source_status: 'OBSERVED',
+    observation_status: 'UNRESOLVED',
+    missingness: [],
+    contradictions: [],
+    authorized_actions: ['RESEARCH_REVIEW', 'DOSSIER_CUSTODY', 'HUMAN_LATCHED_WRITE']
+  };
+  let currentFamily = compileGivingAiaProjectionFamily(currentState);
+  let currentReceipt = runtimeReceipt(currentFamily, currentState, revision);
+
+  const publish = (state, reason = 'runtime-update') => {
+    currentState = { ...state, aperture_context_observed: state.aperture_context_observed ?? apertureObserved };
+    currentFamily = compileGivingAiaProjectionFamily(currentState);
+    revision += 1;
+    currentReceipt = runtimeReceipt(currentFamily, currentState, revision);
+    const root = runtime?.document?.documentElement;
+    if (root?.dataset) {
+      root.dataset.givingAiaSurface = 'bound';
+      root.dataset.givingAiaRevision = String(revision);
+      root.dataset.givingAiaObservation = currentReceipt.observation_status.toLowerCase();
+    }
+    if (typeof runtime?.dispatchEvent === 'function' && typeof runtime?.CustomEvent === 'function') {
+      runtime.dispatchEvent(new runtime.CustomEvent('td613:giving:aia-updated', {
+        detail: {
+          reason,
+          receipt: currentReceipt
+        }
+      }));
+    }
+    return currentReceipt;
+  };
+
   const api = Object.freeze({
     schema: GIVING_AIA_RUNTIME_SCHEMA,
     binding: GIVING_AIA_SURFACE_BINDING,
-    report: family.report,
+    get report() { return currentFamily.report; },
+    get receipt() { return currentReceipt; },
+    get revision() { return revision; },
     project(route, input = {}) {
       return compileGivingAiaProjection(route, {
+        ...currentState,
         ...input,
         aperture_context_observed: input.aperture_context_observed ?? apertureObserved
       });
     },
     projectFamily(input = {}) {
       return compileGivingAiaProjectionFamily({
+        ...currentState,
         ...input,
         aperture_context_observed: input.aperture_context_observed ?? apertureObserved
       });
+    },
+    observeStructuralState(input = {}) {
+      return publish({ ...currentState, ...input }, 'explicit-structural-observation');
     }
   });
+
   try {
     Object.defineProperty(runtime, '__TD613_GIVING_AIA', {
       value: api,
@@ -228,13 +330,27 @@ export function installGivingAiaSurface(runtime = globalThis) {
   } catch {
     runtime.__TD613_GIVING_AIA = api;
   }
+
+  const settledTarget = runtime?.document;
+  if (settledTarget?.addEventListener) {
+    settledTarget.addEventListener('td613:giving-run-settled', (event) => {
+      const state = stateFromSettledRun(event?.detail || {}, apertureObserved);
+      publish(state, 'giving-run-settled');
+    });
+  }
+
   const root = runtime?.document?.documentElement;
-  if (root?.dataset) root.dataset.givingAiaSurface = 'bound';
+  if (root?.dataset) {
+    root.dataset.givingAiaSurface = 'bound';
+    root.dataset.givingAiaRevision = '0';
+    root.dataset.givingAiaObservation = 'unresolved';
+  }
   if (typeof runtime?.dispatchEvent === 'function' && typeof runtime?.CustomEvent === 'function') {
     runtime.dispatchEvent(new runtime.CustomEvent('td613:giving:aia-bound', {
       detail: {
         surface_reference: GIVING_AIA_SURFACE_REFERENCE,
         routes: [...GIVING_AIA_SURFACE_BINDING.routes],
+        runtime_receipt: currentReceipt,
         human_closure_required: true
       }
     }));
