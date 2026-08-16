@@ -90,8 +90,18 @@ assert.match(consolidated, /contracts:\n\s+name: Static, constitutional, and rel
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
-assert.match(consolidated, /ash_browser_shard:[\s\S]*?needs: scope/);
+
+const shardGate = consolidated.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
+const convergenceGate = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+const givingGate = consolidated.match(/  giving_browser:[\s\S]*?    runs-on:/)?.[0] || '';
+assert.match(shardGate, /needs: scope/);
+assert.match(shardGate, /github\.event_name == 'pull_request'/);
+assert.doesNotMatch(shardGate, /contracts|github\.event\.action|ready_for_review/, 'Release law requires full-product browser evidence to start immediately after scope on full-scope PR synchronization.');
+assert.match(convergenceGate, /needs: \[contracts, scope, ash_browser_shard\]/);
+assert.match(convergenceGate, /github\.event_name == 'pull_request'/);
+assert.doesNotMatch(convergenceGate, /github\.event\.action|ready_for_review/, 'Release law requires convergence to follow the shard family without an action-transition lock.');
+assert.match(givingGate, /github\.event\.action == 'ready_for_review'/, 'Giving-only witness remains separately bounded to ready-for-review.');
+
 assert.match(consolidated, /browser: \[chromium, firefox, webkit\]/);
 assert.match(consolidated, /max-parallel: 3/);
 assert.match(consolidated, /playwright install --with-deps "\$\{\{ matrix\.browser \}\}"/);
@@ -99,7 +109,6 @@ assert.match(consolidated, /Run front-line A8 A12 and lifecycle preflight for th
 assert.match(consolidated, /Run core extended and Flow-Core lanes in parallel/);
 assert.match(consolidated, /td613-browser-shard-\$\{\{ matrix\.browser \}\}/);
 assert.match(consolidated, /Collect surviving browser evidence shards/);
-assert.match(consolidated, /needs: \[contracts, scope, ash_browser_shard\]/);
 assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(consolidated, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(consolidated, /giving-browser-probe\.mjs/);
@@ -117,4 +126,4 @@ assert.match(law, /scope-aligned three-engine evidence before merge/i);
 assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for front-line shard premerge evidence and bounded A14 production confirmation');
+console.log('vercel-operator-release-gate.test.mjs passed for synchronize-safe front-line shard premerge evidence and bounded A14 production confirmation');
