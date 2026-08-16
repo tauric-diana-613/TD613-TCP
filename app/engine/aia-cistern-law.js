@@ -1,5 +1,5 @@
-export const AIA_CISTERN_LAW_SCHEMA = 'td613.aia.cistern-law/v0.1';
-export const AIA_CISTERN_RECEIPT_SCHEMA = 'td613.aia.cistern-receipt/v0.1';
+export const AIA_CISTERN_LAW_SCHEMA = 'td613.aia.cistern-law/v0.2';
+export const AIA_CISTERN_RECEIPT_SCHEMA = 'td613.aia.cistern-receipt/v0.2';
 
 function cleanSteps(steps, label) {
   if (!Array.isArray(steps) || !steps.length) throw new TypeError(`${label} must contain at least one route step.`);
@@ -39,6 +39,7 @@ export function compileCisternLawReceipt({
   requestDigest = null,
   sessionDigest = null,
   spentIntentDigest = null,
+  durableTombstone = false,
   egressDigest = null,
   outcome = 'RELEASED'
 } = {}) {
@@ -53,6 +54,11 @@ export function compileCisternLawReceipt({
     bounded_intent: witness.bounded_intent === true
   };
   const admitted = route.exact_route_match && (!witnessState.human_required || witnessState.human_observed) && witnessState.bounded_intent;
+  const replayPosture = durableTombstone && spentIntentDigest
+    ? 'DURABLE_SPENT_INTENT_TOMBSTONE_RECORDED'
+    : spentIntentDigest
+      ? 'SIGNED_SESSION_ROTATION_ONLY_NO_DURABLE_TOMBSTONE_CLAIM'
+      : 'NO_REPLAY_CLAIM';
   return Object.freeze({
     schema: AIA_CISTERN_RECEIPT_SCHEMA,
     law: AIA_CISTERN_LAW_SCHEMA,
@@ -67,10 +73,9 @@ export function compileCisternLawReceipt({
     request_digest: requestDigest,
     session_digest: sessionDigest,
     spent_intent_digest: spentIntentDigest,
+    durable_tombstone: Boolean(durableTombstone && spentIntentDigest),
     egress_digest: egressDigest,
-    replay_posture: spentIntentDigest
-      ? 'PRIOR_INTENT_RETIRED_BY_SIGNED_SESSION_ROTATION_NO_DURABLE_TOMBSTONE_CLAIM'
-      : 'NO_REPLAY_CLAIM',
+    replay_posture: replayPosture,
     authority: {
       endpoint_equivalence_forbidden: true,
       route_equivalence_required_for_release: true,
@@ -99,7 +104,7 @@ export const AIA_CISTERN_LAW = Object.freeze({
   unauthorized_posture: 'LOW_INFORMATION_NON_AUTHORITATIVE_REFUSAL',
   fabricated_decoys: false,
   route_memory: 'SAME_ENDPOINT_DOES_NOT_IMPLY_SAME_ROUTE_OR_SAME_AUTHORITY',
-  replay: 'SIGNED_SESSION_INTENT_ROTATION_WHERE_IMPLEMENTED_DURABLE_TOMBSTONE_NOT_CLAIMED',
+  replay: 'DURABLE_SPENT_INTENT_REQUIRED_FOR_NON_IDEMPOTENT_WRITES; SIGNED_SESSION_ROTATION_IS_NOT_A_TOMBSTONE',
   automatic_redesign: false,
   automatic_release: false,
   human_closure: true
