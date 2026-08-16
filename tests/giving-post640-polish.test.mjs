@@ -10,6 +10,9 @@ const help = read('app/giving/history/giving-dossier-help.js');
 const helpCss = read('app/giving/history/giving-dossier-help.css');
 const polish = read('app/giving/history/giving-polish.css');
 const sharedAccess = read('app/giving/history/giving-shared-access.js');
+const pageSize = read('app/giving/history/giving-page-size.js');
+
+assert.doesNotThrow(() => new Function(shell), 'Giving resilience shell must remain browser-parseable');
 
 assert.match(
   stateCss,
@@ -34,6 +37,10 @@ assert.match(helpCss, /font-weight:\s*500/);
 assert.match(shellCss, /\.campaign-segmented-control\s*\{[\s\S]*?gap:\s*5px/);
 assert.match(shellCss, /\.review-hold-button\s*\{[\s\S]*?translateY\(-2px\)/);
 assert.match(polish, /#sessionTitle::after[\s\S]*?TD613 Giving/);
+
+assert.match(pageSize, /const PAGE_SIZE = 50/);
+assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 50/);
+assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/);
 
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /Evict every shared Giving session/);
