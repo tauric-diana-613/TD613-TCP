@@ -175,12 +175,23 @@ jobs:
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
-      - name: Validate Ash A15 empirical profile journeys
+      - name: Validate Ash A15 empirical profile journeys and A15-R0 research field
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+          node --check scripts/ash-a15-r0-preview-probe.mjs
+          node --check scripts/ash-a15-transition-trace-browser-probe.mjs
           node tests/ash-a15-empirical-profile-journeys.test.mjs
+          node tests/ash-a15-empirical-witness-composition.test.mjs
+          node tests/ash-a15-r0-fixture.test.mjs
+          node tests/ash-a15-r0-kernel-adapter.test.mjs
+          node tests/ash-a15-r0-interaction-ownership.test.mjs
+          node tests/ash-a15-r0-disposal.test.mjs
+          node tests/ash-a15-r0-preview-contract.test.mjs
+          node tests/ash-a15-r0-open-research-field.test.mjs
+          node tests/ash-a15-r0-review-hardening.test.mjs
+          node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
@@ -293,6 +304,54 @@ jobs:
               exit 1
             fi
           done
+      - name: Calibrate A15-R0 and transition ordering for this engine
+        shell: bash
+        run: |
+          set +e
+          browser='${{ matrix.browser }}'
+          export TD613_BROWSER="$browser"
+          export TD613_BASE_URL='http://127.0.0.1:6130'
+          mkdir -p "artifacts/$browser/calibration"
+          : > "artifacts/$browser/calibration/failures.tsv"
+          failures=0
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-r0" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_R0_PREVIEW\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-transition" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_TRANSITION_TRACE\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          BROWSER="$browser" node <<'NODE'
+          const fs = require('node:fs');
+          const browser = process.env.BROWSER;
+          const path = `artifacts/${browser}/calibration/failures.tsv`;
+          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
+            const [seam, status] = line.split('\t');
+            return { seam, status:Number(status) };
+          });
+          fs.writeFileSync(`artifacts/${browser}/calibration/manifest.json`, JSON.stringify({
+            schema:'td613.ash.a15-r0-calibration/v0.3-per-engine-before-gating',
+            browser,
+            scope:['A15_R0_PREVIEW','A15_TRANSITION_TRACE'],
+            measurement_before_gating:true,
+            independent_from_inherited_a15:true,
+            fail_fast:false,
+            per_engine_observed:true,
+            failures,
+            ok:failures.length === 0,
+            promotion_authority:false,
+            production_mutation:false,
+            authority_changed:false,
+            human_closure_required:true
+          }, null, 2));
+          NODE
+
+          if [[ "$failures" -ne 0 ]]; then
+            cat "artifacts/$browser/calibration/failures.tsv"
+            exit 1
+          fi
       - name: Run front-line A8 A12 and lifecycle preflight for this engine
         shell: bash
         run: |
