@@ -117,10 +117,10 @@ function installCommitteeToolbar() {
 
 function installVaultGuide() {
   const grid = $('#view-vault .vault-grid');
-  if (!grid || $('#vaultChildLegibleGuide')) return;
+  if (!grid || $('#vaultGuide')) return;
   const guide = document.createElement('section');
-  guide.id = 'vaultChildLegibleGuide';
-  guide.className = 'vault-child-legible-guide';
+  guide.id = 'vaultGuide';
+  guide.className = 'vault-guide';
   guide.setAttribute('aria-label', 'How the Vault works');
   guide.innerHTML = `
     <p class="vault-case-metaphor">Think of the Vault as a locked field case: TD613 can shelve the case and track its versions, but only your passphrase opens what is inside.</p>
