@@ -8,6 +8,10 @@ import {
   PUBLIC_OPERATIONS
 } from './constants.js';
 import { searchSourcePage } from './adapters/index.js';
+import {
+  observeGivingApertureContext,
+  publicGivingApertureContextReceipt
+} from './aperture-context.js';
 import { searchCommitteeActivity } from './committee-activity.js';
 import {
   campaignDeputyReadiness,
@@ -74,6 +78,7 @@ function responseReceipt(envelope, session, extra = {}) {
     session_id_digest: session?.sid ? sha256(session.sid) : null,
     custody: custodyForOperation(envelope?.operation || ''),
     donor_inputs_logged: false,
+    ...(envelope?.aperture_context ? { aperture_context: publicGivingApertureContextReceipt(envelope.aperture_context) } : {}),
     completed_at: new Date().toISOString(),
     ...extra
   };
@@ -192,6 +197,8 @@ export async function givingHandler(req, res, context = {}) {
       throw new GivingError('content-type-withheld', 'Giving request envelopes must use application/json', 415);
     }
     envelope = await parseEnvelope(req);
+    const apertureContext = observeGivingApertureContext(envelope.intent?.aperture_context);
+    if (apertureContext) envelope = { ...envelope, aperture_context: apertureContext };
     const cors = {
       'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Credentials': 'true',
