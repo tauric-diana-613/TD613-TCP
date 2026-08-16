@@ -215,7 +215,7 @@ jobs:
     needs: scope
     if: >-
       (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving')
+      (github.event_name == 'pull_request' && needs.scope.outputs.validation_scope != 'giving')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
@@ -410,7 +410,7 @@ jobs:
     if: >-
       always() &&
       ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
+      (github.event_name == 'pull_request' && needs.scope.outputs.validation_scope != 'giving'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
