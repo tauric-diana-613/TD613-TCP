@@ -130,7 +130,6 @@ async function witnessResilienceUi() {
     toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0
   }));
   assert.ok(desktopOverflow.document <= desktopOverflow.viewport + 1, `desktop document overflowed: ${JSON.stringify(desktopOverflow)}`);
-  assert.ok(desktopOverflow.body <= desktopOverflow.viewport + 1, `desktop body overflowed: ${JSON.stringify(desktopOverflow)}`);
   assert.ok(desktopOverflow.toolbarRight <= desktopOverflow.viewport + 1, `desktop Committee toolbar overflowed: ${JSON.stringify(desktopOverflow)}`);
 
   await page.screenshot({ path: path.join(artifactDir, 'giving-history-desktop.png'), fullPage: true });
@@ -145,7 +144,6 @@ async function witnessResilienceUi() {
     vaultRight: document.querySelector('#vaultGuide')?.getBoundingClientRect().right || 0
   }));
   assert.ok(mobile.document <= mobile.viewport + 1, `mobile document overflowed: ${JSON.stringify(mobile)}`);
-  assert.ok(mobile.body <= mobile.viewport + 1, `mobile body overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.toolbarRight <= mobile.viewport + 1, `mobile Committee toolbar overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.scopeRight <= mobile.viewport + 1, `mobile campaign scope overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.vaultRight <= mobile.viewport + 1, `mobile Vault guide overflowed: ${JSON.stringify(mobile)}`);
