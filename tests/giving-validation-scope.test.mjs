@@ -17,6 +17,17 @@ assert.equal(classifyValidationScope([
   'package.json'
 ]).scope, 'giving');
 
+assert.equal(classifyValidationScope([
+  'app/giving/history/giving-ux-resilience-shell.js',
+  'app/engine/pedagogue-design-gate.js',
+  'app/engine/aia-cistern-law.js',
+  'docs/PEDAGOGUE_DESIGN_GATE.md',
+  'scripts/run-pedagogue-design-gate.mjs',
+  'tests/fixtures/pedagogue/giving-vault-design.json',
+  'tests/fixtures/pedagogue/giving-research-dossier-design.json',
+  'tests/giving-ux-resilience.test.mjs'
+]).scope, 'giving', 'narrow additive Giving design/security witnesses must stay inside the Giving release lane');
+
 for (const unsafePath of [
   'app/dome-world/ash-keep.js',
   'scripts/ash-a12-browser-probe.mjs',
@@ -31,6 +42,7 @@ for (const unsafePath of [
 }
 
 assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving lane');
+assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).scope, 'full', 'shared design helpers alone cannot self-select the Giving lane');
 assert.equal(classifyValidationScope([]).scope, 'full', 'an empty diff fails closed to full validation');
 
 console.log('giving-validation-scope.test.mjs passed');
