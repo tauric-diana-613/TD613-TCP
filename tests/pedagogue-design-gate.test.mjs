@@ -52,6 +52,8 @@ test('Pedagogue route memory preserves path difference even when endpoints match
   assert.equal(exact.endpoint_equivalent, true);
   assert.equal(exact.same_endpoint_not_same_history, false);
   assert.equal(exact.edit_distance_steps, 0);
+  assert.equal(exact.route_divergence_millipoints, 0);
+  assert.equal(exact.endpoint_holonomy_residue_millipoints, 0);
 
   const diverged = comparePedagogueRouteMemory(expected, observed, {
     expectedEndpoint: 'governed-consequence',
@@ -62,7 +64,14 @@ test('Pedagogue route memory preserves path difference even when endpoints match
   assert.equal(diverged.same_endpoint_not_same_history, true);
   assert.equal(diverged.first_divergence_index, 1);
   assert.equal(diverged.edit_distance_steps, 1);
+  assert.equal(diverged.route_divergence_millipoints, 250);
+  assert.equal(diverged.retained_boundary_millipoints, 750);
+  assert.equal(diverged.endpoint_holonomy_residue_millipoints, 250);
+  assert.equal(diverged.math.model, 'DISCRETE_ROUTE_DIVERGENCE_SURROGATE');
+  assert.equal(diverged.math.geometric_holonomy_claim, false);
+  assert.equal(diverged.math.comparative_structural_measure_only, true);
   assert.equal(diverged.child_legible.why, 'The destination matches, but the path still matters.');
+  assert.match(diverged.child_legible.exact, /Route divergence: 250\/1000/);
   assert.equal(diverged.authority.same_endpoint_grants_authority, false);
   assert.equal(diverged.authority.route_history_may_be_discarded, false);
   assert.equal(diverged.authority.automatic_redesign, false);
