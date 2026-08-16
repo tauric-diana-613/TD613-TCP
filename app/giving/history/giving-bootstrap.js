@@ -1,4 +1,4 @@
-const GIVING_ASSET_EPOCH = '20260816-2';
+const GIVING_ASSET_EPOCH = '20260816-3';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
@@ -48,6 +48,7 @@ await import(epochUrl('./giving-ux-resilience-shell.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-app.js'));
+await import(epochUrl('./giving-shared-access.js'));
 await import(epochUrl('./giving-search-controls.js'));
 await import(epochUrl('./giving-campaign-tools-v3.js'));
 await import(epochUrl('./giving-visible-language.js'));

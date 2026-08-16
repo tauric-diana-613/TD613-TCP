@@ -183,6 +183,23 @@ async function selectRoute(page, route) {
   }, { route, controlValue }, { timeout:60_000 });
 }
 
+async function waitForRouteLanding(page, route, witness) {
+  const controlValue = ROUTE_CONTROLS[route];
+  try {
+    await page.waitForFunction(({ route, controlValue }) => {
+      const currentRoute = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
+      const workspace = document.documentElement.dataset.ashPremiumWorkspace || null;
+      return (currentRoute === controlValue || currentRoute === route.toUpperCase())
+        && document.querySelector('[data-a15-route]')?.textContent?.trim() === route
+        && workspace === 'work'
+        && document.getElementById('workspace-work')?.classList.contains('active') === true;
+    }, { route, controlValue }, { timeout:60_000 });
+  } catch (error) {
+    const diagnostic = await workspaceDiagnostic(page, 'work', witness);
+    throw new Error(`A15 ${route} route-owned Work landing did not settle before target navigation: ${JSON.stringify(diagnostic)}`, { cause:error });
+  }
+}
+
 async function waitForVisibleCombination(page, workspace, route) {
   const controlValue = ROUTE_CONTROLS[route];
   await page.waitForFunction(({ workspace, route, controlValue }) => {
@@ -246,6 +263,7 @@ async function inspectProfile(options, profile, mode) {
       for (const route of ROUTES) {
         witness = { browser:browserName, mode, profile, workspace, route };
         await selectRoute(page, route);
+        await waitForRouteLanding(page, route, witness);
         const navigation = await openWorkspace(page, workspace, witness);
         if (navigation.changed) workspaceTransitions += 1;
         if (navigation.receipt_captured_at_click) capturedNavigationReceipts += 1;
@@ -303,7 +321,7 @@ try {
   for (const receipt of receipts.filter(item => item.mode === 'desktop')) receipt.answers.forEach(answer => { const key = `${answer.workspace}:${answer.route}`; const values = answerSignatures.get(key) || []; values.push(answer.message); answerSignatures.set(key, values); });
   for (const [key, values] of answerSignatures) if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.6-canonical-primary-dock',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.7-route-landing-settlement',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -317,6 +335,7 @@ try {
     state_derived_transition_receipts:true,
     minimum_workspace_transitions_per_profile:4,
     route_landing_workspace:'work',
+    route_landing_settled_before_target_workspace:true,
     real_profile_hydration:true,
     real_workspace_navigation:true,
     navigation_receipt_captured_at_click:true,
