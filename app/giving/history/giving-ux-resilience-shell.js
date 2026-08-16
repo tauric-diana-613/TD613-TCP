@@ -80,7 +80,9 @@ function normalizeLocalFileOptions() {
   const select = $('#localDossierSelect');
   if (!select) return;
   for (const option of select.options) {
-    option.textContent = option.textContent.replace(/^Giving history \d{4}-\d{2}-\d{2}(?=\s*·)/, 'Untitled contributor research');
+    const current = option.textContent;
+    const normalized = current.replace(/^Giving history \d{4}-\d{2}-\d{2}(?=\s*·)/, 'Untitled contributor research');
+    if (normalized !== current) option.textContent = normalized;
   }
 }
 
