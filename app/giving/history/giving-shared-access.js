@@ -17,7 +17,7 @@ function ensureButton() {
   button.id = BUTTON_ID;
   button.type = 'button';
   button.className = 'button quiet';
-  button.textContent = 'Shared access';
+  button.textContent = 'Close shared access';
   button.title = 'Owner control for evicting shared Giving sessions';
   button.hidden = true;
   actions.insertBefore(button, document.getElementById('signOutButton') || null);
@@ -39,17 +39,12 @@ async function runControl() {
   button.disabled = true;
   try {
     const state = await sharedState();
-    if (!state?.configured) {
-      window.alert('Shared-session eviction is not configured yet. Giving needs a separate owner secret plus its admitted Neon custody boundary before this control can lock collaborators out.');
+    if (!state?.configured || !state?.owner_session) {
+      button.hidden = true;
       return;
     }
 
     const locked = state.shared_access === 'LOCKED';
-    if (locked && !state.owner_session) {
-      window.alert('Shared Giving access is locked. Re-enter with the owner secret to reopen it.');
-      return;
-    }
-
     const promptText = locked
       ? 'Reopen the shared Giving access secret for collaborators? Sessions issued before the last lock stay revoked.'
       : 'Evict every shared Giving session and block the shared access secret until an owner reopens it?';
@@ -59,18 +54,13 @@ async function runControl() {
     if (!ownerSecret) return;
 
     const operation = locked ? 'session.shared-access.enable' : 'session.shared-access.revoke';
-    const result = await api.call(operation, { owner_secret: ownerSecret }, {
+    await api.call(operation, { owner_secret: ownerSecret }, {
       mutation: true,
       purpose: locked ? 'reopen shared Giving access' : 'evict shared Giving sessions'
     });
-    const next = result?.data || {};
     window.alert(locked
       ? 'Shared Giving access reopened. Previously evicted sessions remain invalid; collaborators must sign in again.'
       : 'Shared Giving access locked. Existing collaborator sessions were evicted and the shared secret cannot open a new collaborator session until an owner reopens it.');
-    if (next.current_session_closed) {
-      location.reload();
-      return;
-    }
     location.reload();
   } catch (error) {
     window.alert(message(error));
@@ -87,15 +77,17 @@ async function refreshButton() {
   }
   try {
     const state = await sharedState();
-    button.hidden = !state?.configured;
+    button.hidden = !state?.configured || !state?.owner_session;
     if (button.hidden) return;
+    const locked = state.shared_access === 'LOCKED';
+    button.textContent = locked ? 'Reopen shared access' : 'Close shared access';
     button.dataset.sharedAccess = String(state.shared_access || 'UNKNOWN').toLowerCase();
-    button.setAttribute('aria-label', state.shared_access === 'LOCKED'
-      ? 'Shared Giving access locked; owner can reopen access'
-      : 'Shared Giving access open; owner can evict collaborator sessions');
-    button.title = state.shared_access === 'LOCKED'
-      ? 'Shared access locked · owner session required to reopen'
-      : 'Shared access open · evict every collaborator session and block shared sign-in';
+    button.setAttribute('aria-label', locked
+      ? 'Shared Giving access locked; reopen collaborator access'
+      : 'Close shared Giving access and evict collaborator sessions');
+    button.title = locked
+      ? 'Reopen shared access · previously evicted sessions stay invalid'
+      : 'Evict every collaborator session and block shared sign-in';
   } catch {
     button.hidden = true;
   }
