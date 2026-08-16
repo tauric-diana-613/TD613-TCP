@@ -6,6 +6,15 @@ Use it when a product change alters consequence order, AIA route structure, rout
 
 ## Run the Design Gate
 
+Preferred from repository root:
+
+```bash
+npm run pedagogue:design -- <fixture.json>
+npm run test:pedagogue
+```
+
+Direct runner:
+
 ```bash
 node scripts/run-pedagogue-design-gate.mjs <fixture.json>
 ```
@@ -17,6 +26,7 @@ The runner invokes the real shared engine:
 - `app/engine/flowcore-pedagogue-aia.js`
 - `app/engine/flowcore-pedagogue-route-memory.js`
 - `app/engine/flowcore-route-burden.js`
+- `app/engine/flowcore-aia-surface-binding.js`
 
 Read the full contract in [`docs/PEDAGOGUE_DESIGN_GATE.md`](docs/PEDAGOGUE_DESIGN_GATE.md).
 
@@ -36,5 +46,7 @@ Read the full contract in [`docs/PEDAGOGUE_DESIGN_GATE.md`](docs/PEDAGOGUE_DESIG
 A product fixture may reveal a reusable mechanism. Promote that mechanism into shared core only when it is generic, tested independently from the product that revealed it, and does not widen authority.
 
 Keep product names and business rules in fixtures or product adapters. The shared Pedagogue core should describe the mechanism, not the product that happened to teach it.
+
+A nested surface can also teach the architecture how to bind products into AIA without turning product names into new AIA routes. The generic `flowcore-aia-surface-binding.js` primitive binds a Dome-hosted surface to the four canonical non-equivalent AIA projections while preserving invariant verification, explicit route selection, bounded authority, rest/exit, and human closure.
 
 See root [`AGENTS.md`](AGENTS.md) for the agent-facing entry contract.
