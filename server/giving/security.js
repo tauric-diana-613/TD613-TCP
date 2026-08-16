@@ -80,6 +80,10 @@ function encodeSession(payload, secret) {
   return `${encoded}.${hmacSha256(secret, encoded)}`;
 }
 
+function sessionCookie(payload, secret, maxAge) {
+  return `${SESSION_COOKIE}=${encodeSession(payload, secret)}; Path=/; Max-Age=${Math.max(1, Math.floor(maxAge))}; Secure; HttpOnly; SameSite=Strict`;
+}
+
 function decodeSession(token, secret) {
   const [encoded, signature, extra] = String(token || '').split('.');
   if (!encoded || !signature || extra || !constantTimeEqual(signature, hmacSha256(secret, encoded))) {
@@ -115,7 +119,24 @@ export function createSession(accessSecret, audience = null) {
   return {
     payload,
     token: encodeSession(payload, secrets.signing),
-    cookie: `${SESSION_COOKIE}=${encodeSession(payload, secrets.signing)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; Secure; HttpOnly; SameSite=Strict`
+    cookie: sessionCookie(payload, secrets.signing, SESSION_TTL_SECONDS)
+  };
+}
+
+export function rotateSessionIntent(session) {
+  const secrets = assertSessionConfiguration();
+  const now = Math.floor(Date.now() / 1000);
+  if (!session?.sid || !session?.aud || !Number.isFinite(session?.exp) || session.exp <= now) {
+    throw new GivingError('invalid-session', 'Operator session is not valid for intent rotation', 401);
+  }
+  const payload = {
+    ...session,
+    nonce: randomId('intent')
+  };
+  return {
+    payload,
+    token: encodeSession(payload, secrets.signing),
+    cookie: sessionCookie(payload, secrets.signing, session.exp - now)
   };
 }
 
@@ -252,4 +273,4 @@ export function publicSessionView(session) {
   };
 }
 
-export const _sessionInternals = Object.freeze({ encodeSession, decodeSession });
+export const _sessionInternals = Object.freeze({ encodeSession, decodeSession, sessionCookie });
