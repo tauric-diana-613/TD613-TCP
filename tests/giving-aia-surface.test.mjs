@@ -50,15 +50,19 @@ const family = compileGivingAiaProjectionFamily({
   contradictions: [],
   authorized_actions: ['RESEARCH_REVIEW', 'DOSSIER_CUSTODY']
 });
+await phaseReceipt('family-compiled');
 assert.equal(family.report.all_invariants_preserved, true);
 assert.equal(family.report.all_surfaces_non_equivalent, true);
 assert.equal(family.report.authority_transferred, false);
 assert.equal(family.report.route_inference_forbidden, true);
+await phaseReceipt('family-report');
 assert.equal(family.projections.length, 4);
 assert.deepEqual(new Set(family.projections.map((projection) => projection.route)).size, 4);
 assert.ok(family.projections.every((projection) => projection.user_level_score === null));
 assert.ok(family.projections.every((projection) => projection.authority.authority_may_cross === false));
+await phaseReceipt('family-shape');
 assert.ok(family.projections.every((projection) => projection.invariants.provenance.source_instance_count === 4));
+await phaseReceipt('family-invariants');
 await phaseReceipt('family');
 
 const runtime = new FakeRuntime();
