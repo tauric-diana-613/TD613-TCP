@@ -171,7 +171,8 @@ const ROUTE_BUILDERS = Object.freeze({
     bounded_projection: {
       raw_content_included: false,
       donor_identity_included: false,
-      user_level_score: null
+      individual_scoring_forbidden: true,
+      comparative_structural_only: true
     }
   })
 });
