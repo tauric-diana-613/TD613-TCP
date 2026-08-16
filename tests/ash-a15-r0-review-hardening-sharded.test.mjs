@@ -38,9 +38,10 @@ for (const probe of [
   'ash-a14-archive-browser-probe.mjs',
   'run-ash-flowcore-live-field-browser-probe.mjs'
 ]) {
-  const escaped = probe.replace(/[.*+?^\\${}()|[\\]\\\\]/g, '\\\\$&');
-  assert.match(canonicalAshLane, new RegExp('timeout --signal=INT --kill-after=[^\\n]+ node scripts/' + escaped), probe + ' must remain in a timeout-owned process group.');
-  assert.doesNotMatch(canonicalAshLane, new RegExp('timeout --foreground[^\\n]+ node scripts/' + escaped), probe + ' may not restore foreground timeout semantics.');
+  const commandLine = canonicalAshLane.split('\\n').find(line => line.includes('node scripts/' + probe)) || '';
+  assert.ok(commandLine, probe + ' must remain present in the canonical sharded Ash lane.');
+  assert.match(commandLine, /timeout --signal=INT --kill-after=/, probe + ' must remain in a timeout-owned process group.');
+  assert.doesNotMatch(commandLine, /--foreground/, probe + ' may not restore foreground timeout semantics.');
 }
 assert.match(
   shardedAshWitnessChamber,
