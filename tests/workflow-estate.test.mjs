@@ -55,6 +55,8 @@ assert.doesNotMatch(shardGate, /synchronize/, 'Ordinary PR synchronization must 
 assert.doesNotMatch(convergenceGate, /synchronize/, 'Ordinary PR synchronization must not authorize full-product convergence.');
 assert.doesNotMatch(givingBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the Giving browser witness.');
 assert.match(convergenceGate, /needs: \[contracts, scope, ash_browser_shard\]/, 'The canonical owner must converge static contracts with the front-line browser shards.');
+assert.match(convergenceGate, /needs\.contracts\.result == 'success'/, 'Convergence must not spend another Chromium install after static contracts fail.');
+assert.match(convergenceGate, /needs\.ash_browser_shard\.result == 'success'/, 'Convergence must not run after any front-line browser shard fails or is cancelled.');
 
 for (const token of [
   'strategy:',
@@ -103,4 +105,4 @@ const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 
-console.log('Workflow estate closed at 4/4 durable workflows with front-line three-engine shards, one convergence owner, and a distinct Giving-only witness.');
+console.log('Workflow estate closed at 4/4 durable workflows with front-line three-engine shards, one success-gated convergence owner, and a distinct Giving-only witness.');

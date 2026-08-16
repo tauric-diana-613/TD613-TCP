@@ -471,6 +471,8 @@ jobs:
     needs: [contracts, scope, ash_browser_shard]
     if: >-
       always() &&
+      needs.contracts.result == 'success' &&
+      needs.ash_browser_shard.result == 'success' &&
       ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
       (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
     runs-on: ubuntu-latest
