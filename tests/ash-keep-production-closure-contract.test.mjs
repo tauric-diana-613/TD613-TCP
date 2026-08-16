@@ -52,7 +52,7 @@ assert.match(premiumCompatibility, /display:none!important/);
 assert.match(premiumCompatibility, /Exact chambers/);
 for (const token of ['td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations','orientationMs < 10_000','method_first_arrival: true','qualified_route_projections: 6','real_surveillance_probability','MOIRE_REPLAY_VERIFIED','horizontal_overflow','clipped_controls','item.height >= 48','production_promotion_authorized: false']) assert.ok(premiumFlight.includes(token));
 assert.doesNotMatch(premium, /recipient_transport\s*:\s*true|automatic_ash_action\s*:\s*true/);
-assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*:\s*true/);
+assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*true/);
 
 for (const token of ['TD613 Consolidated Validation','tests/ash-keep-production-closure-contract.test.mjs','scripts/run-ash-constitutional-convergence-handshake.mjs','Run bounded closure and constitutional convergence once','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(consolidated.includes(token), `Consolidated closure omitted ${token}`);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
