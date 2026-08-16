@@ -13,7 +13,7 @@ function installCoverageNote() {
 
 function installCampaignLookupShell() {
   const form = $('#campaignDirectoryForm');
-  if (!form || $('#campaignDirectoryJurisdiction')) return;
+  if (!form || form.querySelector('.campaign-scope-block')) return;
   const queryField = $('#campaignDirectoryQuery')?.closest('.field');
   const oldGrid = form.querySelector('.campaign-directory-scope-grid');
   const searchButton = $('#campaignDirectorySearchButton');
