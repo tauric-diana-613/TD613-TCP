@@ -1,4 +1,5 @@
 import { assertCisternRelease, compileCisternLawReceipt } from '../../app/engine/aia-cistern-law.js';
+import { consumeGivingMutationIntent } from './intent-ledger.js';
 import { GivingError, sha256 } from './util.js';
 
 const POLICIES = Object.freeze({
@@ -11,7 +12,8 @@ const POLICIES = Object.freeze({
       ...(payload.person_id ? ['exact-person-selected'] : []),
       'committee-membership-write'
     ],
-    separatelyConfirmed: false
+    separatelyConfirmed: false,
+    durableReplay: false
   }),
   'campaign-deputy.create-confirmed': Object.freeze({
     expected: ['same-origin-session', 'session-bound-intent', 'identity-confirmed', 'duplicate-reviewed', 'create-new-confirmed', 'person-create', 'committee-membership-write'],
@@ -24,7 +26,8 @@ const POLICIES = Object.freeze({
       'person-create',
       'committee-membership-write'
     ],
-    separatelyConfirmed: true
+    separatelyConfirmed: true,
+    durableReplay: true
   }),
   'campaign-deputy.ensure-committee': Object.freeze({
     expected: ['same-origin-session', 'session-bound-intent', 'committee-identity-confirmed', 'committee-list-write'],
@@ -34,12 +37,14 @@ const POLICIES = Object.freeze({
       ...(payload.confirmed === true ? ['committee-identity-confirmed'] : []),
       'committee-list-write'
     ],
-    separatelyConfirmed: true
+    separatelyConfirmed: true,
+    durableReplay: false
   }),
   'campaign-deputy.withhold': Object.freeze({
     expected: ['same-origin-session', 'session-bound-intent', 'operator-withhold'],
     observe: () => ['same-origin-session', 'session-bound-intent', 'operator-withhold'],
-    separatelyConfirmed: true
+    separatelyConfirmed: true,
+    durableReplay: false
   })
 });
 
@@ -47,11 +52,9 @@ export function cisternPolicy(operation) {
   return POLICIES[operation] || null;
 }
 
-export function assertGivingCisternRoute(envelope, session) {
-  const policy = cisternPolicy(envelope?.operation);
-  if (!policy) return null;
+function preflightReceipt(envelope, session, policy, spentIntent = null) {
   const payload = envelope?.payload || {};
-  const receipt = compileCisternLawReceipt({
+  return compileCisternLawReceipt({
     boundary: 'Giving/Campaign-Deputy',
     action: envelope.operation,
     expectedRoute: policy.expected,
@@ -64,10 +67,18 @@ export function assertGivingCisternRoute(envelope, session) {
     },
     requestDigest: envelope?.request_digest || null,
     sessionDigest: session?.sid ? sha256(session.sid) : null,
+    spentIntentDigest: spentIntent?.intent_digest || null,
+    durableTombstone: spentIntent?.durable === true,
     outcome: 'RELEASED'
   });
+}
+
+export async function assertGivingCisternRoute(envelope, session, context = {}) {
+  const policy = cisternPolicy(envelope?.operation);
+  if (!policy) return null;
+  let receipt = preflightReceipt(envelope, session, policy);
   try {
-    return assertCisternRelease(receipt);
+    assertCisternRelease(receipt);
   } catch {
     throw new GivingError(
       'write-authorization-withheld',
@@ -78,6 +89,17 @@ export function assertGivingCisternRoute(envelope, session) {
       }
     );
   }
+
+  if (policy.durableReplay) {
+    const spentIntent = await consumeGivingMutationIntent({
+      envelope,
+      session,
+      fetchImpl: context.fetchImpl
+    });
+    receipt = preflightReceipt(envelope, session, policy, spentIntent);
+    assertCisternRelease(receipt);
+  }
+  return receipt;
 }
 
 function safeEgressProjection(operation, data = {}) {
@@ -119,7 +141,8 @@ export function finalizeGivingCisternReceipt(preflightReceipt, envelope, session
     witness: preflightReceipt.witness,
     requestDigest: envelope.request_digest,
     sessionDigest: session?.sid ? sha256(session.sid) : null,
-    spentIntentDigest: session?.nonce ? sha256(session.nonce) : null,
+    spentIntentDigest: preflightReceipt.spent_intent_digest || (session?.nonce ? sha256(session.nonce) : null),
+    durableTombstone: preflightReceipt.durable_tombstone === true,
     egressDigest: sha256(egress),
     outcome: 'RELEASED'
   });
@@ -131,8 +154,9 @@ export function publicWriteAuthorizationReceipt(internalReceipt, rotatedSession)
     status: internalReceipt.outcome === 'RELEASED' ? 'VERIFIED' : 'WITHHELD',
     request_digest: internalReceipt.request_digest || null,
     egress_digest: internalReceipt.egress_digest || null,
+    replay_protection: internalReceipt.durable_tombstone ? 'DURABLE_SPENT_INTENT' : 'SIGNED_SESSION_ROTATION_ONLY',
     next_intent_issued: Boolean(rotatedSession)
   });
 }
 
-export const _cisternInternals = Object.freeze({ POLICIES, safeEgressProjection });
+export const _cisternInternals = Object.freeze({ POLICIES, safeEgressProjection, preflightReceipt });
