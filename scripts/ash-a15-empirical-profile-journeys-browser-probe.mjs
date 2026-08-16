@@ -136,6 +136,15 @@ source = replaceExactly(
 );
 source = replaceExactly(
   source,
+  `    provider_matrix_cells_per_profile:20,
+    real_profile_hydration:true,`,
+  `    provider_matrix_cells_per_profile:20,
+    matrix_cells:120,
+    real_profile_hydration:true,`,
+  'A15 historical matrix-size receipt claim'
+);
+source = replaceExactly(
+  source,
   `    minimum_workspace_transitions_per_profile:4,
     route_landing_workspace:'work',`,
   `    canonical_primary_dock_navigation:true,
