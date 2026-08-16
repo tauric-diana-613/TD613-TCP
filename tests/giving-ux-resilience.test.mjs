@@ -45,8 +45,10 @@ test('campaign lookup uses compact multi-jurisdiction controls and independent s
   assert.match(tools, /new Set\(\)/);
   assert.match(tools, /Promise\.allSettled/);
   assert.match(tools, /document\.querySelector\('\[data-view="ledger"\]'\)\?\.click\(\)/);
-  assert.match(tools, /facet === 'CANDIDATE'/);
-  assert.match(tools, /facet === 'COMMITTEE'/);
+  assert.match(tools, /localTask\(source, 'CANDIDATE', query, 'STATE'\)/);
+  assert.match(tools, /localTask\(source, 'COMMITTEE', query, 'STATE'\)/);
+  assert.match(tools, /localTask\(source, 'CANDIDATE', query, 'MUNICIPAL'\)/);
+  assert.match(tools, /localTask\(source, 'COMMITTEE', query, 'MUNICIPAL'\)/);
   assert.match(tools, /include_opensecrets: index === 0/);
 });
 
