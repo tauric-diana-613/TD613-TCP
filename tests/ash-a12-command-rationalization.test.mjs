@@ -61,7 +61,7 @@ for (const basis of ['ALREADY_READY','EXISTING_CYCLE_COMPLETED','REBIND_COMPLETE
 assert.match(browserWrapper, /state\?\.posture === 'READY'/);
 assert.match(browserWrapper, /state\?\.phase === 'VISIBLE'/);
 assert.match(browserWrapper, /Number\(state\?\.stable_frames \|\| 0\) >= 2/);
-assert.doesNotMatch(browserWrapper, /A12 present-state convergence rebind was not admitted/);
+assert.match(browserWrapper, /if \(source\.includes\("throw new Error\('A12 present-state convergence rebind was not admitted\.'\)"\)\) \{/);
 assert.match(browserWrapper, /ENTRY_FIELD_QUIET_MS = 220/);
 assert.match(browserWrapper, /async function canonicalFieldDiagnostic\(page, label, error\)/);
 assert.match(browserWrapper, /td613\.ash\.a12-canonical-field-diagnostic\/v0\.1/);
