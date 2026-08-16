@@ -36,14 +36,15 @@ assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /giving\.css\?v=20260816-2/);
 assert.match(html, /giving-polish\.css\?v=20260816-2/);
 assert.match(html, /giving-bootstrap\.js\?v=20260816-2/);
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-2'/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-3'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-export-menu.js', 'giving-contribution-amount-filter.js',
   'giving-state-filter.js', 'giving-review-paging.js', 'giving-ux-resilience-shell.js',
-  'giving-run-settled.js', 'giving-contact-queue-v2.js', 'giving-app.js', 'giving-search-controls.js',
-  'giving-campaign-tools-v3.js', 'giving-visible-language.js', 'giving-contributions-copy.js',
-  'giving-date-sort.js', 'giving-dossier-help.js', 'giving-campaign-tools-v3.css',
-  'giving-search-controls.css', 'giving-state-filter.css', 'giving-clarity.css', 'giving-ux-resilience.css'
+  'giving-run-settled.js', 'giving-contact-queue-v2.js', 'giving-app.js', 'giving-shared-access.js',
+  'giving-search-controls.js', 'giving-campaign-tools-v3.js', 'giving-visible-language.js',
+  'giving-contributions-copy.js', 'giving-date-sort.js', 'giving-dossier-help.js',
+  'giving-campaign-tools-v3.css', 'giving-search-controls.css', 'giving-state-filter.css',
+  'giving-clarity.css', 'giving-ux-resilience.css'
 ]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated epoch`);
 assert.ok(bootstrap.indexOf('giving-run-settled.js') < bootstrap.indexOf('giving-contact-queue-v2.js'));
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'));
