@@ -155,6 +155,7 @@ assert.equal(logout.body.data.closed, true);
 assert.match(logout.res.headers['set-cookie'], /Max-Age=0/);
 
 await import('./giving-cistern-replay.test.mjs');
+await import('./giving-shared-access.test.mjs');
 
 if (process.env.GITHUB_ACTIONS === 'true') {
   const { mkdir, writeFile } = await import('node:fs/promises');
