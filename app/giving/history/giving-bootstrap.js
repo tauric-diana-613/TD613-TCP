@@ -35,6 +35,13 @@ try {
 const apertureContext = await import(epochUrl('./giving-aperture-context.js'));
 apertureContext.installGivingApertureContext(globalThis);
 
+// Bind Giving into the repository AIA before the product module graph starts.
+// This is intentionally non-visual: it installs the Dome-hosted surface contract,
+// four explicit non-equivalent route projections, and invariant report without
+// crowning AIA or Aperture in the Giving interface.
+const aiaSurface = await import(epochUrl('./giving-aia-surface.js'));
+aiaSurface.installGivingAiaSurface(globalThis);
+
 await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
