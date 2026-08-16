@@ -54,6 +54,8 @@ assert.doesNotMatch(shardGate, /needs:\s*\[[^\]]*contracts/, 'Front-line browser
 assert.doesNotMatch(shardGate, /synchronize/, 'Ordinary PR synchronization must not authorize the full-product browser shards.');
 assert.doesNotMatch(convergenceGate, /synchronize/, 'Ordinary PR synchronization must not authorize full-product convergence.');
 assert.doesNotMatch(givingBrowserGate, /synchronize/, 'Ordinary PR synchronization must not authorize the Giving browser witness.');
+assert.match(givingBrowserGate, /needs: scope/, 'The long Giving browser witness must start directly after scope classification.');
+assert.doesNotMatch(givingBrowserGate, /needs:\s*\[[^\]]*contracts/, 'The long Giving browser witness must not wait behind static contracts.');
 assert.match(convergenceGate, /needs: \[contracts, scope, ash_browser_shard\]/, 'The canonical owner must converge static contracts with the front-line browser shards.');
 assert.match(convergenceGate, /needs\.contracts\.result == 'success'/, 'Convergence must not spend another Chromium install after static contracts fail.');
 assert.match(convergenceGate, /needs\.ash_browser_shard\.result == 'success'/, 'Convergence must not run after any front-line browser shard fails or is cancelled.');
@@ -82,8 +84,8 @@ for (const token of [
 
 assert.match(
   consolidated,
-  /ash_browser_shard:[\s\S]*?needs: scope[\s\S]*?Run front-line A8 A12 and lifecycle preflight for this engine[\s\S]*?Run core extended and Flow-Core lanes in parallel/,
-  'Per-engine preflight must occur before the expensive parallel lanes inside each front-line shard.',
+  /ash_browser_shard:[\s\S]*?needs: scope[\s\S]*?Run core extended and Flow-Core lanes in parallel[\s\S]*?Calibrate A15-R0 and transition ordering for this engine[\s\S]*?Run front-line A8 A12 and lifecycle preflight for this engine/,
+  'The expensive per-engine witness lanes must run before calibration and preflight so long failures surface at the front of the critical path.',
 );
 assert.equal((consolidated.match(/Full-product exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Full-product browser estate must retain one canonical convergence owner.');
 assert.equal((consolidated.match(/Giving-only exact-head Chromium Firefox WebKit witness/g) || []).length, 1, 'Giving browser estate must remain one bounded owner.');
@@ -105,4 +107,4 @@ const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 
-console.log('Workflow estate closed at 4/4 durable workflows with front-line three-engine shards, one success-gated convergence owner, and a distinct Giving-only witness.');
+console.log('Workflow estate closed at 4/4 durable workflows with front-loaded expensive three-engine shards, one success-gated convergence owner, and a distinct front-loaded Giving witness.');

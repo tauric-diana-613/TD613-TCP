@@ -8,15 +8,18 @@ const convergenceRunnerPath = path.join(here, 'run-ash-constitutional-convergenc
 const currentObserverPath = path.join(here, 'ash-a2-a5-browser-probe.mjs');
 const legacyObserverPath = path.join(here, 'ash-a2-a5-browser-probe-a13.mjs');
 const registryPath = path.join(repositoryRoot, 'app/dome-world/ash-demo-registry.js');
+const registryCorePath = path.join(repositoryRoot, 'app/dome-world/ash-demo-registry-core.js');
 const compatibilityReceiptPath = path.join(repositoryRoot, 'artifacts/ash-keep-probe-runtime/registry-version-compatibility.json');
 
-const [convergenceSource, currentObserver, legacyObserver, registrySource] = await Promise.all([
+const [convergenceSource, currentObserver, legacyObserver, registryWrapperSource, registryCoreSource] = await Promise.all([
   fs.readFile(convergenceRunnerPath, 'utf8'),
   fs.readFile(currentObserverPath, 'utf8'),
   fs.readFile(legacyObserverPath, 'utf8'),
-  fs.readFile(registryPath, 'utf8')
+  fs.readFile(registryPath, 'utf8'),
+  fs.readFile(registryCorePath, 'utf8')
 ]);
 
+const registrySource = `${registryWrapperSource}\n${registryCoreSource}`;
 const registryVersion = registrySource.match(/ASH_DEMO_REGISTRY_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
 const assetEpoch = registrySource.match(/ASH_DEMO_ASSET_EPOCH\s*=\s*['"]([^'"]+)['"]/)?.[1];
 if (!registryVersion?.startsWith('td613.ash.demo-registry/')) {
@@ -49,6 +52,7 @@ await fs.writeFile(compatibilityReceiptPath, `${JSON.stringify({
   schema:'td613.ash.registry-observer-compatibility/v0.3-read-only-exact-head',
   installed_registry_version:registryVersion,
   installed_asset_epoch:assetEpoch,
+  registry_source_topology:'WRAPPER_PLUS_CORE',
   retired_registry_version:retiredRegistryVersion,
   convergence_observer_prepared:true,
   current_observer_strategy:'TEMPORARY_COPY_ONLY',
@@ -62,4 +66,4 @@ await fs.writeFile(compatibilityReceiptPath, `${JSON.stringify({
   human_closure_required:true
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-profile-closure-fixture-a13.mjs passed · registry ${registryVersion} · read-only exact-head validation`);
+console.log(`prepare-ash-profile-closure-fixture-a13.mjs passed · registry ${registryVersion} · wrapper+core read-only exact-head validation`);

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.bounded-transformation-envelope/v0.1",
+  "title": "A15-R0 Bounded Transformation Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "source_field_schema",
+    "source_status",
+    "authority_class",
+    "thresholds",
+    "metric_gates",
+    "evidence_gate",
+    "human_gate",
+    "all_declared_metric_gates_pass",
+    "all_promotion_gates_pass",
+    "status",
+    "golden_egg_earned",
+    "promotion_authority",
+    "observer_family_scope",
+    "transform_family_scope",
+    "joining_family_scope",
+    "unknown_observers",
+    "unknown_transforms",
+    "claim_ceiling",
+    "finding"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.bounded-transformation-envelope/v0.1" },
+    "source_field_schema": { "const": "td613.ash.a15-r0.open-research-field/v0.2" },
+    "source_status": { "const": "DERIVED_FROM_SIMULATED_FIELD" },
+    "authority_class": { "const": "A2_DERIVATIONAL" },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observer_family_leakage_bits", "reconstruction_distance", "joining_synergy_bits"],
+      "properties": {
+        "observer_family_leakage_bits": { "type": "number", "minimum": 0 },
+        "reconstruction_distance": { "type": "number", "minimum": 0 },
+        "joining_synergy_bits": { "type": "number", "minimum": 0 }
+      }
+    },
+    "metric_gates": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["gate_id", "value", "threshold", "comparator", "pass", "quantity"],
+        "properties": {
+          "gate_id": { "enum": ["OBSERVER_FAMILY_LEAKAGE", "RECONSTRUCTION_FLOOR_DISTANCE", "JOINING_KEY_SYNERGY"] },
+          "value": { "type": "number" },
+          "threshold": { "type": "number", "minimum": 0 },
+          "comparator": { "const": "<=" },
+          "pass": { "type": "boolean" },
+          "quantity": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "evidence_gate": {
+      "type": "object",
+      "required": ["gate_id", "observed_source_status", "required_posture", "pass"],
+      "properties": {
+        "gate_id": { "const": "EVIDENCE_CLASS" },
+        "observed_source_status": { "type": "string", "minLength": 1 },
+        "required_posture": { "const": "NON_SIMULATED_EMPIRICAL_EVIDENCE" },
+        "pass": { "type": "boolean" }
+      }
+    },
+    "human_gate": {
+      "type": "object",
+      "required": ["gate_id", "required", "pass"],
+      "properties": {
+        "gate_id": { "const": "HUMAN_CLOSURE" },
+        "required": { "const": true },
+        "pass": { "const": false }
+      }
+    },
+    "all_declared_metric_gates_pass": { "type": "boolean" },
+    "all_promotion_gates_pass": { "const": false },
+    "status": { "const": "HELD" },
+    "golden_egg_earned": { "const": false },
+    "promotion_authority": { "const": false },
+    "observer_family_scope": { "const": "DECLARED_FINITE_FAMILY_ONLY" },
+    "transform_family_scope": { "const": "DECLARED_SYNTHETIC_FAMILY_ONLY" },
+    "joining_family_scope": { "const": "BALANCED_XOR_FIXTURE_ONLY" },
+    "unknown_observers": { "const": "UNMEASURED" },
+    "unknown_transforms": { "const": "UNMEASURED" },
+    "claim_ceiling": { "const": "BOUNDED_SYNTHETIC_FEASIBILITY_ENVELOPE_ONLY" },
+    "finding": { "type": "string", "minLength": 1 }
+  }
+}

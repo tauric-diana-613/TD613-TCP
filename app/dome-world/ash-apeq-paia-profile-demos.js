@@ -367,7 +367,6 @@ export async function hydrateApeqPaiaProfileDemo(profile) {
         ...fixture.counts
       }
     }));
-    setTimeout(() => (window.__td613AshPremiumUI?.open || window.__td613OpenAshWorkspace)?.(profile === 'investigation' ? 'home' : 'map'), 0);
     if (status) status.innerHTML = `<strong>${config.label} qualification demo hydrated.</strong> The method docket remains synthetic, locally executed, human-gated, and capped at PA2.`;
     return { caseMap, roomRules, routeMemory, assay: fixture.assay, fixture };
   } catch (error) {
@@ -384,7 +383,8 @@ export function installApeqPaiaProfileDemos(doc = document, host = window) {
   ensureStyles();
   const select = ensureProfileOptions();
   const button = byId('startDemo');
-  if (!select || !button) return false;
+  const newCase = byId('newCase');
+  if (!select || !button || !newCase) return false;
   select.addEventListener('change', () => setTimeout(updateControls, 0));
   host.addEventListener('click', event => {
     const target = event.target?.closest?.('#startDemo');

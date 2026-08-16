@@ -175,12 +175,23 @@ jobs:
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
-      - name: Validate Ash A15 empirical profile journeys
+      - name: Validate Ash A15 empirical profile journeys and A15-R0 research field
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+          node --check scripts/ash-a15-r0-preview-probe.mjs
+          node --check scripts/ash-a15-transition-trace-browser-probe.mjs
           node tests/ash-a15-empirical-profile-journeys.test.mjs
+          node tests/ash-a15-empirical-witness-composition.test.mjs
+          node tests/ash-a15-r0-fixture.test.mjs
+          node tests/ash-a15-r0-kernel-adapter.test.mjs
+          node tests/ash-a15-r0-interaction-ownership.test.mjs
+          node tests/ash-a15-r0-disposal.test.mjs
+          node tests/ash-a15-r0-preview-contract.test.mjs
+          node tests/ash-a15-r0-open-research-field.test.mjs
+          node tests/ash-a15-r0-review-hardening.test.mjs
+          node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
@@ -293,55 +304,6 @@ jobs:
               exit 1
             fi
           done
-      - name: Run front-line A8 A12 and lifecycle preflight for this engine
-        shell: bash
-        run: |
-          set +e
-          browser='${{ matrix.browser }}'
-          export TD613_BROWSER="$browser"
-          export TD613_BASE_URL='http://127.0.0.1:6130'
-          mkdir -p "artifacts/$browser/preflight"
-          : > "artifacts/$browser/preflight/failures.tsv"
-          failures=0
-
-          TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a8" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
-          status=$?
-          if [[ "$status" -ne 0 ]]; then printf 'A8\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
-
-          TD613_ARTIFACT_DIR="artifacts/$browser/preflight/lifecycle" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
-          status=$?
-          if [[ "$status" -ne 0 ]]; then printf 'LIFECYCLE\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
-
-          TD613_A12_ENTRY_PREFLIGHT='true' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a12-entry" timeout --foreground --signal=INT --kill-after=15s 240s node scripts/ash-a12-browser-probe.mjs
-          status=$?
-          if [[ "$status" -ne 0 ]]; then printf 'A12_ENTRY\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
-
-          BROWSER="$browser" node <<'NODE'
-          const fs = require('node:fs');
-          const browser = process.env.BROWSER;
-          const path = `artifacts/${browser}/preflight/failures.tsv`;
-          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
-            const [seam, status] = line.split('\t');
-            return { seam, status:Number(status) };
-          });
-          fs.writeFileSync(`artifacts/${browser}/preflight/manifest.json`, JSON.stringify({
-            schema:'td613.ash.front-line-preflight/v0.3-per-engine',
-            browser,
-            scope:['A8','A12_ENTRY','LIFECYCLE'],
-            fail_fast:false,
-            per_engine_observed:true,
-            failures,
-            ok:failures.length === 0,
-            authority_changed:false,
-            source_bytes_moved:false,
-            human_closure_required:true
-          }, null, 2));
-          NODE
-
-          if [[ "$failures" -ne 0 ]]; then
-            cat "artifacts/$browser/preflight/failures.tsv"
-            exit 1
-          fi
       - name: Run core extended and Flow-Core lanes in parallel
         shell: bash
         run: |
@@ -356,14 +318,14 @@ jobs:
             : > "artifacts/$browser/core/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
             status=$?; printf 'A2_A5\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
             status=$?; printf 'A7_A11\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
             if [[ "$browser" == 'chromium' ]]; then
-              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
               status=$?; printf 'A12\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             fi
             exit "$failed"
@@ -377,13 +339,13 @@ jobs:
             : > "artifacts/$browser/extended/frontline/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
             status=$?; printf 'RESEARCH\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
             status=$?; printf 'REVIEWABILITY\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
             status=$?; printf 'INGRESS\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
@@ -396,13 +358,13 @@ jobs:
             : > "artifacts/$browser/extended/profiles/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             status=$?; printf 'A15\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             status=$?; printf 'A13\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
             status=$?; printf 'A14\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
@@ -418,7 +380,7 @@ jobs:
             TD613_FLOWCORE_ROUTE_PREFIX='app/dome-world' TD613_BROWSERS="$browser" TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/runtime" TD613_PRODUCTION_OBSERVATION='false' timeout --foreground --signal=INT --kill-after=20s 1500s node scripts/flowcore-runtime-browser-probe.mjs
             status=$?; printf 'RUNTIME\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             status=$?; printf 'LIVE_FIELD\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
@@ -470,6 +432,103 @@ jobs:
             echo "===== $browser / seam status ====="
             cat "artifacts/$browser/lane-status.tsv" || true
             find "artifacts/$browser" -name status.tsv -print -exec cat {} \; || true
+            exit 1
+          fi
+      - name: Calibrate A15-R0 and transition ordering for this engine
+        shell: bash
+        run: |
+          set +e
+          browser='${{ matrix.browser }}'
+          export TD613_BROWSER="$browser"
+          export TD613_BASE_URL='http://127.0.0.1:6130'
+          mkdir -p "artifacts/$browser/calibration"
+          : > "artifacts/$browser/calibration/failures.tsv"
+          failures=0
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-r0" timeout --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_R0_PREVIEW\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-transition" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_TRANSITION_TRACE\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          BROWSER="$browser" node <<'NODE'
+          const fs = require('node:fs');
+          const browser = process.env.BROWSER;
+          const path = `artifacts/${browser}/calibration/failures.tsv`;
+          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
+            const [seam, status] = line.split('\t');
+            return { seam, status:Number(status) };
+          });
+          fs.writeFileSync(`artifacts/${browser}/calibration/manifest.json`, JSON.stringify({
+            schema:'td613.ash.a15-r0-calibration/v0.3-per-engine-before-gating',
+            browser,
+            scope:['A15_R0_PREVIEW','A15_TRANSITION_TRACE'],
+            measurement_before_gating:true,
+            independent_from_inherited_a15:true,
+            fail_fast:false,
+            per_engine_observed:true,
+            failures,
+            ok:failures.length === 0,
+            promotion_authority:false,
+            production_mutation:false,
+            authority_changed:false,
+            human_closure_required:true
+          }, null, 2));
+          NODE
+
+          if [[ "$failures" -ne 0 ]]; then
+            cat "artifacts/$browser/calibration/failures.tsv"
+            exit 1
+          fi
+      - name: Run front-line A8 A12 and lifecycle preflight for this engine
+        shell: bash
+        run: |
+          set +e
+          browser='${{ matrix.browser }}'
+          export TD613_BROWSER="$browser"
+          export TD613_BASE_URL='http://127.0.0.1:6130'
+          mkdir -p "artifacts/$browser/preflight"
+          : > "artifacts/$browser/preflight/failures.tsv"
+          failures=0
+
+          TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a8" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A8\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/preflight/lifecycle" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'LIFECYCLE\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          TD613_A12_ENTRY_PREFLIGHT='true' TD613_ARTIFACT_DIR="artifacts/$browser/preflight/a12-entry" timeout --foreground --signal=INT --kill-after=15s 240s node scripts/ash-a12-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A12_ENTRY\t%s\n' "$status" >> "artifacts/$browser/preflight/failures.tsv"; failures=1; fi
+
+          BROWSER="$browser" node <<'NODE'
+          const fs = require('node:fs');
+          const browser = process.env.BROWSER;
+          const path = `artifacts/${browser}/preflight/failures.tsv`;
+          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
+            const [seam, status] = line.split('\t');
+            return { seam, status:Number(status) };
+          });
+          fs.writeFileSync(`artifacts/${browser}/preflight/manifest.json`, JSON.stringify({
+            schema:'td613.ash.front-line-preflight/v0.3-per-engine',
+            browser,
+            scope:['A8','A12_ENTRY','LIFECYCLE'],
+            fail_fast:false,
+            per_engine_observed:true,
+            failures,
+            ok:failures.length === 0,
+            authority_changed:false,
+            source_bytes_moved:false,
+            human_closure_required:true
+          }, null, 2));
+          NODE
+
+          if [[ "$failures" -ne 0 ]]; then
+            cat "artifacts/$browser/preflight/failures.tsv"
             exit 1
           fi
       - name: Stop isolated runtimes
@@ -570,7 +629,7 @@ jobs:
 
   giving_browser:
     name: Giving-only exact-head Chromium Firefox WebKit witness
-    needs: [contracts, scope]
+    needs: scope
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&

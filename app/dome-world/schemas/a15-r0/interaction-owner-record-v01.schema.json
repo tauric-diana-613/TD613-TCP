@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.interaction-owner-record/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "control_id",
+    "projection_owner",
+    "action_owner",
+    "event_phase",
+    "delegated",
+    "competing_owner_detected"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.interaction-owner-record/v0.1" },
+    "control_id": { "type": "string" },
+    "projection_owner": { "const": "A15_R0_HARNESS" },
+    "action_owner": { "const": "ASH_KERNEL_ADAPTER" },
+    "event_phase": { "const": "bubble" },
+    "delegated": { "const": true },
+    "competing_owner_detected": { "const": false }
+  },
+  "additionalProperties": false
+}

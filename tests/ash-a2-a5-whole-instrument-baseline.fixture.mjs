@@ -78,6 +78,12 @@ assert.match(a2a6BrowserAdapter, /dataset\.ashPremiumReady === 'true'/);
 assert.match(a2a6BrowserAdapter, /convergence\.reconcile\(\{ case_id:caseId, profile:'political_campaign' \}\)/);
 assert.match(a2a6BrowserAdapter, /A15 A2-A6 reconcile-only convergence owner unavailable/);
 assert.match(a2a6BrowserAdapter, /td613\.ash\.a15-empirical-profile-journeys\/v0\.1/);
+assert.match(a2a6BrowserAdapter, /data-a12-action=\\"profile\\"\]\[data-command-action=\\"profile\\"/,
+  'A15 A2-A6 witness must target the canonical A12-owned Cases & Profiles control.');
+assert.match(a2a6BrowserAdapter, /A15 canonical A12 profile command ownership/,
+  'A15 adapter must retain an exact replacement seam for canonical profile ownership.');
+assert.match(a2a6BrowserAdapter, /profile command witness must use the canonical A12-owned control/,
+  'A15 adapter must self-guard the generated witness against generic profile-selector ownership.');
 assert.match(convergence, /td613\.ash\.demo-entry-convergence\/v0\.8-reconcile-only-restart/);
 assert.match(convergence, /function reconcile\(detail = \{\}\)/);
 assert.match(convergence, /\['OPENING','REVEALING'\]\.includes\(state\.posture\) && !explicitReconcile/);
@@ -103,4 +109,4 @@ assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sen
 assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
 for (const invariant of ['authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','closure_changed:false']) assert.match(a6Source, new RegExp(invariant));
 
-console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation and reconcile-only entry recovery');
+console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation, canonical A12 profile ownership, and reconcile-only entry recovery');

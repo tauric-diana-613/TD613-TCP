@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.governed-task-fixture/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "fixture_id",
+    "namespace",
+    "source_status",
+    "sensor_id",
+    "authority_class",
+    "case_id",
+    "profile",
+    "title",
+    "created_at",
+    "local_source",
+    "question",
+    "case_anchor",
+    "rooms",
+    "route_rules",
+    "route_observations",
+    "allowed_action_sequence",
+    "action_times",
+    "claim_ceiling",
+    "authority"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.governed-task-fixture/v0.1" },
+    "fixture_id": { "type": "string", "pattern": "^a15r0_fixture_" },
+    "namespace": {
+      "type": "object",
+      "required": ["codepoint", "surrogate_pair", "meaning"],
+      "properties": {
+        "codepoint": { "const": "U+10D613" },
+        "surrogate_pair": { "const": "\\uDBF5\\uDE13" },
+        "meaning": { "const": "TD613 = Tauric Diana 613" }
+      },
+      "additionalProperties": false
+    },
+    "source_status": { "const": "SIMULATED" },
+    "sensor_id": { "const": "simulated-fixture" },
+    "authority_class": { "const": "A2_DERIVATIONAL" },
+    "case_id": { "type": "string", "pattern": "^case_" },
+    "profile": { "const": "research" },
+    "title": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "local_source": {
+      "type": "object",
+      "required": ["reference_id", "label", "posture", "raw_bytes_local", "raw_bytes_transport_authorized", "external_content"],
+      "properties": {
+        "reference_id": { "type": "string" },
+        "label": { "type": "string" },
+        "posture": { "const": "DECLARED_REFERENCE_ONLY" },
+        "raw_bytes_local": { "const": true },
+        "raw_bytes_transport_authorized": { "const": false },
+        "external_content": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "question": { "type": "object" },
+    "case_anchor": { "type": "object" },
+    "rooms": { "type": "array", "minItems": 2 },
+    "route_rules": { "type": "array", "minItems": 2, "maxItems": 2 },
+    "route_observations": { "type": "object" },
+    "allowed_action_sequence": {
+      "const": ["ARRIVE", "BIND_REFERENCE", "FORM_RELATION", "COMPARE_ROUTE", "PRESERVE", "RETURN"]
+    },
+    "action_times": { "type": "object" },
+    "claim_ceiling": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "authority": {
+      "type": "object",
+      "required": [
+        "automatic_ash_action",
+        "automatic_relation_binding",
+        "automatic_comparison",
+        "automatic_save",
+        "automatic_handoff",
+        "automatic_export",
+        "automatic_release",
+        "automatic_closure",
+        "human_review_required",
+        "human_closure_required"
+      ],
+      "properties": {
+        "automatic_ash_action": { "const": false },
+        "automatic_relation_binding": { "const": false },
+        "automatic_comparison": { "const": false },
+        "automatic_save": { "const": false },
+        "automatic_handoff": { "const": false },
+        "automatic_export": { "const": false },
+        "automatic_release": { "const": false },
+        "automatic_closure": { "const": false },
+        "human_review_required": { "const": true },
+        "human_closure_required": { "const": true }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
