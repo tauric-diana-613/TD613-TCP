@@ -41,16 +41,40 @@ async function exposeOperatorShell() {
   });
 }
 
+async function hydrationDiagnostics() {
+  return page.evaluate(() => ({
+    readyState: document.readyState,
+    title: document.title,
+    bootstrapSrc: document.querySelector('script[type="module"]')?.getAttribute('src') || null,
+    campaignForm: Boolean(document.querySelector('#campaignDirectoryForm')),
+    campaignJurisdictionTag: document.querySelector('#campaignDirectoryJurisdiction')?.tagName || null,
+    campaignJurisdictionClass: document.querySelector('#campaignDirectoryJurisdiction')?.className || '',
+    scopeShell: Boolean(document.querySelector('.campaign-scope-block')),
+    researchGuide: Boolean(document.querySelector('#researchFileGuide')),
+    vaultGuide: Boolean(document.querySelector('#vaultGuide')),
+    operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden)
+  }));
+}
+
+async function requireResilienceShell() {
+  await page.waitForTimeout(450);
+  if (await page.locator('.campaign-scope-block').count()) return;
+  const diagnostics = await hydrationDiagnostics();
+  throw new Error(`Giving resilience shell did not hydrate: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`);
+}
+
 async function witnessResilienceUi() {
   await exposeOperatorShell();
-  await page.waitForSelector('.campaign-scope-block', { state: 'attached', timeout: 30000 });
-  await page.waitForSelector('#vaultGuide', { state: 'attached', timeout: 10000 });
-  await page.waitForSelector('.committee-ledger-toolbar', { state: 'attached', timeout: 10000 });
+  await requireResilienceShell();
+  await page.waitForSelector('#vaultGuide', { state: 'attached', timeout: 5000 });
+  await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
+  await page.waitForSelector('.committee-ledger-toolbar', { state: 'attached', timeout: 5000 });
 
   const structure = await page.evaluate(() => {
     const scope = document.querySelector('#campaignDirectoryJurisdiction');
     const stateCount = document.querySelector('#campaignDirectoryStateCount');
     const stateInputs = [...document.querySelectorAll('#campaignDirectoryStateMenu input[type="checkbox"]')];
+    const vaultPassphraseLabel = document.querySelector('#vaultPassphrase')?.closest('.field')?.querySelector('span')?.textContent?.trim() || '';
     return {
       jurisdictionTag: scope?.tagName,
       scopeClass: scope?.className || '',
@@ -60,6 +84,12 @@ async function witnessResilienceUi() {
       stateSummaryHidden: Boolean(stateCount?.hidden),
       checkedStates: stateInputs.filter((input) => input.checked).map((input) => input.value),
       vaultBeats: [...document.querySelectorAll('#vaultGuide .vault-beats strong')].map((node) => node.textContent.trim()),
+      vaultPassphraseHeading: document.querySelector('#view-vault .vault-grid .inner-panel h3')?.textContent?.trim() || '',
+      vaultPassphraseLabel,
+      researchHeading: document.querySelector('.dossier-control .panel-heading h2')?.textContent?.trim() || '',
+      researchGuide: Boolean(document.querySelector('#researchFileGuide')),
+      researchVaultButton: document.querySelector('#researchFileVaultButton')?.textContent?.trim() || '',
+      sampleButton: document.querySelector('#loadResearchSampleButton')?.textContent?.trim() || '',
       matchOption: document.querySelector('#reviewFilter option[value="CANDIDATE"]')?.textContent?.trim() || '',
       candidateLegend: document.querySelector('#view-review .legend [data-state="CANDIDATE"]')?.textContent?.trim() || '',
       toolbar: Boolean(document.querySelector('.committee-ledger-toolbar')),
@@ -78,7 +108,13 @@ async function witnessResilienceUi() {
   assert.equal(structure.stateSummary, 'FL');
   assert.equal(structure.stateSummaryHidden, false);
   assert.deepEqual(structure.checkedStates, ['FL']);
-  assert.deepEqual(structure.vaultBeats, ['Lock here', 'Store the sealed copy', 'Unlock here']);
+  assert.deepEqual(structure.vaultBeats, ['Choose the key', 'Store the sealed copy', 'Unlock here']);
+  assert.equal(structure.vaultPassphraseHeading, 'Create or enter Vault passphrase');
+  assert.match(structure.vaultPassphraseLabel, /Vault passphrase/);
+  assert.equal(structure.researchHeading, 'Contributor research file');
+  assert.equal(structure.researchGuide, true);
+  assert.match(structure.researchVaultButton, /Encrypt a Vault copy/);
+  assert.equal(structure.sampleButton, 'Load fictional sample');
   assert.equal(structure.matchOption, 'Match');
   assert.equal(structure.candidateLegend.toLowerCase(), 'match');
   assert.equal(structure.toolbar, true);
@@ -136,19 +172,27 @@ async function witnessResilienceUi() {
   await page.screenshot({ path: path.join(artifactDir, 'giving-history-desktop.png'), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(100);
-  const mobile = await page.evaluate(() => ({
-    viewport: window.innerWidth,
-    document: document.documentElement.scrollWidth,
-    body: document.body.scrollWidth,
-    toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0,
-    scopeRight: document.querySelector('.campaign-scope-block')?.getBoundingClientRect().right || 0,
-    vaultRight: document.querySelector('#vaultGuide')?.getBoundingClientRect().right || 0
-  }));
+  const mobile = await page.evaluate(() => {
+    const stateMenu = document.querySelector('#campaignDirectoryStateMenu');
+    const municipalMenu = document.querySelector('#campaignDirectoryMunicipalMenu');
+    return {
+      viewport: window.innerWidth,
+      document: document.documentElement.scrollWidth,
+      body: document.body.scrollWidth,
+      toolbarRight: document.querySelector('.committee-ledger-toolbar')?.getBoundingClientRect().right || 0,
+      scopeRight: document.querySelector('.campaign-scope-block')?.getBoundingClientRect().right || 0,
+      vaultRight: document.querySelector('#vaultGuide')?.getBoundingClientRect().right || 0,
+      stateGridColumns: stateMenu ? getComputedStyle(stateMenu).gridTemplateColumns : '',
+      municipalGridColumns: municipalMenu ? getComputedStyle(municipalMenu).gridTemplateColumns : ''
+    };
+  });
   assert.ok(mobile.document <= mobile.viewport + 1, `mobile document overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.body <= mobile.viewport + 1, `mobile body overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.toolbarRight <= mobile.viewport + 1, `mobile Committee toolbar overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.scopeRight <= mobile.viewport + 1, `mobile campaign scope overflowed: ${JSON.stringify(mobile)}`);
   assert.ok(mobile.vaultRight <= mobile.viewport + 1, `mobile Vault guide overflowed: ${JSON.stringify(mobile)}`);
+  assert.ok(mobile.stateGridColumns.trim().split(/\s+/).length >= 2, `mobile State menu must retain two columns: ${mobile.stateGridColumns}`);
+  assert.ok(!mobile.municipalGridColumns || mobile.municipalGridColumns.trim().split(/\s+/).length >= 2, `mobile Municipal menu must retain two columns: ${mobile.municipalGridColumns}`);
   await page.screenshot({ path: path.join(artifactDir, 'giving-history-mobile.png'), fullPage: true });
   await page.setViewportSize({ width: 1600, height: 1000 });
 
