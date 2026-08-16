@@ -68,7 +68,9 @@ export function compileCisternLawReceipt({
     session_digest: sessionDigest,
     spent_intent_digest: spentIntentDigest,
     egress_digest: egressDigest,
-    replay_posture: spentIntentDigest ? 'PRIOR_INTENT_TOMBSTONED_BY_ROTATION' : 'NO_REPLAY_CLAIM',
+    replay_posture: spentIntentDigest
+      ? 'PRIOR_INTENT_RETIRED_BY_SIGNED_SESSION_ROTATION_NO_DURABLE_TOMBSTONE_CLAIM'
+      : 'NO_REPLAY_CLAIM',
     authority: {
       endpoint_equivalence_forbidden: true,
       route_equivalence_required_for_release: true,
@@ -97,7 +99,7 @@ export const AIA_CISTERN_LAW = Object.freeze({
   unauthorized_posture: 'LOW_INFORMATION_NON_AUTHORITATIVE_REFUSAL',
   fabricated_decoys: false,
   route_memory: 'SAME_ENDPOINT_DOES_NOT_IMPLY_SAME_ROUTE_OR_SAME_AUTHORITY',
-  replay: 'SINGLE_USE_INTENT_WHERE_IMPLEMENTED',
+  replay: 'SIGNED_SESSION_INTENT_ROTATION_WHERE_IMPLEMENTED_DURABLE_TOMBSTONE_NOT_CLAIMED',
   automatic_redesign: false,
   automatic_release: false,
   human_closure: true
