@@ -92,7 +92,7 @@ const nonce = login.body.data.intent_nonce;
 const status = await call(request('session.status', {}, { cookie, apertureContext }));
 assert.equal(status.body.data.authenticated, true);
 assert.equal(status.body.data.intent_nonce, nonce);
-assert.equal(status.body.receipt.aperture_context.status, 'OBSERVED');
+assert.equal(status.body.receipt.aperture_context.status, 'OBSERVED_NON_AUTHORITATIVE');
 assert.equal(status.body.receipt.aperture_context.source, 'TD613 Aperture');
 assert.equal(status.body.receipt.aperture_context.primary_route, 'REQUESTED_SYNTHESIS');
 assert.equal(status.body.receipt.aperture_context.runtime_materiality, 'BACKGROUND');
@@ -143,7 +143,7 @@ assert.equal(withheld.body.data.external_mutation, false);
 assert.equal(withheld.body.receipt.write_authorization.replay_protection, 'SIGNED_SESSION_ROTATION_ONLY');
 assert.equal(withheld.body.receipt.write_authorization.context_witness_count, 1);
 assert.equal(withheld.body.receipt.write_authorization.context_authority_effect, 'NONE');
-assert.equal(withheld.body.receipt.aperture_context.status, 'OBSERVED');
+assert.equal(withheld.body.receipt.aperture_context.status, 'OBSERVED_NON_AUTHORITATIVE');
 
 const crossOrigin = await call(request('session.status', {}, { cookie, origin: 'https://attacker.example' }));
 assert.equal(crossOrigin.res.statusCode, 403);
