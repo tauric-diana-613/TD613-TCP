@@ -41,6 +41,7 @@ assert.match(registry,/stopImmediatePropagation/);
 assert.match(registry,/control_owner:'ASH_DEMO_REGISTRY'/);
 assert.doesNotMatch(profileWrapper+registry+runtime,/fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
 assert.doesNotMatch(runtime,/fetch\(/,'Method hydration must not fetch legacy fixtures.');
+assert.doesNotMatch(runtime,/__td613AshPremiumUI\?\.open|__td613OpenAshWorkspace/,'Profile hydration must not own entry workspace navigation; canonical demo-entry convergence owns that boundary.');
 for(const token of ['Select a profile…','Environment Profile','Joining-key registry','Heterostratigraphic field','PA2 ceiling'])assert(runtime.includes(token),`Runtime omitted ${token}.`);
 
 const contracts={
