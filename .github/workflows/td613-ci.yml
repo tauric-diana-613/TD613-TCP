@@ -315,11 +315,11 @@ jobs:
           : > "artifacts/$browser/calibration/failures.tsv"
           failures=0
 
-          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-r0" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-r0" timeout --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
           status=$?
           if [[ "$status" -ne 0 ]]; then printf 'A15_R0_PREVIEW\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
 
-          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-transition" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-transition" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
           status=$?
           if [[ "$status" -ne 0 ]]; then printf 'A15_TRANSITION_TRACE\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
 
@@ -415,14 +415,14 @@ jobs:
             : > "artifacts/$browser/core/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
             status=$?; printf 'A2_A5\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
             status=$?; printf 'A7_A11\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
             if [[ "$browser" == 'chromium' ]]; then
-              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
               status=$?; printf 'A12\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             fi
             exit "$failed"
@@ -436,13 +436,13 @@ jobs:
             : > "artifacts/$browser/extended/frontline/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
             status=$?; printf 'RESEARCH\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
             status=$?; printf 'REVIEWABILITY\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
             status=$?; printf 'INGRESS\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
@@ -455,13 +455,13 @@ jobs:
             : > "artifacts/$browser/extended/profiles/status.tsv"
             failed=0
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             status=$?; printf 'A15\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             status=$?; printf 'A13\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
             status=$?; printf 'A14\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
@@ -477,7 +477,7 @@ jobs:
             TD613_FLOWCORE_ROUTE_PREFIX='app/dome-world' TD613_BROWSERS="$browser" TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/runtime" TD613_PRODUCTION_OBSERVATION='false' timeout --foreground --signal=INT --kill-after=20s 1500s node scripts/flowcore-runtime-browser-probe.mjs
             status=$?; printf 'RUNTIME\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
 
-            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             status=$?; printf 'LIVE_FIELD\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
             exit "$failed"
           )
