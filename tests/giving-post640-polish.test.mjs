@@ -38,9 +38,9 @@ assert.match(shellCss, /\.campaign-segmented-control\s*\{[\s\S]*?gap:\s*5px/);
 assert.match(shellCss, /\.review-hold-button\s*\{[\s\S]*?translateY\(-2px\)/);
 assert.match(polish, /#sessionTitle::after[\s\S]*?TD613 Giving/);
 
-assert.match(pageSize, /const PAGE_SIZE = 50/);
-assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 50/);
-assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/);
+assert.match(pageSize, /const PAGE_SIZE = 300/);
+assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 100/);
+assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/, 'legacy page shim may narrow but never widen the client-requested 50-row page');
 
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /Evict every shared Giving session/);
