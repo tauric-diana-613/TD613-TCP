@@ -2,7 +2,8 @@ import {
   compilePedagogicalScene,
   compilePedagogicalTransition,
   compileRestState,
-  compileTransferEncounter
+  compileTransferEncounter,
+  comparePedagogueRouteMemory
 } from './flowcore-pedagogue-core.js';
 import {
   AIA_ROUTE_IDS,
@@ -16,7 +17,7 @@ import {
 } from './flowcore-route-burden.js';
 
 export const PEDAGOGUE_DESIGN_FIXTURE_SCHEMA = 'td613.pedagogue-design-fixture/v0.1';
-export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.1';
+export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.2';
 
 function clone(value) {
   return value === null || typeof value !== 'object'
@@ -106,6 +107,14 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
   const baselineGraph = await compileRouteGraph(baselineScene, [], { ...deterministic, idScope: `${deterministic.idScope || fixture.design_id}:baseline` });
   const baselineBurden = compareBurdenModels(baselineGraph, ROUTE_BURDEN_MODEL_IDS);
   const burdenComparison = compareTotals(baselineBurden, proposedBurden);
+  const routeMemoryComparison = comparePedagogueRouteMemory(
+    fixture.baseline_route_steps,
+    fixture.scene_input.route_topology.steps,
+    {
+      expectedEndpoint: fixture.surface_reference,
+      observedEndpoint: fixture.surface_reference
+    }
+  );
 
   return Object.freeze({
     schema: PEDAGOGUE_DESIGN_REVIEW_SCHEMA,
@@ -120,6 +129,7 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
     aia_report: aiaReport,
     baseline_route_graph: baselineGraph,
     proposed_route_graph: proposedGraph,
+    route_memory_comparison: routeMemoryComparison,
     baseline_burden: baselineBurden,
     proposed_burden: proposedBurden,
     burden_comparison: burdenComparison,
@@ -127,6 +137,7 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
       consequence_before_ontology: true,
       rest_and_exit_preserved: cycle.restState.penalty === false && cycle.restState.exit_available === true,
       aia_invariants_preserved: aiaReport.all_invariants_preserved === true && aiaReport.all_surfaces_non_equivalent === true,
+      route_history_explicit: routeMemoryComparison.endpoint_equivalent === true && routeMemoryComparison.authority.route_history_may_be_discarded === false,
       route_burden_non_worsening: burdenComparison.all_models_non_worsening,
       user_level_score_forbidden: proposedGraph.user_level_score_forbidden === true,
       automatic_redesign_forbidden: proposedGraph.automatic_redesign_forbidden === true,
