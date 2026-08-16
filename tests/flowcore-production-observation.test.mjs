@@ -36,7 +36,7 @@ test('production release verifies source and bounded live consequence without re
   assert.match(releaseWorkflow, /playwright install --with-deps chromium/);
   assert.match(releaseWorkflow, /ash-a13-demo-registry-browser-probe\.mjs/);
   assert.match(releaseWorkflow, /ash-lifecycle-production-probe\.mjs/);
-  assert.match(releaseWorkflow, /premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
+  assert.match(releaseWorkflow, /premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
   assert.doesNotMatch(releaseWorkflow, /flowcore-runtime-browser-probe\.mjs/);
   assert.doesNotMatch(releaseWorkflow, /TD613_BROWSERS: chromium,firefox,webkit/);
 });
