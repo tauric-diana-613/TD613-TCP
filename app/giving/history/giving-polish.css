@@ -274,6 +274,14 @@
 }
 #syncTargetButton { margin-top: 7px; }
 
+/* Hover help keeps its deliberate delay; keyboard focus must be immediate. */
+.readiness-control:focus-within .readiness-tooltip,
+.readiness-control[data-focus-open="true"] .readiness-tooltip {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition-delay: 0s !important;
+}
+
 @media (max-width: 1080px) {
   .workspace { grid-template-rows: 40px minmax(0, 1fr); }
   .ledger-tabs { height: 40px; min-height: 40px; }
