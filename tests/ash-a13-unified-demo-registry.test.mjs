@@ -120,11 +120,10 @@ assert.match(workflowSource, /TD613 Consolidated Validation/);
 assert.match(workflowSource, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
 assert.match(workflowSource, /Full-product exact-head Chromium Firefox WebKit witness/);
 assert.match(workflowSource, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(workflowSource, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.match(workflowSource, /github\.event_name == 'pull_request' && needs\.scope\.outputs\.validation_scope != 'giving'/);
 assert.match(workflowSource, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(workflowSource, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflowSource, /ash-a15-empirical-profile-journeys-browser-probe\.mjs/);
-assert.doesNotMatch(workflowSource, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
-assert.match(estateSource, /exactly four durable authority surfaces/);
+assert.match(estateSource, /synchronize-safe front-line three-engine shards/);
 
 console.log('ash-a13-unified-demo-registry.test.mjs passed under A15 empirical registry ownership with pre-canonical explicit-choice handoff');
