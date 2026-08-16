@@ -25,6 +25,7 @@ const SCOPE_NEUTRAL = new Set([
   '.github/workflows/vercel-operator-release.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
+  'docs/AIA_CISTERN_LAW.md',
   'scripts/classify-validation-scope.mjs',
   'scripts/giving-browser-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',
