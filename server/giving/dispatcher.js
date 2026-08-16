@@ -23,6 +23,7 @@ import {
   openSecretsOrganizationSummary,
   searchCampaignDirectory
 } from './campaign-directory.js';
+import { assertGivingCisternRoute, finalizeGivingCisternReceipt } from './cistern.js';
 import { publicRegistry } from './registry.js';
 import {
   assertSameOrigin,
@@ -33,6 +34,7 @@ import {
   publicSessionView,
   requireIntentNonce,
   requireSession,
+  rotateSessionIntent,
   sessionConfiguration
 } from './security.js';
 import { GivingError, headerValue, sha256 } from './util.js';
@@ -79,11 +81,12 @@ function send(res, status, body, headers = {}) {
   res.end(status === 204 ? '' : JSON.stringify(body));
 }
 
-function ok(res, envelope, session, data, receiptExtra = {}, headers = {}) {
+function ok(res, envelope, session, data, receiptExtra = {}, headers = {}, responseSession = null) {
   const body = {
     ok: true,
     data,
     receipt: responseReceipt(envelope, session, receiptExtra),
+    ...(responseSession ? { session: publicSessionView(responseSession) } : {}),
     error: null
   };
   if (Buffer.byteLength(JSON.stringify(body)) > MAX_RESPONSE_BYTES) {
@@ -92,20 +95,22 @@ function ok(res, envelope, session, data, receiptExtra = {}, headers = {}) {
       'This source page exceeds the Giving response boundary; narrow the search or lower the page size',
       413,
       { limit_bytes: MAX_RESPONSE_BYTES }
-    ), envelope, session, headers);
+    ), envelope, session, headers, responseSession);
   }
   return send(res, 200, body, headers);
 }
 
-function fail(res, error, envelope = null, session = null, headers = {}) {
+function fail(res, error, envelope = null, session = null, headers = {}, responseSession = null) {
   const known = error instanceof GivingError;
   return send(res, known ? error.status : 500, {
     ok: false,
     data: null,
     receipt: responseReceipt(envelope, session, {
       outcome: 'WITHHELD',
-      refusal_code: known ? error.code : 'internal-error'
+      refusal_code: known ? error.code : 'internal-error',
+      ...(responseSession ? { intent_rotation: 'ISSUED_AFTER_ADMITTED_MUTATION_ATTEMPT' } : {})
     }),
+    ...(responseSession ? { session: publicSessionView(responseSession) } : {}),
     error: {
       code: known ? error.code : 'internal-error',
       message: known ? error.message : 'Giving operation did not complete',
@@ -158,6 +163,9 @@ async function dispatch(envelope, session, context) {
 export async function givingHandler(req, res, context = {}) {
   let envelope = null;
   let session = null;
+  let rotatedSession = null;
+  let rotatedCookie = null;
+  let cisternPreflight = null;
   try {
     const method = String(req.method || '').toUpperCase();
     if (method === 'OPTIONS') {
@@ -194,7 +202,15 @@ export async function givingHandler(req, res, context = {}) {
     }
     if (PUBLIC_OPERATIONS.has(envelope.operation)) throw new GivingError('operation-withheld', 'Public operation route was not resolved', 400);
     session = requireSession(req);
-    if (MUTATION_OPERATIONS.has(envelope.operation)) requireIntentNonce(envelope, session);
+    if (MUTATION_OPERATIONS.has(envelope.operation)) {
+      requireIntentNonce(envelope, session);
+      if (envelope.operation !== 'session.close') {
+        cisternPreflight = assertGivingCisternRoute(envelope, session);
+        const rotated = rotateSessionIntent(session);
+        rotatedSession = rotated.payload;
+        rotatedCookie = rotated.cookie;
+      }
+    }
     if (envelope.operation === 'session.close') {
       return ok(res, envelope, session, { authenticated: false, closed: true }, {}, {
         ...cors,
@@ -202,8 +218,18 @@ export async function givingHandler(req, res, context = {}) {
       });
     }
     const data = await dispatch(envelope, session, context);
+    const cistern = finalizeGivingCisternReceipt(cisternPreflight, envelope, session, data);
     return ok(res, envelope, session, data,
-      envelope.operation === 'search.page' ? { source: data.receipt } : {}, cors);
+      {
+        ...(envelope.operation === 'search.page' ? { source: data.receipt } : {}),
+        ...(cistern ? { cistern } : {}),
+        ...(rotatedSession ? { intent_rotation: 'ISSUED_AFTER_ADMITTED_MUTATION_ATTEMPT' } : {})
+      },
+      {
+        ...cors,
+        ...(rotatedCookie ? { 'Set-Cookie': rotatedCookie } : {})
+      },
+      rotatedSession);
   } catch (error) {
     const origin = expectedOrigin(req);
     const supplied = headerValue(req, 'origin');
@@ -212,11 +238,13 @@ export async function givingHandler(req, res, context = {}) {
       'Access-Control-Allow-Credentials': 'true',
       Vary: 'Origin'
     } : {};
-    return fail(res, error, envelope, session, cors);
+    return fail(res, error, envelope, session, {
+      ...cors,
+      ...(rotatedCookie ? { 'Set-Cookie': rotatedCookie } : {})
+    }, rotatedSession);
   }
 }
 
 export default givingHandler;
 
 export const _dispatcherInternals = Object.freeze({ dispatch, responseReceipt, custodyForOperation });
-
