@@ -43,9 +43,9 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-// The consequence-first shell must hydrate independently of retrieval
+// The primary operator shell must hydrate independently of retrieval
 // instrumentation. A paging/fetch shim may fail closed without hiding the
-// child-legible Campaign/Research/Vault structure from the operator.
+// Campaign, Research File, or Vault controls from the operator.
 await import(epochUrl('./giving-ux-resilience-shell.js'));
 await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-run-settled.js'));
