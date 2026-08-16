@@ -70,12 +70,11 @@ export function assertGivingCisternRoute(envelope, session) {
     return assertCisternRelease(receipt);
   } catch {
     throw new GivingError(
-      'cistern-route-withheld',
-      'The consequential Campaign Deputy route did not satisfy the required operator sequence',
+      'write-authorization-withheld',
+      'This Campaign Deputy write did not satisfy the required operator confirmations',
       409,
       {
-        route_status: receipt.route.route_holonomy_posture,
-        missing_or_changed_steps: receipt.route.deltas.map((item) => item.expected).filter(Boolean)
+        missing_required_confirmations: receipt.route.deltas.map((item) => item.expected).filter(Boolean)
       }
     );
   }
@@ -123,6 +122,16 @@ export function finalizeGivingCisternReceipt(preflightReceipt, envelope, session
     spentIntentDigest: session?.nonce ? sha256(session.nonce) : null,
     egressDigest: sha256(egress),
     outcome: 'RELEASED'
+  });
+}
+
+export function publicWriteAuthorizationReceipt(internalReceipt, rotatedSession) {
+  if (!internalReceipt) return null;
+  return Object.freeze({
+    status: internalReceipt.outcome === 'RELEASED' ? 'VERIFIED' : 'WITHHELD',
+    request_digest: internalReceipt.request_digest || null,
+    egress_digest: internalReceipt.egress_digest || null,
+    next_intent_issued: Boolean(rotatedSession)
   });
 }
 
