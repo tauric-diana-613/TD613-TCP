@@ -36,7 +36,7 @@ assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /giving\.css\?v=20260816-2/);
 assert.match(html, /giving-polish\.css\?v=20260816-2/);
 assert.match(html, /giving-bootstrap\.js\?v=20260816-2/);
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-3'/);
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-4'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-export-menu.js', 'giving-contribution-amount-filter.js',
   'giving-state-filter.js', 'giving-review-paging.js', 'giving-ux-resilience-shell.js',
@@ -135,7 +135,7 @@ assert.match(campaignCss, /\.campaign-deputy-sync-tools/);
 
 // Operator copy and public/internal boundary.
 assert.match(visibleLanguage, /textContent = 'Match'/);
-assert.match(dossierHelp, /Research Dossier/);
+assert.match(dossierHelp, /Contributor research file/);
 assert.match(dossierHelp, /document\.body\.appendChild\(popup\)/);
 assert.doesNotMatch(dossierHelp, /createElement\('style'\)/);
 assert.match(dossierHelpCss, /\.research-dossier-help-popup \{[\s\S]*position:\s*fixed/);
