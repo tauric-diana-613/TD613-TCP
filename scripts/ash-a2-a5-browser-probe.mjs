@@ -17,13 +17,38 @@ function replaceExactly(source, marker, replacement, label) {
 let source = await fs.readFile(legacyPath, 'utf8');
 source = source
   .replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')
-  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.6-a15-present-state-reconciled');
+  .replace('td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play', 'td613.ash.a2-a6-browser-observation/v0.7-a15-canonical-control-ownership');
 
 source = replaceExactly(
   source,
   "if (!/Cases & profiles/i.test((await page.locator('[data-command-action=\"profile\"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');",
   "if (!/Cases & profiles/i.test((await page.locator('#premiumCommandGrid [data-command-action=\"profile\"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');",
   'A12 command-sheet profile control ownership'
+);
+
+source = replaceExactly(
+  source,
+  "    const button = page.locator(`[data-aia-route=\"${route}\"]`);",
+  "    const button = page.locator(`#ashAiaMembrane [data-aia-route=\"${route}\"]:visible`).first();",
+  'canonical AIA route control ownership'
+);
+source = replaceExactly(
+  source,
+  "    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
+  "    await page.waitForFunction(expected => document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route === expected, route, { timeout:20_000 });",
+  'canonical AIA route surface settlement'
+);
+source = replaceExactly(
+  source,
+  "    await page.locator(`[data-premium-workspace=\"${destination}\"]`).click();",
+  "    await page.locator(`#premiumPrimaryDock [data-premium-workspace=\"${destination}\"]:visible`).first().click();",
+  'canonical premium dock control ownership'
+);
+source = replaceExactly(
+  source,
+  "    await page.waitForFunction(expected => window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected, destination);",
+  "    await page.waitForFunction(expected => {\n      const panel = document.getElementById(`workspace-${expected}`);\n      return window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected\n        && document.documentElement.dataset.ashPremiumWorkspace === expected\n        && panel?.classList.contains('active') === true;\n    }, destination, { timeout:20_000 });",
+  'canonical premium dock settlement'
 );
 
 source = replaceExactly(
@@ -42,10 +67,14 @@ if (!source.includes('entry_exact_case_reconcile')
   || !source.includes("dataset.ashPremiumWorkspace === 'map'")
   || !source.includes("panel?.classList.contains('active')")
   || !source.includes('#premiumCommandGrid [data-command-action="profile"]')
+  || !source.includes('#ashAiaMembrane [data-aia-route="${route}"]:visible')
+  || !source.includes("#ashAiaMembrane [data-ash-route-surface]")
+  || !source.includes('#premiumPrimaryDock [data-premium-workspace="${destination}"]:visible')
+  || !source.includes("dataset.ashPremiumWorkspace === expected")
   || !source.includes('structural_graph_observed:true')
   || !source.includes('release_receipt:convergence.releaseReceipt?.() || null')
   || !source.includes('td613.ash.a15-empirical-profile-journeys/v0.1')) {
-  throw new Error('A15 A2-A6 present-state convergence adapter failed to compile.');
+  throw new Error('A15 A2-A6 canonical-control convergence adapter failed to compile.');
 }
 
 try {
