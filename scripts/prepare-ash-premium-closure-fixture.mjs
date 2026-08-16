@@ -108,6 +108,17 @@ const cacheMarker = 'const cleanMaintenanceEntries =';
 const navigationMarker = 'ASH_AIA3_LEGACY_BYPASS_STABLE';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
+async function atomicWriteUtf8(target, content) {
+  const temporary = `${target}.${process.pid}.${Date.now()}.tmp`;
+  await fs.mkdir(path.dirname(target), { recursive:true });
+  try {
+    await fs.writeFile(temporary, content, 'utf8');
+    await fs.rename(temporary, target);
+  } finally {
+    await fs.rm(temporary, { force:true });
+  }
+}
+
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
 let prepared = original;
 const transformations = [];
@@ -144,10 +155,9 @@ for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_evic
   if (!prepared.includes(required)) throw new Error(`Premium/mass-eviction fixture omitted ${required}.`);
 }
 
-if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
-await fs.mkdir(path.dirname(manifestPath), { recursive: true });
-await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.premium-production-closure-fixture/v1.1-browser-bound-transition',
+if (prepared !== original) await atomicWriteUtf8(probePath, prepared);
+const manifest = `${JSON.stringify({
+  schema:'td613.ash-keep.premium-production-closure-fixture/v1.2-atomic-browser-bound-transition',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
@@ -155,6 +165,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   transformations,
   permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'EXACT_NON_CASE_LEGACY_CACHE_MARKER' },
   browser_transition_read_via_page_evaluate:true,
+  atomic_source_replacement:true,
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
@@ -166,6 +177,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   promotion_authorized:false,
   transport_authorized:false,
   cinder_authorized:false
-}, null, 2)}\n`);
+}, null, 2)}\n`;
+await atomicWriteUtf8(manifestPath, manifest);
 
 console.log(`prepare-ash-premium-closure-fixture.mjs passed · ${transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED'}`);

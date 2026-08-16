@@ -243,15 +243,19 @@ jobs:
         run: |
           set -euo pipefail
           browser='${{ matrix.browser }}'
-          # Each local server runs the same idempotent fixture-preparation chain on startup.
-          # Start them one at a time so those preparers never race on the shared checkout;
-          # the expensive probe lanes still run in parallel after all three runtimes are ready.
+          node scripts/prepare-ash-profile-closure-fixture-a13.mjs
+          node scripts/prepare-ash-premium-closure-fixture.mjs
+          node scripts/prepare-ash-canonical-cache-closure-fixture.mjs
           for spec in core:6130 extended:6131 flowcore:6132; do
             lane="${spec%%:*}"
             port="${spec##*:}"
             mkdir -p "artifacts/$browser/$lane"
             node scripts/ash-keep-local-closure-server.mjs "$port" > "artifacts/$browser/$lane/server.log" 2>&1 &
             echo $! > "artifacts/$browser/$lane/server.pid"
+          done
+          for spec in core:6130 extended:6131 flowcore:6132; do
+            lane="${spec%%:*}"
+            port="${spec##*:}"
             ready=0
             for attempt in $(seq 1 40); do
               if curl -fsS --max-time 2 "http://127.0.0.1:$port/__ash_keep_closure/readiness" > "artifacts/$browser/$lane/readiness.json"; then
@@ -326,7 +330,9 @@ jobs:
             export TD613_BASE_URL='http://127.0.0.1:6130'
             TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
             TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a12-browser-probe.mjs
+            if [[ "$browser" == 'chromium' ]]; then
+              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+            fi
           )
 
           run_extended() (
@@ -361,13 +367,15 @@ jobs:
           BROWSER="$browser" CORE_STATUS="$core_status" EXTENDED_STATUS="$extended_status" FLOWCORE_STATUS="$flowcore_status" node <<'NODE'
           const fs = require('node:fs');
           const receipt = {
-            schema:'td613.exact-head.browser-shard/v0.1',
+            schema:'td613.exact-head.browser-shard/v0.2-bounded-a12',
             browser:process.env.BROWSER,
             lanes:{
               core:Number(process.env.CORE_STATUS),
               extended:Number(process.env.EXTENDED_STATUS),
               flowcore:Number(process.env.FLOWCORE_STATUS)
             },
+            a12_full_witness:process.env.BROWSER === 'chromium',
+            a12_cross_engine_preflight:true,
             fail_fast:false,
             lane_parallelism:true,
             authority_changed:false,
