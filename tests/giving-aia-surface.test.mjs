@@ -6,6 +6,13 @@ import {
   installGivingAiaSurface
 } from '../app/giving/history/giving-aia-surface.js';
 
+async function phaseReceipt(name) {
+  if (process.env.GITHUB_ACTIONS !== 'true') return;
+  const { mkdir, writeFile } = await import('node:fs/promises');
+  await mkdir('artifacts/giving-contract-markers', { recursive: true });
+  await writeFile(`artifacts/giving-contract-markers/aia-${name}.pass`, 'PASS\n');
+}
+
 class FakeDocument extends EventTarget {
   constructor() {
     super();
@@ -29,6 +36,7 @@ assert.deepEqual(GIVING_AIA_SURFACE_BINDING.routes, ['EXPERIENTIAL', 'CUSTODIAL'
 assert.equal(GIVING_AIA_SURFACE_BINDING.route_inference_forbidden, true);
 assert.equal(GIVING_AIA_SURFACE_BINDING.authority.authority_may_cross, false);
 assert.equal(GIVING_AIA_SURFACE_BINDING.authority.human_closure_required, true);
+await phaseReceipt('binding');
 
 const family = compileGivingAiaProjectionFamily({
   governed_reference: 'test-cycle-1',
@@ -51,6 +59,7 @@ assert.deepEqual(new Set(family.projections.map((projection) => projection.route
 assert.ok(family.projections.every((projection) => projection.user_level_score === null));
 assert.ok(family.projections.every((projection) => projection.authority.authority_may_cross === false));
 assert.ok(family.projections.every((projection) => projection.invariants.provenance.source_instance_count === 4));
+await phaseReceipt('family');
 
 const runtime = new FakeRuntime();
 const updates = [];
@@ -94,6 +103,7 @@ assert.equal(runtime.document.documentElement.dataset.givingAiaObservation, 'unr
 assert.equal(updates.length, 1);
 assert.equal(updates[0].reason, 'giving-run-settled');
 assert.equal(updates[0].receipt.held_route_count, 1);
+await phaseReceipt('runtime');
 
 const audit = api.project('AUDIT');
 assert.equal(audit.route, 'AUDIT');
@@ -102,5 +112,6 @@ assert.deepEqual(audit.surface.missingness, ['HELD_SOURCE_ROUTE_PRESENT']);
 assert.equal(audit.surface.abstention, 'Unresolved or withheld source state remains unresolved or withheld.');
 assert.equal(audit.authority.automatic_release, false);
 assert.equal(audit.authority.human_closure_required, true);
+await phaseReceipt('audit');
 
 console.log('giving-aia-surface.test.mjs passed');
