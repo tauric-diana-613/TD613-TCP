@@ -441,7 +441,7 @@ async function searchDirectory(event) {
   await hydrateCampaignRegistry();
   const lanes = checkedJurisdictions();
   if (!lanes.size) return lookupStatus('Choose at least one filing jurisdiction.', 'error');
-  if ((lanes.has('FEDERAL') || lanes.has('STATE')) && !selectedCampaignStates.size) return lookupStatus('Choose at least one state, or use All in the State picker.', 'error');
+  if (lanes.has('STATE') && !selectedCampaignStates.size) return lookupStatus('Choose at least one state, or use All in the State picker.', 'error');
   if (lanes.has('MUNICIPAL') && !selectedMunicipalSourceIds.size) return lookupStatus('Choose at least one municipal source, or use All in the Municipal picker.', 'error');
 
   document.querySelector('[data-view="ledger"]')?.click();
