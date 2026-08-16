@@ -156,4 +156,10 @@ assert.match(logout.res.headers['set-cookie'], /Max-Age=0/);
 
 await import('./giving-cistern-replay.test.mjs');
 
+if (process.env.GITHUB_ACTIONS === 'true') {
+  const { mkdir, writeFile } = await import('node:fs/promises');
+  await mkdir('artifacts/giving-contract-markers', { recursive: true });
+  await writeFile('artifacts/giving-contract-markers/dispatcher.pass', 'PASS\n');
+}
+
 console.log('giving-dispatcher.test.mjs passed');
