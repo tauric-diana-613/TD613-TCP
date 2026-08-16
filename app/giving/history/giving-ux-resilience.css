@@ -254,10 +254,11 @@
 #readinessButton:focus + .readiness-tooltip,
 #readinessButton:focus-visible + .readiness-tooltip,
 .readiness-control[data-focus-open="true"] .readiness-tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
   transition: opacity 70ms ease 0ms, visibility 0s, transform 70ms ease 0ms;
+  transition-delay: 0s !important;
 }
 
 .contact-queue-item[data-status="SOURCE HOLD"],
