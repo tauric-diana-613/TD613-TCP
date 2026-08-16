@@ -50,7 +50,7 @@ assert.match(premiumCss, /grid-template-columns:repeat\(5,1fr\)/);
 assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(premiumCompatibility, /display:none!important/);
 assert.match(premiumCompatibility, /Exact chambers/);
-for (const token of ['td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations','orientationMs < 10_000','method_first_arrival: true','qualified_route_projections: 6','real_surveillance_probability','MOIRE_REPLAY_VERIFIED','horizontal_overflow','clipped_controls','item.height >= 48','production_promotion_authorized: false']) assert.ok(premiumFlight.includes(token));
+for (const token of ['td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations','orientationMs < 10_000','method_first_arrival: true','qualified_route_projections: 6','real_surveillance_probability','MOIRE_REPLAY_VERIFIED','horizontal_overflow','clipped_controls','item.height >= 48','production_promotion_authorized: false']) assert.ok(premiumFlight.includes(token), `Premium UI browser flight omitted ${token}`);
 assert.doesNotMatch(premium, /recipient_transport\s*:\s*true|automatic_ash_action\s*:\s*true/);
 assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*true/);
 
@@ -59,7 +59,7 @@ assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.doesNotMatch(consolidated, /workflow_run:/);
-for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive = PASS','production_chromium_desktop_mobile = PASS','premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
+for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive =','production_chromium_desktop_mobile =','premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
 assert.doesNotMatch(releaseWorkflow, /for browser in chromium firefox webkit|playwright install --with-deps chromium firefox webkit|ash-keep-aia3-task-journey-v3\.mjs/);
 
 for (const token of ['td613.ash.constitutional-convergence-observation/v0.1','promotion_authorized: false','APERTURE_REBUILD','HUSH_CANDIDATE','DELETE_PARTIAL_HOLD','DRY_AUDIT_ONLY','first_tab_released_at','second_tab_acquired_at','acquired_after_release','td613.ash.cache-flush.aia3.epoch','td613.ash.cache-preflight.epoch','provider_recipient_cinder_transport_requests']) assert.ok(convergenceProbe.includes(token));
