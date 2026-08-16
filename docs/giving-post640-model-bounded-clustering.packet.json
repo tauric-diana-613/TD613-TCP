@@ -27,6 +27,7 @@
     "node tests/giving-search-target-partition.test.mjs"
   ],
   "notes": [
+    "The title anchor intentionally matches the model line exactly; the validator should reject drift rather than guess.",
     "The indexed windows preserve exact-name connectivity without materializing every pair and bound each record to at most 24 candidate comparisons.",
     "Fine-grained locality/employer buckets run before exact-name fallback so scarce candidate budget is spent on higher-information neighbors.",
     "Do not promote the SAMPLE fixture to evidentiary authority; it exercises the same real route with fictional content only."
