@@ -15,6 +15,25 @@ const MUTATIONS = new Set([
 // alive through the upstream window while leaving two seconds for serialization.
 export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
 
+// Initial browser hydration is deliberately smaller than the server's absolute
+// source ceiling. Each source can be continued explicitly; keeping the first
+// page bounded prevents cross-source evidence from turning identity clustering
+// into a main-thread quadratic freeze on common contributor names.
+export const GIVING_SEARCH_PAGE_SIZE = 50;
+
+function boundedPayload(operation, payload) {
+  if (operation !== 'search.page' || !payload?.query || typeof payload.query !== 'object') return payload;
+  const requested = Number(payload.query.page_size);
+  if (!Number.isFinite(requested) || requested <= 0) return payload;
+  return {
+    ...payload,
+    query: {
+      ...payload.query,
+      page_size: Math.min(GIVING_SEARCH_PAGE_SIZE, Math.max(1, Math.floor(requested)))
+    }
+  };
+}
+
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {
     super(message);
@@ -75,7 +94,7 @@ export class GivingApiClient {
         nonce: mutation ? this.intentNonce : null,
         ...(apertureContext ? { aperture_context: apertureContext } : {})
       },
-      payload
+      payload: boundedPayload(operation, payload)
     };
     try {
       const response = await this.fetchImpl(this.endpoint, {

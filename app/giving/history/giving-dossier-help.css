@@ -43,14 +43,14 @@
   color: var(--cyan);
   background: transparent;
   font-family: serif;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: 0;
   text-decoration: none;
   text-transform: none;
-  opacity: .72;
+  opacity: .76;
   user-select: none;
 }
 
@@ -97,7 +97,6 @@
   white-space: normal;
 }
 
-/* Compatibility fallback retained for engines without fixed-position support. */
 @supports not (position: fixed) {
   .research-dossier-help-popup {
     position: absolute;

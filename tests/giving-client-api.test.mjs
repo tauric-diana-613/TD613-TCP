@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { GivingApiClient } from '../app/giving/history/giving-api.js';
+import { GIVING_SEARCH_PAGE_SIZE, GivingApiClient } from '../app/giving/history/giving-api.js';
 
 const calls = [];
 const fetchImpl = async (_url, options) => {
@@ -22,8 +22,12 @@ const client = new GivingApiClient({ fetchImpl });
 await client.createSession('not-a-real-secret');
 await client.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' });
 await client.call('campaign-deputy.ensure-committee', { confirmed: true, committee_id: 'C00999991', committee_name: 'Example Committee' });
+await client.call('search.page', {
+  source_instance_id: 'FEC',
+  query: { name: 'Example Contributor', page_size: 200 }
+}, { mutation: false, purpose: 'bounded common-name retrieval test' });
 
-assert.equal(calls.length, 3);
+assert.equal(calls.length, 4);
 assert.equal(calls[0].envelope.schema, 'td613.giving.request/v1');
 assert.equal(calls[0].envelope.operation, 'session.create');
 assert.equal(calls[0].envelope.intent.nonce, null);
@@ -33,6 +37,9 @@ assert.equal(calls[1].envelope.intent.nonce, 'intent-offline-test');
 assert.equal(calls[2].envelope.operation, 'campaign-deputy.ensure-committee');
 assert.equal(calls[2].envelope.intent.nonce, 'intent-offline-test');
 assert.match(calls[2].envelope.request_id, /^[A-Za-z0-9]/);
+assert.equal(GIVING_SEARCH_PAGE_SIZE, 50);
+assert.equal(calls[3].envelope.operation, 'search.page');
+assert.equal(calls[3].envelope.payload.query.page_size, 50, 'browser hydration must stay bounded and leave deeper source access to explicit continuation');
 
 const internalFailureClient = new GivingApiClient({
   fetchImpl: async () => new Response(JSON.stringify({
@@ -50,6 +57,7 @@ await assert.rejects(
 
 // Keep the live AIA hydration witness inside the maintained Giving test lane.
 await import('./giving-aia-surface.test.mjs');
+await import('./giving-post640-polish.test.mjs');
 
 if (process.env.GITHUB_ACTIONS === 'true') {
   const { mkdir, writeFile } = await import('node:fs/promises');

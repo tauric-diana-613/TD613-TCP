@@ -4,14 +4,14 @@ if (!document.getElementById(stylesheetId)) {
   const link = document.createElement('link');
   link.id = stylesheetId;
   link.rel = 'stylesheet';
-  link.href = new URL('./giving-dossier-help.css?v=20260812-2', import.meta.url).href;
+  link.href = new URL('./giving-dossier-help.css?v=20260816-1', import.meta.url).href;
   document.head.appendChild(link);
 }
 
 const heading = document.querySelector('.dossier-control .panel-heading h2');
 
 if (heading && !document.querySelector('#researchDossierHelp')) {
-  heading.textContent = 'Research Dossier';
+  heading.textContent = 'Contributor research file';
 
   const headingParent = heading.parentElement;
   const line = document.createElement('div');
@@ -27,7 +27,7 @@ if (heading && !document.querySelector('#researchDossierHelp')) {
   trigger.className = 'research-dossier-help-trigger';
   trigger.setAttribute('role', 'button');
   trigger.setAttribute('tabindex', '0');
-  trigger.setAttribute('aria-label', 'About Research Dossier');
+  trigger.setAttribute('aria-label', 'About the contributor research file');
   trigger.setAttribute('aria-describedby', 'researchDossierHelpText');
   trigger.setAttribute('aria-expanded', 'false');
   trigger.textContent = '🛈︎';
@@ -38,7 +38,7 @@ if (heading && !document.querySelector('#researchDossierHelp')) {
   popup.setAttribute('role', 'tooltip');
   popup.setAttribute('aria-hidden', 'true');
   popup.hidden = true;
-  popup.textContent = 'A Research Dossier is the custody container for one Giving investigation. It keeps the query, source lineage, retrieved public records, identity decisions, committee totals, Campaign Deputy receipts, and storage history together without turning those pieces into one opaque database row. Local keeps the dossier in this browser. Hosted encrypts it in the browser before remote storage. Hybrid keeps the local working copy plus an encrypted hosted branch. The vault passphrase is separate from the operator login, and conflicting hosted branches are preserved for human reconciliation instead of being silently overwritten.';
+  popup.textContent = 'The contributor research file keeps one investigation together: search settings, retrieved public records, identity decisions, committee totals, receipts, and custody history. Giving calls this object a dossier internally. Save only preserves the current file; it never runs another search. Local stays in this browser. Hosted stores only a browser-encrypted copy. Hybrid keeps both. Use Vault when you want an encrypted hosted branch; the Vault passphrase is separate from the operator login and cannot be recovered by TD613.';
 
   let popupOpen = false;
 
