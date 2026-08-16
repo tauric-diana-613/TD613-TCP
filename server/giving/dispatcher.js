@@ -23,7 +23,11 @@ import {
   openSecretsOrganizationSummary,
   searchCampaignDirectory
 } from './campaign-directory.js';
-import { assertGivingCisternRoute, finalizeGivingCisternReceipt } from './cistern.js';
+import {
+  assertGivingCisternRoute,
+  finalizeGivingCisternReceipt,
+  publicWriteAuthorizationReceipt
+} from './cistern.js';
 import { publicRegistry } from './registry.js';
 import {
   assertSameOrigin,
@@ -218,11 +222,12 @@ export async function givingHandler(req, res, context = {}) {
       });
     }
     const data = await dispatch(envelope, session, context);
-    const cistern = finalizeGivingCisternReceipt(cisternPreflight, envelope, session, data);
+    const internalWriteReceipt = finalizeGivingCisternReceipt(cisternPreflight, envelope, session, data);
+    const publicWriteReceipt = publicWriteAuthorizationReceipt(internalWriteReceipt, rotatedSession);
     return ok(res, envelope, session, data,
       {
         ...(envelope.operation === 'search.page' ? { source: data.receipt } : {}),
-        ...(cistern ? { cistern } : {}),
+        ...(publicWriteReceipt ? { write_authorization: publicWriteReceipt } : {}),
         ...(rotatedSession ? { intent_rotation: 'ISSUED_AFTER_ADMITTED_MUTATION_ATTEMPT' } : {})
       },
       {
