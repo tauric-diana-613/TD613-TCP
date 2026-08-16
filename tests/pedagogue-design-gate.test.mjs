@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
+import { compileAiaSurfaceBinding } from '../app/engine/flowcore-aia-surface-binding.js';
 import {
   compilePedagogueRouteMemory,
   comparePedagogueRouteMemory
@@ -20,16 +21,43 @@ for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.
     assert.equal(review.design_gate.consequence_before_ontology, true);
     assert.equal(review.design_gate.rest_and_exit_preserved, true);
     assert.equal(review.design_gate.aia_invariants_preserved, true);
+    assert.equal(review.design_gate.aia_surface_bound, true);
     assert.equal(review.design_gate.route_history_explicit, true);
     assert.equal(review.design_gate.route_burden_non_worsening, true);
     assert.equal(review.design_gate.user_level_score_forbidden, true);
     assert.equal(review.design_gate.automatic_redesign_forbidden, true);
     assert.equal(review.design_gate.human_closure_required, true);
+    assert.equal(review.aia_surface_binding.surface_reference, input.surface_reference);
+    assert.equal(review.aia_surface_binding.host_station, 'Dome-World');
+    assert.equal(review.aia_surface_binding.governance_context, 'TD613');
+    assert.equal(review.aia_surface_binding.nested_surface, true);
+    assert.equal(review.aia_surface_binding.route_inference_forbidden, true);
+    assert.equal(review.aia_surface_binding.fabricated_decoys, false);
+    assert.equal(review.aia_surface_binding.authority.authority_may_cross, false);
+    assert.equal(review.aia_surface_projections.length, 4);
+    assert.equal(new Set(review.aia_surface_projections.map((projection) => projection.route)).size, 4);
+    assert.equal(new Set(review.aia_surface_projections.map((projection) => projection.governed_reference)).size, 1);
+    assert.equal(review.aia_surface_family_report.pair_count, 6);
+    assert.equal(review.aia_surface_family_report.all_invariants_preserved, true);
+    assert.equal(review.aia_surface_family_report.all_surfaces_non_equivalent, true);
+    assert.equal(review.aia_surface_family_report.authority_transferred, false);
+    assert.equal(review.aia_surface_family_report.human_closure_required, true);
     assert.equal(review.scene.authority.station_mutation_authorized, false);
     assert.equal(review.scene.authority.automatic_ash_action, false);
     assert.equal(review.transfer.authority.automatic_ash_action, false);
   });
 }
+
+test('AIA surface binding fails closed on inferred authority or fabricated decoys', () => {
+  assert.throws(() => compileAiaSurfaceBinding({
+    surface_reference: 'fixture/authority-crossing',
+    authority: { authority_may_cross: true }
+  }), /widen authority/i);
+  assert.throws(() => compileAiaSurfaceBinding({
+    surface_reference: 'fixture/fabricated-decoy',
+    fabricated_decoys: true
+  }), /does not fabricate decoys/i);
+});
 
 test('Pedagogue route memory preserves path difference even when endpoints match', () => {
   const expected = ['notice', 'witness', 'confirm', 'receipt'];
