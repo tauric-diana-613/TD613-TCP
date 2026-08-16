@@ -1,6 +1,6 @@
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 300;
 const FEC_SOURCE_ID = 'fec-schedule-a';
-const FEC_BOUNDARY_PAGE_SIZE = 50;
+const FEC_BOUNDARY_PAGE_SIZE = 100;
 const priorFetch = globalThis.fetch.bind(globalThis);
 
 globalThis.fetch = async (input, init = {}) => {
