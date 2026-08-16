@@ -34,7 +34,7 @@ for (const token of [
   'await fs.rm(tempDir, { recursive:true, force:true })'
 ]) assert.ok(compatibilityRunner.includes(token), `Compatibility closure runner omitted bounded browser adapter contract ${token}`);
 assert.doesNotMatch(compatibilityRunner, /run-ash-keep-a1-production-probe-base\.mjs/);
-assert.match(compatibilityRunner, /retired pre-lifecycle A1 closure journey/);
+assert.match(compatibilityRunner, /let baseSource = await fs\.readFile\(path\.join\(scriptsDir, 'ash-lifecycle-production-probe-base\.mjs'\), 'utf8'\)/, 'Compatibility runner must adapt the canonical lifecycle base source rather than a retired pre-lifecycle journey.');
 for (const token of [
   "await fs.rm(path.join(repoRoot, 'artifacts', staleDirectory), { recursive:true, force:true })",
   "'ash-keep-production-closure'",
