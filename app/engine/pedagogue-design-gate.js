@@ -11,13 +11,18 @@ import {
   verifyAIAInvariants
 } from './flowcore-pedagogue-aia.js';
 import {
+  compileAiaSurfaceBinding,
+  compileAiaSurfaceProjection,
+  verifyAiaSurfaceProjectionFamily
+} from './flowcore-aia-surface-binding.js';
+import {
   ROUTE_BURDEN_MODEL_IDS,
   compareBurdenModels,
   compileRouteGraph
 } from './flowcore-route-burden.js';
 
 export const PEDAGOGUE_DESIGN_FIXTURE_SCHEMA = 'td613.pedagogue-design-fixture/v0.1';
-export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.2';
+export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.3';
 
 function clone(value) {
   return value === null || typeof value !== 'object'
@@ -85,6 +90,39 @@ async function compileCycle(fixture, options) {
   return { scene, transitions: [notice, act, answer, name, rest], notice, act, answer, name, rest, restState, transfer };
 }
 
+function compileSurfaceFamily(fixture, cycle, aiaViews) {
+  const binding = compileAiaSurfaceBinding({
+    surface_reference: fixture.surface_reference,
+    host_station: 'Dome-World',
+    governance_context: fixture.governance_context || 'TD613',
+    nested_surface: true,
+    routes: AIA_ROUTE_IDS,
+    route_selection: 'EXPLICIT_OPERATOR_SELECTION_ONLY',
+    route_inference_forbidden: true,
+    internal_legibility: 'NOW_WHY_EXACT',
+    outside_posture: 'MINIMUM_DISCLOSURE_NON_AUTHORITATIVE',
+    fabricated_decoys: false,
+    rest: { available: true, penalty: false },
+    exit: { available: true, penalty: false },
+    authority: {
+      station_mutation_authorized: false,
+      automatic_release: false,
+      automatic_redesign: false,
+      route_inference_allowed: false,
+      authority_may_cross: false,
+      human_closure_required: true
+    }
+  });
+  const governedReference = `${cycle.scene.scene_id}:${cycle.name.transition_id}`;
+  const projections = aiaViews.map((view) => compileAiaSurfaceProjection(binding, view.route, {
+    governed_reference: governedReference,
+    invariants: view.invariants,
+    surface: view.surface
+  }));
+  const report = verifyAiaSurfaceProjectionFamily(binding, projections);
+  return { binding, projections, report };
+}
+
 export async function compilePedagogueDesignReview(fixture, options = {}) {
   if (!fixture || fixture.schema !== PEDAGOGUE_DESIGN_FIXTURE_SCHEMA) throw new Error(`Expected ${PEDAGOGUE_DESIGN_FIXTURE_SCHEMA}.`);
   if (typeof fixture.surface_reference !== 'string' || !fixture.surface_reference.trim()) throw new Error('Design fixture requires a Dome-hosted surface_reference.');
@@ -97,6 +135,7 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
   const aiaViews = [];
   for (const route of AIA_ROUTE_IDS) aiaViews.push(await compileAIAView(cycle.scene, cycle.name, route, deterministic));
   const aiaReport = verifyAIAInvariants(cycle.scene, aiaViews);
+  const surfaceFamily = compileSurfaceFamily(fixture, cycle, aiaViews);
 
   const proposedGraph = await compileRouteGraph(cycle.scene, cycle.transitions, deterministic);
   const proposedBurden = compareBurdenModels(proposedGraph, ROUTE_BURDEN_MODEL_IDS);
@@ -127,6 +166,9 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
     rest: cycle.restState,
     transfer: cycle.transfer,
     aia_report: aiaReport,
+    aia_surface_binding: surfaceFamily.binding,
+    aia_surface_projections: surfaceFamily.projections,
+    aia_surface_family_report: surfaceFamily.report,
     baseline_route_graph: baselineGraph,
     proposed_route_graph: proposedGraph,
     route_memory_comparison: routeMemoryComparison,
@@ -137,11 +179,12 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
       consequence_before_ontology: true,
       rest_and_exit_preserved: cycle.restState.penalty === false && cycle.restState.exit_available === true,
       aia_invariants_preserved: aiaReport.all_invariants_preserved === true && aiaReport.all_surfaces_non_equivalent === true,
+      aia_surface_bound: surfaceFamily.report.all_invariants_preserved === true && surfaceFamily.report.all_surfaces_non_equivalent === true && surfaceFamily.report.authority_transferred === false,
       route_history_explicit: routeMemoryComparison.endpoint_equivalent === true && routeMemoryComparison.authority.route_history_may_be_discarded === false,
       route_burden_non_worsening: burdenComparison.all_models_non_worsening,
       user_level_score_forbidden: proposedGraph.user_level_score_forbidden === true,
       automatic_redesign_forbidden: proposedGraph.automatic_redesign_forbidden === true,
-      human_closure_required: true
+      human_closure_required: surfaceFamily.report.human_closure_required === true
     }
   });
 }
