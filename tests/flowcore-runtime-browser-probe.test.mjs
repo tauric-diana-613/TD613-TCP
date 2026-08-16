@@ -47,16 +47,20 @@ test('production content observer binds deployed bytes to the selected source pa
   assert.match(contentProbe, /authorizes_public_route_promotion:\s*false/);
 });
 
-test('one explicit exact-head dispatch retains front-line per-engine browser evidence and one convergence owner', () => {
+test('one exact-head PR run retains front-line per-engine browser evidence and one convergence owner', () => {
   assert.match(consolidated, /workflow_dispatch:/);
   assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
   assert.match(consolidated, /full-browser/);
   assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-  assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 
   const shardHeader = consolidated.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
+  const convergenceHeader = consolidated.match(/  ash_browser:[\s\S]*?    runs-on:/)?.[0] || '';
   assert.match(shardHeader, /needs: scope/);
-  assert.doesNotMatch(shardHeader, /contracts/, 'Front-line browser shards must not wait behind static contracts.');
+  assert.match(shardHeader, /github\.event_name == 'pull_request'/);
+  assert.doesNotMatch(shardHeader, /contracts|github\.event\.action|ready_for_review/, 'Front-line browser shards must start immediately after scope on a full-scope PR synchronization.');
+  assert.match(convergenceHeader, /needs: \[contracts, scope, ash_browser_shard\]/);
+  assert.match(convergenceHeader, /github\.event_name == 'pull_request'/);
+  assert.doesNotMatch(convergenceHeader, /github\.event\.action|ready_for_review/, 'Convergence must follow the full-scope PR shard family without an action-transition lock.');
 
   assert.match(consolidated, /browser: \[chromium, firefox, webkit\]/);
   assert.match(consolidated, /max-parallel: 3/);
@@ -67,7 +71,6 @@ test('one explicit exact-head dispatch retains front-line per-engine browser evi
   assert.match(consolidated, /td613-browser-shard-\$\{\{ matrix\.browser \}\}/);
   assert.match(consolidated, /Collect surviving browser evidence shards/);
   assert.match(consolidated, /Full-product exact-head Chromium Firefox WebKit witness/);
-  assert.match(consolidated, /needs: \[contracts, scope, ash_browser_shard\]/);
   assert.equal(fs.existsSync('.github/workflows/flowcore-runtime-evidence.yml'), false,
     'Flow-Core runtime evidence must not regain an independent workflow.');
 });
