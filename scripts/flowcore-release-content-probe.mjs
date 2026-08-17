@@ -248,6 +248,27 @@ let observation = null;
 let lastError = null;
 for (let attempt = 1; attempt <= attempts; attempt += 1) {
   try {
+    const receiptUrl = new URL('/giving/history/release-source.json', `${base}/`);
+    receiptUrl.searchParams.set('td613_source_packet', sourcePacketCommit);
+    receiptUrl.searchParams.set('td613_receipt_probe_attempt', String(attempt));
+    receiptUrl.searchParams.set('td613_receipt_nonce', `${Date.now()}-${attempt}`);
+    const receiptResponse = await fetch(receiptUrl, {
+      headers: { 'cache-control': 'no-cache' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(15000)
+    });
+    if (!receiptResponse.ok) throw new Error(`/giving/history/release-source.json returned ${receiptResponse.status}.`);
+    let receiptPayload;
+    try {
+      receiptPayload = await receiptResponse.json();
+    } catch (error) {
+      throw new Error(`/giving/history/release-source.json returned invalid JSON: ${error?.message || String(error)}.`);
+    }
+    const observedReceiptSource = String(receiptPayload?.source_packet_commit || '').trim();
+    if (observedReceiptSource !== sourcePacketCommit) {
+      throw new Error(`Release receipt does not match authorized source: expected ${sourcePacketCommit}, observed ${observedReceiptSource || 'missing'}.`);
+    }
+
     const remote = [];
     for (const item of local) {
       const url = new URL(item.remote_path, `${base}/`);
@@ -276,6 +297,12 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       status: 'PASS',
       source_packet_commit: sourcePacketCommit,
       production_base_url: base,
+      release_source_receipt_verified: true,
+      release_source_receipt: {
+        source_packet_commit: observedReceiptSource,
+        final_url: receiptResponse.url,
+        status: receiptResponse.status
+      },
       exact_source_content_verified: true,
       dependency_closure_verified: true,
       navigation_links_excluded: true,
@@ -306,6 +333,7 @@ if (!observation) {
     status: 'HELD',
     source_packet_commit: sourcePacketCommit,
     production_base_url: base,
+    release_source_receipt_verified: false,
     exact_source_content_verified: false,
     dependency_closure_verified: false,
     navigation_links_excluded: true,
@@ -326,6 +354,7 @@ if (observation.status !== 'PASS') throw new Error(observation.hold_reason);
 console.log(JSON.stringify({
   status: observation.status,
   source_packet_commit: sourcePacketCommit,
+  release_source_receipt_verified: observation.release_source_receipt_verified,
   artifact: artifactPath,
   dependency_count: local.length,
   vercel_git_settlement: vercelGitSettlement.status
