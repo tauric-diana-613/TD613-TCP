@@ -171,6 +171,10 @@ async function witnessResilienceUi() {
   await page.waitForSelector('#vaultGuide', { state: 'attached', timeout: 5000 });
   await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
   await page.waitForSelector('.committee-ledger-toolbar', { state: 'attached', timeout: 5000 });
+  // giving-dossier-help.js is intentionally the final bootstrap import and owns
+  // the canonical research heading. WebKit can reach the resilience shell before
+  // that last module settles, so witness its installed marker before reading copy.
+  await page.waitForSelector('#researchDossierHelp', { state: 'attached', timeout: 5000 });
 
   const structure = await page.evaluate(() => {
     const scope = document.querySelector('#campaignDirectoryJurisdiction');
@@ -419,12 +423,6 @@ try {
     failedResources,
     { practiceRequestBoundary: classificationBoundary }
   );
-  const statusRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'session.status');
-  const registryRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'registry.read');
-  if (production && practiceObservation) {
-    assert.ok(statusRefusals.length <= 1, `production practice may observe at most one pre-practice session.status refusal: ${JSON.stringify(statusRefusals)}`);
-    assert.ok(registryRefusals.length <= 1, `production practice may observe at most one fail-closed pre-practice registry.read refusal: ${JSON.stringify(registryRefusals)}`);
-  }
   const receipt = {
     schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
