@@ -90,7 +90,7 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, verify exact application bytes, hold the authorized source stable against stale queued rollbacks, and run one bounded production confirmation. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. ⟐
           EOF_COMMENT
           )"
 
@@ -116,6 +116,7 @@ jobs:
           node tests/giving-production-readiness.test.mjs
           node tests/giving-dispatcher.test.mjs
           node tests/giving-client-surface.test.mjs
+          node tests/giving-vercel-release-receipt.test.mjs
 
       - name: Verify canonical practice fixture release contracts
         if: steps.scope.outputs.validation_scope == 'practice'
@@ -235,13 +236,78 @@ jobs:
           [[ -n "$URL" ]] || { echo 'Release route produced no production URL.' >&2; exit 1; }
           echo "url=$URL" >> "$GITHUB_OUTPUT"
 
+      - name: Await exact-source receipt before stability window
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_RECEIPT_ACQUIRE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
+          TD613_RECEIPT_ACQUIRE_DELAY_MS: '5000'
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const attempts = Number(process.env.TD613_RECEIPT_ACQUIRE_ATTEMPTS || 72);
+          const delayMs = Number(process.env.TD613_RECEIPT_ACQUIRE_DELAY_MS || 5000);
+          if (!base) throw new Error('TD613_BASE_URL is required for release receipt acquisition.');
+          if (!/^[0-9a-f]{40}$/.test(expected)) throw new Error('Release receipt acquisition requires the authorized source SHA.');
+          if (!Number.isSafeInteger(attempts) || attempts < 1 || attempts > 120) throw new Error('TD613_RECEIPT_ACQUIRE_ATTEMPTS must be 1..120.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 1000 || delayMs > 30000) throw new Error('TD613_RECEIPT_ACQUIRE_DELAY_MS must be 1000..30000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          let lastObservation = 'none';
+          for (let attempt = 1; attempt <= attempts; attempt += 1) {
+            const url = new URL('/giving/history/release-source.json', `${base}/`);
+            url.searchParams.set('td613_receipt_acquire', expected);
+            url.searchParams.set('td613_receipt_attempt', String(attempt));
+            url.searchParams.set('td613_receipt_nonce', `${Date.now()}-${attempt}`);
+            try {
+              const response = await fetch(url, {
+                headers: { 'cache-control': 'no-cache' },
+                redirect: 'follow',
+                signal: AbortSignal.timeout(15000)
+              });
+              if (!response.ok) {
+                lastObservation = `HTTP ${response.status}`;
+                if ([404, 408, 425, 429].includes(response.status) || response.status >= 500) {
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                } else {
+                  throw new Error(`Release receipt acquisition returned non-retryable ${response.status}.`);
+                }
+              } else {
+                let payload;
+                try {
+                  payload = await response.json();
+                } catch (error) {
+                  lastObservation = `invalid-json:${error?.message || String(error)}`;
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                  payload = null;
+                }
+                const observed = String(payload?.source_packet_commit || '').trim();
+                if (observed === expected) {
+                  console.log(`[td613-release-receipt] acquired source=${observed} attempt=${attempt}/${attempts}`);
+                  process.exit(0);
+                }
+                if (payload) {
+                  lastObservation = observed ? `source ${observed}` : 'source missing';
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                }
+              }
+            } catch (error) {
+              if (String(error?.message || '').includes('non-retryable')) throw error;
+              lastObservation = `transport:${error?.name || 'Error'}:${error?.message || String(error)}`;
+              console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+            }
+            if (attempt < attempts) await sleep(delayMs);
+          }
+          throw new Error(`Authorized source receipt never arrived after ${attempts} attempts: expected ${expected}, last observation ${lastObservation}.`);
+          NODE
+
       - name: Verify deployed bytes match the authorized source packet
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
           TD613_ARTIFACT_DIR: artifacts/exact-source
-          TD613_PROBE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
-          TD613_PROBE_DELAY_MS: '5000'
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
         run: node scripts/flowcore-release-content-probe.mjs
 
       - name: Hold authorized source stable against stale queued rollbacks
@@ -392,6 +458,7 @@ jobs:
           deployment_count = 1
           deployment_url = ${{ steps.deployed.outputs.url }}
           validation_scope = ${{ steps.scope.outputs.validation_scope }}
+          exact_source_receipt = PASS
           exact_source_content = PASS
           stale_queue_stability_window = PASS
           post_witness_source_guard = PASS
