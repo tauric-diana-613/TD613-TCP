@@ -18,6 +18,14 @@
       "Squidward Q. Tentacles"
     ]
   },
+  "teaching_contrasts": [
+    {
+      "contrast_id": "political-object-kind",
+      "now": "One Giving route can contain contributions to candidate committees, PAC/PC-style committees, party-style committees, and an issue or referendum committee.",
+      "why": "Sharing the contribution route does not make those political objects equivalent.",
+      "exact": "Route membership may support comparison, but it may not silently infer committee kind, candidate status, office, or political-object authority."
+    }
+  ],
   "expected_route_steps": [
     "load-practice-container",
     "search-and-review",
