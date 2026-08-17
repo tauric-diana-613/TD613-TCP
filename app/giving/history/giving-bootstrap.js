@@ -1,7 +1,9 @@
-import './giving-ux-resilience-shell.js?v=20260817-1';
+import './giving-ux-resilience-shell.js?v=20260816-4';
 
-const GIVING_ASSET_EPOCH = '20260817-1';
+const GIVING_ASSET_EPOCH = '20260816-4';
+const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
+const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
@@ -52,8 +54,10 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-await import(epochUrl('./giving-review-paging.js'));
-await import(epochUrl('./giving-search-render-backpressure.js'));
+// Keep the coordinated Giving graph on its sealed epoch. Only the search/render
+// repair receives a sub-epoch so browsers cannot reuse the superseded paging shim.
+await import(repairUrl('./giving-review-paging.js'));
+await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-app.js'));
