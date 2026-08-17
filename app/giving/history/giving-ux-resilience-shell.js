@@ -266,15 +266,25 @@ function installMatchLanguage() {
 }
 
 function installReadinessFocusState() {
+  const root = document.documentElement;
+  if (root.dataset.readinessFocusDelegated === 'true') return;
+  root.dataset.readinessFocusDelegated = 'true';
+
+  const controlFor = (target) => target?.closest?.('#readinessButton')?.closest('.readiness-control') || null;
+  document.addEventListener('focusin', (event) => {
+    const control = controlFor(event.target);
+    if (control) control.dataset.focusOpen = 'true';
+  });
+  document.addEventListener('focusout', (event) => {
+    const control = controlFor(event.target);
+    if (!control) return;
+    if (event.relatedTarget && control.contains(event.relatedTarget)) return;
+    delete control.dataset.focusOpen;
+  });
+
   const button = $('#readinessButton');
   const control = button?.closest('.readiness-control');
-  if (!button || !control || button.dataset.focusStateBound === 'true') return;
-  button.dataset.focusStateBound = 'true';
-  const open = () => { control.dataset.focusOpen = 'true'; };
-  const close = () => { delete control.dataset.focusOpen; };
-  button.addEventListener('focus', open);
-  button.addEventListener('blur', close);
-  if (document.activeElement === button) open();
+  if (button && control && document.activeElement === button) control.dataset.focusOpen = 'true';
 }
 
 installCoverageNote();
