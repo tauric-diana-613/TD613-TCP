@@ -21,6 +21,17 @@ const GIVING_EXACT = new Set([
   'vercel.json'
 ]);
 
+const PRACTICE_EXACT = new Set([
+  'AGENTS.md',
+  'PEDAGOGUE.md',
+  'app/engine/pedagogue-practice-fixture.js',
+  'app/dome-world/docs/ash/experiments/tomography/ASH_KEEP_LOOM_TOMOGRAPHY_CALIBRATION_PHANTOM_V0_1.md',
+  'docs/CANONICAL_PRACTICE_FIXTURE.md',
+  'scripts/giving-practice-fixture-browser-assay.mjs',
+  'tests/fixtures/pedagogue/giving-bikini-bottom-practice.json',
+  'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json'
+]);
+
 const SCOPE_NEUTRAL = new Set([
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
@@ -52,11 +63,20 @@ function isGivingPath(file) {
     /^docs\/CAMPAIGN_DEPUTY_GIVING_HISTORY[^/]*\.md$/.test(file);
 }
 
+function isPracticePath(file) {
+  return PRACTICE_EXACT.has(file);
+}
+
 export function classifyValidationScope(inputFiles = []) {
   const files = [...new Set(inputFiles.map(normalizedPath).filter(Boolean))];
   let givingFileCount = 0;
+  let practiceFileCount = 0;
   const fullScopeFiles = [];
   for (const file of files) {
+    if (isPracticePath(file)) {
+      practiceFileCount += 1;
+      continue;
+    }
     if (isGivingPath(file)) {
       givingFileCount += 1;
       continue;
@@ -64,8 +84,21 @@ export function classifyValidationScope(inputFiles = []) {
     if (SCOPE_NEUTRAL.has(file)) continue;
     fullScopeFiles.push(file);
   }
-  const scope = givingFileCount > 0 && fullScopeFiles.length === 0 ? 'giving' : 'full';
-  return { scope, files, giving_file_count: givingFileCount, full_scope_files: fullScopeFiles };
+  const scope = fullScopeFiles.length > 0
+    ? 'full'
+    : practiceFileCount > 0
+      ? 'practice'
+      : givingFileCount > 0
+        ? 'giving'
+        : 'full';
+  return {
+    scope,
+    files,
+    giving_file_count: givingFileCount,
+    practice_file_count: practiceFileCount,
+    practice_fixture_changed: practiceFileCount > 0,
+    full_scope_files: fullScopeFiles
+  };
 }
 
 function parseInput(raw) {
@@ -81,6 +114,8 @@ async function main() {
     if (!outputPath) throw new Error('--github-output requires a path');
     fs.appendFileSync(outputPath, `validation_scope=${result.scope}\n`);
     fs.appendFileSync(outputPath, `giving_file_count=${result.giving_file_count}\n`);
+    fs.appendFileSync(outputPath, `practice_file_count=${result.practice_file_count}\n`);
+    fs.appendFileSync(outputPath, `practice_fixture_changed=${result.practice_fixture_changed ? 'true' : 'false'}\n`);
   }
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 }
@@ -88,4 +123,12 @@ async function main() {
 const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : '';
 if (invokedPath === fileURLToPath(import.meta.url)) await main();
 
-export const _validationScopeInternals = Object.freeze({ GIVING_PREFIXES, GIVING_EXACT, SCOPE_NEUTRAL, normalizedPath, isGivingPath });
+export const _validationScopeInternals = Object.freeze({
+  GIVING_PREFIXES,
+  GIVING_EXACT,
+  PRACTICE_EXACT,
+  SCOPE_NEUTRAL,
+  normalizedPath,
+  isGivingPath,
+  isPracticePath
+});
