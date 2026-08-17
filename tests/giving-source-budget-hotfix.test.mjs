@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { GIVING_SEARCH_MIN_TIMEOUT_MS } from '../app/giving/history/giving-api.js';
+import { GIVING_SEARCH_MIN_TIMEOUT_MS, GIVING_SEARCH_PAGE_SIZE } from '../app/giving/history/giving-api.js';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
 import { _fecInternals } from '../server/giving/adapters/fec.js';
 import { maxDuration as GIVING_FUNCTION_MAX_DURATION_SECONDS } from '../api/giving.js';
@@ -29,9 +29,11 @@ assert.match(bootstrap, /shellTitle\.textContent = 'TD613 Giving'/, 'unlocked ma
 assert.match(bootstrap, /retrievalLabel\.textContent = 'GIVING HISTORY'/, 'search panel eyebrow must become GIVING HISTORY');
 assert.match(pagingEntry, /giving-page-size\.js\?v=20260814-1/, 'FEC-aware request normalizer must load before core Giving');
 assert.match(pagingEntry, /giving-review-paging-core\.js\?v=20260813-3/, 'review paging core must retain its stable paging epoch');
-assert.match(pageSizeModule, /PAGE_SIZE = 300/, 'source search envelope must retain the 300-row non-FEC page size');
+assert.match(pageSizeModule, /PAGE_SIZE = 300/, 'source search envelope must retain the 300-row non-FEC server capability');
 assert.match(pageSizeModule, /FEC_BOUNDARY_PAGE_SIZE = 100/, 'FEC search envelope must stay to one provider page per boundary');
-assert.match(pagingCore, /PAGE_SIZE = 300/, 'Contributions UI must paginate at 300 cards');
+assert.match(pagingCore, /PAGE_SIZE = 50/, 'Contributions DOM must paginate at a bounded 50 rendered cards');
+assert.match(pagingCore, /LEGACY_RENDER_SLICE = 300/, 'the legacy renderer interception seam must remain explicit');
+assert.match(pagingCore, /reviewRenderDeferred/, 'live source runs must backpressure contribution-card materialization');
 assert.match(pagingCore, /data-review-page/, 'Contributions pagination must expose clickable page numbers');
 assert.match(pagingCore, /Previous contribution page/, 'Contributions pagination must expose previous navigation');
 assert.match(pagingCore, /Next contribution page/, 'Contributions pagination must expose next navigation');
@@ -40,7 +42,8 @@ assert.doesNotMatch(`${bootstrap}\n${pagingEntry}\n${pagingCore}\n${pageSizeModu
 
 assert.equal(GIVING_FUNCTION_MAX_DURATION_SECONDS, 30, 'Giving function code must match the explicit 30-second Vercel override');
 assert.equal(GIVING_SEARCH_MIN_TIMEOUT_MS, 58_000, 'browser may remain patient while the server settles inside its own bounded envelope');
-assert.equal(MAX_SOURCE_PAGE_SIZE, 300, 'Giving source pages must admit the 300-record UI page');
+assert.equal(GIVING_SEARCH_PAGE_SIZE, 200, 'browser evidence hydration must remain independent from the smaller DOM render page');
+assert.equal(MAX_SOURCE_PAGE_SIZE, 300, 'Giving server source pages must retain their 300-record capability');
 assert.equal(_fecInternals.FEC_GIVING_PAGE_BUDGET_MS, 27_000, 'FEC must settle before the 30-second Vercel wall');
 assert.equal(_fecInternals.FEC_UPSTREAM_TIMEOUT_MS, 24_000, 'one OpenFEC request must leave serialization/fallback margin');
 assert.equal(_fecInternals.FEC_UPSTREAM_PAGE_SIZE, 100, 'OpenFEC provider pages stay at the provider-friendly 100-row size');
