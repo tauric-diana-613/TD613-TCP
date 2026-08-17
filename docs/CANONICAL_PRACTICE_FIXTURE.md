@@ -104,6 +104,18 @@ Example:
 node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-bikini-bottom-practice.json
 ```
 
+### Release-smoke contract
+
+`tests/pedagogue-practice-fixture.test.mjs` is the focused release-smoke contract for the product-neutral practice-fixture compiler. It deliberately remains small enough to run inside the one-shot Vercel release membrane while proving the boundaries that matter at release time:
+
+- manifest fiction remains authority-closed;
+- fixture load is zero-effect;
+- deliberately admitted read-only retrieval and reversible practice custody still require an explicit operator gesture;
+- observed authority cannot widen beyond the fixture declaration;
+- same-endpoint route divergence remains measurable without becoming a transport, curvature, or geometric-holonomy claim.
+
+The broader `tests/pedagogue-design-gate.test.mjs` suite remains the deeper architecture/integration witness. A `practice` Vercel release runs both contracts before deployment, then verifies exact deployed bytes and performs one bounded production Chromium practice observation. Live Ash production probes remain reserved for `full` scope.
+
 ## Route reconstruction / tomography
 
 A calibration phantom supplies known route ground truth.
