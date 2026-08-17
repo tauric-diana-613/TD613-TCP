@@ -171,6 +171,10 @@ async function witnessResilienceUi() {
   await page.waitForSelector('#vaultGuide', { state: 'attached', timeout: 5000 });
   await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
   await page.waitForSelector('.committee-ledger-toolbar', { state: 'attached', timeout: 5000 });
+  // giving-dossier-help.js is intentionally the final bootstrap import and owns
+  // the canonical research heading. WebKit can reach the resilience shell before
+  // that last module settles, so witness its installed marker before reading copy.
+  await page.waitForSelector('#researchDossierHelp', { state: 'attached', timeout: 5000 });
 
   const structure = await page.evaluate(() => {
     const scope = document.querySelector('#campaignDirectoryJurisdiction');
