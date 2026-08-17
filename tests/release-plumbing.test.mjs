@@ -74,6 +74,18 @@ assert.ok(releaseCommitIndex >= 0, 'fallback release admission step must exist')
 assert.ok(immediateRelockIndex > releaseCommitIndex, 'fallback relock must immediately follow deployment admission');
 assert.ok(productionObservationIndex > immediateRelockIndex, 'fallback gate must be closed before production observation begins');
 
+const exactSourceProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
+assert.match(exactSourceProbe, /\/giving\/history\/release-source\.json/,
+  'common exact-source proof must bind to the production release canary');
+assert.match(exactSourceProbe, /TD613_SOURCE_RECEIPT_ATTEMPTS \|\| 288/,
+  'release-canary readiness must tolerate bounded long Vercel Git ingestion delay');
+assert.match(exactSourceProbe, /Authorized release-source receipt did not reach production/,
+  'old production must not pass exact-source merely because unchanged runtime bytes match');
+assert.match(exactSourceProbe, /const releaseSourceReceipt = await waitForAuthorizedSourceReceipt\(\);/,
+  'release packet identity must settle before runtime byte parity is evaluated');
+assert.match(exactSourceProbe, /release_source_receipt: releaseSourceReceipt/,
+  'exact-source evidence must retain the release-canary receipt');
+
 const relock = readAuthorized('vercel-relock-safety.yml', 1);
 assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.doesNotMatch(relock, /vercel@latest deploy/);
@@ -82,4 +94,4 @@ assert.match(relock, /deployment_count = 0/);
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting and immediate fallback relock before production observation');
+console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, and immediate fallback relock');
