@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
+      practice_fixture_changed: ${{ steps.classify.outputs.practice_fixture_changed }}
       head_is_current: ${{ steps.freshness.outputs.head_is_current }}
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +65,7 @@ jobs:
         if: steps.freshness.outputs.head_is_current == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Select Giving-only or full-product witness
+      - name: Select Giving, practice, or full-product witness
         id: classify
         if: steps.freshness.outputs.head_is_current == 'true'
         shell: bash
@@ -75,6 +76,7 @@ jobs:
               | node scripts/classify-validation-scope.mjs --github-output "$GITHUB_OUTPUT"
           else
             echo 'validation_scope=full' >> "$GITHUB_OUTPUT"
+            echo 'practice_fixture_changed=false' >> "$GITHUB_OUTPUT"
           fi
 
   contracts:
@@ -252,7 +254,7 @@ jobs:
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
       ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope == 'full'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
@@ -560,7 +562,7 @@ jobs:
       needs.contracts.result == 'success' &&
       needs.ash_browser_shard.result == 'success' &&
       ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope != 'giving'))
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope == 'full'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -613,6 +615,7 @@ jobs:
         if: always()
         run: test ! -f artifacts/convergence/phase4-server.pid || kill "$(cat artifacts/convergence/phase4-server.pid)" 2>/dev/null || true
       - name: Witness originating Giving practice fixture with Chromium
+        if: needs.scope.outputs.practice_fixture_changed == 'true'
         run: |
           mkdir -p artifacts/convergence/giving-practice
           node tests/giving-client-preview-server.mjs 6136 > artifacts/convergence/giving-practice/server.log 2>&1 &
@@ -631,7 +634,7 @@ jobs:
           fi
           TD613_BROWSER=chromium TD613_BASE_URL=http://127.0.0.1:6136 TD613_ARTIFACT_DIR=artifacts/convergence/giving-practice timeout --foreground --signal=INT --kill-after=15s 300s node scripts/giving-browser-probe.mjs
       - name: Stop Giving practice runtime
-        if: always()
+        if: always() && needs.scope.outputs.practice_fixture_changed == 'true'
         run: test ! -f artifacts/convergence/giving-practice/server.pid || kill "$(cat artifacts/convergence/giving-practice/server.pid)" 2>/dev/null || true
       - name: Preserve convergence evidence packet
         if: always()
@@ -651,13 +654,13 @@ jobs:
           [[ "$CONTRACT_RESULT" == 'success' && "$SHARD_RESULT" == 'success' ]]
 
   giving_browser:
-    name: Giving-only exact-head Chromium Firefox WebKit witness
+    name: Giving/practice exact-head Chromium Firefox WebKit witness
     needs: scope
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
       github.event.action == 'ready_for_review' &&
-      needs.scope.outputs.validation_scope == 'giving'
+      (needs.scope.outputs.validation_scope == 'giving' || needs.scope.outputs.validation_scope == 'practice')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -682,7 +685,7 @@ jobs:
           done
           cat artifacts/giving-server.log
           exit 1
-      - name: Witness Campaign Deputy exports through every engine
+      - name: Witness Campaign Deputy exports and practice load through every engine
         run: |
           set -euo pipefail
           for browser in chromium firefox webkit; do
@@ -693,7 +696,7 @@ jobs:
       - name: Stop Giving runtime
         if: always()
         run: test ! -f artifacts/giving-server.pid || kill "$(cat artifacts/giving-server.pid)" 2>/dev/null || true
-      - name: Preserve Giving-only exact-head evidence
+      - name: Preserve Giving/practice exact-head evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
