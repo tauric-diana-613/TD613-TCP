@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import './giving-source-budget-hotfix.test.mjs';
 import './giving-fec-boundary-page.test.mjs';
+import './td613-flight-desktop-clipboard.test.mjs';
 
 const root = process.cwd();
 const read = (filePath) => fs.readFileSync(path.join(root, filePath), 'utf8');
