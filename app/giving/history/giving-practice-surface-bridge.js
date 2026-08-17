@@ -58,9 +58,6 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
     queueMicrotask(() => {
       const sourceCount = $('#selectedSourceCount');
       if (sourceCount) sourceCount.textContent = '1 source';
-      // Hydrate the harmless four-name queue as route context only. Retrieval is
-      // still gated behind the learner's separate SEARCH / Search queue gestures.
-      if ($('#contactQueueInput')?.value.trim()) $('#addContactQueueButton')?.click();
     });
   } else if (action === 'remove') {
     removePracticeSource();
