@@ -117,6 +117,13 @@ jobs:
           node tests/giving-dispatcher.test.mjs
           node tests/giving-client-surface.test.mjs
 
+      - name: Verify canonical practice fixture release contracts
+        if: steps.scope.outputs.validation_scope == 'practice'
+        run: |
+          node tests/pedagogue-practice-fixture.test.mjs
+          node tests/pedagogue-design-gate.test.mjs
+          node tests/giving-post640-polish.test.mjs
+
       - name: Verify full-product release contracts
         if: steps.scope.outputs.validation_scope == 'full'
         run: |
@@ -240,6 +247,19 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/giving-production
         run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
 
+      - name: Confirm deployed canonical practice fixture on Chromium
+        if: steps.scope.outputs.validation_scope == 'practice'
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_GIVING_PROBE_ATTEMPTS: '72'
+          TD613_GIVING_PROBE_DELAY_MS: '5000'
+          TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS: '15000'
+          TD613_ARTIFACT_DIR: artifacts/practice-production
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
+
       - name: Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile
         if: steps.scope.outputs.validation_scope == 'full'
         env:
@@ -267,6 +287,7 @@ jobs:
             artifacts/a14-production-archive/
             artifacts/lifecycle-production/
             artifacts/giving-production/
+            artifacts/practice-production/
           if-no-files-found: warn
           retention-days: 7
 
@@ -307,6 +328,7 @@ jobs:
           exact_source_content = PASS
           premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
           production_giving_history = ${{ steps.scope.outputs.validation_scope == 'giving' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_practice_fixture = ${{ steps.scope.outputs.validation_scope == 'practice' && 'PASS' || 'NOT_APPLICABLE' }}
           production_a14_registry_archive = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
