@@ -15,6 +15,7 @@ export const CUSTODY_MODE = Object.freeze({
 });
 
 const SUFFIXES = new Set(['JR', 'SR', 'II', 'III', 'IV', 'V', 'PHD', 'MD', 'ESQ']);
+const MAX_CLUSTER_CANDIDATES_PER_RECORD = 24;
 
 export function compactText(value) {
   return String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
@@ -150,7 +151,7 @@ export function createDossier({ title = '', query = {}, sourceIds = [], custody 
   return {
     schema: DOSSIER_SCHEMA,
     id,
-    title: compactText(title) || `Giving history ${now.slice(0, 10)}`,
+    title: compactText(title) || 'Untitled contributor research',
     custody,
     version: 1,
     ancestry: [],
@@ -242,25 +243,108 @@ function shareSearchTarget(left, right) {
   return a.some((id) => b.includes(id));
 }
 
+function clusterName(record) {
+  return normalizeName(record.contributor_name || record.raw_contributor_name || record.contributor_name_raw || record.contributor_name_parsed?.display);
+}
+
+function clusterToken(value) {
+  return compactText(value).toUpperCase();
+}
+
+function pushClusterBucket(index, key, recordIndex) {
+  if (!key) return;
+  const bucket = index.get(key) || [];
+  bucket.push(recordIndex);
+  index.set(key, bucket);
+}
+
 export function suggestIdentityClusters(records, threshold = 0.42) {
   const parent = records.map((_, index) => index);
   const evidence = [];
+  const names = records.map(clusterName);
+  const candidateCounts = records.map(() => 0);
+  const candidatePairs = new Set();
+  const indexes = {
+    exactAddress: new Map(),
+    exactZip: new Map(),
+    exactCityState: new Map(),
+    exactEmployer: new Map(),
+    exactTarget: new Map(),
+    fuzzyAddress: new Map(),
+    fuzzyZip: new Map(),
+    fuzzyCityState: new Map(),
+    fuzzyEmployer: new Map(),
+    exactName: new Map()
+  };
+
+  const addPair = (left, right) => {
+    if (left === right || candidateCounts[left] >= MAX_CLUSTER_CANDIDATES_PER_RECORD || candidateCounts[right] >= MAX_CLUSTER_CANDIDATES_PER_RECORD) return;
+    const a = Math.min(left, right);
+    const b = Math.max(left, right);
+    const key = `${a}:${b}`;
+    if (candidatePairs.has(key)) return;
+    candidatePairs.add(key);
+    candidateCounts[a] += 1;
+    candidateCounts[b] += 1;
+  };
+
+  records.forEach((record, index) => {
+    const name = names[index];
+    const exact = name.canonical;
+    const familyInitial = name.last && name.first ? `${name.last}|${name.first[0]}` : '';
+    const address = clusterToken(record.address || record.street_address);
+    const zip = clusterToken(record.zip || record.postal_code);
+    const cityState = [clusterToken(record.city), clusterToken(record.state)].filter(Boolean).join('|');
+    const employer = clusterToken(record.employer);
+    pushClusterBucket(indexes.exactName, exact, index);
+    pushClusterBucket(indexes.exactAddress, exact && address ? `${exact}|${address}` : '', index);
+    pushClusterBucket(indexes.exactZip, exact && zip ? `${exact}|${zip}` : '', index);
+    pushClusterBucket(indexes.exactCityState, exact && cityState ? `${exact}|${cityState}` : '', index);
+    pushClusterBucket(indexes.exactEmployer, exact && employer ? `${exact}|${employer}` : '', index);
+    for (const targetId of recordTargetIds(record)) pushClusterBucket(indexes.exactTarget, exact && targetId ? `${exact}|${targetId}` : '', index);
+    pushClusterBucket(indexes.fuzzyAddress, familyInitial && address ? `${familyInitial}|${address}` : '', index);
+    pushClusterBucket(indexes.fuzzyZip, familyInitial && zip ? `${familyInitial}|${zip}` : '', index);
+    pushClusterBucket(indexes.fuzzyCityState, familyInitial && cityState ? `${familyInitial}|${cityState}` : '', index);
+    pushClusterBucket(indexes.fuzzyEmployer, familyInitial && employer ? `${familyInitial}|${employer}` : '', index);
+  });
+
+  const addNearbyBucketPairs = (bucketMap, windowSize) => {
+    for (const bucket of bucketMap.values()) {
+      for (let position = 0; position < bucket.length; position += 1) {
+        const stop = Math.min(bucket.length, position + 1 + windowSize);
+        for (let next = position + 1; next < stop; next += 1) addPair(bucket[position], bucket[next]);
+      }
+    }
+  };
+
+  addNearbyBucketPairs(indexes.exactAddress, 6);
+  addNearbyBucketPairs(indexes.fuzzyAddress, 6);
+  addNearbyBucketPairs(indexes.exactZip, 5);
+  addNearbyBucketPairs(indexes.fuzzyZip, 4);
+  addNearbyBucketPairs(indexes.exactCityState, 4);
+  addNearbyBucketPairs(indexes.fuzzyCityState, 3);
+  addNearbyBucketPairs(indexes.exactEmployer, 4);
+  addNearbyBucketPairs(indexes.fuzzyEmployer, 3);
+  addNearbyBucketPairs(indexes.exactTarget, 4);
+  addNearbyBucketPairs(indexes.exactName, 4);
+
   const find = (index) => parent[index] === index ? index : (parent[index] = find(parent[index]));
   const union = (a, b) => {
     const rootA = find(a);
     const rootB = find(b);
     if (rootA !== rootB) parent[rootB] = rootA;
   };
-  for (let left = 0; left < records.length; left += 1) {
-    for (let right = left + 1; right < records.length; right += 1) {
-      if (!shareSearchTarget(records[left], records[right])) continue;
-      const comparison = identityPairScore(records[left], records[right]);
-      if (comparison.score >= threshold) {
-        union(left, right);
-        evidence.push({ left: recordDigest(records[left]), right: recordDigest(records[right]), ...comparison });
-      }
+
+  for (const pair of candidatePairs) {
+    const [left, right] = pair.split(':').map(Number);
+    if (!shareSearchTarget(records[left], records[right])) continue;
+    const comparison = identityPairScore(records[left], records[right]);
+    if (comparison.score >= threshold) {
+      union(left, right);
+      evidence.push({ left: recordDigest(records[left]), right: recordDigest(records[right]), ...comparison });
     }
   }
+
   const groups = new Map();
   records.forEach((record, index) => {
     const key = find(index);
@@ -467,4 +551,3 @@ export function safeFilename(value) {
 }
 
 export const _reviewedSummaryInternals = Object.freeze({ shareSafeSourceLocator, spreadsheetSafeText });
-

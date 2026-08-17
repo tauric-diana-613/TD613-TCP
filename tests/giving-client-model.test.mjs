@@ -28,6 +28,7 @@ assert.equal(exactNameMatch('DOE JANE A', 'Jane B Doe'), false, 'reversed source
 assert.equal(exactNameMatch('Jane A Doe', 'Jane B Doe'), false, 'conflicting explicit middle names remain a failed Exact Match');
 assert.equal(exactNameMatch('Jane Doe Jr', 'Jane Doe'), false, 'suffix differences remain meaningful for Exact Match');
 assert.equal(createDossier({ query: { name: 'Jane Doe', exact_match: true } }).query.exact_match, true);
+assert.equal(createDossier().title, 'Untitled contributor research', 'a fresh local research container never impersonates a pre-existing dated file');
 
 const records = [
   {
@@ -104,6 +105,24 @@ const isolatedClusters = suggestIdentityClusters([
   { local_digest: 'target-b', contributor_name_raw: 'Alex Jordan', city: 'Tampa', state: 'FL', search_target_ids: ['target-two'] }
 ]);
 assert.equal(isolatedClusters.length, 0, 'identity clustering never bridges two unrelated queued contact targets');
+
+const stressRecords = Array.from({ length: 600 }, (_, index) => ({
+  local_digest: `stress-${index}`,
+  contributor_name_raw: 'Alex Common',
+  address: `${100 + (index % 30)} Test Ave`,
+  city: 'Jacksonville',
+  state: 'FL',
+  zip: '32202',
+  employer: `Fixture Employer ${index % 12}`,
+  search_target_ids: ['stress-target']
+}));
+const stressClusters = suggestIdentityClusters(stressRecords);
+assert.equal(stressClusters.length, 1, 'a large same-name practice field remains connected under bounded candidate windows');
+assert.equal(stressClusters[0].members.length, stressRecords.length);
+assert.ok(
+  stressClusters[0].comparisons.length <= (stressRecords.length * 24) / 2,
+  'bounded clustering never materializes the quadratic all-record pair field'
+);
 
 const workbook = buildDossierXlsx(partitioned);
 assert.ok(workbook instanceof Uint8Array);

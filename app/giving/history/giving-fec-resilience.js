@@ -52,6 +52,10 @@ function syntheticResponse(template, body) {
 globalThis.fetch = async (input, init = {}) => {
   const envelope = parseEnvelope(init);
   const fecSearch = envelope?.operation === 'search.page' && envelope?.payload?.source_instance_id === FEC_SOURCE_ID;
+  const requestedPageSize = Number(envelope?.payload?.query?.page_size);
+  const boundaryPageSize = Number.isFinite(requestedPageSize) && requestedPageSize > 0
+    ? Math.min(TARGET_RECORDS, Math.floor(requestedPageSize))
+    : TARGET_RECORDS;
   const firstResponse = await priorFetch(input, init);
   if (!fecSearch || !firstResponse.ok) return firstResponse;
 
@@ -74,7 +78,10 @@ globalThis.fetch = async (input, init = {}) => {
       payload: {
         ...envelope.payload,
         continuation,
-        query: { ...envelope.payload.query, page_size: TARGET_RECORDS }
+        // Keep every automatic continuation at the operator/client's bounded
+        // evidence-page size. Explicit Continue remains the route to deeper
+        // source evidence; resilience may never silently widen the request.
+        query: { ...envelope.payload.query, page_size: boundaryPageSize }
       }
     };
     try {
@@ -132,6 +139,7 @@ globalThis.fetch = async (input, init = {}) => {
     source_status: partialError ? 'PARTIAL' : lastPage.source_status,
     client_fec_paging: {
       boundary_pages: pages,
+      boundary_page_size: boundaryPageSize,
       requested_records: TARGET_RECORDS,
       retained_raw_records: Math.min(records.length, TARGET_RECORDS),
       zero_progress_replays: zeroProgressReplays,

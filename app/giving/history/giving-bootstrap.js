@@ -1,4 +1,4 @@
-const GIVING_ASSET_EPOCH = '20260816-3';
+const GIVING_ASSET_EPOCH = '20260816-4';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
@@ -43,8 +43,11 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-await import(epochUrl('./giving-review-paging.js'));
+// The primary operator shell must hydrate independently of retrieval
+// instrumentation. A paging/fetch shim may fail closed without hiding the
+// Campaign, Research File, or Vault controls from the operator.
 await import(epochUrl('./giving-ux-resilience-shell.js'));
+await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-app.js'));

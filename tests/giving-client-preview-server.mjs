@@ -38,7 +38,9 @@ const server = http.createServer(async (request, response) => {
     ? '/app/giving/history/index.html'
     : requestPath?.startsWith('/giving/history/')
       ? `/app/giving/history/${requestPath.slice('/giving/history/'.length)}`
-      : requestPath;
+      : requestPath?.startsWith('/engine/') || requestPath?.startsWith('/dome-world/')
+        ? `/app${requestPath}`
+        : requestPath;
   const target = path.resolve(root, `.${requested.split('?')[0]}`);
   if (!target.startsWith(root)) { response.writeHead(403); return response.end(); }
   try {
