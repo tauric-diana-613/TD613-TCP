@@ -1,0 +1,28 @@
+{
+  "schema": "td613.pedagogue-practice-fixture/v0.1",
+  "fixture_id": "giving.bikini-bottom-practice/v0.1",
+  "surface_reference": "giving/history",
+  "operator_label": "Bikini Bottom practice case",
+  "manifestly_fictional": true,
+  "runtime_binding": true,
+  "operator_read_only_retrieval_allowed": true,
+  "practice_custody_write_allowed": true,
+  "fictional_payload": {
+    "fictional": true,
+    "container_label": "SAMPLE — Bikini Bottom contributor review",
+    "principal_label": "SpongeBob SquarePants",
+    "secondary_labels": [
+      "Patrick Star",
+      "Sandy Cheeks",
+      "Eugene H. Krabs",
+      "Squidward Q. Tentacles"
+    ]
+  },
+  "expected_route_steps": [
+    "load-practice-container",
+    "search-and-review",
+    "save-working-file",
+    "encrypt-vault-copy"
+  ],
+  "expected_endpoint": "encrypted-vault-copy"
+}

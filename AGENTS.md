@@ -7,6 +7,7 @@ This repository contains product surfaces and shared engines. Before materially 
 Primary implementation:
 
 - `app/engine/pedagogue-design-gate.js`
+- `app/engine/pedagogue-practice-fixture.js`
 - `app/engine/flowcore-pedagogue-core.js`
 - `app/engine/flowcore-pedagogue-aia.js`
 - `app/engine/flowcore-pedagogue-route-memory.js`
@@ -29,6 +30,7 @@ Canonical explanation:
 
 - `PEDAGOGUE.md`
 - `docs/PEDAGOGUE_DESIGN_GATE.md`
+- `docs/CANONICAL_PRACTICE_FIXTURE.md`
 
 ## When to reach for it
 
@@ -39,9 +41,20 @@ Use the Design Gate when a change materially alters one or more of:
 - route burden, dependencies, projection crossings, gluing obstruction, or route memory;
 - custody, release, refusal, or human-closure sequencing;
 - a high-consequence mutation path or Cistern Law boundary;
-- a shared design pattern that may deserve promotion from one product into reusable infrastructure.
+- a shared design pattern that may deserve promotion from one product into reusable infrastructure;
+- a consequential workspace that needs a harmless practice case to exercise its real route.
 
 Ordinary copy edits, typo fixes, non-semantic styling, and isolated mechanical repairs do not need a new Pedagogue fixture unless they change those properties.
+
+## Canonical Practice Fixture rule
+
+When a complicated workspace needs onboarding, calibration, or a known-ground-truth route witness, prefer a **Canonical Practice Fixture** over a detached demo world when the real route can be exercised safely.
+
+The product-facing phrase should be child-legible: **Practice case**, **Practice inhabitant**, or a product-native equivalent. **Calibration phantom** is research/test language for the same object when it is used to measure route reconstruction.
+
+A practice fixture must be manifestly fictional and must not fabricate evidence. Loading it changes labels/fictional inputs only: no retrieval, no receipt creation, no custody write, no domain mutation, and no authority grant. Later traversal may perform explicitly gestured read-only retrieval or reversible practice-custody writes only when the fixture declares them safe. Domain mutation and evidence/consequence authority remain closed.
+
+Do not build a second simplified demo route and then use it as evidence about production. The practice case must declare the real expected route, preserve rest/exit, keep route memory, and require human closure.
 
 ## Governing design law
 
@@ -69,7 +82,7 @@ Product work may reveal a generic mechanism worth promoting into Pedagogue/AIA/C
 4. tests distinguish the generic operator from the product fixture that taught it;
 5. CI scope widens honestly when shared core changes.
 
-Do not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, or another product taxonomy into Pedagogue core merely because that product supplied the proving case.
+Do not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, Bikini Bottom, an Ash fixture name, or another product taxonomy into Pedagogue core merely because that product supplied the proving case.
 
 ## AIA and Cistern relationship
 
@@ -79,6 +92,8 @@ Cistern may consume Pedagogue route-memory output, but observed context never gr
 
 A nested product belongs inside the AIA by consequence only when it has an explicit Dome-hosted surface binding, the four canonical non-equivalent route projections, invariant verification, bounded authority, rest/exit, and a live structural receipt or equivalent runtime witness. Directory placement alone is not AIA integration.
 
+A Canonical Practice Fixture is not a fabricated AIA decoy. It is openly fictional to the authorized operator and remains non-authoritative to the system.
+
 ## Fixtures stay outside core
 
 Current proving fixtures live under:
@@ -86,6 +101,12 @@ Current proving fixtures live under:
 `tests/fixtures/pedagogue/`
 
 Keep product-specific fixtures there or in an equivalent test/fixture location. Shared engine files should remain generic.
+
+## Ash / Loom recovery boundary
+
+Practice-fixture and route-memory machinery may be used to study Ash recovery before being installed into live Ash. A research-only calibration phantom may supply known route ground truth without implying Proto-Loom, a transport law, geometric curvature, holonomy, automatic Ash action, or Golden Egg authority.
+
+Do not bind a new shared mechanism into live Ash merely because it exists in the repository. Ash runtime participation remains explicit and separately witnessed.
 
 ## Before merging shared-engine changes
 
