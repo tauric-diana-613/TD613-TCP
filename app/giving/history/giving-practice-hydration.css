@@ -1,0 +1,203 @@
+.dossier-control .panel-heading {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.dossier-control .panel-heading > div {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dossier-control #saveState {
+  flex: 0 0 auto;
+  max-width: 46%;
+  padding-inline: 6px;
+  overflow: hidden;
+  font-size: 7px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dossier-picker-native {
+  display: none !important;
+}
+
+.dossier-single-picker.giving-state-filter {
+  z-index: 18;
+  margin: 0;
+}
+
+.dossier-single-picker > summary strong {
+  min-width: 0;
+  max-width: 62%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.dossier-single-picker-menu.giving-state-filter-menu {
+  grid-template-columns: 1fr;
+  gap: 2px;
+  max-height: 180px;
+}
+
+.dossier-picker-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 6px;
+  border: 0;
+  cursor: pointer;
+  color: var(--bright);
+  background: transparent;
+  font: 700 8px/1.35 var(--mono);
+  text-align: left;
+}
+
+.dossier-picker-option:hover,
+.dossier-picker-option:focus-visible,
+.dossier-picker-option[aria-selected="true"] {
+  outline: none;
+  background: rgba(118, 234, 212, .07);
+}
+
+.dossier-picker-option span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.dossier-picker-option small {
+  color: var(--cyan);
+  font: 700 6px/1 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.source-picker.practice-source-locked {
+  min-height: 150px;
+}
+
+.source-picker.practice-source-locked .source-picker-actions,
+.source-picker.practice-source-locked .source-list {
+  filter: blur(2.2px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.source-picker.practice-source-locked .source-list {
+  overflow: hidden;
+  opacity: .52;
+}
+
+.practice-exit-membrane {
+  position: absolute;
+  z-index: 30;
+  inset: 22px 0 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.practice-exit-button,
+.practice-exit-confirm {
+  pointer-events: auto;
+}
+
+.practice-exit-button {
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid rgba(236, 80, 194, .55);
+  cursor: pointer;
+  color: #ffd8f3;
+  background: rgba(49, 4, 37, .94);
+  font: 800 8px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .42);
+}
+
+.practice-exit-button:hover,
+.practice-exit-button:focus-visible {
+  outline: 1px solid #f06acb;
+  outline-offset: 2px;
+  background: rgba(78, 7, 58, .98);
+}
+
+.practice-exit-confirm {
+  position: absolute;
+  top: calc(50% + 20px);
+  left: 50%;
+  display: grid;
+  width: min(230px, calc(100% - 24px));
+  gap: 6px;
+  padding: 9px;
+  border: 1px solid rgba(236, 80, 194, .48);
+  transform: translateX(-50%);
+  color: var(--text);
+  background: rgba(8, 3, 7, .985);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .5);
+}
+
+.practice-exit-confirm[hidden] { display: none !important; }
+.practice-exit-confirm strong { color: #ffd8f3; font-size: 9px; }
+.practice-exit-confirm small { color: var(--muted); font-size: 7px; line-height: 1.45; }
+.practice-exit-confirm > div { display: flex; gap: 6px; }
+.practice-exit-confirm button {
+  min-height: 25px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  cursor: pointer;
+  color: var(--text);
+  background: rgba(255, 255, 255, .035);
+  font: 700 7px/1 var(--mono);
+  text-transform: uppercase;
+}
+
+.practice-exit-confirm button:hover,
+.practice-exit-confirm button:focus-visible {
+  border-color: rgba(236, 80, 194, .45);
+  outline: none;
+}
+
+.fictional-sample-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 15px;
+  margin-right: 5px;
+  padding: 2px 5px;
+  border: 1px solid rgba(236, 80, 194, .52);
+  color: #ffd0ef;
+  background: rgba(236, 80, 194, .09);
+  font: 800 6px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+html[data-giving-practice="true"] #campaignReceipts::before {
+  content: 'FICTIONAL PRACTICE · Campaign Deputy mutation authority closed';
+  display: block;
+  margin-bottom: 8px;
+  padding: 6px 7px;
+  border-left: 2px solid #ec50c2;
+  color: #ffd0ef;
+  background: rgba(236, 80, 194, .055);
+  font: 750 7px/1.4 var(--mono);
+}
+
+@media (max-width: 760px) {
+  .dossier-single-picker-menu.giving-state-filter-menu {
+    grid-template-columns: 1fr;
+    max-height: 170px;
+  }
+
+  .dossier-control #saveState {
+    max-width: 42%;
+  }
+}
