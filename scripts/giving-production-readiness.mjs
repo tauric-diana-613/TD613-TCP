@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { waitForGivingReleaseContent } from './giving-release-content-probe.mjs';
+
 const REQUIRED_GIVING_MARKERS = Object.freeze([
   '<title>TD613 Giving History</title>',
   'id="exportCampaignDeputyBundleButton"',
@@ -67,7 +70,8 @@ export async function waitForGivingProductionSurface({
   requestTimeoutMs = 15000,
   fetchImpl = globalThis.fetch,
   sleep = (duration) => new Promise((resolve) => setTimeout(resolve, duration)),
-  onAttempt = () => {}
+  onAttempt = () => {},
+  verifyExactContent = process.env.TD613_PRODUCTION_OBSERVATION === 'true'
 } = {}) {
   if (typeof fetchImpl !== 'function') throw new Error('Giving production readiness requires fetch.');
   const expectedCommit = String(sourceCommit || '').trim();
@@ -76,6 +80,36 @@ export async function waitForGivingProductionSurface({
   const boundedAttempts = positiveInteger(attempts, 72);
   const boundedDelayMs = positiveInteger(delayMs, 5000);
   const boundedRequestTimeoutMs = positiveInteger(requestTimeoutMs, 15000);
+  let exactContentObservation = null;
+
+  if (verifyExactContent === true) {
+    const parentArtifactDir = String(process.env.TD613_ARTIFACT_DIR || 'artifacts/giving-production');
+    exactContentObservation = await waitForGivingReleaseContent({
+      baseUrl,
+      sourcePacketCommit: expectedCommit,
+      artifactDir: path.join(parentArtifactDir, 'exact-source'),
+      attempts: boundedAttempts,
+      delayMs: boundedDelayMs,
+      onAttempt: ({ attempt, attempts: total, ready, observation }) => {
+        onAttempt({
+          attempt,
+          attempts: total,
+          ready: false,
+          status: null,
+          observation: `exact-source ${ready ? 'PASS' : 'WAIT'}: ${observation}`,
+          url: null,
+          receiptUrl: null,
+          releaseReceiptPolicy: policy,
+          receiptMatches: false,
+          exactSourcePhase: true
+        });
+      }
+    });
+    if (exactContentObservation?.practice_critical_surface_exact_source !== true) {
+      throw new Error('Giving production readiness requires exact practice-critical surface bytes.');
+    }
+  }
+
   let lastObservation = 'no response';
 
   for (let attempt = 1; attempt <= boundedAttempts; attempt += 1) {
@@ -132,7 +166,8 @@ export async function waitForGivingProductionSurface({
         url,
         receiptUrl,
         releaseReceiptPolicy: policy,
-        receiptMatches
+        receiptMatches,
+        exactSourcePhase: false
       });
       if (ready) {
         return {
@@ -144,7 +179,8 @@ export async function waitForGivingProductionSurface({
           sourceCommit: expectedCommit,
           releaseReceipt,
           releaseReceiptPolicy: policy,
-          releaseReceiptMatchesSource: receiptMatches
+          releaseReceiptMatchesSource: receiptMatches,
+          exactContentObservation
         };
       }
     } catch (error) {
@@ -158,7 +194,8 @@ export async function waitForGivingProductionSurface({
         url,
         receiptUrl,
         releaseReceiptPolicy: policy,
-        receiptMatches: false
+        receiptMatches: false,
+        exactSourcePhase: false
       });
     }
     if (attempt < boundedAttempts) await sleep(boundedDelayMs);

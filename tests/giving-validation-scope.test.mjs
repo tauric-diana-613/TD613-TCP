@@ -42,9 +42,14 @@ const practiceOnly = classifyValidationScope([
   'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json',
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'scripts/giving-browser-probe.mjs',
+  'scripts/giving-release-content-probe.mjs',
+  'scripts/giving-production-readiness.mjs',
+  'scripts/flowcore-release-content-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',
   'tests/pedagogue-practice-fixture.test.mjs',
   'tests/pedagogue-design-gate.test.mjs',
+  'tests/giving-release-content-probe.test.mjs',
+  'tests/giving-vercel-settlement.test.mjs',
   'tests/giving-post640-polish.test.mjs',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
   '.github/workflows/td613-ci.yml',
@@ -92,4 +97,6 @@ console.log('giving-validation-scope.test.mjs passed');
 // membrane so additive Giving design/security witnesses do not create a fifth workflow.
 await import('./giving-vercel-route.test.mjs');
 await import('./giving-ux-resilience.test.mjs');
+await import('./giving-release-content-probe.test.mjs');
+await import('./giving-vercel-settlement.test.mjs');
 await import('./pedagogue-design-gate.test.mjs');
