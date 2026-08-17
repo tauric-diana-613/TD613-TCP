@@ -55,10 +55,11 @@ await assert.rejects(
   'server refusal JSON must not be flattened into boundary-unavailable'
 );
 
-// Keep the live AIA, FEC-boundary, Pedagogue hydration, and post-640 witnesses
-// inside the maintained Giving contract lane rather than relying on ad hoc jobs.
+// Keep the live AIA, FEC-boundary, FEC runtime, Pedagogue hydration, and post-640
+// witnesses inside the maintained Giving contract lane rather than ad hoc jobs.
 await import('./giving-aia-surface.test.mjs');
 await import('./giving-fec-boundary-page.test.mjs');
+await import('./giving-fec-resilience-runtime.test.mjs');
 await import('./giving-post640-polish.test.mjs');
 
 if (process.env.GITHUB_ACTIONS === 'true') {
