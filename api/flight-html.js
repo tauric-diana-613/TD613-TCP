@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const VERSION = 'pr138-flight-android-swipe-smooth/v1';
 const CLIPBOARD_ASSET_SOURCE = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1';
-const CLIPBOARD_ASSET_CURRENT = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260817-desktop-native-textarea-v3';
+const CLIPBOARD_ASSET_CURRENT = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260817-desktop-semantic-paragraph-v4';
 
 function isAndroidRequest(req) {
   return /Android/i.test(String(req?.headers?.['user-agent'] || ''));
@@ -14,7 +14,7 @@ function setHeaders(res, active = false) {
   res.setHeader('cache-control', 'no-store, max-age=0');
   res.setHeader('x-td613-flight-injector', VERSION);
   res.setHeader('x-td613-flight-android-scroll-fix', active ? 'active' : 'inactive');
-  res.setHeader('x-td613-flight-clipboard-asset', '20260817-desktop-native-textarea-v3');
+  res.setHeader('x-td613-flight-clipboard-asset', '20260817-desktop-semantic-paragraph-v4');
 }
 
 function androidInlinePatch() {
