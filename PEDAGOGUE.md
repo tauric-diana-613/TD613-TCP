@@ -53,6 +53,8 @@ The operator sees a Practice case or another product-native label. Research/test
 
 The fixture is not a mock product and not a second demo route. Loading it changes fictional labels/inputs only. It must not fabricate records, run retrieval, write custody, mutate a domain system, or grant authority. Explicit later gestures may exercise admitted read-only retrieval or reversible practice-custody writes while evidentiary and consequence authority stay closed.
 
+A known-ground-truth practice observation begins only after the host workspace publishes its own settlement boundary. A visible endpoint or the presence of one early shell control is not enough: the practice baseline must be taken after the route-owning application has declared the relevant shell and background bootstrap settled. This keeps later route or zero-effect comparison from measuring ordinary hydration as if it were phantom residue.
+
 Example:
 
 ```bash
