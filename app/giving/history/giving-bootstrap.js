@@ -31,13 +31,15 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
-// giving-app.js imports these modules without query strings. Revalidate those exact
-// child-module URLs before the versioned app graph enters so a prior browser cache
-// cannot preserve the superseded 50-row hydration policy or stale model bytes.
+// giving-app.js imports API/model without query strings, while review paging has a
+// deliberately stable child-module identity. Revalidate those exact URLs before
+// the versioned wrappers enter so freshness never requires widening the coordinated
+// Giving epoch or abandoning the stable review-core cache key.
 try {
   await Promise.all([
     fetch(sourceUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' }),
-    fetch(sourceUrl('./giving-api.js'), { cache: 'reload', credentials: 'same-origin' })
+    fetch(sourceUrl('./giving-api.js'), { cache: 'reload', credentials: 'same-origin' }),
+    fetch(sourceUrl('./giving-review-paging-core.js?v=20260813-3'), { cache: 'reload', credentials: 'same-origin' })
   ]);
 } catch {
   // Dynamic imports below remain authoritative.
@@ -55,7 +57,7 @@ await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
 // Keep the coordinated Giving graph on its sealed epoch. Only the search/render
-// repair receives a sub-epoch so browsers cannot reuse the superseded paging shim.
+// wrapper receives a sub-epoch; its stable review-core child is cache-revalidated above.
 await import(repairUrl('./giving-review-paging.js'));
 await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
