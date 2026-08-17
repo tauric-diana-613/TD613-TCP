@@ -116,7 +116,9 @@ node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-bikin
 
 The broader `tests/pedagogue-design-gate.test.mjs` suite remains the deeper architecture/integration witness. A `practice` Vercel release runs both contracts before deployment, then verifies exact deployed bytes and performs one bounded production Chromium practice observation. Live Ash production probes remain reserved for `full` scope.
 
-Because the current production proving surface for the canonical practice fixture is Giving, both `giving` and `practice` releases materialize `app/giving/history/release-source.json` with the **authorized source-packet commit** before deployment. The production practice witness refuses to trust the Giving surface when that receipt names a different packet, even if the visible application bytes otherwise match. This receipt is release provenance only: it grants no Giving evidentiary authority, performs no donor retrieval, and does not convert practice content into evidence.
+Production provenance is intentionally split by claim type. A Giving product release remains strict: `td613.giving.release-source/v1` identifies the independently qualified Giving product packet when `match-source` is required. A practice-on-Giving release uses `observe-existing`: it requires a valid prior Giving release receipt and a ready Giving surface, while the repository-wide `flowcore-release-content-probe.mjs` separately proves that the current practice source packet's deployed application bytes match the authorized SHA. The shared practice packet therefore does not impersonate a new Giving product release.
+
+Readiness is not the practice claim. The production practice browser witness must also execute the same zero-effect fictional-load assay used before merge, and its own receipt must record `practice_fixture_load = PASS`. Endpoint readiness, job success, or same visible destination alone is insufficient evidence that the practice route was actually traversed.
 
 ## Route reconstruction / tomography
 
