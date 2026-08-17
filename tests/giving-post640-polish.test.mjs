@@ -55,8 +55,16 @@ assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'obse
 assert.match(browserProbe, /production && practiceObservation[\s\S]*?productionPracticeWitness = await witnessGivingPracticeFixture\(page\)/, 'production practice must execute the actual Bikini Bottom fixture assay');
 assert.match(browserProbe, /item\?\.status !== 401 \|\| item\?\.method !== 'POST' \|\| item\?\.operation !== 'session\.status'/, 'only an exact pre-auth session.status refusal may be classified as expected');
 assert.match(browserProbe, /target\.pathname === '\/api\/td613-ledger'/, 'protected refusal classification must be pinned to the real Giving boundary');
+assert.match(browserProbe, /async function waitForSessionBootstrapSettlement\(\)/, 'production practice must expose a semantic session-bootstrap barrier');
+assert.ok(
+  browserProbe.includes("() => ['open', 'closed'].includes(document.documentElement.dataset.session || '')"),
+  'session barrier must wait on the product-authored open-or-closed state'
+);
+assert.match(browserProbe, /sessionBootstrapState = await waitForSessionBootstrapSettlement\(\);[\s\S]*?await exposeOperatorShell\(\);[\s\S]*?witnessGivingPracticeFixture\(page\)/, 'pre-auth session bootstrap must settle before the practice shell is exposed and the fixture causal window begins');
+assert.doesNotMatch(browserProbe, /async function requireResilienceShell\(\) \{\s*await page\.waitForTimeout\(450\)/, 'resilience hydration must use a semantic selector boundary rather than a fixed sleep');
 assert.match(browserProbe, /practiceFailedResourceDelta = failedResources\.slice\(failedBeforePractice\)/, 'production witness must measure failed network responses introduced by the practice click itself');
 assert.match(browserProbe, /production practice fixture must not cause failed network responses/, 'practice click network failures remain fatal');
+assert.match(browserProbe, /session_bootstrap_state:\s*sessionBootstrapState/);
 assert.match(browserProbe, /expected_protected_refusals:\s*expectedProtectedRefusals/);
 assert.match(browserProbe, /failed_resources:\s*unexpectedFailedResources/);
 assert.match(browserProbe, /production practice receipt cannot seal without an observed fixture PASS/);

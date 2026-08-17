@@ -66,6 +66,20 @@ function classifyFailedResources(items = failedResources) {
   return { expectedProtectedRefusals, unexpectedFailedResources };
 }
 
+async function waitForSessionBootstrapSettlement() {
+  try {
+    await page.waitForFunction(
+      () => ['open', 'closed'].includes(document.documentElement.dataset.session || ''),
+      undefined,
+      { timeout: 10000 }
+    );
+  } catch (error) {
+    const diagnostics = await hydrationDiagnostics();
+    throw new Error(`Giving session bootstrap did not settle before practice observation: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`, { cause: error });
+  }
+  return page.evaluate(() => document.documentElement.dataset.session || null);
+}
+
 async function exposeOperatorShell() {
   await page.evaluate(() => {
     document.documentElement.dataset.session = 'open';
@@ -85,15 +99,19 @@ async function hydrationDiagnostics() {
     scopeShell: Boolean(document.querySelector('.campaign-scope-block')),
     researchGuide: Boolean(document.querySelector('#researchFileGuide')),
     vaultGuide: Boolean(document.querySelector('#vaultGuide')),
-    operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden)
+    operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden),
+    sessionState: document.documentElement.dataset.session || null,
+    sessionMessage: document.querySelector('#sessionMessage')?.textContent?.trim() || ''
   }));
 }
 
 async function requireResilienceShell() {
-  await page.waitForTimeout(450);
-  if (await page.locator('.campaign-scope-block').count()) return;
-  const diagnostics = await hydrationDiagnostics();
-  throw new Error(`Giving resilience shell did not hydrate: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`);
+  try {
+    await page.waitForSelector('.campaign-scope-block', { state: 'attached', timeout: 5000 });
+  } catch (error) {
+    const diagnostics = await hydrationDiagnostics();
+    throw new Error(`Giving resilience shell did not hydrate: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`, { cause: error });
+  }
 }
 
 async function witnessResilienceUi() {
@@ -285,8 +303,10 @@ try {
   let resilienceWitness = null;
   let productionPracticeWitness = null;
   let practiceFailedResourceDelta = [];
+  let sessionBootstrapState = null;
   if (!production) resilienceWitness = await witnessResilienceUi();
   if (production && practiceObservation) {
+    sessionBootstrapState = await waitForSessionBootstrapSettlement();
     await exposeOperatorShell();
     await requireResilienceShell();
     await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
@@ -342,6 +362,7 @@ try {
     campaign_deputy_exports: 'PASS',
     resilience_ui: resilienceWitness ? 'PASS' : 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     practice_observation_requested: practiceObservation,
+    session_bootstrap_state: sessionBootstrapState,
     practice_fixture_load: resilienceWitness?.practiceFixture?.status || productionPracticeWitness?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     practice_failed_resource_delta: practiceFailedResourceDelta,
     expected_protected_refusals: expectedProtectedRefusals,
@@ -355,10 +376,15 @@ try {
   };
   if (production && practiceObservation) {
     assert.equal(receipt.practice_fixture_load, 'PASS', 'production practice receipt cannot seal without an observed fixture PASS');
-    assert.ok(
-      expectedProtectedRefusals.length <= 1,
-      `production practice may observe at most one pre-auth session.status refusal: ${JSON.stringify(expectedProtectedRefusals)}`
-    );
+    if (sessionBootstrapState === 'closed') {
+      assert.equal(
+        expectedProtectedRefusals.length,
+        1,
+        `closed production session must be explained by exactly one pre-auth session.status refusal: ${JSON.stringify(expectedProtectedRefusals)}`
+      );
+    } else {
+      assert.deepEqual(expectedProtectedRefusals, [], 'an already-open production session must not carry a pre-auth refusal');
+    }
   }
   await fs.writeFile(path.join(artifactDir, 'receipt.json'), JSON.stringify(receipt, null, 2));
   assert.deepEqual(unexpectedFailedResources, [], `Giving browser failed resources: ${unexpectedFailedResources.map((item) => `${item.status} ${item.url}`).join(' | ')}`);
