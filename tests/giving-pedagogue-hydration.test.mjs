@@ -10,6 +10,8 @@ const help = read('app/giving/history/giving-dossier-help.js');
 const helpCss = read('app/giving/history/giving-dossier-help.css');
 const bootstrap = read('app/giving/history/giving-bootstrap.js');
 const fec = read('app/giving/history/giving-fec-resilience.js');
+const pedagogue = read('app/engine/pedagogue-practice-fixture.js');
+const fixture = JSON.parse(read('tests/fixtures/pedagogue/giving-bikini-bottom-practice.json'));
 
 for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) {
   assert.match(practice, new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `practice fixture must include ${name}`);
@@ -21,12 +23,14 @@ for (const committee of [
   'Sheldon Plankton for Bikini Bottom Campaign',
   'Larry Lobster for Mayor of Bikini Bottom',
   'Fishocratic Executive Committee',
-  'Friends of Aquaman PC'
+  'Friends of Aquaman PC',
+  'Krusty Krab Parking Expansion Referendum Committee'
 ]) assert.ok(practice.includes(committee), `practice contributions must exercise ${committee}`);
 
 assert.match(practice, /city: 'Bikini Bottom'/);
 assert.match(practice, /state: 'Oceania'/);
 assert.match(practice, /zip: 'X'/);
+assert.match(practice, /committee_kind: referendum \? 'ISSUE_REFERENDUM'/, 'referendum fixture must exercise a political-object type distinct from candidate/PAC/party-style committees');
 assert.match(practice, /manifestly_fictional: true/);
 assert.match(practice, /evidence_authority: false/);
 assert.match(practice, /consequence_authority: false/);
@@ -42,6 +46,15 @@ assert.match(practice, /PRACTICE_AUTHORITY_CLOSED/, 'fictional practice must nev
 assert.match(practice, /exact\.checked = true/, 'loading the sample must force normalized exact match on');
 assert.match(practice, /practice-source-locked/);
 assert.match(practice, /Exit Sample Demo\?/);
+assert.match(practice, /same Giving route can contain candidate, PAC\/PC, party-style, and issue\/referendum political objects/);
+
+assert.equal(fixture.teaching_contrasts.length, 1);
+assert.equal(fixture.teaching_contrasts[0].contrast_id, 'political-object-kind');
+assert.match(fixture.teaching_contrasts[0].why, /does not make those political objects equivalent/i);
+assert.match(pedagogue, /function normalizeTeachingContrasts/);
+assert.match(pedagogue, /automatic_inference_forbidden: true/);
+assert.match(pedagogue, /authority_grant_forbidden: true/);
+assert.match(pedagogue, /teaching_contrasts_bounded/);
 
 assert.match(bridge, /FICTIONAL SAMPLE/);
 assert.match(bridge, /practice:giving\.bikini-bottom-practice\//);
