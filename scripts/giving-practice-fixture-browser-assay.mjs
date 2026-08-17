@@ -30,7 +30,6 @@ async function snapshot(page) {
     fictionalCards: document.querySelectorAll('#recordList .record-card[data-fictional-sample="true"]').length,
     fictionalChips: document.querySelectorAll('#recordList .fictional-sample-chip').length,
     reviewCount: Number(document.querySelector('#reviewCount')?.textContent || 0),
-    queueCount: document.querySelectorAll('#contactQueueList .contact-queue-item').length,
     queueStates: [...document.querySelectorAll('#contactQueueList .contact-queue-item')].map((row) => row.dataset.status || ''),
     vaultVersionCount: document.querySelectorAll('#vaultVersions .version-item').length,
     localSampleOptions: [...(document.querySelector('#localDossierSelect')?.options || [])].filter((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')).length
@@ -104,8 +103,7 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal(afterSearch.fictionalChips, afterSearch.fictionalCards, 'every fictional contribution card must carry the magenta provenance chip');
   assert.match(afterSearch.recordList, /Krusty Krab Parking Expansion Referendum Committee/);
   assert.match(afterSearch.recordList, /Bikini Bottom/);
-  assert.match(afterSearch.recordList, /Oceania/);
-  assert.match(afterSearch.recordList, />X</);
+  assert.match(afterSearch.recordList, /Oceania · X/);
   assert.match(afterSearch.sourceProgress, /BikiniBottomVotes/);
   assert.match(afterSearch.coverageExecutiveLine, /1\/1 selected sources complete/);
 
@@ -151,6 +149,20 @@ export async function witnessGivingPracticeFixture(page) {
   const afterSave = await snapshot(page);
   assert.ok(afterSave.localSampleOptions >= 1, 'explicit Save must produce an openable local fictional research file');
 
+  await page.evaluate(() => {
+    const select = document.querySelector('#localDossierSelect');
+    const option = [...(select?.options || [])].find((candidate) => /SAMPLE — Bikini Bottom contributor review/.test(candidate.textContent || ''));
+    if (select && option) {
+      select.value = option.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+  await page.locator('#openDossierButton').click();
+  await page.waitForFunction(() => Number(document.querySelector('#reviewCount')?.textContent || 0) === 49, null, { timeout: 5000 });
+  const afterOpen = await snapshot(page);
+  assert.equal(afterOpen.title, 'SAMPLE — Bikini Bottom contributor review');
+  assert.equal(afterOpen.reviewCount, 49, 'Open selected file must reopen the fully hydrated fictional dossier');
+
   await page.locator('#researchFileVaultButton').click();
   await page.locator('#vaultPassphrase').fill('Bikini-Bottom-Practice-613-Key');
   const vaultRequests = [];
@@ -165,6 +177,18 @@ export async function witnessGivingPracticeFixture(page) {
   const afterVault = await snapshot(page);
   assert.deepEqual(vaultRequests, [], 'practice Vault must keep encrypted custody on the reversible in-memory shelf');
   assert.ok(afterVault.vaultVersionCount >= 1, 'practice Vault must expose at least one encrypted version after explicit gesture');
+
+  await page.locator('#practiceExitButton').click();
+  await page.waitForSelector('#practiceExitConfirm:not([hidden])', { timeout: 5000 });
+  await page.locator('[data-practice-exit="no"]').click();
+  assert.equal((await snapshot(page)).practiceLocked, true, 'No must preserve the active fictional sample');
+  await page.locator('#practiceExitButton').click();
+  await page.locator('[data-practice-exit="yes"]').click();
+  await page.waitForFunction(() => document.documentElement.dataset.givingPractice !== 'true', null, { timeout: 5000 });
+  const afterExit = await snapshot(page);
+  assert.equal(afterExit.practiceLocked, false, 'confirmed exit must restore the live source picker');
+  assert.equal(afterExit.exactMatch, false, 'confirmed exit must release the sample exact-match posture');
+  assert.ok(afterExit.localSampleOptions >= 1, 'exiting the demo must not destroy an explicitly saved fictional local file');
 
   return Object.freeze({
     schema: 'td613.giving.practice-fixture-browser-witness/v0.2',
@@ -184,8 +208,9 @@ export async function witnessGivingPracticeFixture(page) {
     fictional_contributors_observed: 5,
     fictional_committee_objects_observed: 8,
     political_object_contrast_observed: true,
-    local_practice_file_saved: true,
+    local_practice_file_saved_and_reopened: true,
     encrypted_practice_vault_version_observed: true,
+    exit_confirmation_preserved_saved_copy: true,
     external_retrieval_requests: 0,
     external_vault_requests: 0,
     evidence_authority_granted: false,
