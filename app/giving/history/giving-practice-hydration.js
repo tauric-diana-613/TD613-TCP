@@ -44,6 +44,7 @@ const TX = Object.freeze({
     ['2023-09-09', 2000, 'King Neptune for King'],
     ['2024-02-03', 2500, 'Mrs. Puff for Bikini Bottom School District #67'],
     ['2024-10-12', 1500, 'Fishocratic Executive Committee'],
+    ['2025-03-15', 2500, 'Krusty Krab Parking Expansion Referendum Committee'],
     ['2025-06-01', 2500, 'Larry Lobster for Mayor of Bikini Bottom'],
     ['2026-07-04', 5000, 'Friends of Aquaman PC']
   ],
@@ -53,6 +54,7 @@ const TX = Object.freeze({
     ['2021-07-18', 500, 'Fishocratic Executive Committee'],
     ['2022-04-23', 1000, 'King Neptune for King'],
     ['2023-11-07', 1500, 'Larry Lobster for Mayor of Bikini Bottom'],
+    ['2024-04-01', 700, 'Krusty Krab Parking Expansion Referendum Committee'],
     ['2024-06-22', 500, 'Friends of Aquaman PC'],
     ['2025-10-31', 2000, 'Fishocratic Executive Committee'],
     ['2026-05-16', 1000, 'Larry Lobster for Mayor of Bikini Bottom']
@@ -67,6 +69,7 @@ const TX = Object.freeze({
     ['2023-12-16', 75000, 'Mrs. Puff for Bikini Bottom School District #67'],
     ['2024-09-01', 150000, 'Larry Lobster for Mayor of Bikini Bottom'],
     ['2025-04-26', 100000, 'Fishocratic Executive Committee'],
+    ['2026-02-14', 50000, 'Krusty Krab Parking Expansion Referendum Committee'],
     ['2026-06-13', 200000, 'King Neptune for King']
   ],
   'Eugene H. Krabs': [
@@ -84,6 +87,7 @@ const TX = Object.freeze({
     ['2022-02-20', 15000, 'Every Villain Is Lemons PAC'],
     ['2022-12-11', 10000, 'Friends of Aquaman PC'],
     ['2023-08-06', 50000, 'Sheldon Plankton for Bikini Bottom Campaign'],
+    ['2023-10-31', 5000, 'Krusty Krab Parking Expansion Referendum Committee'],
     ['2024-05-19', 25000, 'Every Villain Is Lemons PAC'],
     ['2025-09-27', 50000, 'Friends of Aquaman PC'],
     ['2026-03-08', 75000, 'Sheldon Plankton for Bikini Bottom Campaign']
@@ -104,6 +108,7 @@ function safeToken(value) {
 function recordFor(name, [date, amountCents, committee], index) {
   const person = PEOPLE[name];
   const token = `${safeToken(name)}-${date}-${index + 1}`;
+  const referendum = /Referendum Committee$/i.test(committee);
   return {
     digest: `practice:${PRACTICE_FIXTURE_ID}:${token}`,
     contributor_name_raw: name,
@@ -123,8 +128,9 @@ function recordFor(name, [date, amountCents, committee], index) {
     occupation: person.occupation,
     committee,
     committee_name: committee,
+    committee_kind: referendum ? 'ISSUE_REFERENDUM' : 'CANDIDATE_OR_POLITICAL_COMMITTEE',
     jurisdiction: 'Bikini Bottom, Oceania · FICTIONAL',
-    office: /Mayor/.test(committee) ? 'Mayor of Bikini Bottom · FICTIONAL' : /School District/.test(committee) ? 'School District #67 · FICTIONAL' : null,
+    office: referendum ? 'Issue / referendum · FICTIONAL' : /Mayor/.test(committee) ? 'Mayor of Bikini Bottom · FICTIONAL' : /School District/.test(committee) ? 'School District #67 · FICTIONAL' : null,
     cycle: date.slice(0, 4),
     election: `${date.slice(0, 4)} fictional cycle`,
     contribution_date: date,
@@ -366,7 +372,7 @@ function activatePractice() {
   const status = $('#researchFileSampleStatus');
   if (status) {
     status.hidden = false;
-    status.innerHTML = '<strong>Practice case loaded.</strong> Normalized exact match is ON and real custodians are frozen. Press SEARCH to make one deliberate fictional BikiniBottomVotes retrieval. Then review → Save → Vault. Nothing in this case can become real evidence or mutate Campaign Deputy.';
+    status.innerHTML = '<strong>Practice case loaded.</strong> Normalized exact match is ON and real custodians are frozen. Press SEARCH to make one deliberate fictional BikiniBottomVotes retrieval. Then review → Save → Vault. Watch the committee names: the same Giving route can contain candidate, PAC/PC, party-style, and issue/referendum political objects. Nothing in this case can become real evidence or mutate Campaign Deputy.';
   }
   $('#runSearchButton')?.focus();
 }
