@@ -14,25 +14,67 @@ const SCRIPT_TAG = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js
 assert.equal(html.includes(OLD_PHRASE), false, 'legacy Flight phrase must be absent');
 assert.ok((html.split(NEW_PHRASE).length - 1) >= 2, 'visible label and generated phrase must both use the new wording');
 assert.ok(html.includes(SCRIPT_TAG), 'Flight must load the clipboard fidelity layer');
-assert.match(source, /text\/plain/u);
-assert.match(source, /text\/html/u);
-assert.match(source, /ClipboardItem/u);
+assert.match(source, /desktop-writeText/u);
 assert.match(source, /mobile-writeText/u);
-assert.match(source, /desktop-rich-clipboard/u);
-assert.match(source, /replace\(\/\\n\/gu, '<br>'\)/u);
+assert.match(source, /payloadStepperValue/u);
+assert.match(source, /contentEditable/u);
+assert.match(source, /pointerup/u);
+assert.match(source, /authPayload/u);
+assert.doesNotMatch(source, /desktop-rich-clipboard/u, 'desktop must not use a rich HTML clipboard route');
+
+function makeEventNode(initial = {}) {
+  const listeners = new Map();
+  return Object.assign({
+    textContent: '',
+    value: '',
+    dataset: {},
+    style: {},
+    attributes: {},
+    listeners,
+    addEventListener(type, handler) {
+      if (!listeners.has(type)) listeners.set(type, []);
+      listeners.get(type).push(handler);
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = String(value);
+    },
+    dispatchEvent(event) {
+      (listeners.get(event.type) || []).forEach(handler => handler(event));
+      return true;
+    },
+    focus() {},
+    blur() {
+      (listeners.get('blur') || []).forEach(handler => handler({ type: 'blur' }));
+    },
+    ...initial
+  });
+}
+
+function fire(node, type, extra = {}) {
+  const event = {
+    type,
+    key: '',
+    inputType: '',
+    preventDefault() {
+      event.defaultPrevented = true;
+    },
+    defaultPrevented: false,
+    ...extra
+  };
+  (node.listeners.get(type) || []).forEach(handler => handler(event));
+  return event;
+}
 
 function createHarness({ mobile = false } = {}) {
   const clipboardWrites = [];
   const textWrites = [];
-  const listeners = new Map();
   const bodyChildren = [];
-  const status = { textContent: '' };
-
-  class TestClipboardItem {
-    constructor(items) {
-      this.items = items;
-    }
-  }
+  const status = makeEventNode();
+  const payload = makeEventNode({ textContent: '12' });
+  const authPayload = makeEventNode({ value: '12' });
+  let authPayloadInputEvents = 0;
+  authPayload.addEventListener('input', () => { authPayloadInputEvents += 1; });
+  let selectedNode = null;
 
   const document = {
     readyState: 'complete',
@@ -41,11 +83,19 @@ function createHarness({ mobile = false } = {}) {
         bodyChildren.push(node);
       }
     },
-    addEventListener(type, handler) {
-      listeners.set(type, handler);
-    },
+    addEventListener() {},
     getElementById(id) {
-      return id === 'copyStatus' ? status : null;
+      if (id === 'copyStatus') return status;
+      if (id === 'payloadStepperValue') return payload;
+      if (id === 'authPayload') return authPayload;
+      return null;
+    },
+    createRange() {
+      return {
+        selectNodeContents(node) {
+          selectedNode = node;
+        }
+      };
     },
     createElement(tag) {
       assert.equal(tag, 'textarea');
@@ -64,10 +114,23 @@ function createHarness({ mobile = false } = {}) {
     }
   };
 
+  class TestEvent {
+    constructor(type, options = {}) {
+      this.type = type;
+      this.bubbles = Boolean(options.bubbles);
+    }
+  }
+
+  const selection = {
+    removeAllRanges() {},
+    addRange() {}
+  };
+
   const context = {
     Blob,
     console,
     document,
+    globalThis: null,
     navigator: {
       clipboard: {
         async write(items) {
@@ -79,19 +142,37 @@ function createHarness({ mobile = false } = {}) {
       }
     },
     window: {
-      ClipboardItem: TestClipboardItem,
+      Event: TestEvent,
       matchMedia() {
         return { matches: mobile };
+      },
+      getSelection() {
+        return selection;
+      },
+      requestAnimationFrame(callback) {
+        callback();
+        return 1;
       }
     }
   };
+  context.globalThis = context;
   context.window.window = context.window;
   context.window.document = document;
   context.window.navigator = context.navigator;
   vm.createContext(context);
   vm.runInContext(source, context, { filename: 'td613-flight-clipboard-fidelity.js' });
 
-  return { context, clipboardWrites, textWrites, status, listeners, bodyChildren };
+  return {
+    context,
+    clipboardWrites,
+    textWrites,
+    status,
+    payload,
+    authPayload,
+    bodyChildren,
+    get selectedNode() { return selectedNode; },
+    get authPayloadInputEvents() { return authPayloadInputEvents; }
+  };
 }
 
 {
@@ -99,14 +180,10 @@ function createHarness({ mobile = false } = {}) {
   const sample = 'First line\nSecond line\n\nFourth line';
   const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'output');
   assert.equal(result.ok, true);
-  assert.equal(result.mode, 'desktop-rich-clipboard');
-  assert.equal(harness.textWrites.length, 0, 'desktop rich path must not collapse into writeText');
-  assert.equal(harness.clipboardWrites.length, 1);
-  const [item] = harness.clipboardWrites[0];
-  assert.equal(await item.items['text/plain'].text(), sample);
-  const rich = await item.items['text/html'].text();
-  assert.match(rich, /First line<br>Second line<br><br>Fourth line/u);
-  assert.match(harness.status.textContent, /desktop-rich-clipboard/u);
+  assert.equal(result.mode, 'desktop-writeText');
+  assert.deepEqual(harness.textWrites, [sample], 'desktop clipboard must receive the exact canonical plaintext including paragraph breaks');
+  assert.equal(harness.clipboardWrites.length, 0, 'desktop must not offer an HTML clipboard flavor that paste targets can reinterpret');
+  assert.match(harness.status.textContent, /desktop-writeText/u);
 }
 
 {
@@ -116,7 +193,40 @@ function createHarness({ mobile = false } = {}) {
   assert.equal(result.ok, true);
   assert.equal(result.mode, 'mobile-writeText');
   assert.deepEqual(harness.textWrites, [sample]);
-  assert.equal(harness.clipboardWrites.length, 0, 'mobile route must retain writeText behavior');
+  assert.equal(harness.clipboardWrites.length, 0);
+}
+
+{
+  const harness = createHarness({ mobile: false });
+  const editor = harness.payload;
+  assert.equal(editor.contentEditable, 'true');
+  assert.equal(editor.attributes.role, 'textbox');
+  assert.equal(editor.attributes.inputmode, 'numeric');
+  assert.match(editor.attributes['aria-label'], /tap once/i);
+  assert.equal(editor.style.width, undefined, 'inline payload editor must not change width');
+  assert.equal(editor.style.height, undefined, 'inline payload editor must not change height');
+  assert.equal(editor.style.padding, undefined, 'inline payload editor must not change padding');
+  assert.equal(editor.style.font, undefined, 'inline payload editor must inherit the exact existing font');
+  assert.equal(editor.style.color, undefined, 'inline payload editor must inherit the exact existing text color');
+  assert.equal(editor.style.border, undefined, 'field affordance must not add box-model border size');
+  assert.match(editor.style.boxShadow, /inset/u, 'field affordance must be inset-only');
+
+  const pointerEvent = fire(editor, 'pointerup');
+  assert.equal(pointerEvent.defaultPrevented, true);
+  assert.equal(harness.selectedNode, editor, 'one tap/click must select the complete payload numeral');
+
+  editor.textContent = '37';
+  fire(editor, 'input');
+  assert.equal(harness.authPayload.value, '12', 'typing may finish before rebuilding Flight output');
+  fire(editor, 'blur');
+  assert.equal(harness.authPayload.value, '37', 'blur commits the inline numeral to the canonical authorship payload field');
+  assert.equal(harness.authPayloadInputEvents, 1, 'commit must dispatch the existing authPayload input path exactly once');
+
+  editor.textContent = '4x2';
+  fire(editor, 'input');
+  assert.equal(editor.textContent, '42', 'inline editor strips non-digits without changing geometry');
+  fire(editor, 'blur');
+  assert.equal(harness.authPayload.value, '42');
 }
 
 console.log('td613-flight-desktop-clipboard tests passed');
