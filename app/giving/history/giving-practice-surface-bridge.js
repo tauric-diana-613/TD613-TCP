@@ -1,33 +1,25 @@
 const PRACTICE_SOURCE_ID = 'practice-bikini-bottom-votes';
 const PRACTICE_PRIMARY_NAME = 'SpongeBob SquarePants';
 const PRACTICE_DATE_FROM = '2020-01-01';
-const PRACTICE_NAMES = Object.freeze(['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']);
+const PRACTICE_NAMES = Object.freeze([
+  'SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles',
+  'Pearl Krabs', 'Sandy Grouper', 'Sandra Cheeks', 'Squidward Tennisballs', 'Squidward Tentpoles', 'Squidward Tortellini',
+  'Rick Star', 'Sponge Bob Squarepants', 'Spongebob Square Pants', 'Patrick Staar', 'Sandy Cheecks'
+]);
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let practiceSource = null;
 let injecting = false;
 let touched = { name: false, exact: false, from: false, to: false };
 
-function duringPracticeLoad() {
-  return document.documentElement.dataset.givingPracticeLoad === 'true';
-}
-
-function practiceActive() {
-  return document.documentElement.dataset.givingPractice === 'true';
-}
-
-function today() {
-  return new Date().toISOString().slice(0, 10);
-}
-
+function duringPracticeLoad() { return document.documentElement.dataset.givingPracticeLoad === 'true'; }
+function practiceActive() { return document.documentElement.dataset.givingPractice === 'true'; }
+function today() { return new Date().toISOString().slice(0, 10); }
 function practiceRecordsExist() {
   return Boolean($('#recordList .record-card[data-fictional-sample="true"]')) ||
     [...$$('#recordList .record-card')].some((card) => String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/'));
 }
-
-function normalize(value) {
-  return String(value ?? '').normalize('NFKC').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim();
-}
+function normalize(value) { return String(value ?? '').normalize('NFKC').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim(); }
 
 function broadenPracticeNameWhenRequested() {
   const exact = $('#exactMatchToggle');
@@ -41,18 +33,12 @@ function broadenPracticeNameWhenRequested() {
 
 function showPracticeExitConfirmation() {
   const sourceExit = $('#practiceExitButton');
-  if (sourceExit) {
-    sourceExit.click();
-    return true;
-  }
+  if (sourceExit) { sourceExit.click(); return true; }
   return false;
 }
 
 function ensureFloatingExit() {
-  if (!practiceActive()) {
-    $('#practiceFloatingExitButton')?.remove();
-    return;
-  }
+  if (!practiceActive()) { $('#practiceFloatingExitButton')?.remove(); return; }
   if ($('#practiceFloatingExitButton')) return;
   const button = document.createElement('button');
   button.id = 'practiceFloatingExitButton';
@@ -73,10 +59,7 @@ function syncPracticeChrome() {
     else campaignTab.removeAttribute('aria-describedby');
   }
 }
-
-function resetTouched() {
-  touched = { name: false, exact: false, from: false, to: false };
-}
+function resetTouched() { touched = { name: false, exact: false, from: false, to: false }; }
 
 document.addEventListener('input', (event) => {
   if (duringPracticeLoad()) {
@@ -109,16 +92,12 @@ function practiceSourceMarkup(source) {
     </label>`;
   return block;
 }
-
 function ensurePracticeSource() {
   if (!practiceSource || injecting) return;
   const registry = $('#sourceRegistry');
   if (!registry || registry.querySelector('[data-practice-source-block]')) return;
-  injecting = true;
-  registry.prepend(practiceSourceMarkup(practiceSource));
-  injecting = false;
+  injecting = true; registry.prepend(practiceSourceMarkup(practiceSource)); injecting = false;
 }
-
 function enforcePracticeSourceSelection() {
   if (!practiceActive() || !practiceSource) return;
   ensurePracticeSource();
@@ -126,58 +105,39 @@ function enforcePracticeSourceSelection() {
   const sourceCount = $('#selectedSourceCount');
   if (sourceCount) sourceCount.textContent = '1 source';
 }
-
 function enforcePracticeSearchPosture() {
   if (!practiceActive()) return;
   enforcePracticeSourceSelection();
-
   const initial = !practiceRecordsExist();
   const exact = $('#exactMatchToggle');
   const from = $('#dateFrom');
   const to = $('#dateTo');
   const name = $('#searchName');
-
   if (initial && !touched.exact && exact) exact.checked = true;
   if (initial && !touched.from && from) from.value = PRACTICE_DATE_FROM;
   if (initial && !touched.to && to) to.value = today();
   if (initial && !touched.name && name) name.value = PRACTICE_PRIMARY_NAME;
-
   broadenPracticeNameWhenRequested();
 }
-
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
-  practiceSource = null;
-  resetTouched();
-  $('#practiceFloatingExitButton')?.remove();
-  syncPracticeChrome();
+  practiceSource = null; resetTouched(); $('#practiceFloatingExitButton')?.remove(); syncPracticeChrome();
 }
 
 document.addEventListener('td613:giving-practice-source-registry', (event) => {
   const action = event.detail?.action;
   if (action === 'register' && event.detail?.source) {
-    resetTouched();
-    practiceSource = event.detail.source;
-    ensurePracticeSource();
-    queueMicrotask(() => {
-      enforcePracticeSearchPosture();
-      syncPracticeChrome();
-    });
-  } else if (action === 'remove') {
-    removePracticeSource();
-  }
+    resetTouched(); practiceSource = event.detail.source; ensurePracticeSource();
+    queueMicrotask(() => { enforcePracticeSearchPosture(); syncPracticeChrome(); });
+  } else if (action === 'remove') removePracticeSource();
 });
 
 $('#searchForm')?.addEventListener('submit', enforcePracticeSearchPosture, true);
-
 const registry = $('#sourceRegistry');
-if (registry) {
-  new MutationObserver(() => {
-    if (!practiceActive()) return;
-    ensurePracticeSource();
-    queueMicrotask(enforcePracticeSourceSelection);
-  }).observe(registry, { childList: true, subtree: false });
-}
+if (registry) new MutationObserver(() => {
+  if (!practiceActive()) return;
+  ensurePracticeSource(); queueMicrotask(enforcePracticeSourceSelection);
+}).observe(registry, { childList: true, subtree: false });
 
 function decoratePracticeRuns() {
   for (const card of $$('#sourceProgress .source-run-card')) {
@@ -189,7 +149,6 @@ function decoratePracticeRuns() {
     card.dataset.practiceSource = 'true';
   }
 }
-
 function decoratePracticeRecords() {
   for (const card of $$('#recordList .record-card')) {
     if (!String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/')) continue;
@@ -197,65 +156,35 @@ function decoratePracticeRecords() {
     const person = card.querySelector('.record-person strong');
     if (!person) continue;
     const chip = document.createElement('span');
-    chip.className = 'fictional-sample-chip';
-    chip.textContent = 'FICTIONAL SAMPLE';
-    person.before(chip);
-    card.dataset.fictionalSample = 'true';
+    chip.className = 'fictional-sample-chip'; chip.textContent = 'FICTIONAL SAMPLE'; person.before(chip); card.dataset.fictionalSample = 'true';
   }
 }
-
 for (const [selector, decorator] of [['#sourceProgress', decoratePracticeRuns], ['#recordList', decoratePracticeRecords]]) {
-  const node = $(selector);
-  if (!node) continue;
-  new MutationObserver(decorator).observe(node, { childList: true, subtree: true });
-  decorator();
+  const node = $(selector); if (!node) continue;
+  new MutationObserver(decorator).observe(node, { childList: true, subtree: true }); decorator();
 }
 
-const blockedCampaignActions = new Set([
-  'loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton',
-  'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton',
-  'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton'
-]);
-
+const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton', 'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton', 'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton']);
 document.addEventListener('click', (event) => {
-  const button = event.target?.closest?.('button');
-  if (!button) return;
-
-  // Exit route 3 of exactly 3: Campaign Deputy tab. The other two are the
-  // source-box Exit Demo control and the fixed floating Exit Demo control.
+  const button = event.target?.closest?.('button'); if (!button) return;
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    showPracticeExitConfirmation();
-    return;
+    event.preventDefault(); event.stopImmediatePropagation(); showPracticeExitConfirmation(); return;
   }
-
   if (!blockedCampaignActions.has(button.id)) return;
   const hasPracticeRecords = Boolean($('#recordList .record-card[data-fictional-sample="true"]'));
   if (!hasPracticeRecords && !practiceActive()) return;
-  event.preventDefault();
-  event.stopImmediatePropagation();
-  const message = 'FICTIONAL PRACTICE · Campaign Deputy is asleep. Exit the demo before opening or mutating any real CRM surface.';
+  event.preventDefault(); event.stopImmediatePropagation();
   const status = $('#campaignDeputyToolsStatus');
-  if (status) status.textContent = message;
+  if (status) status.textContent = 'FICTIONAL PRACTICE · Campaign Deputy is asleep. Exit the demo before opening or mutating any real CRM surface.';
 }, true);
 
 const sleepHint = document.createElement('span');
-sleepHint.id = 'practiceCampaignSleepHint';
-sleepHint.hidden = true;
+sleepHint.id = 'practiceCampaignSleepHint'; sleepHint.hidden = true;
 sleepHint.textContent = 'Campaign Deputy sleeps during the fictional sample. Activating this tab opens the shared Exit Sample Demo confirmation.';
-document.body.append(sleepHint);
-syncPracticeChrome();
+document.body.append(sleepHint); syncPracticeChrome();
 
 export const _givingPracticeSurfaceBridge = Object.freeze({
-  PRACTICE_SOURCE_ID,
-  PRACTICE_PRIMARY_NAME,
-  PRACTICE_NAMES,
-  ensurePracticeSource,
-  enforcePracticeSourceSelection,
-  enforcePracticeSearchPosture,
-  broadenPracticeNameWhenRequested,
-  ensureFloatingExit,
-  showPracticeExitConfirmation,
-  decoratePracticeRecords
+  PRACTICE_SOURCE_ID, PRACTICE_PRIMARY_NAME, PRACTICE_NAMES,
+  ensurePracticeSource, enforcePracticeSourceSelection, enforcePracticeSearchPosture,
+  broadenPracticeNameWhenRequested, ensureFloatingExit, showPracticeExitConfirmation, decoratePracticeRecords
 });
