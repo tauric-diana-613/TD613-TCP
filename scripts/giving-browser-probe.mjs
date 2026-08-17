@@ -303,3 +303,5 @@ try {
 } finally {
   await browser.close();
 }
+
+if (!production) await import('./giving-practice-fixture-browser-probe.mjs');
