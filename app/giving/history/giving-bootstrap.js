@@ -38,12 +38,6 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
-// The primary operator shell owns the child-legible controls. Hydrate it
-// before retrieval instrumentation so a slow or failed secondary module can
-// never make the Campaign, Research File, Vault, or practice route disappear.
-await import(epochUrl('./giving-ux-resilience-shell.js'));
-publishSettlement('resilience-shell');
-
 try {
   await fetch(epochUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' });
 } catch {
@@ -53,7 +47,7 @@ try {
 const apertureContext = await import(epochUrl('./giving-aperture-context.js'));
 apertureContext.installGivingApertureContext(globalThis);
 
-// Install the non-visual structural runtime before the remaining product graph.
+// Install the non-visual structural runtime before the product module graph.
 const surfaceRuntime = await import(epochUrl('./giving-surface-runtime.js'));
 surfaceRuntime.installGivingSurfaceRuntime(globalThis);
 
@@ -61,6 +55,11 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
+// The primary operator shell must hydrate independently of retrieval
+// instrumentation. Publish an explicit boundary after its existing owner order
+// rather than asking observers to guess settlement from elapsed milliseconds.
+await import(epochUrl('./giving-ux-resilience-shell.js'));
+publishSettlement('resilience-shell');
 await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
