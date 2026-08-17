@@ -1,0 +1,32 @@
+{
+  "schema": "td613.flowcore.pedagogue-practice-fixture/v0.1",
+  "fixture_id": "giving-bikini-bottom-onboarding-v1",
+  "surface_reference": "td613.giving.history",
+  "label": "Fictional contributor-research practice case",
+  "fictional": true,
+  "expected_route_steps": [
+    "research-container-open",
+    "fictional-fields-loaded",
+    "evidence-state-remains-empty",
+    "operator-route-ready"
+  ],
+  "expected_endpoint": "operator-route-ready",
+  "ground_truth": {
+    "research_file_title": "SAMPLE — Bikini Bottom contributor review",
+    "contributor_name": "SpongeBob SquarePants",
+    "queue": [
+      "Patrick Star",
+      "Sandy Cheeks",
+      "Eugene H. Krabs",
+      "Squidward Q. Tentacles"
+    ],
+    "fabricated_evidence_records": 0,
+    "automatic_retrieval": false,
+    "automatic_external_write": false,
+    "automatic_vault_write": false,
+    "note": "The fixture populates fictional operator inputs only. Subsequent Search, Save, Vault, or external-write actions remain real controls and require explicit operator gestures."
+  },
+  "allowed_effects": {
+    "reversible_local_writes_max": 0
+  }
+}
