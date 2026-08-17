@@ -146,9 +146,29 @@ async function witnessResilienceUi() {
   });
   assert.ok(tooltipStyle.width <= 241, `readiness tooltip should remain narrow, observed ${tooltipStyle.width}px`);
   assert.match(tooltipStyle.transitionDelay, /0\.5s|500ms/, 'hover path keeps the deliberate ~500ms delay');
+
+  // Playwright's programmatic focus has different modality semantics in WebKit.
+  // Use it only to establish the adjacent masthead starting point, then move
+  // away and back with real keyboard navigation so this witnesses Tab focus.
   await readinessButton.focus();
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Shift+Tab');
   await page.waitForTimeout(90);
-  assert.equal(await tooltip.evaluate((node) => getComputedStyle(node).opacity), '1', 'keyboard focus reveals readiness help immediately');
+  const focusState = await page.evaluate(() => {
+    const button = document.querySelector('#readinessButton');
+    const control = button?.closest('.readiness-control');
+    const tooltip = document.querySelector('#readinessTooltip');
+    return {
+      activeElement: document.activeElement?.id || document.activeElement?.tagName || '',
+      buttonFocus: Boolean(button?.matches(':focus')),
+      buttonFocusVisible: Boolean(button?.matches(':focus-visible')),
+      controlFocusWithin: Boolean(control?.matches(':focus-within')),
+      focusOpen: control?.dataset.focusOpen || null,
+      opacity: tooltip ? getComputedStyle(tooltip).opacity : null
+    };
+  });
+  assert.equal(focusState.activeElement, 'readinessButton', `keyboard navigation must return to Readiness: ${JSON.stringify(focusState)}`);
+  assert.equal(focusState.opacity, '1', `keyboard focus reveals readiness help immediately: ${JSON.stringify(focusState)}`);
 
   await page.evaluate(() => {
     document.querySelector('#view-review')?.setAttribute('hidden', '');
