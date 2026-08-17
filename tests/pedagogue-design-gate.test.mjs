@@ -106,3 +106,5 @@ test('Pedagogue route memory preserves path difference even when endpoints match
   assert.equal(diverged.authority.automatic_release, false);
   assert.equal(diverged.authority.human_closure_required, true);
 });
+
+await import('./pedagogue-practice-fixture.test.mjs');
