@@ -1,12 +1,46 @@
 (function () {
   'use strict';
 
-  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-08-17-v3';
+  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-08-17-v4';
   const MOBILE_QUERY = '(max-width: 820px)';
   const PAYLOAD_EDITOR_MARKER = 'td613-flight-inline-payload-editor';
 
   function normalizeLineEndings(value) {
     return String(value ?? '').replace(/\r\n?/gu, '\n');
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/gu, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
+  function semanticParagraphHtml(value) {
+    const plain = normalizeLineEndings(value);
+    if (!plain) return '<div data-td613-flight-clipboard="semantic-paragraphs"></div>';
+
+    const parts = plain.split(/(\n{2,})/u);
+    const rendered = [];
+
+    for (const part of parts) {
+      if (!part) continue;
+      if (/^\n{2,}$/u.test(part)) {
+        // Adjacent <p> elements represent the first paragraph break. Preserve any
+        // additional blank lines beyond that as explicit empty paragraphs.
+        const extraBlankParagraphs = Math.max(0, part.length - 2);
+        for (let index = 0; index < extraBlankParagraphs; index += 1) {
+          rendered.push('<p><br></p>');
+        }
+        continue;
+      }
+      rendered.push('<p>' + escapeHtml(part).replace(/\n/gu, '<br>') + '</p>');
+    }
+
+    return '<div data-td613-flight-clipboard="semantic-paragraphs">' + rendered.join('') + '</div>';
   }
 
   function mobileLayout() {
@@ -36,15 +70,28 @@
     return 'fallback-textarea';
   }
 
-  function nativeTextareaCopy(textarea) {
+  function desktopStructuredCopy(textarea, value) {
     if (!textarea || typeof textarea.select !== 'function' || typeof document.execCommand !== 'function') {
-      throw new Error('Native textarea copy path unavailable.');
+      throw new Error('Desktop structured copy path unavailable.');
     }
 
+    const plain = normalizeLineEndings(value);
+    const html = semanticParagraphHtml(plain);
     const previousFocus = document.activeElement || null;
     const previousStart = Number.isInteger(textarea.selectionStart) ? textarea.selectionStart : null;
     const previousEnd = Number.isInteger(textarea.selectionEnd) ? textarea.selectionEnd : null;
     const previousDirection = typeof textarea.selectionDirection === 'string' ? textarea.selectionDirection : 'none';
+    let clipboardOverridden = false;
+
+    const handleCopy = (event) => {
+      if (!event || !event.clipboardData || typeof event.clipboardData.setData !== 'function') return;
+      event.clipboardData.setData('text/plain', plain);
+      event.clipboardData.setData('text/html', html);
+      event.preventDefault();
+      clipboardOverridden = true;
+    };
+
+    textarea.addEventListener('copy', handleCopy, true);
 
     try {
       try {
@@ -56,10 +103,16 @@
       if (typeof textarea.setSelectionRange === 'function') {
         textarea.setSelectionRange(0, textarea.value.length);
       }
+
       const copied = document.execCommand('copy');
-      if (!copied) throw new Error('Native textarea copy command rejected copy.');
-      return 'desktop-native-textarea';
+      if (!copied || !clipboardOverridden) {
+        throw new Error('Desktop structured copy event did not own the system clipboard.');
+      }
+      return { mode: 'desktop-dual-mime-copy', plain, html };
     } finally {
+      if (typeof textarea.removeEventListener === 'function') {
+        textarea.removeEventListener('copy', handleCopy, true);
+      }
       if (previousStart !== null && previousEnd !== null && typeof textarea.setSelectionRange === 'function') {
         try {
           textarea.setSelectionRange(previousStart, previousEnd, previousDirection);
@@ -73,6 +126,28 @@
         }
       }
     }
+  }
+
+  async function writeStructuredClipboard(value) {
+    const plain = normalizeLineEndings(value);
+    const html = semanticParagraphHtml(plain);
+    const clipboard = navigator.clipboard;
+
+    if (clipboard && typeof clipboard.write === 'function' && typeof window.ClipboardItem === 'function') {
+      const item = new window.ClipboardItem({
+        'text/plain': new Blob([plain], { type: 'text/plain;charset=utf-8' }),
+        'text/html': new Blob([html], { type: 'text/html;charset=utf-8' })
+      });
+      await clipboard.write([item]);
+      return 'desktop-dual-mime-write';
+    }
+
+    if (clipboard && typeof clipboard.writeText === 'function') {
+      await clipboard.writeText(plain);
+      return 'desktop-writeText-fallback';
+    }
+
+    return fallbackCopy(plain);
   }
 
   async function writeClipboard(value) {
@@ -90,18 +165,20 @@
   async function copyTextWithFidelity(value, label, sourceTextarea) {
     const plain = normalizeLineEndings(value);
     try {
-      // Desktop Output copy deliberately uses the browser's native textarea-selection
-      // serialization while the click still owns user activation. This is the same
-      // text/plain path as manual select + Ctrl/Cmd+C and leaves Windows/platform
-      // newline conversion to the browser. Mobile keeps its already-stable writeText path.
+      // The desktop Output button owns the real synchronous copy event and writes
+      // both mandatory clipboard representations. Plain text keeps the exact textarea
+      // bytes; rich paste targets receive semantic paragraphs instead of a flat <br>
+      // stream. Mobile remains on its already-working writeText path.
       const mode = sourceTextarea && !mobileLayout()
-        ? nativeTextareaCopy(sourceTextarea)
+        ? desktopStructuredCopy(sourceTextarea, plain).mode
         : await writeClipboard(plain);
       setCopyStatus(label, mode);
       return { ok: true, mode, text: plain };
     } catch (error) {
       try {
-        const mode = await writeClipboard(plain);
+        const mode = sourceTextarea && !mobileLayout()
+          ? await writeStructuredClipboard(plain)
+          : await writeClipboard(plain);
         setCopyStatus(label, mode);
         return { ok: true, mode, text: plain };
       } catch (writeError) {
@@ -231,8 +308,10 @@
       contract: CONTRACT,
       copyText: copyTextWithFidelity,
       normalizeLineEndings,
+      semanticParagraphHtml,
       mobileLayout,
-      nativeTextareaCopy,
+      desktopStructuredCopy,
+      writeStructuredClipboard,
       installPayloadEditor,
       commitPayloadEditor,
       selectPayloadText
