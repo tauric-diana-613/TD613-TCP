@@ -31,7 +31,7 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
-// giving-app.js imports API/model without query strings, while review paging has a
+// The core app imports API/model without query strings, while review paging has a
 // deliberately stable child-module identity. Revalidate those exact URLs before
 // the versioned wrappers enter so freshness never requires widening the coordinated
 // Giving epoch or abandoning the stable review-core cache key.
