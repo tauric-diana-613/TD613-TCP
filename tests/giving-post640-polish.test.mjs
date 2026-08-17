@@ -50,7 +50,12 @@ assert.match(sharedAccess, /Evict every shared Giving session/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
 
 assert.match(browserProbe, /witnessGivingPracticeFixture/);
-assert.match(browserProbe, /practice_fixture_load/);
+assert.match(browserProbe, /normalizedArtifactDir\.split\('\/'\)\.includes\('practice-production'\)/, 'bounded practice-production artifact custody must request the production fixture witness');
+assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'observe-existing' : 'match-source'/, 'practice observation must select observe-existing provenance explicitly');
+assert.match(browserProbe, /production && practiceObservation[\s\S]*?productionPracticeWitness = await witnessGivingPracticeFixture\(page\)/, 'production practice must execute the actual Bikini Bottom fixture assay');
+assert.match(browserProbe, /practice_observation_requested:\s*practiceObservation/);
+assert.match(browserProbe, /practice_fixture_load:\s*resilienceWitness\?\.practiceFixture\?\.status \|\| productionPracticeWitness\?\.status/);
+assert.match(browserProbe, /production practice receipt cannot seal without an observed fixture PASS/);
 assert.match(practiceAssay, /loading the fictional practice case must not call Giving API/);
 assert.match(practiceAssay, /practice load must not start a retrieval run/);
 assert.match(practiceAssay, /practice load must not fabricate or alter contribution records/);
