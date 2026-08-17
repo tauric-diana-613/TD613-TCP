@@ -10,6 +10,7 @@ Primary implementation:
 - `app/engine/flowcore-pedagogue-core.js`
 - `app/engine/flowcore-pedagogue-aia.js`
 - `app/engine/flowcore-pedagogue-route-memory.js`
+- `app/engine/flowcore-pedagogue-practice-fixture.js`
 - `app/engine/flowcore-route-burden.js`
 
 Preferred agent commands from repository root:
@@ -29,6 +30,7 @@ Canonical explanation:
 
 - `PEDAGOGUE.md`
 - `docs/PEDAGOGUE_DESIGN_GATE.md`
+- `docs/CANONICAL_PRACTICE_FIXTURE.md`
 
 ## When to reach for it
 
@@ -42,6 +44,21 @@ Use the Design Gate when a change materially alters one or more of:
 - a shared design pattern that may deserve promotion from one product into reusable infrastructure.
 
 Ordinary copy edits, typo fixes, non-semantic styling, and isolated mechanical repairs do not need a new Pedagogue fixture unless they change those properties.
+
+## Canonical practice fixtures
+
+When a consequential workspace can safely admit manifestly fictional content into the same real operator route as consequential content, consider an opt-in Canonical Practice Fixture. The fixture is a calibration instrument, not a second demo architecture.
+
+Use one only when:
+
+- the content can remain unmistakably fictional;
+- evidence does not need to be invented;
+- the expected route is declared before observation;
+- external write, production mutation, automatic retrieval, automatic release, and evidence authority remain closed;
+- any reversible local practice-state effect is explicitly bounded;
+- the fixture does not weaken outside anisotropy or disclose protected architecture.
+
+A practice fixture may exercise real controls and route memory without acquiring real-world authority. Same endpoint through a different route remains a failed route calibration. See `docs/CANONICAL_PRACTICE_FIXTURE.md`.
 
 ## Governing design law
 
@@ -69,7 +86,7 @@ Product work may reveal a generic mechanism worth promoting into Pedagogue/AIA/C
 4. tests distinguish the generic operator from the product fixture that taught it;
 5. CI scope widens honestly when shared core changes.
 
-Do not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, or another product taxonomy into Pedagogue core merely because that product supplied the proving case.
+Do not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, Bikini Bottom, or another product/fixture taxonomy into Pedagogue core merely because that product supplied the proving case.
 
 ## AIA and Cistern relationship
 
@@ -78,6 +95,8 @@ AIA is repository information architecture. TD613 supplies governance. Cistern L
 Cistern may consume Pedagogue route-memory output, but observed context never grants release authority. Aperture context is recommendation/context only unless a separate reviewed contract explicitly says otherwise.
 
 A nested product belongs inside the AIA by consequence only when it has an explicit Dome-hosted surface binding, the four canonical non-equivalent route projections, invariant verification, bounded authority, rest/exit, and a live structural receipt or equivalent runtime witness. Directory placement alone is not AIA integration.
+
+A Canonical Practice Fixture does not automatically bind a product to AIA, Cistern, Aperture, Ash, or another shared mechanism. It observes the route the product explicitly admits.
 
 ## Fixtures stay outside core
 
