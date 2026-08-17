@@ -16,7 +16,7 @@ assert.match(workflow, /TD613_RECEIPT_ACQUIRE_DELAY_MS: '5000'/);
 assert.match(workflow, /Receipt acquisition pending/);
 assert.match(workflow, /Authorized source receipt never arrived/);
 assert.match(workflow, /\[404, 408, 425, 429\]\.includes\(response\.status\) \|\| response\.status >= 500/);
-assert.match(workflow, /observed !== expected[\s\S]*Receipt acquisition pending/, 'a stale pre-acquisition receipt must remain pending rather than falsely proving settlement');
+assert.match(workflow, /if \(observed === expected\)[\s\S]*Receipt acquisition pending/, 'a stale pre-acquisition receipt must remain pending rather than falsely proving settlement');
 assert.match(workflow, /Stale queued deployment displaced authorized source/, 'once acquired, any source displacement must remain fatal');
 
 console.log('giving-vercel-release-receipt.test.mjs passed for acquire-before-stabilize release observation');
