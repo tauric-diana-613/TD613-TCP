@@ -4,18 +4,26 @@ import vm from 'node:vm';
 
 const htmlPath = new URL('../app/safe-harbor/td613-flight.html', import.meta.url);
 const scriptPath = new URL('../app/safe-harbor/td613-flight-clipboard-fidelity.js', import.meta.url);
+const injectorPath = new URL('../api/flight-html.js', import.meta.url);
 const html = fs.readFileSync(htmlPath, 'utf8');
 const source = fs.readFileSync(scriptPath, 'utf8');
+const injector = fs.readFileSync(injectorPath, 'utf8');
 
 const OLD_PHRASE = 'When authoring, stay academically rigorous yet grounded in high speculation.';
 const NEW_PHRASE = 'When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.';
-const SCRIPT_TAG = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1"></script>';
+const SOURCE_SCRIPT_TAG = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1"></script>';
+const SERVED_SCRIPT_URL = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260817-desktop-native-textarea-v3';
 
 assert.equal(html.includes(OLD_PHRASE), false, 'legacy Flight phrase must be absent');
 assert.ok((html.split(NEW_PHRASE).length - 1) >= 2, 'visible label and generated phrase must both use the new wording');
-assert.ok(html.includes(SCRIPT_TAG), 'Flight must load the clipboard fidelity layer');
-assert.match(source, /desktop-writeText/u);
+assert.ok(html.includes(SOURCE_SCRIPT_TAG), 'Flight source must retain the clipboard helper insertion point');
+assert.ok(injector.includes(SERVED_SCRIPT_URL), 'production Flight injector must serve the current clipboard asset epoch');
+assert.match(injector, /CLIPBOARD_ASSET_SOURCE/u);
+assert.match(injector, /CLIPBOARD_ASSET_CURRENT/u);
+assert.match(source, /td613\.flight\.clipboard-fidelity\/2026-08-17-v3/u);
+assert.match(source, /desktop-native-textarea/u);
 assert.match(source, /mobile-writeText/u);
+assert.match(source, /nativeTextareaCopy/u);
 assert.match(source, /payloadStepperValue/u);
 assert.match(source, /contentEditable/u);
 assert.match(source, /pointerup/u);
@@ -31,6 +39,9 @@ function makeEventNode(initial = {}) {
     style: {},
     attributes: {},
     listeners,
+    selectionStart: 0,
+    selectionEnd: 0,
+    selectionDirection: 'none',
     addEventListener(type, handler) {
       if (!listeners.has(type)) listeners.set(type, []);
       listeners.get(type).push(handler);
@@ -41,6 +52,14 @@ function makeEventNode(initial = {}) {
     dispatchEvent(event) {
       (listeners.get(event.type) || []).forEach(handler => handler(event));
       return true;
+    },
+    setSelectionRange(start, end, direction = 'none') {
+      this.selectionStart = start;
+      this.selectionEnd = end;
+      this.selectionDirection = direction;
+    },
+    select() {
+      this.setSelectionRange(0, String(this.value ?? '').length);
     },
     focus() {},
     blur() {
@@ -68,26 +87,42 @@ function fire(node, type, extra = {}) {
 function createHarness({ mobile = false } = {}) {
   const clipboardWrites = [];
   const textWrites = [];
+  const nativeCopies = [];
   const bodyChildren = [];
+  const documentListeners = new Map();
   const status = makeEventNode();
   const payload = makeEventNode({ textContent: '12' });
   const authPayload = makeEventNode({ value: '12' });
+  const output = makeEventNode();
+  const previousFocus = makeEventNode();
+  let activeElement = previousFocus;
   let authPayloadInputEvents = 0;
   authPayload.addEventListener('input', () => { authPayloadInputEvents += 1; });
   let selectedNode = null;
 
+  previousFocus.focus = () => { activeElement = previousFocus; };
+  output.focus = () => { activeElement = output; };
+  output.closest = () => null;
+
   const document = {
     readyState: 'complete',
+    get activeElement() {
+      return activeElement;
+    },
     body: {
       appendChild(node) {
         bodyChildren.push(node);
       }
     },
-    addEventListener() {},
+    addEventListener(type, handler) {
+      if (!documentListeners.has(type)) documentListeners.set(type, []);
+      documentListeners.get(type).push(handler);
+    },
     getElementById(id) {
       if (id === 'copyStatus') return status;
       if (id === 'payloadStepperValue') return payload;
       if (id === 'authPayload') return authPayload;
+      if (id === 'outputText') return output;
       return null;
     },
     createRange() {
@@ -99,18 +134,19 @@ function createHarness({ mobile = false } = {}) {
     },
     createElement(tag) {
       assert.equal(tag, 'textarea');
-      return {
-        value: '',
-        style: {},
-        setAttribute() {},
-        focus() {},
-        select() {},
-        setSelectionRange() {},
-        remove() {}
-      };
+      const node = makeEventNode();
+      node.focus = () => { activeElement = node; };
+      node.remove = () => {};
+      return node;
     },
     execCommand(command) {
-      return command === 'copy';
+      if (command !== 'copy') return false;
+      if (activeElement && typeof activeElement.value === 'string') {
+        const start = Number.isInteger(activeElement.selectionStart) ? activeElement.selectionStart : 0;
+        const end = Number.isInteger(activeElement.selectionEnd) ? activeElement.selectionEnd : activeElement.value.length;
+        nativeCopies.push(activeElement.value.slice(start, end));
+      }
+      return true;
     }
   };
 
@@ -166,10 +202,15 @@ function createHarness({ mobile = false } = {}) {
     context,
     clipboardWrites,
     textWrites,
+    nativeCopies,
     status,
     payload,
     authPayload,
+    output,
+    previousFocus,
     bodyChildren,
+    documentListeners,
+    get activeElement() { return activeElement; },
     get selectedNode() { return selectedNode; },
     get authPayloadInputEvents() { return authPayloadInputEvents; }
   };
@@ -177,23 +218,40 @@ function createHarness({ mobile = false } = {}) {
 
 {
   const harness = createHarness({ mobile: false });
-  const sample = 'First line\nSecond line\n\nFourth line';
-  const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'output');
+  const sample = 'Paragraph one.\n\nParagraph two.\nLine two.\n\nFinal paragraph.';
+  harness.output.value = sample;
+  harness.output.setSelectionRange(4, 11, 'forward');
+  const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'output', harness.output);
   assert.equal(result.ok, true);
-  assert.equal(result.mode, 'desktop-writeText');
-  assert.deepEqual(harness.textWrites, [sample], 'desktop clipboard must receive the exact canonical plaintext including paragraph breaks');
+  assert.equal(result.mode, 'desktop-native-textarea');
+  assert.deepEqual(harness.nativeCopies, [sample], 'desktop button path must native-copy the complete actual textarea value including blank paragraph lines');
+  assert.deepEqual(harness.textWrites, [], 'successful desktop native textarea copy must not detour through async writeText');
   assert.equal(harness.clipboardWrites.length, 0, 'desktop must not offer an HTML clipboard flavor that paste targets can reinterpret');
-  assert.match(harness.status.textContent, /desktop-writeText/u);
+  assert.equal(harness.output.selectionStart, 4, 'desktop native copy must restore the user selection start');
+  assert.equal(harness.output.selectionEnd, 11, 'desktop native copy must restore the user selection end');
+  assert.equal(harness.activeElement, harness.previousFocus, 'desktop native copy must restore prior focus');
+  assert.match(harness.status.textContent, /desktop-native-textarea/u);
 }
 
 {
   const harness = createHarness({ mobile: true });
   const sample = 'Mobile line one\n\nMobile paragraph two';
-  const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'output');
+  harness.output.value = sample;
+  const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'output', harness.output);
   assert.equal(result.ok, true);
   assert.equal(result.mode, 'mobile-writeText');
-  assert.deepEqual(harness.textWrites, [sample]);
+  assert.deepEqual(harness.textWrites, [sample], 'mobile must retain the existing exact writeText path');
+  assert.deepEqual(harness.nativeCopies, []);
   assert.equal(harness.clipboardWrites.length, 0);
+}
+
+{
+  const harness = createHarness({ mobile: false });
+  const sample = 'CRLF first\r\n\r\nCRLF second';
+  const result = await harness.context.window.TD613FlightClipboardFidelity.copyText(sample, 'generic');
+  assert.equal(result.ok, true);
+  assert.equal(result.mode, 'desktop-writeText');
+  assert.deepEqual(harness.textWrites, ['CRLF first\n\nCRLF second'], 'generic clipboard fallback must retain blank lines while canonicalizing source line endings');
 }
 
 {

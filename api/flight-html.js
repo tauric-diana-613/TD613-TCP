@@ -2,6 +2,8 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const VERSION = 'pr138-flight-android-swipe-smooth/v1';
+const CLIPBOARD_ASSET_SOURCE = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1';
+const CLIPBOARD_ASSET_CURRENT = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260817-desktop-native-textarea-v3';
 
 function isAndroidRequest(req) {
   return /Android/i.test(String(req?.headers?.['user-agent'] || ''));
@@ -12,6 +14,7 @@ function setHeaders(res, active = false) {
   res.setHeader('cache-control', 'no-store, max-age=0');
   res.setHeader('x-td613-flight-injector', VERSION);
   res.setHeader('x-td613-flight-android-scroll-fix', active ? 'active' : 'inactive');
+  res.setHeader('x-td613-flight-clipboard-asset', '20260817-desktop-native-textarea-v3');
 }
 
 function androidInlinePatch() {
@@ -156,11 +159,12 @@ function androidInlinePatch() {
 }
 
 function inject(html = '', active = false) {
-  if (!active || html.includes('td613-flight-android-inline-scroll-fix')) return html;
+  const servedHtml = html.replace(CLIPBOARD_ASSET_SOURCE, CLIPBOARD_ASSET_CURRENT);
+  if (!active || servedHtml.includes('td613-flight-android-inline-scroll-fix')) return servedHtml;
   const patch = androidInlinePatch();
-  if (html.includes('</head>')) return html.replace('</head>', patch + '\n</head>');
-  if (html.includes('</body>')) return html.replace('</body>', patch + '\n</body>');
-  return html + patch;
+  if (servedHtml.includes('</head>')) return servedHtml.replace('</head>', patch + '\n</head>');
+  if (servedHtml.includes('</body>')) return servedHtml.replace('</body>', patch + '\n</body>');
+  return servedHtml + patch;
 }
 
 export default async function handler(req, res) {
