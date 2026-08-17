@@ -279,6 +279,7 @@
 .readiness-control[data-focus-open="true"] .readiness-tooltip {
   opacity: 1 !important;
   visibility: visible !important;
+  transition: none !important;
   transition-delay: 0s !important;
 }
 
