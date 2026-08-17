@@ -53,13 +53,17 @@ assert.match(browserProbe, /witnessGivingPracticeFixture/);
 assert.match(browserProbe, /normalizedArtifactDir\.split\('\/'\)\.includes\('practice-production'\)/, 'bounded practice-production artifact custody must request the production fixture witness');
 assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'observe-existing' : 'match-source'/, 'practice observation must select observe-existing provenance explicitly');
 assert.match(browserProbe, /production && practiceObservation[\s\S]*?productionPracticeWitness = await witnessGivingPracticeFixture\(page\)/, 'production practice must execute the actual Bikini Bottom fixture assay');
-assert.match(browserProbe, /item\?\.status !== 401 \|\| item\?\.method !== 'POST' \|\| item\?\.operation !== 'session\.status'/, 'only an exact pre-auth session.status refusal may be classified as expected');
+assert.match(browserProbe, /\['session\.status', 'registry\.read'\]\.includes\(item\?\.operation\)/, 'only exact protected bootstrap reads may be eligible for pre-practice classification');
 assert.match(browserProbe, /target\.pathname === '\/api\/td613-ledger'/, 'protected refusal classification must be pinned to the real Giving boundary');
-assert.match(browserProbe, /practiceFailedResourceDelta = failedResources\.slice\(failedBeforePractice\)/, 'production witness must measure failed network responses introduced by the practice click itself');
-assert.match(browserProbe, /production practice fixture must not cause failed network responses/, 'practice click network failures remain fatal');
+assert.match(browserProbe, /givingRequestStarts\.filter\(\(item\) => item\.sequence > practiceRequestBoundary\)/, 'production witness must measure Giving requests by request-start causality after the practice boundary');
+assert.match(browserProbe, /production practice fixture must not start Giving API requests/, 'practice-originated Giving requests remain fatal');
+assert.match(browserProbe, /request_sequence:\s*Number\.isInteger\(meta\.sequence\)/, 'failed responses must retain the originating Giving request sequence');
+assert.match(browserProbe, /item\.request_sequence <= practiceRequestBoundary/, 'protected refusal classification must depend on request start occurring before the practice boundary');
+assert.match(browserProbe, /practice_giving_request_delta:\s*practiceGivingRequestDelta/);
 assert.match(browserProbe, /expected_protected_refusals:\s*expectedProtectedRefusals/);
 assert.match(browserProbe, /failed_resources:\s*unexpectedFailedResources/);
 assert.match(browserProbe, /production practice receipt cannot seal without an observed fixture PASS/);
+assert.match(browserProbe, /production practice receipt cannot seal if the fixture starts Giving API traffic/);
 assert.ok(
   practiceAssay.includes("return /\\/api\\/td613-ledger\\/?$/.test(url.pathname);"),
   'practice assay must observe the real Giving API endpoint rather than the retired /api/giving alias'
