@@ -68,7 +68,7 @@ assert.match(renderBackpressure, /td613:giving-run-settled/);
 assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/);
 assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
-assert.match(bootstrap, /const GIVING_PEDAGOGUE_EPOCH = '20260817-2'/);
+assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-2'/);
 assert.match(bootstrap, /giving-practice-hydration\.js/);
 assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
 assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-fec-resilience\.js\?v=20260814-1'\), \{ cache: 'reload'/);
