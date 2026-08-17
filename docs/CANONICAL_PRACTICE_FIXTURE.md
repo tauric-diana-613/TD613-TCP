@@ -116,6 +116,8 @@ node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-bikin
 
 The broader `tests/pedagogue-design-gate.test.mjs` suite remains the deeper architecture/integration witness. A `practice` Vercel release runs both contracts before deployment, then verifies exact deployed bytes and performs one bounded production Chromium practice observation. Live Ash production probes remain reserved for `full` scope.
 
+Because the current production proving surface for the canonical practice fixture is Giving, both `giving` and `practice` releases materialize `app/giving/history/release-source.json` with the **authorized source-packet commit** before deployment. The production practice witness refuses to trust the Giving surface when that receipt names a different packet, even if the visible application bytes otherwise match. This receipt is release provenance only: it grants no Giving evidentiary authority, performs no donor retrieval, and does not convert practice content into evidence.
+
 ## Route reconstruction / tomography
 
 A calibration phantom supplies known route ground truth.
