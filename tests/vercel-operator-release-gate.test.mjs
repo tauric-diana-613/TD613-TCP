@@ -37,10 +37,20 @@ assert.match(workflow, /VERCEL_SCOPE: tauric-diana-s-projects/);
 assert.equal((workflow.match(/vercel@latest deploy/g) || []).length, 1);
 assert.match(workflow, /Create one bounded Git-fallback release commit/);
 assert.match(workflow, /config\.git\.deploymentEnabled = true/);
-assert.match(workflow, /Restore the Git deployment lock after fallback/);
+assert.match(workflow, /Restore the Git deployment lock immediately after fallback admission/);
 assert.match(workflow, /deploymentEnabled: false/);
 assert.equal((workflow.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((workflow.match(/deploymentEnabled: false/g) || []).length, 1);
+
+const releaseIndex = workflow.indexOf('- name: Create one bounded Git-fallback release commit');
+const relockIndex = workflow.indexOf('- name: Restore the Git deployment lock immediately after fallback admission');
+const resolveIndex = workflow.indexOf('- name: Resolve deployed production URL');
+const exactIndex = workflow.indexOf('- name: Verify deployed bytes match the authorized source packet');
+const browserInstallIndex = workflow.indexOf('- name: Install one production browser engine');
+assert.ok(releaseIndex >= 0 && relockIndex > releaseIndex, 'fallback relock must follow the single deployable release commit');
+assert.ok(resolveIndex > relockIndex, 'fallback must be relocked before production URL observation begins');
+assert.ok(exactIndex > relockIndex, 'exact-source observation must happen only after the fallback gate is closed');
+assert.ok(browserInstallIndex > relockIndex, 'browser installation must happen only after the fallback gate is closed');
 
 for (const testFile of [
   'workflow-estate.test.mjs',
@@ -55,7 +65,8 @@ for (const testFile of [
   'ash-keep-production-closure-contract.test.mjs'
 ]) assert.match(workflow, new RegExp(testFile.replaceAll('.', '\\.')));
 
-assert.match(workflow, /flowcore-release-content-probe\.mjs/);
+assert.equal((workflow.match(/flowcore-release-content-probe\.mjs/g) || []).length, 2,
+  'production exact-source bytes must be checked before and after the stale-queue stability window');
 assert.match(workflow, /playwright install --with-deps chromium/);
 assert.doesNotMatch(workflow, /playwright install --with-deps chromium firefox webkit/);
 assert.doesNotMatch(workflow, /for browser in chromium firefox webkit/);
@@ -65,16 +76,28 @@ assert.match(workflow, /giving-production-readiness\.test\.mjs/);
 assert.match(workflow, /TD613_SOURCE_PACKET_COMMIT: \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
 assert.match(workflow, /TD613_GIVING_PROBE_ATTEMPTS: '72'/);
 assert.match(workflow, /TD613_GIVING_PROBE_DELAY_MS: '5000'/);
-assert.match(workflow, /Materialize the Giving exact-source receipt/);
-const materializeReceiptStep = workflow.match(/- name: Materialize the Giving exact-source receipt[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
-assert.match(materializeReceiptStep, /validation_scope == 'giving' \|\| steps\.scope\.outputs\.validation_scope == 'practice'/,
-  'Giving and practice releases must bind the deployed proving surface to the authorized source packet.');
+assert.match(workflow, /Materialize the exact-source receipt/);
+const materializeReceiptStep = workflow.match(/- name: Materialize the exact-source receipt[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
+assert.doesNotMatch(materializeReceiptStep, /^\s+if:/m,
+  'the exact-source receipt must be materialized for Giving, practice, and full-product releases');
 assert.match(workflow, /app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /source_packet_commit: sourcePacketCommit/);
-const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback release commit[\s\S]*?(?=\n\s+- name: Resolve deployed production URL)/)?.[0] || '';
-assert.match(fallbackRelease, /validation_scope \}\}" == 'giving' \|\| "\$\{\{ steps\.scope\.outputs\.validation_scope \}\}" == 'practice'/,
-  'Git fallback must stage the Giving proving-surface receipt for both Giving and practice releases.');
-assert.match(fallbackRelease, /git add app\/giving\/history\/release-source\.json/);
+const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback release commit[\s\S]*?(?=\n\s+- name: Restore the Git deployment lock immediately after fallback admission)/)?.[0] || '';
+assert.match(fallbackRelease, /git add vercel\.json app\/giving\/history\/release-source\.json/,
+  'the one deployable fallback commit must bind the exact-source receipt for every release scope');
+
+assert.match(workflow, /Hold authorized source stable against stale queued rollbacks/);
+assert.match(workflow, /TD613_STABILITY_CHECKS: '10'/);
+assert.match(workflow, /TD613_STABILITY_DELAY_MS: '10000'/);
+assert.match(workflow, /Stale queued deployment displaced authorized source/);
+assert.match(workflow, /Reconfirm exact deployed bytes after stability window/);
+assert.match(workflow, /TD613_ARTIFACT_DIR: artifacts\/exact-source-stable/);
+assert.match(workflow, /Confirm authorized source still owns production after witness/);
+assert.match(workflow, /Production source changed during witness/);
+assert.match(workflow, /stale_queue_stability_window = PASS/);
+assert.match(workflow, /post_witness_source_guard = PASS/);
+assert.match(workflow, /artifacts\/exact-source-stable\//);
+
 assert.match(workflow, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(workflow, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflow, /ash-lifecycle-production-probe\.mjs/);
@@ -126,12 +149,14 @@ for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase I
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
+assert.match(law, /one deployable fallback commit → immediate relock → production observation/);
 assert.match(law, /The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing/);
 assert.match(law, /direct token bridge/);
 assert.match(law, /bounded Git fallback/);
 assert.match(law, /source_packet_commit/);
 assert.match(law, /scope-aligned three-engine evidence before merge/i);
 assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
+assert.match(law, /stale-queue stability window/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for Giving, practice, and full-product premerge evidence with bounded scope-aligned production confirmation');
+console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, immediate relock, stale-queue stability, and bounded scope-aligned production confirmation');

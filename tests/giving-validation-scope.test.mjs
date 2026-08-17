@@ -9,14 +9,16 @@ assert.equal(classifyValidationScope([
   'tests/giving-production-readiness.test.mjs',
   'tests/giving-client-preview-server.mjs',
   'docs/GIVING_HISTORY_ENGINE.md',
+  'docs/CAMPAIGN_DEPUTY_GIVING_HISTORY_RELEASE_ENVELOPE.md',
   'vercel.json',
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
+  'tests/release-plumbing.test.mjs',
   'tests/vercel-operator-release-gate.test.mjs',
   'tests/workflow-estate.test.mjs',
   'package.json'
-]).scope, 'giving');
+]).scope, 'giving', 'release-plumbing contracts remain scope-neutral when a Giving release envelope is the product-scoped change');
 
 assert.equal(classifyValidationScope([
   'app/giving/history/giving-ux-resilience-shell.js',
@@ -88,6 +90,7 @@ for (const unsafePath of [
 }
 
 assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving or practice lane');
+assert.equal(classifyValidationScope(['tests/release-plumbing.test.mjs']).scope, 'full', 'scope-neutral release plumbing alone still fails closed rather than self-selecting a product lane');
 assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).scope, 'full', 'pre-existing shared design helpers alone cannot self-select the practice lane');
 assert.equal(classifyValidationScope([]).scope, 'full', 'an empty diff fails closed to full validation');
 

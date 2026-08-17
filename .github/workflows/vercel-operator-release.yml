@@ -90,7 +90,7 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, deploy once, verify exact application bytes, run one bounded production confirmation, and restore the deployment lock. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, verify exact application bytes, hold the authorized source stable against stale queued rollbacks, and run one bounded production confirmation. ⟐
           EOF_COMMENT
           )"
 
@@ -142,15 +142,14 @@ jobs:
             echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Materialize the Giving exact-source receipt
-        if: steps.scope.outputs.validation_scope == 'giving' || steps.scope.outputs.validation_scope == 'practice'
+      - name: Materialize the exact-source receipt
         env:
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
-          if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('Giving release receipt requires the authorized source commit.');
+          if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('Release receipt requires the authorized source commit.');
           const receipt = {
             schema: 'td613.giving.release-source/v1',
             source_packet_commit: sourcePacketCommit
@@ -199,15 +198,31 @@ jobs:
           NODE
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add vercel.json
-          if [[ "${{ steps.scope.outputs.validation_scope }}" == 'giving' || "${{ steps.scope.outputs.validation_scope }}" == 'practice' ]]; then
-            git add app/giving/history/release-source.json
-          fi
+          git add vercel.json app/giving/history/release-source.json
           git commit -m "release: enable one Vercel deployment for ${{ steps.authorize.outputs.selected_sha }}"
           RELEASE_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
           echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
           echo "deployment_url=$TD613_CANONICAL_PRODUCTION_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the Git deployment lock immediately after fallback admission
+        if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: relock
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (config.git?.deploymentEnabled !== true) throw new Error('Immediate relock expected the single release commit to hold the gate open.');
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+          git add vercel.json
+          git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
+          RELOCK_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Resolve deployed production URL
         id: deployed
@@ -227,6 +242,53 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/exact-source
           TD613_PROBE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
           TD613_PROBE_DELAY_MS: '5000'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Hold authorized source stable against stale queued rollbacks
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_STABILITY_CHECKS: '10'
+          TD613_STABILITY_DELAY_MS: '10000'
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const checks = Number(process.env.TD613_STABILITY_CHECKS || 10);
+          const delayMs = Number(process.env.TD613_STABILITY_DELAY_MS || 10000);
+          if (!base) throw new Error('TD613_BASE_URL is required for release stability.');
+          if (!/^[0-9a-f]{40}$/.test(expected)) throw new Error('Release stability requires the authorized source SHA.');
+          if (!Number.isSafeInteger(checks) || checks < 2 || checks > 30) throw new Error('TD613_STABILITY_CHECKS must be 2..30.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 1000 || delayMs > 30000) throw new Error('TD613_STABILITY_DELAY_MS must be 1000..30000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          for (let index = 1; index <= checks; index += 1) {
+            const url = new URL('/giving/history/release-source.json', `${base}/`);
+            url.searchParams.set('td613_release_stability', expected);
+            url.searchParams.set('td613_stability_check', String(index));
+            url.searchParams.set('td613_stability_nonce', `${Date.now()}-${index}`);
+            const response = await fetch(url, {
+              headers: { 'cache-control': 'no-cache' },
+              redirect: 'follow',
+              signal: AbortSignal.timeout(15000)
+            });
+            if (!response.ok) throw new Error(`Release stability receipt returned ${response.status} at check ${index}.`);
+            const payload = await response.json();
+            const observed = String(payload?.source_packet_commit || '').trim();
+            if (observed !== expected) {
+              throw new Error(`Stale queued deployment displaced authorized source at stability check ${index}: expected ${expected}, observed ${observed || 'missing'}.`);
+            }
+            console.log(`[td613-release-stability] check=${index}/${checks} source=${observed}`);
+            if (index < checks) await sleep(delayMs);
+          }
+          NODE
+
+      - name: Reconfirm exact deployed bytes after stability window
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/exact-source-stable
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
         run: node scripts/flowcore-release-content-probe.mjs
 
       - name: Install one production browser engine
@@ -276,6 +338,28 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/lifecycle-production
         run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-lifecycle-production-probe.mjs
 
+      - name: Confirm authorized source still owns production after witness
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const url = new URL('/giving/history/release-source.json', `${base}/`);
+          url.searchParams.set('td613_post_witness_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, {
+            headers: { 'cache-control': 'no-cache' },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(15000)
+          });
+          if (!response.ok) throw new Error(`Post-witness release receipt returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Production source changed during witness: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[td613-post-witness-source] source=${observed}`);
+          NODE
+
       - name: Preserve bounded production evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -283,6 +367,7 @@ jobs:
           name: td613-bounded-production-release-evidence
           path: |
             artifacts/exact-source/
+            artifacts/exact-source-stable/
             artifacts/a14-production-registry/
             artifacts/a14-production-archive/
             artifacts/lifecycle-production/
@@ -290,24 +375,6 @@ jobs:
             artifacts/practice-production/
           if-no-files-found: warn
           retention-days: 7
-
-      - name: Restore the Git deployment lock after fallback
-        if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
-        id: relock
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const path = 'vercel.json';
-          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
-          config.git = { ...(config.git || {}), deploymentEnabled: false };
-          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
-          NODE
-          git add vercel.json
-          git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
-          RELOCK_SHA="$(git rev-parse HEAD)"
-          git push origin HEAD:main
-          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Seal successful production release
         if: success()
@@ -326,6 +393,8 @@ jobs:
           deployment_url = ${{ steps.deployed.outputs.url }}
           validation_scope = ${{ steps.scope.outputs.validation_scope }}
           exact_source_content = PASS
+          stale_queue_stability_window = PASS
+          post_witness_source_guard = PASS
           premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
           production_giving_history = ${{ steps.scope.outputs.validation_scope == 'giving' && 'PASS' || 'NOT_APPLICABLE' }}
           production_practice_fixture = ${{ steps.scope.outputs.validation_scope == 'practice' && 'PASS' || 'NOT_APPLICABLE' }}
@@ -339,7 +408,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          Production confirmation follows the classified change scope, does not repeat the full pre-merge browser matrix, and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
+          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production confirmation follows the classified change scope, does not repeat the full pre-merge browser matrix, and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -361,6 +430,6 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The fallback lock-restoration step was attempted when applicable. No additional deployment attempt is authorized by this failure. ⟐
+          The fallback gate is relocked immediately after admission when a release commit is created; independent relock safety remains available for interruption recovery. No additional deployment attempt is authorized by this failure. ⟐
           EOF_COMMENT
           )"
