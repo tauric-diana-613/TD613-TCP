@@ -74,6 +74,10 @@ assert.match(bridge, /exact\.checked = true/);
 assert.match(bridge, /from\.value = PRACTICE_DATE_FROM/);
 assert.match(bridge, /#searchForm/);
 assert.match(bridge, /addEventListener\('submit', enforcePracticeSearchPosture, true\)/, 'the full practice posture must be reasserted in capture phase before core startSearch reads the DOM');
+assert.match(bridge, /practiceFloatingExitButton/);
+assert.match(bridge, /showPracticeExitConfirmation/);
+assert.match(bridge, /\.tab\[data-view="campaign"\]/);
+assert.match(bridge, /Campaign Deputy is asleep/);
 assert.match(bridge, /blockedCampaignActions/);
 
 assert.match(shell, /td613:giving-practice-load-request/);
@@ -87,6 +91,11 @@ assert.match(practiceCss, /max-width: 46%/);
 assert.match(practiceCss, /\.dossier-single-picker-menu\.giving-state-filter-menu \{[\s\S]*?grid-template-columns: 1fr/);
 assert.match(practiceCss, /\.source-picker\.practice-source-locked \{[\s\S]*?position: relative/);
 assert.match(practiceCss, /\.source-picker\.practice-source-locked[\s\S]*?overflow: hidden/);
+assert.match(practiceCss, /\.practice-floating-exit \{[\s\S]*?position: fixed/);
+assert.match(practiceCss, /color: var\(--cyan\)/);
+assert.match(practiceCss, /\.practice-exit-confirm \{[\s\S]*?position: fixed/);
+assert.match(practiceCss, /html\[data-giving-practice="true"\] \.tab\[data-view="campaign"\]/);
+assert.match(practiceCss, /content: ' asleep'/);
 assert.match(practiceCss, /\.fictional-sample-chip/);
 
 assert.match(help, /custodyModeHelp/);
