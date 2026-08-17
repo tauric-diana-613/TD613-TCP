@@ -1,4 +1,6 @@
 const PRACTICE_SOURCE_ID = 'practice-bikini-bottom-votes';
+const PRACTICE_PRIMARY_NAME = 'SpongeBob SquarePants';
+const PRACTICE_DATE_FROM = '2020-01-01';
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let practiceSource = null;
@@ -12,14 +14,21 @@ function practiceActive() {
   return document.documentElement.dataset.givingPractice === 'true';
 }
 
+function today() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function practiceRecordsExist() {
+  return Boolean($('#recordList .record-card[data-fictional-sample="true"]')) ||
+    [...$$('#recordList .record-card')].some((card) => String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/'));
+}
+
 // Canonical fixture load must remain zero-effect. The existing Giving shell uses
 // input/change events for ordinary autosave, so stop those events only during the
 // bounded fixture-load instant. Search, Save, and Vault remain separate gestures.
 document.addEventListener('input', (event) => {
   if (!duringPracticeLoad()) return;
-  if (['dossierTitle', 'searchName', 'searchAliases', 'searchHints', 'dateFrom', 'dateTo', 'contactQueueInput'].includes(event.target?.id)) {
-    event.stopImmediatePropagation();
-  }
+  if (['dossierTitle', 'searchName', 'searchAliases', 'searchHints', 'dateFrom', 'dateTo', 'contactQueueInput'].includes(event.target?.id)) event.stopImmediatePropagation();
 }, true);
 
 document.addEventListener('change', (event) => {
@@ -52,11 +61,29 @@ function ensurePracticeSource() {
 function enforcePracticeSourceSelection() {
   if (!practiceActive() || !practiceSource) return;
   ensurePracticeSource();
-  for (const input of $$('#sourceRegistry input[type="checkbox"]')) {
-    input.checked = input.value === PRACTICE_SOURCE_ID;
-  }
+  for (const input of $$('#sourceRegistry input[type="checkbox"]')) input.checked = input.value === PRACTICE_SOURCE_ID;
   const sourceCount = $('#selectedSourceCount');
   if (sourceCount) sourceCount.textContent = '1 source';
+}
+
+function enforcePracticeSearchPosture() {
+  if (!practiceActive()) return;
+  enforcePracticeSourceSelection();
+  const exact = $('#exactMatchToggle');
+  if (exact) exact.checked = true;
+  const from = $('#dateFrom');
+  const to = $('#dateTo');
+  if (from) from.value = PRACTICE_DATE_FROM;
+  if (to) to.value = today();
+
+  // Before the first fictional record exists, the initial search belongs to the
+  // authored SpongeBob seed even if a late authenticated hydrateForm() restored
+  // the pre-demo query. Once the first result exists, queued contributor searches
+  // keep their own current names while exact-match/source/date posture stays fixed.
+  if (!practiceRecordsExist()) {
+    const name = $('#searchName');
+    if (name) name.value = PRACTICE_PRIMARY_NAME;
+  }
 }
 
 function removePracticeSource() {
@@ -69,25 +96,23 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
   if (action === 'register' && event.detail?.source) {
     practiceSource = event.detail.source;
     ensurePracticeSource();
-    queueMicrotask(enforcePracticeSourceSelection);
+    queueMicrotask(enforcePracticeSearchPosture);
   } else if (action === 'remove') {
     removePracticeSource();
   }
 });
 
-// Authenticated Giving may finish its ordinary registry hydration after the
-// practice fixture has already been loaded. That late hydrateForm() legitimately
-// restores the dossier's pre-practice source_ids and can therefore uncheck the
-// synthetic checkbox. Reassert the closed practice aperture at the explicit
-// SEARCH gesture boundary, before Giving's bubble-phase startSearch reads DOM.
-$('#searchForm')?.addEventListener('submit', enforcePracticeSourceSelection, true);
+// Ordinary authenticated hydration may finish after the sample was loaded.
+// Reassert the closed practice aperture at the explicit SEARCH gesture boundary,
+// before Giving's bubble-phase startSearch reads the current form.
+$('#searchForm')?.addEventListener('submit', enforcePracticeSearchPosture, true);
 
 const registry = $('#sourceRegistry');
 if (registry) {
   new MutationObserver(() => {
     if (!practiceActive()) return;
     ensurePracticeSource();
-    queueMicrotask(enforcePracticeSourceSelection);
+    queueMicrotask(enforcePracticeSearchPosture);
   }).observe(registry, { childList: true, subtree: false });
 }
 
@@ -145,7 +170,9 @@ document.addEventListener('click', (event) => {
 
 export const _givingPracticeSurfaceBridge = Object.freeze({
   PRACTICE_SOURCE_ID,
+  PRACTICE_PRIMARY_NAME,
   ensurePracticeSource,
   enforcePracticeSourceSelection,
+  enforcePracticeSearchPosture,
   decoratePracticeRecords
 });
