@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 // The caller owns bootstrap quiescence before this assay begins. Once this
 // request listener is installed, every Giving API call belongs to the fixture
 // load observation window and remains fatal; the assay grants no bootstrap
-// exception of its own.
+// exception of its own. Keep this canonical-practice path in the release
+// packet so production must exercise the same zero-effect witness after repair.
 function isGivingApiRequest(request) {
   if (!['fetch', 'xhr'].includes(request.resourceType())) return false;
   try {
