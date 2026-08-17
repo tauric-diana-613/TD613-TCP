@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-08-17-v2';
+  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-08-17-v3';
   const MOBILE_QUERY = '(max-width: 820px)';
   const PAYLOAD_EDITOR_MARKER = 'td613-flight-inline-payload-editor';
 
@@ -36,13 +36,49 @@
     return 'fallback-textarea';
   }
 
+  function nativeTextareaCopy(textarea) {
+    if (!textarea || typeof textarea.select !== 'function' || typeof document.execCommand !== 'function') {
+      throw new Error('Native textarea copy path unavailable.');
+    }
+
+    const previousFocus = document.activeElement || null;
+    const previousStart = Number.isInteger(textarea.selectionStart) ? textarea.selectionStart : null;
+    const previousEnd = Number.isInteger(textarea.selectionEnd) ? textarea.selectionEnd : null;
+    const previousDirection = typeof textarea.selectionDirection === 'string' ? textarea.selectionDirection : 'none';
+
+    try {
+      try {
+        textarea.focus({ preventScroll: true });
+      } catch (error) {
+        textarea.focus();
+      }
+      textarea.select();
+      if (typeof textarea.setSelectionRange === 'function') {
+        textarea.setSelectionRange(0, textarea.value.length);
+      }
+      const copied = document.execCommand('copy');
+      if (!copied) throw new Error('Native textarea copy command rejected copy.');
+      return 'desktop-native-textarea';
+    } finally {
+      if (previousStart !== null && previousEnd !== null && typeof textarea.setSelectionRange === 'function') {
+        try {
+          textarea.setSelectionRange(previousStart, previousEnd, previousDirection);
+        } catch (error) {}
+      }
+      if (previousFocus && previousFocus !== textarea && typeof previousFocus.focus === 'function') {
+        try {
+          previousFocus.focus({ preventScroll: true });
+        } catch (error) {
+          try { previousFocus.focus(); } catch (focusError) {}
+        }
+      }
+    }
+  }
+
   async function writeClipboard(value) {
     const plain = normalizeLineEndings(value);
     const clipboard = navigator.clipboard;
 
-    // Keep desktop and mobile on the same canonical plain-text path. Flight output
-    // already contains the exact newlines we want; rich HTML clipboard payloads let
-    // desktop paste targets reinterpret those breaks and were the source of drift.
     if (clipboard && typeof clipboard.writeText === 'function') {
       await clipboard.writeText(plain);
       return mobileLayout() ? 'mobile-writeText' : 'desktop-writeText';
@@ -51,25 +87,37 @@
     return fallbackCopy(plain);
   }
 
-  async function copyTextWithFidelity(value, label) {
+  async function copyTextWithFidelity(value, label, sourceTextarea) {
     const plain = normalizeLineEndings(value);
     try {
-      const mode = await writeClipboard(plain);
+      // Desktop Output copy deliberately uses the browser's native textarea-selection
+      // serialization while the click still owns user activation. This is the same
+      // text/plain path as manual select + Ctrl/Cmd+C and leaves Windows/platform
+      // newline conversion to the browser. Mobile keeps its already-stable writeText path.
+      const mode = sourceTextarea && !mobileLayout()
+        ? nativeTextareaCopy(sourceTextarea)
+        : await writeClipboard(plain);
       setCopyStatus(label, mode);
       return { ok: true, mode, text: plain };
     } catch (error) {
       try {
-        const mode = fallbackCopy(plain);
+        const mode = await writeClipboard(plain);
         setCopyStatus(label, mode);
         return { ok: true, mode, text: plain };
-      } catch (fallbackError) {
-        setCopyStatus(label, 'copy failed');
-        return {
-          ok: false,
-          mode: 'failed',
-          text: plain,
-          error: String(fallbackError?.message || error?.message || fallbackError || error)
-        };
+      } catch (writeError) {
+        try {
+          const mode = fallbackCopy(plain);
+          setCopyStatus(label, mode);
+          return { ok: true, mode, text: plain };
+        } catch (fallbackError) {
+          setCopyStatus(label, 'copy failed');
+          return {
+            ok: false,
+            mode: 'failed',
+            text: plain,
+            error: String(fallbackError?.message || writeError?.message || error?.message || fallbackError || writeError || error)
+          };
+        }
       }
     }
   }
@@ -184,6 +232,7 @@
       copyText: copyTextWithFidelity,
       normalizeLineEndings,
       mobileLayout,
+      nativeTextareaCopy,
       installPayloadEditor,
       commitPayloadEditor,
       selectPayloadText
@@ -196,7 +245,7 @@
       if (!trigger) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      void copyTextWithFidelity(trigger.output.value, 'output');
+      void copyTextWithFidelity(trigger.output.value, 'output', trigger.output);
     }, true);
   }
 
