@@ -1,6 +1,6 @@
 const PRACTICE_OBJECTS = Object.freeze([
   { id: 'BBV-C001', name: 'King Neptune for King', kind: 'Candidate committee', candidate: 'King Neptune', office: 'King of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
-  { id: 'BBV-C002', name: 'Mrs. Puff for Bikini Bottom School District #67', kind: 'Candidate committee', candidate: 'Mrs. Puff', office: 'Bikini Bottom School District #67', committee_kind: 'CANDIDATE_COMMITTEE' },
+  { id: 'BBV-C002', name: 'Puff for Bikini Bottom School District #67', kind: 'Candidate committee', candidate: 'Mrs. Puff', office: 'Bikini Bottom School District #67', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C003', name: 'Every Villain Is Lemons PAC', kind: 'PAC', candidate: '', office: '', committee_kind: 'PAC' },
   { id: 'BBV-C004', name: 'Sheldon Plankton for Bikini Bottom Campaign', kind: 'Candidate committee', candidate: 'Sheldon Plankton', office: 'Bikini Bottom campaign', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C005', name: 'Larry Lobster for Mayor of Bikini Bottom', kind: 'Candidate committee', candidate: 'Larry Lobster', office: 'Mayor of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
@@ -141,8 +141,6 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
   }
 });
 
-// Defensive capture guard: details/fieldset descendants remain inert even if a
-// browser ignores disabled interaction on an ancestor shell.
 document.addEventListener('click', (event) => {
   if (!practiceActive()) return;
   if (!event.target?.closest?.('.practice-geo-asleep')) return;
