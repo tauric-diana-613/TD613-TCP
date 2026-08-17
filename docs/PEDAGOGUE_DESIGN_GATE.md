@@ -32,6 +32,21 @@ node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-vault
 
 The runner returns PASS only when the fixture preserves consequence-before-ontology, rest/exit, AIA non-equivalence, non-worsening comparative route burden, the prohibition on user-level scoring/automatic redesign, and human closure.
 
+## Canonical Practice Fixture relationship
+
+A Design Gate fixture asks whether a proposed consequential route is structurally admissible. A Canonical Practice Fixture asks whether a manifestly fictional known-ground-truth case actually traversed an expected real route without acquiring real-world authority.
+
+The practice assay is implemented in `app/engine/flowcore-pedagogue-practice-fixture.js` and documented in `docs/CANONICAL_PRACTICE_FIXTURE.md`.
+
+Keep the distinction explicit:
+
+```text
+Design Gate = compare/grade a proposed route
+Practice Fixture = calibrate an observed route against known fictional ground truth
+```
+
+Neither instrument grants deployment, release, product mutation, evidence authority, or automatic redesign.
+
 ## Fixture custody law
 
 Product-specific proving cases belong under `tests/fixtures/pedagogue/` or another test-only fixture tree. Do not place Pedagogue/AIA fixtures inside a deployable product directory merely because that product is being reviewed. A product may be evaluated by the engine without exposing the engine's internal nomenclature to its users.
@@ -40,20 +55,25 @@ Current Giving proving cases:
 
 - `tests/fixtures/pedagogue/giving-vault-design.json`
 - `tests/fixtures/pedagogue/giving-research-dossier-design.json`
+- `tests/fixtures/pedagogue/giving-bikini-bottom-practice.json`
 
 These fixtures prove generic mechanics; they do not teach the Pedagogue engine a Giving taxonomy.
 
 ## Route-history / tomography discipline
 
-The Design Gate may use implemented route-memory, projection-crossing, and gluing-obstruction surrogates to compare structural demand. Keep the claim ceiling exact:
+The Design Gate and practice-fixture assay may use implemented route-memory, projection-crossing, gluing-obstruction, and known-ground-truth route-reconstruction surrogates to compare structural demand. Keep the claim ceiling exact:
 
 - same endpoint does not establish same route;
 - same route does not establish same authority;
 - route-memory diagnostics are comparative engineering evidence, not a claim of literal differential geometry in ordinary application code;
+- a calibration phantom is a known-ground-truth test object, not proof that the system implements physical tomography;
+- transport, connection, curvature, and geometric holonomy remain unclaimed until separately declared and witnessed;
 - tomography/holonomy vocabulary stays in research/test architecture unless a public instrument intentionally exposes it.
 
 ## CI expectation
 
 A product PR may carry new generic, additive Design Gate fixtures or helpers without becoming a full-product/Ash release **only when** those shared files are not imported by unrelated production surfaces. The validation-scope classifier must enumerate that narrow exception explicitly and the Giving CI lane must execute the Design Gate tests.
 
-The gate is a design witness, never deployment authority.
+When the shared Pedagogue engine itself changes, CI may widen honestly. Do not force a Giving-only classification merely because Giving supplied the proving case.
+
+The gate and the practice assay are design/calibration witnesses, never deployment authority.
