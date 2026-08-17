@@ -21,24 +21,48 @@ const COMMITTEES = Object.freeze([
 
 const NOISE_PEOPLE = Object.freeze({
   'Pearl Krabs': {
-    address: '17 Whale Tail Lane · FICTIONAL ANCHOR HOUSE',
-    given: 'Pearl', family: 'Krabs', employer: 'Krusty Krab Family Holdings · FICTIONAL', occupation: 'Student / Heiress · FICTIONAL',
-    quality: 'NEARBY_NAME'
+    address: '17 Whale Tail Lane · FICTIONAL ANCHOR HOUSE', given: 'Pearl', family: 'Krabs',
+    employer: 'Krusty Krab Family Holdings · FICTIONAL', occupation: 'Student / Heiress · FICTIONAL', quality: 'NEARBY_NAME'
   },
   'Sandy Grouper': {
-    address: '404 Grouper Grotto · FICTIONAL REEF',
-    given: 'Sandy', family: 'Grouper', employer: 'Bikini Bottom Marine Lab · FICTIONAL', occupation: 'Marine Researcher · FICTIONAL',
-    quality: 'NEARBY_NAME'
+    address: '404 Grouper Grotto · FICTIONAL REEF', given: 'Sandy', family: 'Grouper',
+    employer: 'Bikini Bottom Marine Lab · FICTIONAL', occupation: 'Marine Researcher · FICTIONAL', quality: 'NEARBY_NAME'
   },
   'Squidward Tennisballs': {
-    address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS',
-    given: 'Squidward', family: 'Tennisballs', employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL',
-    quality: 'DIRTY_VARIANT'
+    address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tennisballs',
+    employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT'
+  },
+  'Squidward Tentpoles': {
+    address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tentpoles',
+    employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT'
+  },
+  'Squidward Tortellini': {
+    address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tortellini',
+    employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT'
   },
   'Rick Star': {
-    address: 'PA-TRICK Name Tag Lane · FICTIONAL MISREAD',
-    given: 'Rick', family: 'Star', employer: 'Rock Residence · FICTIONAL', occupation: 'Misread Name Tag · FICTIONAL',
-    quality: 'DIRTY_VARIANT'
+    address: 'PA-TRICK Name Tag Lane · FICTIONAL MISREAD', given: 'Rick', family: 'Star',
+    employer: 'Rock Residence · FICTIONAL', occupation: 'Misread Name Tag · FICTIONAL', quality: 'DIRTY_VARIANT'
+  },
+  'Sponge Bob Squarepants': {
+    address: '124 Conch Street · FICTIONAL PINEAPPLE', given: 'Sponge Bob', family: 'Squarepants',
+    employer: 'Krusty Krab · FICTIONAL', occupation: 'Fry Cook · FICTIONAL', quality: 'SPACING_VARIANT'
+  },
+  'Spongebob Square Pants': {
+    address: '124 Conch Street · FICTIONAL PINEAPPLE', given: 'Spongebob', family: 'Square Pants',
+    employer: 'Krusty Krab · FICTIONAL', occupation: 'Fry Cook · FICTIONAL', quality: 'SPACING_VARIANT'
+  },
+  'Eugene Krabs': {
+    address: '1 Krusty Krab Plaza · FICTIONAL RESTAURANT', given: 'Eugene', family: 'Krabs',
+    employer: 'Krusty Krab · FICTIONAL', occupation: 'Restaurateur · FICTIONAL', quality: 'OMITTED_MIDDLE_INITIAL'
+  },
+  'Patrick Staar': {
+    address: '120 Conch Street · FICTIONAL ROCK', given: 'Patrick', family: 'Staar',
+    employer: 'Self · FICTIONAL', occupation: 'Professional Lounger · FICTIONAL', quality: 'TRANSPOSITION_VARIANT'
+  },
+  'Sandy Cheecks': {
+    address: '1 Treedome Way · FICTIONAL AIR DOME', given: 'Sandy', family: 'Cheecks',
+    employer: 'Treedome Research Lab · FICTIONAL', occupation: 'Scientist · FICTIONAL', quality: 'DOUBLED_LETTER_VARIANT'
   }
 });
 
@@ -63,16 +87,27 @@ const NOISE_TX = Object.freeze({
     ['2025-07-19', 26000, COMMITTEES[3]], ['2025-12-06', 30000, COMMITTEES[2]],
     ['2026-03-21', 35000, COMMITTEES[1]], ['2026-07-11', 40000, COMMITTEES[0]]
   ],
-  'Squidward Tennisballs': [
-    ['2023-04-01', 3333, COMMITTEES[2]]
+  'Squidward Tennisballs': [['2021-04-01', 3333, COMMITTEES[2]]],
+  'Squidward Tentpoles': [['2023-04-01', 4444, COMMITTEES[3]]],
+  'Squidward Tortellini': [['2025-04-01', 5555, COMMITTEES[7]]],
+  'Rick Star': [['2024-04-01', 4200, COMMITTEES[0]]],
+  'Sponge Bob Squarepants': [
+    ['2020-04-02', 900, COMMITTEES[0]], ['2022-04-02', 1900, COMMITTEES[2]],
+    ['2024-04-02', 2900, COMMITTEES[4]], ['2026-04-02', 3900, COMMITTEES[6]]
   ],
-  'Rick Star': [
-    ['2024-04-01', 4200, COMMITTEES[0]]
-  ]
+  'Spongebob Square Pants': [
+    ['2021-04-03', 1100, COMMITTEES[1]], ['2023-04-03', 2100, COMMITTEES[3]],
+    ['2025-04-03', 3100, COMMITTEES[5]], ['2026-05-03', 4100, COMMITTEES[7]]
+  ],
+  'Eugene Krabs': [['2022-06-15', 125000, COMMITTEES[5]], ['2025-06-15', 250000, COMMITTEES[5]]],
+  'Patrick Staar': [['2022-03-17', 1700, COMMITTEES[4]], ['2026-03-17', 2700, COMMITTEES[0]]],
+  'Sandy Cheecks': [['2021-08-08', 2400, COMMITTEES[6]], ['2025-08-08', 3400, COMMITTEES[1]]]
 });
 
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 const folded = (value) => compact(value).toLocaleLowerCase('en-US');
+const skeleton = (value) => folded(value).replace(/[^a-z0-9]+/g, '');
+const tokens = (value) => folded(value).split(/[^a-z0-9]+/).filter((token) => token.length >= 4);
 const safeToken = (value) => folded(value).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function recordFor(name, [date, amountCents, committee], index) {
@@ -83,50 +118,28 @@ function recordFor(name, [date, amountCents, committee], index) {
     digest: `practice:${_givingPracticeHydration.PRACTICE_FIXTURE_ID}:${token}`,
     contributor_name_raw: name,
     contributor_name: name,
-    contributor_name_parsed: {
-      display: name,
-      given: person.given,
-      middle: null,
-      family: person.family,
-      suffix: null
-    },
+    contributor_name_parsed: { display: name, given: person.given, middle: null, family: person.family, suffix: null },
     address: person.address,
-    city: 'Bikini Bottom',
-    state: 'Oceania',
-    zip: 'X',
-    employer: person.employer,
-    occupation: person.occupation,
-    committee,
-    committee_name: committee,
+    city: 'Bikini Bottom', state: 'Oceania', zip: 'X',
+    employer: person.employer, occupation: person.occupation,
+    committee, committee_name: committee,
     committee_kind: referendum ? 'ISSUE_REFERENDUM' : 'CANDIDATE_OR_POLITICAL_COMMITTEE',
     jurisdiction: 'Bikini Bottom, Oceania · FICTIONAL',
     office: referendum ? 'Issue / referendum · FICTIONAL' : null,
-    cycle: date.slice(0, 4),
-    election: `${date.slice(0, 4)} fictional cycle`,
-    contribution_date: date,
+    cycle: date.slice(0, 4), election: `${date.slice(0, 4)} fictional cycle`, contribution_date: date,
     contribution_type: amountCents <= 2500 ? 'FICTIONAL SMALL-DOLLAR' : 'FICTIONAL CONTRIBUTION',
     amount_cents: amountCents,
-    source_family: 'FICTIONAL_PRACTICE',
-    source_instance_id: PRACTICE_SOURCE_ID,
-    custodian: 'BikiniBottomVotes',
-    evidence_status: 'FICTIONAL_SAMPLE',
-    retrieved_at: new Date().toISOString(),
+    source_family: 'FICTIONAL_PRACTICE', source_instance_id: PRACTICE_SOURCE_ID, custodian: 'BikiniBottomVotes',
+    evidence_status: 'FICTIONAL_SAMPLE', retrieved_at: new Date().toISOString(),
     source_native_ids: { practice_record_id: token },
     practice_name_quality: person.quality,
-    pedagogy_note: person.quality === 'DIRTY_VARIANT'
-      ? 'Deliberately dirty fictional name record: use partial names, aliases, and exact-match posture to investigate before identity closure.'
-      : 'Deliberately nearby fictional name: broad matching can surface a different person who shares part of the target name.',
+    pedagogy_note: person.quality === 'NEARBY_NAME'
+      ? 'Nearby fictional identity: broad matching can surface a different person who shares part of the target name.'
+      : 'Dirty fictional name record: investigate spacing, omitted initials, transcription error, nickname, or typo before identity closure.',
     lineage: {
-      schema: 'td613.giving.practice-lineage/v1',
-      practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
-      manifestly_fictional: true,
-      practice_record: true,
-      ambiguity_fixture: true,
-      name_quality: person.quality,
-      evidence_authority: false,
-      consequence_authority: false,
-      external_retrieval: false,
-      source_projection: 'BikiniBottomVotes'
+      schema: 'td613.giving.practice-lineage/v1', practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
+      manifestly_fictional: true, practice_record: true, ambiguity_fixture: true, name_quality: person.quality,
+      evidence_authority: false, consequence_authority: false, external_retrieval: false, source_projection: 'BikiniBottomVotes'
     }
   };
 }
@@ -143,14 +156,20 @@ function termsFromQuery(query = {}) {
   return [query.name, ...(Array.isArray(query.aliases) ? query.aliases : [])].map(compact).filter(Boolean);
 }
 
+function broadNameMatch(candidate, term) {
+  const candidateFolded = folded(candidate);
+  const termFolded = folded(term);
+  if (candidateFolded.includes(termFolded) || termFolded.includes(candidateFolded)) return true;
+  if (skeleton(candidate) === skeleton(term)) return true;
+  const candidateTokens = new Set(tokens(candidate));
+  return tokens(term).some((token) => candidateTokens.has(token));
+}
+
 function matchedNames(query = {}) {
-  const terms = termsFromQuery(query).map(folded);
+  const terms = termsFromQuery(query);
   if (!terms.length) return [];
   const exact = Boolean(query.exact_match);
-  return allKnownNames().filter((candidate) => {
-    const value = folded(candidate);
-    return terms.some((term) => exact ? value === term : value.includes(term));
-  });
+  return allKnownNames().filter((candidate) => terms.some((term) => exact ? folded(candidate) === folded(term) : broadNameMatch(candidate, term)));
 }
 
 function dateMatches(record, query = {}) {
@@ -161,11 +180,8 @@ function dateMatches(record, query = {}) {
 }
 
 function recordsForQuery(query = {}) {
-  const names = matchedNames(query);
-  return names.flatMap((name) => {
-    const records = CANONICAL_NAMES.includes(name)
-      ? _givingPracticeHydration.recordsFor(name)
-      : noiseRecordsFor(name);
+  return matchedNames(query).flatMap((name) => {
+    const records = CANONICAL_NAMES.includes(name) ? _givingPracticeHydration.recordsFor(name) : noiseRecordsFor(name);
     return records.filter((record) => dateMatches(record, query));
   });
 }
@@ -200,51 +216,29 @@ const priorFetch = globalThis.fetch.bind(globalThis);
 globalThis.fetch = async (input, init = {}) => {
   const envelope = parseEnvelope(init);
   const query = envelope?.payload?.query;
-  if (!_givingPracticeHydration.active() || envelope?.operation !== 'search.page' || envelope?.payload?.source_instance_id !== PRACTICE_SOURCE_ID || !query) {
-    return priorFetch(input, init);
-  }
+  if (!_givingPracticeHydration.active() || envelope?.operation !== 'search.page' || envelope?.payload?.source_instance_id !== PRACTICE_SOURCE_ID || !query) return priorFetch(input, init);
 
   await sleep(practiceDelay(query), init.signal);
   const names = matchedNames(query);
   const records = recordsForQuery(query);
   return response({
     ok: true,
-    data: {
-      page: {
-        records,
-        continuation: null,
-        source_status: 'READY',
-        coverage: 'FICTIONAL PRACTICE · 2020 → 2026 · BikiniBottomVotes',
-        practice_projection: true,
-        practice_match_mode: query.exact_match ? 'NORMALIZED_EXACT' : 'BROAD_DISCOVERY',
-        matched_fictional_names: names,
-        ambiguity_records_present: records.some((record) => record.lineage?.ambiguity_fixture === true)
-      }
-    },
+    data: { page: {
+      records, continuation: null, source_status: 'READY',
+      coverage: 'FICTIONAL PRACTICE · 2020 → 2026 · BikiniBottomVotes', practice_projection: true,
+      practice_match_mode: query.exact_match ? 'NORMALIZED_EXACT' : 'BROAD_DISCOVERY',
+      matched_fictional_names: names, ambiguity_records_present: records.some((record) => record.lineage?.ambiguity_fixture === true)
+    } },
     receipt: {
-      schema: 'td613.giving.practice-receipt/v1',
-      at: new Date().toISOString(),
-      event: 'PRACTICE_RETRIEVAL_COMPLETE',
-      practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
-      manifestly_fictional: true,
-      source_instance_id: PRACTICE_SOURCE_ID,
-      query_name: compact(query.name),
-      exact_match: Boolean(query.exact_match),
-      matched_fictional_names: names,
-      record_count: records.length,
-      external_retrieval: false,
-      external_mutation: false,
-      evidence_authority: false,
-      consequence_authority: false
+      schema: 'td613.giving.practice-receipt/v1', at: new Date().toISOString(), event: 'PRACTICE_RETRIEVAL_COMPLETE',
+      practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID, manifestly_fictional: true,
+      source_instance_id: PRACTICE_SOURCE_ID, query_name: compact(query.name), exact_match: Boolean(query.exact_match),
+      matched_fictional_names: names, record_count: records.length, external_retrieval: false, external_mutation: false,
+      evidence_authority: false, consequence_authority: false
     }
   });
 };
 
 export const _givingPracticeSearchNoise = Object.freeze({
-  CANONICAL_NAMES,
-  NOISE_PEOPLE,
-  NOISE_TX,
-  COMMITTEES,
-  matchedNames,
-  recordsForQuery
+  CANONICAL_NAMES, NOISE_PEOPLE, NOISE_TX, COMMITTEES, broadNameMatch, matchedNames, recordsForQuery
 });
