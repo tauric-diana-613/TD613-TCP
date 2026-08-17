@@ -27,4 +27,6 @@ const bootstrap = read('app/giving/history/giving-bootstrap.js');
 assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-4'/, 'Giving coordinated module graph remains sealed');
 assert.match(bootstrap, /giving-shared-access\.js/, 'Giving shared-access control must ship inside the coordinated browser module graph');
 
+await import('./giving-pedagogue-hydration.test.mjs');
+
 console.log('giving-fec-boundary-page.test.mjs passed: FEC returns one bounded provider page and exposes continuation for an explicit next gesture.');
