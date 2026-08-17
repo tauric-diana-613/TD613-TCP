@@ -104,8 +104,9 @@ export async function witnessGivingPracticeFixture(page) {
   }
   const afterSearch = await snapshot(page);
   assert.deepEqual(traversalRequests, [], `BikiniBottomVotes search must terminate in the browser practice boundary: ${JSON.stringify(traversalRequests)}`);
-  assert.equal(afterSearch.fictionalCards, 12, 'SpongeBob practice retrieval must expose the authored 12-record grassroots history');
+  assert.equal(afterSearch.fictionalCards, 13, 'SpongeBob practice retrieval must expose the authored 13-record grassroots history including the referendum contrast');
   assert.equal(afterSearch.fictionalChips, afterSearch.fictionalCards, 'every fictional contribution card must carry the magenta provenance chip');
+  assert.match(afterSearch.recordList, /Krusty Krab Parking Expansion Referendum Committee/);
   assert.match(afterSearch.recordList, /Bikini Bottom/);
   assert.match(afterSearch.recordList, /Oceania/);
   assert.match(afterSearch.recordList, />X</);
@@ -151,6 +152,7 @@ export async function witnessGivingPracticeFixture(page) {
     practice_source_locked: true,
     fictional_records_observed: afterSearch.fictionalCards,
     fictional_record_provenance_chips: afterSearch.fictionalChips,
+    political_object_contrast_observed: true,
     local_practice_file_saved: true,
     encrypted_practice_vault_version_observed: true,
     external_retrieval_requests: 0,
