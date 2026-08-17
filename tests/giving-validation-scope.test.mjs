@@ -102,4 +102,5 @@ await import('./giving-vercel-route.test.mjs');
 await import('./giving-ux-resilience.test.mjs');
 await import('./giving-release-content-probe.test.mjs');
 await import('./giving-vercel-settlement.test.mjs');
+await import('./giving-vercel-release-receipt.test.mjs');
 await import('./pedagogue-design-gate.test.mjs');
