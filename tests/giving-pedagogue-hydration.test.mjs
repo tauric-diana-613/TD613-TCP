@@ -65,6 +65,10 @@ assert.match(bridge, /practice:giving\.bikini-bottom-practice\//);
 assert.match(bridge, /FICTIONAL PRACTICE · Bikini Bottom, Oceania/);
 assert.match(bridge, /duringPracticeLoad/);
 assert.match(bridge, /stopImmediatePropagation/);
+assert.match(bridge, /function enforcePracticeSourceSelection/);
+assert.match(bridge, /input\.checked = input\.value === PRACTICE_SOURCE_ID/);
+assert.match(bridge, /#searchForm/);
+assert.match(bridge, /addEventListener\('submit', enforcePracticeSourceSelection, true\)/, 'practice source selection must be reasserted in capture phase before core startSearch reads the DOM');
 assert.match(bridge, /blockedCampaignActions/);
 
 assert.match(shell, /td613:giving-practice-load-request/);
