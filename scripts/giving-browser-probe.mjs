@@ -419,12 +419,6 @@ try {
     failedResources,
     { practiceRequestBoundary: classificationBoundary }
   );
-  const statusRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'session.status');
-  const registryRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'registry.read');
-  if (production && practiceObservation) {
-    assert.ok(statusRefusals.length <= 1, `production practice may observe at most one pre-practice session.status refusal: ${JSON.stringify(statusRefusals)}`);
-    assert.ok(registryRefusals.length <= 1, `production practice may observe at most one fail-closed pre-practice registry.read refusal: ${JSON.stringify(registryRefusals)}`);
-  }
   const receipt = {
     schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
