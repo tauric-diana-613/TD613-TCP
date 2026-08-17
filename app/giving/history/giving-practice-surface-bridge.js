@@ -1,10 +1,12 @@
 const PRACTICE_SOURCE_ID = 'practice-bikini-bottom-votes';
 const PRACTICE_PRIMARY_NAME = 'SpongeBob SquarePants';
 const PRACTICE_DATE_FROM = '2020-01-01';
+const PRACTICE_NAMES = Object.freeze(['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']);
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let practiceSource = null;
 let injecting = false;
+let touched = { name: false, exact: false, from: false, to: false };
 
 function duringPracticeLoad() {
   return document.documentElement.dataset.givingPracticeLoad === 'true';
@@ -21,6 +23,20 @@ function today() {
 function practiceRecordsExist() {
   return Boolean($('#recordList .record-card[data-fictional-sample="true"]')) ||
     [...$$('#recordList .record-card')].some((card) => String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/'));
+}
+
+function normalize(value) {
+  return String(value ?? '').normalize('NFKC').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim();
+}
+
+function broadenPracticeNameWhenRequested() {
+  const exact = $('#exactMatchToggle');
+  const input = $('#searchName');
+  if (!input || exact?.checked !== false) return;
+  const needle = normalize(input.value);
+  if (!needle) return;
+  const matches = PRACTICE_NAMES.filter((name) => normalize(name).includes(needle));
+  if (matches.length === 1) input.value = matches[0];
 }
 
 function showPracticeExitConfirmation() {
@@ -53,21 +69,32 @@ function syncPracticeChrome() {
   const campaignTab = $('.tab[data-view="campaign"]');
   if (campaignTab) {
     campaignTab.dataset.practiceAsleep = practiceActive() ? 'true' : 'false';
-    campaignTab.setAttribute('aria-describedby', practiceActive() ? 'practiceCampaignSleepHint' : '');
+    if (practiceActive()) campaignTab.setAttribute('aria-describedby', 'practiceCampaignSleepHint');
+    else campaignTab.removeAttribute('aria-describedby');
   }
 }
 
-// Canonical fixture load must remain zero-effect. The existing Giving shell uses
-// input/change events for ordinary autosave, so stop those events only during the
-// bounded fixture-load instant. Search, Save, and Vault remain separate gestures.
+function resetTouched() {
+  touched = { name: false, exact: false, from: false, to: false };
+}
+
 document.addEventListener('input', (event) => {
-  if (!duringPracticeLoad()) return;
-  if (['dossierTitle', 'searchName', 'searchAliases', 'searchHints', 'dateFrom', 'dateTo', 'contactQueueInput'].includes(event.target?.id)) event.stopImmediatePropagation();
+  if (duringPracticeLoad()) {
+    if (['dossierTitle', 'searchName', 'searchAliases', 'searchHints', 'dateFrom', 'dateTo', 'contactQueueInput'].includes(event.target?.id)) event.stopImmediatePropagation();
+    return;
+  }
+  if (!practiceActive()) return;
+  if (event.target?.id === 'searchName') touched.name = true;
+  if (event.target?.id === 'dateFrom') touched.from = true;
+  if (event.target?.id === 'dateTo') touched.to = true;
 }, true);
 
 document.addEventListener('change', (event) => {
-  if (!duringPracticeLoad()) return;
-  if (event.target?.id === 'exactMatchToggle' || event.target?.closest?.('#sourceRegistry')) event.stopImmediatePropagation();
+  if (duringPracticeLoad()) {
+    if (event.target?.id === 'exactMatchToggle' || event.target?.closest?.('#sourceRegistry')) event.stopImmediatePropagation();
+    return;
+  }
+  if (practiceActive() && event.target?.id === 'exactMatchToggle') touched.exact = true;
 }, true);
 
 function practiceSourceMarkup(source) {
@@ -103,26 +130,25 @@ function enforcePracticeSourceSelection() {
 function enforcePracticeSearchPosture() {
   if (!practiceActive()) return;
   enforcePracticeSourceSelection();
+
+  const initial = !practiceRecordsExist();
   const exact = $('#exactMatchToggle');
-  if (exact) exact.checked = true;
   const from = $('#dateFrom');
   const to = $('#dateTo');
-  if (from) from.value = PRACTICE_DATE_FROM;
-  if (to) to.value = today();
+  const name = $('#searchName');
 
-  // Before the first fictional record exists, the initial search belongs to the
-  // authored SpongeBob seed even if a late authenticated hydrateForm() restored
-  // the pre-demo query. Once the first result exists, queued contributor searches
-  // keep their own current names while exact-match/source/date posture stays fixed.
-  if (!practiceRecordsExist()) {
-    const name = $('#searchName');
-    if (name) name.value = PRACTICE_PRIMARY_NAME;
-  }
+  if (initial && !touched.exact && exact) exact.checked = true;
+  if (initial && !touched.from && from) from.value = PRACTICE_DATE_FROM;
+  if (initial && !touched.to && to) to.value = today();
+  if (initial && !touched.name && name) name.value = PRACTICE_PRIMARY_NAME;
+
+  broadenPracticeNameWhenRequested();
 }
 
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
   practiceSource = null;
+  resetTouched();
   $('#practiceFloatingExitButton')?.remove();
   syncPracticeChrome();
 }
@@ -130,6 +156,7 @@ function removePracticeSource() {
 document.addEventListener('td613:giving-practice-source-registry', (event) => {
   const action = event.detail?.action;
   if (action === 'register' && event.detail?.source) {
+    resetTouched();
     practiceSource = event.detail.source;
     ensurePracticeSource();
     queueMicrotask(() => {
@@ -141,9 +168,6 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
   }
 });
 
-// Ordinary authenticated hydration may finish after the sample was loaded.
-// Reassert the closed practice aperture at the explicit SEARCH gesture boundary,
-// before Giving's bubble-phase startSearch reads the current form.
 $('#searchForm')?.addEventListener('submit', enforcePracticeSearchPosture, true);
 
 const registry = $('#sourceRegistry');
@@ -151,7 +175,7 @@ if (registry) {
   new MutationObserver(() => {
     if (!practiceActive()) return;
     ensurePracticeSource();
-    queueMicrotask(enforcePracticeSearchPosture);
+    queueMicrotask(enforcePracticeSourceSelection);
   }).observe(registry, { childList: true, subtree: false });
 }
 
@@ -197,6 +221,8 @@ document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button');
   if (!button) return;
 
+  // Exit route 3 of exactly 3: Campaign Deputy tab. The other two are the
+  // source-box Exit Demo control and the fixed floating Exit Demo control.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -210,26 +236,25 @@ document.addEventListener('click', (event) => {
   event.preventDefault();
   event.stopImmediatePropagation();
   const message = 'FICTIONAL PRACTICE · Campaign Deputy is asleep. Exit the demo before opening or mutating any real CRM surface.';
-  for (const id of ['campaignToolsStatus', 'campaignDeputyToolsStatus']) {
-    const status = document.getElementById(id);
-    if (status) status.textContent = message;
-  }
-  showPracticeExitConfirmation();
+  const status = $('#campaignDeputyToolsStatus');
+  if (status) status.textContent = message;
 }, true);
 
 const sleepHint = document.createElement('span');
 sleepHint.id = 'practiceCampaignSleepHint';
 sleepHint.hidden = true;
-sleepHint.textContent = 'Campaign Deputy sleeps during the fictional sample. Activating this tab opens the Exit Sample Demo confirmation.';
+sleepHint.textContent = 'Campaign Deputy sleeps during the fictional sample. Activating this tab opens the shared Exit Sample Demo confirmation.';
 document.body.append(sleepHint);
 syncPracticeChrome();
 
 export const _givingPracticeSurfaceBridge = Object.freeze({
   PRACTICE_SOURCE_ID,
   PRACTICE_PRIMARY_NAME,
+  PRACTICE_NAMES,
   ensurePracticeSource,
   enforcePracticeSourceSelection,
   enforcePracticeSearchPosture,
+  broadenPracticeNameWhenRequested,
   ensureFloatingExit,
   showPracticeExitConfirmation,
   decoratePracticeRecords
