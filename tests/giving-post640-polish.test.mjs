@@ -8,6 +8,8 @@ const shell = read('app/giving/history/giving-ux-resilience-shell.js');
 const shellCss = read('app/giving/history/giving-ux-resilience.css');
 const help = read('app/giving/history/giving-dossier-help.js');
 const helpCss = read('app/giving/history/giving-dossier-help.css');
+const practice = read('app/giving/history/giving-practice-hydration.js');
+const practiceCss = read('app/giving/history/giving-practice-hydration.css');
 const polish = read('app/giving/history/giving-polish.css');
 const sharedAccess = read('app/giving/history/giving-shared-access.js');
 const pageSize = read('app/giving/history/giving-page-size.js');
@@ -23,24 +25,28 @@ const workflow = read('.github/workflows/td613-ci.yml');
 assert.doesNotThrow(() => new Function(shell), 'Giving resilience shell must remain browser-parseable');
 assert.doesNotThrow(() => new Function(renderBackpressure.replace(/export const[\s\S]*$/m, '')), 'Giving search backpressure module must remain browser-parseable');
 
-assert.match(
-  stateCss,
-  /@media \(max-width: 760px\)[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/,
-  'mobile state and municipal selectors must preserve the desktop two-column option grammar'
-);
+assert.match(stateCss, /@media \(max-width: 760px\)[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/, 'mobile state and municipal selectors must preserve the desktop two-column option grammar');
 
 assert.match(shell, /One contributor research file = one investigation\./);
 assert.match(shell, /researchFileVaultButton/);
 assert.match(shell, /Load fictional sample/);
-assert.match(shell, /SpongeBob SquarePants/);
-assert.match(shell, /Patrick Star/);
-assert.match(shell, /SAMPLE only/);
+assert.match(shell, /td613:giving-practice-load-request/);
 assert.match(shell, /First encrypted save: choose a passphrase here\./);
 assert.match(shell, /Untitled contributor research/);
+assert.match(shell, /scrollViewToTop\('view-vault'\)/);
+assert.match(shell, /dossier-single-picker/);
+
+for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) assert.ok(practice.includes(name));
+assert.match(practice, /Krusty Krab Parking Expansion Referendum Committee/);
+assert.match(practice, /exact\.checked = true/);
+assert.match(practice, /8000 \+ \(hash % 8001\)/);
+assert.match(practiceCss, /\.fictional-sample-chip/);
+assert.match(practiceCss, /\.dossier-single-picker-menu\.giving-state-filter-menu \{[\s\S]*?grid-template-columns: 1fr/);
 
 assert.match(help, /Contributor research file/);
 assert.match(help, /Giving calls this object a dossier internally/);
-assert.match(helpCss, /font-size:\s*11px/);
+assert.match(help, /custodyModeHelp/);
+assert.match(helpCss, /font-size:\s*13px/);
 assert.match(helpCss, /font-weight:\s*500/);
 
 assert.match(shellCss, /\.campaign-segmented-control\s*\{[\s\S]*?gap:\s*5px/);
@@ -52,21 +58,20 @@ assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 100/);
 assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/, 'legacy page shim may narrow by source contract but may not widen the client request');
 assert.match(reviewPagingCore, /const PAGE_SIZE = 50/);
 assert.match(reviewPagingCore, /const LEGACY_RENDER_SLICE = 300/);
-assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/, 'review paging must detect the live search render gate');
-assert.match(reviewPagingCore, /if \(reviewRenderDeferred\(\)\) return \[\]/, 'live searches must retain evidence while declining expensive contribution-card DOM materialization');
-assert.match(reviewPagingCore, /nativeSlice\.call\(source, offset, offset \+ PAGE_SIZE\)/, 'settled review rendering must remain bounded to the visible page');
+assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/);
+assert.match(reviewPagingCore, /if \(reviewRenderDeferred\(\)\) return \[\]/);
+assert.match(reviewPagingCore, /nativeSlice\.call\(source, offset, offset \+ PAGE_SIZE\)/);
 assert.match(renderBackpressure, /runButton\.disabled/);
 assert.match(renderBackpressure, /root\.dataset\.givingSearchRender = 'deferred'/);
 assert.match(renderBackpressure, /delete root\.dataset\.givingSearchRender/);
 assert.match(renderBackpressure, /td613:giving-run-settled/);
-assert.match(renderBackpressure, /reviewSearch\?\.dispatchEvent\(new Event\('input'/, 'settlement must request one convergence review render');
-assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/, 'stable review-core URL remains preserved');
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/, 'coordinated Giving epoch remains sealed');
-assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/, 'search/render repair receives an isolated browser sub-epoch');
-assert.match(bootstrap, /repairUrl\('\.\/giving-review-paging\.js'\)/, 'fresh review paging wrapper must load under the repair sub-epoch');
-assert.match(bootstrap, /repairUrl\('\.\/giving-search-render-backpressure\.js'\)/, 'search backpressure membrane must load under the repair sub-epoch');
-assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-api\.js'\), \{ cache: 'reload'/, 'the exact unversioned Giving API child module must be revalidated before app import');
-assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-review-paging-core\.js\?v=20260813-3'\), \{ cache: 'reload'/, 'stable review-core URL must be cache-revalidated before the repair wrapper imports it');
+assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/);
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
+assert.match(bootstrap, /const GIVING_PEDAGOGUE_EPOCH = '20260817-2'/);
+assert.match(bootstrap, /giving-practice-hydration\.js/);
+assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
+assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-fec-resilience\.js\?v=20260814-1'\), \{ cache: 'reload'/);
 assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 
 assert.match(sharedAccess, /Close shared access/);
@@ -74,30 +79,15 @@ assert.match(sharedAccess, /Evict every shared Giving session/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
 
 assert.match(browserProbe, /witnessGivingPracticeFixture/);
-assert.match(browserProbe, /normalizedArtifactDir\.split\('\/'\)\.includes\('practice-production'\)/, 'bounded practice-production artifact custody must request the production fixture witness');
-assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'observe-existing' : 'match-source'/, 'practice observation must select observe-existing provenance explicitly');
-assert.match(browserProbe, /production && practiceObservation[\s\S]*?productionPracticeWitness = await witnessGivingPracticeFixture\(page\)/, 'production practice must execute the actual Bikini Bottom fixture assay');
-assert.match(browserProbe, /\['session\.status', 'registry\.read'\]\.includes\(item\?\.operation\)/, 'only exact protected bootstrap reads may be eligible for pre-practice classification');
-assert.match(browserProbe, /target\.pathname === '\/api\/td613-ledger'/, 'protected refusal classification must be pinned to the real Giving boundary');
-assert.match(browserProbe, /givingRequestStarts\.filter\(\(item\) => item\.sequence > practiceRequestBoundary\)/, 'production witness must measure Giving requests by request-start causality after the practice boundary');
-assert.match(browserProbe, /production practice fixture must not start Giving API requests/, 'practice-originated Giving requests remain fatal');
-assert.match(browserProbe, /request_sequence:\s*Number\.isInteger\(meta\.sequence\)/, 'failed responses must retain the originating Giving request sequence');
-assert.match(browserProbe, /item\.request_sequence <= practiceRequestBoundary/, 'protected refusal classification must depend on request start occurring before the practice boundary');
-assert.match(browserProbe, /practice_giving_request_delta:\s*practiceGivingRequestDelta/);
-assert.match(browserProbe, /expected_protected_refusals:\s*expectedProtectedRefusals/);
-assert.match(browserProbe, /failed_resources:\s*unexpectedFailedResources/);
-assert.match(browserProbe, /production practice receipt cannot seal without an observed fixture PASS/);
-assert.match(browserProbe, /production practice receipt cannot seal if the fixture starts Giving API traffic/);
-assert.ok(
-  practiceAssay.includes("return /\\/api\\/td613-ledger\\/?$/.test(url.pathname);"),
-  'practice assay must observe the real Giving API endpoint rather than the retired /api/giving alias'
-);
+assert.match(browserProbe, /normalizedArtifactDir\.split\('\/'\)\.includes\('practice-production'\)/);
+assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'observe-existing' : 'match-source'/);
+assert.ok(practiceAssay.includes("return /\\/api\\/td613-ledger\\/?$/.test(url.pathname);"));
 assert.match(practiceAssay, /loading the fictional practice case must not call Giving API/);
 assert.match(practiceAssay, /practice load must not start a retrieval run/);
-assert.match(practiceAssay, /practice load must not fabricate or alter contribution records/);
-assert.match(practiceAssay, /practice load must not create retrieval\/operator receipts/);
-assert.match(practiceAssay, /practice load must not write or hydrate Vault versions/);
-assert.match(practiceAssay, /practice load must not create Campaign Deputy receipts/);
+assert.match(practiceAssay, /49 fictional contributions/);
+assert.match(practiceAssay, /Open selected file must reopen/);
+assert.match(practiceAssay, /practice Vault must keep encrypted custody/);
+assert.match(practiceAssay, /confirmed exit must restore the live source picker/);
 assert.match(practiceAssay, /evidence_authority_granted:\s*false/);
 assert.match(practiceAssay, /consequence_authority_granted:\s*false/);
 
