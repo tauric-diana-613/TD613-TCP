@@ -28,6 +28,23 @@ const context = await browser.newContext({ viewport: { width: 1600, height: 1000
 const page = await context.newPage();
 const consoleErrors = [];
 const failedResources = [];
+const givingRequestsInFlight = new Map();
+let givingNetworkActivityAt = Date.now();
+
+function givingApiRequestDetails(request) {
+  if (!['fetch', 'xhr'].includes(request.resourceType())) return null;
+  try {
+    const target = new URL(request.url());
+    const origin = new URL(baseUrl);
+    if (target.origin !== origin.origin || target.pathname !== '/api/td613-ledger') return null;
+    let operation = null;
+    try { operation = JSON.parse(request.postData() || '{}')?.operation || null; } catch {}
+    return { method: request.method(), url: request.url(), operation };
+  } catch {
+    return null;
+  }
+}
+
 page.on('console', (message) => {
   if (message.type() === 'error') {
     const location = message.location()?.url;
@@ -35,6 +52,18 @@ page.on('console', (message) => {
   }
 });
 page.on('pageerror', (error) => consoleErrors.push(error.message));
+page.on('request', (request) => {
+  const details = givingApiRequestDetails(request);
+  if (!details) return;
+  givingRequestsInFlight.set(request, details);
+  givingNetworkActivityAt = Date.now();
+});
+const settleGivingRequest = (request) => {
+  if (!givingRequestsInFlight.delete(request)) return;
+  givingNetworkActivityAt = Date.now();
+};
+page.on('requestfinished', settleGivingRequest);
+page.on('requestfailed', settleGivingRequest);
 page.on('response', (response) => {
   if (response.status() < 400) return;
   const request = response.request();
@@ -60,31 +89,60 @@ function isExpectedProtectedRefusal(item) {
   }
 }
 
-function classifyFailedResources(items = failedResources) {
-  const expectedProtectedRefusals = items.filter(isExpectedProtectedRefusal);
-  const unexpectedFailedResources = items.filter((item) => !isExpectedProtectedRefusal(item));
+function isExpectedBootstrapRegistryRefusal(item) {
+  if (!(production && practiceObservation)) return false;
+  if (item?.status !== 401 || item?.method !== 'POST' || item?.operation !== 'registry.read') return false;
+  try {
+    const target = new URL(item.url);
+    const origin = new URL(baseUrl);
+    return target.origin === origin.origin && target.pathname === '/api/td613-ledger';
+  } catch {
+    return false;
+  }
+}
+
+function classifyFailedResources(items = failedResources, { bootstrapFailureCount = 0 } = {}) {
+  const expectedProtectedRefusals = [];
+  const unexpectedFailedResources = [];
+  items.forEach((item, index) => {
+    const expected = isExpectedProtectedRefusal(item) ||
+      (index < bootstrapFailureCount && isExpectedBootstrapRegistryRefusal(item));
+    if (expected) expectedProtectedRefusals.push(item);
+    else unexpectedFailedResources.push(item);
+  });
   return { expectedProtectedRefusals, unexpectedFailedResources };
 }
 
-async function waitForProtectedSessionBoundary({ timeoutMs = 10000 } = {}) {
-  if (!(production && practiceObservation)) return null;
+async function waitForGivingBootstrapQuiescence({ timeoutMs = 15000, quietMs = 750 } = {}) {
+  if (!(production && practiceObservation)) {
+    return { bootstrapFailureCount: 0, expectedProtectedRefusals: [] };
+  }
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
-    const { expectedProtectedRefusals } = classifyFailedResources();
-    if (expectedProtectedRefusals.length === 1) {
-      // The response event fires before Giving's boot() catch has fully closed
-      // the unauthenticated membrane. Let that micro-sequence settle, then the
-      // witness may expose the shell without racing the bootstrap status call.
-      await page.waitForTimeout(100);
-      return expectedProtectedRefusals[0];
+    const sessionState = await page.evaluate(() => document.documentElement.dataset.session || '');
+    const settledSession = sessionState !== '' && sessionState !== 'checking';
+    const networkIdle = givingRequestsInFlight.size === 0 && Date.now() - givingNetworkActivityAt >= quietMs;
+    if (settledSession && networkIdle) {
+      const bootstrapFailureCount = failedResources.length;
+      const { expectedProtectedRefusals, unexpectedFailedResources } = classifyFailedResources(
+        failedResources,
+        { bootstrapFailureCount }
+      );
+      assert.deepEqual(
+        unexpectedFailedResources,
+        [],
+        `Giving production bootstrap produced an unexpected protected-boundary failure before practice observation: ${JSON.stringify(unexpectedFailedResources)}`
+      );
+      const statusRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'session.status');
+      const registryRefusals = expectedProtectedRefusals.filter((item) => item.operation === 'registry.read');
+      assert.ok(statusRefusals.length <= 1, `production practice may observe at most one pre-auth session.status refusal: ${JSON.stringify(statusRefusals)}`);
+      assert.ok(registryRefusals.length <= 1, `production practice may observe at most one fail-closed bootstrap registry.read refusal: ${JSON.stringify(registryRefusals)}`);
+      return { bootstrapFailureCount, expectedProtectedRefusals };
     }
-    assert.ok(
-      expectedProtectedRefusals.length <= 1,
-      `production practice may observe at most one pre-auth session.status refusal before fixture observation: ${JSON.stringify(expectedProtectedRefusals)}`
-    );
     await page.waitForTimeout(50);
   }
-  throw new Error(`Giving production bootstrap did not settle its protected session.status boundary before practice observation: ${JSON.stringify(failedResources)}`);
+  const diagnostics = await hydrationDiagnostics();
+  throw new Error(`Giving production bootstrap did not become network-quiescent before practice observation: ${JSON.stringify({ diagnostics, failedResources, inFlight: [...givingRequestsInFlight.values()] })}`);
 }
 
 async function exposeOperatorShell() {
@@ -106,7 +164,8 @@ async function hydrationDiagnostics() {
     scopeShell: Boolean(document.querySelector('.campaign-scope-block')),
     researchGuide: Boolean(document.querySelector('#researchFileGuide')),
     vaultGuide: Boolean(document.querySelector('#vaultGuide')),
-    operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden)
+    operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden),
+    sessionState: document.documentElement.dataset.session || null
   }));
 }
 
@@ -306,11 +365,15 @@ try {
   let resilienceWitness = null;
   let productionPracticeWitness = null;
   let practiceFailedResourceDelta = [];
+  let bootstrapFailureCount = 0;
+  let expectedBootstrapRefusals = [];
   if (!production) resilienceWitness = await witnessResilienceUi();
   if (production && practiceObservation) {
     await requireResilienceShell();
     await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
-    await waitForProtectedSessionBoundary();
+    const bootstrapSettlement = await waitForGivingBootstrapQuiescence();
+    bootstrapFailureCount = bootstrapSettlement.bootstrapFailureCount;
+    expectedBootstrapRefusals = bootstrapSettlement.expectedProtectedRefusals;
     await exposeOperatorShell();
     const failedBeforePractice = failedResources.length;
     productionPracticeWitness = await witnessGivingPracticeFixture(page);
@@ -352,7 +415,10 @@ try {
   assert.deepEqual(mapper.zipMagic, [80, 75, 3, 4]);
 
   if (production) await page.screenshot({ path: path.join(artifactDir, 'giving-history.png'), fullPage: true });
-  const { expectedProtectedRefusals, unexpectedFailedResources } = classifyFailedResources();
+  const { expectedProtectedRefusals, unexpectedFailedResources } = classifyFailedResources(
+    failedResources,
+    { bootstrapFailureCount }
+  );
   const receipt = {
     schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
@@ -367,6 +433,7 @@ try {
     practice_fixture_load: resilienceWitness?.practiceFixture?.status || productionPracticeWitness?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     practice_failed_resource_delta: practiceFailedResourceDelta,
     expected_protected_refusals: expectedProtectedRefusals,
+    bootstrap_protected_refusals: expectedBootstrapRefusals,
     desktop_viewport: resilienceWitness ? '1600x1000' : null,
     mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,
@@ -377,9 +444,10 @@ try {
   };
   if (production && practiceObservation) {
     assert.equal(receipt.practice_fixture_load, 'PASS', 'production practice receipt cannot seal without an observed fixture PASS');
-    assert.ok(
-      expectedProtectedRefusals.length <= 1,
-      `production practice may observe at most one pre-auth session.status refusal: ${JSON.stringify(expectedProtectedRefusals)}`
+    assert.deepEqual(
+      expectedProtectedRefusals,
+      expectedBootstrapRefusals,
+      'all expected protected refusals must be fully contained before the practice observation clock begins'
     );
   }
   await fs.writeFile(path.join(artifactDir, 'receipt.json'), JSON.stringify(receipt, null, 2));
