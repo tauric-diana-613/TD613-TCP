@@ -80,6 +80,7 @@
 }
 
 .source-picker.practice-source-locked {
+  position: relative;
   min-height: 150px;
 }
 
