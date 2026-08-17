@@ -1,10 +1,5 @@
 import assert from 'node:assert/strict';
 
-// The caller owns bootstrap quiescence before this assay begins. Once this
-// request listener is installed, every Giving API network call belongs to the
-// observed practice window. The fictional source and practice Vault deliberately
-// terminate inside the browser, so traversal can exercise the real Giving route
-// without an external /api/td613-ledger request.
 function isGivingApiRequest(request) {
   if (!['fetch', 'xhr'].includes(request.resourceType())) return false;
   try {
@@ -87,8 +82,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal(afterLoad.vaultVersions, before.vaultVersions, 'practice load must not write or hydrate Vault versions');
   assert.equal(afterLoad.coverageExecutiveLine, before.coverageExecutiveLine, 'practice load must not create a coverage claim');
 
-  // Traversal begins only after the separate SEARCH gesture. Compress the
-  // pedagogical delay for CI; production users still receive the authored 8–16s.
   await page.evaluate(() => { globalThis.__TD613_GIVING_PRACTICE_DELAY_MS__ = 25; });
   const traversalRequests = [];
   const onTraversalRequest = (request) => {
@@ -116,10 +109,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(afterSearch.sourceProgress, /BikiniBottomVotes/);
   assert.match(afterSearch.coverageExecutiveLine, /1\/1 selected sources complete/);
 
-  // Now hydrate the other four authored contributors through the actual contact
-  // queue. Hold is explicit so SpongeBob remains in the dossier; the end state is
-  // a 49-record, five-person practice file that exercises all eight committee
-  // objects without crossing the external Giving boundary.
   await page.locator('#holdReviewButton').click();
   await page.locator('#addContactQueueButton').click();
   await page.waitForFunction(() => document.querySelectorAll('#contactQueueList .contact-queue-item').length === 4, null, { timeout: 5000 });
@@ -136,7 +125,6 @@ export async function witnessGivingPracticeFixture(page) {
   } finally {
     page.off('request', onQueueRequest);
   }
-  document = undefined;
   const afterQueue = await snapshot(page);
   assert.deepEqual(queueRequests, [], 'all four queued Bikini Bottom contributors must remain inside the browser practice boundary');
   assert.deepEqual(afterQueue.queueStates, ['SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED']);
@@ -157,15 +145,12 @@ export async function witnessGivingPracticeFixture(page) {
     'Krusty Krab Parking Expansion Referendum Committee'
   ]) assert.match(afterQueue.recordList, new RegExp(committee.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
-  // The real local Save route must now have a meaningful sample to reopen.
   await page.locator('#saveDossierButton').click();
   await page.waitForFunction(() => [...(document.querySelector('#localDossierSelect')?.options || [])]
     .some((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')), null, { timeout: 5000 });
   const afterSave = await snapshot(page);
   assert.ok(afterSave.localSampleOptions >= 1, 'explicit Save must produce an openable local fictional research file');
 
-  // Vault traversal uses the real WebCrypto encryption function. Only the hosted
-  // shelf is virtualized, so ciphertext never leaves the practice browser.
   await page.locator('#researchFileVaultButton').click();
   await page.locator('#vaultPassphrase').fill('Bikini-Bottom-Practice-613-Key');
   const vaultRequests = [];
