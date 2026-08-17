@@ -56,15 +56,22 @@ async function hydrationDiagnostics() {
     scopeShell: Boolean(document.querySelector('.campaign-scope-block')),
     researchGuide: Boolean(document.querySelector('#researchFileGuide')),
     vaultGuide: Boolean(document.querySelector('#vaultGuide')),
+    resilienceShellReady: document.documentElement.dataset.givingResilienceShellReady === 'true',
+    bootstrapReady: document.documentElement.dataset.givingBootstrapReady === 'true',
     operatorShellHidden: Boolean(document.querySelector('#operatorShell')?.hidden)
   }));
 }
 
 async function requireResilienceShell() {
-  await page.waitForTimeout(450);
-  if (await page.locator('.campaign-scope-block').count()) return;
-  const diagnostics = await hydrationDiagnostics();
-  throw new Error(`Giving resilience shell did not hydrate: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`);
+  try {
+    await page.waitForFunction(() => (
+      document.documentElement.dataset.givingResilienceShellReady === 'true' &&
+      Boolean(document.querySelector('.campaign-scope-block'))
+    ), undefined, { timeout: 15000 });
+  } catch {
+    const diagnostics = await hydrationDiagnostics();
+    throw new Error(`Giving resilience shell did not settle: ${JSON.stringify({ diagnostics, consoleErrors, failedResources })}`);
+  }
 }
 
 async function witnessResilienceUi() {
