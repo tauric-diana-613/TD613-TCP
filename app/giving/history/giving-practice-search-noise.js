@@ -23,6 +23,7 @@ const COMMITTEES = Object.freeze([
 const NOISE_PEOPLE = Object.freeze({
   'Pearl Krabs': { address: '17 Whale Tail Lane · FICTIONAL ANCHOR HOUSE', given: 'Pearl', family: 'Krabs', employer: 'Krusty Krab Family Holdings · FICTIONAL', occupation: 'Student / Heiress · FICTIONAL', quality: 'NEARBY_NAME' },
   'Sandy Grouper': { address: '404 Grouper Grotto · FICTIONAL REEF', given: 'Sandy', family: 'Grouper', employer: 'Bikini Bottom Marine Lab · FICTIONAL', occupation: 'Marine Researcher · FICTIONAL', quality: 'NEARBY_NAME' },
+  'Sandra Cheeks': { address: '11 Acorn Audit Trail · FICTIONAL CLERICAL ADDRESS', given: 'Sandra', family: 'Cheeks', employer: 'Treedome Filing Annex · FICTIONAL', occupation: 'Records Technician · FICTIONAL', quality: 'GIVEN_NAME_SUBSTITUTION' },
   'Squidward Tennisballs': { address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tennisballs', employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT' },
   'Squidward Tentpoles': { address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tentpoles', employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT' },
   'Squidward Tortellini': { address: '0 Wrong-Name Court · FICTIONAL TYPO ADDRESS', given: 'Squidward', family: 'Tortellini', employer: 'Name Tag Confusion LLC · FICTIONAL', occupation: 'Misentered Clarinetist · FICTIONAL', quality: 'DIRTY_VARIANT' },
@@ -45,6 +46,9 @@ const NOISE_TX = Object.freeze({
     ['2022-03-12', 4000, COMMITTEES[3]], ['2022-09-17', 6000, COMMITTEES[2]], ['2023-01-14', 8500, COMMITTEES[1]], ['2023-06-10', 11000, COMMITTEES[0]],
     ['2024-02-17', 13500, COMMITTEES[7]], ['2024-07-06', 16000, COMMITTEES[6]], ['2024-11-23', 19000, COMMITTEES[5]], ['2025-03-08', 22000, COMMITTEES[4]],
     ['2025-07-19', 26000, COMMITTEES[3]], ['2025-12-06', 30000, COMMITTEES[2]], ['2026-03-21', 35000, COMMITTEES[1]], ['2026-07-11', 40000, COMMITTEES[0]]
+  ],
+  'Sandra Cheeks': [
+    ['2021-05-09', 2600, COMMITTEES[0]], ['2023-09-16', 4600, COMMITTEES[3]], ['2025-02-22', 6600, COMMITTEES[6]], ['2026-05-30', 8600, COMMITTEES[7]]
   ],
   'Squidward Tennisballs': [['2021-04-01', 3333, COMMITTEES[2]]],
   'Squidward Tentpoles': [['2023-04-01', 4444, COMMITTEES[3]]],
@@ -119,21 +123,10 @@ function recordFor(name, [date, amountCents, committee], index) {
   };
 }
 
-function noiseRecordsFor(name) {
-  return (NOISE_TX[name] || []).map((row, index) => recordFor(name, row, index));
-}
-
-function canonicalRecordsFor(name) {
-  return _givingPracticeHydration.recordsFor(name).map((record, index) => normalizeCanonicalRecord(record, name, index));
-}
-
-function allKnownNames() {
-  return [...CANONICAL_NAMES, ...Object.keys(NOISE_PEOPLE)];
-}
-
-function termsFromQuery(query = {}) {
-  return [query.name, ...(Array.isArray(query.aliases) ? query.aliases : [])].map(compact).filter(Boolean);
-}
+function noiseRecordsFor(name) { return (NOISE_TX[name] || []).map((row, index) => recordFor(name, row, index)); }
+function canonicalRecordsFor(name) { return _givingPracticeHydration.recordsFor(name).map((record, index) => normalizeCanonicalRecord(record, name, index)); }
+function allKnownNames() { return [...CANONICAL_NAMES, ...Object.keys(NOISE_PEOPLE)]; }
+function termsFromQuery(query = {}) { return [query.name, ...(Array.isArray(query.aliases) ? query.aliases : [])].map(compact).filter(Boolean); }
 
 function broadNameMatch(candidate, term) {
   const candidateFolded = folded(candidate);
@@ -183,13 +176,8 @@ function sleep(ms, signal) {
   });
 }
 
-function response(body) {
-  return new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
-}
-
-function parseEnvelope(init) {
-  try { return typeof init?.body === 'string' ? JSON.parse(init.body) : null; } catch { return null; }
-}
+function response(body) { return new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } }); }
+function parseEnvelope(init) { try { return typeof init?.body === 'string' ? JSON.parse(init.body) : null; } catch { return null; } }
 
 const priorFetch = globalThis.fetch.bind(globalThis);
 globalThis.fetch = async (input, init = {}) => {
