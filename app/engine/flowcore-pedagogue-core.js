@@ -25,4 +25,11 @@ export {
   compilePedagogueRouteMemory,
   comparePedagogueRouteMemory
 } from './flowcore-pedagogue-route-memory.js';
+export {
+  PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA,
+  PEDAGOGUE_PRACTICE_OBSERVATION_SCHEMA,
+  PEDAGOGUE_PRACTICE_REPORT_SCHEMA,
+  compilePedagoguePracticeFixture,
+  evaluatePedagoguePracticeObservation
+} from './flowcore-pedagogue-practice-fixture.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
