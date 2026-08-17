@@ -88,7 +88,8 @@ assert.match(fec, /const MAX_BOUNDARY_PAGES = 1/);
 assert.doesNotMatch(fec, /while \(continuation/);
 assert.match(fec, /automatic_continuation: false/);
 
-assert.match(bootstrap, /GIVING_PEDAGOGUE_EPOCH = '20260817-2'/);
+assert.match(bootstrap, /GIVING_PRACTICE_EPOCH = '20260817-2'/);
+assert.doesNotMatch(bootstrap, /\bpedagogue\b/i, 'browser bootstrap must keep internal teaching nomenclature out of the delivered source');
 const practiceIndex = bootstrap.indexOf('giving-practice-hydration.js');
 const appIndex = bootstrap.indexOf('giving-app.js');
 const bridgeIndex = bootstrap.indexOf('giving-practice-surface-bridge.js');
