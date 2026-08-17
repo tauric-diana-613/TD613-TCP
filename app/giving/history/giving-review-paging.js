@@ -1,6 +1,6 @@
 import './giving-page-size.js?v=20260814-1';
 import './giving-fec-resilience.js?v=20260814-1';
-import './giving-review-paging-core.js?v=20260817-1';
+import './giving-review-paging-core.js?v=20260813-3';
 
 if (!document.getElementById('givingReviewPagingStylesheet')) {
   const link = document.createElement('link');
