@@ -92,7 +92,8 @@ export async function witnessGivingPracticeFixture(page) {
   page.on('request', onTraversalRequest);
   try {
     await page.locator('#runSearchButton').click();
-    await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'visible', timeout: 10000 });
+    await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'attached', timeout: 10000 });
+    await page.waitForFunction(() => /BikiniBottomVotes/.test(document.querySelector('#sourceProgress')?.textContent || ''), null, { timeout: 10000 });
     await page.waitForTimeout(120);
   } finally {
     page.off('request', onTraversalRequest);
@@ -107,6 +108,10 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(afterSearch.sourceProgress, /BikiniBottomVotes/);
   assert.match(afterSearch.coverageExecutiveLine, /1\/1 selected sources complete/);
 
+  // Search concludes in the ordinary Source run view. Move through the same
+  // visible Contributions tab a learner must use before review/custody gestures.
+  await page.locator('.tab[data-view="review"]').click();
+  await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'visible', timeout: 5000 });
   await page.locator('#holdReviewButton').click();
   await page.locator('#addContactQueueButton').click();
   await page.waitForFunction(() => document.querySelectorAll('#contactQueueList .contact-queue-item').length === 4, null, { timeout: 5000 });
