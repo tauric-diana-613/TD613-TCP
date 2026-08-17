@@ -290,6 +290,23 @@
   .research-file-route > span,
   .research-file-vault-link { min-height: 34px; padding-inline: 5px; }
   .review-hold-button { transform: none; }
+
+  #campaignDirectoryPanel {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+  #campaignDirectoryPanel .campaign-directory-heading,
+  #campaignDirectoryPanel .campaign-directory-form,
+  #campaignDirectoryPanel .campaign-scope-block,
+  #campaignDirectoryPanel .campaign-pickers,
+  #campaignDirectoryPanel .campaign-picker-menu,
+  #campaignDirectoryPanel .giving-state-filter,
+  #campaignDirectoryPanel .giving-state-filter-menu {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 620px) {
