@@ -29,7 +29,8 @@ const PRACTICE_EXACT = new Set([
   'docs/CANONICAL_PRACTICE_FIXTURE.md',
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'tests/fixtures/pedagogue/giving-bikini-bottom-practice.json',
-  'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json'
+  'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json',
+  'tests/pedagogue-practice-fixture.test.mjs'
 ]);
 
 const SCOPE_NEUTRAL = new Set([
