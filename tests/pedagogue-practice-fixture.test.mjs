@@ -6,6 +6,7 @@ import {
   verifyPracticeFixtureLoad,
   comparePracticeFixtureTraversal
 } from '../app/engine/pedagogue-practice-fixture.js';
+import { waitForGivingProductionSurface } from '../scripts/giving-production-readiness.mjs';
 
 const declaration = {
   schema: PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA,
@@ -150,4 +151,35 @@ assert.ok(divergentTraversal.route_reconstruction_error_millipoints > 0);
 assert.equal(divergentTraversal.research_claim_ceiling.transport_law_claim, false);
 assert.equal(divergentTraversal.research_claim_ceiling.geometric_holonomy_claim, false);
 
-console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, zero-effect load, route residue, and closed authority.');
+// Release-smoke law: a practice-scoped production witness may observe the
+// independently qualified prior Giving receipt without rewriting it to the
+// shared architecture source commit. Giving product releases remain strict.
+const previousArtifactDir = process.env.TD613_ARTIFACT_DIR;
+process.env.TD613_ARTIFACT_DIR = 'artifacts/practice-production';
+try {
+  const sourceCommit = 'a'.repeat(40);
+  const priorGivingCommit = 'b'.repeat(40);
+  const readyHtml = '<title>TD613 Giving History</title><section id="sessionMembrane"></section><button id="exportCampaignDeputyBundleButton"></button><button id="bulkGivingHistoryButton"></button>';
+  const readiness = await waitForGivingProductionSurface({
+    baseUrl: 'https://td613.com',
+    sourceCommit,
+    attempts: 1,
+    requestTimeoutMs: 100,
+    fetchImpl: async (url) => ({
+      ok: true,
+      status: 200,
+      text: async () => new URL(url).pathname.endsWith('/release-source.json')
+        ? JSON.stringify({ schema: 'td613.giving.release-source/v1', source_packet_commit: priorGivingCommit })
+        : readyHtml
+    }),
+    sleep: async () => {}
+  });
+  assert.equal(readiness.releaseReceiptPolicy, 'observe-existing');
+  assert.equal(readiness.releaseReceiptMatchesSource, false);
+  assert.equal(readiness.releaseReceipt.source_packet_commit, priorGivingCommit);
+} finally {
+  if (previousArtifactDir === undefined) delete process.env.TD613_ARTIFACT_DIR;
+  else process.env.TD613_ARTIFACT_DIR = previousArtifactDir;
+}
+
+console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, zero-effect load, route residue, closed authority, and independent Giving provenance.');
