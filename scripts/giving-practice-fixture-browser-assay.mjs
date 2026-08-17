@@ -34,6 +34,9 @@ async function snapshot(page) {
     practiceSource: document.querySelector('#sourceRegistry input[value="practice-bikini-bottom-votes"]')?.checked || false,
     fictionalCards: document.querySelectorAll('#recordList .record-card[data-fictional-sample="true"]').length,
     fictionalChips: document.querySelectorAll('#recordList .fictional-sample-chip').length,
+    reviewCount: Number(document.querySelector('#reviewCount')?.textContent || 0),
+    queueCount: document.querySelectorAll('#contactQueueList .contact-queue-item').length,
+    queueStates: [...document.querySelectorAll('#contactQueueList .contact-queue-item')].map((row) => row.dataset.status || ''),
     vaultVersionCount: document.querySelectorAll('#vaultVersions .version-item').length,
     localSampleOptions: [...(document.querySelector('#localDossierSelect')?.options || [])].filter((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')).length
   }));
@@ -113,6 +116,47 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(afterSearch.sourceProgress, /BikiniBottomVotes/);
   assert.match(afterSearch.coverageExecutiveLine, /1\/1 selected sources complete/);
 
+  // Now hydrate the other four authored contributors through the actual contact
+  // queue. Hold is explicit so SpongeBob remains in the dossier; the end state is
+  // a 49-record, five-person practice file that exercises all eight committee
+  // objects without crossing the external Giving boundary.
+  await page.locator('#holdReviewButton').click();
+  await page.locator('#addContactQueueButton').click();
+  await page.waitForFunction(() => document.querySelectorAll('#contactQueueList .contact-queue-item').length === 4, null, { timeout: 5000 });
+  const queueRequests = [];
+  const onQueueRequest = (request) => { if (isGivingApiRequest(request)) queueRequests.push(request.url()); };
+  page.on('request', onQueueRequest);
+  try {
+    await page.locator('#runContactQueueButton').click();
+    await page.waitForFunction(() => {
+      const rows = [...document.querySelectorAll('#contactQueueList .contact-queue-item')];
+      return rows.length === 4 && rows.every((row) => ['SEARCHED', 'SOURCE HOLD', 'CLIENT HOLD'].includes(row.dataset.status || ''));
+    }, null, { timeout: 20000 });
+    await page.waitForTimeout(150);
+  } finally {
+    page.off('request', onQueueRequest);
+  }
+  document = undefined;
+  const afterQueue = await snapshot(page);
+  assert.deepEqual(queueRequests, [], 'all four queued Bikini Bottom contributors must remain inside the browser practice boundary');
+  assert.deepEqual(afterQueue.queueStates, ['SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED']);
+  assert.equal(afterQueue.reviewCount, 49, 'full practice hydration must retain all 49 fictional contributions across five contributors');
+  assert.equal(afterQueue.fictionalCards, 49, 'the 49-record practice file must fit inside one 50-card Contributions page');
+  assert.equal(afterQueue.fictionalChips, 49, 'every hydrated practice contribution must retain its fictional provenance chip');
+  for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) {
+    assert.match(afterQueue.recordList, new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  for (const committee of [
+    'King Neptune for King',
+    'Mrs. Puff for Bikini Bottom School District #67',
+    'Every Villain Is Lemons PAC',
+    'Sheldon Plankton for Bikini Bottom Campaign',
+    'Larry Lobster for Mayor of Bikini Bottom',
+    'Fishocratic Executive Committee',
+    'Friends of Aquaman PC',
+    'Krusty Krab Parking Expansion Referendum Committee'
+  ]) assert.match(afterQueue.recordList, new RegExp(committee.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
   // The real local Save route must now have a meaningful sample to reopen.
   await page.locator('#saveDossierButton').click();
   await page.waitForFunction(() => [...(document.querySelector('#localDossierSelect')?.options || [])]
@@ -150,8 +194,10 @@ export async function witnessGivingPracticeFixture(page) {
     load_campaign_deputy_changed: false,
     normalized_exact_match: true,
     practice_source_locked: true,
-    fictional_records_observed: afterSearch.fictionalCards,
-    fictional_record_provenance_chips: afterSearch.fictionalChips,
+    fictional_records_observed: afterQueue.reviewCount,
+    fictional_record_provenance_chips: afterQueue.fictionalChips,
+    fictional_contributors_observed: 5,
+    fictional_committee_objects_observed: 8,
     political_object_contrast_observed: true,
     local_practice_file_saved: true,
     encrypted_practice_vault_version_observed: true,
