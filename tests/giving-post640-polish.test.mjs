@@ -61,8 +61,10 @@ assert.match(renderBackpressure, /delete root\.dataset\.givingSearchRender/);
 assert.match(renderBackpressure, /td613:giving-run-settled/);
 assert.match(renderBackpressure, /reviewSearch\?\.dispatchEvent\(new Event\('input'/, 'settlement must request one convergence review render');
 assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260817-1/);
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260817-1'/);
-assert.match(bootstrap, /giving-search-render-backpressure\.js/);
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/, 'coordinated Giving epoch remains sealed');
+assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/, 'search/render repair receives an isolated browser sub-epoch');
+assert.match(bootstrap, /repairUrl\('\.\/giving-review-paging\.js'\)/, 'fresh review paging wrapper must load under the repair sub-epoch');
+assert.match(bootstrap, /repairUrl\('\.\/giving-search-render-backpressure\.js'\)/, 'search backpressure membrane must load under the repair sub-epoch');
 assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-api\.js'\), \{ cache: 'reload'/, 'the exact unversioned Giving API child module must be revalidated before app import');
 assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 
