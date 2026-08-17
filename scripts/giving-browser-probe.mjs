@@ -17,6 +17,9 @@ const baseUrl = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6136').re
 const production = process.env.TD613_PRODUCTION_OBSERVATION === 'true';
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || `artifacts/giving-${engineName}`;
+const normalizedArtifactDir = artifactDir.replaceAll('\\', '/');
+const practiceObservation = process.env.TD613_PRACTICE_OBSERVATION === 'true' ||
+  (production && normalizedArtifactDir.split('/').includes('practice-production'));
 await fs.mkdir(artifactDir, { recursive: true });
 
 const executablePath = String(process.env.TD613_BROWSER_EXECUTABLE_PATH || '').trim();
@@ -232,6 +235,7 @@ try {
     ? await waitForGivingProductionSurface({
         baseUrl,
         sourceCommit: sourcePacketCommit,
+        releaseReceiptPolicy: practiceObservation ? 'observe-existing' : 'match-source',
         attempts: process.env.TD613_GIVING_PROBE_ATTEMPTS,
         delayMs: process.env.TD613_GIVING_PROBE_DELAY_MS,
         requestTimeoutMs: process.env.TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS,
@@ -250,7 +254,15 @@ try {
   assert.equal(await page.locator('#bulkGivingHistoryButton').count(), 1);
 
   let resilienceWitness = null;
+  let productionPracticeWitness = null;
   if (!production) resilienceWitness = await witnessResilienceUi();
+  if (production && practiceObservation) {
+    await exposeOperatorShell();
+    await requireResilienceShell();
+    await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
+    productionPracticeWitness = await witnessGivingPracticeFixture(page);
+    assert.equal(productionPracticeWitness.status, 'PASS', 'production practice observation must execute and pass the zero-effect fixture assay');
+  }
 
   const mapper = await page.evaluate(async () => {
     const module = await import('/app/giving/history/giving-campaign-deputy-import.js');
@@ -288,9 +300,11 @@ try {
     route: '/giving/history/',
     source_packet_commit: sourcePacketCommit || null,
     production_readiness_attempt: readiness?.attempt || null,
+    release_receipt_policy: readiness?.receipt?.policy || (production ? (practiceObservation ? 'observe-existing' : 'match-source') : null),
     campaign_deputy_exports: 'PASS',
     resilience_ui: resilienceWitness ? 'PASS' : 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
-    practice_fixture_load: resilienceWitness?.practiceFixture?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
+    practice_observation_requested: practiceObservation,
+    practice_fixture_load: resilienceWitness?.practiceFixture?.status || productionPracticeWitness?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     desktop_viewport: resilienceWitness ? '1600x1000' : null,
     mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,
@@ -299,6 +313,9 @@ try {
     console_errors: consoleErrors,
     failed_resources: failedResources
   };
+  if (production && practiceObservation) {
+    assert.equal(receipt.practice_fixture_load, 'PASS', 'production practice receipt cannot seal without an observed fixture PASS');
+  }
   await fs.writeFile(path.join(artifactDir, 'receipt.json'), JSON.stringify(receipt, null, 2));
   assert.deepEqual(failedResources, [], `Giving browser failed resources: ${failedResources.map((item) => `${item.status} ${item.url}`).join(' | ')}`);
   const materialConsoleErrors = consoleErrors.filter((message) => !/\/favicon\.ico(?:\s|$)/.test(message));
