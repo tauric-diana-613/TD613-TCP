@@ -1,7 +1,10 @@
 import './giving-ux-resilience-shell.js?v=20260816-4';
 
 const GIVING_ASSET_EPOCH = '20260816-4';
+const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
+const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
+const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 // Apply the product name before loading the heavier module graph so even a
 // browser arriving from an older Giving build sees the current membrane name.
@@ -28,11 +31,16 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
-// The primary operator shell is a static module dependency above. It hydrates
-// before this asynchronous product graph begins, so retrieval/paging work may
-// fail closed without hiding Campaign, Research File, or Vault controls.
+// The core app imports API/model without query strings, while review paging has a
+// deliberately stable child-module identity. Revalidate those exact URLs before
+// the versioned wrappers enter so freshness never requires widening the coordinated
+// Giving epoch or abandoning the stable review-core cache key.
 try {
-  await fetch(epochUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' });
+  await Promise.all([
+    fetch(sourceUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' }),
+    fetch(sourceUrl('./giving-api.js'), { cache: 'reload', credentials: 'same-origin' }),
+    fetch(sourceUrl('./giving-review-paging-core.js?v=20260813-3'), { cache: 'reload', credentials: 'same-origin' })
+  ]);
 } catch {
   // Dynamic imports below remain authoritative.
 }
@@ -48,7 +56,10 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-await import(epochUrl('./giving-review-paging.js'));
+// Keep the coordinated Giving graph on its sealed epoch. Only the search/render
+// wrapper receives a sub-epoch; its stable review-core child is cache-revalidated above.
+await import(repairUrl('./giving-review-paging.js'));
+await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-app.js'));

@@ -15,11 +15,12 @@ const MUTATIONS = new Set([
 // alive through the upstream window while leaving two seconds for serialization.
 export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
 
-// Initial browser hydration is deliberately smaller than the server's absolute
-// source ceiling. Each source can be continued explicitly; keeping the first
-// page bounded prevents cross-source evidence from turning identity clustering
-// into a main-thread quadratic freeze on common contributor names.
-export const GIVING_SEARCH_PAGE_SIZE = 50;
+// Retrieval and rendering have separate budgets. The prior 50-row hotfix treated
+// source evidence volume as a UI-performance control and still allowed the page to
+// freeze. Restore the ordinary 200-row source request used by Giving; FEC retains
+// its independent 100-row provider-boundary ceiling, while Contributions rendering
+// is backpressured and paged separately in the browser.
+export const GIVING_SEARCH_PAGE_SIZE = 200;
 
 function boundedPayload(operation, payload) {
   if (operation !== 'search.page' || !payload?.query || typeof payload.query !== 'object') return payload;

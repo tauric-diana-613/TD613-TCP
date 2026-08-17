@@ -11,11 +11,17 @@ const helpCss = read('app/giving/history/giving-dossier-help.css');
 const polish = read('app/giving/history/giving-polish.css');
 const sharedAccess = read('app/giving/history/giving-shared-access.js');
 const pageSize = read('app/giving/history/giving-page-size.js');
+const reviewPaging = read('app/giving/history/giving-review-paging.js');
+const reviewPagingCore = read('app/giving/history/giving-review-paging-core.js');
+const renderBackpressure = read('app/giving/history/giving-search-render-backpressure.js');
+const bootstrap = read('app/giving/history/giving-bootstrap.js');
+const givingIndex = read('app/giving/history/index.html');
 const browserProbe = read('scripts/giving-browser-probe.mjs');
 const practiceAssay = read('scripts/giving-practice-fixture-browser-assay.mjs');
 const workflow = read('.github/workflows/td613-ci.yml');
 
 assert.doesNotThrow(() => new Function(shell), 'Giving resilience shell must remain browser-parseable');
+assert.doesNotThrow(() => new Function(renderBackpressure.replace(/export const[\s\S]*$/m, '')), 'Giving search backpressure module must remain browser-parseable');
 
 assert.match(
   stateCss,
@@ -43,7 +49,25 @@ assert.match(polish, /#sessionTitle::after[\s\S]*?TD613 Giving/);
 
 assert.match(pageSize, /const PAGE_SIZE = 300/);
 assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 100/);
-assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/, 'legacy page shim may narrow but never widen the client-requested 50-row page');
+assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/, 'legacy page shim may narrow by source contract but may not widen the client request');
+assert.match(reviewPagingCore, /const PAGE_SIZE = 50/);
+assert.match(reviewPagingCore, /const LEGACY_RENDER_SLICE = 300/);
+assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/, 'review paging must detect the live search render gate');
+assert.match(reviewPagingCore, /if \(reviewRenderDeferred\(\)\) return \[\]/, 'live searches must retain evidence while declining expensive contribution-card DOM materialization');
+assert.match(reviewPagingCore, /nativeSlice\.call\(source, offset, offset \+ PAGE_SIZE\)/, 'settled review rendering must remain bounded to the visible page');
+assert.match(renderBackpressure, /runButton\.disabled/);
+assert.match(renderBackpressure, /root\.dataset\.givingSearchRender = 'deferred'/);
+assert.match(renderBackpressure, /delete root\.dataset\.givingSearchRender/);
+assert.match(renderBackpressure, /td613:giving-run-settled/);
+assert.match(renderBackpressure, /reviewSearch\?\.dispatchEvent\(new Event\('input'/, 'settlement must request one convergence review render');
+assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/, 'stable review-core URL remains preserved');
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/, 'coordinated Giving epoch remains sealed');
+assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/, 'search/render repair receives an isolated browser sub-epoch');
+assert.match(bootstrap, /repairUrl\('\.\/giving-review-paging\.js'\)/, 'fresh review paging wrapper must load under the repair sub-epoch');
+assert.match(bootstrap, /repairUrl\('\.\/giving-search-render-backpressure\.js'\)/, 'search backpressure membrane must load under the repair sub-epoch');
+assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-api\.js'\), \{ cache: 'reload'/, 'the exact unversioned Giving API child module must be revalidated before app import');
+assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-review-paging-core\.js\?v=20260813-3'\), \{ cache: 'reload'/, 'stable review-core URL must be cache-revalidated before the repair wrapper imports it');
+assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /Evict every shared Giving session/);

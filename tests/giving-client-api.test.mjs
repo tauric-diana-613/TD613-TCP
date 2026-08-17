@@ -25,7 +25,7 @@ await client.call('campaign-deputy.ensure-committee', { confirmed: true, committ
 await client.call('search.page', {
   source_instance_id: 'FEC',
   query: { name: 'Example Contributor', page_size: 200 }
-}, { mutation: false, purpose: 'bounded common-name retrieval test' });
+}, { mutation: false, purpose: 'ordinary source retrieval with separate render backpressure' });
 
 assert.equal(calls.length, 4);
 assert.equal(calls[0].envelope.schema, 'td613.giving.request/v1');
@@ -37,9 +37,9 @@ assert.equal(calls[1].envelope.intent.nonce, 'intent-offline-test');
 assert.equal(calls[2].envelope.operation, 'campaign-deputy.ensure-committee');
 assert.equal(calls[2].envelope.intent.nonce, 'intent-offline-test');
 assert.match(calls[2].envelope.request_id, /^[A-Za-z0-9]/);
-assert.equal(GIVING_SEARCH_PAGE_SIZE, 50);
+assert.equal(GIVING_SEARCH_PAGE_SIZE, 200);
 assert.equal(calls[3].envelope.operation, 'search.page');
-assert.equal(calls[3].envelope.payload.query.page_size, 50, 'browser hydration must stay bounded and leave deeper source access to explicit continuation');
+assert.equal(calls[3].envelope.payload.query.page_size, 200, 'source evidence hydration must remain independent from the bounded Contributions render page');
 
 const internalFailureClient = new GivingApiClient({
   fetchImpl: async () => new Response(JSON.stringify({

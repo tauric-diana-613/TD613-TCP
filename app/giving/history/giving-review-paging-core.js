@@ -1,4 +1,5 @@
-const PAGE_SIZE = 300;
+const PAGE_SIZE = 50;
+const LEGACY_RENDER_SLICE = 300;
 const nativeSlice = Array.prototype.slice;
 let currentPage = 1;
 let currentTotal = 0;
@@ -16,6 +17,10 @@ function looksLikeGivingRecords(value) {
     sample.contribution_date ||
     Number.isSafeInteger(sample.amount_cents)
   );
+}
+
+function reviewRenderDeferred() {
+  return document.documentElement.dataset.givingSearchRender === 'deferred';
 }
 
 function dateValue(record) {
@@ -38,13 +43,16 @@ function sortedForDate(records) {
 }
 
 // The legacy Giving renderer owns ledger state and identity actions. Intercept
-// only its exact review-page slice so that renderer continues to create every
-// card/action itself while pages after 300 become reachable.
+// only its exact review-page slice. During a live source queue, retain the full
+// dossier in memory but return no contribution cards to the expensive DOM builder;
+// source-progress cards remain live. Once the queue converges, render one bounded
+// 50-card review page and expose all remaining records through pagination.
 Array.prototype.slice = function patchedGivingReviewSlice(start, end) {
-  if (start === 0 && end === PAGE_SIZE && looksLikeGivingRecords(this)) {
+  if (start === 0 && end === LEGACY_RENDER_SLICE && looksLikeGivingRecords(this)) {
     currentTotal = this.length;
     const totalPages = Math.max(1, Math.ceil(currentTotal / PAGE_SIZE));
     currentPage = Math.min(Math.max(1, currentPage), totalPages);
+    if (reviewRenderDeferred()) return [];
     const offset = (currentPage - 1) * PAGE_SIZE;
     const source = sortedForDate(this);
     return nativeSlice.call(source, offset, offset + PAGE_SIZE);
@@ -160,6 +168,7 @@ queueDecorate();
 
 export const _givingReviewPaging = Object.freeze({
   PAGE_SIZE,
+  LEGACY_RENDER_SLICE,
   page: () => currentPage,
   total: () => currentTotal,
   dateDirection: () => dateDirection
