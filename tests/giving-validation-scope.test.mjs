@@ -43,6 +43,7 @@ const practiceOnly = classifyValidationScope([
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'scripts/giving-browser-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',
+  'tests/pedagogue-practice-fixture.test.mjs',
   'tests/pedagogue-design-gate.test.mjs',
   'tests/giving-post640-polish.test.mjs',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
@@ -54,6 +55,11 @@ assert.equal(practiceOnly.scope, 'practice');
 assert.equal(practiceOnly.practice_fixture_changed, true);
 assert.ok(practiceOnly.practice_file_count >= 1);
 assert.deepEqual(practiceOnly.full_scope_files, []);
+
+const releaseSmokeOnly = classifyValidationScope(['tests/pedagogue-practice-fixture.test.mjs']);
+assert.equal(releaseSmokeOnly.scope, 'practice', 'the first-class practice release smoke contract must preserve practice release classification');
+assert.equal(releaseSmokeOnly.practice_fixture_changed, true);
+assert.deepEqual(releaseSmokeOnly.full_scope_files, []);
 
 const mixedPracticeAndAsh = classifyValidationScope([
   'app/engine/pedagogue-practice-fixture.js',
