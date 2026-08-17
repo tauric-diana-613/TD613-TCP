@@ -3,6 +3,22 @@ import './giving-ux-resilience-shell.js?v=20260816-4';
 const GIVING_ASSET_EPOCH = '20260816-4';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
+function publishSettlement(kind) {
+  const root = document.documentElement;
+  if (kind === 'resilience-shell') root.dataset.givingResilienceShellReady = 'true';
+  if (kind === 'bootstrap') root.dataset.givingBootstrapReady = 'true';
+  window.dispatchEvent(new CustomEvent(`td613:giving:${kind}-ready`, {
+    detail: Object.freeze({
+      asset_epoch: GIVING_ASSET_EPOCH,
+      settled_at: new Date().toISOString()
+    })
+  }));
+}
+
+// Static imports evaluate before this module body. The primary operator shell
+// therefore owns a real settlement boundary before the asynchronous graph.
+publishSettlement('resilience-shell');
+
 // Apply the product name before loading the heavier module graph so even a
 // browser arriving from an older Giving build sees the current membrane name.
 document.title = 'TD613 Giving';
@@ -59,3 +75,5 @@ await import(epochUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(epochUrl('./giving-date-sort.js'));
 await import(epochUrl('./giving-dossier-help.js'));
+
+publishSettlement('bootstrap');
