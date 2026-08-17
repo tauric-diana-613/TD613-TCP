@@ -24,6 +24,12 @@
       "now": "One Giving route can contain contributions to candidate committees, PAC/PC-style committees, party-style committees, and an issue or referendum committee.",
       "why": "Sharing the contribution route does not make those political objects equivalent.",
       "exact": "Route membership may support comparison, but it may not silently infer committee kind, candidate status, office, or political-object authority."
+    },
+    {
+      "contrast_id": "fictional-jurisdiction-aperture",
+      "now": "BikiniBottomVotes fixes practice geography to Bikini Bottom, Oceania while real State, Municipal, and jurisdiction selectors sleep.",
+      "why": "A fictional practice source must never look combinable with a live real-world filing geography or imply that those custodians were queried.",
+      "exact": "Practice may narrow the aperture to a declared fictional jurisdiction, but real geography controls remain inert until exit and no real filing source may be consulted from that route."
     }
   ],
   "expected_route_steps": [
