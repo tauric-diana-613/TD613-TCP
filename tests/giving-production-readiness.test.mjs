@@ -56,6 +56,8 @@ const readiness = await waitForGivingProductionSurface({
 assert.equal(readiness.attempt, 2);
 assert.equal(readiness.sourceCommit, 'b'.repeat(40));
 assert.equal(readiness.releaseReceipt.source_packet_commit, 'b'.repeat(40));
+assert.equal(readiness.releaseReceiptPolicy, 'match-source');
+assert.equal(readiness.releaseReceiptMatchesSource, true);
 assert.equal(fetchCount, 4);
 assert.equal(sleepCount, 1);
 assert.deepEqual(observations.map(({ ready }) => ready), [false, true]);
@@ -77,10 +79,60 @@ await assert.rejects(
   /did not become ready after 2 attempts/
 );
 
+const priorGivingCommit = 'd'.repeat(40);
+const practiceReadiness = await waitForGivingProductionSurface({
+  baseUrl: 'https://td613.com',
+  sourceCommit: 'c'.repeat(40),
+  releaseReceiptPolicy: 'observe-existing',
+  attempts: 1,
+  delayMs: 1,
+  requestTimeoutMs: 100,
+  fetchImpl: async (url) => ({
+    ok: true,
+    status: 200,
+    text: async () => new URL(url).pathname.endsWith('/release-source.json')
+      ? JSON.stringify({ schema: 'td613.giving.release-source/v1', source_packet_commit: priorGivingCommit })
+      : readyHtml
+  }),
+  sleep: async () => {}
+});
+assert.equal(practiceReadiness.releaseReceiptPolicy, 'observe-existing');
+assert.equal(practiceReadiness.releaseReceiptMatchesSource, false);
+assert.equal(practiceReadiness.releaseReceipt.source_packet_commit, priorGivingCommit);
+
+await assert.rejects(
+  waitForGivingProductionSurface({
+    baseUrl: 'https://td613.com',
+    sourceCommit: 'c'.repeat(40),
+    releaseReceiptPolicy: 'observe-existing',
+    attempts: 1,
+    requestTimeoutMs: 100,
+    fetchImpl: async (url) => ({
+      ok: true,
+      status: 200,
+      text: async () => new URL(url).pathname.endsWith('/release-source.json')
+        ? JSON.stringify({ schema: 'wrong.schema', source_packet_commit: priorGivingCommit })
+        : readyHtml
+    }),
+    sleep: async () => {}
+  }),
+  /did not become ready after 1 attempts/
+);
+
+await assert.rejects(
+  waitForGivingProductionSurface({
+    baseUrl: 'https://td613.com',
+    sourceCommit: 'c'.repeat(40),
+    releaseReceiptPolicy: 'widen-authority',
+    attempts: 1,
+    fetchImpl: async () => { throw new Error('should not fetch'); }
+  }),
+  /Unsupported Giving release receipt policy/
+);
+
 await assert.rejects(
   waitForGivingProductionSurface({ baseUrl: 'https://td613.com', sourceCommit: 'not-a-commit' }),
   /authorized 40-character source commit/
 );
 
 console.log('giving-production-readiness.test.mjs passed');
-
