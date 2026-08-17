@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import {
   PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA,
   PEDAGOGUE_PRACTICE_OBSERVATION_SCHEMA,
@@ -112,4 +113,47 @@ test('practice fixture fails certification when harmless-bound effects are excee
   assert.equal(report.negative_guarantees_preserved, false);
   assert.equal(report.certified, false);
   assert.match(report.child_legible.why, /outside its declared harmless boundary/i);
+});
+
+test('Giving Bikini Bottom proving fixture hydrates shared law without entering shared taxonomy', async () => {
+  const input = JSON.parse(await readFile(new URL('./fixtures/pedagogue/giving-bikini-bottom-practice.json', import.meta.url), 'utf8'));
+  const compiled = compilePedagoguePracticeFixture(input);
+  assert.equal(compiled.surface_reference, 'td613.giving.history');
+  assert.equal(compiled.fictional, true);
+  assert.equal(compiled.ground_truth.fabricated_evidence_records, 0);
+  assert.equal(compiled.ground_truth.automatic_retrieval, false);
+  assert.equal(compiled.authority.evidence_authority, false);
+  assert.equal(compiled.authority.external_write_authority, false);
+
+  const report = evaluatePedagoguePracticeObservation(input, {
+    schema: PEDAGOGUE_PRACTICE_OBSERVATION_SCHEMA,
+    observed_route_steps: input.expected_route_steps,
+    observed_endpoint: input.expected_endpoint,
+    effects: {
+      evidence_records_created: 0,
+      retrieval_requests_started: 0,
+      external_mutations_committed: 0,
+      vault_writes_committed: 0,
+      reversible_local_writes: 0,
+      authority_upgrade_observed: false
+    }
+  });
+  assert.equal(report.certified, true);
+});
+
+test('Giving fictional sample handler cannot auto-run consequential controls', async () => {
+  const source = await readFile(new URL('../app/giving/history/giving-ux-resilience-shell.js', import.meta.url), 'utf8');
+  const match = source.match(/\$\('#loadResearchSampleButton'\)\?\.addEventListener\('click', \(\) => \{([\s\S]*?)\n  \}\);/);
+  assert.ok(match, 'Giving must retain an explicit fictional-sample click handler.');
+  const handler = match[1];
+
+  assert.match(handler, /SAMPLE — Bikini Bottom contributor review/);
+  assert.match(handler, /SpongeBob SquarePants/);
+  assert.match(handler, /Patrick Star/);
+  assert.match(handler, /no records were preloaded/i);
+  assert.doesNotMatch(handler, /\bfetch\s*\(/, 'fictional sample activation must not make network requests');
+  assert.doesNotMatch(handler, /\.request\s*\(/, 'fictional sample activation must not call the Giving API client');
+  assert.doesNotMatch(handler, /runSearchButton|searchForm[^\n]*submit|requestSubmit/, 'fictional sample activation must not start retrieval');
+  assert.doesNotMatch(handler, /saveDossierButton|syncVaultButton|exportCampaignDeputyBundleButton|createCampaignDeputyPersonButton/, 'fictional sample activation must not trigger save/Vault/external mutations');
+  assert.doesNotMatch(handler, /\.click\s*\(/, 'fictional sample activation must not synthesize consequential button gestures');
 });
