@@ -66,6 +66,27 @@ function classifyFailedResources(items = failedResources) {
   return { expectedProtectedRefusals, unexpectedFailedResources };
 }
 
+async function waitForProtectedSessionBoundary({ timeoutMs = 10000 } = {}) {
+  if (!(production && practiceObservation)) return null;
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const { expectedProtectedRefusals } = classifyFailedResources();
+    if (expectedProtectedRefusals.length === 1) {
+      // The response event fires before Giving's boot() catch has fully closed
+      // the unauthenticated membrane. Let that micro-sequence settle, then the
+      // witness may expose the shell without racing the bootstrap status call.
+      await page.waitForTimeout(100);
+      return expectedProtectedRefusals[0];
+    }
+    assert.ok(
+      expectedProtectedRefusals.length <= 1,
+      `production practice may observe at most one pre-auth session.status refusal before fixture observation: ${JSON.stringify(expectedProtectedRefusals)}`
+    );
+    await page.waitForTimeout(50);
+  }
+  throw new Error(`Giving production bootstrap did not settle its protected session.status boundary before practice observation: ${JSON.stringify(failedResources)}`);
+}
+
 async function exposeOperatorShell() {
   await page.evaluate(() => {
     document.documentElement.dataset.session = 'open';
@@ -287,9 +308,10 @@ try {
   let practiceFailedResourceDelta = [];
   if (!production) resilienceWitness = await witnessResilienceUi();
   if (production && practiceObservation) {
-    await exposeOperatorShell();
     await requireResilienceShell();
     await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
+    await waitForProtectedSessionBoundary();
+    await exposeOperatorShell();
     const failedBeforePractice = failedResources.length;
     productionPracticeWitness = await witnessGivingPracticeFixture(page);
     practiceFailedResourceDelta = failedResources.slice(failedBeforePractice);
