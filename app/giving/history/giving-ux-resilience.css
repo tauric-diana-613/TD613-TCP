@@ -257,7 +257,7 @@
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
-  transition: opacity 70ms ease 0ms, visibility 0s, transform 70ms ease 0ms;
+  transition: none !important;
   transition-delay: 0s !important;
 }
 
