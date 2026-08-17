@@ -53,6 +53,14 @@ function readAuthorized(name, expectedPushes) {
 }
 
 const release = readAuthorized('vercel-operator-release.yml', 2);
+assert.match(release, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
+  'the installed chat relay may transport an operator-authorized #405 command');
+assert.doesNotMatch(release, /endsWith\([^\n]*\[bot\]/,
+  'release relay authority must never widen to arbitrary bot identities');
+assert.doesNotMatch(release, /includes\([^\n]*bot/i,
+  'release relay authority must remain an exact identity allowlist');
+assert.match(release, /release_relay = \$\{\{ github\.event\.comment\.user\.login \}\}/,
+  'accepted release receipts must identify which narrow relay transported the operator gesture');
 assert.equal((release.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((release.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.equal((release.match(/vercel@latest deploy/g) || []).length, 1);
@@ -66,6 +74,18 @@ assert.ok(releaseCommitIndex >= 0, 'fallback release admission step must exist')
 assert.ok(immediateRelockIndex > releaseCommitIndex, 'fallback relock must immediately follow deployment admission');
 assert.ok(productionObservationIndex > immediateRelockIndex, 'fallback gate must be closed before production observation begins');
 
+const exactSourceProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
+assert.match(exactSourceProbe, /\/giving\/history\/release-source\.json/,
+  'common exact-source proof must bind to the production release canary');
+assert.match(exactSourceProbe, /TD613_SOURCE_RECEIPT_ATTEMPTS \|\| 288/,
+  'release-canary readiness must tolerate bounded long Vercel Git ingestion delay');
+assert.match(exactSourceProbe, /Authorized release-source receipt did not reach production/,
+  'old production must not pass exact-source merely because unchanged runtime bytes match');
+assert.match(exactSourceProbe, /const releaseSourceReceipt = await waitForAuthorizedSourceReceipt\(\);/,
+  'release packet identity must settle before runtime byte parity is evaluated');
+assert.match(exactSourceProbe, /release_source_receipt: releaseSourceReceipt/,
+  'exact-source evidence must retain the release-canary receipt');
+
 const relock = readAuthorized('vercel-relock-safety.yml', 1);
 assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.doesNotMatch(relock, /vercel@latest deploy/);
@@ -74,4 +94,4 @@ assert.match(relock, /deployment_count = 0/);
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed with immediate fallback relock before production observation');
+console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, and immediate fallback relock');

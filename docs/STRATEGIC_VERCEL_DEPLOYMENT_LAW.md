@@ -33,7 +33,7 @@ operator authorization → assistant/Codex execution → one Vercel deployment
 one deployable fallback commit → immediate relock → production observation
 ```
 
-The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex executes, observes, relocks, and reports.
+The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, observes, relocks, and reports. Relay identity does not create release authority.
 
 ## Evidence placement
 
@@ -90,11 +90,13 @@ The permanent conduit is GitHub issue **#405, “TD613 Vercel Release Gate.”**
 The release workflow accepts only:
 
 - issue #405;
-- the repository-owner identity;
+- the repository-owner identity **or the exact installed `chatgpt-codex-connector[bot]` relay carrying an explicit in-chat operator authorization**;
 - the exact current `main` SHA;
 - the named `PRODUCTION` target;
 - one mutually exclusive credential route;
 - one deployment invocation.
+
+The allowlisted chat relay is a transport mechanism, not an independent operator. Its presence cannot substitute for the operator gesture, widen the target, choose a different SHA, open a closed release without authorization, or bypass any later release check. No wildcard bot identity, generic GitHub App identity, or arbitrary collaborator may inherit this conduit.
 
 The issue comment is an execution mechanism used by the assistant/Codex, not a task transferred to the operator.
 

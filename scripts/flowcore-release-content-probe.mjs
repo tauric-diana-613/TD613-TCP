@@ -8,6 +8,9 @@ const out = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/flowcore-p
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const attempts = Number(process.env.TD613_PROBE_ATTEMPTS || 72);
 const delayMs = Number(process.env.TD613_PROBE_DELAY_MS || 5000);
+const sourceReceiptAttempts = Number(process.env.TD613_SOURCE_RECEIPT_ATTEMPTS || 288);
+const sourceReceiptDelayMs = Number(process.env.TD613_SOURCE_RECEIPT_DELAY_MS || delayMs);
+const sourceReceiptRequestTimeoutMs = Number(process.env.TD613_SOURCE_RECEIPT_REQUEST_TIMEOUT_MS || 15000);
 const settlementAttempts = Number(process.env.TD613_VERCEL_SETTLEMENT_ATTEMPTS || 72);
 const settlementDelayMs = Number(process.env.TD613_VERCEL_SETTLEMENT_DELAY_MS || 5000);
 const settlementRequestTimeoutMs = Number(process.env.TD613_VERCEL_SETTLEMENT_REQUEST_TIMEOUT_MS || 8000);
@@ -31,6 +34,68 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const vercelConfig = JSON.parse(await fsp.readFile('vercel.json', 'utf8'));
 const isRetryableSettlementLookupStatus = status =>
   status === 408 || status === 425 || status === 429 || (status >= 500 && status <= 599);
+
+async function waitForAuthorizedSourceReceipt() {
+  if (!Number.isSafeInteger(sourceReceiptAttempts) || sourceReceiptAttempts < 1 || sourceReceiptAttempts > 360) {
+    throw new Error('Release-source receipt attempts must be 1..360.');
+  }
+  if (!Number.isSafeInteger(sourceReceiptDelayMs) || sourceReceiptDelayMs < 0 || sourceReceiptDelayMs > 60000) {
+    throw new Error('Release-source receipt delay must be 0..60000ms.');
+  }
+  if (!Number.isSafeInteger(sourceReceiptRequestTimeoutMs) || sourceReceiptRequestTimeoutMs < 1000 || sourceReceiptRequestTimeoutMs > 30000) {
+    throw new Error('Release-source receipt request timeout must be 1000..30000ms.');
+  }
+
+  let lastObserved = 'MISSING';
+  let lastIssue = null;
+  for (let attempt = 1; attempt <= sourceReceiptAttempts; attempt += 1) {
+    try {
+      const url = new URL('/giving/history/release-source.json', `${base}/`);
+      url.searchParams.set('td613_source_receipt', sourcePacketCommit);
+      url.searchParams.set('td613_receipt_attempt', String(attempt));
+      url.searchParams.set('td613_receipt_nonce', `${Date.now()}-${attempt}`);
+      const response = await fetch(url, {
+        headers: { 'cache-control': 'no-cache' },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(sourceReceiptRequestTimeoutMs)
+      });
+      if (!response.ok) {
+        lastIssue = `HTTP ${response.status}`;
+      } else {
+        const payload = await response.json();
+        lastObserved = String(payload?.source_packet_commit || '').trim() || 'MISSING';
+        lastIssue = lastObserved === sourcePacketCommit ? null : `observed ${lastObserved}`;
+        if (lastObserved === sourcePacketCommit) {
+          const receipt = Object.freeze({
+            schema: 'td613.release-source-readiness/v0.1',
+            status: 'PASS',
+            source_packet_commit: sourcePacketCommit,
+            observed_source_packet_commit: lastObserved,
+            attempt,
+            observed_at: new Date().toISOString()
+          });
+          await fsp.writeFile(path.join(out, 'release-source-readiness.json'), `${JSON.stringify(receipt, null, 2)}\n`, 'utf8');
+          return receipt;
+        }
+      }
+    } catch (error) {
+      lastIssue = `${error?.name || 'Error'}: ${error?.message || String(error)}`;
+    }
+    if (attempt < sourceReceiptAttempts) await sleep(sourceReceiptDelayMs);
+  }
+
+  const held = Object.freeze({
+    schema: 'td613.release-source-readiness/v0.1',
+    status: 'HELD',
+    source_packet_commit: sourcePacketCommit,
+    observed_source_packet_commit: lastObserved,
+    attempts: sourceReceiptAttempts,
+    hold_reason: lastIssue || `observed ${lastObserved}`,
+    observed_at: new Date().toISOString()
+  });
+  await fsp.writeFile(path.join(out, 'release-source-readiness.json'), `${JSON.stringify(held, null, 2)}\n`, 'utf8');
+  throw new Error(`Authorized release-source receipt did not reach production; expected ${sourcePacketCommit}, last ${lastIssue || `observed ${lastObserved}`}.`);
+}
 
 async function waitForGitFallbackSettlement() {
   if (vercelConfig.git?.deploymentEnabled !== true) {
@@ -214,6 +279,7 @@ async function discoverRuntimeClosure() {
 }
 
 await fsp.mkdir(out, { recursive: true });
+const releaseSourceReceipt = await waitForAuthorizedSourceReceipt();
 const vercelGitSettlement = await waitForGitFallbackSettlement();
 const closure = await discoverRuntimeClosure();
 const local = await Promise.all(closure.map(async ([localPath, value]) => {
@@ -272,10 +338,11 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       });
     }
     observation = {
-      schema: 'td613.flowcore.production-content-observation/v0.4-vercel-settled-rewrite-aware-asset-closure',
+      schema: 'td613.flowcore.production-content-observation/v0.5-release-receipt-bound-vercel-settled-rewrite-aware-asset-closure',
       status: 'PASS',
       source_packet_commit: sourcePacketCommit,
       production_base_url: base,
+      release_source_receipt: releaseSourceReceipt,
       exact_source_content_verified: true,
       dependency_closure_verified: true,
       navigation_links_excluded: true,
@@ -302,10 +369,11 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
 
 if (!observation) {
   observation = {
-    schema: 'td613.flowcore.production-content-observation/v0.4-vercel-settled-rewrite-aware-asset-closure',
+    schema: 'td613.flowcore.production-content-observation/v0.5-release-receipt-bound-vercel-settled-rewrite-aware-asset-closure',
     status: 'HELD',
     source_packet_commit: sourcePacketCommit,
     production_base_url: base,
+    release_source_receipt: releaseSourceReceipt,
     exact_source_content_verified: false,
     dependency_closure_verified: false,
     navigation_links_excluded: true,
@@ -326,6 +394,7 @@ if (observation.status !== 'PASS') throw new Error(observation.hold_reason);
 console.log(JSON.stringify({
   status: observation.status,
   source_packet_commit: sourcePacketCommit,
+  release_source_receipt: releaseSourceReceipt.status,
   artifact: artifactPath,
   dependency_count: local.length,
   vercel_git_settlement: vercelGitSettlement.status
