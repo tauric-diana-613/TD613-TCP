@@ -1,14 +1,10 @@
 import assert from 'node:assert/strict';
 
 // The caller owns bootstrap quiescence before this assay begins. Once this
-// request listener is installed, every Giving API call belongs to the fixture
-// load observation window and remains fatal; the assay grants no bootstrap
-// exception of its own. Keep this canonical-practice path in the release
-// packet so production must exercise the same zero-effect witness after the
-// request-causality repair rather than judging late bootstrap responses.
-// Protected pre-practice refusal count is diagnostic only; causal placement
-// before the fixture boundary controls admissibility, while post-boundary
-// Giving request starts remain fatal without exception.
+// request listener is installed, every Giving API network call belongs to the
+// observed practice window. The fictional source and practice Vault deliberately
+// terminate inside the browser, so traversal can exercise the real Giving route
+// without an external /api/td613-ledger request.
 function isGivingApiRequest(request) {
   if (!['fetch', 'xhr'].includes(request.resourceType())) return false;
   try {
@@ -24,6 +20,7 @@ async function snapshot(page) {
     title: document.querySelector('#dossierTitle')?.value ?? null,
     searchName: document.querySelector('#searchName')?.value ?? null,
     queue: document.querySelector('#contactQueueInput')?.value ?? null,
+    exactMatch: Boolean(document.querySelector('#exactMatchToggle')?.checked),
     status: document.querySelector('#researchFileSampleStatus')?.textContent?.trim() ?? '',
     statusHidden: Boolean(document.querySelector('#researchFileSampleStatus')?.hidden),
     runSummary: document.querySelector('#runSummary')?.textContent?.trim() ?? '',
@@ -32,7 +29,13 @@ async function snapshot(page) {
     receiptList: document.querySelector('#receiptList')?.innerHTML ?? '',
     campaignReceipts: document.querySelector('#campaignReceipts')?.innerHTML ?? '',
     vaultVersions: document.querySelector('#vaultVersions')?.innerHTML ?? '',
-    coverageExecutiveLine: document.querySelector('#coverageExecutiveLine')?.textContent?.trim() ?? ''
+    coverageExecutiveLine: document.querySelector('#coverageExecutiveLine')?.textContent?.trim() ?? '',
+    practiceLocked: document.querySelector('.source-picker')?.classList.contains('practice-source-locked') || false,
+    practiceSource: document.querySelector('#sourceRegistry input[value="practice-bikini-bottom-votes"]')?.checked || false,
+    fictionalCards: document.querySelectorAll('#recordList .record-card[data-fictional-sample="true"]').length,
+    fictionalChips: document.querySelectorAll('#recordList .fictional-sample-chip').length,
+    vaultVersionCount: document.querySelectorAll('#vaultVersions .version-item').length,
+    localSampleOptions: [...(document.querySelector('#localDossierSelect')?.options || [])].filter((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')).length
   }));
 }
 
@@ -40,54 +43,118 @@ export async function witnessGivingPracticeFixture(page) {
   await page.waitForSelector('#loadResearchSampleButton', { state: 'visible', timeout: 5000 });
   await page.waitForSelector('#contactQueueInput', { state: 'attached', timeout: 5000 });
 
-  const requests = [];
-  const onRequest = (request) => {
+  const loadRequests = [];
+  const onLoadRequest = (request) => {
     if (!isGivingApiRequest(request)) return;
     let operation = null;
     try { operation = JSON.parse(request.postData() || '{}')?.operation || null; } catch {}
-    requests.push({ method: request.method(), url: request.url(), operation });
+    loadRequests.push({ method: request.method(), url: request.url(), operation });
   };
 
   const before = await snapshot(page);
-  page.on('request', onRequest);
+  page.on('request', onLoadRequest);
   try {
     await page.locator('#loadResearchSampleButton').click();
-    await page.waitForTimeout(150);
+    await page.waitForTimeout(180);
   } finally {
-    page.off('request', onRequest);
+    page.off('request', onLoadRequest);
   }
-  const after = await snapshot(page);
+  const afterLoad = await snapshot(page);
 
-  assert.equal(after.title, 'SAMPLE — Bikini Bottom contributor review');
-  assert.equal(after.searchName, 'SpongeBob SquarePants');
-  assert.match(after.queue || '', /Patrick Star/);
-  assert.match(after.queue || '', /Sandy Cheeks/);
-  assert.match(after.queue || '', /Eugene H\. Krabs/);
-  assert.match(after.queue || '', /Squidward Q\. Tentacles/);
-  assert.equal(after.statusHidden, false);
-  assert.match(after.status, /Fictional sample loaded locally/i);
-  assert.match(after.status, /no records were preloaded/i);
+  assert.equal(afterLoad.title, 'SAMPLE — Bikini Bottom contributor review');
+  assert.equal(afterLoad.searchName, 'SpongeBob SquarePants');
+  assert.match(afterLoad.queue || '', /Patrick Star/);
+  assert.match(afterLoad.queue || '', /Sandy Cheeks/);
+  assert.match(afterLoad.queue || '', /Eugene H\. Krabs/);
+  assert.match(afterLoad.queue || '', /Squidward Q\. Tentacles/);
+  assert.equal(afterLoad.exactMatch, true, 'fictional practice must begin under normalized exact match');
+  assert.equal(afterLoad.practiceLocked, true, 'real electronic source picker must freeze behind the practice exit membrane');
+  assert.equal(afterLoad.practiceSource, true, 'BikiniBottomVotes must be the only selected practice source');
+  assert.equal(afterLoad.statusHidden, false);
+  assert.match(afterLoad.status, /Practice case loaded/i);
+  assert.match(afterLoad.status, /Press SEARCH/i);
+  assert.match(afterLoad.status, /nothing in this case can become real evidence/i);
 
-  assert.deepEqual(requests, [], `loading the fictional practice case must not call Giving API: ${JSON.stringify(requests)}`);
-  assert.equal(after.runSummary, before.runSummary, 'practice load must not start a retrieval run');
-  assert.equal(after.sourceProgress, before.sourceProgress, 'practice load must not mutate source-run evidence');
-  assert.equal(after.recordList, before.recordList, 'practice load must not fabricate or alter contribution records');
-  assert.equal(after.receiptList, before.receiptList, 'practice load must not create retrieval/operator receipts');
-  assert.equal(after.campaignReceipts, before.campaignReceipts, 'practice load must not create Campaign Deputy receipts');
-  assert.equal(after.vaultVersions, before.vaultVersions, 'practice load must not write or hydrate Vault versions');
-  assert.equal(after.coverageExecutiveLine, before.coverageExecutiveLine, 'practice load must not create a coverage claim');
+  assert.deepEqual(loadRequests, [], `loading the fictional practice case must not call Giving API: ${JSON.stringify(loadRequests)}`);
+  assert.equal(afterLoad.runSummary, before.runSummary, 'practice load must not start a retrieval run');
+  assert.equal(afterLoad.sourceProgress, before.sourceProgress, 'practice load must not mutate source-run evidence');
+  assert.equal(afterLoad.recordList, before.recordList, 'practice load must not fabricate or alter contribution records');
+  assert.equal(afterLoad.receiptList, before.receiptList, 'practice load must not create retrieval/operator receipts');
+  assert.equal(afterLoad.campaignReceipts, before.campaignReceipts, 'practice load must not create Campaign Deputy receipts');
+  assert.equal(afterLoad.vaultVersions, before.vaultVersions, 'practice load must not write or hydrate Vault versions');
+  assert.equal(afterLoad.coverageExecutiveLine, before.coverageExecutiveLine, 'practice load must not create a coverage claim');
+
+  // Traversal begins only after the separate SEARCH gesture. Compress the
+  // pedagogical delay for CI; production users still receive the authored 8–16s.
+  await page.evaluate(() => { globalThis.__TD613_GIVING_PRACTICE_DELAY_MS__ = 25; });
+  const traversalRequests = [];
+  const onTraversalRequest = (request) => {
+    if (!isGivingApiRequest(request)) return;
+    let operation = null;
+    try { operation = JSON.parse(request.postData() || '{}')?.operation || null; } catch {}
+    traversalRequests.push({ method: request.method(), url: request.url(), operation });
+  };
+  page.on('request', onTraversalRequest);
+  try {
+    await page.locator('#runSearchButton').click();
+    await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'visible', timeout: 10000 });
+    await page.waitForTimeout(120);
+  } finally {
+    page.off('request', onTraversalRequest);
+  }
+  const afterSearch = await snapshot(page);
+  assert.deepEqual(traversalRequests, [], `BikiniBottomVotes search must terminate in the browser practice boundary: ${JSON.stringify(traversalRequests)}`);
+  assert.equal(afterSearch.fictionalCards, 12, 'SpongeBob practice retrieval must expose the authored 12-record grassroots history');
+  assert.equal(afterSearch.fictionalChips, afterSearch.fictionalCards, 'every fictional contribution card must carry the magenta provenance chip');
+  assert.match(afterSearch.recordList, /Bikini Bottom/);
+  assert.match(afterSearch.recordList, /Oceania/);
+  assert.match(afterSearch.recordList, />X</);
+  assert.match(afterSearch.sourceProgress, /BikiniBottomVotes/);
+  assert.match(afterSearch.coverageExecutiveLine, /1\/1 selected sources complete/);
+
+  // The real local Save route must now have a meaningful sample to reopen.
+  await page.locator('#saveDossierButton').click();
+  await page.waitForFunction(() => [...(document.querySelector('#localDossierSelect')?.options || [])]
+    .some((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')), null, { timeout: 5000 });
+  const afterSave = await snapshot(page);
+  assert.ok(afterSave.localSampleOptions >= 1, 'explicit Save must produce an openable local fictional research file');
+
+  // Vault traversal uses the real WebCrypto encryption function. Only the hosted
+  // shelf is virtualized, so ciphertext never leaves the practice browser.
+  await page.locator('#researchFileVaultButton').click();
+  await page.locator('#vaultPassphrase').fill('Bikini-Bottom-Practice-613-Key');
+  const vaultRequests = [];
+  const onVaultRequest = (request) => { if (isGivingApiRequest(request)) vaultRequests.push(request.url()); };
+  page.on('request', onVaultRequest);
+  try {
+    await page.locator('#syncVaultButton').click();
+    await page.waitForSelector('#vaultVersions .version-item', { state: 'visible', timeout: 20000 });
+  } finally {
+    page.off('request', onVaultRequest);
+  }
+  const afterVault = await snapshot(page);
+  assert.deepEqual(vaultRequests, [], 'practice Vault must keep encrypted custody on the reversible in-memory shelf');
+  assert.ok(afterVault.vaultVersionCount >= 1, 'practice Vault must expose at least one encrypted version after explicit gesture');
 
   return Object.freeze({
-    schema: 'td613.giving.practice-fixture-browser-witness/v0.1',
+    schema: 'td613.giving.practice-fixture-browser-witness/v0.2',
     fixture: 'giving.bikini-bottom-practice/v0.1',
     manifestly_fictional: true,
     fictional_inputs_loaded: true,
-    api_requests_delta: 0,
-    retrieval_started: false,
-    evidence_records_changed: false,
-    receipts_changed: false,
-    vault_versions_changed: false,
-    campaign_deputy_changed: false,
+    load_api_requests_delta: 0,
+    load_retrieval_started: false,
+    load_evidence_records_changed: false,
+    load_receipts_changed: false,
+    load_vault_versions_changed: false,
+    load_campaign_deputy_changed: false,
+    normalized_exact_match: true,
+    practice_source_locked: true,
+    fictional_records_observed: afterSearch.fictionalCards,
+    fictional_record_provenance_chips: afterSearch.fictionalChips,
+    local_practice_file_saved: true,
+    encrypted_practice_vault_version_observed: true,
+    external_retrieval_requests: 0,
+    external_vault_requests: 0,
     evidence_authority_granted: false,
     consequence_authority_granted: false,
     status: 'PASS'
