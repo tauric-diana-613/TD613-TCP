@@ -8,6 +8,10 @@ function duringPracticeLoad() {
   return document.documentElement.dataset.givingPracticeLoad === 'true';
 }
 
+function practiceActive() {
+  return document.documentElement.dataset.givingPractice === 'true';
+}
+
 // Canonical fixture load must remain zero-effect. The existing Giving shell uses
 // input/change events for ordinary autosave, so stop those events only during the
 // bounded fixture-load instant. Search, Save, and Vault remain separate gestures.
@@ -45,6 +49,16 @@ function ensurePracticeSource() {
   injecting = false;
 }
 
+function enforcePracticeSourceSelection() {
+  if (!practiceActive() || !practiceSource) return;
+  ensurePracticeSource();
+  for (const input of $$('#sourceRegistry input[type="checkbox"]')) {
+    input.checked = input.value === PRACTICE_SOURCE_ID;
+  }
+  const sourceCount = $('#selectedSourceCount');
+  if (sourceCount) sourceCount.textContent = '1 source';
+}
+
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
   practiceSource = null;
@@ -55,19 +69,25 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
   if (action === 'register' && event.detail?.source) {
     practiceSource = event.detail.source;
     ensurePracticeSource();
-    queueMicrotask(() => {
-      const sourceCount = $('#selectedSourceCount');
-      if (sourceCount) sourceCount.textContent = '1 source';
-    });
+    queueMicrotask(enforcePracticeSourceSelection);
   } else if (action === 'remove') {
     removePracticeSource();
   }
 });
 
+// Authenticated Giving may finish its ordinary registry hydration after the
+// practice fixture has already been loaded. That late hydrateForm() legitimately
+// restores the dossier's pre-practice source_ids and can therefore uncheck the
+// synthetic checkbox. Reassert the closed practice aperture at the explicit
+// SEARCH gesture boundary, before Giving's bubble-phase startSearch reads DOM.
+$('#searchForm')?.addEventListener('submit', enforcePracticeSourceSelection, true);
+
 const registry = $('#sourceRegistry');
 if (registry) {
   new MutationObserver(() => {
-    if (document.documentElement.dataset.givingPractice === 'true') ensurePracticeSource();
+    if (!practiceActive()) return;
+    ensurePracticeSource();
+    queueMicrotask(enforcePracticeSourceSelection);
   }).observe(registry, { childList: true, subtree: false });
 }
 
@@ -113,7 +133,7 @@ document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button');
   if (!button || !blockedCampaignActions.has(button.id)) return;
   const hasPracticeRecords = Boolean($('#recordList .record-card[data-fictional-sample="true"]'));
-  if (!hasPracticeRecords && document.documentElement.dataset.givingPractice !== 'true') return;
+  if (!hasPracticeRecords && !practiceActive()) return;
   event.preventDefault();
   event.stopImmediatePropagation();
   const message = 'FICTIONAL PRACTICE · Campaign Deputy remains closed. Exit the demo and open a non-fictional research file before any CRM action.';
@@ -126,5 +146,6 @@ document.addEventListener('click', (event) => {
 export const _givingPracticeSurfaceBridge = Object.freeze({
   PRACTICE_SOURCE_ID,
   ensurePracticeSource,
+  enforcePracticeSourceSelection,
   decoratePracticeRecords
 });
