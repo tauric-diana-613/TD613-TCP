@@ -66,9 +66,14 @@ assert.match(bridge, /FICTIONAL PRACTICE · Bikini Bottom, Oceania/);
 assert.match(bridge, /duringPracticeLoad/);
 assert.match(bridge, /stopImmediatePropagation/);
 assert.match(bridge, /function enforcePracticeSourceSelection/);
+assert.match(bridge, /function enforcePracticeSearchPosture/);
+assert.match(bridge, /PRACTICE_PRIMARY_NAME = 'SpongeBob SquarePants'/);
+assert.match(bridge, /if \(!practiceRecordsExist\(\)\)/, 'only the first practice search may be reseeded to SpongeBob; queued contacts retain their own names');
 assert.match(bridge, /input\.checked = input\.value === PRACTICE_SOURCE_ID/);
+assert.match(bridge, /exact\.checked = true/);
+assert.match(bridge, /from\.value = PRACTICE_DATE_FROM/);
 assert.match(bridge, /#searchForm/);
-assert.match(bridge, /addEventListener\('submit', enforcePracticeSourceSelection, true\)/, 'practice source selection must be reasserted in capture phase before core startSearch reads the DOM');
+assert.match(bridge, /addEventListener\('submit', enforcePracticeSearchPosture, true\)/, 'the full practice posture must be reasserted in capture phase before core startSearch reads the DOM');
 assert.match(bridge, /blockedCampaignActions/);
 
 assert.match(shell, /td613:giving-practice-load-request/);
