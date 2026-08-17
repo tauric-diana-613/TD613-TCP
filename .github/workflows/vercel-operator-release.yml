@@ -143,7 +143,7 @@ jobs:
           fi
 
       - name: Materialize the Giving exact-source receipt
-        if: steps.scope.outputs.validation_scope == 'giving'
+        if: steps.scope.outputs.validation_scope == 'giving' || steps.scope.outputs.validation_scope == 'practice'
         env:
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
         run: |
@@ -200,7 +200,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add vercel.json
-          if [[ "${{ steps.scope.outputs.validation_scope }}" == 'giving' ]]; then
+          if [[ "${{ steps.scope.outputs.validation_scope }}" == 'giving' || "${{ steps.scope.outputs.validation_scope }}" == 'practice' ]]; then
             git add app/giving/history/release-source.json
           fi
           git commit -m "release: enable one Vercel deployment for ${{ steps.authorize.outputs.selected_sha }}"

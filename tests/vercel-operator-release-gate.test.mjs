@@ -66,9 +66,15 @@ assert.match(workflow, /TD613_SOURCE_PACKET_COMMIT: \$\{\{ steps\.authorize\.out
 assert.match(workflow, /TD613_GIVING_PROBE_ATTEMPTS: '72'/);
 assert.match(workflow, /TD613_GIVING_PROBE_DELAY_MS: '5000'/);
 assert.match(workflow, /Materialize the Giving exact-source receipt/);
+const materializeReceiptStep = workflow.match(/- name: Materialize the Giving exact-source receipt[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
+assert.match(materializeReceiptStep, /validation_scope == 'giving' \|\| steps\.scope\.outputs\.validation_scope == 'practice'/,
+  'Giving and practice releases must bind the deployed proving surface to the authorized source packet.');
 assert.match(workflow, /app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /source_packet_commit: sourcePacketCommit/);
-assert.match(workflow, /git add vercel\.json[\s\S]*steps\.scope\.outputs\.validation_scope[\s\S]*git add app\/giving\/history\/release-source\.json/);
+const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback release commit[\s\S]*?(?=\n\s+- name: Resolve deployed production URL)/)?.[0] || '';
+assert.match(fallbackRelease, /validation_scope \}\}" == 'giving' \|\| "\$\{\{ steps\.scope\.outputs\.validation_scope \}\}" == 'practice'/,
+  'Git fallback must stage the Giving proving-surface receipt for both Giving and practice releases.');
+assert.match(fallbackRelease, /git add app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(workflow, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflow, /ash-lifecycle-production-probe\.mjs/);
