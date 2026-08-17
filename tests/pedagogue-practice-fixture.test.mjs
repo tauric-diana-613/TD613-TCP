@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA,
   compileCanonicalPracticeFixture,
@@ -182,4 +183,35 @@ try {
   else process.env.TD613_ARTIFACT_DIR = previousArtifactDir;
 }
 
-console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, zero-effect load, route residue, closed authority, and independent Giving provenance.');
+// Production-hydration law: the resilience shell is a static bootstrap
+// dependency, not a late member of the asynchronous product graph. This pins
+// the causal boundary exposed by production release run 603.
+const givingBootstrap = fs.readFileSync('app/giving/history/giving-bootstrap.js', 'utf8');
+const resilienceStaticImport = givingBootstrap.indexOf("import './giving-ux-resilience-shell.js?v=20260816-4';");
+const productGraphStart = givingBootstrap.indexOf("await fetch(epochUrl('./giving-model.js')");
+assert.ok(resilienceStaticImport >= 0, 'Giving bootstrap must declare the resilience shell as a static module dependency');
+assert.ok(productGraphStart > resilienceStaticImport, 'resilience shell must evaluate before the asynchronous Giving product graph begins');
+assert.doesNotMatch(
+  givingBootstrap,
+  /await import\(epochUrl\('\.\/giving-ux-resilience-shell\.js'\)\)/,
+  'resilience shell must not be deferred into the asynchronous product graph'
+);
+
+const givingExportMenu = fs.readFileSync('app/giving/history/giving-export-menu.js', 'utf8');
+assert.match(
+  givingExportMenu,
+  /const resilientToolbar = document\.querySelector\('\.committee-ledger-toolbar'\)/,
+  'Giving export adapter must detect canonical resilience-toolbar ownership'
+);
+assert.match(
+  givingExportMenu,
+  /if \(!resilientToolbar\) \{[\s\S]*?ledgerCluster\.appendChild\(source\);[\s\S]*?\}/,
+  'legacy export reparenting must be confined to surfaces without the resilience toolbar'
+);
+assert.doesNotMatch(
+  givingExportMenu,
+  /if \(resilientToolbar\)[\s\S]*?appendChild\(source\)/,
+  'resilience-owned Committee controls must never be reparented by the export adapter'
+);
+
+console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, zero-effect load, route residue, closed authority, independent Giving provenance, production shell ordering, and export-toolbar ownership.');

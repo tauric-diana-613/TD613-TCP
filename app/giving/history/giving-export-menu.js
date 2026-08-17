@@ -20,13 +20,21 @@ const exports = [
 ];
 
 if (exports.every(({ source }) => source)) {
-  const ledgerCluster = xlsxButton.parentElement;
-  ledgerCluster.classList.add('export-action-cluster');
+  const resilientToolbar = document.querySelector('.committee-ledger-toolbar');
 
-  for (const { source, label } of exports) {
-    source.textContent = label;
-    source.className = 'export-action-button';
-    ledgerCluster.appendChild(source);
+  // When the resilience shell already owns the Committee ledger toolbar, keep
+  // its original controls in that canonical structure. Reparenting them here
+  // would move Campaign Deputy into the closed Forensic details menu. On older
+  // surfaces without that toolbar, retain the legacy export-cluster behavior.
+  if (!resilientToolbar) {
+    const ledgerCluster = xlsxButton.parentElement;
+    ledgerCluster.classList.add('export-action-cluster');
+
+    for (const { source, label } of exports) {
+      source.textContent = label;
+      source.className = 'export-action-button';
+      ledgerCluster.appendChild(source);
+    }
   }
 
   const reviewHead = document.querySelector('#view-review .section-head');

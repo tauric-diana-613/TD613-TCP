@@ -1,3 +1,5 @@
+import './giving-ux-resilience-shell.js?v=20260816-4';
+
 const GIVING_ASSET_EPOCH = '20260816-4';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 
@@ -26,6 +28,9 @@ function afterStylesheet(id, path) {
   document.head.appendChild(link);
 }
 
+// The primary operator shell is a static module dependency above. It hydrates
+// before this asynchronous product graph begins, so retrieval/paging work may
+// fail closed without hiding Campaign, Research File, or Vault controls.
 try {
   await fetch(epochUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' });
 } catch {
@@ -43,10 +48,6 @@ await import(epochUrl('./giving-left-rail-order.js'));
 await import(epochUrl('./giving-export-menu.js'));
 await import(epochUrl('./giving-contribution-amount-filter.js'));
 await import(epochUrl('./giving-state-filter.js'));
-// The primary operator shell must hydrate independently of retrieval
-// instrumentation. A paging/fetch shim may fail closed without hiding the
-// Campaign, Research File, or Vault controls from the operator.
-await import(epochUrl('./giving-ux-resilience-shell.js'));
 await import(epochUrl('./giving-review-paging.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
