@@ -91,6 +91,12 @@
 .control-rail {
   grid-column: 1;
   grid-row: 1 / span 2;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+.control-rail > .panel {
+  min-width: 0;
+  max-width: 100%;
 }
 .ledger-tabs {
   position: sticky;
@@ -335,7 +341,9 @@
     order: 3;
     display: grid;
     width: 100%;
+    min-width: 0;
     max-width: 100%;
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
     gap: 8px;
     padding: 0 0 16px;
