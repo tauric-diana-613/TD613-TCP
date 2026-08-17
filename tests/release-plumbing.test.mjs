@@ -57,7 +57,14 @@ assert.equal((release.match(/config\.git\.deploymentEnabled = true/g) || []).len
 assert.equal((release.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.equal((release.match(/vercel@latest deploy/g) || []).length, 1);
 assert.match(release, /Create one bounded Git-fallback release commit/);
-assert.match(release, /Restore the Git deployment lock after fallback/);
+assert.match(release, /Restore the Git deployment lock immediately after fallback admission/);
+
+const releaseCommitIndex = release.indexOf('- name: Create one bounded Git-fallback release commit');
+const immediateRelockIndex = release.indexOf('- name: Restore the Git deployment lock immediately after fallback admission');
+const productionObservationIndex = release.indexOf('- name: Resolve deployed production URL');
+assert.ok(releaseCommitIndex >= 0, 'fallback release admission step must exist');
+assert.ok(immediateRelockIndex > releaseCommitIndex, 'fallback relock must immediately follow deployment admission');
+assert.ok(productionObservationIndex > immediateRelockIndex, 'fallback gate must be closed before production observation begins');
 
 const relock = readAuthorized('vercel-relock-safety.yml', 1);
 assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
@@ -67,4 +74,4 @@ assert.match(relock, /deployment_count = 0/);
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed');
+console.log('release-plumbing.test.mjs passed with immediate fallback relock before production observation');
