@@ -120,6 +120,36 @@ Production provenance is intentionally split by claim type. A Giving product rel
 
 Readiness is not the practice claim. The production practice browser witness must also execute the same zero-effect fictional-load assay used before merge, and its own receipt must record `practice_fixture_load = PASS`. Endpoint readiness, job success, or same visible destination alone is insufficient evidence that the practice route was actually traversed.
 
+### Deployment-settlement law
+
+A deployment request is not a deployed observation surface.
+
+```text
+deployment requested
+!= deployment settled
+!= route observed
+```
+
+For the bounded Git-fallback release route, the transient release commit is the deployment identity. TD613 must wait until GitHub reports the Vercel status context as `success` for that **exact release SHA** before any production-byte or browser observation begins. A matching endpoint reached before that settlement belongs to the previous production deployment and cannot witness the new source packet.
+
+The repository-wide exact-source probe owns this settlement barrier. Direct-token releases are already synchronous and therefore do not use the Git-status barrier.
+
+Practice observation through Giving adds a second product-local proof after settlement. `scripts/giving-release-content-probe.mjs` verifies the exact production bytes for the practice-critical Giving surface: the route HTML, the exact versioned bootstrap URL named by that HTML, and the shell/assets required to expose the canonical practice case. This prevents an unchanged Flow-Core dependency subset from being mistaken for proof that Giving itself has advanced to the authorized packet.
+
+The two proofs are deliberately non-equivalent:
+
+```text
+Vercel release SHA settled
++
+shared application closure matches
++
+Giving practice-critical closure matches
++
+Bikini Bottom route assay passes
+```
+
+Only the conjunction can support `production_practice_fixture = PASS`. None of those observations counts as human evidence or grants future release authority.
+
 ## Route reconstruction / tomography
 
 A calibration phantom supplies known route ground truth.

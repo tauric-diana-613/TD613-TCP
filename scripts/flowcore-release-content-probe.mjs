@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 
@@ -7,6 +8,8 @@ const out = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/flowcore-p
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const attempts = Number(process.env.TD613_PROBE_ATTEMPTS || 72);
 const delayMs = Number(process.env.TD613_PROBE_DELAY_MS || 5000);
+const settlementAttempts = Number(process.env.TD613_VERCEL_SETTLEMENT_ATTEMPTS || 72);
+const settlementDelayMs = Number(process.env.TD613_VERCEL_SETTLEMENT_DELAY_MS || 5000);
 
 if (!base) throw new Error('TD613_BASE_URL is required.');
 if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('TD613_SOURCE_PACKET_COMMIT must be an exact 40-character SHA.');
@@ -25,6 +28,66 @@ const allowedExtensions = new Set(['.html', '.js', '.mjs', '.css', '.json', '.sv
 const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const vercelConfig = JSON.parse(await fsp.readFile('vercel.json', 'utf8'));
+
+async function waitForGitFallbackSettlement() {
+  if (vercelConfig.git?.deploymentEnabled !== true) {
+    return Object.freeze({ required: false, status: 'NOT_APPLICABLE_DIRECT_TOKEN_OR_LOCKED_SOURCE' });
+  }
+  if (!Number.isSafeInteger(settlementAttempts) || settlementAttempts < 1 || settlementAttempts > 120) {
+    throw new Error('Vercel settlement attempts must be 1..120.');
+  }
+  if (!Number.isSafeInteger(settlementDelayMs) || settlementDelayMs < 0 || settlementDelayMs > 60000) {
+    throw new Error('Vercel settlement delay must be 0..60000ms.');
+  }
+
+  const releaseSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const repository = String(process.env.GITHUB_REPOSITORY || '').trim();
+  const token = String(process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '').trim();
+  if (!/^[0-9a-f]{40}$/.test(releaseSha)) throw new Error('Git-fallback settlement could not resolve the transient release SHA.');
+  if (!/^[^/]+\/[^/]+$/.test(repository)) throw new Error('GITHUB_REPOSITORY is required for Git-fallback settlement.');
+  if (!token) throw new Error('GH_TOKEN or GITHUB_TOKEN is required for Git-fallback settlement.');
+
+  let lastState = 'MISSING';
+  let lastTargetUrl = null;
+  for (let attempt = 1; attempt <= settlementAttempts; attempt += 1) {
+    const response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
+      headers: {
+        accept: 'application/vnd.github+json',
+        authorization: `Bearer ${token}`,
+        'x-github-api-version': '2022-11-28'
+      },
+      redirect: 'follow'
+    });
+    if (!response.ok) throw new Error(`Vercel settlement status lookup returned ${response.status}.`);
+    const payload = await response.json();
+    const vercelStatus = Array.isArray(payload?.statuses)
+      ? payload.statuses.find(item => item?.context === 'Vercel')
+      : null;
+    lastState = String(vercelStatus?.state || 'MISSING').toUpperCase();
+    lastTargetUrl = vercelStatus?.target_url || null;
+
+    if (lastState === 'SUCCESS') {
+      const receipt = Object.freeze({
+        schema: 'td613.vercel.git-settlement/v0.1',
+        required: true,
+        status: 'PASS',
+        release_sha: releaseSha,
+        source_packet_commit: sourcePacketCommit,
+        vercel_status: 'success',
+        target_url: lastTargetUrl,
+        attempt,
+        observed_at: new Date().toISOString()
+      });
+      await fsp.writeFile(path.join(out, 'vercel-git-settlement.json'), `${JSON.stringify(receipt, null, 2)}\n`, 'utf8');
+      return receipt;
+    }
+    if (lastState === 'FAILURE' || lastState === 'ERROR') {
+      throw new Error(`Vercel deployment for ${releaseSha} reported ${lastState}.`);
+    }
+    if (attempt < settlementAttempts) await sleep(settlementDelayMs);
+  }
+  throw new Error(`Vercel deployment for ${releaseSha} did not settle before observation; last state ${lastState}.`);
+}
 
 function localToRemote(localPath) {
   const normalized = localPath.replaceAll('\\', '/');
@@ -103,6 +166,7 @@ async function discoverRuntimeClosure() {
 }
 
 await fsp.mkdir(out, { recursive: true });
+const vercelGitSettlement = await waitForGitFallbackSettlement();
 const closure = await discoverRuntimeClosure();
 const local = await Promise.all(closure.map(async ([localPath, value]) => {
   const remotePath = localToRemote(localPath);
@@ -160,7 +224,7 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       });
     }
     observation = {
-      schema: 'td613.flowcore.production-content-observation/v0.3-rewrite-aware-asset-closure',
+      schema: 'td613.flowcore.production-content-observation/v0.4-vercel-settled-rewrite-aware-asset-closure',
       status: 'PASS',
       source_packet_commit: sourcePacketCommit,
       production_base_url: base,
@@ -168,6 +232,7 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       dependency_closure_verified: true,
       navigation_links_excluded: true,
       declared_static_rewrites_resolved: true,
+      vercel_git_settlement: vercelGitSettlement,
       dependency_count: local.length,
       application_tree_drift: 'none',
       attempt,
@@ -189,7 +254,7 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
 
 if (!observation) {
   observation = {
-    schema: 'td613.flowcore.production-content-observation/v0.3-rewrite-aware-asset-closure',
+    schema: 'td613.flowcore.production-content-observation/v0.4-vercel-settled-rewrite-aware-asset-closure',
     status: 'HELD',
     source_packet_commit: sourcePacketCommit,
     production_base_url: base,
@@ -197,6 +262,7 @@ if (!observation) {
     dependency_closure_verified: false,
     navigation_links_excluded: true,
     declared_static_rewrites_resolved: true,
+    vercel_git_settlement: vercelGitSettlement,
     dependency_count: local.length,
     application_tree_drift: 'UNRESOLVED',
     hold_reason: lastError?.message || 'Production content was not observed.',
@@ -213,5 +279,6 @@ console.log(JSON.stringify({
   status: observation.status,
   source_packet_commit: sourcePacketCommit,
   artifact: artifactPath,
-  dependency_count: local.length
+  dependency_count: local.length,
+  vercel_git_settlement: vercelGitSettlement.status
 }, null, 2));
