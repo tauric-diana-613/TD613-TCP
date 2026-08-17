@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
 const consolidated = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const law = fs.readFileSync('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md', 'utf8');
+const probe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.equal(vercel.git?.deploymentEnabled, false, 'ordinary Git-triggered Vercel deployment must remain disabled');
@@ -86,6 +87,16 @@ const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback 
 assert.match(fallbackRelease, /git add vercel\.json app\/giving\/history\/release-source\.json/,
   'the one deployable fallback commit must bind the exact-source receipt for every release scope');
 
+assert.match(probe, /new URL\('\/giving\/history\/release-source\.json'/,
+  'exact-source observation must interrogate the release receipt before declaring settlement');
+assert.match(probe, /Release receipt does not match authorized source/);
+assert.match(probe, /release_source_receipt_verified: true/);
+assert.match(probe, /td613_receipt_probe_attempt/);
+const receiptProbeIndex = probe.indexOf("new URL('/giving/history/release-source.json'");
+const runtimeRemoteIndex = probe.indexOf('const remote = [];');
+assert.ok(receiptProbeIndex >= 0 && runtimeRemoteIndex > receiptProbeIndex,
+  'the authorized release receipt must settle before byte-equivalent runtime content can pass');
+
 assert.match(workflow, /Hold authorized source stable against stale queued rollbacks/);
 assert.match(workflow, /TD613_STABILITY_CHECKS: '10'/);
 assert.match(workflow, /TD613_STABILITY_DELAY_MS: '10000'/);
@@ -159,4 +170,4 @@ assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
 assert.match(law, /stale-queue stability window/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, immediate relock, stale-queue stability, and bounded scope-aligned production confirmation');
+console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, receipt-bound settlement, immediate relock, stale-queue stability, and bounded scope-aligned production confirmation');
