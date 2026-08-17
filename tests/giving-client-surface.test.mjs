@@ -28,15 +28,16 @@ const campaignDirectory = read('server/giving/campaign-directory.js');
 const constants = read('server/giving/constants.js');
 const xlsx = read('app/giving/history/giving-xlsx.js');
 
-// Private shell and coordinated cache generation.
+// Private shell, fresh entry point, and sealed coordinated cache generation.
 assert.match(html, /noindex,nofollow,noarchive,nosnippet/);
 assert.doesNotMatch(html, /analytics\.js|speed-insights\.js|https?:\/\//, 'private shell loads no telemetry or third-party assets');
 assert.match(html, /id="sessionMembrane"/);
 assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /giving\.css\?v=20260816-2/);
 assert.match(html, /giving-polish\.css\?v=20260816-2/);
-assert.match(html, /giving-bootstrap\.js\?v=20260816-2/);
+assert.match(html, /giving-bootstrap\.js\?v=20260817-1/, 'changed bootstrap bytes require a fresh HTML entry URL');
 assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(bootstrap, /GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-export-menu.js', 'giving-contribution-amount-filter.js',
   'giving-state-filter.js', 'giving-review-paging.js', 'giving-ux-resilience-shell.js',
@@ -45,7 +46,7 @@ for (const asset of [
   'giving-contributions-copy.js', 'giving-date-sort.js', 'giving-dossier-help.js',
   'giving-campaign-tools-v3.css', 'giving-search-controls.css', 'giving-state-filter.css',
   'giving-clarity.css', 'giving-ux-resilience.css'
-]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated epoch`);
+]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated or explicitly isolated repair epoch`);
 assert.ok(bootstrap.indexOf('giving-run-settled.js') < bootstrap.indexOf('giving-contact-queue-v2.js'));
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'));
 
