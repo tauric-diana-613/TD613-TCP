@@ -86,6 +86,15 @@ function normalizeLocalFileOptions() {
   }
 }
 
+function scrollViewToTop(viewId) {
+  const view = document.getElementById(viewId);
+  if (!view) return;
+  requestAnimationFrame(() => {
+    const top = Math.max(0, view.getBoundingClientRect().top + window.scrollY - 82);
+    window.scrollTo({ top, left: 0, behavior: 'smooth' });
+  });
+}
+
 function installResearchFileGuide() {
   const panel = $('.dossier-control');
   const heading = panel?.querySelector('.panel-heading');
@@ -105,36 +114,18 @@ function installResearchFileGuide() {
     <p class="research-file-storage"><strong>Local</strong> stays in this browser. <strong>Hosted</strong> stores only browser-encrypted ciphertext. <strong>Hybrid</strong> keeps the local working file plus an encrypted hosted branch.</p>
     <div class="research-file-sample">
       <button class="text-button" id="loadResearchSampleButton" type="button">Load fictional sample</button>
-      <small>SAMPLE only · fills fictional names and labels; it never invents contribution records or starts a search.</small>
+      <small>SAMPLE only · loads a manifestly fictional practice case. SEARCH is a separate gesture and never contacts a real custodian while the demo is active.</small>
     </div>
     <p class="research-file-sample-status" id="researchFileSampleStatus" role="status" hidden></p>`;
   heading.insertAdjacentElement('afterend', guide);
 
   $('#researchFileVaultButton')?.addEventListener('click', () => {
     document.querySelector('.tab[data-view="vault"]')?.click();
+    scrollViewToTop('view-vault');
   });
 
   $('#loadResearchSampleButton')?.addEventListener('click', () => {
-    const title = $('#dossierTitle');
-    const name = $('#searchName');
-    const queue = $('#contactQueueInput');
-    if (title) {
-      title.value = 'SAMPLE — Bikini Bottom contributor review';
-      emitInput(title);
-    }
-    if (name) {
-      name.value = 'SpongeBob SquarePants';
-      emitInput(name);
-    }
-    if (queue) {
-      queue.value = ['Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles'].join('\n');
-      emitInput(queue);
-    }
-    const status = $('#researchFileSampleStatus');
-    if (status) {
-      status.hidden = false;
-      status.textContent = 'Fictional sample loaded locally. Choose sources only if you intentionally want to test retrieval; no records were preloaded.';
-    }
+    document.dispatchEvent(new CustomEvent('td613:giving-practice-load-request'));
   });
 }
 
@@ -155,7 +146,7 @@ function installResearchFileLanguage() {
     const hint = document.createElement('p');
     hint.id = 'localDossierHint';
     hint.className = 'research-file-local-hint';
-    hint.textContent = 'A fresh LOCAL working file is created automatically in this browser. It is an empty research container—not a preloaded donor record.';
+    hint.textContent = 'A fresh LOCAL working file is an empty research container. In the fictional practice case, SEARCH fills the practice review; Save is the explicit gesture that makes it appear here.';
     select.insertAdjacentElement('afterend', hint);
     const observer = new MutationObserver(normalizeLocalFileOptions);
     observer.observe(select, { childList: true, subtree: true });
@@ -174,6 +165,66 @@ function installResearchFileLanguage() {
     normalizeDefaultResearchTitle();
     normalizeLocalFileOptions();
   }, { once: true });
+}
+
+function installSingleColumnPicker(selectId, fallbackLabel) {
+  const select = document.getElementById(selectId);
+  if (!select || document.querySelector(`[data-dossier-picker-for="${selectId}"]`)) return;
+  const wrapper = select.closest('.field');
+  if (!wrapper) return;
+  if (wrapper.tagName === 'LABEL') {
+    const replacement = document.createElement('div');
+    replacement.className = wrapper.className;
+    replacement.id = wrapper.id;
+    while (wrapper.firstChild) replacement.appendChild(wrapper.firstChild);
+    wrapper.replaceWith(replacement);
+  }
+  const field = select.closest('.field');
+  const originalLabel = field?.querySelector(':scope > span');
+  const labelText = originalLabel?.textContent?.trim() || fallbackLabel;
+  originalLabel?.remove();
+  select.classList.add('dossier-picker-native');
+  select.setAttribute('aria-hidden', 'true');
+  select.tabIndex = -1;
+
+  const picker = document.createElement('details');
+  picker.className = 'giving-state-filter dossier-single-picker';
+  picker.dataset.dossierPickerFor = selectId;
+  picker.innerHTML = `<summary><span>${labelText}</span><strong></strong></summary><div class="giving-state-filter-menu dossier-single-picker-menu" role="listbox"></div>`;
+  select.insertAdjacentElement('afterend', picker);
+  const summary = picker.querySelector('summary strong');
+  const menu = picker.querySelector('.dossier-single-picker-menu');
+
+  const render = () => {
+    const options = [...select.options];
+    const selected = options.find((option) => option.value === select.value) || options[0];
+    summary.textContent = selected?.textContent || fallbackLabel;
+    summary.title = selected?.textContent || '';
+    menu.replaceChildren(...options.map((option) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'dossier-picker-option';
+      button.dataset.value = option.value;
+      button.setAttribute('role', 'option');
+      button.setAttribute('aria-selected', String(option.value === select.value));
+      button.innerHTML = `<span>${option.textContent}</span>${option.value === select.value ? '<small>selected</small>' : ''}`;
+      button.addEventListener('click', () => {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        picker.open = false;
+        render();
+      });
+      return button;
+    }));
+  };
+  new MutationObserver(render).observe(select, { childList: true, subtree: true });
+  select.addEventListener('change', render);
+  render();
+}
+
+function installDossierPickers() {
+  installSingleColumnPicker('custodyMode', 'Custody mode');
+  installSingleColumnPicker('localDossierSelect', 'Saved local files');
 }
 
 function installVaultLanguage() {
@@ -250,7 +301,7 @@ function installVaultGuide() {
     <p class="vault-case-metaphor">Think of the Vault as a locked field case: TD613 can shelve the case and track its versions, but only your passphrase opens what is inside.</p>
     <div class="vault-beats">
       <div><span>1</span><strong>Choose the key</strong><small>For a new encrypted branch, create a passphrase here. For an existing branch, reuse the passphrase that originally locked it.</small></div>
-      <div><span>2</span><strong>Store the sealed copy</strong><small>Your browser encrypts first. TD613 receives ciphertext, version metadata, digests, and ancestry—not the readable research file.</small></div>
+      <div><span>2</span><strong>Store the sealed copy</strong><small>Your browser encrypts first. TD613 receives ciphertext, version metadata, digests, and ancestry—not the readable research file. In the fictional practice case the same browser encryption runs, while the hosted write is replaced by a reversible in-memory practice shelf.</small></div>
       <div><span>3</span><strong>Unlock here</strong><small>The passphrase stays in browser memory for the operation and cannot be recovered by TD613.</small></div>
     </div>`;
   grid.insertAdjacentElement('beforebegin', guide);
@@ -291,6 +342,7 @@ installCoverageNote();
 installCampaignLookupShell();
 installResearchFileGuide();
 installResearchFileLanguage();
+installDossierPickers();
 installVaultLanguage();
 installCommitteeToolbar();
 installVaultGuide();
