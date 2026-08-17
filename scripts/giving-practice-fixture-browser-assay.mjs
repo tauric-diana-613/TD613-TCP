@@ -4,7 +4,7 @@ function isGivingApiRequest(request) {
   if (!['fetch', 'xhr'].includes(request.resourceType())) return false;
   try {
     const url = new URL(request.url());
-    return /\/api\/giving\/?$/.test(url.pathname);
+    return /\/api\/td613-ledger\/?$/.test(url.pathname);
   } catch {
     return false;
   }

@@ -53,9 +53,17 @@ assert.match(browserProbe, /witnessGivingPracticeFixture/);
 assert.match(browserProbe, /normalizedArtifactDir\.split\('\/'\)\.includes\('practice-production'\)/, 'bounded practice-production artifact custody must request the production fixture witness');
 assert.match(browserProbe, /releaseReceiptPolicy:\s*practiceObservation \? 'observe-existing' : 'match-source'/, 'practice observation must select observe-existing provenance explicitly');
 assert.match(browserProbe, /production && practiceObservation[\s\S]*?productionPracticeWitness = await witnessGivingPracticeFixture\(page\)/, 'production practice must execute the actual Bikini Bottom fixture assay');
-assert.match(browserProbe, /practice_observation_requested:\s*practiceObservation/);
-assert.match(browserProbe, /practice_fixture_load:\s*resilienceWitness\?\.practiceFixture\?\.status \|\| productionPracticeWitness\?\.status/);
+assert.match(browserProbe, /item\?\.status !== 401 \|\| item\?\.method !== 'POST' \|\| item\?\.operation !== 'session\.status'/, 'only an exact pre-auth session.status refusal may be classified as expected');
+assert.match(browserProbe, /target\.pathname === '\/api\/td613-ledger'/, 'protected refusal classification must be pinned to the real Giving boundary');
+assert.match(browserProbe, /practiceFailedResourceDelta = failedResources\.slice\(failedBeforePractice\)/, 'production witness must measure failed network responses introduced by the practice click itself');
+assert.match(browserProbe, /production practice fixture must not cause failed network responses/, 'practice click network failures remain fatal');
+assert.match(browserProbe, /expected_protected_refusals:\s*expectedProtectedRefusals/);
+assert.match(browserProbe, /failed_resources:\s*unexpectedFailedResources/);
 assert.match(browserProbe, /production practice receipt cannot seal without an observed fixture PASS/);
+assert.ok(
+  practiceAssay.includes("return /\\/api\\/td613-ledger\\/?$/.test(url.pathname);"),
+  'practice assay must observe the real Giving API endpoint rather than the retired /api/giving alias'
+);
 assert.match(practiceAssay, /loading the fictional practice case must not call Giving API/);
 assert.match(practiceAssay, /practice load must not start a retrieval run/);
 assert.match(practiceAssay, /practice load must not fabricate or alter contribution records/);

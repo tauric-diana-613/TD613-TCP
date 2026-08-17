@@ -35,7 +35,36 @@ page.on('console', (message) => {
   }
 });
 page.on('pageerror', (error) => consoleErrors.push(error.message));
-page.on('response', (response) => { if (response.status() >= 400) failedResources.push({ status: response.status(), url: response.url() }); });
+page.on('response', (response) => {
+  if (response.status() < 400) return;
+  const request = response.request();
+  let operation = null;
+  try { operation = JSON.parse(request.postData() || '{}')?.operation || null; } catch {}
+  failedResources.push({
+    status: response.status(),
+    url: response.url(),
+    method: request.method(),
+    operation
+  });
+});
+
+function isExpectedProtectedRefusal(item) {
+  if (!(production && practiceObservation)) return false;
+  if (item?.status !== 401 || item?.method !== 'POST' || item?.operation !== 'session.status') return false;
+  try {
+    const target = new URL(item.url);
+    const origin = new URL(baseUrl);
+    return target.origin === origin.origin && target.pathname === '/api/td613-ledger';
+  } catch {
+    return false;
+  }
+}
+
+function classifyFailedResources(items = failedResources) {
+  const expectedProtectedRefusals = items.filter(isExpectedProtectedRefusal);
+  const unexpectedFailedResources = items.filter((item) => !isExpectedProtectedRefusal(item));
+  return { expectedProtectedRefusals, unexpectedFailedResources };
+}
 
 async function exposeOperatorShell() {
   await page.evaluate(() => {
@@ -255,12 +284,20 @@ try {
 
   let resilienceWitness = null;
   let productionPracticeWitness = null;
+  let practiceFailedResourceDelta = [];
   if (!production) resilienceWitness = await witnessResilienceUi();
   if (production && practiceObservation) {
     await exposeOperatorShell();
     await requireResilienceShell();
     await page.waitForSelector('#researchFileGuide', { state: 'attached', timeout: 5000 });
+    const failedBeforePractice = failedResources.length;
     productionPracticeWitness = await witnessGivingPracticeFixture(page);
+    practiceFailedResourceDelta = failedResources.slice(failedBeforePractice);
+    assert.deepEqual(
+      practiceFailedResourceDelta,
+      [],
+      `production practice fixture must not cause failed network responses: ${JSON.stringify(practiceFailedResourceDelta)}`
+    );
     assert.equal(productionPracticeWitness.status, 'PASS', 'production practice observation must execute and pass the zero-effect fixture assay');
   }
 
@@ -293,6 +330,7 @@ try {
   assert.deepEqual(mapper.zipMagic, [80, 75, 3, 4]);
 
   if (production) await page.screenshot({ path: path.join(artifactDir, 'giving-history.png'), fullPage: true });
+  const { expectedProtectedRefusals, unexpectedFailedResources } = classifyFailedResources();
   const receipt = {
     schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
@@ -305,19 +343,25 @@ try {
     resilience_ui: resilienceWitness ? 'PASS' : 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     practice_observation_requested: practiceObservation,
     practice_fixture_load: resilienceWitness?.practiceFixture?.status || productionPracticeWitness?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
+    practice_failed_resource_delta: practiceFailedResourceDelta,
+    expected_protected_refusals: expectedProtectedRefusals,
     desktop_viewport: resilienceWitness ? '1600x1000' : null,
     mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,
     one_committee_per_import: true,
     person_id_mapping: false,
     console_errors: consoleErrors,
-    failed_resources: failedResources
+    failed_resources: unexpectedFailedResources
   };
   if (production && practiceObservation) {
     assert.equal(receipt.practice_fixture_load, 'PASS', 'production practice receipt cannot seal without an observed fixture PASS');
+    assert.ok(
+      expectedProtectedRefusals.length <= 1,
+      `production practice may observe at most one pre-auth session.status refusal: ${JSON.stringify(expectedProtectedRefusals)}`
+    );
   }
   await fs.writeFile(path.join(artifactDir, 'receipt.json'), JSON.stringify(receipt, null, 2));
-  assert.deepEqual(failedResources, [], `Giving browser failed resources: ${failedResources.map((item) => `${item.status} ${item.url}`).join(' | ')}`);
+  assert.deepEqual(unexpectedFailedResources, [], `Giving browser failed resources: ${unexpectedFailedResources.map((item) => `${item.status} ${item.url}`).join(' | ')}`);
   const materialConsoleErrors = consoleErrors.filter((message) => !/\/favicon\.ico(?:\s|$)/.test(message));
   assert.deepEqual(materialConsoleErrors, [], `Giving browser console errors: ${materialConsoleErrors.join(' | ')}`);
   console.log(JSON.stringify(receipt));
