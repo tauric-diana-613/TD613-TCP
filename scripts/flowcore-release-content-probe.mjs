@@ -10,6 +10,7 @@ const attempts = Number(process.env.TD613_PROBE_ATTEMPTS || 72);
 const delayMs = Number(process.env.TD613_PROBE_DELAY_MS || 5000);
 const settlementAttempts = Number(process.env.TD613_VERCEL_SETTLEMENT_ATTEMPTS || 72);
 const settlementDelayMs = Number(process.env.TD613_VERCEL_SETTLEMENT_DELAY_MS || 5000);
+const settlementRequestTimeoutMs = Number(process.env.TD613_VERCEL_SETTLEMENT_REQUEST_TIMEOUT_MS || 8000);
 
 if (!base) throw new Error('TD613_BASE_URL is required.');
 if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('TD613_SOURCE_PACKET_COMMIT must be an exact 40-character SHA.');
@@ -28,6 +29,8 @@ const allowedExtensions = new Set(['.html', '.js', '.mjs', '.css', '.json', '.sv
 const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const vercelConfig = JSON.parse(await fsp.readFile('vercel.json', 'utf8'));
+const isRetryableSettlementLookupStatus = status =>
+  status === 408 || status === 425 || status === 429 || (status >= 500 && status <= 599);
 
 async function waitForGitFallbackSettlement() {
   if (vercelConfig.git?.deploymentEnabled !== true) {
@@ -39,6 +42,9 @@ async function waitForGitFallbackSettlement() {
   if (!Number.isSafeInteger(settlementDelayMs) || settlementDelayMs < 0 || settlementDelayMs > 60000) {
     throw new Error('Vercel settlement delay must be 0..60000ms.');
   }
+  if (!Number.isSafeInteger(settlementRequestTimeoutMs) || settlementRequestTimeoutMs < 1000 || settlementRequestTimeoutMs > 30000) {
+    throw new Error('Vercel settlement request timeout must be 1000..30000ms.');
+  }
 
   const releaseSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const repository = String(process.env.GITHUB_REPOSITORY || '').trim();
@@ -49,26 +55,66 @@ async function waitForGitFallbackSettlement() {
 
   let lastState = 'MISSING';
   let lastTargetUrl = null;
+  let lastLookupIssue = null;
+  let transientLookupFailures = 0;
   for (let attempt = 1; attempt <= settlementAttempts; attempt += 1) {
-    const response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
-      headers: {
-        accept: 'application/vnd.github+json',
-        authorization: `Bearer ${token}`,
-        'x-github-api-version': '2022-11-28'
-      },
-      redirect: 'follow'
-    });
-    if (!response.ok) throw new Error(`Vercel settlement status lookup returned ${response.status}.`);
-    const payload = await response.json();
+    let response;
+    try {
+      response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${token}`,
+          'x-github-api-version': '2022-11-28'
+        },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(settlementRequestTimeoutMs)
+      });
+    } catch (error) {
+      transientLookupFailures += 1;
+      lastLookupIssue = `transport ${error?.name || 'Error'}: ${error?.message || String(error)}`;
+      if (attempt < settlementAttempts) {
+        await sleep(settlementDelayMs);
+        continue;
+      }
+      break;
+    }
+
+    if (!response.ok) {
+      if (isRetryableSettlementLookupStatus(response.status)) {
+        transientLookupFailures += 1;
+        lastLookupIssue = `HTTP ${response.status}`;
+        if (attempt < settlementAttempts) {
+          await sleep(settlementDelayMs);
+          continue;
+        }
+        break;
+      }
+      throw new Error(`Vercel settlement status lookup returned non-retryable ${response.status}.`);
+    }
+
+    let payload;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      transientLookupFailures += 1;
+      lastLookupIssue = `invalid JSON: ${error?.message || String(error)}`;
+      if (attempt < settlementAttempts) {
+        await sleep(settlementDelayMs);
+        continue;
+      }
+      break;
+    }
+
     const vercelStatus = Array.isArray(payload?.statuses)
       ? payload.statuses.find(item => item?.context === 'Vercel')
       : null;
     lastState = String(vercelStatus?.state || 'MISSING').toUpperCase();
     lastTargetUrl = vercelStatus?.target_url || null;
+    lastLookupIssue = null;
 
     if (lastState === 'SUCCESS') {
       const receipt = Object.freeze({
-        schema: 'td613.vercel.git-settlement/v0.1',
+        schema: 'td613.vercel.git-settlement/v0.2-transient-resilient',
         required: true,
         status: 'PASS',
         release_sha: releaseSha,
@@ -76,6 +122,7 @@ async function waitForGitFallbackSettlement() {
         vercel_status: 'success',
         target_url: lastTargetUrl,
         attempt,
+        transient_lookup_failures: transientLookupFailures,
         observed_at: new Date().toISOString()
       });
       await fsp.writeFile(path.join(out, 'vercel-git-settlement.json'), `${JSON.stringify(receipt, null, 2)}\n`, 'utf8');
@@ -86,7 +133,8 @@ async function waitForGitFallbackSettlement() {
     }
     if (attempt < settlementAttempts) await sleep(settlementDelayMs);
   }
-  throw new Error(`Vercel deployment for ${releaseSha} did not settle before observation; last state ${lastState}.`);
+  const lookupDetail = lastLookupIssue ? `; last lookup issue ${lastLookupIssue}` : '';
+  throw new Error(`Vercel deployment for ${releaseSha} did not settle before observation; last state ${lastState}${lookupDetail}.`);
 }
 
 function localToRemote(localPath) {
