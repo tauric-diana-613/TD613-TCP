@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { waitForGivingProductionSurface } from './giving-production-readiness.mjs';
+import { witnessGivingPracticeFixture } from './giving-practice-fixture-browser-assay.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium, firefox, webkit } = require('playwright');
@@ -122,6 +123,8 @@ async function witnessResilienceUi() {
   assert.equal(structure.forensicLabel, 'Forensic ▾');
   assert.match(structure.coverageNote, /Each custodian receipt/);
 
+  const practiceFixture = await witnessGivingPracticeFixture(page);
+
   await page.locator('#campaignDirectoryState > summary').click();
   await page.locator('#campaignDirectoryStateClear').click();
   const cleared = await page.evaluate(() => ({
@@ -221,7 +224,7 @@ async function witnessResilienceUi() {
   await page.screenshot({ path: path.join(artifactDir, 'giving-history-mobile.png'), fullPage: true });
   await page.setViewportSize({ width: 1600, height: 1000 });
 
-  return { desktop: desktopOverflow, mobile, structure };
+  return { desktop: desktopOverflow, mobile, structure, practiceFixture };
 }
 
 try {
@@ -287,6 +290,7 @@ try {
     production_readiness_attempt: readiness?.attempt || null,
     campaign_deputy_exports: 'PASS',
     resilience_ui: resilienceWitness ? 'PASS' : 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
+    practice_fixture_load: resilienceWitness?.practiceFixture?.status || 'NOT_APPLICABLE_PRODUCTION_LOGIN_SURFACE',
     desktop_viewport: resilienceWitness ? '1600x1000' : null,
     mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,

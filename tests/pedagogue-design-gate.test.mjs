@@ -7,6 +7,13 @@ import {
   compilePedagogueRouteMemory,
   comparePedagogueRouteMemory
 } from '../app/engine/flowcore-pedagogue-core.js';
+import {
+  PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA,
+  compileCanonicalPracticeFixture,
+  compilePedagoguePracticeReview,
+  verifyPracticeFixtureLoad,
+  comparePracticeFixtureTraversal
+} from '../app/engine/pedagogue-practice-fixture.js';
 
 async function fixture(name) {
   return JSON.parse(await readFile(new URL(`./fixtures/pedagogue/${name}`, import.meta.url), 'utf8'));
@@ -105,4 +112,129 @@ test('Pedagogue route memory preserves path difference even when endpoints match
   assert.equal(diverged.authority.automatic_redesign, false);
   assert.equal(diverged.authority.automatic_release, false);
   assert.equal(diverged.authority.human_closure_required, true);
+});
+
+for (const name of ['giving-bikini-bottom-practice.json', 'ash-tomography-calibration-phantom-v01.json']) {
+  test(`${name} compiles as a canonical practice fixture without evidence or geometric authority`, async () => {
+    const input = await fixture(name);
+    assert.equal(input.schema, PEDAGOGUE_PRACTICE_FIXTURE_SCHEMA);
+    const review = compilePedagoguePracticeReview(input);
+    assert.equal(Object.values(review.practice_gate).every(Boolean), true);
+    assert.equal(review.practice_gate.route_memory_explicit, true);
+    assert.ok(review.fixture.expected_route_memory.steps.length > 0);
+    assert.equal(review.fixture.expected_route_memory.authority.endpoint_equivalence_grants_authority, false);
+    assert.equal(review.fixture.manifestly_fictional, true);
+    assert.equal(review.fixture.load_contract.fictional_content_may_not_become_evidence, true);
+    assert.equal(review.fixture.traversal_contract.same_runtime_route_required, true);
+    assert.equal(review.fixture.traversal_contract.separate_demo_route_forbidden, true);
+    assert.equal(review.fixture.authority.evidence_claim_authority, false);
+    assert.equal(review.fixture.authority.consequence_authority, false);
+    assert.equal(review.fixture.authority.domain_mutation_authority, false);
+    assert.equal(review.fixture.authority.automatic_retrieval, false);
+    assert.equal(review.fixture.aia_binding.fabricated_decoys, false);
+    assert.equal(review.fixture.aia_binding.authority.authority_may_cross, false);
+    assert.equal(review.fixture.research_claim_ceiling.geometric_holonomy_claim, false);
+    assert.equal(review.fixture.research_claim_ceiling.transport_law_claim, false);
+  });
+}
+
+test('practice fixture load is a zero-effect label hydration, not an evidence event', async () => {
+  const input = await fixture('giving-bikini-bottom-practice.json');
+  const practice = compileCanonicalPracticeFixture(input);
+  const baseline = {
+    evidence_records: 0,
+    retrieval_requests: 0,
+    retrieval_receipts: 0,
+    practice_custody_writes: 1,
+    domain_mutations: 0,
+    authority_grants: 0
+  };
+  const report = verifyPracticeFixtureLoad(practice, { before: baseline, after: { ...baseline } });
+  assert.equal(report.no_effects, true);
+  assert.deepEqual(report.deltas, {
+    evidence_records: 0,
+    retrieval_requests: 0,
+    retrieval_receipts: 0,
+    practice_custody_writes: 0,
+    domain_mutations: 0,
+    authority_grants: 0
+  });
+  assert.throws(() => verifyPracticeFixtureLoad(practice, {
+    before: baseline,
+    after: { ...baseline, evidence_records: 1 }
+  }), /forbidden effects/i);
+});
+
+test('practice traversal may exercise explicit read-only retrieval and practice custody while domain authority stays closed', async () => {
+  const input = await fixture('giving-bikini-bottom-practice.json');
+  const practice = compileCanonicalPracticeFixture(input);
+  const report = comparePracticeFixtureTraversal(practice, input.expected_route_steps, {
+    observedEndpoint: input.expected_endpoint,
+    explicitOperatorGesture: true,
+    observedEffects: {
+      retrieval_requests: 2,
+      practice_custody_writes: 2,
+      domain_mutations: 0,
+      evidence_claims: 0,
+      authority_grants: 0
+    },
+    observedAuthority: {
+      operator_read_only_retrieval_allowed: true,
+      practice_custody_write_authority: true,
+      explicit_operator_gesture_required: true,
+      human_closure_required: true
+    }
+  });
+  assert.equal(report.exact_route_reconstruction, true);
+  assert.equal(report.route_reconstruction_error_millipoints, 0);
+  assert.equal(report.authority_closed, true);
+  assert.equal(report.research_claim_ceiling.geometric_holonomy_claim, false);
+
+  assert.throws(() => comparePracticeFixtureTraversal(practice, input.expected_route_steps, {
+    explicitOperatorGesture: true,
+    observedEffects: { domain_mutations: 1 }
+  }), /domain mutations/i);
+});
+
+test('practice traversal rejects observed authority not admitted by the fixture', async () => {
+  const input = await fixture('ash-tomography-calibration-phantom-v01.json');
+  const practice = compileCanonicalPracticeFixture(input);
+
+  assert.equal(practice.authority.operator_read_only_retrieval_allowed, false);
+  assert.equal(practice.authority.practice_custody_write_authority, false);
+
+  assert.throws(() => comparePracticeFixtureTraversal(practice, input.expected_route_steps, {
+    observedEndpoint: input.expected_endpoint,
+    observedAuthority: { operator_read_only_retrieval_allowed: true }
+  }), /widen authority/i);
+
+  assert.throws(() => comparePracticeFixtureTraversal(practice, input.expected_route_steps, {
+    observedEndpoint: input.expected_endpoint,
+    observedAuthority: { practice_custody_write_authority: true }
+  }), /widen authority/i);
+
+  assert.throws(() => comparePracticeFixtureTraversal(practice, input.expected_route_steps, {
+    observedEndpoint: input.expected_endpoint,
+    observedAuthority: { human_closure_required: false }
+  }), /widen authority/i);
+});
+
+test('calibration phantom detects same-endpoint route divergence without promoting the surrogate to holonomy', async () => {
+  const input = await fixture('ash-tomography-calibration-phantom-v01.json');
+  const practice = compileCanonicalPracticeFixture(input);
+  const observed = [...input.expected_route_steps];
+  observed[2] = 'projection-bypass';
+  const report = comparePracticeFixtureTraversal(practice, observed, {
+    observedEndpoint: input.expected_endpoint,
+    explicitOperatorGesture: false,
+    observedEffects: {}
+  });
+  assert.equal(report.exact_route_reconstruction, false);
+  assert.equal(report.endpoint_equivalent, true);
+  assert.equal(report.route_memory_comparison.same_endpoint_not_same_history, true);
+  assert.ok(report.route_reconstruction_error_millipoints > 0);
+  assert.equal(report.research_claim_ceiling.geometric_holonomy_claim, false);
+  assert.equal(report.research_claim_ceiling.affine_connection_claim, false);
+  assert.equal(report.research_claim_ceiling.transport_law_claim, false);
+  assert.equal(report.tomography_posture, 'CALIBRATION_ROUTE_DIVERGED');
 });

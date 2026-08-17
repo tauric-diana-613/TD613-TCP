@@ -11,6 +11,9 @@ const helpCss = read('app/giving/history/giving-dossier-help.css');
 const polish = read('app/giving/history/giving-polish.css');
 const sharedAccess = read('app/giving/history/giving-shared-access.js');
 const pageSize = read('app/giving/history/giving-page-size.js');
+const browserProbe = read('scripts/giving-browser-probe.mjs');
+const practiceAssay = read('scripts/giving-practice-fixture-browser-assay.mjs');
+const workflow = read('.github/workflows/td613-ci.yml');
 
 assert.doesNotThrow(() => new Function(shell), 'Giving resilience shell must remain browser-parseable');
 
@@ -45,5 +48,20 @@ assert.match(pageSize, /Math\.min\(sourceCeiling, Math\.floor\(requested\)\)/, '
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /Evict every shared Giving session/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
+
+assert.match(browserProbe, /witnessGivingPracticeFixture/);
+assert.match(browserProbe, /practice_fixture_load/);
+assert.match(practiceAssay, /loading the fictional practice case must not call Giving API/);
+assert.match(practiceAssay, /practice load must not start a retrieval run/);
+assert.match(practiceAssay, /practice load must not fabricate or alter contribution records/);
+assert.match(practiceAssay, /practice load must not create retrieval\/operator receipts/);
+assert.match(practiceAssay, /practice load must not write or hydrate Vault versions/);
+assert.match(practiceAssay, /practice load must not create Campaign Deputy receipts/);
+assert.match(practiceAssay, /evidence_authority_granted:\s*false/);
+assert.match(practiceAssay, /consequence_authority_granted:\s*false/);
+
+assert.match(workflow, /Witness originating Giving practice fixture with Chromium/);
+assert.match(workflow, /TD613_ARTIFACT_DIR=artifacts\/convergence\/giving-practice[\s\S]*?scripts\/giving-browser-probe\.mjs/);
+assert.match(workflow, /Stop Giving practice runtime/);
 
 console.log('giving-post640-polish.test.mjs passed');

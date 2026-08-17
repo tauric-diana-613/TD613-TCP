@@ -32,6 +32,37 @@ assert.equal(classifyValidationScope([
   'tests/giving-vercel-route.test.mjs'
 ]).scope, 'giving', 'narrow additive Giving design/security witnesses must stay inside the Giving release lane');
 
+const practiceOnly = classifyValidationScope([
+  'app/engine/pedagogue-practice-fixture.js',
+  'docs/CANONICAL_PRACTICE_FIXTURE.md',
+  'AGENTS.md',
+  'PEDAGOGUE.md',
+  'app/dome-world/docs/ash/experiments/tomography/ASH_KEEP_LOOM_TOMOGRAPHY_CALIBRATION_PHANTOM_V0_1.md',
+  'tests/fixtures/pedagogue/giving-bikini-bottom-practice.json',
+  'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json',
+  'scripts/giving-practice-fixture-browser-assay.mjs',
+  'scripts/giving-browser-probe.mjs',
+  'scripts/run-pedagogue-design-gate.mjs',
+  'tests/pedagogue-design-gate.test.mjs',
+  'tests/giving-post640-polish.test.mjs',
+  'docs/PEDAGOGUE_DESIGN_GATE.md',
+  '.github/workflows/td613-ci.yml',
+  'scripts/classify-validation-scope.mjs',
+  'tests/giving-validation-scope.test.mjs'
+]);
+assert.equal(practiceOnly.scope, 'practice');
+assert.equal(practiceOnly.practice_fixture_changed, true);
+assert.ok(practiceOnly.practice_file_count >= 1);
+assert.deepEqual(practiceOnly.full_scope_files, []);
+
+const mixedPracticeAndAsh = classifyValidationScope([
+  'app/engine/pedagogue-practice-fixture.js',
+  'app/dome-world/ash-demo-entry-convergence.js'
+]);
+assert.equal(mixedPracticeAndAsh.scope, 'full', 'practice + live Ash runtime must widen to full browser qualification');
+assert.equal(mixedPracticeAndAsh.practice_fixture_changed, true);
+assert.deepEqual(mixedPracticeAndAsh.full_scope_files, ['app/dome-world/ash-demo-entry-convergence.js']);
+
 for (const unsafePath of [
   'app/dome-world/ash-keep.js',
   'scripts/ash-a12-browser-probe.mjs',
@@ -45,8 +76,8 @@ for (const unsafePath of [
   assert.deepEqual(result.full_scope_files, [unsafePath]);
 }
 
-assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving lane');
-assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).scope, 'full', 'shared design helpers alone cannot self-select the Giving lane');
+assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving or practice lane');
+assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).scope, 'full', 'pre-existing shared design helpers alone cannot self-select the practice lane');
 assert.equal(classifyValidationScope([]).scope, 'full', 'an empty diff fails closed to full validation');
 
 console.log('giving-validation-scope.test.mjs passed');
