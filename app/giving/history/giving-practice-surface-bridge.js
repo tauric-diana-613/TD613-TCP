@@ -23,6 +23,40 @@ function practiceRecordsExist() {
     [...$$('#recordList .record-card')].some((card) => String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/'));
 }
 
+function showPracticeExitConfirmation() {
+  const sourceExit = $('#practiceExitButton');
+  if (sourceExit) {
+    sourceExit.click();
+    return true;
+  }
+  return false;
+}
+
+function ensureFloatingExit() {
+  if (!practiceActive()) {
+    $('#practiceFloatingExitButton')?.remove();
+    return;
+  }
+  if ($('#practiceFloatingExitButton')) return;
+  const button = document.createElement('button');
+  button.id = 'practiceFloatingExitButton';
+  button.className = 'practice-floating-exit';
+  button.type = 'button';
+  button.textContent = 'Exit Demo';
+  button.setAttribute('aria-label', 'Exit fictional sample demo');
+  button.addEventListener('click', showPracticeExitConfirmation);
+  document.body.append(button);
+}
+
+function syncPracticeChrome() {
+  ensureFloatingExit();
+  const campaignTab = $('.tab[data-view="campaign"]');
+  if (campaignTab) {
+    campaignTab.dataset.practiceAsleep = practiceActive() ? 'true' : 'false';
+    campaignTab.setAttribute('aria-describedby', practiceActive() ? 'practiceCampaignSleepHint' : '');
+  }
+}
+
 // Canonical fixture load must remain zero-effect. The existing Giving shell uses
 // input/change events for ordinary autosave, so stop those events only during the
 // bounded fixture-load instant. Search, Save, and Vault remain separate gestures.
@@ -89,6 +123,8 @@ function enforcePracticeSearchPosture() {
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
   practiceSource = null;
+  $('#practiceFloatingExitButton')?.remove();
+  syncPracticeChrome();
 }
 
 document.addEventListener('td613:giving-practice-source-registry', (event) => {
@@ -96,7 +132,10 @@ document.addEventListener('td613:giving-practice-source-registry', (event) => {
   if (action === 'register' && event.detail?.source) {
     practiceSource = event.detail.source;
     ensurePracticeSource();
-    queueMicrotask(enforcePracticeSearchPosture);
+    queueMicrotask(() => {
+      enforcePracticeSearchPosture();
+      syncPracticeChrome();
+    });
   } else if (action === 'remove') {
     removePracticeSource();
   }
@@ -156,17 +195,34 @@ const blockedCampaignActions = new Set([
 
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button');
-  if (!button || !blockedCampaignActions.has(button.id)) return;
+  if (!button) return;
+
+  if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showPracticeExitConfirmation();
+    return;
+  }
+
+  if (!blockedCampaignActions.has(button.id)) return;
   const hasPracticeRecords = Boolean($('#recordList .record-card[data-fictional-sample="true"]'));
   if (!hasPracticeRecords && !practiceActive()) return;
   event.preventDefault();
   event.stopImmediatePropagation();
-  const message = 'FICTIONAL PRACTICE · Campaign Deputy remains closed. Exit the demo and open a non-fictional research file before any CRM action.';
+  const message = 'FICTIONAL PRACTICE · Campaign Deputy is asleep. Exit the demo before opening or mutating any real CRM surface.';
   for (const id of ['campaignToolsStatus', 'campaignDeputyToolsStatus']) {
     const status = document.getElementById(id);
     if (status) status.textContent = message;
   }
+  showPracticeExitConfirmation();
 }, true);
+
+const sleepHint = document.createElement('span');
+sleepHint.id = 'practiceCampaignSleepHint';
+sleepHint.hidden = true;
+sleepHint.textContent = 'Campaign Deputy sleeps during the fictional sample. Activating this tab opens the Exit Sample Demo confirmation.';
+document.body.append(sleepHint);
+syncPracticeChrome();
 
 export const _givingPracticeSurfaceBridge = Object.freeze({
   PRACTICE_SOURCE_ID,
@@ -174,5 +230,7 @@ export const _givingPracticeSurfaceBridge = Object.freeze({
   ensurePracticeSource,
   enforcePracticeSourceSelection,
   enforcePracticeSearchPosture,
+  ensureFloatingExit,
+  showPracticeExitConfirmation,
   decoratePracticeRecords
 });
