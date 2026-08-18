@@ -36,7 +36,8 @@ assert.doesNotThrow(() => new Function(renderBackpressure.replace(/export const[
 for (const path of [
   'app/giving/history/giving-practice-directory.js',
   'app/giving/history/giving-practice-campaign-history.js',
-  'app/giving/history/giving-practice-committee-graph.js'
+  'app/giving/history/giving-practice-committee-graph.js',
+  'scripts/giving-practice-fixture-browser-assay.mjs'
 ]) {
   assert.doesNotThrow(
     () => execFileSync(process.execPath, ['--check', path], { stdio: 'pipe' }),
@@ -150,6 +151,8 @@ assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
 assert.match(browserProbe, /witnessGivingPracticeFixture/);
+assert.match(practiceAssay, /async function pollUntil/);
+assert.doesNotMatch(practiceAssay, /\.waitForFunction\(/, 'production-facing Giving practice witness must remain CSP-safe and avoid Playwright waitForFunction eval polling');
 assert.match(practiceAssay, /outgrow the obsolete 49-row toy dataset/);
 assert.match(practiceAssay, /local_practice_file_saved_and_reopened:\s*true/);
 assert.match(practiceAssay, /encrypted_practice_vault_version_observed:\s*true/);
