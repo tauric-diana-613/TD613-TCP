@@ -6,6 +6,7 @@ import { _givingPracticeInKind } from './giving-practice-in-kind.js';
 import { _givingPracticeLocalCampaignRules } from './giving-practice-local-campaign-rules.js';
 import { _givingPracticeKrabsCheapskate } from './giving-practice-krabs-cheapskate.js';
 import { _givingPracticeLocalAlignment } from './giving-practice-local-alignment.js';
+import { _givingPracticeCampaignHistory } from './giving-practice-campaign-history.js';
 
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 const normalizeCommitteeName = (value) => value === 'Mrs. Puff for Bikini Bottom School District #67'
@@ -67,7 +68,8 @@ function supplementalRows() {
     ..._givingPracticeTemporalClusterExtension.allRows(),
     ..._givingPracticeInKind.allRows(),
     ..._givingPracticeLocalCampaignRules.allLarryLoanRows(),
-    ..._givingPracticeLocalAlignment.allRows()
+    ..._givingPracticeLocalAlignment.allRows(),
+    ..._givingPracticeCampaignHistory.allRows()
   ].map((record) => ({
     contributor_name: compact(record.contributor_name_raw || record.contributor_name),
     committee_name: normalizeCommitteeName(record.committee_name || record.committee),
@@ -79,6 +81,7 @@ function supplementalRows() {
     practice_compliance_review_required: record.practice_compliance_review_required === true,
     candidate_self_financing: record.candidate_self_financing === true,
     practice_candidate_loan: record.practice_candidate_loan === true,
+    practice_local_campaign_rule: record.practice_local_campaign_rule || null,
     date: record.contribution_date || null,
     lineage: record.lineage || null
   }));
@@ -99,6 +102,7 @@ function pseudoRecord(row) {
     practice_compliance_review_required: row.practice_compliance_review_required,
     candidate_self_financing: row.candidate_self_financing,
     practice_candidate_loan: row.practice_candidate_loan,
+    practice_local_campaign_rule: row.practice_local_campaign_rule,
     lineage: row.lineage || {}
   };
 }
@@ -109,20 +113,21 @@ function normalizedRows() {
   return withoutPlanktonBloc.map((record) => {
     const krabsNormalized = _givingPracticeKrabsCheapskate.normalizeKrabsOrdinaryRecord(record);
     const localNormalized = _givingPracticeLocalCampaignRules.normalizeLocalCampaignRecord(krabsNormalized);
+    const campaignNormalized = _givingPracticeCampaignHistory.normalizePracticeRecord(localNormalized);
     return {
-      contributor_name: compact(localNormalized.contributor_name_raw || localNormalized.contributor_name),
-      committee_name: normalizeCommitteeName(localNormalized.committee_name || localNormalized.committee),
-      amount_cents: localNormalized.amount_cents,
-      practice_data_class: localNormalized.practice_data_class || localNormalized.lineage?.data_class || 'NORMALIZED',
-      contribution_type: localNormalized.contribution_type || null,
-      transaction_class: localNormalized.transaction_class || null,
-      practice_over_limit_anomaly: localNormalized.practice_over_limit_anomaly === true,
-      practice_compliance_review_required: localNormalized.practice_compliance_review_required === true,
-      candidate_self_financing: localNormalized.candidate_self_financing === true,
-      practice_candidate_loan: localNormalized.practice_candidate_loan === true,
-      practice_local_campaign_rule: localNormalized.practice_local_campaign_rule || null,
-      date: localNormalized.contribution_date || null,
-      lineage: localNormalized.lineage || null
+      contributor_name: compact(campaignNormalized.contributor_name_raw || campaignNormalized.contributor_name),
+      committee_name: normalizeCommitteeName(campaignNormalized.committee_name || campaignNormalized.committee),
+      amount_cents: campaignNormalized.amount_cents,
+      practice_data_class: campaignNormalized.practice_data_class || campaignNormalized.lineage?.data_class || 'NORMALIZED',
+      contribution_type: campaignNormalized.contribution_type || null,
+      transaction_class: campaignNormalized.transaction_class || null,
+      practice_over_limit_anomaly: campaignNormalized.practice_over_limit_anomaly === true,
+      practice_compliance_review_required: campaignNormalized.practice_compliance_review_required === true,
+      candidate_self_financing: campaignNormalized.candidate_self_financing === true,
+      practice_candidate_loan: campaignNormalized.practice_candidate_loan === true,
+      practice_local_campaign_rule: campaignNormalized.practice_local_campaign_rule || null,
+      date: campaignNormalized.contribution_date || null,
+      lineage: campaignNormalized.lineage || null
     };
   });
 }
