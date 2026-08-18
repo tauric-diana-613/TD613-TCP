@@ -10,6 +10,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let practiceSource = null;
 let injecting = false;
+let exitReturnFocus = null;
 let touched = { name: false, exact: false, from: false, to: false };
 
 function duringPracticeLoad() { return document.documentElement.dataset.givingPracticeLoad === 'true'; }
@@ -31,9 +32,22 @@ function broadenPracticeNameWhenRequested() {
   if (matches.length === 1) input.value = matches[0];
 }
 
-function showPracticeExitConfirmation() {
+function rememberExitReturnFocus(invoker) {
+  if (invoker instanceof HTMLElement && !invoker.closest('#practiceExitConfirm')) exitReturnFocus = invoker;
+}
+
+function restoreExitReturnFocus() {
+  const target = exitReturnFocus;
+  exitReturnFocus = null;
+  const fallback = $('#runSearchButton');
+  const next = target?.isConnected ? target : fallback;
+  next?.focus({ preventScroll: true });
+}
+
+function showPracticeExitConfirmation(invoker = document.activeElement) {
   const confirm = $('#practiceExitConfirm');
   if (!confirm) return false;
+  rememberExitReturnFocus(invoker);
   confirm.hidden = false;
   confirm.querySelector('[data-practice-exit="no"]')?.focus();
   return true;
@@ -48,7 +62,7 @@ function ensureFloatingExit() {
   button.type = 'button';
   button.textContent = 'Exit Demo';
   button.setAttribute('aria-label', 'Exit fictional sample demo');
-  button.addEventListener('click', showPracticeExitConfirmation);
+  button.addEventListener('click', (event) => showPracticeExitConfirmation(event.currentTarget));
   document.body.append(button);
 }
 
@@ -129,6 +143,7 @@ function enforcePracticeSearchPosture() {
 }
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
+  exitReturnFocus = null;
   practiceSource = null; resetTouched(); $('#practiceFloatingExitButton')?.remove(); syncPracticeChrome();
 }
 
@@ -175,13 +190,28 @@ for (const [selector, decorator] of [['#sourceProgress', decoratePracticeRuns], 
 const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton', 'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton', 'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton']);
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button'); if (!button) return;
-  // Exit route 3 of exactly 3: let the sleeping Campaign Deputy pointer event
-  // unwind before delegating to the one shared Exit Sample Demo membrane. This
-  // avoids re-entrant button activation inside the document capture phase.
+
+  // All three demo-exit gestures share one focus covenant. Capture the visible
+  // invoker before any target/bubble listener moves focus into the dialog.
+  if (practiceActive() && button.matches('#practiceExitButton, #practiceFloatingExitButton')) {
+    rememberExitReturnFocus(button);
+  }
+
+  // A dismissed dialog must never retain focus inside its hidden subtree.
+  // Capture runs before giving-practice-hydration's No handler, so focus returns
+  // to the invoking control before that owner hides the shared membrane.
+  if (practiceActive() && button.matches('[data-practice-exit="no"]')) {
+    restoreExitReturnFocus();
+    return;
+  }
+
+  // Exit route 3 of exactly 3: let the sleeping Campaign Deputy activation
+  // unwind before opening the one shared Exit Sample Demo membrane. Keyboard
+  // and pointer activation follow the same path without synthetic click chains.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    setTimeout(showPracticeExitConfirmation, 0);
+    setTimeout(() => showPracticeExitConfirmation(button), 0);
     return;
   }
   if (!blockedCampaignActions.has(button.id)) return;
