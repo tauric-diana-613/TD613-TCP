@@ -118,11 +118,21 @@ function renderPracticeDirectory(query) {
   }
 }
 
+function revealCommitteeSearchWorkspace() {
+  const ledgerTab = $('.tab[data-view="ledger"]');
+  const ledgerPanel = $('#view-ledger');
+  const workspace = $('#committeeSearchWorkspace');
+  if (!ledgerTab || !ledgerPanel || !workspace) return false;
+  ledgerTab.click();
+  return ledgerPanel.hidden === false;
+}
+
 function interceptPracticeDirectory(event) {
   if (!practiceActive()) return;
   event.preventDefault();
   event.stopImmediatePropagation();
   renderPracticeDirectory($('#campaignDirectoryQuery')?.value || '');
+  queueMicrotask(revealCommitteeSearchWorkspace);
 }
 
 function prepareContributorFromTrail(name, originLabel = null) {
@@ -222,6 +232,7 @@ export const _givingPracticeDirectory = Object.freeze({
   ALL_OBJECTS,
   matchingObjects,
   renderPracticeDirectory,
+  revealCommitteeSearchWorkspace,
   prepareContributorFromTrail,
   sleepGeography,
   wakeGeography
