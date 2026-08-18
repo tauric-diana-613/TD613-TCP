@@ -5,9 +5,9 @@ import {
   FLOWCORE_NEGATIVE_OBSERVATION_SCHEMA,
   compileObservationAperture,
   qualifyNegativeObservation,
-  compareObservationApertures,
-  comparePedagogueRouteMemory
-} from '../app/engine/flowcore-pedagogue-core.js';
+  compareObservationApertures
+} from '../app/engine/flowcore-observation-aperture.js';
+import { comparePedagogueRouteMemory } from '../app/engine/flowcore-pedagogue-route-memory.js';
 
 const giving = compileObservationAperture({
   source_ids: ['fec-schedule-a', 'fl-soe', 'voterfocus-jax', 'easyvote-duval'],
