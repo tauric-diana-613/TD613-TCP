@@ -1,0 +1,22 @@
+.record-amount {
+  position: relative;
+}
+.giving-transaction-class-badge {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  margin-top: 3px;
+  padding: 1px 0;
+  color: #ff4fd8;
+  font: 850 6px/1 var(--mono);
+  letter-spacing: .115em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(255, 79, 216, .18);
+  white-space: nowrap;
+}
+.record-amount > small:has(+ .giving-transaction-class-badge) {
+  opacity: .58;
+}
+@media (max-width: 760px) {
+  .giving-transaction-class-badge { font-size: 6px; }
+}
