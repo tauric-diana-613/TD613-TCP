@@ -137,6 +137,11 @@ async function dismissExitNo(page) {
 
 async function activateSleepingCampaignExit(page) {
   const campaign = page.locator('.tab[data-view="campaign"]');
+  await campaign.evaluate((node) => node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' }));
+  await pollUntil(async () => campaign.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    return rect.bottom > 0 && rect.right > 0 && rect.top < innerHeight && rect.left < innerWidth;
+  }), { timeout: 2000, interval: 40, label: 'sleeping Campaign Deputy viewport intersection' });
   const geometry = await campaign.evaluate((node) => {
     const style = getComputedStyle(node);
     const rect = node.getBoundingClientRect();
