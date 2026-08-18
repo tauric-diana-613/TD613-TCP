@@ -21,20 +21,57 @@
   "teaching_contrasts": [
     {
       "contrast_id": "political-object-kind",
-      "now": "One Giving route can contain contributions to candidate committees, PAC/PC-style committees, party-style committees, and an issue or referendum committee.",
-      "why": "Sharing the contribution route does not make those political objects equivalent.",
-      "exact": "Route membership may support comparison, but it may not silently infer committee kind, candidate status, office, or political-object authority."
+      "now": "One retrieval route can contain transactions involving candidate committees, PAC-style objects, party-style objects, and issue or referendum objects.",
+      "why": "Sharing a route does not make the political objects equivalent.",
+      "exact": "Route membership may support comparison, but it may not silently infer object kind, candidate status, office, or authority."
     },
     {
-      "contrast_id": "fictional-jurisdiction-aperture",
-      "now": "BikiniBottomVotes fixes practice geography to Bikini Bottom, Oceania while real State, Municipal, and jurisdiction selectors sleep.",
-      "why": "A fictional practice source must never look combinable with a live real-world filing geography or imply that those custodians were queried.",
-      "exact": "Practice may narrow the aperture to a declared fictional jurisdiction, but real geography controls remain inert until exit and no real filing source may be consulted from that route."
+      "contrast_id": "practice-aperture-versus-live-jurisdiction",
+      "now": "A bounded practice source can narrow geography while live jurisdiction selectors remain unavailable.",
+      "why": "A simulated retrieval aperture must not appear combinable with live custodians or imply those custodians were queried.",
+      "exact": "Practice may narrow the aperture to a declared fictional jurisdiction, but live geography remains inert until exit and no live source may be consulted from that route."
+    },
+    {
+      "contrast_id": "identity-continuity-versus-field-drift",
+      "now": "One contributor may appear with a formal or familiar name, a missing middle initial, or more than one legitimate address while remaining one review candidate.",
+      "why": "Identity continuity can survive surface-field variation, but similarity alone cannot close identity.",
+      "exact": "Declared alias and compatible-middle evidence may support one candidate cluster; address, employer, and name variation remain visible and human closure remains required."
+    },
+    {
+      "contrast_id": "shared-field-versus-shared-identity",
+      "now": "Different contributors may share an address, employer, city, state, or postal field.",
+      "why": "A corroborating field can strengthen a comparison without becoming an identity key.",
+      "exact": "Shared fields may raise candidate similarity but may never automatically merge contributors or erase contradictory identity evidence."
+    },
+    {
+      "contrast_id": "revision-chain-versus-duplicate-row",
+      "now": "Two filing rows can describe successive versions of one underlying transaction rather than two independent transactions.",
+      "why": "Naive summation and naive deduplication can both destroy filing history.",
+      "exact": "A declared revision relationship must remain visible until an operator decides how the transaction should be interpreted; revision order cannot be silently flattened."
+    },
+    {
+      "contrast_id": "same-name-different-route-role",
+      "now": "The same name can appear as a contributor identity and as part of a candidate or committee identity.",
+      "why": "Lexical identity does not collapse donor role into political-object role.",
+      "exact": "Route role remains first-class: contributor, candidate, committee, organization, and filer projections may share names while remaining non-equivalent objects."
+    },
+    {
+      "contrast_id": "prepared-handoff-versus-automatic-retrieval",
+      "now": "A discovered name can be carried into another search surface without starting that search.",
+      "why": "Preserving discovery context should reduce operator burden without stealing the next retrieval gesture.",
+      "exact": "A handoff may prepare a query and preserve route provenance, but it may not alter search semantics or begin retrieval until the operator explicitly acts."
+    },
+    {
+      "contrast_id": "episodic-convergence-versus-longitudinal-divergence",
+      "now": "Otherwise different contributor histories can suddenly converge on the same dates, political objects, and unusually large transaction magnitudes.",
+      "why": "An episodic pattern can become investigatively salient precisely because the longer histories remain distinct.",
+      "exact": "Repeated co-temporality and magnitude spikes may be surfaced as patterns for review, but coordination, common control, common identity, or causation may not be inferred automatically."
     }
   ],
   "expected_route_steps": [
     "load-practice-container",
     "search-and-review",
+    "follow-discovery-route",
     "save-working-file",
     "encrypt-vault-copy"
   ],
