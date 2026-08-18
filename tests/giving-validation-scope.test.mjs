@@ -36,12 +36,15 @@ assert.equal(classifyValidationScope([
 
 const practiceOnly = classifyValidationScope([
   'app/engine/pedagogue-practice-fixture.js',
+  'app/engine/flowcore-observation-aperture.js',
   'docs/CANONICAL_PRACTICE_FIXTURE.md',
   'AGENTS.md',
   'PEDAGOGUE.md',
   'app/dome-world/docs/ash/experiments/tomography/ASH_KEEP_LOOM_TOMOGRAPHY_CALIBRATION_PHANTOM_V0_1.md',
   'tests/fixtures/pedagogue/giving-bikini-bottom-practice.json',
+  'tests/fixtures/pedagogue/giving-discovery-handoff-design.json',
   'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json',
+  'tests/flowcore-observation-aperture.test.mjs',
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'scripts/giving-browser-probe.mjs',
   'scripts/giving-release-content-probe.mjs',
@@ -60,8 +63,15 @@ const practiceOnly = classifyValidationScope([
 ]);
 assert.equal(practiceOnly.scope, 'practice');
 assert.equal(practiceOnly.practice_fixture_changed, true);
-assert.ok(practiceOnly.practice_file_count >= 1);
+assert.ok(practiceOnly.practice_file_count >= 4, 'practice lane should explicitly include the shared aperture helper and its two cross-system fixture witnesses');
 assert.deepEqual(practiceOnly.full_scope_files, []);
+
+const observationApertureOnly = classifyValidationScope([
+  'app/engine/flowcore-observation-aperture.js',
+  'tests/flowcore-observation-aperture.test.mjs'
+]);
+assert.equal(observationApertureOnly.scope, 'practice', 'the additive qualified-absence helper uses bounded practice qualification rather than full inherited Ash runtime');
+assert.deepEqual(observationApertureOnly.full_scope_files, []);
 
 const releaseSmokeOnly = classifyValidationScope(['tests/pedagogue-practice-fixture.test.mjs']);
 assert.equal(releaseSmokeOnly.scope, 'practice', 'the first-class practice release smoke contract must preserve practice release classification');
@@ -103,4 +113,5 @@ await import('./giving-ux-resilience.test.mjs');
 await import('./giving-release-content-probe.test.mjs');
 await import('./giving-vercel-settlement.test.mjs');
 await import('./giving-vercel-release-receipt.test.mjs');
+await import('./flowcore-observation-aperture.test.mjs');
 await import('./pedagogue-design-gate.test.mjs');
