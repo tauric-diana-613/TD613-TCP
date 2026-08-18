@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 const practice = read('app/giving/history/giving-practice-hydration.js');
+const practiceRuntime = read('app/giving/history/giving-practice-runtime.js');
 const noise = read('app/giving/history/giving-practice-search-noise.js');
 const bridge = read('app/giving/history/giving-practice-surface-bridge.js');
 const directory = read('app/giving/history/giving-practice-directory.js');
@@ -27,9 +28,8 @@ const fec = read('app/giving/history/giving-fec-resilience.js');
 const pedagogue = read('app/engine/pedagogue-practice-fixture.js');
 const fixture = JSON.parse(read('tests/fixtures/pedagogue/giving-bikini-bottom-practice.json'));
 
-// These files are delivered as ES modules. Use Node's module-aware parser rather
-// than new Function(), which rejects valid static import syntax.
 const browserModulePaths = [
+  'app/giving/history/giving-practice-runtime.js',
   'app/giving/history/giving-practice-hydration.js',
   'app/giving/history/giving-practice-search-noise.js',
   'app/giving/history/giving-practice-discovery-graph.js',
@@ -67,9 +67,7 @@ const learnerFacingCommittees = [
   'Krusty Krab Parking Expansion Referendum Committee'
 ];
 for (const name of names) assert.ok(practice.includes(name), `practice fixture must include ${name}`);
-for (const committee of learnerFacingCommittees) {
-  assert.ok(directory.includes(committee), `practice campaign directory must expose ${committee}`);
-}
+for (const committee of learnerFacingCommittees) assert.ok(directory.includes(committee), `practice campaign directory must expose ${committee}`);
 assert.ok(practice.includes('Mrs. Puff for Bikini Bottom School District #67'), 'base fixture provenance may retain the earlier Puff source spelling');
 assert.match(noise, /Mrs\. Puff for Bikini Bottom School District #67[\s\S]*?Puff for Bikini Bottom School District #67/, 'practice search boundary must normalize the Puff committee label');
 
@@ -139,6 +137,8 @@ assert.match(directory, /wakeGeography/);
 
 assert.match(contributorHandoff, /retrieval_started: false/);
 assert.match(contributorHandoff, /exact_match_changed: false/);
+assert.match(contributorHandoff, /PREPARED ROUTE/);
+assert.match(contributorHandoff, /nothing searched by this handoff/);
 assert.match(contributorHandoff, /Press SEARCH to continue/);
 
 assert.match(discoveryGraph, /'Sandra Cheeks'/);
@@ -185,7 +185,9 @@ assert.match(localAlignment, /removePlanktonFromKrabsBloc/);
 
 assert.match(localRules, /LOCAL_ORDINARY_LIMIT_CENTS = 100000/);
 assert.match(localRules, /transaction_class: 'LOAN'/);
-assert.match(localRules, /PRESERVE_OBSERVED_OVER_LIMIT_IN_KIND_FOR_REVIEW/);
+assert.match(localRules, /PRESERVE_OBSERVED_VALUE_AND_FLAG_LIMIT_REVIEW/);
+assert.match(localRules, /source_value_rewrite_forbidden: true/);
+assert.doesNotMatch(localRules, /amount_cents: capped \? LOCAL_ORDINARY_LIMIT_CENTS/, 'observed local source values may not be silently rewritten to the expected limit');
 assert.match(localRules, /allLarryLoanRows/);
 assert.match(inKind, /amount_cents: 230716/);
 assert.match(inKind, /practice_over_limit_anomaly: true/);
@@ -204,6 +206,7 @@ assert.match(committeeGraph, /_givingPracticeKrabsCheapskate\.normalizeKrabsOrdi
 assert.match(committeeGraph, /_givingPracticeLocalAlignment\.removePlanktonFromKrabsBloc/);
 assert.match(committeeGraph, /_givingPracticeInKind\.allRows/);
 assert.match(committeeGraph, /_givingPracticeLocalCampaignRules\.allLarryLoanRows/);
+assert.match(committeeGraph, /practice_compliance_review_required/);
 
 assert.match(shell, /scrollViewToTop\('view-vault'\)/);
 assert.match(shell, /installDossierPickers/);
@@ -222,7 +225,10 @@ assert.match(fec, /const MAX_BOUNDARY_PAGES = 1/);
 assert.doesNotMatch(fec, /while \(continuation/);
 assert.match(fec, /automatic_continuation: false/);
 
-assert.match(bootstrap, /GIVING_PRACTICE_EPOCH = '20260817-\d+'/);
+// Browser ESM side-effect law: one cache-busted practice root; internal modules
+// execute once through relative imports and may be reused by directory/graph.
+assert.match(practiceRuntime, /ONE_VERSIONED_ROOT_RELATIVE_DEPENDENCIES/);
+assert.match(practiceRuntime, /fetch_wrapper_reinstallation_forbidden: true/);
 for (const moduleName of [
   'giving-practice-hydration.js',
   'giving-practice-search-noise.js',
@@ -233,19 +239,23 @@ for (const moduleName of [
   'giving-practice-local-campaign-rules.js',
   'giving-practice-data-reconciliation.js',
   'giving-practice-krabs-cheapskate.js',
-  'giving-practice-local-alignment.js',
-  'giving-practice-committee-graph.js',
-  'giving-practice-directory.js'
-]) assert.ok(bootstrap.includes(moduleName), `Giving bootstrap must load ${moduleName}`);
+  'giving-practice-local-alignment.js'
+]) assert.ok(practiceRuntime.includes(moduleName), `practice runtime must own ${moduleName}`);
+
+assert.match(bootstrap, /GIVING_PRACTICE_EPOCH = '20260817-12'/);
+assert.match(bootstrap, /practiceUrl\('\.\/giving-practice-runtime\.js'\)/);
+assert.match(bootstrap, /sourceUrl\('\.\/giving-contributor-handoff\.js'\)/);
+assert.match(bootstrap, /practiceUrl\('\.\/giving-practice-directory\.js'\)/);
+assert.doesNotMatch(bootstrap, /practiceUrl\('\.\/giving-practice-hydration\.js'\)/, 'bootstrap must not instantiate practice fetch wrappers independently of the root');
+assert.doesNotMatch(bootstrap, /practiceUrl\('\.\/giving-practice-committee-graph\.js'\)/, 'directory owns the pure committee graph import so it resolves one dependency identity');
 assert.doesNotMatch(bootstrap, /\bpedagogue\b/i, 'browser bootstrap must keep internal teaching nomenclature out of delivered source');
-const practiceIndex = bootstrap.indexOf('giving-practice-hydration.js');
+const runtimeIndex = bootstrap.indexOf('giving-practice-runtime.js');
 const appIndex = bootstrap.indexOf('giving-app.js');
 const bridgeIndex = bootstrap.indexOf('giving-practice-surface-bridge.js');
-const committeeGraphIndex = bootstrap.indexOf('giving-practice-committee-graph.js');
 const directoryIndex = bootstrap.indexOf('giving-practice-directory.js');
 const campaignIndex = bootstrap.indexOf('giving-campaign-tools-v3.js');
-assert.ok(practiceIndex >= 0 && appIndex > practiceIndex);
+assert.ok(runtimeIndex >= 0 && appIndex > runtimeIndex, 'fictional fetch wrappers must install once before GivingApiClient captures fetch');
 assert.ok(bridgeIndex > appIndex);
-assert.ok(committeeGraphIndex > bridgeIndex && directoryIndex > committeeGraphIndex && campaignIndex > directoryIndex, 'practice committee graph and lookup must install before the real campaign directory listener');
+assert.ok(directoryIndex > bridgeIndex && campaignIndex > directoryIndex, 'practice lookup must install before the real campaign directory listener');
 
-console.log('giving-pedagogue-hydration.test.mjs passed: ESM syntax, expanded fictional graph, transaction classes, local limits, negative-space alignment, contributor handoff, and Pedagogue contrasts remain bounded.');
+console.log('giving-pedagogue-hydration.test.mjs passed: ESM syntax, single-entry practice runtime, expanded fictional graph, transaction classes, source-value preservation, negative-space alignment, contributor handoff, and Pedagogue contrasts remain bounded.');
