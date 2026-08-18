@@ -34,7 +34,7 @@
   <div class="operator-shell" id="operatorShell" hidden>
     <header class="masthead">
       <div class="brand-block">
-        <a class="brand-mark" href="https://td613.com/" aria-label="Return to TD613 home" title="TD613 home">𝌋</a>
+        <div class="brand-mark" aria-hidden="true">𝌋</div>
         <div>
           <p class="eyebrow">TD613 / PRIVATE RESEARCH LEDGER</p>
           <h1>Giving History</h1>
@@ -153,7 +153,7 @@
           <p class="fine-print">One selected jurisdiction is queried per local search. Local identities may be transaction-derived from that custodian. Expenditure receipts remain a separate campaign-activity lane and never enter donor Giving History. Campaign Deputy sync remains limited to reviewed FEC committee identities.</p>
           <div class="campaign-directory-columns">
             <section><h4>Candidates + principal committees</h4><div id="campaignDirectoryCandidates" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
-            <section><h4>Committees / campaigns / PCs</h4><div id="campaignDirectoryCommittees" class="campaign-directory-results"><span class="muted">Search to begin.</span></div><div id="campaignDirectoryOpenSecretsSummary"></div></section>
+            <section><h4>Committees / campaigns / PCs</h4><div id="campaignDirectoryCommittees" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
             <section><h4>OpenSecrets organizations</h4><div id="campaignDirectoryOpenSecrets" class="campaign-directory-results"><span class="muted">Search to begin.</span></div><div id="campaignDirectoryOpenSecretsSummary"></div></section>
           </div>
           <section class="campaign-activity-results" id="campaignActivitySection" hidden><h4 id="campaignActivityHeading">Committee activity</h4><div id="campaignActivityResults" class="campaign-directory-results"></div></section>
@@ -239,77 +239,149 @@
               <button class="button" id="exportEncryptedButton" type="button">Encrypted JSON</button>
             </div>
           </div>
-          <div id="committeeSearchWorkspace" class="committee-search-workspace">
-            <div class="committee-search-workspace-head"><strong>Candidate / committee search results</strong><small id="committeeSearchWorkspaceSummary">No committee search loaded.</small></div>
-            <div id="committeeSearchWorkspaceList" class="committee-search-workspace-list"><span class="muted">No campaign or committee identities were observed in the loaded search.</span></div>
-          </div>
+          <section class="committee-search-workspace" id="committeeSearchWorkspace" aria-live="polite">
+            <div class="committee-search-workspace-head">
+              <strong>Committee search list</strong>
+              <small id="committeeSearchWorkspaceSummary">No committee search loaded.</small>
+            </div>
+            <div class="committee-search-workspace-list" id="committeeSearchWorkspaceList">
+              <span class="muted">Run Candidate &amp; committee lookup to load this list.</span>
+            </div>
+          </section>
           <div class="total-banner">
-            <div><strong id="confirmedTotal">$0.00</strong><span id="confirmedRecordCount">0 identity-confirmed records</span><small id="confirmedTotalBreakdown">Deterministic-lineage $0.00 · provisional-lineage $0.00</small></div>
-            <span class="filing-total-state" id="filingTotalState">No filing total yet</span>
+            <span id="confirmedTotalLabel">Identity-confirmed contributions</span>
+            <strong id="confirmedTotal">$0.00</strong>
+            <b class="filing-total-state" id="filingTotalState">No filing total yet</b>
+            <small id="confirmedRecordCount">0 identity-confirmed records</small>
+            <small class="total-breakdown" id="confirmedTotalBreakdown">Deterministic-lineage $0.00 · provisional-lineage $0.00</small>
           </div>
-          <div class="committee-ledger" id="committeeLedger">
+          <p class="identity-ceiling">Identity confirmation is a research determination, not a legal compliance determination.</p>
+          <div class="committee-list" id="committeeLedger">
             <div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>
           </div>
         </section>
 
         <section class="view" id="view-vault" data-view-panel="vault" hidden>
-          <div class="section-head"><div><p class="eyebrow">ENCRYPTED CUSTODY</p><h2>Vault</h2></div><span class="state-badge">client-encrypted</span></div>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">SEPARATE DECRYPTION AUTHORITY</p>
+              <h2>Encrypted vault</h2>
+            </div>
+            <span class="state-badge">AES-GCM / PBKDF2</span>
+          </div>
           <div class="vault-grid">
             <section class="inner-panel">
-              <h3>Save encrypted branch</h3>
-              <p>Create a separate passphrase for this research file. Encryption occurs in your browser before any hosted write.</p>
+              <h3>Vault passphrase</h3>
+              <p>Used in browser memory for this operation only. It is never sent to TD613 or stored in the dossier.</p>
               <label class="field"><span>Separate vault passphrase</span><input id="vaultPassphrase" type="password" autocomplete="new-password" minlength="12"></label>
               <div class="button-row">
-                <button class="button primary" id="syncVaultButton" type="button">Encrypt &amp; save hosted version</button>
-                <button class="button" id="listVaultButton" type="button">List versions</button>
+                <button class="button primary" id="syncVaultButton" type="button">Encrypt &amp; save branch</button>
+                <button class="button" id="refreshVaultButton" type="button">List vault versions</button>
               </div>
             </section>
             <section class="inner-panel">
               <h3>Hosted versions</h3>
-              <p>Select a version, enter the passphrase that encrypted it, then decrypt locally.</p>
-              <select id="vaultVersionSelect"><option value="">No hosted version selected</option></select>
-              <div class="button-row">
-                <button class="button" id="openVaultButton" type="button">Decrypt selected version</button>
-              </div>
+              <p>Neon receives ciphertext, version metadata, digests, and ancestry only.</p>
+              <div id="vaultVersions" class="version-list"><span class="muted">No hosted versions loaded.</span></div>
             </section>
           </div>
-          <div class="vault-version-list" id="vaultVersionList"></div>
+          <div class="conflict-panel" id="conflictPanel" hidden>
+            <strong>Parallel vault branches detected.</strong>
+            <p>No branch was overwritten. Open each candidate, reconcile in memory, then explicitly record the chosen ancestry.</p>
+            <div id="conflictActions" class="button-row"></div>
+          </div>
         </section>
 
         <section class="view" id="view-campaign" data-view-panel="campaign" hidden>
-          <div class="section-head"><div><p class="eyebrow">REVIEWED FEC CONTACTS ONLY</p><h2>Campaign Deputy handoff</h2></div><span class="state-badge" id="campaignDeputyStatus">manual authority</span></div>
-          <div class="campaign-target-panel">
-            <label class="field compact"><span>Contact target</span><select id="campaignTargetSelect"><option value="">No reviewed contact target</option></select></label>
-            <div><div class="campaign-target-summary" id="campaignTargetSummary">Confirm contributor identity first, then choose a contact target.</div><button class="button" id="syncTargetButton" type="button" disabled>Sync selected target</button></div>
-          </div>
-          <div class="campaign-deputy-panel">
-            <div class="campaign-deputy-toolbar">
-              <button class="button" id="bulkExactContactsButton" type="button">Sync exact contacts</button>
-              <button class="button" id="bulkGivingHistoryButton" type="button">Sync Giving History</button>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">EXPLICIT CRM WRITEBACK</p>
+              <h2>Campaign Deputy</h2>
             </div>
-            <div class="campaign-deputy-context" id="campaignDeputyLoadedContext" data-loaded="false"><strong>No committee loaded.</strong><small>Use Candidate &amp; committee lookup, then load a reviewed FEC identity.</small></div>
-            <div class="campaign-deputy-tools" id="campaignDeputyTools">
-              <button class="button" id="loadPeopleButton" type="button">Load contacts</button>
-              <button class="button" id="morePeopleButton" type="button">Load more contacts</button>
-              <button class="button" id="linkExistingButton" type="button">Link selected contact</button>
-              <button class="button" id="createContactButton" type="button">Create contact</button>
-              <button class="button" id="prepareGivingHistoryButton" type="button">Prepare Giving History</button>
-              <button class="button" id="withholdButton" type="button">Withhold selected</button>
-              <button class="button" id="syncLoadedCommitteeButton" type="button">Sync committee</button>
-            </div>
-            <div class="campaign-deputy-status" id="campaignDeputyToolsStatus" role="status">Campaign Deputy sleeps until you load a reviewed FEC committee identity.</div>
+            <span class="state-badge">human gesture required</span>
           </div>
+          <div class="writeback-warning">Giving History and Contributions are separate in Campaign Deputy. Contact-to-list sync below is CRM segmentation only; the held Giving History batch preserves each reviewed gift without sending it to either destination.</div>
+          <section class="campaign-target-panel">
+            <label class="field compact"><span>Giving contact target</span><select id="campaignTargetSelect"><option value="">No reviewed contact target</option></select></label>
+            <div class="campaign-target-summary" id="campaignTargetSummary">Search and review a contact before Campaign Deputy handoff.</div>
+          </section>
+          <div class="campaign-grid campaign-donor-actions">
+            <section class="inner-panel">
+              <div class="inner-heading"><h3>1. Find an existing person</h3><button class="button" id="loadPeopleButton" type="button">Load people page</button></div>
+              <label class="field"><span>Filter the loaded index</span><input id="peopleFilter" type="search" placeholder="Name, email, phone"></label>
+              <div id="peopleIndex" class="people-list"><span class="muted">No Campaign Deputy people loaded into this dossier.</span></div>
+              <button class="button wide" id="morePeopleButton" type="button" hidden>Load next page</button>
+              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select an identity-confirmed committee</option></select></label>
+              <button class="button wide" id="linkExistingButton" type="button" disabled>Link selected committee only</button>
+              <button class="button primary wide" id="syncTargetButton" type="button" disabled>Sync all reviewed committees for this contact</button>
+            </section>
+
+            <section class="inner-panel">
+              <h3>2. Explicitly create a contact</h3>
+              <p>Only after duplicate review. Choose each public field you intend to copy.</p>
+              <label class="field"><span>Identity-confirmed source record</span><select id="createRecordSelect"><option value="">Select an identity-confirmed record</option></select></label>
+              <div class="field-choice-grid" id="createFieldChoices">
+                <label><input type="checkbox" value="name" checked> name</label>
+                <label><input type="checkbox" value="email" checked> email</label>
+                <label><input type="checkbox" value="phone" checked> phone</label>
+                <label><input type="checkbox" value="employer" checked> employer</label>
+                <label><input type="checkbox" value="occupation" checked> occupation</label>
+                <label><input type="checkbox" value="city_state_zip" checked> city / state / ZIP</label>
+                <label class="sensitive"><input type="checkbox" value="street_address"> public street address</label>
+              </div>
+              <button class="button primary wide" id="createContactButton" type="button" disabled>Create person + sync reviewed committees</button>
+            </section>
+          </div>
+          <section class="campaign-deputy-sync-tools">
+            <div>
+              <p class="eyebrow">GIVING HISTORY · SAFE STAGING</p>
+              <h3>3. Prepare individual-gift batch</h3>
+              <p>Download a held, API-ready JSON package with every identity-confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
+              <button class="button" id="bulkGivingHistoryButton" type="button">Prepare all exact-match contacts</button>
+            </div>
+          </section>
+          <section class="campaign-deputy-sync-tools">
+            <div>
+              <p class="eyebrow">LOADED CAMPAIGN HANDOFF</p>
+              <h3>4. Committee-list + multi-contact sync</h3>
+              <p id="campaignDeputyLoadedContext">Load a candidate or committee from the left rail first.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="syncLoadedCommitteeButton" type="button" disabled>Sync loaded committee → Campaign Deputy</button>
+              <button class="button" id="bulkExactContactsButton" type="button">Sync all exact-match contacts</button>
+            </div>
+            <div id="campaignDeputyToolsStatus" class="campaign-tools-status" role="status">No loaded committee waiting for Campaign Deputy.</div>
+          </section>
+          <section class="withhold-panel">
+            <div><strong>5. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
+            <button class="button" id="withholdButton" type="button">Record WITHHOLD</button>
+          </section>
+          <div id="campaignReceipts" class="receipt-list"></div>
         </section>
 
         <section class="view" id="view-receipts" data-view-panel="receipts" hidden>
-          <div class="section-head"><div><p class="eyebrow">PROVENANCE LEDGER</p><h2>Receipts</h2></div><span class="counter" id="receiptCount">0 receipts</span></div>
-          <div class="receipt-list" id="receiptList"><div class="empty-state"><strong>No receipts yet.</strong><span>Searches, reviews, exports, and custody actions will append receipts here.</span></div></div>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">LINEAGE / CUSTODY / REFUSALS</p>
+              <h2>Operator receipts</h2>
+            </div>
+            <button class="button" id="copyReceiptsButton" type="button">Copy receipts</button>
+          </div>
+          <div class="receipt-list" id="receiptList"><div class="empty-state"><strong>No receipts yet.</strong><span>Retrieval and operator decisions will be recorded here without donor search inputs.</span></div></div>
         </section>
+        <footer class="signal-wake" aria-label="Current dossier state">
+          <span><i data-signal="source"></i><b id="wakeSourceState">sources quiet</b></span>
+          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 identity confirmed</b></span>
+          <span><i data-signal="custody"></i><b id="wakeCustodyState">local custody</b></span>
+        </footer>
       </div>
     </main>
   </div>
 
-  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
   <script type="module" src="./giving-bootstrap.js?v=20260817-1"></script>
 </body>
 </html>
