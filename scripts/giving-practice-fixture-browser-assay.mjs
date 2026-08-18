@@ -129,34 +129,10 @@ async function assertCenteredDialog(page) {
   assert.equal(await page.locator('#practiceExitConfirm').count(), 1, 'all exit entry points must share one dialog node');
 }
 
-async function dismissExitNo(page, { native = false } = {}) {
+async function dismissExitNo(page) {
   await assertCenteredDialog(page);
-  const no = page.locator('[data-practice-exit="no"]');
-  if (!native) {
-    await no.click();
-    await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
-    return;
-  }
-  const state = await no.evaluate((node) => {
-    const style = getComputedStyle(node);
-    const rect = node.getBoundingClientRect();
-    return {
-      disabled: node.disabled === true,
-      visible: style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0,
-      width: rect.width,
-      height: rect.height
-    };
-  });
-  assert.equal(state.disabled, false, `force-click Campaign Deputy dismissal must remain enabled: ${JSON.stringify(state)}`);
-  assert.equal(state.visible, true, `force-click Campaign Deputy dismissal must remain visible: ${JSON.stringify(state)}`);
-  assert.ok(state.width > 0 && state.height > 0, `force-click Campaign Deputy dismissal must retain a real hit box: ${JSON.stringify(state)}`);
-  await no.click({ force: true });
-  assert.equal(page.isClosed(), false, 'force-click Campaign Deputy dismissal must not close the Giving page');
-  await pollUntil(async () => no.evaluate((node) => node.closest('#practiceExitConfirm')?.hidden === true), {
-    timeout: 5000,
-    interval: 40,
-    label: 'force-click Campaign Deputy dismissal hides shared exit dialog'
-  });
+  await page.locator('[data-practice-exit="no"]').click();
+  await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
 async function activateSleepingCampaignExit(page) {
@@ -188,8 +164,10 @@ async function activateSleepingCampaignExit(page) {
   assert.equal(geometry.visible, true, `sleeping Campaign Deputy exit route must remain visibly available: ${JSON.stringify(geometry)}`);
   assert.ok(geometry.width > 0 && geometry.height > 0, `sleeping Campaign Deputy exit route must retain a real hit box: ${JSON.stringify(geometry)}`);
   assert.equal(geometry.hit, true, `sleeping Campaign Deputy exit route must own its center hit target: ${JSON.stringify(geometry)}`);
-  await campaign.click({ force: true });
-  assert.equal(page.isClosed(), false, 'force-click sleeping Campaign Deputy activation must not close the Giving page');
+  await campaign.focus();
+  assert.equal(await campaign.evaluate((node) => document.activeElement === node), true, 'sleeping Campaign Deputy must accept keyboard focus');
+  await page.keyboard.press('Enter');
+  assert.equal(page.isClosed(), false, 'keyboard sleeping Campaign Deputy activation must not close the Giving page');
   return geometry;
 }
 
@@ -425,7 +403,7 @@ export async function witnessGivingPracticeFixture(page) {
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
-  await dismissExitNo(page, { native: true });
+  await dismissExitNo(page);
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
