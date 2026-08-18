@@ -2,7 +2,7 @@ import './giving-ux-resilience-shell.js?v=20260817-2';
 
 const GIVING_ASSET_EPOCH = '20260816-4';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
-const GIVING_PRACTICE_EPOCH = '20260817-9';
+const GIVING_PRACTICE_EPOCH = '20260817-10';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -71,6 +71,7 @@ await import(practiceUrl('./giving-practice-temporal-cluster-extension.js'));
 await import(practiceUrl('./giving-practice-in-kind.js'));
 await import(practiceUrl('./giving-practice-local-campaign-rules.js'));
 await import(practiceUrl('./giving-practice-data-reconciliation.js'));
+await import(practiceUrl('./giving-practice-krabs-cheapskate.js'));
 await import(epochUrl('./giving-app.js'));
 await import(practiceUrl('./giving-practice-surface-bridge.js'));
 
