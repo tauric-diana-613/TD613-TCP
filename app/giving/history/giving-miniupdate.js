@@ -26,6 +26,27 @@ function activateView(viewName) {
   scrollViewToTop(`view-${viewName}`);
 }
 
+function installBrandHomeLink() {
+  const mark = $('.masthead .brand-mark');
+  if (!mark) return;
+  if (mark instanceof HTMLAnchorElement) {
+    mark.href = 'https://td613.com/';
+    mark.removeAttribute('target');
+    mark.removeAttribute('aria-hidden');
+    mark.setAttribute('aria-label', 'Return to TD613 home');
+    mark.title = 'TD613 home';
+    return;
+  }
+
+  const link = document.createElement('a');
+  link.className = mark.className;
+  link.href = 'https://td613.com/';
+  link.textContent = mark.textContent || '𝌋';
+  link.setAttribute('aria-label', 'Return to TD613 home');
+  link.title = 'TD613 home';
+  mark.replaceWith(link);
+}
+
 function installMobileRangeHooks() {
   $('#dateFrom')?.closest('.split-fields')?.classList.add('giving-date-range-filter');
   $('#amountMin')?.closest('.split-fields')?.classList.add('giving-amount-range-filter');
@@ -44,10 +65,25 @@ function moveContactQueueAfterSearchActions() {
 
 function moveDossierActionsToTitle() {
   const titleInput = $('#dossierTitle');
-  const field = titleInput?.closest('.field');
+  let field = titleInput?.closest('.field');
   const actions = $('.dossier-control .dossier-actions');
-  const label = field?.querySelector(':scope > span');
+  let label = field?.querySelector(':scope > span');
   if (!field || !actions || !label || field.querySelector('.research-file-title-row')) return;
+
+  // New/Save are interactive controls, so do not leave them nested inside the
+  // legacy <label> that wraps the title input. Preserve the visible label through
+  // aria-labelledby while changing only this one field wrapper to a neutral div.
+  if (field.tagName === 'LABEL') {
+    const replacement = document.createElement('div');
+    replacement.className = field.className;
+    while (field.firstChild) replacement.append(field.firstChild);
+    field.replaceWith(replacement);
+    field = replacement;
+    label = field.querySelector(':scope > span');
+  }
+  if (!label) return;
+  label.id = label.id || 'dossierTitleVisibleLabel';
+  titleInput.setAttribute('aria-labelledby', label.id);
 
   const row = document.createElement('div');
   row.className = 'research-file-title-row';
@@ -155,8 +191,8 @@ function installDossierActionPedagogy() {
       return;
     }
 
-    const saveState = $('#saveState');
-    if (!saveState) return;
+    const stack = $('#toastStack');
+    if (!stack) return;
     let settled = false;
     const finish = () => {
       if (settled) return;
@@ -165,12 +201,14 @@ function installDossierActionPedagogy() {
       clearTimeout(timer);
       activateView('search');
     };
-    const observer = new MutationObserver(() => {
-      const text = saveState.textContent.trim().toLowerCase();
-      if (text === 'saved local' || text === 'local branch saved') finish();
-    });
-    observer.observe(saveState, { childList: true, subtree: true, characterData: true });
-    const timer = setTimeout(() => observer.disconnect(), 4000);
+    const observeOpenedFile = () => {
+      const opened = [...stack.children].some((node) => /Dossier opened from local custody\./i.test(node.textContent || ''));
+      if (opened) finish();
+    };
+    const observer = new MutationObserver(observeOpenedFile);
+    observer.observe(stack, { childList: true, subtree: true });
+    const timer = setTimeout(() => observer.disconnect(), 5000);
+    queueMicrotask(observeOpenedFile);
   }, true);
 }
 
@@ -304,7 +342,10 @@ function installCloseSessionPracticeExit() {
 function installCampaignLookupScroll() {
   document.addEventListener('submit', (event) => {
     if (event.target?.id !== 'campaignDirectoryForm') return;
-    requestAnimationFrame(() => requestAnimationFrame(() => scrollViewToTop('view-ledger')));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const ledger = $('#view-ledger');
+      if (ledger && !ledger.hidden) scrollViewToTop('view-ledger');
+    }));
   }, true);
 }
 
@@ -327,6 +368,7 @@ function installFecPartialObserver() {
 }
 
 function installMiniupdate() {
+  installBrandHomeLink();
   installMobileRangeHooks();
   moveContactQueueAfterSearchActions();
   moveDossierActionsToTitle();
@@ -339,7 +381,7 @@ function installMiniupdate() {
   installCloseSessionPracticeExit();
   installCampaignLookupScroll();
   installFecPartialObserver();
-  document.documentElement.dataset.givingMiniupdate = '20260818-2';
+  document.documentElement.dataset.givingMiniupdate = '20260818-3';
 }
 
 installMiniupdate();
@@ -348,6 +390,7 @@ export const _givingMiniupdate = Object.freeze({
   activateView,
   clearWorkingSessionForDemo,
   hydrateCustodyLanguage,
+  installBrandHomeLink,
   installMobileRangeHooks,
   moveContactQueueAfterSearchActions,
   moveDossierActionsToTitle,
