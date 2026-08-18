@@ -147,15 +147,15 @@ async function dismissExitNo(page, { native = false } = {}) {
       height: rect.height
     };
   });
-  assert.equal(state.disabled, false, `native Campaign Deputy dismissal must remain enabled: ${JSON.stringify(state)}`);
-  assert.equal(state.visible, true, `native Campaign Deputy dismissal must remain visible: ${JSON.stringify(state)}`);
-  assert.ok(state.width > 0 && state.height > 0, `native Campaign Deputy dismissal must retain a real hit box: ${JSON.stringify(state)}`);
-  await no.evaluate((node) => node.click());
-  assert.equal(page.isClosed(), false, 'native Campaign Deputy dismissal must not close the Giving page');
+  assert.equal(state.disabled, false, `force-click Campaign Deputy dismissal must remain enabled: ${JSON.stringify(state)}`);
+  assert.equal(state.visible, true, `force-click Campaign Deputy dismissal must remain visible: ${JSON.stringify(state)}`);
+  assert.ok(state.width > 0 && state.height > 0, `force-click Campaign Deputy dismissal must retain a real hit box: ${JSON.stringify(state)}`);
+  await no.click({ force: true });
+  assert.equal(page.isClosed(), false, 'force-click Campaign Deputy dismissal must not close the Giving page');
   await pollUntil(async () => no.evaluate((node) => node.closest('#practiceExitConfirm')?.hidden === true), {
     timeout: 5000,
     interval: 40,
-    label: 'native Campaign Deputy dismissal hides shared exit dialog'
+    label: 'force-click Campaign Deputy dismissal hides shared exit dialog'
   });
 }
 
@@ -188,8 +188,8 @@ async function activateSleepingCampaignExit(page) {
   assert.equal(geometry.visible, true, `sleeping Campaign Deputy exit route must remain visibly available: ${JSON.stringify(geometry)}`);
   assert.ok(geometry.width > 0 && geometry.height > 0, `sleeping Campaign Deputy exit route must retain a real hit box: ${JSON.stringify(geometry)}`);
   assert.equal(geometry.hit, true, `sleeping Campaign Deputy exit route must own its center hit target: ${JSON.stringify(geometry)}`);
-  await campaign.evaluate((node) => node.click());
-  assert.equal(page.isClosed(), false, 'native sleeping Campaign Deputy activation must not close the Giving page');
+  await campaign.click({ force: true });
+  assert.equal(page.isClosed(), false, 'force-click sleeping Campaign Deputy activation must not close the Giving page');
   return geometry;
 }
 
