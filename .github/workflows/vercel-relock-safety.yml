@@ -105,3 +105,164 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="𝌋 Vercel relock safety held. No deployment or retry authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
+
+  confirm-production-practice:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      startsWith(github.event.comment.body, '/td613-vercel-confirm ')
+    permissions:
+      contents: read
+      issues: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out current relocked main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Authorize zero-deploy production confirmation
+        id: authorize_confirmation
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-vercel-confirm' ]] || { echo 'Unexpected confirmation command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only PRODUCTION may be confirmed.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" && "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed confirmation command.' >&2; exit 1; }
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || {
+            echo 'Current main no longer descends from the deployed source packet.' >&2
+            exit 1
+          }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Read-only confirmation requires the Vercel Git deployment lock to remain closed.');
+          NODE
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+          echo "observer_main=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Record accepted read-only confirmation gesture
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Zero-deploy production confirmation accepted.
+
+          \`\`\`text
+          source_packet_commit = ${{ steps.authorize_confirmation.outputs.selected_sha }}
+          observer_main = ${{ steps.authorize_confirmation.outputs.observer_main }}
+          target = PRODUCTION
+          deployment_ceiling = 0
+          browser = Chromium
+          git_auto_deploy = disabled
+          relay = ${{ github.event.comment.user.login }}
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          This route may observe the already-deployed practice surface and exact-source receipt only. It cannot deploy, unlock Vercel Git integration, mutate application source, or grant release authority. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Install repository dependencies once
+        run: npm ci
+
+      - name: Verify confirmation and practice contracts
+        run: |
+          node tests/release-plumbing.test.mjs
+          node tests/vercel-relock-safety.test.mjs
+          node tests/giving-post640-polish.test.mjs
+          node tests/pedagogue-practice-fixture.test.mjs
+
+      - name: Verify deployed source packet before browser observation
+        env:
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_confirmation.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/practice-production-confirmation/exact-source-before
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Install one read-only production browser engine
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+
+      - name: Confirm already-deployed canonical practice fixture on Chromium
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_PRACTICE_OBSERVATION: 'true'
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_confirmation.outputs.selected_sha }}
+          TD613_GIVING_PROBE_ATTEMPTS: '12'
+          TD613_GIVING_PROBE_DELAY_MS: '5000'
+          TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS: '15000'
+          TD613_ARTIFACT_DIR: artifacts/practice-production-confirmation/browser
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
+
+      - name: Reconfirm deployed source packet after browser observation
+        env:
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_confirmation.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/practice-production-confirmation/exact-source-after
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Preserve zero-deploy production confirmation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-zero-deploy-practice-production-confirmation
+          path: artifacts/practice-production-confirmation/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Seal zero-deploy production confirmation
+        if: success()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Already-deployed Giving practice confirmation passed.
+
+          \`\`\`text
+          source_packet_commit = ${{ steps.authorize_confirmation.outputs.selected_sha }}
+          observer_main = ${{ steps.authorize_confirmation.outputs.observer_main }}
+          target = PRODUCTION
+          deployment_count = 0
+          exact_source_before = PASS
+          production_practice_fixture = PASS
+          exact_source_after = PASS
+          browser = Chromium
+          git_auto_deploy = disabled
+          application_mutation = none
+          repository_write_authority = false
+          counts_as_human_evidence = false
+          automatic_release_authority = false
+          \`\`\`
+
+          The already-deployed source packet remained owner of production before and after the CSP-safe practice witness. This confirmation created no deployment and changed no application bytes. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record zero-deploy confirmation hold
+        if: failure()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="𝌋 Zero-deploy production confirmation held. deployment_count = 0; git_auto_deploy remains disabled; no deployment, unlock, retry, or application-mutation authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"

@@ -39,6 +39,7 @@ const PRACTICE_EXACT = new Set([
 const SCOPE_NEUTRAL = new Set([
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
+  '.github/workflows/vercel-relock-safety.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
   'docs/AIA_CISTERN_LAW.md',

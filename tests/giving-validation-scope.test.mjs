@@ -13,12 +13,13 @@ assert.equal(classifyValidationScope([
   'vercel.json',
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
+  '.github/workflows/vercel-relock-safety.yml',
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
   'tests/release-plumbing.test.mjs',
   'tests/vercel-operator-release-gate.test.mjs',
   'tests/workflow-estate.test.mjs',
   'package.json'
-]).scope, 'giving', 'release-plumbing contracts remain scope-neutral when a Giving release envelope is the product-scoped change');
+]).scope, 'giving', 'release/relock plumbing remains scope-neutral when a Giving release envelope is the product-scoped change');
 
 assert.equal(classifyValidationScope([
   'app/giving/history/giving-ux-resilience-shell.js',
@@ -59,6 +60,7 @@ const practiceOnly = classifyValidationScope([
   'tests/giving-post640-polish.test.mjs',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
   '.github/workflows/td613-ci.yml',
+  '.github/workflows/vercel-relock-safety.yml',
   'scripts/classify-validation-scope.mjs',
   'tests/giving-validation-scope.test.mjs'
 ]);
@@ -86,6 +88,14 @@ assert.equal(releaseSmokeOnly.scope, 'practice', 'the first-class practice relea
 assert.equal(releaseSmokeOnly.practice_fixture_changed, true);
 assert.deepEqual(releaseSmokeOnly.full_scope_files, []);
 
+const relockWithPractice = classifyValidationScope([
+  'scripts/giving-practice-fixture-browser-assay.mjs',
+  '.github/workflows/vercel-relock-safety.yml',
+  'tests/release-plumbing.test.mjs'
+]);
+assert.equal(relockWithPractice.scope, 'practice', 'zero-deploy relock/confirmation plumbing must not widen a practice witness repair to full-product validation');
+assert.deepEqual(relockWithPractice.full_scope_files, []);
+
 const mixedPracticeAndAsh = classifyValidationScope([
   'app/engine/pedagogue-practice-fixture.js',
   'app/dome-world/ash-demo-entry-convergence.js'
@@ -108,6 +118,7 @@ for (const unsafePath of [
 }
 
 assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving or practice lane');
+assert.equal(classifyValidationScope(['.github/workflows/vercel-relock-safety.yml']).scope, 'full', 'scope-neutral relock workflow alone still fails closed rather than self-selecting a product lane');
 assert.equal(classifyValidationScope(['tests/release-plumbing.test.mjs']).scope, 'full', 'scope-neutral release plumbing alone still fails closed rather than self-selecting a product lane');
 assert.equal(classifyValidationScope(['app/engine/pedagogue-design-gate.js']).scope, 'full', 'pre-existing shared design helpers alone cannot self-select the practice lane');
 assert.equal(classifyValidationScope([]).scope, 'full', 'an empty diff fails closed to full validation');
