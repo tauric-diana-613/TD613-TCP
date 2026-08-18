@@ -64,6 +64,7 @@ await import(epochUrl('./giving-contributor-handoff.js'));
 await import(practiceUrl('./giving-practice-hydration.js'));
 await import(practiceUrl('./giving-practice-search-noise.js'));
 await import(practiceUrl('./giving-practice-discovery-graph.js'));
+await import(practiceUrl('./giving-practice-data-reconciliation.js'));
 await import(epochUrl('./giving-app.js'));
 await import(practiceUrl('./giving-practice-surface-bridge.js'));
 
