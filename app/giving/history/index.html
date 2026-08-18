@@ -108,7 +108,7 @@
               <textarea id="searchAliases" name="aliases" rows="3" maxlength="1000"></textarea>
             </label>
             <label class="field">
-              <span>Identity hints <small>city, employer, ZIP — never a forced match</small></span>
+              <span>Search hints <small>city, employer, ZIP — never a forced match</small></span>
               <input id="searchHints" name="hints" type="text" maxlength="300">
             </label>
             <div class="split-fields contribution-amount-filter" aria-label="Contribution amount range">
@@ -137,7 +137,7 @@
 
         <section class="panel campaign-directory-panel" id="campaignDirectoryPanel">
           <div class="campaign-directory-heading">
-            <div><p class="eyebrow">CAMPAIGN / PC IDENTITY</p><h2>Candidate &amp; committee lookup</h2></div>
+            <div><p class="eyebrow">CAMPAIGN / PC LOOKUP</p><h2>Candidate &amp; committee lookup</h2></div>
             <span>FEC + OpenSecrets + Florida sources</span>
           </div>
           <form id="campaignDirectoryForm" class="campaign-directory-form">
@@ -194,22 +194,22 @@
               <p class="eyebrow">HUMAN CLOSURE REQUIRED</p>
               <h2>Contributions</h2>
             </div>
-            <div class="legend" aria-label="Identity states">
-              <span data-state="CANDIDATE">candidate</span><span data-state="CONFIRMED">identity confirmed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">unreviewed</span>
+            <div class="legend" aria-label="Review states">
+              <span data-state="CANDIDATE">match</span><span data-state="CONFIRMED">record attributed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">record unresolved</span>
             </div>
           </div>
           <div class="review-toolbar">
             <label class="field compact"><span>Contact</span><select id="reviewTargetFilter"><option value="ALL">All contacts</option></select></label>
-            <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Identity confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
+            <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Match</option><option value="UNREVIEWED">Record unresolved</option><option value="CONFIRMED">Record attributed</option><option value="EXCLUDED">Excluded</option></select></label>
             <label class="field compact grow"><span>Filter contributions</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
             <button class="button review-hold-button" id="holdReviewButton" type="button" aria-pressed="false" data-held="false">Hold</button>
           </div>
           <div class="loaded-campaign-context" id="loadedCampaignContext" data-loaded="false">
             <span class="eyebrow">LOADED CAMPAIGN / COMMITTEE</span>
             <strong>No candidate or committee loaded.</strong>
-            <small>Use Candidate &amp; committee lookup in the left rail to place a reviewed campaign identity here.</small>
+            <small>Use Candidate &amp; committee lookup in the left rail to place a reviewed campaign / committee record here.</small>
           </div>
-          <div class="cluster-notice" id="clusterNotice">No candidate clusters have been proposed.</div>
+          <div class="cluster-notice" id="clusterNotice">No match clusters have been proposed.</div>
           <div class="review-sort-header" aria-label="Contributions sort columns">
             <button class="review-sort-button" type="button" data-review-sort="contributor" data-label="Contributor" aria-pressed="false">Contributor</button>
             <button class="review-sort-button" type="button" data-review-sort="committee" data-label="Committee" aria-pressed="false">Committee</button>
@@ -225,7 +225,7 @@
         <section class="view" id="view-ledger" data-view-panel="ledger" hidden>
           <div class="section-head">
             <div>
-              <p class="eyebrow">IDENTITY-CONFIRMED RECORDS ONLY</p>
+              <p class="eyebrow">ATTRIBUTED RECORDS ONLY</p>
               <h2>Committee-first ledger</h2>
             </div>
             <div class="button-row align-end">
@@ -249,15 +249,15 @@
             </div>
           </section>
           <div class="total-banner">
-            <span id="confirmedTotalLabel">Identity-confirmed contributions</span>
+            <span id="confirmedTotalLabel">Attributed contributions</span>
             <strong id="confirmedTotal">$0.00</strong>
             <b class="filing-total-state" id="filingTotalState">No filing total yet</b>
-            <small id="confirmedRecordCount">0 identity-confirmed records</small>
+            <small id="confirmedRecordCount">0 attributed records</small>
             <small class="total-breakdown" id="confirmedTotalBreakdown">Deterministic-lineage $0.00 · provisional-lineage $0.00</small>
           </div>
-          <p class="identity-ceiling">Identity confirmation is a research determination, not a legal compliance determination.</p>
+          <p class="identity-ceiling">Record attribution is a research determination, not a legal compliance determination.</p>
           <div class="committee-list" id="committeeLedger">
-            <div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>
+            <div class="empty-state"><strong>No attributed giving.</strong><span>Committee totals remain asleep until you attribute a contribution record.</span></div>
           </div>
         </section>
 
@@ -311,7 +311,7 @@
               <label class="field"><span>Filter the loaded index</span><input id="peopleFilter" type="search" placeholder="Name, email, phone"></label>
               <div id="peopleIndex" class="people-list"><span class="muted">No Campaign Deputy people loaded into this dossier.</span></div>
               <button class="button wide" id="morePeopleButton" type="button" hidden>Load next page</button>
-              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select an identity-confirmed committee</option></select></label>
+              <label class="field"><span>Reviewed committee taxonomy</span><select id="committeeSelect"><option value="">Select an attributed committee</option></select></label>
               <button class="button wide" id="linkExistingButton" type="button" disabled>Link selected committee only</button>
               <button class="button primary wide" id="syncTargetButton" type="button" disabled>Sync all reviewed committees for this contact</button>
             </section>
@@ -319,7 +319,7 @@
             <section class="inner-panel">
               <h3>2. Explicitly create a contact</h3>
               <p>Only after duplicate review. Choose each public field you intend to copy.</p>
-              <label class="field"><span>Identity-confirmed source record</span><select id="createRecordSelect"><option value="">Select an identity-confirmed record</option></select></label>
+              <label class="field"><span>Attributed source record</span><select id="createRecordSelect"><option value="">Select an attributed record</option></select></label>
               <div class="field-choice-grid" id="createFieldChoices">
                 <label><input type="checkbox" value="name" checked> name</label>
                 <label><input type="checkbox" value="email" checked> email</label>
@@ -336,7 +336,7 @@
             <div>
               <p class="eyebrow">GIVING HISTORY · SAFE STAGING</p>
               <h3>3. Prepare individual-gift batch</h3>
-              <p>Download a held, API-ready JSON package with every identity-confirmed gift, committee identity, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
+              <p>Download a held, API-ready JSON package with every attributed gift, committee record, date, amount, cycle/election, provenance, and duplicate key. This makes no Campaign Deputy write.</p>
             </div>
             <div class="button-row">
               <button class="button primary" id="prepareGivingHistoryButton" type="button" disabled>Prepare held Giving History batch</button>
@@ -374,7 +374,7 @@
         </section>
         <footer class="signal-wake" aria-label="Current dossier state">
           <span><i data-signal="source"></i><b id="wakeSourceState">sources quiet</b></span>
-          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 identity confirmed</b></span>
+          <span><i data-signal="identity"></i><b id="wakeIdentityState">0 records attributed</b></span>
           <span><i data-signal="custody"></i><b id="wakeCustodyState">local custody</b></span>
         </footer>
       </div>
