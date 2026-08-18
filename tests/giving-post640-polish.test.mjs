@@ -135,8 +135,11 @@ assert.match(twelveStep, /expenditureCoverageAudit/);
 assert.match(twelveStep, /recordMatchesLoadedCommittee/);
 assert.match(twelveStepCss, /\.giving-date-presets\{justify-content:center/);
 assert.match(twelveStepCss, /\.review-sort-header\{display:flex!important/);
-assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.toast-stack\{z-index:2147483002\}/);
-assert.match(twelveStepCss, /\.committee-filter-guard-dialog\{position:fixed;z-index:2147482999/);
+assert.match(twelveStepCss, /\.practice-floating-exit\{z-index:12000!important/);
+assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.toast-stack\{z-index:12010!important\}/);
+assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.practice-exit-confirm\{z-index:12020!important\}/);
+assert.match(twelveStepCss, /\.giving-demo-clear-confirm\{z-index:12020!important\}/);
+assert.match(twelveStepCss, /\.committee-filter-guard-dialog\{position:fixed;z-index:11990/);
 assert.match(twelveStepCss, /drop-shadow\(0 0 42px rgba\(255,82,197,\.34\)\)/);
 assert.match(twelveStepCss, /\.research-dossier-heading-line \.research-dossier-help-trigger\{font-size:10px\}/);
 
