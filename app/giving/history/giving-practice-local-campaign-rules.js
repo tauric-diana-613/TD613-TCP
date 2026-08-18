@@ -36,6 +36,13 @@ function isCandidateLoan(record) {
   return record?.candidate_self_financing === true || record?.practice_candidate_loan === true || /CANDIDATE LOAN/i.test(String(record?.contribution_type || ''));
 }
 
+function isPreservedComplianceAnomaly(record) {
+  return Boolean(
+    record?.practice_over_limit_anomaly === true &&
+    String(record?.transaction_class || record?.contribution_type || '').toLocaleUpperCase('en-US').includes('IN-KIND')
+  );
+}
+
 function normalizeLocalCampaignRecord(record) {
   if (!record || typeof record !== 'object') return record;
   const committee = normalizeCommitteeName(record.committee_name || record.committee);
@@ -46,6 +53,7 @@ function normalizeLocalCampaignRecord(record) {
       ...record,
       committee,
       committee_name: committee,
+      transaction_class: 'LOAN',
       practice_local_campaign_rule: 'CANDIDATE_SELF_FINANCING_SEPARATE_FROM_ORDINARY_LIMIT',
       lineage: {
         ...(record.lineage || {}),
@@ -53,6 +61,26 @@ function normalizeLocalCampaignRecord(record) {
         ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
         candidate_self_financing: true,
         ordinary_limit_applies: false
+      }
+    };
+  }
+
+  if (isPreservedComplianceAnomaly(record)) {
+    return {
+      ...record,
+      committee,
+      committee_name: committee,
+      practice_local_campaign_rule: 'PRESERVE_OBSERVED_OVER_LIMIT_IN_KIND_FOR_REVIEW',
+      practice_local_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
+      practice_compliance_review_required: true,
+      lineage: {
+        ...(record.lineage || {}),
+        local_candidate_committee: true,
+        ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
+        ordinary_limit_applies: true,
+        preserve_observed_value: true,
+        compliance_review_required: true,
+        fixture_amount_normalization_forbidden: true
       }
     };
   }
@@ -114,6 +142,7 @@ function larryLoanRecord(loan) {
     election: `${loan.date.slice(0, 4)} fictional cycle`,
     contribution_date: loan.date,
     contribution_type: 'FICTIONAL CANDIDATE LOAN',
+    transaction_class: 'LOAN',
     amount_cents: loan.amount_cents,
     candidate_self_financing: true,
     practice_candidate_loan: true,
@@ -123,6 +152,12 @@ function larryLoanRecord(loan) {
     custodian: 'BikiniBottomVotes',
     evidence_status: 'FICTIONAL_SAMPLE',
     retrieved_at: new Date().toISOString(),
+    raw_source_row: {
+      'Contributor Name': 'Larry Lobster',
+      'Loan Type': 'CANDIDATE LOAN',
+      'Transaction Type': 'LOAN',
+      Amount: (loan.amount_cents / 100).toFixed(2)
+    },
     source_native_ids: { practice_record_id: token, practice_loan_id: loan.loan_id },
     practice_data_class: 'CANDIDATE_SELF_FINANCING',
     practice_identity_cluster: 'larry-lobster',
@@ -134,6 +169,7 @@ function larryLoanRecord(loan) {
       practice_record: true,
       discovery_graph: true,
       data_class: 'CANDIDATE_SELF_FINANCING',
+      transaction_class: 'LOAN',
       identity_cluster: 'larry-lobster',
       local_candidate_committee: true,
       ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
@@ -150,6 +186,21 @@ function larryLoanRecord(loan) {
 function larryLoansForQuery(query = {}) {
   if (!queryMatchesLarry(query)) return [];
   return LARRY_SELF_LOANS.filter((loan) => dateMatches(loan.date, query)).map(larryLoanRecord);
+}
+
+function allLarryLoanRows() {
+  return LARRY_SELF_LOANS.map(larryLoanRecord);
+}
+
+function contributorsForCommittee(committeeName) {
+  if (normalizeCommitteeName(committeeName) !== LARRY_COMMITTEE) return [];
+  const rows = allLarryLoanRows();
+  return [{
+    name: 'Larry Lobster',
+    record_count: rows.length,
+    total_cents: rows.reduce((sum, row) => sum + row.amount_cents, 0),
+    data_classes: ['CANDIDATE_SELF_FINANCING']
+  }];
 }
 
 function responseFrom(original, body) {
@@ -192,13 +243,15 @@ globalThis.fetch = async (input, init = {}) => {
         ...page,
         records,
         practice_local_campaign_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
-        practice_candidate_self_financing_present: records.some((record) => record.candidate_self_financing === true)
+        practice_candidate_self_financing_present: records.some((record) => record.candidate_self_financing === true),
+        practice_preserved_limit_anomaly_present: records.some((record) => record.practice_over_limit_anomaly === true)
       }
     },
     receipt: {
       ...(body.receipt || {}),
       practice_local_campaign_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
       candidate_self_financing_separate: true,
+      preserved_limit_anomaly: records.some((record) => record.practice_over_limit_anomaly === true),
       record_count: records.length
     }
   });
@@ -211,5 +264,8 @@ export const _givingPracticeLocalCampaignRules = Object.freeze({
   LARRY_SELF_LOANS,
   normalizeLocalCampaignRecord,
   larryLoansForQuery,
-  isLocalCandidateCommittee
+  allLarryLoanRows,
+  contributorsForCommittee,
+  isLocalCandidateCommittee,
+  isPreservedComplianceAnomaly
 });
