@@ -197,11 +197,11 @@ document.addEventListener('click', (event) => {
     rememberExitReturnFocus(button);
   }
 
-  // A dismissed dialog must never retain focus inside its hidden subtree.
-  // Capture runs before giving-practice-hydration's No handler, so focus returns
-  // to the invoking control before that owner hides the shared membrane.
+  // Hydration owns the synchronous No dismissal in bubble phase. Schedule focus
+  // return from capture so it runs immediately afterward: the dialog is hidden
+  // before background focus is restored, and hidden dialog controls never retain it.
   if (practiceActive() && button.matches('[data-practice-exit="no"]')) {
-    restoreExitReturnFocus();
+    queueMicrotask(restoreExitReturnFocus);
     return;
   }
 
