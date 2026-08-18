@@ -76,6 +76,11 @@ await import(sourceUrl('./giving-contributor-handoff.js'));
 await import(observerUrl('./giving-transaction-classification.js'));
 await import(miniupdateUrl('./giving-fec-client-budget.js'));
 
+// Arm the single visible-language owner before giving-app hydrates dynamic review
+// state. Static defaults are normalized immediately and later app renders are
+// intercepted by the already-installed idempotent observers before paint.
+await import(observerUrl('./giving-visible-language.js'));
+
 // One versioned root owns the fictional fetch-wrapper stack. Internal relative
 // imports resolve to one stable module identity and are reused by later practice
 // surfaces instead of multiplying global wrappers/listeners.
@@ -91,7 +96,6 @@ await import(epochUrl('./giving-shared-access.js'));
 await import(epochUrl('./giving-search-controls.js'));
 await import(epochUrl('./giving-campaign-tools-v3.js'));
 await import(epochUrl('./giving-activity-contributor-handoff.js'));
-await import(observerUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(observerUrl('./giving-date-sort.js'));
 await import(practiceUrl('./giving-dossier-help.js'));
