@@ -16,7 +16,10 @@
       "Sandy Cheeks",
       "Eugene H. Krabs",
       "Squidward Q. Tentacles"
-    ]
+    ],
+    "prepared_political_object": "Larry Lobster for Mayor of Bikini Bottom",
+    "starter_political_object_count": 8,
+    "discoverable_candidate_history_objects": 2
   },
   "teaching_contrasts": [
     {
@@ -84,6 +87,12 @@
       "now": "A contributor cluster may repeatedly support some political objects while showing no observed transactions to another object in the available aperture.",
       "why": "Absence within an observed record set can become a useful comparison without becoming proof of hostility, opposition, or intent.",
       "exact": "Negative-space patterns may be surfaced as hypotheses for further retrieval, but absence may not be converted into a positive claim about motive or allegiance."
+    },
+    {
+      "contrast_id": "actor-continuity-versus-episode-continuity",
+      "now": "The same actor can recur across different races, committees, cycles, and transaction dates, while some cross-object dates coincide and others remain separated.",
+      "why": "Actor continuity and timing patterns help trace a history, but neither a repeated name nor co-temporality makes distinct political episodes equivalent.",
+      "exact": "Preserve actor identity, race or committee episode, cycle, and source date separately. Surface repeated or coincident patterns for review; never infer common control, transfer, coordination, causation, or episode equivalence automatically."
     }
   ],
   "expected_route_steps": [
