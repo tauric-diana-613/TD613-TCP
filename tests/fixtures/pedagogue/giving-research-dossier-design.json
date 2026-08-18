@@ -106,6 +106,26 @@
       "native_temporal_control": true,
       "placeholder_is_primary_visual": true
     },
+    "actions": [
+      {
+        "action_id": "new_research_file",
+        "label": "New",
+        "context_effect": "REPLACE_ACTIVE_CONTEXT",
+        "destination_reference": "Giving/Search"
+      },
+      {
+        "action_id": "save_research_file",
+        "label": "Save",
+        "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+        "destination_reference": null
+      },
+      {
+        "action_id": "open_selected_research_file",
+        "label": "Open selected file",
+        "context_effect": "RESTORE_ACTIVE_CONTEXT",
+        "destination_reference": "Giving/Search"
+      }
+    ],
     "constraints": {
       "implementation_this_round": false,
       "preserve_native_accessibility": true,
