@@ -181,8 +181,11 @@ async function assertTwelveStepGeometry(page) {
       help: help ? { x: help.x, width: help.width, left: help.left } : null,
       helpFont: help ? Number.parseFloat(getComputedStyle(document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')).fontSize) : null,
       exitFilter: exit ? getComputedStyle(exit).filter : '',
-      exitZ: exit ? Number.parseInt(getComputedStyle(exit).zIndex || '0', 10) : 0,
-      toastZ: toast ? Number.parseInt(getComputedStyle(toast).zIndex || '0', 10) : 0,
+      exitZ: exit ? getComputedStyle(exit).zIndex : null,
+      toastZ: toast ? getComputedStyle(toast).zIndex : null,
+      toastInlineZ: toast?.style?.zIndex || '',
+      toastPracticeLayer: toast?.dataset?.practiceNotificationLayer || '',
+      practiceState: document.documentElement.dataset.givingPractice || '',
       presetJustify: presets ? getComputedStyle(presets).justifyContent : ''
     };
   });
@@ -191,7 +194,67 @@ async function assertTwelveStepGeometry(page) {
   assert.ok(metrics.helpFont <= 10.5, 'Contributor research file info icon should remain deliberately small');
   assert.match(metrics.exitFilter, /drop-shadow/i, 'floating Exit Demo requires a visible halo outside its clipped button geometry');
   assert.equal(metrics.presetJustify, 'center', 'Quick start presets must remain centered');
-  assert.ok(metrics.toastZ > metrics.exitZ, 'retrieval notifications must be the unrelated floating layer above Exit Demo');
+  return metrics;
+}
+
+async function assertPracticeNotificationPaintOrder(page) {
+  const result = await page.evaluate(() => {
+    const stack = document.querySelector('#toastStack');
+    const exit = document.querySelector('#practiceFloatingExitButton');
+    if (!stack || !exit) return { pass: false, reason: 'missing-surface', stack: Boolean(stack), exit: Boolean(exit) };
+
+    const probe = document.createElement('div');
+    probe.className = 'toast';
+    probe.dataset.practicePaintProbe = 'true';
+    probe.textContent = 'FICTIONAL PRACTICE · retrieval notification paint probe';
+    stack.append(probe);
+
+    const stackStyle = getComputedStyle(stack);
+    const exitStyle = getComputedStyle(exit);
+    const probeRect = probe.getBoundingClientRect();
+    const exitRect = exit.getBoundingClientRect();
+    const left = Math.max(probeRect.left, exitRect.left);
+    const right = Math.min(probeRect.right, exitRect.right);
+    const top = Math.max(probeRect.top, exitRect.top);
+    const bottom = Math.min(probeRect.bottom, exitRect.bottom);
+    const overlap = right > left && bottom > top;
+    const point = overlap ? { x: (left + right) / 2, y: (top + bottom) / 2 } : null;
+    const hitChain = point
+      ? document.elementsFromPoint(point.x, point.y).map((node) => ({
+          id: node.id || '',
+          className: typeof node.className === 'string' ? node.className : '',
+          probe: node === probe || Boolean(node.closest?.('[data-practice-paint-probe="true"]')),
+          exit: node === exit || Boolean(node.closest?.('#practiceFloatingExitButton'))
+        }))
+      : [];
+    const topRelevant = hitChain.find((entry) => entry.probe || entry.exit) || null;
+    const payload = {
+      pass: overlap && topRelevant?.probe === true,
+      reason: overlap ? 'paint-order-observed' : 'no-natural-overlap',
+      practiceState: document.documentElement.dataset.givingPractice || '',
+      stackComputedZ: stackStyle.zIndex,
+      stackInlineZ: stack.style.zIndex || '',
+      stackPosition: stackStyle.position,
+      stackPracticeLayer: stack.dataset.practiceNotificationLayer || '',
+      exitComputedZ: exitStyle.zIndex,
+      exitInlineZ: exit.style.zIndex || '',
+      exitPosition: exitStyle.position,
+      probeRect: { left: probeRect.left, top: probeRect.top, right: probeRect.right, bottom: probeRect.bottom },
+      exitRect: { left: exitRect.left, top: exitRect.top, right: exitRect.right, bottom: exitRect.bottom },
+      overlap,
+      point,
+      topRelevant,
+      hitChain: hitChain.slice(0, 8)
+    };
+    probe.remove();
+    return payload;
+  });
+
+  assert.equal(result.practiceState, 'true', `paint-order probe must run inside the active demo: ${JSON.stringify(result)}`);
+  assert.equal(result.stackPracticeLayer, 'true', `practice bridge must bind the notification layer while demo is active: ${JSON.stringify(result)}`);
+  assert.ok(result.overlap, `the real toast surface must naturally overlap Exit Demo for the paint witness: ${JSON.stringify(result)}`);
+  assert.equal(result.pass, true, `retrieval notifications must paint above Exit Demo at their real overlap point: ${JSON.stringify(result)}`);
+  return result;
 }
 
 async function assertMobileSortRibbon(page) {
@@ -279,13 +342,14 @@ export async function witnessGivingPracticeFixture(page) {
     assert.equal(item.disabledChildren, true, `${item.selector} children must be functionally disabled`);
   }
 
-  await assertTwelveStepGeometry(page);
+  const geometry = await assertTwelveStepGeometry(page);
+  const notificationPaint = await assertPracticeNotificationPaintOrder(page);
+  assert.equal(notificationPaint.stackComputedZ || geometry.toastZ, notificationPaint.stackComputedZ || geometry.toastZ);
 
   const forbiddenIdentitySurface = await page.locator('#operatorShell').innerText();
   assert.doesNotMatch(forbiddenIdentitySurface, /\bIdentity (confirmed|confirmation|states|hints|matching)\b/, 'retired capital-I status grammar must not leak into Giving UI');
   assert.match(forbiddenIdentitySurface, /SEARCH HINTS/i);
 
-  // Filter guard must explain missing committee context rather than silently search.
   await page.locator('#committeeContextFilterToggle').check();
   await page.locator('#runSearchButton').click();
   const filterGuard = page.locator('#committeeFilterGuardDialog:not([hidden])');
@@ -295,7 +359,6 @@ export async function witnessGivingPracticeFixture(page) {
   await filterGuard.locator('[data-committee-filter-guard="uncheck"]').click();
   assert.equal((await snapshot(page)).filterChecked, false);
 
-  // Exactly three exit entry points, all converging on one centered dialog.
   await page.locator('#practiceExitButton').click();
   await dismissExitNo(page);
   await page.locator('#practiceFloatingExitButton').click();
@@ -306,7 +369,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
   await page.locator('[data-practice-exit="no"]').click();
 
-  // Candidate/committee lookup remains usable against exactly eight starter objects.
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
     timeout: 5000,
@@ -319,8 +381,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(directoryState.committeeLedgerText, /No attributed donor totals yet/);
   assert.doesNotMatch(directoryState.committeeLedgerText, /No identity-confirmed giving/i);
 
-  // Expenditure practice: every starter committee renders four receipts, while
-  // a static audit separately proves the two discoverable committees are covered.
   await page.locator('input[name="campaign-directory-activity"][value="EXPENDITURES"]').check();
   await pollUntil(async () => await page.locator('#campaignActivityResults .practice-expenditure-card').count() === 32, {
     timeout: 5000,
@@ -333,15 +393,12 @@ export async function witnessGivingPracticeFixture(page) {
   }
   await page.locator('input[name="campaign-directory-activity"][value="CONTRIBUTIONS"]').check();
 
-  // Exact starts ON but an explicit learner toggle remains honored.
   await page.locator('#exactMatchToggle').uncheck();
   assert.equal((await snapshot(page)).exactMatch, false);
   await page.locator('#exactMatchToggle').check();
 
-  // Speed only the witness; production practice keeps the authored 8–16 second search delay.
   await page.evaluate(() => { globalThis.__TD613_GIVING_PRACTICE_DELAY_MS__ = 25; });
 
-  // Loaded campaign/committee context is optional until explicitly bound.
   await searchPracticeDirectory(page, 'Larry Lobster for Mayor of Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
     timeout: 5000,
@@ -362,7 +419,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.doesNotMatch(filteredLarrySurface, /Board of Public Health, Soil & Water District 2/, 'loaded committee filter must remove the other Larry committee from this contributor retrieval');
   await page.locator('#committeeContextFilterToggle').uncheck();
 
-  // SpongeBob: ordinary cash records plus the in-kind catering lane.
   await page.locator('#searchName').fill('SpongeBob SquarePants');
   const afterSponge = await runPracticeSearch(page);
   assert.equal(afterSponge.searchName, 'SpongeBob SquarePants');
@@ -381,7 +437,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal((await page.locator('#reviewFilter option[value="CONFIRMED"]').textContent())?.trim(), 'Record attributed');
   assert.equal((await page.locator('#reviewFilter option[value="UNREVIEWED"]').textContent())?.trim(), 'Record unresolved');
 
-  // Prove the derived ledger wakes only after an explicit record-attribution gesture.
   await page.locator('#recordList [data-decision="CONFIRMED"]').first().click();
   await page.locator('.tab[data-view="ledger"]').click();
   await pollUntil(async () => await page.locator('#committeeLedger .committee-card').count() >= 1, {
@@ -393,7 +448,6 @@ export async function witnessGivingPracticeFixture(page) {
 
   await assertMobileSortRibbon(page);
 
-  // Starting route is now six research targets: SpongeBob + five queued contacts.
   await page.locator('#holdReviewButton').click();
   assert.equal((await snapshot(page)).demoCueVisible, true, 'demo Add contact cue must remain visible until queue hydration');
   await page.locator('#addContactQueueButton').click();
@@ -438,7 +492,6 @@ export async function witnessGivingPracticeFixture(page) {
     assert.match(queuedRecordSurface, new RegExp(escapeRegExp(committee)));
   }
 
-  // Match-cluster advisory must expose a direct reversible inspection route.
   await page.locator('.tab[data-view="review"]').click();
   await page.locator('#inspectClustersButton').waitFor({ state: 'visible', timeout: 5000 });
   assert.match((await page.locator('#inspectClustersButton').textContent()) || '', /Inspect suggested records/);
@@ -449,7 +502,6 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#inspectClustersButton').click();
   assert.equal(await page.locator('html').getAttribute('data-cluster-inspection'), 'false');
 
-  // Broad matching creates consequence: nearby names become visible only after the learner widens the aperture.
   await page.locator('#exactMatchToggle').uncheck();
   await page.locator('#searchName').fill('Sandy');
   const afterBroadSandy = await runPracticeSearch(page);
@@ -459,7 +511,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(sandySurface, /Sandra Cheeks/, 'broad Sandy search should expose declared alias/name-variant continuity somewhere in the paginated dossier');
   await page.locator('#exactMatchToggle').check();
 
-  // Referendum rabbit hole: committee -> unexpected donor -> prepared Individual Contributor.
   await searchPracticeDirectory(page, 'Krusty Krab Parking Expansion Referendum Committee');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
     timeout: 5000,
@@ -487,7 +538,6 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(barnacleSurface, /Barnacle Boy/, 'explicit Barnacle Boy search must add Barnacle Boy somewhere in the paginated dossier');
   assert.equal((await snapshot(page)).preparedRouteStarted, 'true', 'prepared route should change state only after explicit SEARCH');
 
-  // Plankton negative space: the Krabs trio is absent inside this fictional committee aperture.
   await searchPracticeDirectory(page, 'Sheldon Plankton for Bikini Bottom Campaign');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
     timeout: 5000,
@@ -497,7 +547,6 @@ export async function witnessGivingPracticeFixture(page) {
     assert.equal(await page.locator(`#committeeSearchWorkspaceList [data-practice-contributor="${name}"]`).count(), 0, `${name} must remain absent from the observed Plankton practice ledger`);
   }
 
-  // Larry is the separate transaction-class lane: large candidate self-financing appears as LOAN.
   await searchPracticeDirectory(page, 'Larry Lobster for Mayor of Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
     timeout: 5000,
@@ -518,7 +567,6 @@ export async function witnessGivingPracticeFixture(page) {
   const hydratedCount = afterLoanBadge.reviewCount;
   assert.ok(hydratedCount > 49);
 
-  // The richer dossier must still survive local custody and reopen at its actual dynamic size.
   await page.locator('#saveDossierButton').click();
   const savedOption = page.locator('#localDossierSelect option').filter({ hasText: 'SAMPLE — Bikini Bottom contributor review' }).first();
   await savedOption.waitFor({ state: 'attached', timeout: 5000 });
@@ -532,7 +580,6 @@ export async function witnessGivingPracticeFixture(page) {
   });
   assert.equal((await snapshot(page)).title, 'SAMPLE — Bikini Bottom contributor review');
 
-  // Vault handoff must snap to the top and keep practice custody in-browser.
   await page.locator('#researchFileVaultButton').click();
   await page.locator('#vaultPassphrase').fill('Bikini-Bottom-Practice-613-Key');
   const vaultRequests = [];
@@ -562,12 +609,19 @@ export async function witnessGivingPracticeFixture(page) {
   for (const item of afterExit.sleepingGeo) assert.equal(item.asleep, false, `${item.selector} must wake on confirmed exit`);
 
   return Object.freeze({
-    schema: 'td613.giving.practice-fixture-browser-witness/v0.6',
+    schema: 'td613.giving.practice-fixture-browser-witness/v0.7',
     fixture: 'giving.bikini-bottom-practice/v0.1',
     manifestly_fictional: true,
     exit_entry_points: 3,
     shared_centered_exit_dialog: true,
     notification_layer_above_floating_exit: true,
+    notification_paint_order_observed: true,
+    notification_layer_diagnostics: {
+      stack_computed_z: notificationPaint.stackComputedZ,
+      stack_inline_z: notificationPaint.stackInlineZ,
+      exit_computed_z: notificationPaint.exitComputedZ,
+      top_relevant: notificationPaint.topRelevant
+    },
     loud_exit_demo_halo_observed: true,
     research_file_help_collision_absent: true,
     quick_start_centered: true,
