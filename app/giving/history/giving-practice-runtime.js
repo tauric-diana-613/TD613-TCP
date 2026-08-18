@@ -3,6 +3,7 @@
 // dependency imports from the practice directory/committee graph hit the same
 // ESM cache entries instead of re-running global fetch wrappers or listeners.
 import './giving-practice-hydration.js';
+import './giving-practice-dialog-portal.js';
 import './giving-practice-search-noise.js';
 import './giving-practice-discovery-graph.js';
 import './giving-practice-referendum-cluster.js';
