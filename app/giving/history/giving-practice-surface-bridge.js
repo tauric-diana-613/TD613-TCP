@@ -39,15 +39,15 @@ function rememberExitReturnFocus(invoker) {
 function restoreExitReturnFocus() {
   const target = exitReturnFocus;
   exitReturnFocus = null;
-  const fallback = $('#runSearchButton');
+  const fallback = $('.ledger-tabs .tab.active') || $('#runSearchButton');
   const next = target?.isConnected ? target : fallback;
   next?.focus({ preventScroll: true });
 }
 
-function showPracticeExitConfirmation(invoker = document.activeElement) {
+function showPracticeExitConfirmation(invoker = document.activeElement, returnFocus = invoker) {
   const confirm = $('#practiceExitConfirm');
   if (!confirm) return false;
-  rememberExitReturnFocus(invoker);
+  rememberExitReturnFocus(returnFocus);
   confirm.hidden = false;
   confirm.querySelector('[data-practice-exit="no"]')?.focus();
   return true;
@@ -191,8 +191,7 @@ const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button'); if (!button) return;
 
-  // All three demo-exit gestures share one focus covenant. Capture the visible
-  // invoker before any target/bubble listener moves focus into the dialog.
+  // Source and floating Exit Demo return to their visible invokers.
   if (practiceActive() && button.matches('#practiceExitButton, #practiceFloatingExitButton')) {
     rememberExitReturnFocus(button);
   }
@@ -205,13 +204,14 @@ document.addEventListener('click', (event) => {
     return;
   }
 
-  // Exit route 3 of exactly 3: let the sleeping Campaign Deputy activation
-  // unwind before opening the one shared Exit Sample Demo membrane. Keyboard
-  // and pointer activation follow the same path without synthetic click chains.
+  // Campaign Deputy is an unavailable context switch during practice. If the
+  // operator cancels Exit Demo, return to the still-active tab rather than the
+  // sleeping tab that never became active.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    setTimeout(() => showPracticeExitConfirmation(button), 0);
+    const stableContext = $('.ledger-tabs .tab.active') || $('#runSearchButton');
+    setTimeout(() => showPracticeExitConfirmation(button, stableContext), 0);
     return;
   }
   if (!blockedCampaignActions.has(button.id)) return;
