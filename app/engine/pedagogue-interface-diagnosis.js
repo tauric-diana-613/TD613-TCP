@@ -1,5 +1,5 @@
 export const PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA = 'td613.pedagogue-interface-specimen/v0.1';
-export const PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA = 'td613.pedagogue-interface-diagnosis/v0.1';
+export const PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA = 'td613.pedagogue-interface-diagnosis/v0.2';
 
 function finite(value, fallback = null) {
   const number = Number(value);
@@ -14,6 +14,35 @@ function recommendation(code, now, why, exact, guardrails = []) {
   return Object.freeze({ code, now, why, exact, guardrails: Object.freeze([...guardrails]) });
 }
 
+function compileActionRouting(actions = []) {
+  return Object.freeze(actions.map((action) => {
+    const effect = String(action.context_effect || 'UNKNOWN').toUpperCase();
+    const destination = action.destination_reference || null;
+    const changesContext = effect === 'REPLACE_ACTIVE_CONTEXT' || effect === 'RESTORE_ACTIVE_CONTEXT';
+    const preservesContext = effect === 'PRESERVE_ACTIVE_CONTEXT';
+    const recommendedRoute = changesContext && destination
+      ? 'NAVIGATE_AFTER_WORLD_ANSWER'
+      : preservesContext
+        ? 'STAY_IN_PLACE_AFTER_WORLD_ANSWER'
+        : 'NO_AUTOMATIC_ROUTE_INFERRED';
+
+    return Object.freeze({
+      action_id: action.action_id,
+      label: action.label || action.action_id,
+      context_effect: effect,
+      destination_reference: destination,
+      recommended_route: recommendedRoute,
+      rationale: changesContext
+        ? 'The active working context changed. Return the operator to the declared entry surface after the consequence becomes visible.'
+        : preservesContext
+          ? 'The active working context remained the same. Forced navigation would add route burden without exposing a new consequence.'
+          : 'The specimen does not establish enough context change to justify automatic navigation.',
+      automatic_action_forbidden: true,
+      human_gesture_remains_origin: true
+    });
+  }));
+}
+
 export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
   if (specimen.schema !== PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA) {
     throw new Error(`Expected ${PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA}.`);
@@ -26,6 +55,7 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
   const constraints = specimen.constraints || {};
   const findings = [];
   const recommendations = [];
+  const actionRouting = compileActionRouting(Array.isArray(specimen.actions) ? specimen.actions : []);
 
   if (observed.shared_control_rule === true) {
     findings.push(finding(
@@ -136,6 +166,7 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
     specimen_kind: specimen.specimen_kind || 'INTERFACE_FIELD_SYSTEM',
     findings: Object.freeze(findings),
     recommendations: Object.freeze(recommendations),
+    action_routing: actionRouting,
     synthesis: {
       primary_break: findings.some((item) => item.code === 'TYPOGRAPHIC_ROLE_UNDECLARED')
         ? 'The strongest discontinuity comes from an undeclared data-entry typography/role system, not from the surrounding TD613 panel design.'
@@ -146,7 +177,7 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
       human_closure_required: true
     },
     pedagogue_hydration: {
-      capability: 'INTERFACE_CONTINUITY_DIAGNOSIS',
+      capability: 'INTERFACE_CONTINUITY_AND_ACTION_ROUTE_DIAGNOSIS',
       generic_operator_added: true,
       source_surface_is_specimen_not_owner: true,
       product_mutation_authority: false,
@@ -162,3 +193,5 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
   };
   return Object.freeze(diagnosis);
 }
+
+export const _pedagogueInterfaceDiagnosisInternals = Object.freeze({ compileActionRouting });
