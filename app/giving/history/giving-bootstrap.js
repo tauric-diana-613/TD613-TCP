@@ -56,6 +56,7 @@ await import(repairUrl('./giving-review-paging.js'));
 await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
+await import(epochUrl('./giving-contributor-handoff.js'));
 
 // Practice search wrappers must be installed before GivingApiClient captures
 // globalThis.fetch. Each layer remains inside the fictional source aperture.
@@ -71,6 +72,7 @@ await import(practiceUrl('./giving-practice-directory.js'));
 await import(epochUrl('./giving-shared-access.js'));
 await import(epochUrl('./giving-search-controls.js'));
 await import(epochUrl('./giving-campaign-tools-v3.js'));
+await import(epochUrl('./giving-activity-contributor-handoff.js'));
 await import(epochUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(epochUrl('./giving-date-sort.js'));
