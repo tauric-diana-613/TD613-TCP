@@ -349,7 +349,7 @@ export async function witnessGivingPracticeFixture(page) {
   await savedOption.waitFor({ state: 'attached', timeout: 5000 });
   const savedValue = await savedOption.getAttribute('value');
   assert.ok(savedValue, 'saved fictional dossier option needs a value');
-  await page.locator('#localDossierSelect').selectOption(savedValue);
+  await page.locator('#localDossierSelect').selectOption(savedValue, { force: true });
   await page.locator('#openDossierButton').click();
   await pollUntil(async () => Number(await page.locator('#reviewCount').textContent() || 0) === hydratedCount, {
     timeout: 5000,
