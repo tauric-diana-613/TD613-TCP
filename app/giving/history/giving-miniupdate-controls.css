@@ -54,7 +54,7 @@
    toolbar and Loaded Campaign / Committee context without changing button size. */
 #view-review .review-hold-button {
   position: relative;
-  top: -2px;
+  top: -4px;
 }
 
 /* Desktop remains a true column header, so its rules stay registered to the
