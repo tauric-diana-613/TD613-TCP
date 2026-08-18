@@ -1,4 +1,5 @@
-import { _givingPracticeDiscoveryGraph } from './giving-practice-discovery-graph.js';
+import { _givingPracticeCommitteeGraph } from './giving-practice-committee-graph.js';
+import { prepareContributorSearch } from './giving-contributor-handoff.js';
 
 const PRACTICE_OBJECTS = Object.freeze([
   { id: 'BBV-C001', name: 'King Neptune for King', kind: 'Candidate committee', candidate: 'King Neptune', office: 'King of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
@@ -46,24 +47,32 @@ function money(cents) {
 }
 
 function contributorTrail(item, { expanded = false } = {}) {
-  const contributors = _givingPracticeDiscoveryGraph.contributorsForCommittee(item.name);
+  const contributors = _givingPracticeCommitteeGraph.contributorsForCommittee(item.name);
   if (!contributors.length) return '';
   const visible = expanded ? contributors : contributors.slice(0, 4);
   const remainder = contributors.length - visible.length;
   return `<div class="practice-contributor-trail" data-practice-committee-trail="${escapeHtml(item.id)}">
     <small>Practice contributor trail · click a name to prepare Individual Contributor</small>
     <div class="practice-contributor-trail-list">
-      ${visible.map((entry) => `<button type="button" class="practice-contributor-breadcrumb" data-practice-contributor="${escapeHtml(entry.name)}" title="${escapeHtml(`${entry.record_count} fictional contribution${entry.record_count === 1 ? '' : 's'} · ${money(entry.total_cents)}`)}">${escapeHtml(entry.name)} <em>${entry.record_count}</em></button>`).join('')}
+      ${visible.map((entry) => {
+        const classes = [...entry.transaction_classes, ...entry.data_classes].filter(Boolean).join(' · ');
+        const anomaly = entry.compliance_anomaly_count ? ` · ${entry.compliance_anomaly_count} compliance anomaly` : '';
+        return `<button type="button" class="practice-contributor-breadcrumb" data-practice-contributor="${escapeHtml(entry.name)}" title="${escapeHtml(`${entry.record_count} fictional contribution${entry.record_count === 1 ? '' : 's'} · ${money(entry.total_cents)}${classes ? ` · ${classes}` : ''}${anomaly}`)}">${escapeHtml(entry.name)} <em>${entry.record_count}</em></button>`;
+      }).join('')}
       ${remainder > 0 ? `<span class="practice-contributor-more">+${remainder} more · search this committee to open the full trail</span>` : ''}
     </div>
   </div>`;
 }
 
 function objectCard(item, options = {}) {
+  const totals = _givingPracticeCommitteeGraph.totalsForCommittee(item.name);
+  const classNote = totals.transaction_classes.length ? ` · ${totals.transaction_classes.join(' / ')}` : '';
+  const anomalyNote = totals.compliance_anomaly_count ? ` · ${totals.compliance_anomaly_count} review anomaly` : '';
   return `<article class="practice-directory-card" data-practice-object="${escapeHtml(item.id)}">
     <div>${practiceChip()}<strong>${escapeHtml(item.name)}</strong></div>
     <small>${escapeHtml(item.id)} · ${escapeHtml(item.kind)} · Bikini Bottom, Oceania</small>
     ${item.candidate ? `<span>Candidate: ${escapeHtml(item.candidate)}${item.office ? ` · ${escapeHtml(item.office)}` : ''}</span>` : `<span>${escapeHtml(item.office || item.committee_kind.replaceAll('_', ' '))}</span>`}
+    <span class="practice-directory-ledger-summary">${totals.record_count} fictional record${totals.record_count === 1 ? '' : 's'} · ${totals.contributor_count} contributor${totals.contributor_count === 1 ? '' : 's'} · ${money(totals.total_cents)}${escapeHtml(classNote)}${escapeHtml(anomalyNote)}</span>
     ${contributorTrail(item, options)}
   </article>`;
 }
@@ -111,21 +120,16 @@ function interceptPracticeDirectory(event) {
 }
 
 function prepareContributorFromTrail(name) {
-  const input = $('#searchName');
-  if (!input) return;
-  input.value = name;
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-  const panel = input.closest('.search-control') || $('#searchForm');
-  panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  input.focus({ preventScroll: true });
-  const status = $('#campaignToolsStatus');
-  if (status) {
-    status.dataset.kind = 'info';
-    status.textContent = `${name} is prepared in Individual Contributor. Press SEARCH to follow the fictional contribution trail; no retrieval ran from this breadcrumb.`;
-  }
+  const prepared = prepareContributorSearch(name, {
+    from: 'practice-candidate-committee-lookup',
+    through: 'practice-contributor-breadcrumb',
+    statusSelector: '#campaignToolsStatus'
+  });
+  if (!prepared) return false;
   document.dispatchEvent(new CustomEvent('td613:giving-practice-discovery-route', {
     detail: { from: 'candidate-committee-lookup', through: 'contributor-breadcrumb', prepared_contributor: name, retrieval_started: false }
   }));
+  return true;
 }
 
 function rememberDisabled(input) {
