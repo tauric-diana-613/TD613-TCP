@@ -23,6 +23,12 @@ const declaration = {
     principal_name: 'Fictional Person',
     queue: ['Fictional Neighbor']
   },
+  teaching_contrasts: [{
+    contrast_id: 'same-route-different-object',
+    now: 'Two practice objects may travel through the same route.',
+    why: 'A shared route does not make the objects equivalent.',
+    exact: 'Pedagogue preserves the declared distinction without inferring a category or granting authority.'
+  }],
   expected_route_steps: [
     'load fictional container',
     'review practice route',
@@ -47,9 +53,20 @@ assert.equal(fixture.authority.human_closure_required, true);
 assert.equal(fixture.research_claim_ceiling.transport_law_claim, false);
 assert.equal(fixture.research_claim_ceiling.curvature_claim, false);
 assert.equal(fixture.research_claim_ceiling.geometric_holonomy_claim, false);
+assert.equal(fixture.teaching_contrasts.length, 1);
+assert.equal(fixture.teaching_contrasts[0].automatic_inference_forbidden, true);
+assert.equal(fixture.teaching_contrasts[0].authority_grant_forbidden, true);
+assert.equal(review.practice_gate.teaching_contrasts_bounded, true);
 assert.equal(review.practice_gate.route_memory_explicit, true);
 assert.equal(review.practice_gate.aia_authority_closed, true);
 assert.equal(review.practice_gate.geometric_claims_held, true);
+assert.throws(
+  () => compileCanonicalPracticeFixture({
+    ...declaration,
+    teaching_contrasts: [{ contrast_id: 'unbounded', now: '', why: 'missing NOW', exact: 'held' }]
+  }),
+  /bounded non-empty string/i
+);
 
 const zeroEffects = Object.freeze({
   evidence_records: 0,
@@ -64,6 +81,7 @@ const loadReport = verifyPracticeFixtureLoad(fixture, {
   after: zeroEffects
 });
 assert.equal(loadReport.no_effects, true);
+assert.equal(loadReport.teaching_contrasts.length, 1);
 assert.deepEqual(loadReport.deltas, {
   evidence_records: 0,
   retrieval_requests: 0,
@@ -104,6 +122,7 @@ const exactTraversal = comparePracticeFixtureTraversal(
 assert.equal(exactTraversal.exact_route_reconstruction, true);
 assert.equal(exactTraversal.route_reconstruction_error_millipoints, 0);
 assert.equal(exactTraversal.authority_closed, true);
+assert.equal(exactTraversal.teaching_contrasts.length, 1);
 assert.equal(exactTraversal.research_claim_ceiling.geometric_holonomy_claim, false);
 
 assert.throws(
@@ -187,8 +206,8 @@ try {
 // dependency, not a late member of the asynchronous product graph. This pins
 // the causal boundary exposed by production release run 603.
 const givingBootstrap = fs.readFileSync('app/giving/history/giving-bootstrap.js', 'utf8');
-const resilienceStaticImport = givingBootstrap.indexOf("import './giving-ux-resilience-shell.js?v=20260816-4';");
-const productGraphStart = givingBootstrap.indexOf("await fetch(epochUrl('./giving-model.js')");
+const resilienceStaticImport = givingBootstrap.indexOf("import './giving-ux-resilience-shell.js?v=20260817-2';");
+const productGraphStart = givingBootstrap.indexOf("fetch(sourceUrl('./giving-model.js')");
 assert.ok(resilienceStaticImport >= 0, 'Giving bootstrap must declare the resilience shell as a static module dependency');
 assert.ok(productGraphStart > resilienceStaticImport, 'resilience shell must evaluate before the asynchronous Giving product graph begins');
 assert.doesNotMatch(
@@ -214,4 +233,4 @@ assert.doesNotMatch(
   'resilience-owned Committee controls must never be reparented by the export adapter'
 );
 
-console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, zero-effect load, route residue, closed authority, independent Giving provenance, production shell ordering, and export-toolbar ownership.');
+console.log('pedagogue-practice-fixture.test.mjs passed: release-smoke contract preserves fiction, bounded teaching contrasts, zero-effect load, route residue, closed authority, independent Giving provenance, production shell ordering, and export-toolbar ownership.');

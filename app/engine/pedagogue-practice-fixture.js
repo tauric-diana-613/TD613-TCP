@@ -85,6 +85,27 @@ function normalizeRouteSteps(steps) {
   ));
 }
 
+// A practice case may teach a contrast without teaching a conclusion. The
+// primitive is intentionally semantic-light: products supply bounded NOW / WHY /
+// EXACT language while Pedagogue preserves the distinction, forbids inference,
+// and carries it through review/traversal. Product nouns never enter shared core.
+function normalizeTeachingContrasts(value) {
+  if (value === undefined || value === null) return [];
+  if (!Array.isArray(value)) throw new TypeError('teaching_contrasts must be an array when declared.');
+  if (value.length > 12) throw new TypeError('teaching_contrasts may contain at most 12 bounded contrasts.');
+  return value.map((item, index) => {
+    const source = ensureObject(item, `teaching_contrasts[${index}]`);
+    return {
+      contrast_id: text(source.contrast_id || source.id, `teaching_contrasts[${index}].contrast_id`, 96),
+      now: text(source.now, `teaching_contrasts[${index}].now`, 360),
+      why: text(source.why, `teaching_contrasts[${index}].why`, 360),
+      exact: text(source.exact, `teaching_contrasts[${index}].exact`, 420),
+      automatic_inference_forbidden: true,
+      authority_grant_forbidden: true
+    };
+  });
+}
+
 function nonNegativeInteger(value, label) {
   if (!Number.isSafeInteger(value) || value < 0) throw new TypeError(`${label} must be a non-negative safe integer.`);
   return value;
@@ -153,6 +174,7 @@ export function compileCanonicalPracticeFixture(declaration = {}) {
   canonicalJson(fictionalPayload);
 
   const expectedRouteSteps = normalizeRouteSteps(declaration.expected_route_steps);
+  const teachingContrasts = normalizeTeachingContrasts(declaration.teaching_contrasts);
   const expectedEndpoint = text(declaration.expected_endpoint || expectedRouteSteps.at(-1), 'expected_endpoint');
   const surfaceReference = text(declaration.surface_reference, 'surface_reference');
   const authority = practiceAuthority(declaration);
@@ -188,6 +210,7 @@ export function compileCanonicalPracticeFixture(declaration = {}) {
     manifestly_fictional: true,
     runtime_binding_declared: declaration.runtime_binding === true,
     fictional_payload: fictionalPayload,
+    teaching_contrasts: teachingContrasts,
     expected_route_steps: expectedRouteSteps,
     expected_endpoint: expectedEndpoint,
     expected_route_memory: expectedRouteMemory,
@@ -208,7 +231,8 @@ export function compileCanonicalPracticeFixture(declaration = {}) {
       practice_custody_write_allowed: authority.practice_custody_write_authority,
       domain_mutation_forbidden: true,
       evidence_claim_authority_forbidden: true,
-      practice_marker_must_survive: true
+      practice_marker_must_survive: true,
+      teaching_contrasts_may_not_infer_category: true
     },
     authority,
     aia_binding: aiaBinding,
@@ -234,6 +258,7 @@ export function compilePedagoguePracticeReview(declaration = {}) {
     fixture_id: fixture.fixture_id,
     surface_reference: fixture.surface_reference,
     fixture,
+    teaching_contrasts: clone(fixture.teaching_contrasts),
     expected_route_memory: fixture.expected_route_memory,
     aia_surface_binding: fixture.aia_binding,
     practice_gate: {
@@ -247,6 +272,7 @@ export function compilePedagoguePracticeReview(declaration = {}) {
       consequence_authority_closed: fixture.authority.consequence_authority === false,
       aia_authority_closed: fixture.aia_binding.authority.authority_may_cross === false,
       route_memory_explicit: routeMemoryIsExplicit(fixture.expected_route_memory),
+      teaching_contrasts_bounded: fixture.teaching_contrasts.length <= 12 && fixture.teaching_contrasts.every((item) => item.automatic_inference_forbidden === true && item.authority_grant_forbidden === true),
       geometric_claims_held: fixture.research_claim_ceiling.geometric_holonomy_claim === false && fixture.research_claim_ceiling.transport_law_claim === false,
       human_closure_required: fixture.authority.human_closure_required === true
     }
@@ -269,6 +295,7 @@ export function verifyPracticeFixtureLoad(fixture, { before, after } = {}) {
     before: baseline,
     after: observed,
     deltas,
+    teaching_contrasts: clone(fixture.teaching_contrasts || []),
     child_legible: {
       now: 'The fictional practice case is loaded.',
       why: 'Loading the sample changes labels only; it does not search, write, or create evidence.',
@@ -317,6 +344,7 @@ export function comparePracticeFixtureTraversal(fixture, observedRoute, {
     endpoint_equivalent: comparison.endpoint_equivalent,
     observed_effects: effects,
     authority_closed: true,
+    teaching_contrasts: clone(fixture.teaching_contrasts || []),
     tomography_posture: comparison.exact_route_match
       ? 'CALIBRATION_ROUTE_RECONSTRUCTED'
       : 'CALIBRATION_ROUTE_DIVERGED',

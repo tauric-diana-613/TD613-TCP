@@ -16,11 +16,89 @@
       "Sandy Cheeks",
       "Eugene H. Krabs",
       "Squidward Q. Tentacles"
-    ]
+    ],
+    "prepared_political_object": "Larry Lobster for Mayor of Bikini Bottom",
+    "starter_political_object_count": 8,
+    "discoverable_candidate_history_objects": 2
   },
+  "teaching_contrasts": [
+    {
+      "contrast_id": "political-object-kind",
+      "now": "One retrieval route can contain transactions involving candidate committees, PAC-style objects, party-style objects, and issue or referendum objects.",
+      "why": "Sharing a route does not make the political objects equivalent.",
+      "exact": "Route membership may support comparison, but it may not silently infer object kind, candidate status, office, or authority."
+    },
+    {
+      "contrast_id": "practice-aperture-versus-live-jurisdiction",
+      "now": "A bounded practice source can narrow geography while live jurisdiction selectors remain unavailable.",
+      "why": "A simulated retrieval aperture must not appear combinable with live custodians or imply those custodians were queried.",
+      "exact": "Practice may narrow the aperture to a declared fictional jurisdiction, but live geography remains inert until exit and no live source may be consulted from that route."
+    },
+    {
+      "contrast_id": "identity-continuity-versus-field-drift",
+      "now": "One contributor may appear with a formal or familiar name, a missing middle initial, or more than one legitimate address while remaining one review candidate.",
+      "why": "Identity continuity can survive surface-field variation, but similarity alone cannot close identity.",
+      "exact": "Declared alias and compatible-middle evidence may support one candidate cluster; address, employer, and name variation remain visible and human closure remains required."
+    },
+    {
+      "contrast_id": "shared-field-versus-shared-identity",
+      "now": "Different contributors may share an address, employer, city, state, or postal field.",
+      "why": "A corroborating field can strengthen a comparison without becoming an identity key.",
+      "exact": "Shared fields may raise candidate similarity but may never automatically merge contributors or erase contradictory identity evidence."
+    },
+    {
+      "contrast_id": "revision-chain-versus-duplicate-row",
+      "now": "Two filing rows can describe successive versions of one underlying transaction rather than two independent transactions.",
+      "why": "Naive summation and naive deduplication can both destroy filing history.",
+      "exact": "A declared revision relationship must remain visible until an operator decides how the transaction should be interpreted; revision order cannot be silently flattened."
+    },
+    {
+      "contrast_id": "same-name-different-route-role",
+      "now": "The same name can appear as a contributor identity and as part of a candidate or committee identity.",
+      "why": "Lexical identity does not collapse donor role into political-object role.",
+      "exact": "Route role remains first-class: contributor, candidate, committee, organization, and filer projections may share names while remaining non-equivalent objects."
+    },
+    {
+      "contrast_id": "prepared-handoff-versus-automatic-retrieval",
+      "now": "A discovered name can be carried into another search surface without starting that search.",
+      "why": "Preserving discovery context should reduce operator burden without stealing the next retrieval gesture.",
+      "exact": "A handoff may prepare a query and preserve route provenance, but it may not alter search semantics or begin retrieval until the operator explicitly acts."
+    },
+    {
+      "contrast_id": "episodic-convergence-versus-longitudinal-divergence",
+      "now": "Otherwise different contributor histories can suddenly converge on the same dates, political objects, and unusually large transaction magnitudes.",
+      "why": "An episodic pattern can become investigatively salient precisely because the longer histories remain distinct.",
+      "exact": "Repeated co-temporality and magnitude spikes may be surfaced as patterns for review, but coordination, common control, common identity, or causation may not be inferred automatically."
+    },
+    {
+      "contrast_id": "transaction-class-versus-cash-default",
+      "now": "Most contribution records can remain visually quiet while a small minority carry a meaningful transaction class such as loan or in-kind.",
+      "why": "A sparse but consequential source field should become visible when it changes how a transaction must be interpreted.",
+      "exact": "Transaction class may be promoted from source semantics without discarding the original source type; ordinary cash records remain unbadged."
+    },
+    {
+      "contrast_id": "preserve-anomaly-versus-auto-repair",
+      "now": "A source-observed value can conflict with an expected limit or rule.",
+      "why": "Automatically repairing the value can erase the exact anomaly that deserves review.",
+      "exact": "When a declared practice anomaly is present, preserve the observed value, surface the review condition, and forbid silent normalization from converting the record into a compliant one."
+    },
+    {
+      "contrast_id": "negative-space-versus-opposition-inference",
+      "now": "A contributor cluster may repeatedly support some political objects while showing no observed transactions to another object in the available aperture.",
+      "why": "Absence within an observed record set can become a useful comparison without becoming proof of hostility, opposition, or intent.",
+      "exact": "Negative-space patterns may be surfaced as hypotheses for further retrieval, but absence may not be converted into a positive claim about motive or allegiance."
+    },
+    {
+      "contrast_id": "actor-continuity-versus-episode-continuity",
+      "now": "The same actor can recur across different races, committees, cycles, and transaction dates, while some cross-object dates coincide and others remain separated.",
+      "why": "Actor continuity and timing patterns help trace a history, but neither a repeated name nor co-temporality makes distinct political episodes equivalent.",
+      "exact": "Preserve actor identity, race or committee episode, cycle, and source date separately. Surface repeated or coincident patterns for review; never infer common control, transfer, coordination, causation, or episode equivalence automatically."
+    }
+  ],
   "expected_route_steps": [
     "load-practice-container",
     "search-and-review",
+    "follow-discovery-route",
     "save-working-file",
     "encrypt-vault-copy"
   ],

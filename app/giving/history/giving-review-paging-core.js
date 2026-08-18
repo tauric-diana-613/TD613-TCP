@@ -69,6 +69,11 @@ function pageNumbers(totalPages, page) {
   return [...set].sort((a, b) => a - b);
 }
 
+function paginationSignature() {
+  const totalPages = Math.max(1, Math.ceil(currentTotal / PAGE_SIZE));
+  return `${currentTotal}:${currentPage}:${totalPages}`;
+}
+
 function paginationMarkup() {
   const totalPages = Math.max(1, Math.ceil(currentTotal / PAGE_SIZE));
   if (totalPages <= 1) return '';
@@ -78,7 +83,7 @@ function paginationMarkup() {
     previous = page;
     return `${gap}<button class="review-page-number" type="button" data-review-page="${page}" ${page === currentPage ? 'aria-current="page"' : ''}>${page}</button>`;
   }).join('');
-  return `<nav class="review-pagination" aria-label="Contribution pages">
+  return `<nav class="review-pagination" data-pagination-signature="${paginationSignature()}" aria-label="Contribution pages">
     <button class="review-page-arrow" type="button" data-review-page="${Math.max(1, currentPage - 1)}" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous contribution page">‹</button>
     ${numbers}
     <button class="review-page-arrow" type="button" data-review-page="${Math.min(totalPages, currentPage + 1)}" ${currentPage === totalPages ? 'disabled' : ''} aria-label="Next contribution page">›</button>
@@ -97,9 +102,20 @@ function decoratePaging() {
   const list = document.getElementById('recordList');
   if (!list) return;
   list.querySelector(':scope > .coverage-warning')?.remove();
-  list.querySelector(':scope > .review-pagination')?.remove();
+  const existing = list.querySelector(':scope > .review-pagination');
   const markup = paginationMarkup();
-  if (markup) list.insertAdjacentHTML('beforeend', markup);
+  if (!markup) {
+    existing?.remove();
+  } else {
+    const signature = paginationSignature();
+    // recordList is childList-observed by this module. Replacing an equivalent
+    // pagination nav would recursively wake the observer forever once the dossier
+    // exceeds one page. Mutate only when pagination state actually changes.
+    if (existing?.dataset.paginationSignature !== signature) {
+      if (existing) existing.outerHTML = markup;
+      else list.insertAdjacentHTML('beforeend', markup);
+    }
+  }
   renderDateButton();
 }
 
@@ -114,11 +130,19 @@ function queueDecorate() {
 
 function requestReviewRender() {
   const field = document.getElementById('reviewSearch');
-  if (field) field.dispatchEvent(new Event('input', { bubbles: true }));
+  if (field) field.dispatchEvent(new CustomEvent('input', {
+    bubbles: true,
+    detail: { td613ReviewPagingInternal: true }
+  }));
 }
 
 function resetPage() {
   currentPage = 1;
+}
+
+function resetPageForReviewInput(event) {
+  if (event instanceof CustomEvent && event.detail?.td613ReviewPagingInternal === true) return;
+  resetPage();
 }
 
 document.addEventListener('click', (event) => {
@@ -158,7 +182,8 @@ for (const [id, eventName] of [
   ['reviewSearch', 'input'],
   ['searchForm', 'submit']
 ]) {
-  document.getElementById(id)?.addEventListener(eventName, resetPage, true);
+  const handler = id === 'reviewSearch' ? resetPageForReviewInput : resetPage;
+  document.getElementById(id)?.addEventListener(eventName, handler, true);
 }
 
 const list = document.getElementById('recordList');
