@@ -13,6 +13,7 @@ import './giving-practice-local-campaign-rules.js';
 import './giving-practice-data-reconciliation.js';
 import './giving-practice-krabs-cheapskate.js';
 import './giving-practice-local-alignment.js';
+import './giving-practice-campaign-history.js';
 
 export const GIVING_PRACTICE_RUNTIME_SCHEMA = 'td613.giving.practice-runtime/v0.1';
 
