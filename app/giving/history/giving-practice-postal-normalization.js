@@ -12,7 +12,17 @@ export function practiceStreetAddress(value) {
     .trim();
 }
 
-export function normalizePracticePostalRecord(record = {}) {
+export function practiceContributionType(value, record = {}) {
+  const text = String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
+  const transactionClass = String(record?.transaction_class ?? '').toLocaleUpperCase('en-US');
+  const upper = text.toLocaleUpperCase('en-US');
+  if (transactionClass === 'IN-KIND' || /\bIN[-\s]?KIND\b/.test(upper)) return 'IN-KIND';
+  if (transactionClass === 'LOAN' || /\bLOAN\b/.test(upper)) return 'LOAN';
+  if (/^FICTIONAL\b/.test(upper)) return 'CONTRIBUTION';
+  return text;
+}
+
+export function normalizePracticeEvidenceRecord(record = {}) {
   const practice = record?.source_instance_id === PRACTICE_SOURCE_ID ||
     record?.source_family === 'FICTIONAL_PRACTICE' ||
     record?.evidence_status === 'FICTIONAL_SAMPLE' ||
@@ -27,6 +37,7 @@ export function normalizePracticePostalRecord(record = {}) {
   };
   if ('address' in next) next.address = practiceStreetAddress(next.address);
   if ('address_line_1' in next) next.address_line_1 = practiceStreetAddress(next.address_line_1);
+  if ('contribution_type' in next) next.contribution_type = practiceContributionType(next.contribution_type, next);
   return next;
 }
 
@@ -56,7 +67,7 @@ globalThis.fetch = async (input, init = {}) => {
   const page = body?.data?.page;
   if (!page || !Array.isArray(page.records)) return result;
 
-  const records = page.records.map(normalizePracticePostalRecord);
+  const records = page.records.map(normalizePracticeEvidenceRecord);
   return responseFrom(result, {
     ...body,
     data: {
@@ -64,13 +75,15 @@ globalThis.fetch = async (input, init = {}) => {
       page: {
         ...page,
         records,
-        practice_postal_schema: `${PRACTICE_POSTAL.city}, ${PRACTICE_POSTAL.state} ${PRACTICE_POSTAL.zip}`
+        practice_postal_schema: `${PRACTICE_POSTAL.city}, ${PRACTICE_POSTAL.state} ${PRACTICE_POSTAL.zip}`,
+        practice_evidence_fields_show_not_tell: true
       }
     },
     receipt: {
       ...(body.receipt || {}),
       practice_postal_normalized: true,
-      practice_zip_numeric: true
+      practice_zip_numeric: true,
+      practice_narrative_type_labels_removed: true
     }
   });
 };
@@ -79,5 +92,6 @@ export const _givingPracticePostalNormalization = Object.freeze({
   PRACTICE_SOURCE_ID,
   PRACTICE_POSTAL,
   practiceStreetAddress,
-  normalizePracticePostalRecord
+  practiceContributionType,
+  normalizePracticeEvidenceRecord
 });
