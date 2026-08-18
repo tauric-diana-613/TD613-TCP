@@ -1,0 +1,229 @@
+/* TD613 Giving miniupdate · 2026-08-18
+   Deliberately leaves the general text-field aesthetic unchanged this round.
+   Pedagogue diagnoses that field system separately; this stylesheet only repairs
+   the requested geometry, custody affordances, demo chrome, and tooltip legibility. */
+
+.research-file-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  margin-bottom: 6px;
+}
+.research-file-title-row > span {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+.research-file-title-row .dossier-actions {
+  flex: 0 0 auto;
+  min-height: 24px;
+  margin: 0;
+}
+
+.dossier-external-label {
+  position: relative;
+  z-index: 19;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+.dossier-external-label + .dossier-single-picker.giving-state-filter { margin-top: 0; }
+.dossier-single-picker > summary > strong {
+  max-width: calc(100% - 20px);
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.research-dossier-heading-line {
+  display: inline-grid;
+  grid-template-columns: max-content 16px;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  gap: 5px;
+}
+.research-dossier-heading-line > h2 { min-width: 0; white-space: nowrap; }
+.research-dossier-help-popup {
+  width: min(290px, calc(100vw - 24px));
+  padding: 10px 11px;
+  font-size: 9px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.readiness-tooltip {
+  width: min(280px, 76vw);
+  padding: 8px 9px;
+  font-size: 8px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.load-fictional-demo-button {
+  position: relative;
+  z-index: 1;
+  padding: 4px 7px !important;
+  border: 1px solid rgba(236, 80, 194, .76) !important;
+  color: #ffd0ef !important;
+  background: rgba(236, 80, 194, .10) !important;
+  box-shadow:
+    0 0 0 1px rgba(236, 80, 194, .08),
+    0 0 13px rgba(236, 80, 194, .34),
+    0 0 28px rgba(236, 80, 194, .16);
+  text-shadow: 0 0 10px rgba(255, 208, 239, .20);
+}
+.load-fictional-demo-button:hover,
+.load-fictional-demo-button:focus-visible {
+  border-color: rgba(255, 142, 225, .94) !important;
+  background: rgba(236, 80, 194, .17) !important;
+  box-shadow: 0 0 16px rgba(236, 80, 194, .48), 0 0 34px rgba(236, 80, 194, .22);
+}
+
+.giving-demo-clear-confirm {
+  position: fixed;
+  z-index: 2147483002;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: min(340px, calc(100vw - 30px));
+  gap: 10px;
+  padding: 17px 18px;
+  border: 1px solid rgba(236, 80, 194, .62);
+  transform: translate(-50%, -50%);
+  color: var(--text);
+  background: rgba(5, 10, 12, .992);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .64), 0 0 32px rgba(236, 80, 194, .12);
+}
+.giving-demo-clear-confirm[hidden] { display: none !important; }
+.giving-demo-clear-confirm strong { color: #ffd0ef; font-size: 13px; }
+.giving-demo-clear-confirm small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.giving-demo-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 2px;
+}
+.giving-demo-confirm-actions button {
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  cursor: pointer;
+  color: var(--text);
+  background: rgba(255, 255, 255, .035);
+  font: 750 8px/1 var(--mono);
+  text-transform: uppercase;
+}
+.giving-demo-confirm-actions button[data-demo-clear="yes"] {
+  border-color: rgba(236, 80, 194, .54);
+  color: #ffd0ef;
+  background: rgba(236, 80, 194, .09);
+}
+
+.practice-floating-exit {
+  right: max(28px, calc(env(safe-area-inset-right) + 18px));
+  bottom: max(28px, calc(env(safe-area-inset-bottom) + 18px));
+  border-color: rgba(236, 80, 194, .76);
+  color: #ffd0ef;
+  background: rgba(34, 8, 29, .94);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .42), 0 0 18px rgba(236, 80, 194, .28);
+}
+.practice-floating-exit:hover,
+.practice-floating-exit:focus-visible {
+  outline-color: rgba(255, 142, 225, .88);
+  background: rgba(55, 10, 45, .98);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .45), 0 0 24px rgba(236, 80, 194, .42);
+}
+.practice-exit-confirm {
+  width: min(330px, calc(100vw - 30px));
+  gap: 10px;
+  padding: 16px 17px;
+  border-color: rgba(236, 80, 194, .58);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .64), 0 0 30px rgba(236, 80, 194, .10);
+}
+.practice-exit-confirm strong { color: #ffd0ef; font-size: 12px; }
+.practice-exit-confirm small { font-size: 9px; line-height: 1.55; }
+.practice-exit-confirm > div { justify-content: center; }
+.practice-exit-confirm button { min-height: 31px; padding: 6px 10px; font-size: 8px; }
+
+.fec-partial-guidance {
+  color: #e9d89c !important;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  #view-ledger .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  #view-ledger .committee-ledger-toolbar {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      "list view"
+      "export export";
+    justify-content: stretch;
+    align-items: end;
+    width: 100%;
+    gap: 6px 10px;
+  }
+  #view-ledger .committee-toolbar-list { grid-area: list; }
+  #view-ledger .committee-toolbar-view { grid-area: view; }
+  #view-ledger .committee-toolbar-export {
+    grid-area: export;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: stretch;
+    width: 100%;
+  }
+  #view-ledger .committee-toolbar-export > .button,
+  #view-ledger .committee-forensic-menu,
+  #view-ledger .committee-forensic-menu > summary { width: 100%; }
+  #view-ledger .committee-toolbar-group .button { min-height: 30px; font-size: 8px; }
+
+  .giving-date-range-filter,
+  .giving-amount-range-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+  .giving-date-range-filter > .field,
+  .giving-amount-range-filter > .field,
+  .giving-date-range-filter input,
+  .giving-amount-range-filter input {
+    min-width: 0;
+    max-width: 100%;
+    inline-size: 100%;
+  }
+  .giving-date-range-filter input[type="date"] { overflow: hidden; }
+
+  .practice-floating-exit {
+    right: max(20px, calc(env(safe-area-inset-right) + 12px));
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+  }
+}
+
+@media (max-width: 430px) {
+  /* Override the legacy generic .split-fields collapse only for the two requested pairs. */
+  .giving-date-range-filter,
+  .giving-amount-range-filter { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .research-file-title-row { gap: 7px; }
+  .research-file-title-row .dossier-action-button { padding-inline: 7px; }
+  .research-dossier-heading-line > h2 { white-space: normal; }
+  .research-dossier-help-popup { width: min(270px, calc(100vw - 20px)); }
+}
