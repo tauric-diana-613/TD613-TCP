@@ -8,9 +8,38 @@ function practiceActive() {
   return document.documentElement.dataset[PRACTICE_ACTIVE_ATTR] === 'true';
 }
 
+function reducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
+}
+
+function scrollViewToTop(viewId) {
+  const view = document.getElementById(viewId);
+  if (!view) return;
+  requestAnimationFrame(() => {
+    const top = Math.max(0, view.getBoundingClientRect().top + window.scrollY - 82);
+    window.scrollTo({ top, left: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
+  });
+}
+
+function activateView(viewName) {
+  document.querySelector(`.tab[data-view="${viewName}"]`)?.click();
+  scrollViewToTop(`view-${viewName}`);
+}
+
 function installMobileRangeHooks() {
   $('#dateFrom')?.closest('.split-fields')?.classList.add('giving-date-range-filter');
   $('#amountMin')?.closest('.split-fields')?.classList.add('giving-amount-range-filter');
+}
+
+function moveContactQueueAfterSearchActions() {
+  const form = $('#searchForm');
+  const panel = $('#contactQueuePanel');
+  const run = $('#runSearchButton');
+  const actionRow = run?.closest('.button-row');
+  if (!form || !panel || !actionRow || panel.dataset.postSourceOrder === 'true') return;
+  actionRow.insertAdjacentElement('afterend', panel);
+  panel.dataset.postSourceOrder = 'true';
+  panel.setAttribute('aria-label', 'Optional batch contact queue after source selection and primary search controls');
 }
 
 function moveDossierActionsToTitle() {
@@ -87,10 +116,62 @@ function hydrateCustodyLanguage() {
       '',
       'It carries search settings, retrieved public records, identity decisions, committee totals, receipts, and custody history.',
       '',
-      'Save preserves the current file. Save never starts another search. Vault creates or updates an encrypted hosted copy only when you explicitly choose that route.'
+      'New starts a fresh research context and returns you to Search. Save preserves this current file and leaves you here. Open selected file restores that file and returns you to Search.',
+      '',
+      'Vault creates or updates an encrypted hosted copy only when you explicitly choose that route.'
     ].join('\n');
     fileHelp.dataset.pedagogueHydrated = 'true';
   }
+}
+
+function installDossierActionPedagogy() {
+  const panel = $('.dossier-control');
+  const open = $('#openDossierButton');
+  const newButton = $('#newDossierButton');
+  const save = $('#saveDossierButton');
+  if (!panel || !open || !newButton || !save) return;
+
+  newButton.setAttribute('aria-label', 'New research file; clear the active working context and return to Search');
+  save.setAttribute('aria-label', 'Save this research file; remain in the current Giving view');
+  open.setAttribute('aria-label', 'Open the selected saved local research file and return to Search');
+
+  if (!$('#dossierActionRouteHint')) {
+    const hint = document.createElement('p');
+    hint.id = 'dossierActionRouteHint';
+    hint.className = 'dossier-action-route-hint';
+    hint.innerHTML = '<strong>New</strong> → fresh Search · <strong>Save</strong> → stay here · <strong>Open</strong> → restore file + Search';
+    open.insertAdjacentElement('beforebegin', hint);
+  }
+
+  if (panel.dataset.actionNavigationBound === 'true') return;
+  panel.dataset.actionNavigationBound = 'true';
+
+  document.addEventListener('click', (event) => {
+    const target = event.target?.closest?.('#newDossierButton, #openDossierButton');
+    if (!target || !panel.contains(target)) return;
+
+    if (target.id === 'newDossierButton') {
+      queueMicrotask(() => activateView('search'));
+      return;
+    }
+
+    const saveState = $('#saveState');
+    if (!saveState) return;
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      observer.disconnect();
+      clearTimeout(timer);
+      activateView('search');
+    };
+    const observer = new MutationObserver(() => {
+      const text = saveState.textContent.trim().toLowerCase();
+      if (text === 'saved local' || text === 'local branch saved') finish();
+    });
+    observer.observe(saveState, { childList: true, subtree: true, characterData: true });
+    const timer = setTimeout(() => observer.disconnect(), 4000);
+  }, true);
 }
 
 function renameAndMarkDemoButton() {
@@ -143,6 +224,8 @@ function clearWorkingSessionForDemo() {
     const node = $(selector);
     if (node) node.innerHTML = '<span class="muted">Search to begin.</span>';
   }
+  const workspace = $('#committeeSearchWorkspaceList');
+  if (workspace) workspace.innerHTML = '<span class="muted">No campaign or committee identities were observed in the loaded search.</span>';
   const activity = $('#campaignActivitySection');
   if (activity) activity.hidden = true;
   const status = $('#campaignToolsStatus');
@@ -218,6 +301,13 @@ function installCloseSessionPracticeExit() {
   });
 }
 
+function installCampaignLookupScroll() {
+  document.addEventListener('submit', (event) => {
+    if (event.target?.id !== 'campaignDirectoryForm') return;
+    requestAnimationFrame(() => requestAnimationFrame(() => scrollViewToTop('view-ledger')));
+  }, true);
+}
+
 function annotateFecPartialState() {
   const button = document.querySelector('[data-source-continue="fec-schedule-a"]');
   const card = button?.closest('.source-run-card');
@@ -238,23 +328,28 @@ function installFecPartialObserver() {
 
 function installMiniupdate() {
   installMobileRangeHooks();
+  moveContactQueueAfterSearchActions();
   moveDossierActionsToTitle();
   externalizeDossierPickerLabel('custodyMode');
   externalizeDossierPickerLabel('localDossierSelect');
   hydrateCustodyLanguage();
+  installDossierActionPedagogy();
   renameAndMarkDemoButton();
   installDemoLoadConfirmation();
   installCloseSessionPracticeExit();
+  installCampaignLookupScroll();
   installFecPartialObserver();
-  document.documentElement.dataset.givingMiniupdate = '20260818-1';
+  document.documentElement.dataset.givingMiniupdate = '20260818-2';
 }
 
 installMiniupdate();
 
 export const _givingMiniupdate = Object.freeze({
+  activateView,
   clearWorkingSessionForDemo,
   hydrateCustodyLanguage,
   installMobileRangeHooks,
+  moveContactQueueAfterSearchActions,
   moveDossierActionsToTitle,
   externalizeDossierPickerLabel
 });
