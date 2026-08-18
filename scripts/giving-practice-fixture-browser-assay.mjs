@@ -192,7 +192,13 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal(afterLoad.campaignAsleep, true);
   assert.deepEqual(loadRequests, [], 'loading the fixture must remain zero-network');
   assert.equal(afterLoad.runSummary, before.runSummary);
-  assert.equal(afterLoad.recordList, before.recordList);
+  assert.equal(afterLoad.reviewCount, 0, 'confirmed demo load must clear unsaved working contribution records before practice search');
+  assert.equal(afterLoad.rawPracticeCards, 0, 'practice records must not appear until explicit SEARCH');
+  assert.equal(afterLoad.fictionalCards, 0, 'the fictional fixture may preload search context but not contribution evidence');
+  assert.match(afterLoad.recordList, /<div class="empty-state">[\s\S]*No matching records\.[\s\S]*<\/div>/, 'confirmed demo clear must leave an explicit empty contribution surface before practice search');
+  if (before.reviewCount > 0 || /record-card/.test(before.recordList)) {
+    assert.notEqual(afterLoad.recordList, before.recordList, 'confirmed demo clear must discard prior working contribution records');
+  }
   assert.match(afterLoad.receiptList, /No receipts yet\./, 'confirmed demo load must clear unsaved working receipts');
   if (!/No receipts yet\./.test(before.receiptList)) {
     assert.notEqual(afterLoad.receiptList, before.receiptList, 'confirmed demo clear must discard the prior working dossier receipt surface');
