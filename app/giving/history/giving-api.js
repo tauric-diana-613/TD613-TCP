@@ -11,6 +11,28 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
+const PRACTICE_FIXTURE_ID = 'giving.bikini-bottom-practice/v0.1';
+const PRACTICE_LOCAL_VAULT_MUTATIONS = new Set(['vault.write', 'vault.resolve-conflict']);
+
+// Practice Vault is a browser-only synthetic shelf installed by the practice runtime
+// before this client is constructed. It may cross the client-side nonce precheck only
+// while the explicit practice marker is active, and the returned body must prove that
+// it stayed manifestly fictional with zero external mutation. If the practice fetch
+// wrapper is absent, the nonce-less request still reaches the server without authority
+// and is refused there; a noncanonical success response is rejected below as well.
+function localPracticeVaultMutation(operation) {
+  return PRACTICE_LOCAL_VAULT_MUTATIONS.has(operation) &&
+    globalThis.document?.documentElement?.dataset?.givingPractice === 'true';
+}
+
+function canonicalPracticeVaultReceipt(body) {
+  const receipt = body?.receipt;
+  return receipt?.practice_fixture_id === PRACTICE_FIXTURE_ID &&
+    receipt?.manifestly_fictional === true &&
+    receipt?.external_mutation === false &&
+    receipt?.event === 'PRACTICE_VAULT_WRITE';
+}
+
 // Giving's Node function is explicitly admitted for 60 seconds. Keep the browser
 // alive through the upstream window while leaving two seconds for serialization.
 export const GIVING_SEARCH_MIN_TIMEOUT_MS = 58_000;
@@ -72,7 +94,8 @@ export class GivingApiClient {
 
   async call(operation, payload = {}, options = {}) {
     const mutation = options.mutation ?? MUTATIONS.has(operation);
-    if (mutation && !this.intentNonce) {
+    const practiceLocalVaultMutation = mutation && localPracticeVaultMutation(operation);
+    if (mutation && !practiceLocalVaultMutation && !this.intentNonce) {
       throw new GivingApiError('Refresh the signed operator session before this mutation.', { code: 'INTENT_NONCE_REQUIRED' });
     }
     const controller = new AbortController();
@@ -92,7 +115,7 @@ export class GivingApiClient {
       operation,
       intent: {
         purpose: options.purpose || operation,
-        nonce: mutation ? this.intentNonce : null,
+        nonce: mutation && !practiceLocalVaultMutation ? this.intentNonce : null,
         ...(apertureContext ? { aperture_context: apertureContext } : {})
       },
       payload: boundedPayload(operation, payload)
@@ -113,6 +136,14 @@ export class GivingApiClient {
       const body = await response.json().catch(() => null);
       const nextNonce = responseNonce(body);
       if (nextNonce) this.intentNonce = nextNonce;
+      if (practiceLocalVaultMutation && response.ok && body?.ok !== false && !canonicalPracticeVaultReceipt(body)) {
+        throw new GivingApiError('Practice Vault response did not prove fictional local-only custody.', {
+          code: 'PRACTICE_LOCAL_TRANSPORT_REQUIRED',
+          status: response.status,
+          receipt: body?.receipt || null,
+          retryable: false
+        });
+      }
       if (!response.ok || body?.ok === false) {
         throw new GivingApiError(
           body?.error?.message || body?.message || `Giving request refused (${response.status}).`,
