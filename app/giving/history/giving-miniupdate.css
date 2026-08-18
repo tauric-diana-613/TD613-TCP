@@ -1,7 +1,19 @@
 /* TD613 Giving miniupdate · 2026-08-18
    Deliberately leaves the general text-field aesthetic unchanged this round.
-   Pedagogue diagnoses that field system separately; this stylesheet only repairs
-   the requested geometry, custody affordances, demo chrome, and tooltip legibility. */
+   Pedagogue diagnoses that field system separately as request #20; this stylesheet
+   repairs requested geometry, custody affordances, demo chrome, and legibility. */
+
+.brand-mark {
+  text-decoration: none;
+}
+.brand-mark:hover,
+.brand-mark:focus-visible {
+  border-color: rgba(118, 234, 212, .52);
+  color: var(--bright);
+  background: rgba(118, 234, 212, .07);
+  outline: none;
+  box-shadow: 0 0 18px rgba(118, 234, 212, .12);
+}
 
 .research-file-title-row {
   display: flex;
@@ -11,7 +23,7 @@
   min-width: 0;
   margin-bottom: 6px;
 }
-.research-file-title-row > span {
+.research-file-title-row > :is(span, label) {
   min-width: 0;
   color: var(--muted);
   font-size: 10px;
@@ -48,6 +60,14 @@
   white-space: nowrap;
 }
 
+.dossier-action-route-hint {
+  margin: -2px 0 7px;
+  color: var(--dim);
+  font-size: 9px;
+  line-height: 1.45;
+}
+.dossier-action-route-hint strong { color: var(--muted); }
+
 .research-dossier-heading-line {
   display: inline-grid;
   grid-template-columns: max-content 16px;
@@ -60,16 +80,35 @@
 .research-dossier-help-popup {
   width: min(290px, calc(100vw - 24px));
   padding: 10px 11px;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.5;
   white-space: pre-line;
 }
 .readiness-tooltip {
   width: min(280px, 76vw);
   padding: 8px 9px;
-  font-size: 8px;
+  font-size: 9px;
   line-height: 1.5;
   white-space: pre-line;
+}
+
+/* Raise the tiny 7–8px explanatory layer without changing the field system
+   that request #20 explicitly reserves for diagnosis only. */
+.research-file-purpose,
+.research-file-storage,
+.research-file-local-hint,
+.research-file-sample-status,
+.coverage-scope-note {
+  font-size: 9px !important;
+  line-height: 1.45;
+}
+.research-file-sample small {
+  font-size: 8.5px !important;
+  line-height: 1.45;
+}
+.vault-beats small {
+  font-size: 9px !important;
+  line-height: 1.5;
 }
 
 .load-fictional-demo-button {
@@ -123,7 +162,7 @@
   cursor: pointer;
   color: var(--text);
   background: rgba(255, 255, 255, .035);
-  font: 750 8px/1 var(--mono);
+  font: 750 9px/1 var(--mono);
   text-transform: uppercase;
 }
 .giving-demo-confirm-actions button[data-demo-clear="yes"] {
@@ -154,9 +193,9 @@
   box-shadow: 0 22px 60px rgba(0, 0, 0, .64), 0 0 30px rgba(236, 80, 194, .10);
 }
 .practice-exit-confirm strong { color: #ffd0ef; font-size: 12px; }
-.practice-exit-confirm small { font-size: 9px; line-height: 1.55; }
+.practice-exit-confirm small { font-size: 10px; line-height: 1.55; }
 .practice-exit-confirm > div { justify-content: center; }
-.practice-exit-confirm button { min-height: 31px; padding: 6px 10px; font-size: 8px; }
+.practice-exit-confirm button { min-height: 31px; padding: 6px 10px; font-size: 9px; }
 
 .fec-partial-guidance {
   color: #e9d89c !important;
@@ -165,35 +204,103 @@
 }
 
 @media (max-width: 760px) {
+  /* Keep the desktop hierarchy, but let mobile controls wrap at their natural
+     widths instead of becoming a stack of equal full-width pancakes. */
   #view-ledger .section-head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
+    display: block;
   }
   #view-ledger .committee-ledger-toolbar {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-areas:
-      "list view"
-      "export export";
-    justify-content: stretch;
-    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-end;
     width: 100%;
-    gap: 6px 10px;
+    gap: 7px 11px;
+    margin-top: 10px;
   }
-  #view-ledger .committee-toolbar-list { grid-area: list; }
-  #view-ledger .committee-toolbar-view { grid-area: view; }
+  #view-ledger .committee-toolbar-group {
+    flex: 0 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: auto;
+    gap: 4px;
+  }
   #view-ledger .committee-toolbar-export {
-    grid-area: export;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    justify-content: stretch;
-    width: 100%;
+    display: flex;
+    flex: 1 1 190px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: auto;
   }
   #view-ledger .committee-toolbar-export > .button,
   #view-ledger .committee-forensic-menu,
-  #view-ledger .committee-forensic-menu > summary { width: 100%; }
-  #view-ledger .committee-toolbar-group .button { min-height: 30px; font-size: 8px; }
+  #view-ledger .committee-forensic-menu > summary {
+    width: auto;
+  }
+  #view-ledger .committee-toolbar-group::before { font-size: 7.5px; }
+  #view-ledger .committee-toolbar-group .button { min-height: 30px; font-size: 9px; }
+
+  .button-row:not(.dossier-actions),
+  .source-picker-actions,
+  .contact-queue-actions,
+  .committee-workspace-actions,
+  .campaign-deputy-toolbar,
+  .campaign-deputy-tools,
+  .source-run-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    gap: 6px 7px;
+  }
+  .button-row:not(.dossier-actions) > .button,
+  .contact-queue-actions > :is(.button, .text-button),
+  .committee-workspace-actions > button,
+  .campaign-deputy-toolbar > button,
+  .campaign-deputy-tools > button,
+  .source-run-actions > button,
+  .button.wide {
+    flex: 0 1 auto;
+    width: auto !important;
+    max-width: 100%;
+  }
+  .review-hold-button { width: auto !important; align-self: flex-start; }
+
+  .research-file-route {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 5px;
+  }
+  .research-file-route > span,
+  .research-file-vault-link {
+    flex: 1 1 108px;
+    width: auto;
+    min-width: 0;
+  }
+  .research-file-sample {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    gap: 6px 8px !important;
+  }
+  .research-file-sample small { flex: 1 1 175px; }
+
+  .review-pagination {
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 4px;
+  }
+  .review-page-number,
+  .review-page-arrow {
+    flex: 0 0 auto;
+    min-width: 26px;
+    height: 26px;
+  }
 
   .giving-date-range-filter,
   .giving-amount-range-filter {
@@ -210,7 +317,11 @@
     max-width: 100%;
     inline-size: 100%;
   }
-  .giving-date-range-filter input[type="date"] { overflow: hidden; }
+  .giving-date-range-filter input[type="date"] {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
 
   .practice-floating-exit {
     right: max(20px, calc(env(safe-area-inset-right) + 12px));
