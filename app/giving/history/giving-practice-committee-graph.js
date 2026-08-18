@@ -4,6 +4,8 @@ import { _givingPracticeReferendumCluster } from './giving-practice-referendum-c
 import { _givingPracticeTemporalClusterExtension } from './giving-practice-temporal-cluster-extension.js';
 import { _givingPracticeInKind } from './giving-practice-in-kind.js';
 import { _givingPracticeLocalCampaignRules } from './giving-practice-local-campaign-rules.js';
+import { _givingPracticeKrabsCheapskate } from './giving-practice-krabs-cheapskate.js';
+import { _givingPracticeLocalAlignment } from './giving-practice-local-alignment.js';
 
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 const normalizeCommitteeName = (value) => value === 'Mrs. Puff for Bikini Bottom School District #67'
@@ -21,7 +23,8 @@ function baseRows() {
         practice_data_class: record.practice_name_quality || 'CANONICAL',
         contribution_type: record.contribution_type || null,
         transaction_class: record.transaction_class || null,
-        date: record.contribution_date || null
+        date: record.contribution_date || null,
+        lineage: record.lineage || null
       });
     }
   }
@@ -35,7 +38,8 @@ function baseRows() {
         practice_data_class: _givingPracticeSearchNoise.NOISE_PEOPLE[name]?.quality || 'AMBIGUITY',
         contribution_type: 'FICTIONAL CONTRIBUTION',
         transaction_class: null,
-        date
+        date,
+        lineage: null
       });
     }
   }
@@ -49,7 +53,8 @@ function baseRows() {
         practice_data_class: _givingPracticeDiscoveryGraph.DISCOVERY_PEOPLE[name]?.data_class || 'DISCOVERY',
         contribution_type: 'FICTIONAL CONTRIBUTION',
         transaction_class: null,
-        date
+        date,
+        lineage: null
       });
     }
   }
@@ -61,7 +66,8 @@ function supplementalRows() {
     ..._givingPracticeReferendumCluster.allTemporalClusterRows(),
     ..._givingPracticeTemporalClusterExtension.allRows(),
     ..._givingPracticeInKind.allRows(),
-    ..._givingPracticeLocalCampaignRules.allLarryLoanRows()
+    ..._givingPracticeLocalCampaignRules.allLarryLoanRows(),
+    ..._givingPracticeLocalAlignment.allRows()
   ].map((record) => ({
     contributor_name: compact(record.contributor_name_raw || record.contributor_name),
     committee_name: normalizeCommitteeName(record.committee_name || record.committee),
@@ -77,27 +83,43 @@ function supplementalRows() {
   }));
 }
 
+function pseudoRecord(row) {
+  return {
+    contributor_name: row.contributor_name,
+    contributor_name_raw: row.contributor_name,
+    committee: row.committee_name,
+    committee_name: row.committee_name,
+    amount_cents: row.amount_cents,
+    contribution_date: row.date,
+    contribution_type: row.contribution_type,
+    transaction_class: row.transaction_class,
+    practice_data_class: row.practice_data_class,
+    practice_over_limit_anomaly: row.practice_over_limit_anomaly,
+    candidate_self_financing: row.candidate_self_financing,
+    practice_candidate_loan: row.practice_candidate_loan,
+    lineage: row.lineage || {}
+  };
+}
+
 function normalizedRows() {
-  return [...baseRows(), ...supplementalRows()].map((row) => {
-    const normalized = _givingPracticeLocalCampaignRules.normalizeLocalCampaignRecord({
-      contributor_name: row.contributor_name,
-      contributor_name_raw: row.contributor_name,
-      committee: row.committee_name,
-      committee_name: row.committee_name,
-      amount_cents: row.amount_cents,
-      contribution_type: row.contribution_type,
-      transaction_class: row.transaction_class,
-      practice_over_limit_anomaly: row.practice_over_limit_anomaly,
-      candidate_self_financing: row.candidate_self_financing,
-      practice_candidate_loan: row.practice_candidate_loan,
-      lineage: row.lineage || {}
-    });
+  const raw = [...baseRows(), ...supplementalRows()];
+  const withoutPlanktonBloc = _givingPracticeLocalAlignment.removePlanktonFromKrabsBloc(raw.map(pseudoRecord));
+  return withoutPlanktonBloc.map((record) => {
+    const krabsNormalized = _givingPracticeKrabsCheapskate.normalizeKrabsOrdinaryRecord(record);
+    const localNormalized = _givingPracticeLocalCampaignRules.normalizeLocalCampaignRecord(krabsNormalized);
     return {
-      ...row,
-      committee_name: normalizeCommitteeName(normalized.committee_name || normalized.committee),
-      amount_cents: normalized.amount_cents,
-      transaction_class: normalized.transaction_class || row.transaction_class,
-      practice_local_campaign_rule: normalized.practice_local_campaign_rule || null
+      contributor_name: compact(localNormalized.contributor_name_raw || localNormalized.contributor_name),
+      committee_name: normalizeCommitteeName(localNormalized.committee_name || localNormalized.committee),
+      amount_cents: localNormalized.amount_cents,
+      practice_data_class: localNormalized.practice_data_class || localNormalized.lineage?.data_class || 'NORMALIZED',
+      contribution_type: localNormalized.contribution_type || null,
+      transaction_class: localNormalized.transaction_class || null,
+      practice_over_limit_anomaly: localNormalized.practice_over_limit_anomaly === true,
+      candidate_self_financing: localNormalized.candidate_self_financing === true,
+      practice_candidate_loan: localNormalized.practice_candidate_loan === true,
+      practice_local_campaign_rule: localNormalized.practice_local_campaign_rule || null,
+      date: localNormalized.contribution_date || null,
+      lineage: localNormalized.lineage || null
     };
   });
 }
