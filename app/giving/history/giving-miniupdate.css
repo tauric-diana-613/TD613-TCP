@@ -85,7 +85,7 @@
   white-space: pre-line;
 }
 .readiness-tooltip {
-  width: min(280px, 76vw);
+  width: min(240px, 76vw);
   padding: 8px 9px;
   font-size: 10px;
   line-height: 1.5;
