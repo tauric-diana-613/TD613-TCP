@@ -129,8 +129,8 @@ async function assertCenteredDialog(page) {
   assert.equal(await page.locator('#practiceExitConfirm').count(), 1, 'all exit entry points must share one dialog node');
 }
 
-async function dismissExitNo(page) {
-  await assertCenteredDialog(page);
+async function dismissExitNo(page, { centeredAlready = false } = {}) {
+  if (!centeredAlready) await assertCenteredDialog(page);
   await page.locator('[data-practice-exit="no"]').click();
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
@@ -403,7 +403,7 @@ export async function witnessGivingPracticeFixture(page) {
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
-  await dismissExitNo(page);
+  await dismissExitNo(page, { centeredAlready: true });
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
