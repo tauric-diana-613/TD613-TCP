@@ -18,6 +18,72 @@ const unbound = new GivingApiClient({ fetchImpl });
 await assert.rejects(() => unbound.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' }), /Refresh the signed operator session/);
 await assert.rejects(() => unbound.call('campaign-deputy.ensure-committee', { committee_id: 'C00999991' }), /Refresh the signed operator session/);
 
+const originalDocument = globalThis.document;
+try {
+  globalThis.document = { documentElement: { dataset: { givingPractice: 'true' } } };
+
+  let practiceEnvelope = null;
+  const practiceVaultClient = new GivingApiClient({
+    apertureContextProvider: () => null,
+    fetchImpl: async (_url, options) => {
+      practiceEnvelope = JSON.parse(options.body);
+      return new Response(JSON.stringify({
+        ok: true,
+        data: { version_id: 'practice-version-613', practice: true },
+        receipt: {
+          schema: 'td613.giving.practice-receipt/v1',
+          event: 'PRACTICE_VAULT_WRITE',
+          practice_fixture_id: 'giving.bikini-bottom-practice/v0.1',
+          manifestly_fictional: true,
+          external_mutation: false,
+          evidence_authority: false,
+          consequence_authority: false
+        }
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+  });
+  const practiceVaultResult = await practiceVaultClient.call('vault.write', {
+    dossier_id: 'practice-dossier-613',
+    version_id: 'practice-version-613'
+  }, { mutation: true, purpose: 'store fictional encrypted practice branch in browser memory' });
+  assert.equal(practiceVaultResult.data.version_id, 'practice-version-613');
+  assert.equal(practiceEnvelope.operation, 'vault.write');
+  assert.equal(practiceEnvelope.intent.nonce, null, 'practice-local Vault must never borrow or synthesize a real operator nonce');
+
+  const forgedPracticeClient = new GivingApiClient({
+    apertureContextProvider: () => null,
+    fetchImpl: async () => new Response(JSON.stringify({
+      ok: true,
+      data: { version_id: 'not-proven-local' },
+      receipt: { operation: 'vault.write' }
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } })
+  });
+  await assert.rejects(
+    () => forgedPracticeClient.call('vault.write', { dossier_id: 'practice-dossier-613' }, { mutation: true }),
+    (error) => error.code === 'PRACTICE_LOCAL_TRANSPORT_REQUIRED',
+    'practice-mode nonce bypass must accept only the canonical fictional zero-mutation receipt'
+  );
+
+  delete globalThis.document.documentElement.dataset.givingPractice;
+  let liveVaultFetches = 0;
+  const liveVaultClient = new GivingApiClient({
+    apertureContextProvider: () => null,
+    fetchImpl: async () => {
+      liveVaultFetches += 1;
+      return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+  });
+  await assert.rejects(
+    () => liveVaultClient.call('vault.write', { dossier_id: 'live-dossier' }, { mutation: true }),
+    (error) => error.code === 'INTENT_NONCE_REQUIRED',
+    'live Vault writes must still require the signed operator intent nonce before fetch'
+  );
+  assert.equal(liveVaultFetches, 0, 'live nonce refusal must happen before any network request');
+} finally {
+  if (originalDocument === undefined) delete globalThis.document;
+  else globalThis.document = originalDocument;
+}
+
 const client = new GivingApiClient({ fetchImpl });
 await client.createSession('not-a-real-secret');
 await client.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' });
