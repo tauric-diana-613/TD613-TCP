@@ -1,6 +1,6 @@
 /* TD613 Giving miniupdate · 2026-08-18
    Deliberately leaves the general text-field aesthetic unchanged this round.
-   Pedagogue diagnoses that field system separately as request #20; this stylesheet
+   Pedagogue diagnoses that field system separately as request #24; this stylesheet
    repairs requested geometry, custody affordances, demo chrome, and legibility. */
 
 .brand-mark {
@@ -87,13 +87,13 @@
 .readiness-tooltip {
   width: min(280px, 76vw);
   padding: 8px 9px;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.5;
   white-space: pre-line;
 }
 
 /* Raise the tiny 7–8px explanatory layer without changing the field system
-   that request #20 explicitly reserves for diagnosis only. */
+   that request #24 explicitly reserves for diagnosis only. */
 .research-file-purpose,
 .research-file-storage,
 .research-file-local-hint,
