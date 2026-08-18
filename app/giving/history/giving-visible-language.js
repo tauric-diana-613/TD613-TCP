@@ -41,8 +41,9 @@ function applyRecordAttributionLanguage(root = document) {
   ]);
 
   const ledgerEyebrow = $('#view-ledger .section-head .eyebrow');
-  if (ledgerEyebrow && /IDENTITY-CONFIRMED RECORDS ONLY/i.test(ledgerEyebrow.textContent || '')) {
-    ledgerEyebrow.textContent = 'ATTRIBUTED RECORDS ONLY';
+  if (ledgerEyebrow) {
+    if (/IDENTITY-CONFIRMED RECORDS ONLY/i.test(ledgerEyebrow.textContent || '')) ledgerEyebrow.textContent = 'ATTRIBUTED RECORDS ONLY';
+    else if (/COMMITTEE SEARCH \+ CONFIRMED DONOR TOTALS/i.test(ledgerEyebrow.textContent || '')) ledgerEyebrow.textContent = 'COMMITTEE SEARCH + ATTRIBUTED DONOR TOTALS';
   }
 
   const totalLabel = $('#confirmedTotalLabel');
@@ -65,6 +66,7 @@ function applyRecordAttributionLanguage(root = document) {
     for (const node of ledger.querySelectorAll('strong, span, b, small, .committee-records')) {
       replaceText(node, [
         [/No identity-confirmed giving\./gi, 'No attributed giving.'],
+        [/confirmed donor totals/gi, 'attributed donor totals'],
         [/identity-confirmed/gi, 'attributed'],
         [/IDENTITY CONFIRMED/g, 'RECORD ATTRIBUTED'],
         [/confirm record identity/gi, 'attribute the record'],
