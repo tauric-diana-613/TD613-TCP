@@ -32,9 +32,11 @@ function broadenPracticeNameWhenRequested() {
 }
 
 function showPracticeExitConfirmation() {
-  const sourceExit = $('#practiceExitButton');
-  if (sourceExit) { sourceExit.click(); return true; }
-  return false;
+  const confirm = $('#practiceExitConfirm');
+  if (!confirm) return false;
+  confirm.hidden = false;
+  confirm.querySelector('[data-practice-exit="no"]')?.focus();
+  return true;
 }
 
 function ensureFloatingExit() {
