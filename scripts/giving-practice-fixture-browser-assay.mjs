@@ -171,6 +171,12 @@ export async function witnessGivingPracticeFixture(page) {
   page.on('request', onLoadRequest);
   try {
     await page.locator('#loadResearchSampleButton').click();
+    const clearDialog = page.locator('#givingDemoClearConfirm:not([hidden])');
+    await clearDialog.waitFor({ state: 'visible', timeout: 5000 });
+    assert.equal((await clearDialog.locator('#givingDemoClearConfirmTitle').textContent())?.trim(), 'Clear session and begin demo?');
+    assert.equal((await clearDialog.locator('small').textContent())?.trim(), 'Unsaved work may be lost.');
+    assert.equal((await snapshot(page)).title, before.title, 'opening the demo confirmation must not mutate the working research file');
+    await clearDialog.locator('[data-demo-clear="yes"]').click();
     await page.waitForTimeout(180);
   } finally { page.off('request', onLoadRequest); }
 
