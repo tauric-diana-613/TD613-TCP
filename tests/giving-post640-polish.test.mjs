@@ -74,9 +74,9 @@ assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
 assert.match(browserProbe, /witnessGivingPracticeFixture/);
 assert.match(practiceAssay, /outgrow the obsolete 49-row toy dataset/);
-assert.match(practiceAssay, /Open selected file must reopen/);
-assert.match(practiceAssay, /practice Vault must keep encrypted custody/);
-assert.match(practiceAssay, /confirmed exit must restore the live source picker/);
+assert.match(practiceAssay, /local_practice_file_saved_and_reopened:\s*true/);
+assert.match(practiceAssay, /encrypted_practice_vault_version_observed:\s*true/);
+assert.match(practiceAssay, /must wake on confirmed exit/);
 assert.match(workflow, /Witness originating Giving practice fixture with Chromium/);
 
 console.log('giving-post640-polish.test.mjs passed');
