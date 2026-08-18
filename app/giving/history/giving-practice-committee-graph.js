@@ -76,6 +76,7 @@ function supplementalRows() {
     contribution_type: record.contribution_type || null,
     transaction_class: record.transaction_class || null,
     practice_over_limit_anomaly: record.practice_over_limit_anomaly === true,
+    practice_compliance_review_required: record.practice_compliance_review_required === true,
     candidate_self_financing: record.candidate_self_financing === true,
     practice_candidate_loan: record.practice_candidate_loan === true,
     date: record.contribution_date || null,
@@ -95,6 +96,7 @@ function pseudoRecord(row) {
     transaction_class: row.transaction_class,
     practice_data_class: row.practice_data_class,
     practice_over_limit_anomaly: row.practice_over_limit_anomaly,
+    practice_compliance_review_required: row.practice_compliance_review_required,
     candidate_self_financing: row.candidate_self_financing,
     practice_candidate_loan: row.practice_candidate_loan,
     lineage: row.lineage || {}
@@ -115,6 +117,7 @@ function normalizedRows() {
       contribution_type: localNormalized.contribution_type || null,
       transaction_class: localNormalized.transaction_class || null,
       practice_over_limit_anomaly: localNormalized.practice_over_limit_anomaly === true,
+      practice_compliance_review_required: localNormalized.practice_compliance_review_required === true,
       candidate_self_financing: localNormalized.candidate_self_financing === true,
       practice_candidate_loan: localNormalized.practice_candidate_loan === true,
       practice_local_campaign_rule: localNormalized.practice_local_campaign_rule || null,
@@ -141,7 +144,7 @@ function contributorsForCommittee(committeeName) {
     entry.total_cents += Number(row.amount_cents) || 0;
     if (row.practice_data_class) entry.data_classes.add(row.practice_data_class);
     if (row.transaction_class) entry.transaction_classes.add(row.transaction_class);
-    if (row.practice_over_limit_anomaly) entry.compliance_anomaly_count += 1;
+    if (row.practice_over_limit_anomaly || row.practice_compliance_review_required) entry.compliance_anomaly_count += 1;
     byName.set(row.contributor_name, entry);
   }
   return [...byName.values()]
