@@ -38,6 +38,18 @@
   width: auto !important;
 }
 
+/* Request #23: contribution cards render a postal address as a street line
+   followed by City, State ZIP. Evidence rows do not use bullet separators. */
+.record-address-normalized {
+  display: grid !important;
+  gap: 1px;
+  line-height: 1.35;
+}
+.record-address-line1,
+.record-address-locality {
+  display: block;
+}
+
 @media (max-width: 760px) {
   .giving-primary-search-actions {
     flex-wrap: nowrap !important;
