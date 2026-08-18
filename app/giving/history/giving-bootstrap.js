@@ -1,11 +1,13 @@
 import './giving-ux-resilience-shell.js?v=20260817-2';
 
-const GIVING_ASSET_EPOCH = '20260818-1';
+const GIVING_ASSET_EPOCH = '20260816-4';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const GIVING_PRACTICE_EPOCH = '20260817-12';
+const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
+const observerUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}&observer=${GIVING_OBSERVER_IDEMPOTENCE_EPOCH}`, import.meta.url).href;
 const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 document.title = 'TD613 Giving';
@@ -38,7 +40,7 @@ try {
   await Promise.all([
     fetch(sourceUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' }),
     fetch(sourceUrl('./giving-api.js'), { cache: 'reload', credentials: 'same-origin' }),
-    fetch(sourceUrl('./giving-review-paging-core.js?v=20260818-1'), { cache: 'reload', credentials: 'same-origin' }),
+    fetch(sourceUrl('./giving-review-paging-core.js?v=20260813-3&repair=20260818-1'), { cache: 'reload', credentials: 'same-origin' }),
     fetch(sourceUrl('./giving-fec-resilience.js?v=20260814-1'), { cache: 'reload', credentials: 'same-origin' })
   ]);
 } catch {
@@ -62,7 +64,7 @@ await import(epochUrl('./giving-contact-queue-v2.js'));
 // Contributor handoff is deliberately loaded without a per-import query string.
 // Practice directory imports the same URL, so browser ESM installs its listener once.
 await import(sourceUrl('./giving-contributor-handoff.js'));
-await import(epochUrl('./giving-transaction-classification.js'));
+await import(observerUrl('./giving-transaction-classification.js'));
 
 // One versioned root owns the fictional fetch-wrapper stack. Internal relative
 // imports resolve to one stable module identity and are reused by later practice
@@ -81,5 +83,5 @@ await import(epochUrl('./giving-campaign-tools-v3.js'));
 await import(epochUrl('./giving-activity-contributor-handoff.js'));
 await import(epochUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
-await import(epochUrl('./giving-date-sort.js'));
+await import(observerUrl('./giving-date-sort.js'));
 await import(practiceUrl('./giving-dossier-help.js'));

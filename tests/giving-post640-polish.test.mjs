@@ -62,7 +62,7 @@ assert.match(reviewPagingCore, /const PAGE_SIZE = 50/);
 assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/);
 assert.match(renderBackpressure, /root\.dataset\.givingSearchRender = 'deferred'/);
 assert.match(renderBackpressure, /td613:giving-run-settled/);
-assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260818-1/);
+assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3&repair=20260818-1/);
 assert.match(reviewPagingCore, /data-pagination-signature=/,
   'review pagination must retain an idempotence signature inside the observed record list');
 assert.match(reviewPagingCore, /existing\?\.dataset\.paginationSignature !== signature/,
@@ -83,10 +83,13 @@ assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.appendChild\(ca
   'committee date sorter must not reappend an already-sorted observed card set');
 assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.insertBefore\(card, trailer \|\| null\);/,
   'contribution date sorter must not reinsert an already-sorted observed card set');
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);
-assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260818-1/);
+assert.match(bootstrap, /const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /observerUrl\('\.\/giving-transaction-classification\.js'\)/);
+assert.match(bootstrap, /observerUrl\('\.\/giving-date-sort\.js'\)/);
+assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260813-3&repair=20260818-1/);
 assert.match(bootstrap, /giving-practice-runtime\.js/);
 assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
 assert.match(bootstrap, /giving-practice-directory\.js/);
