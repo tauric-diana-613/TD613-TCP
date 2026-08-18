@@ -34,15 +34,42 @@ afterStylesheet('givingUxResilienceStylesheet', epochUrl('./giving-ux-resilience
 afterStylesheet('givingPracticeHydrationStylesheet', practiceUrl('./giving-practice-hydration.css'));
 afterStylesheet('givingMiniupdateStylesheet', miniupdateUrl('./giving-miniupdate.css'));
 afterStylesheet('givingMiniupdateControlsStylesheet', miniupdateUrl('./giving-miniupdate-controls.css'));
-afterStylesheet('givingTwelveStepStylesheet', twelveStepUrl('./giving-12-step-bundle.css'));
+const givingTwelveStepStylesheetReady = afterStylesheet('givingTwelveStepStylesheet', twelveStepUrl('./giving-12-step-bundle.css'));
 
 function afterStylesheet(id, href) {
-  if (document.getElementById(id)) return;
+  const existing = document.getElementById(id);
+  if (existing) {
+    if (existing.sheet) {
+      existing.dataset.stylesheetState = 'ready';
+      return Promise.resolve(existing);
+    }
+    return new Promise((resolve) => {
+      existing.addEventListener('load', () => {
+        existing.dataset.stylesheetState = 'ready';
+        resolve(existing);
+      }, { once: true });
+      existing.addEventListener('error', () => {
+        existing.dataset.stylesheetState = 'held';
+        resolve(existing);
+      }, { once: true });
+    });
+  }
   const link = document.createElement('link');
   link.id = id;
   link.rel = 'stylesheet';
   link.href = href;
+  const ready = new Promise((resolve) => {
+    link.addEventListener('load', () => {
+      link.dataset.stylesheetState = 'ready';
+      resolve(link);
+    }, { once: true });
+    link.addEventListener('error', () => {
+      link.dataset.stylesheetState = 'held';
+      resolve(link);
+    }, { once: true });
+  });
   document.head.appendChild(link);
+  return ready;
 }
 
 try {
@@ -80,6 +107,17 @@ await import(miniupdateUrl('./giving-fec-client-budget.js'));
 // state. Static defaults are normalized immediately and later app renders are
 // intercepted by the already-installed idempotent observers before paint.
 await import(observerUrl('./giving-visible-language.js'));
+
+// Practice exposes a floating Exit Demo and retrieval notification hierarchy.
+// Do not make that interaction reachable until the final 12-step stylesheet has
+// actually settled; WebKit may otherwise briefly measure the superseded layer
+// ladder while Chromium/Firefox have already applied the final cascade.
+const givingTwelveStepStylesheet = await givingTwelveStepStylesheetReady;
+if (givingTwelveStepStylesheet?.dataset.stylesheetState !== 'ready') {
+  document.documentElement.dataset.givingTwelveStepStyles = 'held';
+  throw new Error('Giving 12-step stylesheet failed to load.');
+}
+document.documentElement.dataset.givingTwelveStepStyles = 'ready';
 
 // One versioned root owns the fictional fetch-wrapper stack. Internal relative
 // imports resolve to one stable module identity and are reused by later practice

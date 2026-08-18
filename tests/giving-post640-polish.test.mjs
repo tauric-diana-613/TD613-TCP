@@ -208,6 +208,14 @@ assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/)
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);
 assert.match(bootstrap, /const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1'/);
 assert.match(bootstrap, /const GIVING_TWELVE_STEP_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /const givingTwelveStepStylesheetReady = afterStylesheet\('givingTwelveStepStylesheet'/);
+assert.match(bootstrap, /const givingTwelveStepStylesheet = await givingTwelveStepStylesheetReady;/);
+assert.match(bootstrap, /dataset\.givingTwelveStepStyles = 'ready'/);
+assert.match(bootstrap, /throw new Error\('Giving 12-step stylesheet failed to load\.'\)/);
+assert.ok(
+  bootstrap.indexOf('await givingTwelveStepStylesheetReady') < bootstrap.indexOf("giving-practice-runtime.js"),
+  'critical 12-step stylesheet must settle before practice runtime becomes interactive'
+);
 assert.match(bootstrap, /observerUrl\('\.\/giving-transaction-classification\.js'\)/);
 assert.match(bootstrap, /observerUrl\('\.\/giving-date-sort\.js'\)/);
 assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260813-3&repair=20260818-1/);
