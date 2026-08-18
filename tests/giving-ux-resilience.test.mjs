@@ -75,8 +75,18 @@ test('operator-facing donor state is Match while serialized CANDIDATE compatibil
   const model = await read('app/giving/history/giving-model.js');
   assert.match(shell, /candidateLegend\.textContent = 'match'/);
   assert.match(shell, /candidateOption\.textContent = 'Match'/);
-  assert.match(visible, /textContent = 'Match'/);
+  assert.match(visible, /setText\(button, 'Match'\)/);
+  assert.match(visible, /setText\(state, 'Match'\)/);
+  assert.doesNotMatch(visible, /textContent = 'Match'/);
   assert.match(model, /CANDIDATE/);
+});
+
+test('visible-language observer writes are idempotent inside observed Giving subtrees', async () => {
+  const visible = await read('app/giving/history/giving-visible-language.js');
+  assert.match(visible, /if \(!node \|\| node\.textContent === next\) return false;/);
+  assert.match(visible, /return next !== text \? setText\(node, next\) : false;/);
+  assert.match(visible, /new MutationObserver\(queueApply\)/);
+  assert.doesNotMatch(visible, /\.textContent = '(?:record attributed|record unresolved|Record attributed|Record unresolved)'/);
 });
 
 test('Cistern route memory refuses endpoint equivalence when route history differs', () => {
