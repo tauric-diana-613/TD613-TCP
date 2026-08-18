@@ -19,6 +19,7 @@ const reviewPaging = read('app/giving/history/giving-review-paging.js');
 const reviewPagingCore = read('app/giving/history/giving-review-paging-core.js');
 const renderBackpressure = read('app/giving/history/giving-search-render-backpressure.js');
 const transactionClassification = read('app/giving/history/giving-transaction-classification.js');
+const dateSort = read('app/giving/history/giving-date-sort.js');
 const bootstrap = read('app/giving/history/giving-bootstrap.js');
 const givingIndex = read('app/giving/history/index.html');
 const browserProbe = read('scripts/giving-browser-probe.mjs');
@@ -61,16 +62,31 @@ assert.match(reviewPagingCore, /const PAGE_SIZE = 50/);
 assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/);
 assert.match(renderBackpressure, /root\.dataset\.givingSearchRender = 'deferred'/);
 assert.match(renderBackpressure, /td613:giving-run-settled/);
-assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/);
+assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260818-1/);
+assert.match(reviewPagingCore, /data-pagination-signature=/,
+  'review pagination must retain an idempotence signature inside the observed record list');
+assert.match(reviewPagingCore, /existing\?\.dataset\.paginationSignature !== signature/,
+  'review paginator may replace its observed nav only when pagination state changes');
+assert.doesNotMatch(reviewPagingCore, /querySelector\(':scope > \.review-pagination'\)\?\.remove\(\);[\s\S]*?insertAdjacentHTML\('beforeend', markup\)/,
+  'review pagination must not remove and recreate its own observed nav on every observer pass');
 assert.match(transactionClassification, /if \(existing\.textContent !== classification\) existing\.textContent = classification;/,
   'transaction badge observer must not rewrite an already-correct text node and recursively trigger itself');
 assert.match(transactionClassification, /if \(existing\.dataset\.transactionClass !== classification\) existing\.dataset\.transactionClass = classification;/,
   'transaction badge metadata updates must also be idempotent');
 assert.doesNotMatch(transactionClassification, /if \(existing\) \{\s*existing\.textContent = classification;/,
   'unconditional existing-badge text rewrites are forbidden inside the childList observer');
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(dateSort, /function sameNodeOrder/,
+  'date-sort observer must compare existing and desired node order before DOM mutation');
+assert.match(dateSort, /if \(!sameNodeOrder\(cards, sorted\)\)/,
+  'date-sort DOM movement must be guarded by actual order change');
+assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.appendChild\(card\);/,
+  'committee date sorter must not reappend an already-sorted observed card set');
+assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.insertBefore\(card, trailer \|\| null\);/,
+  'contribution date sorter must not reinsert an already-sorted observed card set');
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260818-1'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);
+assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260818-1/);
 assert.match(bootstrap, /giving-practice-runtime\.js/);
 assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
 assert.match(bootstrap, /giving-practice-directory\.js/);

@@ -1,6 +1,6 @@
 import './giving-ux-resilience-shell.js?v=20260817-2';
 
-const GIVING_ASSET_EPOCH = '20260816-4';
+const GIVING_ASSET_EPOCH = '20260818-1';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const GIVING_PRACTICE_EPOCH = '20260817-12';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
@@ -38,7 +38,7 @@ try {
   await Promise.all([
     fetch(sourceUrl('./giving-model.js'), { cache: 'reload', credentials: 'same-origin' }),
     fetch(sourceUrl('./giving-api.js'), { cache: 'reload', credentials: 'same-origin' }),
-    fetch(sourceUrl('./giving-review-paging-core.js?v=20260813-3'), { cache: 'reload', credentials: 'same-origin' }),
+    fetch(sourceUrl('./giving-review-paging-core.js?v=20260818-1'), { cache: 'reload', credentials: 'same-origin' }),
     fetch(sourceUrl('./giving-fec-resilience.js?v=20260814-1'), { cache: 'reload', credentials: 'same-origin' })
   ]);
 } catch {

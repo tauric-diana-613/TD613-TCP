@@ -16,6 +16,10 @@ function compareDateValues(left, right, direction) {
   return direction === 'desc' ? -result : result;
 }
 
+function sameNodeOrder(current, desired) {
+  return current.length === desired.length && current.every((node, index) => node === desired[index]);
+}
+
 function decorateContributionCards() {
   const list = document.getElementById('recordList');
   if (!list) return;
@@ -57,12 +61,17 @@ function sortContributionCards() {
   if (!contributionDirection) return;
   const cards = [...list.querySelectorAll(':scope > .record-card')];
   const trailer = list.querySelector(':scope > .coverage-warning');
-  cards.sort((left, right) => compareDateValues(
+  const sorted = [...cards].sort((left, right) => compareDateValues(
     extractDate(left.querySelector('.record-date strong')?.textContent),
     extractDate(right.querySelector('.record-date strong')?.textContent),
     contributionDirection
   ));
-  for (const card of cards) list.insertBefore(card, trailer || null);
+  // recordList is MutationObserver-driven. Moving nodes that are already in the
+  // desired order creates a new childList mutation and recursively requeues this
+  // sorter, so DOM movement is legal only when the order actually changes.
+  if (!sameNodeOrder(cards, sorted)) {
+    for (const card of sorted) list.insertBefore(card, trailer || null);
+  }
 }
 
 function committeeCardDate(card) {
@@ -77,8 +86,13 @@ function sortCommitteeCards() {
   const button = document.getElementById('ledgerDateSortButton');
   if (!list || !button) return;
   const cards = [...list.querySelectorAll(':scope > .committee-card')];
-  cards.sort((left, right) => compareDateValues(committeeCardDate(left), committeeCardDate(right), ledgerDirection));
-  for (const card of cards) list.appendChild(card);
+  const sorted = [...cards].sort((left, right) => compareDateValues(committeeCardDate(left), committeeCardDate(right), ledgerDirection));
+  // committeeLedger is also observed. Re-appending an already-sorted card set
+  // would make the observer trigger itself forever after the first real ledger
+  // render. Preserve identity and move nodes only when ordering changed.
+  if (!sameNodeOrder(cards, sorted)) {
+    for (const card of sorted) list.appendChild(card);
+  }
   button.dataset.direction = ledgerDirection;
   button.setAttribute('aria-pressed', 'true');
   button.textContent = `Date ${ledgerDirection === 'asc' ? '↑' : '↓'}`;
