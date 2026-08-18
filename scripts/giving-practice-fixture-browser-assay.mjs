@@ -56,15 +56,17 @@ async function snapshot(page) {
 async function snapshotReviewPages(page, totalRecords) {
   const pageCount = Math.max(1, Math.ceil(totalRecords / 50));
   const states = [];
+  await page.locator('.tab[data-view="review"]').click();
+  if (pageCount > 1) await page.locator('#recordList .review-pagination').waitFor({ state: 'visible', timeout: 5000 });
   for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
     if (pageNumber > 1) {
-      await page.locator(`#recordList [data-review-page="${pageNumber}"]`).last().click();
+      await page.locator(`#recordList .review-page-number[data-review-page="${pageNumber}"]`).click();
       await page.waitForFunction((value) => Boolean(document.querySelector(`#recordList .review-page-number[data-review-page="${value}"][aria-current="page"]`)), pageNumber, { timeout: 5000 });
     }
     states.push(await snapshot(page));
   }
   if (pageCount > 1) {
-    await page.locator('#recordList [data-review-page="1"]').last().click();
+    await page.locator('#recordList .review-page-number[data-review-page="1"]').click();
     await page.waitForFunction(() => Boolean(document.querySelector('#recordList .review-page-number[data-review-page="1"][aria-current="page"]')), null, { timeout: 5000 });
   }
   return states;
