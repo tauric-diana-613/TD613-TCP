@@ -50,6 +50,21 @@
   display: block;
 }
 
+/* Keep sortable headers visually registered to their evidence columns.
+   Committee's rule was overlong; Contributor only needed a slight trim. */
+.review-sort-button[data-review-sort="contributor"] {
+  width: 96%;
+  justify-self: start;
+}
+.review-sort-button[data-review-sort="committee"] {
+  width: 82%;
+  justify-self: start;
+}
+.review-sort-button[data-review-sort="amount"] {
+  justify-self: end;
+  text-align: right;
+}
+
 @media (max-width: 760px) {
   .giving-primary-search-actions {
     flex-wrap: nowrap !important;
@@ -65,5 +80,12 @@
   .contact-queue-top-actions,
   .contact-queue-run-actions {
     justify-content: flex-end !important;
+  }
+
+  /* Mobile contribution amounts are left-aligned by the card layout, so the
+     corresponding sortable header follows the same reading edge. */
+  .review-sort-button[data-review-sort="amount"] {
+    justify-self: start;
+    text-align: left;
   }
 }
