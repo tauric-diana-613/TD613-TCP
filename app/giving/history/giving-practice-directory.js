@@ -57,7 +57,7 @@ function contributorTrail(item, { expanded = false } = {}) {
       ${visible.map((entry) => {
         const classes = [...entry.transaction_classes, ...entry.data_classes].filter(Boolean).join(' · ');
         const anomaly = entry.compliance_anomaly_count ? ` · ${entry.compliance_anomaly_count} compliance anomaly` : '';
-        return `<button type="button" class="practice-contributor-breadcrumb" data-practice-contributor="${escapeHtml(entry.name)}" title="${escapeHtml(`${entry.record_count} fictional contribution${entry.record_count === 1 ? '' : 's'} · ${money(entry.total_cents)}${classes ? ` · ${classes}` : ''}${anomaly}`)}">${escapeHtml(entry.name)} <em>${entry.record_count}</em></button>`;
+        return `<button type="button" class="practice-contributor-breadcrumb" data-practice-contributor="${escapeHtml(entry.name)}" data-practice-origin="${escapeHtml(item.name)}" title="${escapeHtml(`${entry.record_count} fictional contribution${entry.record_count === 1 ? '' : 's'} · ${money(entry.total_cents)}${classes ? ` · ${classes}` : ''}${anomaly}`)}">${escapeHtml(entry.name)} <em>${entry.record_count}</em></button>`;
       }).join('')}
       ${remainder > 0 ? `<span class="practice-contributor-more">+${remainder} more · search this committee to open the full trail</span>` : ''}
     </div>
@@ -119,15 +119,22 @@ function interceptPracticeDirectory(event) {
   renderPracticeDirectory($('#campaignDirectoryQuery')?.value || '');
 }
 
-function prepareContributorFromTrail(name) {
+function prepareContributorFromTrail(name, originLabel = null) {
   const prepared = prepareContributorSearch(name, {
     from: 'practice-candidate-committee-lookup',
     through: 'practice-contributor-breadcrumb',
-    statusSelector: '#campaignToolsStatus'
+    statusSelector: '#campaignToolsStatus',
+    originLabel
   });
   if (!prepared) return false;
   document.dispatchEvent(new CustomEvent('td613:giving-practice-discovery-route', {
-    detail: { from: 'candidate-committee-lookup', through: 'contributor-breadcrumb', prepared_contributor: name, retrieval_started: false }
+    detail: {
+      from: 'candidate-committee-lookup',
+      through: 'contributor-breadcrumb',
+      origin_label: originLabel,
+      prepared_contributor: name,
+      retrieval_started: false
+    }
   }));
   return true;
 }
@@ -190,7 +197,10 @@ document.addEventListener('click', (event) => {
   if (contributor) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    prepareContributorFromTrail(contributor.dataset.practiceContributor || '');
+    prepareContributorFromTrail(
+      contributor.dataset.practiceContributor || '',
+      contributor.dataset.practiceOrigin || null
+    );
     return;
   }
   if (!event.target?.closest?.('.practice-geo-asleep')) return;
