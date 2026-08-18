@@ -97,13 +97,79 @@ If the observer collapses the altered path into the expected path merely because
 
 That loss is the experimental finding. It is not yet curvature.
 
-## 5. Tomographic recovery sequence
+## 5. Observation aperture
+
+The route comparison must also declare **where and how the observation was made**. Route residue without observation scope can overstate what the assay actually tested.
+
+Shared research receipt:
+
+```text
+td613.flowcore.observation-aperture/v0.1
+```
+
+For Moss Lantern, the initial bounded aperture is conceptually:
+
+```text
+source scope:
+  Moss Lantern practice capsule only
+
+instrument scope:
+  Pedagogue route-memory observer
+
+condition scope:
+  declared route ground truth
+  one controlled projection-step perturbation
+
+matching posture:
+  declared route-step exact
+
+live Ash runtime:
+  false
+
+raw source transport:
+  false
+
+authority effect:
+  none
+```
+
+This produces two separations that future Loom work must preserve:
+
+```text
+same endpoint
+!= same route history
+
+same observed route result
+!= same observation aperture
+```
+
+A missing route step may therefore be stated only as a bounded non-observation:
+
+```text
+the declared step was not observed
+inside this source / instrument / condition aperture
+```
+
+It may not be promoted into:
+
+```text
+the step never existed
+hidden transport was proven
+curvature was measured
+holonomy was observed
+Ash internally routed the object this way
+```
+
+The observation aperture is a receipt of experimental scope, **not a fifth AIA route, not Ash authority, and not a transport law**.
+
+## 6. Tomographic recovery sequence
 
 The bounded recovery sequence is:
 
 ```text
 known fictional phantom
 → declared route ground truth
+→ declare observation aperture
 → real/shared route-memory observer
 → reconstruction comparison
 → controlled path perturbation
@@ -121,15 +187,17 @@ curvature = unearned
 holonomy = unearned
 ```
 
-## 6. Relationship to Giving
+## 7. Relationship to Giving
 
-Giving supplied the empirical pattern, not Ash ontology.
+Giving supplied two empirical patterns, not Ash ontology.
 
-Its Bikini Bottom practice case showed that a fictional payload can hydrate a real consequential workspace without fabricating evidence or auto-running retrieval. That local observation was stripped of Giving nouns and promoted only as the product-independent Canonical Practice Fixture contract.
+First, its Bikini Bottom practice case showed that a fictional payload can hydrate a real consequential workspace without fabricating evidence or auto-running retrieval. That local observation was stripped of Giving nouns and promoted only as the product-independent Canonical Practice Fixture contract.
 
-Ash receives the instrument in research/test custody only.
+Second, Giving exposed the need to preserve the **observation aperture** around a negative result: “not observed in these selected sources, dates, and matching conditions” cannot safely collapse into “absent.” Aperture v3.1’s null-result law independently carries the same structure. The shared Flow-Core observation-aperture receipt therefore has independent witnesses in Giving and this Moss Lantern calibration assay.
 
-## 7. Recovery ceiling
+Ash receives that mechanic in research/test custody only.
+
+## 8. Recovery ceiling
 
 Nothing in this document changes the completed A15-R0 rescue posture.
 
