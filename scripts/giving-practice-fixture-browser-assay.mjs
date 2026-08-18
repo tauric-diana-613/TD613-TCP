@@ -129,10 +129,34 @@ async function assertCenteredDialog(page) {
   assert.equal(await page.locator('#practiceExitConfirm').count(), 1, 'all exit entry points must share one dialog node');
 }
 
-async function dismissExitNo(page) {
+async function dismissExitNo(page, { native = false } = {}) {
   await assertCenteredDialog(page);
-  await page.locator('[data-practice-exit="no"]').click();
-  await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
+  const no = page.locator('[data-practice-exit="no"]');
+  if (!native) {
+    await no.click();
+    await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
+    return;
+  }
+  const state = await no.evaluate((node) => {
+    const style = getComputedStyle(node);
+    const rect = node.getBoundingClientRect();
+    return {
+      disabled: node.disabled === true,
+      visible: style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0,
+      width: rect.width,
+      height: rect.height
+    };
+  });
+  assert.equal(state.disabled, false, `native Campaign Deputy dismissal must remain enabled: ${JSON.stringify(state)}`);
+  assert.equal(state.visible, true, `native Campaign Deputy dismissal must remain visible: ${JSON.stringify(state)}`);
+  assert.ok(state.width > 0 && state.height > 0, `native Campaign Deputy dismissal must retain a real hit box: ${JSON.stringify(state)}`);
+  await no.evaluate((node) => node.click());
+  assert.equal(page.isClosed(), false, 'native Campaign Deputy dismissal must not close the Giving page');
+  await pollUntil(async () => no.evaluate((node) => node.closest('#practiceExitConfirm')?.hidden === true), {
+    timeout: 5000,
+    interval: 40,
+    label: 'native Campaign Deputy dismissal hides shared exit dialog'
+  });
 }
 
 async function activateSleepingCampaignExit(page) {
@@ -401,7 +425,7 @@ export async function witnessGivingPracticeFixture(page) {
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
-  await page.locator('[data-practice-exit="no"]').click();
+  await dismissExitNo(page, { native: true });
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
@@ -643,12 +667,13 @@ export async function witnessGivingPracticeFixture(page) {
   for (const item of afterExit.sleepingGeo) assert.equal(item.asleep, false, `${item.selector} must wake on confirmed exit`);
 
   return Object.freeze({
-    schema: 'td613.giving.practice-fixture-browser-witness/v0.8',
+    schema: 'td613.giving.practice-fixture-browser-witness/v0.9',
     fixture: 'giving.bikini-bottom-practice/v0.1',
     manifestly_fictional: true,
     exit_entry_points: 3,
     exit_pointer_click_entry_points: 2,
     sleeping_campaign_exit_geometry_and_native_activation_observed: true,
+    sleeping_campaign_exit_native_dismissal_observed: true,
     shared_centered_exit_dialog: true,
     notification_layer_above_floating_exit: true,
     notification_paint_order_observed: true,
