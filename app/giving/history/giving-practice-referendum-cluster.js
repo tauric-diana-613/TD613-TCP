@@ -4,7 +4,6 @@ const PRACTICE_SOURCE_ID = _givingPracticeHydration.PRACTICE_SOURCE_ID;
 const REFERENDUM = 'Krusty Krab Parking Expansion Referendum Committee';
 const FISHOCRATIC = 'Fishocratic Executive Committee';
 const AQUAMAN = 'Friends of Aquaman PC';
-const PUFF = 'Puff for Bikini Bottom School District #67';
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 const folded = (value) => compact(value).toLocaleLowerCase('en-US');
 const skeleton = (value) => folded(value).replace(/[^a-z0-9]+/g, '');
@@ -26,9 +25,11 @@ const KRABS_CLUSTER_IDENTITIES = Object.freeze({
 });
 
 // New gifts only. Existing practice gifts remain untouched.
-// Eugene's ordinary recurring history peaks around $10k and Pearl's ordinary
-// practice history remains much smaller/broader. These episodic clusters are
-// intentionally conspicuous magnitude spikes against those otherwise divergent profiles.
+// Eugene's ordinary solo baseline is normalized elsewhere into microscopic
+// cheapskate gifts. These episodic clusters therefore read as conspicuous
+// magnitude spikes against otherwise divergent contributor profiles.
+// Local Larry/Puff maxout clusters live in giving-practice-local-alignment.js;
+// giant coordinated clusters remain limited to referendum/non-local objects.
 const TEMPORAL_CLUSTER_TX = Object.freeze([
   { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2022-12-03', temporal_cluster: 'BBV-REF-2022-12-03', gifts: {
     'Eugene H. Krabs': 7500000,
@@ -54,11 +55,6 @@ const TEMPORAL_CLUSTER_TX = Object.freeze([
     'Eugene H. Krabs': 6000000,
     'Pearl Krabs': 9000000,
     'Krusty Krab LLC': 24000000
-  } },
-  { committee: PUFF, committee_kind: 'CANDIDATE_COMMITTEE', date: '2025-03-22', temporal_cluster: 'BBV-PUFF-2025-03-22', gifts: {
-    'Eugene H. Krabs': 4000000,
-    'Pearl Krabs': 6500000,
-    'Krusty Krab LLC': 18000000
   } }
 ]);
 
@@ -245,7 +241,6 @@ export const _givingPracticeReferendumCluster = Object.freeze({
   REFERENDUM,
   FISHOCRATIC,
   AQUAMAN,
-  PUFF,
   KRABS_CLUSTER_IDENTITIES,
   TEMPORAL_CLUSTER_TX,
   matchedClusterIdentities,
