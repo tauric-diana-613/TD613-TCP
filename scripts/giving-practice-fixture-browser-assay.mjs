@@ -135,6 +135,35 @@ async function dismissExitNo(page) {
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
+async function activateSleepingCampaignExit(page) {
+  const campaign = page.locator('.tab[data-view="campaign"]');
+  const geometry = await campaign.evaluate((node) => {
+    const style = getComputedStyle(node);
+    const rect = node.getBoundingClientRect();
+    const point = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    const hit = document.elementFromPoint(point.x, point.y);
+    return {
+      disabled: node.disabled === true,
+      visible: style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0,
+      width: rect.width,
+      height: rect.height,
+      practiceAsleep: node.dataset.practiceAsleep || '',
+      hit: hit === node || Boolean(hit?.closest?.('.tab[data-view="campaign"]')),
+      hitTag: hit?.tagName || null,
+      hitId: hit?.id || null,
+      hitClass: typeof hit?.className === 'string' ? hit.className : ''
+    };
+  });
+  assert.equal(geometry.practiceAsleep, 'true', `Campaign Deputy must remain explicitly asleep during practice: ${JSON.stringify(geometry)}`);
+  assert.equal(geometry.disabled, false, `sleeping Campaign Deputy exit route must remain an enabled user gesture: ${JSON.stringify(geometry)}`);
+  assert.equal(geometry.visible, true, `sleeping Campaign Deputy exit route must remain visibly available: ${JSON.stringify(geometry)}`);
+  assert.ok(geometry.width > 0 && geometry.height > 0, `sleeping Campaign Deputy exit route must retain a real hit box: ${JSON.stringify(geometry)}`);
+  assert.equal(geometry.hit, true, `sleeping Campaign Deputy exit route must own its center hit target: ${JSON.stringify(geometry)}`);
+  await campaign.evaluate((node) => node.click());
+  assert.equal(page.isClosed(), false, 'native sleeping Campaign Deputy activation must not close the Giving page');
+  return geometry;
+}
+
 async function runPracticeSearch(page, { timeout = 12000 } = {}) {
   const requests = [];
   const onRequest = (request) => { if (isGivingApiRequest(request)) requests.push(request.url()); };
@@ -364,7 +393,7 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#practiceFloatingExitButton').click();
   await dismissExitNo(page);
   const activeBeforeCampaign = (await snapshot(page)).activeTab;
-  await page.locator('.tab[data-view="campaign"]').click();
+  await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
   await page.locator('[data-practice-exit="no"]').click();
@@ -609,10 +638,12 @@ export async function witnessGivingPracticeFixture(page) {
   for (const item of afterExit.sleepingGeo) assert.equal(item.asleep, false, `${item.selector} must wake on confirmed exit`);
 
   return Object.freeze({
-    schema: 'td613.giving.practice-fixture-browser-witness/v0.7',
+    schema: 'td613.giving.practice-fixture-browser-witness/v0.8',
     fixture: 'giving.bikini-bottom-practice/v0.1',
     manifestly_fictional: true,
     exit_entry_points: 3,
+    exit_pointer_click_entry_points: 2,
+    sleeping_campaign_exit_geometry_and_native_activation_observed: true,
     shared_centered_exit_dialog: true,
     notification_layer_above_floating_exit: true,
     notification_paint_order_observed: true,
