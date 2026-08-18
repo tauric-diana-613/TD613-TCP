@@ -5,11 +5,13 @@ const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const GIVING_PRACTICE_EPOCH = '20260817-12';
 const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1';
 const GIVING_PAGING_FIX_EPOCH = '20260818-1';
+const GIVING_MINIUPDATE_EPOCH = '20260818-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
 const observerUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}&observer=${GIVING_OBSERVER_IDEMPOTENCE_EPOCH}`, import.meta.url).href;
 const pagingUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}&pagefix=${GIVING_PAGING_FIX_EPOCH}`, import.meta.url).href;
+const miniupdateUrl = (path) => new URL(`${path}?v=${GIVING_MINIUPDATE_EPOCH}`, import.meta.url).href;
 const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 document.title = 'TD613 Giving';
@@ -28,6 +30,7 @@ afterStylesheet('givingStateFilterStylesheet', epochUrl('./giving-state-filter.c
 afterStylesheet('givingClarityStylesheet', epochUrl('./giving-clarity.css'));
 afterStylesheet('givingUxResilienceStylesheet', epochUrl('./giving-ux-resilience.css'));
 afterStylesheet('givingPracticeHydrationStylesheet', practiceUrl('./giving-practice-hydration.css'));
+afterStylesheet('givingMiniupdateStylesheet', miniupdateUrl('./giving-miniupdate.css'));
 
 function afterStylesheet(id, href) {
   if (document.getElementById(id)) return;
@@ -87,3 +90,4 @@ await import(observerUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(observerUrl('./giving-date-sort.js'));
 await import(practiceUrl('./giving-dossier-help.js'));
+await import(miniupdateUrl('./giving-miniupdate.js'));
