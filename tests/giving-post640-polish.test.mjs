@@ -18,6 +18,7 @@ const pageSize = read('app/giving/history/giving-page-size.js');
 const reviewPaging = read('app/giving/history/giving-review-paging.js');
 const reviewPagingCore = read('app/giving/history/giving-review-paging-core.js');
 const renderBackpressure = read('app/giving/history/giving-search-render-backpressure.js');
+const transactionClassification = read('app/giving/history/giving-transaction-classification.js');
 const bootstrap = read('app/giving/history/giving-bootstrap.js');
 const givingIndex = read('app/giving/history/index.html');
 const browserProbe = read('scripts/giving-browser-probe.mjs');
@@ -61,6 +62,12 @@ assert.match(reviewPagingCore, /givingSearchRender === 'deferred'/);
 assert.match(renderBackpressure, /root\.dataset\.givingSearchRender = 'deferred'/);
 assert.match(renderBackpressure, /td613:giving-run-settled/);
 assert.match(reviewPaging, /giving-review-paging-core\.js\?v=20260813-3/);
+assert.match(transactionClassification, /if \(existing\.textContent !== classification\) existing\.textContent = classification;/,
+  'transaction badge observer must not rewrite an already-correct text node and recursively trigger itself');
+assert.match(transactionClassification, /if \(existing\.dataset\.transactionClass !== classification\) existing\.dataset\.transactionClass = classification;/,
+  'transaction badge metadata updates must also be idempotent');
+assert.doesNotMatch(transactionClassification, /if \(existing\) \{\s*existing\.textContent = classification;/,
+  'unconditional existing-badge text rewrites are forbidden inside the childList observer');
 assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);

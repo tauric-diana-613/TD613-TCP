@@ -116,8 +116,11 @@ function decorateTransactionBadges() {
       continue;
     }
     if (existing) {
-      existing.textContent = classification;
-      existing.dataset.transactionClass = classification;
+      // This decorator is driven by a childList MutationObserver. Rewriting an
+      // already-correct badge text would itself create another child mutation,
+      // recursively scheduling the decorator and starving the browser main thread.
+      if (existing.textContent !== classification) existing.textContent = classification;
+      if (existing.dataset.transactionClass !== classification) existing.dataset.transactionClass = classification;
       continue;
     }
     const badge = document.createElement('span');
