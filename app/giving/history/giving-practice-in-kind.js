@@ -5,10 +5,11 @@ const LOCAL_LIMIT_CENTS = 100000;
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 
 // SpongeBob is the practice in-kind lane: food/catering value moves across
-// several political-object types while ordinary local-candidate entries remain
-// beneath the fictional $1,000 ceiling. Larry's separate self-financing lane
-// teaches candidate loans, so the two transaction classes remain visually and
-// semantically distinct.
+// several political-object types. Most local-candidate entries remain beneath
+// the fictional $1,000 ceiling; one deliberately preserved over-limit in-kind
+// row teaches that non-cash form does not erase a contribution-limit question.
+// Larry's separate self-financing lane teaches candidate loans, so the two
+// transaction classes remain visually and semantically distinct.
 const IN_KIND_TX = Object.freeze([
   {
     date: '2021-09-18', amount_cents: 175000,
@@ -41,6 +42,12 @@ const IN_KIND_TX = Object.freeze([
     description: 'Fundraiser buffet, grill service, and late-night snack trays · FICTIONAL'
   },
   {
+    date: '2026-02-28', amount_cents: 230716,
+    committee: 'Puff for Bikini Bottom School District #67', committee_kind: 'CANDIDATE_COMMITTEE',
+    description: 'Family-night catering, Krabby Patty trays, beverage station, and service labor · FICTIONAL',
+    practice_over_limit_anomaly: true
+  },
+  {
     date: '2026-05-23', amount_cents: 425000,
     committee: 'Krusty Krab Parking Expansion Referendum Committee', committee_kind: 'ISSUE_REFERENDUM',
     description: 'Referendum canvass-launch catering, volunteer meals, and mobile grill service · FICTIONAL'
@@ -69,6 +76,7 @@ function dateMatches(date, query = {}) {
 function recordFor(tx, index) {
   const token = `in-kind-spongebob-${tx.date}-${index + 1}`;
   const localCandidate = tx.committee_kind === 'CANDIDATE_COMMITTEE';
+  const overLimitAnomaly = Boolean(tx.practice_over_limit_anomaly);
   return {
     digest: `practice:${_givingPracticeHydration.PRACTICE_FIXTURE_ID}:${token}`,
     contributor_name_raw: 'SpongeBob SquarePants',
@@ -90,6 +98,11 @@ function recordFor(tx, index) {
     cycle: tx.date.slice(0, 4), election: `${tx.date.slice(0, 4)} fictional cycle`, contribution_date: tx.date,
     contribution_type: 'IN-KIND', transaction_class: 'IN-KIND', amount_cents: tx.amount_cents,
     in_kind_description: tx.description,
+    practice_over_limit_anomaly: overLimitAnomaly,
+    ...(overLimitAnomaly ? {
+      practice_compliance_review_required: true,
+      practice_limit_excess_cents: tx.amount_cents - LOCAL_LIMIT_CENTS
+    } : {}),
     source_family: 'FICTIONAL_PRACTICE', source_instance_id: PRACTICE_SOURCE_ID, custodian: 'BikiniBottomVotes',
     evidence_status: 'FICTIONAL_SAMPLE', retrieved_at: new Date().toISOString(),
     raw_source_row: {
@@ -97,22 +110,34 @@ function recordFor(tx, index) {
       'Contribution Type': 'IN-KIND',
       'In-Kind Description': tx.description,
       'Committee Name': tx.committee,
-      Amount: (tx.amount_cents / 100).toFixed(2)
+      Amount: (tx.amount_cents / 100).toFixed(2),
+      ...(overLimitAnomaly ? { 'Practice Compliance Flag': 'VALUE EXCEEDS LOCAL ORDINARY CONTRIBUTION LIMIT' } : {})
     },
     source_native_ids: { practice_record_id: token },
-    practice_data_class: 'IN_KIND_TRANSACTION_CLASS',
-    pedagogy_note: 'An in-kind contribution carries reportable value without arriving as an ordinary cash payment. The transaction class remains visible on the contribution card while local-candidate amounts still obey the fictional ordinary contribution ceiling.',
+    practice_data_class: overLimitAnomaly ? 'IN_KIND_LIMIT_ANOMALY' : 'IN_KIND_TRANSACTION_CLASS',
+    pedagogy_note: overLimitAnomaly
+      ? 'This fictional in-kind contribution is deliberately valued above the local ordinary contribution ceiling. Preserve the source value and investigate the compliance anomaly; in-kind form does not erase the limit question.'
+      : 'An in-kind contribution carries reportable value without arriving as an ordinary cash payment. The transaction class remains visible on the contribution card while local-candidate amounts still obey the fictional ordinary contribution ceiling.',
     lineage: {
       schema: 'td613.giving.practice-lineage/v1',
       practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
       manifestly_fictional: true,
       practice_record: true,
       discovery_graph: true,
-      data_class: 'IN_KIND_TRANSACTION_CLASS',
+      data_class: overLimitAnomaly ? 'IN_KIND_LIMIT_ANOMALY' : 'IN_KIND_TRANSACTION_CLASS',
       transaction_class: 'IN-KIND',
       in_kind_description: tx.description,
       local_candidate_committee: localCandidate,
-      ...(localCandidate ? { ordinary_contribution_limit_cents: LOCAL_LIMIT_CENTS } : {}),
+      ...(localCandidate ? {
+        ordinary_contribution_limit_cents: LOCAL_LIMIT_CENTS,
+        ordinary_limit_applies: true
+      } : {}),
+      ...(overLimitAnomaly ? {
+        compliance_review_required: true,
+        amount_exceeds_practice_limit: true,
+        excess_cents: tx.amount_cents - LOCAL_LIMIT_CENTS,
+        preserve_observed_value: true
+      } : {}),
       evidence_authority: false,
       consequence_authority: false,
       external_retrieval: false,
@@ -138,7 +163,7 @@ function contributorsForCommittee(committeeName) {
     name: 'SpongeBob SquarePants',
     record_count: rows.length,
     total_cents: rows.reduce((sum, row) => sum + row.amount_cents, 0),
-    data_classes: ['IN_KIND_TRANSACTION_CLASS']
+    data_classes: [...new Set(rows.map((row) => row.practice_data_class))]
   }];
 }
 
@@ -154,10 +179,16 @@ function responseFrom(original, body, records) {
         ...body.data.page,
         records,
         practice_in_kind_present: true,
-        practice_in_kind_record_count: records.filter((record) => record.transaction_class === 'IN-KIND').length
+        practice_in_kind_record_count: records.filter((record) => record.transaction_class === 'IN-KIND').length,
+        practice_in_kind_limit_anomaly_present: records.some((record) => record.practice_over_limit_anomaly === true)
       }
     },
-    receipt: { ...(body.receipt || {}), practice_in_kind_present: true, record_count: records.length }
+    receipt: {
+      ...(body.receipt || {}),
+      practice_in_kind_present: true,
+      practice_in_kind_limit_anomaly_present: records.some((record) => record.practice_over_limit_anomaly === true),
+      record_count: records.length
+    }
   }), { status: original.status, statusText: original.statusText, headers });
 }
 
