@@ -5,13 +5,19 @@ const PRACTICE_OBJECTS = Object.freeze([
   { id: 'BBV-C001', name: 'King Neptune for King', kind: 'Candidate committee', candidate: 'King Neptune', office: 'King of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C002', name: 'Puff for Bikini Bottom School District #67', kind: 'Candidate committee', candidate: 'Mrs. Puff', office: 'Bikini Bottom School District #67', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C003', name: 'Every Villain Is Lemons PAC', kind: 'PAC', candidate: '', office: '', committee_kind: 'PAC' },
-  { id: 'BBV-C004', name: 'Sheldon Plankton for Bikini Bottom Campaign', kind: 'Candidate committee', candidate: 'Sheldon Plankton', office: 'Bikini Bottom campaign', committee_kind: 'CANDIDATE_COMMITTEE' },
+  { id: 'BBV-C004', name: 'Sheldon Plankton for Bikini Bottom Campaign', kind: 'Candidate committee', candidate: 'Sheldon Plankton', office: 'Mayor of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C005', name: 'Larry Lobster for Mayor of Bikini Bottom', kind: 'Candidate committee', candidate: 'Larry Lobster', office: 'Mayor of Bikini Bottom', committee_kind: 'CANDIDATE_COMMITTEE' },
   { id: 'BBV-C006', name: 'Fishocratic Executive Committee', kind: 'Executive committee', candidate: '', office: '', committee_kind: 'PARTY_EXECUTIVE_COMMITTEE' },
   { id: 'BBV-C007', name: 'Friends of Aquaman PC', kind: 'Political committee', candidate: '', office: '', committee_kind: 'POLITICAL_COMMITTEE' },
   { id: 'BBV-C008', name: 'Krusty Krab Parking Expansion Referendum Committee', kind: 'Issue / referendum committee', candidate: '', office: 'Parking expansion referendum', committee_kind: 'ISSUE_REFERENDUM' }
 ]);
 
+const DISCOVERY_OBJECTS = Object.freeze([
+  { id: 'BBV-C009', name: 'Larry Lobster for Bikini Bottom Board of Public Health, Soil & Water District 2', kind: 'Candidate committee', candidate: 'Larry Lobster', office: 'Bikini Bottom Board of Public Health, Soil & Water District 2', committee_kind: 'CANDIDATE_COMMITTEE' },
+  { id: 'BBV-C010', name: 'Aquaman for Bikini Bottom County Sheriff', kind: 'Candidate committee', candidate: 'Aquaman', office: 'Bikini Bottom County Sheriff', committee_kind: 'CANDIDATE_COMMITTEE' }
+]);
+
+const ALL_OBJECTS = Object.freeze([...PRACTICE_OBJECTS, ...DISCOVERY_OBJECTS]);
 const $ = (selector) => document.querySelector(selector);
 const GEO_SELECTORS = Object.freeze(['#givingStateFilter', '#campaignDirectoryState', '#campaignDirectoryMunicipal', '#campaignDirectoryJurisdiction']);
 
@@ -30,7 +36,7 @@ function normalize(value) {
 function matchingObjects(query) {
   const needle = normalize(query);
   if (!needle || needle === 'bikini bottom' || needle === 'sample' || needle === 'fictional sample') return [...PRACTICE_OBJECTS];
-  return PRACTICE_OBJECTS.filter((item) => normalize([item.name, item.kind, item.candidate, item.office, item.committee_kind].join(' ')).includes(needle));
+  return ALL_OBJECTS.filter((item) => normalize([item.name, item.kind, item.candidate, item.office, item.committee_kind].join(' ')).includes(needle));
 }
 
 function candidatesFrom(objects) {
@@ -108,7 +114,7 @@ function renderPracticeDirectory(query) {
     status.dataset.kind = objects.length ? 'success' : 'info';
     status.textContent = objects.length
       ? `${objects.length} fictional candidate / committee result${objects.length === 1 ? '' : 's'} from BikiniBottomVotes. Contributor trails preserve the route into Individual Contributor; real filing jurisdictions remain asleep.`
-      : 'No Bikini Bottom practice object matched. Try “Bikini Bottom” to see all eight fictional political objects.';
+      : 'No Bikini Bottom practice object matched. Try “Bikini Bottom” for the starter eight, or search a candidate/office name to discover additional fictional race history.';
   }
 }
 
@@ -212,6 +218,8 @@ syncPracticeDirectorySurface();
 
 export const _givingPracticeDirectory = Object.freeze({
   PRACTICE_OBJECTS,
+  DISCOVERY_OBJECTS,
+  ALL_OBJECTS,
   matchingObjects,
   renderPracticeDirectory,
   prepareContributorFromTrail,
