@@ -1,0 +1,57 @@
+/* Requests #20–#21: action-row alignment and Contact Queue causal order. */
+.giving-primary-search-actions {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center;
+  justify-content: center !important;
+  width: 100%;
+  gap: 7px;
+}
+.giving-primary-search-actions > .button {
+  flex: 0 1 auto;
+  width: auto !important;
+  min-width: 0;
+}
+
+.contact-queue-top-actions {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  align-items: center;
+  justify-content: flex-end !important;
+  width: 100%;
+  gap: 7px;
+}
+.contact-queue-top-actions .text-button {
+  margin-left: 0 !important;
+}
+.contact-queue-run-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 7px;
+  margin-top: 2px;
+}
+.contact-queue-run-actions > .button {
+  flex: 0 1 auto;
+  width: auto !important;
+}
+
+@media (max-width: 760px) {
+  .giving-primary-search-actions {
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 5px;
+  }
+  .giving-primary-search-actions > .button {
+    min-height: 38px;
+    padding-inline: 8px;
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  .contact-queue-top-actions,
+  .contact-queue-run-actions {
+    justify-content: flex-end !important;
+  }
+}
