@@ -55,13 +55,8 @@ function syncPracticeChrome() {
   const active = practiceActive();
   const toastStack = $('#toastStack');
   if (toastStack) {
-    if (active) {
-      toastStack.dataset.practiceNotificationLayer = 'true';
-      toastStack.style.zIndex = '12010';
-    } else {
-      delete toastStack.dataset.practiceNotificationLayer;
-      toastStack.style.removeProperty('z-index');
-    }
+    if (active) toastStack.dataset.practiceNotificationLayer = 'true';
+    else delete toastStack.dataset.practiceNotificationLayer;
   }
   const campaignTab = $('.tab[data-view="campaign"]');
   if (campaignTab) {
