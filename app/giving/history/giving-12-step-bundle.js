@@ -12,6 +12,7 @@ const money = (cents) => new Intl.NumberFormat('en-US', { style: 'currency', cur
 
 let loadedCommittee = null;
 let clusterInspectionActive = false;
+let queueCueArmed = false;
 const zeroResultTargets = new Set();
 
 function practiceActive() {
@@ -26,6 +27,10 @@ function scrollToElement(node, offset = 84) {
   if (!node) return;
   const top = Math.max(0, node.getBoundingClientRect().top + window.scrollY - offset);
   window.scrollTo({ top, left: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
+}
+
+function setText(node, next) {
+  if (node && node.textContent !== next) node.textContent = next;
 }
 
 function practiceCommitteeById(id) {
@@ -57,9 +62,10 @@ function renderLoadedFilterHint() {
     hint.className = 'loaded-context-filter-hint';
     banner.append(hint);
   }
-  hint.textContent = loadedCommittee
+  const next = loadedCommittee
     ? 'This reviewed committee can filter the next contributor retrieval when “Filter by loaded committee” is checked in Search terms.'
     : 'Optional context only. Ordinary contributor search works without this. Load a committee below if you want to constrain a contributor retrieval to one committee.';
+  setText(hint, next);
 }
 
 function setPracticeLoadedContext(context) {
@@ -156,9 +162,9 @@ function updateCommitteeFilterSummary() {
   const toggle = $('#committeeContextFilterToggle');
   if (!summary || !toggle) return;
   summary.dataset.ready = loadedCommittee ? 'true' : 'false';
-  summary.textContent = loadedCommittee
+  setText(summary, loadedCommittee
     ? `Loaded: ${loadedContextTitle()}${toggle.checked ? ' · filter armed' : ''}`
-    : 'No committee loaded yet.';
+    : 'No committee loaded yet.');
 }
 
 function installCommitteeFilterControl() {
@@ -274,18 +280,16 @@ function decorateCommitteeWorkspace() {
     tab.replaceChildren(document.createTextNode('Committee workspace '), ...(count ? [count] : []));
     tab.dataset.workspaceNamed = 'true';
   }
-  const eyebrow = ledger.querySelector('.section-head .eyebrow');
-  const heading = ledger.querySelector('.section-head h2');
-  if (eyebrow) eyebrow.textContent = 'COMMITTEE SEARCH + CONFIRMED DONOR TOTALS';
-  if (heading) heading.textContent = 'Committee workspace';
+  setText(ledger.querySelector('.section-head .eyebrow'), 'COMMITTEE SEARCH + ATTRIBUTED DONOR TOTALS');
+  setText(ledger.querySelector('.section-head h2'), 'Committee workspace');
 
   const workspaceHead = $('#committeeSearchWorkspace .committee-search-workspace-head');
   if (workspaceHead) {
-    workspaceHead.querySelector('strong').textContent = 'Committee search results';
+    setText(workspaceHead.querySelector('strong'), 'Committee search results');
     if (!workspaceHead.querySelector('.committee-search-lane-copy')) {
       const copy = document.createElement('p');
       copy.className = 'committee-search-lane-copy';
-      copy.textContent = 'Candidate & committee lookup lands here immediately. Donor identity confirmation is not required to inspect a committee search result.';
+      copy.textContent = 'Candidate & committee lookup lands here immediately. Record attribution is not required to inspect a committee search result.';
       workspaceHead.append(copy);
     }
   }
@@ -295,7 +299,7 @@ function decorateCommitteeWorkspace() {
     const lane = document.createElement('section');
     lane.id = 'confirmedGivingLaneHeading';
     lane.className = 'confirmed-giving-lane-heading';
-    lane.innerHTML = '<span>Confirmed giving totals</span><strong>A separate derived lane</strong><small>Only contribution records you mark Identity confirmed in Contributions are allowed into these totals. Committee search results above remain usable whether or not this lane has records.</small>';
+    lane.innerHTML = '<span>Attributed giving totals</span><strong>A separate derived lane</strong><small>Only contribution records you mark Record attributed in Contributions are allowed into these totals. Committee search results above remain usable whether or not this lane has records.</small>';
     totals.insertAdjacentElement('beforebegin', lane);
   }
 }
@@ -303,16 +307,24 @@ function decorateCommitteeWorkspace() {
 function normalizeLedgerEmptyState() {
   const empty = $('#committeeLedger .empty-state');
   if (!empty) return;
-  const strong = empty.querySelector('strong');
-  const span = empty.querySelector('span');
-  if (strong) strong.textContent = 'No confirmed donor totals yet.';
-  if (span) span.textContent = 'Committee search results above are independent and ready to inspect. Confirm contribution identity only when you want reviewed donor records included in this totals lane.';
+  setText(empty.querySelector('strong'), 'No attributed donor totals yet.');
+  setText(empty.querySelector('span'), 'Committee search results above are independent and ready to inspect. Attribute a contribution record only when you want reviewed donor records included in this totals lane.');
+}
+
+let ledgerClarityQueued = false;
+function queueLedgerClarity() {
+  if (ledgerClarityQueued) return;
+  ledgerClarityQueued = true;
+  queueMicrotask(() => {
+    ledgerClarityQueued = false;
+    normalizeLedgerEmptyState();
+  });
 }
 
 function installLedgerClarityObserver() {
   const ledger = $('#committeeLedger');
   if (!ledger) return;
-  new MutationObserver(normalizeLedgerEmptyState).observe(ledger, { childList: true, subtree: true });
+  new MutationObserver(queueLedgerClarity).observe(ledger, { childList: true, subtree: true });
   normalizeLedgerEmptyState();
 }
 
@@ -359,7 +371,7 @@ function renderPracticeExpenditureLane() {
   }
   const ids = visiblePracticeCommitteeIds();
   const records = ids.flatMap((id) => expendituresForCommittee(id));
-  heading.textContent = 'Expenditure receipts · BikiniBottomVotes';
+  setText(heading, 'Expenditure receipts · BikiniBottomVotes');
   section.hidden = false;
   if (!records.length) {
     results.innerHTML = '<span class="muted">No fictional expenditure receipts matched this committee search.</span>';
@@ -381,6 +393,18 @@ function renderPracticeExpenditureLane() {
     </div>`;
 }
 
+let practiceEnhancementQueued = false;
+function queuePracticeEnhancements() {
+  if (practiceEnhancementQueued) return;
+  practiceEnhancementQueued = true;
+  queueMicrotask(() => {
+    practiceEnhancementQueued = false;
+    if (!practiceActive()) return;
+    decoratePracticeCommitteeCards();
+    renderPracticeExpenditureLane();
+  });
+}
+
 function refreshPracticeDirectoryEnhancements() {
   if (!practiceActive()) return;
   decoratePracticeCommitteeCards();
@@ -400,24 +424,34 @@ function installPracticeDirectoryEnhancements() {
     requestAnimationFrame(renderPracticeExpenditureLane);
   });
   const roots = [$('#campaignDirectoryCommittees'), $('#committeeSearchWorkspaceList')].filter(Boolean);
-  for (const root of roots) new MutationObserver(() => queueMicrotask(refreshPracticeDirectoryEnhancements)).observe(root, { childList: true, subtree: true });
+  for (const root of roots) new MutationObserver(queuePracticeEnhancements).observe(root, { childList: true, subtree: true });
+}
+
+function queueCountValue() {
+  const match = compact($('#contactQueueCount')?.textContent).match(/^(\d+)/);
+  return match ? Number(match[1]) : 0;
+}
+
+function ensureDemoQueueCue() {
+  const add = $('#addContactQueueButton');
+  if (!add) return;
+  let cue = $('#demoAddContactCue');
+  if (!cue && practiceActive() && queueCueArmed) {
+    cue = document.createElement('span');
+    cue.id = 'demoAddContactCue';
+    cue.className = 'demo-add-contact-cue';
+    cue.textContent = '→';
+    cue.setAttribute('aria-hidden', 'true');
+    add.insertAdjacentElement('beforebegin', cue);
+  }
+  if (!cue) return;
+  const loaded = queueCountValue() > 0;
+  cue.hidden = !practiceActive() || !queueCueArmed || loaded;
+  if (loaded) queueCueArmed = false;
 }
 
 function installDemoQueueCue() {
-  const add = $('#addContactQueueButton');
-  if (!add) return;
-  const ensureCue = () => {
-    let cue = $('#demoAddContactCue');
-    if (!cue) {
-      cue = document.createElement('span');
-      cue.id = 'demoAddContactCue';
-      cue.className = 'demo-add-contact-cue';
-      cue.textContent = '→';
-      cue.setAttribute('aria-hidden', 'true');
-      add.insertAdjacentElement('beforebegin', cue);
-    }
-    cue.hidden = !practiceActive() || ($('#contactQueueCount')?.textContent || '').trim() !== '0 contacts';
-  };
+  const count = $('#contactQueueCount');
   document.addEventListener('td613:giving-practice-source-registry', (event) => {
     if (event.detail?.action === 'register') {
       setTimeout(() => {
@@ -426,22 +460,21 @@ function installDemoQueueCue() {
           input.value = ['Patrick Star', 'Sandy Cheeks', 'Gary Snail', 'Eugene H. Krabs', 'Squidward Q. Tentacles'].join('\n');
           input.dispatchEvent(new Event('input', { bubbles: true }));
         }
-        ensureCue();
+        queueCueArmed = true;
+        ensureDemoQueueCue();
       }, 0);
     }
     if (event.detail?.action === 'remove') {
       loadedCommittee = null;
       const toggle = $('#committeeContextFilterToggle');
       if (toggle) toggle.checked = false;
+      queueCueArmed = false;
       $('#demoAddContactCue')?.remove();
       updateCommitteeFilterSummary();
     }
   });
-  add.addEventListener('click', () => {
-    const cue = $('#demoAddContactCue');
-    if (cue) cue.hidden = true;
-  }, true);
-  ensureCue();
+  if (count) new MutationObserver(() => queueMicrotask(ensureDemoQueueCue)).observe(count, { childList: true, subtree: true, characterData: true });
+  ensureDemoQueueCue();
 }
 
 function targetOptionCount(targetId) {
@@ -457,18 +490,26 @@ function annotateZeroResultRows() {
   for (const row of list.querySelectorAll('.contact-queue-item')) {
     const targetId = row.dataset.targetId;
     const zero = zeroResultTargets.has(targetId);
-    row.dataset.zeroRecords = zero ? 'true' : 'false';
-    if (!zero) continue;
+    if (row.dataset.zeroRecords !== String(zero)) row.dataset.zeroRecords = String(zero);
     const state = row.querySelector('.contact-queue-state');
+    const note = row.querySelector('.contact-queue-zero-result');
+    if (!zero) {
+      note?.remove();
+      if (state?.textContent === 'NO RECORDS') {
+        setText(state, row.dataset.status || 'SEARCHED');
+        state.hidden = row.dataset.status === 'QUEUED';
+      }
+      continue;
+    }
     if (state) {
       state.hidden = false;
-      state.textContent = 'NO RECORDS';
+      setText(state, 'NO RECORDS');
     }
-    if (!row.querySelector('.contact-queue-zero-result')) {
-      const note = document.createElement('p');
-      note.className = 'contact-queue-zero-result';
-      note.textContent = 'No contribution records returned for this contact in the selected sources and date window. That is an observed zero-result search—not proof that the person or entity never donated elsewhere.';
-      row.append(note);
+    if (!note) {
+      const next = document.createElement('p');
+      next.className = 'contact-queue-zero-result';
+      next.textContent = 'No contribution records returned for this contact in the selected sources and date window. That is an observed zero-result search—not proof that the person or entity never donated elsewhere.';
+      row.append(next);
     }
   }
   const running = list.querySelector('.contact-queue-item[data-status="RUNNING"]');
@@ -478,20 +519,33 @@ function annotateZeroResultRows() {
   }
 }
 
+let zeroAnnotationQueued = false;
+function queueZeroAnnotation() {
+  if (zeroAnnotationQueued) return;
+  zeroAnnotationQueued = true;
+  queueMicrotask(() => {
+    zeroAnnotationQueued = false;
+    annotateZeroResultRows();
+  });
+}
+
 function installZeroResultPedagogy() {
   const list = $('#contactQueueList');
   if (!list) return;
-  document.addEventListener('td613:giving-run-settled', () => {
+  document.addEventListener('td613:giving-run-settled', (event) => {
     const running = list.querySelector('.contact-queue-item[data-status="RUNNING"]');
     const targetId = running?.dataset.targetId;
     if (!targetId) return;
+    const heldSources = Array.isArray(event.detail?.held_sources) ? event.detail.held_sources : [];
+    const held = event.detail?.status === 'HELD' || heldSources.length > 0;
     setTimeout(() => {
-      if (targetOptionCount(targetId) === 0) zeroResultTargets.add(targetId);
+      const observedCount = targetOptionCount(targetId);
+      if (!held && observedCount === 0) zeroResultTargets.add(targetId);
       else zeroResultTargets.delete(targetId);
       annotateZeroResultRows();
     }, 0);
   });
-  new MutationObserver(() => queueMicrotask(annotateZeroResultRows)).observe(list, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-status'] });
+  new MutationObserver(queueZeroAnnotation).observe(list, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-status'] });
   $('#clearContactQueueButton')?.addEventListener('click', () => {
     setTimeout(() => {
       if (!list.querySelector('.contact-queue-item')) zeroResultTargets.clear();
@@ -500,7 +554,7 @@ function installZeroResultPedagogy() {
   });
   document.addEventListener('td613:giving-clear-all', () => {
     zeroResultTargets.clear();
-    queueMicrotask(annotateZeroResultRows);
+    queueZeroAnnotation();
   });
 }
 
@@ -513,29 +567,45 @@ function renderClusterInspection() {
   if (!notice) return;
   const cards = clusterCards();
   for (const card of $$('#recordList .record-card')) card.classList.toggle('cluster-suggested-card', cards.includes(card));
+  let button = notice.querySelector('#inspectClustersButton');
+  if (!cards.length) {
+    clusterInspectionActive = false;
+    document.documentElement.dataset.clusterInspection = 'false';
+    button?.remove();
+    return;
+  }
   document.documentElement.dataset.clusterInspection = clusterInspectionActive ? 'true' : 'false';
-  if (!cards.length) return;
-  if (notice.querySelector('#inspectClustersButton')) return;
-  const button = document.createElement('button');
-  button.id = 'inspectClustersButton';
-  button.type = 'button';
-  button.className = 'cluster-inspect-button';
-  button.textContent = clusterInspectionActive ? 'Show all records' : 'Inspect suggested records →';
-  button.addEventListener('click', () => {
-    clusterInspectionActive = !clusterInspectionActive;
+  if (!button) {
+    button = document.createElement('button');
+    button.id = 'inspectClustersButton';
+    button.type = 'button';
+    button.className = 'cluster-inspect-button';
+    button.addEventListener('click', () => {
+      clusterInspectionActive = !clusterInspectionActive;
+      renderClusterInspection();
+      if (clusterInspectionActive) scrollToElement(clusterCards()[0]);
+    });
+    notice.append(document.createTextNode(' '), button);
+  }
+  setText(button, clusterInspectionActive ? 'Show all records' : 'Inspect suggested records →');
+}
+
+let clusterQueued = false;
+function queueClusterInspection() {
+  if (clusterQueued) return;
+  clusterQueued = true;
+  queueMicrotask(() => {
+    clusterQueued = false;
     renderClusterInspection();
-    if (clusterInspectionActive) scrollToElement(clusterCards()[0]);
   });
-  notice.append(document.createTextNode(' '), button);
 }
 
 function installClusterInspection() {
   const notice = $('#clusterNotice');
   const list = $('#recordList');
   if (!notice || !list) return;
-  const refresh = () => queueMicrotask(renderClusterInspection);
-  new MutationObserver(refresh).observe(notice, { childList: true, subtree: true, characterData: true });
-  new MutationObserver(refresh).observe(list, { childList: true, subtree: true });
+  new MutationObserver(queueClusterInspection).observe(notice, { childList: true, subtree: true, characterData: true });
+  new MutationObserver(queueClusterInspection).observe(list, { childList: true, subtree: true });
   renderClusterInspection();
 }
 
@@ -558,7 +628,7 @@ function install() {
   installDemoQueueCue();
   installZeroResultPedagogy();
   installClusterInspection();
-  document.documentElement.dataset.givingTwelveStepBundle = '20260818-1';
+  document.documentElement.dataset.givingTwelveStepBundle = '20260818-2';
   globalThis.__TD613_GIVING_EXPENDITURE_AUDIT__ = expenditureCoverageAudit();
 }
 
