@@ -52,10 +52,21 @@ function ensureFloatingExit() {
 
 function syncPracticeChrome() {
   ensureFloatingExit();
+  const active = practiceActive();
+  const toastStack = $('#toastStack');
+  if (toastStack) {
+    if (active) {
+      toastStack.dataset.practiceNotificationLayer = 'true';
+      toastStack.style.zIndex = '12010';
+    } else {
+      delete toastStack.dataset.practiceNotificationLayer;
+      toastStack.style.removeProperty('z-index');
+    }
+  }
   const campaignTab = $('.tab[data-view="campaign"]');
   if (campaignTab) {
-    campaignTab.dataset.practiceAsleep = practiceActive() ? 'true' : 'false';
-    if (practiceActive()) campaignTab.setAttribute('aria-describedby', 'practiceCampaignSleepHint');
+    campaignTab.dataset.practiceAsleep = active ? 'true' : 'false';
+    if (active) campaignTab.setAttribute('aria-describedby', 'practiceCampaignSleepHint');
     else campaignTab.removeAttribute('aria-describedby');
   }
 }
