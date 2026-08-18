@@ -66,6 +66,24 @@
       "now": "Otherwise different contributor histories can suddenly converge on the same dates, political objects, and unusually large transaction magnitudes.",
       "why": "An episodic pattern can become investigatively salient precisely because the longer histories remain distinct.",
       "exact": "Repeated co-temporality and magnitude spikes may be surfaced as patterns for review, but coordination, common control, common identity, or causation may not be inferred automatically."
+    },
+    {
+      "contrast_id": "transaction-class-versus-cash-default",
+      "now": "Most contribution records can remain visually quiet while a small minority carry a meaningful transaction class such as loan or in-kind.",
+      "why": "A sparse but consequential source field should become visible when it changes how a transaction must be interpreted.",
+      "exact": "Transaction class may be promoted from source semantics without discarding the original source type; ordinary cash records remain unbadged."
+    },
+    {
+      "contrast_id": "preserve-anomaly-versus-auto-repair",
+      "now": "A source-observed value can conflict with an expected limit or rule.",
+      "why": "Automatically repairing the value can erase the exact anomaly that deserves review.",
+      "exact": "When a declared practice anomaly is present, preserve the observed value, surface the review condition, and forbid silent normalization from converting the record into a compliant one."
+    },
+    {
+      "contrast_id": "negative-space-versus-opposition-inference",
+      "now": "A contributor cluster may repeatedly support some political objects while showing no observed transactions to another object in the available aperture.",
+      "why": "Absence within an observed record set can become a useful comparison without becoming proof of hostility, opposition, or intent.",
+      "exact": "Negative-space patterns may be surfaced as hypotheses for further retrieval, but absence may not be converted into a positive claim about motive or allegiance."
     }
   ],
   "expected_route_steps": [
