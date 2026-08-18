@@ -1,63 +1,53 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-function applyMatchLanguage(root = document) {
-  for (const button of root.querySelectorAll?.('[data-decision="CANDIDATE"]') || []) {
-    if (button.textContent !== 'Match') button.textContent = 'Match';
-  }
-  for (const state of root.querySelectorAll?.('.identity-state[data-state="CANDIDATE"]') || []) {
-    if (state.textContent !== 'Match') state.textContent = 'Match';
-  }
-  const cluster = document.getElementById('clusterNotice');
-  if (cluster && /candidate cluster/i.test(cluster.textContent)) {
-    const next = cluster.textContent.replace(/candidate cluster/ig, 'match cluster');
-    if (next !== cluster.textContent) cluster.textContent = next;
-  }
+function setText(node, next) {
+  if (!node || node.textContent === next) return false;
+  node.textContent = next;
+  return true;
 }
 
 function replaceText(node, replacements) {
-  if (!node) return;
-  let text = node.textContent || '';
+  if (!node) return false;
+  const text = node.textContent || '';
   let next = text;
   for (const [pattern, replacement] of replacements) next = next.replace(pattern, replacement);
-  if (next !== text) node.textContent = next;
+  return next !== text ? setText(node, next) : false;
+}
+
+function applyMatchLanguage(root = document) {
+  for (const button of root.querySelectorAll?.('[data-decision="CANDIDATE"]') || []) setText(button, 'Match');
+  for (const state of root.querySelectorAll?.('.identity-state[data-state="CANDIDATE"]') || []) setText(state, 'Match');
+  const cluster = document.getElementById('clusterNotice');
+  if (cluster && /candidate cluster/i.test(cluster.textContent || '')) {
+    replaceText(cluster, [[/candidate cluster/ig, 'match cluster']]);
+  }
 }
 
 function applyRecordAttributionLanguage(root = document) {
   const legend = $('#view-review .legend');
   if (legend) {
     if (legend.getAttribute('aria-label') === 'Identity states') legend.setAttribute('aria-label', 'Review states');
-    const attributed = legend.querySelector('[data-state="CONFIRMED"]');
-    if (attributed) attributed.textContent = 'record attributed';
-    const unresolved = legend.querySelector('[data-state="UNREVIEWED"]');
-    if (unresolved) unresolved.textContent = 'record unresolved';
+    setText(legend.querySelector('[data-state="CONFIRMED"]'), 'record attributed');
+    setText(legend.querySelector('[data-state="UNREVIEWED"]'), 'record unresolved');
   }
 
-  const confirmedOption = $('#reviewFilter option[value="CONFIRMED"]');
-  if (confirmedOption) confirmedOption.textContent = 'Record attributed';
-  const unresolvedOption = $('#reviewFilter option[value="UNREVIEWED"]');
-  if (unresolvedOption) unresolvedOption.textContent = 'Record unresolved';
+  setText($('#reviewFilter option[value="CONFIRMED"]'), 'Record attributed');
+  setText($('#reviewFilter option[value="UNREVIEWED"]'), 'Record unresolved');
 
-  for (const button of root.querySelectorAll?.('[data-decision="CONFIRMED"]') || []) {
-    if (button.textContent !== 'Record attributed') button.textContent = 'Record attributed';
-  }
-  for (const button of root.querySelectorAll?.('[data-decision="UNREVIEWED"]') || []) {
-    if (button.textContent !== 'Record unresolved') button.textContent = 'Record unresolved';
-  }
-  for (const state of root.querySelectorAll?.('.identity-state[data-state="CONFIRMED"]') || []) {
-    if (state.textContent !== 'Record attributed') state.textContent = 'Record attributed';
-  }
-  for (const state of root.querySelectorAll?.('.identity-state[data-state="UNREVIEWED"]') || []) {
-    if (state.textContent !== 'Record unresolved') state.textContent = 'Record unresolved';
-  }
+  for (const button of root.querySelectorAll?.('[data-decision="CONFIRMED"]') || []) setText(button, 'Record attributed');
+  for (const button of root.querySelectorAll?.('[data-decision="UNREVIEWED"]') || []) setText(button, 'Record unresolved');
+  for (const state of root.querySelectorAll?.('.identity-state[data-state="CONFIRMED"]') || []) setText(state, 'Record attributed');
+  for (const state of root.querySelectorAll?.('.identity-state[data-state="UNREVIEWED"]') || []) setText(state, 'Record unresolved');
 
   const searchHintsLabel = $('#searchHints')?.closest('.field')?.querySelector(':scope > span');
   if (searchHintsLabel && /^IDENTITY HINTS\b/i.test(searchHintsLabel.textContent || '')) {
-    searchHintsLabel.childNodes[0].textContent = 'SEARCH HINTS ';
+    const first = searchHintsLabel.childNodes[0];
+    if (first?.textContent !== 'SEARCH HINTS ') first.textContent = 'SEARCH HINTS ';
   }
 
   const safetyHeading = $$('.safety-block strong').find((node) => /Identity matching stays manual/i.test(node.textContent || ''));
-  if (safetyHeading) safetyHeading.textContent = 'Record matching stays manual';
+  setText(safetyHeading, safetyHeading ? 'Record matching stays manual' : '');
 
   const holdReview = $('#holdReviewButton');
   if (holdReview?.title) {
@@ -67,20 +57,17 @@ function applyRecordAttributionLanguage(root = document) {
     if (nextTitle !== holdReview.title) holdReview.title = nextTitle;
   }
 
-  const loadedCopy = $('#loadedCampaignContext small');
-  replaceText(loadedCopy, [
+  replaceText($('#loadedCampaignContext small'), [
     [/reviewed campaign identity/gi, 'reviewed campaign / committee record'],
     [/reviewed filing identity/gi, 'reviewed filing record']
   ]);
 
   const ledgerEyebrow = $('#view-ledger .section-head .eyebrow');
-  if (ledgerEyebrow) {
-    if (/IDENTITY-CONFIRMED RECORDS ONLY/i.test(ledgerEyebrow.textContent || '')) ledgerEyebrow.textContent = 'ATTRIBUTED RECORDS ONLY';
-    else if (/COMMITTEE SEARCH \+ CONFIRMED DONOR TOTALS/i.test(ledgerEyebrow.textContent || '')) ledgerEyebrow.textContent = 'COMMITTEE SEARCH + ATTRIBUTED DONOR TOTALS';
-  }
+  if (/IDENTITY-CONFIRMED RECORDS ONLY/i.test(ledgerEyebrow?.textContent || '')) setText(ledgerEyebrow, 'ATTRIBUTED RECORDS ONLY');
+  else if (/COMMITTEE SEARCH \+ CONFIRMED DONOR TOTALS/i.test(ledgerEyebrow?.textContent || '')) setText(ledgerEyebrow, 'COMMITTEE SEARCH + ATTRIBUTED DONOR TOTALS');
 
   const totalLabel = $('#confirmedTotalLabel');
-  if (totalLabel && /identity-confirmed contributions/i.test(totalLabel.textContent || '')) totalLabel.textContent = 'Attributed contributions';
+  if (/identity-confirmed contributions/i.test(totalLabel?.textContent || '')) setText(totalLabel, 'Attributed contributions');
 
   replaceText($('#confirmedRecordCount'), [
     [/\bidentity-confirmed record\b/gi, 'attributed record'],
@@ -90,12 +77,9 @@ function applyRecordAttributionLanguage(root = document) {
     [/^Identity confirmed\b/i, 'Record attributed'],
     [/^IDENTITY CONFIRMED\b/, 'RECORD ATTRIBUTED']
   ]);
-  replaceText($('#wakeIdentityState'), [
-    [/^(\d+) identity confirmed$/i, '$1 records attributed']
-  ]);
+  replaceText($('#wakeIdentityState'), [[/^(\d+) identity confirmed$/i, '$1 records attributed']]);
 
-  const ceiling = $('.identity-ceiling');
-  if (ceiling) ceiling.textContent = 'Record attribution is a research determination, not a legal compliance determination.';
+  setText($('.identity-ceiling'), 'Record attribution is a research determination, not a legal compliance determination.');
 
   const ledger = $('#committeeLedger');
   if (ledger) {
@@ -111,29 +95,22 @@ function applyRecordAttributionLanguage(root = document) {
     }
   }
 
-  const targetSummary = $('#campaignTargetSummary');
-  replaceText(targetSummary, [
+  replaceText($('#campaignTargetSummary'), [
     [/(\d+) identity confirmed\b/gi, '$1 records attributed'],
     [/identity-confirmed/gi, 'attributed']
   ]);
 
   const committeeSelect = $('#committeeSelect');
   if (committeeSelect) {
-    for (const option of committeeSelect.options) {
-      replaceText(option, [[/identity-confirmed committee/gi, 'attributed committee']]);
-    }
+    for (const option of committeeSelect.options) replaceText(option, [[/identity-confirmed committee/gi, 'attributed committee']]);
   }
 
   const recordSelect = $('#createRecordSelect');
   if (recordSelect) {
-    for (const option of recordSelect.options) {
-      replaceText(option, [[/identity-confirmed record/gi, 'attributed record']]);
-    }
+    for (const option of recordSelect.options) replaceText(option, [[/identity-confirmed record/gi, 'attributed record']]);
   }
 
-  for (const label of $$('#view-campaign .field > span')) {
-    replaceText(label, [[/Identity-confirmed source record/gi, 'Attributed source record']]);
-  }
+  for (const label of $$('#view-campaign .field > span')) replaceText(label, [[/Identity-confirmed source record/gi, 'Attributed source record']]);
   for (const paragraph of $$('#view-campaign p')) {
     replaceText(paragraph, [
       [/identity-confirmed gift/gi, 'attributed gift'],
