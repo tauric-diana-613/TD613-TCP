@@ -92,5 +92,24 @@
     "observable_correspondence":["opening a saved file restores its own dossier identity"],
     "alternative_explanations":["browser persistence may affect return behavior"],
     "abstention_conditions":["the saved file cannot be resolved by its dossier identity"]
+  },
+  "interface_specimen": {
+    "schema": "td613.pedagogue-interface-specimen/v0.1",
+    "surface_reference": "Giving/Data-entry field system",
+    "specimen_kind": "INTERFACE_FIELD_SYSTEM",
+    "observed": {
+      "shared_control_rule": true,
+      "dedicated_input_typography": false,
+      "mobile_font_size_px": 16,
+      "dedicated_textarea_treatment": false,
+      "dedicated_numeric_typography": false,
+      "native_temporal_control": true,
+      "placeholder_is_primary_visual": true
+    },
+    "constraints": {
+      "implementation_this_round": false,
+      "preserve_native_accessibility": true,
+      "automatic_redesign": false
+    }
   }
 }
