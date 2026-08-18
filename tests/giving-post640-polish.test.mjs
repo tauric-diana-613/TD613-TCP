@@ -37,7 +37,8 @@ for (const path of [
   'app/giving/history/giving-practice-directory.js',
   'app/giving/history/giving-practice-campaign-history.js',
   'app/giving/history/giving-practice-committee-graph.js',
-  'scripts/giving-practice-fixture-browser-assay.mjs'
+  'scripts/giving-practice-fixture-browser-assay.mjs',
+  'scripts/giving-browser-probe.mjs'
 ]) {
   assert.doesNotThrow(
     () => execFileSync(process.execPath, ['--check', path], { stdio: 'pipe' }),
@@ -151,6 +152,13 @@ assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 assert.match(sharedAccess, /Close shared access/);
 assert.match(sharedAccess, /session\.shared-access\.revoke/);
 assert.match(browserProbe, /witnessGivingPracticeFixture/);
+assert.match(browserProbe, /\['session\.status', 'registry\.read'\]/, 'only typed protected bootstrap operations may qualify for the production-practice 401 exception');
+assert.match(browserProbe, /item\.request_sequence <= practiceRequestBoundary/, 'protected HTTP refusals must remain causally bounded before the practice gesture');
+assert.match(browserProbe, /protectedConsole401Budget = expectedProtectedRefusals\.length/, 'console 401 classification must inherit a finite budget from already-proven protected HTTP refusals');
+assert.match(browserProbe, /protectedConsole401Budget -= 1/, 'each protected console echo must consume exactly one HTTP-ledger allowance');
+assert.match(browserProbe, /expected_protected_console_errors: expectedProtectedConsoleErrors/);
+assert.match(browserProbe, /material_console_errors: materialConsoleErrors/);
+assert.match(browserProbe, /assert\.deepEqual\(unexpectedFailedResources, \[\]/, 'unexpected HTTP failures remain independently fatal even when Chromium echoes protected 401s to the console');
 assert.match(practiceAssay, /async function pollUntil/);
 assert.doesNotMatch(practiceAssay, /\.waitForFunction\(/, 'production-facing Giving practice witness must remain CSP-safe and avoid Playwright waitForFunction eval polling');
 assert.match(practiceAssay, /outgrow the obsolete 49-row toy dataset/);
