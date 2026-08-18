@@ -50,8 +50,8 @@
   display: block;
 }
 
-/* Keep sortable headers visually registered to their evidence columns.
-   Committee's rule was overlong; Contributor only needed a slight trim. */
+/* Desktop remains a true column header, so its rules stay registered to the
+   evidence columns. Committee's rule was overlong; Contributor only needed a trim. */
 .review-sort-button[data-review-sort="contributor"] {
   width: 96%;
   justify-self: start;
@@ -82,10 +82,40 @@
     justify-content: flex-end !important;
   }
 
-  /* Mobile contribution amounts are left-aligned by the card layout, so the
-     corresponding sortable header follows the same reading edge. */
+  /* At this breakpoint each contribution becomes a one-column card. These
+     controls therefore stop pretending to be spatial column headers and become
+     one compact intrinsic-width sort ribbon. */
+  .review-sort-header {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    gap: 6px !important;
+    width: 100%;
+    margin: 0 0 8px;
+    padding: 2px 1px 5px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .review-sort-header::-webkit-scrollbar { display: none; }
+  .review-sort-button,
+  .review-sort-button[data-review-sort="contributor"],
+  .review-sort-button[data-review-sort="committee"],
   .review-sort-button[data-review-sort="amount"] {
-    justify-self: start;
-    text-align: left;
+    flex: 0 0 auto;
+    justify-self: auto;
+    width: auto !important;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid rgba(200, 235, 213, .12);
+    border-bottom-color: rgba(200, 235, 213, .18);
+    text-align: center !important;
+    white-space: nowrap;
+  }
+  .review-sort-button[data-active="true"] {
+    border-color: rgba(118, 234, 212, .42);
+    background: rgba(118, 234, 212, .055);
   }
 }
