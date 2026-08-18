@@ -81,7 +81,7 @@ await import(epochUrl('./giving-shared-access.js'));
 await import(epochUrl('./giving-search-controls.js'));
 await import(epochUrl('./giving-campaign-tools-v3.js'));
 await import(epochUrl('./giving-activity-contributor-handoff.js'));
-await import(epochUrl('./giving-visible-language.js'));
+await import(observerUrl('./giving-visible-language.js'));
 await import(epochUrl('./giving-contributions-copy.js'));
 await import(observerUrl('./giving-date-sort.js'));
 await import(practiceUrl('./giving-dossier-help.js'));
