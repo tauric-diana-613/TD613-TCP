@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 
+const WEBKIT_CAMPAIGN_LIVENESS_DIAGNOSTIC = process.env.TD613_BROWSER === 'webkit';
+
 function isGivingApiRequest(request) {
   if (!['fetch', 'xhr'].includes(request.resourceType())) return false;
   try { return /\/api\/td613-ledger\/?$/.test(new URL(request.url()).pathname); } catch { return false; }
@@ -143,6 +145,59 @@ async function dismissCampaignExitNoByKeyboard(page) {
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
+function startWebKitCampaignLifecycleTrace(page) {
+  const startedAt = Date.now();
+  const events = [];
+  const browser = page.context().browser();
+  const mark = (type) => events.push({ type, at_ms: Date.now() - startedAt });
+  page.on('close', () => mark('page-close'));
+  page.on('crash', () => mark('page-crash'));
+  browser?.on('disconnected', () => mark('browser-disconnected'));
+  return { startedAt, events, browser };
+}
+
+async function sampleWebKitCampaignPostDismissal(page, trace) {
+  const checkpoints = [0, 50, 100, 250, 500, 1000];
+  const samples = [];
+  let prior = 0;
+  for (const checkpoint of checkpoints) {
+    const wait = checkpoint - prior;
+    if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+    prior = checkpoint;
+    const sample = {
+      at_ms: Date.now() - trace.startedAt,
+      checkpoint_ms: checkpoint,
+      page_closed: page.isClosed(),
+      browser_connected: trace.browser?.isConnected?.() ?? null
+    };
+    if (!sample.page_closed) {
+      try {
+        sample.dom = await page.evaluate(() => ({
+          ready_state: document.readyState,
+          practice_state: document.documentElement.dataset.givingPractice || '',
+          exit_dialog_hidden: document.querySelector('#practiceExitConfirm')?.hidden ?? null,
+          search_button_present: Boolean(document.querySelector('#campaignDirectorySearchButton')),
+          search_button_disabled: document.querySelector('#campaignDirectorySearchButton')?.disabled ?? null,
+          active_element: document.activeElement?.id || document.activeElement?.tagName || ''
+        }));
+      } catch (error) {
+        sample.evaluate_error = error?.message || String(error);
+      }
+    }
+    samples.push(sample);
+  }
+  return {
+    schema: 'td613.giving.webkit-campaign-post-dismissal-diagnostic/v0.1',
+    diagnostic_only: true,
+    engine: process.env.TD613_BROWSER || null,
+    pointer_actions_after_campaign: 0,
+    lifecycle_events: trace.events,
+    samples,
+    final_page_closed: page.isClosed(),
+    final_browser_connected: trace.browser?.isConnected?.() ?? null
+  };
+}
+
 async function activateSleepingCampaignExit(page) {
   const campaign = page.locator('.tab[data-view="campaign"]');
   await campaign.evaluate((node) => node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' }));
@@ -228,7 +283,7 @@ async function assertTwelveStepGeometry(page) {
       exitZ: exit ? getComputedStyle(exit).zIndex : null,
       toastZ: toast ? getComputedStyle(toast).zIndex : null,
       toastInlineZ: toast?.style?.zIndex || '',
-      toastPracticeLayer: toast?.dataset.practiceNotificationLayer || '',
+      toastPracticeLayer: toast?.dataset?.practiceNotificationLayer || '',
       practiceState: document.documentElement.dataset.givingPractice || '',
       presetJustify: presets ? getComputedStyle(presets).justifyContent : ''
     };
@@ -407,11 +462,18 @@ export async function witnessGivingPracticeFixture(page) {
   await dismissExitNo(page);
   await page.locator('#practiceFloatingExitButton').click();
   await dismissExitNo(page);
+  const campaignLifecycleTrace = WEBKIT_CAMPAIGN_LIVENESS_DIAGNOSTIC ? startWebKitCampaignLifecycleTrace(page) : null;
   const activeBeforeCampaign = (await snapshot(page)).activeTab;
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
   await dismissCampaignExitNoByKeyboard(page);
+
+  if (campaignLifecycleTrace) {
+    const diagnostic = await sampleWebKitCampaignPostDismissal(page, campaignLifecycleTrace);
+    console.log(`[giving-webkit-campaign-isolation] ${JSON.stringify(diagnostic)}`);
+    throw new Error(`TD613_WEBKIT_CAMPAIGN_DIAGNOSTIC_COMPLETE ${JSON.stringify(diagnostic)}`);
+  }
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
