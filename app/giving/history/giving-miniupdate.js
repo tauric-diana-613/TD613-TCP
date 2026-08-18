@@ -367,6 +367,49 @@ function installFecPartialObserver() {
   annotateFecPartialState();
 }
 
+function normalizeContributionCardAddresses() {
+  const list = $('#recordList');
+  if (!list) return;
+  for (const small of list.querySelectorAll('.record-person > small')) {
+    if (small.dataset.addressNormalized === 'true') continue;
+    const parts = String(small.textContent || '')
+      .split(/\s+·\s+/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+    if (parts.length < 2) continue;
+
+    let street = parts[0];
+    let locality = parts.slice(1).join(', ');
+    if (parts.length >= 4) {
+      const zip = parts.at(-1);
+      const state = parts.at(-2);
+      const city = parts.at(-3);
+      street = parts.slice(0, -3).join(' · ');
+      locality = `${city}, ${state} ${zip}`.trim();
+    } else if (parts.length === 3) {
+      locality = `${parts[1]}, ${parts[2]}`;
+    }
+
+    const streetLine = document.createElement('span');
+    streetLine.className = 'record-address-line1';
+    streetLine.textContent = street;
+    const localityLine = document.createElement('span');
+    localityLine.className = 'record-address-locality';
+    localityLine.textContent = locality;
+    small.replaceChildren(streetLine, localityLine);
+    small.classList.add('record-address-normalized');
+    small.dataset.addressNormalized = 'true';
+  }
+}
+
+function installContributionAddressObserver() {
+  const list = $('#recordList');
+  if (!list) return;
+  new MutationObserver(() => queueMicrotask(normalizeContributionCardAddresses))
+    .observe(list, { childList: true, subtree: true });
+  normalizeContributionCardAddresses();
+}
+
 function installMiniupdate() {
   installBrandHomeLink();
   installMobileRangeHooks();
@@ -381,7 +424,8 @@ function installMiniupdate() {
   installCloseSessionPracticeExit();
   installCampaignLookupScroll();
   installFecPartialObserver();
-  document.documentElement.dataset.givingMiniupdate = '20260818-3';
+  installContributionAddressObserver();
+  document.documentElement.dataset.givingMiniupdate = '20260818-4';
 }
 
 installMiniupdate();
@@ -394,5 +438,6 @@ export const _givingMiniupdate = Object.freeze({
   installMobileRangeHooks,
   moveContactQueueAfterSearchActions,
   moveDossierActionsToTitle,
+  normalizeContributionCardAddresses,
   externalizeDossierPickerLabel
 });
