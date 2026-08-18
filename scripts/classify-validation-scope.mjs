@@ -43,6 +43,7 @@ const SCOPE_NEUTRAL = new Set([
   'docs/PEDAGOGUE_DESIGN_GATE.md',
   'docs/AIA_CISTERN_LAW.md',
   'scripts/classify-validation-scope.mjs',
+  'scripts/configure-git-hooks.mjs',
   'scripts/flowcore-release-content-probe.mjs',
   'scripts/giving-browser-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',

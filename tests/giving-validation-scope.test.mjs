@@ -51,6 +51,7 @@ const practiceOnly = classifyValidationScope([
   'scripts/giving-production-readiness.mjs',
   'scripts/flowcore-release-content-probe.mjs',
   'scripts/run-pedagogue-design-gate.mjs',
+  'scripts/configure-git-hooks.mjs',
   'tests/pedagogue-practice-fixture.test.mjs',
   'tests/pedagogue-design-gate.test.mjs',
   'tests/giving-release-content-probe.test.mjs',
@@ -65,6 +66,13 @@ assert.equal(practiceOnly.scope, 'practice');
 assert.equal(practiceOnly.practice_fixture_changed, true);
 assert.ok(practiceOnly.practice_file_count >= 4, 'practice lane should explicitly include the shared aperture helper and its two cross-system fixture witnesses');
 assert.deepEqual(practiceOnly.full_scope_files, []);
+
+const ciInstallerOnly = classifyValidationScope([
+  'app/engine/pedagogue-practice-fixture.js',
+  'scripts/configure-git-hooks.mjs'
+]);
+assert.equal(ciInstallerOnly.scope, 'practice', 'runner-local Giving browser install hardening must remain scope-neutral beside a practice change');
+assert.deepEqual(ciInstallerOnly.full_scope_files, []);
 
 const observationApertureOnly = classifyValidationScope([
   'app/engine/flowcore-observation-aperture.js',
