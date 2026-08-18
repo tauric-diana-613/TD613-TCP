@@ -2,7 +2,7 @@ import './giving-ux-resilience-shell.js?v=20260817-2';
 
 const GIVING_ASSET_EPOCH = '20260816-4';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
-const GIVING_PRACTICE_EPOCH = '20260817-8';
+const GIVING_PRACTICE_EPOCH = '20260817-9';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -18,6 +18,7 @@ if (retrievalLabel) retrievalLabel.textContent = 'GIVING HISTORY';
 
 afterStylesheet('givingCampaignToolsStylesheet', epochUrl('./giving-campaign-tools-v3.css'));
 afterStylesheet('givingContributorHandoffStylesheet', epochUrl('./giving-contributor-handoff.css'));
+afterStylesheet('givingTransactionClassStylesheet', epochUrl('./giving-transaction-classification.css'));
 afterStylesheet('givingSearchControlsStylesheet', epochUrl('./giving-search-controls.css'));
 afterStylesheet('givingStateFilterStylesheet', epochUrl('./giving-state-filter.css'));
 afterStylesheet('givingClarityStylesheet', epochUrl('./giving-clarity.css'));
@@ -58,6 +59,7 @@ await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 await import(epochUrl('./giving-contributor-handoff.js'));
+await import(epochUrl('./giving-transaction-classification.js'));
 
 // Practice search wrappers must be installed before GivingApiClient captures
 // globalThis.fetch. Each layer remains inside the fictional source aperture.
@@ -66,6 +68,7 @@ await import(practiceUrl('./giving-practice-search-noise.js'));
 await import(practiceUrl('./giving-practice-discovery-graph.js'));
 await import(practiceUrl('./giving-practice-referendum-cluster.js'));
 await import(practiceUrl('./giving-practice-temporal-cluster-extension.js'));
+await import(practiceUrl('./giving-practice-in-kind.js'));
 await import(practiceUrl('./giving-practice-local-campaign-rules.js'));
 await import(practiceUrl('./giving-practice-data-reconciliation.js'));
 await import(epochUrl('./giving-app.js'));
