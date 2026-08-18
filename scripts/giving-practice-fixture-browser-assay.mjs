@@ -135,6 +135,14 @@ async function dismissExitNo(page, { centeredAlready = false } = {}) {
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
+async function dismissCampaignExitNoByKeyboard(page) {
+  const no = page.locator('[data-practice-exit="no"]');
+  assert.equal(await no.evaluate((node) => document.activeElement === node), true, 'shared Campaign exit dialog must focus No before keyboard dismissal');
+  await page.keyboard.press('Enter');
+  assert.equal(page.isClosed(), false, 'keyboard Campaign Deputy dismissal must not close the Giving page');
+  await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
+}
+
 async function activateSleepingCampaignExit(page) {
   const campaign = page.locator('.tab[data-view="campaign"]');
   await campaign.evaluate((node) => node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' }));
@@ -220,7 +228,7 @@ async function assertTwelveStepGeometry(page) {
       exitZ: exit ? getComputedStyle(exit).zIndex : null,
       toastZ: toast ? getComputedStyle(toast).zIndex : null,
       toastInlineZ: toast?.style?.zIndex || '',
-      toastPracticeLayer: toast?.dataset?.practiceNotificationLayer || '',
+      toastPracticeLayer: toast?.dataset.practiceNotificationLayer || '',
       practiceState: document.documentElement.dataset.givingPractice || '',
       presetJustify: presets ? getComputedStyle(presets).justifyContent : ''
     };
@@ -403,7 +411,7 @@ export async function witnessGivingPracticeFixture(page) {
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
-  await dismissExitNo(page, { centeredAlready: true });
+  await dismissCampaignExitNoByKeyboard(page);
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
@@ -651,7 +659,7 @@ export async function witnessGivingPracticeFixture(page) {
     exit_entry_points: 3,
     exit_pointer_click_entry_points: 2,
     sleeping_campaign_exit_geometry_and_keyboard_activation_observed: true,
-    sleeping_campaign_exit_pointer_dismissal_observed: true,
+    sleeping_campaign_exit_keyboard_dismissal_observed: true,
     shared_centered_exit_dialog: true,
     notification_layer_above_floating_exit: true,
     notification_paint_order_observed: true,
