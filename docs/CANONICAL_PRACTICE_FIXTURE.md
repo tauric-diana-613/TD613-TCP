@@ -67,6 +67,84 @@ Both require an explicit human gesture. Neither grants evidentiary authority. Do
 
 The distinction is important: forbidding every write would often force a fake route. A reversible, explicitly gestured practice-custody write can be more scientifically honest than a demo button that merely pretends the write occurred.
 
+### Practice-record law
+
+A manifestly fictional practice source may return **practice records** after an explicitly authorized practice retrieval. This does not convert them into evidence.
+
+```text
+fictional practice record
+!= evidentiary record
+!= live-source record
+!= compliance finding
+```
+
+A practice record must remain visibly and mechanically marked as fictional throughout its route. At minimum it must carry the equivalent of:
+
+```text
+manifestly_fictional = true
+practice_record = true
+evidence_authority = false
+consequence_authority = false
+external_retrieval = false
+```
+
+The product must prevent practice records from being silently mixed with live custodians or exported as though they were observed evidence. A product may use the same contribution card, dossier, receipt, review, or Vault machinery precisely because the **route** is under test; the authority class remains practice-only.
+
+The admission rule “no invented evidence” therefore remains binding. Fictional practice records are permitted only because they are explicitly **not evidence** and appear only after the operator chooses to exercise the fictional practice source.
+
+### Observation-preservation law
+
+A rule, expectation, or compliance threshold may annotate an observed record. It may not rewrite the observed value merely to make the record conform.
+
+```text
+observed source value
+!= expected normative value
+
+normative expectation
+→ annotate / compare / flag / hold
+!= silently mutate observation
+```
+
+If a practice record intentionally or accidentally violates an expected threshold, the route must preserve the observed value and surface the contradiction or review condition. Auto-correction is allowed only when the correction itself is the declared source transformation and the pre-transform value remains inspectable.
+
+This law applies beyond campaign finance. A pedagogical system teaches a dangerous forensic habit when it repairs contradiction by erasing the contradictory observation.
+
+### Observation-aperture law
+
+A negative, null, missing, contradictory, or route-divergence observation must carry the bounded conditions under which it was observed.
+
+The shared receipt is:
+
+```text
+td613.flowcore.observation-aperture/v0.1
+```
+
+An observation aperture may declare:
+
+- source scope;
+- instrument scope;
+- condition scope;
+- temporal window;
+- matching posture;
+- active filter posture;
+- practice/live posture;
+- redaction posture.
+
+The portable law is:
+
+```text
+absence inside observed aperture
+!= universal absence
+
+same visible result
+!= same observation aperture
+
+observation aperture
+!= authority
+```
+
+A bounded non-observation may justify another search, comparison, or controlled perturbation. It may not become a universal claim, motive claim, identity claim, causation claim, or proof that an unobserved route does not exist.
+
 ## AIA posture
 
 A Canonical Practice Fixture may be evaluated through the generic AIA surface binding, but it must not be treated as a fabricated decoy.
@@ -80,6 +158,8 @@ human_closure = required
 ```
 
 Authorized operators may receive child-legible **NOW / WHY / EXACT** explanations. Unauthorized routes continue to receive minimum-disclosure, non-authoritative refusal. The practice fixture does not justify reciprocal disclosure of the system's internal topology.
+
+Where a negative observation becomes relevant, the AIA projection should preserve its observation aperture as an invariant while keeping identity/raw content outside the bounded structural projection.
 
 ## Pedagogue posture
 
@@ -97,6 +177,13 @@ A practice review verifies that:
 - route memory remains explicit;
 - geometric claims stay held;
 - human closure remains required.
+
+When the practice route produces fictional records, null results, or controlled perturbations, Pedagogue also checks the stronger hydration rules:
+
+- practice records remain non-evidentiary;
+- source observations are preserved rather than silently normalized to expectations;
+- negative observations remain aperture-qualified;
+- the promoted abstraction removes product nouns before entering shared core.
 
 Example:
 
@@ -157,7 +244,7 @@ A calibration phantom supplies known route ground truth.
 For expected route `R_e` and observed route `R_o`, TD613 currently reuses the bounded Pedagogue route-memory comparison:
 
 ```text
-D_route = round(1000 * d_L(R_e, R_o) / max(|R_e|, |R_o|, 1))
+D_route = round(1000 * d_L(R_e,R_o) / max(|R_e|,|R_o|,1))
 ```
 
 The practice traversal report exposes:
@@ -172,6 +259,8 @@ This is a discrete engineering surrogate for reconstruction error. It can distin
 same visible endpoint
 != same route history
 ```
+
+Every reconstruction observation should also bind an observation aperture describing the source, instrument, condition, matching posture, and relevant filters under which the route was reconstructed.
 
 It is **not** a claim of an affine connection, parallel transport, intrinsic curvature, a curvature tensor, or geometric holonomy.
 
@@ -190,6 +279,8 @@ transport law = not declared
 holonomy claim = not earned
 Golden Egg authority = unchanged
 ```
+
+The Moss Lantern phantom may consume the shared observation-aperture receipt in research/test custody. Doing so records *where and how the route observation was made*; it does not bind the helper into live Ash, create Proto-Loom production authority, or establish geometric transport.
 
 This preserves the emergency-rescue boundary established by the completed A15-R0 work while giving future tomography a known-ground-truth object.
 
