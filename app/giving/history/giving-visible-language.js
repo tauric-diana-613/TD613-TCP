@@ -59,6 +59,14 @@ function applyRecordAttributionLanguage(root = document) {
   const safetyHeading = $$('.safety-block strong').find((node) => /Identity matching stays manual/i.test(node.textContent || ''));
   if (safetyHeading) safetyHeading.textContent = 'Record matching stays manual';
 
+  const holdReview = $('#holdReviewButton');
+  if (holdReview?.title) {
+    const nextTitle = holdReview.title
+      .replace(/this Identity Review/gi, 'this contribution review')
+      .replace(/Identity Review/gi, 'Contribution review');
+    if (nextTitle !== holdReview.title) holdReview.title = nextTitle;
+  }
+
   const loadedCopy = $('#loadedCampaignContext small');
   replaceText(loadedCopy, [
     [/reviewed campaign identity/gi, 'reviewed campaign / committee record'],
@@ -81,6 +89,9 @@ function applyRecordAttributionLanguage(root = document) {
   replaceText($('#filingTotalState'), [
     [/^Identity confirmed\b/i, 'Record attributed'],
     [/^IDENTITY CONFIRMED\b/, 'RECORD ATTRIBUTED']
+  ]);
+  replaceText($('#wakeIdentityState'), [
+    [/^(\d+) identity confirmed$/i, '$1 records attributed']
   ]);
 
   const ceiling = $('.identity-ceiling');
@@ -130,6 +141,14 @@ function applyRecordAttributionLanguage(root = document) {
     ]);
   }
 
+  for (const toast of $$('#toastStack .toast')) {
+    replaceText(toast, [
+      [/Identity Review/gi, 'Contribution review'],
+      [/identity-confirmed/gi, 'attributed'],
+      [/identity state/gi, 'review state']
+    ]);
+  }
+
   // The 12-step Committee workspace may arrive after this module. Its copy is
   // normalized here too so the newer explanatory layer cannot reintroduce the
   // retired status ontology.
@@ -157,10 +176,12 @@ function queueApply() {
   });
 }
 
-for (const id of ['view-review', 'view-ledger', 'view-campaign']) {
+for (const id of ['view-review', 'view-ledger', 'view-campaign', 'wakeIdentityState', 'toastStack']) {
   const node = document.getElementById(id);
   if (node) new MutationObserver(queueApply).observe(node, { childList: true, subtree: true, characterData: true });
 }
+const holdReview = document.getElementById('holdReviewButton');
+if (holdReview) new MutationObserver(queueApply).observe(holdReview, { attributes: true, attributeFilter: ['title'] });
 
 applyRecordAttributionLanguage();
 
