@@ -46,6 +46,50 @@
 .practice-contributor-trail-list { display: flex; flex-wrap: wrap; gap: 4px; }
 .practice-contributor-more { align-self: center; color: var(--muted); font: 650 6px/1.3 var(--mono); }
 .campaign-activity-row .giving-contributor-breadcrumb { margin-top: 2px; }
+
+.giving-prepared-handoff {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 7px;
+  padding: 3px 6px;
+  border-left: 2px solid rgba(118, 234, 212, .72);
+  background: linear-gradient(90deg, rgba(118, 234, 212, .07), rgba(118, 234, 212, 0));
+  color: var(--muted);
+  font: 650 6px/1.35 var(--mono);
+}
+.giving-prepared-handoff[hidden] { display: none !important; }
+.giving-prepared-handoff-kicker {
+  flex: 0 0 auto;
+  color: var(--cyan);
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.giving-prepared-handoff-copy {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.giving-prepared-handoff[data-search-started="true"] {
+  border-left-color: rgba(255, 79, 216, .72);
+}
+.giving-prepared-handoff[data-search-started="true"] .giving-prepared-handoff-kicker {
+  color: #ff4fd8;
+}
+
 @media (max-width: 760px) {
   .giving-contributor-breadcrumb { align-items: flex-start; flex-direction: column; border-radius: 8px; }
+  .giving-prepared-handoff {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+  }
+  .giving-prepared-handoff-copy {
+    white-space: normal;
+  }
 }
