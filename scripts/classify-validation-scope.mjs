@@ -25,11 +25,14 @@ const PRACTICE_EXACT = new Set([
   'AGENTS.md',
   'PEDAGOGUE.md',
   'app/engine/pedagogue-practice-fixture.js',
+  'app/engine/flowcore-observation-aperture.js',
   'app/dome-world/docs/ash/experiments/tomography/ASH_KEEP_LOOM_TOMOGRAPHY_CALIBRATION_PHANTOM_V0_1.md',
   'docs/CANONICAL_PRACTICE_FIXTURE.md',
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'tests/fixtures/pedagogue/giving-bikini-bottom-practice.json',
+  'tests/fixtures/pedagogue/giving-discovery-handoff-design.json',
   'tests/fixtures/pedagogue/ash-tomography-calibration-phantom-v01.json',
+  'tests/flowcore-observation-aperture.test.mjs',
   'tests/pedagogue-practice-fixture.test.mjs'
 ]);
 
