@@ -167,6 +167,7 @@ for (const [selector, decorator] of [['#sourceProgress', decoratePracticeRuns], 
 const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton', 'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton', 'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton']);
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button'); if (!button) return;
+  // Exit route 3 of exactly 3: sleeping Campaign Deputy delegates to the one shared Exit Sample Demo confirmation.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
     event.preventDefault(); event.stopImmediatePropagation(); showPracticeExitConfirmation(); return;
   }
