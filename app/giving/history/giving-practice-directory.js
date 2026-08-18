@@ -18,6 +18,7 @@ const DISCOVERY_OBJECTS = Object.freeze([
 ]);
 
 const ALL_OBJECTS = Object.freeze([...PRACTICE_OBJECTS, ...DISCOVERY_OBJECTS]);
+const GENERIC_QUERY_TOKENS = new Set(['campaign', 'committee', 'candidate', 'political', 'pac', 'pc', 'for', 'of', 'the']);
 const $ = (selector) => document.querySelector(selector);
 const GEO_SELECTORS = Object.freeze(['#givingStateFilter', '#campaignDirectoryState', '#campaignDirectoryMunicipal', '#campaignDirectoryJurisdiction']);
 
@@ -33,10 +34,33 @@ function normalize(value) {
   return String(value ?? '').normalize('NFKC').toLocaleLowerCase('en-US').replace(/\s+/g, ' ').trim();
 }
 
+function objectSearchText(item) {
+  return normalize([item.id, item.name, item.kind, item.candidate, item.office, item.committee_kind].join(' '));
+}
+
+function significantQueryTokens(value) {
+  return normalize(value)
+    .split(/[^a-z0-9]+/)
+    .filter((token) => token.length >= 2 && !GENERIC_QUERY_TOKENS.has(token));
+}
+
 function matchingObjects(query) {
   const needle = normalize(query);
   if (!needle || needle === 'bikini bottom' || needle === 'sample' || needle === 'fictional sample') return [...PRACTICE_OBJECTS];
-  return ALL_OBJECTS.filter((item) => normalize([item.name, item.kind, item.candidate, item.office, item.committee_kind].join(' ')).includes(needle));
+
+  const exact = ALL_OBJECTS.filter((item) => [item.id, item.name, item.candidate]
+    .some((value) => normalize(value) === needle));
+  if (exact.length) return exact;
+
+  const contiguous = ALL_OBJECTS.filter((item) => objectSearchText(item).includes(needle));
+  if (contiguous.length) return contiguous;
+
+  const tokens = significantQueryTokens(needle);
+  if (!tokens.length) return [];
+  return ALL_OBJECTS.filter((item) => {
+    const haystack = objectSearchText(item);
+    return tokens.every((token) => haystack.includes(token));
+  });
 }
 
 function candidatesFrom(objects) {
@@ -231,6 +255,7 @@ export const _givingPracticeDirectory = Object.freeze({
   DISCOVERY_OBJECTS,
   ALL_OBJECTS,
   matchingObjects,
+  significantQueryTokens,
   renderPracticeDirectory,
   revealCommitteeSearchWorkspace,
   prepareContributorFromTrail,

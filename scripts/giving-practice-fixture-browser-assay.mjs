@@ -171,6 +171,12 @@ export async function witnessGivingPracticeFixture(page) {
   page.on('request', onLoadRequest);
   try {
     await page.locator('#loadResearchSampleButton').click();
+    const clearDialog = page.locator('#givingDemoClearConfirm:not([hidden])');
+    await clearDialog.waitFor({ state: 'visible', timeout: 5000 });
+    assert.equal((await clearDialog.locator('#givingDemoClearConfirmTitle').textContent())?.trim(), 'Clear session and begin demo?');
+    assert.equal((await clearDialog.locator('small').textContent())?.trim(), 'Unsaved work may be lost.');
+    assert.equal((await snapshot(page)).title, before.title, 'opening the demo confirmation must not mutate the working research file');
+    await clearDialog.locator('[data-demo-clear="yes"]').click();
     await page.waitForTimeout(180);
   } finally { page.off('request', onLoadRequest); }
 
@@ -187,7 +193,10 @@ export async function witnessGivingPracticeFixture(page) {
   assert.deepEqual(loadRequests, [], 'loading the fixture must remain zero-network');
   assert.equal(afterLoad.runSummary, before.runSummary);
   assert.equal(afterLoad.recordList, before.recordList);
-  assert.equal(afterLoad.receiptList, before.receiptList);
+  assert.match(afterLoad.receiptList, /No receipts yet\./, 'confirmed demo load must clear unsaved working receipts');
+  if (!/No receipts yet\./.test(before.receiptList)) {
+    assert.notEqual(afterLoad.receiptList, before.receiptList, 'confirmed demo clear must discard the prior working dossier receipt surface');
+  }
   assert.equal(afterLoad.vaultVersions, before.vaultVersions);
   assert.match(afterLoad.status, /Practice case loaded/i);
   for (const item of afterLoad.sleepingGeo) {

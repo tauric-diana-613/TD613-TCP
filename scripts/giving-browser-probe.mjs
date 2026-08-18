@@ -220,7 +220,7 @@ async function witnessResilienceUi() {
   assert.equal(structure.researchHeading, 'Contributor research file');
   assert.equal(structure.researchGuide, true);
   assert.match(structure.researchVaultButton, /Encrypt a Vault copy/);
-  assert.equal(structure.sampleButton, 'Load fictional sample');
+  assert.equal(structure.sampleButton, 'Load Fictional Demo');
   assert.equal(structure.matchOption, 'Match');
   assert.equal(structure.candidateLegend.toLowerCase(), 'match');
   assert.equal(structure.toolbar, true);

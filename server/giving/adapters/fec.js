@@ -65,7 +65,13 @@ function fecUrl({ query, apiKey, perPage, lastIndexes }) {
   url.searchParams.set('api_key', apiKey);
   url.searchParams.set('per_page', String(perPage));
   url.searchParams.set('sort', '-contribution_receipt_date');
-  if (query.name || query.last_name) url.searchParams.set('contributor_name', query.name || query.last_name);
+  if (query.name || query.last_name) {
+    url.searchParams.set('contributor_name', query.name || query.last_name);
+    // Giving is an individual-contributor research surface. Keep OpenFEC on its
+    // individual-receipt projection instead of asking the broader Schedule A
+    // corpus to resolve organizational receipts that this workflow will reject.
+    url.searchParams.set('is_individual', 'true');
+  }
   if (query.city) url.searchParams.set('contributor_city', query.city);
   const states = Array.isArray(query.states) && query.states.length ? query.states : query.state ? [query.state] : [];
   for (const state of states) url.searchParams.append('contributor_state', state);
@@ -197,7 +203,11 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       ({ response, attempts } = await fetchFecWithRetry(url, fetchImpl, keyMode, deadline));
     } catch (error) {
-      if (RETRYABLE_FEC_ERRORS.has(error?.code) && rows.length) {
+      // A provider timeout on the first page is missing coverage, not evidence of
+      // zero giving. Preserve an explicit continuation so the operator can retry
+      // that same held page instead of converting upstream latency into a red
+      // source failure.
+      if (RETRYABLE_FEC_ERRORS.has(error?.code)) {
         salvageError = error;
         break;
       }
@@ -210,7 +220,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     try {
       finalRateLimit = await assertFecResponse(response, { keyMode, attempts });
     } catch (error) {
-      if (SALVAGEABLE_FEC_ERRORS.has(error?.code) && rows.length) {
+      if (SALVAGEABLE_FEC_ERRORS.has(error?.code)) {
         salvageError = error;
         break;
       }
@@ -280,4 +290,3 @@ export const _fecInternals = Object.freeze({
   fecUrl,
   transactionPeriods
 });
-

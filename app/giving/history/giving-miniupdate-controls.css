@@ -1,0 +1,129 @@
+/* Requests #20–#21: action-row alignment and Contact Queue causal order. */
+.giving-primary-search-actions {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center;
+  justify-content: center !important;
+  width: 100%;
+  gap: 7px;
+}
+.giving-primary-search-actions > .button {
+  flex: 0 1 auto;
+  width: auto !important;
+  min-width: 0;
+}
+
+.contact-queue-top-actions {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  align-items: center;
+  justify-content: flex-end !important;
+  width: 100%;
+  gap: 7px;
+}
+.contact-queue-top-actions .text-button {
+  margin-left: 0 !important;
+}
+.contact-queue-run-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 7px;
+  margin-top: 2px;
+}
+.contact-queue-run-actions > .button {
+  flex: 0 1 auto;
+  width: auto !important;
+}
+
+/* Request #23: contribution cards render a postal address as a street line
+   followed by City, State ZIP. Evidence rows do not use bullet separators. */
+.record-address-normalized {
+  display: grid !important;
+  gap: 1px;
+  line-height: 1.35;
+}
+.record-address-line1,
+.record-address-locality {
+  display: block;
+}
+
+/* Restore the previously intended micro-separation between the Contributions
+   toolbar and Loaded Campaign / Committee context without changing button size. */
+#view-review .review-hold-button {
+  position: relative;
+  top: -4px;
+  transform: none !important;
+}
+
+/* Desktop remains a true column header, so its rules stay registered to the
+   evidence columns. Committee's rule was overlong; Contributor only needed a trim. */
+.review-sort-button[data-review-sort="contributor"] {
+  width: 96%;
+  justify-self: start;
+}
+.review-sort-button[data-review-sort="committee"] {
+  width: 82%;
+  justify-self: start;
+}
+.review-sort-button[data-review-sort="amount"] {
+  justify-self: end;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .giving-primary-search-actions {
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 5px;
+  }
+  .giving-primary-search-actions > .button {
+    min-height: 38px;
+    padding-inline: 8px;
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  .contact-queue-top-actions,
+  .contact-queue-run-actions {
+    justify-content: flex-end !important;
+  }
+
+  /* At this breakpoint each contribution becomes a one-column card. These
+     controls therefore stop pretending to be spatial column headers and become
+     one compact intrinsic-width sort ribbon. */
+  .review-sort-header {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    gap: 6px !important;
+    width: 100%;
+    margin: 0 0 8px;
+    padding: 2px 1px 5px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .review-sort-header::-webkit-scrollbar { display: none; }
+  .review-sort-button,
+  .review-sort-button[data-review-sort="contributor"],
+  .review-sort-button[data-review-sort="committee"],
+  .review-sort-button[data-review-sort="amount"] {
+    flex: 0 0 auto;
+    justify-self: auto;
+    width: auto !important;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid rgba(200, 235, 213, .12);
+    border-bottom-color: rgba(200, 235, 213, .18);
+    text-align: center !important;
+    white-space: nowrap;
+  }
+  .review-sort-button[data-active="true"] {
+    border-color: rgba(118, 234, 212, .42);
+    background: rgba(118, 234, 212, .055);
+  }
+}

@@ -54,6 +54,7 @@ const SCOPE_NEUTRAL = new Set([
   'tests/vercel-operator-release-gate.test.mjs',
   'tests/workflow-estate.test.mjs',
   'app/engine/pedagogue-design-gate.js',
+  'app/engine/pedagogue-interface-diagnosis.js',
   'app/engine/aia-cistern-law.js',
   'tests/fixtures/pedagogue/giving-vault-design.json',
   'tests/fixtures/pedagogue/giving-research-dossier-design.json',
