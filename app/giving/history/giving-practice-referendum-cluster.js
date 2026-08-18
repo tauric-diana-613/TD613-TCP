@@ -1,8 +1,10 @@
 import { _givingPracticeHydration } from './giving-practice-hydration.js';
-import { _givingPracticeSearchNoise } from './giving-practice-search-noise.js';
 
 const PRACTICE_SOURCE_ID = _givingPracticeHydration.PRACTICE_SOURCE_ID;
 const REFERENDUM = 'Krusty Krab Parking Expansion Referendum Committee';
+const FISHOCRATIC = 'Fishocratic Executive Committee';
+const AQUAMAN = 'Friends of Aquaman PC';
+const PUFF = 'Puff for Bikini Bottom School District #67';
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
 const folded = (value) => compact(value).toLocaleLowerCase('en-US');
 const skeleton = (value) => folded(value).replace(/[^a-z0-9]+/g, '');
@@ -24,23 +26,38 @@ const KRABS_CLUSTER_IDENTITIES = Object.freeze({
 });
 
 // New gifts only. Existing practice gifts remain untouched.
-// The amounts intentionally make this trio the dominant fictional funding bloc
-// for the parking-expansion referendum without implying that co-temporality proves coordination.
-const REFERENDUM_CLUSTER_TX = Object.freeze([
-  { date: '2022-12-03', temporal_cluster: 'BBV-REF-2022-12-03', gifts: {
+// The referendum cluster remains deliberately dominant; three additional
+// same-day clusters repeat the timing pattern across different political-object kinds.
+const TEMPORAL_CLUSTER_TX = Object.freeze([
+  { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2022-12-03', temporal_cluster: 'BBV-REF-2022-12-03', gifts: {
     'Eugene H. Krabs': 2250000,
     'Pearl Krabs': 3000000,
     'Krusty Krab LLC': 5500000
   } },
-  { date: '2024-09-14', temporal_cluster: 'BBV-REF-2024-09-14', gifts: {
+  { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2024-09-14', temporal_cluster: 'BBV-REF-2024-09-14', gifts: {
     'Eugene H. Krabs': 3000000,
     'Pearl Krabs': 4500000,
     'Krusty Krab LLC': 7500000
   } },
-  { date: '2026-04-25', temporal_cluster: 'BBV-REF-2026-04-25', gifts: {
+  { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2026-04-25', temporal_cluster: 'BBV-REF-2026-04-25', gifts: {
     'Eugene H. Krabs': 4000000,
     'Pearl Krabs': 6000000,
     'Krusty Krab LLC': 10000000
+  } },
+  { committee: FISHOCRATIC, committee_kind: 'PARTY_EXECUTIVE_COMMITTEE', date: '2021-10-02', temporal_cluster: 'BBV-FEC-2021-10-02', gifts: {
+    'Eugene H. Krabs': 750000,
+    'Pearl Krabs': 1000000,
+    'Krusty Krab LLC': 2000000
+  } },
+  { committee: AQUAMAN, committee_kind: 'POLITICAL_COMMITTEE', date: '2023-06-17', temporal_cluster: 'BBV-AQUA-2023-06-17', gifts: {
+    'Eugene H. Krabs': 850000,
+    'Pearl Krabs': 1250000,
+    'Krusty Krab LLC': 2500000
+  } },
+  { committee: PUFF, committee_kind: 'CANDIDATE_COMMITTEE', date: '2025-03-22', temporal_cluster: 'BBV-PUFF-2025-03-22', gifts: {
+    'Eugene H. Krabs': 600000,
+    'Pearl Krabs': 900000,
+    'Krusty Krab LLC': 1800000
   } }
 ]);
 
@@ -76,9 +93,11 @@ function parsedName(name, kind) {
   return { display: name, given: pieces[0] || null, middle: pieces.length > 2 ? pieces.slice(1, -1).join(' ') : null, family: pieces.at(-1) || null, suffix: null };
 }
 
-function recordFor(name, date, amountCents, temporalCluster) {
+function recordFor(name, cluster) {
   const person = KRABS_CLUSTER_IDENTITIES[name];
-  const token = `referendum-cluster-${skeleton(name)}-${date}`;
+  const amountCents = cluster.gifts[name];
+  const token = `temporal-cluster-${skeleton(name)}-${cluster.date}-${skeleton(cluster.committee)}`;
+  const referendum = cluster.committee === REFERENDUM;
   return {
     digest: `practice:${_givingPracticeHydration.PRACTICE_FIXTURE_ID}:${token}`,
     contributor_name_raw: name,
@@ -88,17 +107,21 @@ function recordFor(name, date, amountCents, temporalCluster) {
     address: person.address,
     city: 'Bikini Bottom', state: 'Oceania', zip: 'X',
     employer: person.employer, occupation: person.occupation,
-    committee: REFERENDUM, committee_name: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM',
-    jurisdiction: 'Bikini Bottom, Oceania · FICTIONAL', office: 'Issue / referendum · FICTIONAL',
-    cycle: date.slice(0, 4), election: `${date.slice(0, 4)} fictional cycle`, contribution_date: date,
-    contribution_type: 'FICTIONAL LARGE-DOLLAR REFERENDUM CONTRIBUTION', amount_cents: amountCents,
+    committee: cluster.committee,
+    committee_name: cluster.committee,
+    committee_kind: cluster.committee_kind,
+    jurisdiction: 'Bikini Bottom, Oceania · FICTIONAL',
+    office: referendum ? 'Issue / referendum · FICTIONAL' : null,
+    cycle: cluster.date.slice(0, 4), election: `${cluster.date.slice(0, 4)} fictional cycle`, contribution_date: cluster.date,
+    contribution_type: referendum ? 'FICTIONAL LARGE-DOLLAR REFERENDUM CONTRIBUTION' : 'FICTIONAL LARGE-DOLLAR CONTRIBUTION',
+    amount_cents: amountCents,
     source_family: 'FICTIONAL_PRACTICE', source_instance_id: PRACTICE_SOURCE_ID, custodian: 'BikiniBottomVotes',
     evidence_status: 'FICTIONAL_SAMPLE', retrieved_at: new Date().toISOString(),
-    source_native_ids: { practice_record_id: token, practice_temporal_cluster: temporalCluster },
+    source_native_ids: { practice_record_id: token, practice_temporal_cluster: cluster.temporal_cluster },
     practice_data_class: 'CO_TEMPORAL_CONTRIBUTION_CLUSTER',
     practice_identity_cluster: person.cluster,
-    practice_temporal_cluster: temporalCluster,
-    pedagogy_note: 'Separate fictional donors gave to the same referendum on the same filing date. Co-temporality is an investigatory pattern, not proof of common identity, control, or coordination.',
+    practice_temporal_cluster: cluster.temporal_cluster,
+    pedagogy_note: 'Separate fictional donors gave to the same political object on the same filing date. Repeated co-temporality across political-object types is an investigatory pattern, not proof of common identity, control, or coordination.',
     lineage: {
       schema: 'td613.giving.practice-lineage/v1',
       practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
@@ -106,7 +129,8 @@ function recordFor(name, date, amountCents, temporalCluster) {
       practice_record: true,
       discovery_graph: true,
       data_class: 'CO_TEMPORAL_CONTRIBUTION_CLUSTER',
-      temporal_cluster: temporalCluster,
+      temporal_cluster: cluster.temporal_cluster,
+      committee_kind: cluster.committee_kind,
       identity_cluster: person.cluster,
       evidence_authority: false,
       consequence_authority: false,
@@ -119,10 +143,7 @@ function recordFor(name, date, amountCents, temporalCluster) {
 }
 
 function recordsForIdentity(name) {
-  return REFERENDUM_CLUSTER_TX.flatMap((cluster) => {
-    const amount = cluster.gifts[name];
-    return Number.isSafeInteger(amount) ? [recordFor(name, cluster.date, amount, cluster.temporal_cluster)] : [];
-  });
+  return TEMPORAL_CLUSTER_TX.flatMap((cluster) => Number.isSafeInteger(cluster.gifts[name]) ? [recordFor(name, cluster)] : []);
 }
 
 function dateMatches(record, query = {}) {
@@ -136,8 +157,28 @@ function recordsForQuery(query = {}) {
   return matchedClusterIdentities(query).flatMap(recordsForIdentity).filter((record) => dateMatches(record, query));
 }
 
-function allReferendumClusterRows() {
+function allTemporalClusterRows() {
   return Object.keys(KRABS_CLUSTER_IDENTITIES).flatMap((name) => recordsForIdentity(name));
+}
+
+function contributorsForCommittee(committeeName) {
+  const target = compact(committeeName);
+  const byName = new Map();
+  for (const record of allTemporalClusterRows()) {
+    if (compact(record.committee_name) !== target) continue;
+    const entry = byName.get(record.contributor_name) || { name: record.contributor_name, record_count: 0, total_cents: 0, data_classes: new Set() };
+    entry.record_count += 1;
+    entry.total_cents += record.amount_cents;
+    entry.data_classes.add(record.practice_data_class);
+    byName.set(record.contributor_name, entry);
+  }
+  return [...byName.values()].map((entry) => ({ ...entry, data_classes: [...entry.data_classes] }));
+}
+
+function totalsByCommittee() {
+  const totals = new Map();
+  for (const record of allTemporalClusterRows()) totals.set(record.committee_name, (totals.get(record.committee_name) || 0) + record.amount_cents);
+  return Object.fromEntries(totals);
 }
 
 function responseFrom(original, body) {
@@ -172,7 +213,7 @@ globalThis.fetch = async (input, init = {}) => {
     records.push(record);
   }
 
-  const totalClusterCents = allReferendumClusterRows().reduce((sum, record) => sum + record.amount_cents, 0);
+  const totals = totalsByCommittee();
   return responseFrom(result, {
     ...body,
     data: {
@@ -181,13 +222,16 @@ globalThis.fetch = async (input, init = {}) => {
         ...page,
         records,
         practice_temporal_cluster_present: true,
-        practice_referendum_cluster_total_cents: totalClusterCents,
+        practice_temporal_cluster_committee_count: Object.keys(totals).length,
+        practice_referendum_cluster_total_cents: totals[REFERENDUM] || 0,
+        practice_temporal_cluster_totals_cents: totals,
         practice_coordination_inference_forbidden: true
       }
     },
     receipt: {
       ...(body.receipt || {}),
       practice_temporal_cluster_present: true,
+      practice_temporal_cluster_committee_count: Object.keys(totals).length,
       record_count: records.length,
       coordination_inference_forbidden: true
     }
@@ -196,9 +240,14 @@ globalThis.fetch = async (input, init = {}) => {
 
 export const _givingPracticeReferendumCluster = Object.freeze({
   REFERENDUM,
+  FISHOCRATIC,
+  AQUAMAN,
+  PUFF,
   KRABS_CLUSTER_IDENTITIES,
-  REFERENDUM_CLUSTER_TX,
+  TEMPORAL_CLUSTER_TX,
   matchedClusterIdentities,
   recordsForQuery,
-  allReferendumClusterRows
+  allTemporalClusterRows,
+  contributorsForCommittee,
+  totalsByCommittee
 });
