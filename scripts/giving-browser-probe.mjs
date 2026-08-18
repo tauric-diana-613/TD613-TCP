@@ -423,6 +423,29 @@ try {
     failedResources,
     { practiceRequestBoundary: classificationBoundary }
   );
+
+  // Chromium mirrors protected 401 bootstrap responses into the console without
+  // preserving the request operation. The HTTP ledger above retains that missing
+  // causality, so consume console echoes only one-for-one against refusals already
+  // proven protected and pre-practice. Never suppress more console 401s than the
+  // typed HTTP ledger permits; any post-practice request still fails independently.
+  const protectedLedgerUrl = `${new URL(baseUrl).origin}/api/td613-ledger`;
+  let protectedConsole401Budget = expectedProtectedRefusals.length;
+  const expectedProtectedConsoleErrors = [];
+  const materialConsoleErrors = [];
+  for (const message of consoleErrors) {
+    if (/\/favicon\.ico(?:\s|$)/.test(message)) continue;
+    const protected401Echo = protectedConsole401Budget > 0 &&
+      /Failed to load resource: the server responded with a status of 401\b/.test(message) &&
+      message.includes(`@ ${protectedLedgerUrl}`);
+    if (protected401Echo) {
+      expectedProtectedConsoleErrors.push(message);
+      protectedConsole401Budget -= 1;
+    } else {
+      materialConsoleErrors.push(message);
+    }
+  }
+
   const receipt = {
     schema: 'td613.giving.browser-witness/v2',
     engine: engineName,
@@ -439,6 +462,8 @@ try {
     practice_giving_request_delta: practiceGivingRequestDelta,
     practice_failed_resource_delta: practiceFailedResourceDelta,
     expected_protected_refusals: expectedProtectedRefusals,
+    expected_protected_console_errors: expectedProtectedConsoleErrors,
+    material_console_errors: materialConsoleErrors,
     desktop_viewport: resilienceWitness ? '1600x1000' : null,
     mobile_viewport: resilienceWitness ? '390x844' : null,
     official_template_columns: 12,
@@ -453,7 +478,6 @@ try {
   }
   await fs.writeFile(path.join(artifactDir, 'receipt.json'), JSON.stringify(receipt, null, 2));
   assert.deepEqual(unexpectedFailedResources, [], `Giving browser failed resources: ${unexpectedFailedResources.map((item) => `${item.status} ${item.url}`).join(' | ')}`);
-  const materialConsoleErrors = consoleErrors.filter((message) => !/\/favicon\.ico(?:\s|$)/.test(message));
   assert.deepEqual(materialConsoleErrors, [], `Giving browser console errors: ${materialConsoleErrors.join(' | ')}`);
   console.log(JSON.stringify(receipt));
 } finally {
