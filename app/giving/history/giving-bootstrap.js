@@ -17,6 +17,7 @@ const retrievalLabel = document.querySelector('.search-control .panel-heading .e
 if (retrievalLabel) retrievalLabel.textContent = 'GIVING HISTORY';
 
 afterStylesheet('givingCampaignToolsStylesheet', epochUrl('./giving-campaign-tools-v3.css'));
+afterStylesheet('givingContributorHandoffStylesheet', epochUrl('./giving-contributor-handoff.css'));
 afterStylesheet('givingSearchControlsStylesheet', epochUrl('./giving-search-controls.css'));
 afterStylesheet('givingStateFilterStylesheet', epochUrl('./giving-state-filter.css'));
 afterStylesheet('givingClarityStylesheet', epochUrl('./giving-clarity.css'));
