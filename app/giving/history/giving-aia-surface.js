@@ -4,6 +4,10 @@ import {
   compileAiaSurfaceProjection,
   verifyAiaSurfaceProjectionFamily
 } from '../../engine/flowcore-aia-surface-binding.js';
+import {
+  FLOWCORE_OBSERVATION_APERTURE_SCHEMA,
+  compileObservationAperture
+} from '../../engine/flowcore-observation-aperture.js';
 import { FLOWCORE_AIA_ROUTE_IDS } from '../../dome-world/data/flowcore-aia-route-registry-v01.js';
 
 export const GIVING_AIA_SURFACE_REFERENCE = 'td613.giving.history';
@@ -60,22 +64,45 @@ function normalizeObservationAperture(input = {}) {
   const ids = strings(input.selected_source_ids).slice(0, 64);
   const declaredCount = boundedCount(input.selected_source_count);
   const sourceCount = Math.max(declaredCount, ids.length);
+  if (!sourceCount && !input.practice_mode) return null;
+  const dateFrom = boundedDate(input.date_from);
+  const dateTo = boundedDate(input.date_to);
+  const exactMatch = input.exact_match === true;
+  const aliasCount = boundedCount(input.alias_count);
+  const amountMinPresent = input.amount_min_present === true;
+  const amountMaxPresent = input.amount_max_present === true;
+  const practiceMode = input.practice_mode === true;
+  const sharedReceipt = compileObservationAperture({
+    source_ids: ids,
+    source_count: sourceCount,
+    date_from: dateFrom,
+    date_to: dateTo,
+    matching_posture: exactMatch ? 'NORMALIZED_EXACT' : 'BROAD',
+    filter_flags: {
+      amount_min_present: amountMinPresent,
+      amount_max_present: amountMaxPresent
+    },
+    context_labels: ['Giving', 'individual-contributor'],
+    practice_mode: practiceMode,
+    identity_redacted: true
+  });
   return Object.freeze({
     schema: GIVING_OBSERVATION_APERTURE_SCHEMA,
     selected_source_count: sourceCount,
     selected_source_ids: Object.freeze(ids),
-    date_from: boundedDate(input.date_from),
-    date_to: boundedDate(input.date_to),
-    exact_match: input.exact_match === true,
-    alias_count: boundedCount(input.alias_count),
-    amount_min_present: input.amount_min_present === true,
-    amount_max_present: input.amount_max_present === true,
-    practice_mode: input.practice_mode === true,
+    date_from: dateFrom,
+    date_to: dateTo,
+    exact_match: exactMatch,
+    alias_count: aliasCount,
+    amount_min_present: amountMinPresent,
+    amount_max_present: amountMaxPresent,
+    practice_mode: practiceMode,
     query_identity_redacted: true,
     raw_records_included: false,
     donor_identity_included: false,
     authority_effect: 'NONE',
-    absence_outside_aperture_unresolved: true
+    absence_outside_aperture_unresolved: true,
+    shared_receipt: sharedReceipt
   });
 }
 
@@ -199,7 +226,8 @@ const ROUTE_BUILDERS = Object.freeze({
       binding: AIA_SURFACE_BINDING_SCHEMA,
       runtime: GIVING_AIA_RUNTIME_SCHEMA,
       request: 'td613.giving.request/v1',
-      observation_aperture: GIVING_OBSERVATION_APERTURE_SCHEMA
+      observation_aperture: GIVING_OBSERVATION_APERTURE_SCHEMA,
+      shared_observation_aperture: FLOWCORE_OBSERVATION_APERTURE_SCHEMA
     },
     binding: {
       surface_reference: GIVING_AIA_SURFACE_REFERENCE,
@@ -216,6 +244,7 @@ const ROUTE_BUILDERS = Object.freeze({
       observation_scope: state.observation_aperture
         ? { ...state.observation_aperture, selected_source_ids: [...state.observation_aperture.selected_source_ids] }
         : null,
+      shared_receipt_schema: state.observation_aperture?.shared_receipt?.schema || null,
       absence_outside_aperture_unresolved: true,
       authority_effect: 'NONE'
     },
@@ -303,6 +332,7 @@ function runtimeReceipt(family, state, revision) {
     observation_selected_source_count: aperture?.selected_source_count || 0,
     observation_exact_match: aperture?.exact_match || false,
     observation_practice_mode: aperture?.practice_mode || false,
+    shared_observation_aperture_schema: aperture?.shared_receipt?.schema || null,
     absence_outside_aperture_unresolved: true,
     route_count: family.report.routes.length,
     pair_count: family.report.pair_count,
