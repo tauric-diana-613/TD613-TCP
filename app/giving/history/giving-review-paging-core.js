@@ -130,11 +130,19 @@ function queueDecorate() {
 
 function requestReviewRender() {
   const field = document.getElementById('reviewSearch');
-  if (field) field.dispatchEvent(new Event('input', { bubbles: true }));
+  if (field) field.dispatchEvent(new CustomEvent('input', {
+    bubbles: true,
+    detail: { td613ReviewPagingInternal: true }
+  }));
 }
 
 function resetPage() {
   currentPage = 1;
+}
+
+function resetPageForReviewInput(event) {
+  if (event instanceof CustomEvent && event.detail?.td613ReviewPagingInternal === true) return;
+  resetPage();
 }
 
 document.addEventListener('click', (event) => {
@@ -174,7 +182,8 @@ for (const [id, eventName] of [
   ['reviewSearch', 'input'],
   ['searchForm', 'submit']
 ]) {
-  document.getElementById(id)?.addEventListener(eventName, resetPage, true);
+  const handler = id === 'reviewSearch' ? resetPageForReviewInput : resetPage;
+  document.getElementById(id)?.addEventListener(eventName, handler, true);
 }
 
 const list = document.getElementById('recordList');
