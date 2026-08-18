@@ -2,7 +2,7 @@ import './giving-ux-resilience-shell.js?v=20260817-2';
 
 const GIVING_ASSET_EPOCH = '20260816-4';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
-const GIVING_PRACTICE_EPOCH = '20260817-4';
+const GIVING_PRACTICE_EPOCH = '20260817-5';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -58,10 +58,10 @@ await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
 
 // Practice search wrappers must be installed before GivingApiClient captures
-// globalThis.fetch. The canonical fixture owns explicit sample retrieval; the
-// ambiguity wrapper broadens only inside the fictional aperture.
+// globalThis.fetch. Each layer remains inside the fictional source aperture.
 await import(practiceUrl('./giving-practice-hydration.js'));
 await import(practiceUrl('./giving-practice-search-noise.js'));
+await import(practiceUrl('./giving-practice-discovery-graph.js'));
 await import(epochUrl('./giving-app.js'));
 await import(practiceUrl('./giving-practice-surface-bridge.js'));
 
