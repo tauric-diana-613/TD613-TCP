@@ -20,6 +20,11 @@ import {
   compareBurdenModels,
   compileRouteGraph
 } from './flowcore-route-burden.js';
+import {
+  compilePedagogueInterfaceDiagnosis,
+  PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA,
+  PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA
+} from './pedagogue-interface-diagnosis.js';
 
 export const PEDAGOGUE_DESIGN_FIXTURE_SCHEMA = 'td613.pedagogue-design-fixture/v0.1';
 export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.3';
@@ -154,6 +159,9 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
       observedEndpoint: fixture.surface_reference
     }
   );
+  const interfaceDiagnosis = fixture.interface_specimen
+    ? compilePedagogueInterfaceDiagnosis(fixture.interface_specimen)
+    : null;
 
   return Object.freeze({
     schema: PEDAGOGUE_DESIGN_REVIEW_SCHEMA,
@@ -175,6 +183,7 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
     baseline_burden: baselineBurden,
     proposed_burden: proposedBurden,
     burden_comparison: burdenComparison,
+    interface_diagnosis: interfaceDiagnosis,
     design_gate: {
       consequence_before_ontology: true,
       rest_and_exit_preserved: cycle.restState.penalty === false && cycle.restState.exit_available === true,
@@ -184,7 +193,18 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
       route_burden_non_worsening: burdenComparison.all_models_non_worsening,
       user_level_score_forbidden: proposedGraph.user_level_score_forbidden === true,
       automatic_redesign_forbidden: proposedGraph.automatic_redesign_forbidden === true,
+      interface_diagnosis_non_authoritative: !interfaceDiagnosis || (
+        interfaceDiagnosis.authority.product_mutation_authorized === false &&
+        interfaceDiagnosis.authority.automatic_redesign === false &&
+        interfaceDiagnosis.authority.human_closure_required === true
+      ),
       human_closure_required: surfaceFamily.report.human_closure_required === true
     }
   });
 }
+
+export {
+  compilePedagogueInterfaceDiagnosis,
+  PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA,
+  PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA
+};
