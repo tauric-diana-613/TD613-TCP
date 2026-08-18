@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { compilePedagoguePracticeReview } from '../app/engine/pedagogue-practice-fixture.js';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
@@ -10,7 +11,10 @@ const shellCss = read('app/giving/history/giving-ux-resilience.css');
 const help = read('app/giving/history/giving-dossier-help.js');
 const helpCss = read('app/giving/history/giving-dossier-help.css');
 const practice = read('app/giving/history/giving-practice-hydration.js');
+const practiceRuntime = read('app/giving/history/giving-practice-runtime.js');
 const practiceDirectory = read('app/giving/history/giving-practice-directory.js');
+const campaignHistory = read('app/giving/history/giving-practice-campaign-history.js');
+const committeeGraph = read('app/giving/history/giving-practice-committee-graph.js');
 const practiceCss = read('app/giving/history/giving-practice-hydration.css');
 const polish = read('app/giving/history/giving-polish.css');
 const sharedAccess = read('app/giving/history/giving-shared-access.js');
@@ -25,13 +29,20 @@ const givingIndex = read('app/giving/history/index.html');
 const browserProbe = read('scripts/giving-browser-probe.mjs');
 const practiceAssay = read('scripts/giving-practice-fixture-browser-assay.mjs');
 const workflow = read('.github/workflows/td613-ci.yml');
+const pedagogueFixture = JSON.parse(read('tests/fixtures/pedagogue/giving-bikini-bottom-practice.json'));
 
 assert.doesNotThrow(() => new Function(shell));
 assert.doesNotThrow(() => new Function(renderBackpressure.replace(/export const[\s\S]*$/m, '')));
-assert.doesNotThrow(
-  () => execFileSync(process.execPath, ['--check', 'app/giving/history/giving-practice-directory.js'], { stdio: 'pipe' }),
-  'practice directory must remain valid browser ESM'
-);
+for (const path of [
+  'app/giving/history/giving-practice-directory.js',
+  'app/giving/history/giving-practice-campaign-history.js',
+  'app/giving/history/giving-practice-committee-graph.js'
+]) {
+  assert.doesNotThrow(
+    () => execFileSync(process.execPath, ['--check', path], { stdio: 'pipe' }),
+    `${path} must remain valid browser ESM`
+  );
+}
 assert.match(stateCss, /@media \(max-width: 760px\)[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
 
 assert.match(shell, /One contributor research file = one investigation\./);
@@ -42,13 +53,53 @@ assert.match(shell, /scrollViewToTop\('view-vault'\)/);
 assert.match(shell, /dossier-single-picker/);
 
 for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) assert.ok(practice.includes(name));
-for (const committee of ['King Neptune for King','Puff for Bikini Bottom School District #67','Every Villain Is Lemons PAC','Sheldon Plankton for Bikini Bottom Campaign','Larry Lobster for Mayor of Bikini Bottom','Fishocratic Executive Committee','Friends of Aquaman PC','Krusty Krab Parking Expansion Referendum Committee']) assert.ok(practiceDirectory.includes(committee));
+for (const committee of [
+  'King Neptune for King','Puff for Bikini Bottom School District #67','Every Villain Is Lemons PAC',
+  'Sheldon Plankton for Bikini Bottom Campaign','Larry Lobster for Mayor of Bikini Bottom','Fishocratic Executive Committee',
+  'Friends of Aquaman PC','Krusty Krab Parking Expansion Referendum Committee',
+  'Larry Lobster for Bikini Bottom Board of Public Health, Soil & Water District 2','Aquaman for Bikini Bottom County Sheriff'
+]) assert.ok(practiceDirectory.includes(committee), `practice directory must expose ${committee}`);
+assert.match(practiceDirectory, /DISCOVERY_OBJECTS/);
+assert.match(practiceDirectory, /starter eight/);
 assert.match(practice, /exact\.checked = true/);
 assert.match(practice, /8000 \+ \(hash % 8001\)/);
 assert.match(practiceCss, /\.fictional-sample-chip/);
 assert.match(practiceCss, /\.practice-floating-exit/);
 assert.match(practiceCss, /\.practice-geo-asleep/);
 assert.match(practiceCss, /left: 50%[\s\S]*?top: 50%/);
+
+assert.match(campaignHistory, /export const LARRY_BOARD = 'Larry Lobster for Bikini Bottom Board of Public Health, Soil & Water District 2'/);
+assert.match(campaignHistory, /export const AQUAMAN_SHERIFF = 'Aquaman for Bikini Bottom County Sheriff'/);
+assert.match(campaignHistory, /'Sandra Grouper'/);
+assert.match(campaignHistory, /'Karen Plankton'/);
+assert.match(campaignHistory, /40400[\s\S]*?40400[\s\S]*?19200/);
+assert.equal((campaignHistory.match(/40400/g) || []).length, 6, 'Karen must carry two $404 contributions in each of three cycles');
+assert.equal((campaignHistory.match(/19200/g) || []).length, 3, 'Karen must carry one $192 completion contribution in each of three cycles');
+assert.match(campaignHistory, /'Man, Aqua'/);
+assert.match(campaignHistory, /'Barnacle Boy Strategies LLC'/);
+assert.match(campaignHistory, /monthly\('SpongeBob SquarePants', AQUAMAN_SHERIFF, 5, 1750\)/);
+assert.match(campaignHistory, /monthly\('SpongeBob SquarePants', AQUAMAN_PC, 19, 875\)/);
+assert.match(campaignHistory, /monthly\('Patrick Star', AQUAMAN_SHERIFF, 11, 999\)/);
+assert.match(campaignHistory, /monthly\('Patrick Star', AQUAMAN_PC, 26, 425\)/);
+assert.match(campaignHistory, /temporal_coincidence_does_not_grant_causation: true/);
+assert.match(campaignHistory, /candidate_identity_does_not_collapse_race: true/);
+assert.match(campaignHistory, /source_name_serialization_preserved: name === 'Man, Aqua'/);
+assert.match(campaignHistory, /input\.value = LARRY_MAYOR/);
+assert.match(campaignHistory, /#campaignDirectoryQuery/);
+assert.match(campaignHistory, /if \(committee === LARRY_MAYOR && date && date < '2025-01-01'\)[\s\S]*?committee = LARRY_BOARD/);
+assert.match(campaignHistory, /'2021-01-09': '2025-10-04'/);
+assert.match(campaignHistory, /'2024-08-24'[\s\S]*?'2025-11-08'/);
+assert.match(committeeGraph, /_givingPracticeCampaignHistory\.allRows\(\)/);
+assert.match(committeeGraph, /_givingPracticeCampaignHistory\.normalizePracticeRecord/);
+assert.match(practiceRuntime, /giving-practice-campaign-history\.js/);
+
+const pedagogueReview = compilePedagoguePracticeReview(pedagogueFixture);
+assert.ok(Object.values(pedagogueReview.practice_gate).every((value) => value === true), 'expanded Giving fixture must pass the actual Pedagogue practice gate');
+assert.equal(pedagogueReview.teaching_contrasts.length, 12, 'Pedagogue contrast budget must remain exactly bounded at twelve');
+assert.ok(pedagogueReview.teaching_contrasts.some((item) => item.contrast_id === 'actor-continuity-versus-episode-continuity'));
+assert.equal(pedagogueReview.fixture.fictional_payload.prepared_political_object, 'Larry Lobster for Mayor of Bikini Bottom');
+assert.equal(pedagogueReview.fixture.authority.automatic_retrieval, false);
+assert.equal(pedagogueReview.fixture.aia_binding.authority.authority_may_cross, false);
 
 assert.match(help, /Contributor research file/);
 assert.match(help, /custodyModeHelp/);
