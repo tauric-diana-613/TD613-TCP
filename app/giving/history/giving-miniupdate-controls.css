@@ -55,6 +55,7 @@
 #view-review .review-hold-button {
   position: relative;
   top: -4px;
+  transform: none !important;
 }
 
 /* Desktop remains a true column header, so its rules stay registered to the
