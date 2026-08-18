@@ -28,5 +28,6 @@ assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-4'/, 'Giving coordinated
 assert.match(bootstrap, /giving-shared-access\.js/, 'Giving shared-access control must ship inside the coordinated browser module graph');
 
 await import('./giving-pedagogue-hydration.test.mjs');
+await import('./giving-pedagogue-second-pass.test.mjs');
 
-console.log('giving-fec-boundary-page.test.mjs passed: FEC returns one bounded provider page and exposes continuation for an explicit next gesture.');
+console.log('giving-fec-boundary-page.test.mjs passed: FEC returns one bounded provider page, exposes continuation for an explicit next gesture, and carries the Pedagogue second-pass route-memory witness.');
