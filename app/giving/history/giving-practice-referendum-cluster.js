@@ -26,38 +26,39 @@ const KRABS_CLUSTER_IDENTITIES = Object.freeze({
 });
 
 // New gifts only. Existing practice gifts remain untouched.
-// The referendum cluster remains deliberately dominant; three additional
-// same-day clusters repeat the timing pattern across different political-object kinds.
+// Eugene's ordinary recurring history peaks around $10k and Pearl's ordinary
+// practice history remains much smaller/broader. These episodic clusters are
+// intentionally conspicuous magnitude spikes against those otherwise divergent profiles.
 const TEMPORAL_CLUSTER_TX = Object.freeze([
   { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2022-12-03', temporal_cluster: 'BBV-REF-2022-12-03', gifts: {
-    'Eugene H. Krabs': 2250000,
-    'Pearl Krabs': 3000000,
-    'Krusty Krab LLC': 5500000
+    'Eugene H. Krabs': 7500000,
+    'Pearl Krabs': 10000000,
+    'Krusty Krab LLC': 30000000
   } },
   { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2024-09-14', temporal_cluster: 'BBV-REF-2024-09-14', gifts: {
-    'Eugene H. Krabs': 3000000,
-    'Pearl Krabs': 4500000,
-    'Krusty Krab LLC': 7500000
+    'Eugene H. Krabs': 10000000,
+    'Pearl Krabs': 15000000,
+    'Krusty Krab LLC': 45000000
   } },
   { committee: REFERENDUM, committee_kind: 'ISSUE_REFERENDUM', date: '2026-04-25', temporal_cluster: 'BBV-REF-2026-04-25', gifts: {
-    'Eugene H. Krabs': 4000000,
-    'Pearl Krabs': 6000000,
-    'Krusty Krab LLC': 10000000
+    'Eugene H. Krabs': 15000000,
+    'Pearl Krabs': 22500000,
+    'Krusty Krab LLC': 60000000
   } },
   { committee: FISHOCRATIC, committee_kind: 'PARTY_EXECUTIVE_COMMITTEE', date: '2021-10-02', temporal_cluster: 'BBV-FEC-2021-10-02', gifts: {
-    'Eugene H. Krabs': 750000,
-    'Pearl Krabs': 1000000,
-    'Krusty Krab LLC': 2000000
+    'Eugene H. Krabs': 5000000,
+    'Pearl Krabs': 7500000,
+    'Krusty Krab LLC': 20000000
   } },
   { committee: AQUAMAN, committee_kind: 'POLITICAL_COMMITTEE', date: '2023-06-17', temporal_cluster: 'BBV-AQUA-2023-06-17', gifts: {
-    'Eugene H. Krabs': 850000,
-    'Pearl Krabs': 1250000,
-    'Krusty Krab LLC': 2500000
+    'Eugene H. Krabs': 6000000,
+    'Pearl Krabs': 9000000,
+    'Krusty Krab LLC': 24000000
   } },
   { committee: PUFF, committee_kind: 'CANDIDATE_COMMITTEE', date: '2025-03-22', temporal_cluster: 'BBV-PUFF-2025-03-22', gifts: {
-    'Eugene H. Krabs': 600000,
-    'Pearl Krabs': 900000,
-    'Krusty Krab LLC': 1800000
+    'Eugene H. Krabs': 4000000,
+    'Pearl Krabs': 6500000,
+    'Krusty Krab LLC': 18000000
   } }
 ]);
 
@@ -121,7 +122,7 @@ function recordFor(name, cluster) {
     practice_data_class: 'CO_TEMPORAL_CONTRIBUTION_CLUSTER',
     practice_identity_cluster: person.cluster,
     practice_temporal_cluster: cluster.temporal_cluster,
-    pedagogy_note: 'Separate fictional donors gave to the same political object on the same filing date. Repeated co-temporality across political-object types is an investigatory pattern, not proof of common identity, control, or coordination.',
+    pedagogy_note: 'Separate fictional donors with otherwise divergent giving profiles gave unusually large amounts to the same political object on the same filing date. Repeated co-temporality and magnitude spikes are investigatory patterns, not proof of common identity, control, or coordination.',
     lineage: {
       schema: 'td613.giving.practice-lineage/v1',
       practice_fixture_id: _givingPracticeHydration.PRACTICE_FIXTURE_ID,
@@ -132,6 +133,8 @@ function recordFor(name, cluster) {
       temporal_cluster: cluster.temporal_cluster,
       committee_kind: cluster.committee_kind,
       identity_cluster: person.cluster,
+      magnitude_spike: true,
+      longitudinal_profiles_remain_distinct: true,
       evidence_authority: false,
       consequence_authority: false,
       external_retrieval: false,
