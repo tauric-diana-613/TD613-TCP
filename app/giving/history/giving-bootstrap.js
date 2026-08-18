@@ -2,7 +2,7 @@ import './giving-ux-resilience-shell.js?v=20260817-2';
 
 const GIVING_ASSET_EPOCH = '20260816-4';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
-const GIVING_PRACTICE_EPOCH = '20260817-11';
+const GIVING_PRACTICE_EPOCH = '20260817-12';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -58,27 +58,22 @@ await import(repairUrl('./giving-review-paging.js'));
 await import(repairUrl('./giving-search-render-backpressure.js'));
 await import(epochUrl('./giving-run-settled.js'));
 await import(epochUrl('./giving-contact-queue-v2.js'));
-await import(epochUrl('./giving-contributor-handoff.js'));
+
+// Contributor handoff is deliberately loaded without a per-import query string.
+// Practice directory imports the same URL, so browser ESM installs its listener once.
+await import(sourceUrl('./giving-contributor-handoff.js'));
 await import(epochUrl('./giving-transaction-classification.js'));
 
-// Practice search wrappers must be installed before GivingApiClient captures
-// globalThis.fetch. Each layer remains inside the fictional source aperture.
-await import(practiceUrl('./giving-practice-hydration.js'));
-await import(practiceUrl('./giving-practice-search-noise.js'));
-await import(practiceUrl('./giving-practice-discovery-graph.js'));
-await import(practiceUrl('./giving-practice-referendum-cluster.js'));
-await import(practiceUrl('./giving-practice-temporal-cluster-extension.js'));
-await import(practiceUrl('./giving-practice-in-kind.js'));
-await import(practiceUrl('./giving-practice-local-campaign-rules.js'));
-await import(practiceUrl('./giving-practice-data-reconciliation.js'));
-await import(practiceUrl('./giving-practice-krabs-cheapskate.js'));
-await import(practiceUrl('./giving-practice-local-alignment.js'));
+// One versioned root owns the fictional fetch-wrapper stack. Internal relative
+// imports resolve to one stable module identity and are reused by later practice
+// surfaces instead of multiplying global wrappers/listeners.
+await import(practiceUrl('./giving-practice-runtime.js'));
 await import(epochUrl('./giving-app.js'));
 await import(practiceUrl('./giving-practice-surface-bridge.js'));
 
-// The practice directory must own capture-phase lookup before the real campaign
-// directory installs its own capture listener.
-await import(practiceUrl('./giving-practice-committee-graph.js'));
+// The practice directory owns capture-phase lookup before the real campaign
+// directory installs its own capture listener. Its committee graph imports the
+// already-loaded unversioned practice modules and therefore adds no side effects.
 await import(practiceUrl('./giving-practice-directory.js'));
 await import(epochUrl('./giving-shared-access.js'));
 await import(epochUrl('./giving-search-controls.js'));
