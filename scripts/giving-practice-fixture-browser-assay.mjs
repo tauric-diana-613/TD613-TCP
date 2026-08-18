@@ -53,6 +53,23 @@ async function snapshot(page) {
   }));
 }
 
+async function snapshotReviewPages(page, totalRecords) {
+  const pageCount = Math.max(1, Math.ceil(totalRecords / 50));
+  const states = [];
+  for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
+    if (pageNumber > 1) {
+      await page.locator(`#recordList [data-review-page="${pageNumber}"]`).last().click();
+      await page.waitForFunction((value) => Boolean(document.querySelector(`#recordList .review-page-number[data-review-page="${value}"][aria-current="page"]`)), pageNumber, { timeout: 5000 });
+    }
+    states.push(await snapshot(page));
+  }
+  if (pageCount > 1) {
+    await page.locator('#recordList [data-review-page="1"]').last().click();
+    await page.waitForFunction(() => Boolean(document.querySelector('#recordList .review-page-number[data-review-page="1"][aria-current="page"]')), null, { timeout: 5000 });
+  }
+  return states;
+}
+
 function diagnostics(state, requests = []) {
   return JSON.stringify({
     searchName: state.searchName,
@@ -212,13 +229,16 @@ export async function witnessGivingPracticeFixture(page) {
   assert.deepEqual(queueRequests, [], 'queued fictional contributors may not escape the browser boundary');
   assert.deepEqual(afterQueue.queueStates, ['SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED']);
   assert.ok(afterQueue.reviewCount > 49, 'expanded practice hydration must outgrow the obsolete 49-row toy dataset');
-  assert.equal(afterQueue.fictionalCards, afterQueue.reviewCount);
-  assert.equal(afterQueue.fictionalChips, afterQueue.reviewCount);
+  const queuePages = await snapshotReviewPages(page, afterQueue.reviewCount);
+  assert.equal(queuePages.reduce((sum, state) => sum + state.fictionalCards, 0), afterQueue.reviewCount, 'pagination must expose every queued record as fictional across the bounded 50-card review pages');
+  assert.equal(queuePages.reduce((sum, state) => sum + state.fictionalChips, 0), afterQueue.reviewCount, 'every paginated fictional record needs visible FICTIONAL SAMPLE provenance');
+  assert.equal(queuePages.reduce((sum, state) => sum + state.rawPracticeCards, 0), afterQueue.reviewCount, 'all paginated queued records must remain inside the practice namespace');
+  const queuedRecordSurface = queuePages.map((state) => state.recordList).join('\n');
   for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) {
-    assert.match(afterQueue.recordList, new RegExp(escapeRegExp(name)));
+    assert.match(queuedRecordSurface, new RegExp(escapeRegExp(name)));
   }
   for (const committee of ['King Neptune for King','Puff for Bikini Bottom School District #67','Every Villain Is Lemons PAC','Sheldon Plankton for Bikini Bottom Campaign','Larry Lobster for Mayor of Bikini Bottom','Fishocratic Executive Committee','Friends of Aquaman PC','Krusty Krab Parking Expansion Referendum Committee']) {
-    assert.match(afterQueue.recordList, new RegExp(escapeRegExp(committee)));
+    assert.match(queuedRecordSurface, new RegExp(escapeRegExp(committee)));
   }
 
   // Broad matching creates consequence: nearby names become visible only after the learner widens the aperture.
