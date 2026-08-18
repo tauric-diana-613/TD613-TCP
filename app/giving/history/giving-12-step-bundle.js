@@ -167,6 +167,17 @@ function updateCommitteeFilterSummary() {
     : 'No committee loaded yet.');
 }
 
+function guardMissingLoadedCommittee(event) {
+  const toggle = $('#committeeContextFilterToggle');
+  if (!toggle?.checked || loadedCommittee?.committee_name) return false;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  const dialog = committeeFilterDialog();
+  dialog.hidden = false;
+  dialog.querySelector('[data-committee-filter-guard="lookup"]')?.focus();
+  return true;
+}
+
 function installCommitteeFilterControl() {
   const amount = $('#amountMin')?.closest('.split-fields');
   if (!amount || $('#committeeContextFilterControl')) return;
@@ -185,15 +196,14 @@ function installCommitteeFilterControl() {
   $('#committeeContextFilterToggle')?.addEventListener('change', updateCommitteeFilterSummary);
   updateCommitteeFilterSummary();
 
+  document.addEventListener('click', (event) => {
+    if (!event.target?.closest?.('#runSearchButton')) return;
+    guardMissingLoadedCommittee(event);
+  }, true);
+
   document.addEventListener('submit', (event) => {
     if (event.target?.id !== 'searchForm') return;
-    const toggle = $('#committeeContextFilterToggle');
-    if (!toggle?.checked || loadedCommittee?.committee_name) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const dialog = committeeFilterDialog();
-    dialog.hidden = false;
-    dialog.querySelector('[data-committee-filter-guard="lookup"]')?.focus();
+    guardMissingLoadedCommittee(event);
   }, true);
 }
 
