@@ -47,6 +47,8 @@ async function snapshot(page) {
     rawPracticeCards: [...document.querySelectorAll('#recordList .record-card')].filter((card) => String(card.dataset.record || '').startsWith('practice:giving.bikini-bottom-practice/')).length,
     reviewCount: Number(document.querySelector('#reviewCount')?.textContent || 0),
     queueStates: [...document.querySelectorAll('#contactQueueList .contact-queue-item')].map((row) => row.dataset.status || ''),
+    queueNames: [...document.querySelectorAll('#contactQueueList .contact-queue-copy strong')].map((node) => node.textContent?.trim() || ''),
+    queueZeroNames: [...document.querySelectorAll('#contactQueueList .contact-queue-item[data-zero-records="true"] .contact-queue-copy strong')].map((node) => node.textContent?.trim() || ''),
     vaultVersionCount: document.querySelectorAll('#vaultVersions .version-item').length,
     localSampleOptions: [...(document.querySelector('#localDossierSelect')?.options || [])].filter((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')).length,
     floatingExit: Boolean(document.querySelector('#practiceFloatingExitButton')),
@@ -57,14 +59,18 @@ async function snapshot(page) {
       selector,
       present: Boolean(document.querySelector(selector)),
       asleep: document.querySelector(selector)?.classList.contains('practice-geo-asleep') || false,
-      disabledChildren: [...(document.querySelector(selector)?.querySelectorAll('input,button,select') || [])].every((node) => node.disabled)
+      disabledChildren: [...(document.querySelector(selector)?.querySelectorAll('input, button, select') || [])].every((node) => node.disabled)
     })),
     practiceObjects: document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length,
     practiceCandidates: document.querySelectorAll('#campaignDirectoryCandidates [data-practice-candidate]').length,
     transactionBadges: [...document.querySelectorAll('#recordList .giving-transaction-class-badge')].map((badge) => badge.dataset.transactionClass || badge.textContent?.trim() || ''),
     preparedRoute: document.querySelector('#givingPreparedContributorHandoff:not([hidden]) .giving-prepared-handoff-copy')?.textContent?.trim() || '',
     preparedRouteStarted: document.querySelector('#givingPreparedContributorHandoff')?.dataset.searchStarted || '',
-    committeeWorkspaceText: document.querySelector('#committeeSearchWorkspaceList')?.textContent?.replace(/\s+/g, ' ').trim() || ''
+    committeeWorkspaceText: document.querySelector('#committeeSearchWorkspaceList')?.textContent?.replace(/\s+/g, ' ').trim() || '',
+    committeeLedgerText: document.querySelector('#view-ledger')?.textContent?.replace(/\s+/g, ' ').trim() || '',
+    loadedCampaignText: document.querySelector('#loadedCampaignContext')?.textContent?.replace(/\s+/g, ' ').trim() || '',
+    demoCueVisible: Boolean(document.querySelector('#demoAddContactCue') && !document.querySelector('#demoAddContactCue').hidden),
+    filterChecked: Boolean(document.querySelector('#committeeContextFilterToggle')?.checked)
   }));
 }
 
@@ -163,8 +169,65 @@ async function searchPracticeDirectory(page, query) {
   return snapshot(page);
 }
 
+async function assertTwelveStepGeometry(page) {
+  const metrics = await page.evaluate(() => {
+    const heading = document.querySelector('.research-dossier-heading-line > h2')?.getBoundingClientRect();
+    const help = document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')?.getBoundingClientRect();
+    const exit = document.querySelector('#practiceFloatingExitButton');
+    const toast = document.querySelector('#toastStack');
+    const presets = document.querySelector('#givingDatePresets');
+    return {
+      heading: heading ? { x: heading.x, width: heading.width, right: heading.right } : null,
+      help: help ? { x: help.x, width: help.width, left: help.left } : null,
+      helpFont: help ? Number.parseFloat(getComputedStyle(document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')).fontSize) : null,
+      exitFilter: exit ? getComputedStyle(exit).filter : '',
+      exitZ: exit ? Number.parseInt(getComputedStyle(exit).zIndex || '0', 10) : 0,
+      toastZ: toast ? Number.parseInt(getComputedStyle(toast).zIndex || '0', 10) : 0,
+      presetJustify: presets ? getComputedStyle(presets).justifyContent : ''
+    };
+  });
+  assert.ok(metrics.heading && metrics.help, 'research file heading and help trigger must both have geometry');
+  assert.ok(metrics.heading.right <= metrics.help.left + 1, 'Contributor research file help icon must not hide behind the heading');
+  assert.ok(metrics.helpFont <= 10.5, 'Contributor research file info icon should remain deliberately small');
+  assert.match(metrics.exitFilter, /drop-shadow/i, 'floating Exit Demo requires a visible halo outside its clipped button geometry');
+  assert.equal(metrics.presetJustify, 'center', 'Quick start presets must remain centered');
+  assert.ok(metrics.toastZ > metrics.exitZ, 'retrieval notifications must be the unrelated floating layer above Exit Demo');
+}
+
+async function assertMobileSortRibbon(page) {
+  const original = page.viewportSize();
+  if (!original) return;
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(80);
+  const metrics = await page.evaluate(() => {
+    const header = document.querySelector('.review-sort-header');
+    const buttons = [...document.querySelectorAll('.review-sort-button')];
+    const heading = document.querySelector('.research-dossier-heading-line > h2')?.getBoundingClientRect();
+    const help = document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')?.getBoundingClientRect();
+    return {
+      display: header ? getComputedStyle(header).display : '',
+      flexWrap: header ? getComputedStyle(header).flexWrap : '',
+      overflowX: header ? getComputedStyle(header).overflowX : '',
+      alignments: buttons.map((button) => getComputedStyle(button).textAlign),
+      headingRight: heading?.right ?? null,
+      helpLeft: help?.left ?? null
+    };
+  });
+  assert.equal(metrics.display, 'flex');
+  assert.equal(metrics.flexWrap, 'nowrap', 'mobile contribution sort controls must become one intrinsic-width ribbon');
+  assert.ok(['auto', 'scroll'].includes(metrics.overflowX), 'mobile sort ribbon must permit horizontal overflow rather than pancake stacking');
+  assert.ok(metrics.alignments.length >= 5 && metrics.alignments.every((value) => value === 'center'), 'all sort labels, including Amount, must share centered alignment on mobile');
+  assert.ok(metrics.headingRight !== null && metrics.helpLeft !== null && metrics.headingRight <= metrics.helpLeft + 1, 'mobile research-file heading must not overlap its info icon');
+  await page.setViewportSize(original);
+  await page.waitForTimeout(80);
+}
+
 export async function witnessGivingPracticeFixture(page) {
   await page.waitForSelector('#loadResearchSampleButton', { state: 'visible', timeout: 5000 });
+  await pollUntil(async () => await page.locator('html').getAttribute('data-giving-twelve-step-bundle') === '20260818-2', {
+    timeout: 5000,
+    label: 'Giving 12-step bundle hydration'
+  });
   const before = await snapshot(page);
   const loadRequests = [];
   const onLoadRequest = (request) => { if (isGivingApiRequest(request)) loadRequests.push(request.url()); };
@@ -180,6 +243,10 @@ export async function witnessGivingPracticeFixture(page) {
     await page.waitForTimeout(180);
   } finally { page.off('request', onLoadRequest); }
 
+  await pollUntil(async () => (await page.locator('#contactQueueInput').inputValue()).includes('Gary Snail'), {
+    timeout: 5000,
+    label: 'five-name practice queue prefill'
+  });
   const afterLoad = await snapshot(page);
   assert.equal(afterLoad.title, 'SAMPLE — Bikini Bottom contributor review');
   assert.equal(afterLoad.searchName, 'SpongeBob SquarePants');
@@ -190,6 +257,7 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal(afterLoad.floatingExit, true);
   assert.equal(afterLoad.exitDialogs, 1);
   assert.equal(afterLoad.campaignAsleep, true);
+  assert.equal(afterLoad.demoCueVisible, true, 'Load Fictional Demo must cue Add contact until the queue is actually loaded');
   assert.deepEqual(loadRequests, [], 'loading the fixture must remain zero-network');
   assert.equal(afterLoad.runSummary, before.runSummary);
   assert.equal(afterLoad.reviewCount, 0, 'confirmed demo load must clear unsaved working contribution records before practice search');
@@ -211,6 +279,22 @@ export async function witnessGivingPracticeFixture(page) {
     assert.equal(item.disabledChildren, true, `${item.selector} children must be functionally disabled`);
   }
 
+  await assertTwelveStepGeometry(page);
+
+  const forbiddenIdentitySurface = await page.locator('#operatorShell').innerText();
+  assert.doesNotMatch(forbiddenIdentitySurface, /\bIdentity (confirmed|confirmation|states|hints|matching)\b/, 'retired capital-I status grammar must not leak into Giving UI');
+  assert.match(forbiddenIdentitySurface, /SEARCH HINTS/i);
+
+  // Filter guard must explain missing committee context rather than silently search.
+  await page.locator('#committeeContextFilterToggle').check();
+  await page.locator('#runSearchButton').click();
+  const filterGuard = page.locator('#committeeFilterGuardDialog:not([hidden])');
+  await filterGuard.waitFor({ state: 'visible', timeout: 5000 });
+  assert.match((await filterGuard.innerText()), /Load a committee first/);
+  assert.match((await filterGuard.innerText()), /uncheck the filter/i);
+  await filterGuard.locator('[data-committee-filter-guard="uncheck"]').click();
+  assert.equal((await snapshot(page)).filterChecked, false);
+
   // Exactly three exit entry points, all converging on one centered dialog.
   await page.locator('#practiceExitButton').click();
   await dismissExitNo(page);
@@ -222,7 +306,7 @@ export async function witnessGivingPracticeFixture(page) {
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
   await page.locator('[data-practice-exit="no"]').click();
 
-  // Candidate/committee lookup remains usable against exactly eight fictional objects.
+  // Candidate/committee lookup remains usable against exactly eight starter objects.
   await searchPracticeDirectory(page, 'Bikini Bottom');
   await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
     timeout: 5000,
@@ -231,6 +315,23 @@ export async function witnessGivingPracticeFixture(page) {
   const directoryState = await snapshot(page);
   assert.equal(directoryState.practiceObjects, 8);
   assert.equal(directoryState.practiceCandidates, 4);
+  assert.match(directoryState.committeeLedgerText, /Committee search results/);
+  assert.match(directoryState.committeeLedgerText, /No attributed donor totals yet/);
+  assert.doesNotMatch(directoryState.committeeLedgerText, /No identity-confirmed giving/i);
+
+  // Expenditure practice: every starter committee renders four receipts, while
+  // a static audit separately proves the two discoverable committees are covered.
+  await page.locator('input[name="campaign-directory-activity"][value="EXPENDITURES"]').check();
+  await pollUntil(async () => await page.locator('#campaignActivityResults .practice-expenditure-card').count() === 32, {
+    timeout: 5000,
+    label: 'starter committee expenditure receipts'
+  });
+  const expenditureSurface = await page.locator('#campaignActivityResults').innerText();
+  assert.match(expenditureSurface, /Read the lane before the name\./);
+  for (const payee of ['Krusty Krab LLC', 'Sandy Cheeks', 'Squidward Q. Tentacles', 'Eugene H. Krabs']) {
+    assert.match(expenditureSurface, new RegExp(escapeRegExp(payee)), `${payee} must appear as a practice payee somewhere in the starter committee expenditure lane`);
+  }
+  await page.locator('input[name="campaign-directory-activity"][value="CONTRIBUTIONS"]').check();
 
   // Exact starts ON but an explicit learner toggle remains honored.
   await page.locator('#exactMatchToggle').uncheck();
@@ -240,7 +341,29 @@ export async function witnessGivingPracticeFixture(page) {
   // Speed only the witness; production practice keeps the authored 8–16 second search delay.
   await page.evaluate(() => { globalThis.__TD613_GIVING_PRACTICE_DELAY_MS__ = 25; });
 
+  // Loaded campaign/committee context is optional until explicitly bound.
+  await searchPracticeDirectory(page, 'Larry Lobster for Mayor of Bikini Bottom');
+  await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
+    timeout: 5000,
+    label: 'Larry mayor directory result for loaded context'
+  });
+  await page.locator('#committeeSearchWorkspaceList [data-practice-load-context]').click();
+  await pollUntil(async () => (await snapshot(page)).loadedCampaignText.includes('Larry Lobster for Mayor of Bikini Bottom'), {
+    timeout: 5000,
+    label: 'loaded Larry committee context'
+  });
+  await page.locator('#committeeContextFilterToggle').check();
+  await page.locator('#searchName').fill('Larry Lobster');
+  const filteredLarry = await runPracticeSearch(page);
+  assert.ok(filteredLarry.reviewCount > 0, 'loaded Larry committee filter must retain Larry mayor records');
+  const filteredLarryPages = await snapshotReviewPages(page, filteredLarry.reviewCount);
+  const filteredLarrySurface = filteredLarryPages.map((state) => state.recordList).join('\n');
+  assert.match(filteredLarrySurface, /Larry Lobster for Mayor of Bikini Bottom/);
+  assert.doesNotMatch(filteredLarrySurface, /Board of Public Health, Soil & Water District 2/, 'loaded committee filter must remove the other Larry committee from this contributor retrieval');
+  await page.locator('#committeeContextFilterToggle').uncheck();
+
   // SpongeBob: ordinary cash records plus the in-kind catering lane.
+  await page.locator('#searchName').fill('SpongeBob SquarePants');
   const afterSponge = await runPracticeSearch(page);
   assert.equal(afterSponge.searchName, 'SpongeBob SquarePants');
   assert.deepEqual(afterSponge.selectedSources, ['practice-bikini-bottom-votes']);
@@ -253,12 +376,31 @@ export async function witnessGivingPracticeFixture(page) {
   await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'visible', timeout: 5000 });
   await page.locator('#recordList .giving-transaction-class-badge[data-transaction-class="IN-KIND"]').first().waitFor({ state: 'visible', timeout: 5000 });
   assert.ok((await snapshot(page)).transactionBadges.includes('IN-KIND'), 'SpongeBob catering records must visibly teach IN-KIND');
+  assert.equal((await page.locator('#recordList [data-decision="CONFIRMED"]').first().textContent())?.trim(), 'Record attributed');
+  assert.equal((await page.locator('#recordList [data-decision="UNREVIEWED"]').first().textContent())?.trim(), 'Record unresolved');
+  assert.equal((await page.locator('#reviewFilter option[value="CONFIRMED"]').textContent())?.trim(), 'Record attributed');
+  assert.equal((await page.locator('#reviewFilter option[value="UNREVIEWED"]').textContent())?.trim(), 'Record unresolved');
 
-  // Preserve the authored five-person starting route: SpongeBob + four queued names.
+  // Prove the derived ledger wakes only after an explicit record-attribution gesture.
+  await page.locator('#recordList [data-decision="CONFIRMED"]').first().click();
+  await page.locator('.tab[data-view="ledger"]').click();
+  await pollUntil(async () => await page.locator('#committeeLedger .committee-card').count() >= 1, {
+    timeout: 5000,
+    label: 'attributed donor total ledger wake'
+  });
+  assert.match(await page.locator('#committeeLedger').innerText(), /RECORD ATTRIBUTED|attributed/i);
+  await page.locator('.tab[data-view="review"]').click();
+
+  await assertMobileSortRibbon(page);
+
+  // Starting route is now six research targets: SpongeBob + five queued contacts.
   await page.locator('#holdReviewButton').click();
+  assert.equal((await snapshot(page)).demoCueVisible, true, 'demo Add contact cue must remain visible until queue hydration');
   await page.locator('#addContactQueueButton').click();
   const queueRows = page.locator('#contactQueueList .contact-queue-item');
-  await pollUntil(async () => await queueRows.count() === 4, { timeout: 5000, label: 'four queued practice contributors' });
+  await pollUntil(async () => await queueRows.count() === 5, { timeout: 5000, label: 'five queued practice contacts' });
+  assert.equal((await snapshot(page)).demoCueVisible, false, 'demo Add contact cue must disappear after queue rows are actually loaded');
+  assert.deepEqual((await snapshot(page)).queueNames, ['Patrick Star', 'Sandy Cheeks', 'Gary Snail', 'Eugene H. Krabs', 'Squidward Q. Tentacles']);
 
   const queueRequests = [];
   const onQueueRequest = (request) => { if (isGivingApiRequest(request)) queueRequests.push(request.url()); };
@@ -266,16 +408,22 @@ export async function witnessGivingPracticeFixture(page) {
   try {
     await page.locator('#runContactQueueButton').click();
     await pollUntil(async () => {
-      if (await queueRows.count() !== 4) return false;
+      if (await queueRows.count() !== 5) return false;
       const states = [];
-      for (let index = 0; index < 4; index += 1) states.push(await queueRows.nth(index).getAttribute('data-status'));
+      for (let index = 0; index < 5; index += 1) states.push(await queueRows.nth(index).getAttribute('data-status'));
       return states.every((state) => ['SEARCHED', 'SOURCE HOLD', 'CLIENT HOLD'].includes(state || ''));
     }, { timeout: 20000, label: 'contact queue terminal state' });
     await page.waitForTimeout(120);
   } finally { page.off('request', onQueueRequest); }
   const afterQueue = await snapshot(page);
   assert.deepEqual(queueRequests, [], 'queued fictional contributors may not escape the browser boundary');
-  assert.deepEqual(afterQueue.queueStates, ['SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED']);
+  assert.deepEqual(afterQueue.queueStates, ['SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED', 'SEARCHED']);
+  assert.deepEqual(afterQueue.queueZeroNames, ['Gary Snail'], 'Gary must teach exactly one bounded no-record queue result');
+  const garyRow = page.locator('#contactQueueList .contact-queue-item').filter({ hasText: 'Gary Snail' });
+  assert.equal(await garyRow.getAttribute('data-zero-records'), 'true');
+  assert.match(await garyRow.innerText(), /NO RECORDS/);
+  assert.match(await garyRow.innerText(), /selected sources and date window/);
+  assert.match(await garyRow.innerText(), /not proof.*never donated/i);
   assert.ok(afterQueue.reviewCount > 49, 'expanded practice hydration must outgrow the obsolete 49-row toy dataset');
   const queuePages = await snapshotReviewPages(page, afterQueue.reviewCount);
   assert.equal(queuePages.reduce((sum, state) => sum + state.fictionalCards, 0), afterQueue.reviewCount, 'pagination must expose every queued record as fictional across the bounded 50-card review pages');
@@ -285,9 +433,21 @@ export async function witnessGivingPracticeFixture(page) {
   for (const name of ['SpongeBob SquarePants', 'Patrick Star', 'Sandy Cheeks', 'Eugene H. Krabs', 'Squidward Q. Tentacles']) {
     assert.match(queuedRecordSurface, new RegExp(escapeRegExp(name)));
   }
+  assert.doesNotMatch(queuedRecordSurface, /Gary Snail/, 'Gary is a searched target, not a fabricated contribution record');
   for (const committee of ['King Neptune for King','Puff for Bikini Bottom School District #67','Every Villain Is Lemons PAC','Sheldon Plankton for Bikini Bottom Campaign','Larry Lobster for Mayor of Bikini Bottom','Fishocratic Executive Committee','Friends of Aquaman PC','Krusty Krab Parking Expansion Referendum Committee']) {
     assert.match(queuedRecordSurface, new RegExp(escapeRegExp(committee)));
   }
+
+  // Match-cluster advisory must expose a direct reversible inspection route.
+  await page.locator('.tab[data-view="review"]').click();
+  await page.locator('#inspectClustersButton').waitFor({ state: 'visible', timeout: 5000 });
+  assert.match((await page.locator('#inspectClustersButton').textContent()) || '', /Inspect suggested records/);
+  await page.locator('#inspectClustersButton').click();
+  assert.equal(await page.locator('html').getAttribute('data-cluster-inspection'), 'true');
+  assert.ok(await page.locator('#recordList .cluster-suggested-card').count() > 0, 'cluster inspection must reveal the affected record cards');
+  assert.equal((await page.locator('#inspectClustersButton').textContent())?.trim(), 'Show all records');
+  await page.locator('#inspectClustersButton').click();
+  assert.equal(await page.locator('html').getAttribute('data-cluster-inspection'), 'false');
 
   // Broad matching creates consequence: nearby names become visible only after the learner widens the aperture.
   await page.locator('#exactMatchToggle').uncheck();
@@ -402,15 +562,29 @@ export async function witnessGivingPracticeFixture(page) {
   for (const item of afterExit.sleepingGeo) assert.equal(item.asleep, false, `${item.selector} must wake on confirmed exit`);
 
   return Object.freeze({
-    schema: 'td613.giving.practice-fixture-browser-witness/v0.5',
+    schema: 'td613.giving.practice-fixture-browser-witness/v0.6',
     fixture: 'giving.bikini-bottom-practice/v0.1',
     manifestly_fictional: true,
     exit_entry_points: 3,
     shared_centered_exit_dialog: true,
+    notification_layer_above_floating_exit: true,
+    loud_exit_demo_halo_observed: true,
+    research_file_help_collision_absent: true,
+    quick_start_centered: true,
     sleeping_real_geography: true,
     fictional_candidate_committee_lookup: true,
     fictional_committee_objects_observed: 8,
-    authored_starting_contributors_observed: 5,
+    starter_expenditure_receipts_observed: 32,
+    all_practice_committees_expenditure_audited: true,
+    contribution_expenditure_role_separation_observed: true,
+    loaded_committee_filter_observed: true,
+    committee_search_and_attributed_totals_separated: true,
+    record_attribution_language_observed: true,
+    mobile_sort_ribbon_observed: true,
+    match_cluster_inspection_route_observed: true,
+    queued_contacts_observed: 5,
+    zero_result_target_observed: 'Gary Snail',
+    authored_starting_contributors_observed: 6,
     expanded_dossier_record_count: hydratedCount,
     expanded_dataset_exceeds_legacy_49: hydratedCount > 49,
     broad_match_consequence_observed: true,
