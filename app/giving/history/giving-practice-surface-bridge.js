@@ -173,9 +173,14 @@ for (const [selector, decorator] of [['#sourceProgress', decoratePracticeRuns], 
 const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton', 'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton', 'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton']);
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button'); if (!button) return;
-  // Exit route 3 of exactly 3: sleeping Campaign Deputy delegates to the one shared Exit Sample Demo confirmation.
+  // Exit route 3 of exactly 3: let the sleeping Campaign Deputy pointer event
+  // unwind before delegating to the one shared Exit Sample Demo membrane. This
+  // avoids re-entrant button activation inside the document capture phase.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
-    event.preventDefault(); event.stopImmediatePropagation(); showPracticeExitConfirmation(); return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setTimeout(showPracticeExitConfirmation, 0);
+    return;
   }
   if (!blockedCampaignActions.has(button.id)) return;
   const hasPracticeRecords = Boolean($('#recordList .record-card[data-fictional-sample="true"]'));
