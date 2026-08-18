@@ -5,7 +5,7 @@ const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const GIVING_PRACTICE_EPOCH = '20260817-12';
 const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1';
 const GIVING_PAGING_FIX_EPOCH = '20260818-1';
-const GIVING_MINIUPDATE_EPOCH = '20260818-3';
+const GIVING_MINIUPDATE_EPOCH = '20260818-4';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -31,6 +31,7 @@ afterStylesheet('givingClarityStylesheet', epochUrl('./giving-clarity.css'));
 afterStylesheet('givingUxResilienceStylesheet', epochUrl('./giving-ux-resilience.css'));
 afterStylesheet('givingPracticeHydrationStylesheet', practiceUrl('./giving-practice-hydration.css'));
 afterStylesheet('givingMiniupdateStylesheet', miniupdateUrl('./giving-miniupdate.css'));
+afterStylesheet('givingMiniupdateControlsStylesheet', miniupdateUrl('./giving-miniupdate-controls.css'));
 
 function afterStylesheet(id, href) {
   if (document.getElementById(id)) return;
@@ -92,3 +93,4 @@ await import(epochUrl('./giving-contributions-copy.js'));
 await import(observerUrl('./giving-date-sort.js'));
 await import(practiceUrl('./giving-dossier-help.js'));
 await import(miniupdateUrl('./giving-miniupdate.js'));
+await import(miniupdateUrl('./giving-miniupdate-controls.js'));
