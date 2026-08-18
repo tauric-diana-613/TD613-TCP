@@ -197,11 +197,11 @@ document.addEventListener('click', (event) => {
     rememberExitReturnFocus(button);
   }
 
-  // Hydration owns the synchronous No dismissal in bubble phase. Schedule focus
-  // return from capture so it runs immediately afterward: the dialog is hidden
-  // before background focus is restored, and hidden dialog controls never retain it.
+  // Hydration owns the synchronous No dismissal in bubble phase. Return focus
+  // on the next task so the entire pointer/keyboard activation has unwound after
+  // the dialog is hidden; this avoids moving focus in the middle of an input turn.
   if (practiceActive() && button.matches('[data-practice-exit="no"]')) {
-    queueMicrotask(restoreExitReturnFocus);
+    setTimeout(restoreExitReturnFocus, 0);
     return;
   }
 
