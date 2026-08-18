@@ -137,11 +137,11 @@ async function dismissExitNo(page, { centeredAlready = false } = {}) {
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
-async function dismissCampaignExitNoByKeyboard(page) {
+async function dismissFocusedExitNoByKeyboard(page) {
   const no = page.locator('[data-practice-exit="no"]');
-  assert.equal(await no.evaluate((node) => document.activeElement === node), true, 'shared Campaign exit dialog must focus No before keyboard dismissal');
+  assert.equal(await no.evaluate((node) => document.activeElement === node), true, 'shared exit dialog must focus No before keyboard dismissal');
   await page.keyboard.press('Enter');
-  assert.equal(page.isClosed(), false, 'keyboard Campaign Deputy dismissal must not close the Giving page');
+  assert.equal(page.isClosed(), false, 'keyboard exit dismissal must not close the Giving page');
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
@@ -461,18 +461,21 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#practiceExitButton').click();
   await dismissExitNo(page);
   await page.locator('#practiceFloatingExitButton').click();
-  await dismissExitNo(page);
+  await assertCenteredDialog(page);
+  await dismissFocusedExitNoByKeyboard(page);
   const campaignLifecycleTrace = WEBKIT_CAMPAIGN_LIVENESS_DIAGNOSTIC ? startWebKitCampaignLifecycleTrace(page) : null;
   const activeBeforeCampaign = (await snapshot(page)).activeTab;
   await activateSleepingCampaignExit(page);
   await assertCenteredDialog(page);
   assert.equal((await snapshot(page)).activeTab, activeBeforeCampaign);
-  await dismissCampaignExitNoByKeyboard(page);
+  await dismissFocusedExitNoByKeyboard(page);
 
   if (campaignLifecycleTrace) {
     const diagnostic = await sampleWebKitCampaignPostDismissal(page, campaignLifecycleTrace);
     console.log(`[giving-webkit-campaign-isolation] ${JSON.stringify(diagnostic)}`);
-    throw new Error(`TD613_WEBKIT_CAMPAIGN_DIAGNOSTIC_COMPLETE ${JSON.stringify(diagnostic)}`);
+    assert.equal(diagnostic.final_page_closed, false, `WebKit Campaign lifecycle must remain open after keyboard dismissal: ${JSON.stringify(diagnostic)}`);
+    assert.equal(diagnostic.final_browser_connected, true, `WebKit browser must remain connected after Campaign dismissal: ${JSON.stringify(diagnostic)}`);
+    assert.deepEqual(diagnostic.lifecycle_events, [], `WebKit Campaign lifecycle must not emit close/crash/disconnect during the bounded post-dismissal sample: ${JSON.stringify(diagnostic)}`);
   }
 
   await searchPracticeDirectory(page, 'Bikini Bottom');
