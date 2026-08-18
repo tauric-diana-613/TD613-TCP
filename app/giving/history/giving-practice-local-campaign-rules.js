@@ -36,11 +36,8 @@ function isCandidateLoan(record) {
   return record?.candidate_self_financing === true || record?.practice_candidate_loan === true || /CANDIDATE LOAN/i.test(String(record?.contribution_type || ''));
 }
 
-function isPreservedComplianceAnomaly(record) {
-  return Boolean(
-    record?.practice_over_limit_anomaly === true &&
-    String(record?.transaction_class || record?.contribution_type || '').toLocaleUpperCase('en-US').includes('IN-KIND')
-  );
+function isInKind(record) {
+  return String(record?.transaction_class || record?.contribution_type || '').toLocaleUpperCase('en-US').includes('IN-KIND');
 }
 
 function normalizeLocalCampaignRecord(record) {
@@ -60,48 +57,44 @@ function normalizeLocalCampaignRecord(record) {
         local_candidate_committee: true,
         ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
         candidate_self_financing: true,
-        ordinary_limit_applies: false
-      }
-    };
-  }
-
-  if (isPreservedComplianceAnomaly(record)) {
-    return {
-      ...record,
-      committee,
-      committee_name: committee,
-      practice_local_campaign_rule: 'PRESERVE_OBSERVED_OVER_LIMIT_IN_KIND_FOR_REVIEW',
-      practice_local_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
-      practice_compliance_review_required: true,
-      lineage: {
-        ...(record.lineage || {}),
-        local_candidate_committee: true,
-        ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
-        ordinary_limit_applies: true,
-        preserve_observed_value: true,
-        compliance_review_required: true,
-        fixture_amount_normalization_forbidden: true
+        ordinary_limit_applies: false,
+        preserve_observed_value: true
       }
     };
   }
 
   const amount = Number(record.amount_cents);
-  const capped = Number.isFinite(amount) && amount > LOCAL_ORDINARY_LIMIT_CENTS;
+  const overLimit = Number.isFinite(amount) && amount > LOCAL_ORDINARY_LIMIT_CENTS;
+  const explicitAnomaly = record.practice_over_limit_anomaly === true;
+  const complianceReview = overLimit || explicitAnomaly;
+  const transactionClass = isInKind(record) ? 'IN-KIND' : record.transaction_class;
+
   return {
     ...record,
     committee,
     committee_name: committee,
-    amount_cents: capped ? LOCAL_ORDINARY_LIMIT_CENTS : record.amount_cents,
-    practice_local_campaign_rule: 'ORDINARY_CONTRIBUTION_LIMIT',
+    ...(transactionClass ? { transaction_class: transactionClass } : {}),
+    practice_local_campaign_rule: complianceReview
+      ? 'PRESERVE_OBSERVED_VALUE_AND_FLAG_LIMIT_REVIEW'
+      : 'ORDINARY_CONTRIBUTION_LIMIT',
     practice_local_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
-    ...(capped ? { practice_fixture_amount_corrected: true } : {}),
+    ...(complianceReview ? {
+      practice_compliance_review_required: true,
+      practice_limit_excess_cents: Math.max(0, (Number(record.amount_cents) || 0) - LOCAL_ORDINARY_LIMIT_CENTS)
+    } : {}),
     lineage: {
       ...(record.lineage || {}),
       local_candidate_committee: true,
       ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
       candidate_self_financing: false,
       ordinary_limit_applies: true,
-      ...(capped ? { fixture_amount_normalized_to_limit: true } : {})
+      preserve_observed_value: true,
+      source_value_rewrite_forbidden: true,
+      ...(complianceReview ? {
+        compliance_review_required: true,
+        amount_exceeds_practice_limit: overLimit,
+        excess_cents: Math.max(0, (Number(record.amount_cents) || 0) - LOCAL_ORDINARY_LIMIT_CENTS)
+      } : {})
     }
   };
 }
@@ -175,6 +168,8 @@ function larryLoanRecord(loan) {
       ordinary_contribution_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
       candidate_self_financing: true,
       ordinary_limit_applies: false,
+      preserve_observed_value: true,
+      source_value_rewrite_forbidden: true,
       evidence_authority: false,
       consequence_authority: false,
       external_retrieval: false,
@@ -244,14 +239,15 @@ globalThis.fetch = async (input, init = {}) => {
         records,
         practice_local_campaign_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
         practice_candidate_self_financing_present: records.some((record) => record.candidate_self_financing === true),
-        practice_preserved_limit_anomaly_present: records.some((record) => record.practice_over_limit_anomaly === true)
+        practice_preserved_limit_anomaly_present: records.some((record) => record.practice_compliance_review_required === true)
       }
     },
     receipt: {
       ...(body.receipt || {}),
       practice_local_campaign_limit_cents: LOCAL_ORDINARY_LIMIT_CENTS,
       candidate_self_financing_separate: true,
-      preserved_limit_anomaly: records.some((record) => record.practice_over_limit_anomaly === true),
+      source_value_rewrite_forbidden: true,
+      preserved_limit_anomaly: records.some((record) => record.practice_compliance_review_required === true),
       record_count: records.length
     }
   });
@@ -266,6 +262,5 @@ export const _givingPracticeLocalCampaignRules = Object.freeze({
   larryLoansForQuery,
   allLarryLoanRows,
   contributorsForCommittee,
-  isLocalCandidateCommittee,
-  isPreservedComplianceAnomaly
+  isLocalCandidateCommittee
 });
