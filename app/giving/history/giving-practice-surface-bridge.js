@@ -204,9 +204,9 @@ document.addEventListener('click', (event) => {
     return;
   }
 
-  // Campaign Deputy is an unavailable context switch during practice. If the
-  // operator cancels Exit Demo, return to the still-active tab rather than the
-  // sleeping tab that never became active.
+  // Exit route 3 of exactly 3: Campaign Deputy is an unavailable context switch
+  // during practice. If the operator cancels Exit Demo, return to the still-active
+  // tab rather than the sleeping tab that never became active.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
     event.preventDefault();
     event.stopImmediatePropagation();
