@@ -9,6 +9,21 @@ function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+async function pollUntil(predicate, { timeout = 5000, interval = 50, label = 'condition' } = {}) {
+  const deadline = Date.now() + timeout;
+  let lastError = null;
+  while (Date.now() < deadline) {
+    try {
+      if (await predicate()) return true;
+    } catch (error) {
+      lastError = error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
+  const suffix = lastError ? ` Last error: ${lastError.message || String(lastError)}` : '';
+  throw new Error(`${label} did not settle within ${timeout}ms.${suffix}`);
+}
+
 async function snapshot(page) {
   return page.evaluate(() => ({
     title: document.querySelector('#dossierTitle')?.value ?? null,
@@ -60,14 +75,22 @@ async function snapshotReviewPages(page, totalRecords) {
   if (pageCount > 1) await page.locator('#recordList .review-pagination').waitFor({ state: 'visible', timeout: 5000 });
   for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
     if (pageNumber > 1) {
-      await page.locator(`#recordList .review-page-number[data-review-page="${pageNumber}"]`).click();
-      await page.waitForFunction((value) => Boolean(document.querySelector(`#recordList .review-page-number[data-review-page="${value}"][aria-current="page"]`)), pageNumber, { timeout: 5000 });
+      const current = page.locator(`#recordList .review-page-number[data-review-page="${pageNumber}"]`);
+      await current.click();
+      await pollUntil(async () => await current.getAttribute('aria-current') === 'page', {
+        timeout: 5000,
+        label: `review page ${pageNumber} current marker`
+      });
     }
     states.push(await snapshot(page));
   }
   if (pageCount > 1) {
-    await page.locator('#recordList .review-page-number[data-review-page="1"]').click();
-    await page.waitForFunction(() => Boolean(document.querySelector('#recordList .review-page-number[data-review-page="1"][aria-current="page"]')), null, { timeout: 5000 });
+    const first = page.locator('#recordList .review-page-number[data-review-page="1"]');
+    await first.click();
+    await pollUntil(async () => await first.getAttribute('aria-current') === 'page', {
+      timeout: 5000,
+      label: 'review page 1 current marker'
+    });
   }
   return states;
 }
@@ -103,7 +126,7 @@ async function assertCenteredDialog(page) {
 async function dismissExitNo(page) {
   await assertCenteredDialog(page);
   await page.locator('[data-practice-exit="no"]').click();
-  await page.waitForFunction(() => document.querySelector('#practiceExitConfirm')?.hidden === true);
+  await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
 }
 
 async function runPracticeSearch(page, { timeout = 12000 } = {}) {
@@ -112,10 +135,12 @@ async function runPracticeSearch(page, { timeout = 12000 } = {}) {
   page.on('request', onRequest);
   try {
     await page.locator('#runSearchButton').click();
-    await page.waitForFunction(() => {
-      const card = document.querySelector('#sourceProgress .source-run-card');
-      return card && !['QUEUED', 'RUNNING', 'NOT_RUN'].includes(card.dataset.status || '');
-    }, null, { timeout }).catch(() => {});
+    const sourceCard = page.locator('#sourceProgress .source-run-card').first();
+    await pollUntil(async () => {
+      if (await sourceCard.count() !== 1) return false;
+      const status = await sourceCard.getAttribute('data-status');
+      return !['QUEUED', 'RUNNING', 'NOT_RUN'].includes(status || '');
+    }, { timeout, label: 'practice source terminal state' }).catch(() => {});
     await page.waitForTimeout(120);
   } finally { page.off('request', onRequest); }
   const state = await snapshot(page);
@@ -184,7 +209,10 @@ export async function witnessGivingPracticeFixture(page) {
 
   // Candidate/committee lookup remains usable against exactly eight fictional objects.
   await searchPracticeDirectory(page, 'Bikini Bottom');
-  await page.waitForFunction(() => document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length === 8, null, { timeout: 5000 });
+  await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 8, {
+    timeout: 5000,
+    label: 'starter political-object directory count'
+  });
   const directoryState = await snapshot(page);
   assert.equal(directoryState.practiceObjects, 8);
   assert.equal(directoryState.practiceCandidates, 4);
@@ -208,23 +236,26 @@ export async function witnessGivingPracticeFixture(page) {
 
   await page.locator('.tab[data-view="review"]').click();
   await page.waitForSelector('#recordList .fictional-sample-chip', { state: 'visible', timeout: 5000 });
-  await page.waitForFunction(() => document.querySelectorAll('#recordList .giving-transaction-class-badge[data-transaction-class="IN-KIND"]').length >= 1, null, { timeout: 5000 });
+  await page.locator('#recordList .giving-transaction-class-badge[data-transaction-class="IN-KIND"]').first().waitFor({ state: 'visible', timeout: 5000 });
   assert.ok((await snapshot(page)).transactionBadges.includes('IN-KIND'), 'SpongeBob catering records must visibly teach IN-KIND');
 
   // Preserve the authored five-person starting route: SpongeBob + four queued names.
   await page.locator('#holdReviewButton').click();
   await page.locator('#addContactQueueButton').click();
-  await page.waitForFunction(() => document.querySelectorAll('#contactQueueList .contact-queue-item').length === 4, null, { timeout: 5000 });
+  const queueRows = page.locator('#contactQueueList .contact-queue-item');
+  await pollUntil(async () => await queueRows.count() === 4, { timeout: 5000, label: 'four queued practice contributors' });
 
   const queueRequests = [];
   const onQueueRequest = (request) => { if (isGivingApiRequest(request)) queueRequests.push(request.url()); };
   page.on('request', onQueueRequest);
   try {
     await page.locator('#runContactQueueButton').click();
-    await page.waitForFunction(() => {
-      const rows = [...document.querySelectorAll('#contactQueueList .contact-queue-item')];
-      return rows.length === 4 && rows.every((row) => ['SEARCHED', 'SOURCE HOLD', 'CLIENT HOLD'].includes(row.dataset.status || ''));
-    }, null, { timeout: 20000 });
+    await pollUntil(async () => {
+      if (await queueRows.count() !== 4) return false;
+      const states = [];
+      for (let index = 0; index < 4; index += 1) states.push(await queueRows.nth(index).getAttribute('data-status'));
+      return states.every((state) => ['SEARCHED', 'SOURCE HOLD', 'CLIENT HOLD'].includes(state || ''));
+    }, { timeout: 20000, label: 'contact queue terminal state' });
     await page.waitForTimeout(120);
   } finally { page.off('request', onQueueRequest); }
   const afterQueue = await snapshot(page);
@@ -255,7 +286,10 @@ export async function witnessGivingPracticeFixture(page) {
 
   // Referendum rabbit hole: committee -> unexpected donor -> prepared Individual Contributor.
   await searchPracticeDirectory(page, 'Krusty Krab Parking Expansion Referendum Committee');
-  await page.waitForFunction(() => document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length === 1, null, { timeout: 5000 });
+  await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
+    timeout: 5000,
+    label: 'referendum directory result'
+  });
   const referendumState = await snapshot(page);
   assert.match(referendumState.committeeWorkspaceText, /Eugene H\. Krabs/);
   assert.match(referendumState.committeeWorkspaceText, /Pearl Krabs/);
@@ -263,7 +297,10 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(referendumState.committeeWorkspaceText, /Barnacle Boy/);
   assert.match(referendumState.committeeWorkspaceText, /\$2,\d{3},\d{3}/, 'referendum should visibly carry the multimillion-dollar Krabs concentration');
   await page.locator('#committeeSearchWorkspaceList [data-practice-contributor="Barnacle Boy"]').click();
-  await page.waitForFunction(() => document.querySelector('#searchName')?.value === 'Barnacle Boy');
+  await pollUntil(async () => await page.locator('#searchName').inputValue() === 'Barnacle Boy', {
+    timeout: 5000,
+    label: 'Barnacle Boy prepared contributor handoff'
+  });
   const preparedBarnacle = await snapshot(page);
   assert.match(preparedBarnacle.preparedRoute, /Barnacle Boy/);
   assert.match(preparedBarnacle.preparedRoute, /Krusty Krab Parking Expansion Referendum Committee/);
@@ -277,16 +314,25 @@ export async function witnessGivingPracticeFixture(page) {
 
   // Plankton negative space: the Krabs trio is absent inside this fictional committee aperture.
   await searchPracticeDirectory(page, 'Sheldon Plankton for Bikini Bottom Campaign');
-  await page.waitForFunction(() => document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length === 1, null, { timeout: 5000 });
+  await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
+    timeout: 5000,
+    label: 'Plankton directory result'
+  });
   for (const name of ['Eugene H. Krabs', 'Pearl Krabs', 'Krusty Krab LLC']) {
     assert.equal(await page.locator(`#committeeSearchWorkspaceList [data-practice-contributor="${name}"]`).count(), 0, `${name} must remain absent from the observed Plankton practice ledger`);
   }
 
   // Larry is the separate transaction-class lane: large candidate self-financing appears as LOAN.
   await searchPracticeDirectory(page, 'Larry Lobster for Mayor of Bikini Bottom');
-  await page.waitForFunction(() => document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length === 1, null, { timeout: 5000 });
+  await pollUntil(async () => await page.locator('#committeeSearchWorkspaceList [data-practice-object]').count() === 1, {
+    timeout: 5000,
+    label: 'Larry mayor directory result'
+  });
   await page.locator('#committeeSearchWorkspaceList [data-practice-contributor="Larry Lobster"]').click();
-  await page.waitForFunction(() => document.querySelector('#searchName')?.value === 'Larry Lobster');
+  await pollUntil(async () => await page.locator('#searchName').inputValue() === 'Larry Lobster', {
+    timeout: 5000,
+    label: 'Larry prepared contributor handoff'
+  });
   const afterLarry = await runPracticeSearch(page);
   const larryPages = await snapshotReviewPages(page, afterLarry.reviewCount);
   const allLarryBadges = larryPages.flatMap((state) => state.transactionBadges);
@@ -299,14 +345,16 @@ export async function witnessGivingPracticeFixture(page) {
 
   // The richer dossier must still survive local custody and reopen at its actual dynamic size.
   await page.locator('#saveDossierButton').click();
-  await page.waitForFunction(() => [...(document.querySelector('#localDossierSelect')?.options || [])].some((option) => /SAMPLE — Bikini Bottom contributor review/.test(option.textContent || '')), null, { timeout: 5000 });
-  await page.evaluate(() => {
-    const select = document.querySelector('#localDossierSelect');
-    const option = [...(select?.options || [])].find((candidate) => /SAMPLE — Bikini Bottom contributor review/.test(candidate.textContent || ''));
-    if (select && option) { select.value = option.value; select.dispatchEvent(new Event('change', { bubbles: true })); }
-  });
+  const savedOption = page.locator('#localDossierSelect option').filter({ hasText: 'SAMPLE — Bikini Bottom contributor review' }).first();
+  await savedOption.waitFor({ state: 'attached', timeout: 5000 });
+  const savedValue = await savedOption.getAttribute('value');
+  assert.ok(savedValue, 'saved fictional dossier option needs a value');
+  await page.locator('#localDossierSelect').selectOption(savedValue);
   await page.locator('#openDossierButton').click();
-  await page.waitForFunction((count) => Number(document.querySelector('#reviewCount')?.textContent || 0) === count, hydratedCount, { timeout: 5000 });
+  await pollUntil(async () => Number(await page.locator('#reviewCount').textContent() || 0) === hydratedCount, {
+    timeout: 5000,
+    label: 'reopened fictional dossier record count'
+  });
   assert.equal((await snapshot(page)).title, 'SAMPLE — Bikini Bottom contributor review');
 
   // Vault handoff must snap to the top and keep practice custody in-browser.
@@ -327,7 +375,10 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#practiceFloatingExitButton').click();
   await assertCenteredDialog(page);
   await page.locator('[data-practice-exit="yes"]').click();
-  await page.waitForFunction(() => document.documentElement.dataset.givingPractice !== 'true', null, { timeout: 5000 });
+  await pollUntil(async () => await page.locator('html').getAttribute('data-giving-practice') !== 'true', {
+    timeout: 5000,
+    label: 'practice exit state'
+  });
   const afterExit = await snapshot(page);
   assert.equal(afterExit.practiceLocked, false);
   assert.equal(afterExit.floatingExit, false);
