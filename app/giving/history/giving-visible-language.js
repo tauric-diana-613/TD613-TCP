@@ -29,10 +29,35 @@ function applyRecordAttributionLanguage(root = document) {
     if (legend.getAttribute('aria-label') === 'Identity states') legend.setAttribute('aria-label', 'Review states');
     const attributed = legend.querySelector('[data-state="CONFIRMED"]');
     if (attributed) attributed.textContent = 'record attributed';
+    const unresolved = legend.querySelector('[data-state="UNREVIEWED"]');
+    if (unresolved) unresolved.textContent = 'record unresolved';
   }
 
   const confirmedOption = $('#reviewFilter option[value="CONFIRMED"]');
   if (confirmedOption) confirmedOption.textContent = 'Record attributed';
+  const unresolvedOption = $('#reviewFilter option[value="UNREVIEWED"]');
+  if (unresolvedOption) unresolvedOption.textContent = 'Record unresolved';
+
+  for (const button of root.querySelectorAll?.('[data-decision="CONFIRMED"]') || []) {
+    if (button.textContent !== 'Record attributed') button.textContent = 'Record attributed';
+  }
+  for (const button of root.querySelectorAll?.('[data-decision="UNREVIEWED"]') || []) {
+    if (button.textContent !== 'Record unresolved') button.textContent = 'Record unresolved';
+  }
+  for (const state of root.querySelectorAll?.('.identity-state[data-state="CONFIRMED"]') || []) {
+    if (state.textContent !== 'Record attributed') state.textContent = 'Record attributed';
+  }
+  for (const state of root.querySelectorAll?.('.identity-state[data-state="UNREVIEWED"]') || []) {
+    if (state.textContent !== 'Record unresolved') state.textContent = 'Record unresolved';
+  }
+
+  const searchHintsLabel = $('#searchHints')?.closest('.field')?.querySelector(':scope > span');
+  if (searchHintsLabel && /^IDENTITY HINTS\b/i.test(searchHintsLabel.textContent || '')) {
+    searchHintsLabel.childNodes[0].textContent = 'SEARCH HINTS ';
+  }
+
+  const safetyHeading = $$('.safety-block strong').find((node) => /Identity matching stays manual/i.test(node.textContent || ''));
+  if (safetyHeading) safetyHeading.textContent = 'Record matching stays manual';
 
   const loadedCopy = $('#loadedCampaignContext small');
   replaceText(loadedCopy, [
