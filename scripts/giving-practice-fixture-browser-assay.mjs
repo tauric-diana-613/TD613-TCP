@@ -183,7 +183,7 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('[data-practice-exit="no"]').click();
 
   // Candidate/committee lookup remains usable against exactly eight fictional objects.
-  const afterDirectory = await searchPracticeDirectory(page, 'Bikini Bottom');
+  await searchPracticeDirectory(page, 'Bikini Bottom');
   await page.waitForFunction(() => document.querySelectorAll('#committeeSearchWorkspaceList [data-practice-object]').length === 8, null, { timeout: 5000 });
   const directoryState = await snapshot(page);
   assert.equal(directoryState.practiceObjects, 8);
@@ -247,8 +247,10 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#exactMatchToggle').uncheck();
   await page.locator('#searchName').fill('Sandy');
   const afterBroadSandy = await runPracticeSearch(page);
-  assert.match(afterBroadSandy.recordList, /Sandy Grouper/, 'broad Sandy search should surface the separate Sandy Grouper contributor');
-  assert.match(afterBroadSandy.recordList, /Sandra Cheeks/, 'broad Sandy search should expose declared alias/name-variant continuity');
+  const sandyPages = await snapshotReviewPages(page, afterBroadSandy.reviewCount);
+  const sandySurface = sandyPages.map((state) => state.recordList).join('\n');
+  assert.match(sandySurface, /Sandy Grouper/, 'broad Sandy search should surface the separate Sandy Grouper contributor somewhere in the paginated dossier');
+  assert.match(sandySurface, /Sandra Cheeks/, 'broad Sandy search should expose declared alias/name-variant continuity somewhere in the paginated dossier');
   await page.locator('#exactMatchToggle').check();
 
   // Referendum rabbit hole: committee -> unexpected donor -> prepared Individual Contributor.
@@ -268,7 +270,9 @@ export async function witnessGivingPracticeFixture(page) {
   assert.match(preparedBarnacle.preparedRoute, /nothing searched/i);
   assert.equal(preparedBarnacle.preparedRouteStarted, 'false');
   const afterBarnacle = await runPracticeSearch(page);
-  assert.match(afterBarnacle.recordList, /Barnacle Boy/);
+  const barnaclePages = await snapshotReviewPages(page, afterBarnacle.reviewCount);
+  const barnacleSurface = barnaclePages.map((state) => state.recordList).join('\n');
+  assert.match(barnacleSurface, /Barnacle Boy/, 'explicit Barnacle Boy search must add Barnacle Boy somewhere in the paginated dossier');
   assert.equal((await snapshot(page)).preparedRouteStarted, 'true', 'prepared route should change state only after explicit SEARCH');
 
   // Plankton negative space: the Krabs trio is absent inside this fictional committee aperture.
@@ -284,10 +288,10 @@ export async function witnessGivingPracticeFixture(page) {
   await page.locator('#committeeSearchWorkspaceList [data-practice-contributor="Larry Lobster"]').click();
   await page.waitForFunction(() => document.querySelector('#searchName')?.value === 'Larry Lobster');
   const afterLarry = await runPracticeSearch(page);
-  await page.locator('.tab[data-view="review"]').click();
-  await page.waitForFunction(() => document.querySelectorAll('#recordList .giving-transaction-class-badge[data-transaction-class="LOAN"]').length >= 1, null, { timeout: 5000 });
+  const larryPages = await snapshotReviewPages(page, afterLarry.reviewCount);
+  const allLarryBadges = larryPages.flatMap((state) => state.transactionBadges);
+  assert.ok(allLarryBadges.includes('LOAN'), 'Larry self-financing records must visibly teach LOAN somewhere in the paginated dossier');
   const afterLoanBadge = await snapshot(page);
-  assert.ok(afterLoanBadge.transactionBadges.includes('LOAN'), 'Larry self-financing records must visibly teach LOAN');
   assert.ok(afterLoanBadge.reviewCount > afterQueue.reviewCount, 'discoverable contributors must expand the dossier rather than swap through a fixed row pool');
 
   const hydratedCount = afterLoanBadge.reviewCount;
