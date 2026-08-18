@@ -25,11 +25,4 @@ export {
   compilePedagogueRouteMemory,
   comparePedagogueRouteMemory
 } from './flowcore-pedagogue-route-memory.js';
-export {
-  FLOWCORE_OBSERVATION_APERTURE_SCHEMA,
-  FLOWCORE_NEGATIVE_OBSERVATION_SCHEMA,
-  compileObservationAperture,
-  qualifyNegativeObservation,
-  compareObservationApertures
-} from './flowcore-observation-aperture.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
