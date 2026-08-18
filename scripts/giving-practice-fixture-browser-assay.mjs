@@ -143,6 +143,7 @@ async function dismissFocusedExitNoByKeyboard(page) {
   await page.keyboard.press('Enter');
   assert.equal(page.isClosed(), false, 'keyboard exit dismissal must not close the Giving page');
   await page.locator('#practiceExitConfirm').waitFor({ state: 'hidden', timeout: 5000 });
+  await page.waitForTimeout(25);
 }
 
 function startWebKitCampaignLifecycleTrace(page) {
