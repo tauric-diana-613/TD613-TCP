@@ -140,7 +140,9 @@ assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.toast-stack\{z-
 assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.practice-exit-confirm\{z-index:12020!important\}/);
 assert.match(twelveStepCss, /\.giving-demo-clear-confirm\{z-index:12020!important\}/);
 assert.match(twelveStepCss, /\.committee-filter-guard-dialog\{position:fixed;z-index:11990/);
-assert.match(twelveStepCss, /drop-shadow\(0 0 42px rgba\(255,82,197,\.34\)\)/);
+assert.match(twelveStepCss, /box-shadow:[^;]*0 0 42px rgba\(255,82,197,\.34\)/);
+assert.match(twelveStepCss, /filter:none!important/);
+assert.match(twelveStepCss, /backdrop-filter:none!important;-webkit-backdrop-filter:none!important/);
 assert.match(twelveStepCss, /\.research-dossier-heading-line \.research-dossier-help-trigger\{font-size:10px\}/);
 
 const expenditureAudit = expenditureCoverageAudit();
