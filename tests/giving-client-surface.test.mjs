@@ -135,7 +135,9 @@ assert.match(campaignCss, /\.campaign-directory-panel/);
 assert.match(campaignCss, /\.campaign-deputy-sync-tools/);
 
 // Operator copy and public/internal boundary.
-assert.match(visibleLanguage, /textContent = 'Match'/);
+assert.match(visibleLanguage, /setText\(button, 'Match'\)/);
+assert.match(visibleLanguage, /setText\(state, 'Match'\)/);
+assert.doesNotMatch(visibleLanguage, /textContent = 'Match'/);
 assert.match(dossierHelp, /Contributor research file/);
 assert.match(dossierHelp, /document\.body\.appendChild\(popup\)/);
 assert.doesNotMatch(dossierHelp, /createElement\('style'\)/);

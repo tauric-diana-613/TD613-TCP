@@ -35,6 +35,17 @@ assert.equal(classifyValidationScope([
   'tests/giving-vercel-route.test.mjs'
 ]).scope, 'giving', 'narrow additive Giving design/security witnesses must stay inside the Giving release lane');
 
+const twelveStepPedagogueAudit = classifyValidationScope([
+  'app/giving/history/giving-12-step-bundle.js',
+  'app/engine/pedagogue-interface-diagnosis.js',
+  'tests/fixtures/pedagogue/giving-12-step-evidence-workflow.json',
+  'docs/pedagogue/GIVING_12_STEP_REPO_TRANSFER_AUDIT.md',
+  'tests/giving-post640-polish.test.mjs'
+]);
+assert.equal(twelveStepPedagogueAudit.scope, 'giving', 'inert Pedagogue audit artifacts and the shared diagnosis helper must not widen an executable Giving change to the full browser estate');
+assert.deepEqual(twelveStepPedagogueAudit.full_scope_files, []);
+assert.equal(twelveStepPedagogueAudit.practice_fixture_changed, false, 'interface-diagnosis specimens do not mutate the canonical practice fixture');
+
 const practiceOnly = classifyValidationScope([
   'app/engine/pedagogue-practice-fixture.js',
   'app/engine/flowcore-observation-aperture.js',
