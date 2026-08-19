@@ -67,3 +67,4 @@ await import('./pedagogue-research-hydration-temporal.test.mjs');
 await import('./pedagogue-research-assay-witness.test.mjs');
 await import('./ash-a15-r0-moss-lantern-reference-identifiability.test.mjs');
 await import('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
+await import('./giving-pedagogue-independent-order.test.mjs');

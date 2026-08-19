@@ -13,6 +13,7 @@ export function compileMossLanternMl3PedagogueWitness(assay) {
   return compilePedagogueResearchAssayWitness({
     witness_id: MOSS_LANTERN_ML3_PEDAGOGUE_WITNESS_ID,
     mechanism_id: 'ORDER_IS_PART_OF_PROCESS_STATE',
+    context_family: 'ASH_CALIBRATION',
     assay_reference: 'A15-R0 Moss Lantern ML3 temporal-order tomography calibration',
     assay_schema: assay.schema,
     assay_source_status: assay.source_status,

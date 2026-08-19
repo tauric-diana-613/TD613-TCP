@@ -14,7 +14,7 @@ The answer is an **assay witness**, not a learned law.
 
 ## Witness outcomes
 
-A `td613.flowcore.pedagogue-research-assay-witness/v0.1` may record exactly one bounded posture:
+A `td613.flowcore.pedagogue-research-assay-witness/v0.1` records:
 
 ```text
 SUPPORTED_BOUNDED
@@ -22,9 +22,10 @@ COUNTEREXAMPLED_BOUNDED
 INCONCLUSIVE
 ```
 
-The witness binds:
+and binds:
 
 - the generic mechanism being tested;
+- a declared generic `context_family`;
 - assay identity and schema;
 - declared controls;
 - bounded observations;
@@ -34,6 +35,32 @@ The witness binds:
 
 Every witness has zero promotion, redesign, product, production, and transmission authority.
 
+## Context-family law
+
+Witness count is not context count.
+
+```text
+2 Moss Lantern variants
+!=
+2 independent internal contexts
+```
+
+Every witness therefore declares a generic context family such as:
+
+```text
+ASH_CALIBRATION
+GIVING_PRACTICE
+```
+
+Mechanism review reports both:
+
+```text
+internal_assay_witness_count
+internal_context_family_count
+```
+
+Context-family labels establish only declared contextual distinctness. They do **not** establish statistical independence, causal independence, or replication quality.
+
 ## Mechanism review
 
 `reviewPedagogueResearchMechanism(hydration, witnesses, mechanismId)` joins the external hydration state to internal bounded assays without collapsing disagreement.
@@ -42,12 +69,11 @@ Possible learning states include:
 
 ```text
 CROSS_DOMAIN_PLUS_INTERNAL_BOUNDED_ASSAY_WITNESS
+CROSS_DOMAIN_PLUS_MULTI_CONTEXT_INTERNAL_BOUNDED_ASSAY_WITNESSES
 CROSS_DOMAIN_WITH_INTERNAL_BOUNDED_COUNTEREXAMPLE
 CROSS_DOMAIN_WITH_INTERNAL_INCONCLUSIVE_ASSAY
 CROSS_DOMAIN_WITH_MIXED_INTERNAL_ASSAYS
 ```
-
-Single-domain variants are equally valid.
 
 The critical rule is:
 
@@ -59,6 +85,18 @@ support + counterexample
 
 Pedagogue does not average contradictory assays into confidence.
 
+When bounded support survives two or more declared context families without a bounded internal counterexample:
+
+```text
+next_learning_action = SEEK_ADVERSARIAL_COUNTEREXAMPLE
+```
+
+One supported context remains:
+
+```text
+SEEK_INDEPENDENT_CONTEXT_AND_ADVERSARIAL_COUNTEREXAMPLE
+```
+
 ## Promotion firewall
 
 Even the strongest current research state remains:
@@ -69,44 +107,36 @@ promotion_authority = false
 human_closure_required = true
 ```
 
-A bounded assay may therefore change what Pedagogue should test next while remaining unable to change shared law by itself.
+A bounded assay may change what Pedagogue should test next while remaining unable to change shared law by itself.
 
-## First witness: Moss Lantern ML3
+## First two contexts for ORDER_IS_PART_OF_PROCESS_STATE
 
-Moss Lantern ML3 is the first earned internal assay witness. The hydrated relation is:
+### ASH_CALIBRATION
+
+Moss Lantern ML3 uses a classical finite inverse problem with 24 hidden route permutations, fixed operation multiset/endpoints, an order-sensitive two-coordinate terminal witness, and commuting/order-blind controls.
+
+### GIVING_PRACTICE
+
+The independent Giving assay models the already-existing fictional contributor-handoff source contract. `PREPARE → SUBMIT` can mark an existing prepared route searched; `SUBMIT → PREPARE` ends at the same coarse contributor-prepared endpoint but with the prepared route unsearched. A matched null removes the state precondition and erases order.
+
+The Giving assay executes no browser runtime or retrieval and mutates no product behavior. Source-contract verification must pass or the witness is rejected.
+
+Two supported context families therefore mean only:
 
 ```text
-ORDER_IS_PART_OF_PROCESS_STATE
+external cross-domain research candidate
++
+ASH_CALIBRATION bounded witness
++
+GIVING_PRACTICE bounded witness
+→
+CROSS_DOMAIN_PLUS_MULTI_CONTEXT_INTERNAL_BOUNDED_ASSAY_WITNESSES
 ```
 
-The external literature already gives this relation independent cross-domain witnesses. ML3 then tests a deliberately classical finite inverse problem:
+and then:
 
 ```text
-24 hidden permutations
-same operation multiset
-same route boundaries
-same endpoint
-2-coordinate terminal witness
-```
-
-An order-sensitive finite matrix process is compared with a matched commuting null and an order-blind endpoint/multiset null.
-
-A passing ML3 result changes Pedagogue's learning state only from:
-
-```text
-CROSS_DOMAIN_REVIEW_CANDIDATE
-```
-
-to:
-
-```text
-CROSS_DOMAIN_PLUS_INTERNAL_BOUNDED_ASSAY_WITNESS
-```
-
-The next learning action is deliberately adversarial:
-
-```text
-SEEK_INDEPENDENT_CONTEXT_AND_ADVERSARIAL_COUNTEREXAMPLE
+SEEK_ADVERSARIAL_COUNTEREXAMPLE
 ```
 
 No law is promoted.
