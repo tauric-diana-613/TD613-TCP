@@ -63,4 +63,6 @@ try {
 }
 
 await import('./pedagogue-research-hydration.test.mjs');
+await import('./pedagogue-research-hydration-temporal.test.mjs');
 await import('./ash-a15-r0-moss-lantern-reference-identifiability.test.mjs');
+await import('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
