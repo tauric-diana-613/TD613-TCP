@@ -7,7 +7,7 @@ const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1';
 const GIVING_PAGING_FIX_EPOCH = '20260818-1';
 const GIVING_MINIUPDATE_EPOCH = '20260818-4';
 const GIVING_TWELVE_STEP_EPOCH = '20260818-1';
-const GIVING_REPAIR_EPOCH = '20260818-1';
+const GIVING_REPAIR_EPOCH = '20260818-2';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
