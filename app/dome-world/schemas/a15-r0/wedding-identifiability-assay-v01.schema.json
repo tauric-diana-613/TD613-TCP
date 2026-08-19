@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.wedding-identifiability-assay/v0.1",
+  "title": "TD613 Ash A15-R0 Wedding Identifiability Assay",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "source_status",
+    "fixture_class",
+    "authority_class",
+    "state_count",
+    "probe_alphabet",
+    "observation_budget",
+    "noise_model",
+    "conditions",
+    "positive_control",
+    "negative_control",
+    "relationship_shuffle_marginals_preserved",
+    "assay_mechanism_validated",
+    "hypothesis_id",
+    "hypothesis_status",
+    "promotion_authority",
+    "production_mutated",
+    "external_transmission",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.wedding-identifiability-assay/v0.1" },
+    "source_status": { "const": "SIMULATED" },
+    "fixture_class": { "const": "DECLARED_SYNTHETIC_POSITIVE_AND_NEGATIVE_CONTROLS" },
+    "authority_class": { "const": "A2_DERIVATIONAL" },
+    "state_count": { "const": 27 },
+    "probe_alphabet": {
+      "type": "array",
+      "prefixItems": [
+        { "const": 0 },
+        { "const": 1 },
+        { "const": 2 }
+      ],
+      "items": false
+    },
+    "observation_budget": { "type": "integer", "minimum": 6 },
+    "noise_model": {
+      "type": "object",
+      "required": ["kind", "substitution_probability", "trials_per_state", "seed"]
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "positive_control": { "type": "object" },
+    "negative_control": { "type": "object" },
+    "relationship_shuffle_marginals_preserved": { "type": "boolean" },
+    "assay_mechanism_validated": { "type": "boolean" },
+    "hypothesis_id": { "const": "H_TRIPLE_IDENTIFIABILITY_SYNERGY" },
+    "hypothesis_status": { "const": "OPEN_UNMEASURED" },
+    "promotion_authority": { "const": false },
+    "production_mutated": { "const": false },
+    "external_transmission": { "const": false },
+    "partial_information_decomposition_claim": { "const": false },
+    "emergence_claim": { "const": false },
+    "physical_geometry_claim": { "const": false },
+    "claim_ceiling": { "type": "string", "minLength": 1 },
+    "finding": { "type": "string", "minLength": 1 }
+  }
+}
