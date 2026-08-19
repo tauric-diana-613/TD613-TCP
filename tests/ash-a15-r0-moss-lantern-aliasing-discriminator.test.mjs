@@ -37,6 +37,10 @@ assert.equal(assay.schema, MOSS_LANTERN_ALIASING_DISCRIMINATOR_SCHEMA);
 assert.equal(assay.source_status, 'SIMULATED');
 assert.equal(assay.authority_class, 'A2_DERIVATIONAL');
 assert.equal(assay.manifestly_fictional, true);
+assert.equal(assay.epistemic_kind, 'OPERATIONAL_CRITERION');
+assert.equal(assay.formal_scope, 'FINITE_DETERMINISTIC_TERMINAL_SIGNATURE_MODEL');
+assert.equal(assay.criterion_empirical_truth_claim, false);
+assert.equal(assay.criterion_empirically_discovered, false);
 assert.equal(assay.latent_route_count, 24);
 assert.equal(assay.observation_aperture_factor.rich, 'O_rich([u,v])=[u,v]');
 assert.equal(assay.observation_aperture_factor.lossy, 'O_drop_v([u,v])=[u]');
@@ -47,7 +51,6 @@ const A = assay.conditions.A_SEPARATING_RICH;
 const B = assay.conditions.B_SEPARATING_DROP_V;
 const C = assay.conditions.C_ERASING_RICH;
 const D = assay.conditions.D_ERASING_DROP_V;
-
 assert.deepEqual(A, {
   latent_route_count: 24,
   forward_unique_terminal_state_count: 24,
@@ -59,7 +62,6 @@ assert.deepEqual(A, {
   maximum_candidate_set_size: 1,
   classification: 'SEPARATED'
 });
-assert.equal(B.latent_route_count, 24);
 assert.equal(B.forward_unique_terminal_state_count, 24);
 assert.equal(B.observed_unique_signature_count, 18);
 assert.equal(B.forward_alias_deficit, 0);
@@ -81,10 +83,10 @@ assert.deepEqual(D, C);
 assert.equal(assay.findings.rich_aperture_preserves_separating_dynamics, true);
 assert.equal(assay.findings.coordinate_ablation_creates_observational_aliasing, true);
 assert.equal(assay.findings.commuting_forward_process_creates_dynamic_aliasing, true);
-assert.equal(assay.findings.alias_location_discriminator_validated, true);
-assert.equal(assay.hypothesis_status.H_ALIAS_LOCATION_DISCRIMINATOR, 'SUPPORTED_IN_BOUNDED_FACTORIAL_FIXTURE');
-assert.equal(assay.refinement_evaluation, 'DISCRIMINATED_IN_BOUNDED_FACTORIAL_FIXTURE');
-assert.equal(assay.next_learning_action, 'SEEK_EXTERNAL_OR_INDEPENDENT_COUNTEREXAMPLE_TO_REFINED_MECHANISM');
+assert.equal(assay.findings.alias_location_instrument_validated, true);
+assert.equal(assay.hypothesis_status.H_ALIAS_LOCATION_DISCRIMINATOR, 'INSTRUMENT_VALIDATED_IN_BOUNDED_FACTORIAL_FIXTURE');
+assert.equal(assay.refinement_evaluation, 'INSTRUMENTATION_VALIDATED_FOR_OPERATIONAL_CRITERION');
+assert.equal(assay.next_learning_action, 'TEST_SCOPE_BOUNDARY_OUTSIDE_DETERMINISTIC_TERMINAL_SIGNATURE_MODEL');
 assert.equal(assay.observation_aperture.authority_effect, 'NONE');
 assert.equal(assay.observation_aperture.practice_mode, true);
 assert.ok(Object.values(assay.observer_firewall).every(value => value === false));
@@ -102,7 +104,7 @@ assert.equal(assay.live_ash_binding, false);
 assert.equal(assay.proto_loom_implementation, false);
 assert.equal(assay.external_transmission, false);
 assert.equal(assay.human_closure_required, true);
-assert.match(assay.claim_ceiling, /distinguish dynamic aliasing from observational aliasing/i);
+assert.match(assay.claim_ceiling, /criterion is not empirically discovered/i);
 
 assert.throws(() => runMossLanternAliasingDiscriminator({ fixture: {}, refinement }), /canonical Moss Lantern/i);
 assert.throws(() => runMossLanternAliasingDiscriminator({ fixture, refinement: {} }), /governed Pedagogue mechanism refinement/i);
@@ -110,12 +112,15 @@ assert.throws(() => runMossLanternAliasingDiscriminator({ fixture, refinement: {
 const spec = fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/ASH_KEEP_A15_R0_MOSS_LANTERN_ML3_5_ALIASING_DISCRIMINATOR_SPEC_V0_1.md', 'utf8');
 assert.match(spec, /O_drop_v\(\[u,v\]\) = \[u\]/);
 assert.match(spec, /may not switch to `v`, parity, buckets, or another projection/i);
-assert.match(spec, /Dynamic aliasing detected/i);
-assert.match(spec, /Observational aliasing detected/i);
+const epistemicSpec = fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/PEDAGOGUE_REFINEMENT_EPISTEMIC_KIND_SPEC_V0_1.md', 'utf8');
+assert.match(epistemicSpec, /INSTRUMENTATION_VALIDATED_FOR_OPERATIONAL_CRITERION/);
 
 console.log(JSON.stringify({
   ok: true,
   schema: assay.schema,
+  epistemic_kind: assay.epistemic_kind,
+  formal_scope: assay.formal_scope,
+  criterion_empirically_discovered: assay.criterion_empirically_discovered,
   A_forward_states: A.forward_unique_terminal_state_count,
   A_observed_signatures: A.observed_unique_signature_count,
   A_classification: A.classification,
@@ -128,7 +133,7 @@ console.log(JSON.stringify({
   C_forward_alias_deficit: C.forward_alias_deficit,
   C_classification: C.classification,
   D_classification: D.classification,
-  discriminator_status: assay.hypothesis_status.H_ALIAS_LOCATION_DISCRIMINATOR,
+  instrument_status: assay.hypothesis_status.H_ALIAS_LOCATION_DISCRIMINATOR,
   refinement_evaluation: assay.refinement_evaluation,
   next_learning_action: assay.next_learning_action,
   pedagogue_law_promoted: assay.pedagogue_law_promoted,

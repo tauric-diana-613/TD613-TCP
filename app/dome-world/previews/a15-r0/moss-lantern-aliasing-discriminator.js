@@ -40,8 +40,17 @@ function validateRefinement(refinement) {
   if (refinement.candidate_mechanism_id !== ORDER_IDENTIFIABILITY_CANDIDATE_MECHANISM) {
     throw new Error('ML3.5 requires the governed order-identifiability candidate mechanism.');
   }
-  if (refinement.refinement_status !== 'INTERNALLY_SUPPORTED_REFINEMENT_CANDIDATE') {
-    throw new Error('ML3.5 requires an internally supported refinement candidate before discrimination.');
+  if (refinement.epistemic_kind !== 'OPERATIONAL_CRITERION') {
+    throw new Error('ML3.5 requires the order-identifiability refinement to be classified as an OPERATIONAL_CRITERION.');
+  }
+  if (refinement.formal_scope !== 'FINITE_DETERMINISTIC_TERMINAL_SIGNATURE_MODEL') {
+    throw new Error('ML3.5 requires the finite deterministic terminal-signature formal scope.');
+  }
+  if (refinement.refinement_status !== 'MULTI_CONTEXT_MOTIVATED_OPERATIONAL_CRITERION') {
+    throw new Error('ML3.5 requires a multi-context-motivated operational criterion before instrumentation validation.');
+  }
+  if (refinement.empirical_truth_claim !== false || refinement.instrumentation_validation_applicable !== true) {
+    throw new Error('ML3.5 may validate instrumentation for the criterion but may not treat the criterion as an empirical truth claim.');
   }
   if (refinement.authority?.pedagogue_law_promoted !== false || refinement.authority?.production_mutation_authorized !== false) {
     throw new Error('ML3.5 requires closed Pedagogue-law and production authority.');
@@ -143,23 +152,24 @@ export function runMossLanternAliasingDiscriminator({ fixture, refinement } = {}
   const aperture = compileObservationAperture({
     source_ids: ['moss-lantern-practice-capsule'],
     source_count: 1,
-    instrument_scope: ['pedagogue-order-identifiability-refinement', 'moss-lantern-ml3.5-aliasing-discriminator'],
+    instrument_scope: ['pedagogue-order-identifiability-operational-criterion', 'moss-lantern-ml3.5-aliasing-discriminator'],
     condition_scope: [
       'F_sep x O_rich',
       'F_sep x O_drop_v',
       'F_erase x O_rich',
       'F_erase x O_drop_v'
     ],
-    matching_posture: 'DECLARED_2X2_FORWARD_OBSERVATION_DISCRIMINATOR',
+    matching_posture: 'DECLARED_2X2_FORWARD_OBSERVATION_INSTRUMENT_VALIDATION',
     filter_flags: {
       live_ash_runtime: false,
       raw_source_transport: false,
       route_labels_exposed_to_observer: false,
       absolute_timestamps_used: false,
       hidden_intermediate_states_used: false,
-      lossy_aperture_changed_after_results: false
+      lossy_aperture_changed_after_results: false,
+      criterion_empirically_discovered: false
     },
-    context_labels: ['A15-R0', 'Moss Lantern', 'ML3.5', 'aliasing-discriminator'],
+    context_labels: ['A15-R0', 'Moss Lantern', 'ML3.5', 'operational-criterion-instrument-validation'],
     practice_mode: true,
     identity_redacted: true
   });
@@ -172,6 +182,10 @@ export function runMossLanternAliasingDiscriminator({ fixture, refinement } = {}
     manifestly_fictional: true,
     prerequisite_refinement_id: refinement.proposal_id,
     candidate_mechanism_id: refinement.candidate_mechanism_id,
+    epistemic_kind: refinement.epistemic_kind,
+    formal_scope: refinement.formal_scope,
+    criterion_empirical_truth_claim: false,
+    criterion_empirically_discovered: false,
     latent_route_count: routes.length,
     forward_process_factor: freeze({
       separating: 'ML3_ORDER_SENSITIVE_Z31_OPERATOR_TRAIN',
@@ -189,19 +203,19 @@ export function runMossLanternAliasingDiscriminator({ fixture, refinement } = {}
       rich_aperture_preserves_separating_dynamics: A.classification === 'SEPARATED',
       coordinate_ablation_creates_observational_aliasing: B.classification === 'OBSERVATIONAL_ALIASING',
       commuting_forward_process_creates_dynamic_aliasing: C.classification === 'DYNAMIC_ALIASING' && D.classification === 'DYNAMIC_ALIASING',
-      alias_location_discriminator_validated: discriminatorValidated
+      alias_location_instrument_validated: discriminatorValidated
     }),
     hypothesis_status: freeze({
       H_ALIAS_LOCATION_DISCRIMINATOR: discriminatorValidated
-        ? 'SUPPORTED_IN_BOUNDED_FACTORIAL_FIXTURE'
-        : 'INCONCLUSIVE_OR_FALSIFIED_IN_BOUNDED_FACTORIAL_FIXTURE'
+        ? 'INSTRUMENT_VALIDATED_IN_BOUNDED_FACTORIAL_FIXTURE'
+        : 'INSTRUMENT_NOT_VALIDATED_IN_BOUNDED_FACTORIAL_FIXTURE'
     }),
     refinement_evaluation: discriminatorValidated
-      ? 'DISCRIMINATED_IN_BOUNDED_FACTORIAL_FIXTURE'
-      : 'NOT_DISCRIMINATED_IN_BOUNDED_FACTORIAL_FIXTURE',
+      ? 'INSTRUMENTATION_VALIDATED_FOR_OPERATIONAL_CRITERION'
+      : 'INSTRUMENTATION_NOT_VALIDATED_FOR_OPERATIONAL_CRITERION',
     next_learning_action: discriminatorValidated
-      ? 'SEEK_EXTERNAL_OR_INDEPENDENT_COUNTEREXAMPLE_TO_REFINED_MECHANISM'
-      : 'REVISE_REFINEMENT_OR_DISCRIMINATOR',
+      ? 'TEST_SCOPE_BOUNDARY_OUTSIDE_DETERMINISTIC_TERMINAL_SIGNATURE_MODEL'
+      : 'REVISE_INSTRUMENTATION_OR_OPERATIONAL_CRITERION',
     observer_firewall: freeze({
       hidden_route_identity_received: false,
       route_labels_received_as_observations: false,
@@ -226,6 +240,6 @@ export function runMossLanternAliasingDiscriminator({ fixture, refinement } = {}
     proto_loom_implementation: false,
     external_transmission: false,
     human_closure_required: true,
-    claim_ceiling: 'FINITE_CLASSICAL_MOSS_LANTERN_ALIAS_LOCATION_DISCRIMINATOR_ONLY; may distinguish dynamic aliasing from observational aliasing in the declared 2x2 fixture. It does not establish a universal theory of history, statistical independence, live TD613 temporal-order identifiability, quantum process tomography, physical noncommutativity, connection, curvature, holonomy, Berry structure, phasons, D3 physical geometry, A16, Proto-Loom, or production authority.'
+    claim_ceiling: 'FINITE_CLASSICAL_MOSS_LANTERN_ALIAS_LOCATION_INSTRUMENT_VALIDATION_ONLY; validates that the declared 2x2 instrumentation distinguishes dynamic from observational collision stages according to the operational criterion. The criterion is not empirically discovered. No universal theory of history, statistical independence, live TD613 temporal-order identifiability, quantum process tomography, physical noncommutativity, connection, curvature, holonomy, Berry structure, phasons, D3 physical geometry, A16, Proto-Loom, or production authority follows.'
   });
 }

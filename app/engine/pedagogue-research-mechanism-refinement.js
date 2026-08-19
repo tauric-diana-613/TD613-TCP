@@ -11,6 +11,12 @@ export const PEDAGOGUE_RESEARCH_REFINEMENT_POSTURES = Object.freeze([
   'PROPOSED_FROM_MULTI_CONTEXT_INTERNAL_ASSAYS',
   'PROPOSED_FROM_MIXED_INTERNAL_ASSAYS'
 ]);
+export const PEDAGOGUE_RESEARCH_REFINEMENT_EPISTEMIC_KINDS = Object.freeze([
+  'EMPIRICAL_RELATION',
+  'OPERATIONAL_CRITERION',
+  'FORMAL_IDENTITY',
+  'DESIGN_HEURISTIC'
+]);
 
 const MECHANISM_RE = /^[A-Z][A-Z0-9_]{2,127}$/;
 
@@ -18,6 +24,73 @@ function uniqueStrings(values, label) {
   const out = strings(values, label, 1);
   if (new Set(out).size !== out.length) throw new Error(`${label} values must be unique.`);
   return out;
+}
+
+function bool(value, label) {
+  if (typeof value !== 'boolean') throw new Error(`${label} must be boolean.`);
+  return value;
+}
+
+function validateEpistemicKind(proposal) {
+  const epistemic_kind = text(proposal.epistemic_kind, 'proposal.epistemic_kind').toUpperCase();
+  if (!PEDAGOGUE_RESEARCH_REFINEMENT_EPISTEMIC_KINDS.includes(epistemic_kind)) {
+    throw new Error(`Unsupported Pedagogue refinement epistemic kind: ${epistemic_kind}`);
+  }
+  const empirical_truth_claim = bool(proposal.empirical_truth_claim, 'proposal.empirical_truth_claim');
+  const instrumentation_validation_applicable = bool(
+    proposal.instrumentation_validation_applicable,
+    'proposal.instrumentation_validation_applicable'
+  );
+  const boundary_testing_required = bool(proposal.boundary_testing_required, 'proposal.boundary_testing_required');
+
+  if (epistemic_kind === 'EMPIRICAL_RELATION' && empirical_truth_claim !== true) {
+    throw new Error('EMPIRICAL_RELATION refinements must explicitly declare a bounded contingent empirical truth claim.');
+  }
+  if (epistemic_kind !== 'EMPIRICAL_RELATION' && empirical_truth_claim !== false) {
+    throw new Error(`${epistemic_kind} refinements may not declare an empirical truth claim.`);
+  }
+  if (epistemic_kind === 'OPERATIONAL_CRITERION') {
+    if (instrumentation_validation_applicable !== true || boundary_testing_required !== true) {
+      throw new Error('OPERATIONAL_CRITERION refinements require instrumentation validation and scope-boundary testing.');
+    }
+  }
+  if (epistemic_kind === 'DESIGN_HEURISTIC') {
+    if (instrumentation_validation_applicable !== true || boundary_testing_required !== true) {
+      throw new Error('DESIGN_HEURISTIC refinements require utility validation and boundary testing.');
+    }
+  }
+  if (epistemic_kind === 'FORMAL_IDENTITY' && instrumentation_validation_applicable !== true) {
+    throw new Error('FORMAL_IDENTITY refinements require implementation-consistency validation.');
+  }
+
+  return freeze({
+    epistemic_kind,
+    formal_scope: text(proposal.formal_scope, 'proposal.formal_scope'),
+    empirical_truth_claim,
+    instrumentation_validation_applicable,
+    boundary_testing_required
+  });
+}
+
+function statusForKind(epistemicKind, counterexampled) {
+  if (epistemicKind === 'OPERATIONAL_CRITERION') {
+    return counterexampled > 0
+      ? 'MIXED_EVIDENCE_MOTIVATED_OPERATIONAL_CRITERION'
+      : 'MULTI_CONTEXT_MOTIVATED_OPERATIONAL_CRITERION';
+  }
+  if (epistemicKind === 'FORMAL_IDENTITY') return 'FORMAL_IDENTITY_IMPLEMENTATION_REVIEW_CANDIDATE';
+  if (epistemicKind === 'DESIGN_HEURISTIC') {
+    return counterexampled > 0 ? 'MIXED_UTILITY_DESIGN_HEURISTIC_CANDIDATE' : 'MULTI_CONTEXT_DESIGN_HEURISTIC_CANDIDATE';
+  }
+  return counterexampled > 0 ? 'MIXED_EVIDENCE_REFINEMENT_CANDIDATE' : 'INTERNALLY_SUPPORTED_REFINEMENT_CANDIDATE';
+}
+
+function nextActionForKind(epistemicKind, counterexampled) {
+  if (counterexampled > 0) return 'RUN_DISCRIMINATING_ASSAY';
+  if (epistemicKind === 'OPERATIONAL_CRITERION') return 'RUN_DISCRIMINATING_APERTURE_ASSAY';
+  if (epistemicKind === 'FORMAL_IDENTITY') return 'VALIDATE_IMPLEMENTATION_AND_ASSUMPTION_BOUNDARY';
+  if (epistemicKind === 'DESIGN_HEURISTIC') return 'TEST_UTILITY_AND_FAILURE_BOUNDARY';
+  return 'SEEK_ADVERSARIAL_COUNTEREXAMPLE';
 }
 
 export function compilePedagogueResearchMechanismRefinement(input = {}) {
@@ -52,6 +125,7 @@ export function compilePedagogueResearchMechanismRefinement(input = {}) {
     throw new Error('Mechanism refinement parent is absent from the governed research hydration.');
   }
 
+  const epistemic = validateEpistemicKind(proposal);
   const supportingWitnessIds = uniqueStrings(proposal.supporting_witness_ids, 'proposal.supporting_witness_ids');
   if (supportingWitnessIds.length < 2) {
     throw new Error('Multi-context mechanism refinement requires at least two bounded internal assay witnesses.');
@@ -90,9 +164,7 @@ export function compilePedagogueResearchMechanismRefinement(input = {}) {
   const posture = counterexampled > 0
     ? 'PROPOSED_FROM_MIXED_INTERNAL_ASSAYS'
     : 'PROPOSED_FROM_MULTI_CONTEXT_INTERNAL_ASSAYS';
-  const refinementStatus = counterexampled > 0
-    ? 'MIXED_EVIDENCE_REFINEMENT_CANDIDATE'
-    : 'INTERNALLY_SUPPORTED_REFINEMENT_CANDIDATE';
+  const refinementStatus = statusForKind(epistemic.epistemic_kind, counterexampled);
 
   const refinement = {
     schema: PEDAGOGUE_RESEARCH_MECHANISM_REFINEMENT_SCHEMA,
@@ -101,6 +173,11 @@ export function compilePedagogueResearchMechanismRefinement(input = {}) {
     candidate_mechanism_id,
     proposal_posture: posture,
     refinement_status: refinementStatus,
+    epistemic_kind: epistemic.epistemic_kind,
+    formal_scope: epistemic.formal_scope,
+    empirical_truth_claim: epistemic.empirical_truth_claim,
+    instrumentation_validation_applicable: epistemic.instrumentation_validation_applicable,
+    boundary_testing_required: epistemic.boundary_testing_required,
     operational_definition: text(proposal.operational_definition, 'proposal.operational_definition'),
     scope_conditions: freeze(strings(proposal.scope_conditions, 'proposal.scope_conditions', 1)),
     failure_modes: freeze(strings(proposal.failure_modes, 'proposal.failure_modes', 1)),
@@ -118,16 +195,15 @@ export function compilePedagogueResearchMechanismRefinement(input = {}) {
       'proposal.alternative_explanations_remaining',
       1
     )),
-    next_learning_action: counterexampled > 0
-      ? 'RUN_DISCRIMINATING_ASSAY'
-      : 'RUN_DISCRIMINATING_APERTURE_ASSAY',
+    next_learning_action: nextActionForKind(epistemic.epistemic_kind, counterexampled),
     claim_ceiling: text(proposal.claim_ceiling, 'proposal.claim_ceiling'),
     evidence_posture: freeze({
       internal_multi_context_assay_derived: true,
       context_family_distinctness_only: true,
       statistical_independence_claim: false,
       parent_mechanism_revalidated: false,
-      candidate_mechanism_is_law: false
+      candidate_mechanism_is_law: false,
+      empirical_discovery_claim: false
     }),
     authority: freeze({
       parent_mechanism_replaced: false,
@@ -141,9 +217,11 @@ export function compilePedagogueResearchMechanismRefinement(input = {}) {
       external_transmission_authorized: false,
       human_closure_required: true
     }),
-    finding: counterexampled > 0
-      ? 'Multi-context internal assay evidence is mixed. The candidate refinement is retained only as a discriminating-assay target; contradiction remains visible and no Pedagogue law is promoted.'
-      : 'At least two declared internal context families support the narrower operational mechanism as a refinement candidate. Context labels do not establish statistical independence, the parent relation is not replaced, and no Pedagogue law is promoted.'
+    finding: epistemic.epistemic_kind === 'OPERATIONAL_CRITERION'
+      ? 'Multi-context bounded evidence motivated a narrower operational identifiability criterion. The criterion is not an empirical discovery; internal assays may validate instrumentation, calibration, applicability, and scope boundaries only. The parent relation is not replaced and no Pedagogue law is promoted.'
+      : counterexampled > 0
+        ? 'Multi-context internal assay evidence is mixed. The candidate refinement is retained only as a discriminating-assay target; contradiction remains visible and no Pedagogue law is promoted.'
+        : 'At least two declared internal context families motivate the classified refinement candidate. Context labels do not establish statistical independence, the parent relation is not replaced, and no Pedagogue law is promoted.'
   };
 
   noForbidden(refinement);
