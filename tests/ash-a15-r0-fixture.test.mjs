@@ -7,6 +7,7 @@ import './ash-a15-r0-model-misspecification-heldout.test.mjs';
 import './ash-a15-r0-predeclared-reserve-recovery.test.mjs';
 import './ash-a15-r0-inadequate-reserve-open-set-hold.test.mjs';
 import './ash-a15-r0-noisy-open-set-near-miss.test.mjs';
+import './ash-a15-r0-multi-probe-matched-budget.test.mjs';
 import {
   A15_R0_ACTION_SEQUENCE,
   A15_R0_SCHEMAS,
