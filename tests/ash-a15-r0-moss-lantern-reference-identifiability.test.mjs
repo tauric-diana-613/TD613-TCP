@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { buildIdentifiabilityFrontierRegistry } from '../app/dome-world/previews/a15-r0/identifiability-frontier-registry.js';
+import { runWeddingIdentifiabilityAssay } from '../app/dome-world/previews/a15-r0/wedding-identifiability-assay.js';
 import {
   MOSS_LANTERN_INDEPENDENT_PROBE_OFFSETS,
   MOSS_LANTERN_OBSERVATION_BUDGET,
@@ -131,6 +133,36 @@ assert.match(spec, /generic aperiodic control/i);
 assert.match(spec, /phi-specific advantage NOT SUPPORTED/i);
 assert.match(spec, /Moss Lantern dedicated UI = NOT REQUIRED/i);
 
+const frontier = buildIdentifiabilityFrontierRegistry({
+  wedding: runWeddingIdentifiabilityAssay(),
+  moss: assay
+});
+const extension = Object.fromEntries(frontier.extension_hypotheses.map(item => [item.hypothesis_id, item]));
+assert.equal(frontier.extension_hypotheses.length, 5);
+assert.deepEqual(frontier.bounded_support, [
+  'H_WEDDING_ASSAY_MECHANISM_VALID',
+  'H_MOSS_LANTERN_NONREPETITION_REFERENCE_ASSAY'
+]);
+assert.deepEqual(frontier.closed_by_counterexample, [
+  'H_PHI_SPECIFIC_ANTI_ALIASING_ADVANTAGE'
+]);
+assert.deepEqual(frontier.research_frontier, [
+  'H_TRIPLE_IDENTIFIABILITY_SYNERGY',
+  'H_TD613_PHI_ANTI_ALIASING'
+]);
+assert.equal(extension.H_MOSS_LANTERN_NONREPETITION_REFERENCE_ASSAY.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_REFERENCE_FIXTURE');
+assert.equal(extension.H_PHI_SPECIFIC_ANTI_ALIASING_ADVANTAGE.status, 'FALSIFIED_AS_PHI_SPECIFIC_SUPERIORITY_IN_BOUNDED_SYNTHETIC_FIXTURE');
+assert.equal(extension.H_TD613_PHI_ANTI_ALIASING.status, 'OPEN_UNMEASURED');
+assert.equal(extension.H_TD613_PHI_ANTI_ALIASING.evidence.td613_phi_forward_model, 'UNDECLARED');
+assert.equal(extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.status, 'OPEN_UNMEASURED');
+assert.equal(frontier.promotion_authority, false);
+assert.equal(frontier.sequence_authority, false);
+assert.equal(frontier.next_stage, null);
+assert.deepEqual(frontier.stage_unlocks, []);
+assert.equal(frontier.production_mutated, false);
+assert.equal(frontier.external_transmission, false);
+assert.match(frontier.finding, /phi-specific superiority was counterexampled there/i);
+
 console.log(JSON.stringify({
   ok: true,
   schema: assay.schema,
@@ -152,9 +184,12 @@ console.log(JSON.stringify({
   phi_specific_advantage_over_generic_aperiodic: assay.findings.phi_specific_advantage_over_generic_aperiodic,
   probe_diversity_matters_under_matched_budget: assay.findings.probe_diversity_matters_under_matched_budget,
   assay_mechanism_validated: assay.findings.assay_mechanism_validated,
-  nonrepetition_status: assay.hypothesis_status.H_NONREPETITION_REDUCES_REFERENCE_ALIASING,
-  phi_specific_status: assay.hypothesis_status.H_PHI_SPECIFIC_ANTI_ALIASING_ADVANTAGE,
-  td613_phi_status: assay.hypothesis_status.H_TD613_PHI_ANTI_ALIASING,
-  td613_triple_status: assay.hypothesis_status.H_TD613_TRIPLE_IDENTIFIABILITY_SYNERGY,
-  promotion_authority: assay.promotion_authority
+  nonrepetition_status: extension.H_MOSS_LANTERN_NONREPETITION_REFERENCE_ASSAY.status,
+  phi_specific_status: extension.H_PHI_SPECIFIC_ANTI_ALIASING_ADVANTAGE.status,
+  td613_phi_status: extension.H_TD613_PHI_ANTI_ALIASING.status,
+  td613_triple_status: extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.status,
+  bounded_support: frontier.bounded_support,
+  closed_by_counterexample: frontier.closed_by_counterexample,
+  research_frontier: frontier.research_frontier,
+  promotion_authority: frontier.promotion_authority
 }, null, 2));
