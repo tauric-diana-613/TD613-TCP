@@ -1,0 +1,89 @@
+{
+  "schema": "td613.flowcore.pedagogue-research-literature-fixture/v0.1",
+  "fixture_id": "pedagogue.research-hydration.2026-identifiability-scope-fifth-pass/v0.1",
+  "research_only": true,
+  "raw_source_content_included": false,
+  "part": "E",
+  "cards": [
+    {
+      "card_id": "lit-stochastic-process-observation-identifiability-2026",
+      "source": {
+        "title": "Structural identifiability of partially-observed stochastic processes: from single-particle trajectories to total particle density data",
+        "venue": "arXiv",
+        "publication_date": "2026-05-13",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2605.13504"
+      },
+      "domain_family": "STOCHASTIC_PROCESS_IDENTIFIABILITY",
+      "domain_tags": ["stochastic-processes", "partial-observation", "identifiability"],
+      "mechanism_id": "IDENTIFIABILITY_DEPENDS_ON_OBSERVATION_OBJECT",
+      "observed_relation": "The preprint studies structural identifiability for partially observed stochastic processes and reports different identifiability outcomes when the available data are individual trajectories versus population-level density measurements.",
+      "transferable_relation": "Identifiability can change when the observation object changes even when the underlying modeled process family is related; the measurement object must therefore be part of an identifiability claim.",
+      "admissible_assays": ["Hold the latent model family fixed while changing only the admitted observation object and report which parameter or route distinctions remain identifiable."],
+      "alternative_explanations": ["Differences may depend on the studied stochastic model, initial conditions, or the mathematical tools available for each observation type rather than a universal partial-observation law."],
+      "falsifiers": ["Changing the admitted observation object leaves the declared identifiability class unchanged across a model family specifically authored to expose observation-dependent distinctions."],
+      "forbidden_inferences": ["Observation-dependent identifiability in a stochastic particle model does not establish TD613 stochastic dynamics or a universal information geometry."],
+      "claim_ceiling": "OBSERVATION_OBJECT_IDENTIFIABILITY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-causal-system-identification-structure-2026",
+      "source": {
+        "title": "Disentangling Dynamical Systems: Causal Representation Learning Meets Local Sparse Attention",
+        "venue": "CLeaR / Proceedings of Machine Learning Research",
+        "publication_date": "2026-04",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "pmlr:v323:baumgartner26a"
+      },
+      "domain_family": "CAUSAL_SYSTEM_IDENTIFICATION",
+      "domain_tags": ["system-identification", "causal-representation", "identifiability"],
+      "mechanism_id": "IDENTIFIABILITY_IS_ASSUMPTION_SCOPED",
+      "observed_relation": "The paper derives an identifiability theorem for system-parameter representations under a declared causal graphical criterion and reports that local state-dependent causal structure can be necessary for stronger disentanglement guarantees.",
+      "transferable_relation": "Identifiability guarantees belong to an explicit structural assumption set and equivalence class; changing those assumptions can change what unique recovery means.",
+      "admissible_assays": ["State the structural assumptions and allowed equivalence class before testing recovery, then deliberately violate one assumption to locate the guarantee boundary."],
+      "alternative_explanations": ["The particular graphical criterion and learned representation class may not transfer beyond the studied causal-system-identification setting."],
+      "falsifiers": ["A claimed identifiability guarantee survives removal of an assumption that its own theorem requires without a revised proof or weaker equivalence class."],
+      "forbidden_inferences": ["A TD613 representation is not thereby a causal representation or identified physical system parameter."],
+      "claim_ceiling": "ASSUMPTION_SCOPED_IDENTIFIABILITY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-weight-variant-latent-identifiability-2026",
+      "source": {
+        "title": "Identifying Weight-Variant Latent Causal Models",
+        "venue": "Journal of Machine Learning Research",
+        "publication_date": "2026",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "jmlr:v27:23-1023"
+      },
+      "domain_family": "LATENT_CAUSAL_IDENTIFIABILITY",
+      "domain_tags": ["latent-variables", "causal-representation", "identifiability"],
+      "mechanism_id": "IDENTIFIABILITY_IS_ASSUMPTION_SCOPED",
+      "observed_relation": "The paper analyzes intrinsic indeterminacies in latent causal identification and proves identifiability only under stated model and reference-condition assumptions, with partial results when some assumptions are violated.",
+      "transferable_relation": "A recovery claim must name the transformations or ambiguities under which the latent object is identifiable and retain partial identifiability when assumptions do not support full recovery.",
+      "admissible_assays": ["Report exact recovery, recovery up to declared equivalence, and partial identifiability as separate outcomes rather than collapsing them into one success label."],
+      "alternative_explanations": ["The specific ambiguity classes arise from the paper's latent linear-Gaussian causal model and may differ in other model families."],
+      "falsifiers": ["A method claims unique latent identification while multiple transformations remain observationally equivalent under the declared data and assumptions."],
+      "forbidden_inferences": ["Latent causal identifiability theory does not establish TD613 latent physical variables or causal ontology."],
+      "claim_ceiling": "EQUIVALENCE_SCOPED_IDENTIFIABILITY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-partial-disentanglement-equivalence-2026",
+      "source": {
+        "title": "Nonparametric Partial Disentanglement via Mechanism Sparsity: Sparse Actions, Interventions and Sparse Temporal Dependencies",
+        "venue": "Journal of Machine Learning Research",
+        "publication_date": "2026",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "jmlr:v27:24-0771"
+      },
+      "domain_family": "NONPARAMETRIC_CAUSAL_REPRESENTATION",
+      "domain_tags": ["partial-identifiability", "temporal-dependencies", "equivalence"],
+      "mechanism_id": "IDENTIFIABILITY_IS_ASSUMPTION_SCOPED",
+      "observed_relation": "The paper develops nonparametric identifiability results under mechanism-sparsity assumptions and explicitly distinguishes partial disentanglement up to a declared consistency relation from complete disentanglement under stronger graphical conditions.",
+      "transferable_relation": "Partial recovery up to a declared equivalence relation is a legitimate identifiability outcome; stronger uniqueness requires stronger assumptions rather than more confident wording.",
+      "admissible_assays": ["When full unique recovery fails, identify the surviving equivalence class and test whether stronger assumptions legitimately shrink that class."],
+      "alternative_explanations": ["Mechanism sparsity is one route to identifiability and need not be the relevant structural assumption in unrelated inverse problems."],
+      "falsifiers": ["A claimed complete-identifiability result cannot distinguish candidate latents that remain equivalent under the declared observation and assumption set."],
+      "forbidden_inferences": ["Partial disentanglement theory does not imply TD613 latent-factor ontology, causal sparsity, or physical structure."],
+      "claim_ceiling": "PARTIAL_AND_EQUIVALENCE_SCOPED_IDENTIFIABILITY_RELATION_ONLY"
+    }
+  ]
+}
