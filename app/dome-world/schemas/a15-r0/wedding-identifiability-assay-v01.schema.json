@@ -3,7 +3,7 @@
   "$id": "td613.ash.a15-r0.wedding-identifiability-assay/v0.1",
   "title": "TD613 Ash A15-R0 Wedding Identifiability Assay",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
     "schema",
     "source_status",
@@ -16,6 +16,8 @@
     "conditions",
     "positive_control",
     "negative_control",
+    "positive_probe_marginals",
+    "shuffled_probe_marginals",
     "relationship_shuffle_marginals_preserved",
     "assay_mechanism_validated",
     "hypothesis_id",
@@ -23,7 +25,11 @@
     "promotion_authority",
     "production_mutated",
     "external_transmission",
-    "claim_ceiling"
+    "partial_information_decomposition_claim",
+    "emergence_claim",
+    "physical_geometry_claim",
+    "claim_ceiling",
+    "finding"
   ],
   "properties": {
     "schema": { "const": "td613.ash.a15-r0.wedding-identifiability-assay/v0.1" },
@@ -43,16 +49,26 @@
     "observation_budget": { "type": "integer", "minimum": 6 },
     "noise_model": {
       "type": "object",
-      "required": ["kind", "substitution_probability", "trials_per_state", "seed"]
+      "additionalProperties": false,
+      "required": ["kind", "substitution_probability", "trials_per_state", "seed"],
+      "properties": {
+        "kind": { "const": "SEEDED_CATEGORICAL_SUBSTITUTION_Z3" },
+        "substitution_probability": { "type": "number", "minimum": 0, "exclusiveMaximum": 1 },
+        "trials_per_state": { "type": "integer", "minimum": 1 },
+        "seed": { "type": "integer" }
+      }
     },
     "conditions": {
       "type": "array",
       "minItems": 8,
       "maxItems": 8,
-      "uniqueItems": true
+      "uniqueItems": true,
+      "items": { "type": "string" }
     },
     "positive_control": { "type": "object" },
     "negative_control": { "type": "object" },
+    "positive_probe_marginals": { "type": "object" },
+    "shuffled_probe_marginals": { "type": "object" },
     "relationship_shuffle_marginals_preserved": { "type": "boolean" },
     "assay_mechanism_validated": { "type": "boolean" },
     "hypothesis_id": { "const": "H_TRIPLE_IDENTIFIABILITY_SYNERGY" },

@@ -66,7 +66,8 @@ assert.deepEqual(schemas, [
   'open-research-hypothesis-registry-v01.schema.json',
   'operator-rejection-receipt-v01.schema.json',
   'projection-descriptor-v01.schema.json',
-  'projection-run-receipt-v01.schema.json'
+  'projection-run-receipt-v01.schema.json',
+  'wedding-identifiability-assay-v01.schema.json'
 ]);
 for (const filename of schemas) {
   const schema = JSON.parse(fs.readFileSync(path.join(schemaDir, filename), 'utf8'));
