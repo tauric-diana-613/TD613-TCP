@@ -10,9 +10,60 @@ export const PEDAGOGUE_RESEARCH_SOURCE_CLASSES = Object.freeze([
   'PRIMARY_PREPRINT'
 ]);
 
-const DATE_RE = /^\d{4}-\d{2}(?:-\d{2})?$/;
+export const PEDAGOGUE_RESEARCH_DATE_PRECISIONS = Object.freeze([
+  'YEAR',
+  'MONTH',
+  'DAY'
+]);
+
+const YEAR_RE = /^(\d{4})$/;
+const MONTH_RE = /^(\d{4})-(\d{2})$/;
+const DAY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 const MECHANISM_RE = /^[A-Z][A-Z0-9_]{2,95}$/;
 const DOMAIN_FAMILY_RE = /^[A-Z][A-Z0-9_]{2,63}$/;
+
+function publicationDate(input) {
+  const value = text(input, 'source.publication_date');
+  let match = value.match(YEAR_RE);
+  if (match) {
+    return freeze({
+      publication_date: value,
+      publication_date_precision: 'YEAR'
+    });
+  }
+
+  match = value.match(MONTH_RE);
+  if (match) {
+    const month = Number(match[2]);
+    if (month < 1 || month > 12) {
+      throw new Error('source.publication_date contains an invalid calendar month.');
+    }
+    return freeze({
+      publication_date: value,
+      publication_date_precision: 'MONTH'
+    });
+  }
+
+  match = value.match(DAY_RE);
+  if (match) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    if (month < 1 || month > 12) {
+      throw new Error('source.publication_date contains an invalid calendar month.');
+    }
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    if (day < 1 || day > daysInMonth) {
+      throw new Error('source.publication_date contains an invalid calendar day.');
+    }
+    return freeze({
+      publication_date: value,
+      publication_date_precision: 'DAY'
+    });
+  }
+
+  throw new Error('source.publication_date must be valid YYYY, YYYY-MM, or YYYY-MM-DD matching the precision supplied by the source.');
+}
 
 function source(input) {
   const value = object(input, 'source');
@@ -20,12 +71,12 @@ function source(input) {
   if (!PEDAGOGUE_RESEARCH_SOURCE_CLASSES.includes(source_class)) {
     throw new Error(`Unsupported research source class: ${source_class}`);
   }
-  const publication_date = text(value.publication_date, 'source.publication_date');
-  if (!DATE_RE.test(publication_date)) throw new Error('source.publication_date must be YYYY-MM or YYYY-MM-DD.');
+  const date = publicationDate(value.publication_date);
   return freeze({
     title: text(value.title, 'source.title'),
     venue: text(value.venue, 'source.venue'),
-    publication_date,
+    publication_date: date.publication_date,
+    publication_date_precision: date.publication_date_precision,
     source_class,
     source_reference: text(value.source_reference, 'source.source_reference'),
     peer_reviewed: source_class === 'PRIMARY_PEER_REVIEWED',
@@ -53,6 +104,7 @@ export function compilePedagogueResearchTransferCard(input = {}) {
     forbidden_inferences: strings(value.forbidden_inferences, 'forbidden_inferences', 1),
     evidence_posture: freeze({
       external_literature_observation: true,
+      source_date_precision_preserved: true,
       td613_transfer_is_hypothesis: true,
       raw_source_content_ingested: false,
       source_authority_transferred: false,
@@ -123,6 +175,10 @@ export function hydratePedagogueResearch(cards = []) {
   const sourceReferences = [...new Set(compiled.map(card => card.source.source_reference))].sort();
   const domainFamilies = [...new Set(compiled.map(card => card.domain_family))].sort();
   const domainTags = [...new Set(compiled.flatMap(card => card.domain_tags))].sort();
+  const sourceDatePrecisionCounts = Object.fromEntries(PEDAGOGUE_RESEARCH_DATE_PRECISIONS.map(precision => [
+    precision,
+    compiled.filter(card => card.source.publication_date_precision === precision).length
+  ]));
 
   const hydration = {
     schema: PEDAGOGUE_RESEARCH_HYDRATION_SCHEMA,
@@ -135,6 +191,7 @@ export function hydratePedagogueResearch(cards = []) {
     domain_tags: domainTags,
     peer_reviewed_count: compiled.filter(card => card.source.peer_reviewed).length,
     preprint_count: compiled.filter(card => card.source.preprint).length,
+    source_date_precision_counts: freeze(sourceDatePrecisionCounts),
     cards: freeze(compiled),
     mechanism_reviews: freeze(mechanisms),
     cross_domain_review_candidates: freeze(crossDomainCandidates),

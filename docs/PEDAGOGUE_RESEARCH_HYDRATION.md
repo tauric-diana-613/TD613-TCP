@@ -11,6 +11,7 @@ Research hydration extends that same law to external scientific literature witho
 A `td613.flowcore.pedagogue-research-transfer-card/v0.1` contains only a bounded structured record:
 
 - primary-source provenance and source class;
+- source publication date **at the precision actually supplied by the source**;
 - a generic `domain_family` and optional domain tags;
 - the domain-specific observed relation;
 - a stripped transferable relation;
@@ -31,6 +32,40 @@ PRIMARY_PREPRINT
 ```
 
 Source class is preserved because an interesting preprint and a peer-reviewed paper are not the same evidentiary object.
+
+## Source-date precision is evidence
+
+Research sources do not all publish dates at the same precision. Pedagogue may therefore accept:
+
+```text
+YYYY       → YEAR
+YYYY-MM    → MONTH
+YYYY-MM-DD → DAY
+```
+
+and records the resulting `publication_date_precision` on every transfer card.
+
+The rule is:
+
+```text
+source supplied year only
+→ retain year only
+→ publication_date_precision = YEAR
+```
+
+Pedagogue may not infer a month from issue order, a repository modification timestamp, a conference season, or surrounding papers merely to satisfy a schema that prefers more digits.
+
+Likewise, malformed dates fail closed:
+
+```text
+2026-13    → reject
+2026-02-30 → reject
+Spring 2026 → reject
+```
+
+This is a provenance rule, not cosmetic validation. **Unknown precision is not missing rigor; invented precision is false evidence.**
+
+Hydration reports aggregate source-date precision counts so a research packet can see how much of its chronology is day-, month-, or year-resolved without upgrading any source silently.
 
 ## Hydration
 
@@ -83,6 +118,7 @@ The complete research-learning route is:
 
 ```text
 primary source
+→ source-faithful provenance precision
 → bounded research-transfer card
 → stripped generic relation
 → cross-domain witness review
@@ -94,7 +130,7 @@ primary source
 
 ## Moss Lantern v0.1 hydration use
 
-The first research-hydration field is A15-R0 Moss Lantern. Its 2026 literature fixture spans tomography, inverse-problem identifiability, control/representation, moiré and phasonics, quasiperiodic structure, quantum-geometry methodology, authorship/provenance, operator learning, and inverse design.
+The first research-hydration field is A15-R0 Moss Lantern. Its 2026 literature fixture spans tomography, inverse-problem identifiability, control/representation, moiré and phasonics, quasiperiodic structure, quantum-geometry methodology, authorship/provenance, operator learning, inverse design, observability/aliasing, and assumption-scoped or stochastic identifiability.
 
 The hydration does not make those sciences TD613 ontology. It uses them to author better falsifiers and controls.
 
@@ -106,9 +142,10 @@ For example:
 - moiré/phason work motivates a separate registry-shift perturbation rather than treating quasiperiodicity as a static texture;
 - latent-representation work motivates equivalence-controlled transforms without granting latent physical geometry;
 - holonomy papers raise the threshold for later transport claims: route residue alone remains insufficient;
-- inverse-design work motivates target → candidate → independent verification loops while physical realization remains outside current authority.
+- inverse-design work motivates target → candidate → independent verification loops while physical realization remains outside current authority;
+- stochastic and causal identifiability work motivates declaring the model class, observation object, structural assumptions, and surviving equivalence class before using the word `identifiable`.
 
-The first executable result of that hydration is deliberately narrower: Moss Lantern ML1 reference identifiability plus the minimum ML2 probe-dependence controls.
+The first executable result of that hydration was deliberately narrower: Moss Lantern ML1 reference identifiability plus the minimum ML2 probe-dependence controls. Subsequent research passes have used the same hydration discipline to author temporal-order, alias-location, and model-scope boundary assays without granting them automatic law status.
 
 ## Promotion law remains unchanged
 

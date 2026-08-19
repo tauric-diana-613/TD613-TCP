@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
+  PEDAGOGUE_RESEARCH_DATE_PRECISIONS,
   PEDAGOGUE_RESEARCH_HYDRATION_SCHEMA,
   PEDAGOGUE_RESEARCH_TRANSFER_CARD_SCHEMA,
   compilePedagogueResearchTransferCard,
@@ -35,6 +36,8 @@ test('Pedagogue research hydration structures literature without transferring so
 
   const cards = fixture.cards.map(compilePedagogueResearchTransferCard);
   assert.ok(cards.every(card => card.schema === PEDAGOGUE_RESEARCH_TRANSFER_CARD_SCHEMA));
+  assert.ok(cards.every(card => PEDAGOGUE_RESEARCH_DATE_PRECISIONS.includes(card.source.publication_date_precision)));
+  assert.ok(cards.every(card => card.evidence_posture.source_date_precision_preserved === true));
   assert.ok(cards.every(card => card.evidence_posture.raw_source_content_ingested === false));
   assert.ok(cards.every(card => card.evidence_posture.source_authority_transferred === false));
   assert.ok(cards.every(card => card.authority.promotion_authority === false));
@@ -50,6 +53,12 @@ test('Pedagogue research hydration structures literature without transferring so
   assert.equal(hydration.domain_family_count, 21);
   assert.equal(hydration.peer_reviewed_count, 20);
   assert.equal(hydration.preprint_count, 6);
+  assert.equal(
+    hydration.source_date_precision_counts.YEAR
+      + hydration.source_date_precision_counts.MONTH
+      + hydration.source_date_precision_counts.DAY,
+    hydration.card_count
+  );
   assert.equal(hydration.pedagogue_learning_posture, 'HYPOTHESIS_GENERATION_AND_ASSAY_DESIGN_ONLY');
   assert.equal(hydration.promotion_authority, false);
   assert.equal(hydration.automatic_redesign, false);
@@ -82,6 +91,40 @@ test('Pedagogue research hydration structures literature without transferring so
   assert.equal(registryShift.promotion_authority, false);
 });
 
+test('Pedagogue research hydration preserves source date precision and rejects invented precision', () => {
+  assert.deepEqual([...PEDAGOGUE_RESEARCH_DATE_PRECISIONS], ['YEAR', 'MONTH', 'DAY']);
+  const base = structuredClone(fixture.cards[0]);
+
+  const yearOnly = structuredClone(base);
+  yearOnly.card_id = 'date-precision-year';
+  yearOnly.source.publication_date = '2026';
+  const compiledYear = compilePedagogueResearchTransferCard(yearOnly);
+  assert.equal(compiledYear.source.publication_date, '2026');
+  assert.equal(compiledYear.source.publication_date_precision, 'YEAR');
+
+  const monthOnly = structuredClone(base);
+  monthOnly.card_id = 'date-precision-month';
+  monthOnly.source.publication_date = '2026-07';
+  const compiledMonth = compilePedagogueResearchTransferCard(monthOnly);
+  assert.equal(compiledMonth.source.publication_date_precision, 'MONTH');
+
+  const dayExact = structuredClone(base);
+  dayExact.card_id = 'date-precision-day';
+  dayExact.source.publication_date = '2026-07-06';
+  const compiledDay = compilePedagogueResearchTransferCard(dayExact);
+  assert.equal(compiledDay.source.publication_date_precision, 'DAY');
+
+  for (const invalidDate of ['Spring 2026', '2026-13', '2026-02-30', '2026-00', '2026-04-00']) {
+    const invalid = structuredClone(base);
+    invalid.source.publication_date = invalidDate;
+    assert.throws(
+      () => compilePedagogueResearchTransferCard(invalid),
+      /publication_date|calendar/i,
+      `${invalidDate} must fail closed rather than inventing source precision.`
+    );
+  }
+});
+
 test('Pedagogue research hydration fails closed on fake authority, duplicate cards, and malformed source status', () => {
   const base = structuredClone(fixture.cards[0]);
 
@@ -95,7 +138,7 @@ test('Pedagogue research hydration fails closed on fake authority, duplicate car
 
   const badDate = structuredClone(base);
   badDate.source.publication_date = 'Spring 2026';
-  assert.throws(() => compilePedagogueResearchTransferCard(badDate), /YYYY-MM/i);
+  assert.throws(() => compilePedagogueResearchTransferCard(badDate), /YYYY, YYYY-MM, or YYYY-MM-DD/i);
 
   const compiled = compilePedagogueResearchTransferCard(base);
   assert.throws(() => hydratePedagogueResearch([compiled, compiled]), /card_id values must be unique/i);
