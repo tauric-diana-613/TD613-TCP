@@ -205,11 +205,12 @@ assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.appendChild\(ca
   'committee date sorter must not reappend an already-sorted observed card set');
 assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.insertBefore\(card, trailer \|\| null\);/,
   'contribution date sorter must not reinsert an already-sorted observed card set');
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260818-5'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);
 assert.match(bootstrap, /const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1'/);
 assert.match(bootstrap, /const GIVING_TWELVE_STEP_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /const GIVING_REPAIR_EPOCH = '20260818-2'/);
 assert.match(bootstrap, /observerUrl\('\.\/giving-transaction-classification\.js'\)/);
 assert.match(bootstrap, /observerUrl\('\.\/giving-date-sort\.js'\)/);
 assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260813-3&repair=20260818-1/);
@@ -217,6 +218,7 @@ assert.match(bootstrap, /giving-practice-runtime\.js/);
 assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
 assert.match(bootstrap, /giving-practice-directory\.js/);
 assert.match(bootstrap, /giving-12-step-bundle\.js/);
+assert.match(bootstrap, /giving-20260818-repair\.js/);
 assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-fec-resilience\.js\?v=20260814-1'\), \{ cache: 'reload'/);
 assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 
@@ -237,5 +239,7 @@ assert.match(practiceAssay, /local_practice_file_saved_and_reopened:\s*true/);
 assert.match(practiceAssay, /encrypted_practice_vault_version_observed:\s*true/);
 assert.match(practiceAssay, /must wake on confirmed exit/);
 assert.match(workflow, /Witness originating Giving practice fixture with Chromium/);
+
+await import('./giving-20260818-repair.test.mjs');
 
 console.log('giving-post640-polish.test.mjs passed');

@@ -1,4 +1,4 @@
-import './giving-page-size.js?v=20260814-1';
+import './giving-page-size.js?v=20260818-2';
 import './giving-fec-resilience.js?v=20260814-1';
 import './giving-review-paging-core.js?v=20260813-3&repair=20260818-1&pagefix=20260818-1';
 
