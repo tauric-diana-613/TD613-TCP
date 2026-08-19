@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { buildIdentifiabilityFrontierRegistry, IDENTIFIABILITY_FRONTIER_REGISTRY_SCHEMA } from '../app/dome-world/previews/a15-r0/identifiability-frontier-registry.js';
 import {
   WEDDING_ALPHABET,
   WEDDING_IDENTIFIABILITY_ASSAY_SCHEMA,
@@ -16,6 +17,7 @@ const spec = fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/ASH_KEE
 
 assert.equal(WEDDING_IDENTIFIABILITY_ASSAY_SCHEMA, 'td613.ash.a15-r0.wedding-identifiability-assay/v0.1');
 assert.equal(schema.$id, WEDDING_IDENTIFIABILITY_ASSAY_SCHEMA);
+assert.equal(schema.additionalProperties, false);
 assert.deepEqual([...WEDDING_PROBES], ['D', 'Q', 'M']);
 assert.deepEqual([...WEDDING_ALPHABET], [0, 1, 2]);
 assert.equal(WEDDING_OBSERVATION_BUDGET, 12);
@@ -97,10 +99,47 @@ assert.equal(assay.physical_geometry_claim, false);
 assert.match(assay.claim_ceiling, /does not establish TD613 triple synergy/i);
 assert.match(assay.finding, /live TD613 triple hypothesis remains OPEN_UNMEASURED/i);
 
+const frontier = buildIdentifiabilityFrontierRegistry({ wedding: assay });
+const extension = Object.fromEntries(frontier.extension_hypotheses.map(item => [item.hypothesis_id, item]));
+assert.equal(frontier.schema, IDENTIFIABILITY_FRONTIER_REGISTRY_SCHEMA);
+assert.equal(frontier.base_hypothesis_count, 9);
+assert.equal(frontier.extension_hypotheses.length, 2);
+assert.deepEqual(frontier.bounded_support, ['H_WEDDING_ASSAY_MECHANISM_VALID']);
+assert.deepEqual(frontier.closed_by_counterexample, []);
+assert.deepEqual(frontier.research_frontier, ['H_TRIPLE_IDENTIFIABILITY_SYNERGY']);
+assert.equal(frontier.sequence_authority, false);
+assert.equal(frontier.next_stage, null);
+assert.deepEqual(frontier.stage_unlocks, []);
+assert.equal(frontier.promotion_authority, false);
+assert.equal(frontier.production_mutated, false);
+assert.equal(frontier.external_transmission, false);
+assert.equal(frontier.human_closure_required, true);
+assert.equal(extension.H_WEDDING_ASSAY_MECHANISM_VALID.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY');
+assert.equal(extension.H_WEDDING_ASSAY_MECHANISM_VALID.evidence.assay_mechanism_validated, true);
+assert.equal(extension.H_WEDDING_ASSAY_MECHANISM_VALID.evidence.positive_exact_gain_over_best_pair, 1);
+assert.equal(extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.status, 'OPEN_UNMEASURED');
+assert.equal(extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.evidence.td613_d3_phi_m_forward_model, 'UNDECLARED');
+assert.equal(extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.evidence.td613_d3_phi_m_measurement, 'UNMEASURED');
+assert.match(frontier.finding, /remains OPEN_UNMEASURED/i);
+
 assert.doesNotMatch(source, /Math\.random/);
 assert.match(spec, /positive synthetic fixture passes[\s\S]*!= TD613 triple synergy established/i);
 assert.match(spec, /relationship-shuffled\(D\+Q\+M\)/);
 assert.match(spec, /redundant negative control/i);
 assert.match(spec, /This assay is deliberately small enough to fail cheaply/i);
 
-console.log('Ash A15-R0 Wedding Identifiability assay contract passed.');
+console.log(JSON.stringify({
+  ok: true,
+  schema: WEDDING_IDENTIFIABILITY_ASSAY_SCHEMA,
+  state_count: assay.state_count,
+  observation_budget: assay.observation_budget,
+  positive_exact_gain_over_best_pair: assay.positive_control.exact_gain_over_best_pair,
+  positive_noisy_gain_over_best_pair_positive: assay.positive_control.noisy_gain_over_best_pair > 0,
+  positive_noisy_gain_over_shuffled_positive: assay.positive_control.noisy_gain_over_shuffled_triple > 0,
+  relationship_shuffle_marginals_preserved: assay.relationship_shuffle_marginals_preserved,
+  negative_noisy_gain_over_best_pair: assay.negative_control.noisy_gain_over_best_pair,
+  assay_mechanism_validated: assay.assay_mechanism_validated,
+  synthetic_mechanism_status: extension.H_WEDDING_ASSAY_MECHANISM_VALID.status,
+  td613_triple_hypothesis_status: extension.H_TRIPLE_IDENTIFIABILITY_SYNERGY.status,
+  promotion_authority: frontier.promotion_authority
+}, null, 2));
