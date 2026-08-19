@@ -25,4 +25,11 @@ export {
   compilePedagogueRouteMemory,
   comparePedagogueRouteMemory
 } from './flowcore-pedagogue-route-memory.js';
+export {
+  PEDAGOGUE_RESEARCH_TRANSFER_CARD_SCHEMA,
+  PEDAGOGUE_RESEARCH_HYDRATION_SCHEMA,
+  PEDAGOGUE_RESEARCH_SOURCE_CLASSES,
+  compilePedagogueResearchTransferCard,
+  hydratePedagogueResearch
+} from './pedagogue-research-transfer.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
