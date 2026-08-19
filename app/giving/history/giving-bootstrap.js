@@ -8,6 +8,7 @@ const GIVING_PAGING_FIX_EPOCH = '20260818-1';
 const GIVING_MINIUPDATE_EPOCH = '20260818-4';
 const GIVING_TWELVE_STEP_EPOCH = '20260818-1';
 const GIVING_REPAIR_EPOCH = '20260818-2';
+const GIVING_MOBILE_HOTFIX_EPOCH = '20260819-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -16,6 +17,7 @@ const pagingUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOC
 const miniupdateUrl = (path) => new URL(`${path}?v=${GIVING_MINIUPDATE_EPOCH}`, import.meta.url).href;
 const twelveStepUrl = (path) => new URL(`${path}?v=${GIVING_TWELVE_STEP_EPOCH}`, import.meta.url).href;
 const bundleRepairUrl = (path) => new URL(`${path}?v=${GIVING_REPAIR_EPOCH}`, import.meta.url).href;
+const mobileHotfixUrl = (path) => new URL(`${path}?v=${GIVING_MOBILE_HOTFIX_EPOCH}`, import.meta.url).href;
 const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 document.title = 'TD613 Giving';
@@ -38,6 +40,7 @@ afterStylesheet('givingMiniupdateStylesheet', miniupdateUrl('./giving-miniupdate
 afterStylesheet('givingMiniupdateControlsStylesheet', miniupdateUrl('./giving-miniupdate-controls.css'));
 afterStylesheet('givingTwelveStepStylesheet', twelveStepUrl('./giving-12-step-bundle.css'));
 afterStylesheet('giving20260818RepairStylesheet', bundleRepairUrl('./giving-20260818-repair.css'));
+afterStylesheet('giving20260819MobileHotfixStylesheet', mobileHotfixUrl('./giving-20260819-mobile-hotfix.css'));
 
 function afterStylesheet(id, href) {
   if (document.getElementById(id)) return;
