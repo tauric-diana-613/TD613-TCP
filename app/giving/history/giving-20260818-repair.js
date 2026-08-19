@@ -1,6 +1,9 @@
+import { openGivingStore } from './giving-store.js';
+
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
-const BUILD = '20260818-1';
+const BUILD = '20260818-2';
+const PRACTICE_SOURCE_ID = 'practice-bikini-bottom-votes';
 let bypassSavedPracticeBoundary = false;
 let pendingSavedPracticeValue = null;
 
@@ -77,12 +80,12 @@ function translateQueueStates() {
     const state = row.querySelector('.contact-queue-state');
     if (!state) continue;
     if (row.dataset.status === 'SOURCE HOLD') {
-      if (state.textContent !== 'NEEDS SOURCE RETRY') state.textContent = 'NEEDS SOURCE RETRY';
+      if (state.textContent !== 'INCOMPLETE COVERAGE') state.textContent = 'INCOMPLETE COVERAGE';
       state.title = 'At least one selected filing source did not complete. Successful source results remain usable; retry the named source for fuller coverage.';
       if (!row.querySelector('.queue-source-retry-note')) {
         const note = document.createElement('p');
         note.className = 'queue-source-retry-note';
-        note.textContent = 'At least one filing source needs another retrieval attempt. This does not erase results returned by sources that completed.';
+        note.textContent = 'Some filing-source coverage is incomplete. Results returned by completed sources remain usable; retry the named source to extend coverage.';
         row.append(note);
       }
     } else if (row.dataset.status === 'CLIENT HOLD') {
@@ -96,7 +99,7 @@ function translateQueueStates() {
   if (message) {
     const next = String(message.textContent || '')
       .replace(/held custodians\/routes:/gi, 'sources needing retry:')
-      .replace(/(\d+) held\b/gi, '$1 needing retry');
+      .replace(/(\d+) held\b/gi, '$1 with incomplete coverage');
     if (next !== message.textContent) message.textContent = next;
   }
 }
@@ -117,6 +120,18 @@ function clearField(selector, value = '') {
   node.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
+function resetLoadedCommitteeSurface() {
+  const banner = $('#loadedCampaignContext');
+  if (banner) {
+    banner.dataset.loaded = 'false';
+    banner.innerHTML = '<span class="eyebrow">LOADED CAMPAIGN / COMMITTEE</span><strong>No candidate or committee loaded.</strong><small>Use Candidate &amp; committee lookup to load optional committee context.</small>';
+  }
+  const deputy = $('#campaignDeputyLoadedContext');
+  if (deputy) deputy.textContent = 'No reviewed committee loaded.';
+  const sync = $('#syncLoadedCommitteeButton');
+  if (sync) sync.disabled = true;
+}
+
 function purgePracticeTransientState() {
   document.dispatchEvent(new CustomEvent('td613:giving-clear-all'));
   clearField('#searchName');
@@ -127,7 +142,7 @@ function purgePracticeTransientState() {
   clearField('#contactQueueInput');
   clearField('#campaignDirectoryQuery');
   clearField('#reviewSearch');
-  clearField('#dateFrom', '2020-01-01');
+  clearField('#dateFrom', '2000-01-01');
   clearField('#dateTo', new Date().toISOString().slice(0, 10));
   const exact = $('#exactMatchToggle');
   if (exact?.checked) {
@@ -140,9 +155,24 @@ function purgePracticeTransientState() {
   }
   const localFiles = $('#localDossierSelect');
   if (localFiles) localFiles.value = '';
-  $('#campaignDirectoryCandidates')?.replaceChildren(Object.assign(document.createElement('span'), { className: 'muted', textContent: 'Search to begin.' }));
-  $('#campaignDirectoryCommittees')?.replaceChildren(Object.assign(document.createElement('span'), { className: 'muted', textContent: 'Search to begin.' }));
-  $('#campaignDirectoryOpenSecrets')?.replaceChildren(Object.assign(document.createElement('span'), { className: 'muted', textContent: 'Search to begin.' }));
+  for (const selector of ['#campaignDirectoryCandidates', '#campaignDirectoryCommittees', '#campaignDirectoryOpenSecrets']) {
+    const node = $(selector);
+    if (!node) continue;
+    const empty = document.createElement('span');
+    empty.className = 'muted';
+    empty.textContent = 'Search to begin.';
+    node.replaceChildren(empty);
+  }
+  const workspace = $('#committeeSearchWorkspaceList');
+  if (workspace) {
+    const empty = document.createElement('span');
+    empty.className = 'muted';
+    empty.textContent = 'No campaign or committee identities were observed in the loaded search.';
+    workspace.replaceChildren(empty);
+  }
+  const summary = $('#committeeSearchWorkspaceSummary');
+  if (summary) summary.textContent = 'No committee search loaded.';
+  resetLoadedCommitteeSurface();
 }
 
 function installPracticeExitPurge() {
@@ -152,11 +182,27 @@ function installPracticeExitPurge() {
   });
 }
 
-function savedPracticeOption() {
+function dossierDeclaresPractice(dossier = {}) {
+  const sourceIds = Array.isArray(dossier.source_ids) ? dossier.source_ids.map(compact) : [];
+  if (sourceIds.includes(PRACTICE_SOURCE_ID)) return true;
+  const records = Array.isArray(dossier.records) ? dossier.records : [];
+  return records.some((record) =>
+    compact(record?.source_instance_id || record?.source_instance) === PRACTICE_SOURCE_ID ||
+    compact(record?.lineage?.practice_fixture_id) !== '' ||
+    (record?.lineage?.practice_record === true && record?.lineage?.manifestly_fictional === true)
+  );
+}
+
+async function savedPracticeOption() {
   const option = $('#localDossierSelect')?.selectedOptions?.[0];
   if (!option?.value) return null;
-  const label = compact(option.textContent);
-  return /\bSAMPLE\b|BIKINI BOTTOM|FICTIONAL/i.test(label) ? option : null;
+  const store = await openGivingStore();
+  try {
+    const dossier = await store.readDossier(option.value);
+    return dossierDeclaresPractice(dossier) ? option : null;
+  } finally {
+    store.close();
+  }
 }
 
 function practiceFileBoundaryDialog() {
@@ -171,7 +217,7 @@ function practiceFileBoundaryDialog() {
   dialog.setAttribute('aria-labelledby', 'practiceFileBoundaryTitle');
   dialog.innerHTML = `
     <strong id="practiceFileBoundaryTitle">Open this saved file in Demo mode?</strong>
-    <p>This saved research file belongs to the fictional practice universe. Opening it will clear the current unsaved working session, put real filing sources to sleep, enter Demo mode, then restore the selected file. Saved Local Files and Vault custody are preserved.</p>
+    <p>This saved research file carries fictional practice-source provenance. Opening it will clear the current unsaved working session, put real filing sources to sleep, enter Demo mode, then restore the selected file. Saved Local Files and Vault custody are preserved.</p>
     <div>
       <button type="button" class="button primary" data-practice-file-boundary="enter">Enter Demo &amp; open file</button>
       <button type="button" class="button" data-practice-file-boundary="cancel">Cancel</button>
@@ -204,15 +250,35 @@ function enterPracticeAndOpenSavedFile() {
   document.dispatchEvent(new CustomEvent('td613:giving-practice-load-request'));
 }
 
+function surfaceBoundaryReadFailure() {
+  const status = $('#researchFileSampleStatus');
+  if (!status) return;
+  status.hidden = false;
+  status.textContent = 'Saved-file provenance could not be read, so Giving held the open action rather than risk mixing live and fictional source worlds. Reopen the page and try again.';
+}
+
 function installSavedPracticeBoundary() {
   practiceFileBoundaryDialog();
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     const open = event.target?.closest?.('#openDossierButton');
     if (!open || bypassSavedPracticeBoundary || practiceActive()) return;
-    const option = savedPracticeOption();
-    if (!option) return;
+    const selected = $('#localDossierSelect')?.value;
+    if (!selected) return;
     event.preventDefault();
     event.stopImmediatePropagation();
+    let option = null;
+    try {
+      option = await savedPracticeOption();
+    } catch {
+      surfaceBoundaryReadFailure();
+      return;
+    }
+    if (!option) {
+      bypassSavedPracticeBoundary = true;
+      open.click();
+      queueMicrotask(() => { bypassSavedPracticeBoundary = false; });
+      return;
+    }
     pendingSavedPracticeValue = option.value;
     const dialog = practiceFileBoundaryDialog();
     dialog.hidden = false;
@@ -239,7 +305,7 @@ function ensurePracticeLoadButtons() {
     button.dataset.practiceLoadContext = 'true';
     button.dataset.committeeId = committeeId;
     button.dataset.committeeName = committeeName;
-    button.dataset.sourceId = 'practice-bikini-bottom-votes';
+    button.dataset.sourceId = PRACTICE_SOURCE_ID;
     button.textContent = 'Load committee → Contributions';
     card.append(button);
   }
@@ -320,11 +386,11 @@ function install() {
   installSourceMessageObserver();
   document.documentElement.dataset.givingRepairBundle = BUILD;
   globalThis.__TD613_GIVING_REPAIR_DIAGNOSIS__ = Object.freeze({
-    schema: 'td613.giving.repair-diagnosis/v0.1',
+    schema: 'td613.giving.repair-diagnosis/v0.2',
     build: BUILD,
     principles: Object.freeze([
       'advisory controls must expose their route',
-      'practice custody cannot cross into live retrieval without an explicit universe transition',
+      'practice custody crosses worlds only from dossier provenance and an explicit human transition',
       'partial source coverage remains usable evidence and must not masquerade as zero',
       'responsive controls may change geometry without losing semantic role'
     ]),
@@ -340,6 +406,7 @@ export const _givingRepair20260818 = Object.freeze({
   moveCommitteeFilterBeforeSources,
   renameFilingSources,
   purgePracticeTransientState,
+  dossierDeclaresPractice,
   savedPracticeOption,
   ensurePracticeLoadButtons,
   ensureLiveWorkspaceFallback
