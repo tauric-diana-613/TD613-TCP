@@ -274,14 +274,18 @@ async function assertTwelveStepGeometry(page) {
     const heading = document.querySelector('.research-dossier-heading-line > h2')?.getBoundingClientRect();
     const help = document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')?.getBoundingClientRect();
     const exit = document.querySelector('#practiceFloatingExitButton');
+    const exitStyle = exit ? getComputedStyle(exit) : null;
     const toast = document.querySelector('#toastStack');
     const presets = document.querySelector('#givingDatePresets');
     return {
       heading: heading ? { x: heading.x, width: heading.width, right: heading.right } : null,
       help: help ? { x: help.x, width: help.width, left: help.left } : null,
       helpFont: help ? Number.parseFloat(getComputedStyle(document.querySelector('.research-dossier-heading-line .research-dossier-help-trigger')).fontSize) : null,
-      exitFilter: exit ? getComputedStyle(exit).filter : '',
-      exitZ: exit ? getComputedStyle(exit).zIndex : null,
+      exitFilter: exitStyle?.filter || '',
+      exitBoxShadow: exitStyle?.boxShadow || '',
+      exitBackdropFilter: exitStyle?.backdropFilter || '',
+      exitWebkitBackdropFilter: exitStyle?.getPropertyValue('-webkit-backdrop-filter') || '',
+      exitZ: exitStyle?.zIndex || null,
       toastZ: toast ? getComputedStyle(toast).zIndex : null,
       toastInlineZ: toast?.style?.zIndex || '',
       toastPracticeLayer: toast?.dataset?.practiceNotificationLayer || '',
@@ -292,7 +296,10 @@ async function assertTwelveStepGeometry(page) {
   assert.ok(metrics.heading && metrics.help, 'research file heading and help trigger must both have geometry');
   assert.ok(metrics.heading.right <= metrics.help.left + 1, 'Contributor research file help icon must not hide behind the heading');
   assert.ok(metrics.helpFont <= 10.5, 'Contributor research file info icon should remain deliberately small');
-  assert.match(metrics.exitFilter, /drop-shadow/i, 'floating Exit Demo requires a visible halo outside its clipped button geometry');
+  assert.notEqual(metrics.exitBoxShadow, 'none', 'floating Exit Demo requires a visible box-shadow halo outside its clipped button geometry');
+  assert.equal(metrics.exitFilter, 'none', 'floating Exit Demo halo must avoid CSS filter compositing');
+  assert.ok(['', 'none'].includes(metrics.exitBackdropFilter), `floating Exit Demo must avoid backdrop-filter compositing: ${metrics.exitBackdropFilter}`);
+  assert.ok(['', 'none'].includes(metrics.exitWebkitBackdropFilter), `floating Exit Demo must avoid -webkit-backdrop-filter compositing: ${metrics.exitWebkitBackdropFilter}`);
   assert.equal(metrics.presetJustify, 'center', 'Quick start presets must remain centered');
   return metrics;
 }
