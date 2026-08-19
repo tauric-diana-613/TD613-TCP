@@ -57,6 +57,7 @@ const SCOPE_NEUTRAL = new Set([
   'app/engine/pedagogue-design-gate.js',
   'app/engine/pedagogue-interface-diagnosis.js',
   'app/engine/pedagogue-boundary-diagnosis.js',
+  'app/engine/pedagogue-responsive-hierarchy-diagnosis.js',
   'app/engine/aia-cistern-law.js',
   'tests/fixtures/pedagogue/giving-vault-design.json',
   'tests/fixtures/pedagogue/giving-research-dossier-design.json',

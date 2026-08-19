@@ -3,7 +3,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
 const receipt = {
-  schema: 'td613.giving.20260818-repair-browser-sentinel/v0.1',
+  schema: 'td613.giving.20260818-repair-browser-sentinel/v0.2',
   attached: true,
   desktop_structure: false,
   mobile_geometry: false,
@@ -65,6 +65,7 @@ function witnessMobileGeometry() {
   const presets = $('#givingDatePresets') || $('.giving-date-presets');
   const filter = $('#committeeContextFilterControl');
   const jump = $('#committeeFilterJump');
+  const filterHelper = filter?.querySelector('label small');
   const picker = $('#searchForm .source-picker');
   const legend = picker?.querySelector(':scope > legend');
   const actions = picker?.querySelector('.source-picker-actions');
@@ -73,27 +74,41 @@ function witnessMobileGeometry() {
 
   const pairRect = rect(datePair);
   const dateRects = dates.map(rect);
-  const dateFonts = dates.map((node) => Number.parseFloat(getComputedStyle(node).fontSize));
+  const dateStyles = dates.map((node) => getComputedStyle(node));
+  const dateFonts = dateStyles.map((style) => Number.parseFloat(style.fontSize));
   const legendRect = rect(legend);
   const actionsRect = rect(actions);
   const filterRect = rect(filter);
   const jumpRect = rect(jump);
+  const filterHelperStyle = filterHelper ? getComputedStyle(filterHelper) : null;
   const toolbarStyle = getComputedStyle(toolbar);
   const presetStyle = getComputedStyle(presets);
   const overflow = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth;
 
   const boundedDates = dateRects.every((item) => item && pairRect && item.left >= pairRect.left - 1.5 && item.right <= pairRect.right + 1.5);
+  const compactDates = dateRects.every((item) => item && item.height <= 38);
+  const quietDateChrome = dateStyles.every((style) =>
+    Number.parseFloat(style.borderTopLeftRadius || '0') <= 1.5 &&
+    Number.parseFloat(style.borderTopRightRadius || '0') <= 1.5 &&
+    style.boxShadow === 'none'
+  );
   const jumpCentered = filterRect && jumpRect
     ? Math.abs(((jumpRect.left + jumpRect.right) / 2) - ((filterRect.left + filterRect.right) / 2)) <= 24
     : false;
+  const compactCommitteeModifier = Boolean(filterRect && filterRect.height <= 82);
+  const helperDemoted = !filterHelperStyle || filterHelperStyle.display === 'none';
   const sourceStackSeparated = legendRect && actionsRect
     ? legendRect.bottom <= actionsRect.top + 2 || actionsRect.bottom <= legendRect.top + 2
     : false;
 
   if (!assert(boundedDates, 'mobile date controls must remain inside their own pair', { pairRect, dateRects })) return;
+  if (!assert(compactDates, 'mobile dates must remain quiet constraints rather than tall control chambers', { dateRects })) return;
+  if (!assert(quietDateChrome, 'mobile dates must not restore rounded chamber chrome or box shadow', { styles: dateStyles.map((style) => ({ borderRadius: style.borderRadius, boxShadow: style.boxShadow })) })) return;
   if (!assert(dateFonts.every((value) => value >= 16), 'mobile native date text must remain legible without replacing the native control', { dateFonts })) return;
   if (!assert(overflow <= 2, 'mobile repair must not create horizontal page spill', { overflow, viewport: innerWidth, documentWidth: document.documentElement.scrollWidth, bodyWidth: document.body.scrollWidth })) return;
   if (!assert(presetStyle.justifyContent === 'center', 'Quick Start presets must remain centered', { justifyContent: presetStyle.justifyContent })) return;
+  if (!assert(compactCommitteeModifier, 'optional committee filtering must remain a compact modifier rather than a subsection', { filterRect })) return;
+  if (!assert(helperDemoted, 'mobile committee modifier must demote the long explanatory sentence', { display: filterHelperStyle?.display || null })) return;
   if (!assert(jumpCentered, 'committee route must be centered rather than shoved into the left rail edge', { filterRect, jumpRect })) return;
   if (!assert(sourceStackSeparated, 'filing-source heading and actions must not collide on mobile', { legendRect, actionsRect })) return;
   if (!assert(toolbarStyle.display === 'flex' && toolbarStyle.flexWrap === 'wrap', 'Committee Workspace controls must use a wrapped natural-width mobile cluster', { display: toolbarStyle.display, flexWrap: toolbarStyle.flexWrap, gridTemplateColumns: toolbarStyle.gridTemplateColumns })) return;
