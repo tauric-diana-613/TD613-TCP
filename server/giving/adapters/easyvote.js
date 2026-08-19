@@ -8,6 +8,7 @@ import {
 } from './shared.js';
 
 const EASYVOTE_REQUEST_TIMEOUT_MS = 6500;
+const EASYVOTE_PAGE_SIZE_CEILING = 50;
 
 function authenticationHeader(identity) {
   const token = identity.ZumoToken === null || identity.ZumoToken === undefined
@@ -46,8 +47,9 @@ function easyVoteHeaders(portal, extra = {}) {
 
 function easyVoteQuery(query, page) {
   const params = new URLSearchParams();
+  const pageSize = Math.max(1, Math.min(EASYVOTE_PAGE_SIZE_CEILING, Number(query.page_size) || EASYVOTE_PAGE_SIZE_CEILING));
   params.set('pageNumber', String(page));
-  params.set('pageSize', String(query.page_size));
+  params.set('pageSize', String(pageSize));
   params.set('contributorName', query.name || query.last_name || '');
   params.set('candidateCommitteeName', query.committee || query.candidate || '');
   params.set('startDate', query.start_date || '');
@@ -226,6 +228,7 @@ export async function searchEasyVotePage({ source, query, continuation, fetchImp
 }
 
 export const _easyVoteInternals = Object.freeze({
+  EASYVOTE_PAGE_SIZE_CEILING,
   authenticationHeader,
   easyVotePortalCandidates,
   easyVoteSiteOrigin,
