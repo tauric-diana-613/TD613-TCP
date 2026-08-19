@@ -1,0 +1,276 @@
+/* TD613 Giving repair bundle · 2026-08-18 · mobile/retrieval/committee boundary */
+
+.filing-source-help {
+  margin: 0 0 8px;
+  color: var(--dim);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.committee-filter-jump {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.committee-filter-jump:hover,
+.committee-filter-jump:focus-visible {
+  color: var(--bright);
+  outline: none;
+}
+.committee-context-filter[data-repair-placement="before-filing-sources"] {
+  margin: 12px 0 10px;
+}
+
+.queue-source-retry-note {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  padding-top: 6px;
+  border-top: 1px solid rgba(228,198,108,.14);
+  color: #c8b984;
+  font-size: 8.5px;
+  line-height: 1.45;
+}
+
+.practice-file-boundary-dialog {
+  position: fixed;
+  z-index: 12020;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: min(420px, calc(100vw - 30px));
+  gap: 10px;
+  padding: 18px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,151,222,.62);
+  color: var(--text);
+  background: rgba(3,14,12,.995);
+  box-shadow: 0 24px 68px rgba(0,0,0,.72), 0 0 34px rgba(255,82,197,.12);
+}
+.practice-file-boundary-dialog[hidden] { display: none !important; }
+.practice-file-boundary-dialog strong { color: #ffd8f2; font-size: 13px; }
+.practice-file-boundary-dialog p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.practice-file-boundary-dialog > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+
+.repair-workspace-fallback {
+  align-items: center;
+}
+.repair-workspace-load {
+  width: auto !important;
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  /* Search-term order: narrative identity → geographic state → committee context → numeric/date bounds → filing sources. */
+  #givingStateFilter[data-repair-placement="after-search-hints"] {
+    margin: 1px 0 9px;
+  }
+
+  .committee-context-filter[data-repair-placement="before-filing-sources"] {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: start;
+    gap: 5px 10px !important;
+    margin: 12px 0 12px !important;
+    padding: 11px 12px !important;
+  }
+  .committee-context-filter > label {
+    min-width: 0;
+  }
+  .committee-context-filter label > span {
+    min-width: 0;
+  }
+  .committee-context-filter strong {
+    font-size: 11px !important;
+  }
+  .committee-context-filter small {
+    font-size: 9px !important;
+    line-height: 1.45 !important;
+  }
+  .committee-filter-jump {
+    justify-self: end !important;
+    align-self: start !important;
+    margin-top: 1px;
+    padding: 2px 0 1px !important;
+    white-space: nowrap;
+    font-size: 8.5px !important;
+  }
+  .committee-filter-summary {
+    grid-column: 1 / -1 !important;
+    margin: 1px 0 0 31px;
+    font-size: 8.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .giving-date-range-filter {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 8px !important;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .giving-date-range-filter > .field {
+    min-width: 0;
+    width: 100%;
+  }
+  .giving-date-range-filter > .field > span {
+    font-size: 9px !important;
+    line-height: 1.2;
+  }
+  .giving-date-range-filter input[type="date"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 44px;
+    padding: 7px 9px !important;
+    overflow: hidden;
+    border-radius: 0;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 16px !important;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+  }
+  .giving-date-range-filter input[type="date"]::-webkit-date-and-time-value {
+    min-width: 0;
+    text-align: left;
+  }
+  .giving-date-presets {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center !important;
+    align-items: center;
+    gap: 5px !important;
+    width: 100%;
+    margin-top: 6px;
+  }
+  .giving-date-presets::before {
+    flex: 0 0 100%;
+    margin: 0 0 1px;
+    text-align: center;
+  }
+  .coverage-scope-chip {
+    margin: 10px 0 14px !important;
+    line-height: 1.45 !important;
+  }
+
+  #searchForm .source-picker {
+    position: relative;
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    margin-top: 0 !important;
+    padding-top: 12px !important;
+  }
+  #searchForm .source-picker > legend {
+    position: static !important;
+    float: none !important;
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 !important;
+    padding: 0 4px !important;
+    white-space: normal;
+    font-size: 9px !important;
+    line-height: 1.3;
+  }
+  #searchForm .source-picker-actions {
+    position: static !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    margin: 0 !important;
+    gap: 7px !important;
+  }
+  #searchForm .source-picker-actions .text-button {
+    width: auto !important;
+  }
+  .filing-source-help {
+    margin: 0 0 1px;
+    font-size: 9px;
+  }
+
+  /* Committee Workspace becomes a mobile work surface, not a crushed desktop toolbar. */
+  #view-ledger .section-head {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 12px !important;
+  }
+  #view-ledger .committee-ledger-toolbar-repair {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 7px !important;
+    margin: 0 !important;
+  }
+  #view-ledger .committee-ledger-toolbar-repair > * {
+    min-width: 0;
+    width: 100% !important;
+  }
+  #view-ledger .committee-ledger-toolbar-repair .button,
+  #view-ledger .committee-ledger-toolbar-repair summary {
+    box-sizing: border-box;
+    min-height: 34px;
+    width: 100% !important;
+    padding-inline: 8px !important;
+    font-size: 9px !important;
+    white-space: normal;
+  }
+  #view-ledger .committee-toolbar-export {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 7px !important;
+    width: 100% !important;
+  }
+  #view-ledger .committee-toolbar-group::before {
+    grid-column: 1 / -1;
+    margin: 2px 0 0;
+  }
+  .committee-search-workspace-repair {
+    padding: 14px 13px !important;
+  }
+  .committee-search-workspace-repair .committee-search-workspace-head {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 5px !important;
+  }
+  .committee-search-workspace-repair .committee-search-workspace-head > strong {
+    font-size: 15px !important;
+    line-height: 1.2;
+  }
+  .committee-search-workspace-repair .committee-search-workspace-head > small,
+  .committee-search-workspace-repair .committee-search-lane-copy {
+    width: auto !important;
+    margin: 0 !important;
+    text-align: left !important;
+    font-size: 9.5px !important;
+    line-height: 1.45 !important;
+  }
+  .committee-search-workspace-list .committee-workspace-row {
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 8px !important;
+  }
+  .committee-search-workspace-list .committee-workspace-actions,
+  .committee-search-workspace-list .repair-workspace-load {
+    justify-self: start;
+    width: auto !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .committee-context-filter[data-repair-placement="before-filing-sources"] {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+  .committee-filter-jump {
+    justify-self: start !important;
+    margin-left: 31px;
+  }
+  .committee-filter-summary {
+    margin-left: 31px;
+  }
+  #view-ledger .committee-ledger-toolbar-repair {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}

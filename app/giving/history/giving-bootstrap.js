@@ -1,12 +1,13 @@
 import './giving-ux-resilience-shell.js?v=20260817-2';
 
-const GIVING_ASSET_EPOCH = '20260816-4';
+const GIVING_ASSET_EPOCH = '20260818-5';
 const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1';
 const GIVING_PRACTICE_EPOCH = '20260817-12';
 const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1';
 const GIVING_PAGING_FIX_EPOCH = '20260818-1';
 const GIVING_MINIUPDATE_EPOCH = '20260818-4';
 const GIVING_TWELVE_STEP_EPOCH = '20260818-1';
+const GIVING_REPAIR_EPOCH = '20260818-1';
 const epochUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}`, import.meta.url).href;
 const repairUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}`, import.meta.url).href;
 const practiceUrl = (path) => new URL(`${path}?v=${GIVING_PRACTICE_EPOCH}`, import.meta.url).href;
@@ -14,6 +15,7 @@ const observerUrl = (path) => new URL(`${path}?v=${GIVING_ASSET_EPOCH}&observer=
 const pagingUrl = (path) => new URL(`${path}?v=${GIVING_SEARCH_BACKPRESSURE_EPOCH}&pagefix=${GIVING_PAGING_FIX_EPOCH}`, import.meta.url).href;
 const miniupdateUrl = (path) => new URL(`${path}?v=${GIVING_MINIUPDATE_EPOCH}`, import.meta.url).href;
 const twelveStepUrl = (path) => new URL(`${path}?v=${GIVING_TWELVE_STEP_EPOCH}`, import.meta.url).href;
+const bundleRepairUrl = (path) => new URL(`${path}?v=${GIVING_REPAIR_EPOCH}`, import.meta.url).href;
 const sourceUrl = (path) => new URL(path, import.meta.url).href;
 
 document.title = 'TD613 Giving';
@@ -35,6 +37,7 @@ afterStylesheet('givingPracticeHydrationStylesheet', practiceUrl('./giving-pract
 afterStylesheet('givingMiniupdateStylesheet', miniupdateUrl('./giving-miniupdate.css'));
 afterStylesheet('givingMiniupdateControlsStylesheet', miniupdateUrl('./giving-miniupdate-controls.css'));
 afterStylesheet('givingTwelveStepStylesheet', twelveStepUrl('./giving-12-step-bundle.css'));
+afterStylesheet('giving20260818RepairStylesheet', bundleRepairUrl('./giving-20260818-repair.css'));
 
 function afterStylesheet(id, href) {
   if (document.getElementById(id)) return;
@@ -105,3 +108,8 @@ await import(miniupdateUrl('./giving-miniupdate-controls.js'));
 // The 12-step bundle loads last so it can observe and pedagogically coordinate
 // already-hydrated Giving surfaces without becoming an alternate owner of them.
 await import(twelveStepUrl('./giving-12-step-bundle.js'));
+
+// The August 18 repair bundle is deliberately the final presentation/state seam.
+// It reorders already-owned controls, adds explicit practice-boundary pedagogy,
+// and normalizes source-finality language without taking over retrieval authority.
+await import(bundleRepairUrl('./giving-20260818-repair.js'));
