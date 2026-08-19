@@ -39,4 +39,9 @@ export {
   compilePedagogueResearchAssayWitness,
   reviewPedagogueResearchMechanism
 } from './pedagogue-research-assay-witness.js';
+export {
+  PEDAGOGUE_RESEARCH_MECHANISM_REFINEMENT_SCHEMA,
+  PEDAGOGUE_RESEARCH_REFINEMENT_POSTURES,
+  compilePedagogueResearchMechanismRefinement
+} from './pedagogue-research-mechanism-refinement.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
