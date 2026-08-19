@@ -32,4 +32,11 @@ export {
   compilePedagogueResearchTransferCard,
   hydratePedagogueResearch
 } from './pedagogue-research-transfer.js';
+export {
+  PEDAGOGUE_RESEARCH_ASSAY_WITNESS_SCHEMA,
+  PEDAGOGUE_RESEARCH_MECHANISM_REVIEW_SCHEMA,
+  PEDAGOGUE_RESEARCH_ASSAY_OUTCOMES,
+  compilePedagogueResearchAssayWitness,
+  reviewPedagogueResearchMechanism
+} from './pedagogue-research-assay-witness.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
