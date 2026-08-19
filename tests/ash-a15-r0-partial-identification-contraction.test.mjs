@@ -88,7 +88,7 @@ assert.match(spec, /I_\(Y,H_pre\)[\s\S]*\{R0,R1\}/);
 assert.match(spec, /I_\(Y,Z\) = \{R0,R2\}/);
 assert.match(spec, /POINT_IDENTIFIED_WITHIN_DECLARED_OBSERVATION_AND_MODEL_SCOPE/);
 assert.match(spec, /ASSUMPTION_LAUNDERING_REJECTED/);
-assert.match(spec, /cardinality/i);
+assert.match(spec, /candidate set numerically smaller/i);
 
 console.log(JSON.stringify({
   ok: true,
