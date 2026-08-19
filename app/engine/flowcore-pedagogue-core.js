@@ -29,6 +29,7 @@ export {
   PEDAGOGUE_RESEARCH_TRANSFER_CARD_SCHEMA,
   PEDAGOGUE_RESEARCH_HYDRATION_SCHEMA,
   PEDAGOGUE_RESEARCH_SOURCE_CLASSES,
+  PEDAGOGUE_RESEARCH_DATE_PRECISIONS,
   compilePedagogueResearchTransferCard,
   hydratePedagogueResearch
 } from './pedagogue-research-transfer.js';
