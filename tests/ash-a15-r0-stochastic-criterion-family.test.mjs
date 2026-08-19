@@ -108,7 +108,7 @@ assert.throws(() => compilePedagogueResearchCriterionFamily(missingRole), /missi
 
 const spec = fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/PEDAGOGUE_STOCHASTIC_CRITERION_FAMILY_HOSTILE_ASSAY_SPEC_V0_1.md', 'utf8');
 assert.match(spec, /TV\(A0\^3,A1\^3\) = 0\.296/);
-assert.match(spec, /equal-prior binary Bayes error = 0\.15/);
+assert.match(spec, /binary equal-prior pairwise Bayes error = 0\.15/);
 assert.match(spec, /multiclass Bayes error = 0\.2/);
 assert.match(spec, /UNEXECUTED_EMPIRICAL_VALIDATION/);
 
