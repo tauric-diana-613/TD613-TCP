@@ -109,7 +109,6 @@ await import(miniupdateUrl('./giving-miniupdate-controls.js'));
 // already-hydrated Giving surfaces without becoming an alternate owner of them.
 await import(twelveStepUrl('./giving-12-step-bundle.js'));
 
-// The August 18 repair bundle is deliberately the final presentation/state seam.
-// It reorders already-owned controls, adds explicit practice-boundary pedagogy,
-// and normalizes source-finality language without taking over retrieval authority.
+// Load the August 18 Giving repair after the existing controls are hydrated so
+// its layout, practice-state, and source-status adjustments see their final UI.
 await import(bundleRepairUrl('./giving-20260818-repair.js'));
