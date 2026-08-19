@@ -46,4 +46,9 @@ export {
   PEDAGOGUE_RESEARCH_REFINEMENT_EPISTEMIC_KINDS,
   compilePedagogueResearchMechanismRefinement
 } from './pedagogue-research-mechanism-refinement.js';
+export {
+  PEDAGOGUE_RESEARCH_CRITERION_FAMILY_SCHEMA,
+  PEDAGOGUE_RESEARCH_CRITERION_ROLES,
+  compilePedagogueResearchCriterionFamily
+} from './pedagogue-research-criterion-family.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
