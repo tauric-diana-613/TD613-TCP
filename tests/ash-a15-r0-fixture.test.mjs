@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import './ash-a15-r0-stochastic-criterion-family.test.mjs';
 import './ash-a15-r0-partial-identification-contraction.test.mjs';
+import './ash-a15-r0-model-misspecification-heldout.test.mjs';
 import {
   A15_R0_ACTION_SEQUENCE,
   A15_R0_SCHEMAS,
