@@ -73,4 +73,5 @@ await import('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
 await import('./ash-a15-r0-moss-lantern-aliasing-discriminator.test.mjs');
 await import('./ash-a15-r0-moss-lantern-stochastic-boundary.test.mjs');
 await import('./ash-a15-r0-self-calibrating-joint-state-operator.test.mjs');
+await import('./ash-a15-r0-identifiability-deficit-targeting.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
