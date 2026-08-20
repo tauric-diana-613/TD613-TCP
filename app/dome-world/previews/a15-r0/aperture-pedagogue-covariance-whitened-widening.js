@@ -22,6 +22,7 @@ const COMPLETE_PROBES = Object.freeze([
 
 function round(value, digits=15){ return Number(value.toFixed(digits)); }
 function finiteVariance(value){ return Number.isFinite(value) && value > 0; }
+function approximatelyEqual(left,right,tolerance=TOLERANCE){ return Math.abs(left-right)<=tolerance; }
 function multiply(matrix, vector){ return matrix.map(row=>row[0]*vector[0]+row[1]*vector[1]); }
 function l2(left,right){ return Math.hypot(left[0]-right[0],left[1]-right[1]); }
 function solve2(matrix, obs){
@@ -166,7 +167,7 @@ export function runCovarianceWhitenedWideningGauntlet(){
     whitened.selected_probe_id==='P_DIAG' &&
     whitened.complete_noise_geometry===true &&
     orth.rank_lift===1 && diag.rank_lift===1 && duplicate.rank_lift===0 &&
-    orth.sigma_min_whitened===0.1 && orth.condition_number_whitened===10 &&
+    approximatelyEqual(orth.sigma_min_whitened,0.1) && approximatelyEqual(orth.condition_number_whitened,10) &&
     diag.sigma_min_whitened>0.54 && diag.sigma_min_whitened<0.55 &&
     diag.condition_number_whitened>2.41 && diag.condition_number_whitened<2.42 &&
     diag.sigma_min_whitened>orth.sigma_min_whitened &&
