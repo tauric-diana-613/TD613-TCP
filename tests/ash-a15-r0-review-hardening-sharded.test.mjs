@@ -76,4 +76,5 @@ await import('./ash-a15-r0-self-calibrating-joint-state-operator.test.mjs');
 await import('./ash-a15-r0-identifiability-deficit-targeting.test.mjs');
 await import('./ash-a15-r0-aperture-conditioning-aware-widening.test.mjs');
 await import('./ash-a15-r0-aperture-covariance-whitened-widening.test.mjs');
+await import('./ash-a15-r0-aperture-correlated-noise-geometry.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
