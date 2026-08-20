@@ -8,14 +8,16 @@ import {
   runCovarianceWhitenedWideningGauntlet
 } from '../app/dome-world/previews/a15-r0/aperture-pedagogue-covariance-whitened-widening.js';
 
+const near = (left,right,tolerance=1e-12) => Math.abs(left-right) <= tolerance;
+
 assert.deepEqual(whitenTwoChannelOperator([[1,0],[0,1]],[1,100]),[[1,0],[0,0.1]]);
 assert.throws(()=>whitenTwoChannelOperator([[1,0],[0,1]],[1,0]),/positive finite/);
 
 const orth=evaluateWhitenedCandidate({probe_id:'P_ORTH',gradient:[0,1],variance:100,variance_source_status:'DECLARED_SYNTHETIC'});
 const diag=evaluateWhitenedCandidate({probe_id:'P_DIAG',gradient:[1,1],variance:1,variance_source_status:'DECLARED_SYNTHETIC'});
 const missing=evaluateWhitenedCandidate({probe_id:'P_DIAG',gradient:[1,1],variance:null,variance_source_status:'UNRESOLVED'});
-assert.equal(orth.sigma_min_whitened,0.1);
-assert.equal(orth.condition_number_whitened,10);
+assert.ok(near(orth.sigma_min_whitened,0.1));
+assert.ok(near(orth.condition_number_whitened,10));
 assert.ok(diag.sigma_min_whitened>0.54 && diag.sigma_min_whitened<0.55);
 assert.equal(missing.complete_noise_geometry,false);
 assert.equal(missing.sigma_min_whitened,null);
