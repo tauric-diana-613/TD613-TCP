@@ -100,7 +100,7 @@ assert.equal(receipt.live_ash_binding, false);
 assert.equal(receipt.human_closure_required, true);
 
 const spec = fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/PEDAGOGUE_IDENTIFIABILITY_DEFICIT_TARGETING_SPEC_V0_1.md', 'utf8');
-assert.match(spec, /direction the current inverse problem cannot see/i);
+assert.match(spec, /current nullspace/i);
 assert.match(spec, /rank-lift score/i);
 assert.match(spec, /g_k · n != 0/);
 assert.match(spec, /renamed\/repeated probe/i);
