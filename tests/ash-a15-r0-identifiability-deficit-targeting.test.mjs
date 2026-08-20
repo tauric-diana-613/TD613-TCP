@@ -105,7 +105,7 @@ assert.match(spec, /rank-lift score/i);
 assert.match(spec, /g_k · n != 0/);
 assert.match(spec, /renamed\/repeated probe/i);
 assert.match(spec, /global identifiability/i);
-assert.match(spec, /physical sensor control = false/);
+assert.match(spec, /physical_sensor_control = false/);
 
 console.log(JSON.stringify({
   ok:true,
