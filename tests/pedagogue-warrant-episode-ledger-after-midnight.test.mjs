@@ -215,7 +215,7 @@ assert.match(spec, /executable provenance replay/i);
 assert.match(spec, /post-hoc conflict-definition mutation/i);
 assert.match(spec, /withdrawn then restored support/i);
 assert.match(spec, /latest C2 snapshots are identical while the histories differ/i);
-assert.match(spec, /Issue #405/i);
+assert.match(spec, /vercel_release_requires_issue_405_and_new_explicit_operator_gesture = true/i);
 
 const fixture = JSON.parse(fs.readFileSync('docs/pedagogue/pedagogue-ghost-house-after-midnight-temporal-warrant-custody-hostile-assay-v0.1.json','utf8'));
 assert.equal(fixture.inherited_candidate.id, 'C2_WARRANT_GENEALOGY_CUSTODY');
