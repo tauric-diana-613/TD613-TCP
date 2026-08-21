@@ -93,3 +93,4 @@ await import('./pedagogue-precedence-admission-genealogy-blueprint-margins.test.
 await import('./pedagogue-admission-witness-replay-custody-carbon-paper.test.mjs');
 await import('./pedagogue-event-membership-revision-custody-cut-and-paste.test.mjs');
 await import('./pedagogue-membership-epoch-bundle-custody-two-stamps-same-minute.test.mjs');
+await import('./pedagogue-revision-precedence-bridge-custody-notary-ribbon.test.mjs');
