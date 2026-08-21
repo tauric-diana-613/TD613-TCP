@@ -123,7 +123,7 @@ const spec = fs.readFileSync(
 );
 assert.match(spec, /Carbon Paper/i);
 assert.match(spec, /C7_ADMISSION_WITNESS_REPLAY_CUSTODY/);
-assert.match(spec, /matching witness payload != replayed witness provenance/i);
+assert.match(spec, /matching edge-admission witness payload is not itself provenance/i);
 assert.match(spec, /REFUSE_UNREPLAYED_EDGE_ADMISSION_WITNESS/);
 assert.match(spec, /REFUSE_WITNESS_REPLAY_MISMATCH/);
 assert.match(spec, /SEALED_ADMISSION_WITNESS_PROVENANCE_IMMUTABLE/);
