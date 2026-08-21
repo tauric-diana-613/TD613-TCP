@@ -61,3 +61,21 @@ try {
 } finally {
   await fs.rm(tempPath, { force:true });
 }
+
+await import('./pedagogue-research-hydration.test.mjs');
+await import('./pedagogue-research-hydration-temporal.test.mjs');
+await import('./pedagogue-research-hydration-observability.test.mjs');
+await import('./pedagogue-research-hydration-identifiability-scope.test.mjs');
+await import('./pedagogue-research-assay-witness.test.mjs');
+await import('./pedagogue-order-identifiability-refinement.test.mjs');
+await import('./ash-a15-r0-moss-lantern-reference-identifiability.test.mjs');
+await import('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
+await import('./ash-a15-r0-moss-lantern-aliasing-discriminator.test.mjs');
+await import('./ash-a15-r0-moss-lantern-stochastic-boundary.test.mjs');
+await import('./ash-a15-r0-self-calibrating-joint-state-operator.test.mjs');
+await import('./ash-a15-r0-identifiability-deficit-targeting.test.mjs');
+await import('./ash-a15-r0-aperture-conditioning-aware-widening.test.mjs');
+await import('./ash-a15-r0-aperture-covariance-whitened-widening.test.mjs');
+await import('./ash-a15-r0-aperture-correlated-noise-geometry.test.mjs');
+await import('./ash-a15-r0-aperture-experiment-design-state.test.mjs');
+await import('./giving-pedagogue-independent-order.test.mjs');

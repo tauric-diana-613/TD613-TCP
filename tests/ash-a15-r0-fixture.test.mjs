@@ -1,6 +1,14 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import './ash-a15-r0-stochastic-criterion-family.test.mjs';
+import './ash-a15-r0-partial-identification-contraction.test.mjs';
+import './ash-a15-r0-model-misspecification-heldout.test.mjs';
+import './ash-a15-r0-predeclared-reserve-recovery.test.mjs';
+import './ash-a15-r0-inadequate-reserve-open-set-hold.test.mjs';
+import './ash-a15-r0-noisy-open-set-near-miss.test.mjs';
+import './ash-a15-r0-multi-probe-matched-budget.test.mjs';
+import './ash-a15-r0-known-forward-relational-reconstruction.test.mjs';
 import {
   A15_R0_ACTION_SEQUENCE,
   A15_R0_SCHEMAS,
@@ -66,7 +74,8 @@ assert.deepEqual(schemas, [
   'open-research-hypothesis-registry-v01.schema.json',
   'operator-rejection-receipt-v01.schema.json',
   'projection-descriptor-v01.schema.json',
-  'projection-run-receipt-v01.schema.json'
+  'projection-run-receipt-v01.schema.json',
+  'wedding-identifiability-assay-v01.schema.json'
 ]);
 for (const filename of schemas) {
   const schema = JSON.parse(fs.readFileSync(path.join(schemaDir, filename), 'utf8'));
