@@ -43,6 +43,7 @@ const SCOPE_NEUTRAL = new Set([
   'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md',
   'docs/PEDAGOGUE_DESIGN_GATE.md',
   'docs/AIA_CISTERN_LAW.md',
+  'docs/pedagogue/GIVING_12_STEP_REPO_TRANSFER_AUDIT.md',
   'scripts/classify-validation-scope.mjs',
   'scripts/configure-git-hooks.mjs',
   'scripts/flowcore-release-content-probe.mjs',
@@ -55,9 +56,12 @@ const SCOPE_NEUTRAL = new Set([
   'tests/workflow-estate.test.mjs',
   'app/engine/pedagogue-design-gate.js',
   'app/engine/pedagogue-interface-diagnosis.js',
+  'app/engine/pedagogue-boundary-diagnosis.js',
+  'app/engine/pedagogue-responsive-hierarchy-diagnosis.js',
   'app/engine/aia-cistern-law.js',
   'tests/fixtures/pedagogue/giving-vault-design.json',
   'tests/fixtures/pedagogue/giving-research-dossier-design.json',
+  'tests/fixtures/pedagogue/giving-12-step-evidence-workflow.json',
   'tests/fixtures/pedagogue/cistern-boundary-design.json'
 ]);
 

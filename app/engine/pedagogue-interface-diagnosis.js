@@ -1,5 +1,5 @@
 export const PEDAGOGUE_INTERFACE_SPECIMEN_SCHEMA = 'td613.pedagogue-interface-specimen/v0.1';
-export const PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA = 'td613.pedagogue-interface-diagnosis/v0.2';
+export const PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA = 'td613.pedagogue-interface-diagnosis/v0.3';
 
 function finite(value, fallback = null) {
   const number = Number(value);
@@ -158,6 +158,96 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
     ));
   }
 
+  if (observed.status_claim_exceeds_evidence === true) {
+    findings.push(finding(
+      'STATUS_ONTOLOGY_OVERCLAIM',
+      'The interface names a record-level research decision as though it established person-level identity certainty.',
+      'A status such as “Identity confirmed” can exceed the actual evidence event when the operator has only attributed a retrieved record to the active research target.'
+    ));
+    recommendations.push(recommendation(
+      'NAME_DECISION_AT_EVIDENCE_LEVEL',
+      'Use record-attribution language for record-to-target closure and reserve identity language for workflows that actually establish an exact person identity.',
+      'Status copy should describe what the operator decided, not inflate the ontology of the evidence.',
+      'Prefer “Record attributed” / “Record unresolved” for contribution review; preserve stronger identity terminology only where an exact-person workflow independently earns it.',
+      ['Do not rename internal enums merely for presentation.', 'Do not convert record attribution into legal or compliance identity authority.']
+    ));
+  }
+
+  if (observed.cross_lane_same_entity === true) {
+    findings.push(finding(
+      'LANE_ROLE_PRECEDES_ENTITY',
+      'A familiar name appearing in multiple transaction lanes can invite role collapse before the learner notices what each ledger actually records.',
+      'The same person or entity may legitimately appear as a contributor in one lane and a payee in another; name overlap alone does not make the transactions equivalent.'
+    ));
+    recommendations.push(recommendation(
+      'TEACH_TRANSACTION_ROLE_BEFORE_NAME_OVERLAP',
+      'Keep contribution and expenditure evidence visibly lane-specific, then let selected cross-lane names recur so the learner must read role before inference.',
+      'The pedagogical consequence should emerge from comparing real-shaped records rather than from explanatory labels inserted into evidence fields.',
+      'Expose ordinary contribution and expenditure records with separate lane framing; allow a bounded set of names to appear in both and explain the distinction adjacent to the lane, not inside the transaction datum.',
+      ['Same-name overlap never proves same identity.', 'Cross-lane overlap never proves coordination or wrongdoing.', 'Practice provenance remains explicit.']
+    ));
+  }
+
+  if (observed.zero_result_scope_bounded === true) {
+    findings.push(finding(
+      'NEGATIVE_RESULT_NEEDS_SCOPE',
+      'A completed search with zero retained records can be mistaken for a global claim of non-participation unless the interface preserves the search aperture.',
+      'Zero results are bounded by the selected custodians, date window, query posture, and source receipts.'
+    ));
+    recommendations.push(recommendation(
+      'REPORT_BOUNDED_ZERO_LOCALLY',
+      'Attach the zero-result notice to the searched target and name the bounded aperture that produced it.',
+      'A local result is useful when it says what was observed without converting absence in the aperture into absence everywhere.',
+      'Mark the target as “No records” after the run settles and explain that no contribution records returned in the selected sources/date window; explicitly forbid “never donated” inference.',
+      ['Do not fabricate a zero until every selected route settles.', 'Preserve held/partial source states.', 'Do not collapse source failure into zero.']
+    ));
+  }
+
+  if (observed.advisory_without_inspection_route === true) {
+    findings.push(finding(
+      'ADVISORY_WITHOUT_ROUTE',
+      'The interface announces a potentially useful review condition but leaves the operator to reverse-engineer how to inspect the affected records.',
+      'A match-cluster banner without a direct inspection gesture names a consequence without exposing its route.'
+    ));
+    recommendations.push(recommendation(
+      'PAIR_ADVISORY_WITH_INSPECTION_GESTURE',
+      'Give bounded advisory notices a nearby action that reveals the records they refer to.',
+      'The notice becomes pedagogical when the operator can immediately move from claim to evidence.',
+      'Add an “Inspect suggested records” gesture that highlights or filters the already-rendered records without converting the suggestion into an identity decision.',
+      ['Inspection must remain reversible.', 'Suggestion strength must not mutate review status.']
+    ));
+  }
+
+  if (observed.loaded_context_visible_but_search_unbound === true) {
+    findings.push(finding(
+      'DORMANT_CONTEXT_WITHOUT_CONSEQUENCE',
+      'A prominently loaded context appears consequential while the search route ignores it, creating a false affordance.',
+      'A loaded campaign/committee surface should either declare itself contextual-only or expose an explicit operator-controlled way to bind that context to the next retrieval.'
+    ));
+    recommendations.push(recommendation(
+      'DECLARE_OR_BIND_LOADED_CONTEXT',
+      'Make loaded context optional by default and expose a separate explicit filter when the operator wants it to constrain contributor results.',
+      'Context and query authority should not be silently coupled, but a visible dormant context should not masquerade as an active filter.',
+      'Use a “Filter by loaded committee” toggle near search constraints, link it back to committee lookup, and block the filtered search with an explanatory guard when no committee is loaded.',
+      ['Ordinary contributor search remains available without committee context.', 'Filtering must not rewrite source receipts.', 'No automatic committee selection.']
+    ));
+  }
+
+  if (observed.responsive_spatial_correspondence_lost === true) {
+    findings.push(finding(
+      'RESPONSIVE_ROLE_DRIFT',
+      'A desktop control keeps pretending to occupy column-header geometry after the content has collapsed into single-column cards.',
+      'At the responsive breakpoint the sorting actions remain meaningful, but their spatial correspondence to table columns no longer exists.'
+    ));
+    recommendations.push(recommendation(
+      'RECLASSIFY_SORT_CONTROLS_AT_BREAKPOINT',
+      'Treat responsive sort controls as a compact sort ribbon rather than shrinking a false table header.',
+      'Preserving a dead spatial relationship teaches the wrong geometry and produces brittle pancake layouts.',
+      'Keep true column alignment on desktop; on narrow viewports present intrinsic-width sortable chips/ribbon with horizontal overflow only when needed.',
+      ['Preserve sorting semantics and aria-pressed state.', 'Do not force equal-width mobile buttons.', 'Do not imply column alignment where none exists.']
+    ));
+  }
+
   const implementationAllowed = constraints.implementation_this_round === true;
   const preserveNativeAccessibility = constraints.preserve_native_accessibility !== false;
   const diagnosis = {
@@ -168,16 +258,18 @@ export function compilePedagogueInterfaceDiagnosis(specimen = {}) {
     recommendations: Object.freeze(recommendations),
     action_routing: actionRouting,
     synthesis: {
-      primary_break: findings.some((item) => item.code === 'TYPOGRAPHIC_ROLE_UNDECLARED')
-        ? 'The strongest discontinuity comes from an undeclared data-entry typography/role system, not from the surrounding TD613 panel design.'
-        : 'No dominant typography-role discontinuity was established from the supplied specimen.',
+      primary_break: findings.some((item) => item.code === 'STATUS_ONTOLOGY_OVERCLAIM')
+        ? 'The strongest discontinuity is an evidence-level mismatch between what the interface says has been established and what the workflow actually decided.'
+        : findings.some((item) => item.code === 'TYPOGRAPHIC_ROLE_UNDECLARED')
+          ? 'The strongest discontinuity comes from an undeclared data-entry typography/role system, not from the surrounding TD613 panel design.'
+          : 'No dominant interface discontinuity was established from the supplied specimen.',
       implementation_this_round: implementationAllowed,
       preserve_native_accessibility: preserveNativeAccessibility,
       automatic_redesign: false,
       human_closure_required: true
     },
     pedagogue_hydration: {
-      capability: 'INTERFACE_CONTINUITY_AND_ACTION_ROUTE_DIAGNOSIS',
+      capability: 'INTERFACE_CONTINUITY_ACTION_ROUTE_AND_EVIDENCE_ROLE_DIAGNOSIS',
       generic_operator_added: true,
       source_surface_is_specimen_not_owner: true,
       product_mutation_authority: false,

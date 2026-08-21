@@ -17,6 +17,7 @@ assert.equal(releaseJson.composition.bootstrap, 'app/aperture/bootstrap.js');
 assert.deepEqual(releaseJson.composition.componentOrder, [
   'release-manifest',
   'task-intent',
+  'v32-experiment-design',
   'v31-compatibility',
   'phase4-reciprocal-bridge'
 ]);
@@ -25,8 +26,8 @@ assert.equal(releaseJson.composition.automaticAuthorityTransfer, false);
 assert.equal(releaseJson.composition.operatorClosureRequired, true);
 
 const regenerated = releaseManifestFromMetadata({
-  version: 'v3.1-alpha',
-  schema: 'td613-aperture/v3.1-alpha',
+  version: 'v3.2-alpha',
+  schema: 'td613-aperture/v3.2-alpha',
   featureVersion: releaseJson.featureVersion,
   doctrineKernelSchema: releaseJson.doctrineKernelSchema
 }, releaseJson);

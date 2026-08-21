@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
+import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 import * as engine from '../app/engine/stylometry.js';
 import personas from '../app/data/personas.js';
 import { buildAnnexDiagnostics, buildAnnexMarkdown } from './lib/annex-diagnostics.mjs';
@@ -30,6 +31,7 @@ const latestJsonPath = path.join(reportsDir, 'latest.json');
 const latestMdPath = path.join(reportsDir, 'latest.md');
 const diagnosticsStageDir = path.join(reportsDir, '.staging');
 const activeStageManifestPath = path.join(diagnosticsStageDir, 'active-run.json');
+const DEFAULT_SECTION_TIMEOUT_MS = 15 * 60 * 1000;
 const CASE_SECTION_IDS = Object.freeze([
   'swapPairs',
   'maskCases',
@@ -2719,16 +2721,65 @@ function publishDiagnosticsReport(report = {}) {
   });
 }
 
-function runDiagnosticsSections(manifest = {}, sectionIds = []) {
+function diagnosticsSectionTimeoutMs() {
+  const configured = Number(process.env.TD613_DIAGNOSTICS_SECTION_TIMEOUT_MS);
+  return Number.isFinite(configured) && configured > 0
+    ? Math.floor(configured)
+    : DEFAULT_SECTION_TIMEOUT_MS;
+}
+
+function buildSectionDataInWorker(sectionId = '') {
+  const timeoutMs = diagnosticsSectionTimeoutMs();
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(__filename, {
+      workerData: { diagnosticsSectionId: sectionId }
+    });
+    const startedAt = Date.now();
+    let settled = false;
+    const finish = (callback, value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      callback(value);
+    };
+    const timeout = setTimeout(() => {
+      const elapsedMs = Date.now() - startedAt;
+      finish(reject, new Error(
+        `Diagnostics section "${sectionId}" timed out after ${elapsedMs} ms. ` +
+        'No checkpoint was written. Increase TD613_DIAGNOSTICS_SECTION_TIMEOUT_MS only after reviewing the section.'
+      ));
+      void worker.terminate();
+    }, timeoutMs);
+
+    worker.once('message', (message) => {
+      if (message?.ok) {
+        finish(resolve, { data: message.data, elapsedMs: Date.now() - startedAt });
+        return;
+      }
+      finish(reject, new Error(message?.error || `Diagnostics section "${sectionId}" failed.`));
+    });
+    worker.once('error', (error) => finish(reject, error));
+    worker.once('exit', (code) => {
+      if (!settled && code !== 0) {
+        finish(reject, new Error(`Diagnostics section "${sectionId}" worker exited with code ${code}.`));
+      }
+    });
+  });
+}
+
+async function runDiagnosticsSections(manifest = {}, sectionIds = []) {
   let nextManifest = manifest;
-  sectionIds.forEach((sectionId) => {
+  for (const sectionId of sectionIds) {
     if (stageSectionComplete(nextManifest, sectionId)) {
       console.log(`diagnostics section reused: ${sectionId}`);
-      return;
+      continue;
     }
-    console.log(`diagnostics section running: ${sectionId}`);
-    nextManifest = persistStageSnapshot(nextManifest, sectionId, buildSectionData(sectionId));
-  });
+    const timeoutMs = diagnosticsSectionTimeoutMs();
+    console.log(`diagnostics section running: ${sectionId} (timeout ${timeoutMs} ms)`);
+    const result = await buildSectionDataInWorker(sectionId);
+    nextManifest = persistStageSnapshot(nextManifest, sectionId, result.data);
+    console.log(`diagnostics section complete: ${sectionId} (${result.elapsedMs} ms)`);
+  }
   return nextManifest;
 }
 
@@ -2750,17 +2801,26 @@ async function main() {
   }
 
   if (args.sections?.length) {
-    manifest = runDiagnosticsSections(manifest, args.sections);
+    manifest = await runDiagnosticsSections(manifest, args.sections);
     console.log(`diagnostics battery staged sections complete (${args.sections.join(', ')})`);
     return;
   }
 
   const missing = missingStageSections(manifest);
-  manifest = runDiagnosticsSections(manifest, missing);
+  manifest = await runDiagnosticsSections(manifest, missing);
   const report = buildReportFromStageManifest(manifest);
   publishDiagnosticsReport(report);
   console.log(`diagnostics battery complete (${report.summary.totalCases} cases)`);
   console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);
 }
 
-await main();
+if (isMainThread) {
+  await main();
+} else {
+  try {
+    const sectionId = workerData?.diagnosticsSectionId || '';
+    parentPort.postMessage({ ok: true, data: buildSectionData(sectionId) });
+  } catch (error) {
+    parentPort.postMessage({ ok: false, error: error?.stack || error?.message || String(error) });
+  }
+}

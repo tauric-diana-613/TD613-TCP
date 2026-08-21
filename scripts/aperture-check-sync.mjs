@@ -36,7 +36,7 @@ assert.ok(tool.metadata.blocks.doctrineKernel, 'Doctrine kernel block missing fr
 assert.ok(tool.metadata.globals.gatewayEmbed, 'Gateway embed global missing from tool.html');
 assert.match(tool.html, /function\s+auditFlowCoreContextReceipt\s*\(/, 'returned Flow-Core receipt audit missing from tool.html');
 assert.match(tool.html, /reciprocalReceipts:true[\s\S]*reciprocalAuthority:false/, 'reciprocal receipt authority boundary missing from tool.html');
-if (/^v3\.1(?:-|$)/.test(tool.metadata.version)) {
+if (/^v3\.(?:[1-9]\d*)(?:-|$)/.test(tool.metadata.version)) {
   assert.equal(release.observatory?.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.2', 'tomography receipt schema drifted');
   assert.deepEqual(release.observatory?.evidenceRecord?.fields, ['source_status', 'evidence_basis', 'observations', 'missingness', 'alternatives', 'open_questions', 'operator_notes', 'closure'], 'v3.1 evidence record drifted');
   assert.deepEqual(release.observatory?.evidenceRecord?.researchNotes, { default: 'OFF', humanOperated: true, modelContextInjection: false }, 'Research Notes posture drifted');

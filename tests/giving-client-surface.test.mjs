@@ -35,9 +35,10 @@ assert.match(html, /id="sessionMembrane"/);
 assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /giving\.css\?v=20260816-2/);
 assert.match(html, /giving-polish\.css\?v=20260816-2/);
-assert.match(html, /giving-bootstrap\.js\?v=20260817-1/, 'changed bootstrap bytes require a fresh HTML entry URL');
-assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(html, /giving-bootstrap\.js\?v=20260817-1/, 'HTML keeps the stable bootstrap entry while bootstrap-owned child epochs evict revised assets');
+assert.match(bootstrap, /GIVING_ASSET_EPOCH = '20260818-5'/);
 assert.match(bootstrap, /GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
+assert.match(bootstrap, /GIVING_REPAIR_EPOCH = '20260818-2'/);
 for (const asset of [
   'giving-left-rail-order.js', 'giving-export-menu.js', 'giving-contribution-amount-filter.js',
   'giving-state-filter.js', 'giving-review-paging.js', 'giving-ux-resilience-shell.js',
@@ -45,10 +46,11 @@ for (const asset of [
   'giving-search-controls.js', 'giving-campaign-tools-v3.js', 'giving-visible-language.js',
   'giving-contributions-copy.js', 'giving-date-sort.js', 'giving-dossier-help.js',
   'giving-campaign-tools-v3.css', 'giving-search-controls.css', 'giving-state-filter.css',
-  'giving-clarity.css', 'giving-ux-resilience.css'
+  'giving-clarity.css', 'giving-ux-resilience.css', 'giving-20260818-repair.js', 'giving-20260818-repair.css'
 ]) assert.ok(bootstrap.includes(asset), `Giving bootstrap must load ${asset} through the coordinated or explicitly isolated repair epoch`);
 assert.ok(bootstrap.indexOf('giving-run-settled.js') < bootstrap.indexOf('giving-contact-queue-v2.js'));
 assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'));
+assert.ok(bootstrap.indexOf('giving-12-step-bundle.js') < bootstrap.indexOf('giving-20260818-repair.js'), 'repair owner must load after the existing 12-step coordination seam');
 
 // Stable shell structure and non-regression controls.
 for (const id of [
@@ -135,7 +137,9 @@ assert.match(campaignCss, /\.campaign-directory-panel/);
 assert.match(campaignCss, /\.campaign-deputy-sync-tools/);
 
 // Operator copy and public/internal boundary.
-assert.match(visibleLanguage, /textContent = 'Match'/);
+assert.match(visibleLanguage, /setText\(button, 'Match'\)/);
+assert.match(visibleLanguage, /setText\(state, 'Match'\)/);
+assert.doesNotMatch(visibleLanguage, /textContent = 'Match'/);
 assert.match(dossierHelp, /Contributor research file/);
 assert.match(dossierHelp, /document\.body\.appendChild\(popup\)/);
 assert.doesNotMatch(dossierHelp, /createElement\('style'\)/);

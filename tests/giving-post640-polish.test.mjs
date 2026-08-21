@@ -2,6 +2,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { compilePedagoguePracticeReview } from '../app/engine/pedagogue-practice-fixture.js';
+import { compilePedagogueInterfaceDiagnosis } from '../app/engine/pedagogue-interface-diagnosis.js';
+import {
+  allPracticeExpenditures,
+  expenditureCoverageAudit
+} from '../app/giving/history/giving-practice-expenditures.js';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
@@ -30,6 +35,11 @@ const browserProbe = read('scripts/giving-browser-probe.mjs');
 const practiceAssay = read('scripts/giving-practice-fixture-browser-assay.mjs');
 const workflow = read('.github/workflows/td613-ci.yml');
 const pedagogueFixture = JSON.parse(read('tests/fixtures/pedagogue/giving-bikini-bottom-practice.json'));
+const twelveStep = read('app/giving/history/giving-12-step-bundle.js');
+const twelveStepCss = read('app/giving/history/giving-12-step-bundle.css');
+const expenditures = read('app/giving/history/giving-practice-expenditures.js');
+const visibleLanguage = read('app/giving/history/giving-visible-language.js');
+const evidenceWorkflowFixture = JSON.parse(read('tests/fixtures/pedagogue/giving-12-step-evidence-workflow.json'));
 
 assert.doesNotThrow(() => new Function(shell));
 assert.doesNotThrow(() => new Function(renderBackpressure.replace(/export const[\s\S]*$/m, '')));
@@ -37,6 +47,10 @@ for (const path of [
   'app/giving/history/giving-practice-directory.js',
   'app/giving/history/giving-practice-campaign-history.js',
   'app/giving/history/giving-practice-committee-graph.js',
+  'app/giving/history/giving-practice-expenditures.js',
+  'app/giving/history/giving-12-step-bundle.js',
+  'app/giving/history/giving-visible-language.js',
+  'app/engine/pedagogue-interface-diagnosis.js',
   'scripts/giving-practice-fixture-browser-assay.mjs',
   'scripts/giving-browser-probe.mjs'
 ]) {
@@ -109,6 +123,61 @@ assert.match(helpCss, /font-size:\s*13px/);
 assert.match(shellCss, /\.campaign-segmented-control/);
 assert.match(polish, /#sessionTitle::after[\s\S]*?TD613 Giving/);
 
+// 12-step acceptance lives in the cheap Giving contract so browser witness
+// installation cannot hide a fast deterministic failure.
+assert.match(twelveStep, /Filter by loaded committee/);
+assert.match(twelveStep, /Choose committee below/);
+assert.match(twelveStep, /Inspect suggested records/);
+assert.match(twelveStep, /Gary Snail/);
+assert.match(twelveStep, /No contribution records returned for this contact in the selected sources and date window/);
+assert.match(twelveStep, /source_receipt_rewritten: false/);
+assert.match(twelveStep, /expenditureCoverageAudit/);
+assert.match(twelveStep, /recordMatchesLoadedCommittee/);
+assert.match(twelveStepCss, /\.giving-date-presets\{justify-content:center/);
+assert.match(twelveStepCss, /\.review-sort-header\{display:flex!important/);
+assert.match(twelveStepCss, /\.practice-floating-exit\{z-index:12000!important/);
+assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.toast-stack\{z-index:12010!important\}/);
+assert.match(twelveStepCss, /html\[data-giving-practice=true\] \.practice-exit-confirm\{z-index:12020!important\}/);
+assert.match(twelveStepCss, /\.giving-demo-clear-confirm\{z-index:12020!important\}/);
+assert.match(twelveStepCss, /\.committee-filter-guard-dialog\{position:fixed;z-index:11990/);
+assert.match(twelveStepCss, /box-shadow:[^;]*0 0 42px rgba\(255,82,197,\.34\)/);
+assert.match(twelveStepCss, /filter:none!important/);
+assert.match(twelveStepCss, /backdrop-filter:none!important;-webkit-backdrop-filter:none!important/);
+assert.match(twelveStepCss, /\.research-dossier-heading-line \.research-dossier-help-trigger\{font-size:10px\}/);
+
+const expenditureAudit = expenditureCoverageAudit();
+assert.equal(expenditureAudit.committee_count, 10);
+assert.equal(expenditureAudit.expenditure_count, 40);
+assert.equal(expenditureAudit.all_committees_have_expenditures, true);
+assert.deepEqual(expenditureAudit.missing_committee_ids, []);
+for (const payee of ['Krusty Krab LLC', 'Sandy Cheeks', 'Squidward Q. Tentacles', 'Eugene H. Krabs']) {
+  assert.ok(expenditureAudit.cross_lane_payees.includes(payee), `${payee} must teach contribution/payee role separation`);
+}
+assert.equal(allPracticeExpenditures().every((record) => record.activity_type === 'EXPENDITURE'), true);
+assert.match(expenditures, /contribution_expenditure_equivalence_forbidden: true/);
+assert.match(expenditures, /same_name_same_identity_inference_forbidden: true/);
+
+const evidenceWorkflowDiagnosis = compilePedagogueInterfaceDiagnosis(evidenceWorkflowFixture);
+const evidenceFindingCodes = new Set(evidenceWorkflowDiagnosis.findings.map((finding) => finding.code));
+for (const code of [
+  'STATUS_ONTOLOGY_OVERCLAIM',
+  'LANE_ROLE_PRECEDES_ENTITY',
+  'NEGATIVE_RESULT_NEEDS_SCOPE',
+  'ADVISORY_WITHOUT_ROUTE',
+  'DORMANT_CONTEXT_WITHOUT_CONSEQUENCE',
+  'RESPONSIVE_ROLE_DRIFT'
+]) assert.ok(evidenceFindingCodes.has(code), `Pedagogue must hydrate ${code} from the Giving specimen`);
+assert.equal(evidenceWorkflowDiagnosis.authority.product_mutation_authorized, false);
+assert.equal(evidenceWorkflowDiagnosis.authority.automatic_redesign, false);
+assert.equal(evidenceWorkflowDiagnosis.authority.human_closure_required, true);
+assert.equal(evidenceWorkflowDiagnosis.pedagogue_hydration.source_surface_is_specimen_not_owner, true);
+
+assert.match(visibleLanguage, /Record attributed/);
+assert.match(visibleLanguage, /Review states/);
+assert.match(visibleLanguage, /ATTRIBUTED RECORDS ONLY/);
+assert.match(visibleLanguage, /Record attribution is a research determination/);
+assert.match(visibleLanguage, /reviewed campaign \/ committee record/);
+
 assert.match(pageSize, /const PAGE_SIZE = 300/);
 assert.match(pageSize, /const FEC_BOUNDARY_PAGE_SIZE = 100/);
 assert.match(reviewPagingCore, /const PAGE_SIZE = 50/);
@@ -136,16 +205,20 @@ assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.appendChild\(ca
   'committee date sorter must not reappend an already-sorted observed card set');
 assert.doesNotMatch(dateSort, /for \(const card of cards\) list\.insertBefore\(card, trailer \|\| null\);/,
   'contribution date sorter must not reinsert an already-sorted observed card set');
-assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260816-4'/);
+assert.match(bootstrap, /const GIVING_ASSET_EPOCH = '20260818-5'/);
 assert.match(bootstrap, /const GIVING_SEARCH_BACKPRESSURE_EPOCH = '20260817-1'/);
 assert.match(bootstrap, /const GIVING_PRACTICE_EPOCH = '20260817-12'/);
 assert.match(bootstrap, /const GIVING_OBSERVER_IDEMPOTENCE_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /const GIVING_TWELVE_STEP_EPOCH = '20260818-1'/);
+assert.match(bootstrap, /const GIVING_REPAIR_EPOCH = '20260818-2'/);
 assert.match(bootstrap, /observerUrl\('\.\/giving-transaction-classification\.js'\)/);
 assert.match(bootstrap, /observerUrl\('\.\/giving-date-sort\.js'\)/);
 assert.match(bootstrap, /giving-review-paging-core\.js\?v=20260813-3&repair=20260818-1/);
 assert.match(bootstrap, /giving-practice-runtime\.js/);
 assert.match(bootstrap, /giving-practice-surface-bridge\.js/);
 assert.match(bootstrap, /giving-practice-directory\.js/);
+assert.match(bootstrap, /giving-12-step-bundle\.js/);
+assert.match(bootstrap, /giving-20260818-repair\.js/);
 assert.match(bootstrap, /fetch\(sourceUrl\('\.\/giving-fec-resilience\.js\?v=20260814-1'\), \{ cache: 'reload'/);
 assert.match(givingIndex, /giving-bootstrap\.js\?v=20260817-1/);
 
@@ -166,5 +239,7 @@ assert.match(practiceAssay, /local_practice_file_saved_and_reopened:\s*true/);
 assert.match(practiceAssay, /encrypted_practice_vault_version_observed:\s*true/);
 assert.match(practiceAssay, /must wake on confirmed exit/);
 assert.match(workflow, /Witness originating Giving practice fixture with Chromium/);
+
+await import('./giving-20260818-repair.test.mjs');
 
 console.log('giving-post640-polish.test.mjs passed');

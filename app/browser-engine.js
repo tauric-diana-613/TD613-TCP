@@ -901,9 +901,9 @@ function assessCompressionState(sourceText = '', outputText = '', witnessAudit =
   });
 }
 
-const TD613_APERTURE_VERSION = 'v3.1-alpha';
-const TD613_APERTURE_SCHEMA = 'td613-aperture/v3.1-alpha';
-const TD613_APERTURE_FEATURE_VERSION = 'v3.1-alpha-admissibility-tomography-registry-dynamics-runtime';
+const TD613_APERTURE_VERSION = 'v3.2-alpha';
+const TD613_APERTURE_SCHEMA = 'td613-aperture/v3.2-alpha';
+const TD613_APERTURE_FEATURE_VERSION = 'v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime';
 
 const TD613_APERTURE_PROTOCOL = Object.freeze({
   id: TD613_APERTURE_SCHEMA,

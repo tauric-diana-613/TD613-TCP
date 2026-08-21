@@ -10,6 +10,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let practiceSource = null;
 let injecting = false;
+let exitReturnFocus = null;
 let touched = { name: false, exact: false, from: false, to: false };
 
 function duringPracticeLoad() { return document.documentElement.dataset.givingPracticeLoad === 'true'; }
@@ -31,10 +32,25 @@ function broadenPracticeNameWhenRequested() {
   if (matches.length === 1) input.value = matches[0];
 }
 
-function showPracticeExitConfirmation() {
-  const sourceExit = $('#practiceExitButton');
-  if (sourceExit) { sourceExit.click(); return true; }
-  return false;
+function rememberExitReturnFocus(invoker) {
+  if (invoker instanceof HTMLElement && !invoker.closest('#practiceExitConfirm')) exitReturnFocus = invoker;
+}
+
+function restoreExitReturnFocus() {
+  const target = exitReturnFocus;
+  exitReturnFocus = null;
+  const fallback = $('.ledger-tabs .tab.active') || $('#runSearchButton');
+  const next = target?.isConnected ? target : fallback;
+  next?.focus({ preventScroll: true });
+}
+
+function showPracticeExitConfirmation(invoker = document.activeElement, returnFocus = invoker) {
+  const confirm = $('#practiceExitConfirm');
+  if (!confirm) return false;
+  rememberExitReturnFocus(returnFocus);
+  confirm.hidden = false;
+  confirm.querySelector('[data-practice-exit="no"]')?.focus();
+  return true;
 }
 
 function ensureFloatingExit() {
@@ -46,16 +62,22 @@ function ensureFloatingExit() {
   button.type = 'button';
   button.textContent = 'Exit Demo';
   button.setAttribute('aria-label', 'Exit fictional sample demo');
-  button.addEventListener('click', showPracticeExitConfirmation);
+  button.addEventListener('click', (event) => showPracticeExitConfirmation(event.currentTarget));
   document.body.append(button);
 }
 
 function syncPracticeChrome() {
   ensureFloatingExit();
+  const active = practiceActive();
+  const toastStack = $('#toastStack');
+  if (toastStack) {
+    if (active) toastStack.dataset.practiceNotificationLayer = 'true';
+    else delete toastStack.dataset.practiceNotificationLayer;
+  }
   const campaignTab = $('.tab[data-view="campaign"]');
   if (campaignTab) {
-    campaignTab.dataset.practiceAsleep = practiceActive() ? 'true' : 'false';
-    if (practiceActive()) campaignTab.setAttribute('aria-describedby', 'practiceCampaignSleepHint');
+    campaignTab.dataset.practiceAsleep = active ? 'true' : 'false';
+    if (active) campaignTab.setAttribute('aria-describedby', 'practiceCampaignSleepHint');
     else campaignTab.removeAttribute('aria-describedby');
   }
 }
@@ -121,6 +143,7 @@ function enforcePracticeSearchPosture() {
 }
 function removePracticeSource() {
   $('#sourceRegistry [data-practice-source-block]')?.remove();
+  exitReturnFocus = null;
   practiceSource = null; resetTouched(); $('#practiceFloatingExitButton')?.remove(); syncPracticeChrome();
 }
 
@@ -167,9 +190,29 @@ for (const [selector, decorator] of [['#sourceProgress', decoratePracticeRuns], 
 const blockedCampaignActions = new Set(['loadPeopleButton', 'morePeopleButton', 'linkExistingButton', 'syncTargetButton', 'createContactButton', 'prepareGivingHistoryButton', 'bulkGivingHistoryButton', 'withholdButton', 'syncLoadedCommitteeButton', 'bulkExactContactsButton']);
 document.addEventListener('click', (event) => {
   const button = event.target?.closest?.('button'); if (!button) return;
-  // Exit route 3 of exactly 3: sleeping Campaign Deputy delegates to the one shared Exit Sample Demo confirmation.
+
+  // Source and floating Exit Demo return to their visible invokers.
+  if (practiceActive() && button.matches('#practiceExitButton, #practiceFloatingExitButton')) {
+    rememberExitReturnFocus(button);
+  }
+
+  // Hydration owns the synchronous No dismissal in bubble phase. Return focus
+  // on the next task so the entire pointer/keyboard activation has unwound after
+  // the dialog is hidden; this avoids moving focus in the middle of an input turn.
+  if (practiceActive() && button.matches('[data-practice-exit="no"]')) {
+    setTimeout(restoreExitReturnFocus, 0);
+    return;
+  }
+
+  // Exit route 3 of exactly 3: Campaign Deputy is an unavailable context switch
+  // during practice. If the operator cancels Exit Demo, return to the still-active
+  // tab rather than the sleeping tab that never became active.
   if (practiceActive() && button.matches('.tab[data-view="campaign"]')) {
-    event.preventDefault(); event.stopImmediatePropagation(); showPracticeExitConfirmation(); return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const stableContext = $('.ledger-tabs .tab.active') || $('#runSearchButton');
+    setTimeout(() => showPracticeExitConfirmation(button, stableContext), 0);
+    return;
   }
   if (!blockedCampaignActions.has(button.id)) return;
   const hasPracticeRecords = Boolean($('#recordList .record-card[data-fictional-sample="true"]'));

@@ -50,7 +50,8 @@ const server = http.createServer(async (request, response) => {
         .replace('data-session="checking"', 'data-session="open"')
         .replace('<section class="session-membrane"', '<section hidden class="session-membrane"')
         .replace('<div class="operator-shell" id="operatorShell" hidden>', '<div class="operator-shell" id="operatorShell">')
-        .replace('<script type="module" src="./giving-app.js"></script>', ''));
+        .replace('<script type="module" src="./giving-app.js"></script>', '')
+        .replace('</body>', '<script type="module" src="/scripts/giving-20260818-repair-browser-sentinel.js"></script></body>'));
     }
     const type = target.endsWith('.html') ? 'text/html' : target.endsWith('.css') ? 'text/css' : target.endsWith('.js') ? 'text/javascript' : 'application/octet-stream';
     response.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store' });
