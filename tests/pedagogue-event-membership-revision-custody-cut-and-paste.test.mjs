@@ -119,8 +119,8 @@ const spec = fs.readFileSync(
 assert.match(spec, /Cut-and-Paste/i);
 assert.match(spec, /C8_EVENT_MEMBERSHIP_REVISION_CUSTODY/);
 assert.match(spec, /replayable witness in prior event universe/i);
-assert.match(spec, /event deletion != historical witness erasure/i);
-assert.match(spec, /event reintroduction != uninterrupted event continuity/i);
+assert.match(spec, /must not erase historical witness custody merely because an event leaves the current universe/i);
+assert.match(spec, /Reintroduction after a membership gap creates a new current membership episode/i);
 assert.match(spec, /REFUSE_CURRENT_EDGE_EVENT_MEMBERSHIP_INCOMPLETE/);
 assert.match(spec, /ABSTAIN_CONFLICTING_EVENT_MEMBERSHIP/);
 assert.match(spec, /SEALED_EVENT_MEMBERSHIP_LEDGER_IMMUTABLE/);
