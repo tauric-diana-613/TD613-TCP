@@ -55,3 +55,5 @@ assert.match(spec,/ABSTAIN_CANDIDATE_ADMISSIBILITY_NOT_STABLE/);
 assert.match(spec,/value contingency != epistemic deficit/);
 assert.match(spec,/#686 evidence != #677 hypothesis promotion/);
 console.log(JSON.stringify({ok:true,schema:receipt.schema,stable_posture:F1.replay_policy_disposition,measurement_sensitive_posture:F2.replay_policy_disposition,measurement_sensitive_axis:F2.replay_sensitivity_axis,decision_sensitive_posture:F3.replay_policy_disposition,decision_sensitive_axis:F3.replay_sensitivity_axis,admissibility_instability_posture:F4.replay_policy_disposition,admissibility_rank_lifts:F4.envelope_evaluations.map(item=>item.rank_lift),undeclared_status:F5.undeclared.status,conflict_status:F5.conflict.status,posthoc_status:F5.posthoc.status,next_learning_action:receipt.next_learning_action,promotion_authority:receipt.promotion_authority},null,2));
+
+import './ash-a15-r0-aperture-pedagogue-typed-multi-axis-replay.test.mjs';
