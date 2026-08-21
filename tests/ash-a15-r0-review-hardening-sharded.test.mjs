@@ -85,3 +85,4 @@ await import('./ash-a15-r0-aperture-pedagogue-decision-loss-replay-map.test.mjs'
 await import('./giving-pedagogue-independent-order.test.mjs');
 await import('./pedagogue-h1-consequence-conservation-hostile.test.mjs');
 await import('./pedagogue-typed-non-amplification-hostile.test.mjs');
+await import('./pedagogue-warrant-genealogy-ghost-house.test.mjs');
