@@ -90,3 +90,4 @@ await import('./pedagogue-warrant-episode-ledger-after-midnight.test.mjs');
 await import('./pedagogue-warrant-weave-two-staircases.test.mjs');
 await import('./pedagogue-weave-revision-ledger-moving-floorplan.test.mjs');
 await import('./pedagogue-precedence-admission-genealogy-blueprint-margins.test.mjs');
+await import('./pedagogue-admission-witness-replay-custody-carbon-paper.test.mjs');
