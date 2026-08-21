@@ -97,3 +97,4 @@ await import('./pedagogue-revision-precedence-bridge-custody-notary-ribbon.test.
 await import('./pedagogue-revision-precedence-witness-ledger-custody-self-inking-stamp.test.mjs');
 await import('./pedagogue-precedence-witness-pre-admission-protocol-custody-witness-arrived-with-defendant.test.mjs');
 await import('./pedagogue-precedence-witness-non-anticipating-acquisition-custody-witness-knew-the-question.test.mjs');
+await import('./pedagogue-internal-provenance-non-bootstrap-claim-ceiling-no-window.test.mjs');
