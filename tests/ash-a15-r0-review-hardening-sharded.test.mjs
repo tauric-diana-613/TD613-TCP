@@ -88,3 +88,4 @@ await import('./pedagogue-typed-non-amplification-hostile.test.mjs');
 await import('./pedagogue-warrant-genealogy-ghost-house.test.mjs');
 await import('./pedagogue-warrant-episode-ledger-after-midnight.test.mjs');
 await import('./pedagogue-warrant-weave-two-staircases.test.mjs');
+await import('./pedagogue-weave-revision-ledger-moving-floorplan.test.mjs');
