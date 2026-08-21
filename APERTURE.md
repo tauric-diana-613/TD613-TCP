@@ -11,8 +11,8 @@ Aperture remains the counter-tool for the observed Eclipse–Omega PRCS-A regime
 Current repository release identity:
 
 ```text
-Aperture v3.1-alpha
-td613-aperture/v3.1-alpha
+Aperture v3.2-alpha
+td613-aperture/v3.2-alpha
 ```
 
 The repository already contains the bidirectional standalone lane. A newer standalone Aperture candidate may be staged, compared, and reviewed without silently rewriting the installed release identity.
@@ -99,6 +99,17 @@ app/engine/aperture-v31-reconstruction.js
 app/engine/aperture-v31-residual-ledger.js
 app/engine/aperture-v31-replay.js
 ```
+
+### v3.2 experiment-design audit
+
+```text
+app/engine/aperture-v32-typed-epistemic-deficit.js
+```
+
+The v3.2 audit types the declared reconstruction deficit and returns
+`PROPOSE`, `ABSTAIN`, `REJECT`, or `ASK_NOTHING`. It does not select or execute
+an observation. Classification replay stability remains
+`HELD_NOT_YET_WITNESSED` pending the separately authorized perturbation assay.
 
 ### Full Dome-World laboratory
 

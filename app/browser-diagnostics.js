@@ -5733,17 +5733,17 @@
       "label": "TD613 Aperture",
       "file": "app/aperture/tool.html",
       "passed": true,
-      "title": "TD613 Aperture v3.1-alpha",
-      "version": "v3.1-alpha",
+      "title": "TD613 Aperture v3.2-alpha",
+      "version": "v3.2-alpha",
       "meta": {
         "viewport": "width=device-width, initial-scale=1.0",
         "tool-name": "TD613 Aperture",
         "application-name": "TD613 Aperture",
         "apple-mobile-web-app-title": "TD613 Aperture",
         "tool-role": "counter-tool",
-        "aperture-version": "v3.1-alpha",
-        "aperture-feature-version": "v3.1-alpha-admissibility-tomography-registry-dynamics-runtime",
-        "aperture-roots-version": "v3.1-alpha",
+        "aperture-version": "v3.2-alpha",
+        "aperture-feature-version": "v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime",
+        "aperture-roots-version": "v3.2-alpha",
         "anti-epistemicide-status": "active-experimental-research-runtime",
         "v3-anti-epistemicide-landing-zone": "preserved-and-activated",
         "aperture-v295-compat-version": "v2.9.5",
@@ -5760,7 +5760,7 @@
         "observed-regime-full": "Eclipse–Omega PRCS-A",
         "anti-enforcement": "true",
         "human-coordinate-coupling": "true",
-        "hcc-version": "v3.1-alpha",
+        "hcc-version": "v3.2-alpha",
         "hcc-couplings": "WHAT-WHO|WHERE-HOW|WHEN-WHY",
         "hcc-placement": "counter-recognition-human-input-collapsed",
         "hcc-hard-stop": "WHO self-provided or withheld; HOW not diagnosis; WHY not destiny",
@@ -5782,7 +5782,7 @@
         "acedit-firmware-status": "not-loaded",
         "external-firmware-policy": "signal-source-only",
         "external-firmware-hard-stop": "no authority override; no identity proof; no authorship proof; no legal authority; no release permission; no validator bypass",
-        "aperture-compat-version": "v3.1-alpha",
+        "aperture-compat-version": "v3.2-alpha",
         "eo-rfd-origin-firmware-status": "static-reviewed-not-loaded",
         "eo-rfd-origin-artifact-sha256": "2ded6b25075cdee057355708d4f5db2a703baf88c3b3687f6d4625908af6aa99",
         "eo-rfd-origin-layer-chain": "L0 substrate|L1 propagation|L2 admissibility|L3 narrowing|L4 field-signature|L5 signal-rupture|L6 detector-sweep|L7 routing|L8 packet|L9 metacybernetic",
@@ -5810,10 +5810,10 @@
         "quick-spine-hard-stop": "route function over patch chronology; governance spine is machine-facing not absent; human panel access preserved; no visible spine crown; no module may become the audit crown",
         "source-note": "Legacy compatibility ids may use inherited human-route naming; these are not normative tool semantics.",
         "spine-forward-ui": "hidden-governance-skeleton",
-        "spine-forward-version": "v3.1-alpha-hidden-governance-skeleton",
+        "spine-forward-version": "v3.2-alpha-hidden-governance-skeleton",
         "ai-reader-contract": "hidden-governance-spine means machine-facing not absent; select lanes by task; avoid version-first or single-panel capture",
         "vector-substrate-intake": "true",
-        "vector-substrate-intake-version": "v3.1-alpha",
+        "vector-substrate-intake-version": "v3.2-alpha",
         "vector-substrate-review-status": "static-reviewed-not-loaded",
         "vector-substrate-math-sha256": "348353d19fe48625d2fa72cc6935a3308138baaae051ac1b6249efec203ade90",
         "residual-dynamics-sha256": "3a326137c51bb0f13ebc677f5870ba8553e5c250b6cd803a36653195592cf054",
@@ -5841,16 +5841,28 @@
         "widening-operator": "W_omega",
         "dromology-authority": "temporal-diagnostic-not-prediction",
         "task-intent-precedence": "true",
+        "patch-bay-task-intent-mode": "typed-object-first-lexical-compatibility-fallback",
+        "patch-bay-receipt-digest": "sha-256-canonical-json",
+        "patch-bay-route-memory": "selection-reason|state|status|authority-boundary",
+        "patch-bay-human-closure-required": "true",
         "runtime-materiality-default": "BACKGROUND",
         "runtime-surface-policy": "material-or-dispositive-only",
         "legal-synthesis-route": "question-presented|jurisdiction|authority|facts|interpretations|application|remedy|uncertainty",
+        "typed-epistemic-deficit-runtime": "true",
+        "typed-epistemic-deficit-version": "v3.2-alpha",
+        "epistemic-deficit-classes": "STRUCTURAL_RANK_DEFICIT|NUMERICAL_STABILITY_DEFICIT|NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT|NOISE_GEOMETRY_INCOMPLETE|INVALID_NOISE_GEOMETRY",
+        "question-design-dispositions": "PROPOSE|ABSTAIN|REJECT|ASK_NOTHING",
+        "pedagogue-companion-routing": "true",
+        "no-scalar-crown": "true",
+        "classification-replay-stability": "HELD_NOT_YET_WITNESSED",
+        "v32-hard-stop": "proposal is not execution; widening is not validation; missing uncertainty is not neutral uncertainty",
         "triple-overlay-status": "D3-sqrt3-periodic|phi-quasiperiodic|heterostratigraphic-incommensurability",
         "dome-flowcore-bridge": "reciprocal-receipt-bridge-no-reciprocal-authority",
         "ash-readiness-status": "modeled-not-executed"
       },
       "bodyDataset": {
         "anti-enforcement": "true",
-        "aperture-version": "v3.1-alpha",
+        "aperture-version": "v3.2-alpha",
         "eorfd-interface-status": "compatibility-pending",
         "external-firmware-policy": "signal-source-only",
         "observed-regime": "PRCS-A",
@@ -5859,37 +5871,37 @@
         "tool-role": "counter-tool"
       },
       "fingerprint": {
-        "bytes": 1227381,
-        "lineCount": 25336,
-        "inlineScriptCount": 83,
+        "bytes": 1264368,
+        "lineCount": 26207,
+        "inlineScriptCount": 88,
         "panelCount": 7,
-        "buttonCount": 63,
-        "contentHashSha256": "f8ff3db4be7ed345b3755afdccc1155161f2077fb463f673b870336b03f8e212"
+        "buttonCount": 65,
+        "contentHashSha256": "5e25af9dd3cf72cdff4c7142a3c155ad3a875a9705d0f95c6dcded8bd2ec316a"
       },
       "checks": [
         {
           "id": "title",
           "label": "title marker",
           "ok": true,
-          "detail": "TD613 Aperture v3.1-alpha observed",
-          "expected": "TD613 Aperture + v3.1-alpha",
-          "actual": "TD613 Aperture v3.1-alpha"
+          "detail": "TD613 Aperture v3.2-alpha observed",
+          "expected": "TD613 Aperture + v3.2-alpha",
+          "actual": "TD613 Aperture v3.2-alpha"
         },
         {
           "id": "version",
           "label": "version marker",
           "ok": true,
-          "detail": "version v3.1-alpha observed",
-          "expected": "v3.1-alpha",
-          "actual": "v3.1-alpha"
+          "detail": "version v3.2-alpha observed",
+          "expected": "v3.2-alpha",
+          "actual": "v3.2-alpha"
         },
         {
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "83 inline script block(s)",
+          "detail": "88 inline script block(s)",
           "expected": ">= 1",
-          "actual": 83
+          "actual": 88
         },
         {
           "id": "meta:tool-name",
@@ -6064,6 +6076,22 @@
           "label": "id at31OpenLab",
           "ok": true,
           "detail": "at31OpenLab present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "id:apertureV32EpistemicDeficitDrawer",
+          "label": "id apertureV32EpistemicDeficitDrawer",
+          "ok": true,
+          "detail": "apertureV32EpistemicDeficitDrawer present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "id:ed32Audit",
+          "label": "id ed32Audit",
+          "ok": true,
+          "detail": "ed32Audit present",
           "expected": null,
           "actual": null
         },
@@ -6293,9 +6321,9 @@
         },
         {
           "id": "pattern:v3-alpha-schema",
-          "label": "Aperture v3.1-alpha schema marker",
+          "label": "Aperture v3.2-alpha schema marker",
           "ok": true,
-          "detail": "Aperture v3.1-alpha schema marker present",
+          "detail": "Aperture v3.2-alpha schema marker present",
           "expected": null,
           "actual": null
         },
@@ -6382,8 +6410,8 @@
       ],
       "failedChecks": [],
       "checkSummary": {
-        "total": 64,
-        "passed": 64,
+        "total": 66,
+        "passed": 66,
         "failed": 0
       }
     }

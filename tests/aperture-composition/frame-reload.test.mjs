@@ -34,8 +34,9 @@ const root = {
   CustomEvent: FakeCustomEvent
 };
 const modules = {
-  release: Object.freeze({ version: 'v3.1-alpha', apertureSchema: 'td613-aperture/v3.1-alpha' }),
+  release: Object.freeze({ version: 'v3.2-alpha', apertureSchema: 'td613-aperture/v3.2-alpha' }),
   taskIntent: Object.freeze({ schema: 'td613.aperture.task-intent-route/v3.0-alpha' }),
+  experimentDesign: Object.freeze({ schema: 'td613-aperture/v3.2-alpha' }),
   compatibility: Object.freeze({ schema: 'td613.aperture.v31-v30-bridge-compatibility/v0.1' }),
   reciprocalBridge: Object.freeze({ schema: 'td613.phase4.reciprocal-bridge/v0.1' })
 };

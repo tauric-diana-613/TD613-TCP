@@ -109,16 +109,22 @@ useful; together they make the exposure surface complete.
 ## What's missing right now
 
 The canonical browser body is now [`tool.html`](tool.html) at
-`v3.1-alpha` / `td613-aperture/v3.1-alpha`; [`index.html`](index.html) is the
-stable public iframe shim. v3.1-alpha carries the doctrine kernel, geometric
+`v3.2-alpha` / `td613-aperture/v3.2-alpha`; [`index.html`](index.html) is the
+stable public iframe shim. v3.2-alpha carries the doctrine kernel, geometric
 addendum, ZFP certification, corrected rupture predicate, Moire Stratigraphy,
 Phason and Sigma dynamics, the Anti-Epistemicide Research Runtime, task-intent
 precedence, the Gateway/Dome-World reciprocal receipt bridge, and a compact
-Admissibility Tomography status/launch drawer. The complete tomography lab
+Admissibility Tomography status/launch drawer, plus the compact typed epistemic
+deficit and question-need audit. The complete tomography lab
 lives in Dome-World so the standalone does not load the snapshot lattice. The bridge
 compiles an outbound diagnostic receipt only when explicitly invoked and can
 audit a returned Flow-Core context receipt. It does not transmit automatically,
 execute Aperture, rewrite doctrine, or trigger Ash custody.
+
+The v3.2 audit preserves the v3.1 tomography lineage and the v3.0 bridge
+receipts. It classifies declared rank, stability, and uncertainty posture but
+does not select or execute an observation. Its classification replay-stability
+assay remains held for the separately authorized next research chamber.
 
 [ROADMAP.md](../../ROADMAP.md) at the repo root still names the pending
 Aperture refactor: splitting the monolithic standalone body and

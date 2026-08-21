@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
-const consolidated = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
-const law = fs.readFileSync('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md', 'utf8');
+const readText = path => fs.readFileSync(path, 'utf8').replaceAll('\r\n', '\n');
+const workflow = readText('.github/workflows/vercel-operator-release.yml');
+const consolidated = readText('.github/workflows/td613-ci.yml');
+const law = readText('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.equal(vercel.git?.deploymentEnabled, false, 'ordinary Git-triggered Vercel deployment must remain disabled');
