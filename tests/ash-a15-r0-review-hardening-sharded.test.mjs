@@ -99,3 +99,4 @@ await import('./pedagogue-precedence-witness-pre-admission-protocol-custody-witn
 await import('./pedagogue-precedence-witness-non-anticipating-acquisition-custody-witness-knew-the-question.test.mjs');
 await import('./pedagogue-internal-provenance-non-bootstrap-claim-ceiling-no-window.test.mjs');
 await import('./pedagogue-exogenous-anchor-admission-custody-open-window.test.mjs');
+await import('./pedagogue-exogenous-anchor-revision-episode-custody-moving-sash.test.mjs');
