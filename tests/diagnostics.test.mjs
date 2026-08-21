@@ -25,6 +25,9 @@ assert.equal(DIAGNOSTIC_BATTERY.falseNeighborCases.length, 32, 'diagnostic batte
 assert.ok(diagnosticsScriptSource.includes("'hushCases'"), 'diagnostics runner declares a Hush section');
 assert.ok(diagnosticsScriptSource.includes('--section='), 'diagnostics runner supports section staging');
 assert.ok(diagnosticsScriptSource.includes('--assemble-only'), 'diagnostics runner supports release assembly from staged sections');
+assert.ok(diagnosticsScriptSource.includes('TD613_DIAGNOSTICS_SECTION_TIMEOUT_MS'), 'diagnostics sections have an explicit configurable timeout');
+assert.ok(diagnosticsScriptSource.includes('No checkpoint was written'), 'a timed-out section cannot be represented as completed evidence');
+assert.ok(diagnosticsScriptSource.includes('diagnostics section complete:'), 'diagnostics sections report elapsed completion');
 
 for (const family of DIAGNOSTIC_CORPUS.families) {
   const samples = DIAGNOSTIC_CORPUS.samples.filter((sample) => sample.familyId === family.id);

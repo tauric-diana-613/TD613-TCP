@@ -41,8 +41,8 @@ function receiptSubject(receipt) {
 export const APERTURE_COMPOSITION_MANIFEST = deepFreeze({
   schema: APERTURE_COMPOSITION_MANIFEST_SCHEMA,
   version: 'v0.1',
-  aperture_version: 'v3.1-alpha',
-  aperture_schema: 'td613-aperture/v3.1-alpha',
+  aperture_version: 'v3.2-alpha',
+  aperture_schema: 'td613-aperture/v3.2-alpha',
   role: 'explicit-composition-for-stable-public-shim',
   canonical_body: {
     id: 'canonical-body',
@@ -75,8 +75,17 @@ export const APERTURE_COMPOSITION_MANIFEST = deepFreeze({
       role: 'requested-synthesis-and-runtime-materiality-router'
     },
     {
-      id: 'v31-compatibility',
+      id: 'v32-experiment-design',
       order: 30,
+      module: '../engine/aperture-v32-typed-epistemic-deficit.js',
+      namespace: 'TD613_APERTURE_V32_EXPERIMENT_DESIGN',
+      depends_on: ['release-manifest', 'task-intent'],
+      compatibility_alias: false,
+      role: 'typed-epistemic-deficit-and-question-need-audit'
+    },
+    {
+      id: 'v31-compatibility',
+      order: 40,
       module: '../engine/aperture-v31-compatibility.js',
       namespace: 'TD613_APERTURE_V31_COMPATIBILITY',
       depends_on: ['release-manifest', 'task-intent'],
@@ -85,7 +94,7 @@ export const APERTURE_COMPOSITION_MANIFEST = deepFreeze({
     },
     {
       id: 'phase4-reciprocal-bridge',
-      order: 40,
+      order: 50,
       module: '../engine/aperture-v3-reciprocal-bridge.js',
       namespace: 'TD613_PHASE4_RECIPROCAL_BRIDGE',
       depends_on: ['release-manifest', 'task-intent', 'v31-compatibility'],
@@ -118,8 +127,8 @@ export function validateApertureCompositionManifest(manifest = APERTURE_COMPOSIT
   }
   if (manifest.schema !== APERTURE_COMPOSITION_MANIFEST_SCHEMA) throw new Error('Unsupported Aperture composition manifest schema.');
   if (manifest.version !== 'v0.1') throw new Error('Unsupported Aperture composition version.');
-  if (manifest.aperture_version !== 'v3.1-alpha') throw new Error('Composition must preserve the v3.1-alpha identity.');
-  if (manifest.aperture_schema !== 'td613-aperture/v3.1-alpha') throw new Error('Composition Aperture schema mismatch.');
+  if (manifest.aperture_version !== 'v3.2-alpha') throw new Error('Composition must preserve the v3.2-alpha identity.');
+  if (manifest.aperture_schema !== 'td613-aperture/v3.2-alpha') throw new Error('Composition Aperture schema mismatch.');
   if (manifest.canonical_body?.source !== './tool.html') throw new Error('Canonical Aperture body must remain ./tool.html.');
   if (manifest.canonical_body?.mutated_by_composer !== false) throw new Error('Composer may not rewrite the canonical Aperture body.');
   if (manifest.public_shim?.source !== './index.html' || manifest.public_shim?.bootstrap !== './bootstrap.js') {
@@ -279,6 +288,7 @@ export async function installApertureComposition({
   const values = {
     'release-manifest': modules.release,
     'task-intent': modules.taskIntent,
+    'v32-experiment-design': modules.experimentDesign,
     'v31-compatibility': modules.compatibility,
     'phase4-reciprocal-bridge': modules.reciprocalBridge
   };

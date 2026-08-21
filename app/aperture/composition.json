@@ -1,8 +1,8 @@
 {
   "schema": "td613.aperture.composition-manifest/v0.1",
   "version": "v0.1",
-  "aperture_version": "v3.1-alpha",
-  "aperture_schema": "td613-aperture/v3.1-alpha",
+  "aperture_version": "v3.2-alpha",
+  "aperture_schema": "td613-aperture/v3.2-alpha",
   "role": "explicit-composition-for-stable-public-shim",
   "canonical_body": {
     "id": "canonical-body",
@@ -35,8 +35,17 @@
       "role": "requested-synthesis-and-runtime-materiality-router"
     },
     {
-      "id": "v31-compatibility",
+      "id": "v32-experiment-design",
       "order": 30,
+      "module": "../engine/aperture-v32-typed-epistemic-deficit.js",
+      "namespace": "TD613_APERTURE_V32_EXPERIMENT_DESIGN",
+      "depends_on": ["release-manifest", "task-intent"],
+      "compatibility_alias": false,
+      "role": "typed-epistemic-deficit-and-question-need-audit"
+    },
+    {
+      "id": "v31-compatibility",
+      "order": 40,
       "module": "../engine/aperture-v31-compatibility.js",
       "namespace": "TD613_APERTURE_V31_COMPATIBILITY",
       "depends_on": ["release-manifest", "task-intent"],
@@ -45,7 +54,7 @@
     },
     {
       "id": "phase4-reciprocal-bridge",
-      "order": 40,
+      "order": 50,
       "module": "../engine/aperture-v3-reciprocal-bridge.js",
       "namespace": "TD613_PHASE4_RECIPROCAL_BRIDGE",
       "depends_on": ["release-manifest", "task-intent", "v31-compatibility"],

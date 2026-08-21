@@ -263,8 +263,9 @@ export function updateApertureEngineJs(js, metadata) {
 export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
   const version = metadata.version;
   const apertureSchema = metadata.schema || `td613-aperture/${version}`;
-  const isV31 = /^v3\.1(?:-|$)/.test(version);
-  const compatibilityReceiptVersion = isV31 ? 'v3.0-alpha' : version;
+  const isV3Producer = /^v3\./.test(version);
+  const inheritsV31Observatory = /^v3\.(?:[1-9]\d*)(?:-|$)/.test(version);
+  const compatibilityReceiptVersion = isV3Producer ? 'v3.0-alpha' : version;
   return {
     ...currentRelease,
     schema: 'td613.aperture.release/v1',
@@ -285,10 +286,10 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
     compatibility: {
       ...(currentRelease.compatibility || {}),
       phase4ReceiptSchemaVersion: compatibilityReceiptVersion,
-      v3ProducerMayEmitV30BridgeReceipts: isV31,
+      v3ProducerMayEmitV30BridgeReceipts: isV3Producer,
       phase5RelationEnvelopeUnchanged: true
     },
-    observatory: isV31 ? {
+    observatory: inheritsV31Observatory ? {
       status: currentRelease.observatory?.status || 'IMPLEMENTED_VALIDATION_GATED',
       productionStatus: currentRelease.observatory?.productionStatus || 'PRODUCTION_GATED',
       capabilityProfile: ['reciprocal-bridge', 'admissibility-tomography'],
@@ -307,7 +308,7 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
         legacyLimitingVocabularyCurrent: false
       }
     } : currentRelease.observatory,
-    ash: isV31 ? {
+    ash: inheritsV31Observatory ? {
       version: currentRelease.ash?.version || 'v1.0-alpha',
       phase: currentRelease.ash?.phase || 'ASH_KEEP_CASE_MAP_RUNTIME',
       status: currentRelease.ash?.status || 'IMPLEMENTED_VALIDATION_GATED',
@@ -321,8 +322,8 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
     } : currentRelease.ash,
     domeWorld: {
       ...(currentRelease.domeWorld || {}),
-      version: isV31 ? (currentRelease.domeWorld?.version || 'v0.7.0-alpha') : (currentRelease.domeWorld?.version || 'v0.5.0'),
-      schema: isV31 ? (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.7.0-alpha') : (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.5.0'),
+      version: inheritsV31Observatory ? (currentRelease.domeWorld?.version || 'v0.7.0-alpha') : (currentRelease.domeWorld?.version || 'v0.5.0'),
+      schema: inheritsV31Observatory ? (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.7.0-alpha') : (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.5.0'),
       exactReceiptSchema: currentRelease.domeWorld?.exactReceiptSchema || 'td613.dome-world.exact-receipt/v0.4.3'
     },
     observedRegime: 'PRCS-A',

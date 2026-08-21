@@ -39,8 +39,9 @@ const root = {
 };
 const frame = frameFixture();
 const modules = {
-  release: Object.freeze({ version: 'v3.1-alpha', apertureSchema: 'td613-aperture/v3.1-alpha' }),
+  release: Object.freeze({ version: 'v3.2-alpha', apertureSchema: 'td613-aperture/v3.2-alpha' }),
   taskIntent: Object.freeze({ schema: 'td613.aperture.task-intent-route/v3.0-alpha' }),
+  experimentDesign: Object.freeze({ schema: 'td613-aperture/v3.2-alpha' }),
   compatibility: Object.freeze({ schema: 'td613.aperture.v31-v30-bridge-compatibility/v0.1' }),
   reciprocalBridge: Object.freeze({ schema: 'td613.phase4.reciprocal-bridge/v0.1' })
 };
@@ -60,6 +61,7 @@ assert.equal(receipt.idempotent_reuse, false);
 assert.deepEqual(receipt.installed_components, [
   'release-manifest',
   'task-intent',
+  'v32-experiment-design',
   'v31-compatibility',
   'phase4-reciprocal-bridge'
 ]);
@@ -69,6 +71,7 @@ assert.equal(frame.contentWindow.TD613_APERTURE_COMPOSITION.schema, APERTURE_COM
 assert.equal(root.TD613_APERTURE_COMPOSITION.schema, APERTURE_COMPOSITION_RUNTIME_SCHEMA);
 assert.equal(frame.contentWindow.TD613_APERTURE_RELEASE, modules.release);
 assert.equal(frame.contentWindow.TD613_APERTURE_TASK_INTENT, modules.taskIntent);
+assert.equal(frame.contentWindow.TD613_APERTURE_V32_EXPERIMENT_DESIGN, modules.experimentDesign);
 assert.equal(frame.contentWindow.TD613_APERTURE_V31_COMPATIBILITY, modules.compatibility);
 assert.equal(frame.contentWindow.TD613_PHASE4_RECIPROCAL_BRIDGE, modules.reciprocalBridge);
 assert.equal(root.TD613_PHASE4_RECIPROCAL_BRIDGE, modules.reciprocalBridge);

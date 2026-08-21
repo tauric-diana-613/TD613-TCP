@@ -4,7 +4,7 @@
 
 - the full browser cockpit and room system;
 - one active-view sovereign-perspective scheduler with machine-facing art receipts;
-- Aperture v3.1-alpha reconstruction identity with frozen v3.0 reciprocal diagnostic/context receipt compatibility;
+- Aperture v3.2-alpha reconstruction identity with frozen v3.0 reciprocal diagnostic/context receipt compatibility and inherited v3.1 tomography;
 - a full Admissibility Tomography lab with Ash VI-A experimental custody and Flow-Core context-series indexing;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;

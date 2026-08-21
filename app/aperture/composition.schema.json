@@ -20,8 +20,8 @@
   "properties": {
     "schema": { "const": "td613.aperture.composition-manifest/v0.1" },
     "version": { "const": "v0.1" },
-    "aperture_version": { "const": "v3.1-alpha" },
-    "aperture_schema": { "const": "td613-aperture/v3.1-alpha" },
+    "aperture_version": { "const": "v3.2-alpha" },
+    "aperture_schema": { "const": "td613-aperture/v3.2-alpha" },
     "role": { "const": "explicit-composition-for-stable-public-shim" },
     "canonical_body": {
       "type": "object",
@@ -46,7 +46,7 @@
     },
     "components": {
       "type": "array",
-      "minItems": 4,
+      "minItems": 5,
       "items": {
         "type": "object",
         "additionalProperties": false,

@@ -6,7 +6,7 @@ const lab = fs.readFileSync('app/dome-world/admissibility-tomography.html', 'utf
 assert.match(index, /href="\/dome-world\/admissibility-tomography\.html"[^>]+data-open-view="tomography"/);
 assert.equal((index.match(/class="tab(?: active)?"/g) || []).length, 8, 'Tomography must not become a ninth primary tab.');
 assert.equal((index.match(/class="lab-node"/g) || []).length, 10, 'Lab constellation must retain ten stations.');
-assert.match(lab, /TD613 Aperture v3\.1-alpha/);
+assert.match(lab, /TD613 Aperture v3\.2-alpha/);
 assert.match(lab, /IndexedDB/);
 assert.match(lab, /td613\.aperture\.v31\.latest-run/);
 assert.match(lab, /compileTomographyReceipt/);

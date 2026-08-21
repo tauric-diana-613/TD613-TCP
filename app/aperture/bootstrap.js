@@ -16,6 +16,14 @@ import {
   compileV31CompatibleRoundTrip,
   compileV31DiagnosticForV30Bridge
 } from '../engine/aperture-v31-compatibility.js';
+import {
+  APERTURE_V32_SCHEMA,
+  APERTURE_V32_TYPED_DEFICIT_RECEIPT_SCHEMA,
+  APERTURE_V32_VERSION,
+  auditTypedEpistemicDeficit,
+  classifyTypedEpistemicDeficit,
+  selfTestTypedEpistemicDeficit
+} from '../engine/aperture-v32-typed-epistemic-deficit.js';
 import { TD613_PHASE4_RECIPROCAL_BRIDGE } from '../engine/aperture-v3-reciprocal-bridge.js';
 import { APERTURE_COMPOSITION_MANIFEST } from '../engine/aperture-composition.js';
 import { installApertureCompositionForFrame } from '../engine/aperture-composition-frame.js';
@@ -37,6 +45,15 @@ export const TD613_APERTURE_V31_COMPATIBILITY = Object.freeze({
   compileV31DiagnosticForV30Bridge,
   compileV31CompatibleRoundTrip,
   assertStrictV30RoundTripShape
+});
+
+export const TD613_APERTURE_V32_EXPERIMENT_DESIGN = Object.freeze({
+  version: APERTURE_V32_VERSION,
+  schema: APERTURE_V32_SCHEMA,
+  receiptSchema: APERTURE_V32_TYPED_DEFICIT_RECEIPT_SCHEMA,
+  audit: auditTypedEpistemicDeficit,
+  classify: classifyTypedEpistemicDeficit,
+  selfTest: selfTestTypedEpistemicDeficit
 });
 
 function dispatchHeld(root, frame, error) {
@@ -69,6 +86,7 @@ export async function bootApertureComposition({
       modules: {
         release: APERTURE_RELEASE,
         taskIntent: TD613_APERTURE_TASK_INTENT,
+        experimentDesign: TD613_APERTURE_V32_EXPERIMENT_DESIGN,
         compatibility: TD613_APERTURE_V31_COMPATIBILITY,
         reciprocalBridge: TD613_PHASE4_RECIPROCAL_BRIDGE
       },

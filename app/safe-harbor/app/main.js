@@ -30,9 +30,9 @@
   });
   const batchNodesCache = new Map();
   const APERTURE_CONTEXT_BASE = Object.freeze({
-    apertureVersion: 'v3.1-alpha',
-    apertureSchema: 'td613-aperture/v3.1-alpha',
-    apertureFeatureVersion: 'v3.1-alpha-admissibility-tomography-registry-dynamics-runtime',
+    apertureVersion: 'v3.2-alpha',
+    apertureSchema: 'td613-aperture/v3.2-alpha',
+    apertureFeatureVersion: 'v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime',
     observedRegime: 'PRCS-A',
     doctrineKernel: 'present',
     geometricAddendum: 'present',

@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/tool.html',
-    expectedVersion: 'v3.1-alpha',
+    expectedVersion: 'v3.2-alpha',
     versionPattern: /TD613 APERTURE\s+(v[0-9]+(?:\.[0-9]+){1,3}(?:-[A-Za-z0-9_.]+)?)\s+SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v3.1-alpha'],
+    titleIncludes: ['TD613 Aperture', 'v3.2-alpha'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -253,7 +253,9 @@ const ANNEX_SPECS = Object.freeze([
       'diffAuditMatrix',
       'ethicsAuditTable',
       'apertureV31TomographyDrawer',
-      'at31OpenLab'
+      'at31OpenLab',
+      'apertureV32EpistemicDeficitDrawer',
+      'ed32Audit'
     ]),
     requiredFunctions: Object.freeze([
       'resetSystem',
@@ -266,7 +268,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v3\.1-alpha SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v3\.2-alpha SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -380,7 +382,7 @@ const ANNEX_SPECS = Object.freeze([
       },
       {
         id: 'v3-alpha-schema',
-        label: 'Aperture v3.1-alpha schema marker',
+        label: 'Aperture v3.2-alpha schema marker',
         pattern: /td613-aperture\/v3\.1-alpha/i
       },
       {

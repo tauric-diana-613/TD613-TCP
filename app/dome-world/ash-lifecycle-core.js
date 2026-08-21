@@ -404,7 +404,7 @@ async function domeRequest(operation, payload) {
     body: JSON.stringify({
       operation,
       traceId: `ash_${Date.now().toString(36)}`,
-      apertureContext: { version: 'v3.1-alpha', schema: 'td613-aperture/v3.1-alpha', observedRegime: 'PRCS-A' },
+      apertureContext: { version: 'v3.2-alpha', schema: 'td613-aperture/v3.2-alpha', observedRegime: 'PRCS-A' },
       payload
     })
   });
