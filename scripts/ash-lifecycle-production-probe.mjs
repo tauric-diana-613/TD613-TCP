@@ -24,7 +24,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
-  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));\nfunction isExpectedTransitionAbort(item) {\n  if (item?.failure !== 'net::ERR_ABORTED' || item?.method !== 'GET') return false;\n  let url;\n  try { url = new URL(item.url); } catch { return false; }\n  const cacheEvictionTransition = item.resource_type === 'fetch'\n    && url.pathname === '/api/dome-world-shell'\n    && url.searchParams.get('surface') === 'cache-evict'\n    && url.searchParams.has('epoch')\n    && url.searchParams.has('asset_epoch')\n    && url.searchParams.has('nonce');\n  const supersededAia3Navigation = item.resource_type === 'script'\n    && url.pathname === '/dome-world/ash-aia3-composition.js'\n    && url.searchParams.has('v');\n  return cacheEvictionTransition || supersededAia3Navigation;\n}",
+  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));\nfunction isExpectedTransitionAbort(item, activeStylesheetHrefs = new Set()) {\n  if (item?.failure !== 'net::ERR_ABORTED' || item?.method !== 'GET') return false;\n  let url;\n  try { url = new URL(item.url); } catch { return false; }\n  const cacheEvictionTransition = item.resource_type === 'fetch'\n    && url.pathname === '/api/dome-world-shell'\n    && url.searchParams.get('surface') === 'cache-evict'\n    && url.searchParams.has('epoch')\n    && url.searchParams.has('asset_epoch')\n    && url.searchParams.has('nonce');\n  const supersededAia3Navigation = item.resource_type === 'script'\n    && url.pathname === '/dome-world/ash-aia3-composition.js'\n    && url.searchParams.has('v');\n  const supersededGuidedStylesheet = item.resource_type === 'stylesheet'\n    && url.pathname === '/dome-world/ash-guided-operator-ui.css'\n    && url.searchParams.get('v') === '20260718-stable-membrane-v4'\n    && activeStylesheetHrefs.has(item.url);\n  return cacheEvictionTransition || supersededAia3Navigation || supersededGuidedStylesheet;\n}",
   'named transition-abort classifier'
 );
 runtime = replaceExactly(
@@ -42,7 +42,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
-  "  const expectedTransitionAborts = requestFailures.filter(isExpectedTransitionAbort);\n  const unexpectedRequestFailures = requestFailures.filter(item => !isExpectedTransitionAbort(item));\n  report.network.expected_transition_aborts = expectedTransitionAborts;\n  report.network.unexpected_request_failures = unexpectedRequestFailures;\n  assert(unexpectedRequestFailures.length === 0, `Unexpected request failures observed: ${unexpectedRequestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
+  "  const activeStylesheetHrefs = new Set(await page.evaluate(() => Array.from(document.styleSheets).map(sheet => sheet.href).filter(Boolean)));\n  const guidedStylesheetActive = [...activeStylesheetHrefs].some(href => {\n    let url;\n    try { url = new URL(href); } catch { return false; }\n    return url.pathname === '/dome-world/ash-guided-operator-ui.css'\n      && url.searchParams.get('v') === '20260718-stable-membrane-v4';\n  });\n  const expectedTransitionAborts = requestFailures.filter(item => isExpectedTransitionAbort(item, activeStylesheetHrefs));\n  const unexpectedRequestFailures = requestFailures.filter(item => !isExpectedTransitionAbort(item, activeStylesheetHrefs));\n  report.network.active_stylesheet_hrefs = [...activeStylesheetHrefs];\n  report.network.guided_stylesheet_active = guidedStylesheetActive;\n  report.network.expected_transition_aborts = expectedTransitionAborts;\n  report.network.unexpected_request_failures = unexpectedRequestFailures;\n  assert(guidedStylesheetActive, 'Guided operator stylesheet is not active at terminal lifecycle');\n  assert(unexpectedRequestFailures.length === 0, `Unexpected request failures observed: ${unexpectedRequestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
   'named transition-abort terminal classification'
 );
 runtime = replaceExactly(
@@ -180,6 +180,12 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('unexpected_request_failures')
   || !runtime.includes("url.pathname === '/api/dome-world-shell'")
   || !runtime.includes("url.pathname === '/dome-world/ash-aia3-composition.js'")
+  || !runtime.includes("item.resource_type === 'stylesheet'")
+  || !runtime.includes("url.pathname === '/dome-world/ash-guided-operator-ui.css'")
+  || !runtime.includes("url.searchParams.get('v') === '20260718-stable-membrane-v4'")
+  || !runtime.includes('activeStylesheetHrefs.has(item.url)')
+  || !runtime.includes('guided_stylesheet_active')
+  || !runtime.includes('Guided operator stylesheet is not active at terminal lifecycle')
   || !runtime.includes('Unexpected request failures observed:')
   || !runtime.includes('cleared_arrival_module_settlement')
   || !runtime.includes("dataset.ashAiaReady === 'true'")
