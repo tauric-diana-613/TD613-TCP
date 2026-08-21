@@ -76,7 +76,8 @@ assert.match(spec, /smallest admissible specimen that kills the generic form/i);
 assert.match(spec, /CE-D1/);
 assert.match(spec, /CE-P1/);
 assert.match(spec, /REFUSE_TYPED_MULTI_AXIS_SCALAR_COLLAPSE/);
-assert.match(spec, /ATTACK_ONLY_NOT_PROMOTED/);
+assert.match(spec, /Candidate rescue — attack only, not doctrine/i);
+assert.match(spec, /no presumption of survival/i);
 
 const fixture = JSON.parse(fs.readFileSync('docs/pedagogue/h1-consequence-conservation-typed-multi-axis-hostile-assay-v0.1.json', 'utf8'));
 assert.equal(fixture.status, 'AUTHORED_PRE_EXECUTION_HOSTILE_RESEARCH_ONLY_HUMAN_GATED');
