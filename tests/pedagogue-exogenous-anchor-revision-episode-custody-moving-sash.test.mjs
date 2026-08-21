@@ -124,7 +124,7 @@ const spec = fs.readFileSync(
 assert.match(spec, /Moving Sash/i);
 assert.match(spec, /E2_EXOGENOUS_ANCHOR_REVISION_EPISODE_CUSTODY/);
 assert.match(spec, /Current equality is not historical equality|Same current observation does not imply same historical custody/i);
-assert.match(spec, /same-semantic same-epoch contradiction/i);
+assert.match(spec, /Same-semantic same-epoch records are evaluated as an epoch bundle/i);
 assert.match(spec, /vercel_release_requires_issue_405_and_new_explicit_operator_gesture = true/i);
 
 const fixture = JSON.parse(fs.readFileSync(
