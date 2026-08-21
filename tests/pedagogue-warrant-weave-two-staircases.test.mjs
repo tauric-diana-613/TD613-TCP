@@ -187,7 +187,7 @@ assert.match(spec, /all admitted serializations/i);
 assert.match(spec, /Two Staircases/i);
 assert.match(spec, /ABSTAIN_TRANSIENT_HISTORY_NOT_IDENTIFIED_BY_PARTIAL_ORDER/);
 assert.match(spec, /REJECT_CYCLIC_OR_INCONSISTENT_PRECEDENCE/);
-assert.match(spec, /deterministic display order != historical authority/i);
+assert.match(spec, /event identifier, input order, lexical order, or hidden implementation order/i);
 assert.match(spec, /final-state equivalence != transient-history equivalence/i);
 assert.match(spec, /vercel_release_requires_issue_405_and_new_explicit_operator_gesture = true/i);
 
