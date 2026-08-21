@@ -92,3 +92,4 @@ await import('./pedagogue-weave-revision-ledger-moving-floorplan.test.mjs');
 await import('./pedagogue-precedence-admission-genealogy-blueprint-margins.test.mjs');
 await import('./pedagogue-admission-witness-replay-custody-carbon-paper.test.mjs');
 await import('./pedagogue-event-membership-revision-custody-cut-and-paste.test.mjs');
+await import('./pedagogue-membership-epoch-bundle-custody-two-stamps-same-minute.test.mjs');
