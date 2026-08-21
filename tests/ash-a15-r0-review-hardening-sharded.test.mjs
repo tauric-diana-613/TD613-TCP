@@ -101,3 +101,4 @@ await import('./pedagogue-internal-provenance-non-bootstrap-claim-ceiling-no-win
 await import('./pedagogue-exogenous-anchor-admission-custody-open-window.test.mjs');
 await import('./pedagogue-exogenous-anchor-revision-episode-custody-moving-sash.test.mjs');
 await import('./pedagogue-anchor-dependent-warrant-revocation-custody-borrowed-light.test.mjs');
+await import('./pedagogue-transitive-warrant-dependency-custody-relay-lantern.test.mjs');
