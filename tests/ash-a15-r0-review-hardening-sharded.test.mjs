@@ -102,3 +102,4 @@ await import('./pedagogue-exogenous-anchor-admission-custody-open-window.test.mj
 await import('./pedagogue-exogenous-anchor-revision-episode-custody-moving-sash.test.mjs');
 await import('./pedagogue-anchor-dependent-warrant-revocation-custody-borrowed-light.test.mjs');
 await import('./pedagogue-transitive-warrant-dependency-custody-relay-lantern.test.mjs');
+await import('./pedagogue-dependency-edge-admission-provenance-custody-unlicensed-electrician.test.mjs');
