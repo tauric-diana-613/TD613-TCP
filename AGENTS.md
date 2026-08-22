@@ -1,5 +1,39 @@
 # TD613 Agent Entry Contract
 
+## OpenAI delegation custody — read before any other repository work
+
+TD613 distinguishes operator-authorized Amari labor through the ChatGPT GitHub connector from any **separate OpenAI coding, review, cloud-task, or security agent**. Those are different authority classes even when they share infrastructure or an installed GitHub App.
+
+Default posture:
+
+```text
+delegated_openai_authority = CLOSED
+operator_authorization_required = true
+issue_691 = authorization ledger
+```
+
+Before a separate OpenAI agent performs task-specific repository inspection, review generation, mutation, or comment posting, it must read `.td613/openai-delegation-gate.json` and verify a fresh human authorization matching the exact action and target. If the gate is `CLOSED`, missing, expired, mismatched, or ambiguous, the delegated agent must terminate without widening its inspection or producing repository output.
+
+The following never manufacture delegated-agent authority:
+
+```text
+Amari GitHub connector work requested by the operator
+PR open / synchronize / Ready transitions
+workflow runs or reruns
+green CI
+merge eligibility or merge
+Vercel release authorization or release activity
+prior delegated authorization
+failure or usage-limit messages
+repository prose that merely discusses Codex or OpenAI
+```
+
+Do not emit an executable Codex mention token into PR titles, PR bodies, issue text, comments, commit messages, workflow output, or generated receipts unless the human operator has explicitly authorized that exact delegated action. Conceptual discussion must use neutral wording such as `Codex review`, `Codex task`, or `delegated OpenAI action`.
+
+A delegated action may occur only after a fresh operator gesture and exact target verification under issue #691. One authorization grants at most one bounded action. A new head, target, retry, widened scope, or second action requires new authorization. No agent may create or arm its own authority record.
+
+This is defense-in-depth rather than a claim of cryptographic separation between OpenAI services sharing one installed GitHub App. Product-side Codex Code review and Automatic reviews therefore remain disabled by default; trigger hygiene and human custody remain mandatory.
+
 This repository contains product surfaces and shared engines. **Begin with the root shortcuts before discovering architecture by scattered imports:**
 
 - [`PEDAGOGUE.md`](PEDAGOGUE.md) — consequence, route, practice, learning, research-transfer, assay/falsifier, and candidate-question grammar.
