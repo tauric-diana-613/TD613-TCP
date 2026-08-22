@@ -36,17 +36,12 @@ source = replaceExactly(
   source,
   "    await button.click();\n    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
   `    await button.focus();
-    await page.waitForFunction(expected => {
-      const control = document.activeElement;
-      return control?.dataset?.aiaRoute === expected
-        && control.isConnected
-        && typeof control.onclick === 'function';
-    }, route, { timeout:5_000 });
-    await page.evaluate(expected => {
-      const control = document.activeElement?.dataset?.aiaRoute === expected
-        ? document.activeElement
-        : null;
-      if (!control) throw new Error('A15 A2-A6 semantic route control unavailable before keyboard activation.');
+    await button.evaluate((control, expected) => {
+      if (control?.dataset?.aiaRoute !== expected
+          || !control.isConnected
+          || typeof control.onclick !== 'function') {
+        throw new Error('A15 A2-A6 semantic route control unavailable before keyboard activation.');
+      }
       const trace = {
         expected_route:expected,
         before_route:document.querySelector('#ashAiaMembrane [data-ash-route-surface]')?.dataset.route || null,
@@ -77,7 +72,7 @@ source = replaceExactly(
       observe('click', 'CLICK_BUBBLE', false);
       window.__td613A2A5SemanticRouteTrace = trace;
     }, route);
-    await page.keyboard.press('Enter');
+    await button.press('Enter');
     const activationAfterDispatch = await page.evaluate(expected => {
       const trace = window.__td613A2A5SemanticRouteTrace || null;
       return {
@@ -147,9 +142,9 @@ if (!source.includes('entry_exact_case_reconcile')
   throw new Error('A15 A2-A6 canonical-control convergence adapter failed to compile.');
 }
 if (!source.includes('await button.focus()')
-  || !source.includes("await page.keyboard.press('Enter')")
-  || !source.includes("control?.dataset?.aiaRoute === expected")
-  || !source.includes("typeof control.onclick === 'function'")) {
+  || !source.includes("await button.press('Enter')")
+  || !source.includes("control?.dataset?.aiaRoute !== expected")
+  || !source.includes("typeof control.onclick !== 'function'")) {
   throw new Error('A15 A2-A6 native route activation adapter failed to compile.');
 }
 if (!source.includes('__td613A2A5SemanticRouteTrace')

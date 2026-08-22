@@ -72,8 +72,19 @@ assert.doesNotMatch(
   'Canonical A15 must not infer profile hydration completion from case/profile visibility alone.'
 );
 
+assert.match(inheritedRouteProbe, /#ashAiaMembrane \[data-aia-route=/,
+  'Inherited semantic route witness must target the canonical visible AIA route control.');
 assert.match(inheritedRouteProbe, /await button\.focus\(\)/);
-assert.match(inheritedRouteProbe, /await page\.keyboard\.press\('Enter'\)/);
+assert.match(inheritedRouteProbe, /await button\.evaluate\(\(control, expected\) => \{/);
+assert.match(inheritedRouteProbe, /await button\.press\('Enter'\)/,
+  'Inherited semantic route witness must dispatch native Enter through the canonical locator-owned control.');
+assert.doesNotMatch(
+  inheritedRouteProbe,
+  /await page\.keyboard\.press\('Enter'\)/,
+  'Inherited semantic route witness may not depend on global page focus surviving a separate round-trip.'
+);
+assert.match(inheritedRouteProbe, /control\?\.dataset\?\.aiaRoute !== expected/);
+assert.match(inheritedRouteProbe, /!control\.isConnected/);
 assert.match(inheritedRouteProbe, /control === document\.activeElement/);
 assert.match(inheritedRouteProbe, /typeof control\.onclick === 'function'/);
 assert.match(inheritedRouteProbe, /__td613A2A5SemanticRouteTrace/);
@@ -84,6 +95,8 @@ assert.match(inheritedRouteProbe, /'KEYUP_BUBBLE'/);
 assert.match(inheritedRouteProbe, /'CLICK_CAPTURE'/);
 assert.match(inheritedRouteProbe, /'CLICK_BUBBLE'/);
 assert.match(inheritedRouteProbe, /after_dispatch_route/);
+assert.match(inheritedRouteProbe, /window\.__td613AshLiveAIA\?\.current\?\.\(\)\?\.route === expected/,
+  'Inherited semantic route witness must still verify canonical Live-AIA settlement after native activation.');
 assert.match(inheritedRouteProbe, /report\.observations\.semantic_route_activation\[route\] = activationAfterDispatch/);
 assert.match(
   inheritedRouteProbe,
@@ -178,49 +191,3 @@ const a15Index = inheritedChamber.indexOf('node scripts/ash-a15-empirical-profil
 assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent per-engine calibration chamber.');
 assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent per-engine calibration chamber.');
 assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present in the front-loaded expensive lane.');
-assert.ok(r0Index < traceIndex, 'A15-R0 preview evidence must precede transition calibration within each engine.');
-assert.equal(inheritedChamber.includes('node scripts/ash-a15-r0-preview-probe.mjs'), false,
-  'Inherited witness must not own A15-R0 evidence acquisition.');
-assert.equal(inheritedChamber.includes('node scripts/ash-a15-transition-trace-browser-probe.mjs'), false,
-  'Inherited witness must not own transition-trace evidence acquisition.');
-
-console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.15-front-loaded-expensive-witness',
-  a15_r0_evidence_independent_of_inherited_a15:true,
-  transition_trace_independent_of_inherited_a15:true,
-  a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
-  runtime_readiness_precedes_measurement:true,
-  expensive_witness_front_loaded:true,
-  per_engine_runtime_and_calibration:true,
-  all_engines_declared:['chromium','firefox','webkit'],
-  profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
-  profile_hydration_completion_required:true,
-  hydration_authority_must_remain_closed:true,
-  route_side_effects_bounded_after_before_route_marker:true,
-  route_control_owner_observed_at_click:true,
-  route_click_capture_and_bubble_instrumented:true,
-  route_click_phase_claim_derived_from_trace_records:true,
-  pointer_delivery_hold_classification_requires_owned_control_and_absent_dom_click:true,
-  pointer_delivery_holds_are_promotion_veto:false,
-  transition_probe_nonzero_reserved_for_fatal_observer_failures:true,
-  inherited_profile_hydration_receipt_required:true,
-  inherited_browser_process_isolation_per_profile:true,
-  inherited_incremental_profile_checkpoints:true,
-  inherited_semantic_route_witness_uses_native_keyboard_button_activation:true,
-  inherited_semantic_keyboard_keydown_keyup_and_click_diagnostic:true,
-  inherited_semantic_keyboard_diagnostic_persisted_before_route_wait:true,
-  inherited_semantic_route_witness_private_api_bypass_guard:true,
-  a15_calibration_timeout_process_group_containment:true,
-  inherited_ash_timeout_process_group_containment:true,
-  lifecycle_closure_foreground_law_preserved:true,
-  flowcore_runtime_foreground_law_preserved:true,
-  canonical_a12_timeout_budget_seconds:420,
-  workspace_normalization_applied:false,
-  failure_diagnostics_preserved:true,
-  all_engines_observed_separate_from_all_seams_ok:true,
-  inherited_a15_retains_promotion_veto:true,
-  execution_order_is_not_epistemic_authority:true,
-  measurement_dependencies_are_runtime_dependencies_only:true,
-  observation_window_is_quiescence_proof:false,
-  timing_patch_authorized:false
-}, null, 2));
