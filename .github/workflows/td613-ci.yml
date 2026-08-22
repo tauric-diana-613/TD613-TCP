@@ -127,6 +127,25 @@ jobs:
           node tests/giving-client-surface.test.mjs
           node tests/giving-post640-polish.test.mjs
           node tests/pedagogue-design-gate.test.mjs
+      - name: Materialize same-run scientific observation custody when O1 surface is under test
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          TD613_SCIENCE_HEAD: ${{ github.event.pull_request.head.sha }}
+          TD613_WORKFLOW_RUN_ID: ${{ github.run_id }}
+          TD613_WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          TD613_WORKFLOW_RUN_NUMBER: ${{ github.run_number }}
+          TD613_WORKFLOW_NAME: ${{ github.workflow }}
+          TD613_WORKFLOW_JOB: contracts
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}")"
+          if ! grep -Eq '(^|/)(pedagogue-observation-custody|OBSERVATION_CUSTODY_WITNESS_PRESERVATION)' <<<"$changed"; then
+            echo 'No O1 observation-custody surface in this PR diff; scientific custody artifact not materialized.'
+            exit 0
+          fi
+          node scripts/pedagogue-observation-custody-ci.mjs \
+            artifacts/pedagogue-observation-custody/o1-success-observation.json
       - name: Validate Dome-World static surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
@@ -246,6 +265,14 @@ jobs:
             artifacts/
             *.log
           if-no-files-found: ignore
+          retention-days: 3
+      - name: Preserve scientific observation custody when present
+        if: ${{ always() && hashFiles('artifacts/pedagogue-observation-custody/**/*.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-observation-custody-${{ github.run_id }}
+          path: artifacts/pedagogue-observation-custody/
+          if-no-files-found: error
           retention-days: 3
 
   ash_browser_shard:
