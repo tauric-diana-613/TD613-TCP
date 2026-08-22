@@ -105,3 +105,4 @@ await import('./pedagogue-transitive-warrant-dependency-custody-relay-lantern.te
 await import('./pedagogue-dependency-edge-admission-provenance-custody-unlicensed-electrician.test.mjs');
 await import('./pedagogue-dependency-edge-admission-witness-custody-permit-printer.test.mjs');
 await import('./pedagogue-dependency-edge-admission-witness-non-anticipating-acquisition-custody-clerk-was-already-there.test.mjs');
+await import('./pedagogue-dependency-edge-admission-witness-source-origin-custody-return-address.test.mjs');
