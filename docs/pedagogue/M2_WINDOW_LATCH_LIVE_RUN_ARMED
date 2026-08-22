@@ -1,0 +1,21 @@
+U+10D613
+M2_WINDOW_LATCH_ONE_SHOT_ARM
+
+operator_gesture = Proceed
+armed_at_context_date = 2026-08-22
+external_request_budget = 1
+request_url = https://www.iana.org/domains/reserved
+method = GET
+redirect_policy = refuse
+agent = NODE_DEFAULT_HTTPS_GLOBAL_AGENT_PATH
+reject_unauthorized = true
+historical_run_1932 = UNRESOLVED_NOT_RECONSTRUCTED
+purpose = NEW_M2_RESPONSE_SOCKET_LIFECYCLE_WITNESS_ONLY
+post_run_action = REMOVE_THIS_ARM_BEFORE_ANY_FURTHER_PR_SYNCHRONIZE_OR_READY_WITNESS
+production_authority = false
+release_authority = false
+vercel_authority = false
+
+This file is a one-shot execution arm, not a durable permission surface. Its presence plus GitHub Actions pull-request execution admits exactly one new Window Latch request. After the exact science run is retrieved and independently replayed, remove this file before any closure run.
+
+Sealed ⟐
