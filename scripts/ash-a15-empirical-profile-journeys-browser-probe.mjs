@@ -90,7 +90,26 @@ source = replaceExactly(
   source,
   `    return Object.freeze({
       profile:capture.receipt.profile,`,
-  `    try {
+  `    const convergenceReconcile = await page.evaluate(selected => {
+      const current = window.__td613AshKeep?.current?.() || null;
+      const owner = window.__td613AshDemoEntryConvergence || null;
+      const before = owner?.current?.() || null;
+      if (!current?.case_id || typeof owner?.reconcile !== 'function') {
+        return { owner_available:false, invoked:false, before, after:before };
+      }
+      let invoked = false;
+      if (before?.posture !== 'READY') {
+        owner.reconcile({ case_id:current.case_id, profile:selected });
+        invoked = true;
+      }
+      return {
+        owner_available:true,
+        invoked,
+        before,
+        after:owner.current?.() || null
+      };
+    }, profile);
+    try {
       await page.waitForFunction(selected => {
         const current = window.__td613AshKeep?.current?.() || null;
         const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
@@ -117,7 +136,7 @@ source = replaceExactly(
         workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
         active:[...document.querySelectorAll('.workspace.active')].map(node => node.id)
       }));
-      throw new Error(\`A15 \${profile} demo-entry convergence did not settle before matrix navigation: \${JSON.stringify(diagnostic)}\`, { cause:error });
+      throw new Error(\`A15 \${profile} demo-entry convergence did not settle before matrix navigation: \${JSON.stringify({ ...diagnostic, convergence_reconcile:convergenceReconcile })}\`, { cause:error });
     }
     return Object.freeze({
       profile:capture.receipt.profile,`,
@@ -226,6 +245,8 @@ if (!source.includes("profile.replaceAll('_', ' ')") || !source.includes('visibl
   throw new Error('A15 empirical witness hardening did not compile into the generated probe.');
 }
 if (!source.includes('profile_entry_convergence_gated:true')
+    || !source.includes("before?.posture !== 'READY'")
+    || !source.includes("owner.reconcile({ case_id:current.case_id, profile:selected })")
     || !source.includes("convergence?.posture === 'READY'")
     || !source.includes("convergence?.phase === 'VISIBLE'")
     || !source.includes('ashDemoEntryHydrating')
