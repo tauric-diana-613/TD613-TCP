@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import {
+  assertWindowLatchLiveAuthority,
   buildWindowLatchCustodyObservation,
   classifyLatePropertyLookup,
   classifyWindowLatchLifecycle,
+  observeWindowLatchOnce,
   writeWindowLatchCustodyArtifact
 } from '../scripts/pedagogue-window-latch-m2.mjs';
 import {
@@ -140,6 +142,17 @@ test('M2 custody rejects retroactive laundering by preserving run 1932 as unreso
   assert.equal(replay.ok, false);
   assert.ok(replay.failures.includes('RUN_1932_ANTI_RETROACTIVITY_BROKEN'));
   assert.ok(replay.failures.includes('CUSTODY_DIGEST_MISMATCH'));
+});
+
+test('M2 live instrument fails closed before network I/O when human arm or GitHub PR context is absent', async () => {
+  assert.throws(
+    () => assertWindowLatchLiveAuthority({ GITHUB_ACTIONS: 'false', GITHUB_EVENT_NAME: 'pull_request' }, true),
+    /WINDOW_LATCH_LIVE_REQUEST_NOT_ARMED/
+  );
+  await assert.rejects(
+    observeWindowLatchOnce({ GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'push' }),
+    /WINDOW_LATCH_LIVE_REQUEST_NOT_ARMED/
+  );
 });
 
 test('M2 live Window Latch executes only in GitHub Actions while the one-shot arm exists', {

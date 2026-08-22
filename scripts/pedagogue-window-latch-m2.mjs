@@ -1,5 +1,6 @@
 import https from 'node:https';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -8,6 +9,7 @@ export const WINDOW_LATCH_CUSTODY_SCHEMA = 'td613.pedagogue.e9-m2-window-latch-c
 export const WINDOW_LATCH_FIXTURE_VERSION = 'td613.pedagogue.window-latch-e9-m2/v0.1';
 export const WINDOW_LATCH_INSTRUMENT_VERSION = 'pedagogue-window-latch-m2/o1-custody-v0.1';
 export const WINDOW_LATCH_CANONICALIZATION = 'td613.sorted-json/v1';
+export const WINDOW_LATCH_LIVE_ARM_PATH = 'docs/pedagogue/M2_WINDOW_LATCH_LIVE_RUN_ARMED';
 export const WINDOW_LATCH_TARGET = Object.freeze({
   request_url: 'https://www.iana.org/domains/reserved',
   expected_hostname: 'www.iana.org',
@@ -226,7 +228,22 @@ function sanitizedErrorCode(error) {
     .slice(0, 160);
 }
 
-export async function observeWindowLatchOnce() {
+export function assertWindowLatchLiveAuthority(env = process.env, armExists = existsSync(WINDOW_LATCH_LIVE_ARM_PATH)) {
+  const admitted = Boolean(
+    env.GITHUB_ACTIONS === 'true' &&
+    env.GITHUB_EVENT_NAME === 'pull_request' &&
+    armExists
+  );
+  if (!admitted) {
+    const error = new Error('WINDOW_LATCH_LIVE_REQUEST_NOT_ARMED');
+    error.code = 'WINDOW_LATCH_LIVE_REQUEST_NOT_ARMED';
+    throw error;
+  }
+  return true;
+}
+
+export async function observeWindowLatchOnce(env = process.env) {
+  assertWindowLatchLiveAuthority(env);
   const url = new URL(WINDOW_LATCH_TARGET.request_url);
   return await new Promise((resolveObservation) => {
     let settled = false;
@@ -413,7 +430,7 @@ export async function buildWindowLatchCustodyObservation(observation, env = proc
 }
 
 export async function writeWindowLatchCustodyArtifact(filePath, env = process.env) {
-  const observation = await observeWindowLatchOnce();
+  const observation = await observeWindowLatchOnce(env);
   const custody = await buildWindowLatchCustodyObservation(observation, env);
   const target = resolve(filePath);
   await mkdir(dirname(target), { recursive: true });
