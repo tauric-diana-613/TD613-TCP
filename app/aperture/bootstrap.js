@@ -110,10 +110,22 @@ function installFrameControlContainment(frame) {
   const style = frameDocument.createElement('style');
   style.id = styleId;
   style.textContent = `
-    input[type="datetime-local"] {
-      box-sizing: border-box !important;
-      width: 100% !important;
+    #apertureV22TraceBlock .input-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
       min-width: 0 !important;
+    }
+
+    #apertureV22TraceBlock .input-shell {
+      min-width: 0 !important;
+    }
+
+    #apertureV22TraceBlock input[type="datetime-local"] {
+      box-sizing: border-box !important;
+      inline-size: 100% !important;
+      width: 100% !important;
+      min-inline-size: 0 !important;
+      min-width: 0 !important;
+      max-inline-size: 100% !important;
       max-width: 100% !important;
     }
   `;
