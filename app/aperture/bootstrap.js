@@ -100,11 +100,35 @@ export async function bootApertureComposition({
   }
 }
 
+function installFrameControlContainment(frame) {
+  const frameDocument = frame?.contentDocument;
+  if (!frameDocument?.head) return false;
+
+  const styleId = 'td613-aperture-native-datetime-containment';
+  if (frameDocument.getElementById(styleId)) return true;
+
+  const style = frameDocument.createElement('style');
+  style.id = styleId;
+  style.textContent = `
+    input[type="datetime-local"] {
+      box-sizing: border-box !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+  `;
+  frameDocument.head.appendChild(style);
+  return true;
+}
+
 function scheduleBrowserBoot() {
   const frame = document.getElementById('td613ApertureTool');
   if (!frame) return;
-  const run = () => bootApertureComposition({ root: window, documentImpl: document, frame })
-    .catch(error => console.warn('TD613 Aperture composition held:', error));
+  const run = () => {
+    installFrameControlContainment(frame);
+    return bootApertureComposition({ root: window, documentImpl: document, frame })
+      .catch(error => console.warn('TD613 Aperture composition held:', error));
+  };
   frame.addEventListener('load', run, { once: false, passive: true });
   if (frame.contentDocument?.readyState === 'complete') queueMicrotask(run);
 }
