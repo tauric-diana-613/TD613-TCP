@@ -1,0 +1,25 @@
+{
+  "schema": "td613.openai-delegation-gate/v1",
+  "status": "CLOSED",
+  "authority_issue": 691,
+  "operator_authorization_required": true,
+  "product_side_defaults": {
+    "codex_code_review": "DISABLED",
+    "codex_automatic_reviews": "DISABLED"
+  },
+  "authorized_action": null,
+  "pr_number": null,
+  "head_sha": null,
+  "action_count_ceiling": 0,
+  "expires_at": null,
+  "self_authorization_forbidden": true,
+  "retry_inference_forbidden": true,
+  "connector_adjacency_grants_authority": false,
+  "vercel_release_grants_authority": false,
+  "notes": [
+    "Default repository posture is fail closed for separate OpenAI coding, review, cloud-task, and security-agent activity.",
+    "Amari work explicitly requested by the human operator through ChatGPT is a distinct authority class and does not arm delegated OpenAI agents.",
+    "A future delegated action requires a fresh human gesture recorded against issue 691 and an exact target receipt before invocation.",
+    "Do not place an executable Codex mention token in repository metadata while this gate is CLOSED."
+  ]
+}
