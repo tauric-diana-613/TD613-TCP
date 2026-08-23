@@ -245,11 +245,22 @@ function compileFamily(rectangles,edgeFunction,options={}) {
   return freeze(rectangles.map(rectangle=>compileRectangleReceipt(rectangle,edgeFunction,options)));
 }
 
+function familyGaugePass(original,gauged) {
+  return gauged.every((rect,index) =>
+    rect.all_boundary_edges_validated &&
+    rect.rectangle_shear===original[index].rectangle_shear &&
+    JSON.stringify(rect.unit_face_receipts.map(face=>face.shear_parameter))===JSON.stringify(original[index].unit_face_receipts.map(face=>face.shear_parameter)) &&
+    rect.stokes_consistent
+  );
+}
+
 export function runDiscreteFaceCurvatureTomographyAssay() {
   const positive=compileFamily(POSITIVE_RECTANGLES,constantPositiveEdge,{expectedDensity:-2});
   const flat=compileFamily(POSITIVE_RECTANGLES,flatEdge,{expectedDensity:0});
   const variable=compileFamily(POSITIVE_RECTANGLES,variableEdge);
   const gaugePositive=compileFamily(POSITIVE_RECTANGLES,constantPositiveEdge,{gauge:true,expectedDensity:-2});
+  const gaugeFlat=compileFamily(POSITIVE_RECTANGLES,flatEdge,{gauge:true,expectedDensity:0});
+  const gaugeVariable=compileFamily(POSITIVE_RECTANGLES,variableEdge,{gauge:true});
 
   const positivePass=positive.every(rect =>
     rect.all_boundary_edges_validated &&
@@ -267,17 +278,21 @@ export function runDiscreteFaceCurvatureTomographyAssay() {
   const variablePass=variable.every(rect => {
     const expectedFaceShears=rect.unit_face_receipts.map(face => -4*face.lower_left[1]-2);
     const observed=rect.unit_face_receipts.map(face=>face.shear_parameter);
-    return JSON.stringify(expectedFaceShears)===JSON.stringify(observed) && rect.stokes_consistent;
+    return rect.all_boundary_edges_validated &&
+      rect.unit_face_receipts.every(face=>face.all_edges_validated) &&
+      JSON.stringify(expectedFaceShears)===JSON.stringify(observed) &&
+      rect.stokes_consistent;
   });
   const variableDistinctDensities=new Set(variable.flatMap(rect=>rect.unit_face_receipts.map(face=>face.curvature_shear_density))).size>1;
-  const gaugePass=gaugePositive.every((rect,index) =>
-    rect.all_boundary_edges_validated &&
-    rect.rectangle_shear===positive[index].rectangle_shear &&
-    JSON.stringify(rect.unit_face_receipts.map(face=>face.shear_parameter))===JSON.stringify(positive[index].unit_face_receipts.map(face=>face.shear_parameter)) &&
-    rect.stokes_consistent
-  );
+  const gaugePositivePass=familyGaugePass(positive,gaugePositive);
+  const gaugeFlatPass=familyGaugePass(flat,gaugeFlat);
+  const gaugeVariablePass=familyGaugePass(variable,gaugeVariable);
+  const gaugePass=gaugePositivePass&&gaugeFlatPass&&gaugeVariablePass;
   const flatHasNontrivialLocalEdges=flat.some(rect => rect.boundary_edge_receipts.some(edge => shearParameter(edge.reconstructed_matrix)!==0));
-  const pass=positivePass&&flatPass&&variablePass&&variableDistinctDensities&&gaugePass&&flatHasNontrivialLocalEdges;
+  const allCleanEdgeFamiliesValidated=[positive,flat,variable,gaugePositive,gaugeFlat,gaugeVariable].every(family => family.every(rect =>
+    rect.all_boundary_edges_validated && rect.unit_face_receipts.every(face=>face.all_edges_validated)
+  ));
+  const pass=positivePass&&flatPass&&variablePass&&variableDistinctDensities&&gaugePass&&flatHasNontrivialLocalEdges&&allCleanEdgeFamiliesValidated;
 
   return freeze({
     schema:DISCRETE_FACE_CURVATURE_SCHEMA,
@@ -294,14 +309,22 @@ export function runDiscreteFaceCurvatureTomographyAssay() {
     positive_constant_density:freeze({ kappa:KAPPA, rectangles:positive }),
     flat_nontrivial_edge_control:freeze({ horizontal_shear:7, rectangles:flat, nontrivial_local_edges_present:flatHasNontrivialLocalEdges }),
     variable_face_field_control:freeze({ horizontal_rule:'S(2*y^2)', rectangles:variable, distinct_face_density_count:new Set(variable.flatMap(rect=>rect.unit_face_receipts.map(face=>face.curvature_shear_density))).size }),
-    gauge_clone:freeze({ phi:'3*x - 2*y + x*y', rectangles:gaugePositive }),
+    gauge_clone:freeze({
+      phi:'3*x - 2*y + x*y',
+      positive_rectangles:gaugePositive,
+      flat_rectangles:gaugeFlat,
+      variable_rectangles:gaugeVariable,
+      positive_family_pass:gaugePositivePass,
+      flat_family_pass:gaugeFlatPass,
+      variable_family_pass:gaugeVariablePass
+    }),
     findings:freeze({
-      edgewise_tomography_and_orientation_validation_pass:positive.every(rect=>rect.all_boundary_edges_validated&&rect.unit_face_receipts.every(face=>face.all_edges_validated)),
+      edgewise_tomography_and_orientation_validation_pass:allCleanEdgeFamiliesValidated,
       positive_unit_face_defect_is_constant_minus_two:positivePass,
       larger_loop_defect_equals_sum_of_enclosed_face_defects:positive.every(rect=>rect.stokes_consistent)&&variable.every(rect=>rect.stokes_consistent),
       nontrivial_local_edge_transport_can_coexist_with_zero_face_defect:flatPass&&flatHasNontrivialLocalEdges,
       variable_connection_yields_nonconstant_face_field:variablePass&&variableDistinctDensities,
-      gauge_transformation_preserves_closed_loop_face_and_rectangle_defects:gaugePass,
+      gauge_transformation_preserves_closed_loop_face_and_rectangle_defects_across_all_three_field_families:gaugePass,
       assay_mechanism_validated:pass
     }),
     bounded_answer:pass
