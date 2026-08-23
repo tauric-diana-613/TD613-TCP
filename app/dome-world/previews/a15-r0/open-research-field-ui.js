@@ -19,6 +19,70 @@ function metric(label, value, detail) {
   return article;
 }
 
+function ensureProgramSummarySurface() {
+  if (byId('fieldProgramSummary')) return;
+  const hypothesisSummary = byId('fieldHypothesisSummary');
+  const hypothesisSection = hypothesisSummary?.closest('section.field-subsection');
+  if (!hypothesisSection) throw new Error('Open research hypothesis section missing; synthesis capsule cannot be placed safely.');
+
+  const section = document.createElement('section');
+  section.className = 'field-subsection';
+  section.setAttribute('aria-labelledby', 'field-program-title');
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  const titleWrap = document.createElement('div');
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'Discrete observability transport · bounded synthesis';
+  const title = document.createElement('h3');
+  title.id = 'field-program-title';
+  title.textContent = 'When transport changes which distinctions a readout can make';
+  titleWrap.append(eyebrow, title);
+  const status = document.createElement('output');
+  status.id = 'fieldProgramStatus';
+  status.className = 'state-chip';
+  status.setAttribute('aria-label', 'Discrete observability transport synthesis status');
+  status.textContent = 'Loading';
+  head.append(titleWrap, status);
+
+  const intro = document.createElement('p');
+  intro.textContent = 'This capsule binds the completed finite-fixture research arc. It reports receipt-backed relations and holds without treating the preview as new scientific evidence or release authority.';
+
+  const summary = document.createElement('div');
+  summary.id = 'fieldProgramSummary';
+  summary.className = 'field-grid four';
+  summary.setAttribute('aria-live', 'polite');
+
+  const finding = document.createElement('p');
+  finding.id = 'fieldProgramFinding';
+  finding.textContent = 'Bounded synthesis loading.';
+
+  const relationsHeading = document.createElement('h4');
+  relationsHeading.textContent = 'Receipt-backed relations';
+  const relations = document.createElement('ul');
+  relations.id = 'fieldProgramRelations';
+  relations.className = 'field-claim-ceiling';
+  relations.setAttribute('aria-live', 'polite');
+
+  const witnessHeading = document.createElement('h4');
+  witnessHeading.textContent = 'Witness posture';
+  const witness = document.createElement('div');
+  witness.id = 'fieldProgramWitness';
+  witness.className = 'field-grid four';
+  witness.setAttribute('aria-live', 'polite');
+
+  const ceilingHeading = document.createElement('h4');
+  ceilingHeading.textContent = 'Claim ceiling';
+  const ceiling = document.createElement('ul');
+  ceiling.id = 'fieldProgramCeiling';
+  ceiling.className = 'field-claim-ceiling';
+  ceiling.setAttribute('aria-live', 'polite');
+
+  section.append(head, intro, summary, finding, relationsHeading, relations, witnessHeading, witness, ceilingHeading, ceiling);
+  hypothesisSection.before(section);
+}
+
 function renderObservability(result) {
   const host = byId('fieldObservability');
   host.replaceChildren();
@@ -114,6 +178,7 @@ function renderEnvelope(result) {
 }
 
 function renderProgramSummary(result) {
+  ensureProgramSummarySurface();
   byId('fieldProgramStatus').textContent = result.status;
   byId('fieldProgramFinding').textContent = result.finding;
   const q = result.quantitative_boundary;
