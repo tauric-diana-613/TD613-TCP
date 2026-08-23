@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {
+  routeEndpointAffineFormula,
   endpointFor,
   buildRouteBoxes,
   evaluateSharedEndpointFamily,
@@ -12,6 +13,15 @@ const assertInterval = (actual, lo, hi) => {
   assert.equal(approx(actual.lo, lo), true, `interval lo ${actual.lo} != ${lo}`);
   assert.equal(approx(actual.hi, hi), true, `interval hi ${actual.hi} != ${hi}`);
 };
+
+const formulaAB = routeEndpointAffineFormula(['A', 'B']);
+const formulaBA = routeEndpointAffineFormula(['B', 'A']);
+assert.deepEqual(formulaAB, formulaBA);
+assert.deepEqual(formulaAB, [
+  [{ constant: 2, alpha: 0, beta: 1 }, { constant: 1, alpha: 0, beta: 0 }],
+  [{ constant: 1, alpha: 0, beta: 0 }, { constant: 3, alpha: 1, beta: 0 }],
+]);
+assert.throws(() => routeEndpointAffineFormula(['A', 'A']), /EXACTLY_A_AND_B_ONCE/);
 
 assert.deepEqual(endpointFor(1, 2), [[4, 1], [1, 4]]);
 
@@ -47,7 +57,8 @@ const shared = evaluateSharedEndpointFamily({
   beta: { lo: 1.8, hi: 2.2 },
 });
 assert.equal(shared.shared_parameter_covenant, true);
-assert.deepEqual(shared.symbolic_endpoint_formula_AB, shared.symbolic_endpoint_formula_BA);
+assert.deepEqual(shared.affine_endpoint_formula_AB, shared.affine_endpoint_formula_BA);
+assert.deepEqual(shared.affine_endpoint_formula_AB, formulaAB);
 assert.equal(shared.pointwise_endpoint_identity_certified_over_declared_family, true);
 assert.equal(shared.corner_comparisons_are_diagnostic_only, true);
 assert.equal(shared.corner_comparisons.length, 4);
