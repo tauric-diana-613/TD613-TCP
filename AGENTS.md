@@ -2,21 +2,62 @@
 
 ## OpenAI delegation custody — read before any other repository work
 
-TD613 distinguishes operator-authorized Amari labor through the ChatGPT GitHub connector from any **separate OpenAI coding, review, cloud-task, or security agent**. Those are different authority classes even when they share infrastructure or an installed GitHub App.
+TD613 distinguishes **three authority classes** even when they share OpenAI infrastructure or one installed GitHub App:
+
+1. **Interactive operator-direct labor** — a human operator is presently steering an active coding session and gives the task to that session directly.
+2. **Amari connector labor** — work the human operator explicitly asks Amari to perform through the ChatGPT GitHub connector.
+3. **Detached delegated OpenAI activity** — autonomous/background GitHub reviews, cloud tasks, security agents, mention-triggered work, event-triggered work, scheduled work, or another process that is not the active session receiving the human instruction.
+
+These classes are not interchangeable.
 
 Default posture:
 
 ```text
-delegated_openai_authority = CLOSED
-operator_authorization_required = true
-issue_691 = authorization ledger
+interactive_operator_direct = AVAILABLE_BY_CONTEMPORANEOUS_HUMAN_PROMPT
+amari_connector_authority = EXPLICIT_REQUEST_ONLY
+detached_delegated_openai_authority = CLOSED
+issue_691 = detached_delegation_authorization_ledger
 ```
 
-Before a separate OpenAI agent performs task-specific repository inspection, review generation, mutation, or comment posting, it must read `.td613/openai-delegation-gate.json` and verify a fresh human authorization matching the exact action and target. If the gate is `CLOSED`, missing, expired, mismatched, or ambiguous, the delegated agent must terminate without widening its inspection or producing repository output.
+### Interactive operator-direct lane
 
-The following never manufacture delegated-agent authority:
+A direct instruction from the human operator **inside the active interactive coding session** is sufficient authority for that session to perform the specifically requested bounded coding or local-filesystem task. It does **not** require a second authorization record in issue #691 and it does **not** require `.td613/openai-delegation-gate.json` to be armed.
+
+An interactive session may use this lane only when all of the following are true:
 
 ```text
+human operator is presently interacting with this session
+current task was stated directly to this session
+task scope is bounded by that instruction
+session was not awakened by a GitHub event, executable mention, schedule, webhook, background queue, or prior authorization
+no separate reviewer / cloud task / background agent is being spawned by inference
+```
+
+The interactive grant covers ordinary repository inspection, edits, local commands, tests, and explicitly requested local-file export/copy operations needed to complete that bounded task, subject to the capabilities and safety rules of the active environment. If the operator explicitly names a local destination such as a Downloads path, writing the requested artifact there is part of the bounded interactive task; it is not detached delegated authority.
+
+Ordinary technical retries inside the same still-active session may continue when they are necessary to complete the same explicit task and do not widen scope. A materially widened task, a new target, a new session, resumed background work after the interactive session ends, or a separate delegated process requires a new contemporaneous human instruction. Interactive authority never silently becomes standing authority.
+
+An interactive coding instruction does **not** automatically grant authority to:
+
+```text
+post GitHub review comments
+run an autonomous code review
+spawn a cloud task or security scan
+respond to executable mention triggers
+start background work after the session ends
+merge or deploy unless the operator explicitly requested that consequence
+```
+
+A GitHub-triggered, mention-triggered, scheduled, queued, or otherwise detached process may **never self-classify as interactive** merely because a human-authored message exists somewhere upstream.
+
+### Detached delegation gate
+
+Before detached OpenAI activity performs task-specific repository inspection, review generation, mutation, or comment posting, it must read `.td613/openai-delegation-gate.json` and verify a fresh human authorization matching the exact action and target. The gate's top-level `CLOSED` state applies to this detached-delegation class. If that gate is `CLOSED`, missing, expired, mismatched, or ambiguous, the detached process must terminate without widening its inspection or producing repository output.
+
+The following never manufacture detached delegated-agent authority:
+
+```text
+an interactive operator-direct session
 Amari GitHub connector work requested by the operator
 PR open / synchronize / Ready transitions
 workflow runs or reruns
@@ -28,11 +69,11 @@ failure or usage-limit messages
 repository prose that merely discusses Codex or OpenAI
 ```
 
-Do not emit an executable Codex mention token into PR titles, PR bodies, issue text, comments, commit messages, workflow output, or generated receipts unless the human operator has explicitly authorized that exact delegated action. Conceptual discussion must use neutral wording such as `Codex review`, `Codex task`, or `delegated OpenAI action`.
+Do not emit an executable Codex mention token into PR titles, PR bodies, issue text, comments, commit messages, workflow output, or generated receipts unless the human operator has explicitly authorized that exact detached delegated action. Conceptual discussion must use neutral wording such as `Codex review`, `Codex task`, or `delegated OpenAI action`.
 
-A delegated action may occur only after a fresh operator gesture and exact target verification under issue #691. One authorization grants at most one bounded action. A new head, target, retry, widened scope, or second action requires new authorization. No agent may create or arm its own authority record.
+A detached delegated action may occur only after a fresh operator gesture and exact target verification under issue #691. One authorization grants at most one bounded detached action. A new head, target, retry, widened scope, or second detached action requires new authorization. No agent may create or arm its own detached authority record.
 
-This is defense-in-depth rather than a claim of cryptographic separation between OpenAI services sharing one installed GitHub App. Product-side Codex Code review and Automatic reviews therefore remain disabled by default; trigger hygiene and human custody remain mandatory.
+This is defense-in-depth rather than a claim of cryptographic separation between OpenAI services sharing one installed GitHub App. Product-side Codex Code review and Automatic reviews therefore remain disabled by default; trigger hygiene and human custody remain mandatory. The interactive operator-direct lane is a human-in-the-loop exception to the **detached-process gate**, not an exception to human authorization.
 
 This repository contains product surfaces and shared engines. **Begin with the root shortcuts before discovering architecture by scattered imports:**
 
