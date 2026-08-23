@@ -76,4 +76,9 @@ export {
   PEDAGOGUE_RECURRENCE_EVIDENCE_POSTURES,
   compilePedagogueRecurrenceAudit
 } from './pedagogue-recurrence-audit.js';
+export {
+  PEDAGOGUE_MATHEMATICAL_COUNTERPOINT_SCHEMA,
+  PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS,
+  tracePedagogueMathematicalCounterpoint
+} from './pedagogue-mathematical-counterpoints.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
