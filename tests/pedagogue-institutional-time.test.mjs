@@ -34,8 +34,11 @@ test('Institutional Time audit reproduces the preemption gap and closure boundar
   assert.equal(receipt.preemption.context_lags_action, true);
   assert.equal(receipt.preemption.public_visibility_lag, 5);
   assert.equal(receipt.closure.closure_class, 'drift');
+  assert.equal(receipt.closure.score_millipoints, 500);
   assert.equal(receipt.closure.faithful, false);
   assert.equal(receipt.rupture.rupture, true);
+  assert.equal(receipt.beacon.integral_ticks, 8);
+  assert.equal(receipt.beacon.threshold_ticks, 6);
   assert.equal(receipt.beacon.beacon_candidate, true);
   assert.equal(receipt.compression.many_to_one_declared, true);
   assert.equal(receipt.compression.semantic_loss_inferred_from_count, false);
@@ -57,6 +60,7 @@ test('Institutional Time audit preserves non-registration without inventing a ti
   assert.equal(receipt.preemption.preemption_gap, null);
   assert.equal(receipt.preemption.institution_never_registered, true);
   assert.equal(receipt.preemption.acts_before_counts, true);
+  assert.equal(receipt.closure.score_millipoints, 0);
   assert.equal(receipt.rupture.rupture, true);
 });
 
@@ -67,7 +71,7 @@ test('Dromological audit detects premature naming, assessment, cadence compressi
       { phase: 'NOTICE', at: 0 },
       { phase: 'ACT', at: 1 },
       { phase: 'NAME', at: 2 },
-      { phase: 'ASSESSMENT', at: 2.5 },
+      { phase: 'ASSESSMENT', at: 2 },
       { phase: 'WORLD_ANSWERS', at: 3 },
       { phase: 'EXIT', at: 8 }
     ],
@@ -121,7 +125,7 @@ test('Dromological audit preserves a clean declared cadence without forcing hidd
   assert.equal(receipt.cadence.timing_requirements_are_fixture_declared, true);
 });
 
-test('Temporal audits fail closed on prohibited learner-profile fields', () => {
+test('Temporal audits fail closed on prohibited learner-profile fields and noncanonical fractional ticks', () => {
   assert.throws(() => compileInstitutionalTimeAudit({
     case_id: 'bad-profile',
     age: 9,
@@ -134,4 +138,9 @@ test('Temporal audits fail closed on prohibited learner-profile fields', () => {
     developmental_rank: 'stage-1',
     events: [{ phase: 'NOTICE', at: 0 }]
   }), /prohibited/i);
+
+  assert.throws(() => compileDromologicalSequenceAudit({
+    audit_id: 'fractional-clock',
+    events: [{ phase: 'NOTICE', at: 0.5 }]
+  }), /safe integer tick/i);
 });
