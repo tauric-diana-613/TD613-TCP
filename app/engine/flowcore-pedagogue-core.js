@@ -62,7 +62,7 @@ export {
   compilePedagogueLineageSpine,
   tracePedagogueLineage,
   compilePedagogueLineageReview
-} from './pedagogue-lineage-spine.js';
+} from './pedagogue-lineage-spine-v02.js';
 export {
   PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
   PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
