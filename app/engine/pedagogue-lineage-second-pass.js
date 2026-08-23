@@ -2,7 +2,7 @@ import { canonicalJson } from '../dome-world/ash/canonical-json.js';
 import { freeze, noForbidden, object, strings, text } from './flowcore-pedagogue-utils.js';
 import {
   PEDAGOGUE_LINEAGE_LENSES
-} from './pedagogue-lineage-spine-v02.js';
+} from './pedagogue-lineage-spine.js';
 import {
   PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA
 } from './pedagogue-interface-diagnosis.js';
