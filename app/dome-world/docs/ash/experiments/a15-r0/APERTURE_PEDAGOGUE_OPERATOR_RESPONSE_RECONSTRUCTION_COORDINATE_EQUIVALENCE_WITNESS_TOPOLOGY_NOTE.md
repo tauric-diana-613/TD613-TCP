@@ -62,6 +62,33 @@ If all naming criteria survive the witness, the next action is a human naming/pr
 → human naming decision only if all criteria survive
 ```
 
+## Re-witness after signed-zero representation repair
+
+The first admitted witness, run 2057 on `47927c9f0ca1b31da87df2b8ff9548f924a494d6`, reached the new A15-R0 chamber and failed because JavaScript preserved IEEE-754 signed zero in one computed measurement row:
+
+```text
+actual   = [0,1,-0,-1]
+expected = [0,1,0,-1]
+```
+
+This is recorded as a representation-level failure, not a change to the preregistered response geometry. The repair commit `b36a0e60fb5f6388e007f25c759f676c8d954378` canonicalizes signed zero to semantic zero at the computed measurement-row boundary.
+
+The repair does not modify:
+
+```text
+probe family
+response values
+rank / determinant targets
+nullspace target
+held-out responses
+coordinate transform
+partial-coordinate hostile tables
+naming criteria N1-N10
+claim ceilings
+```
+
+A fresh exact-head witness is required. Run 2057 may not be reclassified as a scientific pass.
+
 No later receipt may claim its later SHA was executed by CI unless that exact SHA actually receives a witness.
 
 𝌋
