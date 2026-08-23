@@ -7,11 +7,15 @@ import {
   compilePedagogueLineageReview
 } from '../app/engine/flowcore-pedagogue-core.js';
 
-test('Pedagogue lineage spine preserves Potato as synthesis layer and versioned thinker entry', () => {
+test('Pedagogue lineage spine preserves Potato as synthesis layer without false first-introduction precision', () => {
   const spine = compilePedagogueLineageSpine();
   assert.equal(spine.schema, PEDAGOGUE_LINEAGE_SPINE_SCHEMA);
   assert.equal(spine.synthesis_owner, 'POTATO_FLOW_CORE_DOME_WORLD');
   assert.equal(spine.genealogy_rule, 'SOURCE_LINEAGES_TO_POTATO_SYNTHESIS_TO_PEDAGOGUE_OPERATIONALIZATION');
+  assert.equal(spine.chronology_semantics.first_documented_in_is_not_proven_first_introduction, true);
+  assert.equal(spine.chronology_semantics.undocumented_earlier_states_remain_possible, true);
+  assert.equal(spine.chronology_semantics.later_reweighting_does_not_rewrite_earlier_presence, true);
+  assert.equal(spine.chronology_semantics.v01_preserved_as_historical_encoding_base, true);
   assert.equal(spine.flat_saint_list_forbidden, true);
   assert.equal(spine.thinker_vote_forbidden, true);
   assert.equal(spine.convergence_is_truth, false);
@@ -19,16 +23,17 @@ test('Pedagogue lineage spine preserves Potato as synthesis layer and versioned 
   assert.equal(spine.promotion_authority, false);
 
   const byId = Object.fromEntries(spine.nodes.map((node) => [node.node_id, node]));
-  assert.equal(byId.MONTESSORI.introduced_in, 'ASP_EARLY');
-  assert.equal(byId.MALAGUZZI.introduced_in, 'ASP_EARLY');
-  assert.equal(byId.MILLER.introduced_in, 'ASP_EARLY');
-  assert.equal(byId.LAING.introduced_in, 'ASP_EARLY');
-  assert.equal(byId.STEINER.introduced_in, 'ASP_EARLY');
-  assert.equal(byId.GRAEBER.introduced_in, 'ASP_EARLY');
+  for (const nodeId of ['MONTESSORI', 'MALAGUZZI', 'MILLER', 'LAING', 'STEINER', 'GRAEBER']) {
+    assert.equal(byId[nodeId].first_documented_in, 'ASP_DOCUMENTED_CONSTELLATION');
+    assert.match(byId[nodeId].introduction_precision, /EARLIER_SPINE_STATE_UNRESOLVED/);
+    assert.equal(Object.hasOwn(byId[nodeId], 'introduced_in'), false);
+  }
   assert.ok(byId.GRAEBER.routed_through.includes('FLOW_CORE_GOVERNANCE'));
-  assert.equal(byId.DEWEY.introduced_in, 'DOME_WORLD_CHILD_LIBERATION');
-  assert.equal(byId.GATTO.introduced_in, 'DOME_WORLD_CHILD_LIBERATION');
-  assert.equal(byId.JACOBS.introduced_in, 'DOME_WORLD_CHILD_LIBERATION');
+  assert.match(byId.GRAEBER.evolution_note, /reweights his role/i);
+  assert.match(byId.GRAEBER.evolution_note, /first-entry date.*unresolved/i);
+  assert.equal(byId.DEWEY.first_documented_in, 'DOME_WORLD_CHILD_LIBERATION');
+  assert.equal(byId.GATTO.first_documented_in, 'DOME_WORLD_CHILD_LIBERATION');
+  assert.equal(byId.JACOBS.first_documented_in, 'DOME_WORLD_CHILD_LIBERATION');
   assert.equal(byId.ASHIWI_SPATIAL_KNOWLEDGE.kind, 'ROUTED_LIVING_KNOWLEDGE');
 });
 
@@ -48,12 +53,18 @@ test('Steiner remains multi-route while racial hierarchy is separately quarantin
   assert.notEqual(relations.RHYTHM_AND_CADENCE.authority_ceiling, relations.RACIAL_HIERARCHY_QUARANTINE.authority_ceiling);
   assert.match(relations.ANTHROPOSOPHIC_METAPHYSICS.tensions.join(' '), /empirical verification/i);
   assert.match(relations.EPISTEMIC_REFRACTION.potato_synthesis, /access != interpretation != authority/i);
+  assert.match(trace.node.evolution_note, /active-observation recurrence/i);
+  assert.equal(trace.chronology_semantics.first_documented_in_is_not_first_introduction_claim, true);
   assert.equal(trace.authority.runtime_authority_transferred, false);
 
   const challengeRefs = new Set(trace.challenge_cards.map((card) => card.source_reference));
   assert.ok(challengeRefs.has('doi:10.1525/nr.2008.11.3.4'));
   assert.ok(challengeRefs.has('doi:10.31265/aura.791'));
+  assert.ok(challengeRefs.has('doi:10.1007/s40656-025-00681-7'));
+  assert.ok(challengeRefs.has('doi:10.1007/s44217-026-01523-9'));
+  assert.ok(challengeRefs.has('doi:10.1177/00221678261421324'));
   assert.ok(trace.challenge_cards.filter((card) => card.relation === 'QUARANTINES').length >= 2);
+  assert.ok(trace.challenge_cards.some((card) => /not empirical validation/i.test(card.finding)));
 });
 
 test('lineage review carries provenance lenses without thinker voting or automatic redesign', () => {
@@ -78,7 +89,10 @@ test('lineage review carries provenance lenses without thinker voting or automat
   assert.equal(review.human_closure_required, true);
 
   const rhythm = review.selected_lenses.find((lens) => lens.lens_id === 'RHYTHM_AND_CADENCE');
-  assert.ok(rhythm.provenance.some((node) => node.node_id === 'STEINER'));
+  const steiner = rhythm.provenance.find((node) => node.node_id === 'STEINER');
+  assert.ok(steiner);
+  assert.equal(steiner.first_documented_in, 'ASP_DOCUMENTED_CONSTELLATION');
+  assert.match(steiner.introduction_precision, /EARLIER_SPINE_STATE_UNRESOLVED/);
   assert.ok(rhythm.provenance.some((node) => node.node_id === 'MONTESSORI'));
 
   assert.throws(() => compilePedagogueLineageReview({
