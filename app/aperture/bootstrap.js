@@ -27,6 +27,7 @@ import {
 import { TD613_PHASE4_RECIPROCAL_BRIDGE } from '../engine/aperture-v3-reciprocal-bridge.js';
 import { APERTURE_COMPOSITION_MANIFEST } from '../engine/aperture-composition.js';
 import { installApertureCompositionForFrame } from '../engine/aperture-composition-frame.js';
+import { installAperturePedagogueSurface } from './pedagogue-surface.js';
 
 export const TD613_APERTURE_TASK_INTENT = Object.freeze({
   version: APERTURE_V3_VERSION,
@@ -100,24 +101,11 @@ export async function bootApertureComposition({
   }
 }
 
-function installFrameControlContainment(frame) {
+function installPedagogueForFrame(frame) {
   const frameDocument = frame?.contentDocument;
-  if (!frameDocument?.head) return false;
-
-  const styleId = 'td613-aperture-native-datetime-containment';
-  if (frameDocument.getElementById(styleId)) return true;
-
-  const style = frameDocument.createElement('style');
-  style.id = styleId;
-  style.textContent = `
-    input[type="datetime-local"] {
-      box-sizing: border-box !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-    }
-  `;
-  frameDocument.head.appendChild(style);
+  const frameWindow = frame?.contentWindow;
+  if (!frameDocument || !frameWindow) return false;
+  installAperturePedagogueSurface(frameDocument, frameWindow);
   return true;
 }
 
@@ -125,7 +113,11 @@ function scheduleBrowserBoot() {
   const frame = document.getElementById('td613ApertureTool');
   if (!frame) return;
   const run = () => {
-    installFrameControlContainment(frame);
+    try {
+      installPedagogueForFrame(frame);
+    } catch (error) {
+      console.warn('TD613 Aperture Pedagogue surface held:', error);
+    }
     return bootApertureComposition({ root: window, documentImpl: document, frame })
       .catch(error => console.warn('TD613 Aperture composition held:', error));
   };

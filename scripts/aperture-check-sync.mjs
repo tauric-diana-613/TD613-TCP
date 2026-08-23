@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import {
+  APERTURE_DIR,
   APERTURE_INDEX_PATH,
   APERTURE_RELEASE_PATH,
   APERTURE_TOOL_PATH,
@@ -8,11 +10,15 @@ import {
   readHtmlArtifact,
   readText
 } from './lib/aperture-sync-lane.mjs';
+import { composeShareableApertureHtml } from './lib/aperture-pedagogue-package.mjs';
 
 const tool = await readHtmlArtifact(APERTURE_TOOL_PATH);
 const index = await readHtmlArtifact(APERTURE_INDEX_PATH);
 const assetVersions = await readText(ASSET_VERSIONS_PATH);
 const release = JSON.parse(await readText(APERTURE_RELEASE_PATH));
+const bootstrap = await readText(path.join(APERTURE_DIR, 'bootstrap.js'));
+const pedagogueSurface = await readText(path.join(APERTURE_DIR, 'pedagogue-surface.js'));
+const counterToolDiscovery = JSON.parse(await readText(path.join(APERTURE_DIR, 'counter-tool-discovery.json')));
 
 const indexVersion = index.metadata.version;
 const iframeToken = index.metadata.cacheToken;
@@ -36,6 +42,29 @@ assert.ok(tool.metadata.blocks.doctrineKernel, 'Doctrine kernel block missing fr
 assert.ok(tool.metadata.globals.gatewayEmbed, 'Gateway embed global missing from tool.html');
 assert.match(tool.html, /function\s+auditFlowCoreContextReceipt\s*\(/, 'returned Flow-Core receipt audit missing from tool.html');
 assert.match(tool.html, /reciprocalReceipts:true[\s\S]*reciprocalAuthority:false/, 'reciprocal receipt authority boundary missing from tool.html');
+
+assert.equal(counterToolDiscovery.schema, 'td613.aperture.counter-tool-route-guide/v1', 'Counter-Tool machine discovery schema drifted');
+assert.equal(counterToolDiscovery.reciprocal_receipt_bridge.status_nodes_are_controls, false, 'receipt status nodes must remain non-controls');
+assert.equal(counterToolDiscovery.reciprocal_receipt_bridge.automatic_authority_transfer, false, 'receipt bridge must not acquire automatic authority');
+assert.match(bootstrap, /installAperturePedagogueSurface/, 'web wrapper no longer installs the canonical Pedagogue surface');
+assert.match(pedagogueSurface, /consequence_before_ontology/, 'Pedagogue consequence-first route contract missing');
+assert.match(pedagogueSurface, /td613PedagogueReceiptCurrent/, 'Pedagogue receipt-current animation missing');
+assert.match(pedagogueSurface, /cursor:\s*help/, 'receipt stages must advertise explanation rather than click agency');
+assert.match(pedagogueSurface, /prefers-reduced-motion:\s*reduce/, 'Pedagogue motion must preserve reduced-motion containment');
+assert.doesNotMatch(pedagogueSurface, /fetch\s*\(|XMLHttpRequest|WebSocket/, 'Pedagogue presentation surface must remain network-silent');
+
+const shareable = composeShareableApertureHtml({
+  coreHtml: tool.html,
+  surfaceModuleSource: pedagogueSurface,
+  discovery: counterToolDiscovery
+});
+assert.match(shareable, /id="apertureCounterToolDiscovery"\s+type="application\/json"/, 'shareable standalone missing machine discovery card');
+assert.match(shareable, /id="td613AperturePedagogueSurfaceInline"\s+type="module"/, 'shareable standalone missing inlined Pedagogue surface');
+assert.match(shareable, /installAperturePedagogueSurface\(document, window\)/, 'shareable standalone does not install the inlined Pedagogue surface');
+assert.ok(shareable.indexOf('apertureCounterToolDiscovery') < shareable.indexOf('</head>'), 'machine discovery card must be in the standalone head');
+assert.ok(shareable.indexOf('td613AperturePedagogueSurfaceInline') < shareable.indexOf('</body>'), 'Pedagogue surface must be packaged inside the standalone body');
+assert.doesNotMatch(shareable, /<script[^>]+src=["'][^"']*pedagogue-surface\.js/i, 'shareable standalone must not depend on an external Pedagogue runtime');
+
 if (/^v3\.(?:[1-9]\d*)(?:-|$)/.test(tool.metadata.version)) {
   assert.equal(release.observatory?.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.2', 'tomography receipt schema drifted');
   assert.deepEqual(release.observatory?.evidenceRecord?.fields, ['source_status', 'evidence_basis', 'observations', 'missingness', 'alternatives', 'open_questions', 'operator_notes', 'closure'], 'v3.1 evidence record drifted');
@@ -52,5 +81,7 @@ console.log(JSON.stringify({
   featureVersion: tool.metadata.featureVersion,
   cacheToken: iframeToken,
   duplicateIdWarnings: tool.metadata.duplicateIds.length,
-  mojibakeSignals: tool.metadata.mojibakeSignals
+  mojibakeSignals: tool.metadata.mojibakeSignals,
+  pedagogueSurface: 'packaged-single-file',
+  counterToolDiscovery: counterToolDiscovery.schema
 }, null, 2));

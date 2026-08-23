@@ -1,0 +1,48 @@
+{
+  "schema": "td613.aperture.counter-tool-route-guide/v1",
+  "surface": "Counter-Tool Field",
+  "pedagogue_posture": "consequence_before_ontology",
+  "use_when": [
+    "a supplied trace or account needs counter-reading",
+    "provenance, occlusion, or registration gaps matter",
+    "two observations need comparison without forced equivalence",
+    "temporal order from sensing through public registration matters",
+    "residue mapping needs a human-inspectable route"
+  ],
+  "routes": [
+    {
+      "id": "current-field",
+      "label": "Use current field",
+      "consequence": "Read the instrument's present state without supplying a trace."
+    },
+    {
+      "id": "trace",
+      "label": "Enter a trace",
+      "consequence": "Supply an observed account or sequence for counter-reading."
+    },
+    {
+      "id": "parallel",
+      "label": "Compare traces",
+      "consequence": "Compare observations without collapsing them into equivalence."
+    }
+  ],
+  "temporal_lab": {
+    "purpose": "Mark when an event moved from sensing to modeling to action to institutional registration to public visibility.",
+    "pilot_is_optional": true,
+    "pilot_is_editable": true,
+    "pilot_is_not_evidence": true
+  },
+  "reciprocal_receipt_bridge": {
+    "law": "receipts may travel; authority does not",
+    "status_nodes_are_controls": false,
+    "human_gate_remains_explicit": true,
+    "automatic_authority_transfer": false
+  },
+  "anti_equivalences": [
+    "status stage != operator button",
+    "receipt movement != authority movement",
+    "pilot preset != finding",
+    "comparison != equivalence",
+    "proposal != execution"
+  ]
+}
