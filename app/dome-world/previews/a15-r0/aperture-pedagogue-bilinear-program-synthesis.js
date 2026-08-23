@@ -1,0 +1,21 @@
+export const BILINEAR_PROGRAM_SYNTHESIS_SCHEMA='td613.a15-r0.aperture-pedagogue-bilinear-program-synthesis/v0.1';
+const EPS=1e-10;
+const T=Object.freeze([[2,1],[1,3]].map(Object.freeze));
+const N=Object.freeze([1,-1,-1,1]);
+const P1=Object.freeze({id:'TRACE_E1',cost:1,r:Object.freeze([1,0]),x:Object.freeze([1,0])});
+const P2=Object.freeze({id:'TRACE_E2',cost:1,r:Object.freeze([0,1]),x:Object.freeze([0,1])});
+const GOOD=Object.freeze({id:'GOOD_SINGLE',cost:1,r:Object.freeze([1,0]),x:Object.freeze([1,0])});
+const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+const dot=(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0);
+const norm=a=>Math.sqrt(dot(a,a));
+const row=(r,x)=>[r[0]*x[0],r[0]*x[1],r[1]*x[0],r[1]*x[1]].map(v=>Object.is(v,-0)?0:v);
+const add=(a,b)=>a.map((v,i)=>v+b[i]);
+const mv=(M,x)=>M.map(r=>dot(r,x));
+const response=(M,p)=>dot(p.r,mv(M,p.x));
+const det=h=>h[0]*h[3]-h[1]*h[2];
+const rank2=h=>Math.abs(det(h))>EPS?2:(norm(h)>EPS?1:0);
+const sensitivity=h=>Math.abs(dot(h,N))/norm(h);
+export const oneActionRow=p=>freeze(row(p.r,p.x));
+export function synthesizeProgram(program){const rows=program.map(oneActionRow),aggregate=rows.reduce(add,[0,0,0,0]),responses=program.map(p=>response(T,p));return freeze({action_count:program.reduce((s,p)=>s+p.cost,0),component_rows:rows,aggregate_row:aggregate,component_responses:responses,aggregate_response:responses.reduce((a,b)=>a+b,0),aggregate_rank:rank2(aggregate),aggregate_sensitivity:sensitivity(aggregate)});}
+export function programSelector(input){for(const k of ['T_star','future_responses','synthetic_oracle'])if(k in input)throw new Error('REJECT_ORACLE_LEAKAGE_IN_PROGRAM_SELECTION');const scored=input.programs.map(p=>{const s=synthesizeProgram(p.actions);return {program_id:p.program_id,action_count:s.action_count,sensitivity:s.aggregate_sensitivity,efficiency:s.aggregate_sensitivity/s.action_count};}).sort((a,b)=>b.efficiency-a.efficiency||a.program_id.localeCompare(b.program_id));return freeze({selected_program_id:scored[0].program_id,scored});}
+export function runBilinearProgramSynthesisGauntlet(){const target=[1,0,0,1],forward=synthesizeProgram([P1,P2]),reverse=synthesizeProgram([P2,P1]),good=synthesizeProgram([GOOD]),selector=programSelector({programs:[{program_id:'TRACE_PROGRAM',actions:[P1,P2]},{program_id:'GOOD_SINGLE',actions:[GOOD]}]});let leak=false;try{programSelector({programs:[],T_star:T});}catch(e){leak=/REJECT_ORACLE/.test(String(e.message));}const criteria=freeze({B1_target_rank2:rank2(target)===2&&Math.abs(det(target)-1)<EPS,B2_each_component_rank1:forward.component_rows.every(h=>rank2(h)===1&&Math.abs(det(h))<EPS),B3_exact_composite:forward.aggregate_row.every((v,i)=>Math.abs(v-target[i])<EPS),B4_composite_response_computed:Math.abs(forward.aggregate_response-(T[0][0]+T[1][1]))<EPS,B5_minimum_cost_not_one:rank2(target)===2&&forward.action_count===2,B6_static_order_control:forward.aggregate_response===reverse.aggregate_response&&forward.aggregate_row.every((v,i)=>v===reverse.aggregate_row[i]),B7_cost_changes_preference:Math.abs(forward.aggregate_sensitivity-Math.SQRT2)<EPS&&Math.abs(forward.aggregate_sensitivity/2-Math.SQRT1_2)<EPS&&selector.selected_program_id==='GOOD_SINGLE',B8_oracle_leak_rejected:leak});const passed=Object.values(criteria).every(Boolean);return freeze({schema:BILINEAR_PROGRAM_SYNTHESIS_SCHEMA,target_functional:{row:target,rank:rank2(target)},trace_program:forward,reverse_order_control:reverse,good_single:good,selector,criteria,passed,canonical_bounded_scientific_claim:passed?'A_LINEAR_FUNCTIONAL_INADMISSIBLE_AS_ONE_DECLARED_BILINEAR_ACTION_CAN_BE_EXACTLY_REALIZED_AS_A_HIGHER_ACTION_COUNT_SUM_OF_ADMISSIBLE_RANK_ONE_BILINEAR_PROBES_IN_THE_AUTHORED_STATIC_2X2_FIXTURE_WHILE_PROGRAM_REALIZABILITY_DOES_NOT_IMPLY_COST_OPTIMALITY':null,next_learning_action:passed?'HELD_FOR_TRANSITION_SENSITIVE_PROGRAM_COMPOSITION_AFTER_WITNESS_RECEIPT':null,endogenous_sequential_transport_earned:false,path_category_earned:false,path_groupoid_earned:false,canonical_operator_tomography_promotion_authority:false,holonomy_earned:false,curvature_earned:false,proto_loom_earned:false,a16_reopened:false,merge_authority:false,production_authority:false,vercel_authority:false});}
