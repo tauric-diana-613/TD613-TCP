@@ -158,7 +158,7 @@ assert.equal(receipt.human_closure_required,true);
 
 const spec=fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_COUNTERFACTUAL_SHARED_PREFIX_BRANCHING_GAUNTLET_SPEC_V0_1.md','utf8');
 assert.match(spec,/Preregistration boundary: \*\*frozen before executable implementation\.\*\*/);
-assert.match(spec,/counterfactual branch != historical custody/);
+assert.match(spec,/counterfactual_branch != historical_custody/);
 assert.match(spec,/shared past != shared future/);
 assert.match(spec,/branch comparison != reconciliation/);
 assert.match(spec,/branch count != independent support/);
