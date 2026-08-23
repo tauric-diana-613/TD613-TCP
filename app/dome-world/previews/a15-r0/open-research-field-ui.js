@@ -1,4 +1,5 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
+import { buildDiscreteObservabilityTransportProgramSummary } from './discrete-observability-transport-program-summary.js';
 import { runOpenResearchField } from './open-research-field.js';
 import { buildOpenResearchHypothesisRegistry } from './open-research-hypothesis-registry.js';
 
@@ -16,6 +17,70 @@ function metric(label, value, detail) {
   copy.textContent = detail;
   article.append(heading, output, copy);
   return article;
+}
+
+function ensureProgramSummarySurface() {
+  if (byId('fieldProgramSummary')) return;
+  const hypothesisSummary = byId('fieldHypothesisSummary');
+  const hypothesisSection = hypothesisSummary?.closest('section.field-subsection');
+  if (!hypothesisSection) throw new Error('Open research hypothesis section missing; synthesis capsule cannot be placed safely.');
+
+  const section = document.createElement('section');
+  section.className = 'field-subsection';
+  section.setAttribute('aria-labelledby', 'field-program-title');
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  const titleWrap = document.createElement('div');
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'Discrete observability transport · bounded synthesis';
+  const title = document.createElement('h3');
+  title.id = 'field-program-title';
+  title.textContent = 'When transport changes which distinctions a readout can make';
+  titleWrap.append(eyebrow, title);
+  const status = document.createElement('output');
+  status.id = 'fieldProgramStatus';
+  status.className = 'state-chip';
+  status.setAttribute('aria-label', 'Discrete observability transport synthesis status');
+  status.textContent = 'Loading';
+  head.append(titleWrap, status);
+
+  const intro = document.createElement('p');
+  intro.textContent = 'This capsule binds the completed finite-fixture research arc. It reports receipt-backed relations and holds without treating the preview as new scientific evidence or release authority.';
+
+  const summary = document.createElement('div');
+  summary.id = 'fieldProgramSummary';
+  summary.className = 'field-grid four';
+  summary.setAttribute('aria-live', 'polite');
+
+  const finding = document.createElement('p');
+  finding.id = 'fieldProgramFinding';
+  finding.textContent = 'Bounded synthesis loading.';
+
+  const relationsHeading = document.createElement('h4');
+  relationsHeading.textContent = 'Receipt-backed relations';
+  const relations = document.createElement('ul');
+  relations.id = 'fieldProgramRelations';
+  relations.className = 'field-claim-ceiling';
+  relations.setAttribute('aria-live', 'polite');
+
+  const witnessHeading = document.createElement('h4');
+  witnessHeading.textContent = 'Witness posture';
+  const witness = document.createElement('div');
+  witness.id = 'fieldProgramWitness';
+  witness.className = 'field-grid four';
+  witness.setAttribute('aria-live', 'polite');
+
+  const ceilingHeading = document.createElement('h4');
+  ceilingHeading.textContent = 'Claim ceiling';
+  const ceiling = document.createElement('ul');
+  ceiling.id = 'fieldProgramCeiling';
+  ceiling.className = 'field-claim-ceiling';
+  ceiling.setAttribute('aria-live', 'polite');
+
+  section.append(head, intro, summary, finding, relationsHeading, relations, witnessHeading, witness, ceilingHeading, ceiling);
+  hypothesisSection.before(section);
 }
 
 function renderObservability(result) {
@@ -112,6 +177,35 @@ function renderEnvelope(result) {
   host.append(metric('Human closure', result.human_gate.pass ? 'PASS' : 'HELD', 'Promotion authority remains human-gated and is not exercised by this preview.'));
 }
 
+function renderProgramSummary(result) {
+  ensureProgramSummarySurface();
+  byId('fieldProgramStatus').textContent = result.status;
+  byId('fieldProgramFinding').textContent = result.finding;
+  const q = result.quantitative_boundary;
+  byId('fieldProgramSummary').replaceChildren(
+    metric('Orbit directions', q.projective_readout_orbit_directions, `${q.induced_partition_classes_on_frozen_four_state_ecology} distinct partitions on the frozen four-state ecology.`),
+    metric('Calibration ecology', `${q.global_kernel_complete_calibration_states} → ${q.codesigned_calibration_states}`, `Global kernel-complete states to claim-conditioned co-designed states; hypothesis-conditioned intermediate = ${q.hypothesis_conditioned_calibration_states}.`),
+    metric('Primary probes', `${q.inherited_primary_probe_count} → ${q.codesigned_primary_probe_count}`, 'Held-out validation remains separate from primary selection.'),
+    metric('Two-packet distance', q.minimum_anchored_two_packet_signature_distance, 'Minimum ZERO-anchored membership-reassignment distance between distinct clean q3/q4 hypothesis signatures.')
+  );
+  byId('fieldProgramWitness').replaceChildren(
+    metric('Component tests', result.witness_status.deterministic_component_tests_authored ? 'AUTHORED' : 'MISSING', 'Deterministic component tests exist on research branches.'),
+    metric('Exact-head execution', result.witness_status.exact_head_node_execution_witnessed ? 'WITNESSED' : 'HELD', 'No exact-head Node execution is claimed by this synthesis capsule.'),
+    metric('CI witness', result.witness_status.ci_witnessed ? 'WITNESSED' : 'HELD', 'No CI witness is manufactured by rendering the synthesis.'),
+    metric('Production authority', result.release_boundary.promotion_authority ? 'GRANTED' : 'HELD', 'This preview summarizes research and cannot authorize its own promotion.')
+  );
+  byId('fieldProgramRelations').replaceChildren(...result.earned_relations.map(value => {
+    const item = document.createElement('li');
+    item.textContent = value;
+    return item;
+  }));
+  byId('fieldProgramCeiling').replaceChildren(...result.claim_ceiling.map(value => {
+    const item = document.createElement('li');
+    item.textContent = value;
+    return item;
+  }));
+}
+
 function renderHypothesisRegistry(result) {
   const falsified = result.closed_by_counterexample.length;
   const frontier = result.research_frontier.length;
@@ -152,6 +246,7 @@ function renderHypothesisRegistry(result) {
 function startOpenField() {
   const result = runOpenResearchField();
   const envelope = runBoundedTransformationEnvelope({ field: result });
+  const programSummary = buildDiscreteObservabilityTransportProgramSummary();
   const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field: result, envelope });
   renderObservability(result.observability);
   renderDirectionalExposure(result.directional_exposure);
@@ -160,10 +255,12 @@ function startOpenField() {
   renderReconstruction(result.reconstruction);
   renderTransformTable(result.reconstruction);
   renderEnvelope(envelope);
+  renderProgramSummary(programSummary);
   renderHypothesisRegistry(hypothesisRegistry);
   byId('fieldRaw').textContent = pretty({
     field: result,
     bounded_transformation_envelope: envelope,
+    discrete_observability_transport_program: programSummary,
     hypothesis_registry: hypothesisRegistry
   });
   byId('fieldFinding').textContent = result.observability.finding;
@@ -174,12 +271,15 @@ function startOpenField() {
   }));
   document.documentElement.dataset.a15R0OpenField = 'ready';
   document.documentElement.dataset.a15R0Envelope = envelope.status.toLowerCase();
+  document.documentElement.dataset.a15R0ObservabilityTransport = 'bounded-research-synthesis';
   document.documentElement.dataset.a15R0HypothesisFrontier = 'ready';
   window.dispatchEvent(new CustomEvent('td613:ash:a15-r0-open-field-ready', {
     detail: {
       schema: result.schema,
       envelope_schema: envelope.schema,
       envelope_status: envelope.status,
+      observability_transport_schema: programSummary.schema,
+      observability_transport_status: programSummary.status,
       hypothesis_registry_schema: hypothesisRegistry.schema,
       hypothesis_frontier_count: hypothesisRegistry.research_frontier.length,
       source_status: result.source_status,
