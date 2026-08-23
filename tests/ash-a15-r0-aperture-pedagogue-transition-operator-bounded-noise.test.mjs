@@ -190,7 +190,7 @@ assert.equal(stable(fixture),before);
 
 const spec=fs.readFileSync('app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TRANSITION_OPERATOR_BOUNDED_NOISE_GAUNTLET_SPEC_V0_1.md','utf8');
 assert.match(spec,/same observation-error bound != same operator-identification uncertainty/);
-assert.match(spec,/radius ratio:\n\n```text\nfragile_radius \/ stable_radius = 1000|fragile_radius \/ stable_radius = 1000/);
+assert.match(spec,/fragile_radius \/ stable_radius = 1000/);
 assert.match(spec,/nominal reconstruction != bounded-error compatible set/);
 assert.match(spec,/It is not a statistical consistency result/);
 assert.match(spec,/operator tomography/);
@@ -198,7 +198,11 @@ assert.match(spec,/A16 remains held/);
 
 const implementation=fs.readFileSync('app/dome-world/previews/a15-r0/aperture-pedagogue-transition-operator-bounded-noise.js','utf8');
 assert.match(implementation,/candidates:fixture\.candidates\.map\(selectionCandidateFromFull\)/);
-assert.doesNotMatch(implementation,/selectionCandidateFromFull\([\s\S]*observed_center/);
+const projectionBody=implementation.match(/function selectionCandidateFromFull\(candidate\) \{([\s\S]*?)\n\}/)?.[1] || '';
+assert.ok(projectionBody,'Selection projection function must remain discoverable.');
+assert.doesNotMatch(projectionBody,/observed_center/);
+assert.match(projectionBody,/candidate_id/);
+assert.match(projectionBody,/probe_cost/);
 
 console.log(JSON.stringify({
   ok:true,
