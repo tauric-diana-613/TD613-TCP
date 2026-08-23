@@ -88,7 +88,7 @@
     "aperture:export-downloads": "node scripts/aperture-export-downloads.mjs",
     "aperture:check-sync": "node scripts/aperture-check-sync.mjs",
     "sync:aperture-release": "node scripts/sync-aperture-release.mjs",
-    "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs",
+    "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs && node tests/aperture-canonical-route.test.mjs",
     "test:aperture:v31": "node tests/aperture-v31-compatibility.test.mjs && node tests/aperture-v31-observatory-contracts.test.mjs && node tests/ash-v09-experiment-custody.test.mjs && node tests/ash-v09-derivative-eligibility.test.mjs && node tests/aperture-v31-source-lattice.test.mjs && node tests/aperture-v31-operators.test.mjs && node tests/aperture-v31-reconstruction.test.mjs && node tests/aperture-v31-lab.test.mjs",
     "test:aperture:v32": "node tests/aperture-v32-typed-epistemic-deficit.test.mjs && node tests/aperture-sync-lane.test.mjs && node scripts/aperture-check-sync.mjs",
     "test:dome-world:art": "node tests/dome-world-art.test.mjs && node tests/dome-world-integration.test.mjs && node tests/aperture-dome-bridge.test.mjs",

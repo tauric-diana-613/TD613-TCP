@@ -1,6 +1,7 @@
 {
   "schema": "td613.aperture.counter-tool-route-guide/v1",
   "surface": "Counter-Tool Field",
+  "canonical_public_route": "https://td613.com/aperture/",
   "pedagogue_posture": "consequence_before_ontology",
   "use_when": [
     "a supplied trace or account needs counter-reading",

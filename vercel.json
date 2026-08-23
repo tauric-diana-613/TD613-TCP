@@ -43,6 +43,16 @@
       "source": "/giving/history",
       "destination": "/giving/history/",
       "permanent": true
+    },
+    {
+      "source": "/aperture",
+      "destination": "/aperture/",
+      "permanent": true
+    },
+    {
+      "source": "/aperture/index.html",
+      "destination": "/aperture/",
+      "permanent": true
     }
   ],
   "headers": [
