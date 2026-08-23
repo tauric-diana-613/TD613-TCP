@@ -10,6 +10,7 @@ await import('./ash-a15-r0-aperture-pedagogue-post-r2-prospective-continuation.t
 await import('./ash-a15-r0-aperture-pedagogue-transition-family-robustness.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-transition-operator-identifiability.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-transition-operator-bounded-noise.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-transition-operator-sequential-contraction.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
