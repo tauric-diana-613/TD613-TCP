@@ -70,14 +70,32 @@ test('variable control preserves face summation while rejecting constant-density
   }
 });
 
-test('full assay preserves gauge-invariant closed loops and claim ceiling',()=>{
+test('gauge transform preserves positive, flat, and variable closed-loop defects',()=>{
+  const result=runDiscreteFaceCurvatureTomographyAssay();
+  assert.equal(result.gauge_clone.positive_family_pass,true);
+  assert.equal(result.gauge_clone.flat_family_pass,true);
+  assert.equal(result.gauge_clone.variable_family_pass,true);
+  for(const [original,gauged] of [
+    [result.positive_constant_density.rectangles,result.gauge_clone.positive_rectangles],
+    [result.flat_nontrivial_edge_control.rectangles,result.gauge_clone.flat_rectangles],
+    [result.variable_face_field_control.rectangles,result.gauge_clone.variable_rectangles]
+  ]){
+    original.forEach((rect,index)=>{
+      assert.equal(gauged[index].rectangle_shear,rect.rectangle_shear);
+      assert.deepEqual(gauged[index].unit_face_receipts.map(face=>face.shear_parameter),rect.unit_face_receipts.map(face=>face.shear_parameter));
+    });
+  }
+});
+
+test('full assay preserves claim ceiling and continuum firewall',()=>{
   const result=runDiscreteFaceCurvatureTomographyAssay();
   assert.equal(result.findings.assay_mechanism_validated,true);
+  assert.equal(result.findings.edgewise_tomography_and_orientation_validation_pass,true);
   assert.equal(result.findings.positive_unit_face_defect_is_constant_minus_two,true);
   assert.equal(result.findings.larger_loop_defect_equals_sum_of_enclosed_face_defects,true);
   assert.equal(result.findings.nontrivial_local_edge_transport_can_coexist_with_zero_face_defect,true);
   assert.equal(result.findings.variable_connection_yields_nonconstant_face_field,true);
-  assert.equal(result.findings.gauge_transformation_preserves_closed_loop_face_and_rectangle_defects,true);
+  assert.equal(result.findings.gauge_transformation_preserves_closed_loop_face_and_rectangle_defects_across_all_three_field_families,true);
   assert.equal(result.bounded_answer,'DISCRETE_FACE_CURVATURE_TOMOGRAPHY_CANDIDATE_SURVIVES_IN_AUTHORED_INTEGER_SHEAR_LATTICE');
   assert.equal(result.continuum_firewall.mesh_refinement_tested,false);
   assert.equal(result.continuum_firewall.continuum_connection,false);
