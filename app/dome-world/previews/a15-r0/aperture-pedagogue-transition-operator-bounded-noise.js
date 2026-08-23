@@ -64,24 +64,11 @@ function vector2(vector,label='vector') {
   return vector.map((value,index)=>finite(value,`${label}[${index}]`));
 }
 
-function matVec(matrix,vector) {
-  if (!Array.isArray(matrix) || matrix.length !== 2) throw new TypeError('matrix must be 2 x 2');
-  const x=vector2(vector,'vector');
-  return matrix.map((row,index)=>{
-    const r=vector2(row,`matrix[${index}]`);
-    return r[0]*x[0]+r[1]*x[1];
-  });
-}
-
 function interval(center,radius) {
   const c=finite(center,'interval center');
   const r=finite(radius,'interval radius');
   if (r < 0) throw new RangeError('interval radius must be non-negative');
   return deepFreeze([c-r,c+r]);
-}
-
-function intervalWidth(pair) {
-  return pair[1]-pair[0];
 }
 
 function intervalIntersects(left,right,tolerance=1e-12) {
@@ -125,10 +112,28 @@ function expectedCandidate(id) {
   return CANDIDATES.find(candidate=>candidate.candidate_id===id) || null;
 }
 
+function selectionCandidateFromFull(candidate) {
+  return deepFreeze({
+    candidate_id:candidate.candidate_id,
+    x:clone(candidate.x),
+    probe_cost:candidate.probe_cost
+  });
+}
+
 export function validateNoiseProbeCandidate(candidate) {
   if (!candidate || typeof candidate !== 'object') throw new TypeError('candidate must be an object');
   const expected=expectedCandidate(candidate.candidate_id);
   if (!expected || stable(candidate)!==stable(expected)) throw new Error('REJECT_NOISE_PROBE_CANDIDATE_MUTATION');
+  return true;
+}
+
+export function validateNoiseSelectionCandidate(candidate) {
+  if (!candidate || typeof candidate !== 'object') throw new TypeError('selection candidate must be an object');
+  const expected=expectedCandidate(candidate.candidate_id);
+  if (!expected) throw new Error('REJECT_NOISE_PROBE_CANDIDATE_SET_MUTATION');
+  const expectedSurface=selectionCandidateFromFull(expected);
+  if (stable(candidate)!==stable(expectedSurface)) throw new Error('REJECT_NOISE_SELECTION_CANDIDATE_MUTATION');
+  if ('observed_center' in candidate) throw new Error('REJECT_ORACLE_OUTPUT_LEAKAGE_IN_NOISE_AWARE_PROBE_SELECTION');
   return true;
 }
 
@@ -187,10 +192,7 @@ export function validateCompatibleOperatorSetRepresentation(set) {
 export function predictHeldoutBox(operatorSet,probe=X_HOLD) {
   validateCompatibleOperatorSetRepresentation(operatorSet);
   if (operatorSet.representation==='UNBOUNDED_SECOND_COLUMN') {
-    return deepFreeze({
-      status:'UNBOUNDED_PREDICTION_SET',
-      intervals:null
-    });
+    return deepFreeze({status:'UNBOUNDED_PREDICTION_SET',intervals:null});
   }
   const [x0,x1]=vector2(probe,'heldout probe');
   const intervals=[0,1].map(index=>
@@ -239,7 +241,7 @@ export function validateNoiseAwareSelectionInput(input) {
   if (stable(vector2(input.current_probe,'current_probe'))!==stable(X1)) throw new Error('REJECT_CALIBRATION_PROBE_MUTATION');
   if (stable(vector2(input.current_observation,'current_observation'))!==stable(Y1)) throw new Error('REJECT_CALIBRATION_OBSERVATION_MUTATION');
   if (!Array.isArray(input.candidates) || input.candidates.length!==3) throw new Error('REJECT_NOISE_PROBE_CANDIDATE_SET_MUTATION');
-  input.candidates.forEach(validateNoiseProbeCandidate);
+  input.candidates.forEach(validateNoiseSelectionCandidate);
   if (Math.abs(Number(input.declared_delta)-DELTA)>1e-15) throw new Error('REJECT_DECLARED_NOISE_BOUND_MUTATION');
   return true;
 }
@@ -248,18 +250,13 @@ function selectionSurface(fixture) {
   return deepFreeze({
     current_probe:clone(fixture.exact_calibration_probe),
     current_observation:clone(fixture.exact_calibration_observation),
-    candidates:fixture.candidates.map(candidate=>({
-      candidate_id:candidate.candidate_id,
-      x:clone(candidate.x),
-      probe_cost:candidate.probe_cost,
-      observed_center:clone(candidate.observed_center)
-    })),
+    candidates:fixture.candidates.map(selectionCandidateFromFull),
     declared_delta:fixture.delta
   });
 }
 
-function geometryOnlyCandidate(candidate) {
-  validateNoiseProbeCandidate(candidate);
+function geometryOnlySelectionCandidate(candidate) {
+  validateNoiseSelectionCandidate(candidate);
   const geometry=probeGeometry(candidate.x);
   return deepFreeze({
     candidate_id:candidate.candidate_id,
@@ -270,7 +267,7 @@ function geometryOnlyCandidate(candidate) {
 
 export function noiseBlindHostileSelector(input) {
   validateNoiseAwareSelectionInput(input);
-  const evaluations=input.candidates.map(geometryOnlyCandidate);
+  const evaluations=input.candidates.map(geometryOnlySelectionCandidate);
   const ordered=[...evaluations].sort((left,right)=>
     left.exact_remaining_operator_dimension-right.exact_remaining_operator_dimension ||
     left.candidate_id.localeCompare(right.candidate_id)
@@ -288,6 +285,7 @@ export function noiseBlindHostileSelector(input) {
 export function boundedNoiseAwareSelector(input) {
   validateNoiseAwareSelectionInput(input);
   const evaluations=input.candidates.map(candidate=>{
+    validateNoiseSelectionCandidate(candidate);
     const [alpha,beta]=vector2(candidate.x,`${candidate.candidate_id}.x`);
     const geometry=probeGeometry(candidate.x);
     const exactDimension=exactRemainingOperatorDimension(candidate.x);
