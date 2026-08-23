@@ -10,7 +10,7 @@ Pedagogue has three related bodies:
 2. **Lineage Spine / temporal audit** — Potato’s versioned ASP → Flow-Core → Dome-World synthesis, provenance lenses, Institutional Time, dromological sequence/cadence analysis, recurrence audit, and challenge-card routing.
 3. **Research metabolism** — source-faithful research hydration, bounded assay authoring, mathematical counterpoints, criterion-family separation, mechanism refinement, falsifier preservation, and explicit non-promotion.
 
-Neither body grants autonomous redesign, experiment execution, custody mutation, release, or production authority.
+None of these bodies grants autonomous redesign, experiment execution, custody mutation, release, or production authority.
 
 ## Reach rule
 
@@ -71,8 +71,8 @@ The source graph is versioned. A thinker or routed knowledge tradition may alrea
 
 Canonical lineage implementation:
 
-- `app/engine/pedagogue-lineage-spine-v02.js` — active chronology-safe spine;
-- `app/engine/pedagogue-lineage-spine.js` — preserved v0.1 historical encoding base;
+- `app/engine/pedagogue-lineage-spine.js` — chronology-safe Potato lineage base;
+- `app/engine/pedagogue-lineage-spine-v02.js` — scholarly challenge-card extension over the same chronology; it does not remap first-entry history;
 - `app/engine/pedagogue-institutional-time.js`;
 - `app/engine/pedagogue-recurrence-audit.js`.
 
@@ -121,6 +121,32 @@ EARLIER_SPINE_STATE_UNRESOLVED
 ```
 
 This matters especially for Graeber: the supplied ASP excerpt already names him, while later Flow-Core/Dome-World work visibly reweights his role toward claims on Time, bureaucracy, interpretive labor, category calcification, and release. Later reweighting does not back-write a false first-entry date.
+
+### Canonical lineage inventory
+
+The original supplied ASP constellation is represented explicitly:
+
+- Maria Montessori;
+- Loris Malaguzzi / Reggio Emilia;
+- Rudolf Steiner;
+- Alice Miller;
+- R. D. Laing;
+- David Graeber.
+
+Later Flow-Core / Dome-World documentary routes additionally include:
+
+- John Dewey;
+- John Taylor Gatto;
+- Jane Jacobs;
+- David Graeber & David Wengrow.
+
+Routed knowledge lines additionally include:
+
+- A:shiwi / Zuni spatial knowledge as routed by Potato;
+- Indigenous relational epistemologies as routed by Potato;
+- traditional Chinese process-oriented thought as routed by Potato.
+
+Jakob Steiner remains outside Potato’s ancestry as a later TD613 mathematical counterpoint.
 
 ### Provenance lenses
 
@@ -370,7 +396,7 @@ Keep product names, source-thinker authority, paper-specific ontology, fixture l
 
 A nested surface can teach the architecture how to bind products into AIA without turning product names into new AIA routes. The generic `flowcore-aia-surface-binding.js` primitive binds a Dome-hosted surface to the four canonical non-equivalent AIA projections while preserving invariant verification, explicit route selection, bounded authority, rest/exit, and human closure.
 
-Bikini Bottom may teach the generic practice-fixture mechanic; Bikini Bottom does not become Pedagogue ontology. Likewise, Montessori, Malaguzzi, Rudolf Steiner, Graeber, A:shiwi routed knowledge, Jakob Steiner, tomography, moiré, phasonics, stylometry, inverse design, or quantum-geometry papers may teach or motivate experimental relations; their whole ontology does not transfer into TD613 by analogy.
+Bikini Bottom may teach the generic practice-fixture mechanic; Bikini Bottom does not become Pedagogue ontology. Likewise, Montessori, Malaguzzi, Rudolf Steiner, Alice Miller, R. D. Laing, Dewey, Gatto, Jacobs, Graeber, Graeber & Wengrow, A:shiwi routed knowledge, wider Indigenous relational routes, traditional Chinese process-oriented thought, Jakob Steiner, tomography, moiré, phasonics, stylometry, inverse design, or quantum-geometry papers may teach or motivate experimental relations; their whole ontology does not transfer into TD613 by analogy.
 
 ## Companion instrument · Aperture
 

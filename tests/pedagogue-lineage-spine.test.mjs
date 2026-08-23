@@ -15,7 +15,8 @@ test('Pedagogue lineage spine preserves Potato as synthesis layer without false 
   assert.equal(spine.chronology_semantics.first_documented_in_is_not_proven_first_introduction, true);
   assert.equal(spine.chronology_semantics.undocumented_earlier_states_remain_possible, true);
   assert.equal(spine.chronology_semantics.later_reweighting_does_not_rewrite_earlier_presence, true);
-  assert.equal(spine.chronology_semantics.v01_preserved_as_historical_encoding_base, true);
+  assert.equal(spine.chronology_semantics.base_spine_chronology_safe, true);
+  assert.equal(spine.chronology_semantics.scholarly_extension_does_not_rewrite_base_chronology, true);
   assert.equal(spine.flat_saint_list_forbidden, true);
   assert.equal(spine.thinker_vote_forbidden, true);
   assert.equal(spine.convergence_is_truth, false);

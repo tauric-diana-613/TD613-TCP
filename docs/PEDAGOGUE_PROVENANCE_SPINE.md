@@ -1,6 +1,6 @@
 # Flow-Core Pedagogue · Provenance Spine and Institutional-Time Extension
 
-Status: **AUTHORED / PRE-IMPLEMENTATION / HUMAN-GATED**
+Status: **IMPLEMENTED / DRAFT RESEARCH PR / HUMAN-GATED**
 
 This extension restores a distinction that is easy to lose once Pedagogue becomes mathematically and agentically sophisticated:
 
@@ -16,12 +16,13 @@ Pedagogue keeps two non-equivalent provenance systems.
 
 ### 1.1 Lineage Spine
 
-The Lineage Spine records how a concept entered Potato's work and how TD613 later operationalized it.
+The Lineage Spine records how a concept is documented in Potato's work and how TD613 later operationalized it.
 
 ```text
 source / thinker / routed knowledge
 → source concept
-→ Potato synthesis stage
+→ first supplied documentary stage
+→ Potato synthesis route
 → derived Dome-World / Flow-Core principle
 → mathematical abstraction
 → Pedagogue mechanism
@@ -48,7 +49,7 @@ The spine is evolutionary.
 
 At minimum it distinguishes:
 
-- `ASP_EARLY` — the early Adaptive Systems Patterning constellation described by Potato;
+- `ASP_DOCUMENTED_CONSTELLATION` — documented at or before the supplied Adaptive Systems Patterning excerpt; earlier spine state remains unresolved;
 - `FLOW_CORE_GOVERNANCE` — later process/state, institutional-time, bureaucracy, ambient cognition, and release synthesis;
 - `DOME_WORLD_CHILD_LIBERATION` — built-environment, child sovereignty, temporal sovereignty, community embedding, safety-by-relation, and legibility synthesis;
 - `TD613_PEDAGOGUE_OPERATIONALIZATION` — computational abstractions and current mechanisms.
@@ -56,21 +57,22 @@ At minimum it distinguishes:
 Every lineage node must preserve:
 
 ```text
-introduced_in
+first_documented_in
+introduction_precision
 routed_through[]
 operationalized_as[]
 tensions[]
 authority_ceiling
 ```
 
-A later appearance must not be back-written into an earlier stage.
+`first_documented_in` means first documentary stage supported by the supplied corpus, not proven first historical introduction. Undocumented earlier states remain possible. Later reweighting must not be back-written as a false first-entry date.
 
 ## 3. Potato is the indispensable middle layer
 
 The graph must not imply:
 
 ```text
-Montessori + Steiner + Malaguzzi + Graeber -> Pedagogue
+thinker list -> Pedagogue
 ```
 
 The admissible genealogy is:
@@ -86,11 +88,37 @@ source lineages
 → bounded Pedagogue agent
 ```
 
+### 3.1 Canonical lineage inventory in this patch
+
+The supplied ASP constellation is represented explicitly as:
+
+- Maria Montessori;
+- Loris Malaguzzi / Reggio Emilia;
+- Rudolf Steiner;
+- Alice Miller;
+- R. D. Laing;
+- David Graeber.
+
+Later Flow-Core / Dome-World documentary routes additionally include:
+
+- John Dewey;
+- John Taylor Gatto;
+- Jane Jacobs;
+- David Graeber & David Wengrow.
+
+Routed knowledge lines additionally include:
+
+- A:shiwi / Zuni spatial knowledge as routed by Potato;
+- Indigenous relational epistemologies as routed by Potato;
+- traditional Chinese process-oriented thought as routed by Potato.
+
+Jakob Steiner is deliberately **not** inserted into Potato's lineage. He is a later TD613 mathematical counterpoint with an explicit identity-collision firewall separating him from Rudolf Steiner.
+
 ## 4. Core provenance lenses
 
 A lineage lens asks an operational question. It does not impersonate the thinker and it does not vote.
 
-Initial lens family:
+Current lens family:
 
 - `PREPARED_ENVIRONMENT` — can the environment make the appropriate action legible without additional command?
 - `THIRD_TEACHER_DOCUMENTATION` — what is the environment teaching through its structure, and is process witnessed rather than reduced to a score?
@@ -102,6 +130,10 @@ Initial lens family:
 - `COMMUNITY_EMBEDDEDNESS` — is knowledge embedded in a navigable shared world or segregated into a managed specialist zone?
 - `TEMPORAL_SOVEREIGNTY` — whose clock controls the transition, and can rest/exit remain structurally available?
 - `LEGIBILITY_WITHOUT_EXPERT_MONOPOLY` — can a participant inspect enough of the mechanism to participate without surrendering interpretive sovereignty?
+- `EPISTEMIC_REFRACTION` — what separates an access claim from the interpretation imposed on it and the authority later granted to that interpretation?
+- `RACIAL_HIERARCHY_QUARANTINE` — does any derived mechanism import racial hierarchy, racialized developmental ranking, or authority from a contaminated source route?
+- `INSTITUTIONAL_TIME` — did institutional action begin before registration or causal context caught up, and which actor clock governed the consequence?
+- `DROMOLOGICAL_COMPRESSION` — what relation disappeared when a lived route was compressed into administratively cheaper states?
 
 Lens outputs must preserve:
 
@@ -128,6 +160,8 @@ Separate edges include:
 4. epistemic-refraction case: possible useful access or observation does not imply partition-free interpretation;
 5. racial-hierarchy quarantine: racist racial/evolutionary hierarchy carries no Pedagogue authority.
 
+Modern scholarly challenge cards additionally examine a Goethe → Steiner active-observation route: sustained observation, postponement of theoretical judgment, imaginative reconstruction of transformation, and the relation between perception and concept. These cards sharpen questions about observation order and observer activity; they do not establish outcome superiority, hidden-state access, or empirical validation of Anthroposophic metaphysics.
+
 The governing anti-equivalences are:
 
 ```text
@@ -135,6 +169,7 @@ metaphysical lineage != racial hierarchy
 scientific/pedagogical salvage != source exoneration
 source recurrence != source authority
 access claim != interpretation != governance authority
+functional rhyme != proven genealogy
 quarantine != erasure of provenance
 ```
 
@@ -235,15 +270,17 @@ When present, results are **diagnostic annotations**, not automatic redesign aut
 
 ## 11. Modern scholarship as challenge cards
 
-Modern scholarship may be attached to a lineage node as `SUPPORTS`, `COMPLICATES`, `CONTESTS`, or `QUARANTINES`.
+Modern scholarship may be attached to a lineage node as `SUPPORTS`, `SUPPORTS_AND_BOUNDS`, `COMPLICATES`, `COMPLICATES_AND_EXTENDS`, `CONTESTS`, or `QUARANTINES`.
 
-Examples admitted for the first implementation pass include:
+The current implementation includes bounded challenge routes for:
 
 - Montessori evidence reviews on prepared environment / self-directed engagement;
 - Reggio Emilia scholarship on environment as third teacher and pedagogical documentation;
 - contemporary Waldorf scholarship on curriculum/rhythm/integration;
 - scholarly historical criticism of Steiner's racial teachings;
-- later research on documentation, temporal autonomy, learning environments, or institutional classification when it directly tests a derived mechanism.
+- 2025 history/philosophy scholarship on Goethe-to-Steiner active observation (`doi:10.1007/s40656-025-00681-7`);
+- a 2026 Waldorf-science perspective on direct observation and postponement of theoretical judgment (`doi:10.1007/s44217-026-01523-9`);
+- a 2026 phenomenology/Goethean-science paper on disciplined imagination and perception (`doi:10.1177/00221678261421324`).
 
 A challenge card may alter a research question. It may not rewrite historical provenance.
 

@@ -88,7 +88,8 @@ export function compilePedagogueLineageSpine() {
       first_documented_in_is_not_proven_first_introduction: true,
       undocumented_earlier_states_remain_possible: true,
       later_reweighting_does_not_rewrite_earlier_presence: true,
-      v01_preserved_as_historical_encoding_base: true
+      base_spine_chronology_safe: true,
+      scholarly_extension_does_not_rewrite_base_chronology: true
     }),
     flat_saint_list_forbidden: true,
     thinker_vote_forbidden: true,
