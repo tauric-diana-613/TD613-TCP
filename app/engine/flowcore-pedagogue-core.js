@@ -70,4 +70,10 @@ export {
   compileInstitutionalTimeAudit,
   compileDromologicalSequenceAudit
 } from './pedagogue-institutional-time.js';
+export {
+  PEDAGOGUE_RECURRENCE_AUDIT_SCHEMA,
+  PEDAGOGUE_RECURRENCE_EXPOSURE_CLASSES,
+  PEDAGOGUE_RECURRENCE_EVIDENCE_POSTURES,
+  compilePedagogueRecurrenceAudit
+} from './pedagogue-recurrence-audit.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
