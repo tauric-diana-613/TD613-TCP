@@ -91,4 +91,5 @@ await import('./ash-a15-r0-aperture-pedagogue-typed-policy-state-aliasing.test.m
 await import('./ash-a15-r0-aperture-pedagogue-minimal-decision-custody-state.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-noisy-orientation-provenance-independence.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-joint-decision-custody-hold-composition.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-decision-transition-append-only-custody-replay.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
