@@ -47,12 +47,16 @@ const shared = evaluateSharedEndpointFamily({
   beta: { lo: 1.8, hi: 2.2 },
 });
 assert.equal(shared.shared_parameter_covenant, true);
+assert.deepEqual(shared.symbolic_endpoint_formula_AB, shared.symbolic_endpoint_formula_BA);
+assert.equal(shared.pointwise_endpoint_identity_certified_over_declared_family, true);
+assert.equal(shared.corner_comparisons_are_diagnostic_only, true);
 assert.equal(shared.corner_comparisons.length, 4);
+assert.equal(shared.all_frozen_corners_agree, true);
+assert.equal(shared.anti_equivalence, 'FOUR_AGREEING_CORNERS_DO_NOT_PROVE_AN_ARBITRARY_NONLINEAR_FAMILY');
 for (const comparison of shared.corner_comparisons) {
   assert.equal(comparison.equal, true);
   assert.deepEqual(comparison.AB, comparison.BA);
 }
-assert.equal(shared.pointwise_endpoint_equality_over_frozen_corners, true);
 
 const hostile = evaluateEndpointHostile();
 assert.deepEqual(hostile.AB, [[4, 1], [1, 4]]);
@@ -84,11 +88,12 @@ assert.equal(result.passed, true);
 for (const [key, value] of Object.entries(result.criteria)) {
   assert.equal(value, true, `${key} must hold`);
 }
+assert.equal(result.representation_epsilon, 1e-12);
 assert.equal(
   result.canonical_bounded_scientific_claim,
   'ROUTE_CONDITIONED_ACTION_INDEXED_OBSERVATION_TRANSCRIPTS_CAN_REMAIN_SET_WISE_SEPARABLE_OVER_A_DECLARED_SHARED_FAMILY_OF_COMMUTING_ADDITIVE_TRANSITION_MAGNITUDES_AND_DETERMINISTIC_BOUNDED_MEASUREMENT_ERROR_WHILE_A_SMALLER_EFFECT_FAMILY_CAN_BECOME_UNRESOLVED_AND_ROUTE_DEPENDENT_ENDPOINT_DRIFT_BLOCKS_THE_COMMON_ENDPOINT_CLAIM_IN_THE_AUTHORED_2X2_FIXTURE',
 );
-assert.equal(result.next_learning_action, 'HUMAN_𝄐_REQUIRED_BEFORE_PATH_OBJECT_OR_TRANSPORT_FORMALIZATION');
+assert.equal(result.next_learning_action, 'CONTINUE_TO_BOUNDED_TRANSCRIPT_COMPRESSION_AND_PARTIAL_CUSTODY_ASSAYS_BEFORE_HUMAN_𝄐');
 
 for (const key of [
   'general_robust_path_dependence_theorem_earned',
