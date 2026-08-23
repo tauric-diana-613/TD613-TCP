@@ -51,4 +51,39 @@ export {
   PEDAGOGUE_RESEARCH_CRITERION_ROLES,
   compilePedagogueResearchCriterionFamily
 } from './pedagogue-research-criterion-family.js';
+export {
+  PEDAGOGUE_LINEAGE_SPINE_SCHEMA,
+  PEDAGOGUE_LINEAGE_REVIEW_SCHEMA,
+  PEDAGOGUE_LINEAGE_STAGES,
+  PEDAGOGUE_LINEAGE_FINDING_POSTURES,
+  PEDAGOGUE_LINEAGE_NODES,
+  PEDAGOGUE_LINEAGE_CHALLENGE_CARDS,
+  compilePedagogueLineageSpine,
+  tracePedagogueLineage,
+  compilePedagogueLineageReview
+} from './pedagogue-lineage-spine-v02.js';
+export { PEDAGOGUE_LINEAGE_LENSES } from './pedagogue-lineage-spine.js';
+export {
+  PEDAGOGUE_LINEAGE_SECOND_PASS_SCHEMA,
+  PEDAGOGUE_LINEAGE_SECOND_PASS_SIGNALS,
+  compilePedagogueLineageSecondPass
+} from './pedagogue-lineage-second-pass.js';
+export {
+  PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
+  PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
+  PEDAGOGUE_CLOSURE_CLASSES,
+  compileInstitutionalTimeAudit,
+  compileDromologicalSequenceAudit
+} from './pedagogue-institutional-time.js';
+export {
+  PEDAGOGUE_RECURRENCE_AUDIT_SCHEMA,
+  PEDAGOGUE_RECURRENCE_EXPOSURE_CLASSES,
+  PEDAGOGUE_RECURRENCE_EVIDENCE_POSTURES,
+  compilePedagogueRecurrenceAudit
+} from './pedagogue-recurrence-audit.js';
+export {
+  PEDAGOGUE_MATHEMATICAL_COUNTERPOINT_SCHEMA,
+  PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS,
+  tracePedagogueMathematicalCounterpoint
+} from './pedagogue-mathematical-counterpoints.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';

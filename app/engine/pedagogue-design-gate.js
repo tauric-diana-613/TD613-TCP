@@ -3,7 +3,11 @@ import {
   compilePedagogicalTransition,
   compileRestState,
   compileTransferEncounter,
-  comparePedagogueRouteMemory
+  comparePedagogueRouteMemory,
+  compilePedagogueLineageReview,
+  compilePedagogueLineageSecondPass,
+  compileInstitutionalTimeAudit,
+  compileDromologicalSequenceAudit
 } from './flowcore-pedagogue-core.js';
 import {
   AIA_ROUTE_IDS,
@@ -27,7 +31,7 @@ import {
 } from './pedagogue-interface-diagnosis.js';
 
 export const PEDAGOGUE_DESIGN_FIXTURE_SCHEMA = 'td613.pedagogue-design-fixture/v0.1';
-export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.3';
+export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.5';
 
 function clone(value) {
   return value === null || typeof value !== 'object'
@@ -162,6 +166,23 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
   const interfaceDiagnosis = fixture.interface_specimen
     ? compilePedagogueInterfaceDiagnosis(fixture.interface_specimen)
     : null;
+  const lineageReview = fixture.lineage_review
+    ? compilePedagogueLineageReview(fixture.lineage_review)
+    : null;
+  const institutionalTimeAudit = fixture.institutional_time_case
+    ? compileInstitutionalTimeAudit(fixture.institutional_time_case)
+    : null;
+  const cadenceAudit = fixture.cadence_case
+    ? compileDromologicalSequenceAudit(fixture.cadence_case)
+    : null;
+  const lineageSecondPass = compilePedagogueLineageSecondPass({
+    pass_id: `${fixture.design_id}:lineage-second-pass`,
+    interface_diagnosis: interfaceDiagnosis,
+    institutional_time_audit: institutionalTimeAudit,
+    cadence_audit: cadenceAudit,
+    burden_comparison: burdenComparison,
+    declared_system_signals: fixture.lineage_second_pass_signals || []
+  });
 
   return Object.freeze({
     schema: PEDAGOGUE_DESIGN_REVIEW_SCHEMA,
@@ -184,6 +205,10 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
     proposed_burden: proposedBurden,
     burden_comparison: burdenComparison,
     interface_diagnosis: interfaceDiagnosis,
+    lineage_review: lineageReview,
+    institutional_time_audit: institutionalTimeAudit,
+    cadence_audit: cadenceAudit,
+    lineage_second_pass: lineageSecondPass,
     design_gate: {
       consequence_before_ontology: true,
       rest_and_exit_preserved: cycle.restState.penalty === false && cycle.restState.exit_available === true,
@@ -197,6 +222,26 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
         interfaceDiagnosis.authority.product_mutation_authorized === false &&
         interfaceDiagnosis.authority.automatic_redesign === false &&
         interfaceDiagnosis.authority.human_closure_required === true
+      ),
+      lineage_review_non_authoritative: !lineageReview || (
+        lineageReview.product_mutation_authorized === false &&
+        lineageReview.automatic_redesign === false &&
+        lineageReview.human_closure_required === true
+      ),
+      institutional_time_audit_non_authoritative: !institutionalTimeAudit || (
+        institutionalTimeAudit.authority.production_mutation_authorized === false &&
+        institutionalTimeAudit.authority.human_closure_required === true
+      ),
+      cadence_audit_non_authoritative: !cadenceAudit || (
+        cadenceAudit.authority.production_mutation_authorized === false &&
+        cadenceAudit.authority.automatic_redesign === false &&
+        cadenceAudit.authority.human_closure_required === true
+      ),
+      lineage_second_pass_non_authoritative: (
+        lineageSecondPass.authority.product_mutation_authorized === false &&
+        lineageSecondPass.authority.production_mutation_authorized === false &&
+        lineageSecondPass.authority.automatic_redesign === false &&
+        lineageSecondPass.authority.human_closure_required === true
       ),
       human_closure_required: surfaceFamily.report.human_closure_required === true
     }

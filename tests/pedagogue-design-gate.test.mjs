@@ -1,3 +1,8 @@
 import './pedagogue-design-gate.base.test.mjs';
 import './pedagogue-observation-custody.test.mjs';
 import './pedagogue-window-latch-m2.test.mjs';
+import './pedagogue-lineage-spine.test.mjs';
+import './pedagogue-lineage-second-pass.test.mjs';
+import './pedagogue-institutional-time.test.mjs';
+import './pedagogue-provenance-time-integration.test.mjs';
+import './pedagogue-recurrence-counterpoints.test.mjs';
