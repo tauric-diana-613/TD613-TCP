@@ -2,13 +2,13 @@
 
 This is the **canonical repository shortcut** into the Flow-Core Pedagogue program.
 
-An agent should begin here rather than discovering Pedagogue by scattered imports. The implementation is intentionally distributed; the identity, reach rules, authority boundary, intellectual ancestry, temporal audit grammar, and current research metabolism are housed here.
+An agent should begin here rather than discovering Pedagogue by scattered imports. The implementation is intentionally distributed; the identity, reach rules, authority boundary, intellectual ancestry, temporal audit grammar, recurrence controls, mathematical counterpoints, and current research metabolism are housed here.
 
 Pedagogue has three related bodies:
 
 1. **Design Gate / practice pedagogy** — consequence order, AIA route structure, route burden, route memory, custody/refusal sequencing, human closure, and harmless known-ground-truth practice routes.
-2. **Lineage Spine / temporal audit** — Potato’s versioned ASP → Flow-Core → Dome-World synthesis, provenance lenses, Institutional Time, dromological sequence/cadence analysis, and challenge-card routing.
-3. **Research metabolism** — source-faithful research hydration, bounded assay authoring, criterion-family separation, mechanism refinement, falsifier preservation, and explicit non-promotion.
+2. **Lineage Spine / temporal audit** — Potato’s versioned ASP → Flow-Core → Dome-World synthesis, provenance lenses, Institutional Time, dromological sequence/cadence analysis, recurrence audit, and challenge-card routing.
+3. **Research metabolism** — source-faithful research hydration, bounded assay authoring, mathematical counterpoints, criterion-family separation, mechanism refinement, falsifier preservation, and explicit non-promotion.
 
 Neither body grants autonomous redesign, experiment execution, custody mutation, release, or production authority.
 
@@ -25,6 +25,7 @@ Reach for Pedagogue when a product, workflow, ontology, research fixture, or pro
 - a consequential workspace that needs a harmless practice case;
 - a research claim that needs a falsifier, negative control, model-scope boundary, or explicit forbidden inference;
 - a repeated cross-domain relation that may be worth an independent assay but must not become ontology by repetition alone;
+- a repeated named coordinate whose recurrence may be confounded by alias collision, shared exposure, or corpus breadth;
 - a design claim whose intellectual provenance matters to the mechanism being proposed;
 - a process where institutional action, registration, public visibility, or causal context occur on different clocks;
 - a route where naming, assessment, interruption, rest, or exit may be temporally misordered;
@@ -66,16 +67,19 @@ Read the full design contracts in:
 
 Pedagogue is not a generic agent to which pedagogy was attached later. Its computational ancestry runs through **Potato’s evolving Adaptive Systems Patterning → Flow-Core → Dome-World synthesis**.
 
-The source graph is versioned. A thinker or routed knowledge tradition may enter one stage, be reweighted later, acquire challenge evidence, or be quarantined without rewriting earlier history.
+The source graph is versioned. A thinker or routed knowledge tradition may already be present in the earliest supplied record, be reweighted later, acquire challenge evidence, or be quarantined without rewriting earlier history.
 
 Canonical lineage implementation:
 
-- `app/engine/pedagogue-lineage-spine.js`
-- `app/engine/pedagogue-institutional-time.js`
+- `app/engine/pedagogue-lineage-spine-v02.js` — active chronology-safe spine;
+- `app/engine/pedagogue-lineage-spine.js` — preserved v0.1 historical encoding base;
+- `app/engine/pedagogue-institutional-time.js`;
+- `app/engine/pedagogue-recurrence-audit.js`.
 
 Canonical explanation:
 
 - [`docs/PEDAGOGUE_PROVENANCE_SPINE.md`](docs/PEDAGOGUE_PROVENANCE_SPINE.md)
+- [`docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md`](docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md)
 
 The lineage route is:
 
@@ -96,6 +100,27 @@ The indispensable middle layer is **Potato’s synthesis**. Do not flatten the g
 ```text
 thinker list -> Pedagogue
 ```
+
+### Chronology semantics
+
+The active v0.2 spine deliberately uses:
+
+```text
+first_documented_in
+introduction_precision
+later_reweighting
+```
+
+rather than treating the first document currently available to TD613 as proof of first historical introduction.
+
+For the supplied ASP constellation, the admissible statement is:
+
+```text
+DOCUMENTED_AT_OR_BEFORE_SUPPLIED_ASP_EXCERPT
+EARLIER_SPINE_STATE_UNRESOLVED
+```
+
+This matters especially for Graeber: the supplied ASP excerpt already names him, while later Flow-Core/Dome-World work visibly reweights his role toward claims on Time, bureaucracy, interpretive labor, category calcification, and release. Later reweighting does not back-write a false first-entry date.
 
 ### Provenance lenses
 
@@ -122,7 +147,7 @@ A review may preserve `CONVERGENCE`, `DIVERGENCE`, `NORMATIVE_ASSUMPTION`, `EMPI
 
 Convergence does not create authority.
 
-### Steiner · recurrent multi-route coordinate
+### Rudolf Steiner · recurrent multi-route coordinate
 
 Rudolf Steiner is not reduced to one Waldorf/rhythm edge and is not granted whole-corpus authority.
 
@@ -136,6 +161,8 @@ EPISTEMIC_REFRACTION
 RACIAL_HIERARCHY_QUARANTINE
 ```
 
+Modern challenge cards additionally examine the Goethe→Steiner active-observation lineage: sustained observation, postponement of theoretical judgment, imaginative reconstruction of transformation, and the relation between perception and concept. These cards are scholarly challenges/counterpoints, not proof that Potato derived Pedagogue from this exact source route and not empirical validation of Anthroposophic metaphysics.
+
 The governing anti-equivalences are:
 
 ```text
@@ -143,12 +170,32 @@ metaphysical lineage != racial hierarchy
 scientific/pedagogical salvage != source exoneration
 source recurrence != source authority
 access claim != interpretation != governance authority
+functional rhyme != proven genealogy
 quarantine != erasure of provenance
 ```
 
 No racial hierarchy, racialized developmental ranking, hidden racial ontology, age-derived learner hierarchy, or developmental-rank field may enter Pedagogue runtime logic.
 
 Steiner’s metaphysical lineage remains provenance; the firewall applies to inadmissible racial hierarchy and authority transfer, not to the mere existence of metaphysical questions.
+
+### Recurrence audit
+
+Repeated coordinates are not self-authenticating. `pedagogue-recurrence-audit.js` distinguishes at minimum:
+
+```text
+ENTITY_COLLISION
+SHARED_SOURCE_INHERITANCE
+DIRECT_EXPOSURE
+HIGH_DEGREE_BREADTH_EFFECT
+INDEPENDENT_FUNCTIONAL_RECURRENCE
+UNKNOWN
+```
+
+A bare repeated name is never enough.
+
+Unknown exposure does not count as independence. A high-degree transdisciplinary corpus cannot be ignored when evaluating recurrence in a transdisciplinary lab. A shared mechanism across independently routed cases may become an `INDEPENDENT_FUNCTIONAL_RECURRENCE_CANDIDATE`; it does not become proof of common cause, metaphysical truth, genealogy, or source authority.
+
+The surname `Steiner` now has an explicit prospective identity control because Rudolf Steiner and Jakob Steiner are distinct coordinates. No prior TD613 recurrence is reclassified as an alias collision merely because the collision is possible.
 
 ### A:shiwi / Indigenous routing
 
@@ -183,6 +230,8 @@ Pi(s) = t_inst - t_op
 
 A positive gap means the system **acts before it counts**. A null `t_inst` remains non-registration rather than an invented timestamp.
 
+Temporal custody uses declared safe-integer ticks and closure millipoints so the resulting receipt remains canonically serializable and replayable under TD613’s custody law.
+
 The generic audit also preserves closure (`closed / drift / suppressed / inexpressible`), optional bounded influence/beacon posture, explicit compression mappings, and the distinction between institutional and physical Time Travel.
 
 Pedagogue’s consequence order is additionally available as a dromological partial-order audit:
@@ -206,6 +255,34 @@ CONTEXT_REGISTRATION_LAG
 Cadence thresholds are fixture-declared. Pedagogue may not infer them from age, diagnosis, identity, developmental rank, or a hidden learner profile.
 
 Aperture’s Temporal Lab remains the observatory/pilot surface. Pedagogue supplies the generic temporal grammar; it does not need a duplicate Temporal Lab UI.
+
+## Mathematical counterpoints · research-side, not ancestry
+
+A mathematical counterpoint is introduced by TD613 when an external mathematical construction appears useful for attacking or sharpening an already-declared Pedagogue mechanism.
+
+```text
+mathematical counterpoint != lineage ancestor
+mathematical rhyme != shared ontology
+named object != complete authorship provenance
+```
+
+Current counterpoints live in:
+
+- `app/engine/pedagogue-mathematical-counterpoints.js`
+- [`docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md`](docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md)
+
+### Jakob Steiner
+
+Jakob Steiner (1796–1863), the Swiss projective geometer, is a **new TD613 research coordinate** and is not retroactively inserted into Potato’s lineage.
+
+Two bounded cards are currently admitted:
+
+1. **Projective dependence / synthetic geometry** — asks whether non-equivalent AIA projections preserve a declared relational invariant in a way usefully attacked by projective-geometric reasoning.
+2. **Combinatorial coverage** — uses the modern Steiner-system/block-design family as a candidate language for controlled relation coverage under a fixed probe budget.
+
+The combinatorial card preserves the historical naming caveat: modern “Steiner system” terminology does not establish exclusive authorship of the full modern theory; related triple-system results predate Jakob Steiner’s 1853 paper.
+
+No card assumes projective geometry is TD613 ontology, that balanced incidence is epistemically optimal, or that Jakob and Rudolf share intellectual provenance because they share a surname.
 
 ## Research metabolism
 
@@ -259,11 +336,14 @@ Modern scholarship may challenge a lineage-derived relation through a lineage ch
 - recommendation, never automatic redesign;
 - source class and source-date precision as evidence;
 - model scope, alternatives, falsifiers, and forbidden inference;
+- chronology without fake first-introduction precision;
 - intellectual provenance without thinker voting;
 - metaphysical provenance without automatic empirical promotion;
 - racial-hierarchy quarantine without provenance erasure;
+- recurrence without alias/exposure/breadth laundering;
 - Institutional Time analysis without person diagnosis or intent inference;
 - fixture-declared cadence without age/developmental profiling;
+- mathematical counterpoints without ancestry laundering;
 - bounded station authority and mandatory human closure.
 
 ## Canonical Practice Fixture
@@ -284,13 +364,13 @@ The Ash/Loom calibration fixture remains test/research-only and does not bind th
 
 ## How products, ancestry, and research teach the engine
 
-A product fixture, lineage route, or research assay may reveal a reusable mechanism. Promote that mechanism into shared core only when it is generic, independently testable, and does not widen authority.
+A product fixture, lineage route, mathematical counterpoint, or research assay may reveal a reusable mechanism. Promote that mechanism into shared core only when it is generic, independently testable, and does not widen authority.
 
 Keep product names, source-thinker authority, paper-specific ontology, fixture labels, and business rules out of shared core. The shared Pedagogue core should describe the mechanism, while provenance tells us how the question arrived.
 
 A nested surface can teach the architecture how to bind products into AIA without turning product names into new AIA routes. The generic `flowcore-aia-surface-binding.js` primitive binds a Dome-hosted surface to the four canonical non-equivalent AIA projections while preserving invariant verification, explicit route selection, bounded authority, rest/exit, and human closure.
 
-Bikini Bottom may teach the generic practice-fixture mechanic; Bikini Bottom does not become Pedagogue ontology. Likewise, Montessori, Malaguzzi, Steiner, Graeber, A:shiwi routed knowledge, tomography, moiré, phasonics, stylometry, inverse design, or quantum-geometry papers may teach or motivate experimental relations; their whole ontology does not transfer into TD613 by analogy.
+Bikini Bottom may teach the generic practice-fixture mechanic; Bikini Bottom does not become Pedagogue ontology. Likewise, Montessori, Malaguzzi, Rudolf Steiner, Graeber, A:shiwi routed knowledge, Jakob Steiner, tomography, moiré, phasonics, stylometry, inverse design, or quantum-geometry papers may teach or motivate experimental relations; their whole ontology does not transfer into TD613 by analogy.
 
 ## Companion instrument · Aperture
 
