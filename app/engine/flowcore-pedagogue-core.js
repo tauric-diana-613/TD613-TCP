@@ -57,12 +57,12 @@ export {
   PEDAGOGUE_LINEAGE_STAGES,
   PEDAGOGUE_LINEAGE_FINDING_POSTURES,
   PEDAGOGUE_LINEAGE_NODES,
-  PEDAGOGUE_LINEAGE_LENSES,
   PEDAGOGUE_LINEAGE_CHALLENGE_CARDS,
   compilePedagogueLineageSpine,
   tracePedagogueLineage,
   compilePedagogueLineageReview
 } from './pedagogue-lineage-spine-v02.js';
+export { PEDAGOGUE_LINEAGE_LENSES } from './pedagogue-lineage-spine.js';
 export {
   PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
   PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
