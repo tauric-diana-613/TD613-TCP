@@ -17,6 +17,7 @@ await import('./ash-a15-r0-aperture-pedagogue-bilinear-program-synthesis.test.mj
 await import('./ash-a15-r0-aperture-pedagogue-route-conditioned-observation-transcript.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-route-transcript-robustness.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-transcript-compression-collision.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-partial-event-custody-projection.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
