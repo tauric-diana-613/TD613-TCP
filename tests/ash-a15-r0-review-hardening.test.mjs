@@ -14,6 +14,7 @@ await import('./ash-a15-r0-aperture-pedagogue-transition-operator-sequential-con
 await import('./ash-a15-r0-aperture-pedagogue-operator-response-reconstruction-coordinate-equivalence.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-admissible-bilinear-probe-geometry.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-bilinear-program-synthesis.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-route-conditioned-observation-transcript.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
