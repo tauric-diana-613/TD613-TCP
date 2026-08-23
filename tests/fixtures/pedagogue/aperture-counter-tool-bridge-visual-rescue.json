@@ -1,0 +1,101 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "aperture-counter-tool-bridge-visual-rescue",
+  "surface_reference": "Aperture/Counter-Tool Field + Reciprocal Receipt Bridge",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-08-22T20:00:00Z",
+    "idSeed": "aperture-counter-tool-bridge-visual-rescue-v1",
+    "idScope": "Aperture"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "aperture_pedagogue_surface_v1",
+    "provenance": {
+      "source_references": ["app/aperture/pedagogue-surface.js", "app/aperture/tool.html#humanRoutePanel", "app/aperture/tool.html#reciprocalReceiptBridgePanel"],
+      "evidence_basis": ["rendered desktop right-lane inspection", "rendered narrow and mobile inspection", "existing bridge authority contract"],
+      "transformations": ["replace one-per-row route slabs with compact parallel choices", "separate observed bridge state from operator agency", "reveal route ontology after selection"],
+      "station_owners": ["Dome-World", "Aperture"]
+    },
+    "visible_condition": {
+      "plain_language": "Choose what to inspect, then see how far a receipt has genuinely traveled without confusing observation with authority.",
+      "surface_reference": "Aperture/Counter-Tool Field + Reciprocal Receipt Bridge"
+    },
+    "available_affordances": [{
+      "action_id": "choose_counter_reading_route",
+      "purpose": "Choose current field, one trace, or a comparison before opening route-specific controls.",
+      "authorized_by_station": "Human",
+      "reversible": true
+    }],
+    "route_topology": {
+      "entry": "compact consequence-first route strip",
+      "exit": "return to current field or continue scrolling without acting",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {"step_id":"choose_route","label":"Choose what to inspect","phase":"NOTICE","required_fields":["current field","one trace","compare traces"],"dependencies":[],"legibility_millipoints":960,"affordance_millipoints":960,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+        {"step_id":"declare_route","label":"Select a compact route chip","phase":"ACT","required_fields":["selected route","one-line consequence"],"dependencies":["choose_route"],"legibility_millipoints":950,"affordance_millipoints":970,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"inspect_receipt_progress","label":"Inspect reached receipt stages","phase":"WORLD_ANSWERS","required_fields":["reached stages","furthest genuine stage","authority remains local"],"dependencies":["declare_route"],"legibility_millipoints":950,"affordance_millipoints":940,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"operate_or_rest","label":"Use separate operator controls or leave the bridge untouched","phase":"TRANSFER","required_fields":["operator actions","rest","exit","human gate"],"dependencies":["inspect_receipt_progress"],"legibility_millipoints":940,"affordance_millipoints":960,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true}
+      ]
+    },
+    "causal_structure": {
+      "input": "human route selection or an already-known bridge runtime state",
+      "operator": "Pedagogue presentation and bounded educational playback",
+      "observable": "compact route consequences and a receipt marker limited to genuinely reached stages",
+      "authority": "human operator and existing Aperture bridge handlers",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can compact parallel choices and a state-bounded bridge instrument reduce visual burden while preserving route history and authority separation?",
+      "hypothesis": "A three-chip route strip plus five compact observed stages will lower scan burden without changing scientific or bridge semantics.",
+      "observable_behavior": ["all three routes are visible in one scan", "unreached stages never appear completed", "operator controls remain visually distinct", "tooltips remain readable by hover and keyboard focus"],
+      "alternative_explanations": ["smaller typography alone may improve apparent density", "desktop rail width may dominate perceived burden"],
+      "expected_failure_modes": ["route labels wrap into tall slabs", "educational playback implies runtime authority", "tooltips clip outside the lane", "mobile collapses every item to one row"],
+      "falsifier": ["the compact strip becomes harder to identify at narrow width", "playback can advance beyond a genuinely reached stage", "keyboard focus cannot reveal the same concise explanation"],
+      "abstention_conditions": ["existing IDs or handlers would need mutation", "scientific engine changes would be required"]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": ["the revised surface is more compact in measured layouts", "receipt playback is bounded by observed state", "operator controls remain separate from stages"],
+      "forbidden_claims": ["the interface proves comprehension", "animation transfers authority", "a reached stage proves external truth"]
+    },
+    "technical_terms_withheld": ["route topology", "non-injective observability", "authority membrane"]
+  },
+  "baseline_route_steps": [
+    {"step_id":"baseline_guide_card","label":"Read a large explanatory guide","phase":"NOTICE","required_fields":["why routes exist","when ontology appears"],"dependencies":[],"legibility_millipoints":650,"affordance_millipoints":560,"gluing_obstruction_millipoints":150,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_field_slab","label":"Scan current-field slab","phase":"NOTICE","required_fields":["label","description"],"dependencies":["baseline_guide_card"],"legibility_millipoints":610,"affordance_millipoints":610,"gluing_obstruction_millipoints":130,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_trace_slab","label":"Scan trace slab","phase":"NOTICE","required_fields":["label","description"],"dependencies":["baseline_guide_card"],"legibility_millipoints":610,"affordance_millipoints":610,"gluing_obstruction_millipoints":130,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_parallel_slab","label":"Scan comparison slab","phase":"ACT","required_fields":["label","description","selection"],"dependencies":["baseline_field_slab","baseline_trace_slab"],"legibility_millipoints":590,"affordance_millipoints":620,"gluing_obstruction_millipoints":180,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"baseline_bridge_cards","label":"Interpret stacked bridge cards and status tiles","phase":"WORLD_ANSWERS","required_fields":["five stages","six status cards","posture","operator controls"],"dependencies":["baseline_parallel_slab"],"legibility_millipoints":520,"affordance_millipoints":540,"gluing_obstruction_millipoints":220,"projection_crossings":2,"route_memory_edges":2,"operator_action_required":false},
+    {"step_id":"baseline_operator_area","label":"Find actual operator actions beneath observed stages","phase":"TRANSFER","required_fields":["runtime controls","human gate","reset","exit"],"dependencies":["baseline_bridge_cards"],"legibility_millipoints":550,"affordance_millipoints":570,"gluing_obstruction_millipoints":190,"projection_crossings":2,"route_memory_edges":2,"operator_action_required":true}
+  ],
+  "action": {"action_id":"choose_counter_reading_route"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": ["the operator sees three compact route choices", "selection reveals only route-relevant detail", "the bridge reads actual reached state", "educational playback stops at the furthest reached stage", "actual actions remain separately gestured"],
+    "losses": [],
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "unresolved_relations": ["visual compactness does not prove comprehension"],
+    "glyph_candidates": [],
+    "static_equivalent": {"summary":"Choose a route, inspect reached receipt stages, then act only through separate operator controls.","steps":["choose route","inspect observed progress","act or rest"]}
+  },
+  "name": {
+    "plain_language": "The receipt can be inspected and replayed only as far as it has actually traveled; only separate controls can request work.",
+    "glyph_relation": null,
+    "technical_term": "state-bounded reciprocal receipt playback",
+    "non_equivalence": ["observed stage is not operator control", "receipt travel is not authority transfer"]
+  },
+  "transfer_context": {
+    "context": {"surface":"Aperture narrow right-lane and standalone surface"},
+    "shared_relation_candidate": "compact observed infrastructure stays separate from explicit human agency",
+    "observable_correspondence": ["stage cells remain non-clickable while operator controls retain button semantics"],
+    "alternative_explanations": ["color contrast may contribute to perceived agency separation"],
+    "abstention_conditions": ["the runtime state cannot expose a trustworthy furthest reached stage"]
+  }
+}
