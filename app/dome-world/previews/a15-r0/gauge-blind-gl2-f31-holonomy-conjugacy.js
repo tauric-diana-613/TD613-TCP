@@ -175,8 +175,11 @@ function findConjugator(A,B) {
   const equation=conjugacyEquationMatrix(A,B);
   const nullspace=nullspaceBasis(equation);
   const coefficientVectors=enumerateCoefficientVectors(nullspace.dimension);
+  const expectedCount=MODULUS**nullspace.dimension;
   let recovered=null;
+  let coefficientsTested=0;
   for(const coefficients of coefficientVectors) {
+    coefficientsTested+=1;
     const candidate=vectorToMatrix(linearCombination(nullspace.basis,coefficients));
     if(determinant2(candidate)===0) continue;
     if(matrixEqual(B,matrixMultiply(candidate,matrixMultiply(A,inverse2(candidate))))) {
@@ -189,9 +192,12 @@ function findConjugator(A,B) {
     conjugacy_equation_rank:nullspace.rank,
     conjugacy_solution_dimension:nullspace.dimension,
     nullspace_basis:nullspace.basis,
-    full_nullspace_coefficients_enumerated:coefficientVectors.length,
-    expected_full_solution_count:MODULUS**nullspace.dimension,
-    exhaustive_solution_space_searched:coefficientVectors.length===MODULUS**nullspace.dimension,
+    full_nullspace_coefficients_materialized:coefficientVectors.length,
+    expected_full_solution_count:expectedCount,
+    complete_solution_family_materialized:coefficientVectors.length===expectedCount,
+    coefficients_tested:coefficientsTested,
+    search_terminated_on_witness:recovered!==null,
+    search_exhausted_without_witness:recovered===null && coefficientsTested===expectedCount,
     invertible_conjugator_found:recovered!==null,
     recovered_conjugator:recovered,
     exact_conjugation_verified:recovered!==null
@@ -227,17 +233,22 @@ export function runGaugeBlindGL2HolonomyClassifierGauntlet() {
   const positiveJordan=classifyPair(J3,J3Clone);
   const differentCharacteristic=classifyPair(H0,HL);
 
+  const positivePass=[positiveDistinct,positiveJordan].every(result=>
+    result.fingerprints_equal && result.invertible_conjugator_found && result.exact_conjugation_verified &&
+    result.complete_solution_family_materialized && result.search_terminated_on_witness &&
+    result.oracle_conjugator_exposed_to_classifier===false
+  );
+  const negativePass=[identityUnipotentTrap,repeatedScaleTrap,differentCharacteristic].every(result=>
+    !result.fingerprints_equal && !result.invertible_conjugator_found &&
+    result.complete_solution_family_materialized && result.search_exhausted_without_witness
+  );
   const pass=
     matrixEqual(H0Clone,[[19,23],[28,18]]) &&
     matrixEqual(J3Clone,[[1,4],[30,5]]) &&
-    positiveDistinct.fingerprints_equal && positiveDistinct.invertible_conjugator_found && positiveDistinct.exact_conjugation_verified &&
-    positiveDistinct.oracle_conjugator_exposed_to_classifier===false &&
-    identityUnipotentTrap.trace_det_equal && !identityUnipotentTrap.fingerprints_equal && !identityUnipotentTrap.invertible_conjugator_found &&
-    repeatedScaleTrap.trace_det_equal && !repeatedScaleTrap.fingerprints_equal && !repeatedScaleTrap.invertible_conjugator_found &&
-    positiveJordan.fingerprints_equal && positiveJordan.invertible_conjugator_found &&
-    positiveJordan.left_fingerprint.rank_shifted_by_repeated_root===1 && positiveJordan.right_fingerprint.rank_shifted_by_repeated_root===1 &&
-    !differentCharacteristic.fingerprints_equal && !differentCharacteristic.invertible_conjugator_found &&
-    [positiveDistinct,identityUnipotentTrap,repeatedScaleTrap,positiveJordan,differentCharacteristic].every(result=>result.exhaustive_solution_space_searched===true);
+    positivePass && negativePass &&
+    identityUnipotentTrap.trace_det_equal && repeatedScaleTrap.trace_det_equal &&
+    positiveJordan.left_fingerprint.rank_shifted_by_repeated_root===1 &&
+    positiveJordan.right_fingerprint.rank_shifted_by_repeated_root===1;
 
   return freeze({
     schema:GAUGE_BLIND_GL2_HOLONOMY_SCHEMA,
@@ -248,9 +259,10 @@ export function runGaugeBlindGL2HolonomyClassifierGauntlet() {
     oracle_generation:freeze({ H0_clone:H0Clone, J3_clone:J3Clone, oracle_conjugators_exposed_to_classifier:false }),
     cases:freeze({ positive_distinct_eigen:positiveDistinct, identity_unipotent_trap:identityUnipotentTrap, repeated_scale_trap:repeatedScaleTrap, positive_jordan:positiveJordan, different_characteristic:differentCharacteristic }),
     findings:freeze({
-      unknown_gauge_conjugacy_can_be_witnessed_without_oracle_conjugator:positiveDistinct.invertible_conjugator_found && positiveJordan.invertible_conjugator_found,
+      unknown_gauge_conjugacy_can_be_witnessed_without_oracle_conjugator:positivePass,
       trace_determinant_insufficient_on_repeated_root_classes:identityUnipotentTrap.trace_det_equal && !identityUnipotentTrap.fingerprints_equal && repeatedScaleTrap.trace_det_equal && !repeatedScaleTrap.fingerprints_equal,
-      exhaustive_linear_conjugacy_solution_space_search_agrees_with_fingerprint_classifier:pass,
+      negative_nonconjugacy_claims_require_exhausted_complete_solution_space:negativePass,
+      positive_equivalence_stops_on_explicit_invertible_witness:true,
       gauntlet_validated:pass
     }),
     bounded_answer:pass
