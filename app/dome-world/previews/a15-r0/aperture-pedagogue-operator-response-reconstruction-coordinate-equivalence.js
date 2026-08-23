@@ -18,6 +18,7 @@ const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v
 const near=(a,b,t=EPS)=>Math.abs(a-b)<=t;
 const nearVec=(a,b,t=EPS)=>a.length===b.length&&a.every((v,i)=>near(v,b[i],t));
 const nearMat=(a,b,t=EPS)=>a.length===b.length&&a.every((r,i)=>nearVec(r,b[i],t));
+const canonicalScalar=x=>Object.is(x,-0)?0:x;
 const v2=(v,l='vector')=>{if(!Array.isArray(v)||v.length!==2||v.some(x=>!Number.isFinite(Number(x))))throw new TypeError(`${l} must be finite length 2`);return v.map(Number);};
 const m2=(M,l='matrix')=>{if(!Array.isArray(M)||M.length!==2)return (()=>{throw new TypeError(`${l} must be 2x2`);})();return M.map((r,i)=>v2(r,`${l}[${i}]`));};
 const dot=(a,b)=>{a=v2(a);b=v2(b);return a[0]*b[0]+a[1]*b[1];};
@@ -27,7 +28,7 @@ const mm=(A,B)=>{A=m2(A);B=m2(B);return [[A[0][0]*B[0][0]+A[0][1]*B[1][0],A[0][0
 const inv2=M=>{M=m2(M);const d=M[0][0]*M[1][1]-M[0][1]*M[1][0];if(near(d,0))throw new Error('coordinate transform must be invertible');return [[M[1][1]/d,-M[0][1]/d],[-M[1][0]/d,M[0][0]/d]];};
 const unvec=v=>[[v[0],v[1]],[v[2],v[3]]];
 
-export function measurementRow(p){const r=v2(p.r),x=v2(p.x);return freeze([r[0]*x[0],r[0]*x[1],r[1]*x[0],r[1]*x[1]]);}
+export function measurementRow(p){const r=v2(p.r),x=v2(p.x);return freeze([r[0]*x[0],r[0]*x[1],r[1]*x[0],r[1]*x[1]].map(canonicalScalar));}
 export const measurementMatrix=ps=>freeze(ps.map(measurementRow));
 export const scalarResponse=(T,p)=>dot(p.r,mv(T,p.x));
 export const responseTable=(T,ps)=>freeze(ps.map(p=>scalarResponse(T,p)));
