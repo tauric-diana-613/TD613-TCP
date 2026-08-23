@@ -37,7 +37,7 @@ assert.ok(nearZero.every(item=>item.minus_repair.terminal_audit.aperture.disposi
 const falsifier=buildUnderdeclaredNoiseFalsifier();
 assert.equal(falsifier.true_y,0.0008);
 assert.equal(falsifier.y_hat,-0.0001);
-assert.equal(falsifier.actual_eta,-0.0009);
+assert.ok(Math.abs(falsifier.actual_eta - (-0.0009)) < 1e-15);
 assert.equal(falsifier.declared_bound_holds,false);
 assert.equal(falsifier.bound_status,'DECLARED_NOISE_BOUND_FALSIFIED_BY_SYNTHETIC_TRUTH');
 assert.equal(falsifier.eligible_for_valid_bound_support,false);
