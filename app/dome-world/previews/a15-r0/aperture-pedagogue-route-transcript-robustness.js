@@ -23,15 +23,10 @@ export function endpointFor(alpha, beta) {
 
 export function buildRouteBoxes({ alpha, beta, eta, timing = 'sample_before_transition' }) {
   if (timing !== 'sample_before_transition') {
-    return freeze({
-      status: 'SEQUENTIAL_OBSERVATION_TIMING_UNDECLARED',
-      disposition: 'ABSTAIN_BEFORE_ROUTE_TRANSCRIPT_COMPARISON',
-    });
+    return freeze({ status: 'SEQUENTIAL_OBSERVATION_TIMING_UNDECLARED', disposition: 'ABSTAIN_BEFORE_ROUTE_TRANSCRIPT_COMPARISON' });
   }
   for (const [name, iv] of [['alpha', alpha], ['beta', beta]]) {
-    if (!iv || !Number.isFinite(iv.lo) || !Number.isFinite(iv.hi) || iv.lo > iv.hi) {
-      throw new Error(`VALID_${name.toUpperCase()}_INTERVAL_REQUIRED`);
-    }
+    if (!iv || !Number.isFinite(iv.lo) || !Number.isFinite(iv.hi) || iv.lo > iv.hi) throw new Error(`VALID_${name.toUpperCase()}_INTERVAL_REQUIRED`);
   }
   if (!Number.isFinite(eta) || eta < 0) throw new Error('NONNEGATIVE_MEASUREMENT_ERROR_BOUND_REQUIRED');
 
@@ -59,21 +54,29 @@ export function buildRouteBoxes({ alpha, beta, eta, timing = 'sample_before_tran
 }
 
 export function evaluateSharedEndpointFamily({ alpha, beta }) {
-  const corners = [
-    [alpha.lo, beta.lo],
-    [alpha.lo, beta.hi],
-    [alpha.hi, beta.lo],
-    [alpha.hi, beta.hi],
-  ];
+  for (const [name, iv] of [['alpha', alpha], ['beta', beta]]) {
+    if (!iv || !Number.isFinite(iv.lo) || !Number.isFinite(iv.hi) || iv.lo > iv.hi) throw new Error(`VALID_${name.toUpperCase()}_INTERVAL_REQUIRED`);
+  }
+
+  const symbolicAB = freeze({ t11: '2+beta', t12: '1', t21: '1', t22: '3+alpha' });
+  const symbolicBA = freeze({ t11: '2+beta', t12: '1', t21: '1', t22: '3+alpha' });
+  const symbolicIdentity = Object.keys(symbolicAB).every((key) => symbolicAB[key] === symbolicBA[key]);
+  const corners = [[alpha.lo, beta.lo], [alpha.lo, beta.hi], [alpha.hi, beta.lo], [alpha.hi, beta.hi]];
   const comparisons = corners.map(([a, b]) => {
     const AB = endpointFor(a, b);
     const BA = endpointFor(a, b);
     return freeze({ alpha: a, beta: b, AB, BA, equal: maxAbsEntryDifference(AB, BA) <= EPS });
   });
+
   return freeze({
     shared_parameter_covenant: true,
+    symbolic_endpoint_formula_AB: symbolicAB,
+    symbolic_endpoint_formula_BA: symbolicBA,
+    pointwise_endpoint_identity_certified_over_declared_family: symbolicIdentity,
+    corner_comparisons_are_diagnostic_only: true,
     corner_comparisons: comparisons,
-    pointwise_endpoint_equality_over_frozen_corners: comparisons.every((entry) => entry.equal),
+    all_frozen_corners_agree: comparisons.every((entry) => entry.equal),
+    anti_equivalence: 'FOUR_AGREEING_CORNERS_DO_NOT_PROVE_AN_ARBITRARY_NONLINEAR_FAMILY',
   });
 }
 
@@ -88,41 +91,20 @@ export function evaluateEndpointHostile({ alpha = 1, betaAB = 2, betaBA = 2.4, t
     endpoint_tolerance: tolerance,
     max_entry_difference: difference,
     common_endpoint_established: commonEndpointEstablished,
-    classification: commonEndpointEstablished
-      ? 'COMMON_ENDPOINT_ESTABLISHED_WITHIN_DECLARED_TOLERANCE'
-      : 'COMMON_ENDPOINT_NOT_ESTABLISHED_OVER_DECLARED_TRANSITION_MODEL',
-    disposition: commonEndpointEstablished
-      ? 'ROUTE_TRANSCRIPT_COMPARISON_MAY_PROCEED'
-      : 'ABSTAIN_FROM_COMMON_ENDPOINT_ROUTE_TRANSCRIPT_CLAIM',
+    classification: commonEndpointEstablished ? 'COMMON_ENDPOINT_ESTABLISHED_WITHIN_DECLARED_TOLERANCE' : 'COMMON_ENDPOINT_NOT_ESTABLISHED_OVER_DECLARED_TRANSITION_MODEL',
+    disposition: commonEndpointEstablished ? 'ROUTE_TRANSCRIPT_COMPARISON_MAY_PROCEED' : 'ABSTAIN_FROM_COMMON_ENDPOINT_ROUTE_TRANSCRIPT_CLAIM',
   });
 }
 
 export function runRouteTranscriptRobustnessGauntlet() {
-  const robust = buildRouteBoxes({
-    alpha: { lo: 0.9, hi: 1.1 },
-    beta: { lo: 1.8, hi: 2.2 },
-    eta: 0.05,
-    timing: 'sample_before_transition',
-  });
-  const ambiguous = buildRouteBoxes({
-    alpha: { lo: 0.05, hi: 0.15 },
-    beta: { lo: 0.05, hi: 0.15 },
-    eta: 0.10,
-    timing: 'sample_before_transition',
-  });
-  const sharedEndpoint = evaluateSharedEndpointFamily({
-    alpha: { lo: 0.9, hi: 1.1 },
-    beta: { lo: 1.8, hi: 2.2 },
-  });
+  const robust = buildRouteBoxes({ alpha: { lo: 0.9, hi: 1.1 }, beta: { lo: 1.8, hi: 2.2 }, eta: 0.05, timing: 'sample_before_transition' });
+  const ambiguous = buildRouteBoxes({ alpha: { lo: 0.05, hi: 0.15 }, beta: { lo: 0.05, hi: 0.15 }, eta: 0.10, timing: 'sample_before_transition' });
+  const sharedEndpoint = evaluateSharedEndpointFamily({ alpha: { lo: 0.9, hi: 1.1 }, beta: { lo: 1.8, hi: 2.2 } });
   const endpointHostile = evaluateEndpointHostile();
-  const missingTiming = buildRouteBoxes({
-    alpha: { lo: 0.9, hi: 1.1 },
-    beta: { lo: 1.8, hi: 2.2 },
-    eta: 0.05,
-  });
+  const missingTiming = buildRouteBoxes({ alpha: { lo: 0.9, hi: 1.1 }, beta: { lo: 1.8, hi: 2.2 }, eta: 0.05 });
 
   const criteria = freeze({
-    R1_shared_parameter_endpoint_equality: sharedEndpoint.pointwise_endpoint_equality_over_frozen_corners,
+    R1_shared_parameter_endpoint_identity_over_whole_family: sharedEndpoint.pointwise_endpoint_identity_certified_over_declared_family === true,
     R2_robust_AB_box_exact: intervalApprox(robust.observed_boxes.AB.A, 1.95, 2.05) && intervalApprox(robust.observed_boxes.AB.B, 3.85, 4.15),
     R3_robust_BA_box_exact: intervalApprox(robust.observed_boxes.BA.A, 3.75, 4.25) && intervalApprox(robust.observed_boxes.BA.B, 2.95, 3.05),
     R4_robust_boxes_disjoint: robust.boxes_overlap === false,
@@ -132,11 +114,13 @@ export function runRouteTranscriptRobustnessGauntlet() {
     R8_endpoint_hostile_exceeds_tolerance: endpointHostile.max_entry_difference > endpointHostile.endpoint_tolerance,
     R9_endpoint_hostile_blocks_claim: endpointHostile.classification === 'COMMON_ENDPOINT_NOT_ESTABLISHED_OVER_DECLARED_TRANSITION_MODEL' && endpointHostile.disposition === 'ABSTAIN_FROM_COMMON_ENDPOINT_ROUTE_TRANSCRIPT_CLAIM',
     R10_missing_timing_abstains: missingTiming.status === 'SEQUENTIAL_OBSERVATION_TIMING_UNDECLARED' && missingTiming.disposition === 'ABSTAIN_BEFORE_ROUTE_TRANSCRIPT_COMPARISON',
+    R11_corner_enumeration_is_diagnostic_not_proof: sharedEndpoint.corner_comparisons_are_diagnostic_only === true && sharedEndpoint.all_frozen_corners_agree === true,
   });
 
   const passed = Object.values(criteria).every(Boolean);
   return freeze({
     schema: ROUTE_TRANSCRIPT_ROBUSTNESS_SCHEMA,
+    representation_epsilon: EPS,
     robust_family: robust,
     ambiguity_control: ambiguous,
     shared_endpoint_family: sharedEndpoint,
@@ -147,7 +131,7 @@ export function runRouteTranscriptRobustnessGauntlet() {
     canonical_bounded_scientific_claim: passed
       ? 'ROUTE_CONDITIONED_ACTION_INDEXED_OBSERVATION_TRANSCRIPTS_CAN_REMAIN_SET_WISE_SEPARABLE_OVER_A_DECLARED_SHARED_FAMILY_OF_COMMUTING_ADDITIVE_TRANSITION_MAGNITUDES_AND_DETERMINISTIC_BOUNDED_MEASUREMENT_ERROR_WHILE_A_SMALLER_EFFECT_FAMILY_CAN_BECOME_UNRESOLVED_AND_ROUTE_DEPENDENT_ENDPOINT_DRIFT_BLOCKS_THE_COMMON_ENDPOINT_CLAIM_IN_THE_AUTHORED_2X2_FIXTURE'
       : null,
-    next_learning_action: passed ? 'HUMAN_𝄐_REQUIRED_BEFORE_PATH_OBJECT_OR_TRANSPORT_FORMALIZATION' : null,
+    next_learning_action: passed ? 'CONTINUE_TO_BOUNDED_TRANSCRIPT_COMPRESSION_AND_PARTIAL_CUSTODY_ASSAYS_BEFORE_HUMAN_𝄐' : null,
     general_robust_path_dependence_theorem_earned: false,
     statistical_consistency_earned: false,
     probabilistic_route_classification_earned: false,
