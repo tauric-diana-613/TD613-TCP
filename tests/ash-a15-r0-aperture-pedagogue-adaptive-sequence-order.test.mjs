@@ -33,7 +33,7 @@ const productAB = multiplyMatrices(Q_B_MATRIX, Q_A_MATRIX);
 const productBA = multiplyMatrices(Q_A_MATRIX, Q_B_MATRIX);
 assert.ok(matrixDifferenceNorm(productAB, productBA) > TOLERANCE);
 
-assert.throws(() => multiplyMatrixVector([[1,0]], [1,0]), /2x2/);
+assert.throws(() => multiplyMatrixVector([[1,0]], [1,0]), /must contain two values|2x2/);
 assert.throws(() => multiplyMatrixVector(Q_A_MATRIX, [1,0,2]), /two-component row/);
 assert.throws(() => multiplyMatrices(Q_A_MATRIX, [[1,0],[0,Number.NaN]]), /must be finite/);
 
