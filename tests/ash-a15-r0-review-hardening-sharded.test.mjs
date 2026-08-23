@@ -87,4 +87,5 @@ await import('./ash-a15-r0-aperture-pedagogue-multi-step-question-order.test.mjs
 await import('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-order.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-perturbation-consequence.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-branching-typed-deficit-policy.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-typed-policy-state-aliasing.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
