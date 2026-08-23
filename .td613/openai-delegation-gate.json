@@ -1,25 +1,58 @@
 {
-  "schema": "td613.openai-delegation-gate/v1",
+  "schema": "td613.openai-delegation-gate/v2",
   "status": "CLOSED",
+  "status_applies_to": "DETACHED_DELEGATED_OPENAI_ACTIVITY_ONLY",
   "authority_issue": 691,
   "operator_authorization_required": true,
+  "interactive_operator_direct": {
+    "status": "AVAILABLE_BY_CONTEMPORANEOUS_HUMAN_PROMPT",
+    "issue_691_ledger_required": false,
+    "same_active_session_required": true,
+    "direct_instruction_to_session_required": true,
+    "bounded_to_explicit_task": true,
+    "ordinary_same_task_retries_allowed": true,
+    "explicit_local_filesystem_actions_allowed": true,
+    "background_spawn_inferred": false,
+    "autonomous_review_authority_inherited": false,
+    "github_comment_authority_inherited": false,
+    "merge_authority_inherited": false,
+    "deployment_authority_inherited": false,
+    "event_or_mention_trigger_may_self_classify_interactive": false,
+    "authority_ends_at": "TASK_OR_INTERACTIVE_SESSION_BOUNDARY"
+  },
+  "detached_delegation": {
+    "status": "CLOSED",
+    "covered_action_classes": [
+      "AUTONOMOUS_GITHUB_REVIEW",
+      "BACKGROUND_CLOUD_TASK",
+      "SECURITY_AGENT",
+      "EXECUTABLE_MENTION_TRIGGER",
+      "GITHUB_EVENT_TRIGGER",
+      "SCHEDULED_OR_QUEUED_AGENT_WORK",
+      "OTHER_DETACHED_OPENAI_AGENT"
+    ],
+    "issue_691_ledger_required": true,
+    "authorized_action": null,
+    "pr_number": null,
+    "head_sha": null,
+    "action_count_ceiling": 0,
+    "expires_at": null
+  },
   "product_side_defaults": {
     "codex_code_review": "DISABLED",
     "codex_automatic_reviews": "DISABLED"
   },
-  "authorized_action": null,
-  "pr_number": null,
-  "head_sha": null,
-  "action_count_ceiling": 0,
-  "expires_at": null,
   "self_authorization_forbidden": true,
-  "retry_inference_forbidden": true,
+  "retry_inference_forbidden_for_detached_activity": true,
   "connector_adjacency_grants_authority": false,
-  "vercel_release_grants_authority": false,
+  "vercel_release_grants_detached_authority": false,
   "notes": [
-    "Default repository posture is fail closed for separate OpenAI coding, review, cloud-task, and security-agent activity.",
-    "Amari work explicitly requested by the human operator through ChatGPT is a distinct authority class and does not arm delegated OpenAI agents.",
-    "A future delegated action requires a fresh human gesture recorded against issue 691 and an exact target receipt before invocation.",
-    "Do not place an executable Codex mention token in repository metadata while this gate is CLOSED."
+    "Top-level CLOSED applies to detached delegated OpenAI activity, not to a human operator presently steering an active interactive coding session.",
+    "A direct contemporaneous instruction inside the active interactive coding session authorizes only that explicitly bounded interactive task and requires no second issue-691 ledger gesture.",
+    "Explicitly requested local-file export or copy work, including a named Downloads destination, belongs to the bounded interactive task when the active environment can perform it.",
+    "No GitHub-event, mention-triggered, scheduled, queued, background, review, or cloud process may self-classify as interactive.",
+    "Amari work explicitly requested by the human operator through ChatGPT remains a distinct authority class and does not arm detached delegated OpenAI agents.",
+    "A detached delegated action requires a fresh human gesture recorded against issue 691 and an exact target receipt before invocation.",
+    "Do not place an executable Codex mention token in repository metadata while detached delegation is CLOSED."
   ]
 }
