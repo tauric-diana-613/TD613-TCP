@@ -64,6 +64,11 @@ export {
 } from './pedagogue-lineage-spine-v02.js';
 export { PEDAGOGUE_LINEAGE_LENSES } from './pedagogue-lineage-spine.js';
 export {
+  PEDAGOGUE_LINEAGE_SECOND_PASS_SCHEMA,
+  PEDAGOGUE_LINEAGE_SECOND_PASS_SIGNALS,
+  compilePedagogueLineageSecondPass
+} from './pedagogue-lineage-second-pass.js';
+export {
   PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
   PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
   PEDAGOGUE_CLOSURE_CLASSES,

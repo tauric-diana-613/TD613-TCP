@@ -5,6 +5,7 @@ import {
   compileTransferEncounter,
   comparePedagogueRouteMemory,
   compilePedagogueLineageReview,
+  compilePedagogueLineageSecondPass,
   compileInstitutionalTimeAudit,
   compileDromologicalSequenceAudit
 } from './flowcore-pedagogue-core.js';
@@ -30,7 +31,7 @@ import {
 } from './pedagogue-interface-diagnosis.js';
 
 export const PEDAGOGUE_DESIGN_FIXTURE_SCHEMA = 'td613.pedagogue-design-fixture/v0.1';
-export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.4';
+export const PEDAGOGUE_DESIGN_REVIEW_SCHEMA = 'td613.pedagogue-design-review/v0.5';
 
 function clone(value) {
   return value === null || typeof value !== 'object'
@@ -174,6 +175,14 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
   const cadenceAudit = fixture.cadence_case
     ? compileDromologicalSequenceAudit(fixture.cadence_case)
     : null;
+  const lineageSecondPass = compilePedagogueLineageSecondPass({
+    pass_id: `${fixture.design_id}:lineage-second-pass`,
+    interface_diagnosis: interfaceDiagnosis,
+    institutional_time_audit: institutionalTimeAudit,
+    cadence_audit: cadenceAudit,
+    burden_comparison: burdenComparison,
+    declared_system_signals: fixture.lineage_second_pass_signals || []
+  });
 
   return Object.freeze({
     schema: PEDAGOGUE_DESIGN_REVIEW_SCHEMA,
@@ -199,6 +208,7 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
     lineage_review: lineageReview,
     institutional_time_audit: institutionalTimeAudit,
     cadence_audit: cadenceAudit,
+    lineage_second_pass: lineageSecondPass,
     design_gate: {
       consequence_before_ontology: true,
       rest_and_exit_preserved: cycle.restState.penalty === false && cycle.restState.exit_available === true,
@@ -226,6 +236,12 @@ export async function compilePedagogueDesignReview(fixture, options = {}) {
         cadenceAudit.authority.production_mutation_authorized === false &&
         cadenceAudit.authority.automatic_redesign === false &&
         cadenceAudit.authority.human_closure_required === true
+      ),
+      lineage_second_pass_non_authoritative: (
+        lineageSecondPass.authority.product_mutation_authorized === false &&
+        lineageSecondPass.authority.production_mutation_authorized === false &&
+        lineageSecondPass.authority.automatic_redesign === false &&
+        lineageSecondPass.authority.human_closure_required === true
       ),
       human_closure_required: surfaceFamily.report.human_closure_required === true
     }

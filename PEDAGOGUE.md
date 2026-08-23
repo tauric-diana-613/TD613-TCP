@@ -7,7 +7,7 @@ An agent should begin here rather than discovering Pedagogue by scattered import
 Pedagogue has three related bodies:
 
 1. **Design Gate / practice pedagogy** — consequence order, AIA route structure, route burden, route memory, custody/refusal sequencing, human closure, and harmless known-ground-truth practice routes.
-2. **Lineage Spine / temporal audit** — Potato’s versioned ASP → Flow-Core → Dome-World synthesis, provenance lenses, Institutional Time, dromological sequence/cadence analysis, recurrence audit, and challenge-card routing.
+2. **Lineage Spine / temporal audit** — Potato’s versioned ASP → Flow-Core → Dome-World synthesis, provenance lenses, second-pass lineage question routing, Institutional Time, dromological sequence/cadence analysis, recurrence audit, and challenge-card routing.
 3. **Research metabolism** — source-faithful research hydration, bounded assay authoring, mathematical counterpoints, criterion-family separation, mechanism refinement, falsifier preservation, and explicit non-promotion.
 
 None of these bodies grants autonomous redesign, experiment execution, custody mutation, release, or production authority.
@@ -29,7 +29,8 @@ Reach for Pedagogue when a product, workflow, ontology, research fixture, or pro
 - a design claim whose intellectual provenance matters to the mechanism being proposed;
 - a process where institutional action, registration, public visibility, or causal context occur on different clocks;
 - a route where naming, assessment, interruption, rest, or exit may be temporally misordered;
-- a compressed institutional representation that may have discarded declared relational distinctions.
+- a compressed institutional representation that may have discarded declared relational distinctions;
+- a machine-level diagnostic that should wake the relevant inherited questions without turning ancestry into authority.
 
 If the question is specifically about **observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, replay, or whether a proposed next observation is actually informative**, also reach for [`APERTURE.md`](APERTURE.md). Pedagogue may propose or reframe the question; Aperture audits whether the question addresses the admitted deficit under the declared observation geometry.
 
@@ -73,12 +74,14 @@ Canonical lineage implementation:
 
 - `app/engine/pedagogue-lineage-spine.js` — chronology-safe Potato lineage base;
 - `app/engine/pedagogue-lineage-spine-v02.js` — scholarly challenge-card extension over the same chronology; it does not remap first-entry history;
+- `app/engine/pedagogue-lineage-second-pass.js` — non-authoritative router from existing machine diagnostics to relevant inherited questions;
 - `app/engine/pedagogue-institutional-time.js`;
 - `app/engine/pedagogue-recurrence-audit.js`.
 
 Canonical explanation:
 
 - [`docs/PEDAGOGUE_PROVENANCE_SPINE.md`](docs/PEDAGOGUE_PROVENANCE_SPINE.md)
+- [`docs/PEDAGOGUE_LINEAGE_SECOND_PASS.md`](docs/PEDAGOGUE_LINEAGE_SECOND_PASS.md)
 - [`docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md`](docs/PEDAGOGUE_MATHEMATICAL_COUNTERPOINTS.md)
 
 The lineage route is:
@@ -172,6 +175,22 @@ Current lenses include:
 A review may preserve `CONVERGENCE`, `DIVERGENCE`, `NORMATIVE_ASSUMPTION`, `EMPIRICAL_CLAIM`, `DERIVATIONAL_CLAIM`, and `UNVERIFIED_SOURCE_CLAIM` as different finding postures.
 
 Convergence does not create authority.
+
+### Lineage second pass · diagnostics call the relevant questions back into view
+
+The second pass makes the full spine operational without requiring a human operator to remember every lens after every machine result.
+
+```text
+existing machine diagnostic
+→ typed system deficit
+→ relevant provenance lens(es)
+→ inherited question(s)
+→ human review
+```
+
+It can consume the existing interface diagnosis, Institutional Time audit, dromological cadence audit, route-burden comparison, and a closed vocabulary of explicit system-level signals. It returns activated and dormant lenses plus the exact diagnostic basis for each activation.
+
+This is question routing only. `activation_count` is not a score; convergence is not computed; schema identity does not independently authenticate a supplied receipt; lens activation establishes neither a source claim nor a design defect. The second pass cannot infer a learner/person profile, rank thinkers, mutate a product, redesign automatically, intervene, release, or close the seam.
 
 ### Rudolf Steiner · recurrent multi-route coordinate
 
@@ -364,6 +383,7 @@ Modern scholarship may challenge a lineage-derived relation through a lineage ch
 - model scope, alternatives, falsifiers, and forbidden inference;
 - chronology without fake first-introduction precision;
 - intellectual provenance without thinker voting;
+- lineage-question activation without source-claim or design-defect inflation;
 - metaphysical provenance without automatic empirical promotion;
 - racial-hierarchy quarantine without provenance erasure;
 - recurrence without alias/exposure/breadth laundering;

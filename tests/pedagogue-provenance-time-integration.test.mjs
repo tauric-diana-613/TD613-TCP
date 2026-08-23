@@ -7,7 +7,7 @@ async function fixture(name) {
   return JSON.parse(await readFile(new URL(`./fixtures/pedagogue/${name}`, import.meta.url), 'utf8'));
 }
 
-test('Design Gate may carry lineage, Institutional Time, and cadence diagnostics without widening authority', async () => {
+test('Design Gate may carry lineage, Institutional Time, cadence, and provenance second-pass diagnostics without widening authority', async () => {
   const input = await fixture('cistern-boundary-design.json');
   input.lineage_review = {
     review_id: 'cistern-provenance-review',
@@ -68,27 +68,46 @@ test('Design Gate may carry lineage, Institutional Time, and cadence diagnostics
   assert.ok(review.lineage_review);
   assert.ok(review.institutional_time_audit);
   assert.ok(review.cadence_audit);
+  assert.ok(review.lineage_second_pass);
   assert.equal(review.lineage_review.selected_lenses.length, 4);
   assert.equal(review.lineage_review.convergence_creates_authority, false);
   assert.equal(review.institutional_time_audit.preemption.preemption_gap, 2);
   assert.equal(review.institutional_time_audit.classification, 'INSTITUTIONAL_PREEMPTION_PRESENT');
   assert.equal(review.cadence_audit.classification, 'NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT');
 
+  const secondPassIds = new Set(review.lineage_second_pass.activated_lenses.map((lens) => lens.lens_id));
+  for (const lensId of [
+    'INSTITUTIONAL_TIME',
+    'TEMPORAL_SOVEREIGNTY',
+    'INTERPRETIVE_LABOR',
+    'EPISTEMIC_REFRACTION',
+    'EXPERIENCE_CONTINUITY',
+    'DROMOLOGICAL_COMPRESSION',
+    'THIRD_TEACHER_DOCUMENTATION'
+  ]) assert.ok(secondPassIds.has(lensId), `${lensId} should be activated by the compiled receipt.`);
+  assert.equal(review.lineage_second_pass.human_profile_inference, false);
+  assert.equal(review.lineage_second_pass.activation_count_is_not_score, true);
+
   assert.equal(review.design_gate.lineage_review_non_authoritative, true);
   assert.equal(review.design_gate.institutional_time_audit_non_authoritative, true);
   assert.equal(review.design_gate.cadence_audit_non_authoritative, true);
+  assert.equal(review.design_gate.lineage_second_pass_non_authoritative, true);
   assert.equal(review.design_gate.automatic_redesign_forbidden, true);
   assert.equal(review.design_gate.human_closure_required, true);
   assert.equal(review.scene.authority.station_mutation_authorized, false);
 });
 
-test('Old design fixtures remain compatible when no provenance or temporal case is supplied', async () => {
+test('Old design fixtures remain compatible and receive an inert second pass when no provenance or temporal case is supplied', async () => {
   const input = await fixture('cistern-boundary-design.json');
   const review = await compilePedagogueDesignReview(input);
   assert.equal(review.lineage_review, null);
   assert.equal(review.institutional_time_audit, null);
   assert.equal(review.cadence_audit, null);
+  assert.ok(review.lineage_second_pass);
+  assert.equal(review.lineage_second_pass.activation_count, 0);
+  assert.deepEqual(review.lineage_second_pass.activated_lenses, []);
   assert.equal(review.design_gate.lineage_review_non_authoritative, true);
   assert.equal(review.design_gate.institutional_time_audit_non_authoritative, true);
   assert.equal(review.design_gate.cadence_audit_non_authoritative, true);
+  assert.equal(review.design_gate.lineage_second_pass_non_authoritative, true);
 });
