@@ -4,11 +4,13 @@ import {
   PEDAGOGUE_LINEAGE_LENSES,
   PEDAGOGUE_LINEAGE_SECOND_PASS_SCHEMA,
   PEDAGOGUE_LINEAGE_SECOND_PASS_SIGNALS,
-  PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA,
   PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
   PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
   compilePedagogueLineageSecondPass
 } from '../app/engine/flowcore-pedagogue-core.js';
+import {
+  PEDAGOGUE_INTERFACE_DIAGNOSIS_SCHEMA
+} from '../app/engine/pedagogue-interface-diagnosis.js';
 
 test('second pass routes declared machine deficits through the full provenance lens family without creating authority', () => {
   const receipt = compilePedagogueLineageSecondPass({
