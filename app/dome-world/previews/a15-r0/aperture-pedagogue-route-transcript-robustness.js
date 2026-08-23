@@ -54,7 +54,7 @@ export function endpointFor(alpha, beta) {
   return freeze([[2 + beta, 1], [1, 3 + alpha]].map(Object.freeze));
 }
 
-export function buildRouteBoxes({ alpha, beta, eta, timing = 'sample_before_transition' }) {
+export function buildRouteBoxes({ alpha, beta, eta, timing }) {
   if (timing !== 'sample_before_transition') {
     return freeze({ status: 'SEQUENTIAL_OBSERVATION_TIMING_UNDECLARED', disposition: 'ABSTAIN_BEFORE_ROUTE_TRANSCRIPT_COMPARISON' });
   }
