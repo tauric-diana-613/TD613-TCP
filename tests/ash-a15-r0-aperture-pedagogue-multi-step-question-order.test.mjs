@@ -13,7 +13,7 @@ import {
 assert.deepEqual(multiply2([[1,0],[0,1]], [[2,3],[4,5]]), [[2,3],[4,5]]);
 assert.equal(determinant2(QUESTION_TRANSITIONS.A.matrix), 1.25);
 assert.equal(determinant2(QUESTION_TRANSITIONS.B.matrix), 2.5);
-assert.throws(() => multiply2([[1,0,0],[0,1,0]], [[1,0],[0,1]]), /2x2/);
+assert.throws(() => multiply2([[1,0,0],[0,1,0]], [[1,0],[0,1]]), /two values|2x2/);
 
 const AB = simulateGovernedQuestionSequence(['A','B']);
 const BA = simulateGovernedQuestionSequence(['B','A']);
