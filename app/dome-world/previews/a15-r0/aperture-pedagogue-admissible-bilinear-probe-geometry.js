@@ -47,21 +47,22 @@ export function coefficientAudit(candidate){
   return freeze({h,coefficient_matrix:m2(h),determinant,nonzero,factorization_present:Boolean(factored),factorization_matches,admissible_as_one_declared_bilinear_probe:admissible});
 }
 
-export function nullspaceSensitivity(h,n=N){return Math.abs(dot(h,n))/norm(h);}
-export function candidateAudit(candidate){
-  const c=coefficientAudit(candidate),s=nullspaceSensitivity(c.h),newRank=rank([...A3,c.h]);
-  return freeze({...candidate,coefficient:c,nullspace_dot:dot(c.h,N),normalized_nullspace_sensitivity:s,rank_after_probe:newRank,contracts_current_nullspace:newRank>rank(A3)});
+export function nullspaceSensitivity(h,n){return Math.abs(dot(h,n))/norm(h);}
+export function candidateAudit(candidate,n){
+  if(!Array.isArray(n)||n.length!==4)throw new TypeError('current null direction must have four coordinates');
+  const c=coefficientAudit(candidate),s=nullspaceSensitivity(c.h,n),newRank=rank([...A3,c.h]);
+  return freeze({...candidate,coefficient:c,nullspace_dot:dot(c.h,n),normalized_nullspace_sensitivity:s,rank_after_probe:newRank,contracts_current_nullspace:newRank>rank(A3)});
 }
 
-export function unrestrictedGreedySelector(candidates){
-  const audits=candidates.map(candidateAudit).sort((a,b)=>b.normalized_nullspace_sensitivity-a.normalized_nullspace_sensitivity||a.candidate_id.localeCompare(b.candidate_id));
+export function unrestrictedGreedySelector(candidates,currentNullDirection){
+  const audits=candidates.map(c=>candidateAudit(c,currentNullDirection)).sort((a,b)=>b.normalized_nullspace_sensitivity-a.normalized_nullspace_sensitivity||a.candidate_id.localeCompare(b.candidate_id));
   return freeze({selected_candidate_id:audits[0].candidate_id,selection_surface:'UNRESTRICTED_LINEAR_FUNCTIONALS',audits});
 }
 
 export function admissibilityAwareSelector(input){
   for(const key of ['T_star','future_responses','synthetic_oracle','answer_key'])if(key in input)throw new Error('REJECT_ORACLE_LEAKAGE_IN_ADMISSIBLE_PROBE_SELECTION');
   if(!Array.isArray(input.candidates)||!Array.isArray(input.current_null_direction))throw new TypeError('candidates and current null direction required');
-  const audits=input.candidates.map(candidateAudit),eligible=audits.filter(a=>a.coefficient.admissible_as_one_declared_bilinear_probe).sort((a,b)=>b.normalized_nullspace_sensitivity-a.normalized_nullspace_sensitivity||a.candidate_id.localeCompare(b.candidate_id));
+  const audits=input.candidates.map(c=>candidateAudit(c,input.current_null_direction)),eligible=audits.filter(a=>a.coefficient.admissible_as_one_declared_bilinear_probe).sort((a,b)=>b.normalized_nullspace_sensitivity-a.normalized_nullspace_sensitivity||a.candidate_id.localeCompare(b.candidate_id));
   if(!eligible.length)return freeze({status:'NO_ADMISSIBLE_BILINEAR_PROBE',selected_candidate_id:null,audits});
   return freeze({status:'ADMISSIBLE_BILINEAR_PROBE_SELECTED_AFTER_ACTION_SET_FILTER',selected_candidate_id:eligible[0].candidate_id,audits});
 }
@@ -75,8 +76,8 @@ export function transformBilinearProbe(candidate,H=G){
 export function buildAdmissibleBilinearProbeFixture(){return freeze({schema:ADMISSIBLE_BILINEAR_PROBE_SCHEMA,A3:clone(A3),current_null_direction:clone(N),coordinate_transform:clone(G),candidates:clone(CANDIDATES)});}
 
 export function runAdmissibleBilinearProbeGeometryGauntlet(){
-  const fixture=buildAdmissibleBilinearProbeFixture(),before=JSON.stringify(fixture),audits=fixture.candidates.map(candidateAudit),byId=Object.fromEntries(audits.map(a=>[a.candidate_id,a]));
-  const unrestricted=unrestrictedGreedySelector(fixture.candidates),corrected=admissibilityAwareSelector({candidates:fixture.candidates,current_null_direction:fixture.current_null_direction});
+  const fixture=buildAdmissibleBilinearProbeFixture(),before=JSON.stringify(fixture),audits=fixture.candidates.map(c=>candidateAudit(c,fixture.current_null_direction)),byId=Object.fromEntries(audits.map(a=>[a.candidate_id,a]));
+  const unrestricted=unrestrictedGreedySelector(fixture.candidates,fixture.current_null_direction),corrected=admissibilityAwareSelector({candidates:fixture.candidates,current_null_direction:fixture.current_null_direction});
   const transformedGood=transformBilinearProbe(fixture.candidates.find(c=>c.candidate_id==='Q_ADMISSIBLE_GOOD'),fixture.coordinate_transform);
   let leakRejected=false;try{admissibilityAwareSelector({candidates:fixture.candidates,current_null_direction:fixture.current_null_direction,T_star:[[2,1],[1,3]]});}catch(e){leakRejected=/REJECT_ORACLE/.test(String(e.message));}
   const criteria=freeze({
