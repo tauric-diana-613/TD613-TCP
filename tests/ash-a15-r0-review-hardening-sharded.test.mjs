@@ -90,4 +90,5 @@ await import('./ash-a15-r0-aperture-pedagogue-branching-typed-deficit-policy.tes
 await import('./ash-a15-r0-aperture-pedagogue-typed-policy-state-aliasing.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-minimal-decision-custody-state.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-noisy-orientation-provenance-independence.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-joint-decision-custody-hold-composition.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
