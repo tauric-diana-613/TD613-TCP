@@ -7,18 +7,25 @@ export const PEDAGOGUE_CLOSURE_CLASSES = Object.freeze(['closed', 'drift', 'supp
 
 const PHASE_ORDER = Object.freeze(['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME']);
 
-function finiteOrNull(value, label) {
+function safeIntegerOrNull(value, label) {
   if (value === null || value === undefined) return null;
-  if (!Number.isFinite(value)) throw new TypeError(`${label} must be finite or null.`);
-  return Number(value);
+  if (!Number.isSafeInteger(value) || Object.is(value, -0)) throw new TypeError(`${label} must be a safe integer tick or null.`);
+  return value;
+}
+
+function unitIntervalToMillipoints(value, label) {
+  if (!Number.isFinite(value) || value < 0 || value > 1) throw new Error(`${label} must lie in [0,1].`);
+  const millipoints = Math.round(value * 1000);
+  if (!Number.isSafeInteger(millipoints)) throw new TypeError(`${label} cannot be represented as safe integer millipoints.`);
+  return millipoints;
 }
 
 function closure(input = {}) {
   const value = object(input, 'closure');
   const closure_class = text(value.closure_class, 'closure.closure_class').toLowerCase();
   if (!PEDAGOGUE_CLOSURE_CLASSES.includes(closure_class)) throw new Error(`Unsupported closure class: ${closure_class}`);
-  if (!Number.isFinite(value.score) || value.score < 0 || value.score > 1) throw new Error('closure.score must lie in [0,1].');
-  return freeze({ closure_class, score: Number(value.score), faithful: Number(value.score) === 1 });
+  const score_millipoints = unitIntervalToMillipoints(value.score, 'closure.score');
+  return freeze({ closure_class, score_millipoints, faithful: score_millipoints === 1000 });
 }
 
 function lag(later, earlier) {
@@ -49,37 +56,40 @@ export function compileInstitutionalTimeAudit(input = {}) {
   noForbidden(input);
   const value = object(input, 'input');
   const clocks = object(value.clocks, 'clocks');
-  const t_sense = finiteOrNull(clocks.t_sense, 'clocks.t_sense');
-  const t_model = finiteOrNull(clocks.t_model, 'clocks.t_model');
-  const t_op = finiteOrNull(clocks.t_op, 'clocks.t_op');
-  const t_inst = finiteOrNull(clocks.t_inst, 'clocks.t_inst');
-  const t_pub = finiteOrNull(clocks.t_pub, 'clocks.t_pub');
-  const t_context = finiteOrNull(clocks.t_context, 'clocks.t_context');
-  if (t_op === null) throw new Error('Institutional Time audit requires finite clocks.t_op because preemption is defined around first materially conditioned action.');
+  const t_sense = safeIntegerOrNull(clocks.t_sense, 'clocks.t_sense');
+  const t_model = safeIntegerOrNull(clocks.t_model, 'clocks.t_model');
+  const t_op = safeIntegerOrNull(clocks.t_op, 'clocks.t_op');
+  const t_inst = safeIntegerOrNull(clocks.t_inst, 'clocks.t_inst');
+  const t_pub = safeIntegerOrNull(clocks.t_pub, 'clocks.t_pub');
+  const t_context = safeIntegerOrNull(clocks.t_context, 'clocks.t_context');
+  if (t_op === null) throw new Error('Institutional Time audit requires clocks.t_op because preemption is defined around first materially conditioned action.');
 
   const closureState = closure(value.closure);
   const preemption_gap = lag(t_inst, t_op);
   const public_visibility_lag = lag(t_pub, t_inst);
   const context_preemption_gap = lag(t_context, t_op);
-  const rupture = closureState.score < 1;
+  const rupture = closureState.score_millipoints < 1000;
   const acts_before_counts = preemption_gap === null ? t_inst === null : preemption_gap > 0;
   const context_lags_action = context_preemption_gap !== null && context_preemption_gap > 0;
 
   let beacon = null;
   if (value.influence) {
     const influence = object(value.influence, 'influence');
-    if (!Number.isFinite(influence.integral) || !Number.isFinite(influence.threshold)) throw new Error('influence.integral and influence.threshold must be finite.');
+    const integral_ticks = safeIntegerOrNull(influence.integral, 'influence.integral');
+    const threshold_ticks = safeIntegerOrNull(influence.threshold, 'influence.threshold');
+    if (integral_ticks === null || threshold_ticks === null) throw new Error('influence.integral and influence.threshold must be safe integer ticks.');
     beacon = freeze({
-      integral: Number(influence.integral),
-      threshold: Number(influence.threshold),
-      sustained_influence_above_threshold: influence.integral > influence.threshold,
-      beacon_candidate: influence.integral > influence.threshold && closureState.score < 1
+      integral_ticks,
+      threshold_ticks,
+      sustained_influence_above_threshold: integral_ticks > threshold_ticks,
+      beacon_candidate: integral_ticks > threshold_ticks && rupture
     });
   }
 
   const audit = {
     schema: PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
     case_id: text(value.case_id, 'case_id'),
+    clock_unit: text(value.clock_unit || 'DECLARED_INTEGER_TICK', 'clock_unit'),
     clocks: freeze({ t_sense, t_model, t_op, t_inst, t_pub, t_context }),
     closure: closureState,
     preemption: freeze({
@@ -92,7 +102,7 @@ export function compileInstitutionalTimeAudit(input = {}) {
     }),
     rupture: freeze({
       operational_action_present: true,
-      failed_faithful_closure: closureState.score < 1,
+      failed_faithful_closure: rupture,
       rupture
     }),
     beacon,
@@ -126,8 +136,8 @@ function eventMap(events) {
   events.forEach((event, index) => {
     const value = object(event, `events[${index}]`);
     const phase = text(value.phase, `events[${index}].phase`).toUpperCase();
-    const at = finiteOrNull(value.at, `events[${index}].at`);
-    if (at === null) throw new Error(`events[${index}].at must be finite.`);
+    const at = safeIntegerOrNull(value.at, `events[${index}].at`);
+    if (at === null) throw new Error(`events[${index}].at must be a safe integer tick.`);
     if (map.has(phase)) throw new Error(`Duplicate cadence phase: ${phase}`);
     map.set(phase, at);
   });
@@ -155,7 +165,7 @@ export function compileDromologicalSequenceAudit(input = {}) {
   const constraints = value.cadence_constraints ? object(value.cadence_constraints, 'cadence_constraints') : {};
   const minimumAnswerDwell = constraints.minimum_world_answer_dwell === undefined
     ? null
-    : finiteOrNull(constraints.minimum_world_answer_dwell, 'cadence_constraints.minimum_world_answer_dwell');
+    : safeIntegerOrNull(constraints.minimum_world_answer_dwell, 'cadence_constraints.minimum_world_answer_dwell');
   let world_answer_dwell = null;
   if (minimumAnswerDwell !== null && answer !== undefined && name !== undefined) {
     world_answer_dwell = name - answer;
@@ -168,8 +178,8 @@ export function compileDromologicalSequenceAudit(input = {}) {
   const context = value.context_registration ? object(value.context_registration, 'context_registration') : null;
   let context_registration_lag = null;
   if (context) {
-    const actionAt = finiteOrNull(context.action_at, 'context_registration.action_at');
-    const contextRegisteredAt = finiteOrNull(context.context_registered_at, 'context_registration.context_registered_at');
+    const actionAt = safeIntegerOrNull(context.action_at, 'context_registration.action_at');
+    const contextRegisteredAt = safeIntegerOrNull(context.context_registered_at, 'context_registration.context_registered_at');
     if (actionAt !== null && contextRegisteredAt !== null) {
       context_registration_lag = contextRegisteredAt - actionAt;
       if (context_registration_lag > 0) violations.push('CONTEXT_REGISTRATION_LAG');
@@ -181,6 +191,7 @@ export function compileDromologicalSequenceAudit(input = {}) {
   const audit = {
     schema: PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
     audit_id: text(value.audit_id, 'audit_id'),
+    clock_unit: text(value.clock_unit || 'DECLARED_INTEGER_TICK', 'clock_unit'),
     phase_times: freeze(phase_times),
     canonical_partial_order: PHASE_ORDER,
     canonical_phases_present: required_present,
