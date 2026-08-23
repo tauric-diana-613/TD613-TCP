@@ -51,4 +51,23 @@ export {
   PEDAGOGUE_RESEARCH_CRITERION_ROLES,
   compilePedagogueResearchCriterionFamily
 } from './pedagogue-research-criterion-family.js';
+export {
+  PEDAGOGUE_LINEAGE_SPINE_SCHEMA,
+  PEDAGOGUE_LINEAGE_REVIEW_SCHEMA,
+  PEDAGOGUE_LINEAGE_STAGES,
+  PEDAGOGUE_LINEAGE_FINDING_POSTURES,
+  PEDAGOGUE_LINEAGE_NODES,
+  PEDAGOGUE_LINEAGE_LENSES,
+  PEDAGOGUE_LINEAGE_CHALLENGE_CARDS,
+  compilePedagogueLineageSpine,
+  tracePedagogueLineage,
+  compilePedagogueLineageReview
+} from './pedagogue-lineage-spine.js';
+export {
+  PEDAGOGUE_INSTITUTIONAL_TIME_AUDIT_SCHEMA,
+  PEDAGOGUE_DROMOLOGICAL_SEQUENCE_AUDIT_SCHEMA,
+  PEDAGOGUE_CLOSURE_CLASSES,
+  compileInstitutionalTimeAudit,
+  compileDromologicalSequenceAudit
+} from './pedagogue-institutional-time.js';
 export { validateScene as validatePedagogicalScene, validateTransition as validatePedagogicalTransition } from './flowcore-pedagogue-validators.js';
