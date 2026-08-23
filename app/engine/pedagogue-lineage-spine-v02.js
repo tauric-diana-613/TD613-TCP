@@ -1,9 +1,9 @@
 import { canonicalJson } from '../dome-world/ash/canonical-json.js';
 import { freeze, noForbidden, object, strings, text } from './flowcore-pedagogue-utils.js';
 import {
-  PEDAGOGUE_LINEAGE_NODES as V01_NODES,
+  PEDAGOGUE_LINEAGE_NODES as BASE_NODES,
   PEDAGOGUE_LINEAGE_LENSES,
-  PEDAGOGUE_LINEAGE_CHALLENGE_CARDS as V01_CHALLENGE_CARDS
+  PEDAGOGUE_LINEAGE_CHALLENGE_CARDS as BASE_CHALLENGE_CARDS
 } from './pedagogue-lineage-spine.js';
 
 export const PEDAGOGUE_LINEAGE_SPINE_SCHEMA = 'td613.flowcore.pedagogue-lineage-spine/v0.2';
@@ -25,44 +25,21 @@ export const PEDAGOGUE_LINEAGE_FINDING_POSTURES = Object.freeze([
   'UNVERIFIED_SOURCE_CLAIM'
 ]);
 
-const ASP_PRECISION = 'DOCUMENTED_AT_OR_BEFORE_SUPPLIED_ASP_EXCERPT_EARLIER_SPINE_STATE_UNRESOLVED';
-const FLOW_PRECISION = 'DOCUMENTED_IN_SUPPLIED_FLOW_CORE_GOVERNANCE_CORPUS';
-const DOME_PRECISION = 'DOCUMENTED_IN_SUPPLIED_DOME_WORLD_CHILD_LIBERATION_CORPUS';
-
-function mappedStage(stage) {
-  return stage === 'ASP_EARLY' ? 'ASP_DOCUMENTED_CONSTELLATION' : stage;
-}
-
-function precisionFor(stage) {
-  if (stage === 'ASP_EARLY') return ASP_PRECISION;
-  if (stage === 'FLOW_CORE_GOVERNANCE') return FLOW_PRECISION;
-  if (stage === 'DOME_WORLD_CHILD_LIBERATION') return DOME_PRECISION;
-  return 'DOCUMENTED_IN_TD613_OPERATIONALIZATION';
-}
-
-function evolutionNote(nodeId) {
-  if (nodeId === 'GRAEBER') {
-    return 'The supplied ASP formulation already names Graeber. Later Flow-Core/Dome-World work substantially reweights his role toward claims on Time, bureaucracy, interpretive labor, category calcification, and release. Exact first-entry date before the supplied ASP record remains unresolved.';
-  }
-  if (nodeId === 'STEINER') {
+function extensionEvolutionNote(node) {
+  if (node.node_id === 'STEINER') {
     return 'Later TD613 routing separates pedagogy, Anthroposophic metaphysics, epistemic-refraction use, active-observation recurrence, and racial-hierarchy quarantine instead of treating the corpus as one authority object.';
   }
-  return null;
+  return node.evolution_note;
 }
 
-export const PEDAGOGUE_LINEAGE_NODES = Object.freeze(V01_NODES.map((node) => {
-  const { introduced_in, ...rest } = node;
-  return freeze({
-    ...rest,
-    first_documented_in: mappedStage(introduced_in),
-    introduction_precision: precisionFor(introduced_in),
-    routed_through: freeze([...node.routed_through]),
-    evolution_note: evolutionNote(node.node_id)
-  });
-}));
+export const PEDAGOGUE_LINEAGE_NODES = Object.freeze(BASE_NODES.map((node) => freeze({
+  ...node,
+  routed_through: freeze([...node.routed_through]),
+  evolution_note: extensionEvolutionNote(node)
+})));
 
 export const PEDAGOGUE_LINEAGE_CHALLENGE_CARDS = Object.freeze([
-  ...V01_CHALLENGE_CARDS,
+  ...BASE_CHALLENGE_CARDS,
   freeze({
     card_id: 'challenge-steiner-goethe-organism-2025',
     target_node: 'STEINER',
