@@ -1,5 +1,6 @@
 export const ROUTE_TRANSCRIPT_ROBUSTNESS_SCHEMA = 'td613.a15-r0.aperture-pedagogue-route-transcript-robustness/v0.1';
 
+const EPS = 1e-12;
 const freeze = (value) => {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
     Object.values(value).forEach(freeze);
@@ -8,11 +9,13 @@ const freeze = (value) => {
   return value;
 };
 
+const approx = (a, b) => Math.abs(a - b) <= EPS;
 const interval = (lo, hi) => freeze({ lo, hi });
 const expand = (iv, eta) => interval(iv.lo - eta, iv.hi + eta);
 const overlaps = (a, b) => !(a.hi < b.lo || b.hi < a.lo);
 const boxesOverlap = (a, b) => overlaps(a.A, b.A) && overlaps(a.B, b.B);
 const maxAbsEntryDifference = (A, B) => Math.max(...A.flatMap((row, i) => row.map((value, j) => Math.abs(value - B[i][j]))));
+const intervalApprox = (iv, lo, hi) => approx(iv.lo, lo) && approx(iv.hi, hi);
 
 export function endpointFor(alpha, beta) {
   return freeze([[2 + beta, 1], [1, 3 + alpha]].map(Object.freeze));
@@ -40,6 +43,7 @@ export function buildRouteBoxes({ alpha, beta, eta, timing = 'sample_before_tran
     AB: freeze({ A: expand(exact.AB.A, eta), B: expand(exact.AB.B, eta) }),
     BA: freeze({ A: expand(exact.BA.A, eta), B: expand(exact.BA.B, eta) }),
   });
+  const overlap = boxesOverlap(observed.AB, observed.BA);
 
   return freeze({
     status: 'ROUTE_TRANSCRIPT_INTERVALS_COMPUTED',
@@ -47,8 +51,8 @@ export function buildRouteBoxes({ alpha, beta, eta, timing = 'sample_before_tran
     measurement_error_bound: eta,
     exact_response_family: exact,
     observed_boxes: observed,
-    boxes_overlap: boxesOverlap(observed.AB, observed.BA),
-    classification: boxesOverlap(observed.AB, observed.BA)
+    boxes_overlap: overlap,
+    classification: overlap
       ? 'ROUTE_TRANSCRIPT_SEPARATION_UNRESOLVED_UNDER_DECLARED_ERROR_FAMILY'
       : 'ROBUST_ROUTE_TRANSCRIPT_SEPARATION_OVER_DECLARED_TRANSITION_AND_ERROR_FAMILY',
   });
@@ -64,7 +68,7 @@ export function evaluateSharedEndpointFamily({ alpha, beta }) {
   const comparisons = corners.map(([a, b]) => {
     const AB = endpointFor(a, b);
     const BA = endpointFor(a, b);
-    return freeze({ alpha: a, beta: b, AB, BA, equal: maxAbsEntryDifference(AB, BA) === 0 });
+    return freeze({ alpha: a, beta: b, AB, BA, equal: maxAbsEntryDifference(AB, BA) <= EPS });
   });
   return freeze({
     shared_parameter_covenant: true,
@@ -119,8 +123,8 @@ export function runRouteTranscriptRobustnessGauntlet() {
 
   const criteria = freeze({
     R1_shared_parameter_endpoint_equality: sharedEndpoint.pointwise_endpoint_equality_over_frozen_corners,
-    R2_robust_AB_box_exact: robust.observed_boxes.AB.A.lo === 1.95 && robust.observed_boxes.AB.A.hi === 2.05 && robust.observed_boxes.AB.B.lo === 3.85 && robust.observed_boxes.AB.B.hi === 4.1499999999999995,
-    R3_robust_BA_box_exact: robust.observed_boxes.BA.A.lo === 3.75 && robust.observed_boxes.BA.A.hi === 4.25 && robust.observed_boxes.BA.B.lo === 2.95 && robust.observed_boxes.BA.B.hi === 3.05,
+    R2_robust_AB_box_exact: intervalApprox(robust.observed_boxes.AB.A, 1.95, 2.05) && intervalApprox(robust.observed_boxes.AB.B, 3.85, 4.15),
+    R3_robust_BA_box_exact: intervalApprox(robust.observed_boxes.BA.A, 3.75, 4.25) && intervalApprox(robust.observed_boxes.BA.B, 2.95, 3.05),
     R4_robust_boxes_disjoint: robust.boxes_overlap === false,
     R5_robust_classification: robust.classification === 'ROBUST_ROUTE_TRANSCRIPT_SEPARATION_OVER_DECLARED_TRANSITION_AND_ERROR_FAMILY',
     R6_ambiguity_boxes_overlap: ambiguous.boxes_overlap === true,
