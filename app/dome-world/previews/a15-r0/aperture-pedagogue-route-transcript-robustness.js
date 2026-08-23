@@ -17,6 +17,39 @@ const boxesOverlap = (a, b) => overlaps(a.A, b.A) && overlaps(a.B, b.B);
 const maxAbsEntryDifference = (A, B) => Math.max(...A.flatMap((row, i) => row.map((value, j) => Math.abs(value - B[i][j]))));
 const intervalApprox = (iv, lo, hi) => approx(iv.lo, lo) && approx(iv.hi, hi);
 
+const affine = (constant, alpha = 0, beta = 0) => freeze({ constant, alpha, beta });
+const affineAdd = (a, b) => affine(a.constant + b.constant, a.alpha + b.alpha, a.beta + b.beta);
+const affineMatrixAdd = (A, B) => freeze(A.map((row, i) => row.map((value, j) => affineAdd(value, B[i][j]))));
+const affineMatrixEqual = (A, B) => A.every((row, i) => row.every((value, j) => (
+  value.constant === B[i][j].constant
+  && value.alpha === B[i][j].alpha
+  && value.beta === B[i][j].beta
+)));
+
+const AFFINE_T0 = freeze([
+  [affine(2), affine(1)],
+  [affine(1), affine(3)],
+]);
+const AFFINE_DELTA_A = freeze([
+  [affine(0), affine(0)],
+  [affine(0), affine(0, 1, 0)],
+]);
+const AFFINE_DELTA_B = freeze([
+  [affine(0, 0, 1), affine(0)],
+  [affine(0), affine(0)],
+]);
+
+export function routeEndpointAffineFormula(order) {
+  if (!Array.isArray(order) || order.length !== 2 || [...order].sort().join('') !== 'AB') {
+    throw new Error('ROUTE_MUST_CONTAIN_EXACTLY_A_AND_B_ONCE');
+  }
+  let formula = AFFINE_T0;
+  for (const action of order) {
+    formula = affineMatrixAdd(formula, action === 'A' ? AFFINE_DELTA_A : AFFINE_DELTA_B);
+  }
+  return freeze(formula);
+}
+
 export function endpointFor(alpha, beta) {
   return freeze([[2 + beta, 1], [1, 3 + alpha]].map(Object.freeze));
 }
@@ -58,9 +91,10 @@ export function evaluateSharedEndpointFamily({ alpha, beta }) {
     if (!iv || !Number.isFinite(iv.lo) || !Number.isFinite(iv.hi) || iv.lo > iv.hi) throw new Error(`VALID_${name.toUpperCase()}_INTERVAL_REQUIRED`);
   }
 
-  const symbolicAB = freeze({ t11: '2+beta', t12: '1', t21: '1', t22: '3+alpha' });
-  const symbolicBA = freeze({ t11: '2+beta', t12: '1', t21: '1', t22: '3+alpha' });
-  const symbolicIdentity = Object.keys(symbolicAB).every((key) => symbolicAB[key] === symbolicBA[key]);
+  const formulaAB = routeEndpointAffineFormula(['A', 'B']);
+  const formulaBA = routeEndpointAffineFormula(['B', 'A']);
+  const wholeFamilyIdentity = affineMatrixEqual(formulaAB, formulaBA);
+
   const corners = [[alpha.lo, beta.lo], [alpha.lo, beta.hi], [alpha.hi, beta.lo], [alpha.hi, beta.hi]];
   const comparisons = corners.map(([a, b]) => {
     const AB = endpointFor(a, b);
@@ -70,9 +104,9 @@ export function evaluateSharedEndpointFamily({ alpha, beta }) {
 
   return freeze({
     shared_parameter_covenant: true,
-    symbolic_endpoint_formula_AB: symbolicAB,
-    symbolic_endpoint_formula_BA: symbolicBA,
-    pointwise_endpoint_identity_certified_over_declared_family: symbolicIdentity,
+    affine_endpoint_formula_AB: formulaAB,
+    affine_endpoint_formula_BA: formulaBA,
+    pointwise_endpoint_identity_certified_over_declared_family: wholeFamilyIdentity,
     corner_comparisons_are_diagnostic_only: true,
     corner_comparisons: comparisons,
     all_frozen_corners_agree: comparisons.every((entry) => entry.equal),
