@@ -10,6 +10,10 @@ import {
   runBooleanSynergyCensus
 } from '../app/dome-world/previews/a15-r0/boolean-synergy-census.js';
 import {
+  DISCRETE_OBSERVABILITY_TRANSPORT_PROGRAM_SUMMARY_SCHEMA,
+  buildDiscreteObservabilityTransportProgramSummary
+} from '../app/dome-world/previews/a15-r0/discrete-observability-transport-program-summary.js';
+import {
   FISHER_SYNERGY_NON_EQUIVALENCE_SCHEMA,
   runFisherSynergyNonEquivalence
 } from '../app/dome-world/previews/a15-r0/fisher-synergy-non-equivalence.js';
@@ -47,6 +51,7 @@ const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8'
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
 const booleanSource = fs.readFileSync('app/dome-world/previews/a15-r0/boolean-synergy-census.js', 'utf8');
+const programSummarySource = fs.readFileSync('app/dome-world/previews/a15-r0/discrete-observability-transport-program-summary.js', 'utf8');
 const fisherSource = fs.readFileSync('app/dome-world/previews/a15-r0/fisher-synergy-non-equivalence.js', 'utf8');
 const goldenSource = fs.readFileSync('app/dome-world/previews/a15-r0/golden-egg-feasible-region.js', 'utf8');
 const geometrySource = fs.readFileSync('app/dome-world/previews/a15-r0/information-geometry-calibration.js', 'utf8');
@@ -63,6 +68,7 @@ assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
 assert.equal(OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA, 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1');
 assert.equal(hypothesisSchema.$id, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(BOOLEAN_SYNERGY_CENSUS_SCHEMA, 'td613.ash.a15-r0.boolean-synergy-census/v0.1');
+assert.equal(DISCRETE_OBSERVABILITY_TRANSPORT_PROGRAM_SUMMARY_SCHEMA, 'td613.aia.discrete-observability-transport-program-summary/v0.1');
 assert.equal(FISHER_SYNERGY_NON_EQUIVALENCE_SCHEMA, 'td613.ash.a15-r0.fisher-synergy-non-equivalence/v0.1');
 assert.equal(GOLDEN_EGG_FEASIBLE_REGION_SCHEMA, 'td613.ash.a15-r0.golden-egg-feasible-region/v0.1');
 assert.equal(INFORMATION_GEOMETRY_CALIBRATION_SCHEMA, 'td613.ash.a15-r0.information-geometry-calibration/v0.1');
@@ -284,6 +290,32 @@ assert.deepEqual(hypothesisRegistry.bounded_support, [
 ]);
 assert.deepEqual(hypothesisRegistry.research_frontier, ['H_INFORMATION_CURVATURE_GEOMETRIC']);
 
+const programSummary = buildDiscreteObservabilityTransportProgramSummary();
+assert.equal(programSummary.status, 'BOUNDED_RESEARCH_SYNTHESIS');
+assert.equal(programSummary.receipts.synthesis, 'f7defcb7debb2d20ddb4cd84b40797d4915fd0c6');
+assert.equal(programSummary.receipts.synthesis_digest_sha256, '24efc9eb878418c6d408b3e4e9d5a2a2b063059387c16495ebf8742a7e1d2e98');
+assert.equal(programSummary.quantitative_boundary.projective_readout_orbit_directions, 8);
+assert.equal(programSummary.quantitative_boundary.induced_partition_classes_on_frozen_four_state_ecology, 4);
+assert.equal(programSummary.quantitative_boundary.global_kernel_complete_calibration_states, 33);
+assert.equal(programSummary.quantitative_boundary.hypothesis_conditioned_calibration_states, 15);
+assert.equal(programSummary.quantitative_boundary.codesigned_calibration_states, 8);
+assert.equal(programSummary.quantitative_boundary.inherited_primary_probe_count, 3);
+assert.equal(programSummary.quantitative_boundary.codesigned_primary_probe_count, 1);
+assert.equal(programSummary.quantitative_boundary.minimum_anchored_two_packet_signature_distance, 4);
+assert.equal(programSummary.witness_status.deterministic_component_tests_authored, true);
+assert.equal(programSummary.witness_status.exact_head_node_execution_witnessed, false);
+assert.equal(programSummary.witness_status.ci_witnessed, false);
+assert.equal(programSummary.witness_status.this_summary_creates_new_scientific_evidence, false);
+assert.equal(programSummary.release_boundary.selected_surface, 'A15_R0_OPEN_RESEARCH_FIELD');
+assert.equal(programSummary.release_boundary.preview_summary_only, true);
+assert.equal(programSummary.release_boundary.promotion_authority, false);
+assert.equal(programSummary.release_boundary.vercel_authority, false);
+assert.ok(programSummary.claim_ceiling.includes('NO_TD613_GENERAL_AIA_THEOREM'));
+assert.ok(programSummary.claim_ceiling.includes('NO_CONTINUUM_LIMIT_OR_DIFFERENTIAL_GEOMETRY'));
+assert.ok(programSummary.claim_ceiling.includes('NO_PROTO_LOOM_PROMOTION'));
+assert.ok(programSummary.claim_ceiling.includes('NO_PRODUCTION_OR_DEPLOYMENT_AUTHORITY_FROM_THIS_SUMMARY'));
+assert.equal(Object.isFrozen(programSummary), true);
+
 for (const marker of [
   'Open research field · noncanonical',
   'Competing hypotheses over one fixed substrate',
@@ -304,13 +336,16 @@ for (const marker of [
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-for (const source of [modelSource, envelopeSource, booleanSource, fisherSource, goldenSource, geometrySource, hypothesisSource, uiSource]) {
+assert.match(uiSource, /Discrete observability transport · bounded synthesis/);
+assert.match(uiSource, /fieldProgramSummary/);
+assert.match(uiSource, /bounded-research-synthesis/);
+for (const source of [modelSource, envelopeSource, booleanSource, programSummarySource, fisherSource, goldenSource, geometrySource, hypothesisSource, uiSource]) {
   assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
 }
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.7',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.8',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -343,6 +378,10 @@ console.log(JSON.stringify({
   frontier: hypothesisRegistry.research_frontier.length,
   next_stage: hypothesisRegistry.next_stage,
   sequence_authority: hypothesisRegistry.sequence_authority,
+  observability_transport_status: programSummary.status,
+  observability_transport_orbit_directions: programSummary.quantitative_boundary.projective_readout_orbit_directions,
+  observability_transport_partition_classes: programSummary.quantitative_boundary.induced_partition_classes_on_frozen_four_state_ecology,
+  observability_transport_ci_witnessed: programSummary.witness_status.ci_witnessed,
   production_mutated: false,
   external_transmission: false,
   human_selection_required: true
