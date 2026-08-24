@@ -277,8 +277,8 @@ export function composeTypedQuotientArrows(first, second) {
 function congruenceCertificate() {
   const u = freeze(['T', 'T', 'T', 'T', 'Q']);
   const v = freeze(['Q', 'T', 'T', 'T', 'T']);
-  const q = freeze(['T', 'Q', 'Q']);
-  const r = freeze(['Q', 'Q', 'T']);
+  const q = freeze(['T', 'T', 'Q']);
+  const r = freeze(['Q', 'T', 'T']);
   const cu = quotientCoordinate(u);
   const cv = quotientCoordinate(v);
   const cq = quotientCoordinate(q);
