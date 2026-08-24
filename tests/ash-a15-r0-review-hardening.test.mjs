@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
-const PARENT_730_RECEIPT = 'e14a4a9a7a35cac8b5c806d1f2fed4317f0effc7';
-execFileSync('git', ['cat-file', '-e', `${PARENT_730_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_730_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_732_RECEIPT = '38259af04ed12568cb5fde330a2032fd0d8817df';
+execFileSync('git', ['cat-file', '-e', `${PARENT_732_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_732_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_730_RECEIPT}..HEAD`,
+    `${PARENT_732_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -25,11 +25,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_MINIMAL_ROUTE_SENSITIVE_TRANSPORT_STATE_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_MINIMAL_ROUTE_SENSITIVE_TRANSPORT_STATE_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_MINIMAL_ROUTE_SENSITIVE_TRANSPORT_STATE_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-minimal-route-sensitive-transport-state.js',
-  'tests/ash-a15-r0-aperture-pedagogue-minimal-route-sensitive-transport-state.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FIRST_MOMENT_WEAKER_TRANSPORT_QUOTIENT_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FIRST_MOMENT_WEAKER_TRANSPORT_QUOTIENT_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FIRST_MOMENT_WEAKER_TRANSPORT_QUOTIENT_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-first-moment-weaker-transport-quotient.js',
+  'tests/ash-a15-r0-aperture-pedagogue-first-moment-weaker-transport-quotient.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -37,11 +37,11 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `#732 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `#733 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-minimal-route-sensitive-transport-state.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-first-moment-weaker-transport-quotient.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
