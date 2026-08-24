@@ -30,6 +30,7 @@ await import('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruc
 await import('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
@@ -87,7 +88,7 @@ const adapter = await createAshKernelAdapter(fixture);
 assert.equal('state' in adapter, false, 'Adapter state must not remain on the public governance surface.');
 assert.equal('sequence' in adapter, false, 'Adapter receipt sequence must not remain on the public governance surface.');
 assert.equal(adapter.state, undefined, 'Adapter state reads must not expose mutable governance state.');
-assert.equal(adapter.sequence, undefined, 'Adapter receipt sequence reads must not expose receipt identity state.');
+assert.equal(adapter.sequence, undefined, 'Adapter receipt sequence must not expose receipt identity state.');
 assert.throws(() => { adapter.state = { taskState:'RETURN' }; }, /private governance state/i);
 assert.throws(() => { adapter.sequence = 0; }, /private governance state/i);
 for (const internal of ['sealReceipt','restoreMutationCheckpoint','mutationCheckpoint','transition','hold','enqueueMutation','stateSummary','caseMapInput','options','assertAvailable']) {
