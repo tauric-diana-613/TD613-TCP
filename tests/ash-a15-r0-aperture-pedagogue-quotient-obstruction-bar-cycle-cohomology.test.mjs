@@ -70,6 +70,11 @@ assert.equal(assay.primitive_descent_failure.P_left, 2);
 assert.equal(assay.primitive_descent_failure.P_right, 0);
 assert.equal(assay.primitive_descent_failure.s_left, -2);
 assert.equal(assay.primitive_descent_failure.s_right, 0);
+assert.equal(
+  Object.is(assay.primitive_descent_failure.s_right, 0),
+  true,
+  'The integer-valued route primitive must emit canonical +0 rather than IEEE-754 negative zero.',
+);
 assert.equal(assay.swapped_directed_class_relation.omega_pairing, 2);
 assert.equal(assay.swapped_directed_class_relation.swapped_pairing, -2);
 assert.equal(assay.fake_cycle_rejection.passed, true);
