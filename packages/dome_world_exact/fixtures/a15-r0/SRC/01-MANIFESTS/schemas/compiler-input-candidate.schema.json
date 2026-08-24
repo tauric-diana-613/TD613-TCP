@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:compiler-input-candidate:v1",
+  "title": "SignalRupture compiler input candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["compiler_candidate_id", "compiler_id", "status", "source_predicate_raw", "input_slots", "origin", "relation_provenance_mode", "evidence_ids", "interpretive_limit"],
+  "properties": {
+    "compiler_candidate_id": {"type": "string", "minLength": 1},
+    "compiler_id": {"type": ["string", "null"], "minLength": 1},
+    "status": {"type": "string", "minLength": 1},
+    "source_predicate_raw": {"type": "string", "minLength": 1},
+    "input_slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot", "candidate_ids", "resolution"],
+        "properties": {
+          "slot": {"type": "string", "minLength": 1},
+          "candidate_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "resolution": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "archive-derived", "researcher-proposed"]},
+    "relation_provenance_mode": {"enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "MIXED", "UNRESOLVED"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  }
+}

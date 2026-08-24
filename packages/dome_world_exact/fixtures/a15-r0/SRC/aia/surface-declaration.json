@@ -1,0 +1,36 @@
+{
+  "schema_version": "td613-aia-surface-declaration/v1",
+  "surface_id": "a15-r0-src-atelier",
+  "host_station": "Dome-World",
+  "governance_context": "TD613",
+  "nested_surface": true,
+  "external_research_fixture": true,
+  "routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
+  "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+  "route_inference_forbidden": true,
+  "outside_posture": "MINIMUM_DISCLOSURE_NON_AUTHORITATIVE",
+  "fabricated_decoys": false,
+  "rest": {"available_without_penalty": true},
+  "exit": {"available_without_penalty": true},
+  "authority": {
+    "transfer": false,
+    "automatic_redesign": false,
+    "automatic_release": false,
+    "station_mutation": false,
+    "human_closure_required": true
+  },
+  "governed_invariants": [
+    "provenance", "missingness", "contradictions", "causal_structure",
+    "claim_ceiling", "station_ownership", "authorized_actions",
+    "source_status", "observation_status"
+  ],
+  "projections": {
+    "EXPERIENTIAL": {"purpose": "chronology, concepts, three-corpus traversal, and route-conditioned reading", "authority": "read_and_propose_only"},
+    "CUSTODIAL": {"purpose": "originals, hashes, licenses, availability, captures, and disappearance receipts", "authority": "read_and_verify_only"},
+    "AUDIT": {"purpose": "contradictions, evidence lineage, compilers, authority, claims, hypotheses, and falsifiers", "authority": "read_query_and_candidate_disposition_only"},
+    "IMPLEMENTATION": {"purpose": "schemas, deterministic runner, tests, and reproducible query recipes", "authority": "inspect_and_propose_patch_only"}
+  },
+  "forbidden_payloads": ["raw_bodies", "credentials", "cookies", "authorization_headers", "private_tokens"],
+  "promotion": "NO_TD613_SCIENTIFIC_CORE_PROMOTION",
+  "closure": "HUMAN_REQUIRED"
+}

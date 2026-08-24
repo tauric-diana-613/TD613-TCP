@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:legacy-membership-candidate:v1",
+  "title": "SignalRupture Legacy criterion membership candidate",
+  "description": "A criterion match is not an individual Legacy or authority assertion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "subject_id",
+    "title",
+    "publication_date",
+    "criterion",
+    "candidate_status",
+    "authority_assignment_status",
+    "origin",
+    "relation_provenance_mode",
+    "evidence_ids",
+    "interpretive_limit"
+  ],
+  "properties": {
+    "schema_version": {"const": "legacy-membership-candidate/v1"},
+    "subject_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "publication_date": {"type": "string", "format": "date"},
+    "criterion": {"type": "string", "minLength": 1},
+    "candidate_status": {
+      "enum": [
+        "MEETS_DECLARED_LEGACY_CRITERION",
+        "DOES_NOT_MEET_DECLARED_LEGACY_CRITERION",
+        "UNRESOLVED_CRITERION_MATCH"
+      ]
+    },
+    "authority_assignment_status": {
+      "enum": ["NOT_INDIVIDUALLY_WITNESSED", "INDIVIDUALLY_WITNESSED", "DISPUTED", "NOT_APPLICABLE"]
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+    "relation_provenance_mode": {
+      "enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "MIXED", "UNRESOLVED"]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  }
+}

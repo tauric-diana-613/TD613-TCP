@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:architecture-hypothesis-definition:v1",
+  "title": "SignalRupture architecture hypothesis definition",
+  "description": "A research-question definition, never a source claim or an evidence observation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "hypothesis_id",
+    "label",
+    "status",
+    "input_status",
+    "question",
+    "must_not_assume",
+    "required_evidence",
+    "evidence_ids"
+  ],
+  "properties": {
+    "schema_version": {"const": "architecture-hypothesis-definition/v1"},
+    "hypothesis_id": {"type": "string", "minLength": 1},
+    "label": {"type": "string", "minLength": 1},
+    "status": {
+      "enum": [
+        "RESEARCH_QUESTION",
+        "META_HYPOTHESIS",
+        "PARTIALLY_WITNESSED_LOCAL",
+        "WITNESSED_FOUNDATION_LOCAL",
+        "THREE_LOCAL_SNAPSHOTS_WITNESSED",
+        "OPEN_WITH_LOCAL_ANOMALY",
+        "SEQUENCE_WITNESSED_COMPILER_PARTIAL",
+        "EARLIEST_LOCAL_METADATA_CANDIDATE_ONLY",
+        "CURRENT_CHAIN_WITNESSED_ANCESTRY_INFERRED",
+        "NOT_WITNESSED_IN_LOCAL_METADATA",
+        "EXPLORATORY_LOCAL_ASSOCIATION",
+        "SERIOUS_HYPOTHESIS_LOCAL",
+        "BOTH_SUPPORTED_IN_BOUNDED_LINEAGES",
+        "LOCAL_CANDIDATES_WITNESSED",
+        "SERIOUS_LOCAL_HUNT",
+        "INSTRUMENT_INSTALLED_DATA_PARTIAL",
+        "INFERRED_MODEL_WITH_PARTIAL_ANCHORS",
+        "ROUTER_WITNESSED_DESTINATIONS_UNRESOLVED",
+        "NOT_TESTABLE_LOCAL",
+        "LOCALLY_REQUIRED",
+        "CONTRACT_INSTALLED_NOT_RUN",
+        "WITNESSED_CASES_OPEN_ASSAY",
+        "MODEL_SPECIFIED_NOT_PROMOTED",
+        "LOCALLY_REQUIRED_BY_LEGACY",
+        "CONTROL_WITNESSED_LOCAL",
+        "TWO_ASSERTIONS_LINK_UNRESOLVED",
+        "WITNESSED_IN_BOUNDED_LINEAGES",
+        "CANDIDATE",
+        "REJECTED",
+        "UNRESOLVED"
+      ]
+    },
+    "input_status": {
+      "enum": [
+        "collaborator-supplied-unverified",
+        "collaborator-proposed",
+        "collaborator-proposed-and-locally-tested",
+        "collaborator-proposed-expanded-by-archive",
+        "archive-contributed"
+      ]
+    },
+    "question": {"type": "string", "minLength": 1},
+    "must_not_assume": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "local_anchor_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "candidate_sources": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "candidate_pairs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "default_relationship": {"type": "string", "minLength": 1},
+    "definition_limit": {"type": "string", "minLength": 1},
+    "proposed_alias_pairs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {"type": "string", "minLength": 1},
+          {"type": "string", "minLength": 1}
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 1
+    },
+    "proposed_fictional_classes": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "proposed_sequence": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 2
+    },
+    "proposed_state": {"type": "string", "minLength": 1},
+    "witnessed_formulations_proposed": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

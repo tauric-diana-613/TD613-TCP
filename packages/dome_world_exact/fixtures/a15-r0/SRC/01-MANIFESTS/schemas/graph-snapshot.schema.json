@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:graph-snapshot:v1",
+  "title": "SignalRupture graph snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "graph_snapshot_id", "graph_kind", "graph_layer", "as_of", "knowledge_cutoff", "view_mode", "source_map_manifestation_id", "input_snapshot_hashes", "included_node_ids", "included_edge_ids", "completeness"],
+  "properties": {
+    "schema_version": {"const": "graph-snapshot/v1"},
+    "graph_snapshot_id": {"type": "string", "minLength": 1},
+    "graph_kind": {"enum": ["C_AUTHOR_SELF_MAP", "G_ARCHIVE_RECONSTRUCTION"]},
+    "graph_layer": {"enum": ["HISTORICAL", "CONCEPTUAL", "OPERATIONAL", "NAVIGATIONAL", "AUTHORITY", "MULTILAYER"]},
+    "as_of": {"type": "string"},
+    "knowledge_cutoff": {"type": "string"},
+    "view_mode": {"enum": ["CONTEMPORANEOUS_ONLY", "HINDSIGHT_AUGMENTED", "ALL_WITNESSED_AS_OF_QUERY"]},
+    "source_map_manifestation_id": {"type": ["string", "null"]},
+    "input_snapshot_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "minItems": 1},
+    "included_node_ids": {"type": "array", "items": {"type": "string"}},
+    "included_edge_ids": {"type": "array", "items": {"type": "string"}},
+    "completeness": {"enum": ["BOUNDED_COMPLETE", "PARTIAL", "METADATA_ONLY", "UNKNOWN"]}
+  }
+}
