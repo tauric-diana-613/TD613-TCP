@@ -2,6 +2,39 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const asyncDiagnosticPath = 'artifacts/a15-r0/review-hardening-async-error.json';
+const parentImportDiagnosticPath = 'artifacts/a15-r0/review-hardening-parent-import-progress.json';
+let parentLastCompletedSpecifier = null;
+
+function writeParentImportProgress({ currentSpecifier = null, caughtError = null, phase = 'IMPORT_CHAIN' } = {}) {
+  fs.mkdirSync('artifacts/a15-r0', { recursive: true });
+  fs.writeFileSync(parentImportDiagnosticPath, JSON.stringify({
+    phase,
+    current_specifier: currentSpecifier,
+    last_completed_specifier: parentLastCompletedSpecifier,
+    caught_error: caughtError,
+  }, null, 2));
+}
+
+async function auditedParentImport(specifier) {
+  writeParentImportProgress({ currentSpecifier: specifier });
+  try {
+    const imported = await import(specifier);
+    parentLastCompletedSpecifier = specifier;
+    writeParentImportProgress();
+    return imported;
+  } catch (error) {
+    writeParentImportProgress({
+      currentSpecifier: specifier,
+      caughtError: {
+        name: error?.name ?? null,
+        message: error?.message ?? null,
+        stack: error?.stack ?? null,
+      },
+    });
+    throw error;
+  }
+}
+
 process.on('uncaughtExceptionMonitor', (error, origin) => {
   fs.mkdirSync('artifacts/a15-r0', { recursive: true });
   fs.writeFileSync(asyncDiagnosticPath, JSON.stringify({
@@ -15,41 +48,41 @@ process.on('uncaughtExceptionMonitor', (error, origin) => {
   }, null, 2));
 });
 
-await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-explicit-reconciliation-event.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-post-reconciliation-dual-lineage.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-multi-generation-prospective-branching.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-cross-generation-reconciliation.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-post-r2-prospective-continuation.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-family-robustness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-identifiability.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-bounded-noise.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-sequential-contraction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-operator-response-reconstruction-coordinate-equivalence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-admissible-bilinear-probe-geometry.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-bilinear-program-synthesis.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-route-conditioned-observation-transcript.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-route-transcript-robustness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transcript-compression-collision.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-partial-event-custody-projection.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-compositional-replay-closure.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-exogenous-evolution-congruence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-temporal-recurrence-phase-aliasing.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-first-bounded-path-grammar.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-finite-path-category-audition.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-invertibility-admissibility-obstruction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-reachability-geometry.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-branching-confluence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
-await import('./ash-a15-r0-wedding-identifiability.test.mjs');
+await auditedParentImport('./ash-a15-r0-review-hardening-sharded.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-explicit-reconciliation-event.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-post-reconciliation-dual-lineage.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-multi-generation-prospective-branching.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-cross-generation-reconciliation.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-post-r2-prospective-continuation.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-transition-family-robustness.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-transition-operator-identifiability.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-transition-operator-bounded-noise.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-transition-operator-sequential-contraction.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-operator-response-reconstruction-coordinate-equivalence.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-admissible-bilinear-probe-geometry.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-bilinear-program-synthesis.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-route-conditioned-observation-transcript.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-route-transcript-robustness.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-transcript-compression-collision.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-partial-event-custody-projection.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-compositional-replay-closure.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-exogenous-evolution-congruence.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-temporal-recurrence-phase-aliasing.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-first-bounded-path-grammar.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-finite-path-category-audition.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-invertibility-admissibility-obstruction.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-directed-reachability-geometry.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-directed-branching-confluence.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruction.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
+await auditedParentImport('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
+await auditedParentImport('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
-const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
-const { createAshKernelAdapter } = await import('../app/dome-world/previews/a15-r0/ash-kernel-adapter.js');
+const { validateGovernedTaskFixture } = await auditedParentImport('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
+const { createObservableEventRecorder } = await auditedParentImport('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
+const { createAshKernelAdapter } = await auditedParentImport('../app/dome-world/previews/a15-r0/ash-kernel-adapter.js');
 const fixture = JSON.parse(fs.readFileSync('app/dome-world/fixtures/a15-r0/governed-task-fixture-v01.json', 'utf8'));
 
 for (const [label, mutate] of [
@@ -129,4 +162,5 @@ const a12Source = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
 assert.match(a12Source, /case_closed:document\.body\.dataset\.ashCaseClosed === 'true'/, 'A12 must observe whether the reusable Investigation case is already closed.');
 assert.match(a12Source, /existing\.case_closed === true/, 'A12 must reactivate a matching but closed Investigation case.');
 
+writeParentImportProgress({ phase: 'HARNESS_TERMINAL_MARKER' });
 console.log('Ash A15-R0 release-boundary hardening tests passed.');
