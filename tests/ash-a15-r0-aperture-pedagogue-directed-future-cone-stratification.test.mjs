@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { mkdirSync, writeFileSync } from 'node:fs';
 
 import {
   DIRECTED_FUTURE_CONE_STRATIFICATION_SCHEMA,
@@ -135,6 +136,34 @@ assert.equal(
     : 'SOURCE_RELATIVE_MINIMAL_FRONTIER_PROFILES_RETAIN_SEASON_DEPENDENT_STRUCTURE',
 );
 
+const h7Summary = result.fork_audits.map((fork) => {
+  const row = fork.count_rows.find((candidate) => candidate.horizon === 7);
+  return {
+    source_node_id: fork.source_node_id,
+    common_future_count: row.common_future_count,
+    minimal_frontier_width: row.minimal_frontier_width,
+    least_count: row.least_count,
+    minimum_join_cost: row.minimum_join_cost,
+  };
+});
+
+// Diagnostic custody is written before the post-witness positive assertions.
+// The first observational witness (run 2101) executed the preregistered assay,
+// but its console body was unavailable through the connector. This artifact
+// records the measured truth vector without changing the assay or adding H8.
+mkdirSync('artifacts/a15-r0', { recursive: true });
+writeFileSync(
+  'artifacts/a15-r0/directed-future-cone-h7-confirmation.json',
+  `${JSON.stringify({
+    schema: result.schema,
+    status: result.status,
+    patterns,
+    classifications: result.classifications,
+    h7: h7Summary,
+  }, null, 2)}\n`,
+  'utf8',
+);
+
 // Post-witness confirmation layer. These expectations are authored after the
 // first successful observational witness because the Actions log body was not
 // recoverable through the connector. They therefore confirm the preregistered
@@ -184,17 +213,6 @@ assert.equal(result.claim_ceiling.merge, false);
 assert.equal(result.claim_ceiling.production, false);
 assert.equal(result.claim_ceiling.vercel, false);
 assert.equal(result.stop, 'HUMAN_𝄐_QUALIFIED_FOR_SYMBOLIC_RECURRENCE_AND_INDUCTIVE_PROOF_AUDITION');
-
-const h7Summary = result.fork_audits.map((fork) => {
-  const row = fork.count_rows.find((candidate) => candidate.horizon === 7);
-  return {
-    source_node_id: fork.source_node_id,
-    common_future_count: row.common_future_count,
-    minimal_frontier_width: row.minimal_frontier_width,
-    least_count: row.least_count,
-    minimum_join_cost: row.minimum_join_cost,
-  };
-});
 
 console.log('A15-R0 directed future-cone stratification summary:', JSON.stringify({
   h7: h7Summary,
