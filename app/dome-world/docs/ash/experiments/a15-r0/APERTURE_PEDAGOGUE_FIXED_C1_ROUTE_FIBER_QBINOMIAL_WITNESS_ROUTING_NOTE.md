@@ -28,6 +28,8 @@ Post-freeze add/delete paperwork scars exist in commit history but have zero net
 
 This file exists only for temporary exact-head CI routing. It changes no Gaussian-polynomial theorem, route-fiber count, custody bound, hostile, or claim ceiling.
 
+Synchronization annotation: the initial retargeted routing head did not attach a pull-request Actions run, so this metadata-only update exists solely to register a fresh exact-head PR event. Scientific head remains frozen above.
+
 After authority-bearing witness: restore stacked base, delete this note, compare frozen science to cleanup for zero net scientific drift, then write receipt.
 
 ```text
