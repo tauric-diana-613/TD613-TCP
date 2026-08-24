@@ -156,6 +156,17 @@ export function evaluateQuotientCoordinateFromSource(sourceState, c) {
   });
 }
 
+function quotientTargetProjection(symbolic) {
+  if (symbolic?.status !== 'SOURCE_CONDITIONED_QUOTIENT_TARGET_DERIVED') return null;
+  return freeze({
+    endpoint: symbolic.endpoint,
+    last_action: symbolic.last_action,
+    operational_lineage: symbolic.operational_lineage,
+    clock_phase: symbolic.clock_phase,
+    forcing_season: symbolic.forcing_season,
+  });
+}
+
 function minimalHistoryForSeason(season, index = 0) {
   return freeze({
     id: `Q729_${season}_${index}`,
@@ -194,7 +205,8 @@ function transitionLocalityControls() {
       const actual = evaluateWord(history, word);
       const c = quotientCoordinate(word);
       const symbolic = evaluateQuotientCoordinateFromSource(sourceState, c);
-      rows.push(freeze({ season, word, coordinate: c, actual: actual.target, symbolic, equal: actual.passed && keyOf(actual.target) === keyOf(symbolic) }));
+      const symbolicTarget = quotientTargetProjection(symbolic);
+      rows.push(freeze({ season, word, coordinate: c, actual: actual.target, symbolic, equal: actual.passed && symbolicTarget !== null && keyOf(actual.target) === keyOf(symbolicTarget) }));
     }
   }
   return freeze({
