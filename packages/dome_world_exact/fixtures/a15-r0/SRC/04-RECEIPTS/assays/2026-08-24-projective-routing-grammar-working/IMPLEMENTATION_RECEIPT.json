@@ -1,0 +1,67 @@
+{
+  "schema_version": "src-projective-routing-implementation-receipt/v1",
+  "atelier_snapshot_id": "src-20260824-p2-001",
+  "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+  "source_status": "POST_SEAL_RESEARCH_IMPLEMENTATION",
+  "observation_status": "INSTRUMENT_INSTALLED_EXECUTION_NOT_RECORDED",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "amari/src-projective-routing-grammar",
+  "pull_request": 731,
+  "base_branch": "main",
+  "base_sha": "7f9b2c1ecd5cb05c61ccc700ebe5d03af4a132a6",
+  "instrument_commit_sha": "6a726f04d01fce9575c12fe4dc88d91b26f5ee5e",
+  "implemented_files": [
+    "05-OPERATIONS/hypotheses/2026-08-24-amari-projective-routing-grammar.jsonl",
+    "05-OPERATIONS/hypotheses/PROJECTIVE_ROUTING_GRAMMAR_TRAIL.md",
+    "06-INSTRUMENTS/PROJECTIVE_ROUTING_GRAMMAR.md",
+    "99-ADMIN/run-projective-routing-grammar-assay.py"
+  ],
+  "runner_properties": {
+    "network_access": false,
+    "default_write_mode": false,
+    "explicit_write_flag_required": true,
+    "sealed_kiln_write_forbidden": true,
+    "python_dependencies": "standard_library_only",
+    "synthetic_self_test_available": true
+  },
+  "implemented_outputs_when_run_with_write": [
+    "explore-token-observations.jsonl",
+    "signature-observations.jsonl",
+    "field-marker-observations.jsonl",
+    "summary.json"
+  ],
+  "implemented_candidate_classes": [
+    "LATER_EXACT_RESOLUTION_CANDIDATE",
+    "PREEXISTING_DESTINATION_CANDIDATE",
+    "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+    "PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+    "UNRESOLVED_MACHINE",
+    "SINGLETON_SIGNATURE",
+    "RECURRING_EXACT_SIGNATURE",
+    "WITNESSED_LITERAL_MARKER"
+  ],
+  "automatic_promotions_forbidden": [
+    "LATER_SEMANTIC_RESOLUTION",
+    "PROMISSORY_OBJECT_CONFIRMED",
+    "SIGNATURE_COORDINATE_AXIS_CONFIRMED",
+    "MACHINE_ROUTING_EFFECT_CONFIRMED",
+    "TOMOGRAPHY",
+    "HOLONOMY",
+    "HIDDEN_MESSAGE",
+    "SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS"
+  ],
+  "non_collapse": [
+    "source assertion != archive inference != researcher hypothesis",
+    "lexical resolution != semantic identity",
+    "future resolution != causal prediction",
+    "signature recurrence != authorship fingerprint",
+    "machine-readable != ingested by model X",
+    "multi-view integration != tomography theorem",
+    "path dependence != holonomy",
+    "unresolved destination != suppressed object",
+    "SRC_PROJECTIVE_ROUTING_GRAMMAR != A15_R0_TRANSPORT_RESEARCH"
+  ],
+  "execution_note": "This receipt records installation only. A corpus assay result must be produced by executing the runner against the bound snapshot; no result is inferred from implementation.",
+  "merge_authority": "NONE",
+  "deployment_authority": "NONE"
+}
