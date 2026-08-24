@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_751_RECEIPT = 'b9a0d13e43d80f59769788da31d87951ec8ea8ee';
-execFileSync('git', ['cat-file', '-e', `${PARENT_751_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_751_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
+execFileSync('git', ['cat-file', '-e', `${PARENT_752_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_752_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_751_RECEIPT}..HEAD`,
+    `${PARENT_752_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -24,11 +24,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_ADMISSIBILITY_DESCENT_THEOREM_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_ADMISSIBILITY_DESCENT_THEOREM_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_ADMISSIBILITY_DESCENT_THEOREM_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-finite-admissibility-descent-theorem.js',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-admissibility-descent-theorem.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_CLAIM_AUTHORITY_PARTITION_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_CLAIM_AUTHORITY_PARTITION_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_FINITE_CLAIM_AUTHORITY_PARTITION_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-finite-claim-authority-partition.js',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-claim-authority-partition.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -36,14 +36,14 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `#752 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `#753 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
-// Parent release-boundary obligations are carried by exact #751 receipt ancestry.
-// Execute only current science plus standing sharded and wedding sentinels;
-// do not recursively reenact witnessed parent assays.
+// Parent theorem authority is carried by exact #752 receipt ancestry.
+// Execute only current application science plus standing sharded and wedding sentinels;
+// do not recursively reenact witnessed ancestor assays.
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-finite-admissibility-descent-theorem.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-claim-authority-partition.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 #752 finite admissibility descent theorem hardening tests passed.');
+console.log('Ash A15-R0 #753 finite claim-authority partition hardening tests passed.');
