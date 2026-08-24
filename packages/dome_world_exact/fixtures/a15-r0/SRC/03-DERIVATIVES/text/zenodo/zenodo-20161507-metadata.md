@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:f18b8597b7337da4bbad8824
+parent_capture_id: capture:04c168acef4fdab08ebf89ca
+parent_blob_sha256: 804c1250fb638308d9772fc0e5be3b155f2e390714a3964ebaf801b8fcc9915f
+tool: srcctl-json-normalizer/1
+source_title: "THE AGENCY MYTH: Operationalizing SignalRupture"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20161506",
+  "conceptrecid": "20161506",
+  "created": "2026-05-13T16:00:37.358047+00:00",
+  "doi": "10.5281/zenodo.20161507",
+  "doi_url": "https://doi.org/10.5281/zenodo.20161507",
+  "files": [
+    {
+      "checksum": "md5:7ccaaf6dbab276bff6c8d887f9bf9ddd",
+      "id": "562e7d99-4232-4361-91f1-e7fb57057706",
+      "key": "THE AGENCY MYTH: Operationalizing SignalRupture.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20161507/files/THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/content"
+      },
+      "size": 247756
+    }
+  ],
+  "id": 20161507,
+  "links": {
+    "access": "https://zenodo.org/api/records/20161507/access",
+    "access_grants": "https://zenodo.org/api/records/20161507/access/grants",
+    "access_links": "https://zenodo.org/api/records/20161507/access/links",
+    "access_request": "https://zenodo.org/api/records/20161507/access/request",
+    "access_users": "https://zenodo.org/api/records/20161507/access/users",
+    "archive": "https://zenodo.org/api/records/20161507/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20161507/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20161507/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20161507/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20161507",
+    "draft": "https://zenodo.org/api/records/20161507/draft",
+    "file_modification": "https://zenodo.org/api/records/20161507/file-modification",
+    "files": "https://zenodo.org/api/records/20161507/files",
+    "latest": "https://zenodo.org/api/records/20161507/versions/latest",
+    "latest_html": "https://zenodo.org/records/20161507/latest",
+    "media_files": "https://zenodo.org/api/records/20161507/media-files",
+    "parent": "https://zenodo.org/api/records/20161506",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20161506",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20161506",
+    "parent_html": "https://zenodo.org/records/20161506",
+    "preview_html": "https://zenodo.org/records/20161507?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20161507/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20161507/request-deletion",
+    "requests": "https://zenodo.org/api/records/20161507/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20161507/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20161507",
+    "self_doi": "https://doi.org/10.5281/zenodo.20161507",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20161507",
+    "self_html": "https://zenodo.org/records/20161507",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20161507/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20161507/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20161507:THE%20AGENCY%20MYTH:%20Operationalizing%20SignalRupture.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20161507/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Agency Myth develops a unified structural and computational framework for understanding why modern populations retain formal freedoms yet increasingly lose the executable adaptive capacity required to act on them. The essay argues that agency is not an inherent human trait but a structurally rationed resource shaped by friction, scarcity, institutional complexity, and temporal depletion. Through the Agency Realization Ratio (ARR), the Quiet Governance Friction Index (QGFI), deviation capacity modeling, and recursive degradation dynamics, the paper demonstrates how cumulative friction erodes adaptive bandwidth across housing, labor, healthcare, mobility, and cognitive‑temporal domains.</p>\n<p>The manuscript integrates systems theory, population‑level indicators, and computational heuristics to show that only 35&ndash;40% of individuals in Canada and the United States retain stable executable agency. It reframes governance as bandwidth exhaustion rather than coercive domination, arguing that modern societies preserve symbolic liberty while compressing the material conditions required for meaningful action. The essay positions agency collapse as the defining structural crisis of advanced economies.</p>",
+    "doi": "10.5281/zenodo.20161507",
+    "keywords": [
+      "Metatheory",
+      "Agency",
+      "Personal Agency",
+      "Freedom",
+      "Society",
+      "Extraction"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-13",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20161506"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "THE AGENCY MYTH: Operationalizing SignalRupture",
+    "version": "1.0"
+  },
+  "modified": "2026-05-13T16:00:38.147289+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20161507",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 6,
+    "unique_downloads": 5,
+    "unique_views": 18,
+    "version_downloads": 6,
+    "version_unique_downloads": 5,
+    "version_unique_views": 18,
+    "version_views": 19,
+    "views": 19
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "THE AGENCY MYTH: Operationalizing SignalRupture",
+  "updated": "2026-05-13T16:00:38.147289+00:00"
+}

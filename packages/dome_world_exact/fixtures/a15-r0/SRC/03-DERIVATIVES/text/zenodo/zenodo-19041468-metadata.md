@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:39e85cfecdd21eb31fb4d035
+parent_capture_id: capture:570176a29a55050585aa5fbe
+parent_blob_sha256: 23db83195d28be856f53f82253f514abe9b893007d6ab68f8ef4e3c350fa3dd4
+tool: srcctl-json-normalizer/1
+source_title: "Dominant‑Cluster Formation: When a Single Concept Reorganizes the System"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19041467",
+  "conceptrecid": "19041467",
+  "created": "2026-03-16T00:44:17.879583+00:00",
+  "doi": "10.5281/zenodo.19041468",
+  "doi_url": "https://doi.org/10.5281/zenodo.19041468",
+  "files": [
+    {
+      "checksum": "md5:0f611eec461282e0ea270c9d9dc47ba9",
+      "id": "16f8cb52-19b2-40e5-bf54-b26d9601b31c",
+      "key": "Dominant‑Cluster Formation: When a Single Concept Reorganizes the System .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19041468/files/Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/content"
+      },
+      "size": 90399
+    }
+  ],
+  "id": 19041468,
+  "links": {
+    "access": "https://zenodo.org/api/records/19041468/access",
+    "access_grants": "https://zenodo.org/api/records/19041468/access/grants",
+    "access_links": "https://zenodo.org/api/records/19041468/access/links",
+    "access_request": "https://zenodo.org/api/records/19041468/access/request",
+    "access_users": "https://zenodo.org/api/records/19041468/access/users",
+    "archive": "https://zenodo.org/api/records/19041468/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19041468/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19041468/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19041468/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19041468",
+    "draft": "https://zenodo.org/api/records/19041468/draft",
+    "file_modification": "https://zenodo.org/api/records/19041468/file-modification",
+    "files": "https://zenodo.org/api/records/19041468/files",
+    "latest": "https://zenodo.org/api/records/19041468/versions/latest",
+    "latest_html": "https://zenodo.org/records/19041468/latest",
+    "media_files": "https://zenodo.org/api/records/19041468/media-files",
+    "parent": "https://zenodo.org/api/records/19041467",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19041467",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19041467",
+    "parent_html": "https://zenodo.org/records/19041467",
+    "preview_html": "https://zenodo.org/records/19041468?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19041468/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19041468/request-deletion",
+    "requests": "https://zenodo.org/api/records/19041468/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19041468/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19041468",
+    "self_doi": "https://doi.org/10.5281/zenodo.19041468",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19041468",
+    "self_html": "https://zenodo.org/records/19041468",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19041468/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19041468/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19041468:Dominant%E2%80%91Cluster%20Formation:%20When%20a%20Single%20Concept%20Reorganizes%20the%20System%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19041468/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Dominant‑Cluster Formation defines the structural event in which a platform detects a concept or field so coherent and semantically dense that it reorganizes its classification system around it. Using the SR diagnostic framework, the essay shows how strong conceptual attractors trigger indexing stalls, routing anomalies, misclassification, and temporary visibility collapse as the system rebuilds its semantic map. It argues that dominant clusters emerge not from trends but from infrastructural mechanics: when a field exhibits enough internal coherence, cross‑document reinforcement, and external traffic convergence, the platform restructures itself to accommodate the new conceptual center.</p>",
+    "doi": "10.5281/zenodo.19041468",
+    "keywords": [
+      "Digital Platforms",
+      "Metatheory",
+      "Institutions",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19041467"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Dominant‑Cluster Formation: When a Single Concept Reorganizes the System",
+    "version": "1.0"
+  },
+  "modified": "2026-03-16T00:44:18.409548+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19041468",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 12,
+    "unique_downloads": 11,
+    "unique_views": 18,
+    "version_downloads": 12,
+    "version_unique_downloads": 11,
+    "version_unique_views": 18,
+    "version_views": 18,
+    "views": 18
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Dominant‑Cluster Formation: When a Single Concept Reorganizes the System",
+  "updated": "2026-03-16T00:44:18.409548+00:00"
+}

@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:b72b28fc876db1e088d12057
+parent_capture_id: capture:1b2f121dbf61c3aaa2a843f0
+parent_blob_sha256: 994c738eab03933a10c08db716720b1398b69aac30acd83b73ba87bedc10388b
+tool: srcctl-json-normalizer/1
+source_title: "AI as Interpretive Governance: The New Architecture of Political Meaning"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19040998",
+  "conceptrecid": "19040998",
+  "created": "2026-03-15T23:38:03.608108+00:00",
+  "doi": "10.5281/zenodo.19040999",
+  "doi_url": "https://doi.org/10.5281/zenodo.19040999",
+  "files": [
+    {
+      "checksum": "md5:7d65cd65e4edada895ecde6726a12635",
+      "id": "7b108d5d-ab45-4351-92ee-2464d89dd8de",
+      "key": "AI as Interpretive Governance: The New Architecture of Political Meaning .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19040999/files/AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/content"
+      },
+      "size": 75024
+    }
+  ],
+  "id": 19040999,
+  "links": {
+    "access": "https://zenodo.org/api/records/19040999/access",
+    "access_grants": "https://zenodo.org/api/records/19040999/access/grants",
+    "access_links": "https://zenodo.org/api/records/19040999/access/links",
+    "access_request": "https://zenodo.org/api/records/19040999/access/request",
+    "access_users": "https://zenodo.org/api/records/19040999/access/users",
+    "archive": "https://zenodo.org/api/records/19040999/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19040999/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19040999/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19040999/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19040999",
+    "draft": "https://zenodo.org/api/records/19040999/draft",
+    "file_modification": "https://zenodo.org/api/records/19040999/file-modification",
+    "files": "https://zenodo.org/api/records/19040999/files",
+    "latest": "https://zenodo.org/api/records/19040999/versions/latest",
+    "latest_html": "https://zenodo.org/records/19040999/latest",
+    "media_files": "https://zenodo.org/api/records/19040999/media-files",
+    "parent": "https://zenodo.org/api/records/19040998",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19040998",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19040998",
+    "parent_html": "https://zenodo.org/records/19040998",
+    "preview_html": "https://zenodo.org/records/19040999?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19040999/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19040999/request-deletion",
+    "requests": "https://zenodo.org/api/records/19040999/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19040999/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19040999",
+    "self_doi": "https://doi.org/10.5281/zenodo.19040999",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19040999",
+    "self_html": "https://zenodo.org/records/19040999",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19040999/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19040999/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19040999:AI%20as%20Interpretive%20Governance:%20The%20New%20Architecture%20of%20Political%20Meaning%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19040999/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>AI as Interpretive Governance examines how AI systems have become an infrastructural layer of political meaning‑making, shaping classification, public reasoning, and institutional decision pathways. Using the SR diagnostic framework, the essay maps how semantic drift, epistemic rupture, and recursive collapse destabilize democratic processes by eroding shared meaning and interpretive grounding. It argues that AI now functions as an unaccountable political actor whose interpretive authority exceeds institutional oversight, making the governance of interpretive infrastructures essential for democratic stability in the post‑web era.</p>",
+    "doi": "10.5281/zenodo.19040999",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Politics",
+      "Artificial intelligence",
+      "Democracy"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19040998"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "AI as Interpretive Governance: The New Architecture of Political Meaning",
+    "version": "1.0"
+  },
+  "modified": "2026-03-15T23:38:03.965641+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19040999",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 6,
+    "unique_views": 22,
+    "version_downloads": 7,
+    "version_unique_downloads": 6,
+    "version_unique_views": 22,
+    "version_views": 22,
+    "views": 22
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "AI as Interpretive Governance: The New Architecture of Political Meaning",
+  "updated": "2026-03-15T23:38:03.965641+00:00"
+}

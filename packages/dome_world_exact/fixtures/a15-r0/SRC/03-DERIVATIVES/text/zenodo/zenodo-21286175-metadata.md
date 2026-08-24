@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:3d3a79a11115adf4b5a01a2e
+parent_capture_id: capture:135b3887a5d1adbfcbc551b8
+parent_blob_sha256: ca67b5268afcb9ca14fd7dc4a1105d4be5e35877f9c0f7c491d9b5c3e8cc6978
+tool: srcctl-json-normalizer/1
+source_title: "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21286174",
+  "conceptrecid": "21286174",
+  "created": "2026-07-09T23:10:49.724362+00:00",
+  "doi": "10.5281/zenodo.21286175",
+  "doi_url": "https://doi.org/10.5281/zenodo.21286175",
+  "files": [
+    {
+      "checksum": "md5:8afb2b13bfa69bcf9914d7ffbe6a6024",
+      "id": "d0088b27-27a6-4f26-bc90-7941d0701c97",
+      "key": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21286175/files/SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/content"
+      },
+      "size": 421016
+    }
+  ],
+  "id": 21286175,
+  "links": {
+    "access": "https://zenodo.org/api/records/21286175/access",
+    "access_grants": "https://zenodo.org/api/records/21286175/access/grants",
+    "access_links": "https://zenodo.org/api/records/21286175/access/links",
+    "access_request": "https://zenodo.org/api/records/21286175/access/request",
+    "access_users": "https://zenodo.org/api/records/21286175/access/users",
+    "archive": "https://zenodo.org/api/records/21286175/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21286175/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21286175/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21286175/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21286175",
+    "draft": "https://zenodo.org/api/records/21286175/draft",
+    "file_modification": "https://zenodo.org/api/records/21286175/file-modification",
+    "files": "https://zenodo.org/api/records/21286175/files",
+    "latest": "https://zenodo.org/api/records/21286175/versions/latest",
+    "latest_html": "https://zenodo.org/records/21286175/latest",
+    "media_files": "https://zenodo.org/api/records/21286175/media-files",
+    "parent": "https://zenodo.org/api/records/21286174",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21286174",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21286174",
+    "parent_html": "https://zenodo.org/records/21286174",
+    "preview_html": "https://zenodo.org/records/21286175?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21286175/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21286175/request-deletion",
+    "requests": "https://zenodo.org/api/records/21286175/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21286175/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21286175",
+    "self_doi": "https://doi.org/10.5281/zenodo.21286175",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21286175",
+    "self_html": "https://zenodo.org/records/21286175",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21286175/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21286175/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21286175/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Institutional Sharingan</strong> introduces a structural vision system for analyzing institutional motion across governance, organizational, and societal contexts. The paper argues that institutions do not perceive their own structural conditions accurately; instead, they rely on narrative, ritual, symbolic legitimacy, and inherited identity to maintain coherence. This divergence between institutional narrative and structural reality is conceptualized as <em>Izanagi‑mode</em>, a condition in which institutions rewrite or reinterpret outcomes to preserve stability.</p>\n<p>The framework builds on the SignalRupture (SR) metatheory and defines five operators&mdash;<strong>Pressure, Reflex, Drift, Collapse, and Reorganization</strong>&mdash;as recurrent modes of institutional motion. Institutional Sharingan provides the perceptual architecture for identifying these operators in real time, enabling analysts to detect structural deterioration, narrative distortion, and collapse trajectories before they become visible through conventional performance indicators.</p>\n<p>The paper integrates insights from Meyer &amp; Rowan, Goffman, Bourdieu, Foucault, Luhmann, March &amp; Olsen, and Berger &amp; Luckmann, positioning Institutional Sharingan as a unifying perceptual grammar that synthesizes decades of institutional theory. It includes empirical case studies (CDC, Meta, Soviet Union) demonstrating how the five operators manifest across different institutional environments.</p>\n<p>A companion paper, <strong>Structural Perception Theory (SPT)</strong>, provides the methodological foundation for Institutional Sharingan by explaining institutional blindness, the divergence between narrative and structural reality, and the role of the structural observer. Readers are encouraged to consult SPT for the underlying perceptual principles that make Institutional Sharingan possible.</p>",
+    "doi": "10.5281/zenodo.21286175",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Anime",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-07-10",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21286174"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode",
+    "version": "1.0"
+  },
+  "modified": "2026-07-09T23:10:50.125126+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21286175",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 2,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 2,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode",
+  "updated": "2026-07-09T23:10:50.125126+00:00"
+}

@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:eb8088be259181edc81f51ee
+parent_capture_id: capture:102e0845f32167d2ba3650fc
+parent_blob_sha256: c59c9069decac2ece289178beadb4380a37c45ee6f36ff8c1762ec51d1b976c8
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Stylometric Publishing: A Framework for Identity Stabilization, Algorithmic Resistance, and Cross‑Platform Scholarly Lineage"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18119742
+Final URL: https://zenodo.org/records/18119742
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18119742 -> https://zenodo.org/doi/10.5281/zenodo.18119742
+302 https://zenodo.org/doi/10.5281/zenodo.18119742 -> https://zenodo.org/records/18119742

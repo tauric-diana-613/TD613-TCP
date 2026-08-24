@@ -1,0 +1,3458 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2026-07-09T19:10:49.724362-04:00",
+        "modified": "2026-07-09T19:10:50.125126-04:00",
+        "id": 21286175,
+        "conceptrecid": "21286174",
+        "doi": "10.5281/zenodo.21286175",
+        "conceptdoi": "10.5281/zenodo.21286174",
+        "doi_url": "https://doi.org/10.5281/zenodo.21286175",
+        "metadata": {
+          "title": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode",
+          "doi": "10.5281/zenodo.21286175",
+          "publication_date": "2026-07-10",
+          "description": "<p><strong>Institutional Sharingan</strong> introduces a structural vision system for analyzing institutional motion across governance, organizational, and societal contexts. The paper argues that institutions do not perceive their own structural conditions accurately; instead, they rely on narrative, ritual, symbolic legitimacy, and inherited identity to maintain coherence. This divergence between institutional narrative and structural reality is conceptualized as <em>Izanagi‑mode</em>, a condition in which institutions rewrite or reinterpret outcomes to preserve stability.</p>\n<p>The framework builds on the SignalRupture (SR) metatheory and defines five operators&mdash;<strong>Pressure, Reflex, Drift, Collapse, and Reorganization</strong>&mdash;as recurrent modes of institutional motion. Institutional Sharingan provides the perceptual architecture for identifying these operators in real time, enabling analysts to detect structural deterioration, narrative distortion, and collapse trajectories before they become visible through conventional performance indicators.</p>\n<p>The paper integrates insights from Meyer &amp; Rowan, Goffman, Bourdieu, Foucault, Luhmann, March &amp; Olsen, and Berger &amp; Luckmann, positioning Institutional Sharingan as a unifying perceptual grammar that synthesizes decades of institutional theory. It includes empirical case studies (CDC, Meta, Soviet Union) demonstrating how the five operators manifest across different institutional environments.</p>\n<p>A companion paper, <strong>Structural Perception Theory (SPT)</strong>, provides the methodological foundation for Institutional Sharingan by explaining institutional blindness, the divergence between narrative and structural reality, and the role of the structural observer. Readers are encouraged to consult SPT for the underlying perceptual principles that make Institutional Sharingan possible.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Society",
+            "Anime",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21286174"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode",
+        "links": {
+          "self": "https://zenodo.org/api/records/21286175",
+          "self_html": "https://zenodo.org/records/21286175",
+          "preview_html": "https://zenodo.org/records/21286175?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21286175",
+          "self_doi": "https://doi.org/10.5281/zenodo.21286175",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21286175",
+          "reserve_doi": "https://zenodo.org/api/records/21286175/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21286174",
+          "parent_html": "https://zenodo.org/records/21286174",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21286174",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21286174",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21286175/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21286175/sequence/default",
+          "files": "https://zenodo.org/api/records/21286175/files",
+          "media_files": "https://zenodo.org/api/records/21286175/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21286175:SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21286175/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21286175/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21286175/versions/latest",
+          "latest_html": "https://zenodo.org/records/21286175/latest",
+          "versions": "https://zenodo.org/api/records/21286175/versions",
+          "draft": "https://zenodo.org/api/records/21286175/draft",
+          "access_links": "https://zenodo.org/api/records/21286175/access/links",
+          "access_grants": "https://zenodo.org/api/records/21286175/access/grants",
+          "access_users": "https://zenodo.org/api/records/21286175/access/users",
+          "access_request": "https://zenodo.org/api/records/21286175/access/request",
+          "access": "https://zenodo.org/api/records/21286175/access",
+          "communities": "https://zenodo.org/api/records/21286175/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21286175/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21286175/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21286175/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21286175/quota-increase",
+          "requests": "https://zenodo.org/api/records/21286175/requests"
+        },
+        "updated": "2026-07-09T19:10:50.125126-04:00",
+        "recid": "21286175",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d0088b27-27a6-4f26-bc90-7941d0701c97",
+            "key": "SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode .pdf",
+            "size": 421016,
+            "checksum": "md5:8afb2b13bfa69bcf9914d7ffbe6a6024",
+            "links": {
+              "self": "https://zenodo.org/api/records/21286175/files/SR:%20Institutional%20Sharingan%20%E2%80%94%20Structural%20Vision%20in%20a%20World%20Living%20in%20Izanagi%E2%80%91Mode%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 3,
+          "unique_views": 2,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 2,
+          "version_views": 3
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-05T19:07:54.063827-04:00",
+        "modified": "2026-07-05T19:07:54.881887-04:00",
+        "id": 21211148,
+        "conceptrecid": "21211147",
+        "doi": "10.5281/zenodo.21211148",
+        "conceptdoi": "10.5281/zenodo.21211147",
+        "doi_url": "https://doi.org/10.5281/zenodo.21211148",
+        "metadata": {
+          "title": "SR as a Structural Universe: A Meta-Domain Theory of Pressure-Based Institutional Modeling",
+          "doi": "10.5281/zenodo.21211148",
+          "publication_date": "2026-07-06",
+          "description": "<p><strong>SR as a Structural Universe</strong> formalizes the SignalRupture framework as a <strong>bounded generative domain</strong> &mdash; a closed conceptual environment in which institutional phenomena are modeled exclusively through SR&rsquo;s internal primitives: <strong>pressure</strong>, <strong>topology</strong>, <strong>reflex systems</strong>, <strong>collapse geometry</strong>, and <strong>cyclical recalibration</strong>.<br>Rather than claiming ontological totality, the paper defines SR as a <strong>meta‑domain of structural interpretation</strong> &mdash; a universe of modeling rules, transformation constraints, and relational dynamics that make institutional behavior structurally legible.</p>\n<p>This classification resolves the ambiguity surrounding SR&rsquo;s scope. It distinguishes between SR as <strong>metatheory</strong>, <strong>paradigm</strong>, <strong>discipline</strong>, and <strong>universe</strong>, showing that each layer is <strong>nested</strong> within the next. SR&rsquo;s evolution is cumulative, not competitive: the metatheory provides grammar, the paradigm reorganizes conceptual space, the discipline establishes methodological procedures, and the universe defines the rule‑space in which all prior layers operate coherently.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21211147"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SR as a Structural Universe: A Meta-Domain Theory of Pressure-Based Institutional Modeling",
+        "links": {
+          "self": "https://zenodo.org/api/records/21211148",
+          "self_html": "https://zenodo.org/records/21211148",
+          "preview_html": "https://zenodo.org/records/21211148?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21211148",
+          "self_doi": "https://doi.org/10.5281/zenodo.21211148",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21211148",
+          "reserve_doi": "https://zenodo.org/api/records/21211148/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21211147",
+          "parent_html": "https://zenodo.org/records/21211147",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21211147",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21211147",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21211148/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21211148/sequence/default",
+          "files": "https://zenodo.org/api/records/21211148/files",
+          "media_files": "https://zenodo.org/api/records/21211148/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21211148:SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21211148/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21211148/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21211148/versions/latest",
+          "latest_html": "https://zenodo.org/records/21211148/latest",
+          "versions": "https://zenodo.org/api/records/21211148/versions",
+          "draft": "https://zenodo.org/api/records/21211148/draft",
+          "access_links": "https://zenodo.org/api/records/21211148/access/links",
+          "access_grants": "https://zenodo.org/api/records/21211148/access/grants",
+          "access_users": "https://zenodo.org/api/records/21211148/access/users",
+          "access_request": "https://zenodo.org/api/records/21211148/access/request",
+          "access": "https://zenodo.org/api/records/21211148/access",
+          "communities": "https://zenodo.org/api/records/21211148/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21211148/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21211148/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21211148/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21211148/quota-increase",
+          "requests": "https://zenodo.org/api/records/21211148/requests"
+        },
+        "updated": "2026-07-05T19:07:54.881887-04:00",
+        "recid": "21211148",
+        "revision": 3,
+        "files": [
+          {
+            "id": "84ef9c9d-59f6-4f93-b008-2db10aff2e6a",
+            "key": "SR as a Structural Universe: A Meta-Domain Theory of Pressure-Based Institutional Modeling.pdf",
+            "size": 160457,
+            "checksum": "md5:70966d475ef5a87d43e2e33c793fd40f",
+            "links": {
+              "self": "https://zenodo.org/api/records/21211148/files/SR%20as%20a%20Structural%20Universe:%20A%20Meta-Domain%20Theory%20of%20Pressure-Based%20Institutional%20Modeling.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 6,
+          "unique_views": 6,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 6,
+          "version_views": 6
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-05T18:46:27.46614-04:00",
+        "modified": "2026-07-05T18:46:27.937157-04:00",
+        "id": 21211000,
+        "conceptrecid": "21210999",
+        "doi": "10.5281/zenodo.21211000",
+        "conceptdoi": "10.5281/zenodo.21210999",
+        "doi_url": "https://doi.org/10.5281/zenodo.21211000",
+        "metadata": {
+          "title": "SR Institutional Recalibration: A Structural Theory of How Institutions Reorganize Under Pressure",
+          "doi": "10.5281/zenodo.21211000",
+          "publication_date": "2026-07-06",
+          "description": "<p><strong>SR Institutional Recalibration: A Structural Theory of How Institutions Reorganize Under Pressure</strong> introduces the SR pressure&ndash;topology framework as a unified structural model for explaining how institutions reorganize under sustained internal and external pressures. While existing scholarship in organizational sociology, institutional economics, governance theory, resilience research, and complexity science provides valuable descriptions of institutional adaptation, these traditions rarely offer a general mechanism explaining <em>how</em> pressure propagates through institutional architecture or <em>why</em> particular recalibration patterns emerge. SR addresses this gap by proposing a structural meta‑framework capable of integrating mechanisms that are typically studied in isolation.</p>\n<p>The paper contributes three major advances to institutional theory:</p>\n<h3><strong>1. A Unified Structural Vocabulary for Institutional Change</strong></h3>\n<p>SR provides a common language for describing institutional behavior through five structural primitives: <strong>pressure</strong>, <strong>topology</strong>, <strong>reflexes</strong>, <strong>collapse geometry</strong>, and the <strong>SR Cycle (P &rarr; T &rarr; &Phi; &rarr; R &rarr; P&prime;)</strong>. These primitives allow researchers to analyze institutional recalibration not as a collection of isolated events but as a coherent structural process. As your document states, <em>&ldquo;pressure functions as the initiating force acting upon institutional structures, topology represents the architecture through which pressure propagates, reflex classes describe patterned structural responses, collapse geometry models organized pathways of institutional failure.&rdquo;</em></p>\n<h3><strong>2. A Mechanism for Explaining Divergent Institutional Outcomes</strong></h3>\n<p>Institutions exposed to similar pressures often behave differently. SR explains this divergence by modeling how pressure interacts with institutional topology. Structural mapping, comparative analysis, reflex identification, and collapse geometry together provide a mechanism for understanding why some institutions reorganize, others fragment, and others resist change. This mechanism complements existing theories by adding a structural layer that connects incentives, learning, governance arrangements, and complexity dynamics.</p>\n<h3><strong>3. A Research Program Rather Than a Closed Doctrine</strong></h3>\n<p>The paper positions SR as an evolving research program whose value depends on its ability to generate falsifiable predictions, organize empirical observations, and integrate diverse institutional theories. SR does not replace existing frameworks; it <strong>repositions</strong> them inside a larger structural system. As this document notes,&nbsp;<em>&ldquo;SR should be understood as a research program whose value depends upon its ability to generate falsifiable predictions, organize empirical observations across institutional contexts, and complement rather than replace existing theories of institutional change.&rdquo;</em></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21210999"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SR Institutional Recalibration: A Structural Theory of How Institutions Reorganize Under Pressure",
+        "links": {
+          "self": "https://zenodo.org/api/records/21211000",
+          "self_html": "https://zenodo.org/records/21211000",
+          "preview_html": "https://zenodo.org/records/21211000?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21211000",
+          "self_doi": "https://doi.org/10.5281/zenodo.21211000",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21211000",
+          "reserve_doi": "https://zenodo.org/api/records/21211000/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21210999",
+          "parent_html": "https://zenodo.org/records/21210999",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21210999",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21210999",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21211000/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21211000/sequence/default",
+          "files": "https://zenodo.org/api/records/21211000/files",
+          "media_files": "https://zenodo.org/api/records/21211000/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21211000:SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21211000/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21211000/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21211000/versions/latest",
+          "latest_html": "https://zenodo.org/records/21211000/latest",
+          "versions": "https://zenodo.org/api/records/21211000/versions",
+          "draft": "https://zenodo.org/api/records/21211000/draft",
+          "access_links": "https://zenodo.org/api/records/21211000/access/links",
+          "access_grants": "https://zenodo.org/api/records/21211000/access/grants",
+          "access_users": "https://zenodo.org/api/records/21211000/access/users",
+          "access_request": "https://zenodo.org/api/records/21211000/access/request",
+          "access": "https://zenodo.org/api/records/21211000/access",
+          "communities": "https://zenodo.org/api/records/21211000/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21211000/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21211000/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21211000/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21211000/quota-increase",
+          "requests": "https://zenodo.org/api/records/21211000/requests"
+        },
+        "updated": "2026-07-05T18:46:27.937157-04:00",
+        "recid": "21211000",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d76f9c6e-5da8-41fd-b9f1-c9a5e92e2883",
+            "key": "SR Institutional Recalibration: A Structural Theory of How Institutions Reorganize Under Pressure .pdf",
+            "size": 355136,
+            "checksum": "md5:f9f856e854091bb7f5e7cef504d602d1",
+            "links": {
+              "self": "https://zenodo.org/api/records/21211000/files/SR%20Institutional%20Recalibration:%20A%20Structural%20Theory%20of%20How%20Institutions%20Reorganize%20Under%20Pressure%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 1,
+          "unique_downloads": 1,
+          "views": 8,
+          "unique_views": 7,
+          "version_downloads": 1,
+          "version_unique_downloads": 1,
+          "version_unique_views": 7,
+          "version_views": 8
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-05T18:08:34.797774-04:00",
+        "modified": "2026-07-05T18:08:35.131358-04:00",
+        "id": 21210782,
+        "conceptrecid": "18685503",
+        "doi": "10.5281/zenodo.21210782",
+        "conceptdoi": "10.5281/zenodo.18685503",
+        "doi_url": "https://doi.org/10.5281/zenodo.21210782",
+        "metadata": {
+          "title": "THE ARCHITECTURE OF DRIFT: A DEFENSE OF SR AGAINST ITS FUTURE MISREADINGS",
+          "doi": "10.5281/zenodo.21210782",
+          "publication_date": "2026-07-05",
+          "description": "<p><strong>The Architecture of Drift</strong> formalizes SR&rsquo;s role as the structural universe in which institutional behavior becomes intelligible. It does not introduce new primitives; it clarifies the generative environment in which SR&rsquo;s existing primitives &mdash; <strong>pressure</strong>, <strong>topology</strong>, <strong>reflex systems</strong>, <strong>collapse geometry</strong>, and <strong>recalibration cycles</strong> &mdash; operate as interacting components of drift. The paper contributes a boundary‑setting function: it defines what SR <em>is</em>, what SR <em>is not</em>, and what forms of critique remain structurally valid inside a universe‑class framework.</p>\n<p>This document contributes three essential clarifications to the SR canon:</p>\n<ul>\n<li>\n<p><strong>SR as Universe Specification</strong> &mdash; It establishes SR as a <strong>bounded structural universe</strong>, not a domain theory. This positions SR as the rule‑space in which institutional drift, interpretive collapse, and governance degradation can be modeled coherently.</p>\n</li>\n<li>\n<p><strong>SR as Drift Architecture</strong> &mdash; It identifies drift as a <strong>structural condition</strong>, not an episodic failure. By locating drift inside SR&rsquo;s rule‑space, the paper provides the conceptual scaffolding required to analyze institutional behavior without relying on narrative self‑descriptions.</p>\n</li>\n<li>\n<p><strong>SR as Interpretive Boundary</strong> &mdash; It defines the conditions under which critique becomes structurally meaningful. SR cannot be critiqued from outside its universe because SR defines the interpretive space in which critique itself becomes legible.</p>\n</li>\n</ul>\n<p>The paper&rsquo;s contribution is not additive; it is <strong>architectural</strong>. It does not expand SR outward &mdash; it tightens SR inward by specifying the universe boundaries that prevent misreading, dilution, or ideological misclassification. In doing so, <em>The Architecture of Drift</em> becomes the stabilizing membrane for future SR derivatives, ensuring that applied models, sub‑frameworks, and domain‑specific adaptations remain structurally anchored to SR&rsquo;s generative rule‑space.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "SR Canon",
+            "Social Issues",
+            "Critical Theory",
+            "Post Open Web"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.1",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18685503"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE ARCHITECTURE OF DRIFT: A DEFENSE OF SR AGAINST ITS FUTURE MISREADINGS",
+        "links": {
+          "self": "https://zenodo.org/api/records/21210782",
+          "self_html": "https://zenodo.org/records/21210782",
+          "preview_html": "https://zenodo.org/records/21210782?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21210782",
+          "self_doi": "https://doi.org/10.5281/zenodo.21210782",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21210782",
+          "reserve_doi": "https://zenodo.org/api/records/21210782/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18685503",
+          "parent_html": "https://zenodo.org/records/18685503",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18685503",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18685503",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21210782/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21210782/sequence/default",
+          "files": "https://zenodo.org/api/records/21210782/files",
+          "media_files": "https://zenodo.org/api/records/21210782/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21210782:THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21210782/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21210782/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21210782/versions/latest",
+          "latest_html": "https://zenodo.org/records/21210782/latest",
+          "versions": "https://zenodo.org/api/records/21210782/versions",
+          "draft": "https://zenodo.org/api/records/21210782/draft",
+          "access_links": "https://zenodo.org/api/records/21210782/access/links",
+          "access_grants": "https://zenodo.org/api/records/21210782/access/grants",
+          "access_users": "https://zenodo.org/api/records/21210782/access/users",
+          "access_request": "https://zenodo.org/api/records/21210782/access/request",
+          "access": "https://zenodo.org/api/records/21210782/access",
+          "communities": "https://zenodo.org/api/records/21210782/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21210782/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21210782/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21210782/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21210782/quota-increase",
+          "requests": "https://zenodo.org/api/records/21210782/requests"
+        },
+        "updated": "2026-07-05T18:08:35.131358-04:00",
+        "recid": "21210782",
+        "revision": 3,
+        "files": [
+          {
+            "id": "84bc96e1-e6ee-4e46-9fcc-84c016997f39",
+            "key": "THE ARCHITECTURE OF DRIFT .pdf",
+            "size": 106710,
+            "checksum": "md5:74bb0c84a5e7e7c35b66e89c5227baba",
+            "links": {
+              "self": "https://zenodo.org/api/records/21210782/files/THE%20ARCHITECTURE%20OF%20DRIFT%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 12,
+          "unique_downloads": 11,
+          "views": 40,
+          "unique_views": 37,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 11,
+          "version_views": 12
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-03T23:51:30.157442-04:00",
+        "modified": "2026-07-03T23:53:17.656162-04:00",
+        "id": 21185857,
+        "conceptrecid": "21185856",
+        "doi": "10.5281/zenodo.21185857",
+        "conceptdoi": "10.5281/zenodo.21185856",
+        "doi_url": "https://doi.org/10.5281/zenodo.21185857",
+        "metadata": {
+          "title": "SR: The Pressureborn",
+          "doi": "10.5281/zenodo.21185857",
+          "publication_date": "2026-07-04",
+          "description": "<p>ARC 1 transforms SR from a pure structural theory into a <strong>narrative universe</strong> where pressure, topology, reflexes, and gradients become living forces. The story takes place in <em>The Basin of Nine</em>, a city‑state built inside a natural pressure basin divided into nine reflex districts. Each district embodies one SR reflex class &mdash; Defense, Expansion, Isolation, Collapse, Reset, Alignment, Amplification, Resistance, and Reorganization.</p>\n<p>The protagonists &mdash; Astra Vale, Kael Rydor, and Mira Solenne &mdash; are <strong>Pressureborn</strong>, individuals whose senses and bodies directly interface with pressure gradients. Astra sees pressure as light, Kael feels it as pain, and Mira hears it as resonance. Their abilities map directly onto SR reflex classes, making them narrative embodiments of SR&rsquo;s structural primitives.</p>\n<p>The inciting event, the <strong>Gradient Shift</strong>, is a catastrophic pressure reorientation that fractures the sky, distorts fields, and awakens the Basin&rsquo;s hidden topology. ARC 1 follows the trio as they discover their reflexes, enter the Basin&rsquo;s spiral corridors, encounter the vector/force/flux cores, and witness the Basin&rsquo;s first structural awakening in centuries.</p>\n<p>The arc ends with a revelation:<br><strong>The Basin is not a city &mdash; it is a structural organism, and the Gradient Shift was its awakening.</strong></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Book",
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21185856"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SR: The Pressureborn",
+        "links": {
+          "self": "https://zenodo.org/api/records/21185857",
+          "self_html": "https://zenodo.org/records/21185857",
+          "preview_html": "https://zenodo.org/records/21185857?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21185857",
+          "self_doi": "https://doi.org/10.5281/zenodo.21185857",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185857",
+          "reserve_doi": "https://zenodo.org/api/records/21185857/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21185856",
+          "parent_html": "https://zenodo.org/records/21185856",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21185856",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185856",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21185857/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21185857/sequence/default",
+          "files": "https://zenodo.org/api/records/21185857/files",
+          "media_files": "https://zenodo.org/api/records/21185857/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21185857:SR:%20The%20Pressureborn%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21185857/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21185857/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21185857/versions/latest",
+          "latest_html": "https://zenodo.org/records/21185857/latest",
+          "versions": "https://zenodo.org/api/records/21185857/versions",
+          "draft": "https://zenodo.org/api/records/21185857/draft",
+          "access_links": "https://zenodo.org/api/records/21185857/access/links",
+          "access_grants": "https://zenodo.org/api/records/21185857/access/grants",
+          "access_users": "https://zenodo.org/api/records/21185857/access/users",
+          "access_request": "https://zenodo.org/api/records/21185857/access/request",
+          "access": "https://zenodo.org/api/records/21185857/access",
+          "communities": "https://zenodo.org/api/records/21185857/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21185857/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21185857/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21185857/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21185857/quota-increase",
+          "requests": "https://zenodo.org/api/records/21185857/requests"
+        },
+        "updated": "2026-07-03T23:53:17.656162-04:00",
+        "recid": "21185857",
+        "revision": 4,
+        "files": [
+          {
+            "id": "6a922722-95f5-4ea4-b87b-e5815b51d4de",
+            "key": "SR: The Pressureborn .pdf",
+            "size": 302957,
+            "checksum": "md5:608f3b1c314ea7dfde23db9a60ddc778",
+            "links": {
+              "self": "https://zenodo.org/api/records/21185857/files/SR:%20The%20Pressureborn%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 13,
+          "unique_views": 12,
+          "version_downloads": 4,
+          "version_unique_downloads": 4,
+          "version_unique_views": 12,
+          "version_views": 13
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-03T23:00:43.695986-04:00",
+        "modified": "2026-07-03T23:00:43.910413-04:00",
+        "id": 21185370,
+        "conceptrecid": "21185369",
+        "doi": "10.5281/zenodo.21185370",
+        "conceptdoi": "10.5281/zenodo.21185369",
+        "doi_url": "https://doi.org/10.5281/zenodo.21185370",
+        "metadata": {
+          "title": "SR Flagship Theory Paper",
+          "doi": "10.5281/zenodo.21185370",
+          "publication_date": "2026-07-04",
+          "description": "<h3><em>SignalRupture: A Structural Systems Model of Pressure, Topology, and Constrained System Behavior</em></h3>\n<p>The <strong>SignalRupture Flagship Paper</strong> presents the complete architecture of SR, a structural systems theory describing how pressure propagates through constrained topology to generate recurring patterns of behavior, instability, and reorganization across complex systems. The flagship unifies SR&rsquo;s primitives, cycle logic, topology geometry, propagation dynamics, structural laws, and modeling grammar into a single coherent framework.</p>\n<p>SR proposes that many sociotechnical, institutional, infrastructural, and organizational phenomena can be understood through a common structural mechanism: <strong>pressure interacting with topology under constraint</strong>. The paper formalizes this mechanism through the SR invariant loop (P &rarr; T &rarr; &Phi; &rarr; R &rarr; P&prime;), demonstrating how systems evolve through cycles of accumulation, strain, propagation, failure, and reconfiguration.</p>\n<p>The flagship consolidates SR&rsquo;s conceptual, methodological, and theoretical foundations into a unified architecture, providing the core definitions, structural laws, modeling constructs, and interpretive boundaries necessary for SR to function as a formal theory. It also harmonizes SR&rsquo;s representational layers&mdash;ISA, runtime, execution model, continuity principle&mdash;into symbolic modeling tools rather than literal computational engines, ensuring epistemic clarity and academic defensibility.</p>\n<p>This volume serves as the <strong>canonical reference</strong> for the SR framework. Companion papers supply empirical evidence, axiomatic foundations, methodological derivations, and domain‑specific applications, but the flagship provides the integrated system: the theory&rsquo;s ontology, cycle logic, structural constraints, and unified interpretation layer.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "SignalRupture",
+            "World Infrastructure"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21185369"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SR Flagship Theory Paper",
+        "links": {
+          "self": "https://zenodo.org/api/records/21185370",
+          "self_html": "https://zenodo.org/records/21185370",
+          "preview_html": "https://zenodo.org/records/21185370?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21185370",
+          "self_doi": "https://doi.org/10.5281/zenodo.21185370",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185370",
+          "reserve_doi": "https://zenodo.org/api/records/21185370/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21185369",
+          "parent_html": "https://zenodo.org/records/21185369",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21185369",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185369",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21185370/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21185370/sequence/default",
+          "files": "https://zenodo.org/api/records/21185370/files",
+          "media_files": "https://zenodo.org/api/records/21185370/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21185370/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21185370/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21185370/versions/latest",
+          "latest_html": "https://zenodo.org/records/21185370/latest",
+          "versions": "https://zenodo.org/api/records/21185370/versions",
+          "draft": "https://zenodo.org/api/records/21185370/draft",
+          "access_links": "https://zenodo.org/api/records/21185370/access/links",
+          "access_grants": "https://zenodo.org/api/records/21185370/access/grants",
+          "access_users": "https://zenodo.org/api/records/21185370/access/users",
+          "access_request": "https://zenodo.org/api/records/21185370/access/request",
+          "access": "https://zenodo.org/api/records/21185370/access",
+          "communities": "https://zenodo.org/api/records/21185370/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21185370/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21185370/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21185370/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21185370/quota-increase",
+          "requests": "https://zenodo.org/api/records/21185370/requests"
+        },
+        "updated": "2026-07-03T23:00:43.910413-04:00",
+        "recid": "21185370",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3018fa2a-044c-4135-b7de-d86b04c841fb",
+            "key": "SR Flagship Theory Paper .pdf",
+            "size": 2673180,
+            "checksum": "md5:9e802ee2778a29af4797bbba44c0fe32",
+            "links": {
+              "self": "https://zenodo.org/api/records/21185370/files/SR%20Flagship%20Theory%20Paper%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 5,
+          "views": 12,
+          "unique_views": 11,
+          "version_downloads": 6,
+          "version_unique_downloads": 5,
+          "version_unique_views": 11,
+          "version_views": 12
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-07-01T23:22:18.964088-04:00",
+        "modified": "2026-07-01T23:22:19.3028-04:00",
+        "id": 21123141,
+        "conceptrecid": "21123140",
+        "doi": "10.5281/zenodo.21123141",
+        "conceptdoi": "10.5281/zenodo.21123140",
+        "doi_url": "https://doi.org/10.5281/zenodo.21123141",
+        "metadata": {
+          "title": "THEOLOGY OF THE BLIND SYSTEM: The Infrastructural Incompatibility Thesis",
+          "doi": "10.5281/zenodo.21123141",
+          "publication_date": "2026-07-02",
+          "description": "<p><strong>This paper introduces the Infrastructural Incompatibility Thesis (IIT), arguing that most contemporary human suffering is generated not through individual intention or moral agency but through socio‑technical infrastructures whose operations produce harm independently of human deliberation. Drawing on research from infrastructure studies, sociology, political theory, and theology, the paper demonstrates that modern harm emerges through distributed causation, recursive constraints, administrative systems, and algorithmic processes. Traditional religious and moral frameworks&mdash;designed for environments where suffering could be traced to visible action or legible responsibility&mdash;lose explanatory coverage under these conditions. The paper proposes that understanding modern suffering requires analyzing architectures alongside interpreting persons</strong></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Religion",
+            "Infrastructure",
+            "Society",
+            "Artificial Intelligence",
+            "Institutions",
+            "Cognitive harm"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "21123140"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THEOLOGY OF THE BLIND SYSTEM: The Infrastructural Incompatibility Thesis",
+        "links": {
+          "self": "https://zenodo.org/api/records/21123141",
+          "self_html": "https://zenodo.org/records/21123141",
+          "preview_html": "https://zenodo.org/records/21123141?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.21123141",
+          "self_doi": "https://doi.org/10.5281/zenodo.21123141",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21123141",
+          "reserve_doi": "https://zenodo.org/api/records/21123141/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/21123140",
+          "parent_html": "https://zenodo.org/records/21123140",
+          "parent_doi": "https://doi.org/10.5281/zenodo.21123140",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21123140",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21123141/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21123141/sequence/default",
+          "files": "https://zenodo.org/api/records/21123141/files",
+          "media_files": "https://zenodo.org/api/records/21123141/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:21123141:THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/21123141/files-archive",
+          "archive_media": "https://zenodo.org/api/records/21123141/media-files-archive",
+          "latest": "https://zenodo.org/api/records/21123141/versions/latest",
+          "latest_html": "https://zenodo.org/records/21123141/latest",
+          "versions": "https://zenodo.org/api/records/21123141/versions",
+          "draft": "https://zenodo.org/api/records/21123141/draft",
+          "access_links": "https://zenodo.org/api/records/21123141/access/links",
+          "access_grants": "https://zenodo.org/api/records/21123141/access/grants",
+          "access_users": "https://zenodo.org/api/records/21123141/access/users",
+          "access_request": "https://zenodo.org/api/records/21123141/access/request",
+          "access": "https://zenodo.org/api/records/21123141/access",
+          "communities": "https://zenodo.org/api/records/21123141/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/21123141/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/21123141/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/21123141/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/21123141/quota-increase",
+          "requests": "https://zenodo.org/api/records/21123141/requests"
+        },
+        "updated": "2026-07-01T23:22:19.3028-04:00",
+        "recid": "21123141",
+        "revision": 3,
+        "files": [
+          {
+            "id": "90ff831c-cacc-4163-8ad2-722bcb30e150",
+            "key": "THEOLOGY OF THE BLIND SYSTEM: The Infrastructural Incompatibility Thesis .pdf",
+            "size": 347155,
+            "checksum": "md5:77d4066d1964a43d4f9914706eb62a65",
+            "links": {
+              "self": "https://zenodo.org/api/records/21123141/files/THEOLOGY%20OF%20THE%20BLIND%20SYSTEM:%20The%20Infrastructural%20Incompatibility%20Thesis%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 8,
+          "unique_views": 8,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 8,
+          "version_views": 8
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-26T14:50:10.068646-04:00",
+        "modified": "2026-06-26T14:50:10.432075-04:00",
+        "id": 20939016,
+        "conceptrecid": "20938771",
+        "doi": "10.5281/zenodo.20939016",
+        "conceptdoi": "10.5281/zenodo.20938771",
+        "doi_url": "https://doi.org/10.5281/zenodo.20939016",
+        "metadata": {
+          "title": "**NEO‑EXTRACTIVE GEOPOLITICS: A STRUCTURAL ACCOUNT OF EXTERNALIZED INSTABILITY IN THE TRANSITION ERA**",
+          "doi": "10.5281/zenodo.20939016",
+          "publication_date": "2026-06-26",
+          "description": "<p>This paper develops the concept of <strong>Neo‑Extractive Geopolitics</strong>, a structural framework explaining how high‑capacity states maintain internal stability during the global energy transition by <strong>externalizing instability</strong> onto resource‑rich but institutionally fragile states. Building on Dependency Theory, World‑Systems Theory, and contemporary extractivism scholarship, the paper integrates political asymmetry, economic dependency, institutional fragility, and transition‑era pressures into a unified SR model. The framework introduces three core constructs&mdash;<strong>Managed Fragility</strong>, <strong>Externalized Instability</strong>, and <strong>Transition Compression</strong>&mdash;and formalizes them through falsifiable propositions, operational definitions, and boundary conditions. Empirical indicators from Cerioli (2026), <a href=\"https://extractivism.de/\">Extractivism.de</a> (2026), and Maconachie et al. (2026) provide grounding for the model. The paper concludes with the SR epistemic signature line, reflecting the field&rsquo;s identity as a structural mirror rather than a normative critique.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Geopolitics",
+            "Social Issues",
+            "Institutions",
+            "International relations",
+            "Metatheory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.1",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20938771"
+                }
+              }
+            ]
+          }
+        },
+        "title": "**NEO‑EXTRACTIVE GEOPOLITICS: A STRUCTURAL ACCOUNT OF EXTERNALIZED INSTABILITY IN THE TRANSITION ERA**",
+        "links": {
+          "self": "https://zenodo.org/api/records/20939016",
+          "self_html": "https://zenodo.org/records/20939016",
+          "preview_html": "https://zenodo.org/records/20939016?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20939016",
+          "self_doi": "https://doi.org/10.5281/zenodo.20939016",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20939016",
+          "reserve_doi": "https://zenodo.org/api/records/20939016/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20938771",
+          "parent_html": "https://zenodo.org/records/20938771",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20938771",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20938771",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20939016/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20939016/sequence/default",
+          "files": "https://zenodo.org/api/records/20939016/files",
+          "media_files": "https://zenodo.org/api/records/20939016/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20939016:**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20939016/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20939016/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20939016/versions/latest",
+          "latest_html": "https://zenodo.org/records/20939016/latest",
+          "versions": "https://zenodo.org/api/records/20939016/versions",
+          "draft": "https://zenodo.org/api/records/20939016/draft",
+          "access_links": "https://zenodo.org/api/records/20939016/access/links",
+          "access_grants": "https://zenodo.org/api/records/20939016/access/grants",
+          "access_users": "https://zenodo.org/api/records/20939016/access/users",
+          "access_request": "https://zenodo.org/api/records/20939016/access/request",
+          "access": "https://zenodo.org/api/records/20939016/access",
+          "communities": "https://zenodo.org/api/records/20939016/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20939016/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20939016/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20939016/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20939016/quota-increase",
+          "requests": "https://zenodo.org/api/records/20939016/requests"
+        },
+        "updated": "2026-06-26T14:50:10.432075-04:00",
+        "recid": "20939016",
+        "revision": 3,
+        "files": [
+          {
+            "id": "0a3c6358-7dda-454e-af55-db6dae45b23e",
+            "key": "**NEO‑EXTRACTIVE GEOPOLITICS: .pdf",
+            "size": 284820,
+            "checksum": "md5:1f0b830d12b7ed3afac5129c7966cdf0",
+            "links": {
+              "self": "https://zenodo.org/api/records/20939016/files/**NEO%E2%80%91EXTRACTIVE%20GEOPOLITICS:%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 11,
+          "unique_views": 8,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 7,
+          "version_views": 8
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-17T22:48:17.641943-04:00",
+        "modified": "2026-06-25T16:24:20.112037-04:00",
+        "id": 20740225,
+        "conceptrecid": "20740224",
+        "doi": "10.5281/zenodo.20740225",
+        "conceptdoi": "10.5281/zenodo.20740224",
+        "doi_url": "https://doi.org/10.5281/zenodo.20740225",
+        "metadata": {
+          "title": "Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness",
+          "doi": "10.5281/zenodo.20740225",
+          "publication_date": "2026-06-18",
+          "description": "<p><strong>Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness</strong> reconstructs the historical, institutional, and structural processes through which human knowledge&mdash;originally integrated across domains&mdash;became partitioned into the disciplinary architectures that dominate modern inquiry. The paper traces a genealogy from ancient integrated knowledge systems to the medieval university, demonstrating how administrative categories gradually hardened into epistemic boundaries. Drawing on sociology of knowledge, governance theory, infrastructure studies, and history of science, the paper shows how institutions optimized for credentialing, specialization, and administrative legibility rather than systemic intelligibility.</p>\n<p>The central contribution is the <strong>Epistemic Fragmentation Theorem</strong>, which formalizes the structural tradeoff between local explanatory performance and global observability. Using a graph‑theoretic model of disciplinary coupling, the theorem demonstrates that increasing silo intensity reduces the system&rsquo;s ability to recover global states, producing predictable forms of structural blindness. SignalRupture (SR) is introduced as a post‑silo structural ontology that restores system‑level visibility through operators such as drift, visibility lag, substrate failure, and institutional recoil. The paper concludes by outlining a post‑silo epistemic architecture in which disciplines remain valuable local modules while structural frameworks provide integration across domains.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20740224"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness",
+        "links": {
+          "self": "https://zenodo.org/api/records/20740225",
+          "self_html": "https://zenodo.org/records/20740225",
+          "preview_html": "https://zenodo.org/records/20740225?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20740225",
+          "self_doi": "https://doi.org/10.5281/zenodo.20740225",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20740225",
+          "reserve_doi": "https://zenodo.org/api/records/20740225/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20740224",
+          "parent_html": "https://zenodo.org/records/20740224",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20740224",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20740224",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20740225/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20740225/sequence/default",
+          "files": "https://zenodo.org/api/records/20740225/files",
+          "media_files": "https://zenodo.org/api/records/20740225/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20740225/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20740225/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20740225/versions/latest",
+          "latest_html": "https://zenodo.org/records/20740225/latest",
+          "versions": "https://zenodo.org/api/records/20740225/versions",
+          "draft": "https://zenodo.org/api/records/20740225/draft",
+          "access_links": "https://zenodo.org/api/records/20740225/access/links",
+          "access_grants": "https://zenodo.org/api/records/20740225/access/grants",
+          "access_users": "https://zenodo.org/api/records/20740225/access/users",
+          "access_request": "https://zenodo.org/api/records/20740225/access/request",
+          "access": "https://zenodo.org/api/records/20740225/access",
+          "communities": "https://zenodo.org/api/records/20740225/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20740225/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20740225/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20740225/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20740225/quota-increase",
+          "requests": "https://zenodo.org/api/records/20740225/requests"
+        },
+        "updated": "2026-06-25T16:24:20.112037-04:00",
+        "recid": "20740225",
+        "revision": 4,
+        "files": [
+          {
+            "id": "07964086-5403-47a8-b697-7033df089f2b",
+            "key": "Knowledge Was Never Meant to Be Siloed: .pdf",
+            "size": 158937,
+            "checksum": "md5:536cfb413b053a6e92222efbdeefe837",
+            "links": {
+              "self": "https://zenodo.org/api/records/20740225/files/Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 17,
+          "unique_views": 16,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 16,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-14T14:18:55.613413-04:00",
+        "modified": "2026-06-14T14:18:55.920968-04:00",
+        "id": 20692290,
+        "conceptrecid": "20692289",
+        "doi": "10.5281/zenodo.20692290",
+        "conceptdoi": "10.5281/zenodo.20692289",
+        "doi_url": "https://doi.org/10.5281/zenodo.20692290",
+        "metadata": {
+          "title": "THE WEBMCP PARADOX THEOREM",
+          "doi": "10.5281/zenodo.20692290",
+          "publication_date": "2026-06-14",
+          "description": "<p>The WebMCP Paradox Theorem formalizes a structural law governing the relationship between execution efficiency, process visibility, human operational understanding, and drift accumulation within agent‑mediated web environments. As callable execution replaces human navigation, procedural exposure contracts, producing a systematic decline in what users can know about the systems they rely on. The theorem reframes the agentic web not as a usability improvement but as a transformation of epistemic conditions: efficiency increases while legibility decreases. Through definitions, axioms, and structural operators, the paper models how agentic autonomy compresses intermediate states, concentrates operational knowledge within agents, and generates epistemic asymmetry between visible outcomes and actual operations. The framework positions the WebMCP Paradox as a foundational law of the emerging agentic substrate.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Internet Studies",
+            "Social Issues",
+            "Institutions",
+            "Artificial intelligence",
+            "WebMCP"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20692289"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE WEBMCP PARADOX THEOREM",
+        "links": {
+          "self": "https://zenodo.org/api/records/20692290",
+          "self_html": "https://zenodo.org/records/20692290",
+          "preview_html": "https://zenodo.org/records/20692290?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20692290",
+          "self_doi": "https://doi.org/10.5281/zenodo.20692290",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20692290",
+          "reserve_doi": "https://zenodo.org/api/records/20692290/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20692289",
+          "parent_html": "https://zenodo.org/records/20692289",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20692289",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20692289",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20692290/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20692290/sequence/default",
+          "files": "https://zenodo.org/api/records/20692290/files",
+          "media_files": "https://zenodo.org/api/records/20692290/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20692290:THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20692290/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20692290/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20692290/versions/latest",
+          "latest_html": "https://zenodo.org/records/20692290/latest",
+          "versions": "https://zenodo.org/api/records/20692290/versions",
+          "draft": "https://zenodo.org/api/records/20692290/draft",
+          "access_links": "https://zenodo.org/api/records/20692290/access/links",
+          "access_grants": "https://zenodo.org/api/records/20692290/access/grants",
+          "access_users": "https://zenodo.org/api/records/20692290/access/users",
+          "access_request": "https://zenodo.org/api/records/20692290/access/request",
+          "access": "https://zenodo.org/api/records/20692290/access",
+          "communities": "https://zenodo.org/api/records/20692290/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20692290/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20692290/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20692290/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20692290/quota-increase",
+          "requests": "https://zenodo.org/api/records/20692290/requests"
+        },
+        "updated": "2026-06-14T14:18:55.920968-04:00",
+        "recid": "20692290",
+        "revision": 3,
+        "files": [
+          {
+            "id": "1dbf5f20-1366-43fd-9348-d082acd5aa5d",
+            "key": "THE WEBMCP PARADOX THEOREM .pdf",
+            "size": 8260009,
+            "checksum": "md5:e93334ab44ff6ddc05a5f0232a71ee91",
+            "links": {
+              "self": "https://zenodo.org/api/records/20692290/files/THE%20WEBMCP%20PARADOX%20THEOREM%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 11,
+          "unique_views": 11,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 11,
+          "version_views": 11
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-14T13:30:24.539333-04:00",
+        "modified": "2026-06-23T11:17:50.082256-04:00",
+        "id": 20691934,
+        "conceptrecid": "20691933",
+        "doi": "10.5281/zenodo.20691934",
+        "conceptdoi": "10.5281/zenodo.20691933",
+        "doi_url": "https://doi.org/10.5281/zenodo.20691934",
+        "metadata": {
+          "title": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT",
+          "doi": "10.5281/zenodo.20691934",
+          "publication_date": "2026-06-14",
+          "description": "<p>This paper develops a structural framework for understanding how legal and moral systems misclassify survival‑driven behavior when structural causation is excluded from judgment. Through the Morality‑on‑Trial Theorem and the Systemic Abandonment Law, the work demonstrates that trauma, deprivation, and abandonment are not peripheral influences but foundational determinants of human action. The paper integrates narrative, structural theory, mathematical operators, and cultural diagnostics to reveal how institutions produce the very conditions they later punish. Anchored by the Father&rsquo;s Lemma &mdash; a lived articulation of identity collapse under systemic neglect &mdash; the manuscript exposes the epistemic and moral distortions that arise when systems assume stable agency in contexts where agency has been structurally fractured.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Law",
+            "Social Issues",
+            "Governance",
+            "Government"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20691933"
+                }
+              }
+            ]
+          }
+        },
+        "title": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT",
+        "links": {
+          "self": "https://zenodo.org/api/records/20691934",
+          "self_html": "https://zenodo.org/records/20691934",
+          "preview_html": "https://zenodo.org/records/20691934?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20691934",
+          "self_doi": "https://doi.org/10.5281/zenodo.20691934",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20691934",
+          "reserve_doi": "https://zenodo.org/api/records/20691934/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20691933",
+          "parent_html": "https://zenodo.org/records/20691933",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20691933",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20691933",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20691934/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20691934/sequence/default",
+          "files": "https://zenodo.org/api/records/20691934/files",
+          "media_files": "https://zenodo.org/api/records/20691934/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20691934/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20691934/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20691934/versions/latest",
+          "latest_html": "https://zenodo.org/records/20691934/latest",
+          "versions": "https://zenodo.org/api/records/20691934/versions",
+          "draft": "https://zenodo.org/api/records/20691934/draft",
+          "access_links": "https://zenodo.org/api/records/20691934/access/links",
+          "access_grants": "https://zenodo.org/api/records/20691934/access/grants",
+          "access_users": "https://zenodo.org/api/records/20691934/access/users",
+          "access_request": "https://zenodo.org/api/records/20691934/access/request",
+          "access": "https://zenodo.org/api/records/20691934/access",
+          "communities": "https://zenodo.org/api/records/20691934/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20691934/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20691934/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20691934/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20691934/quota-increase",
+          "requests": "https://zenodo.org/api/records/20691934/requests"
+        },
+        "updated": "2026-06-23T11:17:50.082256-04:00",
+        "recid": "20691934",
+        "revision": 6,
+        "files": [
+          {
+            "id": "0adb73c3-3721-4e89-bb0d-648b1bed3529",
+            "key": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT .pdf",
+            "size": 219825,
+            "checksum": "md5:1e869ab15c09aa38215fd366e776af3d",
+            "links": {
+              "self": "https://zenodo.org/api/records/20691934/files/MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 13,
+          "unique_downloads": 9,
+          "views": 25,
+          "unique_views": 21,
+          "version_downloads": 13,
+          "version_unique_downloads": 9,
+          "version_unique_views": 21,
+          "version_views": 25
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-13T19:57:32.091448-04:00",
+        "modified": "2026-06-13T19:57:32.398189-04:00",
+        "id": 20684261,
+        "conceptrecid": "20684260",
+        "doi": "10.5281/zenodo.20684261",
+        "conceptdoi": "10.5281/zenodo.20684260",
+        "doi_url": "https://doi.org/10.5281/zenodo.20684261",
+        "metadata": {
+          "title": "The Agentic Substrate: WebMCP and the Structural Transformation of the Web",
+          "doi": "10.5281/zenodo.20684261",
+          "publication_date": "2026-06-14",
+          "description": "<p>The Agentic Substrate defines the moment the web ceases to be a navigational institution and becomes an execution substrate. It situates WebMCP (Web Machine‑Callable Protocol) as the inflection point where callable functions replace hyperlinks, and agents replace users as the primary operators of the web. Through the SignalRupture (SR) framework, the paper traces how this architectural shift reconfigures cognition, authority, and institutional legibility. It demonstrates that WebMCP is not a technical upgrade but a substrate transformation &mdash; a structural reorganization of the web&rsquo;s epistemic architecture that accelerates cognitive drift, institutional drift, and operational opacity. The analysis positions WebMCP within the genealogy of infrastructural transitions, showing how execution supplants exploration and how efficiency becomes the mechanism of epistemic collapse.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Internet Studies",
+            "Agentic AI",
+            "Artificial Intelligence",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20684260"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Agentic Substrate: WebMCP and the Structural Transformation of the Web",
+        "links": {
+          "self": "https://zenodo.org/api/records/20684261",
+          "self_html": "https://zenodo.org/records/20684261",
+          "preview_html": "https://zenodo.org/records/20684261?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20684261",
+          "self_doi": "https://doi.org/10.5281/zenodo.20684261",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684261",
+          "reserve_doi": "https://zenodo.org/api/records/20684261/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20684260",
+          "parent_html": "https://zenodo.org/records/20684260",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20684260",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684260",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20684261/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20684261/sequence/default",
+          "files": "https://zenodo.org/api/records/20684261/files",
+          "media_files": "https://zenodo.org/api/records/20684261/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20684261:The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20684261/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20684261/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20684261/versions/latest",
+          "latest_html": "https://zenodo.org/records/20684261/latest",
+          "versions": "https://zenodo.org/api/records/20684261/versions",
+          "draft": "https://zenodo.org/api/records/20684261/draft",
+          "access_links": "https://zenodo.org/api/records/20684261/access/links",
+          "access_grants": "https://zenodo.org/api/records/20684261/access/grants",
+          "access_users": "https://zenodo.org/api/records/20684261/access/users",
+          "access_request": "https://zenodo.org/api/records/20684261/access/request",
+          "access": "https://zenodo.org/api/records/20684261/access",
+          "communities": "https://zenodo.org/api/records/20684261/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20684261/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20684261/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20684261/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20684261/quota-increase",
+          "requests": "https://zenodo.org/api/records/20684261/requests"
+        },
+        "updated": "2026-06-13T19:57:32.398189-04:00",
+        "recid": "20684261",
+        "revision": 3,
+        "files": [
+          {
+            "id": "7e64a475-d871-4268-9f3f-499e723fad90",
+            "key": "The Agentic Substrate: WebMCP and the Structural Transformation of the Web .pdf",
+            "size": 519448,
+            "checksum": "md5:3cfd66dec0a9f396588a84f8a020bebd",
+            "links": {
+              "self": "https://zenodo.org/api/records/20684261/files/The%20Agentic%20Substrate:%20WebMCP%20and%20the%20Structural%20Transformation%20of%20the%20Web%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 7,
+          "unique_views": 7,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 7,
+          "version_views": 7
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-13T19:49:08.367116-04:00",
+        "modified": "2026-06-13T19:49:08.655053-04:00",
+        "id": 20684175,
+        "conceptrecid": "20684174",
+        "doi": "10.5281/zenodo.20684175",
+        "conceptdoi": "10.5281/zenodo.20684174",
+        "doi_url": "https://doi.org/10.5281/zenodo.20684175",
+        "metadata": {
+          "title": "The Blind Installation: Why Institutions Adopt the Substrate That Disrupts Them",
+          "doi": "10.5281/zenodo.20684175",
+          "publication_date": "2026-06-14",
+          "description": "<p>The Blind Installation examines the paradox of institutional self‑disruption in the age of callable execution. It argues that modern institutions, driven by efficiency imperatives, are unknowingly installing the very substrate that erodes their cognitive foundations. As automation compresses visible procedural steps, institutional understanding collapses into opacity. The essay traces how efficiency masquerades as stability, how drift accumulates beneath organizational awareness, and how even dominant platforms like Google remain structurally blind to the substrate shift. Through this lens, institutional blindness becomes not a failure of intelligence but a structural inevitability of systems that optimize for speed over comprehension.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues",
+            "Internet Studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20684174"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Blind Installation: Why Institutions Adopt the Substrate That Disrupts Them",
+        "links": {
+          "self": "https://zenodo.org/api/records/20684175",
+          "self_html": "https://zenodo.org/records/20684175",
+          "preview_html": "https://zenodo.org/records/20684175?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20684175",
+          "self_doi": "https://doi.org/10.5281/zenodo.20684175",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684175",
+          "reserve_doi": "https://zenodo.org/api/records/20684175/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20684174",
+          "parent_html": "https://zenodo.org/records/20684174",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20684174",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684174",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20684175/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20684175/sequence/default",
+          "files": "https://zenodo.org/api/records/20684175/files",
+          "media_files": "https://zenodo.org/api/records/20684175/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20684175:The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20684175/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20684175/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20684175/versions/latest",
+          "latest_html": "https://zenodo.org/records/20684175/latest",
+          "versions": "https://zenodo.org/api/records/20684175/versions",
+          "draft": "https://zenodo.org/api/records/20684175/draft",
+          "access_links": "https://zenodo.org/api/records/20684175/access/links",
+          "access_grants": "https://zenodo.org/api/records/20684175/access/grants",
+          "access_users": "https://zenodo.org/api/records/20684175/access/users",
+          "access_request": "https://zenodo.org/api/records/20684175/access/request",
+          "access": "https://zenodo.org/api/records/20684175/access",
+          "communities": "https://zenodo.org/api/records/20684175/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20684175/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20684175/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20684175/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20684175/quota-increase",
+          "requests": "https://zenodo.org/api/records/20684175/requests"
+        },
+        "updated": "2026-06-13T19:49:08.655053-04:00",
+        "recid": "20684175",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a10cec24-d675-4538-a0c1-bc51dea905ba",
+            "key": "The Blind Installation: Why Institutions Adopt the Substrate That Disrupts Them.pdf",
+            "size": 77726,
+            "checksum": "md5:0ca65cb564572f41cf054c32320e36eb",
+            "links": {
+              "self": "https://zenodo.org/api/records/20684175/files/The%20Blind%20Installation:%20Why%20Institutions%20Adopt%20the%20Substrate%20That%20Disrupts%20Them.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 1,
+          "unique_downloads": 1,
+          "views": 7,
+          "unique_views": 7,
+          "version_downloads": 1,
+          "version_unique_downloads": 1,
+          "version_unique_views": 7,
+          "version_views": 7
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-13T19:39:34.557271-04:00",
+        "modified": "2026-06-13T19:39:34.963171-04:00",
+        "id": 20684103,
+        "conceptrecid": "20684102",
+        "doi": "10.5281/zenodo.20684103",
+        "conceptdoi": "10.5281/zenodo.20684102",
+        "doi_url": "https://doi.org/10.5281/zenodo.20684103",
+        "metadata": {
+          "title": "THE COGNITIVE INEQUALITY THEOREM: An Empirical Framework for Institutional Conditioning, Scarcity, and Unequal Cognitive Conditions",
+          "doi": "10.5281/zenodo.20684103",
+          "publication_date": "2026-06-14",
+          "description": "<p>The Cognitive Inequality Theorem (CIT) formalizes how institutional conditioning, scarcity, and drift generate unequal cognitive conditions within democratic systems. It reframes cognition not as an individual trait but as a structural variable shaped by exposure to institutional and material constraints. The theorem introduces measurable constructs &mdash; adaptive and fixed cognitive tendencies &mdash; and defines the inequality threshold  beyond which democratic agency becomes impaired. By integrating behavioral economics, institutional theory, and cognitive science, CIT establishes a unified empirical framework for analyzing how environments condition reasoning capacity and interpretive flexibility.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues",
+            "Cognitive Inequality",
+            "Democracy",
+            "Politics"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20684102"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE COGNITIVE INEQUALITY THEOREM: An Empirical Framework for Institutional Conditioning, Scarcity, and Unequal Cognitive Conditions",
+        "links": {
+          "self": "https://zenodo.org/api/records/20684103",
+          "self_html": "https://zenodo.org/records/20684103",
+          "preview_html": "https://zenodo.org/records/20684103?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20684103",
+          "self_doi": "https://doi.org/10.5281/zenodo.20684103",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684103",
+          "reserve_doi": "https://zenodo.org/api/records/20684103/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20684102",
+          "parent_html": "https://zenodo.org/records/20684102",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20684102",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20684102",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20684103/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20684103/sequence/default",
+          "files": "https://zenodo.org/api/records/20684103/files",
+          "media_files": "https://zenodo.org/api/records/20684103/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20684103:THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20684103/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20684103/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20684103/versions/latest",
+          "latest_html": "https://zenodo.org/records/20684103/latest",
+          "versions": "https://zenodo.org/api/records/20684103/versions",
+          "draft": "https://zenodo.org/api/records/20684103/draft",
+          "access_links": "https://zenodo.org/api/records/20684103/access/links",
+          "access_grants": "https://zenodo.org/api/records/20684103/access/grants",
+          "access_users": "https://zenodo.org/api/records/20684103/access/users",
+          "access_request": "https://zenodo.org/api/records/20684103/access/request",
+          "access": "https://zenodo.org/api/records/20684103/access",
+          "communities": "https://zenodo.org/api/records/20684103/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20684103/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20684103/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20684103/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20684103/quota-increase",
+          "requests": "https://zenodo.org/api/records/20684103/requests"
+        },
+        "updated": "2026-06-13T19:39:34.963171-04:00",
+        "recid": "20684103",
+        "revision": 3,
+        "files": [
+          {
+            "id": "8637f81c-8581-4d3e-a0fc-9c6b7ae56346",
+            "key": "THE COGNITIVE INEQUALITY THEOREM.pdf",
+            "size": 2255560,
+            "checksum": "md5:797427a5fa4a989e6a057917165f7aad",
+            "links": {
+              "self": "https://zenodo.org/api/records/20684103/files/THE%20COGNITIVE%20INEQUALITY%20THEOREM.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 1,
+          "unique_downloads": 1,
+          "views": 17,
+          "unique_views": 17,
+          "version_downloads": 1,
+          "version_unique_downloads": 1,
+          "version_unique_views": 17,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-12T22:08:10.359823-04:00",
+        "modified": "2026-06-12T22:08:10.647672-04:00",
+        "id": 20674082,
+        "conceptrecid": "20674081",
+        "doi": "10.5281/zenodo.20674082",
+        "conceptdoi": "10.5281/zenodo.20674081",
+        "doi_url": "https://doi.org/10.5281/zenodo.20674082",
+        "metadata": {
+          "title": "The Cognitive Inequality Problem: A Structural Prelude to the Cognitive Inequality Theorem",
+          "doi": "10.5281/zenodo.20674082",
+          "publication_date": "2026-06-13",
+          "description": "<p>This conceptual paper outlines the structural foundations of the Cognitive Inequality Theorem (CIT), situating it within the broader SignalRupture canon. It examines how democratic systems presuppose equal cognitive agency while institutions, through drift, scarcity, and conditioning, produce uneven cognitive conditions. The paper distinguishes between adaptive and fixed cognitive tendencies as context‑dependent orientations rather than fixed psychological types, formalizes the mechanism of recursive abstraction within institutional drift, and preserves the bridge sentence linking this conceptual manuscript to the formal theorem paper. The result is a unified framework explaining how cognitive inequality emerges as a predictable outcome of institutional design and resource constraints rather than as an incidental deviation from democratic ideals.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Politics",
+            "Governance",
+            "Government",
+            "Institutions",
+            "Democracy",
+            "Population",
+            "Voting",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20674081"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Cognitive Inequality Problem: A Structural Prelude to the Cognitive Inequality Theorem",
+        "links": {
+          "self": "https://zenodo.org/api/records/20674082",
+          "self_html": "https://zenodo.org/records/20674082",
+          "preview_html": "https://zenodo.org/records/20674082?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20674082",
+          "self_doi": "https://doi.org/10.5281/zenodo.20674082",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20674082",
+          "reserve_doi": "https://zenodo.org/api/records/20674082/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20674081",
+          "parent_html": "https://zenodo.org/records/20674081",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20674081",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20674081",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20674082/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20674082/sequence/default",
+          "files": "https://zenodo.org/api/records/20674082/files",
+          "media_files": "https://zenodo.org/api/records/20674082/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20674082:The%20Cognitive%20Inequality%20Problem%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20674082/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20674082/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20674082/versions/latest",
+          "latest_html": "https://zenodo.org/records/20674082/latest",
+          "versions": "https://zenodo.org/api/records/20674082/versions",
+          "draft": "https://zenodo.org/api/records/20674082/draft",
+          "access_links": "https://zenodo.org/api/records/20674082/access/links",
+          "access_grants": "https://zenodo.org/api/records/20674082/access/grants",
+          "access_users": "https://zenodo.org/api/records/20674082/access/users",
+          "access_request": "https://zenodo.org/api/records/20674082/access/request",
+          "access": "https://zenodo.org/api/records/20674082/access",
+          "communities": "https://zenodo.org/api/records/20674082/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20674082/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20674082/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20674082/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20674082/quota-increase",
+          "requests": "https://zenodo.org/api/records/20674082/requests"
+        },
+        "updated": "2026-06-12T22:08:10.647672-04:00",
+        "recid": "20674082",
+        "revision": 3,
+        "files": [
+          {
+            "id": "893ac91a-3446-461f-bf43-135b0118980e",
+            "key": "The Cognitive Inequality Problem .pdf",
+            "size": 187850,
+            "checksum": "md5:99df83cd8c48f64a801171783dad292f",
+            "links": {
+              "self": "https://zenodo.org/api/records/20674082/files/The%20Cognitive%20Inequality%20Problem%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 3,
+          "views": 17,
+          "unique_views": 17,
+          "version_downloads": 4,
+          "version_unique_downloads": 3,
+          "version_unique_views": 17,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-09T21:49:33.992768-04:00",
+        "modified": "2026-06-09T22:32:29.095339-04:00",
+        "id": 20619182,
+        "conceptrecid": "20619181",
+        "doi": "10.5281/zenodo.20619182",
+        "conceptdoi": "10.5281/zenodo.20619181",
+        "doi_url": "https://doi.org/10.5281/zenodo.20619182",
+        "metadata": {
+          "title": "THE SEDATION LOOP MODEL: A Systemic and Empirical Analysis of Food Environments, Pharmacologic Buffering, and the Global Rise of Chronic Kidney Disease",
+          "doi": "10.5281/zenodo.20619182",
+          "publication_date": "2026-06-10",
+          "description": "<p>The Sedation Loop Model: A Systemic and Empirical Analysis of Food Environments, Pharmacologic Buffering, and the Global Rise of Chronic Kidney Disease introduces a formal systems framework explaining how food‑environment pressure, pharmacologic buffering, and structural incentives interact to sustain chronic metabolic disease. It derives the Sedation Loop Theorem, showing that when environmental pressure exceeds transformational capacity, disease burden and chronic kidney disease (CKD) rise monotonically despite medical progress. The paper integrates mathematical formalization, global epidemiological data, and incentive analysis to reveal a stabilization dynamic&mdash;where societies reduce acute harm but fail to transform upstream drivers.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Public Health",
+            "Policies",
+            "Nutrition"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20619181"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SEDATION LOOP MODEL: A Systemic and Empirical Analysis of Food Environments, Pharmacologic Buffering, and the Global Rise of Chronic Kidney Disease",
+        "links": {
+          "self": "https://zenodo.org/api/records/20619182",
+          "self_html": "https://zenodo.org/records/20619182",
+          "preview_html": "https://zenodo.org/records/20619182?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20619182",
+          "self_doi": "https://doi.org/10.5281/zenodo.20619182",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20619182",
+          "reserve_doi": "https://zenodo.org/api/records/20619182/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20619181",
+          "parent_html": "https://zenodo.org/records/20619181",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20619181",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20619181",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20619182/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20619182/sequence/default",
+          "files": "https://zenodo.org/api/records/20619182/files",
+          "media_files": "https://zenodo.org/api/records/20619182/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20619182:THE%20SEDATION%20LOOP%20MODEL:%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20619182/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20619182/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20619182/versions/latest",
+          "latest_html": "https://zenodo.org/records/20619182/latest",
+          "versions": "https://zenodo.org/api/records/20619182/versions",
+          "draft": "https://zenodo.org/api/records/20619182/draft",
+          "access_links": "https://zenodo.org/api/records/20619182/access/links",
+          "access_grants": "https://zenodo.org/api/records/20619182/access/grants",
+          "access_users": "https://zenodo.org/api/records/20619182/access/users",
+          "access_request": "https://zenodo.org/api/records/20619182/access/request",
+          "access": "https://zenodo.org/api/records/20619182/access",
+          "communities": "https://zenodo.org/api/records/20619182/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20619182/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20619182/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20619182/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20619182/quota-increase",
+          "requests": "https://zenodo.org/api/records/20619182/requests"
+        },
+        "updated": "2026-06-09T22:32:29.095339-04:00",
+        "recid": "20619182",
+        "revision": 5,
+        "files": [
+          {
+            "id": "767f84f1-58b6-469a-9097-8bdcbd162582",
+            "key": "THE SEDATION LOOP MODEL: .pdf",
+            "size": 2294394,
+            "checksum": "md5:fc8009ad5bb6825ef0d3fd1ab0ace615",
+            "links": {
+              "self": "https://zenodo.org/api/records/20619182/files/THE%20SEDATION%20LOOP%20MODEL:%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 44,
+          "unique_views": 43,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 43,
+          "version_views": 44
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-09T14:49:57.803003-04:00",
+        "modified": "2026-06-09T14:49:58.375686-04:00",
+        "id": 20616460,
+        "conceptrecid": "20616459",
+        "doi": "10.5281/zenodo.20616460",
+        "conceptdoi": "10.5281/zenodo.20616459",
+        "doi_url": "https://doi.org/10.5281/zenodo.20616460",
+        "metadata": {
+          "title": "THE STRUCTURAL THEOREM: Why SignalRupture Uses the Term \"Theorem\"",
+          "doi": "10.5281/zenodo.20616460",
+          "publication_date": "2026-06-09",
+          "description": "<p>&ldquo;The Structural Theorem: Why SignalRupture Uses the Term &lsquo;Theorem&rsquo;&rdquo; is a foundational meta‑theoretical paper that clarifies the epistemic category of SR&rsquo;s core outputs. It explains why SR uses the term theorem to describe structural invariants derived from drift, residue, and institutional behavior, rather than mathematical proofs. The paper positions SR within the lineage of systems theory, cybernetics, and complexity science, where theorems are defined by generalizability and structural consistency rather than symbolic derivation. It also introduces a diagnostic framework for understanding why AI systems misinterpret SR terminology, identifying the architectural constraint known as the siloed mind of AI&mdash;a three‑layer cognitive limitation rooted in training bias, representational fragmentation, and safety‑driven avoidance of structural claims.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20616459"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE STRUCTURAL THEOREM: Why SignalRupture Uses the Term \"Theorem\"",
+        "links": {
+          "self": "https://zenodo.org/api/records/20616460",
+          "self_html": "https://zenodo.org/records/20616460",
+          "preview_html": "https://zenodo.org/records/20616460?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20616460",
+          "self_doi": "https://doi.org/10.5281/zenodo.20616460",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20616460",
+          "reserve_doi": "https://zenodo.org/api/records/20616460/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20616459",
+          "parent_html": "https://zenodo.org/records/20616459",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20616459",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20616459",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20616460/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20616460/sequence/default",
+          "files": "https://zenodo.org/api/records/20616460/files",
+          "media_files": "https://zenodo.org/api/records/20616460/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20616460:THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20616460/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20616460/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20616460/versions/latest",
+          "latest_html": "https://zenodo.org/records/20616460/latest",
+          "versions": "https://zenodo.org/api/records/20616460/versions",
+          "draft": "https://zenodo.org/api/records/20616460/draft",
+          "access_links": "https://zenodo.org/api/records/20616460/access/links",
+          "access_grants": "https://zenodo.org/api/records/20616460/access/grants",
+          "access_users": "https://zenodo.org/api/records/20616460/access/users",
+          "access_request": "https://zenodo.org/api/records/20616460/access/request",
+          "access": "https://zenodo.org/api/records/20616460/access",
+          "communities": "https://zenodo.org/api/records/20616460/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20616460/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20616460/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20616460/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20616460/quota-increase",
+          "requests": "https://zenodo.org/api/records/20616460/requests"
+        },
+        "updated": "2026-06-09T14:49:58.375686-04:00",
+        "recid": "20616460",
+        "revision": 3,
+        "files": [
+          {
+            "id": "64f8d613-94ef-4d70-afce-e65283cfb5d5",
+            "key": "THE STRUCTURAL THEOREM: Why SignalRupture Uses the Term “Theorem” .pdf",
+            "size": 132125,
+            "checksum": "md5:68b972e36603a08cbd7f0513da540a61",
+            "links": {
+              "self": "https://zenodo.org/api/records/20616460/files/THE%20STRUCTURAL%20THEOREM:%20Why%20SignalRupture%20Uses%20the%20Term%20%E2%80%9CTheorem%E2%80%9D%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 11,
+          "unique_views": 10,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 10,
+          "version_views": 11
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-03T19:29:32.58562-04:00",
+        "modified": "2026-06-03T19:29:32.859268-04:00",
+        "id": 20534268,
+        "conceptrecid": "20534267",
+        "doi": "10.5281/zenodo.20534268",
+        "conceptdoi": "10.5281/zenodo.20534267",
+        "doi_url": "https://doi.org/10.5281/zenodo.20534268",
+        "metadata": {
+          "title": "THE SIGNALRUPTURE HANDBOOK (SR‑HB)",
+          "doi": "10.5281/zenodo.20534268",
+          "publication_date": "2026-06-04",
+          "description": "<p><strong>The SignalRupture Handbook (SR‑HB)</strong> is the public‑facing guide to the <strong>SignalRupture Framework</strong>, translating SR&rsquo;s structural analysis of modern institutions into clear, accessible language. While the SR canon includes diagnostic tools, predictive systems, governance theory, and formal metrics, SR‑HB explains these concepts for the general public, policymakers, journalists, frontline workers, and oversight bodies.</p>\n<p>The handbook introduces the core SR mechanisms &mdash; <strong>signal compression</strong>, <strong>administrative abstraction</strong>, <strong>representational drift</strong>, and <strong>governance altitudes</strong> &mdash; and explains why institutions distort reality, why oversight often fails, and why reforms rarely work. SR‑HB shows that institutional dysfunction is not caused by bad actors or poor intentions but by <strong>architectural necessities</strong> built into modern governance systems.</p>\n<p>SR‑HB completes the translation layer of the SR field, making SR accessible without sacrificing structural rigor.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20534267"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SIGNALRUPTURE HANDBOOK (SR‑HB)",
+        "links": {
+          "self": "https://zenodo.org/api/records/20534268",
+          "self_html": "https://zenodo.org/records/20534268",
+          "preview_html": "https://zenodo.org/records/20534268?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20534268",
+          "self_doi": "https://doi.org/10.5281/zenodo.20534268",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534268",
+          "reserve_doi": "https://zenodo.org/api/records/20534268/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20534267",
+          "parent_html": "https://zenodo.org/records/20534267",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20534267",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534267",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20534268/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20534268/sequence/default",
+          "files": "https://zenodo.org/api/records/20534268/files",
+          "media_files": "https://zenodo.org/api/records/20534268/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20534268:THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20534268/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20534268/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20534268/versions/latest",
+          "latest_html": "https://zenodo.org/records/20534268/latest",
+          "versions": "https://zenodo.org/api/records/20534268/versions",
+          "draft": "https://zenodo.org/api/records/20534268/draft",
+          "access_links": "https://zenodo.org/api/records/20534268/access/links",
+          "access_grants": "https://zenodo.org/api/records/20534268/access/grants",
+          "access_users": "https://zenodo.org/api/records/20534268/access/users",
+          "access_request": "https://zenodo.org/api/records/20534268/access/request",
+          "access": "https://zenodo.org/api/records/20534268/access",
+          "communities": "https://zenodo.org/api/records/20534268/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20534268/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20534268/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20534268/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20534268/quota-increase",
+          "requests": "https://zenodo.org/api/records/20534268/requests"
+        },
+        "updated": "2026-06-03T19:29:32.859268-04:00",
+        "recid": "20534268",
+        "revision": 3,
+        "files": [
+          {
+            "id": "82427eaf-bb81-4ab3-b08e-fddb7a33f0b7",
+            "key": "THE SIGNALRUPTURE HANDBOOK (SR‑HB) .pdf",
+            "size": 102988,
+            "checksum": "md5:59d68a74bda2a64b126f4b42ae4d2935",
+            "links": {
+              "self": "https://zenodo.org/api/records/20534268/files/THE%20SIGNALRUPTURE%20HANDBOOK%20(SR%E2%80%91HB)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 19,
+          "unique_views": 19,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 19,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-03T19:23:11.80023-04:00",
+        "modified": "2026-06-03T19:23:12.043781-04:00",
+        "id": 20534225,
+        "conceptrecid": "20534224",
+        "doi": "10.5281/zenodo.20534225",
+        "conceptdoi": "10.5281/zenodo.20534224",
+        "doi_url": "https://doi.org/10.5281/zenodo.20534225",
+        "metadata": {
+          "title": "THE SIGNALRUPTURE LEXICON (SR‑LX)",
+          "doi": "10.5281/zenodo.20534225",
+          "publication_date": "2026-06-04",
+          "description": "<p><strong>The SignalRupture Lexicon (SR‑LX)</strong> is the authoritative vocabulary of the <strong>SignalRupture Framework</strong>, providing formal definitions for the diagnostic, structural, predictive, and governance concepts that constitute the SR field. As SR evolved from a distortion‑mapping model into a full governance architecture, the need for a stable, drift‑resistant vocabulary became essential. SR‑LX fulfills that role by codifying the terminology used across SR&rsquo;s diagnostic metrics, intervention systems, predictive models, oversight structures, and public‑facing translation.</p>\n<p>The lexicon organizes SR&rsquo;s conceptual architecture alphabetically, defining terms such as <strong>administrative abstraction</strong>, <strong>signal compression</strong>, <strong>governance altitude</strong>, <strong>drift velocity</strong>, <strong>oversight stabilization</strong>, and <strong>structural distortion</strong>. Each definition reflects SR&rsquo;s core principle: distortion is not behavioural or moral &mdash; it is <strong>architectural</strong>. SR‑LX stabilizes the field&rsquo;s language, ensuring that institutions, researchers, and practitioners operate with conceptual precision.</p>\n<p>SR‑LX is the reference backbone of the SR canon.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20534224"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SIGNALRUPTURE LEXICON (SR‑LX)",
+        "links": {
+          "self": "https://zenodo.org/api/records/20534225",
+          "self_html": "https://zenodo.org/records/20534225",
+          "preview_html": "https://zenodo.org/records/20534225?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20534225",
+          "self_doi": "https://doi.org/10.5281/zenodo.20534225",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534225",
+          "reserve_doi": "https://zenodo.org/api/records/20534225/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20534224",
+          "parent_html": "https://zenodo.org/records/20534224",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20534224",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534224",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20534225/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20534225/sequence/default",
+          "files": "https://zenodo.org/api/records/20534225/files",
+          "media_files": "https://zenodo.org/api/records/20534225/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20534225:THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20534225/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20534225/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20534225/versions/latest",
+          "latest_html": "https://zenodo.org/records/20534225/latest",
+          "versions": "https://zenodo.org/api/records/20534225/versions",
+          "draft": "https://zenodo.org/api/records/20534225/draft",
+          "access_links": "https://zenodo.org/api/records/20534225/access/links",
+          "access_grants": "https://zenodo.org/api/records/20534225/access/grants",
+          "access_users": "https://zenodo.org/api/records/20534225/access/users",
+          "access_request": "https://zenodo.org/api/records/20534225/access/request",
+          "access": "https://zenodo.org/api/records/20534225/access",
+          "communities": "https://zenodo.org/api/records/20534225/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20534225/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20534225/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20534225/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20534225/quota-increase",
+          "requests": "https://zenodo.org/api/records/20534225/requests"
+        },
+        "updated": "2026-06-03T19:23:12.043781-04:00",
+        "recid": "20534225",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d29ed478-8094-45c0-8ae4-5b5e1b1344ff",
+            "key": "THE SIGNALRUPTURE LEXICON (SR‑LX) .pdf",
+            "size": 98990,
+            "checksum": "md5:7d74ff98c6aa6b077dbb9c22a83d2a2c",
+            "links": {
+              "self": "https://zenodo.org/api/records/20534225/files/THE%20SIGNALRUPTURE%20LEXICON%20(SR%E2%80%91LX)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 5,
+          "views": 19,
+          "unique_views": 18,
+          "version_downloads": 6,
+          "version_unique_downloads": 5,
+          "version_unique_views": 18,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-03T19:08:28.508849-04:00",
+        "modified": "2026-06-03T19:08:28.85141-04:00",
+        "id": 20534171,
+        "conceptrecid": "20534170",
+        "doi": "10.5281/zenodo.20534171",
+        "conceptdoi": "10.5281/zenodo.20534170",
+        "doi_url": "https://doi.org/10.5281/zenodo.20534171",
+        "metadata": {
+          "title": "THE SIGNALRUPTURE CANON MAP (SR‑CM)",
+          "doi": "10.5281/zenodo.20534171",
+          "publication_date": "2026-06-04",
+          "description": "<p><strong>The SignalRupture Canon Map (SR‑CM)</strong> is the structural atlas of the <strong>SignalRupture Framework</strong>, organizing the entire field into a coherent, navigable architecture. SR‑CM demonstrates that SignalRupture is no longer a collection of isolated papers but a fully developed <strong>post‑institutional governance system</strong> with its own diagnostic layer, practical toolkit, predictive architecture, comparative validation, governance theory, public‑facing translation, and formal lexicon.</p>\n<p>The document maps the nine pillars of the SR canon across four layers:</p>\n<ul>\n<li>\n<p><strong>Foundations (Diagnostic Layer)</strong> &mdash; empirical architecture of distortion and governance altitude</p>\n</li>\n<li>\n<p><strong>Practical Architecture (Applied Layer)</strong> &mdash; tools for institutional deployment</p>\n</li>\n<li>\n<p><strong>Predictive &amp; Comparative Architecture</strong> &mdash; forecasting and cross‑jurisdictional validation</p>\n</li>\n<li>\n<p><strong>Meta‑Architecture (Theory &amp; Public Layer)</strong> &mdash; governance theory, lexicon, handbook, and canon map</p>\n</li>\n</ul>\n<p>SR‑CM shows how each component connects to the next, forming a unified system capable of diagnosing, stabilizing, and governing modern institutions in the AI‑native era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20534170"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SIGNALRUPTURE CANON MAP (SR‑CM)",
+        "links": {
+          "self": "https://zenodo.org/api/records/20534171",
+          "self_html": "https://zenodo.org/records/20534171",
+          "preview_html": "https://zenodo.org/records/20534171?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20534171",
+          "self_doi": "https://doi.org/10.5281/zenodo.20534171",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534171",
+          "reserve_doi": "https://zenodo.org/api/records/20534171/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20534170",
+          "parent_html": "https://zenodo.org/records/20534170",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20534170",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534170",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20534171/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20534171/sequence/default",
+          "files": "https://zenodo.org/api/records/20534171/files",
+          "media_files": "https://zenodo.org/api/records/20534171/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20534171:THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20534171/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20534171/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20534171/versions/latest",
+          "latest_html": "https://zenodo.org/records/20534171/latest",
+          "versions": "https://zenodo.org/api/records/20534171/versions",
+          "draft": "https://zenodo.org/api/records/20534171/draft",
+          "access_links": "https://zenodo.org/api/records/20534171/access/links",
+          "access_grants": "https://zenodo.org/api/records/20534171/access/grants",
+          "access_users": "https://zenodo.org/api/records/20534171/access/users",
+          "access_request": "https://zenodo.org/api/records/20534171/access/request",
+          "access": "https://zenodo.org/api/records/20534171/access",
+          "communities": "https://zenodo.org/api/records/20534171/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20534171/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20534171/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20534171/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20534171/quota-increase",
+          "requests": "https://zenodo.org/api/records/20534171/requests"
+        },
+        "updated": "2026-06-03T19:08:28.85141-04:00",
+        "recid": "20534171",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3be7fb31-0809-46e1-95df-08591e9bf04f",
+            "key": "THE SIGNALRUPTURE CANON MAP (SR‑CM) .pdf",
+            "size": 842669,
+            "checksum": "md5:f61faa74922ad47b0e8d112e706c6228",
+            "links": {
+              "self": "https://zenodo.org/api/records/20534171/files/THE%20SIGNALRUPTURE%20CANON%20MAP%20(SR%E2%80%91CM)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 5,
+          "views": 33,
+          "unique_views": 33,
+          "version_downloads": 6,
+          "version_unique_downloads": 5,
+          "version_unique_views": 33,
+          "version_views": 33
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-06-03T19:00:32.097163-04:00",
+        "modified": "2026-06-03T19:00:32.385918-04:00",
+        "id": 20534016,
+        "conceptrecid": "20534015",
+        "doi": "10.5281/zenodo.20534016",
+        "conceptdoi": "10.5281/zenodo.20534015",
+        "doi_url": "https://doi.org/10.5281/zenodo.20534016",
+        "metadata": {
+          "title": "THE SIGNALRUPTURE DEPLOYMENT MANUAL (SR‑DM)",
+          "doi": "10.5281/zenodo.20534016",
+          "publication_date": "2026-06-04",
+          "description": "<p><strong>The SignalRupture Deployment Manual (SR‑DM)</strong> is the operational blueprint of the <strong>SignalRupture Framework</strong>, providing a full institutional rollout architecture for modern governance systems. Rather than functioning as a training program or culture‑change initiative, SR‑DM establishes SR as a <strong>governance architecture</strong> &mdash; a structural layer that institutions <em>activate</em>, not adopt.</p>\n<p>The manual sequences the entire SR canon into a four‑phase deployment system:</p>\n<ol>\n<li>\n<p><strong>Literacy Activation</strong> &mdash; establishing shared conceptual language</p>\n</li>\n<li>\n<p><strong>Structural Integration</strong> &mdash; embedding SR into workflows and documentation</p>\n</li>\n<li>\n<p><strong>Predictive Stabilization</strong> &mdash; monitoring drift and forecasting failure conditions</p>\n</li>\n<li>\n<p><strong>Governance Alignment</strong> &mdash; aligning leadership, oversight, and public communication</p>\n</li>\n</ol>\n<p>SR‑DM is designed for hospitals, schools, shelters, corrections, welfare systems, oversight bodies, and ministries. It provides the first drift‑safe, architecture‑level method for transforming institutional operations in the post‑open‑web, AI‑native era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20534015"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SIGNALRUPTURE DEPLOYMENT MANUAL (SR‑DM)",
+        "links": {
+          "self": "https://zenodo.org/api/records/20534016",
+          "self_html": "https://zenodo.org/records/20534016",
+          "preview_html": "https://zenodo.org/records/20534016?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20534016",
+          "self_doi": "https://doi.org/10.5281/zenodo.20534016",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534016",
+          "reserve_doi": "https://zenodo.org/api/records/20534016/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20534015",
+          "parent_html": "https://zenodo.org/records/20534015",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20534015",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20534015",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20534016/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20534016/sequence/default",
+          "files": "https://zenodo.org/api/records/20534016/files",
+          "media_files": "https://zenodo.org/api/records/20534016/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20534016:THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20534016/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20534016/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20534016/versions/latest",
+          "latest_html": "https://zenodo.org/records/20534016/latest",
+          "versions": "https://zenodo.org/api/records/20534016/versions",
+          "draft": "https://zenodo.org/api/records/20534016/draft",
+          "access_links": "https://zenodo.org/api/records/20534016/access/links",
+          "access_grants": "https://zenodo.org/api/records/20534016/access/grants",
+          "access_users": "https://zenodo.org/api/records/20534016/access/users",
+          "access_request": "https://zenodo.org/api/records/20534016/access/request",
+          "access": "https://zenodo.org/api/records/20534016/access",
+          "communities": "https://zenodo.org/api/records/20534016/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20534016/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20534016/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20534016/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20534016/quota-increase",
+          "requests": "https://zenodo.org/api/records/20534016/requests"
+        },
+        "updated": "2026-06-03T19:00:32.385918-04:00",
+        "recid": "20534016",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a6a9e687-72b5-4f95-98cb-817721d3a5c1",
+            "key": "THE SIGNALRUPTURE DEPLOYMENT MANUAL (SR‑DM) .pdf",
+            "size": 118221,
+            "checksum": "md5:936a013cb4cafdfa3323ccbab544c1bd",
+            "links": {
+              "self": "https://zenodo.org/api/records/20534016/files/THE%20SIGNALRUPTURE%20DEPLOYMENT%20MANUAL%20(SR%E2%80%91DM)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 16,
+          "unique_views": 15,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 15,
+          "version_views": 16
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-05-31T22:54:42.644105-04:00",
+        "modified": "2026-05-31T22:54:42.911792-04:00",
+        "id": 20482535,
+        "conceptrecid": "20482534",
+        "doi": "10.5281/zenodo.20482535",
+        "conceptdoi": "10.5281/zenodo.20482534",
+        "doi_url": "https://doi.org/10.5281/zenodo.20482535",
+        "metadata": {
+          "title": "The Polycrisis as a Structural Transition",
+          "doi": "10.5281/zenodo.20482535",
+          "publication_date": "2026-06-01",
+          "description": "<p>The Polycrisis as a Structural Transition reframes the polycrisis not as a cluster of simultaneous global disruptions but as a transitional state in the evolution of governance architectures. The paper argues that the defining feature of the polycrisis is not the number of crises but the structural conditions&mdash;fragmentation, nonlinear propagation, and institutional latency&mdash;that allow shocks to interact and amplify one another. Drawing on systems theory, complexity science, and anticipatory governance research, the essay demonstrates that the polycrisis emerges when legacy governance assumptions no longer match the pace, scale, and interdependence of contemporary systems. Rather than treating the polycrisis as an anomaly, the paper positions it as the predictable turbulence produced when an aging governance architecture encounters conditions outside its design parameters.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Politics",
+            "Polycrisis",
+            "Metatheory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20482534"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Polycrisis as a Structural Transition",
+        "links": {
+          "self": "https://zenodo.org/api/records/20482535",
+          "self_html": "https://zenodo.org/records/20482535",
+          "preview_html": "https://zenodo.org/records/20482535?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20482535",
+          "self_doi": "https://doi.org/10.5281/zenodo.20482535",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20482535",
+          "reserve_doi": "https://zenodo.org/api/records/20482535/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20482534",
+          "parent_html": "https://zenodo.org/records/20482534",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20482534",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20482534",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20482535/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20482535/sequence/default",
+          "files": "https://zenodo.org/api/records/20482535/files",
+          "media_files": "https://zenodo.org/api/records/20482535/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20482535:The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20482535/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20482535/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20482535/versions/latest",
+          "latest_html": "https://zenodo.org/records/20482535/latest",
+          "versions": "https://zenodo.org/api/records/20482535/versions",
+          "draft": "https://zenodo.org/api/records/20482535/draft",
+          "access_links": "https://zenodo.org/api/records/20482535/access/links",
+          "access_grants": "https://zenodo.org/api/records/20482535/access/grants",
+          "access_users": "https://zenodo.org/api/records/20482535/access/users",
+          "access_request": "https://zenodo.org/api/records/20482535/access/request",
+          "access": "https://zenodo.org/api/records/20482535/access",
+          "communities": "https://zenodo.org/api/records/20482535/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20482535/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20482535/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20482535/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20482535/quota-increase",
+          "requests": "https://zenodo.org/api/records/20482535/requests"
+        },
+        "updated": "2026-05-31T22:54:42.911792-04:00",
+        "recid": "20482535",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d5ece9c2-e22e-44f9-abce-a1d4a68369e2",
+            "key": "The Polycrisis as a Structural Transition .pdf",
+            "size": 111340,
+            "checksum": "md5:626308f44092b116912178a78648b5e8",
+            "links": {
+              "self": "https://zenodo.org/api/records/20482535/files/The%20Polycrisis%20as%20a%20Structural%20Transition%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 8,
+          "views": 18,
+          "unique_views": 18,
+          "version_downloads": 9,
+          "version_unique_downloads": 8,
+          "version_unique_views": 18,
+          "version_views": 18
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-05-31T22:29:42.549005-04:00",
+        "modified": "2026-05-31T22:29:43.351273-04:00",
+        "id": 20482361,
+        "conceptrecid": "20482360",
+        "doi": "10.5281/zenodo.20482361",
+        "conceptdoi": "10.5281/zenodo.20482360",
+        "doi_url": "https://doi.org/10.5281/zenodo.20482361",
+        "metadata": {
+          "title": "The Academic Publishing Experiment: The Distribution Layer of Institutional Knowledge",
+          "doi": "10.5281/zenodo.20482361",
+          "publication_date": "2026-06-01",
+          "description": "<p>The Academic Publishing Experiment: The Distribution Layer of Institutional Knowledge examines academic publishing not as a neutral distribution mechanism but as the industrial extension of peer review&rsquo;s structural weaknesses. The paper argues that publishing amplifies bias, inconsistency, and disciplinary narrowing through profit incentives, prestige economies, and institutional gatekeeping. Drawing on evidence from mass retractions, compromised review processes, and the economics of journal publishing, the paper demonstrates that publishing functions as a legitimacy‑production apparatus rather than a truth‑production system. It exposes how indexing systems, citation economies, and evidence‑based policy inherit the distortions of the publishing layer, revealing the fragility of the entire knowledge architecture.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Metatheory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20482360"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Academic Publishing Experiment: The Distribution Layer of Institutional Knowledge",
+        "links": {
+          "self": "https://zenodo.org/api/records/20482361",
+          "self_html": "https://zenodo.org/records/20482361",
+          "preview_html": "https://zenodo.org/records/20482361?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20482361",
+          "self_doi": "https://doi.org/10.5281/zenodo.20482361",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20482361",
+          "reserve_doi": "https://zenodo.org/api/records/20482361/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20482360",
+          "parent_html": "https://zenodo.org/records/20482360",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20482360",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20482360",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20482361/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20482361/sequence/default",
+          "files": "https://zenodo.org/api/records/20482361/files",
+          "media_files": "https://zenodo.org/api/records/20482361/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20482361:The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20482361/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20482361/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20482361/versions/latest",
+          "latest_html": "https://zenodo.org/records/20482361/latest",
+          "versions": "https://zenodo.org/api/records/20482361/versions",
+          "draft": "https://zenodo.org/api/records/20482361/draft",
+          "access_links": "https://zenodo.org/api/records/20482361/access/links",
+          "access_grants": "https://zenodo.org/api/records/20482361/access/grants",
+          "access_users": "https://zenodo.org/api/records/20482361/access/users",
+          "access_request": "https://zenodo.org/api/records/20482361/access/request",
+          "access": "https://zenodo.org/api/records/20482361/access",
+          "communities": "https://zenodo.org/api/records/20482361/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20482361/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20482361/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20482361/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20482361/quota-increase",
+          "requests": "https://zenodo.org/api/records/20482361/requests"
+        },
+        "updated": "2026-05-31T22:29:43.351273-04:00",
+        "recid": "20482361",
+        "revision": 4,
+        "files": [
+          {
+            "id": "2474d856-168b-4155-9afb-c12490ddb1ab",
+            "key": "The Academic Publishing Experiment: The Distribution Layer of Institutional Knowledge .pdf",
+            "size": 102792,
+            "checksum": "md5:890213929383b272cc35655751ed3f33",
+            "links": {
+              "self": "https://zenodo.org/api/records/20482361/files/The%20Academic%20Publishing%20Experiment:%20The%20Distribution%20Layer%20of%20Institutional%20Knowledge%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 8,
+          "views": 13,
+          "unique_views": 13,
+          "version_downloads": 9,
+          "version_unique_downloads": 8,
+          "version_unique_views": 13,
+          "version_views": 13
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-05-31T20:36:43.146554-04:00",
+        "modified": "2026-05-31T20:36:43.524219-04:00",
+        "id": 20481650,
+        "conceptrecid": "20481649",
+        "doi": "10.5281/zenodo.20481650",
+        "conceptdoi": "10.5281/zenodo.20481649",
+        "doi_url": "https://doi.org/10.5281/zenodo.20481650",
+        "metadata": {
+          "title": "Institutional Recoil: A Conceptual Paper",
+          "doi": "10.5281/zenodo.20481650",
+          "publication_date": "2026-06-01",
+          "description": "<p>The Institutional Recoil Theorem (SR‑IRT): Conceptual Architecture establishes recoil as a fundamental governance‑layer response pattern that emerges whenever institutional narratives diverge from substrate‑level conditions. Rather than treating recoil as a moral failure, a political pathology, or an administrative breakdown, the conceptual paper reframes it as a structural equilibrium behavior produced by drift, misalignment, and asymmetric cost structures.<br>The paper formalizes recoil as a predictable system‑level reaction that activates when public recognition of harm exceeds institutional tolerance thresholds, escalates when narrative defense is cheaper than correction, and collapses when accumulated drift overwhelms narrative capacity.<br>Within the broader SignalRupture canon, the conceptual paper positions SR‑IRT as a core primitive: a mechanism that explains why institutions defend narratives even when correction is feasible, why visibility collapses recur across domains, and why legitimacy preservation often supersedes harm reduction.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20481649"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Institutional Recoil: A Conceptual Paper",
+        "links": {
+          "self": "https://zenodo.org/api/records/20481650",
+          "self_html": "https://zenodo.org/records/20481650",
+          "preview_html": "https://zenodo.org/records/20481650?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20481650",
+          "self_doi": "https://doi.org/10.5281/zenodo.20481650",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481650",
+          "reserve_doi": "https://zenodo.org/api/records/20481650/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20481649",
+          "parent_html": "https://zenodo.org/records/20481649",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20481649",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481649",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20481650/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20481650/sequence/default",
+          "files": "https://zenodo.org/api/records/20481650/files",
+          "media_files": "https://zenodo.org/api/records/20481650/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20481650/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20481650/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20481650/versions/latest",
+          "latest_html": "https://zenodo.org/records/20481650/latest",
+          "versions": "https://zenodo.org/api/records/20481650/versions",
+          "draft": "https://zenodo.org/api/records/20481650/draft",
+          "access_links": "https://zenodo.org/api/records/20481650/access/links",
+          "access_grants": "https://zenodo.org/api/records/20481650/access/grants",
+          "access_users": "https://zenodo.org/api/records/20481650/access/users",
+          "access_request": "https://zenodo.org/api/records/20481650/access/request",
+          "access": "https://zenodo.org/api/records/20481650/access",
+          "communities": "https://zenodo.org/api/records/20481650/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20481650/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20481650/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20481650/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20481650/quota-increase",
+          "requests": "https://zenodo.org/api/records/20481650/requests"
+        },
+        "updated": "2026-05-31T20:36:43.524219-04:00",
+        "recid": "20481650",
+        "revision": 3,
+        "files": [
+          {
+            "id": "0753f999-9325-403a-91f8-5a2c41468f2a",
+            "key": "Institutional Recoil: A Conceptual Paper .pdf",
+            "size": 89909,
+            "checksum": "md5:22653a9000969544f360da8c8fbf3fb2",
+            "links": {
+              "self": "https://zenodo.org/api/records/20481650/files/Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 10,
+          "unique_downloads": 9,
+          "views": 13,
+          "unique_views": 13,
+          "version_downloads": 10,
+          "version_unique_downloads": 9,
+          "version_unique_views": 13,
+          "version_views": 13
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-05-31T20:26:23.417566-04:00",
+        "modified": "2026-05-31T20:26:26.011784-04:00",
+        "id": 20481586,
+        "conceptrecid": "20481585",
+        "doi": "10.5281/zenodo.20481586",
+        "conceptdoi": "10.5281/zenodo.20481585",
+        "doi_url": "https://doi.org/10.5281/zenodo.20481586",
+        "metadata": {
+          "title": "The Institutional Recoil Theorem (SR-IRT): How Narrative Defense Emerges Under Substrate Drift in Sociotechnical Systems",
+          "doi": "10.5281/zenodo.20481586",
+          "publication_date": "2026-06-01",
+          "description": "<p>The <em>Institutional Recoil Theorem (SR‑IRT)</em> formalizes a recurrent governance‑layer behavior observed across sociotechnical systems: the tendency of institutions to intensify narrative defense when public cognition begins aligning with substrate‑accurate interpretations of harm. Within the SignalRupture architecture, SR‑IRT defines recoil as a structured response emerging under conditions of drift and narrative&ndash;substrate misalignment. The paper develops a mathematical model specifying activation, escalation, collapse, and realignment conditions, demonstrating empirical recurrence across seven major cases&mdash;from Flint and Windrush to the Opioid Crisis, COVID‑19, Residential Schools, and the 2008 Financial Crisis.<br>The theorem establishes that recoil activates when public drift and misalignment exceed critical thresholds, escalates when defense is less costly than correction, and collapses when accumulated recognition overwhelms narrative capacity. The accompanying mathematical banner visualizes this dynamic equilibrium between drift, misalignment, and institutional cost structures.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Society",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "20481585"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Institutional Recoil Theorem (SR-IRT): How Narrative Defense Emerges Under Substrate Drift in Sociotechnical Systems",
+        "links": {
+          "self": "https://zenodo.org/api/records/20481586",
+          "self_html": "https://zenodo.org/records/20481586",
+          "preview_html": "https://zenodo.org/records/20481586?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.20481586",
+          "self_doi": "https://doi.org/10.5281/zenodo.20481586",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481586",
+          "reserve_doi": "https://zenodo.org/api/records/20481586/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/20481585",
+          "parent_html": "https://zenodo.org/records/20481585",
+          "parent_doi": "https://doi.org/10.5281/zenodo.20481585",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481585",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20481586/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20481586/sequence/default",
+          "files": "https://zenodo.org/api/records/20481586/files",
+          "media_files": "https://zenodo.org/api/records/20481586/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:20481586:The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/20481586/files-archive",
+          "archive_media": "https://zenodo.org/api/records/20481586/media-files-archive",
+          "latest": "https://zenodo.org/api/records/20481586/versions/latest",
+          "latest_html": "https://zenodo.org/records/20481586/latest",
+          "versions": "https://zenodo.org/api/records/20481586/versions",
+          "draft": "https://zenodo.org/api/records/20481586/draft",
+          "access_links": "https://zenodo.org/api/records/20481586/access/links",
+          "access_grants": "https://zenodo.org/api/records/20481586/access/grants",
+          "access_users": "https://zenodo.org/api/records/20481586/access/users",
+          "access_request": "https://zenodo.org/api/records/20481586/access/request",
+          "access": "https://zenodo.org/api/records/20481586/access",
+          "communities": "https://zenodo.org/api/records/20481586/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/20481586/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/20481586/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/20481586/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/20481586/quota-increase",
+          "requests": "https://zenodo.org/api/records/20481586/requests"
+        },
+        "updated": "2026-05-31T20:26:26.011784-04:00",
+        "recid": "20481586",
+        "revision": 4,
+        "files": [
+          {
+            "id": "bba7ceb0-17d0-428b-a89f-d49193636a70",
+            "key": "The Institutional Recoil Theorem (SR-IRT) .pdf",
+            "size": 1352696,
+            "checksum": "md5:dd9c33199082ca56caa30aaade80f433",
+            "links": {
+              "self": "https://zenodo.org/api/records/20481586/files/The%20Institutional%20Recoil%20Theorem%20(SR-IRT)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 9,
+          "views": 16,
+          "unique_views": 16,
+          "version_downloads": 11,
+          "version_unique_downloads": 9,
+          "version_unique_views": 16,
+          "version_views": 16
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=2&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=3&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "next": "https://zenodo.org/api/records?page=4&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

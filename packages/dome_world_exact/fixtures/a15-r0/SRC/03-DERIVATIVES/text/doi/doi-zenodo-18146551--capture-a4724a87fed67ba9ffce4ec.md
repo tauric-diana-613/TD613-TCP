@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:309e803913eec08effe9649c
+parent_capture_id: capture:a4724a87fed67ba9ffce4ec8
+parent_blob_sha256: 060482623741b6d3a2e720bea98fb2ad9749081c323bab671009b943734eeb53
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Attention Span Collapsed: Social Media as Brain Damage and Population Control"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18146551
+Final URL: https://zenodo.org/records/18146551
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18146551 -> https://zenodo.org/doi/10.5281/zenodo.18146551
+302 https://zenodo.org/doi/10.5281/zenodo.18146551 -> https://zenodo.org/records/18146551

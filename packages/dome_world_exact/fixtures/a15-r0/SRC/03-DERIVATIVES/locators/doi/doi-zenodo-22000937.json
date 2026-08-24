@@ -1,0 +1,13 @@
+{
+  "derivative_id": "derivative:d7622fa89e564760f10c568b",
+  "locators": [
+    {
+      "redirect_index": 0,
+      "source": "capture-redirect-chain"
+    },
+    {
+      "redirect_index": 1,
+      "source": "capture-redirect-chain"
+    }
+  ]
+}

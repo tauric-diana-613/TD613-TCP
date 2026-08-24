@@ -1,0 +1,148 @@
+---
+derivative_id: derivative:126bb949ccb7fdab5fdaaf07
+parent_capture_id: capture:1c60f6f7e3fd859119205290
+parent_blob_sha256: befa4f8b18ce312ee3c1b13f2e9351e95d06a2cabdb70dbf1c899fc475ad5a15
+tool: srcctl-json-normalizer/1
+source_title: "Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18120745",
+  "conceptrecid": "18120745",
+  "created": "2026-01-01T22:00:01.140206+00:00",
+  "doi": "10.5281/zenodo.18120746",
+  "doi_url": "https://doi.org/10.5281/zenodo.18120746",
+  "files": [
+    {
+      "checksum": "md5:0285cc0418fe4642f101463c9bcf6e12",
+      "id": "fba153c5-5b1d-4e1e-acc0-12a12bbdca3b",
+      "key": "Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18120746/files/Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/content"
+      },
+      "size": 83926
+    }
+  ],
+  "id": 18120746,
+  "links": {
+    "access": "https://zenodo.org/api/records/18120746/access",
+    "access_grants": "https://zenodo.org/api/records/18120746/access/grants",
+    "access_links": "https://zenodo.org/api/records/18120746/access/links",
+    "access_request": "https://zenodo.org/api/records/18120746/access/request",
+    "access_users": "https://zenodo.org/api/records/18120746/access/users",
+    "archive": "https://zenodo.org/api/records/18120746/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18120746/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18120746/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18120746/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18120746",
+    "draft": "https://zenodo.org/api/records/18120746/draft",
+    "file_modification": "https://zenodo.org/api/records/18120746/file-modification",
+    "files": "https://zenodo.org/api/records/18120746/files",
+    "latest": "https://zenodo.org/api/records/18120746/versions/latest",
+    "latest_html": "https://zenodo.org/records/18120746/latest",
+    "media_files": "https://zenodo.org/api/records/18120746/media-files",
+    "parent": "https://zenodo.org/api/records/18120745",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18120745",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18120745",
+    "parent_html": "https://zenodo.org/records/18120745",
+    "preview_html": "https://zenodo.org/records/18120746?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18120746/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18120746/request-deletion",
+    "requests": "https://zenodo.org/api/records/18120746/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18120746/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18120746",
+    "self_doi": "https://doi.org/10.5281/zenodo.18120746",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18120746",
+    "self_html": "https://zenodo.org/records/18120746",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18120746/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18120746/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18120746:Drift%20Log:%20A%20Methodology%20for%20Tracking%20Suppression,%20Filtration,%20and%20Systemic%20Drift%20in%20Digital%20Publishing%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18120746/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing introduces a creator‑centered framework for documenting visibility loss, indexing instability, and unexplained filtration across digital platforms. While existing research on platform governance highlights algorithmic opacity, moderation practices, and structural bias, creators still lack practical tools for recording their own experiences of suppression and infrastructural drift. The Drift Log addresses this gap by offering a structured method for timestamping events, classifying anomalies, contextualizing platform behavior, and comparing patterns across multiple environments.</p>\n<p>This methodology reframes suppression not as an isolated glitch but as a traceable signal of infrastructural behavior. By transforming subjective experiences into systematic records, the Drift Log enables creators and researchers to identify recurring patterns, infer platform logic, and analyze the epistemic consequences of unstable visibility systems. As both a research instrument and a form of epistemic self‑defense, the Drift Log provides a foundation for studying digital publishing environments from the ground up, foregrounding the lived realities of creators navigating opaque and shifting algorithmic infrastructures.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18120746",
+    "keywords": [
+      "Social Issues",
+      "Social Media",
+      "Publishing Methods",
+      "Internet and Society",
+      "Sociology",
+      "Criminology",
+      "Public Policy",
+      "Minority Groups",
+      "Minority Studies",
+      "Activism",
+      "Feminism",
+      "Critical Theories"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18120745"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:54:53.294991+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18120746",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 24,
+    "unique_downloads": 18,
+    "unique_views": 33,
+    "version_downloads": 24,
+    "version_unique_downloads": 18,
+    "version_unique_views": 33,
+    "version_views": 39,
+    "views": 39
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing",
+  "updated": "2026-01-29T01:54:53.294991+00:00"
+}

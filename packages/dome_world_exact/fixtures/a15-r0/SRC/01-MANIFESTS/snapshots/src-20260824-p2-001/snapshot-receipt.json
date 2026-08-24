@@ -1,0 +1,32 @@
+{
+  "at": "2026-08-24T06:49:42.689052Z",
+  "dry_run": false,
+  "files": [
+    {
+      "bytes": 1254190,
+      "path": "01-MANIFESTS/candidate-corpus.jsonl",
+      "sha256": "45bed7f04d4bcbfb894b46712b43f4c1c22edcde6149adc2923569d0e12604a7"
+    },
+    {
+      "bytes": 171477,
+      "path": "01-MANIFESTS/platforms/academia.jsonl",
+      "sha256": "7a166e39686d91017a7216f22e1a3f2a9b0cba008c7c5ca40a6ab5a9f576b1ae"
+    },
+    {
+      "bytes": 101971,
+      "path": "01-MANIFESTS/platforms/substack.jsonl",
+      "sha256": "ed4069787324f3dc3c1cd644a4172cc108b8a5b83c62649c27d1c0117943478a"
+    },
+    {
+      "bytes": 74938,
+      "path": "01-MANIFESTS/platforms/medium.jsonl",
+      "sha256": "81b00ed43b772922d4f64394a2c478d087f398814be39d773b8eb8083f1dc912"
+    },
+    {
+      "bytes": 19283,
+      "path": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/phase-2-acquisition-priorities.jsonl",
+      "sha256": "757a1d450bb9211caa00ce5d9c342adeb3895957900c9fb1c323e35bde415397"
+    }
+  ],
+  "snapshot_id": "src-20260824-p2-001"
+}

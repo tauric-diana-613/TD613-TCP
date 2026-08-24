@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:bb24c129a49f0d7f1f7bf2b3
+parent_capture_id: capture:77bc7b83d29e6921d1d78f92
+parent_blob_sha256: 5c7c8039fa23367d871516a4b5b836b78cd0aaed718cbbb42d42b811b06c34be
+tool: srcctl-json-normalizer/1
+source_title: "THE SIGNALRUPTURE CROSS-DOMAIN EMPIRICAL PAPER"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20258343",
+  "conceptrecid": "20258343",
+  "created": "2026-05-17T14:17:57.039749+00:00",
+  "doi": "10.5281/zenodo.20258344",
+  "doi_url": "https://doi.org/10.5281/zenodo.20258344",
+  "files": [
+    {
+      "checksum": "md5:b37bc844b59d3b16a490f28f12a238ea",
+      "id": "41423137-7c93-4a92-bf54-824b75313614",
+      "key": "THE SIGNALRUPTURE CROSS-DOMAIN EMPIRICAL PAPER.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20258344/files/THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/content"
+      },
+      "size": 241901
+    }
+  ],
+  "id": 20258344,
+  "links": {
+    "access": "https://zenodo.org/api/records/20258344/access",
+    "access_grants": "https://zenodo.org/api/records/20258344/access/grants",
+    "access_links": "https://zenodo.org/api/records/20258344/access/links",
+    "access_request": "https://zenodo.org/api/records/20258344/access/request",
+    "access_users": "https://zenodo.org/api/records/20258344/access/users",
+    "archive": "https://zenodo.org/api/records/20258344/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20258344/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20258344/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20258344/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20258344",
+    "draft": "https://zenodo.org/api/records/20258344/draft",
+    "file_modification": "https://zenodo.org/api/records/20258344/file-modification",
+    "files": "https://zenodo.org/api/records/20258344/files",
+    "latest": "https://zenodo.org/api/records/20258344/versions/latest",
+    "latest_html": "https://zenodo.org/records/20258344/latest",
+    "media_files": "https://zenodo.org/api/records/20258344/media-files",
+    "parent": "https://zenodo.org/api/records/20258343",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20258343",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20258343",
+    "parent_html": "https://zenodo.org/records/20258343",
+    "preview_html": "https://zenodo.org/records/20258344?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20258344/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20258344/request-deletion",
+    "requests": "https://zenodo.org/api/records/20258344/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20258344/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20258344",
+    "self_doi": "https://doi.org/10.5281/zenodo.20258344",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20258344",
+    "self_html": "https://zenodo.org/records/20258344",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20258344/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20258344/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20258344:THE%20SIGNALRUPTURE%20CROSS-DOMAIN%20EMPIRICAL%20PAPER.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20258344/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper presents the first fully consolidated, cross‑domain empirical application of the SignalRupture (SR) framework. Drawing on ten public‑institutional domains&mdash;including homelessness governance, shelter access administration, crisis intervention, welfare eligibility adjudication, inpatient psychiatry, corrections oversight, child welfare systems, emergency medicine, addictions response, and school discipline&mdash;the study demonstrates that institutional distortion is not incidental but structurally reproducible. Using publicly accessible coroner reviews, tribunal decisions, oversight investigations, and administrative governance documents, the paper operationalizes SR&rsquo;s three core metrics&mdash;Signal Compression Ratio (SCR), Administrative Abstraction Index (AAI), and Ground‑Truth Discrepancy Index (GTDI)&mdash;to quantify how behavioural reality is transformed as it moves through governance layers.</p>\n<p>The dataset includes ten cases, each containing frontline behavioural narratives (GA 1), administrative summaries (GA 3), and oversight interpretations (GA 4). The analysis reveals that across all domains, behavioural complexity is consistently compressed into administratively legible forms optimized for throughput, procedural stability, and audit compatibility. SCR values range from 4.11 to 6.19, AAI values from 2.0 to 3.0, and GTDI values from 0.53 to 0.62, demonstrating a stable distortion pattern across unrelated systems. The paper argues that institutional distortion is not a failure of individual actors but an emergent property of governance architectures operating under scarcity, liability constraints, and administrative burden.</p>",
+    "doi": "10.5281/zenodo.20258344",
+    "keywords": [
+      "Metatheory",
+      "Empirical Findings",
+      "Institutions",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-17",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20258343"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE CROSS-DOMAIN EMPIRICAL PAPER",
+    "version": "1.0"
+  },
+  "modified": "2026-05-17T14:17:57.355804+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20258344",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 7,
+    "unique_views": 12,
+    "version_downloads": 8,
+    "version_unique_downloads": 7,
+    "version_unique_views": 12,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "THE SIGNALRUPTURE CROSS-DOMAIN EMPIRICAL PAPER",
+  "updated": "2026-05-17T14:17:57.355804+00:00"
+}

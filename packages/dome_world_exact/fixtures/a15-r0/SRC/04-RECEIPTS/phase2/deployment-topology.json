@@ -1,0 +1,22 @@
+{
+  "schema_version": "src-deployment-topology/v1",
+  "atelier_snapshot_id": "src-20260824-p2-001",
+  "query_authority": {
+    "repository": "tauric-diana-613/TD613-TCP",
+    "path": "packages/dome_world_exact/fixtures/a15-r0/SRC",
+    "host_station": "Dome-World",
+    "aia_surface": "aia/surface-declaration.json"
+  },
+  "custody_authority": {
+    "kind": "desktop_vault",
+    "repository": null,
+    "connector_access": false,
+    "restricted_body_paths_disclosed": false
+  },
+  "separate_companion_repository": false,
+  "restricted_full_text_in_public_projection": false,
+  "notes": [
+    "AIA governs routing, interpretation, and authority inside TD613-TCP; it is not access control for a public repository.",
+    "Opaque private locator IDs witness sealed desktop custody without exposing restricted filenames or paths."
+  ]
+}

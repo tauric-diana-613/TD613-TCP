@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:2465ad4b62662269dc4e3edb
+parent_capture_id: capture:6716506f7066ada756ce9f4b
+parent_blob_sha256: 7d1f9238ee1422dded01d4823bfe07672ec50082ac41a064b7d52b879608a0d7
+tool: srcctl-json-normalizer/1
+source_title: "The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19187329",
+  "conceptrecid": "19187329",
+  "created": "2026-03-23T15:34:46.462471+00:00",
+  "doi": "10.5281/zenodo.19187330",
+  "doi_url": "https://doi.org/10.5281/zenodo.19187330",
+  "files": [
+    {
+      "checksum": "md5:416f285676de134be4affa6ba3076e91",
+      "id": "070341a0-714a-4e1f-92ae-8aadb02ba786",
+      "key": "The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19187330/files/The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/content"
+      },
+      "size": 104866
+    }
+  ],
+  "id": 19187330,
+  "links": {
+    "access": "https://zenodo.org/api/records/19187330/access",
+    "access_grants": "https://zenodo.org/api/records/19187330/access/grants",
+    "access_links": "https://zenodo.org/api/records/19187330/access/links",
+    "access_request": "https://zenodo.org/api/records/19187330/access/request",
+    "access_users": "https://zenodo.org/api/records/19187330/access/users",
+    "archive": "https://zenodo.org/api/records/19187330/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19187330/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19187330/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19187330/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19187330",
+    "draft": "https://zenodo.org/api/records/19187330/draft",
+    "file_modification": "https://zenodo.org/api/records/19187330/file-modification",
+    "files": "https://zenodo.org/api/records/19187330/files",
+    "latest": "https://zenodo.org/api/records/19187330/versions/latest",
+    "latest_html": "https://zenodo.org/records/19187330/latest",
+    "media_files": "https://zenodo.org/api/records/19187330/media-files",
+    "parent": "https://zenodo.org/api/records/19187329",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19187329",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19187329",
+    "parent_html": "https://zenodo.org/records/19187329",
+    "preview_html": "https://zenodo.org/records/19187330?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19187330/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19187330/request-deletion",
+    "requests": "https://zenodo.org/api/records/19187330/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19187330/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19187330",
+    "self_doi": "https://doi.org/10.5281/zenodo.19187330",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19187330",
+    "self_html": "https://zenodo.org/records/19187330",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19187330/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19187330/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19187330:The%20Legibility%20Trap:%20How%20Systems%20Force%20People%20to%20Simplify%20Themselves%20to%20Fit%20Institutional%20Categories%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19187330/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Title: The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories</p>\n<p>Description</p>\n<p>This essay develops The Legibility Trap, a core structural concept within the SignalRupture framework. It argues that modern institutions require individuals to simplify, flatten, or distort themselves in order to fit predefined categories, metrics, and administrative schemas. Drawing on research in sociology, political theory, information systems, and organizational studies, the essay demonstrates that legibility is not a neutral or benign process&mdash;it is a mechanism of control. Institutions demand legibility to manage populations, allocate resources, and enforce compliance, but this demand produces structural harm by erasing complexity, constraining identity, and limiting agency. As digital infrastructures expand, legibility becomes increasingly automated, rigid, and punitive, with algorithmic systems intensifying misclassification, predictive profiling, and administrative burden. SignalRupture positions the legibility trap as a central mechanism through which systems maintain power, reproduce inequality, and shape the lived experience of individuals navigating institutional environments.</p>",
+    "doi": "10.5281/zenodo.19187330",
+    "keywords": [
+      "Institutions",
+      "Metatheory",
+      "Social Issues",
+      "Artificial intelligence",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-23",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19187329"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories",
+    "version": "1.0"
+  },
+  "modified": "2026-03-23T15:34:46.923858+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19187330",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 11,
+    "unique_views": 21,
+    "version_downloads": 11,
+    "version_unique_downloads": 11,
+    "version_unique_views": 21,
+    "version_views": 21,
+    "views": 21
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories",
+  "updated": "2026-03-23T15:34:46.923858+00:00"
+}

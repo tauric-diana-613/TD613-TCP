@@ -1,0 +1,7 @@
+{
+  "query": "creators.name:\"Rupture, Signal\"",
+  "records_discovered": 442,
+  "retrieved_at_utc": "2026-08-24T01:44:23.5222527Z",
+  "catalog_path": "01-MANIFESTS/candidate-corpus.jsonl",
+  "next_step": "Review official cross-platform indices, then download records whose stated license permits local preservation."
+}

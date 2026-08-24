@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:7f7142ef0bdba3c6d8ed03a8
+parent_capture_id: capture:b5004b355a0d14f2c85f5eb7
+parent_blob_sha256: dbe4bd1cbc5c80fb3c6ff89fab1986dfdd853d30d170f5bb7e322f5372c19df0
+tool: srcctl-json-normalizer/1
+source_title: "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18143602",
+  "conceptrecid": "18143602",
+  "created": "2026-01-04T05:13:19.672821+00:00",
+  "doi": "10.5281/zenodo.18143603",
+  "doi_url": "https://doi.org/10.5281/zenodo.18143603",
+  "files": [
+    {
+      "checksum": "md5:4286f33364a69ff05ff18d652a34d2ed",
+      "id": "8ae70800-6c51-40d9-be73-5697bbe52ffa",
+      "key": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18143603/files/Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/content"
+      },
+      "size": 115912
+    }
+  ],
+  "id": 18143603,
+  "links": {
+    "access": "https://zenodo.org/api/records/18143603/access",
+    "access_grants": "https://zenodo.org/api/records/18143603/access/grants",
+    "access_links": "https://zenodo.org/api/records/18143603/access/links",
+    "access_request": "https://zenodo.org/api/records/18143603/access/request",
+    "access_users": "https://zenodo.org/api/records/18143603/access/users",
+    "archive": "https://zenodo.org/api/records/18143603/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18143603/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18143603/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18143603/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18143603",
+    "draft": "https://zenodo.org/api/records/18143603/draft",
+    "file_modification": "https://zenodo.org/api/records/18143603/file-modification",
+    "files": "https://zenodo.org/api/records/18143603/files",
+    "latest": "https://zenodo.org/api/records/18143603/versions/latest",
+    "latest_html": "https://zenodo.org/records/18143603/latest",
+    "media_files": "https://zenodo.org/api/records/18143603/media-files",
+    "parent": "https://zenodo.org/api/records/18143602",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18143602",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143602",
+    "parent_html": "https://zenodo.org/records/18143602",
+    "preview_html": "https://zenodo.org/records/18143603?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18143603/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18143603/request-deletion",
+    "requests": "https://zenodo.org/api/records/18143603/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18143603/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18143603",
+    "self_doi": "https://doi.org/10.5281/zenodo.18143603",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143603",
+    "self_html": "https://zenodo.org/records/18143603",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18143603/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18143603/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18143603/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Workplace Law reframes legal and administrative systems as structural engines of harm rather than protective frameworks. Building on Workplace Erosion, Workplace Health, Slow Harm Theory, and Administrative Harm, this essay demonstrates how legal design and administrative enforcement work together to produce, legitimize, and institutionalize workplace injury.</p>\n<p>Instead of treating law as a neutral arbiter, the essay shows how legal thresholds, procedural timelines, documentation burdens, and enforcement mechanisms create the conditions under which harm becomes permissible, invisible, or inevitable. Workplace law is revealed as an infrastructural determinant of health and capacity &mdash; a system that shapes exposure, erosion, delay, scarcity, and containment through its very architecture.</p>\n<p>By positioning workplace law as a structural mechanism of harm within Social Infrastructure Theory, the essay establishes a new diagnostic category for understanding how modern workplaces transform legal compliance into a pathway for cumulative injury.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18143603",
+    "keywords": [
+      "Law",
+      "HR",
+      "Social issues",
+      "Activism",
+      "Feminism",
+      "Critical theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18143602"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:43:19.988323+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18143603",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 25,
+    "unique_downloads": 21,
+    "unique_views": 45,
+    "version_downloads": 25,
+    "version_unique_downloads": 21,
+    "version_unique_views": 45,
+    "version_views": 49,
+    "views": 49
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm",
+  "updated": "2026-01-29T01:43:19.988323+00:00"
+}

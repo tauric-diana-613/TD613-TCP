@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:bab877a5e2d8df450deb6db3
+parent_capture_id: capture:e77cb1da771481e020e1c4b2
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Exposure‑Silo Bias (ESB)"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.22019313
+Final URL: https://zenodo.org/records/22019313
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.22019313 -> https://zenodo.org/doi/10.5281/zenodo.22019313
+302 https://zenodo.org/doi/10.5281/zenodo.22019313 -> https://zenodo.org/records/22019313

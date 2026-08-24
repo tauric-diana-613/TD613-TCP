@@ -1,0 +1,2045 @@
+{
+  "derivative_id": "derivative:150e29405ad8b582fe97b9c8",
+  "locators": [
+    {
+      "page": 1,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 16
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 17
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 18
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 19
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 20
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 21
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 22
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 23
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 24
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 25
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 26
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 27
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 28
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 29
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 30
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 31
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 32
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 33
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 34
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 35
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 36
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 37
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 38
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 39
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 40
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 41
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 42
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 43
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 44
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 45
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 46
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 47
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 48
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 49
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 50
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 51
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 52
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 53
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 54
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 55
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 56
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 57
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 58
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 59
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 60
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 61
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 62
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 63
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 64
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 65
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 66
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 67
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 68
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 69
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 70
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 71
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 72
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 73
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 74
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 75
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 76
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 77
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 78
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 79
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 80
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 81
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 82
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 83
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 84
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 85
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 86
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 87
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 88
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 89
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 90
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 91
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 92
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 93
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 94
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 95
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 96
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 97
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 98
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 99
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 100
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 101
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 102
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 103
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 104
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 105
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 106
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 107
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 108
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 109
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 110
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 111
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 112
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 113
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 114
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 115
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 116
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 117
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 118
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 119
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 120
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 121
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 122
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 123
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 124
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 125
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 126
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 127
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 128
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 129
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 130
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 131
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 132
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 133
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 134
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 135
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 136
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 137
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 138
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 139
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 140
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 141
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 142
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 143
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 144
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 145
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 146
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 147
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 148
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 149
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 150
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 151
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 152
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 153
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 154
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 155
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 156
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 157
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 158
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 159
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 160
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 161
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 162
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 163
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 164
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 165
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 166
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 167
+    },
+    {
+      "page": 1,
+      "paragraph_on_page": 168
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 2,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 3,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 16
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 17
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 18
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 19
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 20
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 21
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 22
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 23
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 24
+    },
+    {
+      "page": 4,
+      "paragraph_on_page": 25
+    },
+    {
+      "page": 5,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 5,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 5,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 5,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 5,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 6,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 16
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 17
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 18
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 19
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 20
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 21
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 22
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 23
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 24
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 25
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 26
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 27
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 28
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 29
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 30
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 31
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 32
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 33
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 34
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 35
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 36
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 37
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 38
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 39
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 40
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 41
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 42
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 43
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 44
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 45
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 46
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 47
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 48
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 49
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 50
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 51
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 52
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 53
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 54
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 55
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 56
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 57
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 58
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 59
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 60
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 61
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 62
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 63
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 64
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 65
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 66
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 67
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 68
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 69
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 70
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 71
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 72
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 73
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 74
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 75
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 76
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 77
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 78
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 79
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 80
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 81
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 82
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 83
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 84
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 85
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 86
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 87
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 88
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 89
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 90
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 91
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 92
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 93
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 94
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 95
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 96
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 97
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 98
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 99
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 100
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 101
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 102
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 103
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 104
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 105
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 106
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 107
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 108
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 109
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 110
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 111
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 112
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 113
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 114
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 115
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 116
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 117
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 118
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 119
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 120
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 121
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 122
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 123
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 124
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 125
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 126
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 127
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 128
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 129
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 130
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 131
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 132
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 133
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 134
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 135
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 136
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 137
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 138
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 139
+    },
+    {
+      "page": 7,
+      "paragraph_on_page": 140
+    },
+    {
+      "page": 8,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 8,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 8,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 8,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 9,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 9,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 10,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 10,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 10,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 10,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 11,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 11,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 11,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 12,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 12,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 12,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 12,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 12,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 16
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 17
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 18
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 19
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 20
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 21
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 22
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 23
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 24
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 25
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 26
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 27
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 28
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 29
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 30
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 31
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 32
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 33
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 34
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 35
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 36
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 37
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 38
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 39
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 40
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 41
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 42
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 43
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 44
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 45
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 46
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 47
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 48
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 49
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 50
+    },
+    {
+      "page": 13,
+      "paragraph_on_page": 51
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 14,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 15,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 15,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 5
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 6
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 7
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 8
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 9
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 10
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 11
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 12
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 13
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 14
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 15
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 16
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 17
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 18
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 19
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 20
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 21
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 22
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 23
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 24
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 25
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 26
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 27
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 28
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 29
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 30
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 31
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 32
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 33
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 34
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 35
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 36
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 37
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 38
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 39
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 40
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 41
+    },
+    {
+      "page": 16,
+      "paragraph_on_page": 42
+    },
+    {
+      "page": 17,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 17,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 18,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 18,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 18,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 19,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 19,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 19,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 19,
+      "paragraph_on_page": 4
+    },
+    {
+      "page": 20,
+      "paragraph_on_page": 1
+    },
+    {
+      "page": 20,
+      "paragraph_on_page": 2
+    },
+    {
+      "page": 20,
+      "paragraph_on_page": 3
+    },
+    {
+      "page": 20,
+      "paragraph_on_page": 4
+    }
+  ]
+}

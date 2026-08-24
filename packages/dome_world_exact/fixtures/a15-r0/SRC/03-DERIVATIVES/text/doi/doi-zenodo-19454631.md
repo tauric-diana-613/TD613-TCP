@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:e8a8d45388977ff59bd2cd29
+parent_capture_id: capture:61a2f50efac31bfbfca18ad4
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Belief‑Conditioning Primitive"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19454631
+Final URL: https://zenodo.org/records/19454631
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19454631 -> https://zenodo.org/doi/10.5281/zenodo.19454631
+302 https://zenodo.org/doi/10.5281/zenodo.19454631 -> https://zenodo.org/records/19454631

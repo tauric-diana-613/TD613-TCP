@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:0e7a7a3675184605f6916f6e
+parent_capture_id: capture:005e742c1ccfc58b05c166ee
+parent_blob_sha256: c4dac50274d686767ad51588cfbff16c0511121782188251f75af9cd53ddfbbb
+tool: srcctl-json-normalizer/1
+source_title: "The Necromantic Shift: A Diagnostic Architecture for Systemic Erosion and Rupture Dynamics"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19926780",
+  "conceptrecid": "19926780",
+  "created": "2026-04-30T18:08:10.524680+00:00",
+  "doi": "10.5281/zenodo.19926781",
+  "doi_url": "https://doi.org/10.5281/zenodo.19926781",
+  "files": [
+    {
+      "checksum": "md5:991cd8484a0fe2def8751806afc4cb71",
+      "id": "5ca6b43a-dc95-4b46-8f38-c0f0a59ff737",
+      "key": "The Necromantic Shift: A Diagnostic Architecture for Systemic Erosion and Rupture Dynamics .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19926781/files/The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/content"
+      },
+      "size": 168939
+    }
+  ],
+  "id": 19926781,
+  "links": {
+    "access": "https://zenodo.org/api/records/19926781/access",
+    "access_grants": "https://zenodo.org/api/records/19926781/access/grants",
+    "access_links": "https://zenodo.org/api/records/19926781/access/links",
+    "access_request": "https://zenodo.org/api/records/19926781/access/request",
+    "access_users": "https://zenodo.org/api/records/19926781/access/users",
+    "archive": "https://zenodo.org/api/records/19926781/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19926781/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19926781/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19926781/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19926781",
+    "draft": "https://zenodo.org/api/records/19926781/draft",
+    "file_modification": "https://zenodo.org/api/records/19926781/file-modification",
+    "files": "https://zenodo.org/api/records/19926781/files",
+    "latest": "https://zenodo.org/api/records/19926781/versions/latest",
+    "latest_html": "https://zenodo.org/records/19926781/latest",
+    "media_files": "https://zenodo.org/api/records/19926781/media-files",
+    "parent": "https://zenodo.org/api/records/19926780",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19926780",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19926780",
+    "parent_html": "https://zenodo.org/records/19926780",
+    "preview_html": "https://zenodo.org/records/19926781?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19926781/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19926781/request-deletion",
+    "requests": "https://zenodo.org/api/records/19926781/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19926781/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19926781",
+    "self_doi": "https://doi.org/10.5281/zenodo.19926781",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19926781",
+    "self_html": "https://zenodo.org/records/19926781",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19926781/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19926781/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19926781:The%20Necromantic%20Shift:%20A%20Diagnostic%20Architecture%20for%20Systemic%20Erosion%20and%20Rupture%20Dynamics%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19926781/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Necromantic Shift develops a formal diagnostic architecture for understanding systemic erosion in high‑complexity socio‑technical environments. It models rupture as the structural outcome of three calibrated divergences: rapid technological acceleration (T), static biological capacity (B), and slow institutional latency (I). Using empirical ranges&mdash;T increasing by 2&ndash;3 orders of magnitude since 2012, B remaining approximately constant, and I lagging at 3&ndash;7 years&mdash;the framework defines drift density as the central latent variable governing instability. The model introduces a rupture functional, a misrecognition differential, and a physiological constraint boundary, enabling the quantification of metastability, necromantic functioning, and phase‑transition dynamics. Rather than predicting collapse, the work provides a bounded scenario architecture for 2024&ndash;2030 and an extension to 2035, describing how systems sustain output metrics while degrading in real capacity. The result is a coherent, empirically aligned framework for diagnosing the structural conditions that produce chronic friction, brittleness, and institutional incoherence.</p>",
+    "doi": "10.5281/zenodo.19926781",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Social issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-04-30",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19926780"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Necromantic Shift: A Diagnostic Architecture for Systemic Erosion and Rupture Dynamics",
+    "version": "1.0"
+  },
+  "modified": "2026-04-30T19:11:34.379446+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19926781",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 5,
+    "unique_views": 19,
+    "version_downloads": 7,
+    "version_unique_downloads": 5,
+    "version_unique_views": 19,
+    "version_views": 19,
+    "views": 19
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Necromantic Shift: A Diagnostic Architecture for Systemic Erosion and Rupture Dynamics",
+  "updated": "2026-04-30T19:11:34.379446+00:00"
+}

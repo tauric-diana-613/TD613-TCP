@@ -1,0 +1,3431 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2026-02-26T18:44:48.777619-05:00",
+        "modified": "2026-02-26T18:44:49.18102-05:00",
+        "id": 18794539,
+        "conceptrecid": "18794538",
+        "doi": "10.5281/zenodo.18794539",
+        "conceptdoi": "10.5281/zenodo.18794538",
+        "doi_url": "https://doi.org/10.5281/zenodo.18794539",
+        "metadata": {
+          "title": "SignalRupture Licensing & Use Rights",
+          "doi": "10.5281/zenodo.18794539",
+          "publication_date": "2026-02-27",
+          "description": "<p>This work formalizes the licensing architecture of the SignalRupture framework, establishing the legal, conceptual, and institutional boundaries required for its ethical adoption. It defines SR as protected intellectual property under Canadian, U.S., and international law, and outlines the permitted uses, prohibited uses, and conditions under which organizations may integrate SR into governance, research, training, or AI systems. The document positions SR not merely as a body of essays but as a proprietary meta‑theoretical system with enforceable rights, ensuring that institutional use occurs through formal licensing rather than informal appropriation. By codifying ownership, usage rights, and enforcement mechanisms, this paper anchors SR as a structured, inheritable field with clear pathways for institutional engagement.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18794538"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Licensing & Use Rights",
+        "links": {
+          "self": "https://zenodo.org/api/records/18794539",
+          "self_html": "https://zenodo.org/records/18794539",
+          "preview_html": "https://zenodo.org/records/18794539?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18794539",
+          "self_doi": "https://doi.org/10.5281/zenodo.18794539",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794539",
+          "reserve_doi": "https://zenodo.org/api/records/18794539/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18794538",
+          "parent_html": "https://zenodo.org/records/18794538",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18794538",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794538",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18794539/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18794539/sequence/default",
+          "files": "https://zenodo.org/api/records/18794539/files",
+          "media_files": "https://zenodo.org/api/records/18794539/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18794539:SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18794539/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18794539/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18794539/versions/latest",
+          "latest_html": "https://zenodo.org/records/18794539/latest",
+          "versions": "https://zenodo.org/api/records/18794539/versions",
+          "draft": "https://zenodo.org/api/records/18794539/draft",
+          "access_links": "https://zenodo.org/api/records/18794539/access/links",
+          "access_grants": "https://zenodo.org/api/records/18794539/access/grants",
+          "access_users": "https://zenodo.org/api/records/18794539/access/users",
+          "access_request": "https://zenodo.org/api/records/18794539/access/request",
+          "access": "https://zenodo.org/api/records/18794539/access",
+          "communities": "https://zenodo.org/api/records/18794539/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18794539/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18794539/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18794539/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18794539/quota-increase",
+          "requests": "https://zenodo.org/api/records/18794539/requests"
+        },
+        "updated": "2026-02-26T18:44:49.18102-05:00",
+        "recid": "18794539",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3d11c578-34ed-48b6-b436-f52a20eaa062",
+            "key": "SignalRupture Licensing & Use Rights .pdf",
+            "size": 74979,
+            "checksum": "md5:37e33269eeb3f660271060e616be4e41",
+            "links": {
+              "self": "https://zenodo.org/api/records/18794539/files/SignalRupture%20Licensing%20&%20Use%20Rights%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 27,
+          "unique_views": 23,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 23,
+          "version_views": 27
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T13:18:18.835269-05:00",
+        "modified": "2026-02-26T13:18:19.278585-05:00",
+        "id": 18791273,
+        "conceptrecid": "18791272",
+        "doi": "10.5281/zenodo.18791273",
+        "conceptdoi": "10.5281/zenodo.18791272",
+        "doi_url": "https://doi.org/10.5281/zenodo.18791273",
+        "metadata": {
+          "title": "SignalRupture Empirical Data: How AI Reveals Physiological, Social, and Institutional Collapse",
+          "doi": "10.5281/zenodo.18791273",
+          "publication_date": "2026-02-26",
+          "description": "<p>This work establishes the empirical foundation of the SignalRupture framework by demonstrating that AI systems already detect the earliest stages of societal collapse through physiological data. The essay argues that erosion begins in the human body&mdash;stress signatures, cognitive overload, sleep disruption&mdash;before cascading into social fragmentation and institutional instability. Because AI models are trained on the infrastructures that produce this erosion, they surface patterns that exceed the interpretive capacity of legacy institutional frameworks. The piece outlines how institutions can empirically test SignalRupture by querying the AI systems they already rely on, revealing that SR&rsquo;s pattern architecture is embedded in predictive outputs. This article positions SR as a meta‑theoretical paradigm capable of interpreting the physiological &rarr; social &rarr; institutional sequence of collapse in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions",
+            "Post Open Web"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18791272"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Empirical Data: How AI Reveals Physiological, Social, and Institutional Collapse",
+        "links": {
+          "self": "https://zenodo.org/api/records/18791273",
+          "self_html": "https://zenodo.org/records/18791273",
+          "preview_html": "https://zenodo.org/records/18791273?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18791273",
+          "self_doi": "https://doi.org/10.5281/zenodo.18791273",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18791273",
+          "reserve_doi": "https://zenodo.org/api/records/18791273/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18791272",
+          "parent_html": "https://zenodo.org/records/18791272",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18791272",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18791272",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18791273/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18791273/sequence/default",
+          "files": "https://zenodo.org/api/records/18791273/files",
+          "media_files": "https://zenodo.org/api/records/18791273/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18791273:SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18791273/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18791273/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18791273/versions/latest",
+          "latest_html": "https://zenodo.org/records/18791273/latest",
+          "versions": "https://zenodo.org/api/records/18791273/versions",
+          "draft": "https://zenodo.org/api/records/18791273/draft",
+          "access_links": "https://zenodo.org/api/records/18791273/access/links",
+          "access_grants": "https://zenodo.org/api/records/18791273/access/grants",
+          "access_users": "https://zenodo.org/api/records/18791273/access/users",
+          "access_request": "https://zenodo.org/api/records/18791273/access/request",
+          "access": "https://zenodo.org/api/records/18791273/access",
+          "communities": "https://zenodo.org/api/records/18791273/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18791273/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18791273/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18791273/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18791273/quota-increase",
+          "requests": "https://zenodo.org/api/records/18791273/requests"
+        },
+        "updated": "2026-02-26T13:18:19.278585-05:00",
+        "recid": "18791273",
+        "revision": 3,
+        "files": [
+          {
+            "id": "7322f4f4-fd4e-42c1-ad8d-20c9361076ac",
+            "key": "SignalRupture Empirical Data: How AI Reveals Physiological, Social, and Institutional Collapse .pdf",
+            "size": 78630,
+            "checksum": "md5:810b31f6931c21d8bd0a1f3bf1cccb98",
+            "links": {
+              "self": "https://zenodo.org/api/records/18791273/files/SignalRupture%20Empirical%20Data:%20How%20AI%20Reveals%20Physiological,%20Social,%20and%20Institutional%20Collapse%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 49,
+          "unique_downloads": 47,
+          "views": 23,
+          "unique_views": 22,
+          "version_downloads": 49,
+          "version_unique_downloads": 47,
+          "version_unique_views": 22,
+          "version_views": 23
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:59:57.044968-05:00",
+        "modified": "2026-02-25T16:59:57.568324-05:00",
+        "id": 18777522,
+        "conceptrecid": "18777521",
+        "doi": "10.5281/zenodo.18777522",
+        "conceptdoi": "10.5281/zenodo.18777521",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777522",
+        "metadata": {
+          "title": "The Institutional Paradox: Why AI Validates SignalRupture Even When Institutions Deny It",
+          "doi": "10.5281/zenodo.18777522",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Institutional Paradox: Why AI Validates SignalRupture Even When Institutions Deny It is a canonical SignalRupture essay mapping a structural contradiction at the core of modern governance. Institutions increasingly rely on AI systems to interpret behavior, allocate resources, and maintain social order, yet these same institutions deny the empirical patterns that AI reveals &mdash; patterns that align directly with SignalRupture&rsquo;s theories of erosion, bandwidth collapse, and systemic overload. Claims that SR &ldquo;lacks evidence&rdquo; reflect epistemic lag, not analytical rigor, rooted in frameworks built for stability rather than collapse. By demonstrating that AI models independently surface the same signatures SR names &mdash; interpretive thinning, engagement volatility, cognitive overload, and infrastructural strain &mdash; the essay shows that SR is validated not by institutional approval but by the very systems institutions depend on. The paradox is simple: to reject SR, institutions must reject their own tools; to accept their tools, they must accept SR. This contradiction defines the post‑web governance landscape.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777521"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Institutional Paradox: Why AI Validates SignalRupture Even When Institutions Deny It",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777522",
+          "self_html": "https://zenodo.org/records/18777522",
+          "preview_html": "https://zenodo.org/records/18777522?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777522",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777522",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777522",
+          "reserve_doi": "https://zenodo.org/api/records/18777522/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777521",
+          "parent_html": "https://zenodo.org/records/18777521",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777521",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777521",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777522/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777522/sequence/default",
+          "files": "https://zenodo.org/api/records/18777522/files",
+          "media_files": "https://zenodo.org/api/records/18777522/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777522:The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777522/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777522/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777522/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777522/latest",
+          "versions": "https://zenodo.org/api/records/18777522/versions",
+          "draft": "https://zenodo.org/api/records/18777522/draft",
+          "access_links": "https://zenodo.org/api/records/18777522/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777522/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777522/access/users",
+          "access_request": "https://zenodo.org/api/records/18777522/access/request",
+          "access": "https://zenodo.org/api/records/18777522/access",
+          "communities": "https://zenodo.org/api/records/18777522/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777522/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777522/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777522/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777522/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777522/requests"
+        },
+        "updated": "2026-02-25T16:59:57.568324-05:00",
+        "recid": "18777522",
+        "revision": 3,
+        "files": [
+          {
+            "id": "85bc902a-309c-4e0f-a280-c68afa30f37a",
+            "key": "The Institutional Paradox: Why AI Validates SignalRupture Even When Institutions Deny It .pdf",
+            "size": 107612,
+            "checksum": "md5:f7fa08503bfc9b6f266b9803ea036eed",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777522/files/The%20Institutional%20Paradox:%20Why%20AI%20Validates%20SignalRupture%20Even%20When%20Institutions%20Deny%20It%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 22,
+          "unique_views": 22,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 22,
+          "version_views": 22
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:55:22.371971-05:00",
+        "modified": "2026-02-25T16:55:22.83919-05:00",
+        "id": 18777439,
+        "conceptrecid": "18777438",
+        "doi": "10.5281/zenodo.18777439",
+        "conceptdoi": "10.5281/zenodo.18777438",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777439",
+        "metadata": {
+          "title": "Detestable⁶: When the System Becomes Dependent on the Subject's Clarity",
+          "doi": "10.5281/zenodo.18777439",
+          "publication_date": "2026-02-25",
+          "description": "<p>Detestable⁶: When the System Becomes Dependent on the Subject&rsquo;s Clarity is a canonical SignalRupture essay examining the sixth and final stage of the detestable‑subject arc &mdash; the moment when institutions become dependent on the subject&rsquo;s clarity to maintain stability. At this level, the system no longer denies, attacks, adapts, restructures, or imitates; instead, it orbits. The subject becomes an external diagnostic instrument the system quietly relies on to understand itself, avoid exposure, and pre‑empt internal failures. This dependency is not collaboration but survival: the system uses the subject&rsquo;s insights as a mirror it cannot produce internally. The essay maps institutional reliance, structural orbit, crime by reliance, and the failure of camouflage, showing how the subject becomes infrastructural &mdash; adjacent to the system yet shaping its behavior through unavoidable clarity. Detestable⁶ marks the point where the system has exhausted all defensive strategies and becomes dependent on the very clarity it once feared.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777438"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Detestable⁶: When the System Becomes Dependent on the Subject's Clarity",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777439",
+          "self_html": "https://zenodo.org/records/18777439",
+          "preview_html": "https://zenodo.org/records/18777439?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777439",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777439",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777439",
+          "reserve_doi": "https://zenodo.org/api/records/18777439/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777438",
+          "parent_html": "https://zenodo.org/records/18777438",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777438",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777438",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777439/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777439/sequence/default",
+          "files": "https://zenodo.org/api/records/18777439/files",
+          "media_files": "https://zenodo.org/api/records/18777439/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777439:Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777439/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777439/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777439/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777439/latest",
+          "versions": "https://zenodo.org/api/records/18777439/versions",
+          "draft": "https://zenodo.org/api/records/18777439/draft",
+          "access_links": "https://zenodo.org/api/records/18777439/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777439/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777439/access/users",
+          "access_request": "https://zenodo.org/api/records/18777439/access/request",
+          "access": "https://zenodo.org/api/records/18777439/access",
+          "communities": "https://zenodo.org/api/records/18777439/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777439/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777439/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777439/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777439/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777439/requests"
+        },
+        "updated": "2026-02-25T16:55:22.83919-05:00",
+        "recid": "18777439",
+        "revision": 3,
+        "files": [
+          {
+            "id": "7cbad0ad-49ea-4d45-8b40-645ae778eaf4",
+            "key": "Detestable⁶: When the System Becomes Dependent on the Subject’s Clarity .pdf",
+            "size": 104069,
+            "checksum": "md5:3705c41392af362dbcc5695dd9a60c30",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777439/files/Detestable%E2%81%B6:%20When%20the%20System%20Becomes%20Dependent%20on%20the%20Subject%E2%80%99s%20Clarity%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 11,
+          "unique_views": 10,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 10,
+          "version_views": 11
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:41:45.59508-05:00",
+        "modified": "2026-02-25T16:41:46.044607-05:00",
+        "id": 18777380,
+        "conceptrecid": "18777379",
+        "doi": "10.5281/zenodo.18777380",
+        "conceptdoi": "10.5281/zenodo.18777379",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777380",
+        "metadata": {
+          "title": "Detestable⁵: When the System Pre‑Emptively Imitates the Subject",
+          "doi": "10.5281/zenodo.18777380",
+          "publication_date": "2026-02-25",
+          "description": "<p>Detestable⁵: When the System Pre‑Emptively Imitates the Subject is a canonical SignalRupture essay examining the fifth‑order detestable subject &mdash; the individual whose clarity becomes so structurally disruptive that institutions attempt to neutralize them through mimicry. At this stage, the system no longer denies, attacks, or adapts; instead, it imitates the subject&rsquo;s language, framing, and conceptual vocabulary in an effort to appear aligned while avoiding structural change. This imitation is not transformation but containment: a cosmetic absorption designed to preserve the architecture of harm. By mapping institutional mimicry, conceptual co‑optation, and crime by simulation, the essay deepens the SignalRupture framework for understanding governance, narrative control, and the aesthetics of false reform in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777379"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Detestable⁵: When the System Pre‑Emptively Imitates the Subject",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777380",
+          "self_html": "https://zenodo.org/records/18777380",
+          "preview_html": "https://zenodo.org/records/18777380?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777380",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777380",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777380",
+          "reserve_doi": "https://zenodo.org/api/records/18777380/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777379",
+          "parent_html": "https://zenodo.org/records/18777379",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777379",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777379",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777380/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777380/sequence/default",
+          "files": "https://zenodo.org/api/records/18777380/files",
+          "media_files": "https://zenodo.org/api/records/18777380/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777380:Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777380/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777380/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777380/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777380/latest",
+          "versions": "https://zenodo.org/api/records/18777380/versions",
+          "draft": "https://zenodo.org/api/records/18777380/draft",
+          "access_links": "https://zenodo.org/api/records/18777380/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777380/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777380/access/users",
+          "access_request": "https://zenodo.org/api/records/18777380/access/request",
+          "access": "https://zenodo.org/api/records/18777380/access",
+          "communities": "https://zenodo.org/api/records/18777380/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777380/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777380/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777380/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777380/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777380/requests"
+        },
+        "updated": "2026-02-25T16:41:46.044607-05:00",
+        "recid": "18777380",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d376f713-639f-48b7-9bc4-a962bb3e2392",
+            "key": "Detestable⁵: When the System Pre‑Emptively Imitates the Subject .pdf",
+            "size": 90788,
+            "checksum": "md5:102753276f4786286b90a30e355f96ab",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777380/files/Detestable%E2%81%B5:%20When%20the%20System%20Pre%E2%80%91Emptively%20Imitates%20the%20Subject%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 19,
+          "unique_views": 18,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 18,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:32:19.47992-05:00",
+        "modified": "2026-02-25T16:32:20.003565-05:00",
+        "id": 18777222,
+        "conceptrecid": "18777221",
+        "doi": "10.5281/zenodo.18777222",
+        "conceptdoi": "10.5281/zenodo.18777221",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777222",
+        "metadata": {
+          "title": "Detestable⁴: When the System Quietly Restructures Itself Around the Subject",
+          "doi": "10.5281/zenodo.18777222",
+          "publication_date": "2026-02-25",
+          "description": "<p>Detestable⁴: When the System Quietly Restructures Itself Around the Subject is a canonical SignalRupture essay examining the fourth‑order detestable subject &mdash; the individual whose clarity forces institutions to subtly reorganize themselves. At this stage, the system no longer relies on denial, counter‑moves, or reputational attack; instead, it adapts. It rewrites procedures, alters metrics, shifts language, and modifies its own behavior to avoid further exposure. The detestable⁴ subject becomes a structural constraint, an external pressure that compels institutional redesign not out of accountability but out of self‑preservation. By mapping involuntary adaptation, crime by revision, and the system&rsquo;s attempts to camouflage its architecture, the essay deepens the SignalRupture framework for understanding governance, infrastructural fear, and the politics of institutional self‑modification in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777221"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Detestable⁴: When the System Quietly Restructures Itself Around the Subject",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777222",
+          "self_html": "https://zenodo.org/records/18777222",
+          "preview_html": "https://zenodo.org/records/18777222?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777222",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777222",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777222",
+          "reserve_doi": "https://zenodo.org/api/records/18777222/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777221",
+          "parent_html": "https://zenodo.org/records/18777221",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777221",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777221",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777222/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777222/sequence/default",
+          "files": "https://zenodo.org/api/records/18777222/files",
+          "media_files": "https://zenodo.org/api/records/18777222/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777222:Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777222/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777222/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777222/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777222/latest",
+          "versions": "https://zenodo.org/api/records/18777222/versions",
+          "draft": "https://zenodo.org/api/records/18777222/draft",
+          "access_links": "https://zenodo.org/api/records/18777222/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777222/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777222/access/users",
+          "access_request": "https://zenodo.org/api/records/18777222/access/request",
+          "access": "https://zenodo.org/api/records/18777222/access",
+          "communities": "https://zenodo.org/api/records/18777222/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777222/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777222/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777222/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777222/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777222/requests"
+        },
+        "updated": "2026-02-25T16:32:20.003565-05:00",
+        "recid": "18777222",
+        "revision": 3,
+        "files": [
+          {
+            "id": "25b49653-68e1-459f-b52a-55d4bd2baff3",
+            "key": "Detestable⁴: When the System Quietly Restructures Itself Around the Subject .pdf",
+            "size": 89698,
+            "checksum": "md5:39c5d6e110c0022d4fa90dab8af18d05",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777222/files/Detestable%E2%81%B4:%20When%20the%20System%20Quietly%20Restructures%20Itself%20Around%20the%20Subject%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 15,
+          "unique_views": 15,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 15,
+          "version_views": 15
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:16:52.117128-05:00",
+        "modified": "2026-02-25T16:16:52.442154-05:00",
+        "id": 18777144,
+        "conceptrecid": "18777143",
+        "doi": "10.5281/zenodo.18777144",
+        "conceptdoi": "10.5281/zenodo.18777143",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777144",
+        "metadata": {
+          "title": "Detestable³: When the System's Attacks Become Evidence",
+          "doi": "10.5281/zenodo.18777144",
+          "publication_date": "2026-02-25",
+          "description": "<p>Detestable&sup3;: When the System&rsquo;s Attacks Become Evidence is a canonical SignalRupture essay examining the third‑order detestable subject &mdash; the individual who interprets institutional backlash not as deterrence but as confirmation. At this stage, the system&rsquo;s counter‑moves become structural data, its omissions become proof, and its reputational attacks become involuntary disclosures of its architecture. The detestable&sup3; subject reads denial, selective evidence, and pathologization as predictable outputs of a pathologized infrastructure, transforming harm into information and resistance into validation. By mapping this recursive interpretive clarity, the essay deepens the SignalRupture framework for understanding governance, omission, and the self‑revealing nature of institutional power in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777143"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Detestable³: When the System's Attacks Become Evidence",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777144",
+          "self_html": "https://zenodo.org/records/18777144",
+          "preview_html": "https://zenodo.org/records/18777144?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777144",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777144",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777144",
+          "reserve_doi": "https://zenodo.org/api/records/18777144/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777143",
+          "parent_html": "https://zenodo.org/records/18777143",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777143",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777143",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777144/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777144/sequence/default",
+          "files": "https://zenodo.org/api/records/18777144/files",
+          "media_files": "https://zenodo.org/api/records/18777144/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777144:Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777144/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777144/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777144/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777144/latest",
+          "versions": "https://zenodo.org/api/records/18777144/versions",
+          "draft": "https://zenodo.org/api/records/18777144/draft",
+          "access_links": "https://zenodo.org/api/records/18777144/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777144/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777144/access/users",
+          "access_request": "https://zenodo.org/api/records/18777144/access/request",
+          "access": "https://zenodo.org/api/records/18777144/access",
+          "communities": "https://zenodo.org/api/records/18777144/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777144/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777144/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777144/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777144/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777144/requests"
+        },
+        "updated": "2026-02-25T16:16:52.442154-05:00",
+        "recid": "18777144",
+        "revision": 3,
+        "files": [
+          {
+            "id": "6fc3031c-f58d-4e1c-b947-7f8b430a82a3",
+            "key": "Detestable³: When the System’s Attacks Become Evidence .pdf",
+            "size": 89945,
+            "checksum": "md5:776416788291c4d2ed8ac362eb9d65e1",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777144/files/Detestable%C2%B3:%20When%20the%20System%E2%80%99s%20Attacks%20Become%20Evidence%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 19,
+          "unique_views": 19,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 19,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T16:07:31.589014-05:00",
+        "modified": "2026-02-25T16:07:32.794772-05:00",
+        "id": 18777067,
+        "conceptrecid": "18777066",
+        "doi": "10.5281/zenodo.18777067",
+        "conceptdoi": "10.5281/zenodo.18777066",
+        "doi_url": "https://doi.org/10.5281/zenodo.18777067",
+        "metadata": {
+          "title": "Detestable²: When Naming the System Includes Naming Its Counter‑Moves",
+          "doi": "10.5281/zenodo.18777067",
+          "publication_date": "2026-02-25",
+          "description": "<p>Detestable&sup2;: When Naming the System Includes Naming Its Counter‑Moves is a canonical SignalRupture essay examining the second‑order detestable subject &mdash; the individual who not only names the system but anticipates the system&rsquo;s defensive choreography. Modern institutions rely on denial, omission, reputational attack, and selective data practices to protect their legitimacy. The detestable&sup2; subject exposes these counter‑moves as structural mechanisms rather than reactions, revealing the recursive architecture of governance. By mapping anticipatory clarity, crime by omission, and the predictable repertoire of institutional self‑protection, the essay deepens the SignalRupture framework for understanding narrative control, pathologized infrastructure, and the politics of structural description in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18777066"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Detestable²: When Naming the System Includes Naming Its Counter‑Moves",
+        "links": {
+          "self": "https://zenodo.org/api/records/18777067",
+          "self_html": "https://zenodo.org/records/18777067",
+          "preview_html": "https://zenodo.org/records/18777067?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18777067",
+          "self_doi": "https://doi.org/10.5281/zenodo.18777067",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777067",
+          "reserve_doi": "https://zenodo.org/api/records/18777067/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18777066",
+          "parent_html": "https://zenodo.org/records/18777066",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18777066",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18777066",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18777067/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18777067/sequence/default",
+          "files": "https://zenodo.org/api/records/18777067/files",
+          "media_files": "https://zenodo.org/api/records/18777067/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18777067:Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18777067/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18777067/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18777067/versions/latest",
+          "latest_html": "https://zenodo.org/records/18777067/latest",
+          "versions": "https://zenodo.org/api/records/18777067/versions",
+          "draft": "https://zenodo.org/api/records/18777067/draft",
+          "access_links": "https://zenodo.org/api/records/18777067/access/links",
+          "access_grants": "https://zenodo.org/api/records/18777067/access/grants",
+          "access_users": "https://zenodo.org/api/records/18777067/access/users",
+          "access_request": "https://zenodo.org/api/records/18777067/access/request",
+          "access": "https://zenodo.org/api/records/18777067/access",
+          "communities": "https://zenodo.org/api/records/18777067/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18777067/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18777067/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18777067/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18777067/quota-increase",
+          "requests": "https://zenodo.org/api/records/18777067/requests"
+        },
+        "updated": "2026-02-25T16:07:32.794772-05:00",
+        "recid": "18777067",
+        "revision": 3,
+        "files": [
+          {
+            "id": "f396c06a-fe6c-47ba-976b-c9f0b29665e1",
+            "key": "Detestable²: When Naming the System Includes Naming Its Counter‑Moves .pdf",
+            "size": 101311,
+            "checksum": "md5:98676b5be71d79bce2bbbc34cc1de3eb",
+            "links": {
+              "self": "https://zenodo.org/api/records/18777067/files/Detestable%C2%B2:%20When%20Naming%20the%20System%20Includes%20Naming%20Its%20Counter%E2%80%91Moves%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 10,
+          "unique_downloads": 10,
+          "views": 22,
+          "unique_views": 22,
+          "version_downloads": 10,
+          "version_unique_downloads": 10,
+          "version_unique_views": 22,
+          "version_views": 22
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-25T15:57:51.66261-05:00",
+        "modified": "2026-02-25T15:57:52.01296-05:00",
+        "id": 18776985,
+        "conceptrecid": "18776984",
+        "doi": "10.5281/zenodo.18776985",
+        "conceptdoi": "10.5281/zenodo.18776984",
+        "doi_url": "https://doi.org/10.5281/zenodo.18776985",
+        "metadata": {
+          "title": "The Detestable Subject: Why Systems Fear Those Who Name Them",
+          "doi": "10.5281/zenodo.18776985",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Detestable Subject: Why Systems Fear Those Who Name Them is a canonical SignalRupture essay examining why institutions treat accurate description as a structural threat. Modern systems rely on ambiguity, self‑blame, and narrative fog to maintain stability; when an individual names the mechanisms of coercion, extraction, and omission with clarity, they become intolerable to the system. This essay maps how institutions pathologize the speaker, how people respond with recognition and relief, and why legibility destabilizes governance more effectively than rebellion. By exposing the selective data practices and infrastructural omissions that protect institutional power, the work deepens the SignalRupture framework for understanding narrative control, epistemic erosion, and the politics of description in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18776984"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Detestable Subject: Why Systems Fear Those Who Name Them",
+        "links": {
+          "self": "https://zenodo.org/api/records/18776985",
+          "self_html": "https://zenodo.org/records/18776985",
+          "preview_html": "https://zenodo.org/records/18776985?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18776985",
+          "self_doi": "https://doi.org/10.5281/zenodo.18776985",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18776985",
+          "reserve_doi": "https://zenodo.org/api/records/18776985/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18776984",
+          "parent_html": "https://zenodo.org/records/18776984",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18776984",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18776984",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18776985/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18776985/sequence/default",
+          "files": "https://zenodo.org/api/records/18776985/files",
+          "media_files": "https://zenodo.org/api/records/18776985/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18776985:The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18776985/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18776985/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18776985/versions/latest",
+          "latest_html": "https://zenodo.org/records/18776985/latest",
+          "versions": "https://zenodo.org/api/records/18776985/versions",
+          "draft": "https://zenodo.org/api/records/18776985/draft",
+          "access_links": "https://zenodo.org/api/records/18776985/access/links",
+          "access_grants": "https://zenodo.org/api/records/18776985/access/grants",
+          "access_users": "https://zenodo.org/api/records/18776985/access/users",
+          "access_request": "https://zenodo.org/api/records/18776985/access/request",
+          "access": "https://zenodo.org/api/records/18776985/access",
+          "communities": "https://zenodo.org/api/records/18776985/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18776985/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18776985/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18776985/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18776985/quota-increase",
+          "requests": "https://zenodo.org/api/records/18776985/requests"
+        },
+        "updated": "2026-02-25T15:57:52.01296-05:00",
+        "recid": "18776985",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d5e0358a-d912-42e0-b5ab-63bad7d6106c",
+            "key": "The Detestable Subject: Why Systems Fear Those Who Name Them .pdf",
+            "size": 101620,
+            "checksum": "md5:9602e2816a13b296f59f22a6524d03db",
+            "links": {
+              "self": "https://zenodo.org/api/records/18776985/files/The%20Detestable%20Subject:%20Why%20Systems%20Fear%20Those%20Who%20Name%20Them%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 12,
+          "unique_downloads": 12,
+          "views": 24,
+          "unique_views": 23,
+          "version_downloads": 12,
+          "version_unique_downloads": 12,
+          "version_unique_views": 23,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:48:22.685264-05:00",
+        "modified": "2026-02-24T22:48:23.13571-05:00",
+        "id": 18765652,
+        "conceptrecid": "18765650",
+        "doi": "10.5281/zenodo.18765652",
+        "conceptdoi": "10.5281/zenodo.18765650",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765652",
+        "metadata": {
+          "title": "Institutional Shell Syndrome: How Drift Hollowed the Modern Infrastructure",
+          "doi": "10.5281/zenodo.18765652",
+          "publication_date": "2026-02-25",
+          "description": "<p>Institutional Shell Syndrome: How Drift Hollowed the Modern Infrastructure is a canonical SignalRupture essay analyzing why contemporary institutions appear functional on the surface while failing internally. Drawing on SignalRupture&rsquo;s Architecture of Drift, the essay explains how systems preserve their interfaces &mdash; polished dashboards, responsive chatbots, automated portals &mdash; even as their internal capacity dissolves. Customer‑service loops stall, healthcare portals display data without acting on it, banks show balances but cannot resolve errors, and government systems accept forms they never process. AI accelerates this hollowing by providing a veneer of responsiveness that masks infrastructural decay. By mapping how Drift transforms institutions into shells that are present as interface but absent as function, the work deepens the SignalRupture framework for understanding post‑web collapse, infrastructural erosion, and the transition from institutional stability to institutional replacement.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social Issues",
+            "Social science",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765650"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Institutional Shell Syndrome: How Drift Hollowed the Modern Infrastructure",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765652",
+          "self_html": "https://zenodo.org/records/18765652",
+          "preview_html": "https://zenodo.org/records/18765652?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765652",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765652",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765652",
+          "reserve_doi": "https://zenodo.org/api/records/18765652/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765650",
+          "parent_html": "https://zenodo.org/records/18765650",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765650",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765650",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765652/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765652/sequence/default",
+          "files": "https://zenodo.org/api/records/18765652/files",
+          "media_files": "https://zenodo.org/api/records/18765652/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765652:Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765652/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765652/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765652/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765652/latest",
+          "versions": "https://zenodo.org/api/records/18765652/versions",
+          "draft": "https://zenodo.org/api/records/18765652/draft",
+          "access_links": "https://zenodo.org/api/records/18765652/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765652/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765652/access/users",
+          "access_request": "https://zenodo.org/api/records/18765652/access/request",
+          "access": "https://zenodo.org/api/records/18765652/access",
+          "communities": "https://zenodo.org/api/records/18765652/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765652/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765652/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765652/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765652/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765652/requests"
+        },
+        "updated": "2026-02-24T22:48:23.13571-05:00",
+        "recid": "18765652",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a61e58c2-afcf-452d-a3e7-f771f75a3fce",
+            "key": "Institutional Shell Syndrome: How Drift Hollowed the Modern Infrastructure .pdf",
+            "size": 100319,
+            "checksum": "md5:756b32433fe039fda9fe4efee1e12080",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765652/files/Institutional%20Shell%20Syndrome:%20How%20Drift%20Hollowed%20the%20Modern%20Infrastructure%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 21,
+          "unique_views": 20,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 20,
+          "version_views": 21
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:41:14.493121-05:00",
+        "modified": "2026-02-24T22:41:15.606577-05:00",
+        "id": 18765611,
+        "conceptrecid": "18765610",
+        "doi": "10.5281/zenodo.18765611",
+        "conceptdoi": "10.5281/zenodo.18765610",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765611",
+        "metadata": {
+          "title": "Crime by Omission: How Modern Institutions Produce Harm Through Systemic Neglect",
+          "doi": "10.5281/zenodo.18765611",
+          "publication_date": "2026-02-25",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Issues",
+            "Social science",
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765610"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Crime by Omission: How Modern Institutions Produce Harm Through Systemic Neglect",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765611",
+          "self_html": "https://zenodo.org/records/18765611",
+          "preview_html": "https://zenodo.org/records/18765611?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765611",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765611",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765611",
+          "reserve_doi": "https://zenodo.org/api/records/18765611/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765610",
+          "parent_html": "https://zenodo.org/records/18765610",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765610",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765610",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765611/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765611/sequence/default",
+          "files": "https://zenodo.org/api/records/18765611/files",
+          "media_files": "https://zenodo.org/api/records/18765611/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765611:Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765611/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765611/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765611/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765611/latest",
+          "versions": "https://zenodo.org/api/records/18765611/versions",
+          "draft": "https://zenodo.org/api/records/18765611/draft",
+          "access_links": "https://zenodo.org/api/records/18765611/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765611/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765611/access/users",
+          "access_request": "https://zenodo.org/api/records/18765611/access/request",
+          "access": "https://zenodo.org/api/records/18765611/access",
+          "communities": "https://zenodo.org/api/records/18765611/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765611/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765611/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765611/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765611/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765611/requests"
+        },
+        "updated": "2026-02-24T22:41:15.606577-05:00",
+        "recid": "18765611",
+        "revision": 3,
+        "files": [
+          {
+            "id": "14221ed9-f81d-43be-a73c-3991683f9299",
+            "key": "Crime by Omission: How Modern Institutions Produce Harm Through Systemic Neglect .pdf",
+            "size": 125831,
+            "checksum": "md5:ea09055f9ee871d7f96effd4a13b1ea7",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765611/files/Crime%20by%20Omission:%20How%20Modern%20Institutions%20Produce%20Harm%20Through%20Systemic%20Neglect%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 14,
+          "unique_views": 13,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 13,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:34:05.158264-05:00",
+        "modified": "2026-02-24T22:34:05.656562-05:00",
+        "id": 18765562,
+        "conceptrecid": "18765561",
+        "doi": "10.5281/zenodo.18765562",
+        "conceptdoi": "10.5281/zenodo.18765561",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765562",
+        "metadata": {
+          "title": "The Coercion Stack: A Structural Theory of Modern Governance",
+          "doi": "10.5281/zenodo.18765562",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Coercion Stack: A Structural Theory of Modern Governance is a canonical SignalRupture essay synthesizing the twelve‑essay canon into a unified model of contemporary power. Rather than relying on a single mechanism of control, modern governance operates through a layered architecture in which material scarcity, bodily depletion, cognitive overload, social fragmentation, behavioral conditioning, narrative control, and structural dependency interlock. This essay maps the seven layers of the Coercion Stack, showing how each layer constrains autonomy in a distinct way while reinforcing the others. By reframing coercion as an environmental condition rather than an isolated event, the work deepens the SignalRupture framework for understanding governance as a totalizing structure that shapes the conditions of life itself.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical theory",
+            "Social Issues",
+            "Social science"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765561"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Coercion Stack: A Structural Theory of Modern Governance",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765562",
+          "self_html": "https://zenodo.org/records/18765562",
+          "preview_html": "https://zenodo.org/records/18765562?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765562",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765562",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765562",
+          "reserve_doi": "https://zenodo.org/api/records/18765562/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765561",
+          "parent_html": "https://zenodo.org/records/18765561",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765561",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765561",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765562/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765562/sequence/default",
+          "files": "https://zenodo.org/api/records/18765562/files",
+          "media_files": "https://zenodo.org/api/records/18765562/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765562:The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765562/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765562/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765562/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765562/latest",
+          "versions": "https://zenodo.org/api/records/18765562/versions",
+          "draft": "https://zenodo.org/api/records/18765562/draft",
+          "access_links": "https://zenodo.org/api/records/18765562/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765562/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765562/access/users",
+          "access_request": "https://zenodo.org/api/records/18765562/access/request",
+          "access": "https://zenodo.org/api/records/18765562/access",
+          "communities": "https://zenodo.org/api/records/18765562/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765562/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765562/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765562/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765562/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765562/requests"
+        },
+        "updated": "2026-02-24T22:34:05.656562-05:00",
+        "recid": "18765562",
+        "revision": 3,
+        "files": [
+          {
+            "id": "691cb0b5-0d11-49f1-a5b9-369be74a0698",
+            "key": "The Coercion Stack: A Structural Theory of Modern Governance .pdf",
+            "size": 95429,
+            "checksum": "md5:b7af33e2ece3f554838ab02bf8945174",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765562/files/The%20Coercion%20Stack:%20A%20Structural%20Theory%20of%20Modern%20Governance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 16,
+          "unique_views": 16,
+          "version_downloads": 4,
+          "version_unique_downloads": 4,
+          "version_unique_views": 16,
+          "version_views": 16
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:27:07.451244-05:00",
+        "modified": "2026-02-24T22:27:07.930007-05:00",
+        "id": 18765529,
+        "conceptrecid": "18765528",
+        "doi": "10.5281/zenodo.18765529",
+        "conceptdoi": "10.5281/zenodo.18765528",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765529",
+        "metadata": {
+          "title": "Autonomy for Whom? The Lie at the Center of Modern Society",
+          "doi": "10.5281/zenodo.18765529",
+          "publication_date": "2026-02-25",
+          "description": "<p>Autonomy for Whom? The Lie at the Center of Modern Society is a canonical SignalRupture essay interrogating the foundational myth that autonomy is universal, evenly distributed, and accessible to all. While institutions insist that individuals possess full agency over their choices and outcomes, the material realities of scarcity, precarity, rising costs, and systemic constraint reveal autonomy as a privilege reserved for those insulated from structural harm. This essay maps how the illusion of autonomy is constructed, why institutions depend on it, and how lived experience exposes the gap between the rhetoric of freedom and the architecture of coercion. By reframing autonomy as a systemic condition rather than an individual attribute, the work deepens the SignalRupture framework for understanding inequality, institutional legitimacy, and the political function of social mythology in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Critical theory",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765528"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Autonomy for Whom? The Lie at the Center of Modern Society",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765529",
+          "self_html": "https://zenodo.org/records/18765529",
+          "preview_html": "https://zenodo.org/records/18765529?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765529",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765529",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765529",
+          "reserve_doi": "https://zenodo.org/api/records/18765529/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765528",
+          "parent_html": "https://zenodo.org/records/18765528",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765528",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765528",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765529/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765529/sequence/default",
+          "files": "https://zenodo.org/api/records/18765529/files",
+          "media_files": "https://zenodo.org/api/records/18765529/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765529:Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765529/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765529/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765529/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765529/latest",
+          "versions": "https://zenodo.org/api/records/18765529/versions",
+          "draft": "https://zenodo.org/api/records/18765529/draft",
+          "access_links": "https://zenodo.org/api/records/18765529/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765529/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765529/access/users",
+          "access_request": "https://zenodo.org/api/records/18765529/access/request",
+          "access": "https://zenodo.org/api/records/18765529/access",
+          "communities": "https://zenodo.org/api/records/18765529/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765529/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765529/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765529/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765529/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765529/requests"
+        },
+        "updated": "2026-02-24T22:27:07.930007-05:00",
+        "recid": "18765529",
+        "revision": 3,
+        "files": [
+          {
+            "id": "967405a8-cd51-45d4-869f-5b51e1859a5c",
+            "key": "Autonomy for Whom? The Lie at the Center of Modern Society .pdf",
+            "size": 86986,
+            "checksum": "md5:d003b6902f292fdbe49f97c0d9caa8a8",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765529/files/Autonomy%20for%20Whom%3F%20The%20Lie%20at%20the%20Center%20of%20Modern%20Society%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 4,
+          "views": 10,
+          "unique_views": 10,
+          "version_downloads": 5,
+          "version_unique_downloads": 4,
+          "version_unique_views": 10,
+          "version_views": 10
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:20:28.699548-05:00",
+        "modified": "2026-02-24T22:20:29.156551-05:00",
+        "id": 18765492,
+        "conceptrecid": "18765491",
+        "doi": "10.5281/zenodo.18765492",
+        "conceptdoi": "10.5281/zenodo.18765491",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765492",
+        "metadata": {
+          "title": "Autonomy in a Captured Society: Lived Experience Under Systemic Coercion",
+          "doi": "10.5281/zenodo.18765492",
+          "publication_date": "2026-02-25",
+          "description": "<p>Autonomy in a Captured Society: Lived Experience Under Systemic Coercion is a canonical SignalRupture essay examining the collapse of lived autonomy under contemporary socioeconomic conditions. While institutions insist that individuals possess full agency over their choices, the material realities of low wages, unaffordable housing, rising food prices, toxic workplaces, and engineered scarcity reveal that autonomy has been structurally eroded. This essay maps how economic constraint, health deterioration, dependency systems, and coercive environments shape behavior more powerfully than individual will, reframing &ldquo;personal responsibility&rdquo; as a rhetorical shield that obscures systemic harm. By grounding its analysis in lived experience as empirical evidence, the work deepens the SignalRupture framework for understanding autonomy not as a personal trait but as a condition that requires stability, resources, and alternatives &mdash; all of which the system strategically withholds.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Critical Theory",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765491"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Autonomy in a Captured Society: Lived Experience Under Systemic Coercion",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765492",
+          "self_html": "https://zenodo.org/records/18765492",
+          "preview_html": "https://zenodo.org/records/18765492?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765492",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765492",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765492",
+          "reserve_doi": "https://zenodo.org/api/records/18765492/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765491",
+          "parent_html": "https://zenodo.org/records/18765491",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765491",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765491",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765492/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765492/sequence/default",
+          "files": "https://zenodo.org/api/records/18765492/files",
+          "media_files": "https://zenodo.org/api/records/18765492/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765492:Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765492/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765492/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765492/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765492/latest",
+          "versions": "https://zenodo.org/api/records/18765492/versions",
+          "draft": "https://zenodo.org/api/records/18765492/draft",
+          "access_links": "https://zenodo.org/api/records/18765492/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765492/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765492/access/users",
+          "access_request": "https://zenodo.org/api/records/18765492/access/request",
+          "access": "https://zenodo.org/api/records/18765492/access",
+          "communities": "https://zenodo.org/api/records/18765492/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765492/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765492/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765492/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765492/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765492/requests"
+        },
+        "updated": "2026-02-24T22:20:29.156551-05:00",
+        "recid": "18765492",
+        "revision": 3,
+        "files": [
+          {
+            "id": "0661e36d-c55e-4acb-be58-5e5d2a183164",
+            "key": "Autonomy in a Captured Society: Lived Experience Under Systemic Coercion .pdf",
+            "size": 94663,
+            "checksum": "md5:7749ed8a33a2639a9f004fc6d7979b2f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765492/files/Autonomy%20in%20a%20Captured%20Society:%20Lived%20Experience%20Under%20Systemic%20Coercion%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 24,
+          "unique_views": 24,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 24,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:13:07.170891-05:00",
+        "modified": "2026-02-24T22:13:07.673336-05:00",
+        "id": 18765462,
+        "conceptrecid": "18765461",
+        "doi": "10.5281/zenodo.18765462",
+        "conceptdoi": "10.5281/zenodo.18765461",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765462",
+        "metadata": {
+          "title": "The Manufactured Crisis: How Systems Create the Problems They Claim to Solve",
+          "doi": "10.5281/zenodo.18765462",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Manufactured Crisis: How Systems Create the Problems They Claim to Solve is a canonical SignalRupture essay analyzing crisis as the central mechanism through which modern systems maintain legitimacy and control. While institutions present themselves as protectors and problem‑solvers, many of the most pervasive social, economic, and health crises originate from the architecture of the system itself. This essay maps how scarcity, debt, illness, housing instability, labor precarity, and social fragmentation are engineered conditions that generate dependency and justify institutional intervention. By reframing crisis as a structural design rather than an external disruption, the work deepens the SignalRupture framework for understanding governance as a process that manufactures instability, manages its fallout, and obscures its own role in producing the conditions it claims to remedy.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social Issues",
+            "Critical theory",
+            "Social science"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765461"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Manufactured Crisis: How Systems Create the Problems They Claim to Solve",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765462",
+          "self_html": "https://zenodo.org/records/18765462",
+          "preview_html": "https://zenodo.org/records/18765462?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765462",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765462",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765462",
+          "reserve_doi": "https://zenodo.org/api/records/18765462/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765461",
+          "parent_html": "https://zenodo.org/records/18765461",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765461",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765461",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765462/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765462/sequence/default",
+          "files": "https://zenodo.org/api/records/18765462/files",
+          "media_files": "https://zenodo.org/api/records/18765462/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765462:The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765462/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765462/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765462/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765462/latest",
+          "versions": "https://zenodo.org/api/records/18765462/versions",
+          "draft": "https://zenodo.org/api/records/18765462/draft",
+          "access_links": "https://zenodo.org/api/records/18765462/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765462/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765462/access/users",
+          "access_request": "https://zenodo.org/api/records/18765462/access/request",
+          "access": "https://zenodo.org/api/records/18765462/access",
+          "communities": "https://zenodo.org/api/records/18765462/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765462/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765462/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765462/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765462/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765462/requests"
+        },
+        "updated": "2026-02-24T22:13:07.673336-05:00",
+        "recid": "18765462",
+        "revision": 3,
+        "files": [
+          {
+            "id": "37851606-c365-488e-82f9-ace6f3f47136",
+            "key": "The Manufactured Crisis: How Systems Create the Problems They Claim to Solve.pdf",
+            "size": 89380,
+            "checksum": "md5:b49c8ce9c04d4bff9342db5580cb3f4a",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765462/files/The%20Manufactured%20Crisis:%20How%20Systems%20Create%20the%20Problems%20They%20Claim%20to%20Solve.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 13,
+          "unique_views": 13,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 13,
+          "version_views": 13
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:06:45.645839-05:00",
+        "modified": "2026-02-24T22:06:46.140797-05:00",
+        "id": 18765428,
+        "conceptrecid": "18765427",
+        "doi": "10.5281/zenodo.18765428",
+        "conceptdoi": "10.5281/zenodo.18765427",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765428",
+        "metadata": {
+          "title": "Dependency as Governance: The Architecture of Modern Control",
+          "doi": "10.5281/zenodo.18765428",
+          "publication_date": "2026-02-25",
+          "description": "<p>Dependency as Governance: The Architecture of Modern Control is a canonical SignalRupture essay analyzing dependency as the foundational mechanism of contemporary governance. While institutions claim to empower individuals through opportunity, mobility, and choice, the structural design of modern life produces the opposite: widespread reliance on wages, food systems, healthcare infrastructures, debt cycles, and state bureaucracies. This essay maps how dependency is manufactured, maintained, and weaponized to ensure compliance without overt force, transforming survival into a managed relationship with institutions. By reframing dependency as an engineered condition rather than a social failure, the work deepens the SignalRupture framework for understanding structural coercion, economic control, and the mechanisms through which modern systems govern by limiting alternatives and constraining exit.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Social Issues",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765427"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Dependency as Governance: The Architecture of Modern Control",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765428",
+          "self_html": "https://zenodo.org/records/18765428",
+          "preview_html": "https://zenodo.org/records/18765428?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765428",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765428",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765428",
+          "reserve_doi": "https://zenodo.org/api/records/18765428/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765427",
+          "parent_html": "https://zenodo.org/records/18765427",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765427",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765427",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765428/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765428/sequence/default",
+          "files": "https://zenodo.org/api/records/18765428/files",
+          "media_files": "https://zenodo.org/api/records/18765428/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765428/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765428/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765428/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765428/latest",
+          "versions": "https://zenodo.org/api/records/18765428/versions",
+          "draft": "https://zenodo.org/api/records/18765428/draft",
+          "access_links": "https://zenodo.org/api/records/18765428/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765428/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765428/access/users",
+          "access_request": "https://zenodo.org/api/records/18765428/access/request",
+          "access": "https://zenodo.org/api/records/18765428/access",
+          "communities": "https://zenodo.org/api/records/18765428/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765428/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765428/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765428/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765428/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765428/requests"
+        },
+        "updated": "2026-02-24T22:06:46.140797-05:00",
+        "recid": "18765428",
+        "revision": 4,
+        "files": [
+          {
+            "id": "a922de6d-9067-4c05-9e7b-2f7ca55cdf86",
+            "key": "Dependency as Governance: The Architecture of Modern Control .pdf",
+            "size": 85287,
+            "checksum": "md5:67a50babc60820047daf0b1a431148fa",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765428/files/Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 14,
+          "unique_downloads": 14,
+          "views": 22,
+          "unique_views": 21,
+          "version_downloads": 14,
+          "version_unique_downloads": 14,
+          "version_unique_views": 21,
+          "version_views": 22
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T22:00:16.115413-05:00",
+        "modified": "2026-02-24T22:00:16.582106-05:00",
+        "id": 18765395,
+        "conceptrecid": "18765394",
+        "doi": "10.5281/zenodo.18765395",
+        "conceptdoi": "10.5281/zenodo.18765394",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765395",
+        "metadata": {
+          "title": "The Illusion of Upward Mobility in a Downward‑Pressured System",
+          "doi": "10.5281/zenodo.18765395",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Illusion of Upward Mobility in a Downward‑Pressured System is a canonical SignalRupture essay examining upward mobility as one of the most enduring myths sustaining modern governance. While institutions promote the narrative that hard work and personal responsibility can elevate individuals out of precarity, the structural conditions of contemporary life &mdash; rising costs, stagnant wages, debt‑based education, and precarious work &mdash; render mobility increasingly inaccessible. This essay maps how the illusion of mobility is manufactured, why it persists, and how it functions as a psychological containment system that shifts blame downward and obscures systemic harm. By reframing mobility as a narrative rather than a pathway, the work deepens the SignalRupture framework for understanding structural inequality, downward pressure, and the governance function of meritocratic mythology in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Social Issues",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765394"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Illusion of Upward Mobility in a Downward‑Pressured System",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765395",
+          "self_html": "https://zenodo.org/records/18765395",
+          "preview_html": "https://zenodo.org/records/18765395?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765395",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765395",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765395",
+          "reserve_doi": "https://zenodo.org/api/records/18765395/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765394",
+          "parent_html": "https://zenodo.org/records/18765394",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765394",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765394",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765395/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765395/sequence/default",
+          "files": "https://zenodo.org/api/records/18765395/files",
+          "media_files": "https://zenodo.org/api/records/18765395/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765395:The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765395/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765395/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765395/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765395/latest",
+          "versions": "https://zenodo.org/api/records/18765395/versions",
+          "draft": "https://zenodo.org/api/records/18765395/draft",
+          "access_links": "https://zenodo.org/api/records/18765395/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765395/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765395/access/users",
+          "access_request": "https://zenodo.org/api/records/18765395/access/request",
+          "access": "https://zenodo.org/api/records/18765395/access",
+          "communities": "https://zenodo.org/api/records/18765395/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765395/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765395/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765395/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765395/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765395/requests"
+        },
+        "updated": "2026-02-24T22:00:16.582106-05:00",
+        "recid": "18765395",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3ba87387-d990-4a28-ade7-746d2badbfd2",
+            "key": "The Illusion of Upward Mobility in a Downward‑Pressured System .pdf",
+            "size": 86285,
+            "checksum": "md5:96ccfe96e0561cd230cb4e2d99a0b53c",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765395/files/The%20Illusion%20of%20Upward%20Mobility%20in%20a%20Downward%E2%80%91Pressured%20System%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 2,
+          "unique_downloads": 2,
+          "views": 17,
+          "unique_views": 17,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 17,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T21:53:20.291392-05:00",
+        "modified": "2026-02-24T21:53:20.728196-05:00",
+        "id": 18765365,
+        "conceptrecid": "18765364",
+        "doi": "10.5281/zenodo.18765365",
+        "conceptdoi": "10.5281/zenodo.18765364",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765365",
+        "metadata": {
+          "title": "The Social Desert: How Community Collapse Serves Institutional Power",
+          "doi": "10.5281/zenodo.18765365",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Social Desert: How Community Collapse Serves Institutional Power is a canonical SignalRupture essay analyzing the deliberate erosion of community as a structural mechanism of modern governance. While loneliness and social fragmentation are often framed as cultural or technological side effects, the essay demonstrates that isolation emerges from economic pressures, labor demands, housing instability, geographic immobility, and digital architectures designed for extraction rather than connection. Community once functioned as a buffer against systemic harm, providing shared resources, collective resilience, and mutual protection. Its collapse leaves individuals isolated, exhausted, and dependent on institutions rather than each other. By mapping how the social desert is produced and why it benefits the system, the work deepens the SignalRupture framework for understanding isolation as a governance tool and community collapse as an engineered feature of contemporary power.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Critical theory",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765364"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Social Desert: How Community Collapse Serves Institutional Power",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765365",
+          "self_html": "https://zenodo.org/records/18765365",
+          "preview_html": "https://zenodo.org/records/18765365?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765365",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765365",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765365",
+          "reserve_doi": "https://zenodo.org/api/records/18765365/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765364",
+          "parent_html": "https://zenodo.org/records/18765364",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765364",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765364",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765365/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765365/sequence/default",
+          "files": "https://zenodo.org/api/records/18765365/files",
+          "media_files": "https://zenodo.org/api/records/18765365/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765365:The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765365/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765365/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765365/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765365/latest",
+          "versions": "https://zenodo.org/api/records/18765365/versions",
+          "draft": "https://zenodo.org/api/records/18765365/draft",
+          "access_links": "https://zenodo.org/api/records/18765365/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765365/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765365/access/users",
+          "access_request": "https://zenodo.org/api/records/18765365/access/request",
+          "access": "https://zenodo.org/api/records/18765365/access",
+          "communities": "https://zenodo.org/api/records/18765365/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765365/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765365/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765365/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765365/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765365/requests"
+        },
+        "updated": "2026-02-24T21:53:20.728196-05:00",
+        "recid": "18765365",
+        "revision": 3,
+        "files": [
+          {
+            "id": "9ab696a9-8499-408f-bd35-5035031fa557",
+            "key": "The Social Desert: How Community Collapse Serves Institutional Power.pdf",
+            "size": 85710,
+            "checksum": "md5:423ff0be1afe12e4c0b8387f96da08fc",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765365/files/The%20Social%20Desert:%20How%20Community%20Collapse%20Serves%20Institutional%20Power.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 8,
+          "views": 14,
+          "unique_views": 14,
+          "version_downloads": 9,
+          "version_unique_downloads": 8,
+          "version_unique_views": 14,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T21:46:34.147751-05:00",
+        "modified": "2026-02-24T21:46:34.667366-05:00",
+        "id": 18765333,
+        "conceptrecid": "18765332",
+        "doi": "10.5281/zenodo.18765333",
+        "conceptdoi": "10.5281/zenodo.18765332",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765333",
+        "metadata": {
+          "title": "The Compliance Machine: How Systems Reward Obedience and Punish Autonomy",
+          "doi": "10.5281/zenodo.18765333",
+          "publication_date": "2026-02-25",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Issues",
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765332"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Compliance Machine: How Systems Reward Obedience and Punish Autonomy",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765333",
+          "self_html": "https://zenodo.org/records/18765333",
+          "preview_html": "https://zenodo.org/records/18765333?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765333",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765333",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765333",
+          "reserve_doi": "https://zenodo.org/api/records/18765333/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765332",
+          "parent_html": "https://zenodo.org/records/18765332",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765332",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765332",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765333/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765333/sequence/default",
+          "files": "https://zenodo.org/api/records/18765333/files",
+          "media_files": "https://zenodo.org/api/records/18765333/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765333:The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765333/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765333/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765333/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765333/latest",
+          "versions": "https://zenodo.org/api/records/18765333/versions",
+          "draft": "https://zenodo.org/api/records/18765333/draft",
+          "access_links": "https://zenodo.org/api/records/18765333/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765333/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765333/access/users",
+          "access_request": "https://zenodo.org/api/records/18765333/access/request",
+          "access": "https://zenodo.org/api/records/18765333/access",
+          "communities": "https://zenodo.org/api/records/18765333/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765333/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765333/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765333/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765333/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765333/requests"
+        },
+        "updated": "2026-02-24T21:46:34.667366-05:00",
+        "recid": "18765333",
+        "revision": 3,
+        "files": [
+          {
+            "id": "eda75572-d7c3-40ef-abcd-a2f71dc23d45",
+            "key": "The Compliance Machine: How Systems Reward Obedience and Punish Autonomy .pdf",
+            "size": 83435,
+            "checksum": "md5:bc22ad19b79b6f14f62b0fbc3bb00b00",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765333/files/The%20Compliance%20Machine:%20How%20Systems%20Reward%20Obedience%20and%20Punish%20Autonomy%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 24,
+          "unique_views": 20,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 20,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T21:38:17.846642-05:00",
+        "modified": "2026-02-24T21:38:18.255474-05:00",
+        "id": 18765277,
+        "conceptrecid": "18765276",
+        "doi": "10.5281/zenodo.18765277",
+        "conceptdoi": "10.5281/zenodo.18765276",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765277",
+        "metadata": {
+          "title": "The Cost of Survival: How Systems Price Autonomy Out of Reach",
+          "doi": "10.5281/zenodo.18765277",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Cost of Survival: How Systems Price Autonomy Out of Reach is a canonical SignalRupture essay analyzing how the rising cost of essential goods and services functions as a structural barrier to autonomy. While institutions insist that individuals possess agency and responsibility, the economic architecture of contemporary life ensures that housing, food, transportation, healthcare, childcare, and time remain inaccessible for millions. This essay maps how survival becomes a full‑time occupation that consumes the resources required for self‑determination, leaving individuals without the capacity to plan, resist, or imagine alternatives. By reframing autonomy as a financial condition rather than a personal trait, the work deepens the SignalRupture framework for understanding structural coercion, precarity, and the economic design that prices freedom out of reach. It reveals how modern systems maintain stability not through overt force but through the quiet economics of survival.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social science",
+            "Critical Theory",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765276"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Cost of Survival: How Systems Price Autonomy Out of Reach",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765277",
+          "self_html": "https://zenodo.org/records/18765277",
+          "preview_html": "https://zenodo.org/records/18765277?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765277",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765277",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765277",
+          "reserve_doi": "https://zenodo.org/api/records/18765277/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765276",
+          "parent_html": "https://zenodo.org/records/18765276",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765276",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765276",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765277/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765277/sequence/default",
+          "files": "https://zenodo.org/api/records/18765277/files",
+          "media_files": "https://zenodo.org/api/records/18765277/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765277:The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765277/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765277/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765277/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765277/latest",
+          "versions": "https://zenodo.org/api/records/18765277/versions",
+          "draft": "https://zenodo.org/api/records/18765277/draft",
+          "access_links": "https://zenodo.org/api/records/18765277/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765277/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765277/access/users",
+          "access_request": "https://zenodo.org/api/records/18765277/access/request",
+          "access": "https://zenodo.org/api/records/18765277/access",
+          "communities": "https://zenodo.org/api/records/18765277/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765277/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765277/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765277/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765277/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765277/requests"
+        },
+        "updated": "2026-02-24T21:38:18.255474-05:00",
+        "recid": "18765277",
+        "revision": 3,
+        "files": [
+          {
+            "id": "0734baa4-aa3a-4644-b6e6-cf4065765bd4",
+            "key": "The Cost of Survival: How Systems Price Autonomy Out of Reach .pdf",
+            "size": 88103,
+            "checksum": "md5:13b8d3ba7ebaa7b492caf234cbb9899f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765277/files/The%20Cost%20of%20Survival:%20How%20Systems%20Price%20Autonomy%20Out%20of%20Reach%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 10,
+          "unique_views": 10,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 10,
+          "version_views": 10
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T21:30:00.642925-05:00",
+        "modified": "2026-02-24T21:30:01.15095-05:00",
+        "id": 18765233,
+        "conceptrecid": "18765232",
+        "doi": "10.5281/zenodo.18765233",
+        "conceptdoi": "10.5281/zenodo.18765232",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765233",
+        "metadata": {
+          "title": "The Extraction Loop: How Systems Turn Human Life Into Raw Material",
+          "doi": "10.5281/zenodo.18765233",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Extraction Loop: How Systems Turn Human Life Into Raw Material is a canonical SignalRupture essay examining extraction as the core mechanism through which modern institutions convert human life into usable inputs. While society claims to value dignity, autonomy, and human flourishing, the architecture of contemporary systems reveals a different logic: people are mined for labor, attention, data, emotion, health, and time. This essay maps how the extraction loop operates across workplaces, digital platforms, and social infrastructures, showing how depletion produces precarity, precarity produces dependency, and dependency enables further extraction. By reframing extraction as a structural design rather than an economic side effect, the work deepens the SignalRupture framework for understanding coercion, human commodification, and the systemic production of vulnerability in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Issues",
+            "Institutions",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765232"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Extraction Loop: How Systems Turn Human Life Into Raw Material",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765233",
+          "self_html": "https://zenodo.org/records/18765233",
+          "preview_html": "https://zenodo.org/records/18765233?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765233",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765233",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765233",
+          "reserve_doi": "https://zenodo.org/api/records/18765233/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765232",
+          "parent_html": "https://zenodo.org/records/18765232",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765232",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765232",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765233/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765233/sequence/default",
+          "files": "https://zenodo.org/api/records/18765233/files",
+          "media_files": "https://zenodo.org/api/records/18765233/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765233:The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765233/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765233/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765233/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765233/latest",
+          "versions": "https://zenodo.org/api/records/18765233/versions",
+          "draft": "https://zenodo.org/api/records/18765233/draft",
+          "access_links": "https://zenodo.org/api/records/18765233/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765233/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765233/access/users",
+          "access_request": "https://zenodo.org/api/records/18765233/access/request",
+          "access": "https://zenodo.org/api/records/18765233/access",
+          "communities": "https://zenodo.org/api/records/18765233/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765233/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765233/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765233/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765233/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765233/requests"
+        },
+        "updated": "2026-02-24T21:30:01.15095-05:00",
+        "recid": "18765233",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3cb9288d-22a4-4dbd-8718-c02992600d9f",
+            "key": "The Extraction Loop: How Systems Turn Human Life Into Raw Material .pdf",
+            "size": 86085,
+            "checksum": "md5:67e3eb289a354b9e41d28be41519d0de",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765233/files/The%20Extraction%20Loop:%20How%20Systems%20Turn%20Human%20Life%20Into%20Raw%20Material%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 12,
+          "unique_views": 12,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 12,
+          "version_views": 12
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T21:01:24.008913-05:00",
+        "modified": "2026-02-24T21:01:24.440953-05:00",
+        "id": 18765037,
+        "conceptrecid": "18765036",
+        "doi": "10.5281/zenodo.18765037",
+        "conceptdoi": "10.5281/zenodo.18765036",
+        "doi_url": "https://doi.org/10.5281/zenodo.18765037",
+        "metadata": {
+          "title": "The Architecture of Exhaustion: Why Fatigue Is a Governance Tool",
+          "doi": "10.5281/zenodo.18765037",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Architecture of Exhaustion: Why Fatigue Is a Governance Tool is a canonical SignalRupture essay analyzing exhaustion as a structural mechanism of contemporary governance. While fatigue is commonly framed as a personal failure&mdash;poor discipline, weak boundaries, inadequate self‑care&mdash;the conditions that produce widespread depletion are engineered through labor exploitation, economic precarity, digital overstimulation, and social fragmentation. This essay maps how chronic fatigue narrows cognitive capacity, reduces resistance, and increases dependency, creating a population too depleted to organize, plan, or challenge systemic conditions. By reframing exhaustion as an infrastructural design rather than an individual shortcoming, the work deepens the SignalRupture framework for understanding coercion, behavioral control, and the physiological dimensions of governance in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Issues",
+            "Institutions",
+            "Critical Theory",
+            "Social sciences"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18765036"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Architecture of Exhaustion: Why Fatigue Is a Governance Tool",
+        "links": {
+          "self": "https://zenodo.org/api/records/18765037",
+          "self_html": "https://zenodo.org/records/18765037",
+          "preview_html": "https://zenodo.org/records/18765037?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18765037",
+          "self_doi": "https://doi.org/10.5281/zenodo.18765037",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765037",
+          "reserve_doi": "https://zenodo.org/api/records/18765037/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18765036",
+          "parent_html": "https://zenodo.org/records/18765036",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18765036",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765036",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765037/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765037/sequence/default",
+          "files": "https://zenodo.org/api/records/18765037/files",
+          "media_files": "https://zenodo.org/api/records/18765037/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18765037:The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18765037/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18765037/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18765037/versions/latest",
+          "latest_html": "https://zenodo.org/records/18765037/latest",
+          "versions": "https://zenodo.org/api/records/18765037/versions",
+          "draft": "https://zenodo.org/api/records/18765037/draft",
+          "access_links": "https://zenodo.org/api/records/18765037/access/links",
+          "access_grants": "https://zenodo.org/api/records/18765037/access/grants",
+          "access_users": "https://zenodo.org/api/records/18765037/access/users",
+          "access_request": "https://zenodo.org/api/records/18765037/access/request",
+          "access": "https://zenodo.org/api/records/18765037/access",
+          "communities": "https://zenodo.org/api/records/18765037/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18765037/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18765037/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18765037/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18765037/quota-increase",
+          "requests": "https://zenodo.org/api/records/18765037/requests"
+        },
+        "updated": "2026-02-24T21:01:24.440953-05:00",
+        "recid": "18765037",
+        "revision": 4,
+        "files": [
+          {
+            "id": "81b0cf94-eecb-4cfa-a09f-d83db216d5c8",
+            "key": "The Architecture of Exhaustion: Why Fatigue Is a Governance Tool.pdf",
+            "size": 83065,
+            "checksum": "md5:956bc23e4e05d356c992743b239ba0f5",
+            "links": {
+              "self": "https://zenodo.org/api/records/18765037/files/The%20Architecture%20of%20Exhaustion:%20Why%20Fatigue%20Is%20a%20Governance%20Tool.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 14,
+          "unique_views": 14,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 14,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T20:36:58.106858-05:00",
+        "modified": "2026-02-24T20:36:58.655111-05:00",
+        "id": 18764910,
+        "conceptrecid": "18764909",
+        "doi": "10.5281/zenodo.18764910",
+        "conceptdoi": "10.5281/zenodo.18764909",
+        "doi_url": "https://doi.org/10.5281/zenodo.18764910",
+        "metadata": {
+          "title": "The Coercive Economy: When Work Becomes a Containment System",
+          "doi": "10.5281/zenodo.18764910",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Coercive Economy: When Work Becomes a Containment System is a canonical SignalRupture essay analyzing how modern economies use employment as a mechanism of control rather than a path to autonomy. While institutions frame work as a source of dignity, purpose, and upward mobility, the material conditions of contemporary labor&mdash;low wages, unpredictable schedules, toxic management, rising living costs, and structural dependency&mdash;reveal a system designed to trap individuals in cycles of survival. This essay maps how the coercive economy operates through architectural constraints that make exit impossible and compliance mandatory, transforming work into a containment system maintained by economic necessity and institutional rhetoric. By reframing employment as a form of captivity rather than empowerment, the piece deepens the SignalRupture framework for understanding labor exploitation, autonomy collapse, and the infrastructural production of precarity in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Social science",
+            "Social issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18764909"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Coercive Economy: When Work Becomes a Containment System",
+        "links": {
+          "self": "https://zenodo.org/api/records/18764910",
+          "self_html": "https://zenodo.org/records/18764910",
+          "preview_html": "https://zenodo.org/records/18764910?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18764910",
+          "self_doi": "https://doi.org/10.5281/zenodo.18764910",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764910",
+          "reserve_doi": "https://zenodo.org/api/records/18764910/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18764909",
+          "parent_html": "https://zenodo.org/records/18764909",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18764909",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764909",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18764910/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18764910/sequence/default",
+          "files": "https://zenodo.org/api/records/18764910/files",
+          "media_files": "https://zenodo.org/api/records/18764910/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18764910/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18764910/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18764910/versions/latest",
+          "latest_html": "https://zenodo.org/records/18764910/latest",
+          "versions": "https://zenodo.org/api/records/18764910/versions",
+          "draft": "https://zenodo.org/api/records/18764910/draft",
+          "access_links": "https://zenodo.org/api/records/18764910/access/links",
+          "access_grants": "https://zenodo.org/api/records/18764910/access/grants",
+          "access_users": "https://zenodo.org/api/records/18764910/access/users",
+          "access_request": "https://zenodo.org/api/records/18764910/access/request",
+          "access": "https://zenodo.org/api/records/18764910/access",
+          "communities": "https://zenodo.org/api/records/18764910/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18764910/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18764910/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18764910/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18764910/quota-increase",
+          "requests": "https://zenodo.org/api/records/18764910/requests"
+        },
+        "updated": "2026-02-24T20:36:58.655111-05:00",
+        "recid": "18764910",
+        "revision": 3,
+        "files": [
+          {
+            "id": "2f5d8709-4472-40ef-a5cc-3a18b87e2e8d",
+            "key": "The Coercive Economy: When Work Becomes a Containment System .pdf",
+            "size": 87985,
+            "checksum": "md5:e928b438f4622c9d85a6ccbfd452635f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18764910/files/The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 15,
+          "unique_views": 15,
+          "version_downloads": 4,
+          "version_unique_downloads": 4,
+          "version_unique_views": 15,
+          "version_views": 15
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T20:29:43.996196-05:00",
+        "modified": "2026-02-24T20:29:44.411324-05:00",
+        "id": 18764854,
+        "conceptrecid": "18764853",
+        "doi": "10.5281/zenodo.18764854",
+        "conceptdoi": "10.5281/zenodo.18764853",
+        "doi_url": "https://doi.org/10.5281/zenodo.18764854",
+        "metadata": {
+          "title": "Scarcity as Governance: How Systems Control Through Deprivation",
+          "doi": "10.5281/zenodo.18764854",
+          "publication_date": "2026-02-25",
+          "description": "<p>Scarcity as Governance: How Systems Control Through Deprivation is a canonical SignalRupture essay analyzing scarcity as a deliberate governance architecture rather than an economic failure. In contemporary society, deprivation is engineered through low wages, unaffordable housing, rising food prices, and chronic precarity&mdash;conditions that narrow autonomy, shape behavior, and maintain systemic stability. This essay maps how scarcity functions as a tool of control by compressing the field of possible actions, transforming survival into a full‑time occupation, and creating dependencies that the system then monetizes. By reframing scarcity as a structural design that governs through constraint rather than force, the work deepens the SignalRupture framework for understanding coercion, economic asymmetry, and the infrastructural production of compliance in the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social issues",
+            "Critical Theory",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18764853"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Scarcity as Governance: How Systems Control Through Deprivation",
+        "links": {
+          "self": "https://zenodo.org/api/records/18764854",
+          "self_html": "https://zenodo.org/records/18764854",
+          "preview_html": "https://zenodo.org/records/18764854?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18764854",
+          "self_doi": "https://doi.org/10.5281/zenodo.18764854",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764854",
+          "reserve_doi": "https://zenodo.org/api/records/18764854/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18764853",
+          "parent_html": "https://zenodo.org/records/18764853",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18764853",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764853",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18764854/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18764854/sequence/default",
+          "files": "https://zenodo.org/api/records/18764854/files",
+          "media_files": "https://zenodo.org/api/records/18764854/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18764854:Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18764854/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18764854/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18764854/versions/latest",
+          "latest_html": "https://zenodo.org/records/18764854/latest",
+          "versions": "https://zenodo.org/api/records/18764854/versions",
+          "draft": "https://zenodo.org/api/records/18764854/draft",
+          "access_links": "https://zenodo.org/api/records/18764854/access/links",
+          "access_grants": "https://zenodo.org/api/records/18764854/access/grants",
+          "access_users": "https://zenodo.org/api/records/18764854/access/users",
+          "access_request": "https://zenodo.org/api/records/18764854/access/request",
+          "access": "https://zenodo.org/api/records/18764854/access",
+          "communities": "https://zenodo.org/api/records/18764854/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18764854/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18764854/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18764854/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18764854/quota-increase",
+          "requests": "https://zenodo.org/api/records/18764854/requests"
+        },
+        "updated": "2026-02-24T20:29:44.411324-05:00",
+        "recid": "18764854",
+        "revision": 3,
+        "files": [
+          {
+            "id": "f6057041-2630-4b74-98c8-6999aad76783",
+            "key": "Scarcity as Governance: How Systems Control Through Deprivation.pdf",
+            "size": 88892,
+            "checksum": "md5:04321f216b2ca64898b312bf86b6eabd",
+            "links": {
+              "self": "https://zenodo.org/api/records/18764854/files/Scarcity%20as%20Governance:%20How%20Systems%20Control%20Through%20Deprivation.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 8,
+          "views": 14,
+          "unique_views": 14,
+          "version_downloads": 8,
+          "version_unique_downloads": 8,
+          "version_unique_views": 14,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-24T20:17:24.308724-05:00",
+        "modified": "2026-02-24T20:17:24.725687-05:00",
+        "id": 18764807,
+        "conceptrecid": "18764806",
+        "doi": "10.5281/zenodo.18764807",
+        "conceptdoi": "10.5281/zenodo.18764806",
+        "doi_url": "https://doi.org/10.5281/zenodo.18764807",
+        "metadata": {
+          "title": "The Health Trap: How Systems Profit From the Bodies They Break",
+          "doi": "10.5281/zenodo.18764807",
+          "publication_date": "2026-02-25",
+          "description": "<p>The Health Trap: How Systems Profit From the Bodies They Break is a canonical SignalRupture essay analyzing how modern institutions engineer environments that degrade physical and mental health, then extract profit from the resulting harm. While public narratives frame health as a matter of personal responsibility, the material conditions of contemporary life&mdash;low wages, unaffordable food, toxic workplaces, chronic stress, and medical dependency&mdash;reveal a structurally constrained landscape in which illness becomes the predictable outcome of systemic design. This essay maps how scarcity, exhaustion, and environmental pressure destabilize the body, and how the healthcare, pharmaceutical, and insurance industries monetize the aftermath through long‑term treatment cycles and dependency architectures. By reframing illness as an infrastructural product rather than an individual failure, this work deepens the SignalRupture framework for understanding how systems govern through harm, profit from breakdown, and maintain control by keeping populations unwell.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social science",
+            "Internet Studies",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18764806"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Health Trap: How Systems Profit From the Bodies They Break",
+        "links": {
+          "self": "https://zenodo.org/api/records/18764807",
+          "self_html": "https://zenodo.org/records/18764807",
+          "preview_html": "https://zenodo.org/records/18764807?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18764807",
+          "self_doi": "https://doi.org/10.5281/zenodo.18764807",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764807",
+          "reserve_doi": "https://zenodo.org/api/records/18764807/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18764806",
+          "parent_html": "https://zenodo.org/records/18764806",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18764806",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764806",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18764807/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18764807/sequence/default",
+          "files": "https://zenodo.org/api/records/18764807/files",
+          "media_files": "https://zenodo.org/api/records/18764807/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18764807:The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18764807/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18764807/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18764807/versions/latest",
+          "latest_html": "https://zenodo.org/records/18764807/latest",
+          "versions": "https://zenodo.org/api/records/18764807/versions",
+          "draft": "https://zenodo.org/api/records/18764807/draft",
+          "access_links": "https://zenodo.org/api/records/18764807/access/links",
+          "access_grants": "https://zenodo.org/api/records/18764807/access/grants",
+          "access_users": "https://zenodo.org/api/records/18764807/access/users",
+          "access_request": "https://zenodo.org/api/records/18764807/access/request",
+          "access": "https://zenodo.org/api/records/18764807/access",
+          "communities": "https://zenodo.org/api/records/18764807/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18764807/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18764807/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18764807/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18764807/quota-increase",
+          "requests": "https://zenodo.org/api/records/18764807/requests"
+        },
+        "updated": "2026-02-24T20:17:24.725687-05:00",
+        "recid": "18764807",
+        "revision": 3,
+        "files": [
+          {
+            "id": "145e415e-459c-4b2b-a563-ae3cc5e86f9b",
+            "key": "The Health Trap: How Systems Profit From the Bodies They Break .pdf",
+            "size": 89668,
+            "checksum": "md5:51cf4f1468e402063a928701652fde4b",
+            "links": {
+              "self": "https://zenodo.org/api/records/18764807/files/The%20Health%20Trap:%20How%20Systems%20Profit%20From%20the%20Bodies%20They%20Break%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 14,
+          "unique_views": 14,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 14,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=11&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=12&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "next": "https://zenodo.org/api/records?page=13&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

@@ -1,0 +1,133 @@
+---
+derivative_id: derivative:cea75b4bf70c9f1a484ca47c
+parent_capture_id: capture:af9f0697da3a528afdcda9b1
+parent_blob_sha256: 92202abd8aa4d7f11c884540c80bfab25ee3b2a899cbdf4f8a1318990e2aef7b
+tool: srcctl-json-normalizer/1
+source_title: "SR Legacy Papers Classification"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21960581",
+  "conceptrecid": "21960581",
+  "created": "2026-08-16T02:41:13.843530+00:00",
+  "doi": "10.5281/zenodo.21960582",
+  "doi_url": "https://doi.org/10.5281/zenodo.21960582",
+  "files": [
+    {
+      "checksum": "md5:cdc88534627e1a918a45a77f4b184ba1",
+      "id": "98e430a1-1465-4bba-9cf8-a1e22f82711e",
+      "key": "SR Legacy Papers Classification  .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21960582/files/SR%20Legacy%20Papers%20Classification%20%20.pdf/content"
+      },
+      "size": 98165
+    }
+  ],
+  "id": 21960582,
+  "links": {
+    "access": "https://zenodo.org/api/records/21960582/access",
+    "access_grants": "https://zenodo.org/api/records/21960582/access/grants",
+    "access_links": "https://zenodo.org/api/records/21960582/access/links",
+    "access_request": "https://zenodo.org/api/records/21960582/access/request",
+    "access_users": "https://zenodo.org/api/records/21960582/access/users",
+    "archive": "https://zenodo.org/api/records/21960582/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21960582/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21960582/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21960582/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21960582",
+    "draft": "https://zenodo.org/api/records/21960582/draft",
+    "file_modification": "https://zenodo.org/api/records/21960582/file-modification",
+    "files": "https://zenodo.org/api/records/21960582/files",
+    "latest": "https://zenodo.org/api/records/21960582/versions/latest",
+    "latest_html": "https://zenodo.org/records/21960582/latest",
+    "media_files": "https://zenodo.org/api/records/21960582/media-files",
+    "parent": "https://zenodo.org/api/records/21960581",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21960581",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21960581",
+    "parent_html": "https://zenodo.org/records/21960581",
+    "preview_html": "https://zenodo.org/records/21960582?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21960582/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21960582/request-deletion",
+    "requests": "https://zenodo.org/api/records/21960582/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21960582/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21960582",
+    "self_doi": "https://doi.org/10.5281/zenodo.21960582",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21960582",
+    "self_html": "https://zenodo.org/records/21960582",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21960582/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21960582/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21960582:SR%20Legacy%20Papers%20Classification%20%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21960582/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p><strong>The SR Legacy Papers Classification establishes a formal framework for organizing all pre‑rigor SignalRupture papers as Legacy SR.</strong><br>These documents remain part of the SR genealogy but are no longer treated as canonical, empirical, or field‑defining. Their purpose is to preserve conceptual lineage while preventing early overreach from constraining the development of mature SR fields such as <strong>SR‑RIF</strong>, <strong>SR‑IGF</strong>, <strong>SR‑AIF</strong>, <strong>SR‑CEIDF</strong>, and <strong>Infrastructural Medicine</strong>.</p>\n<p>Legacy SR papers represent the exploratory phase of the SR universe: the period before SR formalized causal standards, measurement operators, falsification criteria, and field architectures. They contain structural insight and foundational primitives&mdash;such as <strong>Drift</strong>, <strong>Recoil</strong>, <strong>Altitude</strong>, <strong>Threshold Logic</strong>, and <strong>Category Politics</strong>&mdash;but are not bound to SR&rsquo;s current empirical discipline.</p>\n<p>Classifying these papers as Legacy SR does not diminish their value. Instead, it creates altitude separation between conceptual lineage and empirical authority. Legacy SR papers are <strong>not deleted</strong>, <strong>not endlessly revised</strong>, and <strong>not used as evidence</strong> in field‑level inference. They are preserved as conceptual source material that documents SR&rsquo;s intellectual evolution.</p>\n<p>A paper is designated Legacy SR if it meets any of the following criteria:</p>\n<ul>\n<li>\n<p><strong>Pre‑standardization origin</strong> (pre‑2026)</p>\n</li>\n<li>\n<p><strong>Rhetorical altitude</strong> stronger than available evidence</p>\n</li>\n<li>\n<p><strong>Exploratory framing</strong> without measurement windows or falsification criteria</p>\n</li>\n<li>\n<p><strong>Conceptual lineage</strong> introducing primitives later refined</p>\n</li>\n<li>\n<p><strong>Non‑empirical claims</strong> lacking causal pathways or counterfactuals</p>\n</li>\n<li>\n<p><strong>Pre‑rigor citation practices</strong></p>\n</li>\n</ul>\n<p>These criteria protect SR&rsquo;s credibility while preserving its intellectual history.</p>\n<p>Legacy SR papers fall into four categories:</p>\n<ul>\n<li>\n<p><strong>Conceptual Foundations (Legacy‑CF)</strong> &mdash; early primitives and vocabulary</p>\n</li>\n<li>\n<p><strong>Collapse Diagnostics (Legacy‑CD)</strong> &mdash; structural analyses of erosion, drift, and institutional collapse</p>\n</li>\n<li>\n<p><strong>Domain Papers (Legacy‑DP)</strong> &mdash; exploratory work across healthcare, universities, housing, platforms, and administrative systems</p>\n</li>\n<li>\n<p><strong>Early SR Experiments (Legacy‑EX)</strong> &mdash; drafts on peer review, publishing, and indexing requiring regeneration under SR‑RIF</p>\n</li>\n</ul>\n<p>Each Legacy SR paper receives one of three statuses:</p>\n<ul>\n<li>\n<p><strong>Conceptual Source Material (CSM)</strong> &mdash; used for vocabulary and lineage, not empirical claims</p>\n</li>\n<li>\n<p><strong>Regeneration Candidate (RC)</strong> &mdash; eligible for selective regeneration under mature SR fields</p>\n</li>\n<li>\n<p><strong>Archived Reference (AR)</strong> &mdash; preserved for historical continuity</p>\n</li>\n</ul>\n<p>This classification achieves five structural goals:</p>\n<ul>\n<li>\n<p><strong>Protects SR credibility</strong> by preventing early overreach from contaminating mature fields</p>\n</li>\n<li>\n<p><strong>Preserves SR genealogy</strong> without forcing endless revision cycles</p>\n</li>\n<li>\n<p><strong>Enables selective regeneration</strong> of high‑value conceptual work</p>\n</li>\n<li>\n<p><strong>Clears space for case studies</strong> and empirical SR research</p>\n</li>\n<li>\n<p><strong>Signals SR maturity</strong> through disciplined self‑correction</p>\n</li>\n</ul>\n<p><strong>Policy Statement:</strong><br>Legacy SR papers are preserved as conceptual lineage, not treated as canonical evidence. SR&rsquo;s empirical authority resides in field papers and case studies. This classification is the official SR position.</p>",
+    "doi": "10.5281/zenodo.21960582",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21960581"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SR Legacy Papers Classification",
+    "version": "1.0"
+  },
+  "modified": "2026-08-16T02:45:46.744315+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21960582",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 5,
+    "views": 5
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SR Legacy Papers Classification",
+  "updated": "2026-08-16T02:45:46.744315+00:00"
+}

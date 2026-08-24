@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:0442ac36780227b04d534fdd
+parent_capture_id: capture:d2dcb57e950909c1f1aff78d
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Delay Is Design: Mapping the Currency of Friction"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18209550
+Final URL: https://zenodo.org/records/18209550
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18209550 -> https://zenodo.org/doi/10.5281/zenodo.18209550
+302 https://zenodo.org/doi/10.5281/zenodo.18209550 -> https://zenodo.org/records/18209550

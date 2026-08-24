@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:acf5fbd9d4a9c5e7a26124c5
+parent_capture_id: capture:8beb6172fc9e0949d069cff5
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Infrastructure Harm Mechanism: Downstream Harm: A Non‑Moral Theory of Harm Production in Complex Systems"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19391113
+Final URL: https://zenodo.org/records/19391113
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19391113 -> https://zenodo.org/doi/10.5281/zenodo.19391113
+302 https://zenodo.org/doi/10.5281/zenodo.19391113 -> https://zenodo.org/records/19391113

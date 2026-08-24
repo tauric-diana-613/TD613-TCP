@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:720775c7a874a1d41f993153
+parent_capture_id: capture:df0068ac1aea5f9cd31f6ef8
+parent_blob_sha256: 067b13886bf055e891f7c9b540040d59aa7cb048d5d4dddc5dcaef639c7ea315
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Social Infrastructure Theory: A Structural Frame Work For Understanding Social Outcomes"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18096652
+Final URL: https://zenodo.org/records/18096652
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18096652 -> https://zenodo.org/doi/10.5281/zenodo.18096652
+302 https://zenodo.org/doi/10.5281/zenodo.18096652 -> https://zenodo.org/records/18096652

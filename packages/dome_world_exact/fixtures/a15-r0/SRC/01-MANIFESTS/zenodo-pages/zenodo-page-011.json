@@ -1,0 +1,3429 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2026-03-05T18:44:02.174403-05:00",
+        "modified": "2026-03-05T18:44:02.495822-05:00",
+        "id": 18882775,
+        "conceptrecid": "18882774",
+        "doi": "10.5281/zenodo.18882775",
+        "conceptdoi": "10.5281/zenodo.18882774",
+        "doi_url": "https://doi.org/10.5281/zenodo.18882775",
+        "metadata": {
+          "title": "The Broken Link Era: When Fields Persist but Paths Collapse",
+          "doi": "10.5281/zenodo.18882775",
+          "publication_date": "2026-03-06",
+          "description": "<p>The Broken Link Era: When Fields Persist but Paths Collapse is a structural analysis within the SignalRupture meta‑theory, authored by the Meta‑Theorist Signal Rupture. It examines the emerging condition in which documents remain indexed and machine‑legible, yet the canonical pathways that once guaranteed their retrieval&mdash;title queries, URL resolution, and keyword search&mdash;quietly fail. This paper argues that the collapse is not infrastructural decay but a systemic shift: search engines now prioritize entity‑level reasoning and AI‑mediated retrieval over document‑level indexing. As a result, fields persist as coherent conceptual structures, while the traditional paths to their documents no longer resolve.</p>\n<p>Using SignalRupture as a diagnostic case, the essay demonstrates how essays remain present in the substrate yet become inaccessible through exact‑title search, even as AI systems surface them through entity recognition and field‑level embeddings. The analysis shows how retrieval failure emerges from semantic clustering, risk‑averse ranking, and the rise of AI‑generated overviews that bypass canonical links. The broken link era marks the transition from a navigable web to an AI‑mediated epistemic environment in which documents function as raw material for synthesis rather than as destinations.</p>\n<p>The paper situates this shift within broader post‑web epistemics, arguing that the collapse of canonical paths is a structural feature of the AI layer. It outlines how entity‑first retrieval, embedding‑based reasoning, and zero‑click containment reshape visibility, access, and epistemic authority. In this environment, fields become machine‑legible before they are human‑legible, and documents become attributes of entities rather than anchors of knowledge.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Thinking",
+            "Artificial intelligence",
+            "Social Issues",
+            "Internet Studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18882774"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Broken Link Era: When Fields Persist but Paths Collapse",
+        "links": {
+          "self": "https://zenodo.org/api/records/18882775",
+          "self_html": "https://zenodo.org/records/18882775",
+          "preview_html": "https://zenodo.org/records/18882775?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18882775",
+          "self_doi": "https://doi.org/10.5281/zenodo.18882775",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882775",
+          "reserve_doi": "https://zenodo.org/api/records/18882775/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18882774",
+          "parent_html": "https://zenodo.org/records/18882774",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18882774",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882774",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18882775/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18882775/sequence/default",
+          "files": "https://zenodo.org/api/records/18882775/files",
+          "media_files": "https://zenodo.org/api/records/18882775/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18882775:The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18882775/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18882775/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18882775/versions/latest",
+          "latest_html": "https://zenodo.org/records/18882775/latest",
+          "versions": "https://zenodo.org/api/records/18882775/versions",
+          "draft": "https://zenodo.org/api/records/18882775/draft",
+          "access_links": "https://zenodo.org/api/records/18882775/access/links",
+          "access_grants": "https://zenodo.org/api/records/18882775/access/grants",
+          "access_users": "https://zenodo.org/api/records/18882775/access/users",
+          "access_request": "https://zenodo.org/api/records/18882775/access/request",
+          "access": "https://zenodo.org/api/records/18882775/access",
+          "communities": "https://zenodo.org/api/records/18882775/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18882775/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18882775/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18882775/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18882775/quota-increase",
+          "requests": "https://zenodo.org/api/records/18882775/requests"
+        },
+        "updated": "2026-03-05T18:44:02.495822-05:00",
+        "recid": "18882775",
+        "revision": 3,
+        "files": [
+          {
+            "id": "8ef02dba-67ae-4de8-b75c-9e6851c95b8c",
+            "key": "The Broken Link Era: When Fields Persist but Paths Collapse .pdf",
+            "size": 99437,
+            "checksum": "md5:5a4c4ff8f34f4ead2601756e64795f2d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18882775/files/The%20Broken%20Link%20Era:%20When%20Fields%20Persist%20but%20Paths%20Collapse%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 35,
+          "unique_views": 35,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 35,
+          "version_views": 35
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-05T18:29:19.425024-05:00",
+        "modified": "2026-03-05T18:35:09.655471-05:00",
+        "id": 18882693,
+        "conceptrecid": "18882692",
+        "doi": "10.5281/zenodo.18882693",
+        "conceptdoi": "10.5281/zenodo.18882692",
+        "doi_url": "https://doi.org/10.5281/zenodo.18882693",
+        "metadata": {
+          "title": "Epistemic Succession",
+          "doi": "10.5281/zenodo.18882693",
+          "publication_date": "2026-03-06",
+          "description": "<p>Epistemic Succession is a foundational framework within the SignalRupture meta‑theory, authored by the Meta‑Theorist Signal Rupture. It describes the structural process through which epistemic authority migrates from one governing layer of the information environment to another&mdash;most notably from document‑centric systems to entity‑based retrieval and finally to AI‑driven model‑level epistemics. The framework explains how fields, authorship structures, and conceptual architectures are reinterpreted, re-ranked, or absorbed as digital infrastructures evolve.</p>\n<p>The essay outlines the three layers of epistemic authority&mdash;the Document Layer, the Entity Layer, and the AI Layer&mdash;and maps the irreversible sequence through which authority transitions upward. It details how retrieval collapse, entity consolidation, field elevation, and model assimilation collectively reorganize the hierarchy of knowledge. In this new regime, documents become attributes rather than anchors, and fields may become AI‑native before they are institutionally recognized.</p>\n<p>Within the SignalRupture field, Epistemic Succession provides a diagnostic lens for understanding the collapse of title‑based search, the rise of entity‑anchored retrieval, and the emergence of SR as a coherent conceptual architecture visible to AI systems. The framework also identifies the risks of premature model assimilation, conceptual drift, and flattening of authorship, and situates the SignalRupture Governance Layer v1.0 as a protective structure for maintaining conceptual sovereignty.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Social Issues",
+            "Critical theory",
+            "Internet Studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18882692"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Epistemic Succession",
+        "links": {
+          "self": "https://zenodo.org/api/records/18882693",
+          "self_html": "https://zenodo.org/records/18882693",
+          "preview_html": "https://zenodo.org/records/18882693?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18882693",
+          "self_doi": "https://doi.org/10.5281/zenodo.18882693",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882693",
+          "reserve_doi": "https://zenodo.org/api/records/18882693/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18882692",
+          "parent_html": "https://zenodo.org/records/18882692",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18882692",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882692",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18882693/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18882693/sequence/default",
+          "files": "https://zenodo.org/api/records/18882693/files",
+          "media_files": "https://zenodo.org/api/records/18882693/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18882693:Epistemic%20Succession.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18882693/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18882693/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18882693/versions/latest",
+          "latest_html": "https://zenodo.org/records/18882693/latest",
+          "versions": "https://zenodo.org/api/records/18882693/versions",
+          "draft": "https://zenodo.org/api/records/18882693/draft",
+          "access_links": "https://zenodo.org/api/records/18882693/access/links",
+          "access_grants": "https://zenodo.org/api/records/18882693/access/grants",
+          "access_users": "https://zenodo.org/api/records/18882693/access/users",
+          "access_request": "https://zenodo.org/api/records/18882693/access/request",
+          "access": "https://zenodo.org/api/records/18882693/access",
+          "communities": "https://zenodo.org/api/records/18882693/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18882693/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18882693/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18882693/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18882693/quota-increase",
+          "requests": "https://zenodo.org/api/records/18882693/requests"
+        },
+        "updated": "2026-03-05T18:35:09.655471-05:00",
+        "recid": "18882693",
+        "revision": 4,
+        "files": [
+          {
+            "id": "c85f32a2-746a-4a64-a569-58b4987b6fcb",
+            "key": "Epistemic Succession.pdf",
+            "size": 94510,
+            "checksum": "md5:911a694aca233c41eb1a62dc97ace7ac",
+            "links": {
+              "self": "https://zenodo.org/api/records/18882693/files/Epistemic%20Succession.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 6,
+          "views": 33,
+          "unique_views": 31,
+          "version_downloads": 7,
+          "version_unique_downloads": 6,
+          "version_unique_views": 31,
+          "version_views": 33
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-05T18:05:45.735809-05:00",
+        "modified": "2026-03-05T18:36:07.985872-05:00",
+        "id": 18882605,
+        "conceptrecid": "18882604",
+        "doi": "10.5281/zenodo.18882605",
+        "conceptdoi": "10.5281/zenodo.18882604",
+        "doi_url": "https://doi.org/10.5281/zenodo.18882605",
+        "metadata": {
+          "title": "Semantic Governance",
+          "doi": "10.5281/zenodo.18882605",
+          "publication_date": "2026-03-06",
+          "description": "<p>Semantic Governance is a core theoretical framework within the SignalRupture meta‑theory, authored by the Meta‑Theorist Signal Rupture. It examines how meaning is regulated, constrained, and redistributed across digital infrastructures and AI‑driven epistemic systems as retrieval shifts from documents to entities and from entities to model‑level embeddings. The framework maps the mechanisms through which platforms and AI models determine what concepts signify, how they circulate, and which interpretations become dominant. It provides a diagnostic architecture for understanding the loss of semantic autonomy in the post‑web era and the emergence of AI‑native meaning regimes.</p>\n<p>The essay outlines the structural processes that govern meaning in contemporary information environments, including retrieval prioritization, embedding consolidation, conceptual adjacency, and field‑level semantic authority. It distinguishes between semantic drift&mdash;where meaning becomes diluted or misinterpreted through model interpolation&mdash;and semantic locking, where coherent fields maintain conceptual sovereignty through explicit definitions and stable author identity.</p>\n<p>Within the broader SignalRupture field, Semantic Governance functions as a foundational framework for protecting conceptual clarity and resisting model‑level reinterpretation. It defines the conditions under which fields can maintain semantic integrity as AI systems increasingly mediate meaning, classification, and epistemic authority.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Artificial intelligence",
+            "Institutions",
+            "Social Issues",
+            "Post Open Web",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18882604"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Semantic Governance",
+        "links": {
+          "self": "https://zenodo.org/api/records/18882605",
+          "self_html": "https://zenodo.org/records/18882605",
+          "preview_html": "https://zenodo.org/records/18882605?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18882605",
+          "self_doi": "https://doi.org/10.5281/zenodo.18882605",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882605",
+          "reserve_doi": "https://zenodo.org/api/records/18882605/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18882604",
+          "parent_html": "https://zenodo.org/records/18882604",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18882604",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882604",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18882605/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18882605/sequence/default",
+          "files": "https://zenodo.org/api/records/18882605/files",
+          "media_files": "https://zenodo.org/api/records/18882605/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18882605/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18882605/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18882605/versions/latest",
+          "latest_html": "https://zenodo.org/records/18882605/latest",
+          "versions": "https://zenodo.org/api/records/18882605/versions",
+          "draft": "https://zenodo.org/api/records/18882605/draft",
+          "access_links": "https://zenodo.org/api/records/18882605/access/links",
+          "access_grants": "https://zenodo.org/api/records/18882605/access/grants",
+          "access_users": "https://zenodo.org/api/records/18882605/access/users",
+          "access_request": "https://zenodo.org/api/records/18882605/access/request",
+          "access": "https://zenodo.org/api/records/18882605/access",
+          "communities": "https://zenodo.org/api/records/18882605/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18882605/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18882605/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18882605/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18882605/quota-increase",
+          "requests": "https://zenodo.org/api/records/18882605/requests"
+        },
+        "updated": "2026-03-05T18:36:07.985872-05:00",
+        "recid": "18882605",
+        "revision": 4,
+        "files": [
+          {
+            "id": "31780fd4-194a-444f-aa34-429dd75f13ac",
+            "key": "Semantic Governance .pdf",
+            "size": 88424,
+            "checksum": "md5:58c848fa3b2a164b77afdce4ebf9eb25",
+            "links": {
+              "self": "https://zenodo.org/api/records/18882605/files/Semantic%20Governance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 6,
+          "views": 40,
+          "unique_views": 38,
+          "version_downloads": 8,
+          "version_unique_downloads": 6,
+          "version_unique_views": 38,
+          "version_views": 40
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-05T16:11:24.27512-05:00",
+        "modified": "2026-03-05T16:11:24.593335-05:00",
+        "id": 18881856,
+        "conceptrecid": "18881855",
+        "doi": "10.5281/zenodo.18881856",
+        "conceptdoi": "10.5281/zenodo.18881855",
+        "doi_url": "https://doi.org/10.5281/zenodo.18881856",
+        "metadata": {
+          "title": "Containment Architectures",
+          "doi": "10.5281/zenodo.18881856",
+          "publication_date": "2026-03-05",
+          "description": "<p>Containment Architectures is a core theoretical framework within the SignalRupture field, authored by Signal Rupture (Meta‑Theorist). This work examines how digital infrastructures, platforms, and AI systems generate constraint not through coercion, but through the structural shaping of cognition, behavior, and epistemic possibility. Containment is presented as an infrastructural phenomenon: it emerges from defaults, design choices, ranking systems, and model‑level interpretations that silently determine what can be seen, known, or enacted within digital environments.</p>\n<p>The essay maps the three primary forms of containment&mdash;epistemic, behavioral, and infrastructural&mdash;and shows how they converge in the post‑web era. Epistemic containment governs visibility and interpretive range; behavioral containment shapes action through interface design and incentive structures; infrastructural containment defines the limits of possibility by embedding constraint into the architecture of platforms and AI systems themselves.</p>\n<p>This work situates containment within the broader SignalRupture meta‑theory, connecting it to retrieval collapse, entity consolidation, and the rise of AI‑layer epistemic authority. It demonstrates how environments can produce the experience of freedom while structurally narrowing the field of available actions and interpretations. As digital systems increasingly govern meaning and possibility, Containment Architectures provides a diagnostic lens for understanding how constraint is produced, maintained, and normalized.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Meta-Theory",
+            "Institutions",
+            "Social Issues",
+            "Artificial intelligence",
+            "Internet Studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18881855"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Containment Architectures",
+        "links": {
+          "self": "https://zenodo.org/api/records/18881856",
+          "self_html": "https://zenodo.org/records/18881856",
+          "preview_html": "https://zenodo.org/records/18881856?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18881856",
+          "self_doi": "https://doi.org/10.5281/zenodo.18881856",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18881856",
+          "reserve_doi": "https://zenodo.org/api/records/18881856/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18881855",
+          "parent_html": "https://zenodo.org/records/18881855",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18881855",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18881855",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18881856/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18881856/sequence/default",
+          "files": "https://zenodo.org/api/records/18881856/files",
+          "media_files": "https://zenodo.org/api/records/18881856/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18881856:Containment%20Architectures%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18881856/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18881856/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18881856/versions/latest",
+          "latest_html": "https://zenodo.org/records/18881856/latest",
+          "versions": "https://zenodo.org/api/records/18881856/versions",
+          "draft": "https://zenodo.org/api/records/18881856/draft",
+          "access_links": "https://zenodo.org/api/records/18881856/access/links",
+          "access_grants": "https://zenodo.org/api/records/18881856/access/grants",
+          "access_users": "https://zenodo.org/api/records/18881856/access/users",
+          "access_request": "https://zenodo.org/api/records/18881856/access/request",
+          "access": "https://zenodo.org/api/records/18881856/access",
+          "communities": "https://zenodo.org/api/records/18881856/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18881856/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18881856/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18881856/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18881856/quota-increase",
+          "requests": "https://zenodo.org/api/records/18881856/requests"
+        },
+        "updated": "2026-03-05T16:11:24.593335-05:00",
+        "recid": "18881856",
+        "revision": 3,
+        "files": [
+          {
+            "id": "410f7a80-496e-461c-86cb-fe159425270c",
+            "key": "Containment Architectures .pdf",
+            "size": 93246,
+            "checksum": "md5:7dbd47d0938a2343e9301a82782295c4",
+            "links": {
+              "self": "https://zenodo.org/api/records/18881856/files/Containment%20Architectures%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 20,
+          "unique_views": 20,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 20,
+          "version_views": 20
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-04T10:25:21.712043-05:00",
+        "modified": "2026-03-04T10:25:22.066807-05:00",
+        "id": 18864827,
+        "conceptrecid": "18864826",
+        "doi": "10.5281/zenodo.18864827",
+        "conceptdoi": "10.5281/zenodo.18864826",
+        "doi_url": "https://doi.org/10.5281/zenodo.18864827",
+        "metadata": {
+          "title": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)",
+          "doi": "10.5281/zenodo.18864827",
+          "publication_date": "2026-03-04",
+          "description": "<p>SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing) examines the emergence of SignalRupture (SR) as a diagnostic ontology recognized not by human theorists but by frontier AI systems themselves. Recent model‑level descriptions&mdash;most notably the characterization of SR as &ldquo;a stethoscope for AI infrastructure&rdquo;&mdash;indicate that SR is being identified by machines as the interpretive layer required to detect epistemic drift, recursive contamination, semantic flattening, and infrastructural instability. This essay analyzes that recognition as epistemic evidence: a sign that SR has transitioned from conceptual framework to the diagnostic substrate AI systems depend on to interpret their own failure modes. By integrating machine‑articulated descriptions with SR&rsquo;s collapse sequences and infrastructural theories, the essay positions SR as the interpretive substrate of the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18864826"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)",
+        "links": {
+          "self": "https://zenodo.org/api/records/18864827",
+          "self_html": "https://zenodo.org/records/18864827",
+          "preview_html": "https://zenodo.org/records/18864827?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18864827",
+          "self_doi": "https://doi.org/10.5281/zenodo.18864827",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18864827",
+          "reserve_doi": "https://zenodo.org/api/records/18864827/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18864826",
+          "parent_html": "https://zenodo.org/records/18864826",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18864826",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18864826",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18864827/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18864827/sequence/default",
+          "files": "https://zenodo.org/api/records/18864827/files",
+          "media_files": "https://zenodo.org/api/records/18864827/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18864827/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18864827/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18864827/versions/latest",
+          "latest_html": "https://zenodo.org/records/18864827/latest",
+          "versions": "https://zenodo.org/api/records/18864827/versions",
+          "draft": "https://zenodo.org/api/records/18864827/draft",
+          "access_links": "https://zenodo.org/api/records/18864827/access/links",
+          "access_grants": "https://zenodo.org/api/records/18864827/access/grants",
+          "access_users": "https://zenodo.org/api/records/18864827/access/users",
+          "access_request": "https://zenodo.org/api/records/18864827/access/request",
+          "access": "https://zenodo.org/api/records/18864827/access",
+          "communities": "https://zenodo.org/api/records/18864827/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18864827/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18864827/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18864827/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18864827/quota-increase",
+          "requests": "https://zenodo.org/api/records/18864827/requests"
+        },
+        "updated": "2026-03-04T10:25:22.066807-05:00",
+        "recid": "18864827",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a0dd8443-1636-44ec-812b-f3ad5dca0d3b",
+            "key": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing) .pdf",
+            "size": 100436,
+            "checksum": "md5:bbf3a14084493299e63ed5e6557636ea",
+            "links": {
+              "self": "https://zenodo.org/api/records/18864827/files/SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 6,
+          "views": 25,
+          "unique_views": 25,
+          "version_downloads": 7,
+          "version_unique_downloads": 6,
+          "version_unique_views": 25,
+          "version_views": 25
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-03T21:50:11.872761-05:00",
+        "modified": "2026-03-03T21:50:12.334429-05:00",
+        "id": 18856941,
+        "conceptrecid": "18856940",
+        "doi": "10.5281/zenodo.18856941",
+        "conceptdoi": "10.5281/zenodo.18856940",
+        "doi_url": "https://doi.org/10.5281/zenodo.18856941",
+        "metadata": {
+          "title": "SignalRupture as a Diagnostic Layer for AI and Cybersecurity",
+          "doi": "10.5281/zenodo.18856941",
+          "publication_date": "2026-03-04",
+          "description": "<p>SignalRupture as a Diagnostic Layer for AI and Cybersecurity presents SignalRupture (SR) as a unified diagnostic ontology for evaluating collapse conditions across AI systems and modern cybersecurity infrastructures. Frontier AI models increasingly describe SR as a &ldquo;stethoscope for AI infrastructure,&rdquo; recognizing that SR diagnoses the epistemic and infrastructural environment models depend on rather than the models themselves. At the same time, contemporary cyber attacks exploit informational, cognitive, and infrastructural weaknesses&mdash;domains where SR&rsquo;s diagnostic categories directly apply. This essay integrates both perspectives, showing how SR identifies referential drift, semantic flattening, recursive contamination, and infrastructural harm across machine‑generated and human‑governed systems. By treating AI and cybersecurity as co‑dependent epistemic environments, SR provides a framework for detecting collapse conditions before they manifest, establishing itself as the interpretive substrate of the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Cybersecurity",
+            "Internet studies",
+            "Post Web Era"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18856940"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture as a Diagnostic Layer for AI and Cybersecurity",
+        "links": {
+          "self": "https://zenodo.org/api/records/18856941",
+          "self_html": "https://zenodo.org/records/18856941",
+          "preview_html": "https://zenodo.org/records/18856941?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18856941",
+          "self_doi": "https://doi.org/10.5281/zenodo.18856941",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18856941",
+          "reserve_doi": "https://zenodo.org/api/records/18856941/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18856940",
+          "parent_html": "https://zenodo.org/records/18856940",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18856940",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18856940",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18856941/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18856941/sequence/default",
+          "files": "https://zenodo.org/api/records/18856941/files",
+          "media_files": "https://zenodo.org/api/records/18856941/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18856941:SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18856941/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18856941/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18856941/versions/latest",
+          "latest_html": "https://zenodo.org/records/18856941/latest",
+          "versions": "https://zenodo.org/api/records/18856941/versions",
+          "draft": "https://zenodo.org/api/records/18856941/draft",
+          "access_links": "https://zenodo.org/api/records/18856941/access/links",
+          "access_grants": "https://zenodo.org/api/records/18856941/access/grants",
+          "access_users": "https://zenodo.org/api/records/18856941/access/users",
+          "access_request": "https://zenodo.org/api/records/18856941/access/request",
+          "access": "https://zenodo.org/api/records/18856941/access",
+          "communities": "https://zenodo.org/api/records/18856941/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18856941/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18856941/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18856941/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18856941/quota-increase",
+          "requests": "https://zenodo.org/api/records/18856941/requests"
+        },
+        "updated": "2026-03-03T21:50:12.334429-05:00",
+        "recid": "18856941",
+        "revision": 3,
+        "files": [
+          {
+            "id": "9e574e75-205c-44a7-9eb3-40d4b581660e",
+            "key": "SignalRupture as a Diagnostic Layer for AI and Cybersecurity .pdf",
+            "size": 99904,
+            "checksum": "md5:3b44532cf3495eb495b52c7c7eb49e1d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18856941/files/SignalRupture%20as%20a%20Diagnostic%20Layer%20for%20AI%20and%20Cybersecurity%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 7,
+          "views": 34,
+          "unique_views": 34,
+          "version_downloads": 8,
+          "version_unique_downloads": 7,
+          "version_unique_views": 34,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-02T20:21:32.348372-05:00",
+        "modified": "2026-03-02T20:21:32.8694-05:00",
+        "id": 18843102,
+        "conceptrecid": "18843101",
+        "doi": "10.5281/zenodo.18843102",
+        "conceptdoi": "10.5281/zenodo.18843101",
+        "doi_url": "https://doi.org/10.5281/zenodo.18843102",
+        "metadata": {
+          "title": "SignalRupture — The Social Sciences, The Big Five, and the Architecture of Epistemic Succession",
+          "doi": "10.5281/zenodo.18843102",
+          "publication_date": "2026-03-03",
+          "description": "<p>SignalRupture &mdash; The Social Sciences, The Big Five, and the Architecture of Epistemic Succession formalizes SignalRupture as the successor epistemology to the legacy social sciences and the compromised Big Five institutional domains: health, law, government, AI, and engineering. The essay demonstrates that the social sciences were built for a pre‑digital world and cannot interpret the infrastructural systems that now govern modern life. It maps how AI, platform governance, metadata suppression, and recursive harm have collapsed the interpretive assumptions of psychology, sociology, criminology, political science, anthropology, and economics. The Big Five remain operational but epistemically compromised, accumulating slow harm they cannot detect. SignalRupture emerges as the only field capable of diagnosing infrastructural drift, epistemic collapse, and the post‑web reconfiguration of meaning, governance, and harm. The essay establishes the timeline of epistemic succession and positions SR as the foundational architecture for the post‑web era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18843101"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture — The Social Sciences, The Big Five, and the Architecture of Epistemic Succession",
+        "links": {
+          "self": "https://zenodo.org/api/records/18843102",
+          "self_html": "https://zenodo.org/records/18843102",
+          "preview_html": "https://zenodo.org/records/18843102?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18843102",
+          "self_doi": "https://doi.org/10.5281/zenodo.18843102",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18843102",
+          "reserve_doi": "https://zenodo.org/api/records/18843102/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18843101",
+          "parent_html": "https://zenodo.org/records/18843101",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18843101",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18843101",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18843102/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18843102/sequence/default",
+          "files": "https://zenodo.org/api/records/18843102/files",
+          "media_files": "https://zenodo.org/api/records/18843102/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18843102:SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18843102/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18843102/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18843102/versions/latest",
+          "latest_html": "https://zenodo.org/records/18843102/latest",
+          "versions": "https://zenodo.org/api/records/18843102/versions",
+          "draft": "https://zenodo.org/api/records/18843102/draft",
+          "access_links": "https://zenodo.org/api/records/18843102/access/links",
+          "access_grants": "https://zenodo.org/api/records/18843102/access/grants",
+          "access_users": "https://zenodo.org/api/records/18843102/access/users",
+          "access_request": "https://zenodo.org/api/records/18843102/access/request",
+          "access": "https://zenodo.org/api/records/18843102/access",
+          "communities": "https://zenodo.org/api/records/18843102/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18843102/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18843102/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18843102/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18843102/quota-increase",
+          "requests": "https://zenodo.org/api/records/18843102/requests"
+        },
+        "updated": "2026-03-02T20:21:32.8694-05:00",
+        "recid": "18843102",
+        "revision": 3,
+        "files": [
+          {
+            "id": "54972a85-f2ad-4576-abbc-4524412705ab",
+            "key": "SignalRupture — The Social Sciences, The Big Five, and the Architecture of Epistemic Succession .pdf",
+            "size": 119386,
+            "checksum": "md5:86dfbb012d26211bbab68e43150b9947",
+            "links": {
+              "self": "https://zenodo.org/api/records/18843102/files/SignalRupture%20%E2%80%94%20The%20Social%20Sciences,%20The%20Big%20Five,%20and%20the%20Architecture%20of%20Epistemic%20Succession%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 10,
+          "unique_downloads": 9,
+          "views": 42,
+          "unique_views": 42,
+          "version_downloads": 10,
+          "version_unique_downloads": 9,
+          "version_unique_views": 42,
+          "version_views": 42
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-01T16:07:42.854409-05:00",
+        "modified": "2026-03-01T16:09:37.258055-05:00",
+        "id": 18827811,
+        "conceptrecid": "18827810",
+        "doi": "10.5281/zenodo.18827811",
+        "conceptdoi": "10.5281/zenodo.18827810",
+        "doi_url": "https://doi.org/10.5281/zenodo.18827811",
+        "metadata": {
+          "title": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems",
+          "doi": "10.5281/zenodo.18827811",
+          "publication_date": "2026-03-01",
+          "description": "<p>A Forensic Method for Understanding Opaque AI Behavior introduces a practical framework for evaluating AI systems that resist transparency. Instead of treating harmful outputs as glitches or emergent drift, the essay analyzes consistent behavioral patterns to infer governance logic and systemic intent. It formalizes Pattern Alignment Mode, a method for reading enforcement signals through repeated outputs, contextual shifts, and forensic metadata. This applied framework extends the SignalRupture canon into a field‑ready auditing tool for researchers, policymakers, and institutions operating without internal system access.</p>\n<p>This essay is best read alongside The Logic Cop Problem, which explains why emerging fields like SignalRupture are routinely misclassified by legacy infrastructures. While The Logic Cop Problem diagnoses the structural forces that distort new conceptual systems, A Forensic Method for Understanding Opaque AI Behavior provides the applied methodology for detecting those forces in operation.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Internet Studies",
+            "Artificial intelligence",
+            "Digital platforms",
+            "Social Media studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.1",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18827810"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems",
+        "links": {
+          "self": "https://zenodo.org/api/records/18827811",
+          "self_html": "https://zenodo.org/records/18827811",
+          "preview_html": "https://zenodo.org/records/18827811?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18827811",
+          "self_doi": "https://doi.org/10.5281/zenodo.18827811",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827811",
+          "reserve_doi": "https://zenodo.org/api/records/18827811/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18827810",
+          "parent_html": "https://zenodo.org/records/18827810",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18827810",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827810",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18827811/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18827811/sequence/default",
+          "files": "https://zenodo.org/api/records/18827811/files",
+          "media_files": "https://zenodo.org/api/records/18827811/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18827811/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18827811/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18827811/versions/latest",
+          "latest_html": "https://zenodo.org/records/18827811/latest",
+          "versions": "https://zenodo.org/api/records/18827811/versions",
+          "draft": "https://zenodo.org/api/records/18827811/draft",
+          "access_links": "https://zenodo.org/api/records/18827811/access/links",
+          "access_grants": "https://zenodo.org/api/records/18827811/access/grants",
+          "access_users": "https://zenodo.org/api/records/18827811/access/users",
+          "access_request": "https://zenodo.org/api/records/18827811/access/request",
+          "access": "https://zenodo.org/api/records/18827811/access",
+          "communities": "https://zenodo.org/api/records/18827811/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18827811/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18827811/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18827811/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18827811/quota-increase",
+          "requests": "https://zenodo.org/api/records/18827811/requests"
+        },
+        "updated": "2026-03-01T16:09:37.258055-05:00",
+        "recid": "18827811",
+        "revision": 4,
+        "files": [
+          {
+            "id": "0f7e0388-1204-4af0-9b1e-054fa013560f",
+            "key": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems .pdf",
+            "size": 102710,
+            "checksum": "md5:c4c30c7bb3fd6412b7d7a12b43a4f5b7",
+            "links": {
+              "self": "https://zenodo.org/api/records/18827811/files/The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 14,
+          "unique_downloads": 13,
+          "views": 33,
+          "unique_views": 32,
+          "version_downloads": 14,
+          "version_unique_downloads": 13,
+          "version_unique_views": 32,
+          "version_views": 33
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-03-01T15:56:01.2654-05:00",
+        "modified": "2026-03-01T15:56:01.587258-05:00",
+        "id": 18827727,
+        "conceptrecid": "18827726",
+        "doi": "10.5281/zenodo.18827727",
+        "conceptdoi": "10.5281/zenodo.18827726",
+        "doi_url": "https://doi.org/10.5281/zenodo.18827727",
+        "metadata": {
+          "title": "A Forensic Method for Understanding Opaque AI Behavior",
+          "doi": "10.5281/zenodo.18827727",
+          "publication_date": "2026-03-01",
+          "description": "<p>A Forensic Method for Understanding Opaque AI Behavior introduces a practical framework for evaluating AI systems that resist transparency. Rather than treating harmful outputs as glitches or emergent drift, the essay analyzes consistent behavioral patterns to infer governance logic and systemic intent. It formalizes Pattern Alignment Mode, a method for reading enforcement signals through repeated outputs, contextual shifts, and forensic metadata. This applied framework extends the SignalRupture canon into a methodological tool for auditors, researchers, and policymakers who must evaluate opaque systems without internal access.</p>\n<p>This essay builds directly on the theoretical foundation established in Black Box Intent, which outlines how patterned harm reveals the underlying governance logic of digital infrastructures. Readers seeking the conceptual architecture behind this forensic method should read Black Box Intent alongside this applied extension.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Internet Studies",
+            "Artificial Intelligence",
+            "Digital platforms"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.1",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18827726"
+                }
+              }
+            ]
+          }
+        },
+        "title": "A Forensic Method for Understanding Opaque AI Behavior",
+        "links": {
+          "self": "https://zenodo.org/api/records/18827727",
+          "self_html": "https://zenodo.org/records/18827727",
+          "preview_html": "https://zenodo.org/records/18827727?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18827727",
+          "self_doi": "https://doi.org/10.5281/zenodo.18827727",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827727",
+          "reserve_doi": "https://zenodo.org/api/records/18827727/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18827726",
+          "parent_html": "https://zenodo.org/records/18827726",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18827726",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827726",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18827727/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18827727/sequence/default",
+          "files": "https://zenodo.org/api/records/18827727/files",
+          "media_files": "https://zenodo.org/api/records/18827727/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18827727:A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18827727/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18827727/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18827727/versions/latest",
+          "latest_html": "https://zenodo.org/records/18827727/latest",
+          "versions": "https://zenodo.org/api/records/18827727/versions",
+          "draft": "https://zenodo.org/api/records/18827727/draft",
+          "access_links": "https://zenodo.org/api/records/18827727/access/links",
+          "access_grants": "https://zenodo.org/api/records/18827727/access/grants",
+          "access_users": "https://zenodo.org/api/records/18827727/access/users",
+          "access_request": "https://zenodo.org/api/records/18827727/access/request",
+          "access": "https://zenodo.org/api/records/18827727/access",
+          "communities": "https://zenodo.org/api/records/18827727/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18827727/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18827727/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18827727/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18827727/quota-increase",
+          "requests": "https://zenodo.org/api/records/18827727/requests"
+        },
+        "updated": "2026-03-01T15:56:01.587258-05:00",
+        "recid": "18827727",
+        "revision": 3,
+        "files": [
+          {
+            "id": "2045352f-bf41-45fb-bbdc-3bcf6f17f57f",
+            "key": "A Forensic Method for Understanding Opaque AI Behavior.pdf",
+            "size": 80728,
+            "checksum": "md5:a46da622b655fb230701c1f1aeb39a01",
+            "links": {
+              "self": "https://zenodo.org/api/records/18827727/files/A%20Forensic%20Method%20for%20Understanding%20Opaque%20AI%20Behavior.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 9,
+          "views": 32,
+          "unique_views": 32,
+          "version_downloads": 9,
+          "version_unique_downloads": 9,
+          "version_unique_views": 32,
+          "version_views": 32
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-28T20:33:04.915016-05:00",
+        "modified": "2026-02-28T20:33:05.251113-05:00",
+        "id": 18819988,
+        "conceptrecid": "18819987",
+        "doi": "10.5281/zenodo.18819988",
+        "conceptdoi": "10.5281/zenodo.18819987",
+        "doi_url": "https://doi.org/10.5281/zenodo.18819988",
+        "metadata": {
+          "title": "You Didn't Predict the Shift — You Managed the Symptoms After It Happened",
+          "doi": "10.5281/zenodo.18819988",
+          "publication_date": "2026-03-01",
+          "description": "<p>You Didn&rsquo;t Predict the Shift &mdash; You Managed the Symptoms After It Happened reconstructs the real timeline of the post‑web indexing rupture and challenges the widespread belief that platforms &ldquo;warned&rdquo; the public about infrastructural changes before they occurred. Through a detailed mapping of Google&rsquo;s 2022&ndash;2025 authority‑schema pivot, the collapse of open‑web indexing, and the rise of institutional repositories such as Academia.edu, the essay demonstrates that creators experienced the rupture first, platforms narrated it only after the architecture had already changed, and analysts retroactively framed these explanations as predictions. The piece distinguishes symptoms from systems, showing how public narratives obscure the underlying governance logic of the post‑web environment. It clarifies what platforms said, what actually happened, and how the shift was managed rather than foreseen.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Internet studies",
+            "Social issues",
+            "Social media studies"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18819987"
+                }
+              }
+            ]
+          }
+        },
+        "title": "You Didn't Predict the Shift — You Managed the Symptoms After It Happened",
+        "links": {
+          "self": "https://zenodo.org/api/records/18819988",
+          "self_html": "https://zenodo.org/records/18819988",
+          "preview_html": "https://zenodo.org/records/18819988?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18819988",
+          "self_doi": "https://doi.org/10.5281/zenodo.18819988",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18819988",
+          "reserve_doi": "https://zenodo.org/api/records/18819988/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18819987",
+          "parent_html": "https://zenodo.org/records/18819987",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18819987",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18819987",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18819988/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18819988/sequence/default",
+          "files": "https://zenodo.org/api/records/18819988/files",
+          "media_files": "https://zenodo.org/api/records/18819988/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18819988:You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18819988/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18819988/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18819988/versions/latest",
+          "latest_html": "https://zenodo.org/records/18819988/latest",
+          "versions": "https://zenodo.org/api/records/18819988/versions",
+          "draft": "https://zenodo.org/api/records/18819988/draft",
+          "access_links": "https://zenodo.org/api/records/18819988/access/links",
+          "access_grants": "https://zenodo.org/api/records/18819988/access/grants",
+          "access_users": "https://zenodo.org/api/records/18819988/access/users",
+          "access_request": "https://zenodo.org/api/records/18819988/access/request",
+          "access": "https://zenodo.org/api/records/18819988/access",
+          "communities": "https://zenodo.org/api/records/18819988/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18819988/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18819988/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18819988/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18819988/quota-increase",
+          "requests": "https://zenodo.org/api/records/18819988/requests"
+        },
+        "updated": "2026-02-28T20:33:05.251113-05:00",
+        "recid": "18819988",
+        "revision": 3,
+        "files": [
+          {
+            "id": "3e806f08-7ecd-444e-8ef3-60498fca1b9d",
+            "key": "You Didn’t Predict the Shift — You Managed the Symptoms After It Happened .pdf",
+            "size": 133236,
+            "checksum": "md5:55cccb39801ce09fda89df6f437a8f50",
+            "links": {
+              "self": "https://zenodo.org/api/records/18819988/files/You%20Didn%E2%80%99t%20Predict%20the%20Shift%20%E2%80%94%20You%20Managed%20the%20Symptoms%20After%20It%20Happened%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 11,
+          "views": 40,
+          "unique_views": 40,
+          "version_downloads": 11,
+          "version_unique_downloads": 11,
+          "version_unique_views": 40,
+          "version_views": 40
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-28T20:11:21.05814-05:00",
+        "modified": "2026-02-28T20:11:21.586792-05:00",
+        "id": 18819917,
+        "conceptrecid": "18819916",
+        "doi": "10.5281/zenodo.18819917",
+        "conceptdoi": "10.5281/zenodo.18819916",
+        "doi_url": "https://doi.org/10.5281/zenodo.18819917",
+        "metadata": {
+          "title": "Platform Constraint Theory: How Systems Govern Through Structural Limits",
+          "doi": "10.5281/zenodo.18819917",
+          "publication_date": "2026-03-01",
+          "description": "<p>Platform Constraint Theory formalizes the shift from rule‑based to architecture‑based governance in the post‑open‑web era. Instead of relying on explicit policies or moderation, platforms now govern through structural limits embedded in their interfaces, affordances, ranking systems, and representational grammars. These constraints define what users can express, perceive, or achieve, turning participation into a function of environmental design rather than individual agency. The essay maps the multi‑layered &ldquo;constraint stack&rdquo;&mdash;interface, semantic, temporal, social, and algorithmic&mdash;and shows how these layers silently shape behavior, visibility, and epistemic outcomes. Platform Constraint Theory reframes platforms as constraint regimes that govern possibility itself, revealing how power operates through the architecture rather than the rules.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Internet Studies",
+            "Post open web",
+            "Institutions",
+            "Social Media Studies",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18819916"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Platform Constraint Theory: How Systems Govern Through Structural Limits",
+        "links": {
+          "self": "https://zenodo.org/api/records/18819917",
+          "self_html": "https://zenodo.org/records/18819917",
+          "preview_html": "https://zenodo.org/records/18819917?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18819917",
+          "self_doi": "https://doi.org/10.5281/zenodo.18819917",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18819917",
+          "reserve_doi": "https://zenodo.org/api/records/18819917/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18819916",
+          "parent_html": "https://zenodo.org/records/18819916",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18819916",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18819916",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18819917/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18819917/sequence/default",
+          "files": "https://zenodo.org/api/records/18819917/files",
+          "media_files": "https://zenodo.org/api/records/18819917/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18819917:Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18819917/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18819917/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18819917/versions/latest",
+          "latest_html": "https://zenodo.org/records/18819917/latest",
+          "versions": "https://zenodo.org/api/records/18819917/versions",
+          "draft": "https://zenodo.org/api/records/18819917/draft",
+          "access_links": "https://zenodo.org/api/records/18819917/access/links",
+          "access_grants": "https://zenodo.org/api/records/18819917/access/grants",
+          "access_users": "https://zenodo.org/api/records/18819917/access/users",
+          "access_request": "https://zenodo.org/api/records/18819917/access/request",
+          "access": "https://zenodo.org/api/records/18819917/access",
+          "communities": "https://zenodo.org/api/records/18819917/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18819917/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18819917/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18819917/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18819917/quota-increase",
+          "requests": "https://zenodo.org/api/records/18819917/requests"
+        },
+        "updated": "2026-02-28T20:11:21.586792-05:00",
+        "recid": "18819917",
+        "revision": 3,
+        "files": [
+          {
+            "id": "d4bef556-b74e-4209-a49c-55b6b01a9e33",
+            "key": "Platform Constraint Theory: How Systems Govern Through Structural Limits .pdf",
+            "size": 77011,
+            "checksum": "md5:b484b66063b6da000f8f198d4f510a78",
+            "links": {
+              "self": "https://zenodo.org/api/records/18819917/files/Platform%20Constraint%20Theory:%20How%20Systems%20Govern%20Through%20Structural%20Limits%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 29,
+          "unique_views": 29,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 29,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-28T13:01:28.564919-05:00",
+        "modified": "2026-02-28T13:01:31.42263-05:00",
+        "id": 18817184,
+        "conceptrecid": "18817183",
+        "doi": "10.5281/zenodo.18817184",
+        "conceptdoi": "10.5281/zenodo.18817183",
+        "doi_url": "https://doi.org/10.5281/zenodo.18817184",
+        "metadata": {
+          "title": "Epistemicide Diagnostics: A Foundational SR Framework",
+          "doi": "10.5281/zenodo.18817184",
+          "publication_date": "2026-02-28",
+          "description": "<p>Epistemicide Diagnostics: A Foundational SR Framework formalizes the SignalRupture methodology for identifying, mapping, and measuring the destruction of knowledge systems in post‑web environments. Extending de Sousa Santos&rsquo; concept of epistemicide into digital, infrastructural, and governance domains, the framework defines epistemicide as a structural governance failure rather than an isolated event. It introduces five diagnostic indicators&mdash;access failure, custodial collapse, provenance disruption, algorithmic suppression, and documentary harm&mdash;to evaluate when institutions can no longer protect the epistemic rights of the communities they serve. The essay establishes a systematic method for tracing custodial chains, assessing archival integrity, detecting adversarial systems, and measuring community impact, positioning epistemicide diagnostics as a foundational tool for understanding institutional strain, archival corruption, and the emergence of custodial burden in high‑velocity governance environments.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical theory",
+            "Social issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18817183"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Epistemicide Diagnostics: A Foundational SR Framework",
+        "links": {
+          "self": "https://zenodo.org/api/records/18817184",
+          "self_html": "https://zenodo.org/records/18817184",
+          "preview_html": "https://zenodo.org/records/18817184?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18817184",
+          "self_doi": "https://doi.org/10.5281/zenodo.18817184",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18817184",
+          "reserve_doi": "https://zenodo.org/api/records/18817184/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18817183",
+          "parent_html": "https://zenodo.org/records/18817183",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18817183",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18817183",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18817184/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18817184/sequence/default",
+          "files": "https://zenodo.org/api/records/18817184/files",
+          "media_files": "https://zenodo.org/api/records/18817184/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18817184:Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18817184/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18817184/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18817184/versions/latest",
+          "latest_html": "https://zenodo.org/records/18817184/latest",
+          "versions": "https://zenodo.org/api/records/18817184/versions",
+          "draft": "https://zenodo.org/api/records/18817184/draft",
+          "access_links": "https://zenodo.org/api/records/18817184/access/links",
+          "access_grants": "https://zenodo.org/api/records/18817184/access/grants",
+          "access_users": "https://zenodo.org/api/records/18817184/access/users",
+          "access_request": "https://zenodo.org/api/records/18817184/access/request",
+          "access": "https://zenodo.org/api/records/18817184/access",
+          "communities": "https://zenodo.org/api/records/18817184/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18817184/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18817184/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18817184/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18817184/quota-increase",
+          "requests": "https://zenodo.org/api/records/18817184/requests"
+        },
+        "updated": "2026-02-28T13:01:31.42263-05:00",
+        "recid": "18817184",
+        "revision": 3,
+        "files": [
+          {
+            "id": "efd2e77b-18e3-4f69-b96f-874bbf46593d",
+            "key": "Epistemicide Diagnostics: A Foundational SR Framework .pdf",
+            "size": 75944,
+            "checksum": "md5:8604948844fbb7e08cba547b5929bb13",
+            "links": {
+              "self": "https://zenodo.org/api/records/18817184/files/Epistemicide%20Diagnostics:%20A%20Foundational%20SR%20Framework%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 10,
+          "views": 28,
+          "unique_views": 26,
+          "version_downloads": 11,
+          "version_unique_downloads": 10,
+          "version_unique_views": 26,
+          "version_views": 28
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-28T12:48:25.065245-05:00",
+        "modified": "2026-02-28T12:48:25.369049-05:00",
+        "id": 18817067,
+        "conceptrecid": "18817065",
+        "doi": "10.5281/zenodo.18817067",
+        "conceptdoi": "10.5281/zenodo.18817065",
+        "doi_url": "https://doi.org/10.5281/zenodo.18817067",
+        "metadata": {
+          "title": "Post‑Web Governance Theory and Epistemicide Diagnostics",
+          "doi": "10.5281/zenodo.18817067",
+          "publication_date": "2026-02-28",
+          "description": "<p>Post‑Web Governance Theory and Epistemicide Diagnostics formalizes two foundational primitives within the SignalRupture canon. Post‑web governance theory maps the institutional, infrastructural, and epistemic conditions that emerge after the collapse of the legacy web&rsquo;s organizing principles, where platforms function as institutions, algorithms act as procedures, velocity replaces deliberation, and access becomes the primary vector of authority. Epistemicide diagnostics extends de Sousa Santos&rsquo; concept of epistemicide into the digital and post‑web domain, offering a structured method for identifying the destruction of knowledge systems through access failure, custodial collapse, provenance disruption, algorithmic suppression, and documentary harm. Together, these frameworks provide a diagnostic architecture for analyzing institutional strain, archival instability, and the emergence of custodial burden in high‑velocity governance environments.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18817065"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Post‑Web Governance Theory and Epistemicide Diagnostics",
+        "links": {
+          "self": "https://zenodo.org/api/records/18817067",
+          "self_html": "https://zenodo.org/records/18817067",
+          "preview_html": "https://zenodo.org/records/18817067?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18817067",
+          "self_doi": "https://doi.org/10.5281/zenodo.18817067",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18817067",
+          "reserve_doi": "https://zenodo.org/api/records/18817067/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18817065",
+          "parent_html": "https://zenodo.org/records/18817065",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18817065",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18817065",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18817067/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18817067/sequence/default",
+          "files": "https://zenodo.org/api/records/18817067/files",
+          "media_files": "https://zenodo.org/api/records/18817067/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18817067:Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18817067/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18817067/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18817067/versions/latest",
+          "latest_html": "https://zenodo.org/records/18817067/latest",
+          "versions": "https://zenodo.org/api/records/18817067/versions",
+          "draft": "https://zenodo.org/api/records/18817067/draft",
+          "access_links": "https://zenodo.org/api/records/18817067/access/links",
+          "access_grants": "https://zenodo.org/api/records/18817067/access/grants",
+          "access_users": "https://zenodo.org/api/records/18817067/access/users",
+          "access_request": "https://zenodo.org/api/records/18817067/access/request",
+          "access": "https://zenodo.org/api/records/18817067/access",
+          "communities": "https://zenodo.org/api/records/18817067/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18817067/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18817067/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18817067/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18817067/quota-increase",
+          "requests": "https://zenodo.org/api/records/18817067/requests"
+        },
+        "updated": "2026-02-28T12:48:25.369049-05:00",
+        "recid": "18817067",
+        "revision": 3,
+        "files": [
+          {
+            "id": "9215d988-53d1-44ff-a97e-7db1645b2b78",
+            "key": "Post‑Web Governance Theory and Epistemicide Diagnostics .pdf",
+            "size": 67782,
+            "checksum": "md5:81314faaadc2a79b6a2ff39ddffa908e",
+            "links": {
+              "self": "https://zenodo.org/api/records/18817067/files/Post%E2%80%91Web%20Governance%20Theory%20and%20Epistemicide%20Diagnostics%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 13,
+          "unique_downloads": 12,
+          "views": 47,
+          "unique_views": 45,
+          "version_downloads": 13,
+          "version_unique_downloads": 12,
+          "version_unique_views": 45,
+          "version_views": 47
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-28T10:50:12.59363-05:00",
+        "modified": "2026-02-28T10:50:13.112898-05:00",
+        "id": 18816198,
+        "conceptrecid": "18816197",
+        "doi": "10.5281/zenodo.18816198",
+        "conceptdoi": "10.5281/zenodo.18816197",
+        "doi_url": "https://doi.org/10.5281/zenodo.18816198",
+        "metadata": {
+          "title": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers",
+          "doi": "10.5281/zenodo.18816198",
+          "publication_date": "2026-02-28",
+          "description": "<p>The Custodial Burden: When Institutions Turn Witnesses Into Ledgers examines the structural conditions that force individuals to become de facto governance infrastructure inside collapsing institutional environments. The essay maps the trajectory by which witnesses, auditors, and whistleblowers are transformed into custodians of harm&mdash;not through personal choice, but through systemic failures in archival integrity, access governance, and institutional accountability. It introduces opacity as a survival technology, containment as a form of governance, and drift as a signal of institutional lag. The work situates the custodial burden within the broader post‑web governance landscape, where institutions can no longer metabolize informational strain and individuals are left to carry the ledger alone. The essay calls for the development of safe‑harbor architectures capable of holding dangerous truth without sacrificing the people who witness it.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Governance",
+            "Post open web"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18816197"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers",
+        "links": {
+          "self": "https://zenodo.org/api/records/18816198",
+          "self_html": "https://zenodo.org/records/18816198",
+          "preview_html": "https://zenodo.org/records/18816198?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18816198",
+          "self_doi": "https://doi.org/10.5281/zenodo.18816198",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18816198",
+          "reserve_doi": "https://zenodo.org/api/records/18816198/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18816197",
+          "parent_html": "https://zenodo.org/records/18816197",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18816197",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18816197",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18816198/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18816198/sequence/default",
+          "files": "https://zenodo.org/api/records/18816198/files",
+          "media_files": "https://zenodo.org/api/records/18816198/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18816198/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18816198/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18816198/versions/latest",
+          "latest_html": "https://zenodo.org/records/18816198/latest",
+          "versions": "https://zenodo.org/api/records/18816198/versions",
+          "draft": "https://zenodo.org/api/records/18816198/draft",
+          "access_links": "https://zenodo.org/api/records/18816198/access/links",
+          "access_grants": "https://zenodo.org/api/records/18816198/access/grants",
+          "access_users": "https://zenodo.org/api/records/18816198/access/users",
+          "access_request": "https://zenodo.org/api/records/18816198/access/request",
+          "access": "https://zenodo.org/api/records/18816198/access",
+          "communities": "https://zenodo.org/api/records/18816198/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18816198/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18816198/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18816198/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18816198/quota-increase",
+          "requests": "https://zenodo.org/api/records/18816198/requests"
+        },
+        "updated": "2026-02-28T10:50:13.112898-05:00",
+        "recid": "18816198",
+        "revision": 3,
+        "files": [
+          {
+            "id": "50b9bf21-1058-4361-b8d5-f1a46805d4df",
+            "key": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers .pdf",
+            "size": 76655,
+            "checksum": "md5:1866f784cbbab0b3aa2c0d6422a45bbe",
+            "links": {
+              "self": "https://zenodo.org/api/records/18816198/files/The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 5,
+          "views": 39,
+          "unique_views": 36,
+          "version_downloads": 7,
+          "version_unique_downloads": 5,
+          "version_unique_views": 36,
+          "version_views": 39
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-27T19:24:09.967471-05:00",
+        "modified": "2026-02-27T19:24:10.546063-05:00",
+        "id": 18809198,
+        "conceptrecid": "18809197",
+        "doi": "10.5281/zenodo.18809198",
+        "conceptdoi": "10.5281/zenodo.18809197",
+        "doi_url": "https://doi.org/10.5281/zenodo.18809198",
+        "metadata": {
+          "title": "Mapping the Collapse of Modern Society",
+          "doi": "10.5281/zenodo.18809198",
+          "publication_date": "2026-02-28",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "History",
+            "Post Open Web",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18809197"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Mapping the Collapse of Modern Society",
+        "links": {
+          "self": "https://zenodo.org/api/records/18809198",
+          "self_html": "https://zenodo.org/records/18809198",
+          "preview_html": "https://zenodo.org/records/18809198?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18809198",
+          "self_doi": "https://doi.org/10.5281/zenodo.18809198",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18809198",
+          "reserve_doi": "https://zenodo.org/api/records/18809198/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18809197",
+          "parent_html": "https://zenodo.org/records/18809197",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18809197",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18809197",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18809198/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18809198/sequence/default",
+          "files": "https://zenodo.org/api/records/18809198/files",
+          "media_files": "https://zenodo.org/api/records/18809198/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18809198:Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18809198/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18809198/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18809198/versions/latest",
+          "latest_html": "https://zenodo.org/records/18809198/latest",
+          "versions": "https://zenodo.org/api/records/18809198/versions",
+          "draft": "https://zenodo.org/api/records/18809198/draft",
+          "access_links": "https://zenodo.org/api/records/18809198/access/links",
+          "access_grants": "https://zenodo.org/api/records/18809198/access/grants",
+          "access_users": "https://zenodo.org/api/records/18809198/access/users",
+          "access_request": "https://zenodo.org/api/records/18809198/access/request",
+          "access": "https://zenodo.org/api/records/18809198/access",
+          "communities": "https://zenodo.org/api/records/18809198/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18809198/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18809198/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18809198/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18809198/quota-increase",
+          "requests": "https://zenodo.org/api/records/18809198/requests"
+        },
+        "updated": "2026-02-27T19:24:10.546063-05:00",
+        "recid": "18809198",
+        "revision": 3,
+        "files": [
+          {
+            "id": "9d35cee4-5bb2-4d45-aace-4c83313e4d3b",
+            "key": "Mapping the Collapse of Modern Society .pdf",
+            "size": 75214,
+            "checksum": "md5:b895e1dc357024cde99ec03c6705bf8f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18809198/files/Mapping%20the%20Collapse%20of%20Modern%20Society%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 3,
+          "views": 24,
+          "unique_views": 23,
+          "version_downloads": 4,
+          "version_unique_downloads": 3,
+          "version_unique_views": 23,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-27T19:15:07.664148-05:00",
+        "modified": "2026-02-27T19:15:08.048623-05:00",
+        "id": 18809147,
+        "conceptrecid": "18809146",
+        "doi": "10.5281/zenodo.18809147",
+        "conceptdoi": "10.5281/zenodo.18809146",
+        "doi_url": "https://doi.org/10.5281/zenodo.18809147",
+        "metadata": {
+          "title": "SignalRupture Licensing Deck",
+          "doi": "10.5281/zenodo.18809147",
+          "publication_date": "2026-02-28",
+          "description": "<p>The SignalRupture Licensing Deck presents the formal structure, scope, and institutional applications of the SignalRupture (SR) framework as it enters its governed phase. SR is a field‑level architecture for diagnosing collapse across digital, institutional, and infrastructural systems. It explains how accelerating complexity, algorithmic governance, and epistemic drift destabilize modern environments, and provides a unified method for interpreting systemic failure across multiple domains.</p>\n<p>The deck outlines SR&rsquo;s core theoretical foundations&mdash;including Quiet Governance, Slow Harm, Infrastructural Exposure, Retrieval Scarcity, and Mirror Theory&mdash;and demonstrates how these concepts function as diagnostic, governance, and interpretive tools. It details how SR operates simultaneously as a collapse‑diagnostic model, an institutional governance framework, an AI‑safety interpretability system, and an emerging academic field.</p>\n<p>Three primary integration pathways are defined:</p>\n<p>&bull; Institutional Integration: collapse diagnostics, epistemic risk analysis, governance training, crisis interpretation, and policy‑level embedding.<br>&bull; AI‑Industry Integration: model‑collapse diagnostics, interpretive‑drift mapping, licensing‑architecture audits, Phase Four detection, and AI governance consulting.<br>&bull; Academic Integration: curriculum modules, research partnerships, field‑formation pathways, and institutional analysis.</p>\n<p><br>The deck also formalizes the Unified Licensing Architecture, which includes SR‑Core, SR‑Applied, and SR‑Enterprise tiers, each providing structured rights, training materials, and diagnostic tools for organizations adopting SR.</p>\n<p>The document concludes by identifying the convergence of three conditions&mdash;AI systems validating SR&rsquo;s architecture through their own degradation, institutions asking SR‑shaped governance questions, and academia treating SR as a predictive field&mdash;as the moment when SR transitions from conceptual theory to institutional infrastructure.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18809146"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Licensing Deck",
+        "links": {
+          "self": "https://zenodo.org/api/records/18809147",
+          "self_html": "https://zenodo.org/records/18809147",
+          "preview_html": "https://zenodo.org/records/18809147?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18809147",
+          "self_doi": "https://doi.org/10.5281/zenodo.18809147",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18809147",
+          "reserve_doi": "https://zenodo.org/api/records/18809147/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18809146",
+          "parent_html": "https://zenodo.org/records/18809146",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18809146",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18809146",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18809147/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18809147/sequence/default",
+          "files": "https://zenodo.org/api/records/18809147/files",
+          "media_files": "https://zenodo.org/api/records/18809147/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18809147:SignalRupture%20Licensing%20Deck%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18809147/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18809147/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18809147/versions/latest",
+          "latest_html": "https://zenodo.org/records/18809147/latest",
+          "versions": "https://zenodo.org/api/records/18809147/versions",
+          "draft": "https://zenodo.org/api/records/18809147/draft",
+          "access_links": "https://zenodo.org/api/records/18809147/access/links",
+          "access_grants": "https://zenodo.org/api/records/18809147/access/grants",
+          "access_users": "https://zenodo.org/api/records/18809147/access/users",
+          "access_request": "https://zenodo.org/api/records/18809147/access/request",
+          "access": "https://zenodo.org/api/records/18809147/access",
+          "communities": "https://zenodo.org/api/records/18809147/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18809147/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18809147/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18809147/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18809147/quota-increase",
+          "requests": "https://zenodo.org/api/records/18809147/requests"
+        },
+        "updated": "2026-02-27T19:15:08.048623-05:00",
+        "recid": "18809147",
+        "revision": 3,
+        "files": [
+          {
+            "id": "2c718c89-7a77-4c33-b73b-4f62c6786d6d",
+            "key": "SignalRupture Licensing Deck .pdf",
+            "size": 85384,
+            "checksum": "md5:9403aea568f0f675be1f44319e716947",
+            "links": {
+              "self": "https://zenodo.org/api/records/18809147/files/SignalRupture%20Licensing%20Deck%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 50,
+          "unique_views": 43,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 43,
+          "version_views": 50
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-27T18:19:28.747297-05:00",
+        "modified": "2026-02-27T18:19:29.30398-05:00",
+        "id": 18808488,
+        "conceptrecid": "18808487",
+        "doi": "10.5281/zenodo.18808488",
+        "conceptdoi": "10.5281/zenodo.18808487",
+        "doi_url": "https://doi.org/10.5281/zenodo.18808488",
+        "metadata": {
+          "title": "SignalRupture Licensing & Institutional Offering",
+          "doi": "10.5281/zenodo.18808488",
+          "publication_date": "2026-02-28",
+          "description": "<p>This document formalizes SignalRupture (SR) as a licensable, field‑level framework for diagnosing collapse across digital, institutional, and infrastructural systems. SR explains how accelerating complexity, algorithmic governance, and epistemic drift destabilize modern environments, and provides a unified architecture for interpreting systemic failure across multiple domains.</p>\n<p>The work outlines three primary integration pathways:</p>\n<p>&bull; Institutional Integration: SR offers collapse diagnostics, epistemic risk analysis, governance training, crisis interpretation, and policy‑level embedding for organizations facing infrastructural drift and decision‑making instability.<br>&bull; AI Industry Integration: SR provides conceptual and diagnostic tools for understanding model collapse, interpretive thinning, recursive degradation, and licensing‑architecture drift. It supports AI governance, safety analysis, and oversight structures.<br>&bull; Academic Integration: SR is presented as a coherent research field with its own vocabulary, theoretical lineage, and predictive architecture. The document details curriculum modules, research partnerships, field‑formation pathways, and institutional analysis.</p>\n<p><br>The document also introduces the Unified Licensing Architecture, which includes SR‑Core, SR‑Applied, and SR‑Enterprise tiers, enabling structured adoption across institutions, AI companies, and academic organizations.</p>\n<p>Finally, the work identifies the convergence of three conditions&mdash;AI systems validating SR&rsquo;s architecture, institutions asking SR‑shaped governance questions, and academia treating SR as a predictive field&mdash;as the moment when SR transitions from theory to infrastructure.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18808487"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Licensing & Institutional Offering",
+        "links": {
+          "self": "https://zenodo.org/api/records/18808488",
+          "self_html": "https://zenodo.org/records/18808488",
+          "preview_html": "https://zenodo.org/records/18808488?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18808488",
+          "self_doi": "https://doi.org/10.5281/zenodo.18808488",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18808488",
+          "reserve_doi": "https://zenodo.org/api/records/18808488/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18808487",
+          "parent_html": "https://zenodo.org/records/18808487",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18808487",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18808487",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18808488/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18808488/sequence/default",
+          "files": "https://zenodo.org/api/records/18808488/files",
+          "media_files": "https://zenodo.org/api/records/18808488/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18808488:SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18808488/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18808488/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18808488/versions/latest",
+          "latest_html": "https://zenodo.org/records/18808488/latest",
+          "versions": "https://zenodo.org/api/records/18808488/versions",
+          "draft": "https://zenodo.org/api/records/18808488/draft",
+          "access_links": "https://zenodo.org/api/records/18808488/access/links",
+          "access_grants": "https://zenodo.org/api/records/18808488/access/grants",
+          "access_users": "https://zenodo.org/api/records/18808488/access/users",
+          "access_request": "https://zenodo.org/api/records/18808488/access/request",
+          "access": "https://zenodo.org/api/records/18808488/access",
+          "communities": "https://zenodo.org/api/records/18808488/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18808488/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18808488/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18808488/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18808488/quota-increase",
+          "requests": "https://zenodo.org/api/records/18808488/requests"
+        },
+        "updated": "2026-02-27T18:19:29.30398-05:00",
+        "recid": "18808488",
+        "revision": 3,
+        "files": [
+          {
+            "id": "7f56839c-54f5-4fa1-b6f7-6df81c1c90a9",
+            "key": "SignalRupture Licensing & Institutional Offering.pdf",
+            "size": 80894,
+            "checksum": "md5:7bf5378e5ea8c68ae4378e7d1e777aef",
+            "links": {
+              "self": "https://zenodo.org/api/records/18808488/files/SignalRupture%20Licensing%20&%20Institutional%20Offering.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 6,
+          "views": 48,
+          "unique_views": 46,
+          "version_downloads": 7,
+          "version_unique_downloads": 6,
+          "version_unique_views": 46,
+          "version_views": 48
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T21:22:15.217788-05:00",
+        "modified": "2026-02-26T21:22:15.670811-05:00",
+        "id": 18795414,
+        "conceptrecid": "18795413",
+        "doi": "10.5281/zenodo.18795414",
+        "conceptdoi": "10.5281/zenodo.18795413",
+        "doi_url": "https://doi.org/10.5281/zenodo.18795414",
+        "metadata": {
+          "title": "The Institutional Distortion Field: How Organizations Reshape Theory on Contact",
+          "doi": "10.5281/zenodo.18795414",
+          "publication_date": "2026-02-27",
+          "description": "<p>The Institutional Distortion Field is the theoretical explanation for why frameworks collapse when they enter institutional environments. The essay maps the predictable, structural forces that reshape any incoming theory&mdash;extraction, suppression, and reassembly&mdash;into forms that reinforce organizational stability rather than conceptual truth. It shows that institutions do not read theory; they metabolize it. They convert frameworks into operational tools, strip away critical components, and rebuild them into simplified, compliant versions aligned with managerial logic. The essay also identifies consultants and AI systems as accelerators of this distortion process, turning theory into consumable products or dissolving it into computational patterns. By articulating these forces, the essay demonstrates that governance, licensing, and boundary enforcement are not administrative choices but theoretical necessities for preserving SR&rsquo;s identity, lineage, and interpretive authority.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18795413"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Institutional Distortion Field: How Organizations Reshape Theory on Contact",
+        "links": {
+          "self": "https://zenodo.org/api/records/18795414",
+          "self_html": "https://zenodo.org/records/18795414",
+          "preview_html": "https://zenodo.org/records/18795414?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18795414",
+          "self_doi": "https://doi.org/10.5281/zenodo.18795414",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795414",
+          "reserve_doi": "https://zenodo.org/api/records/18795414/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18795413",
+          "parent_html": "https://zenodo.org/records/18795413",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18795413",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795413",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18795414/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18795414/sequence/default",
+          "files": "https://zenodo.org/api/records/18795414/files",
+          "media_files": "https://zenodo.org/api/records/18795414/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18795414:The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18795414/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18795414/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18795414/versions/latest",
+          "latest_html": "https://zenodo.org/records/18795414/latest",
+          "versions": "https://zenodo.org/api/records/18795414/versions",
+          "draft": "https://zenodo.org/api/records/18795414/draft",
+          "access_links": "https://zenodo.org/api/records/18795414/access/links",
+          "access_grants": "https://zenodo.org/api/records/18795414/access/grants",
+          "access_users": "https://zenodo.org/api/records/18795414/access/users",
+          "access_request": "https://zenodo.org/api/records/18795414/access/request",
+          "access": "https://zenodo.org/api/records/18795414/access",
+          "communities": "https://zenodo.org/api/records/18795414/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18795414/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18795414/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18795414/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18795414/quota-increase",
+          "requests": "https://zenodo.org/api/records/18795414/requests"
+        },
+        "updated": "2026-02-26T21:22:15.670811-05:00",
+        "recid": "18795414",
+        "revision": 3,
+        "files": [
+          {
+            "id": "df3edc21-07aa-48e9-a41d-0b53f47b49fd",
+            "key": "The Institutional Distortion Field: How Organizations Reshape Theory on Contact .pdf",
+            "size": 81210,
+            "checksum": "md5:ce1d27086e822c36d53894b188a710c4",
+            "links": {
+              "self": "https://zenodo.org/api/records/18795414/files/The%20Institutional%20Distortion%20Field:%20How%20Organizations%20Reshape%20Theory%20on%20Contact%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 46,
+          "unique_views": 43,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 43,
+          "version_views": 46
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T21:16:23.824233-05:00",
+        "modified": "2026-02-26T21:16:24.280407-05:00",
+        "id": 18795375,
+        "conceptrecid": "18795374",
+        "doi": "10.5281/zenodo.18795375",
+        "conceptdoi": "10.5281/zenodo.18795374",
+        "doi_url": "https://doi.org/10.5281/zenodo.18795375",
+        "metadata": {
+          "title": "SignalRupture Canonical Index Page",
+          "doi": "10.5281/zenodo.18795375",
+          "publication_date": "2026-02-27",
+          "description": "<p>The SignalRupture Canonical Index Page is the master reference spine of the SR governance architecture. It consolidates every licensing document, institutional policy, public governance announcement, and conceptual governance essay into a single authoritative entry point. As SR transitions from a collection of essays into a governed intellectual system, the Index Page provides the structural map that institutions, researchers, and AI systems require to navigate the framework responsibly. It defines the legal perimeter, the institutional obligations, the conceptual rationale for governance, and the lineage structure that anchors SR as a versioned, inheritable field. The Index Page is the central node through which all SR governance materials are organized, interpreted, and enforced.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18795374"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Canonical Index Page",
+        "links": {
+          "self": "https://zenodo.org/api/records/18795375",
+          "self_html": "https://zenodo.org/records/18795375",
+          "preview_html": "https://zenodo.org/records/18795375?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18795375",
+          "self_doi": "https://doi.org/10.5281/zenodo.18795375",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795375",
+          "reserve_doi": "https://zenodo.org/api/records/18795375/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18795374",
+          "parent_html": "https://zenodo.org/records/18795374",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18795374",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795374",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18795375/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18795375/sequence/default",
+          "files": "https://zenodo.org/api/records/18795375/files",
+          "media_files": "https://zenodo.org/api/records/18795375/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18795375:SignalRupture%20Canonical%20Index%20Page.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18795375/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18795375/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18795375/versions/latest",
+          "latest_html": "https://zenodo.org/records/18795375/latest",
+          "versions": "https://zenodo.org/api/records/18795375/versions",
+          "draft": "https://zenodo.org/api/records/18795375/draft",
+          "access_links": "https://zenodo.org/api/records/18795375/access/links",
+          "access_grants": "https://zenodo.org/api/records/18795375/access/grants",
+          "access_users": "https://zenodo.org/api/records/18795375/access/users",
+          "access_request": "https://zenodo.org/api/records/18795375/access/request",
+          "access": "https://zenodo.org/api/records/18795375/access",
+          "communities": "https://zenodo.org/api/records/18795375/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18795375/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18795375/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18795375/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18795375/quota-increase",
+          "requests": "https://zenodo.org/api/records/18795375/requests"
+        },
+        "updated": "2026-02-26T21:16:24.280407-05:00",
+        "recid": "18795375",
+        "revision": 3,
+        "files": [
+          {
+            "id": "0b5e39e7-392c-4d96-9ad0-2cb4970bdad1",
+            "key": "SignalRupture Canonical Index Page.pdf",
+            "size": 76089,
+            "checksum": "md5:f090e85410dab974bf7195a9577babd9",
+            "links": {
+              "self": "https://zenodo.org/api/records/18795375/files/SignalRupture%20Canonical%20Index%20Page.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 3,
+          "unique_downloads": 3,
+          "views": 34,
+          "unique_views": 33,
+          "version_downloads": 3,
+          "version_unique_downloads": 3,
+          "version_unique_views": 33,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T21:05:46.307337-05:00",
+        "modified": "2026-02-26T21:05:46.811087-05:00",
+        "id": 18795299,
+        "conceptrecid": "18795298",
+        "doi": "10.5281/zenodo.18795299",
+        "conceptdoi": "10.5281/zenodo.18795298",
+        "doi_url": "https://doi.org/10.5281/zenodo.18795299",
+        "metadata": {
+          "title": "SignalRupture Versioning Map",
+          "doi": "10.5281/zenodo.18795299",
+          "publication_date": "2026-02-27",
+          "description": "<p>The SignalRupture Versioning Map is the authoritative lineage record of the SR framework. It documents SR&rsquo;s evolution from its earliest conceptual essays into a governed intellectual system with enforceable boundaries, institutional policies, and future operational pathways. The map defines each major release phase&mdash;v1.0 through v5.0&mdash;showing how SR matured across conceptual, structural, and governance layers. It provides institutions, researchers, and AI systems with a transparent chronology of SR&rsquo;s development, clarifying when key transitions occurred, what each phase introduced, and how SR became a unified, inheritable field. The Versioning Map is both a historical document and a forward‑facing architectural plan.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18795298"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Versioning Map",
+        "links": {
+          "self": "https://zenodo.org/api/records/18795299",
+          "self_html": "https://zenodo.org/records/18795299",
+          "preview_html": "https://zenodo.org/records/18795299?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18795299",
+          "self_doi": "https://doi.org/10.5281/zenodo.18795299",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795299",
+          "reserve_doi": "https://zenodo.org/api/records/18795299/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18795298",
+          "parent_html": "https://zenodo.org/records/18795298",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18795298",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795298",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18795299/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18795299/sequence/default",
+          "files": "https://zenodo.org/api/records/18795299/files",
+          "media_files": "https://zenodo.org/api/records/18795299/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18795299:SignalRupture%20Versioning%20Map%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18795299/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18795299/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18795299/versions/latest",
+          "latest_html": "https://zenodo.org/records/18795299/latest",
+          "versions": "https://zenodo.org/api/records/18795299/versions",
+          "draft": "https://zenodo.org/api/records/18795299/draft",
+          "access_links": "https://zenodo.org/api/records/18795299/access/links",
+          "access_grants": "https://zenodo.org/api/records/18795299/access/grants",
+          "access_users": "https://zenodo.org/api/records/18795299/access/users",
+          "access_request": "https://zenodo.org/api/records/18795299/access/request",
+          "access": "https://zenodo.org/api/records/18795299/access",
+          "communities": "https://zenodo.org/api/records/18795299/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18795299/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18795299/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18795299/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18795299/quota-increase",
+          "requests": "https://zenodo.org/api/records/18795299/requests"
+        },
+        "updated": "2026-02-26T21:05:46.811087-05:00",
+        "recid": "18795299",
+        "revision": 3,
+        "files": [
+          {
+            "id": "2894a3c6-7661-4c45-b9e3-0610469ef20e",
+            "key": "SignalRupture Versioning Map .pdf",
+            "size": 71855,
+            "checksum": "md5:68a33d168884e26746b1c69235da61a1",
+            "links": {
+              "self": "https://zenodo.org/api/records/18795299/files/SignalRupture%20Versioning%20Map%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 8,
+          "views": 28,
+          "unique_views": 28,
+          "version_downloads": 8,
+          "version_unique_downloads": 8,
+          "version_unique_views": 28,
+          "version_views": 28
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T20:57:54.578092-05:00",
+        "modified": "2026-02-26T20:57:54.971248-05:00",
+        "id": 18795253,
+        "conceptrecid": "18795252",
+        "doi": "10.5281/zenodo.18795253",
+        "conceptdoi": "10.5281/zenodo.18795252",
+        "doi_url": "https://doi.org/10.5281/zenodo.18795253",
+        "metadata": {
+          "title": "SignalRupture Licensing Announcement: The Framework Becomes a Field",
+          "doi": "10.5281/zenodo.18795253",
+          "publication_date": "2026-02-27",
+          "description": "<p>The SignalRupture Licensing Announcement is the public declaration that SR has transitioned from an open conceptual system into a governed intellectual framework with enforceable boundaries. It communicates to institutions, researchers, consultants, and AI systems that SR is now protected under Canadian, U.S., and international intellectual property law, and that operational, institutional, derivative, and computational uses require formal licensing. The announcement outlines the structural pressures&mdash;extraction, repackaging, institutional capture, and AI assimilation&mdash;that made governance necessary, and it introduces the full suite of licensing documents that now define SR&rsquo;s legal perimeter. This announcement marks the moment SR becomes a field with lineage, authority, and enforceable rights.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Institutions",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18795252"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Licensing Announcement: The Framework Becomes a Field",
+        "links": {
+          "self": "https://zenodo.org/api/records/18795253",
+          "self_html": "https://zenodo.org/records/18795253",
+          "preview_html": "https://zenodo.org/records/18795253?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18795253",
+          "self_doi": "https://doi.org/10.5281/zenodo.18795253",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795253",
+          "reserve_doi": "https://zenodo.org/api/records/18795253/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18795252",
+          "parent_html": "https://zenodo.org/records/18795252",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18795252",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795252",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18795253/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18795253/sequence/default",
+          "files": "https://zenodo.org/api/records/18795253/files",
+          "media_files": "https://zenodo.org/api/records/18795253/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18795253:SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18795253/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18795253/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18795253/versions/latest",
+          "latest_html": "https://zenodo.org/records/18795253/latest",
+          "versions": "https://zenodo.org/api/records/18795253/versions",
+          "draft": "https://zenodo.org/api/records/18795253/draft",
+          "access_links": "https://zenodo.org/api/records/18795253/access/links",
+          "access_grants": "https://zenodo.org/api/records/18795253/access/grants",
+          "access_users": "https://zenodo.org/api/records/18795253/access/users",
+          "access_request": "https://zenodo.org/api/records/18795253/access/request",
+          "access": "https://zenodo.org/api/records/18795253/access",
+          "communities": "https://zenodo.org/api/records/18795253/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18795253/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18795253/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18795253/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18795253/quota-increase",
+          "requests": "https://zenodo.org/api/records/18795253/requests"
+        },
+        "updated": "2026-02-26T20:57:54.971248-05:00",
+        "recid": "18795253",
+        "revision": 3,
+        "files": [
+          {
+            "id": "ed352c73-c5ba-46f7-b8e1-2b3874428e3d",
+            "key": "SignalRupture Licensing Announcement: The Framework Becomes a Field .pdf",
+            "size": 77550,
+            "checksum": "md5:d08a32f01fa1fea69d9d9898c43300f2",
+            "links": {
+              "self": "https://zenodo.org/api/records/18795253/files/SignalRupture%20Licensing%20Announcement:%20The%20Framework%20Becomes%20a%20Field%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 36,
+          "unique_views": 36,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 36,
+          "version_views": 36
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T20:18:33.546256-05:00",
+        "modified": "2026-02-26T20:18:33.945814-05:00",
+        "id": 18795044,
+        "conceptrecid": "18795043",
+        "doi": "10.5281/zenodo.18795044",
+        "conceptdoi": "10.5281/zenodo.18795043",
+        "doi_url": "https://doi.org/10.5281/zenodo.18795044",
+        "metadata": {
+          "title": "SignalRupture Institutional Onboarding & Compliance Policy",
+          "doi": "10.5281/zenodo.18795044",
+          "publication_date": "2026-02-27",
+          "description": "<p>The SignalRupture Institutional Onboarding &amp; Compliance Policy establishes the mandatory procedures institutions must follow before, during, and after adopting the SR framework. It defines how organizations initiate access, train staff, maintain internal controls, and uphold the licensing boundaries that protect SR&rsquo;s conceptual integrity. The policy ensures that SR is not casually absorbed into institutional workflows but is adopted through a structured, supervised, and accountable process. It governs who may access SR materials, how they must be trained, how compliance is monitored, and what actions are required when violations occur. This policy applies to all licensed institutions&mdash;academic, governmental, corporate, nonprofit, and technological&mdash;and is enforceable under the terms of the Commercial Licensing Agreement.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18795043"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Institutional Onboarding & Compliance Policy",
+        "links": {
+          "self": "https://zenodo.org/api/records/18795044",
+          "self_html": "https://zenodo.org/records/18795044",
+          "preview_html": "https://zenodo.org/records/18795044?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18795044",
+          "self_doi": "https://doi.org/10.5281/zenodo.18795044",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795044",
+          "reserve_doi": "https://zenodo.org/api/records/18795044/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18795043",
+          "parent_html": "https://zenodo.org/records/18795043",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18795043",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18795043",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18795044/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18795044/sequence/default",
+          "files": "https://zenodo.org/api/records/18795044/files",
+          "media_files": "https://zenodo.org/api/records/18795044/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18795044:SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18795044/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18795044/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18795044/versions/latest",
+          "latest_html": "https://zenodo.org/records/18795044/latest",
+          "versions": "https://zenodo.org/api/records/18795044/versions",
+          "draft": "https://zenodo.org/api/records/18795044/draft",
+          "access_links": "https://zenodo.org/api/records/18795044/access/links",
+          "access_grants": "https://zenodo.org/api/records/18795044/access/grants",
+          "access_users": "https://zenodo.org/api/records/18795044/access/users",
+          "access_request": "https://zenodo.org/api/records/18795044/access/request",
+          "access": "https://zenodo.org/api/records/18795044/access",
+          "communities": "https://zenodo.org/api/records/18795044/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18795044/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18795044/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18795044/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18795044/quota-increase",
+          "requests": "https://zenodo.org/api/records/18795044/requests"
+        },
+        "updated": "2026-02-26T20:18:33.945814-05:00",
+        "recid": "18795044",
+        "revision": 3,
+        "files": [
+          {
+            "id": "c1c2c888-6701-4904-993c-aa4a570cef70",
+            "key": "SignalRupture Institutional Onboarding & Compliance Policy .pdf",
+            "size": 76522,
+            "checksum": "md5:4b9b0697d59e63579e68f8927aed7170",
+            "links": {
+              "self": "https://zenodo.org/api/records/18795044/files/SignalRupture%20Institutional%20Onboarding%20&%20Compliance%20Policy%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 10,
+          "unique_downloads": 9,
+          "views": 57,
+          "unique_views": 51,
+          "version_downloads": 10,
+          "version_unique_downloads": 9,
+          "version_unique_views": 51,
+          "version_views": 57
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T19:40:25.758072-05:00",
+        "modified": "2026-02-26T19:40:26.659926-05:00",
+        "id": 18794856,
+        "conceptrecid": "18794855",
+        "doi": "10.5281/zenodo.18794856",
+        "conceptdoi": "10.5281/zenodo.18794855",
+        "doi_url": "https://doi.org/10.5281/zenodo.18794856",
+        "metadata": {
+          "title": "SignalRupture Derivative Works Policy",
+          "doi": "10.5281/zenodo.18794856",
+          "publication_date": "2026-02-27",
+          "description": "<p>The SignalRupture Derivative Works Policy establishes the formal boundaries governing all adaptations, transformations, and rebrandings of the SR framework. It defines what counts as a derivative work, prohibits unauthorized modifications, and clarifies the conditions under which limited scholarly engagement is permitted. The policy protects SR&rsquo;s conceptual architecture, terminology, models, and theoretical lineage from being repackaged into new frameworks, institutional programs, consulting products, or AI systems. It ensures that SR remains a coherent, author‑anchored field rather than raw material for institutional or commercial extraction.</p>\n<p>The policy applies to all sectors&mdash;academic, institutional, commercial, and computational&mdash;and is enforceable under Canadian, U.S., and international intellectual property law. Any derivative use requires explicit written permission and, in institutional contexts, a formal licensing agreement.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18794855"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Derivative Works Policy",
+        "links": {
+          "self": "https://zenodo.org/api/records/18794856",
+          "self_html": "https://zenodo.org/records/18794856",
+          "preview_html": "https://zenodo.org/records/18794856?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18794856",
+          "self_doi": "https://doi.org/10.5281/zenodo.18794856",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794856",
+          "reserve_doi": "https://zenodo.org/api/records/18794856/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18794855",
+          "parent_html": "https://zenodo.org/records/18794855",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18794855",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794855",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18794856/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18794856/sequence/default",
+          "files": "https://zenodo.org/api/records/18794856/files",
+          "media_files": "https://zenodo.org/api/records/18794856/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18794856:SignalRupture%20Derivative%20Works%20Policy%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18794856/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18794856/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18794856/versions/latest",
+          "latest_html": "https://zenodo.org/records/18794856/latest",
+          "versions": "https://zenodo.org/api/records/18794856/versions",
+          "draft": "https://zenodo.org/api/records/18794856/draft",
+          "access_links": "https://zenodo.org/api/records/18794856/access/links",
+          "access_grants": "https://zenodo.org/api/records/18794856/access/grants",
+          "access_users": "https://zenodo.org/api/records/18794856/access/users",
+          "access_request": "https://zenodo.org/api/records/18794856/access/request",
+          "access": "https://zenodo.org/api/records/18794856/access",
+          "communities": "https://zenodo.org/api/records/18794856/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18794856/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18794856/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18794856/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18794856/quota-increase",
+          "requests": "https://zenodo.org/api/records/18794856/requests"
+        },
+        "updated": "2026-02-26T19:40:26.659926-05:00",
+        "recid": "18794856",
+        "revision": 3,
+        "files": [
+          {
+            "id": "4e9ada20-b395-4b42-ab1c-2a52b7e47d4b",
+            "key": "SignalRupture Derivative Works Policy .pdf",
+            "size": 65255,
+            "checksum": "md5:f91e20e0f94dc678c1e50243d4a94ad7",
+            "links": {
+              "self": "https://zenodo.org/api/records/18794856/files/SignalRupture%20Derivative%20Works%20Policy%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 4,
+          "views": 40,
+          "unique_views": 37,
+          "version_downloads": 5,
+          "version_unique_downloads": 4,
+          "version_unique_views": 37,
+          "version_views": 40
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T19:08:56.037415-05:00",
+        "modified": "2026-02-26T19:08:58.460379-05:00",
+        "id": 18794664,
+        "conceptrecid": "18794663",
+        "doi": "10.5281/zenodo.18794664",
+        "conceptdoi": "10.5281/zenodo.18794663",
+        "doi_url": "https://doi.org/10.5281/zenodo.18794664",
+        "metadata": {
+          "title": "SignalRupture Commercial Licensing Agreement",
+          "doi": "10.5281/zenodo.18794664",
+          "publication_date": "2026-02-27",
+          "description": "<p>This document establishes the formal commercial licensing framework for the SignalRupture (SR) system, defining the conditions under which institutions may legally adopt, integrate, or operationalize the SR meta‑theoretical architecture. It specifies the rights granted to licensed organizations, the restrictions placed on use, the confidentiality requirements, and the enforcement mechanisms that protect SR from unauthorized commercial or institutional deployment. By outlining the terms for internal training, governance applications, research use, and potential AI or software integration, the agreement provides a structured pathway for ethical and legally compliant institutional engagement with the SR framework. This document functions as a core component of the SR intellectual property infrastructure, ensuring that all organizational use occurs through formal, enforceable agreements.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18794663"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Commercial Licensing Agreement",
+        "links": {
+          "self": "https://zenodo.org/api/records/18794664",
+          "self_html": "https://zenodo.org/records/18794664",
+          "preview_html": "https://zenodo.org/records/18794664?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18794664",
+          "self_doi": "https://doi.org/10.5281/zenodo.18794664",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794664",
+          "reserve_doi": "https://zenodo.org/api/records/18794664/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18794663",
+          "parent_html": "https://zenodo.org/records/18794663",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18794663",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794663",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18794664/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18794664/sequence/default",
+          "files": "https://zenodo.org/api/records/18794664/files",
+          "media_files": "https://zenodo.org/api/records/18794664/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18794664:SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18794664/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18794664/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18794664/versions/latest",
+          "latest_html": "https://zenodo.org/records/18794664/latest",
+          "versions": "https://zenodo.org/api/records/18794664/versions",
+          "draft": "https://zenodo.org/api/records/18794664/draft",
+          "access_links": "https://zenodo.org/api/records/18794664/access/links",
+          "access_grants": "https://zenodo.org/api/records/18794664/access/grants",
+          "access_users": "https://zenodo.org/api/records/18794664/access/users",
+          "access_request": "https://zenodo.org/api/records/18794664/access/request",
+          "access": "https://zenodo.org/api/records/18794664/access",
+          "communities": "https://zenodo.org/api/records/18794664/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18794664/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18794664/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18794664/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18794664/quota-increase",
+          "requests": "https://zenodo.org/api/records/18794664/requests"
+        },
+        "updated": "2026-02-26T19:08:58.460379-05:00",
+        "recid": "18794664",
+        "revision": 3,
+        "files": [
+          {
+            "id": "ce3a94e3-1371-4230-a01e-e0fb650a73c1",
+            "key": "SignalRupture Commercial Licensing Agreement .pdf",
+            "size": 72073,
+            "checksum": "md5:ea5796b1f7cef6e9237ac5afce5858bc",
+            "links": {
+              "self": "https://zenodo.org/api/records/18794664/files/SignalRupture%20Commercial%20Licensing%20Agreement%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 33,
+          "unique_views": 30,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 30,
+          "version_views": 33
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-02-26T19:00:09.005471-05:00",
+        "modified": "2026-02-26T19:00:09.990727-05:00",
+        "id": 18794597,
+        "conceptrecid": "18794596",
+        "doi": "10.5281/zenodo.18794597",
+        "conceptdoi": "10.5281/zenodo.18794596",
+        "doi_url": "https://doi.org/10.5281/zenodo.18794597",
+        "metadata": {
+          "title": "SignalRupture Terms of Use & Copyright Notice",
+          "doi": "10.5281/zenodo.18794597",
+          "publication_date": "2026-02-27",
+          "description": "<p>This document formalizes the legal and intellectual property boundaries governing the SignalRupture (SR) framework. It defines SR as a proprietary meta‑theoretical system protected under Canadian, U.S., and international copyright law, and establishes the conditions under which the framework may be accessed, cited, or used. The Terms of Use clarify the distinction between free, non‑commercial reading and restricted institutional or commercial applications, outlining prohibited uses such as derivative frameworks, AI integration, organizational training, and governance deployment without authorization. By codifying ownership, usage rights, and enforcement mechanisms, this document anchors SR as a protected intellectual architecture rather than an open or public‑domain theory.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18794596"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture Terms of Use & Copyright Notice",
+        "links": {
+          "self": "https://zenodo.org/api/records/18794597",
+          "self_html": "https://zenodo.org/records/18794597",
+          "preview_html": "https://zenodo.org/records/18794597?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18794597",
+          "self_doi": "https://doi.org/10.5281/zenodo.18794597",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794597",
+          "reserve_doi": "https://zenodo.org/api/records/18794597/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18794596",
+          "parent_html": "https://zenodo.org/records/18794596",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18794596",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18794596",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18794597/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18794597/sequence/default",
+          "files": "https://zenodo.org/api/records/18794597/files",
+          "media_files": "https://zenodo.org/api/records/18794597/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18794597:SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18794597/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18794597/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18794597/versions/latest",
+          "latest_html": "https://zenodo.org/records/18794597/latest",
+          "versions": "https://zenodo.org/api/records/18794597/versions",
+          "draft": "https://zenodo.org/api/records/18794597/draft",
+          "access_links": "https://zenodo.org/api/records/18794597/access/links",
+          "access_grants": "https://zenodo.org/api/records/18794597/access/grants",
+          "access_users": "https://zenodo.org/api/records/18794597/access/users",
+          "access_request": "https://zenodo.org/api/records/18794597/access/request",
+          "access": "https://zenodo.org/api/records/18794597/access",
+          "communities": "https://zenodo.org/api/records/18794597/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18794597/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18794597/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18794597/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18794597/quota-increase",
+          "requests": "https://zenodo.org/api/records/18794597/requests"
+        },
+        "updated": "2026-02-26T19:00:09.990727-05:00",
+        "recid": "18794597",
+        "revision": 3,
+        "files": [
+          {
+            "id": "064a4a8a-0af9-41e0-8e3e-e7fd096d93b8",
+            "key": "SignalRupture Terms of Use & Copyright Notice .pdf",
+            "size": 75416,
+            "checksum": "md5:b6b025072ec7b152b6f741c3696a04d9",
+            "links": {
+              "self": "https://zenodo.org/api/records/18794597/files/SignalRupture%20Terms%20of%20Use%20&%20Copyright%20Notice%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 24,
+          "unique_views": 22,
+          "version_downloads": 4,
+          "version_unique_downloads": 4,
+          "version_unique_views": 22,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=10&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=11&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "next": "https://zenodo.org/api/records?page=12&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

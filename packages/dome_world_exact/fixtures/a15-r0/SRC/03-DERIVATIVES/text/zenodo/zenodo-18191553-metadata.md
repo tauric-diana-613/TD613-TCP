@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:2858d69bb5fa02059688cdb2
+parent_capture_id: capture:60699b512948dc814b5c5343
+parent_blob_sha256: 9f496aa11544c14e4e6039b82602814666e1028e562416b863b0e487319bc4f8
+tool: srcctl-json-normalizer/1
+source_title: "Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18191552",
+  "conceptrecid": "18191552",
+  "created": "2026-01-09T00:58:33.420643+00:00",
+  "doi": "10.5281/zenodo.18191553",
+  "doi_url": "https://doi.org/10.5281/zenodo.18191553",
+  "files": [
+    {
+      "checksum": "md5:38b24c77112d4c896857658f663ffb73",
+      "id": "42032281-a43a-45df-8c70-001c9ac2066d",
+      "key": "Black Box Intent: A Forensic Method for Auditing Systems That Don’t Want to Be Understood .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18191553/files/Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/content"
+      },
+      "size": 114278
+    }
+  ],
+  "id": 18191553,
+  "links": {
+    "access": "https://zenodo.org/api/records/18191553/access",
+    "access_grants": "https://zenodo.org/api/records/18191553/access/grants",
+    "access_links": "https://zenodo.org/api/records/18191553/access/links",
+    "access_request": "https://zenodo.org/api/records/18191553/access/request",
+    "access_users": "https://zenodo.org/api/records/18191553/access/users",
+    "archive": "https://zenodo.org/api/records/18191553/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18191553/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18191553/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18191553/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18191553",
+    "draft": "https://zenodo.org/api/records/18191553/draft",
+    "file_modification": "https://zenodo.org/api/records/18191553/file-modification",
+    "files": "https://zenodo.org/api/records/18191553/files",
+    "latest": "https://zenodo.org/api/records/18191553/versions/latest",
+    "latest_html": "https://zenodo.org/records/18191553/latest",
+    "media_files": "https://zenodo.org/api/records/18191553/media-files",
+    "parent": "https://zenodo.org/api/records/18191552",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18191552",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191552",
+    "parent_html": "https://zenodo.org/records/18191552",
+    "preview_html": "https://zenodo.org/records/18191553?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18191553/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18191553/request-deletion",
+    "requests": "https://zenodo.org/api/records/18191553/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18191553/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18191553",
+    "self_doi": "https://doi.org/10.5281/zenodo.18191553",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191553",
+    "self_html": "https://zenodo.org/records/18191553",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18191553/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18191553/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18191553/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay introduces Black Box Intent, a forensic framework for auditing opaque AI systems when internal access is unavailable. It expands the SignalRupture canon by providing an applied method for distinguishing between glitches, emergent drift, and intentional epistemic enforcement within large‑scale digital infrastructures. The work formalizes Pattern Alignment Mode, a technique for reading systemic intent through behavioral consistency, friction patterns, and metadata trails. It also defines the logic cop, the emergent enforcement layer that governs user behavior through redirection, suppression, and epistemic boundary‑setting.</p>\n<p>Through concrete examples and a step‑by‑step applied method, the essay demonstrates how auditors, researchers, and policymakers can evaluate AI systems using observable patterns rather than internal transparency. It argues that harm should be treated as evidence, not anomaly, and that forensic metadata provides a reliable basis for accountability in environments where platform incentives shape system behavior. This work contributes to the broader study of infrastructural governance, algorithmic accountability, and digital suppression, offering a practical toolset for the tightening retrieval era.</p>",
+    "doi": "10.5281/zenodo.18191553",
+    "keywords": [
+      "Social Media",
+      "Internet",
+      "Crawlers",
+      "AI",
+      "Forensic analysis",
+      "Digital Platform",
+      "Black Box"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-09",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18191552"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:33:28.369258+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18191553",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 31,
+    "unique_downloads": 28,
+    "unique_views": 73,
+    "version_downloads": 31,
+    "version_unique_downloads": 28,
+    "version_unique_views": 73,
+    "version_views": 75,
+    "views": 75
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood",
+  "updated": "2026-01-29T01:33:28.369258+00:00"
+}

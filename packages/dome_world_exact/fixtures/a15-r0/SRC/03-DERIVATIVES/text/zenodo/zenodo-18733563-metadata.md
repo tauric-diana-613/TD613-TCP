@@ -1,0 +1,145 @@
+---
+derivative_id: derivative:b96b8f4966dd76351ae304cc
+parent_capture_id: capture:c28455f8e71b53ac3d5dc435
+parent_blob_sha256: 4f0753b60292b3790500cf711e4f713bf0f52ec72dbee1a82196f4e417d80af1
+tool: srcctl-json-normalizer/1
+source_title: "Systemic Drift Theory: How Infrastructures Degrade, Mutate, and Lose Coherence Over Time"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18733562",
+  "conceptrecid": "18733562",
+  "created": "2026-02-22T16:45:49.808230+00:00",
+  "doi": "10.5281/zenodo.18733563",
+  "doi_url": "https://doi.org/10.5281/zenodo.18733563",
+  "files": [
+    {
+      "checksum": "md5:e6d52a0dde4b004681f4aa2b2a34930d",
+      "id": "aeff3f5d-e1fa-4cd1-81f5-28933d2cd2a7",
+      "key": "Systemic Drift Theory: How Infrastructures Degrade, Mutate, and Lose Coherence Over Time .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18733563/files/Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/content"
+      },
+      "size": 90632
+    }
+  ],
+  "id": 18733563,
+  "links": {
+    "access": "https://zenodo.org/api/records/18733563/access",
+    "access_grants": "https://zenodo.org/api/records/18733563/access/grants",
+    "access_links": "https://zenodo.org/api/records/18733563/access/links",
+    "access_request": "https://zenodo.org/api/records/18733563/access/request",
+    "access_users": "https://zenodo.org/api/records/18733563/access/users",
+    "archive": "https://zenodo.org/api/records/18733563/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18733563/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18733563/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18733563/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18733563",
+    "draft": "https://zenodo.org/api/records/18733563/draft",
+    "file_modification": "https://zenodo.org/api/records/18733563/file-modification",
+    "files": "https://zenodo.org/api/records/18733563/files",
+    "latest": "https://zenodo.org/api/records/18733563/versions/latest",
+    "latest_html": "https://zenodo.org/records/18733563/latest",
+    "media_files": "https://zenodo.org/api/records/18733563/media-files",
+    "parent": "https://zenodo.org/api/records/18733562",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18733562",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18733562",
+    "parent_html": "https://zenodo.org/records/18733562",
+    "preview_html": "https://zenodo.org/records/18733563?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18733563/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18733563/request-deletion",
+    "requests": "https://zenodo.org/api/records/18733563/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18733563/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18733563",
+    "self_doi": "https://doi.org/10.5281/zenodo.18733563",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18733563",
+    "self_html": "https://zenodo.org/records/18733563",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18733563/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18733563/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18733563:Systemic%20Drift%20Theory:%20How%20Infrastructures%20Degrade,%20Mutate,%20and%20Lose%20Coherence%20Over%20Time%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18733563/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      },
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Systemic Drift Theory examines how infrastructures degrade, mutate, and lose coherence through the cumulative pressures of noise, constraint, and representational decay. Rather than treating instability as failure, the paper demonstrates that drift is the default behavior of complex systems operating under continuous load. It maps the mechanics of drift across four domains&mdash;structural fatigue, epistemic erosion, representational mutation, and constraint pressure&mdash;and shows how these forces interact to produce systems that gradually become unstable, unpredictable, or internally contradictory. By situating drift within the post‑open‑web environment, where volatility is constant and constraints intensify, the essay explains why collapse is not sudden but the endpoint of long‑term infrastructural transformation. This work provides a structural framework for understanding how platforms, models, institutions, and conceptual systems lose coherence over time.</p>",
+    "doi": "10.5281/zenodo.18733563",
+    "keywords": [
+      "Critical Theory",
+      "Institutions",
+      "Governance",
+      "Artificial Intelligence",
+      "Social Issues",
+      "Public Policies"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-22",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18733562"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Systemic Drift Theory: How Infrastructures Degrade, Mutate, and Lose Coherence Over Time",
+    "version": "1.0"
+  },
+  "modified": "2026-02-22T16:45:50.249670+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18733563",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 24,
+    "unique_downloads": 24,
+    "unique_views": 26,
+    "version_downloads": 24,
+    "version_unique_downloads": 24,
+    "version_unique_views": 26,
+    "version_views": 26,
+    "views": 26
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Systemic Drift Theory: How Infrastructures Degrade, Mutate, and Lose Coherence Over Time",
+  "updated": "2026-02-22T16:45:50.249670+00:00"
+}

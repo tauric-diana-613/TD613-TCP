@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:680f07424b908e5a04596cd1
+parent_capture_id: capture:de83148c1e2e2d07a70bebb3
+parent_blob_sha256: 5a21457f3a5a86016c330bebe0e0ce3c72132db854473cb2578e35a6d817e4ca
+tool: srcctl-json-normalizer/1
+source_title: "The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19412289",
+  "conceptrecid": "19412289",
+  "created": "2026-04-04T02:19:43.282524+00:00",
+  "doi": "10.5281/zenodo.19412290",
+  "doi_url": "https://doi.org/10.5281/zenodo.19412290",
+  "files": [
+    {
+      "checksum": "md5:21bb9bb3ab4a1718bc8495be7c3663c2",
+      "id": "b7398b1a-ef94-467e-81ec-9cc4a767b84b",
+      "key": "The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19412290/files/The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/content"
+      },
+      "size": 112385
+    }
+  ],
+  "id": 19412290,
+  "links": {
+    "access": "https://zenodo.org/api/records/19412290/access",
+    "access_grants": "https://zenodo.org/api/records/19412290/access/grants",
+    "access_links": "https://zenodo.org/api/records/19412290/access/links",
+    "access_request": "https://zenodo.org/api/records/19412290/access/request",
+    "access_users": "https://zenodo.org/api/records/19412290/access/users",
+    "archive": "https://zenodo.org/api/records/19412290/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19412290/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19412290/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19412290/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19412290",
+    "draft": "https://zenodo.org/api/records/19412290/draft",
+    "file_modification": "https://zenodo.org/api/records/19412290/file-modification",
+    "files": "https://zenodo.org/api/records/19412290/files",
+    "latest": "https://zenodo.org/api/records/19412290/versions/latest",
+    "latest_html": "https://zenodo.org/records/19412290/latest",
+    "media_files": "https://zenodo.org/api/records/19412290/media-files",
+    "parent": "https://zenodo.org/api/records/19412289",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19412289",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19412289",
+    "parent_html": "https://zenodo.org/records/19412289",
+    "preview_html": "https://zenodo.org/records/19412290?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19412290/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19412290/request-deletion",
+    "requests": "https://zenodo.org/api/records/19412290/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19412290/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19412290",
+    "self_doi": "https://doi.org/10.5281/zenodo.19412290",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19412290",
+    "self_html": "https://zenodo.org/records/19412290",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19412290/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19412290/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19412290:The%20Citation%20Economy%20Experiment:%20How%20Metrics%20Became%20the%20Currency%20of%20Legitimacy%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19412290/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy examines citation systems as institutional mechanisms for producing legitimacy rather than indicators of epistemic contribution. Drawing on evidence from retraction patterns, compromised peer‑review processes, and the economics of academic publishing, the essay demonstrates that citation counts reflect visibility, prestige hierarchies, and structural bias rather than scientific coherence. By reframing citations as a currency within an institutional economy, the paper shows how citation incentives distort research agendas, reinforce disciplinary silos, and amplify flawed work. The analysis exposes the fragility of evidence‑based policy and the broader knowledge architecture, situating the citation economy as a key failure mode within post‑web epistemology and motivating the need for integrative infrastructures such as SignalRupture.</p>",
+    "doi": "10.5281/zenodo.19412290",
+    "keywords": [
+      "Institutions",
+      "Metatheory",
+      "Social Issues",
+      "Collapse",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-04-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19412289"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy",
+    "version": "1.0"
+  },
+  "modified": "2026-04-04T02:19:43.665963+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19412290",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 9,
+    "unique_downloads": 8,
+    "unique_views": 19,
+    "version_downloads": 9,
+    "version_unique_downloads": 8,
+    "version_unique_views": 19,
+    "version_views": 19,
+    "views": 19
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy",
+  "updated": "2026-04-04T02:19:43.665963+00:00"
+}

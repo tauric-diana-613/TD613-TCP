@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:21779b7c63774022d0f9390d
+parent_capture_id: capture:1db0f20e1bce359a5edfc4de
+parent_blob_sha256: 974433c8b9119792abb7b84b8ce524b7e80d0a9ff058f2337662b62a8d0f033a
+tool: srcctl-json-normalizer/1
+source_title: "Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19412129",
+  "conceptrecid": "19412129",
+  "created": "2026-04-04T01:35:50.825408+00:00",
+  "doi": "10.5281/zenodo.19412130",
+  "doi_url": "https://doi.org/10.5281/zenodo.19412130",
+  "files": [
+    {
+      "checksum": "md5:8b474be436ed7e16893189f43bd36f6c",
+      "id": "59417c09-371f-4abc-a471-ffedf183f19a",
+      "key": "Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19412130/files/Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/content"
+      },
+      "size": 107542
+    }
+  ],
+  "id": 19412130,
+  "links": {
+    "access": "https://zenodo.org/api/records/19412130/access",
+    "access_grants": "https://zenodo.org/api/records/19412130/access/grants",
+    "access_links": "https://zenodo.org/api/records/19412130/access/links",
+    "access_request": "https://zenodo.org/api/records/19412130/access/request",
+    "access_users": "https://zenodo.org/api/records/19412130/access/users",
+    "archive": "https://zenodo.org/api/records/19412130/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19412130/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19412130/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19412130/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19412130",
+    "draft": "https://zenodo.org/api/records/19412130/draft",
+    "file_modification": "https://zenodo.org/api/records/19412130/file-modification",
+    "files": "https://zenodo.org/api/records/19412130/files",
+    "latest": "https://zenodo.org/api/records/19412130/versions/latest",
+    "latest_html": "https://zenodo.org/records/19412130/latest",
+    "media_files": "https://zenodo.org/api/records/19412130/media-files",
+    "parent": "https://zenodo.org/api/records/19412129",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19412129",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19412129",
+    "parent_html": "https://zenodo.org/records/19412129",
+    "preview_html": "https://zenodo.org/records/19412130?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19412130/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19412130/request-deletion",
+    "requests": "https://zenodo.org/api/records/19412130/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19412130/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19412130",
+    "self_doi": "https://doi.org/10.5281/zenodo.19412130",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19412130",
+    "self_html": "https://zenodo.org/records/19412130",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19412130/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19412130/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19412130:Decision%E2%80%91Speed%20Interfaces:%20The%20Operational%20Surface%20of%20the%20SignalRupture%20Field%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19412130/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field formalizes the mechanism that enables high‑resolution theoretical frameworks to function inside real‑world decision environments. While the first propagation law of the SignalRupture field establishes that frameworks propagate when they achieve decision‑speed legibility, this paper identifies the structural form through which such legibility becomes operational: the decision‑speed interface (DSI).</p>\n<p>The paper defines DSIs as compressed execution layers that translate systemic diagnostics into immediate, actionable outputs without requiring interpretive overhead. It outlines the structural requirements of DSIs&mdash;variable compression, state reduction, direct action mapping, and temporal compatibility&mdash;and demonstrates how these interfaces allow complex models to operate under institutional pressure. A minimal instantiation of the SignalRupture interface is presented, showing how exposure, opportunity, and institutional lag can be collapsed into a three‑state classification system with corresponding intervention pathways.</p>\n<p>By distinguishing between frameworks (descriptive, high‑resolution) and interfaces (compressed, executable), the paper explains why many valid models fail to propagate and why SR&rsquo;s architecture is uniquely suited for institutional adoption. Decision‑speed interfaces are shown to be the necessary bridge between theoretical sovereignty and infrastructural embedding, enabling SR to transition from analysis to operational governance.</p>",
+    "doi": "10.5281/zenodo.19412130",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-04-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19412129"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field",
+    "version": "1.0"
+  },
+  "modified": "2026-04-04T01:35:51.162718+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19412130",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 6,
+    "unique_views": 15,
+    "version_downloads": 7,
+    "version_unique_downloads": 6,
+    "version_unique_views": 15,
+    "version_views": 15,
+    "views": 15
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field",
+  "updated": "2026-04-04T01:35:51.162718+00:00"
+}

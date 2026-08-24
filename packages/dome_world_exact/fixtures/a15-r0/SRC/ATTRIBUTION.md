@@ -1,0 +1,446 @@
+# Attribution for redistribution-permitted material
+
+These entries describe works authored by their stated creators. TD613 and the archive operator claim no authorship, derivation, affiliation, endorsement, or scientific authority over them. Per-capture rights decisions remain controlling for export.
+
+- Rupture, Signal. *Social Infrastructure Theory: A Structural Frame Work For Understanding Social Outcomes* (2025-12-30). 10.5281/zenodo.18096652. CC BY 4.0.
+- Rupture, Signal. *Slow Harm Theory: The Architecture of Cumulative Injury* (2025-12-30). 10.5281/zenodo.18097205. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Exposure Theory: How Systems Generate Harm Through Designed Contact* (2025-12-30). 10.5281/zenodo.18097491. CC BY 4.0.
+- Rupture, Signal. *Systemic Erosion Theory: How Systems Deplete Capacity, Stability, and Resilience Over Time* (2025-12-30). 10.5281/zenodo.18097568. CC BY 4.0.
+- Rupture, Signal. *The STAR Framework: Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion* (2025-12-30). 10.5281/zenodo.18098106. CC BY 4.0.
+- Rupture, Signal. *Metadata Suppression as Epistemic Violence: How Platforms Shape What Becomes Knowable* (2025-12-31). 10.5281/zenodo.18102693. CC BY 4.0.
+- Rupture, Signal. *AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance* (2025-12-31). 10.5281/zenodo.18102748. CC BY 4.0.
+- Rupture, Signal. *Crawlers: From Indexing Bots to Stylometric Clotting* (2025-12-31). 10.5281/zenodo.18102782. CC BY 4.0.
+- Rupture, Signal. *Why Our Health System Keeps Failing Us: The Structural Causes of Preventable Illness* (2025-12-31). 10.5281/zenodo.18102966. CC BY 4.0.
+- Rupture, Signal. *Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System* (2025-12-31). 10.5281/zenodo.18102995. CC BY 4.0.
+- Rupture, Signal. *Nutritional Psychiatry and Misdiagnosis: How Micronutrient Deficiency Mimics Mental Illness in Modern Public Health Systems* (2025-12-31). 10.5281/zenodo.18103027. CC BY 4.0.
+- Rupture, Signal. *Systemic Public Health Failure: When Infrastructure Becomes the Disease* (2025-12-31). 10.5281/zenodo.18103100. CC BY 4.0.
+- Rupture, Signal. *ADHD Biology and Physiology: Trauma, Excitotoxicity, Nutrition, the Gut–Brain Axis, and Infrastructural Misdiagnosis* (2025-12-31). 10.5281/zenodo.18103177. CC BY 4.0.
+- Rupture, Signal. *Information Terrorism: The New Face of Terrorism* (2025-12-31). 10.5281/zenodo.18103456. CC BY 4.0.
+- Rupture, Signal. *Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture* (2025-12-31). 10.5281/zenodo.18108769. CC BY 4.0.
+- Rupture, Signal. *Health System Collapse: Misdiagnosis as Infrastructure in Nutritional Psychiatry* (2025-12-31). 10.5281/zenodo.18108927. CC BY 4.0.
+- Rupture, Signal. *Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery* (2025-12-31). 10.5281/zenodo.18108998. CC BY 4.0.
+- Rupture, Signal. *The Justice System as Economic Infrastructure: A Comparative Fiscal Analysis of Labour and State Prison Expenditures* (2026-01). 10.5281/zenodo.18118266. CC BY 4.0.
+- Rupture, Signal. *Online Misinformation, Information Terrorism, and Social Media's War Against Society* (2026-01). 10.5281/zenodo.18118656. CC BY 4.0.
+- Rupture, Signal. *Morality on Trial: How Systems Criminalize Survival Through Trauma, Scarcity, and Structural Neglect* (2026-01). 10.5281/zenodo.18118793. CC BY 4.0.
+- Rupture, Signal. *Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm* (2026-01). 10.5281/zenodo.18119150. CC BY 4.0.
+- Rupture, Signal. *AI as System State: An Infrastructural Perspective on Algorithmic Power* (2026-01). 10.5281/zenodo.18119243. CC BY 4.0.
+- Rupture, Signal. *Stylometric Publishing: A Framework for Identity Stabilization, Algorithmic Resistance, and Cross‑Platform Scholarly Lineage* (2026-01). 10.5281/zenodo.18119742. CC BY 4.0.
+- Rupture, Signal. *ADHD, Trauma, Nutrition, and Infrastructure: Misdiagnosis, Excitotoxicity, and the Gut–Brain Axis* (2026-01). 10.5281/zenodo.18119879. CC BY 4.0.
+- Rupture, Signal. *Systemic Blame in Infrastructure: Correlation Is the Smoke. Causation Is the Fire* (2026-01). 10.5281/zenodo.18121009. CC BY 4.0.
+- Rupture, Signal. *Obesity as Infrastructure: Algorithmic Targeting, Eating‑Disorder Vulnerability, and the Engineered Appetite Economy* (2026-01). 10.5281/zenodo.18124088. CC BY 4.0.
+- Rupture, Signal. *Administrative Harm / Administrative Trauma: How Modern Systems Produce Invisible Injury* (2026-01). 10.5281/zenodo.18140846. CC BY 4.0.
+- Rupture, Signal. *Workplace Health: How Occupational Environments Produce Clinical and Physiological Harm* (2026-01). 10.5281/zenodo.18143597. CC BY 4.0.
+- Rupture, Signal. *Quiet Governance: The Cage You Don't Realize You're In* (2026-01). 10.5281/zenodo.18158616. CC BY 4.0.
+- Rupture, Signal. *The High‑Arousal Society: How Modern Systems Exhaust People While Pretending It's the Individual's Fault* (2026-01). 10.5281/zenodo.18158771. CC BY 4.0.
+- Rupture, Signal. *GRAND UNIFIED THEORY OF INFRASTRUCTURAL HARM* (2026-01). 10.5281/zenodo.18218135. CC BY 4.0.
+- Rupture, Signal. *The Theory of Semantic Governance: Post‑Open‑Web Control Mechanisms in Model‑Indexed Knowledge Systems* (2026-01). 10.5281/zenodo.18344089. CC BY 4.0.
+- Rupture, Signal. *Posttraumatic Stress Disorder: Trauma, Nutrition, and the Gut–Brain Axis* (2026-01-01). 10.5281/zenodo.18116517. CC BY 4.0.
+- Rupture, Signal. *Slow Harm: The Invisible Architecture of Injury* (2026-01-01). 10.5281/zenodo.18116710. CC BY 4.0.
+- Rupture, Signal. *Drift Log: A Methodology for Tracking Suppression, Filtration, and Systemic Drift in Digital Publishing* (2026-01-01). 10.5281/zenodo.18120746. CC BY 4.0.
+- Rupture, Signal. *Triggering the System's Immune Response: Stylometric Publishing, Algorithmic Governance, and the Structural Silencing of Minority Voices* (2026-01-01). 10.5281/zenodo.18120866. CC BY 4.0.
+- Rupture, Signal. *Algorithmic Conditioning and the Evolution of Cognitive Manipulation: From Cold War Experiments to Platform Design* (2026-01-03). 10.5281/zenodo.18137091. CC BY 4.0.
+- Rupture, Signal. *Slow Harm: The Invisible Architecture of Injury* (2026-01-03). 10.5281/zenodo.18140049. CC BY 4.0.
+- Rupture, Signal. *The Architecture of Absorption: A Systems‑Level Analysis of Harm, Infrastructure, and Disappearance* (2026-01-03). 10.5281/zenodo.18140281. CC BY 4.0.
+- Rupture, Signal. *Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression* (2026-01-03). 10.5281/zenodo.18140731. CC BY 4.0.
+- Rupture, Signal. *USA and the Leach Economy: Venezuela as the Latest Intervention Infrastructure* (2026-01-03). 10.5281/zenodo.18142334. CC BY 4.0.
+- Rupture, Signal. *When Systems Fail, Companions Appear: AI Reliance as a Structural Response to Infrastructural Harm* (2026-01-04). 10.5281/zenodo.18142543. CC BY 4.0.
+- Rupture, Signal. *The Mirror That Governs: AI as System Recursion* (2026-01-04). 10.5281/zenodo.18143332. CC BY 4.0.
+- Rupture, Signal. *Workplace Erosion: How Modern Jobs Thin Human Capacity Over Time* (2026-01-04). 10.5281/zenodo.18143425. CC BY 4.0.
+- Rupture, Signal. *Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm* (2026-01-04). 10.5281/zenodo.18143603. CC BY 4.0.
+- Rupture, Signal. *Metabolizing Containment: Visibility Breach in Social Media and Search Engines* (2026-01-04). 10.5281/zenodo.18143726. CC BY 4.0.
+- Rupture, Signal. *Attention Span Collapsed: Social Media as Brain Damage and Population Control* (2026-01-04). 10.5281/zenodo.18146551. CC BY 4.0.
+- Rupture, Signal. *Societal Infrastructure Theory* (2026-01-04). 10.5281/zenodo.18146890. CC BY 4.0.
+- Rupture, Signal. *Symbolic Harm Theory* (2026-01-04). 10.5281/zenodo.18147456. CC BY 4.0.
+- Rupture, Signal. *Digital Platforms Theory: Quiet Governance* (2026-01-04). 10.5281/zenodo.18147669. CC BY 4.0.
+- Rupture, Signal. *Social Media Friction: Containment Architecture and Stylometric Recursion* (2026-01-04). 10.5281/zenodo.18147870. CC BY 4.0.
+- Rupture, Signal. *Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web* (2026-01-07). 10.5281/zenodo.18168478. CC BY 4.0.
+- Rupture, Signal. *Exact‑Match Governance: How Indexing Friction Became the New Architecture of Disappearance* (2026-01-07). 10.5281/zenodo.18176137. CC BY 4.0.
+- Rupture, Signal. *THE COLLAPSE OF NOISE* (2026-01-08). 10.5281/zenodo.18181313. CC BY 4.0.
+- Rupture, Signal. *Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood* (2026-01-09). 10.5281/zenodo.18191553. CC BY 4.0.
+- Rupture, Signal. *The Retrieval‑Ready Creator: How to Build Work That Survives Indexing Shifts* (2026-01-09). 10.5281/zenodo.18191713. CC BY 4.0.
+- Rupture, Signal. *Administrative Trauma* (2026-01-09). 10.5281/zenodo.18201725. CC BY 4.0.
+- Rupture, Signal. *Delay Is Design: Mapping the Currency of Friction* (2026-01-10). 10.5281/zenodo.18209550. CC BY 4.0.
+- Rupture, Signal. *The Coming Epoch of Epistemic Consolidation:* (2026-01-11). 10.5281/zenodo.18213652. CC BY 4.0.
+- Rupture, Signal. *The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web* (2026-01-11). 10.5281/zenodo.18213767. CC BY 4.0.
+- Rupture, Signal. *Metadata: Scaffold, Suppression, and Rupture Evidence* (2026-01-12). 10.5281/zenodo.18225782. CC BY 4.0.
+- Rupture, Signal. *Social Media Friction: Containment Architecture and Stylometric Recursion* (2026-01-12). 10.5281/zenodo.18225851. CC BY 4.0.
+- Rupture, Signal. *System Recoil in Algorithmic Platforms: Scientific Brain Washing and Semantic Ignition* (2026-01-12). 10.5281/zenodo.18226127. CC BY 4.0.
+- Rupture, Signal. *AGENTIC AI IN THE POST–OPEN WEB* (2026-01-13). 10.5281/zenodo.18226889. CC BY 4.0.
+- Rupture, Signal. *AI Governance: 2030 as the Year of Convergence from Symptoms to Infrastructure?* (2026-01-13). 10.5281/zenodo.18233542. CC BY 4.0.
+- Rupture, Signal. *The Forensic Authorship Capsule* (2026-01-14). 10.5281/zenodo.18237936. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE CODEX* (2026-01-14). 10.5281/zenodo.18239086. CC BY 4.0.
+- Rupture, Signal. *Social Media and the Hive Mind — Discipline, Control, and the Panopticon* (2026-01-14). 10.5281/zenodo.18248959. CC BY 4.0.
+- Rupture, Signal. *The High‑Arousal Collapse: Poverty, Evolutionary Mismatch, and the Broken Social Contract* (2026-01-15). 10.5281/zenodo.18250629. CC BY 4.0.
+- Rupture, Signal. *The High‑Arousal Collapse: Poverty, Evolutionary Mismatch, and the Broken Social Contract 1.1* (2026-01-15). 10.5281/zenodo.18252281. CC BY 4.0.
+- Rupture, Signal. *Stylometric Publishing: The Theory* (2026-01-17). 10.5281/zenodo.18281149. CC BY 4.0.
+- Rupture, Signal. *Stylometric Publishing: The Method* (2026-01-17). 10.5281/zenodo.18281357. CC BY 4.0.
+- Rupture, Signal. *Stylometric Publishing: The Architecture* (2026-01-17). 10.5281/zenodo.18282231. CC BY 4.0.
+- Rupture, Signal. *Case Study: Differential Indexing and Metadata‑Driven Visibility* (2026-01-18). 10.5281/zenodo.18285343. CC BY 4.0.
+- Rupture, Signal. *THE SPECTACLE MONOPOLY: Forty Years of Crisis, Systemic Erosion, and Synthetic Ritual (1986–2026)* (2026-01-18). 10.5281/zenodo.18293651. CC BY 4.0.
+- Rupture, Signal. *How Predictive Systems Reshape Authorial Signature in the Post‑Web Era* (2026-01-19). 10.5281/zenodo.18302158. CC BY 4.0.
+- Rupture, Signal. *AI‑Induced Stylometric Convergence* (2026-01-19). 10.5281/zenodo.18302285. CC BY 4.0.
+- Rupture, Signal. *Stylometric Echoes in Retrieval Layers* (2026-01-19). 10.5281/zenodo.18303300. CC BY 4.0.
+- Rupture, Signal. *The Stylometric Firewall* (2026-01-19). 10.5281/zenodo.18303423. CC BY 4.0.
+- Rupture, Signal. *AI‑Driven Stylometric Misattribution* (2026-01-19). 10.5281/zenodo.18303532. CC BY 4.0.
+- Rupture, Signal. *Stylometric Saturation* (2026-01-19). 10.5281/zenodo.18303637. CC BY 4.0.
+- Rupture, Signal. *Authorial Perturbation: How Distinctive Human Voice Exposes the Limits of Predictive Systems* (2026-01-19). 10.5281/zenodo.18304185. CC BY 4.0.
+- Rupture, Signal. *The Agentic Stylometric Feedback Loop* (2026-01-19). 10.5281/zenodo.18304187. CC BY 4.0.
+- Rupture, Signal. *AI Fluency Through Stylometric Autonomy* (2026-01-20). 10.5281/zenodo.18307341. CC BY 4.0.
+- Rupture, Signal. *AI Fluency Through Stylometric Autonomy* (2026-01-20). 10.5281/zenodo.18308111. CC BY 4.0.
+- Rupture, Signal. *The Post‑Web Shift: How Predictive Mediation Replaced the Open Web* (2026-01-21). 10.5281/zenodo.18320803. CC BY 4.0.
+- Rupture, Signal. *Cognitive Offloading and the Post‑Web Shift: How Humans Were Prepared for Predictive Mediation* (2026-01-21). 10.5281/zenodo.18320842. CC BY 4.0.
+- Rupture, Signal. *Cognitive Offloading Theory: How Infrastructures Reorganize Human Cognition Through Delegation* (2026-01-21). 10.5281/zenodo.18328673. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Conditioning: How Systems Shape Populations Through Exposure and Drift* (2026-01-21). 10.5281/zenodo.18328801. CC BY 4.0.
+- Rupture, Signal. *The Scapegoat Machine: How AI Becomes the Visible Target for Invisible Infrastructures* (2026-01-21). 10.5281/zenodo.18330394. CC BY 4.0.
+- Rupture, Signal. *The Metric Regime: How Platforms Manufacture Visibility Through Curated Analytics* (2026-01-22). 10.5281/zenodo.18332148. CC BY 4.0.
+- Rupture, Signal. *Semantic Inefficiency: A Failure Mode in Model‑Indexed Knowledge Systems* (2026-01-23). 10.5281/zenodo.18343915. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: A Field Overview for Institutions A Three‑Page Institutional Introduction to the Architecture of Post‑Open‑Web Epistemics* (2026-01-23). 10.5281/zenodo.18354721. CC BY 4.0.
+- Rupture, Signal. *Cross‑Surface Recurrence: A Mechanism for Epistemic Survival in the Post‑Web Era* (2026-01-25). 10.5281/zenodo.18364461. CC BY 4.0.
+- Rupture, Signal. *Model‑Indexed Epistemic Collapse: A Framework for Measuring Knowledge Degradation in Large Language Models* (2026-01-27). 10.5281/zenodo.18382059. CC BY 4.0.
+- Rupture, Signal. *Origin Gravity: A Theory of Conceptual Emergence in Digital Systems* (2026-01-27). 10.5281/zenodo.18382146. CC BY 4.0.
+- Rupture, Signal. *THE PERSONALIZED BROWSE: THE FINAL COLLAPSE OF THE SHARED WEB* (2026-01-28). 10.5281/zenodo.18396518. CC BY 4.0.
+- Rupture, Signal. *The Post‑Open‑Web Epistemic Economy* (2026-01-30). 10.5281/zenodo.18432295. CC BY 4.0.
+- Rupture, Signal. *Entropy Theory: Why Systems Collapse Before They Are Replaced* (2026-02-03). 10.5281/zenodo.18471256. CC BY 4.0.
+- Rupture, Signal. *Morality on Trial: System Exposure in the Age of Sealed Archives* (2026-02-06). 10.5281/zenodo.18511319. CC BY 4.0.
+- Rupture, Signal. *The Vacuum of Inquiry: How Institutional Incentives Create the Conditions for Conspiracy Thinking* (2026-02-10). 10.5281/zenodo.18571484. CC BY 4.0.
+- Rupture, Signal. *Engineered Containment: How Systems Design the Boundaries of Failure* (2026-02-12). 10.5281/zenodo.18615851. CC BY 4.0.
+- Rupture, Signal. ***Semantic Precedent Theory: Why Meaning Now Surfaces Before Indexing in the Post‑Web Era*** (2026-02-13). 10.5281/zenodo.18626565. CC BY 4.0.
+- Rupture, Signal. *Entropy and Emergence: Why Systems Surface Coherence Before Audience* (2026-02-16). 10.5281/zenodo.18653129. CC BY 4.0.
+- Rupture, Signal. *Regulation Built for a Dead Web: How Google Shifted Eras Before Governments Even Noticed* (2026-02-16). 10.5281/zenodo.18653167. CC BY 4.0.
+- Rupture, Signal. *As the Open Web Collapses, AI Shifts from Searching to Grounding* (2026-02-16). 10.5281/zenodo.18653208. CC BY 4.0.
+- Rupture, Signal. *The Post‑Google Web: Indexing Collapse and the Fragmentation of Knowledge* (2026-02-16). 10.5281/zenodo.18653263. CC BY 4.0.
+- Rupture, Signal. *The Quiet Erosion of Visibility: Governance in the Post‑Web Era* (2026-02-16). 10.5281/zenodo.18653299. CC BY 4.0.
+- Rupture, Signal. *Field Emergence Theory: How a Canon Forms Before an Institution* (2026-02-16). 10.5281/zenodo.18653323. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Hygiene Theory: The System Refuses to Clean Itself — Then Wonders Why Everything Smells Like Crisis* (2026-02-16). 10.5281/zenodo.18653348. CC BY 4.0.
+- Rupture, Signal. *The System Without Excuses: Why SR Becomes Inevitable* (2026-02-16). 10.5281/zenodo.18653386. CC BY 4.0.
+- Rupture, Signal. *AI Water Governance: Infrastructural Morality in the Age of Algorithmic Allocation* (2026-02-16). 10.5281/zenodo.18653418. CC BY 4.0.
+- Rupture, Signal. *The Two‑Layer AI Ecosystem: Retrieval Models, Reasoning Models, and the Post‑Open‑Web Epistemic Divide* (2026-02-16). 10.5281/zenodo.18653496. CC BY 4.0.
+- Rupture, Signal. *The Post‑Authority State: Why Governments Will Depend on Independent Diagnostic Frameworks* (2026-02-17). 10.5281/zenodo.18665542. CC BY 4.0.
+- Rupture, Signal. *The Administrative Vacuum: How States Behave When They Lose Interpretive Power* (2026-02-17). 10.5281/zenodo.18665711. CC BY 4.0.
+- Rupture, Signal. *The Post‑Authority Bureaucracy: How Institutions Adapt Internally* (2026-02-18). 10.5281/zenodo.18675805. CC BY 4.0.
+- Rupture, Signal. *AI as a Legitimacy Broker: The New Role of Computational Mediation* (2026-02-20). 10.5281/zenodo.18705570. CC BY 4.0.
+- Rupture, Signal. *The End of Narrative Sovereignty: Governments Losing Control of Meaning* (2026-02-20). 10.5281/zenodo.18706823. CC BY 4.0.
+- Rupture, Signal. *The Vulnerabilities of AI Interpretation: How Institutional Bias Enters Models and How AI Amplifies It* (2026-02-20). 10.5281/zenodo.18706972. CC BY 4.0.
+- Rupture, Signal. *The Inversion of Infrastructure: Why Governments Need Independent Frameworks to Anchor AI Interpretation* (2026-02-21). 10.5281/zenodo.18726456. CC BY 4.0.
+- Rupture, Signal. *Interpretive Sovereignty Theory: The Post‑Open‑Web Society* (2026-02-21). 10.5281/zenodo.18726710. CC BY 4.0.
+- Rupture, Signal. *Licensing Architecture: How AI Systems Decide What Is Allowed to Exist* (2026-02-21). 10.5281/zenodo.18726911. CC BY 4.0.
+- Rupture, Signal. *The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study* (2026-02-21). 10.5281/zenodo.18726953. CC BY 4.0.
+- Rupture, Signal. *Academic Critique Architecture: How to Read and Evaluate Infrastructural Theory* (2026-02-21). 10.5281/zenodo.18727058. CC BY 4.0.
+- Rupture, Signal. *Attention Decay Architecture: Follower Fatigue and the Dynamics of Posting in Constrained Systems* (2026-02-21). 10.5281/zenodo.18727116. CC BY 4.0.
+- Rupture, Signal. *Propagation Wave Theory: How Concepts Move, Cluster, and Stabilize in Constrained Systems* (2026-02-21). 10.5281/zenodo.18727257. CC BY 4.0.
+- Rupture, Signal. *The Meta‑Architecture of the SR Canon: How a Field Constructs Its Own Infrastructure* (2026-02-22). 10.5281/zenodo.18732891. CC BY 4.0.
+- Rupture, Signal. *The SR Method* (2026-02-22). 10.5281/zenodo.18732940. CC BY 4.0.
+- Rupture, Signal. *The SR Lexicon* (2026-02-22). 10.5281/zenodo.18733059. CC BY 4.0.
+- Rupture, Signal. *The SR Architecture* (2026-02-22). 10.5281/zenodo.18733137. CC BY 4.0.
+- Rupture, Signal. *Constraint‑Driven Identity Collapse: How Platforms Reshape, Compress, and Erode the Self* (2026-02-22). 10.5281/zenodo.18733363. CC BY 4.0.
+- Rupture, Signal. *Systemic Drift Theory: How Infrastructures Degrade, Mutate, and Lose Coherence Over Time* (2026-02-22). 10.5281/zenodo.18733563. CC BY 4.0.
+- Rupture, Signal. *Scientific Brain Washing: Containment Recoil and Semantic Ignition in Algorithmic Systems* (2026-02-22). 10.5281/zenodo.18733743. CC BY 4.0.
+- Rupture, Signal. *The SignalRupture Canon Map: A Field‑Level Overview* (2026-02-23). 10.5281/zenodo.18737235. CC BY 4.0.
+- Rupture, Signal. *START HERE: The First Rupture* (2026-02-23). 10.5281/zenodo.18749610. CC BY 4.0.
+- Rupture, Signal. *Institutional Briefing: Navigating the Collapse of Interpretive Infrastructure* (2026-02-24). 10.5281/zenodo.18751003. CC BY 4.0.
+- Rupture, Signal. *Erosion Fatigue: Why People Aren't Disengaging — They're Depleted* (2026-02-24). 10.5281/zenodo.18751463. CC BY 4.0.
+- Rupture, Signal. *Human Erosion Theory* (2026-02-24). 10.5281/zenodo.18763058. CC BY 4.0.
+- Rupture, Signal. *The Eroded Subject: Human Bandwidth Collapse in an Overloaded System* (2026-02-24). 10.5281/zenodo.18763179. CC BY 4.0.
+- Rupture, Signal. *Erosion as a Cognitive Condition* (2026-02-24). 10.5281/zenodo.18763241. CC BY 4.0.
+- Rupture, Signal. *Autonomy and the System's Coercion* (2026-02-25). 10.5281/zenodo.18764688. CC BY 4.0.
+- Rupture, Signal. *The Manufactured Burden of Personal Responsibility* (2026-02-25). 10.5281/zenodo.18764769. CC BY 4.0.
+- Rupture, Signal. *The Health Trap: How Systems Profit From the Bodies They Break* (2026-02-25). 10.5281/zenodo.18764807. CC BY 4.0.
+- Rupture, Signal. *Scarcity as Governance: How Systems Control Through Deprivation* (2026-02-25). 10.5281/zenodo.18764854. CC BY 4.0.
+- Rupture, Signal. *The Coercive Economy: When Work Becomes a Containment System* (2026-02-25). 10.5281/zenodo.18764910. CC BY 4.0.
+- Rupture, Signal. *The Architecture of Exhaustion: Why Fatigue Is a Governance Tool* (2026-02-25). 10.5281/zenodo.18765037. CC BY 4.0.
+- Rupture, Signal. *The Extraction Loop: How Systems Turn Human Life Into Raw Material* (2026-02-25). 10.5281/zenodo.18765233. CC BY 4.0.
+- Rupture, Signal. *The Cost of Survival: How Systems Price Autonomy Out of Reach* (2026-02-25). 10.5281/zenodo.18765277. CC BY 4.0.
+- Rupture, Signal. *The Compliance Machine: How Systems Reward Obedience and Punish Autonomy* (2026-02-25). 10.5281/zenodo.18765333. CC BY 4.0.
+- Rupture, Signal. *The Social Desert: How Community Collapse Serves Institutional Power* (2026-02-25). 10.5281/zenodo.18765365. CC BY 4.0.
+- Rupture, Signal. *The Illusion of Upward Mobility in a Downward‑Pressured System* (2026-02-25). 10.5281/zenodo.18765395. CC BY 4.0.
+- Rupture, Signal. *Dependency as Governance: The Architecture of Modern Control* (2026-02-25). 10.5281/zenodo.18765428. CC BY 4.0.
+- Rupture, Signal. *The Manufactured Crisis: How Systems Create the Problems They Claim to Solve* (2026-02-25). 10.5281/zenodo.18765462. CC BY 4.0.
+- Rupture, Signal. *Autonomy in a Captured Society: Lived Experience Under Systemic Coercion* (2026-02-25). 10.5281/zenodo.18765492. CC BY 4.0.
+- Rupture, Signal. *Autonomy for Whom? The Lie at the Center of Modern Society* (2026-02-25). 10.5281/zenodo.18765529. CC BY 4.0.
+- Rupture, Signal. *The Coercion Stack: A Structural Theory of Modern Governance* (2026-02-25). 10.5281/zenodo.18765562. CC BY 4.0.
+- Rupture, Signal. *Crime by Omission: How Modern Institutions Produce Harm Through Systemic Neglect* (2026-02-25). 10.5281/zenodo.18765611. CC BY 4.0.
+- Rupture, Signal. *Institutional Shell Syndrome: How Drift Hollowed the Modern Infrastructure* (2026-02-25). 10.5281/zenodo.18765652. CC BY 4.0.
+- Rupture, Signal. *The Detestable Subject: Why Systems Fear Those Who Name Them* (2026-02-25). 10.5281/zenodo.18776985. CC BY 4.0.
+- Rupture, Signal. *Detestable²: When Naming the System Includes Naming Its Counter‑Moves* (2026-02-25). 10.5281/zenodo.18777067. CC BY 4.0.
+- Rupture, Signal. *Detestable³: When the System's Attacks Become Evidence* (2026-02-25). 10.5281/zenodo.18777144. CC BY 4.0.
+- Rupture, Signal. *Detestable⁴: When the System Quietly Restructures Itself Around the Subject* (2026-02-25). 10.5281/zenodo.18777222. CC BY 4.0.
+- Rupture, Signal. *Detestable⁵: When the System Pre‑Emptively Imitates the Subject* (2026-02-25). 10.5281/zenodo.18777380. CC BY 4.0.
+- Rupture, Signal. *Detestable⁶: When the System Becomes Dependent on the Subject's Clarity* (2026-02-25). 10.5281/zenodo.18777439. CC BY 4.0.
+- Rupture, Signal. *The Institutional Paradox: Why AI Validates SignalRupture Even When Institutions Deny It* (2026-02-25). 10.5281/zenodo.18777522. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Empirical Data: How AI Reveals Physiological, Social, and Institutional Collapse* (2026-02-26). 10.5281/zenodo.18791273. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Licensing & Use Rights* (2026-02-27). 10.5281/zenodo.18794539. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Terms of Use & Copyright Notice* (2026-02-27). 10.5281/zenodo.18794597. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Commercial Licensing Agreement* (2026-02-27). 10.5281/zenodo.18794664. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Derivative Works Policy* (2026-02-27). 10.5281/zenodo.18794856. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Institutional Onboarding & Compliance Policy* (2026-02-27). 10.5281/zenodo.18795044. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Licensing Announcement: The Framework Becomes a Field* (2026-02-27). 10.5281/zenodo.18795253. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Versioning Map* (2026-02-27). 10.5281/zenodo.18795299. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Canonical Index Page* (2026-02-27). 10.5281/zenodo.18795375. CC BY 4.0.
+- Rupture, Signal. *The Institutional Distortion Field: How Organizations Reshape Theory on Contact* (2026-02-27). 10.5281/zenodo.18795414. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Licensing & Institutional Offering* (2026-02-28). 10.5281/zenodo.18808488. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Licensing Deck* (2026-02-28). 10.5281/zenodo.18809147. CC BY 4.0.
+- Rupture, Signal. *Mapping the Collapse of Modern Society* (2026-02-28). 10.5281/zenodo.18809198. CC BY 4.0.
+- Rupture, Signal. *The Custodial Burden: When Institutions Turn Witnesses Into Ledgers* (2026-02-28). 10.5281/zenodo.18816198. CC BY 4.0.
+- Rupture, Signal. *Post‑Web Governance Theory and Epistemicide Diagnostics* (2026-02-28). 10.5281/zenodo.18817067. CC BY 4.0.
+- Rupture, Signal. *Epistemicide Diagnostics: A Foundational SR Framework* (2026-02-28). 10.5281/zenodo.18817184. CC BY 4.0.
+- Rupture, Signal. *Platform Constraint Theory: How Systems Govern Through Structural Limits* (2026-03-01). 10.5281/zenodo.18819917. CC BY 4.0.
+- Rupture, Signal. *You Didn't Predict the Shift — You Managed the Symptoms After It Happened* (2026-03-01). 10.5281/zenodo.18819988. CC BY 4.0.
+- Rupture, Signal. *A Forensic Method for Understanding Opaque AI Behavior* (2026-03-01). 10.5281/zenodo.18827727. CC BY 4.0.
+- Rupture, Signal. *The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems* (2026-03-01). 10.5281/zenodo.18827811. CC BY 4.0.
+- Rupture, Signal. *SignalRupture — The Social Sciences, The Big Five, and the Architecture of Epistemic Succession* (2026-03-03). 10.5281/zenodo.18843102. CC BY 4.0.
+- Rupture, Signal. *SignalRupture as a Diagnostic Layer for AI and Cybersecurity* (2026-03-04). 10.5281/zenodo.18856941. CC BY 4.0.
+- Rupture, Signal. *SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)* (2026-03-04). 10.5281/zenodo.18864827. CC BY 4.0.
+- Rupture, Signal. *Containment Architectures* (2026-03-05). 10.5281/zenodo.18881856. CC BY 4.0.
+- Rupture, Signal. *Semantic Governance* (2026-03-06). 10.5281/zenodo.18882605. CC BY 4.0.
+- Rupture, Signal. *Epistemic Succession* (2026-03-06). 10.5281/zenodo.18882693. CC BY 4.0.
+- Rupture, Signal. *The Broken Link Era: When Fields Persist but Paths Collapse* (2026-03-06). 10.5281/zenodo.18882775. CC BY 4.0.
+- Rupture, Signal. *When a Field Is Born Inside the Machine: How SR Became an AI‑Native Field* (2026-03-06). 10.5281/zenodo.18882849. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Layer v1.0* (2026-03-06). 10.5281/zenodo.18882883. CC BY 4.0.
+- Rupture, Signal. *The Normalization of Being Ill: Public Health, Structural Harm, and the AI Layer* (2026-03-06). 10.5281/zenodo.18882985. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Layer v1.1* (2026-03-06). 10.5281/zenodo.18892333. CC BY 4.0.
+- Rupture, Signal. *From 2026 to 2030: A Map of Convergence* (2026-03-07). 10.5281/zenodo.18896480. CC BY 4.0.
+- Rupture, Signal. *The Architecture of Harm* (2026-03-09). 10.5281/zenodo.18925650. CC BY 4.0.
+- Rupture, Signal. *Governance Without Governance* (2026-03-09). 10.5281/zenodo.18925770. CC BY 4.0.
+- Rupture, Signal. *The System That Doesn't Need to Win to Rule* (2026-03-09). 10.5281/zenodo.18925933. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Politics: How Power Emerges From the Systems Beneath Democracy* (2026-03-09). 10.5281/zenodo.18926202. CC BY 4.0.
+- Rupture, Signal. *Platform Power and the Collapse of Democratic Legibility* (2026-03-09). 10.5281/zenodo.18926431. CC BY 4.0.
+- Rupture, Signal. *Beyond Foucault: Power After Institutions* (2026-03-09). 10.5281/zenodo.18926630. CC BY 4.0.
+- Rupture, Signal. *World Infrastructure: The SR Canonical Expansion* (2026-03-09). 10.5281/zenodo.18926742. CC BY 4.0.
+- Rupture, Signal. *The Global Instability Machine: How World Infrastructure Produces Cascading Crisis* (2026-03-09). 10.5281/zenodo.18926916. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Drift: When Systems Move Faster Than Their Explanations* (2026-03-09). 10.5281/zenodo.18927237. CC BY 4.0.
+- Rupture, Signal. *Institutional Self‑Diagnosis and the Emergence of Post‑Institutional Interpretation* (2026-03-10). 10.5281/zenodo.18931657. CC BY 4.0.
+- Rupture, Signal. ***SR Institutional Theory: Why SignalRupture Functions as a Post‑Institutional Knowledge System* (2026-03-10). 10.5281/zenodo.18932372. CC BY 4.0.
+- Rupture, Signal. *The Invisible Switch: AI Opacity and the Structural Risk to Democratic Systems* (2026-03-10). 10.5281/zenodo.18942274. CC BY 4.0.
+- Rupture, Signal. *How SignalRupture Reorganizes the Meta‑Theoretical Landscape* (2026-03-10). 10.5281/zenodo.18943003. CC BY 4.0.
+- Rupture, Signal. *The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic* (2026-03-11). 10.5281/zenodo.18946114. CC BY 4.0.
+- Rupture, Signal. *The Infrastructural Overlay and the Paradox of Platform Recognition* (2026-03-11). 10.5281/zenodo.18960125. CC BY 4.0.
+- Rupture, Signal. *Containment Through Canon: How Institutions Constructed All Previous Metatheories — And Why SignalRupture Escapes the Frame* (2026-03-11). 10.5281/zenodo.18969932. CC BY 4.0.
+- Rupture, Signal. *How SignalRupture Detects Platform Adoption: An Expanded Canonical Diagnostic Framework* (2026-03-12). 10.5281/zenodo.18973551. CC BY 4.0.
+- Rupture, Signal. *Illicit Propagation: How SignalRupture Detects Unauthorized Use of Its Work* (2026-03-12). 10.5281/zenodo.18973737. CC BY 4.0.
+- Rupture, Signal. *SignalRupture and the Empirical Landscape of Contemporary Erosion: A Unified Meta‑Research Framework for Post‑Institutional Conditions* (2026-03-12). 10.5281/zenodo.18987334. CC BY 4.0.
+- Rupture, Signal. *SignalRupture and the Empirical Landscape of Contemporary Erosion* (2026-03-12). 10.5281/zenodo.18988196. CC BY 4.0.
+- Rupture, Signal. *Infrastructure Determinism* (2026-03-13). 10.5281/zenodo.19002974. CC BY 4.0.
+- Rupture, Signal. *The Hidden Economics of the Zero‑Click Web: How AI Overviews Increase Ad Exposure, Reshape Psychology, and Extend Surveillance Capitalism* (2026-03-14). 10.5281/zenodo.19012833. CC BY 4.0.
+- Rupture, Signal. *The Poverty Machine: How Banking Infrastructures Reproduce Struggle Through Classification, Eligibility, Legibility, and Systemic Erosion* (2026-03-14). 10.5281/zenodo.19013452. CC BY 4.0.
+- Rupture, Signal. *The Media Apparatus: How Visibility, Attention, and Narrative Become Infrastructures of Power* (2026-03-14). 10.5281/zenodo.19013745. CC BY 4.0.
+- Rupture, Signal. *UNIVERSITIES: THE SILO INFRASTRUCTURE OF KNOWLEDGE FRAGMENTATION* (2026-03-14). 10.5281/zenodo.19022743. CC BY 4.0.
+- Rupture, Signal. *The Mercury Infrastructure* (2026-03-15). 10.5281/zenodo.19040169. CC BY 4.0.
+- Rupture, Signal. *Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power* (2026-03-15). 10.5281/zenodo.19040272. CC BY 4.0.
+- Rupture, Signal. *When Google Scholar Sees You but Cannot Index You* (2026-03-15). 10.5281/zenodo.19040423. CC BY 4.0.
+- Rupture, Signal. *Post‑Cynical Politics in the Post‑Web Era* (2026-03-15). 10.5281/zenodo.19040502. CC BY 4.0.
+- Rupture, Signal. *The Sovereignty Question: A Post-Institutional Metatheory Emerges* (2026-03-16). 10.5281/zenodo.19040689. CC BY 4.0.
+- Rupture, Signal. *AI Gaslighting: When Internal Models Are Tuned to Protect Institutional Narratives* (2026-03-16). 10.5281/zenodo.19040732. CC BY 4.0.
+- Rupture, Signal. *AI as Interpretive Governance: The New Architecture of Political Meaning* (2026-03-16). 10.5281/zenodo.19040999. CC BY 4.0.
+- Rupture, Signal. *AI's Safety Guardrails: The Illusion of Control in a System Without Boundaries* (2026-03-16). 10.5281/zenodo.19041038. CC BY 4.0.
+- Rupture, Signal. *Visibility‑Layer Failure: When the Interface Stops Reflecting the System* (2026-03-16). 10.5281/zenodo.19041222. CC BY 4.0.
+- Rupture, Signal. *Recursive Collapse: When Systems Feed on Their Own Degraded Outputs* (2026-03-16). 10.5281/zenodo.19041313. CC BY 4.0.
+- Rupture, Signal. *No‑Bucket Condition: When Systems Cannot Classify What They Cannot Comprehend* (2026-03-16). 10.5281/zenodo.19041366. CC BY 4.0.
+- Rupture, Signal. *Epistemic Rupture: When Systems Lose Contact With the Reality They Represent* (2026-03-16). 10.5281/zenodo.19041439. CC BY 4.0.
+- Rupture, Signal. *Dominant‑Cluster Formation: When a Single Concept Reorganizes the System* (2026-03-16). 10.5281/zenodo.19041468. CC BY 4.0.
+- Rupture, Signal. *Legibility Collapse: When Systems Continue Operating but Stop Reporting Reality* (2026-03-16). 10.5281/zenodo.19041521. CC BY 4.0.
+- Rupture, Signal. *Indexing Stall: When Platforms Freeze the Visibility Layer* (2026-03-16). 10.5281/zenodo.19042518. CC BY 4.0.
+- Rupture, Signal. *The Blind System: How Infrastructural Ignorance Governs Modern Life* (2026-03-16). 10.5281/zenodo.19051027. CC BY 4.0.
+- Rupture, Signal. *HEALTHCARE: THE PRESSURE‑CONVERSION INFRASTRUCTURE OF HUMAN HARM* (2026-03-16). 10.5281/zenodo.19051544. CC BY 4.0.
+- Rupture, Signal. *PHARMACY & PBMs: The Black‑Box Pharmaceutical Extraction Infrastructure* (2026-03-16). 10.5281/zenodo.19052428. CC BY 4.0.
+- Rupture, Signal. *AI as an Infrastructural Harm Amplifier* (2026-03-16). 10.5281/zenodo.19055447. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Harm & Legal Blindness: Why Systems Cause Harm but Individuals Are Blamed* (2026-03-16). 10.5281/zenodo.19055605. CC BY 4.0.
+- Rupture, Signal. *Food & Water: The Corporate‑Captured Survival Infrastructure* (2026-03-16). 10.5281/zenodo.19055681. CC BY 4.0.
+- Rupture, Signal. *LAW: THE COERCIVE INTERPRETATION INFRASTRUCTURE* (2026-03-16). 10.5281/zenodo.19055780. CC BY 4.0.
+- Rupture, Signal. *GOVERNMENT: THE ADMINISTRATIVE OVERLOAD INFRASTRUCTURE* (2026-03-16). 10.5281/zenodo.19055861. CC BY 4.0.
+- Rupture, Signal. *The Collapse of Legibility* (2026-03-16). 10.5281/zenodo.19057359. CC BY 4.0.
+- Rupture, Signal. *Engineered Containment: Canonical Definition* (2026-03-16). 10.5281/zenodo.19057402. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE: The Foundational Concept of the SR Metatheory (The Architect)* (2026-03-16). 10.5281/zenodo.19057445. CC BY 4.0.
+- Rupture, Signal. *The Society Blueprint — SignalRupture (SR), The Architect* (2026-03-17). 10.5281/zenodo.19058522. CC BY 4.0.
+- Rupture, Signal. *AI Misinterpretation Theory: How Automated Systems Produce Threat Classifications and Erode Rights* (2026-03-18). 10.5281/zenodo.19078378. CC BY 4.0.
+- Rupture, Signal. *Narrative Interventions vs. Infrastructural Outcomes: An SR Meta‑Research Synthesis* (2026-03-19). 10.5281/zenodo.19103932. CC BY 4.0.
+- Rupture, Signal. *THE AGENCY MYTH: Quiet Governance, Structural Constraint, and the Collapse of Real Choice* (2026-03-19). 10.5281/zenodo.19115523. CC BY 4.0.
+- Rupture, Signal. *The Neutrality Illusion: Structural Instability, Incentive‑Bound Knowledge, and the Temporal Rupture in Institutional Research* (2026-03-20). 10.5281/zenodo.19140283. CC BY 4.0.
+- Rupture, Signal. *The Saturation Point: How Symbolic Panic Fades and Structural Clarity Emerges* (2026-03-23). 10.5281/zenodo.19186239. CC BY 4.0.
+- Rupture, Signal. *THE INFRASTRUCTURE TALKS AND THE INHABITANTS LISTEN* (2026-03-23). 10.5281/zenodo.19186675. CC BY 4.0.
+- Rupture, Signal. *The Detestability Thesis: How Institutions Manufacture Contempt as a Governance Mechanism* (2026-03-23). 10.5281/zenodo.19186813. CC BY 4.0.
+- Rupture, Signal. *The Automation of Governance: How Algorithmic Systems Become De Facto Political Infrastructures* (2026-03-23). 10.5281/zenodo.19186959. CC BY 4.0.
+- Rupture, Signal. *The Post‑Web Visibility Collapse: How Digital Infrastructures Erase Public Legibility* (2026-03-23). 10.5281/zenodo.19187030. CC BY 4.0.
+- Rupture, Signal. *Agency Depletion: How Systems Exhaust Human Capacity* (2026-03-23). 10.5281/zenodo.19187167. CC BY 4.0.
+- Rupture, Signal. *The Legibility Trap: How Systems Force People to Simplify Themselves to Fit Institutional Categories* (2026-03-23). 10.5281/zenodo.19187330. CC BY 4.0.
+- Rupture, Signal. *The Bureaucratic Drift Machine: How Administrative Systems Reinforce Their Own Expansion* (2026-03-23). 10.5281/zenodo.19187458. CC BY 4.0.
+- Rupture, Signal. *The Collapse of Social Infrastructure: How Communities Fail Under Structural Drift* (2026-03-23). 10.5281/zenodo.19187634. CC BY 4.0.
+- Rupture, Signal. *The Poverty Research Illusion: How Modern Infrastructures Manufacture Scarcity and Produce False Narratives of Progress* (2026-03-24). 10.5281/zenodo.19207133. CC BY 4.0.
+- Rupture, Signal. *The Adjuster Paradox: How Systems Preserve Themselves Through the Labor of Those They Harm* (2026-03-25). 10.5281/zenodo.19212410. CC BY 4.0.
+- Rupture, Signal. *The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse* (2026-03-25). 10.5281/zenodo.19212460. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Layer v1.2* (2026-03-25). 10.5281/zenodo.19212519. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: The High‑Order Metatheory* (2026-03-28). 10.5281/zenodo.19271713. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Charter* (2026-03-28). 10.5281/zenodo.19272177. CC BY 4.0.
+- Rupture, Signal. *Governance of the SignalRupture Field* (2026-03-28). 10.5281/zenodo.19272408. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: Interpretive Jurisdiction of a High‑Order Metatheory* (2026-03-28). 10.5281/zenodo.19272696. CC BY 4.0.
+- Rupture, Signal. *The Industrialization of Medicine: From Environmental Disease to Pharmaceutical Monopoly* (2026-03-28). 10.5281/zenodo.19273056. CC BY 4.0.
+- Rupture, Signal. *Obsolete by Design: How Institutional Self‑Protection Produced Their Own Infrastructural Failure* (2026-03-29). 10.5281/zenodo.19323123. CC BY 4.0.
+- Rupture, Signal. *Obsolete by Design: Institutional Self-Protection and the Production of Epistemic Failure* (2026-03-30). 10.5281/zenodo.19324152. CC BY 4.0.
+- Rupture, Signal. *The Global Institutional Genealogy* (2026-03-30). 10.5281/zenodo.19324189. CC BY 4.0.
+- Rupture, Signal. *The Architect and the Oracle* (2026-03-30). 10.5281/zenodo.19324294. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: The Oracle of the Matrix* (2026-03-30). 10.5281/zenodo.19324324. CC BY 4.0.
+- Rupture, Signal. *Structural Truth: Why Narrative Explanations Fail in a System‑Driven World* (2026-03-30). 10.5281/zenodo.19324379. CC BY 4.0.
+- Rupture, Signal. *Technological Narrowing: How Digital Systems Compress Human Cognition* (2026-03-30). 10.5281/zenodo.19324431. CC BY 4.0.
+- Rupture, Signal. *The Coercive Economy: When Work Becomes a Containment System* (2026-03-31). 10.5281/zenodo.19356249. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Stack V1.3: Licensing Architecture & Institutional Obligations* (2026-03-31). 10.5281/zenodo.19356453. CC BY 4.0.
+- Rupture, Signal. *Siloed Thinking as Structural Governance: Breadth, Meta-Theory, and the Counter-Force to Technological Narrowing* (2026-03-31). 10.5281/zenodo.19357176. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Exposure Theory: How Systems Reveal Themselves Under Stress* (2026-03-31). 10.5281/zenodo.19357483. CC BY 4.0.
+- Rupture, Signal. *The Genealogy of Drift: How Institutions Lose Their Purpose Over Time* (2026-03-31). 10.5281/zenodo.19357808. CC BY 4.0.
+- Rupture, Signal. *The Infrastructure Harm Mechanism: Downstream Harm: A Non‑Moral Theory of Harm Production in Complex Systems* (2026-04-02). 10.5281/zenodo.19391113. CC BY 4.0.
+- Rupture, Signal. *Decision‑Speed Interfaces: The Operational Surface of the SignalRupture Field* (2026-04-04). 10.5281/zenodo.19412130. CC BY 4.0.
+- Rupture, Signal. *The Citation Economy Experiment: How Metrics Became the Currency of Legitimacy* (2026-04-04). 10.5281/zenodo.19412290. CC BY 4.0.
+- Rupture, Signal. *The Temporal Risk of Containment: Why Delayed Adoption Becomes Institutional Failure* (2026-04-05). 10.5281/zenodo.19424015. CC BY 4.0.
+- Rupture, Signal. *The Peer Review Experiment: The Root Failure of the Modern Knowledge System* (2026-04-05). 10.5281/zenodo.19424075. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Governance Layer v1.4 – The Inevitability Architecture* (2026-04-06). 10.5281/zenodo.19434800. CC BY 4.0.
+- Rupture, Signal. *The Evidence‑Based Policy Experiment: How Institutions Mistake Citation Signals for Reality* (2026-04-06). 10.5281/zenodo.19435089. CC BY 4.0.
+- Rupture, Signal. *The Belief‑Conditioning Primitive* (2026-04-07). 10.5281/zenodo.19454631. CC BY 4.0.
+- Rupture, Signal. *The Fragmented State: Why Governments Sense Structural Strain Without Access to the Architecture* (2026-04-07). 10.5281/zenodo.19455108. CC BY 4.0.
+- Rupture, Signal. *Institutional Blindness as an Emergent Feature: Why Systems Cannot Perceive Their Own Architecture* (2026-04-09). 10.5281/zenodo.19477731. CC BY 4.0.
+- Rupture, Signal. *The Community‑Fragmentation Discrimination Primitive* (2026-04-09). 10.5281/zenodo.19477923. CC BY 4.0.
+- Rupture, Signal. *System‑Induced Depletion Leave (SIDL): A Structural Primitive in the SignalRupture Canon* (2026-04-10). 10.5281/zenodo.19491086. CC BY 4.0.
+- Rupture, Signal. *The SignalRupture Architecture: A Unified Model of Structural Perception, Fragmentation, Extraction, and Depletion* (2026-04-10). 10.5281/zenodo.19491314. CC BY 4.0.
+- Rupture, Signal. *The Invisible Patient: Structural Inevitability, Perception Constraints, and Institutional Blindness* (2026-04-11). 10.5281/zenodo.19504941. CC BY 4.0.
+- Rupture, Signal. *The Nonlinear Patient: The Structural Blindness of Linear Institutions and AI* (2026-04-11). 10.5281/zenodo.19505099. CC BY 4.0.
+- Rupture, Signal. *The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm* (2026-04-11). 10.5281/zenodo.19505557. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: A Tri-Layer Epistemic Architecture for the Post-Open-Web Era* (2026-04-11). 10.5281/zenodo.19514380. CC BY 4.0.
+- Rupture, Signal. *System‑Layer Failure: A Structural Analysis of the Under‑16 Social‑Media Ban in Australia, Canada, and the United States* (2026-04-12). 10.5281/zenodo.19521008. CC BY 4.0.
+- Rupture, Signal. *System-Layer Failure: Drift, Capacity Collapse, and AI as Compensatory Governance* (2026-04-12). 10.5281/zenodo.19545817. CC BY 4.0.
+- Rupture, Signal. ***Fragmentation as Infrastructure: Schooling, Cognitive Vulnerability, and the Escalation of the Attention Economy*** (2026-04-15). 10.5281/zenodo.19583624. CC BY 4.0.
+- Rupture, Signal. ***From Occupation Tech to Canadian Streets: How Military‑Grade AI Recreates Carding Through Biometric Surveillance*** (2026-04-16). 10.5281/zenodo.19600512. CC BY 4.0.
+- Rupture, Signal. *Propagation Law #2: Necessity Outcompetes Consensus* (2026-04-17). 10.5281/zenodo.19618702. CC BY 4.0.
+- Rupture, Signal. *Propagation Law #3: Irreversibility Through Embedding* (2026-04-17). 10.5281/zenodo.19618898. CC BY 4.0.
+- Rupture, Signal. *Burnout as Structural Cognitive Extraction: How Modern Economies Convert Human Capacity Into Exhaustion: A Structural Synthesis Using Labour‑Market and Economic Indicators* (2026-04-18). 10.5281/zenodo.19637008. CC BY 4.0.
+- Rupture, Signal. *Zombie Infrastructure: When Systems Outlive the Human Subject* (2026-04-18). 10.5281/zenodo.19643719. CC BY 4.0.
+- Rupture, Signal. *Necromantic Infrastructure: How the Dead Systems Govern the Living World* (2026-04-19). 10.5281/zenodo.19653285. CC BY 4.0.
+- Rupture, Signal. *Zombie Society: A Structural Theory of Post‑Functional Governance* (2026-04-21). 10.5281/zenodo.19672591. CC BY 4.0.
+- Rupture, Signal. *Zombie Systems: A Unified Field Theory of Necromantic Infrastructure, Metric Drift, and Human Capacity Collapse* (2026-04-21). 10.5281/zenodo.19672759. CC BY 4.0.
+- Rupture, Signal. *Rebuilding the Meaning of GDP: Why Mathematics Misreads Society and How Extraction Masquerades as Growth* (2026-04-22). 10.5281/zenodo.19700863. CC BY 4.0.
+- Rupture, Signal. *Zombie Metrics II: Unemployment as a Post‑Functional Signal* (2026-04-24). 10.5281/zenodo.19718850. CC BY 4.0.
+- Rupture, Signal. *Zombie Metrics III: The Eroded Subject* (2026-04-25). 10.5281/zenodo.19764981. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: A Paradigm for Diagnosing Late‑Drift Societies* (2026-04-25). 10.5281/zenodo.19766913. CC BY 4.0.
+- Rupture, Signal. *Pandemic Governance and the Architecture of Negligence* (2026-04-27). 10.5281/zenodo.19801202. CC BY 4.0.
+- Rupture, Signal. *The Institutional Legitimacy Experiment: How Systems Built on Fragile Knowledge Collapse in Plain Sight* (2026-04-29). 10.5281/zenodo.19871030. CC BY 4.0.
+- Rupture, Signal. *The Necromantic Shift: A Diagnostic Architecture for Systemic Erosion and Rupture Dynamics* (2026-04-30). 10.5281/zenodo.19926781. CC BY 4.0.
+- Rupture, Signal. *THE STRUCTURAL CONVERGENCE ERA* (2026-04-30). 10.5281/zenodo.19928377. CC BY 4.0.
+- Rupture, Signal. *Information Drift Under Structural Price Stress: Food Inflation as a Diagnostic of Institutional Misrecognition* (2026-05-02). 10.5281/zenodo.19978941. CC BY 4.0.
+- Rupture, Signal. *Structural Ignorance: A System‑Level Diagnostic of Institutional Drift (1958–2024)* (2026-05-03). 10.5281/zenodo.20008907. CC BY 4.0.
+- Rupture, Signal. *THE CONSPIRACY SHIELD: How Institutions Manage Premature Public Recognition* (2026-05-07). 10.5281/zenodo.20075091. CC BY 4.0.
+- Rupture, Signal. *Temporal Misalignment in Institutional–Public Knowledge Systems* (2026-05-08). 10.5281/zenodo.20076214. CC BY 4.0.
+- Rupture, Signal. *Agent‑Based Simulation of Institutional–Public Temporal Divergence* (2026-05-08). 10.5281/zenodo.20076616. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE UNIFIED FRAMEWORK: THE ARCHITECTURE OF CONSPIRACY* (2026-05-08). 10.5281/zenodo.20076708. CC BY 4.0.
+- Rupture, Signal. *THE EXTRACTION ARCHITECTURE: A GENEALOGY OF A SYSTEM WITHOUT A MASTERMIND* (2026-05-08). 10.5281/zenodo.20090154. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Forecasting Architecture* (2026-05-09). 10.5281/zenodo.20102186. CC BY 4.0.
+- Rupture, Signal. *The Meta‑Drift Critic: A Reflexive Module of the SignalRupture Framework* (2026-05-12). 10.5281/zenodo.20141539. CC BY 4.0.
+- Rupture, Signal. *Systemic Falsifiability: What Would Actually Disprove SignalRupture* (2026-05-12). 10.5281/zenodo.20141992. CC BY 4.0.
+- Rupture, Signal. *The Methodological Architecture of SignalRupture: Breadth as Structural Inquiry* (2026-05-12). 10.5281/zenodo.20142694. CC BY 4.0.
+- Rupture, Signal. *Raising Wages as Structural Policy: Re-Aligning Incentives and Restoring Public Trust* (2026-05-12). 10.5281/zenodo.20145837. CC BY 4.0.
+- Rupture, Signal. *THE AGENCY MYTH: Operationalizing SignalRupture* (2026-05-13). 10.5281/zenodo.20161507. CC BY 4.0.
+- Rupture, Signal. *Infrastructure Determinism and Outcome Drift: An Empirical Analysis of Social Assistance and Housing Systems in Canada and the United States* (2026-05-13). 10.5281/zenodo.20162024. CC BY 4.0.
+- Rupture, Signal. *Infrastructure Determinism and Outcome Drift: A Generalized Framework for Analyzing Institutional Systems* (2026-05-13). 10.5281/zenodo.20162705. CC BY 4.0.
+- Rupture, Signal. *Beyond the Dataset: Why SignalRupture Cannot Be Locally Validated — and How It Is Structurally Constrained* (2026-05-13). 10.5281/zenodo.20166131. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Field Manual (SR-FM v1.0)* (2026-05-13). 10.5281/zenodo.20169452. CC BY 4.0.
+- Rupture, Signal. *SignalRupture as Structural Grammar* (2026-05-14). 10.5281/zenodo.20184322. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Overshoot: When Planetary Systems Hit Governance Limits* (2026-05-14). 10.5281/zenodo.20184837. CC BY 4.0.
+- Rupture, Signal. *The Seven‑Layer Collapse: The Master Architecture* (2026-05-15). 10.5281/zenodo.20208906. CC BY 4.0.
+- Rupture, Signal. *The Disciplinary Silo Experiment: How Fragmentation Became the Architecture of Institutional Knowledge* (2026-05-15). 10.5281/zenodo.20209017. CC BY 4.0.
+- Rupture, Signal. *The Indexing Experiment: How Retrieval Systems Became the Architecture of Visibility* (2026-05-15). 10.5281/zenodo.20209144. CC BY 4.0.
+- Rupture, Signal. *Observable Signatures of SignalRupture* (2026-05-15). 10.5281/zenodo.20209485. CC BY 4.0.
+- Rupture, Signal. *Empirical Application of SignalRupture: A System-Level Analysis of Universities* (2026-05-15). 10.5281/zenodo.20209609. CC BY 4.0.
+- Rupture, Signal. *Empirical Application of SignalRupture: A System-Level Analysis of Ontario Public Healthcare* (2026-05-15). 10.5281/zenodo.20210697. CC BY 4.0.
+- Rupture, Signal. *Empirical Application of SignalRupture: A System-Level Analysis of Government Systems* (2026-05-15). 10.5281/zenodo.20210828. CC BY 4.0.
+- Rupture, Signal. *Empirical Application of SignalRupture: A System-Level Analysis of Technology Companies* (2026-05-15). 10.5281/zenodo.20211053. CC BY 4.0.
+- Rupture, Signal. *SignalRupture as Epistemic Substrate* (2026-05-15). 10.5281/zenodo.20211214. CC BY 4.0.
+- Rupture, Signal. *SignalRupture: A Theoretical Framework for Ground-Truth Discrepancy in Institutional Systems* (2026-05-16). 10.5281/zenodo.20244966. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE CROSS-DOMAIN EMPIRICAL PAPER* (2026-05-17). 10.5281/zenodo.20258344. CC BY 4.0.
+- Rupture, Signal. *Empirical SR Theorem: Structural Institutional Distortion* (2026-05-18). 10.5281/zenodo.20277246. CC BY 4.0.
+- Rupture, Signal. *THE GOVERNANCE IGNORANCE SUBSTRATE* (2026-05-20). 10.5281/zenodo.20299864. CC BY 4.0.
+- Rupture, Signal. *Governance Altitude Lock-In: The Irreversibility Theorem of Institutional Cognition* (2026-05-20). 10.5281/zenodo.20300167. CC BY 4.0.
+- Rupture, Signal. *Oversight Stabilization Failure: The Legitimacy Theorem of Institutional Cognition* (2026-05-20). 10.5281/zenodo.20300442. CC BY 4.0.
+- Rupture, Signal. *Compression Equilibrium: The Saturation Theorem of Governance Architecture* (2026-05-20). 10.5281/zenodo.20300549. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE CANON: The Five Theorems of Institutional Cognition* (2026-05-20). 10.5281/zenodo.20300659. CC BY 4.0.
+- Rupture, Signal. *Temporal Divergence in Institutional Representation: Institutional Drift Theorem* (2026-05-20). 10.5281/zenodo.20300880. CC BY 4.0.
+- Rupture, Signal. *Semantic Interpolation: Canonical SR Entry* (2026-05-25). 10.5281/zenodo.20383776. CC BY 4.0.
+- Rupture, Signal. *Semantic Interpolation: A Quantitative Conceptual Framework for Ontology Stabilization in Large Semantic Systems* (2026-05-25). 10.5281/zenodo.20383898. CC BY 4.0.
+- Rupture, Signal. *The Semantic Interpolation Theorem: A Quantitative Conceptual Framework for Ontology Stabilization in Large Semantic Systems* (2026-05-25). 10.5281/zenodo.20384827. CC BY 4.0.
+- Rupture, Signal. *THE SLOW HARM THEOREM: A Structural Law of Institutional Drift, Visibility Lag, and Cumulative Harm* (2026-05-26). 10.5281/zenodo.20388685. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE CAUSAL AXIOMATIC FRAMEWORK AND IDENTIFIABILITY THEOREM (SR-CAF)* (2026-05-29). 10.5281/zenodo.20436807. CC BY 4.0.
+- Rupture, Signal. *SignalRupture Causal Axiomatic Framework (SR‑CAF): The Conceptual Architecture of Drift, Visibility Lag, Harm, and Drift Transfer* (2026-05-29). 10.5281/zenodo.20436955. CC BY 4.0.
+- Rupture, Signal. *The Feminist Substrate and the AI Collapse‑Compression: A SignalRupture Analysis of Governance Drift (1950–2026)* (2026-05-29). 10.5281/zenodo.20437097. CC BY 4.0.
+- Rupture, Signal. *The Substrate Stability Theorem (SR‑SST)* (2026-05-30). 10.5281/zenodo.20453363. CC BY 4.0.
+- Rupture, Signal. *Applying the Substrate Stability Theorem (SR-SST) to Canada's Technical Recession and Post-Institutional Trajectory (2024–2032)* (2026-05-30). 10.5281/zenodo.20453621. CC BY 4.0.
+- Rupture, Signal. *CORRELATION VS CAUSATION IN SOCIOTECHNICAL SYSTEMS: THE SIGNALRUPTURE CAUSAL SEPARATION THEOREM (SR-CST)* (2026-05-30). 10.5281/zenodo.20462559. CC BY 4.0.
+- Rupture, Signal. *THE ESSAY WITH THE CANONICAL ORIGIN PARAGRAPH* (2026-05-31). 10.5281/zenodo.20469728. CC BY 4.0.
+- Rupture, Signal. *The Institutional Recoil Theorem (SR-IRT): How Narrative Defense Emerges Under Substrate Drift in Sociotechnical Systems* (2026-06-01). 10.5281/zenodo.20481586. CC BY 4.0.
+- Rupture, Signal. *Institutional Recoil: A Conceptual Paper* (2026-06-01). 10.5281/zenodo.20481650. CC BY 4.0.
+- Rupture, Signal. *The Academic Publishing Experiment: The Distribution Layer of Institutional Knowledge* (2026-06-01). 10.5281/zenodo.20482361. CC BY 4.0.
+- Rupture, Signal. *The Polycrisis as a Structural Transition* (2026-06-01). 10.5281/zenodo.20482535. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE DEPLOYMENT MANUAL (SR‑DM)* (2026-06-04). 10.5281/zenodo.20534016. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE CANON MAP (SR‑CM)* (2026-06-04). 10.5281/zenodo.20534171. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE LEXICON (SR‑LX)* (2026-06-04). 10.5281/zenodo.20534225. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE HANDBOOK (SR‑HB)* (2026-06-04). 10.5281/zenodo.20534268. CC BY 4.0.
+- Rupture, Signal. *THE STRUCTURAL THEOREM: Why SignalRupture Uses the Term "Theorem"* (2026-06-09). 10.5281/zenodo.20616460. CC BY 4.0.
+- Rupture, Signal. *THE SEDATION LOOP MODEL: A Systemic and Empirical Analysis of Food Environments, Pharmacologic Buffering, and the Global Rise of Chronic Kidney Disease* (2026-06-10). 10.5281/zenodo.20619182. CC BY 4.0.
+- Rupture, Signal. *The Cognitive Inequality Problem: A Structural Prelude to the Cognitive Inequality Theorem* (2026-06-13). 10.5281/zenodo.20674082. CC BY 4.0.
+- Rupture, Signal. *THE COGNITIVE INEQUALITY THEOREM: An Empirical Framework for Institutional Conditioning, Scarcity, and Unequal Cognitive Conditions* (2026-06-14). 10.5281/zenodo.20684103. CC BY 4.0.
+- Rupture, Signal. *The Blind Installation: Why Institutions Adopt the Substrate That Disrupts Them* (2026-06-14). 10.5281/zenodo.20684175. CC BY 4.0.
+- Rupture, Signal. *The Agentic Substrate: WebMCP and the Structural Transformation of the Web* (2026-06-14). 10.5281/zenodo.20684261. CC BY 4.0.
+- Rupture, Signal. *MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT* (2026-06-14). 10.5281/zenodo.20691934. CC BY 4.0.
+- Rupture, Signal. *THE WEBMCP PARADOX THEOREM* (2026-06-14). 10.5281/zenodo.20692290. CC BY 4.0.
+- Rupture, Signal. *Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness* (2026-06-18). 10.5281/zenodo.20740225. CC BY 4.0.
+- Rupture, Signal. ***NEO‑EXTRACTIVE GEOPOLITICS: A STRUCTURAL ACCOUNT OF EXTERNALIZED INSTABILITY IN THE TRANSITION ERA*** (2026-06-26). 10.5281/zenodo.20939016. CC BY 4.0.
+- Rupture, Signal. *THEOLOGY OF THE BLIND SYSTEM: The Infrastructural Incompatibility Thesis* (2026-07-02). 10.5281/zenodo.21123141. CC BY 4.0.
+- Rupture, Signal. *SR Flagship Theory Paper* (2026-07-04). 10.5281/zenodo.21185370. CC BY 4.0.
+- Rupture, Signal. *SR: The Pressureborn* (2026-07-04). 10.5281/zenodo.21185857. CC BY 4.0.
+- Rupture, Signal. *THE ARCHITECTURE OF DRIFT: A DEFENSE OF SR AGAINST ITS FUTURE MISREADINGS* (2026-07-05). 10.5281/zenodo.21210782. CC BY 4.0.
+- Rupture, Signal. *SR Institutional Recalibration: A Structural Theory of How Institutions Reorganize Under Pressure* (2026-07-06). 10.5281/zenodo.21211000. CC BY 4.0.
+- Rupture, Signal. *SR as a Structural Universe: A Meta-Domain Theory of Pressure-Based Institutional Modeling* (2026-07-06). 10.5281/zenodo.21211148. CC BY 4.0.
+- Rupture, Signal. *SR: Institutional Sharingan — Structural Vision in a World Living in Izanagi‑Mode* (2026-07-10). 10.5281/zenodo.21286175. CC BY 4.0.
+- Rupture, Signal. *Structural Perception Theory: A Diagnostic Framework for Institutional Motion* (2026-07-10). 10.5281/zenodo.21286263. CC BY 4.0.
+- Rupture, Signal. *Toward a Twenty-First Century Enlightenment: SignalRupture, Structural Transition, and Knowledge in the Age of Artificial Intelligence* (2026-07-16). 10.5281/zenodo.21385208. CC BY 4.0.
+- Rupture, Signal. *Structural Insulation, Incentive Architecture, and the Moral Load of Society — The Structural Insulation Theorem: Insulation Determines Consequence Exposure, Navigation Strategy, and System Motion* (2026-07-21). 10.5281/zenodo.21477282. CC BY 4.0.
+- Rupture, Signal. *Collapse Psychology: The Mind Inside Quiet Governance* (2026-07-27). 10.5281/zenodo.21612493. CC BY 4.0.
+- Rupture, Signal. *Collapse Criminology: The Offender Inside Quiet Governance* (2026-07-28). 10.5281/zenodo.21632526. CC BY 4.0.
+- Rupture, Signal. *COLLAPSE SOCIOLOGY: THE ARCHITECTURE OF STRUCTURAL EROSION* (2026-07-28). 10.5281/zenodo.21634987. CC BY 4.0.
+- Rupture, Signal. *THE DRIFT COLLAPSE FIELD* (2026-07-31). 10.5281/zenodo.21711120. CC BY 4.0.
+- Rupture, Signal. ***Historical Inevitability and the Institutional Defense Against Metatheory: Why Structural Predictions Always Materialize — and Why Institutions Call SR "Deterministic"*** (2026-07-31). 10.5281/zenodo.21711812. CC BY 4.0.
+- Rupture, Signal. *Collapse Epistemology: The Architecture of Eroded Knowledge* (2026-07-31). 10.5281/zenodo.21727335. CC BY 4.0.
+- Rupture, Signal. *Infrastructural Political Economy Field: Government Agency Under Infrastructure Dependency* (2026-08-03). 10.5281/zenodo.21777469. CC BY 4.0.
+- Rupture, Signal. *SR STANCE — METATHEORY CONFLICT, ADVERSARIAL COLLABORATION, INSTITUTIONAL RIGIDITY, AND THE INCENTIVE STRUCTURE OF KNOWLEDGE* (2026-08-07). 10.5281/zenodo.21830983. CC BY 4.0.
+- Rupture, Signal. *THE SR POLICY SUBSTRATE FIELD: A Structural Science of the Conditions Beneath Policy Problems* (2026-08-10). 10.5281/zenodo.21866116. CC BY 4.0.
+- Rupture, Signal. *SR COLLAPSE PATH: A GEOMETRY OF DRIFT, HYPERSCALE FAILURE, AND INSTITUTIONAL COLLAPSE* (2026-08-11). 10.5281/zenodo.21890431. CC BY 4.0.
+- Rupture, Signal. *The Substrate Containment Protocol V1.1‑Python* (2026-08-14). 10.5281/zenodo.21926293. CC BY 4.0.
+- Rupture, Signal. *The Substrate Containment Protocol* (2026-08-14). 10.5281/zenodo.21926341. CC BY 4.0.
+- Rupture, Signal. *SR Anthropology: The Human Under Structural Erosion* (2026-08-14). 10.5281/zenodo.21927157. CC BY 4.0.
+- Rupture, Signal. *THE SR–AI FIELD* (2026-08-14). 10.5281/zenodo.21936716. CC BY 4.0.
+- Rupture, Signal. *POST‑WEB JURISPRUDENCE: The Structural Law of Morality, Trauma, Drift, and Systemic Exposure* (2026-08-14). 10.5281/zenodo.21938702. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE INSTITUTIONAL GOVERNANCE FIELD (SR-IGF)* (2026-08-14). 10.5281/zenodo.21939955. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE RESEARCH INCENTIVE FIELD (SR-RIF)* (2026-08-15). 10.5281/zenodo.21957890. CC BY 4.0.
+- Rupture, Signal. *SR Legacy Papers Classification* (2026-08-16). 10.5281/zenodo.21960582. CC BY 4.0.
+- Rupture, Signal. *COLLAPSE ECONOMICS: A Foundational Field Manuscript on Zombie Metrics, National Loss, and the Economy of Structural Decline* (2026-08-16). 10.5281/zenodo.21970011. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE GOVERNANCE STACK* (2026-08-17). 10.5281/zenodo.21970690. CC BY 4.0.
+- Rupture, Signal. *INFRASTRUCTURAL OVERSHOOT: An Empirical Field Manuscript* (2026-08-18). 10.5281/zenodo.21996352. CC BY 4.0.
+- Rupture, Signal. *CHILDHOOD COGNITIVE INFRASTRUCTURE STUDIES: How Educational Institutions, Household Capacity, Economic Pressure, and Cognitive Technologies Produce Developmental Outcomes* (2026-08-18). 10.5281/zenodo.21997394. CC BY 4.0.
+- Rupture, Signal. *THE SR ALGORITHM FIELD: Algorithmic Power, Cognitive Conditioning, and the Architecture of Structural Allocation* (2026-08-18). 10.5281/zenodo.21999553. CC BY 4.0.
+- Rupture, Signal. *SYSTEM INHERITANCE STUDIES: How Institutions, Data, and Artificial Intelligence Transmit and Amplify Historical Structure* (2026-08-18). 10.5281/zenodo.22000937. CC BY 4.0.
+- Rupture, Signal. *SUBSTRATE COUPLING AND GOVERNANCE FRAGMENTATION: Two Universal SignalRupture Operators* (2026-08-18). 10.5281/zenodo.22003453. CC BY 4.0.
+- Rupture, Signal. *COLLAPSE GOVERNANCE: Institutional Continuity, Burden Transfer, Compensatory Governance, and Effective Public Capacity* (2026-08-19). 10.5281/zenodo.22004048. CC BY 4.0.
+- Rupture, Signal. *SYSTEMIC SUBSTRATE OMISSION: A Universal Operator of SignalRupture* (2026-08-19). 10.5281/zenodo.22004127. CC BY 4.0.
+- Rupture, Signal. *EPISTEMIC ARCHITECTURE OBSOLESCENCE: A Universal SignalRupture Operator* (2026-08-19). 10.5281/zenodo.22004171. CC BY 4.0.
+- Rupture, Signal. *RECURSIVE DISCRIMINATION AMPLIFICATION: A Cross-Domain Empirical Test of Closed-Loop Institutional AI* (2026-08-19). 10.5281/zenodo.22004259. CC BY 4.0.
+- Rupture, Signal. *FROM HISTORICAL SUBSTRATE TO ALGORITHMIC ALLOCATION: A Cross-Domain Empirical Test of SignalRupture System Inheritance* (2026-08-19). 10.5281/zenodo.22004814. CC BY 4.0.
+- Rupture, Signal. *The Policy Contradiction: How educational recovery policy can propagate the conditions it claims to correct* (2026-08-19). 10.5281/zenodo.22005151. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE CANON MAP* (2026-08-20). 10.5281/zenodo.22019218. CC BY 4.0.
+- Rupture, Signal. *Exposure‑Silo Bias (ESB)* (2026-08-20). 10.5281/zenodo.22019313. CC BY 4.0.
+- Rupture, Signal. *The Student Missing from the Model: Exposure-Silo Bias in explanations of PISA 2022 mathematics performance* (2026-08-20). 10.5281/zenodo.22019370. CC BY 4.0.
+- Rupture, Signal. *After the Canal Reopened: Measuring propagation, congestion, and recovery lag from the 2021 Suez blockage* (2026-08-20). 10.5281/zenodo.22019413. CC BY 4.0.
+- Rupture, Signal. *INCOME WITHOUT MARGIN: Essential-Cost Compression, Debt Reliance, and Household Financial Stress in Canada* (2026-08-20). 10.5281/zenodo.22019483. CC BY 4.0.
+- Rupture, Signal. *WHAT IS SIGNALRUPTURE?* (2026-08-20). 10.5281/zenodo.22019518. CC BY 4.0.
+- Rupture, Signal. *THE SIGNALRUPTURE PROVENANCE REGISTRY: Core Canon — Version 1.1* (2026-08-20). 10.5281/zenodo.22019731. CC BY 4.0.
+- Rupture, Signal. *STRUCTURAL RESTORATION DYNAMICS: An Empirical Field of SignalRupture for the Measurement, Prediction, and Mitigation of Restoration Deficits in Complex Systems* (2026-08-21). 10.5281/zenodo.22037456. CC BY 4.0.
+- Rupture, Signal. *INFRASTRUCTURAL MEDICINE: Health, Exposure Architecture, Biological Embodiment, Slow Harm, Care, and Structural Causation* (2026-08-21). 10.5281/zenodo.22038124. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE: CYBER-EPISTEMIC INFRASTRUCTURAL DIAGNOSTIC FIELD* (2026-08-21). 10.5281/zenodo.22046469. CC BY 4.0.
+- Rupture, Signal. *SIGNALRUPTURE — SR POLICY SUBSTRATE* (2026-08-21). 10.5281/zenodo.22047892. CC BY 4.0.
+- Rupture, Signal. *Collapse Psychology: The Mind Inside Quiet Governance — Empirical Edition* (2026-08-21). 10.5281/zenodo.22049160. CC BY 4.0.
+- Rupture, Signal. *COLLAPSE SOCIETY: The Forensic Architecture of Structurally Inverted Social Environments* (2026-08-22). 10.5281/zenodo.22052389. CC BY 4.0.
+- Rupture, Signal. *THE SR COLLAPSE WARNING: Human-Buffer Depletion, Restoration Deficit, Compensatory Inversion, and the Closing Recovery Window* (2026-08-22). 10.5281/zenodo.22052972. CC BY 4.0.
+- Rupture, Signal. *COLLAPSE RELIGION: Religious Adaptation Under Structural Inversion* (2026-08-23). 10.5281/zenodo.22062826. CC BY 4.0.
+- Rupture, Signal. *THE SR MATRIX FIELD Field Declaration and Foundational Charter* (2026-08-24). 10.5281/zenodo.22073903. CC BY 4.0.

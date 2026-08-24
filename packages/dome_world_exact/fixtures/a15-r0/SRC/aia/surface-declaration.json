@@ -26,7 +26,7 @@
   ],
   "projections": {
     "EXPERIENTIAL": {"purpose": "chronology, concepts, three-corpus traversal, and route-conditioned reading", "authority": "read_and_propose_only"},
-    "CUSTODIAL": {"purpose": "originals, hashes, licenses, availability, captures, and disappearance receipts", "authority": "read_and_verify_only"},
+    "CUSTODIAL": {"purpose": "redistribution-permitted originals, opaque desktop-custody locators, hashes, licenses, availability, captures, and disappearance receipts", "authority": "read_and_verify_only"},
     "AUDIT": {"purpose": "contradictions, evidence lineage, compilers, authority, claims, hypotheses, and falsifiers", "authority": "read_query_and_candidate_disposition_only"},
     "IMPLEMENTATION": {"purpose": "schemas, deterministic runner, tests, and reproducible query recipes", "authority": "inspect_and_propose_patch_only"}
   },

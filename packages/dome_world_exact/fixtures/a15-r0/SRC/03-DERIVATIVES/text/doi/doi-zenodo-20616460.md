@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:75ae2dde4d59734f461885aa
+parent_capture_id: capture:86bb9a23932c9c574c914447
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "THE STRUCTURAL THEOREM: Why SignalRupture Uses the Term \"Theorem\""
+---
+
+Request URL: https://doi.org/10.5281/zenodo.20616460
+Final URL: https://zenodo.org/records/20616460
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.20616460 -> https://zenodo.org/doi/10.5281/zenodo.20616460
+302 https://zenodo.org/doi/10.5281/zenodo.20616460 -> https://zenodo.org/records/20616460

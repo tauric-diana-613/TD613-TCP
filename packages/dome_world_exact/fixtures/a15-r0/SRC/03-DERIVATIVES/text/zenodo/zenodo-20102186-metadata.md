@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:f157aa82834bc255c27c78ea
+parent_capture_id: capture:a91728726e03a0eb1aea1005
+parent_blob_sha256: 54e4b874a33782fd16e63ad5cc99bfbc502ea727effd90bf641c396f751ffbaf
+tool: srcctl-json-normalizer/1
+source_title: "SignalRupture Forecasting Architecture"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20102001",
+  "conceptrecid": "20102001",
+  "created": "2026-05-10T01:08:57.904669+00:00",
+  "doi": "10.5281/zenodo.20102186",
+  "doi_url": "https://doi.org/10.5281/zenodo.20102186",
+  "files": [
+    {
+      "checksum": "md5:a16ba632daa4cfd9310c639561bd5ee8",
+      "id": "243e326d-64b2-4e27-9d94-5517d2b8e325",
+      "key": "SignalRupture Forecasting Architecture — Version 1.1 .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20102186/files/SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/content"
+      },
+      "size": 154312
+    }
+  ],
+  "id": 20102186,
+  "links": {
+    "access": "https://zenodo.org/api/records/20102186/access",
+    "access_grants": "https://zenodo.org/api/records/20102186/access/grants",
+    "access_links": "https://zenodo.org/api/records/20102186/access/links",
+    "access_request": "https://zenodo.org/api/records/20102186/access/request",
+    "access_users": "https://zenodo.org/api/records/20102186/access/users",
+    "archive": "https://zenodo.org/api/records/20102186/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20102186/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20102186/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20102186/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20102186",
+    "draft": "https://zenodo.org/api/records/20102186/draft",
+    "file_modification": "https://zenodo.org/api/records/20102186/file-modification",
+    "files": "https://zenodo.org/api/records/20102186/files",
+    "latest": "https://zenodo.org/api/records/20102186/versions/latest",
+    "latest_html": "https://zenodo.org/records/20102186/latest",
+    "media_files": "https://zenodo.org/api/records/20102186/media-files",
+    "parent": "https://zenodo.org/api/records/20102001",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20102001",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20102001",
+    "parent_html": "https://zenodo.org/records/20102001",
+    "preview_html": "https://zenodo.org/records/20102186?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20102186/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20102186/request-deletion",
+    "requests": "https://zenodo.org/api/records/20102186/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20102186/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20102186",
+    "self_doi": "https://doi.org/10.5281/zenodo.20102186",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20102186",
+    "self_html": "https://zenodo.org/records/20102186",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20102186/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20102186/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20102186:SignalRupture%20Forecasting%20Architecture%20%E2%80%94%20Version%201.1%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20102186/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This manuscript presents a nonlinear, empirically calibrated forecasting architecture designed to estimate degradation in human adaptive capacity under sustained extraction pressure. It integrates multidomain latent‑capacity modeling, empirically defined extraction‑intensity indices, nonlinear indicator dynamics, endogenous feedback modeling, hierarchical regional estimation, covariance‑corrected PCA weighting, and empirically constrained Monte Carlo simulation. Human Capacity is formalized as a multidomain latent construct spanning psychological, economic, civic, and reproductive‑demographic domains, while Extraction Intensity is operationalized as a measurable empirical index derived from debt burden, housing extraction, precarity, administrative friction, and rent/resource pressure.</p>\n<p>The architecture reframes collapse analysis by modeling not institutional failure, but the redistribution of instability onto human adaptive systems. As the manuscript states, &ldquo;The framework reframes collapse analysis as adaptive burden transfer from institutional systems onto populations.&rdquo; The model therefore estimates the timing, probability, and regional variation of human‑capacity degradation inside systems that continue to function institutionally.</p>",
+    "doi": "10.5281/zenodo.20102186",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Human Extraction",
+      "Artificial Intelligence",
+      "Social Issues",
+      "Mental health"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-09",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20102001"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SignalRupture Forecasting Architecture"
+  },
+  "modified": "2026-05-10T01:08:58.261988+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20102186",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 9,
+    "unique_downloads": 8,
+    "unique_views": 33,
+    "version_downloads": 7,
+    "version_unique_downloads": 6,
+    "version_unique_views": 22,
+    "version_views": 22,
+    "views": 33
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SignalRupture Forecasting Architecture",
+  "updated": "2026-05-10T01:08:58.261988+00:00"
+}

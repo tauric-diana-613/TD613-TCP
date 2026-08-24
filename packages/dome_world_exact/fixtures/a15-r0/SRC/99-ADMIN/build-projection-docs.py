@@ -52,7 +52,7 @@ def main() -> int:
 
 > **Independent preservation fixture.** {NOTICE}
 
-This matched Git projection is a query surface for snapshot `{snapshot}`. The desktop vault remains custody authority. Read `CONNECTOR_ENTRY.md` before any corpus query.
+This sealed TD613-TCP projection is the query surface for snapshot `{snapshot}`. The desktop vault remains custody authority. Read `CONNECTOR_ENTRY.md` before any corpus query.
 
 ## Phase 2 preservation status
 
@@ -97,11 +97,11 @@ Route selection is explicit. This fixture transfers no authority, imports no TD6
 
 ## Mandatory epoch binding
 
-Resolve `04-RECEIPTS/phase2/current-seal.json` in both `tauric-diana-613/TD613-TCP` and `tauric-diana-613/A15-R0-C2`. Open a session only when `seal_id` and `atelier_snapshot_id` match exactly. Every query result, hypothesis packet, and proposed patch must carry both values.
+Resolve `04-RECEIPTS/phase2/current-seal.json` in `tauric-diana-613/TD613-TCP`. Open a session only when both `seal_id` and `atelier_snapshot_id` are present and the projection seal verifies. Every query result, hypothesis packet, and proposed patch must carry both values.
 
 ```text
 desktop vault = custody authority
-matched sealed Git projection = query authority for epoch S_k
+sealed TD613-TCP projection = query authority for epoch S_k
 unsealed working state != connector query authority
 ```
 
@@ -112,7 +112,7 @@ Never join epochs implicitly. An explicit cross-epoch assay must name both seals
 1. Read `01-MANIFESTS/phase2/interface-registry.json`.
 2. Resolve identifiers through `01-MANIFESTS/phase2/entity-resolver-v2.jsonl`.
 3. Follow work → edition → manifestation → capture → derivative/source span without skipping layers.
-4. Resolve restricted bodies only through opaque `src-private-locator:*` values and the private repository resolver.
+4. Treat opaque `src-private-locator:*` values as evidence that a body was verified in desktop custody at the named seal. They disclose no path and confer no connector access; return `PRIVATE_UNAVAILABLE` when the body is absent from TD613-TCP.
 5. Treat `PLACEHOLDER`, `OPEN_UNRESOLVED`, `PRIVATE_UNAVAILABLE`, and contradictions as terminal query states until new evidence is sealed.
 6. Search formal theory, fictional universe, and governance/provenance as overlapping projections, never exclusive bins.
 

@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:101cdb45966aa0e02a8ca5ee
+parent_capture_id: capture:b7141201445b5ab052ff25b1
+parent_blob_sha256: 5ad48e46f0142c1dc9c15023e63be41c67b3484808885207439b27439fb0badf
+tool: srcctl-json-normalizer/1
+source_title: "Administrative Harm / Administrative Trauma: How Modern Systems Produce Invisible Injury"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18140672",
+  "conceptrecid": "18140672",
+  "created": "2026-01-03T16:01:14.663109+00:00",
+  "doi": "10.5281/zenodo.18140846",
+  "doi_url": "https://doi.org/10.5281/zenodo.18140846",
+  "files": [
+    {
+      "checksum": "md5:218180524b5faf987d98127a2eb6a61e",
+      "id": "6dbd081f-f52b-44c6-9a28-ce0302b47751",
+      "key": " Administrative Trauma: How Modern Systems Produce Invisible Injury .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18140846/files/%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/content"
+      },
+      "size": 89827
+    }
+  ],
+  "id": 18140846,
+  "links": {
+    "access": "https://zenodo.org/api/records/18140846/access",
+    "access_grants": "https://zenodo.org/api/records/18140846/access/grants",
+    "access_links": "https://zenodo.org/api/records/18140846/access/links",
+    "access_request": "https://zenodo.org/api/records/18140846/access/request",
+    "access_users": "https://zenodo.org/api/records/18140846/access/users",
+    "archive": "https://zenodo.org/api/records/18140846/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18140846/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18140846/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18140846/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18140846",
+    "draft": "https://zenodo.org/api/records/18140846/draft",
+    "file_modification": "https://zenodo.org/api/records/18140846/file-modification",
+    "files": "https://zenodo.org/api/records/18140846/files",
+    "latest": "https://zenodo.org/api/records/18140846/versions/latest",
+    "latest_html": "https://zenodo.org/records/18140846/latest",
+    "media_files": "https://zenodo.org/api/records/18140846/media-files",
+    "parent": "https://zenodo.org/api/records/18140672",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18140672",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140672",
+    "parent_html": "https://zenodo.org/records/18140672",
+    "preview_html": "https://zenodo.org/records/18140846?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18140846/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18140846/request-deletion",
+    "requests": "https://zenodo.org/api/records/18140846/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18140846/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18140846",
+    "self_doi": "https://doi.org/10.5281/zenodo.18140846",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140846",
+    "self_html": "https://zenodo.org/records/18140846",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18140846/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18140846/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18140846:%20Administrative%20Trauma:%20How%20Modern%20Systems%20Produce%20Invisible%20Injury%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18140846/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Administrative Harm / Administrative Trauma: How Modern Systems Produce Invisible Injury defines administrative harm&mdash;also expressed clinically as administrative trauma&mdash;as a structural injury generated through repeated contact with modern bureaucratic systems. Rather than arising from acute events, administrative harm accumulates through procedural friction, digital barriers, shifting requirements, automated denials, and systemic delay. Drawing on SR&rsquo;s theoretical canon&mdash;including Infrastructural Exposure Theory, Slow Harm Theory, Systemic Erosion Theory, Social Infrastructure Theory, and the clinical framing developed in Pathologized Infrastructure&mdash;the essay positions administrative harm/administrative trauma as a predictable outcome of system design rather than an individual failing.</p>\n<p>The work argues that administrative harm is metabolized through absorption, enacted through bureaucratic friction, and intensified through temporal governance. It becomes administrative trauma when chronic exposure produces physiological, cognitive, and emotional consequences. Through this lens, administrative harm/administrative trauma emerges as a foundational diagnostic category for understanding contemporary breakdowns in workplaces, healthcare, welfare systems, and justice infrastructures. The essay reframes administrative suffering as systemic rather than personal, revealing the hidden architecture through which modern institutions produce invisible injury.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18140846",
+    "keywords": [
+      "Criminology",
+      "Social Issues",
+      "Social Psychology",
+      "Feminism",
+      "Critical Theory",
+      "Activism",
+      "Political Activism"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18140672"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Administrative Harm / Administrative Trauma: How Modern Systems Produce Invisible Injury",
+    "version": "1.1"
+  },
+  "modified": "2026-01-29T01:47:38.841643+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18140846",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 28,
+    "unique_downloads": 22,
+    "unique_views": 53,
+    "version_downloads": 16,
+    "version_unique_downloads": 13,
+    "version_unique_views": 33,
+    "version_views": 35,
+    "views": 58
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Administrative Harm / Administrative Trauma: How Modern Systems Produce Invisible Injury",
+  "updated": "2026-01-29T01:47:38.841643+00:00"
+}

@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:1ab37b272e6e7b6f4878db09
+parent_capture_id: capture:cc42f5fa3dc605be2e93bcc5
+parent_blob_sha256: d38298c8b69d8f5d059bc00a97ee624ab4ffb22463a34498bf813b772a9e072f
+tool: srcctl-json-normalizer/1
+source_title: "The Blind System: How Infrastructural Ignorance Governs Modern Life"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19051026",
+  "conceptrecid": "19051026",
+  "created": "2026-03-16T13:43:26.708358+00:00",
+  "doi": "10.5281/zenodo.19051027",
+  "doi_url": "https://doi.org/10.5281/zenodo.19051027",
+  "files": [
+    {
+      "checksum": "md5:f5ce0bb9278f30485b8f8244e46c3f7a",
+      "id": "f04eeee2-25a4-4192-b5a4-110d2c2c5c37",
+      "key": "The Blind System: How Infrastructural Ignorance Governs Modern Life .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19051027/files/The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/content"
+      },
+      "size": 116754
+    }
+  ],
+  "id": 19051027,
+  "links": {
+    "access": "https://zenodo.org/api/records/19051027/access",
+    "access_grants": "https://zenodo.org/api/records/19051027/access/grants",
+    "access_links": "https://zenodo.org/api/records/19051027/access/links",
+    "access_request": "https://zenodo.org/api/records/19051027/access/request",
+    "access_users": "https://zenodo.org/api/records/19051027/access/users",
+    "archive": "https://zenodo.org/api/records/19051027/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19051027/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19051027/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19051027/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19051027",
+    "draft": "https://zenodo.org/api/records/19051027/draft",
+    "file_modification": "https://zenodo.org/api/records/19051027/file-modification",
+    "files": "https://zenodo.org/api/records/19051027/files",
+    "latest": "https://zenodo.org/api/records/19051027/versions/latest",
+    "latest_html": "https://zenodo.org/records/19051027/latest",
+    "media_files": "https://zenodo.org/api/records/19051027/media-files",
+    "parent": "https://zenodo.org/api/records/19051026",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19051026",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19051026",
+    "parent_html": "https://zenodo.org/records/19051026",
+    "preview_html": "https://zenodo.org/records/19051027?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19051027/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19051027/request-deletion",
+    "requests": "https://zenodo.org/api/records/19051027/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19051027/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19051027",
+    "self_doi": "https://doi.org/10.5281/zenodo.19051027",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19051027",
+    "self_html": "https://zenodo.org/records/19051027",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19051027/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19051027/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19051027:The%20Blind%20System:%20How%20Infrastructural%20Ignorance%20Governs%20Modern%20Life%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19051027/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Blind System introduces infrastructural ignorance as the foundational mechanism through which modern societies generate harm. The essay argues that contemporary infrastructures&mdash;food, water, energy, digital platforms, supply chains, and AI&mdash;are structurally designed to remain blind to their own consequences, enabling extraction, acceleration, and expansion without accountability. Through examples spanning electrification, mineral dependency, digital environments, and AI deployment, the essay demonstrates how systemic blindness transforms ordinary infrastructures into harm‑producing machines. It establishes infrastructural ignorance as a core diagnostic tool within the SignalRupture framework and a critical lens for understanding why modern societies continue to produce stress, scarcity, and instability even when evidence of harm is overwhelming.</p>",
+    "doi": "10.5281/zenodo.19051027",
+    "keywords": [
+      "Metatheory",
+      "Society",
+      "Blueprint",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19051026"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Blind System: How Infrastructural Ignorance Governs Modern Life",
+    "version": "1.0"
+  },
+  "modified": "2026-03-16T13:43:27.187081+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19051027",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 13,
+    "unique_downloads": 12,
+    "unique_views": 27,
+    "version_downloads": 13,
+    "version_unique_downloads": 12,
+    "version_unique_views": 27,
+    "version_views": 27,
+    "views": 27
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Blind System: How Infrastructural Ignorance Governs Modern Life",
+  "updated": "2026-03-16T13:43:27.187081+00:00"
+}

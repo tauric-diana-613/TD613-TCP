@@ -1,0 +1,18 @@
+{
+  "at": "2026-08-24T06:49:42.372946Z",
+  "baseline_counts": {
+    "academia": 499,
+    "medium": 210,
+    "substack": 257,
+    "zenodo": 442
+  },
+  "disk_gate": "PASS",
+  "dry_run": false,
+  "free_bytes": 347737759744,
+  "phase15_validator_present": true,
+  "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "required_free_bytes": 413718099,
+  "root": "C:\\Users\\timst\\Documents\\Codex\\2026-08-14\\new-chat\\SRC-vault-phase2",
+  "runner": "srcctl/2.0.0",
+  "source_bytes_expected": 137906033
+}

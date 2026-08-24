@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:a783b8411c0a7287fb1f5895
+parent_capture_id: capture:015dae88bda20d775a89d4db
+parent_blob_sha256: b6440e11d838b9452d54979fd68454bc0beb87d795d4fa1262b843ab0e325b08
+tool: srcctl-json-normalizer/1
+source_title: "The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18946113",
+  "conceptrecid": "18946113",
+  "created": "2026-03-11T00:10:09.613345+00:00",
+  "doi": "10.5281/zenodo.18946114",
+  "doi_url": "https://doi.org/10.5281/zenodo.18946114",
+  "files": [
+    {
+      "checksum": "md5:e48cf81f0b02cf0e56d953d8ec0c76e3",
+      "id": "68b6c600-cb7c-4ffc-8d4d-2e378fb9738e",
+      "key": "The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18946114/files/The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/content"
+      },
+      "size": 93743
+    }
+  ],
+  "id": 18946114,
+  "links": {
+    "access": "https://zenodo.org/api/records/18946114/access",
+    "access_grants": "https://zenodo.org/api/records/18946114/access/grants",
+    "access_links": "https://zenodo.org/api/records/18946114/access/links",
+    "access_request": "https://zenodo.org/api/records/18946114/access/request",
+    "access_users": "https://zenodo.org/api/records/18946114/access/users",
+    "archive": "https://zenodo.org/api/records/18946114/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18946114/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18946114/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18946114/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18946114",
+    "draft": "https://zenodo.org/api/records/18946114/draft",
+    "file_modification": "https://zenodo.org/api/records/18946114/file-modification",
+    "files": "https://zenodo.org/api/records/18946114/files",
+    "latest": "https://zenodo.org/api/records/18946114/versions/latest",
+    "latest_html": "https://zenodo.org/records/18946114/latest",
+    "media_files": "https://zenodo.org/api/records/18946114/media-files",
+    "parent": "https://zenodo.org/api/records/18946113",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18946113",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18946113",
+    "parent_html": "https://zenodo.org/records/18946113",
+    "preview_html": "https://zenodo.org/records/18946114?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18946114/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18946114/request-deletion",
+    "requests": "https://zenodo.org/api/records/18946114/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18946114/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18946114",
+    "self_doi": "https://doi.org/10.5281/zenodo.18946114",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18946114",
+    "self_html": "https://zenodo.org/records/18946114",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18946114/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18946114/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18946114:The%20Interlocked%20World%20and%20the%20Siloed%20Mind:%20A%20Collapse%E2%80%91Era%20Diagnostic%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18946114/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic examines the structural mismatch between a world governed by tightly interdependent infrastructures and a population trained to think in disciplinary, cognitive, and algorithmic silos. The essay argues that the widespread overwhelm experienced across society is not a psychological failure but a predictable outcome of institutional fragmentation, platform‑driven attention collapse, and AI‑mediated pre‑interpretation.</p>\n<p>As global systems become more interconnected&mdash;financial networks, climate systems, supply chains, digital platforms, and AI infrastructures&mdash;educational and institutional structures remain anchored in 19th‑century silos. This mismatch produces a cognitive architecture that is fundamentally misaligned with the complexity of the world it attempts to navigate.</p>\n<p>The essay situates this mismatch within collapse‑era epistemics, showing how siloed curricula, platform‑segmented information flows, and AI&rsquo;s tendency to compress and pre‑interpret reality create conditions where individuals and institutions alike lose the ability to think systemically. The result is a population overwhelmed by complexity and increasingly vulnerable to drift, dependency, and infrastructural steering&mdash;not through intention, but through architecture.</p>\n<p>SignalRupture (SR) provides the interpretive infrastructure required to diagnose this condition. By mapping the relationship between interlocked systems and fragmented cognition, SR clarifies why compounding, cross‑domain thinking is essential for navigating collapse‑era environments and why institutions must abandon siloed frameworks to remain relevant in an AI‑mediated world.</p>",
+    "doi": "10.5281/zenodo.18946114",
+    "keywords": [
+      "Institutions",
+      "Governance",
+      "Artificial Intelligence",
+      "Metatheory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-11",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18946113"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic",
+    "version": "1.0"
+  },
+  "modified": "2026-03-11T01:51:25.515793+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18946114",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 34,
+    "unique_downloads": 30,
+    "unique_views": 24,
+    "version_downloads": 34,
+    "version_unique_downloads": 30,
+    "version_unique_views": 24,
+    "version_views": 26,
+    "views": 26
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Interlocked World and the Siloed Mind: A Collapse‑Era Diagnostic",
+  "updated": "2026-03-11T01:51:25.515793+00:00"
+}

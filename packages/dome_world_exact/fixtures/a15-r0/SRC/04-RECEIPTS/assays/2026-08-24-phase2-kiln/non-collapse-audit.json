@@ -1,0 +1,17 @@
+{
+  "atelier_snapshot_id": "src-20260824-p2-001",
+  "claim_ceiling": "Registry separation prevents silent identity collapse; numeric counts may coincidentally match without implying equivalence.",
+  "cross_graph_join_default": false,
+  "invariant": "work multiplicity != evidence multiplicity != representation multiplicity != authority multiplicity",
+  "latest_wins_rule_present": false,
+  "namespace_collisions": [],
+  "registry_counts": {
+    "authority": 9,
+    "evidence": 1650,
+    "representation": 26,
+    "work": 0
+  },
+  "result": "PASS",
+  "schema_version": "non-collapse-audit/v1",
+  "seal_epoch_binding": "RESOLVE_MATCHED_CURRENT_SEAL"
+}

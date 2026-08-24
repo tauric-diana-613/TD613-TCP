@@ -2,7 +2,7 @@
 
 > **Independent preservation fixture.** SignalRupture materials remain the work of their stated author(s). The archive operator, TD613, and TD613-TCP claim no authorship, ownership, origin, derivation, provenance, affiliation, endorsement, or authority over the preserved corpus.
 
-This matched Git projection is a query surface for snapshot `src-20260824-p2-001`. The desktop vault remains custody authority. Read `CONNECTOR_ENTRY.md` before any corpus query.
+This sealed TD613-TCP projection is the query surface for snapshot `src-20260824-p2-001`. The desktop vault remains custody authority. Read `CONNECTOR_ENTRY.md` before any corpus query.
 
 ## Phase 2 preservation status
 
