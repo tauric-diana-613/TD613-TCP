@@ -1,6 +1,6 @@
 # Temporary witness routing note
 
-Routing-only metadata for #729 exact-head consolidated validation. Scientific head before routing: `c6fdcd3987950cff7ef98ba5e26917f71047b9d6`.
+Routing-only metadata for #729 exact-head consolidated validation. Original scientific head before routing: `c6fdcd3987950cff7ef98ba5e26917f71047b9d6`.
 
 PR #729 is temporarily targeted at fresh `main` solely to register the exact-head static witness.
 
@@ -16,12 +16,18 @@ This wrapper field is not part of `K_period4` operational equality.
 
 ## Pre-repair boundary
 
-Before executable repair, the only authorized change is:
+Before executable repair, the only authorized change was:
 
 ```text
 compare the symbolic target's K_period4 payload
 against the concrete K_period4 projection
 rather than comparing the symbolic status wrapper itself.
+```
+
+Wrapper-only repair commit:
+
+```text
+2c2dff6425eb3e26244259da2ac60eab85515dc8
 ```
 
 Frozen and unchanged:
@@ -38,4 +44,4 @@ human stop
 workflow timeout
 ```
 
-No failed theorem assertion is to be rewritten as success. Run 2124 remains diagnostic provenance.
+No failed theorem assertion is rewritten as success. Run 2124 remains diagnostic provenance. This commit is a routing-only registration pulse for the repaired exact-head witness.
