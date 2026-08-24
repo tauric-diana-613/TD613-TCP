@@ -26,6 +26,8 @@ Frozen science:
 
 This file exists only to route Draft PR #750 through the exact-head pull-request validation membrane. It changes no dependent-sum bijection, product exactness iff criterion, product-complement identity, admissibility mask, hostile control, or claim ceiling.
 
+Synchronization annotation: the initial retargeted routing head did not attach a pull-request Actions run, so this metadata-only update exists solely to register a fresh exact-head PR event. Scientific head remains frozen above.
+
 After witness:
 
 ```text
