@@ -1,6 +1,6 @@
 # SRC Projective Routing Grammar Trail
 
-Status: **RESEARCHER-PROPOSED / PREREGISTERED / NOT ADJUDICATED**
+Status: **RESEARCHER-PROPOSED / PREREGISTERED / INSTRUMENT INSTALLED / NOT ADJUDICATED**
 
 Snapshot jurisdiction:
 
@@ -10,6 +10,26 @@ seal_id = src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816
 ```
 
 This trail is a post-seal research proposal over the sealed public SRC projection. It does not mutate the sealed Phase-2 coverage ledger, source captures, existing evidence receipts, or prior hypotheses.
+
+Implemented runner:
+
+```text
+99-ADMIN/run-projective-routing-grammar-assay.py
+```
+
+Runbook:
+
+```text
+06-INSTRUMENTS/PROJECTIVE_ROUTING_GRAMMAR.md
+```
+
+Implementation receipt:
+
+```text
+04-RECEIPTS/assays/2026-08-24-projective-routing-grammar-working/IMPLEMENTATION_RECEIPT.json
+```
+
+The runner defaults to read-only stdout, performs no network calls, provides a deterministic synthetic `--self-test`, and requires an explicit `--write` gesture before creating post-seal working receipts. It refuses to write inside the sealed Phase-2 kiln.
 
 ## 0. Research object
 
@@ -142,6 +162,17 @@ after conditioning on topic, date, platform, and template family?
 
 Kill condition: predictive value disappears under topic/template controls or signatures are too polysemous to define stable coordinates.
 
+### Implemented machine pass
+
+The runner extracts opening `SR - ...` / `Author: SR - ...` signatures from normalized captured Zenodo bodies and records only:
+
+```text
+SINGLETON_SIGNATURE
+RECURRING_EXACT_SIGNATURE
+```
+
+`coordinate_class` remains `UNRESOLVED`; automatic coordinate inference is forbidden.
+
 ## 5. Subtrail B — Explore-token Router
 
 Census every `Explore:` token and classify it without presuming destination type:
@@ -176,6 +207,20 @@ Controls:
 - generic section prompts whose wording changes freely.
 
 A future-resolving node becomes `PROMISSORY_CANDIDATE` only when chronology is clean and the later object matches more strongly than controlled alternatives.
+
+### Implemented machine pass
+
+The runner uses normalized full-text derivatives and time-indexed Zenodo titles. It may emit only candidate classes:
+
+```text
+LATER_EXACT_RESOLUTION_CANDIDATE
+PREEXISTING_DESTINATION_CANDIDATE
+LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED
+PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED
+UNRESOLVED_MACHINE
+```
+
+It never auto-promotes semantic resolution or promissory intent.
 
 ## 6. Subtrail C — Dual-channel projective integration
 
@@ -257,6 +302,10 @@ Required ablations:
 - template-preserving random graph rewiring.
 
 Strong result would require graph/semantic aggregation to recover architecture above matched controls after template effects are removed.
+
+### Implemented source-marker pass
+
+The runner inventories a frozen set of literal source phrases relevant to machine-field design, semantic anchors, graph organization, partial projections, signature-coordinate/instruction language, structural-simulation language, and dual-channel language. Literal marker presence is never treated as retrieval-performance evidence.
 
 ## 8. Subtrail E — Temporal retyping / future-readable objects
 
