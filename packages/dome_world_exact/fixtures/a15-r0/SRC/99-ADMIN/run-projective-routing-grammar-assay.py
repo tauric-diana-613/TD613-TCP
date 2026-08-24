@@ -56,7 +56,7 @@ STOPWORDS = {
     "on", "or", "sr", "the", "to", "under", "with",
 }
 
-EXPLORE_RE = re.compile(r"\bExplore\s+([^.!?\n\r]{2,96})\.", re.IGNORECASE)
+EXPLORE_RE = re.compile(r"\bExplore\s+([^.!?]{2,96})\.", re.IGNORECASE)
 RECORD_RE = re.compile(r"zenodo-(\d+)-file-0\.md$")
 
 
@@ -181,9 +181,10 @@ def load_documents(root: Path) -> list[Document]:
 
 def extract_explore_tokens(document: Document) -> list[str]:
     found: list[str] = []
-    for match in EXPLORE_RE.finditer(document.body):
+    # Native PDF derivatives frequently contain line breaks between ordinary words.
+    # Run this lexical census only after whitespace normalization.
+    for match in EXPLORE_RE.finditer(document.normalized_body):
         token = normalize_space(match.group(1)).strip(" -:\t")
-        # PDF extraction can occasionally leave section numbering in the same span.
         token = re.sub(r"\s+(?:[IVXLCDM]+|\d+)(?:\.\d+)*$", "", token, flags=re.I)
         if 2 <= len(token) <= 80:
             found.append(token)
@@ -202,8 +203,7 @@ def signature_from_document(document: Document) -> str | None:
     for pattern in patterns:
         match = pattern.search(prefix)
         if match:
-            phrase = normalize_space(match.group(1)).strip()
-            phrase = phrase.rstrip(" .")
+            phrase = normalize_space(match.group(1)).strip().rstrip(" .")
             if 3 <= len(phrase) <= 180:
                 return phrase
     return None
@@ -227,9 +227,7 @@ def lexical_candidates(token: str, source: Document, documents: list[Document]) 
             or title_key.startswith(token_key + " ")
             or f" {token_key} " in f" {title_key} "
         )
-        overlap = 0.0
-        if token_words:
-            overlap = len(token_words & title_words) / len(token_words)
+        overlap = len(token_words & title_words) / len(token_words) if token_words else 0.0
         if not exactish and not (len(token_words) >= 2 and overlap >= 0.66):
             continue
 
@@ -253,10 +251,7 @@ def lexical_candidates(token: str, source: Document, documents: list[Document]) 
             }
         )
 
-    rank = {
-        "EXACT_OR_TITLE_SUBSTRING": 0,
-        "LEXICAL_OVERLAP_ONLY": 1,
-    }
+    rank = {"EXACT_OR_TITLE_SUBSTRING": 0, "LEXICAL_OVERLAP_ONLY": 1}
     candidates.sort(
         key=lambda item: (
             rank[item["match_kind"]],
@@ -494,7 +489,6 @@ def main() -> int:
 
     if args.write:
         output = (args.output or (root / DEFAULT_OUTPUT_RELATIVE)).resolve()
-        # Safety boundary: never overwrite the sealed Phase-2 kiln.
         sealed_kiln = (root / "04-RECEIPTS/assays/2026-08-24-phase2-kiln").resolve()
         if output == sealed_kiln or sealed_kiln in output.parents:
             raise SystemExit("Refusing to write inside the sealed Phase-2 kiln")
