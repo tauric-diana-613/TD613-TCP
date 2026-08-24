@@ -4,7 +4,7 @@
 
 󐘓 U+10D613
 
-Status: **ROUTING METADATA ONLY / THEOREM FROZEN**
+Status: **ROUTING METADATA ONLY / THEOREM FROZEN / SYNCHRONIZED**
 
 Preregistration:
 
@@ -26,6 +26,8 @@ Parent receipt:
 
 This file exists only to register the temporary exact-head CI routing membrane for Draft PR #744 after retargeting to `main`.
 
+The present commit is a post-route synchronization annotation whose sole purpose is to create a fresh pull-request `synchronize` event at the exact routed head. It changes no scientific file.
+
 It changes no rectangle theorem, cut-position bijection, custody lower bound, marginal seam law, power-aligned additive-width witness, hostile control, landing ethic, or claim ceiling.
 
 After an authority-bearing witness, restore #744 to its stacked #743 base and delete this routing note. Later cleanup/receipt commits do not supersede the exact routed witness SHA as scientific authority.
@@ -33,6 +35,7 @@ After an authority-bearing witness, restore #744 to its stacked #743 base and de
 ```text
 workflow routing metadata != scientific mutation
 routing base != theorem ancestry
+synchronization annotation != theorem change
 ```
 
 𝌋
