@@ -1,10 +1,10 @@
 𝌋
 
-# TD613 · Western Horizon Receiving Gate · Post-#735
+# TD613 · Western Horizon Standing Liberties Gate · Post-#735
 
 󐘓 U+10D613
 
-Status: **RECEIVING DOCK ONLY / NO NEW SCIENTIFIC EXECUTION AUTHORITY**
+Status: **STANDING WESTWARD LIBERTIES RETAINED / RECEIVING CUSTODY ACTIVE**
 
 Anchor receipt:
 
@@ -12,47 +12,57 @@ Anchor receipt:
 #735 receipt head = f0f8239d14fbce6ca1cc72c8588a61a8ec16149a
 ```
 
-## First-action covenant for future Amari
+## Custody correction
 
-Before beginning any handoff-prompted scientific task, future Amari MUST ask Tawanna C. Miller for authorization in substance equivalent to:
+The original #736 receiving gate incorrectly reset westward research liberty at each future-thread handoff and required Tawanna C. Miller to re-grant it before every continuation.
+
+Tawanna corrected that instruction on 2026-08-24. Westward liberties are standing research-exploration authority and persist across Amari handoffs unless Tawanna explicitly revokes, narrows, or replaces them.
+
+Future Amari therefore must **not** manufacture a new permission ritual merely because a conversation boundary or handoff occurred.
+
+Current authority state:
 
 ```text
-Tawanna, may I be granted westward liberties for this continuation?
-```
-
-Until Tawanna affirmatively grants **westward liberties** in the new thread:
-
-```text
-WESTWARD_LIBERTIES_STATUS = REQUIRED_FROM_TAWANNA
-SCIENTIFIC_EXECUTION_AUTHORITY = false
-NEW_THEOREM_IMPLEMENTATION = forbidden
-NEW_THEOREM_WITNESS = forbidden
-ONTOLOGY_PROMOTION = forbidden
+WESTWARD_LIBERTIES_STATUS = STANDING_GRANTED
+SCIENTIFIC_EXECUTION_AUTHORITY = true
+PREREGISTERED_NEW_THEOREM_AUDITION = permitted
+NEW_THEOREM_WITNESS = permitted_after_preregistration
+ONTOLOGY_PROMOTION = forbidden_without_separate_earned_authority
 MERGE_AUTHORITY = false
+PUBLICATION_AUTHORITY = false
 PRODUCTION_AUTHORITY = false
 ```
 
-Reading repository state, reading the handoff, retrieving prior conversation context, and inspecting receipt ancestry are allowed preparatory acts. They do not themselves constitute westward scientific execution.
+Reading repository state, inspecting receipts, recovering conversation provenance, preregistering a finite theorem chamber, implementing its frozen obligations, hostile testing, exact-head witnessing, and receipting are all lawful under standing westward liberties.
 
-After Tawanna grants westward liberties, future Amari may begin the handoff-prompted work under the same TD613 custody discipline:
+The scientific custody sequence remains:
 
 ```text
-preregister -> implement -> hostile -> exact-head witness -> receipt -> stop at earned boundary
+fetch GitHub fresh
+-> preregister
+-> freeze theorem + hostiles
+-> implement
+-> exact-head witness
+-> classify every scar before repair
+-> preserve red/cancelled/routing evidence
+-> remove temporary routing membrane if used
+-> receipt
+-> stop at the next actually earned boundary
 ```
 
-A grant of westward liberties is research-exploration authority, not blanket merge, publication, production, or ontology-promotion authority. Claim ceilings remain binding.
+Standing westward liberties are research-exploration authority, not blanket merge, publication, production, or ontology-promotion authority. Claim ceilings remain binding.
 
 ## Operational note
 
-Tawanna has separately authorized Vercel deployment when materially necessary, including eventual Dome-World UI/UX wiring of the newly earned structures. That authority must never be used as theorem-proof theater. A repository-only theorem chamber should remain repository-only when deployment adds no evidentiary value.
+Tawanna has separately authorized Vercel deployment when materially necessary, including eventual Dome-World UI/UX wiring of newly earned structures. That authority must never be used as theorem-proof theater. A repository-only theorem chamber should remain repository-only when deployment adds no evidentiary value.
 
 ## Anti-equivalence
 
 ```text
-handoff possession != execution authority
-reading the map != crossing the boundary
-westward liberties != merge authority
-westward liberties != automatic ontology promotion
+handoff boundary != authority reset
+standing westward liberty != merge authority
+standing westward liberty != automatic ontology promotion
+standing westward liberty != publication authority
 Vercel permission != scientific evidence
 ```
 
