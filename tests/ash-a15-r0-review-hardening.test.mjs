@@ -77,6 +77,9 @@ process.on('uncaughtExceptionMonitor', (error, origin) => {
   }, null, 2));
 });
 
+writeTypedRewriteSyntaxDiagnostics();
+throw new Error('INTENTIONAL_TYPED_REWRITE_SYNTAX_DIAGNOSTIC_HOLD');
+
 await auditedParentImport('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-explicit-reconciliation-event.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-post-reconciliation-dual-lineage.test.mjs');
@@ -106,7 +109,6 @@ await auditedParentImport('./ash-a15-r0-aperture-pedagogue-bounded-common-future
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
-writeTypedRewriteSyntaxDiagnostics();
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
 await auditedParentImport('./ash-a15-r0-wedding-identifiability.test.mjs');
 
