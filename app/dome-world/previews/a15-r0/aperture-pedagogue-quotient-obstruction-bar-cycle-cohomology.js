@@ -231,7 +231,7 @@ function fakeCycleRejection() {
 function routePrimitive(word) {
   const c = firstMomentCoordinate(word);
   if (c?.status !== 'FIRST_MOMENT_WEAKER_TRANSPORT_COORDINATE_DERIVED') return null;
-  return -c.P;
+  return c.P === 0 ? 0 : -c.P;
 }
 
 function pulledBackCoboundary(u, v) {
