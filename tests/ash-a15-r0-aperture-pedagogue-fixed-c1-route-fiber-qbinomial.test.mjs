@@ -57,9 +57,14 @@ const undersizedAudit = auditFixedC1RouteCustody(3, 1, 1, 3, collisionRows, 1);
 assert.equal(undersizedAudit.undersized, true);
 assert.equal(undersizedAudit.exact, false);
 
-// Edge laws.
+// Edge laws, including the pre-freeze t=0 row-shape repair.
+const t0Fiber = enumerateFixedC1RouteFiber(0, 12, 0, 0);
 assert.equal(fixedC1RouteCount(0, 12, 0, 0).route_count, '1');
 assert.equal(fixedC1RouteCount(0, 12, 0, 0).minimum_fixed_width_binary_bits, 0);
+assert.equal(t0Fiber.status, 'FIXED_C1_ROUTE_FIBER_ENUMERATED');
+assert.equal(t0Fiber.rows.length, 1);
+assert.deepEqual(t0Fiber.rows[0].blocks, [12]);
+assert.equal(t0Fiber.rows[0].derived.route.word.join(''), 'Q'.repeat(12));
 assert.equal(fixedC1RouteCount(1, 5, 9, 9).route_count, '1');
 assert.equal(fixedC1RouteCount(1, 5, 9, 9).minimum_fixed_width_binary_bits, 0);
 assert.equal(analyzeFixedC1State(3, 1, 1, 2).lawful, false);
