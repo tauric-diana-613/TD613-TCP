@@ -52,7 +52,7 @@ function normalizeSupport(values) {
 function supportKey(values) {
   const normalized = normalizeSupport(values);
   if (!normalized) return null;
-  return normalized.map(canonicalFiniteValue).join('|');
+  return JSON.stringify(normalized.map(canonicalFiniteValue));
 }
 
 function supportMap(values) {
