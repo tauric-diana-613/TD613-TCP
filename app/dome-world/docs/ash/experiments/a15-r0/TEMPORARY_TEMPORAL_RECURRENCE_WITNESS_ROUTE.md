@@ -23,7 +23,15 @@ Fresh main observed immediately before routing:
 main = 4ca8c0600b40d0ea2b38c1e0dd0b2d1e77713aef
 ```
 
-The PR may be temporarily retargeted to `main` solely so the existing TD613 static classifier can witness the exact head.
+The PR is temporarily retargeted to `main` solely so the existing TD613 static classifier can witness the exact head.
+
+Routing synchronization epoch:
+
+```text
+2
+```
+
+This synchronization changes routing metadata only. It does not alter the preregistered fixture, implementation, or hostile test.
 
 This note grants no merge, production, Vercel, browser, full-repository, self-hosted, path-object, category, transport, holonomy, curvature, Proto-Loom, or A16 authority.
 
