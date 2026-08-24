@@ -14,20 +14,41 @@ status = SOURCE_CONDITIONED_QUOTIENT_TARGET_DERIVED
 
 This wrapper field is not part of `K_period4` operational equality.
 
-## Pre-repair boundary
-
-Before executable repair, the only authorized change was:
-
-```text
-compare the symbolic target's K_period4 payload
-against the concrete K_period4 projection
-rather than comparing the symbolic status wrapper itself.
-```
-
 Wrapper-only repair commit:
 
 ```text
 2c2dff6425eb3e26244259da2ac60eab85515dc8
+```
+
+## Preserved run-2128 diagnostic scar
+
+After the wrapper repair, same-head registration produced run `2127 / 32725767354` cancelled by concurrency and surviving run `2128 / 32725803225`. Run 2128 failed at A15-R0 step 19 before any success classification and remains preserved.
+
+Inspection identified a representative-control defect in `congruenceCertificate()`. The typed-composition premise requires the second-stage representative words to belong to the same quotient class, but the authored control used:
+
+```text
+q = T Q Q   -> c(q) = (1,0,2)
+r = Q Q T   -> c(r) = (1,2,0)
+```
+
+Therefore `sameCoordinate(cq,cr)` was false by construction and the control never instantiated the theorem premise.
+
+## Pre-second-repair boundary
+
+Before executable repair, the only authorized change is:
+
+```text
+replace q = TQQ and r = QQT
+with the distinct equal-class representatives
+q = TTQ and r = QTT
+```
+
+because:
+
+```text
+c(TTQ) = (2,1,0)
+c(QTT) = (2,1,0)
+TTQ != QTT
 ```
 
 Frozen and unchanged:
@@ -37,11 +58,12 @@ Frozen and unchanged:
 parity-twisted star law
 source-relative jurisdiction
 associativity obligation
-congruence obligations
-hostile controls
+right-congruence statement
+typed-composition statement
+all hostile controls
 claim ceiling
 human stop
 workflow timeout
 ```
 
-No failed theorem assertion is rewritten as success. Run 2124 remains diagnostic provenance. This commit is a routing-only registration pulse for the repaired exact-head witness.
+No failed assertion is rewritten as success. Runs 2124 and 2128 remain diagnostic provenance; run 2127 remains concurrency provenance.
