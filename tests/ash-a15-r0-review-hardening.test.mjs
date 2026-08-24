@@ -1,6 +1,20 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+const asyncDiagnosticPath = 'artifacts/a15-r0/review-hardening-async-error.json';
+process.on('uncaughtExceptionMonitor', (error, origin) => {
+  fs.mkdirSync('artifacts/a15-r0', { recursive: true });
+  fs.writeFileSync(asyncDiagnosticPath, JSON.stringify({
+    origin,
+    name: error?.name ?? null,
+    message: error?.message ?? null,
+    stack: error?.stack ?? null,
+    active_resources: typeof process.getActiveResourcesInfo === 'function'
+      ? process.getActiveResourcesInfo()
+      : [],
+  }, null, 2));
+});
+
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-explicit-reconciliation-event.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-post-reconciliation-dual-lineage.test.mjs');
