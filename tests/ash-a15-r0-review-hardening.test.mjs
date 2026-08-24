@@ -47,7 +47,7 @@ await assert.rejects(
 await assert.rejects(
   recorder.record({ actionId:'A', kernelReceiptId:'R', worldAnswerId:'W', taskStateBefore:'ARRIVE' }),
   /controlId is required/i,
-  'Observable events must identify the pre-action task state before coercion.'
+  'Observable events must identify the visible control before coercion.'
 );
 
 const mutableBoundary = { edge:'alpha' };
