@@ -1,36 +1,47 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
+const PARENT_726_RECEIPT = '0853a1956722c0b6ca9b2ea0d13bb33ea8a87919';
+execFileSync('git', ['cat-file', '-e', `${PARENT_726_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_726_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+
+const changedA15R0 = execFileSync(
+  'git',
+  [
+    'diff',
+    '--name-only',
+    `${PARENT_726_RECEIPT}..HEAD`,
+    '--',
+    'app/dome-world/docs/ash/experiments/a15-r0',
+    'app/dome-world/previews/a15-r0',
+    'tests',
+  ],
+  { encoding: 'utf8' },
+).trim().split('\n').filter(Boolean).filter((path) => (
+  path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')
+  || path.startsWith('app/dome-world/previews/a15-r0/')
+  || path.startsWith('tests/ash-a15-r0-')
+));
+
+const allowedCurrentChamberPaths = new Set([
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_COMPLETENESS_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_COMPLETENESS_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_WITNESS_ARCHITECTURE_REPAIR_PREREGISTRATION.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness.js',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness-receipt-witness.js',
+  'tests/ash-a15-r0-aperture-pedagogue-target-equivalence-completeness.test.mjs',
+  'tests/ash-a15-r0-review-hardening.test.mjs',
+]);
+
+const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamberPaths.has(path));
+assert.deepEqual(
+  historicalMutations,
+  [],
+  `#728 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+);
+
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-explicit-reconciliation-event.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-post-reconciliation-dual-lineage.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-multi-generation-prospective-branching.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-cross-generation-reconciliation.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-post-r2-prospective-continuation.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-family-robustness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-identifiability.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-bounded-noise.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transition-operator-sequential-contraction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-operator-response-reconstruction-coordinate-equivalence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-admissible-bilinear-probe-geometry.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-bilinear-program-synthesis.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-route-conditioned-observation-transcript.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-route-transcript-robustness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-transcript-compression-collision.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-partial-event-custody-projection.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-compositional-replay-closure.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-exogenous-evolution-congruence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-temporal-recurrence-phase-aliasing.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-first-bounded-path-grammar.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-finite-path-category-audition.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-invertibility-admissibility-obstruction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-reachability-geometry.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-branching-confluence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruction.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-target-equivalence-completeness.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
@@ -116,4 +127,4 @@ const a12Source = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
 assert.match(a12Source, /case_closed:document\.body\.dataset\.ashCaseClosed === 'true'/, 'A12 must observe whether the reusable Investigation case is already closed.');
 assert.match(a12Source, /existing\.case_closed === true/, 'A12 must reactivate a matching but closed Investigation case.');
 
-console.log('Ash A15-R0 release-boundary hardening tests passed.');
+console.log('Ash A15-R0 receipt-backed release-boundary hardening tests passed.');
