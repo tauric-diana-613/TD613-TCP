@@ -135,6 +135,36 @@ assert.equal(
     : 'SOURCE_RELATIVE_MINIMAL_FRONTIER_PROFILES_RETAIN_SEASON_DEPENDENT_STRUCTURE',
 );
 
+// Post-witness confirmation layer. These expectations are authored after the
+// first successful observational witness because the Actions log body was not
+// recoverable through the connector. They therefore confirm the preregistered
+// finite H7 hypotheses; they are not retroactive preregistration.
+const postWitnessExpectedPatterns = {
+  minimal_frontier_width_matches_H_minus_one: true,
+  common_future_count_matches_binomial: true,
+  question_lineage_consecutive: true,
+  frontier_preserves_source_phase: true,
+  frontier_is_source_plus_two_seasons: true,
+  opposite_phase_coordinate_stratification: true,
+  route_normal_form: true,
+  affine_cost: true,
+  antichain_persistence: true,
+  source_relative_profiles_identical: true,
+};
+
+for (const [key, expected] of Object.entries(postWitnessExpectedPatterns)) {
+  assert.equal(patterns[key], expected, `Post-witness H7 confirmation failed for ${key}.`);
+}
+
+for (const fork of result.fork_audits) {
+  const h7 = fork.count_rows.find((row) => row.horizon === 7);
+  assert.ok(h7, `${fork.source_node_id} must expose the preregistered H7 census row.`);
+  assert.equal(h7.common_future_count, 56, `${fork.source_node_id} H7 common-future count must match C(8,3).`);
+  assert.equal(h7.minimal_frontier_width, 6, `${fork.source_node_id} H7 minimal frontier must match H-1.`);
+  assert.equal(h7.least_count, 0, `${fork.source_node_id} H7 bounded least-common-future count must remain zero.`);
+  assert.equal(h7.minimum_join_cost, 4, `${fork.source_node_id} H7 minimum total continuation cost must remain four.`);
+}
+
 assert.equal(result.claim_ceiling.all_H_recurrence_theorem, false);
 assert.equal(result.claim_ceiling.induction_conclusion, false);
 assert.equal(result.claim_ceiling.closed_form_beyond_H7, false);
