@@ -5,6 +5,7 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 ## Start here
 
 - [README](../README.md) — Top-level project entry for The Cadence Playground, TD613, and Hush placement.
+- [Information Dome Research Discovery Index](INFORMATION_DOME_RESEARCH_DISCOVERY_INDEX.md) — Machine-facing technical map for Dome-World / Information Dome, child-legible AIA, heterostratigraphic and admissibility tomography, Moiré/Phason proving scenes, Westward theorem receipts, historical φ/quasiperiodic geometry, and explicit non-promotions.
 - [TD613 Mission Thesis](TD613_MISSION_THESIS.md) — The custodial AI-access mission crown: countersurveillance, containment, credentials, and custody before ingestion.
 - [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 29.1 map of the Hush Toy-to-Tool build.
 - [Hush Operator Manual](HUSH_OPERATOR_MANUAL.md) — Practical Hush operator route, limits, modes, and stop conditions.
@@ -21,6 +22,7 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 - [TD613 Aperture](TD613_APERTURE.md) — Counter-tool for governed exposure events and anti-selective-admissibility audit posture.
 - [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Provenance-preserving passage layer.
 - [Dome-World / Flow-Core](DOME_WORLD_FLOW_CORE.md) — Non-public route-weather, exact residual, Phason, and readiness station.
+- [Information Dome Research Discovery Index](INFORMATION_DOME_RESEARCH_DISCOVERY_INDEX.md) — Retrieval/status boundary for implemented synthetic research, authored specifications, open Westward theorem work, and historical/prototype geometry.
 - [Flow-Core Pedagogue Spine and Child-Legible AIA](TD613_FLOWCORE_PEDAGOGUE_AIA_IMPLEMENTATION_SPEC.md) — Constitutional implementation specification for the Information Dome proving ground, Ash Keep rehabilitation, anisotropic legibility, Flow-Core visual grammar, and human-gated empirical validation.
 - [Flow-Core Pedagogue AIA Build Plan](../app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_BUILD_PLAN.md) — Operative phase sequence, modules, fixtures, tests, Ash non-regression gates, and zero-new-function deployment plan.
 - [Flow-Core Pedagogue AIA Roadmap](../app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_ROADMAP_V0_1.json) — Machine-readable phase dependencies, invariants, non-claims, and promotion gates.
