@@ -26,6 +26,8 @@ Frozen science:
 
 This file exists only to route Draft PR #755 through the exact-head pull-request validation membrane. It changes no finite conservation identity, hostile frontier, safe-abstention corollary, inherited #753 bridge, or claim ceiling.
 
+Synchronization annotation: the initial routed head did not attach a pull-request workflow run. This metadata-only edit exists solely to re-present the already frozen head to the workflow membrane; scientific content remains unchanged.
+
 After witness:
 
 ```text
