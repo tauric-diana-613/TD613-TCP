@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
-const PARENT_726_RECEIPT = '0853a1956722c0b6ca9b2ea0d13bb33ea8a87919';
-execFileSync('git', ['cat-file', '-e', `${PARENT_726_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_726_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_728_RECEIPT = 'b08fab1ca7786a3f70c5e1816f41c1bc9f856723';
+execFileSync('git', ['cat-file', '-e', `${PARENT_728_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_728_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_726_RECEIPT}..HEAD`,
+    `${PARENT_728_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -25,12 +25,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_COMPLETENESS_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_COMPLETENESS_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_WITNESS_ARCHITECTURE_REPAIR_PREREGISTRATION.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness.js',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness-receipt-witness.js',
-  'tests/ash-a15-r0-aperture-pedagogue-target-equivalence-completeness.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-quotient-congruence.js',
+  'tests/ash-a15-r0-aperture-pedagogue-target-equivalence-quotient-congruence.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -38,11 +37,11 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `#728 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `#729 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-target-equivalence-completeness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-target-equivalence-quotient-congruence.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
