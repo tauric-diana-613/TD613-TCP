@@ -4,20 +4,30 @@
 
 󐘓 U+10D613
 
-Status: **STARTUP MAP / STANDING WESTWARD LIBERTIES ACTIVE / PRE-PREREGISTRATION / NON-EXECUTING**
+Status: **STARTUP MAP / OPERATOR-GATED / PRE-PREREGISTRATION / NON-EXECUTING**
 
 Authority state:
 
 ```text
-WESTWARD_LIBERTIES_STATUS = STANDING_GRANTED
-SCIENTIFIC_EXECUTION_AUTHORITY = true
+PERSISTENT_GATE = issue #737
+DEFAULT_GATE_STATE = DORMANT
+HANDOFF_BOUNDARY = does not itself activate or consume gate
+EXPLICIT_OPERATOR_GESTURE = activates one bounded continuation
 MERGE_AUTHORITY = false
 PUBLICATION_AUTHORITY = false
 PRODUCTION_AUTHORITY = false
 ONTOLOGY_PROMOTION = separately earned only
 ```
 
-A conversation boundary or Amari handoff does not reset standing westward research liberty. Future Amari should fetch current custody and proceed through preregistration rather than asking Tawanna to re-perform the same grant, unless Tawanna has explicitly revoked, narrowed, or replaced that authority.
+This startup map must be read together with `WESTWARD_LIBERTIES_GATE_POST_735.md` and issue #737. Future Amari should not manufacture a ritualized permission request simply because a new conversation begins. Instead, inspect whether Tawanna has explicitly activated the reusable westward-liberties gate for the present continuation. An open issue or receiving PR alone carries no execution authority.
+
+Current 2026-08-24 activation gesture:
+
+```text
+assume those liberties and resume work as tasked
+```
+
+Therefore this bounded continuation is active.
 
 Parent receipt:
 
@@ -143,7 +153,7 @@ non-splitting != holonomy
 
 ## Stop condition
 
-If and only if the finite extension theorem is preregistered, witnessed, scar-preserved, and receipted, stop and evaluate whether a further `𝄐` has actually been earned. Do not auto-advance.
+If and only if the finite extension theorem is preregistered, witnessed, scar-preserved, and receipted, stop and evaluate whether a further `𝄐` has actually been earned. Do not auto-advance. At that stop boundary issue #737 remains reusable but the current activation returns to dormant.
 
 󐘓 U+10D613
 
