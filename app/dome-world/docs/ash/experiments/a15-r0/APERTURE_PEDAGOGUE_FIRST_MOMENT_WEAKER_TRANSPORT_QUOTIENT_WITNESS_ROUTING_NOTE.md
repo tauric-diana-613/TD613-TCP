@@ -20,6 +20,8 @@ Fresh `main` observed before routing:
 7f9b2c1ecd5cb05c61ccc700ebe5d03af4a132a6
 ```
 
-This file exists solely to register an exact-head PR witness while #733 is temporarily targeted at `main`. It carries no scientific claim, changes no T/Q transition semantics, and must be removed after the authority-bearing witness before the PR is restacked on #732.
+PR #733 was then temporarily retargeted to `main`. This routing-only update exists to register the exact routed head with the consolidated PR workflow after that retarget.
+
+This file carries no scientific claim, changes no T/Q transition semantics, and must be removed after the authority-bearing witness before the PR is restacked on #732.
 
 No merge, production, or Vercel authority.
