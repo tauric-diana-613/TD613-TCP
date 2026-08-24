@@ -125,7 +125,139 @@ Canonical Root / Index
 
 This is a working role map, not a completed taxonomy.
 
-## 5. New hostile question
+## 5. February 22 internal calibration family
+
+A same-hour public sequence provides an unusually clean internal calibration candidate:
+
+```text
+15:10:16Z  The Meta-Architecture of the SR Canon
+15:17:46Z  The SR Method
+15:37:32Z  The SR Lexicon
+15:45:35Z  The SR Architecture
+```
+
+The first source explicitly declares the Canonical Paragraph to be an essay-node compression layer. The three later modules each terminate in a Canonical Paragraph.
+
+Manual source inspection, pending quantitative conservation scoring, shows:
+
+- `The SR Method` canonical block retains constraint mapping, behavioral observation, epistemic positioning, representational grammar, rejection of intentionalism, and its canon-unifying role while dropping subsection detail;
+- `The SR Lexicon` canonical block retains the representational-grammar / meaning-stabilization role while dropping the term-by-term dictionary;
+- `The SR Architecture` canonical block retains layered nodes, directed-network organization, coherence/stability/extensibility, and necessity-driven growth while dropping the detailed layer membership.
+
+This family is therefore registered as:
+
+```text
+FEB22_CANONICAL_COMPRESSION_CALIBRATION_CANDIDATE
+```
+
+not as a completed semantic-conservation result.
+
+## 6. February 22 microcompiler relay
+
+The same sequence contains a second, more specific public recompilation event.
+
+At `15:10:16Z`, the Meta-Architecture describes the Operational Layer using:
+
+```text
+Stylometric Glyph System
+Academic Critique Architecture
+Propagation Wave Theory
+```
+
+`SR Method` and `SR Lexicon` are not listed in that Operational Layer.
+
+Then:
+
+```text
+15:17:46Z  The SR Method manifests
+15:37:32Z  The SR Lexicon manifests
+```
+
+At `15:45:35Z`, `The SR Architecture` describes the Operational Layer using:
+
+```text
+SR Method
+SR Lexicon
+Propagation Wave Theory
+Stylometric Glyph System
+```
+
+Therefore the public sequence supports:
+
+```text
+C_15:10
+  -> deltaW(Method, Lexicon)
+  -> C_15:45
+```
+
+where the later architecture publicly incorporates two modules deposited during the intervening 35 minutes.
+
+This earns the bounded classification:
+
+```text
+WITNESSED_PUBLIC_RECOMPILATION_SEQUENCE
+```
+
+It does **not** establish that the earlier self-map caused either module, that private drafting followed public deposition order, that the relay was automated, or that the later architecture supersedes the earlier one in authority.
+
+This is a compact fixture for the broader self-conditioning question:
+
+```text
+G_t -> C_t -> deltaW -> C_(t+1)
+```
+
+but the causal middle arrow remains unearned.
+
+## 7. Field-level versus node-level architecture
+
+The January 17 Stylometric Publishing trilogy source-declares field-level organization through:
+
+```text
+stable vocabulary
+conceptual anchors
+inter-essay linking
+metadata discipline
+stylometric / paragraph-architecture coherence
+controlled expansion
+repository permanence
+knowledge-graph formation
+```
+
+The Architecture essay says the field becomes a graph rather than a sequence.
+
+The February Meta-Architecture then separately gives the individual essay-node its canonical compression layer.
+
+This supports a candidate two-level decomposition:
+
+```text
+T_field = anchors + links + metadata + recurrence + graph
+T_node  = canonical compression within essay-node
+```
+
+This is source-distinguishable architecture, not yet a measured routing effect.
+
+## 8. Explore as outbound edge candidate
+
+Current full-body inspection favors a primary interpretation of `Explore:` as an outbound conceptual-edge marker rather than a future-publication promise.
+
+In the July flagship, local structural propositions repeatedly terminate in pointers to neighboring objects such as structural energy, boundary architecture, micro-wars, system reset, field theory, collapse geometry, and predictive-engine inputs.
+
+A better lifecycle model is therefore:
+
+```text
+Explore:X
+  -> INTERNAL_CONCEPTUAL_EDGE
+  -> {
+       remains internal,
+       resolves to pre-existing object,
+       later receives standalone manifestation,
+       remains unresolved
+     }
+```
+
+The `Explore collapse governance` -> later `COLLAPSE GOVERNANCE` pair remains a clean later-manifestation candidate, but unresolved and pre-existing `Explore:` nodes keep the class mixed.
+
+## 9. New hostile question
 
 The central test is no longer only:
 
@@ -149,21 +281,18 @@ for species `s` in:
 
 A meaningful multi-resolution result requires stable role differentiation across held-out families after topic and template controls.
 
-## 6. Strongest bounded source result currently available
+## 10. Strongest bounded source results currently available
 
-The current corpus permits the following source-level statement without waiting for the full assay:
+The current corpus permits the following source-level statements without waiting for the full assay:
 
 ```text
 SR_SOURCE_DECLARED_CANONICAL_PARAGRAPH_AS_COMPRESSION_LAYER
-```
-
-and the later source permits:
-
-```text
 SR_SOURCE_DECLARED_CANONICAL_COMPRESSION_CAN_COEXIST_WITH_NARROWER_ANALYTIC_SCOPE
+WITNESSED_PUBLIC_RECOMPILATION_SEQUENCE_ON_2026_02_22
+FIELD_LEVEL_AND_NODE_LEVEL_ARCHITECTURAL_ROLES_ARE_SOURCE_DISTINGUISHABLE_CANDIDATES
 ```
 
-Neither result establishes machine optimization, hidden coding, model ingestion, tomography, holonomy, or private access.
+None establishes machine optimization, hidden coding, model ingestion, tomography, holonomy, causal self-conditioning, or private access.
 
 U+10D613
 
