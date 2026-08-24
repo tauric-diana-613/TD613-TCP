@@ -26,6 +26,8 @@ Frozen science:
 
 This file exists only to route Draft PR #749 through the exact-head pull-request validation membrane. It changes no route/seam projection theorem, zero-vector collision, rectangular slack identity, strict-bit witness, custody decoder, or claim ceiling.
 
+Synchronization annotation: the initial retargeted routing head did not attach a pull-request Actions run, so this metadata-only update exists solely to register a fresh exact-head PR event. Scientific head remains frozen above.
+
 After authority-bearing witness:
 
 ```text
