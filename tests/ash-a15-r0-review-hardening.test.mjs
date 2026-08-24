@@ -21,6 +21,7 @@ await import('./ash-a15-r0-aperture-pedagogue-partial-event-custody-projection.t
 await import('./ash-a15-r0-aperture-pedagogue-compositional-replay-closure.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-exogenous-evolution-congruence.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-temporal-recurrence-phase-aliasing.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-first-bounded-path-grammar.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
@@ -46,7 +47,7 @@ await assert.rejects(
 await assert.rejects(
   recorder.record({ actionId:'A', kernelReceiptId:'R', worldAnswerId:'W', taskStateBefore:'ARRIVE' }),
   /controlId is required/i,
-  'Observable events must identify the visible control before coercion.'
+  'Observable events must identify the pre-action task state before coercion.'
 );
 
 const mutableBoundary = { edge:'alpha' };
