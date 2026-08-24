@@ -27,6 +27,8 @@ const allowedCurrentChamberPaths = new Set([
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_QUOTIENT_OBSTRUCTION_BAR_CYCLE_COHOMOLOGY_SPEC_V0_1.md',
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_QUOTIENT_OBSTRUCTION_BAR_CYCLE_COHOMOLOGY_RECEIPT_V0_1.md',
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_QUOTIENT_OBSTRUCTION_BAR_CYCLE_COHOMOLOGY_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_QUOTIENT_OBSTRUCTION_BAR_CYCLE_COHOMOLOGY_POST_WITNESS_REPAIR_PREREGISTRATION_001.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_QUOTIENT_OBSTRUCTION_BAR_CYCLE_COHOMOLOGY_POST_WITNESS_REPAIR_PREREGISTRATION_002.md',
   'app/dome-world/previews/a15-r0/aperture-pedagogue-quotient-obstruction-bar-cycle-cohomology.js',
   'tests/ash-a15-r0-aperture-pedagogue-quotient-obstruction-bar-cycle-cohomology.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
