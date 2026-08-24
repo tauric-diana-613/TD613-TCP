@@ -26,6 +26,8 @@ b2bc94c4ee7e689cb6f130a2601e848e422cfa69
 
 This file exists only to route Draft PR #756 through the exact-head pull-request validation membrane. It changes no sequential-erasure composition identity, gap-monotonicity theorem, inherited/new-gap decomposition, hostile controls, or claim ceiling.
 
+Synchronization annotation: the initial routed head did not attach a pull-request workflow run. This metadata-only edit exists solely to re-present the already frozen head to the workflow membrane; scientific content remains unchanged.
+
 After witness:
 
 ```text
