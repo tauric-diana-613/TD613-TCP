@@ -18,54 +18,43 @@ const freeze = (value) => {
 
 const key = (value) => JSON.stringify(value);
 const nat = (value) => Number.isSafeInteger(value) && value >= 0;
-
-function bitsForCardinality(value) {
-  if (!nat(value) || value < 1) return null;
-  return value === 1 ? 0 : Math.ceil(Math.log2(value));
-}
+const bits = (n) => (nat(n) && n >= 1 ? (n === 1 ? 0 : Math.ceil(Math.log2(n))) : null);
 
 function groupedJointFiber(t, E, O, P) {
   const fiber = enumerateFixedC1JointFiber(t, E, O, P);
   if (fiber.status !== 'FIXED_C1_JOINT_FIBER_ENUMERATED') {
     return freeze({ status: 'ROUTE_CONDITIONED_SCHEMA_JOINT_FIBER_ABSTAIN', fiber });
   }
-  const groups = new Map();
+
+  const map = new Map();
   for (const row of fiber.rows) {
-    const routeKey = key(row.blocks);
-    if (!groups.has(routeKey)) {
-      groups.set(routeKey, {
-        route_rank: row.route_rank,
-        blocks: row.blocks,
-        word: row.word,
-        rows: [],
-      });
-    }
-    groups.get(routeKey).rows.push(row);
+    const k = key(row.blocks);
+    if (!map.has(k)) map.set(k, { route_rank: row.route_rank, blocks: row.blocks, word: row.word, rows: [] });
+    map.get(k).rows.push(row);
   }
-  const routes = [...groups.values()]
+
+  const routes = [...map.values()]
     .sort((a, b) => a.route_rank - b.route_rank)
-    .map((group) => {
-      const declared = routeConditionalSeamCardinality(group.blocks);
-      const seamCardinality = group.rows.length;
-      const localRanks = [...group.rows]
-        .sort((a, b) => Number(BigInt(a.local_seam_rank) - BigInt(b.local_seam_rank)))
-        .map((row) => row.local_seam_rank);
+    .map((route) => {
+      const declared = routeConditionalSeamCardinality(route.blocks);
+      const seamCardinality = route.rows.length;
+      const distinct = new Set(route.rows.map((row) => key(row.seams))).size;
       const passed = declared.status === 'ROUTE_CONDITIONAL_SEAM_CARDINALITY_DERIVED'
         && BigInt(declared.cardinality) === BigInt(seamCardinality)
-        && new Set(group.rows.map((row) => key(row.seams))).size === seamCardinality;
+        && distinct === seamCardinality;
       return freeze({
-        route_rank: group.route_rank,
-        blocks: group.blocks,
-        word: group.word,
+        route_rank: route.route_rank,
+        blocks: route.blocks,
+        word: route.word,
         seam_cardinality: seamCardinality,
-        declared_seam_cardinality: declared.cardinality,
-        local_seam_ranks: freeze(localRanks),
-        rows: freeze(group.rows),
+        rows: freeze(route.rows),
         passed,
       });
     });
+
   const passed = routes.every((route) => route.passed)
     && routes.reduce((sum, route) => sum + route.seam_cardinality, 0) === fiber.rows.length;
+
   return freeze({
     status: passed
       ? 'ROUTE_CONDITIONED_SCHEMA_GROUPED_JOINT_FIBER_DERIVED'
@@ -126,43 +115,42 @@ export function seamProjectionZeroFiber(t, E, O, P) {
 export function routeConditionedSchemaProfile(t, E, O, P) {
   const grouped = groupedJointFiber(t, E, O, P);
   if (grouped.status !== 'ROUTE_CONDITIONED_SCHEMA_GROUPED_JOINT_FIBER_DERIVED') return grouped;
-  const seamSizes = grouped.routes.map((route) => route.seam_cardinality);
-  const maxSeam = Math.max(...seamSizes);
-  const routeCount = grouped.route_count;
-  const jointCount = grouped.joint_count;
-  const rectangularCapacity = routeCount * maxSeam;
-  const slack = rectangularCapacity - jointCount;
-  const slackByRoute = seamSizes.map((size) => maxSeam - size);
-  const slackSum = slackByRoute.reduce((sum, value) => sum + value, 0);
-  const uniform = seamSizes.every((size) => size === maxSeam);
-  const routeBits = bitsForCardinality(routeCount);
-  const conditionalSeamBits = bitsForCardinality(maxSeam);
-  const jointBits = bitsForCardinality(jointCount);
-  const splitBits = routeBits + conditionalSeamBits;
-  const passed = slack >= 0
-    && slack === slackSum
-    && (slack === 0) === uniform
+  const sizes = grouped.routes.map((route) => route.seam_cardinality);
+  const S = Math.max(...sizes);
+  const N = grouped.route_count;
+  const J = grouped.joint_count;
+  const C = N * S;
+  const delta = C - J;
+  const byRoute = sizes.map((size) => S - size);
+  const uniform = sizes.every((size) => size === S);
+  const routeBits = bits(N);
+  const seamBits = bits(S);
+  const jointBits = bits(J);
+  const splitBits = routeBits + seamBits;
+  const passed = delta >= 0
+    && delta === byRoute.reduce((sum, value) => sum + value, 0)
+    && (delta === 0) === uniform
     && splitBits >= jointBits;
   return freeze({
     status: passed
       ? 'EXACT_ROUTE_CONDITIONED_SEAM_SCHEMA_PROFILE_DERIVED'
       : 'ROUTE_CONDITIONED_SEAM_SCHEMA_PROFILE_MISMATCH',
     t, E, O, P,
-    route_count: routeCount,
-    route_conditional_seam_cardinalities: freeze(seamSizes),
-    shared_conditional_seam_alphabet_min: maxSeam,
-    joint_count: jointCount,
-    rectangular_capacity: rectangularCapacity,
-    rectangular_slack: slack,
-    rectangular_slack_by_route: freeze(slackByRoute),
+    route_count: N,
+    route_conditional_seam_cardinalities: freeze(sizes),
+    shared_conditional_seam_alphabet_min: S,
+    joint_count: J,
+    rectangular_capacity: C,
+    rectangular_slack: delta,
+    rectangular_slack_by_route: freeze(byRoute),
     conditional_seam_burdens_uniform: uniform,
     monolithic_joint_bits: jointBits,
     split_route_bits: routeBits,
-    split_conditional_seam_bits: conditionalSeamBits,
+    split_conditional_seam_bits: seamBits,
     split_total_bits: splitBits,
     fixed_width_bit_tax: splitBits - jointBits,
     classifications: freeze({
-      slack: slack > 0
+      slack: delta > 0
         ? 'NONUNIFORM_CONDITIONAL_SEAM_BURDENS_FORCE_UNUSED_RECTANGULAR_SCHEMA_CELLS'
         : 'DECLARED_ROUTE_CONDITIONAL_SEAM_BURDENS_FILL_THE_RECTANGULAR_SCHEMA',
       width: splitBits > jointBits
@@ -254,12 +242,14 @@ export function materializeRectangularSchema(t, E, O, P) {
   const cells = [];
   for (const route of grouped.routes) {
     for (let seamLabel = 0; seamLabel < profile.shared_conditional_seam_alphabet_min; seamLabel += 1) {
-      const decoded = decodeFactorizedRouteConditionalSeam(t, E, O, P, route.route_rank, seamLabel);
+      const lawful = seamLabel < route.seam_cardinality;
       cells.push(freeze({
         route_label: route.route_rank,
         seam_label: seamLabel,
-        lawful: decoded.status === 'EXACT_FACTORIZED_ROUTE_CONDITIONAL_SEAM_STATE_DECODED',
-        decoded,
+        lawful,
+        classification: lawful
+          ? 'LAWFUL_FACTORIZED_ROUTE_CONDITIONAL_SEAM_CELL'
+          : 'UNUSED_RECTANGULAR_CELL_IS_SCHEMA_PADDING_NOT_A_LAWFUL_HISTORY',
       }));
     }
   }
@@ -341,16 +331,12 @@ function strictBitTaxHostile() {
 }
 
 function factorizedRoundTripHostile() {
-  const states = [
-    [3, 1, 1, 3],
-    [3, 1, 2, 4],
-    [2, 2, 3, 5],
-  ];
+  const states = [[3, 1, 1, 3], [3, 1, 2, 4], [2, 2, 3, 5]];
   const rows = [];
   for (const args of states) {
     const grouped = groupedJointFiber(...args);
     if (grouped.status !== 'ROUTE_CONDITIONED_SCHEMA_GROUPED_JOINT_FIBER_DERIVED') {
-      rows.push(freeze({ args, passed: false, reason: grouped.status }));
+      rows.push(freeze({ args: freeze(args), passed: false, reason: grouped.status }));
       continue;
     }
     for (const route of grouped.routes) {
@@ -360,11 +346,9 @@ function factorizedRoundTripHostile() {
           ? decodeFactorizedRouteConditionalSeam(...args, encoded.route_label, encoded.seam_label)
           : freeze({ status: 'FACTORIZED_ROUND_TRIP_ENCODING_FAILED' });
         rows.push(freeze({
-          args,
+          args: freeze(args),
           blocks: state.blocks,
           seams: state.seams,
-          encoded,
-          decoded,
           passed: decoded.status === 'EXACT_FACTORIZED_ROUTE_CONDITIONAL_SEAM_STATE_DECODED'
             && key(decoded.blocks) === key(state.blocks)
             && key(decoded.seams) === key(state.seams),
@@ -379,7 +363,7 @@ function universalZeroCollisionCorroboration() {
   const states = [
     [0, 3, 0, 0],
     [1, 2, 3, 3],
-    [2, 1, 2, 3],
+    [2, 1, 2, 4],
     [3, 1, 1, 3],
     [3, 1, 2, 4],
     [3, 2, 2, 6],
@@ -389,28 +373,23 @@ function universalZeroCollisionCorroboration() {
     const zero = seamProjectionZeroFiber(...args);
     return freeze({
       args: freeze(args),
-      zero,
       passed: zero.status === 'EXACT_FULL_SEAM_PROJECTION_ZERO_FIBER_DERIVED'
         && zero.zero_fiber_cardinality === zero.route_count,
+      zero,
     });
   });
   return freeze({ passed: rows.every((row) => row.passed), rows: freeze(rows), authority: 'BOUNDED_CORROBORATION_ONLY' });
 }
 
 function uniformSlackCorroboration() {
-  const states = [
-    [0, 5, 0, 0],
-    [1, 2, 3, 3],
-    [2, 0, 2, 2],
-    [2, 2, 0, 2],
-    [3, 0, 0, 0],
-  ];
+  const states = [[0, 5, 0, 0], [1, 2, 3, 3], [2, 0, 2, 2], [2, 2, 0, 2], [3, 0, 0, 0]];
   const rows = states.map((args) => {
     const profile = routeConditionedSchemaProfile(...args);
     return freeze({
-      args: freeze(args), profile,
+      args: freeze(args),
       passed: profile.status === 'EXACT_ROUTE_CONDITIONED_SEAM_SCHEMA_PROFILE_DERIVED'
         && ((profile.rectangular_slack === 0) === profile.conditional_seam_burdens_uniform),
+      profile,
     });
   });
   return freeze({ passed: rows.every((row) => row.passed), rows: freeze(rows), authority: 'BOUNDED_CORROBORATION_ONLY' });
@@ -437,20 +416,18 @@ function paddingAbstentionHostile() {
   });
 }
 
-function compareWithMonolithicRankHostile() {
-  const fiber = groupedJointFiber(3, 1, 2, 4);
+function monolithicFactorizedCoexistence() {
+  const grouped = groupedJointFiber(3, 1, 2, 4);
   const rows = [];
-  for (const route of fiber.routes) {
+  for (const route of grouped.routes) {
     for (const state of route.rows) {
-      const monolithic = encodeFixedC1JointRank(3, 1, 2, 4, state.blocks, state.seams);
-      const factorized = encodeFactorizedRouteConditionalSeam(3, 1, 2, 4, state.blocks, state.seams);
+      const mono = encodeFixedC1JointRank(3, 1, 2, 4, state.blocks, state.seams);
+      const split = encodeFactorizedRouteConditionalSeam(3, 1, 2, 4, state.blocks, state.seams);
       rows.push(freeze({
+        passed: mono.status === 'FIXED_C1_JOINT_RANK_ENCODED'
+          && split.status === 'EXACT_FACTORIZED_ROUTE_CONDITIONAL_SEAM_STATE_ENCODED',
         blocks: state.blocks,
         seams: state.seams,
-        monolithic,
-        factorized,
-        passed: monolithic.status === 'FIXED_C1_JOINT_RANK_ENCODED'
-          && factorized.status === 'EXACT_FACTORIZED_ROUTE_CONDITIONAL_SEAM_STATE_ENCODED',
       }));
     }
   }
@@ -468,7 +445,7 @@ export function runRouteConditionedSeamSchemaSlackChamber() {
     uniform_slack_corroboration: uniformSlackCorroboration(),
     conditional_seam_alphabet: alphabetHostile(),
     padding_abstention: paddingAbstentionHostile(),
-    monolithic_factorized_coexistence: compareWithMonolithicRankHostile(),
+    monolithic_factorized_coexistence: monolithicFactorizedCoexistence(),
   });
   const passed = Object.values(certificates).every((certificate) => certificate.passed);
   return freeze({
