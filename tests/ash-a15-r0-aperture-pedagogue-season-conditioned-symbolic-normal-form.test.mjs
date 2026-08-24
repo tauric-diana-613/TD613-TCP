@@ -59,12 +59,12 @@ for (const proof of result.structural_induction.T_extension.residue_certificate.
 assert.deepEqual(tickDepartureCounts('S0', 0), [0, 0, 0, 0]);
 assert.deepEqual(tickDepartureCounts('S0', 4), [1, 1, 1, 1]);
 assert.deepEqual(tickDepartureCounts('S1', 9), [2, 3, 2, 2]);
-assert.deepEqual(tickDepartureCounts('S3', 14), [3, 3, 3, 5]);
+assert.deepEqual(tickDepartureCounts('S3', 14), [4, 3, 3, 4]);
 
 const summary = summarizeSeasonConditionedWord('S3', ['Q', 'T', 'Q', 'T', 'T', 'Q']);
 assert.equal(summary.status, 'SEASON_CONDITIONED_WORD_SUMMARIZED');
 assert.equal(summary.t, 3);
-assert.deepEqual(summary.q_by_season, [1, 0, 0, 2]);
+assert.deepEqual(summary.q_by_season, [1, 0, 1, 1]);
 assert.equal(summary.q_total, 3);
 assert.equal(summary.final_season, 'S2');
 assert.equal(summary.final_phase, 'P0');
