@@ -62,9 +62,9 @@ The repair shall pin exactly the inherited receipt heads already present in #728
 
 Acceptance requires each exact receipt commit to be an ancestor of the exact #728 witness head under the full-history checkout. A missing, replaced, or non-ancestor receipt must fail loudly before #728 promotion.
 
-## 3. Authorized implementation change
+## 3. Authorized executable change
 
-Replace recursive parent assay re-performance with:
+Replace recursive parent assay re-performance inside #728 with:
 
 ```text
 exact receipt manifest
@@ -78,13 +78,37 @@ The generator tables must be derived from the same lawful source histories and d
 
 The #728 symbolic certificate and bounded hostile must still execute fresh at the candidate witness head.
 
-## 4. Runtime boundary
+## 4. Gate-level replay defect discovered before gate repair
+
+The first executable repair revealed a second independent replay layer before a replacement witness was accepted: `ash-a15-r0-review-hardening.test.mjs` imports the entire historical A15-R0 research chain and therefore re-executes old scientific assays, including #726's own recursive parent custody, before reaching #728.
+
+That gate-level behavior is governed by the same distinction:
+
+```text
+historical strata already receipt-witnessed
+!=
+current exact-head theorem requiring fresh execution
+```
+
+The authorized gate repair shall therefore:
+
+1. require #726 receipt head `0853a1956722c0b6ca9b2ea0d13bb33ea8a87919` to be an ancestor of `HEAD`;
+2. inspect the diff from that receipt to `HEAD` over the A15-R0 research/docs/test surfaces;
+3. fail if any pre-#728 historical research path changed;
+4. execute the current #728 theorem test fresh;
+5. retain the non-research release-boundary hardening checks already in the gate.
+
+Historical A15-R0 research tests are not re-imported merely to prove that their already-witnessed results still exist. Receipt ancestry plus a no-historical-path-mutation diff is the custody proof for this child chamber.
+
+The timed-out/censored pre-repair implementation and its original module remain in the branch as provenance; the repair must not overwrite that artifact.
+
+## 5. Runtime boundary
 
 The existing `contracts` timeout remains unchanged. This repair must not obtain a green witness by increasing the 45-minute job ceiling.
 
 A successful rerun therefore demonstrates that witness architecture, rather than a larger timeout allowance, removed the inherited replay burden.
 
-## 5. Claim ceiling
+## 6. Claim ceiling
 
 This maintenance repair earns no new mathematical result by itself. In particular it does not authorize source erasure, quotient promotion, ambient Church-Rosser, rewrite completion outside the authored jurisdiction, inverse semantics, groupoid, transport, connection, holonomy, curvature, Proto-Loom, A16, live Ash, merge, production, or Vercel release.
 
@@ -93,6 +117,7 @@ Required classifications:
 ```text
 RUN_2118_TIMEOUT_CENSORED_NOT_SCIENTIFICALLY_FALSIFIED
 PARENT_RECEIPT_ANCESTRY_VERIFICATION_REPLACES_PARENT_ASSAY_REPLAY
+HISTORICAL_GATE_REPLAY_REPLACED_BY_RECEIPT_PLUS_NO_MUTATION_DIFF
 THEOREM_SEMANTICS_FROZEN_DURING_WITNESS_ARCHITECTURE_REPAIR
 ```
 
