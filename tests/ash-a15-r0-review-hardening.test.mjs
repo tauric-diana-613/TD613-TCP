@@ -30,6 +30,7 @@ await import('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruc
 await import('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
