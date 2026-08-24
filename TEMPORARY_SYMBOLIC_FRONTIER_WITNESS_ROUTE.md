@@ -14,4 +14,6 @@ Fresh main observed before routing:
 4ca8c0600b40d0ea2b38c1e0dd0b2d1e77713aef
 ```
 
+Synchronization pulse: 1
+
 Purpose: register the repository's existing consolidated pull-request validation against the exact #725 scientific content. This file carries no scientific claim and must be removed after witness custody is complete.
