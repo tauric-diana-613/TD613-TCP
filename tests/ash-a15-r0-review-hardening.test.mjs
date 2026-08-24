@@ -26,6 +26,7 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-path-category-audition.test
 await import('./ash-a15-r0-aperture-pedagogue-invertibility-admissibility-obstruction.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-directed-reachability-geometry.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-directed-branching-confluence.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-bounded-common-future-join-obstruction.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
