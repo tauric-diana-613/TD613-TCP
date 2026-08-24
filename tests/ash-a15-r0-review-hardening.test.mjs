@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 
 const asyncDiagnosticPath = 'artifacts/a15-r0/review-hardening-async-error.json';
 const parentImportDiagnosticPath = 'artifacts/a15-r0/review-hardening-parent-import-progress.json';
+const rewriteSyntaxDiagnosticPath = 'artifacts/a15-r0/typed-rewrite-syntax-check.json';
 let parentLastCompletedSpecifier = null;
 
 function writeParentImportProgress({ currentSpecifier = null, caughtError = null, phase = 'IMPORT_CHAIN' } = {}) {
@@ -12,6 +14,33 @@ function writeParentImportProgress({ currentSpecifier = null, caughtError = null
     current_specifier: currentSpecifier,
     last_completed_specifier: parentLastCompletedSpecifier,
     caught_error: caughtError,
+  }, null, 2));
+}
+
+function writeTypedRewriteSyntaxDiagnostics() {
+  const paths = [
+    'tests/ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs',
+    'app/dome-world/previews/a15-r0/aperture-pedagogue-typed-target-preserving-rewrite-admissibility.js',
+  ];
+  const rows = paths.map((path) => {
+    const checked = spawnSync(process.execPath, ['--check', path], { encoding: 'utf8' });
+    return {
+      path,
+      status: checked.status,
+      signal: checked.signal,
+      stdout: checked.stdout,
+      stderr: checked.stderr,
+      error: checked.error ? {
+        name: checked.error.name,
+        message: checked.error.message,
+        stack: checked.error.stack,
+      } : null,
+    };
+  });
+  fs.mkdirSync('artifacts/a15-r0', { recursive: true });
+  fs.writeFileSync(rewriteSyntaxDiagnosticPath, JSON.stringify({
+    schema: 'td613.ash.a15-r0.typed-rewrite-syntax-check/v0.1',
+    rows,
   }, null, 2));
 }
 
@@ -77,6 +106,7 @@ await auditedParentImport('./ash-a15-r0-aperture-pedagogue-bounded-common-future
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-directed-future-cone-stratification.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-season-conditioned-symbolic-normal-form.test.mjs');
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-symbolic-frontier-completeness.test.mjs');
+writeTypedRewriteSyntaxDiagnostics();
 await auditedParentImport('./ash-a15-r0-aperture-pedagogue-typed-target-preserving-rewrite-admissibility.test.mjs');
 await auditedParentImport('./ash-a15-r0-wedding-identifiability.test.mjs');
 
