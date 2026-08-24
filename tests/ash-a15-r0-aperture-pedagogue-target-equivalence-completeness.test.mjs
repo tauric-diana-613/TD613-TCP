@@ -1,16 +1,25 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 
 import {
   TARGET_EQUIVALENCE_COMPLETENESS_SCHEMA,
+  TARGET_EQUIVALENCE_PARENT_RECEIPTS,
   blockDecomposeTqWord,
   canonicalParityBlockNormalForm,
   runTargetEquivalenceCompletenessAssay,
-} from '../app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness.js';
+} from '../app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-completeness-receipt-witness.js';
+
+assert.equal(TARGET_EQUIVALENCE_PARENT_RECEIPTS.length, 7);
+for (const receipt of TARGET_EQUIVALENCE_PARENT_RECEIPTS) {
+  assert.match(receipt.head, /^[0-9a-f]{40}$/);
+  execFileSync('git', ['cat-file', '-e', `${receipt.head}^{commit}`], { stdio: 'pipe' });
+  execFileSync('git', ['merge-base', '--is-ancestor', receipt.head, 'HEAD'], { stdio: 'pipe' });
+}
 
 const result = runTargetEquivalenceCompletenessAssay();
 
 assert.equal(result.schema, TARGET_EQUIVALENCE_COMPLETENESS_SCHEMA);
-assert.equal(result.passed, true, 'The preregistered source-relative completeness theorem must satisfy the symbolic certificate, larger bounded hostile, and parent custody or fail loudly.');
+assert.equal(result.passed, true, 'The preregistered source-relative completeness theorem must satisfy the symbolic certificate, larger bounded hostile, and exact parent receipt ancestry or fail loudly.');
 assert.equal(result.status, 'SOURCE_RELATIVE_TARGET_EQUIVALENCE_COMPLETENESS_ROUND_CLOSED');
 assert.equal(
   result.canonical_classification,
@@ -22,6 +31,22 @@ assert.deepEqual(result.source_domain.source_seasons, ['S0', 'S1', 'S2', 'S3']);
 assert.equal(result.source_domain.last_action, 'Q_PHASE_PULSE');
 assert.deepEqual(result.source_domain.generators, ['T', 'Q']);
 assert.equal(result.source_domain.source_erasure_authorized, false);
+
+assert.equal(result.generator_table_custody.passed, true);
+assert.equal(result.generator_table_custody.status, 'GENERATOR_TABLES_DERIVED_DIRECTLY_FROM_DECLARED_TQ_TRANSITIONS');
+assert.equal(result.generator_table_custody.parent_assay_replay_used, false);
+assert.deepEqual(result.generator_table_custody.D_Q, {
+  S0: [0, 0, 0, 1],
+  S1: [1, 0, 0, 0],
+  S2: [0, 0, 0, 1],
+  S3: [1, 0, 0, 0],
+});
+assert.deepEqual(result.generator_table_custody.F_Q, {
+  S0: [1, 1, 0, 0],
+  S1: [0, 0, 1, 1],
+  S2: [2, 2, 0, 0],
+  S3: [0, 0, 2, 2],
+});
 
 const block = blockDecomposeTqWord(['Q', 'Q', 'T', 'Q', 'T', 'Q', 'Q', 'Q']);
 assert.equal(block.status, 'UNIQUE_TQ_Q_BLOCK_DECOMPOSITION_DERIVED');
@@ -100,8 +125,13 @@ assert.equal(
 );
 assert.ok(hostile.cross_source_control.distinct_complete_target_count_across_sources > 1);
 
-assert.equal(result.parent_custody_unchanged, true);
-assert.equal(result.parent_custody_classification, 'PARENT_718_719_720_723_724_725_726_CUSTODY_UNCHANGED');
+assert.equal(result.parent_custody_replayed, false);
+assert.equal(result.parent_custody_strategy, 'EXACT_PARENT_RECEIPT_ANCESTRY_STATIC_VERIFICATION_NO_PARENT_ASSAY_REPLAY');
+assert.deepEqual(result.parent_receipt_manifest, TARGET_EQUIVALENCE_PARENT_RECEIPTS);
+assert.equal(
+  result.parent_custody_classification,
+  'PARENT_718_719_720_723_724_725_726_EXACT_RECEIPT_ANCESTRY_PINNED',
+);
 
 for (const forbidden of [
   'source_season_erasure',
@@ -136,6 +166,7 @@ assert.equal(
 
 console.log('A15-R0 target-equivalence completeness summary:', JSON.stringify({
   classification: result.canonical_classification,
+  parent_custody: result.parent_custody_strategy,
   normal_form: symbolic.canonical_form,
   forcing_cycle: injectivity.forcing_four_cycle_sum,
   hostile: {
@@ -148,4 +179,4 @@ console.log('A15-R0 target-equivalence completeness summary:', JSON.stringify({
     cross_source_target_diversity: hostile.cross_source_control.distinct_complete_target_count_across_sources,
   },
 }));
-console.log('Ash A15-R0 Aperture × Pedagogue source-relative target-equivalence completeness tests passed.');
+console.log('Ash A15-R0 Aperture × Pedagogue source-relative target-equivalence completeness receipt-witness tests passed.');
