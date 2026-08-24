@@ -1,10 +1,58 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const testsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(testsDir, 'ash-a15-r0-review-hardening-core.test.mjs');
 const tempPath = path.join(testsDir, `.ash-a15-r0-review-hardening-sharded-${process.pid}.mjs`);
+const diagnosticPath = path.join('artifacts', 'a15-r0', 'review-hardening-import-progress.json');
+const diagnosticState = {
+  schema: 'td613.ash.a15-r0.review-hardening-import-progress/v0.1',
+  current_specifier: null,
+  last_completed_specifier: null,
+  completed_specifiers: []
+};
+
+function writeDiagnostic(extra = {}) {
+  fsSync.mkdirSync(path.dirname(diagnosticPath), { recursive:true });
+  fsSync.writeFileSync(
+    diagnosticPath,
+    `${JSON.stringify({ ...diagnosticState, ...extra }, null, 2)}\n`,
+    'utf8'
+  );
+}
+
+async function auditedImport(specifier) {
+  diagnosticState.current_specifier = specifier;
+  writeDiagnostic({ phase:'before_import' });
+  try {
+    const moduleNamespace = await import(specifier);
+    diagnosticState.last_completed_specifier = specifier;
+    diagnosticState.completed_specifiers.push(specifier);
+    diagnosticState.current_specifier = null;
+    writeDiagnostic({ phase:'after_import' });
+    return moduleNamespace;
+  } catch (error) {
+    writeDiagnostic({
+      phase:'import_rejected',
+      error_name:error?.name ?? null,
+      error_message:error?.message ?? String(error),
+      error_stack:error?.stack ?? null
+    });
+    throw error;
+  }
+}
+
+process.on('uncaughtExceptionMonitor', error => {
+  writeDiagnostic({
+    phase:'uncaught_exception_monitor',
+    error_name:error?.name ?? null,
+    error_message:error?.message ?? String(error),
+    error_stack:error?.stack ?? null
+  });
+});
+
 let source = await fs.readFile(corePath, 'utf8');
 
 const startMarker = "const consolidatedWorkflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');";
@@ -57,40 +105,40 @@ assert.match(
 source = source.slice(0, start) + shardedTopologyLaw + source.slice(end);
 await fs.writeFile(tempPath, source, 'utf8');
 try {
-  await import(`${pathToFileURL(tempPath).href}?sharded=${Date.now()}`);
+  await auditedImport(`${pathToFileURL(tempPath).href}?sharded=${Date.now()}`);
 } finally {
   await fs.rm(tempPath, { force:true });
 }
 
-await import('./pedagogue-research-hydration.test.mjs');
-await import('./pedagogue-research-hydration-temporal.test.mjs');
-await import('./pedagogue-research-hydration-observability.test.mjs');
-await import('./pedagogue-research-hydration-identifiability-scope.test.mjs');
-await import('./pedagogue-research-assay-witness.test.mjs');
-await import('./pedagogue-order-identifiability-refinement.test.mjs');
-await import('./ash-a15-r0-moss-lantern-reference-identifiability.test.mjs');
-await import('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
-await import('./ash-a15-r0-moss-lantern-aliasing-discriminator.test.mjs');
-await import('./ash-a15-r0-moss-lantern-stochastic-boundary.test.mjs');
-await import('./ash-a15-r0-self-calibrating-joint-state-operator.test.mjs');
-await import('./ash-a15-r0-identifiability-deficit-targeting.test.mjs');
-await import('./ash-a15-r0-aperture-conditioning-aware-widening.test.mjs');
-await import('./ash-a15-r0-aperture-covariance-whitened-widening.test.mjs');
-await import('./ash-a15-r0-aperture-correlated-noise-geometry.test.mjs');
-await import('./ash-a15-r0-aperture-experiment-design-state.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-replay-stability.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-replay-envelope-consequence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-consequence-conditioned-selection.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-decision-loss-replay-map.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-endogenous-observation-reaudit.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-multi-step-question-order.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-order.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-perturbation-consequence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-branching-typed-deficit-policy.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-typed-policy-state-aliasing.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-minimal-decision-custody-state.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-noisy-orientation-provenance-independence.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-joint-decision-custody-hold-composition.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-decision-transition-append-only-custody-replay.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-counterfactual-shared-prefix-branching.test.mjs');
-await import('./giving-pedagogue-independent-order.test.mjs');
+await auditedImport('./pedagogue-research-hydration.test.mjs');
+await auditedImport('./pedagogue-research-hydration-temporal.test.mjs');
+await auditedImport('./pedagogue-research-hydration-observability.test.mjs');
+await auditedImport('./pedagogue-research-hydration-identifiability-scope.test.mjs');
+await auditedImport('./pedagogue-research-assay-witness.test.mjs');
+await auditedImport('./pedagogue-order-identifiability-refinement.test.mjs');
+await auditedImport('./ash-a15-r0-moss-lantern-reference-identifiability.test.mjs');
+await auditedImport('./ash-a15-r0-moss-lantern-temporal-order.test.mjs');
+await auditedImport('./ash-a15-r0-moss-lantern-aliasing-discriminator.test.mjs');
+await auditedImport('./ash-a15-r0-moss-lantern-stochastic-boundary.test.mjs');
+await auditedImport('./ash-a15-r0-self-calibrating-joint-state-operator.test.mjs');
+await auditedImport('./ash-a15-r0-identifiability-deficit-targeting.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-conditioning-aware-widening.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-covariance-whitened-widening.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-correlated-noise-geometry.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-experiment-design-state.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-replay-stability.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-replay-envelope-consequence.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-consequence-conditioned-selection.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-decision-loss-replay-map.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-endogenous-observation-reaudit.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-multi-step-question-order.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-order.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-adaptive-sequence-perturbation-consequence.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-branching-typed-deficit-policy.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-typed-policy-state-aliasing.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-minimal-decision-custody-state.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-noisy-orientation-provenance-independence.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-joint-decision-custody-hold-composition.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-decision-transition-append-only-custody-replay.test.mjs');
+await auditedImport('./ash-a15-r0-aperture-pedagogue-counterfactual-shared-prefix-branching.test.mjs');
+await auditedImport('./giving-pedagogue-independent-order.test.mjs');
