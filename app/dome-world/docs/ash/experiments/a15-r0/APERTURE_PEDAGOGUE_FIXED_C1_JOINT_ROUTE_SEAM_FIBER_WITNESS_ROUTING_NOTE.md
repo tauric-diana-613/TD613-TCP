@@ -26,6 +26,8 @@ ae9f8d7eeefc4de39d5a09d086daadbed22d7e47
 
 This file exists only to route Draft PR #748 through the repository's exact-head pull-request validation membrane. It changes no seam-split bijection, duplicated-slot polynomial, inherited five-state hostile, custody bound, rank decoder, or claim ceiling.
 
+Synchronization annotation: the initial retargeted head did not immediately attach a pull-request Actions run, so this metadata-only update exists solely to register a fresh exact-head PR event. Scientific head remains frozen above.
+
 After authority-bearing witness:
 
 ```text
