@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
-const PARENT_728_RECEIPT = 'b08fab1ca7786a3f70c5e1816f41c1bc9f856723';
-execFileSync('git', ['cat-file', '-e', `${PARENT_728_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_728_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_729_RECEIPT = 'bd33fc4010604dc9a0a84ba10ba4d721632ac4ef';
+execFileSync('git', ['cat-file', '-e', `${PARENT_729_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_729_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_728_RECEIPT}..HEAD`,
+    `${PARENT_729_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -25,11 +25,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TARGET_EQUIVALENCE_QUOTIENT_CONGRUENCE_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-target-equivalence-quotient-congruence.js',
-  'tests/ash-a15-r0-aperture-pedagogue-target-equivalence-quotient-congruence.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DIRECTED_FIBER_TRANSPORT_QUOTIENT_DESCENT_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DIRECTED_FIBER_TRANSPORT_QUOTIENT_DESCENT_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DIRECTED_FIBER_TRANSPORT_QUOTIENT_DESCENT_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-directed-fiber-transport-quotient-descent.js',
+  'tests/ash-a15-r0-aperture-pedagogue-directed-fiber-transport-quotient-descent.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -37,11 +37,11 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `#729 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `#730 may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-target-equivalence-quotient-congruence.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-directed-fiber-transport-quotient-descent.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
