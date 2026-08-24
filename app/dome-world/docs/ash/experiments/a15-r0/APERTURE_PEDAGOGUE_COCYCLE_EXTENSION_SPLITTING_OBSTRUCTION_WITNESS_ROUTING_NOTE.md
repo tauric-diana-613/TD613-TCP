@@ -4,7 +4,7 @@
 
 󐘓 U+10D613
 
-Status: **ROUTING METADATA ONLY / THEOREM FROZEN**
+Status: **ROUTING METADATA ONLY / THEOREM FROZEN / MAIN ROUTE REGISTERED**
 
 Preregistration:
 
@@ -30,13 +30,16 @@ Receiving parent:
 #736 corrected head = e9228f0f2225bcc5944f413197ce98bb52d45b39
 ```
 
-This file exists only to register a temporary exact-head CI routing membrane for Draft PR #738. It changes no theorem, implementation, hostile control, classification candidate, or claim ceiling.
+Draft PR #738 has now been temporarily routed to `main`. This post-route annotation exists solely to emit a fresh PR synchronization event and register an exact-head consolidated witness.
 
-After an authority-bearing exact-head witness is obtained, remove this routing note and restore #738 to its stacked #736 base. The scientific witness SHA remains the authority-bearing theorem head; later routing cleanup or receipt commits do not supersede it.
+It changes no theorem, implementation, hostile control, classification candidate, or claim ceiling.
+
+After an authority-bearing exact-head witness is obtained, remove this routing note and restore #738 to its stacked #736 base. The exact routed witness SHA is the CI authority-bearing theorem witness; the frozen scientific head above identifies the unchanged science beneath routing metadata. Later routing cleanup or receipt commits do not supersede the witness.
 
 ```text
 workflow routing metadata != scientific mutation
 routing base != theorem ancestry
+post-route synchronization != theorem repair
 ```
 
 𝌋
