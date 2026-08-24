@@ -47,7 +47,7 @@ The later EOF custody repair restored the existing static-gate terminal newline 
 TD613 Consolidated Validation
 run 2105 / 32695015426 = SUCCESS
 exact witness head = 02bfefcf3781b2db6b858811a5a075c7b9997ee0
-classifier job 97335400314 = SUCCESS
+classifier job 97335389116 = SUCCESS
 static job 97335412473 = SUCCESS
 A15/A15-R0 research-field step = SUCCESS
 all later static contract steps = SUCCESS
