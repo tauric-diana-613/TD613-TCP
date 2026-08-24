@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:ad8830145755bd6f7e81fc61
+parent_capture_id: capture:c05346ce47cae814d0de9953
+parent_blob_sha256: e941e5c86404b1181f5fc586a94f439f48e9d9c5f5afa9a09d77867aee60bbd1
+tool: srcctl-json-normalizer/1
+source_title: "Infrastructure Determinism and Outcome Drift: A Generalized Framework for Analyzing Institutional Systems"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20162704",
+  "conceptrecid": "20162704",
+  "created": "2026-05-13T17:20:58.069707+00:00",
+  "doi": "10.5281/zenodo.20162705",
+  "doi_url": "https://doi.org/10.5281/zenodo.20162705",
+  "files": [
+    {
+      "checksum": "md5:4cfd8876b70c6e5b6e8f7c492b666ccd",
+      "id": "9550da69-0f63-4464-a901-304cad6e61b7",
+      "key": "Infrastructure Determinism and Outcome Drift A Generalized Framework for Analyzing Institutional Systems .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20162705/files/Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/content"
+      },
+      "size": 154301
+    }
+  ],
+  "id": 20162705,
+  "links": {
+    "access": "https://zenodo.org/api/records/20162705/access",
+    "access_grants": "https://zenodo.org/api/records/20162705/access/grants",
+    "access_links": "https://zenodo.org/api/records/20162705/access/links",
+    "access_request": "https://zenodo.org/api/records/20162705/access/request",
+    "access_users": "https://zenodo.org/api/records/20162705/access/users",
+    "archive": "https://zenodo.org/api/records/20162705/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20162705/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20162705/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20162705/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20162705",
+    "draft": "https://zenodo.org/api/records/20162705/draft",
+    "file_modification": "https://zenodo.org/api/records/20162705/file-modification",
+    "files": "https://zenodo.org/api/records/20162705/files",
+    "latest": "https://zenodo.org/api/records/20162705/versions/latest",
+    "latest_html": "https://zenodo.org/records/20162705/latest",
+    "media_files": "https://zenodo.org/api/records/20162705/media-files",
+    "parent": "https://zenodo.org/api/records/20162704",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20162704",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20162704",
+    "parent_html": "https://zenodo.org/records/20162704",
+    "preview_html": "https://zenodo.org/records/20162705?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20162705/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20162705/request-deletion",
+    "requests": "https://zenodo.org/api/records/20162705/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20162705/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20162705",
+    "self_doi": "https://doi.org/10.5281/zenodo.20162705",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20162705",
+    "self_html": "https://zenodo.org/records/20162705",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20162705/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20162705/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20162705:Infrastructure%20Determinism%20and%20Outcome%20Drift%20A%20Generalized%20Framework%20for%20Analyzing%20Institutional%20Systems%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20162705/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay develops a generalized theoretical and analytical framework for understanding why institutional outcomes routinely diverge from institutional intentions. It formalizes infrastructure determinism, the principle that institutions behave according to their operational architectures&mdash;administrative systems, eligibility rules, supply chains, financing mechanisms, regulatory structures, information systems, staffing capacities, and logistical networks&mdash;rather than their symbolic commitments. As the paper states, &ldquo;intentions are symbolic while infrastructures are causal,&rdquo; and outcomes therefore reflect structural capacity more than political aspiration.</p>\n<p>To operationalize this principle, the essay introduces Outcome Drift Differential (ODD), a domain‑agnostic metric for quantifying the divergence between policy targets and observed outcomes. ODD is designed to function across heterogeneous systems&mdash;housing, healthcare, education, climate governance, labor markets, digital platforms, disaster response, and administrative governance&mdash;making it a cross‑domain diagnostic tool rather than a sector‑specific indicator.</p>\n<p>Through examples spanning housing, healthcare, education, climate systems, labor markets, and digital platforms, the paper demonstrates that persistent outcome drift emerges when symbolic commitments exceed infrastructural capacity. The framework identifies recurring structural mechanisms&mdash;administrative friction, supply constraints, path dependence, fragmentation, temporal lag, extraction pressure, and information bottlenecks&mdash;as the primary drivers of drift. The essay concludes that institutions do not fail despite their infrastructures; they fail according to their infrastructures.</p>",
+    "doi": "10.5281/zenodo.20162705",
+    "keywords": [
+      "Metatheory",
+      "Infrastructure Determinism",
+      "Institutions",
+      "Frameworks",
+      "Infrastructure",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "notes": "<p>This essay develops a generalized theoretical and analytical framework for understanding why institutional outcomes routinely diverge from institutional intentions. It formalizes infrastructure determinism, the principle that institutions behave according to their operational architectures&mdash;administrative systems, eligibility rules, supply chains, financing mechanisms, regulatory structures, information systems, staffing capacities, and logistical networks&mdash;rather than their symbolic commitments. As the paper states, &ldquo;intentions are symbolic while infrastructures are causal,&rdquo; and outcomes therefore reflect structural capacity more than political aspiration.</p>\n<p>To operationalize this principle, the essay introduces Outcome Drift Differential (ODD), a domain‑agnostic metric for quantifying the divergence between policy targets and observed outcomes. ODD is designed to function across heterogeneous systems&mdash;housing, healthcare, education, climate governance, labor markets, digital platforms, disaster response, and administrative governance&mdash;making it a cross‑domain diagnostic tool rather than a sector‑specific indicator.</p>\n<p>Through examples spanning housing, healthcare, education, climate systems, labor markets, and digital platforms, the paper demonstrates that persistent outcome drift emerges when symbolic commitments exceed infrastructural capacity. The framework identifies recurring structural mechanisms&mdash;administrative friction, supply constraints, path dependence, fragmentation, temporal lag, extraction pressure, and information bottlenecks&mdash;as the primary drivers of drift. The essay concludes that institutions do not fail despite their infrastructures; they fail according to their infrastructures.</p>",
+    "publication_date": "2026-05-13",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20162704"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Infrastructure Determinism and Outcome Drift: A Generalized Framework for Analyzing Institutional Systems",
+    "version": "1.0"
+  },
+  "modified": "2026-05-13T17:20:59.241613+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20162705",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 3,
+    "unique_views": 13,
+    "version_downloads": 4,
+    "version_unique_downloads": 3,
+    "version_unique_views": 13,
+    "version_views": 14,
+    "views": 14
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Infrastructure Determinism and Outcome Drift: A Generalized Framework for Analyzing Institutional Systems",
+  "updated": "2026-05-13T17:20:59.241613+00:00"
+}

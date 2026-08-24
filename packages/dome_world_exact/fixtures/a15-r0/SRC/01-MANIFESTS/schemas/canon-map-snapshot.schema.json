@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:canon-map-snapshot:v1",
+  "title": "SignalRupture immutable canon self-model snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "snapshot_id", "map_manifestation_id", "source_publication_at",
+    "source_updated_at", "captured_at", "evidence_level", "enumeration_completeness",
+    "raw_architecture_labels", "nodes", "edges", "immutable_snapshot", "evidence_ids"
+  ],
+  "properties": {
+    "schema_version": {"const": "canon-map-snapshot/v1"},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "map_manifestation_id": {"type": "string", "minLength": 1},
+    "source_publication_at": {"type": ["string", "null"]},
+    "source_updated_at": {"type": ["string", "null"]},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "evidence_level": {"enum": ["AUTHOR_SUPPLIED_PLATFORM_METADATA", "CAPTURED_ORIGINAL", "DERIVATIVE_WITH_CAPTURE_LINEAGE"]},
+    "enumeration_completeness": {"enum": ["FULL_SOURCE_ENUMERATION", "PARTIAL_SOURCE_ENUMERATION", "METADATA_ONLY_PARTIAL", "UNKNOWN"]},
+    "raw_architecture_labels": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["snapshot_node_id", "raw_label", "raw_ordinal", "normalized_concept_id", "evidence_ids"],
+        "properties": {
+          "snapshot_node_id": {"type": "string"},
+          "raw_label": {"type": "string"},
+          "raw_ordinal": {"type": ["string", "null"]},
+          "normalized_concept_id": {"type": ["string", "null"]},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "edges": {"type": "array", "items": {"type": "object"}},
+    "immutable_snapshot": {"const": true},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

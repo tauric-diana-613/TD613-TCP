@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:b444a694e34c9fb5ff09a385
+parent_capture_id: capture:4045b34cf8ef105f21d90942
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Policy Contradiction: How educational recovery policy can propagate the conditions it claims to correct"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.22005151
+Final URL: https://zenodo.org/records/22005151
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.22005151 -> https://zenodo.org/doi/10.5281/zenodo.22005151
+302 https://zenodo.org/doi/10.5281/zenodo.22005151 -> https://zenodo.org/records/22005151

@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:97adf612025e7bb3cc40eba9
+parent_capture_id: capture:1d1fdf717de90c4e8b2fd0f9
+parent_blob_sha256: abca62410e35123094e239dd4fa787f7123e7624dcad2f0913b98162dc18d619
+tool: srcctl-json-normalizer/1
+source_title: "Administrative Trauma"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18201724",
+  "conceptrecid": "18201724",
+  "created": "2026-01-09T18:26:10.081295+00:00",
+  "doi": "10.5281/zenodo.18201725",
+  "doi_url": "https://doi.org/10.5281/zenodo.18201725",
+  "files": [
+    {
+      "checksum": "md5:ffd1eadde03c01b957897ba6971a8e2c",
+      "id": "e002cd2e-8bec-44ec-8fdb-ea8c6cceb517",
+      "key": "Administrative Trauma  .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18201725/files/Administrative%20Trauma%20%20.pdf/content"
+      },
+      "size": 73867
+    }
+  ],
+  "id": 18201725,
+  "links": {
+    "access": "https://zenodo.org/api/records/18201725/access",
+    "access_grants": "https://zenodo.org/api/records/18201725/access/grants",
+    "access_links": "https://zenodo.org/api/records/18201725/access/links",
+    "access_request": "https://zenodo.org/api/records/18201725/access/request",
+    "access_users": "https://zenodo.org/api/records/18201725/access/users",
+    "archive": "https://zenodo.org/api/records/18201725/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18201725/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18201725/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18201725/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18201725",
+    "draft": "https://zenodo.org/api/records/18201725/draft",
+    "file_modification": "https://zenodo.org/api/records/18201725/file-modification",
+    "files": "https://zenodo.org/api/records/18201725/files",
+    "latest": "https://zenodo.org/api/records/18201725/versions/latest",
+    "latest_html": "https://zenodo.org/records/18201725/latest",
+    "media_files": "https://zenodo.org/api/records/18201725/media-files",
+    "parent": "https://zenodo.org/api/records/18201724",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18201724",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18201724",
+    "parent_html": "https://zenodo.org/records/18201724",
+    "preview_html": "https://zenodo.org/records/18201725?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18201725/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18201725/request-deletion",
+    "requests": "https://zenodo.org/api/records/18201725/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18201725/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18201725",
+    "self_doi": "https://doi.org/10.5281/zenodo.18201725",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18201725",
+    "self_html": "https://zenodo.org/records/18201725",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18201725/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18201725/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18201725/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay defines administrative trauma as the harm produced when people must navigate systems that misrecognize them, delay them, or trap them in procedural loops. It shows how modern governance&mdash;especially automated governance&mdash;inflicts injury not through outcomes, but through the process itself. By mapping friction, opacity, misclassification, and AI‑driven containment, the essay exposes the widening gap between digital design and lived reality.</p>",
+    "doi": "10.5281/zenodo.18201725",
+    "keywords": [
+      "Social media",
+      "Digital platforms",
+      "Artificial intelligence",
+      "Governance",
+      "Critical theory",
+      "Indexing",
+      "Enshitification",
+      "Forensic Analysis"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-09",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18201724"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Administrative Trauma",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:32:24.672077+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18201725",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 24,
+    "unique_downloads": 21,
+    "unique_views": 74,
+    "version_downloads": 24,
+    "version_unique_downloads": 21,
+    "version_unique_views": 74,
+    "version_views": 78,
+    "views": 78
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Administrative Trauma",
+  "updated": "2026-01-29T01:32:24.672077+00:00"
+}

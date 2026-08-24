@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613-src/evidence-lineage-assertion/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "assertion_id", "evidence_unit_ids", "classification",
+    "common_ancestor_evidence_unit_ids", "independence_basis",
+    "independence_dimensions", "unresolved_shared_inputs", "evidence_ids",
+    "source_status", "atelier_snapshot_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "evidence-lineage-assertion/v1"},
+    "assertion_id": {"type": "string", "minLength": 1},
+    "atelier_snapshot_id": {"type": "string", "minLength": 1},
+    "seal_id": {"type": ["string", "null"]},
+    "evidence_unit_ids": {"type": "array", "minItems": 2, "items": {"type": "string"}, "uniqueItems": true},
+    "classification": {"enum": ["IDENTICAL", "DERIVED", "OVERLAPPING", "INDEPENDENT", "UNRESOLVED"]},
+    "common_ancestor_evidence_unit_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "independence_basis": {"type": ["string", "null"]},
+    "independence_dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "method", "cases", "result_generation"],
+      "properties": {
+        "data": {"enum": ["INDEPENDENT", "SHARED", "OVERLAPPING", "UNRESOLVED"]},
+        "method": {"enum": ["INDEPENDENT", "SHARED", "OVERLAPPING", "UNRESOLVED"]},
+        "cases": {"enum": ["INDEPENDENT", "SHARED", "OVERLAPPING", "UNRESOLVED"]},
+        "result_generation": {"enum": ["INDEPENDENT", "SHARED", "OVERLAPPING", "UNRESOLVED"]}
+      }
+    },
+    "unresolved_shared_inputs": {"type": "array", "items": {"type": "string"}},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "source_status": {"enum": ["SOURCE_DECLARED", "ARCHIVE_OBSERVATION", "ARCHIVE_INFERENCE", "RESEARCHER_PROPOSED"]},
+    "human_disposition": {"enum": ["PENDING", "ACCEPTED", "REJECTED", "REVISED"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"classification": {"const": "INDEPENDENT"}}},
+      "then": {
+        "properties": {
+          "independence_basis": {"type": "string", "minLength": 1},
+          "unresolved_shared_inputs": {"maxItems": 0}
+        }
+      }
+    }
+  ]
+}

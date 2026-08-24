@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:7251e71072a05467bbedb955
+parent_capture_id: capture:861f955461fb5220fe997c5d
+parent_blob_sha256: d12442dee4b43b615a2203eda89713d83c5dcdebab7b13744a17bfbb374612b6
+tool: srcctl-json-normalizer/1
+source_title: "**Historical Inevitability and the Institutional Defense Against Metatheory: Why Structural Predictions Always Materialize — and Why Institutions Call SR \"Deterministic\"**"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21711811",
+  "conceptrecid": "21711811",
+  "created": "2026-07-31T00:49:58.631731+00:00",
+  "doi": "10.5281/zenodo.21711812",
+  "doi_url": "https://doi.org/10.5281/zenodo.21711812",
+  "files": [
+    {
+      "checksum": "md5:f040a7bb9f220a87c5f5ffaccb3518a7",
+      "id": "e34afc35-eebc-48fe-9b71-d56d6c4b2701",
+      "key": "Historical Inevitability and the Institutional Defense Against Metatheory.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21711812/files/Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/content"
+      },
+      "size": 144645
+    }
+  ],
+  "id": 21711812,
+  "links": {
+    "access": "https://zenodo.org/api/records/21711812/access",
+    "access_grants": "https://zenodo.org/api/records/21711812/access/grants",
+    "access_links": "https://zenodo.org/api/records/21711812/access/links",
+    "access_request": "https://zenodo.org/api/records/21711812/access/request",
+    "access_users": "https://zenodo.org/api/records/21711812/access/users",
+    "archive": "https://zenodo.org/api/records/21711812/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21711812/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21711812/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21711812/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21711812",
+    "draft": "https://zenodo.org/api/records/21711812/draft",
+    "file_modification": "https://zenodo.org/api/records/21711812/file-modification",
+    "files": "https://zenodo.org/api/records/21711812/files",
+    "latest": "https://zenodo.org/api/records/21711812/versions/latest",
+    "latest_html": "https://zenodo.org/records/21711812/latest",
+    "media_files": "https://zenodo.org/api/records/21711812/media-files",
+    "parent": "https://zenodo.org/api/records/21711811",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21711811",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21711811",
+    "parent_html": "https://zenodo.org/records/21711811",
+    "preview_html": "https://zenodo.org/records/21711812?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21711812/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21711812/request-deletion",
+    "requests": "https://zenodo.org/api/records/21711812/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21711812/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21711812",
+    "self_doi": "https://doi.org/10.5281/zenodo.21711812",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21711812",
+    "self_html": "https://zenodo.org/records/21711812",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21711812/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21711812/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21711812:Historical%20Inevitability%20and%20the%20Institutional%20Defense%20Against%20Metatheory.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21711812/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper clarifies a core misunderstanding about SR and the Drift Collapse Field (DCF): <strong>SR is not deterministic &mdash; but drift trajectories are predictable.</strong> The distinction matters because institutions routinely mislabel structural predictability as determinism to avoid acknowledging their own rigidity, dependencies, and locked‑in trajectories. By examining the historical record of structural metatheory &mdash; Marx, Durkheim, Weber, Foucault, Bauman, STS, algorithmic studies &mdash; the paper demonstrates that structural predictions have consistently materialized, not because history is predetermined, but because institutions operate inside constrained fields where drift vectors, saturation dynamics, and infrastructure dependencies narrow the range of possible futures. The paper identifies the institutional reflex that arises when metatheory exposes inevitabilities: institutions call SR &ldquo;deterministic&rdquo; precisely when SR reveals what they cannot change. This work provides the philosophical foundation required for understanding drift as a field phenomenon and directs readers to the full mathematical model of the Drift Collapse Field.</p>",
+    "doi": "10.5281/zenodo.21711812",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-07-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21711811"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "**Historical Inevitability and the Institutional Defense Against Metatheory: Why Structural Predictions Always Materialize — and Why Institutions Call SR \"Deterministic\"**",
+    "version": "1.0"
+  },
+  "modified": "2026-07-31T00:49:59.066120+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21711812",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 6,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 6,
+    "version_views": 6,
+    "views": 6
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "**Historical Inevitability and the Institutional Defense Against Metatheory: Why Structural Predictions Always Materialize — and Why Institutions Call SR \"Deterministic\"**",
+  "updated": "2026-07-31T00:49:59.066120+00:00"
+}

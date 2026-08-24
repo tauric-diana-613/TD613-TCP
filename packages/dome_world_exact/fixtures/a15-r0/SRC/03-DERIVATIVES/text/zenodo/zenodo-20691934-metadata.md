@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:ba7e51f230ff7b7e16136393
+parent_capture_id: capture:5e7513bec3b13c1a0d77e1a9
+parent_blob_sha256: 4213cc684cd835e49836ab0099be85bd16ac5b535140ec3ed08717f1d8920fe3
+tool: srcctl-json-normalizer/1
+source_title: "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20691933",
+  "conceptrecid": "20691933",
+  "created": "2026-06-14T17:30:24.539333+00:00",
+  "doi": "10.5281/zenodo.20691934",
+  "doi_url": "https://doi.org/10.5281/zenodo.20691934",
+  "files": [
+    {
+      "checksum": "md5:1e869ab15c09aa38215fd366e776af3d",
+      "id": "0adb73c3-3721-4e89-bb0d-648b1bed3529",
+      "key": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20691934/files/MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/content"
+      },
+      "size": 219825
+    }
+  ],
+  "id": 20691934,
+  "links": {
+    "access": "https://zenodo.org/api/records/20691934/access",
+    "access_grants": "https://zenodo.org/api/records/20691934/access/grants",
+    "access_links": "https://zenodo.org/api/records/20691934/access/links",
+    "access_request": "https://zenodo.org/api/records/20691934/access/request",
+    "access_users": "https://zenodo.org/api/records/20691934/access/users",
+    "archive": "https://zenodo.org/api/records/20691934/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20691934/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20691934/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20691934/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20691934",
+    "draft": "https://zenodo.org/api/records/20691934/draft",
+    "file_modification": "https://zenodo.org/api/records/20691934/file-modification",
+    "files": "https://zenodo.org/api/records/20691934/files",
+    "latest": "https://zenodo.org/api/records/20691934/versions/latest",
+    "latest_html": "https://zenodo.org/records/20691934/latest",
+    "media_files": "https://zenodo.org/api/records/20691934/media-files",
+    "parent": "https://zenodo.org/api/records/20691933",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20691933",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20691933",
+    "parent_html": "https://zenodo.org/records/20691933",
+    "preview_html": "https://zenodo.org/records/20691934?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20691934/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20691934/request-deletion",
+    "requests": "https://zenodo.org/api/records/20691934/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20691934/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20691934",
+    "self_doi": "https://doi.org/10.5281/zenodo.20691934",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20691934",
+    "self_html": "https://zenodo.org/records/20691934",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20691934/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20691934/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20691934:MORALITY%20ON%20TRIAL:%20THE%20STRUCTURAL%20LAW%20OF%20SURVIVAL,%20TRAUMA,%20AND%20SYSTEMIC%20ABANDONMENT%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20691934/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper develops a structural framework for understanding how legal and moral systems misclassify survival‑driven behavior when structural causation is excluded from judgment. Through the Morality‑on‑Trial Theorem and the Systemic Abandonment Law, the work demonstrates that trauma, deprivation, and abandonment are not peripheral influences but foundational determinants of human action. The paper integrates narrative, structural theory, mathematical operators, and cultural diagnostics to reveal how institutions produce the very conditions they later punish. Anchored by the Father&rsquo;s Lemma &mdash; a lived articulation of identity collapse under systemic neglect &mdash; the manuscript exposes the epistemic and moral distortions that arise when systems assume stable agency in contexts where agency has been structurally fractured.</p>",
+    "doi": "10.5281/zenodo.20691934",
+    "keywords": [
+      "Metatheory",
+      "Law",
+      "Social Issues",
+      "Governance",
+      "Government"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-06-14",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20691933"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT",
+    "version": "1.0"
+  },
+  "modified": "2026-06-23T15:17:50.082256+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20691934",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 13,
+    "unique_downloads": 9,
+    "unique_views": 21,
+    "version_downloads": 13,
+    "version_unique_downloads": 9,
+    "version_unique_views": 21,
+    "version_views": 25,
+    "views": 25
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "MORALITY ON TRIAL: THE STRUCTURAL LAW OF SURVIVAL, TRAUMA, AND SYSTEMIC ABANDONMENT",
+  "updated": "2026-06-23T15:17:50.082256+00:00"
+}

@@ -1,0 +1,857 @@
+{
+  "derivative_id": "derivative:41d03a0e706edf3404ddb393",
+  "locators": [
+    {
+      "paragraph": 1,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 2,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 3,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 4,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 5,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 6,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 7,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 8,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 9,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 10,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 11,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 12,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 13,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 14,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 15,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 16,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 17,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 18,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 19,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 20,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 21,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 22,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 23,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 24,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 25,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 26,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 27,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 28,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 29,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 30,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 31,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 32,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 33,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 34,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 35,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 36,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 37,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 38,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 39,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 40,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 41,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 42,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 43,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 44,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 45,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 46,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 47,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 48,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 49,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 50,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 51,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 52,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 53,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 54,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 55,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 56,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 57,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 58,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 59,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 60,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 61,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 62,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 63,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 64,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 65,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 66,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 67,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 68,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 69,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 70,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 71,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 72,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 73,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 74,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 75,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 76,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 77,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 78,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 79,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 80,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 81,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 82,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 83,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 84,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 85,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 86,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 87,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 88,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 89,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 90,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 91,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 92,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 93,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 94,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 95,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 96,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 97,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 98,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 99,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 100,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 101,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 102,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 103,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 104,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 105,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 106,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 107,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 108,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 109,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 110,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 111,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 112,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 113,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 114,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 115,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 116,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 117,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 118,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 119,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 120,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 121,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 122,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 123,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 124,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 125,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 126,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 127,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 128,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 129,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 130,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 131,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 132,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 133,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 134,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 135,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 136,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 137,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 138,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 139,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 140,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 141,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 142,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 143,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 144,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 145,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 146,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 147,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 148,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 149,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 150,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 151,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 152,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 153,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 154,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 155,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 156,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 157,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 158,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 159,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 160,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 161,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 162,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 163,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 164,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 165,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 166,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 167,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 168,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 169,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 170,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 171,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 172,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 173,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 174,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 175,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 176,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 177,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 178,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 179,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 180,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 181,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 182,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 183,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 184,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 185,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 186,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 187,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 188,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 189,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 190,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 191,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 192,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 193,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 194,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 195,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 196,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 197,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 198,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 199,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 200,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 201,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 202,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 203,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 204,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 205,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 206,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 207,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 208,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 209,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 210,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 211,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 212,
+      "source_member": "word/document.xml"
+    },
+    {
+      "paragraph": 213,
+      "source_member": "word/document.xml"
+    }
+  ]
+}

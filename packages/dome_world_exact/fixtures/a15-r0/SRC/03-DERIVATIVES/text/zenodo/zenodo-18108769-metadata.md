@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:a941b07ef65db4fdee693857
+parent_capture_id: capture:e77ffae8aaa7a5185a7563a6
+parent_blob_sha256: 5962c29ba24b7dfacb814bb1294d2a32f7eb947a5634b93dc8ab4e1085ba474c
+tool: srcctl-json-normalizer/1
+source_title: "Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18108768",
+  "conceptrecid": "18108768",
+  "created": "2025-12-31T14:30:30.849198+00:00",
+  "doi": "10.5281/zenodo.18108769",
+  "doi_url": "https://doi.org/10.5281/zenodo.18108769",
+  "files": [
+    {
+      "checksum": "md5:cfcbf409f217c744c515eefc711a3e67",
+      "id": "34c665d3-1402-4fd3-b8ad-bcbd7dbcf760",
+      "key": "Correlation vs. Causation  Lifestyle as Policy, Containment as Architecture .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18108769/files/Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/content"
+      },
+      "size": 78772
+    }
+  ],
+  "id": 18108769,
+  "links": {
+    "access": "https://zenodo.org/api/records/18108769/access",
+    "access_grants": "https://zenodo.org/api/records/18108769/access/grants",
+    "access_links": "https://zenodo.org/api/records/18108769/access/links",
+    "access_request": "https://zenodo.org/api/records/18108769/access/request",
+    "access_users": "https://zenodo.org/api/records/18108769/access/users",
+    "archive": "https://zenodo.org/api/records/18108769/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18108769/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18108769/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18108769/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18108769",
+    "draft": "https://zenodo.org/api/records/18108769/draft",
+    "file_modification": "https://zenodo.org/api/records/18108769/file-modification",
+    "files": "https://zenodo.org/api/records/18108769/files",
+    "latest": "https://zenodo.org/api/records/18108769/versions/latest",
+    "latest_html": "https://zenodo.org/records/18108769/latest",
+    "media_files": "https://zenodo.org/api/records/18108769/media-files",
+    "parent": "https://zenodo.org/api/records/18108768",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18108768",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108768",
+    "parent_html": "https://zenodo.org/records/18108768",
+    "preview_html": "https://zenodo.org/records/18108769?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18108769/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18108769/request-deletion",
+    "requests": "https://zenodo.org/api/records/18108769/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18108769/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18108769",
+    "self_doi": "https://doi.org/10.5281/zenodo.18108769",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108769",
+    "self_html": "https://zenodo.org/records/18108769",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18108769/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18108769/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18108769/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper reframes correlation and causation through a systemic lens, arguing that what society labels as &ldquo;lifestyle&rdquo; is often the result of policy, infrastructure, and containment architecture. Public health narratives reduce illness, poverty, stress, and social outcomes to personal choices, while research frames them as neutral associations. In reality, these patterns emerge from systemic design. Using examples from Soviet housing, industry, and surveillance, as well as modern health, labor, and cultural systems, the paper shows how correlation functions as containment &mdash; the visible pattern &mdash; while causation is the signal embedded in architecture. By exposing how policy masquerades as lifestyle, the work challenges individual‑blame narratives and reveals the infrastructural forces shaping mental health, behavior, and social outcomes.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18108769",
+    "keywords": [
+      "Data science",
+      "Feminism",
+      "Sociology",
+      "Psychology",
+      "Helathcare",
+      "Brainwashing",
+      "Governance",
+      "Critical Theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2025-12-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18108768"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T02:02:38.805826+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18108769",
+  "revision": 7,
+  "state": "done",
+  "stats": {
+    "downloads": 20,
+    "unique_downloads": 15,
+    "unique_views": 28,
+    "version_downloads": 20,
+    "version_unique_downloads": 15,
+    "version_unique_views": 28,
+    "version_views": 34,
+    "views": 34
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture",
+  "updated": "2026-01-29T02:02:38.805826+00:00"
+}

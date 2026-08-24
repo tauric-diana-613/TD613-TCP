@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:a6bc55e352620d11f2b32de2
+parent_capture_id: capture:27abd6f6ec7550a87bda96bf
+parent_blob_sha256: d1087651619a84bbb464e00801345b4d0fd2c5ebae76403f5a6543751a401c03
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Infrastructural Exposure Theory: How Systems Generate Harm Through Designed Contact"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18097491
+Final URL: https://zenodo.org/records/18097491
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18097491 -> https://zenodo.org/doi/10.5281/zenodo.18097491
+302 https://zenodo.org/doi/10.5281/zenodo.18097491 -> https://zenodo.org/records/18097491

@@ -1,0 +1,28 @@
+{
+  "schema_version": "src-interface-registry/v1",
+  "portable_source_of_truth": "JSONL_AND_MARKDOWN",
+  "sqlite_role": "RESUMABLE_WORK_JOURNAL_ONLY",
+  "analytical_schema_path": "01-MANIFESTS/schemas/phase2-analytical-interfaces-v1.schema.json",
+  "interfaces": [
+    {"name": "capture", "version": "v2", "path": "01-MANIFESTS/phase2/capture-v2.jsonl"},
+    {"name": "blob", "version": "v1", "path": "01-MANIFESTS/phase2/blob-v1.jsonl"},
+    {"name": "derivative", "version": "v1", "path": "01-MANIFESTS/phase2/derivative-v1.jsonl"},
+    {"name": "version-observation", "version": "v1", "path": "05-OPERATIONS/phase2/version-observations.jsonl"},
+    {"name": "rights-decision", "version": "v1", "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl"},
+    {"name": "expected-object-observation", "version": "v1", "path": "05-OPERATIONS/phase2/expected-object-observations.jsonl"},
+    {"name": "contextual-role-assertion", "version": "v1", "path": "05-OPERATIONS/phase2/contextual-role-assertions.jsonl"},
+    {"name": "compilation-pass", "version": "v1", "path": "05-OPERATIONS/phase2/compilation-passes.jsonl"},
+    {"name": "evidence-unit-fingerprint", "version": "v1", "path": "05-OPERATIONS/phase2/evidence-unit-fingerprints.jsonl"},
+    {"name": "evidence-lineage-assertion", "version": "v1", "path": "05-OPERATIONS/phase2/evidence-lineage-assertions.jsonl"},
+    {"name": "compiler-conservation-observation", "version": "v1", "path": "05-OPERATIONS/phase2/compiler-conservation-observations.jsonl"},
+    {"name": "authority-jurisdiction-assertion", "version": "v1", "path": "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"},
+    {"name": "claim-evidence-tomography", "version": "v1", "path": "05-OPERATIONS/phase2/claim-evidence-tomography.jsonl"},
+    {"name": "reference-assertion", "version": "v1", "path": "05-OPERATIONS/phase2/reference-assertions.jsonl"},
+    {"name": "canon-map-speech-act", "version": "v1", "path": "05-OPERATIONS/phase2/canon-map-speech-acts.jsonl"},
+    {"name": "publishing-regime-observation", "version": "v1", "path": "05-OPERATIONS/phase2/publishing-regime-observations.jsonl"},
+    {"name": "capture-repetition-observation", "version": "v1", "path": "05-OPERATIONS/phase2/capture-repetition-observations.jsonl"},
+    {"name": "non-collapse-audit", "version": "v1", "path": "04-RECEIPTS/assays/2026-08-24-phase2-kiln/non-collapse-audit.json"},
+    {"name": "connector-trace", "version": "v1", "path": "99-ADMIN/srcquery.py"}
+  ],
+  "master_invariant": "work multiplicity != evidence multiplicity != representation multiplicity != authority multiplicity"
+}

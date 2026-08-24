@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:5aa8a3afbbbeb388c3184810
+parent_capture_id: capture:1a5eaf50e19ca9f076dec770
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Societal Infrastructure Theory"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18146890
+Final URL: https://zenodo.org/records/18146890
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18146890 -> https://zenodo.org/doi/10.5281/zenodo.18146890
+302 https://zenodo.org/doi/10.5281/zenodo.18146890 -> https://zenodo.org/records/18146890

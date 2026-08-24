@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:authority-assertion:v1",
+  "title": "SignalRupture time-indexed authority assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authority_assertion_id",
+    "subject",
+    "declared_by",
+    "scope",
+    "source_asserted_at",
+    "recorded_at",
+    "authority",
+    "origin",
+    "temporal_provenance_mode",
+    "adjudication_status",
+    "individual_expansion_status",
+    "evidence_ids"
+  ],
+  "properties": {
+    "schema_version": {"const": "authority-assertion/v1"},
+    "authority_assertion_id": {"type": "string", "minLength": 1},
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["WORK", "EDITION", "FORMULATION", "CLAIM", "CLASS", "FIELD"]}
+      }
+    },
+    "declared_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestation_id", "work_id"],
+      "properties": {
+        "manifestation_id": {"type": "string", "minLength": 1},
+        "work_id": {"type": ["string", "null"]}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "raw_scope"],
+      "properties": {
+        "kind": {"enum": ["CANON", "FIELD", "CLAIM_SET", "FORMULATION_SET", "WORK_CLASS", "OTHER"]},
+        "raw_scope": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_asserted_at": {"$ref": "#/$defs/sourceTime"},
+    "effective_from": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["value", "basis"],
+      "properties": {
+        "value": {"type": ["string", "null"]},
+        "basis": {"enum": ["EXPLICIT_SOURCE", "UNSTATED"]}
+      }
+    },
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["G_genealogical", "C_canonical", "E_empirical", "F_field_defining", "K_controlling"],
+      "properties": {
+        "G_genealogical": {"$ref": "#/$defs/axis"},
+        "C_canonical": {"$ref": "#/$defs/axis"},
+        "E_empirical": {"$ref": "#/$defs/axis"},
+        "F_field_defining": {"$ref": "#/$defs/axis"},
+        "K_controlling": {"$ref": "#/$defs/controllingAxis"}
+      }
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed"]},
+    "temporal_provenance_mode": {"enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "UNRESOLVED"]},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "prior_assertion_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "individual_expansion_status": {"enum": ["NOT_APPLICABLE", "NOT_EXPANDED", "PARTIAL", "COMPLETE"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "sourceTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "precision", "basis"],
+      "properties": {
+        "value": {"type": ["string", "null"]},
+        "precision": {"enum": ["SECOND", "DAY", "MONTH", "YEAR", "UNKNOWN"]},
+        "basis": {"enum": ["SOURCE_PUBLICATION_METADATA", "SOURCE_TEXT", "UNKNOWN"]}
+      }
+    },
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "source_status_raw", "evidence_ids"],
+      "properties": {
+        "state": {"enum": ["AFFIRMED", "DENIED", "CONTESTED", "UNSTATED", "NOT_ASSESSED"]},
+        "source_status_raw": {"type": ["string", "null"]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "controllingAxis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "formulation_ids", "source_status_raw", "evidence_ids"],
+      "properties": {
+        "state": {"enum": ["CONTROLLING", "CO_CONTROLLING", "NONCONTROLLING", "CONTESTED", "UNSTATED", "NOT_ASSESSED"]},
+        "formulation_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "source_status_raw": {"type": ["string", "null"]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    }
+  }
+}

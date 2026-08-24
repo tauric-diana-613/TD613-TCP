@@ -1,0 +1,70 @@
+{
+  "schema_version": "optional-provenance-geometry-assay-design/v1",
+  "status": "OPTIONAL_RESEARCH_DESIGN",
+  "inspired_by": "collaborator brainstorming; not source evidence",
+  "promotion": "HUMAN_DISPOSITION_REQUIRED",
+  "provenance_object": {
+    "form": "P(x,t) = (signature_geometry, structure_geometry, channel_geometry)",
+    "signature_geometry": {
+      "symbol": "sigma(x)",
+      "dimensions": ["lexical", "syntactic", "rhetorical", "semiotic"],
+      "forbidden_inference": "signature similarity is not authorship or identity"
+    },
+    "structure_geometry": {
+      "symbol": "R(x)",
+      "dimensions": ["relations", "operators", "composition", "route", "scope", "authority"],
+      "forbidden_inference": "structural correspondence is not lineage without channel and lineage evidence"
+    },
+    "channel_geometry": {
+      "symbol": "Gamma_c(t)",
+      "states": [
+        "PRE_CONTACT_NO_DEMONSTRATED_ACCESS",
+        "PRE_CONTACT_PUBLICLY_ACCESSIBLE",
+        "POST_CONTACT_GENERAL_INTERACTION",
+        "POST_CONTACT_SPECIFIC_DISCLOSURE",
+        "BIDIRECTIONAL_CONTAMINATION_POSSIBLE",
+        "SPECIFIC_TRANSFER_WITNESSED"
+      ],
+      "ordering": "CATEGORICAL_NONNUMERIC",
+      "forbidden_inference": "channel availability is not evidence that content traversed the channel"
+    }
+  },
+  "cadence_structure_quadrants": [
+    {"cadence": "PRESERVED", "structure": "PRESERVED", "triage": "RECURRENCE_CANDIDATE"},
+    {"cadence": "PRESERVED", "structure": "CHANGED", "triage": "STYLISTIC_SHELL_OR_CONCEPTUAL_MUTATION"},
+    {"cadence": "CHANGED", "structure": "PRESERVED", "triage": "HIGH_VALUE_STRUCTURAL_TRANSMISSION_CANDIDATE_NOT_PROOF"},
+    {"cadence": "CHANGED", "structure": "CHANGED", "triage": "WEAK_OR_DIFFERENT_OBJECT_CANDIDATE"}
+  ],
+  "joint_composition_design": {
+    "unit": "relation-level pre-discovery signature",
+    "required_controls": [
+      "neighboring literature",
+      "platform",
+      "genre",
+      "period",
+      "length",
+      "template family",
+      "multiple testing and post-selection"
+    ],
+    "report": "main effects and interaction terms separately; no scalar provenance score"
+  },
+  "model_exposure_states": [
+    "PUBLIC_MODEL_EXPOSURE_INTENDED",
+    "PUBLIC_MODEL_EXPOSURE_POSSIBLE",
+    "MODEL_ACCESS_OBSERVED",
+    "SPECIFIC_TRAINING_INGESTION_CONFIRMED"
+  ],
+  "permanent_noncollapse": [
+    "signature similarity != authorship",
+    "structure similarity != transfer",
+    "channel availability != traversal",
+    "post-contact convergence != pre-contact independence",
+    "public model exposure != training ingestion",
+    "high-value triage != promoted conclusion"
+  ],
+  "required_output": {
+    "coordinates": ["delta_signature", "delta_structure", "channel_state", "epoch", "controls", "evidence_ids"],
+    "composite_score": null,
+    "human_disposition": "REQUIRED"
+  }
+}

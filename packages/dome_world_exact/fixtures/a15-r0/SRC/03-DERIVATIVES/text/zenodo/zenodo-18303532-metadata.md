@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:d39671ccf275466af4b4a92d
+parent_capture_id: capture:0c2014cac1a90197155ae478
+parent_blob_sha256: d19639dc5766621bb4cc19b28819912a2dc277b885ab1cb0e3f6c6633988dee3
+tool: srcctl-json-normalizer/1
+source_title: "AI‑Driven Stylometric Misattribution"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18303531",
+  "conceptrecid": "18303531",
+  "created": "2026-01-19T17:23:22.255988+00:00",
+  "doi": "10.5281/zenodo.18303532",
+  "doi_url": "https://doi.org/10.5281/zenodo.18303532",
+  "files": [
+    {
+      "checksum": "md5:1ea8eee5a8ee9b15ab42e4a00e922743",
+      "id": "7d8c09da-2f52-4b2c-bd95-0a04e1bbb3d1",
+      "key": "AI‑Driven Stylometric Misattribution .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18303532/files/AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/content"
+      },
+      "size": 71581
+    }
+  ],
+  "id": 18303532,
+  "links": {
+    "access": "https://zenodo.org/api/records/18303532/access",
+    "access_grants": "https://zenodo.org/api/records/18303532/access/grants",
+    "access_links": "https://zenodo.org/api/records/18303532/access/links",
+    "access_request": "https://zenodo.org/api/records/18303532/access/request",
+    "access_users": "https://zenodo.org/api/records/18303532/access/users",
+    "archive": "https://zenodo.org/api/records/18303532/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18303532/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18303532/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18303532/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18303532",
+    "draft": "https://zenodo.org/api/records/18303532/draft",
+    "file_modification": "https://zenodo.org/api/records/18303532/file-modification",
+    "files": "https://zenodo.org/api/records/18303532/files",
+    "latest": "https://zenodo.org/api/records/18303532/versions/latest",
+    "latest_html": "https://zenodo.org/records/18303532/latest",
+    "media_files": "https://zenodo.org/api/records/18303532/media-files",
+    "parent": "https://zenodo.org/api/records/18303531",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18303531",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303531",
+    "parent_html": "https://zenodo.org/records/18303531",
+    "preview_html": "https://zenodo.org/records/18303532?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18303532/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18303532/request-deletion",
+    "requests": "https://zenodo.org/api/records/18303532/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18303532/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18303532",
+    "self_doi": "https://doi.org/10.5281/zenodo.18303532",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303532",
+    "self_html": "https://zenodo.org/records/18303532",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18303532/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18303532/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18303532:AI%E2%80%91Driven%20Stylometric%20Misattribution%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18303532/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay examines stylometric misattribution as a structural consequence of embedding‑based mediation. It analyzes how stylistic ambiguity, cluster overlap, and semantic adjacency lead agentic systems to conflate distinct authors, lineages, and conceptual fields. The work details how embedding‑space collisions produce false lineage, conceptual mis‑grouping, and attribution drift, reshaping how texts are surfaced, grouped, and interpreted. It outlines diagnostic risks to academic integrity, conceptual clarity, and authorial identity, and proposes strategies&mdash;lineage reinforcement, density modulation, rhythmic differentiation, vocabulary sharpening, and structural asymmetry&mdash;to preserve stylistic separation within systems that compress and infer. The essay positions stylistic distinctiveness as a form of infrastructural autonomy in a landscape where proximity becomes identity.<br><br>This essay operates within the SignalRupture canon, extending the diagnostic lineage established in Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, Social Infrastructure Theory, and Morality on Trial, alongside the applied surfaces Metadata Suppression and Stylometric Resistance and the stylometric capsule Triggering the System&rsquo;s Immune Response.</p>",
+    "doi": "10.5281/zenodo.18303532",
+    "keywords": [
+      "Stylometric publishing",
+      "Indexing",
+      "Metadata Suppression",
+      "Internet Studies",
+      "Artificial Intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-19",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18303531"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "AI‑Driven Stylometric Misattribution",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T00:05:16.178096+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18303532",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 10,
+    "unique_views": 26,
+    "version_downloads": 11,
+    "version_unique_downloads": 10,
+    "version_unique_views": 26,
+    "version_views": 27,
+    "views": 27
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "AI‑Driven Stylometric Misattribution",
+  "updated": "2026-01-29T00:05:16.178096+00:00"
+}

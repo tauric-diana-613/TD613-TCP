@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:7abb63949384afdf83b16430
+parent_capture_id: capture:f307975a1e568e2e64e6f407
+parent_blob_sha256: cd6cf571a53960cd444494309895e1ba6e7bbeefa07ec330b6d81ed44049eac9
+tool: srcctl-json-normalizer/1
+source_title: "Temporal Misalignment in Institutional–Public Knowledge Systems"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20076213",
+  "conceptrecid": "20076213",
+  "created": "2026-05-07T22:16:07.323691+00:00",
+  "doi": "10.5281/zenodo.20076214",
+  "doi_url": "https://doi.org/10.5281/zenodo.20076214",
+  "files": [
+    {
+      "checksum": "md5:a96cd2dd109db63b468bd84bfb96ebfc",
+      "id": "5dfa99e7-cb61-4ed7-902f-89c4bbd801eb",
+      "key": "Temporal Misalignment in Institutional–Public Knowledge Systems .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20076214/files/Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/content"
+      },
+      "size": 184672
+    }
+  ],
+  "id": 20076214,
+  "links": {
+    "access": "https://zenodo.org/api/records/20076214/access",
+    "access_grants": "https://zenodo.org/api/records/20076214/access/grants",
+    "access_links": "https://zenodo.org/api/records/20076214/access/links",
+    "access_request": "https://zenodo.org/api/records/20076214/access/request",
+    "access_users": "https://zenodo.org/api/records/20076214/access/users",
+    "archive": "https://zenodo.org/api/records/20076214/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20076214/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20076214/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20076214/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20076214",
+    "draft": "https://zenodo.org/api/records/20076214/draft",
+    "file_modification": "https://zenodo.org/api/records/20076214/file-modification",
+    "files": "https://zenodo.org/api/records/20076214/files",
+    "latest": "https://zenodo.org/api/records/20076214/versions/latest",
+    "latest_html": "https://zenodo.org/records/20076214/latest",
+    "media_files": "https://zenodo.org/api/records/20076214/media-files",
+    "parent": "https://zenodo.org/api/records/20076213",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20076213",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20076213",
+    "parent_html": "https://zenodo.org/records/20076213",
+    "preview_html": "https://zenodo.org/records/20076214?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20076214/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20076214/request-deletion",
+    "requests": "https://zenodo.org/api/records/20076214/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20076214/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20076214",
+    "self_doi": "https://doi.org/10.5281/zenodo.20076214",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20076214",
+    "self_html": "https://zenodo.org/records/20076214",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20076214/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20076214/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20076214:Temporal%20Misalignment%20in%20Institutional%E2%80%93Public%20Knowledge%20Systems%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20076214/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><em>Temporal Misalignment in Institutional&ndash;Public Knowledge Systems: Operationalizing the Conspiracy Shield Model</em> is the empirical foundation of the SignalRupture Conspiracy Shield research program. While Paper I defined the Shield conceptually as a governance‑layer timing mechanism, Paper II transforms that theory into a <strong>measurable, testable, data‑driven model</strong> of institutional&ndash;public temporal divergence.</p>\n<p>The paper formalizes premature public recognition as a <strong>quantifiable divergence</strong> between distributed public detection systems and institutional acknowledgment cycles. As the abstract states, it constructs <em>&ldquo;a multi-layer dataset architecture integrating discourse timing analysis, institutional communication logs, policy lifecycle tracing, and public claim validation trajectories.&rdquo;</em></p>\n<p>Paper II introduces three core empirical constructs:</p>\n<ul>\n<li>\n<p><strong>Narrative Lag Function (NLF)</strong> &mdash; the time difference between first public detection and first institutional acknowledgment: <em>&ldquo;NLF = t₍IRE₎ &minus; t₍PDS₎.&rdquo;</em></p>\n</li>\n<li>\n<p><strong>Structural Recognition Delay (SRD)</strong> &mdash; the expected lag across events within a domain.</p>\n</li>\n<li>\n<p><strong>Dismissal‑to‑Validation Ratio (DVR)</strong> &mdash; the proportion of dismissed claims later confirmed or partially validated.</p>\n</li>\n</ul>\n<p>The paper also defines the <strong>Public Detection Signal (PDS)</strong> as <em>&ldquo;a statistically clustered emergence of claims, narratives, or anomaly reports in decentralized communication systems prior to institutional acknowledgment,&rdquo;</em> and the <strong>Institutional Recognition Event (IRE)</strong> as <em>&ldquo;the first official acknowledgment, policy framing, or regulatory admission of a structural phenomenon previously observable in public signals.&rdquo;</em></p>\n<p>To operationalize these constructs, Paper II proposes a four‑layer dataset architecture (Discourse Signals, Institutional Timelines, Validation Records, and Narrative Framing) and develops empirical models including the <strong>Temporal Misalignment Model</strong>, <strong>Lag Distribution Model</strong>, and <strong>Domain Sensitivity Model</strong>.</p>\n<p>The central hypothesis is explicit:</p>\n<blockquote>\n<p><em>&ldquo;Institutional acknowledgment of structural change systematically lags distributed public detection signals by a measurable and non-random interval.&rdquo;</em></p>\n</blockquote>\n<p>This paper reframes &ldquo;conspiracy theory belief&rdquo; not as a psychological anomaly but as <em>&ldquo;a measurable artifact of asynchronous information stabilization in complex institutional systems.&rdquo;</em></p>",
+    "doi": "10.5281/zenodo.20076214",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Governance",
+      "Conspiracy theory",
+      "government",
+      "Society",
+      "Brainwashing"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-08",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20076213"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Temporal Misalignment in Institutional–Public Knowledge Systems",
+    "version": "1.0"
+  },
+  "modified": "2026-05-07T22:16:07.765119+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20076214",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 13,
+    "unique_downloads": 11,
+    "unique_views": 29,
+    "version_downloads": 13,
+    "version_unique_downloads": 11,
+    "version_unique_views": 29,
+    "version_views": 31,
+    "views": 31
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Temporal Misalignment in Institutional–Public Knowledge Systems",
+  "updated": "2026-05-07T22:16:07.765119+00:00"
+}

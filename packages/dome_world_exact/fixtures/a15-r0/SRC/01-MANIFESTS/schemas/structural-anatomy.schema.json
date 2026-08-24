@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:structural-anatomy:v1",
+  "title": "SignalRupture bounded first-appearance structural anatomy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "anatomy_id",
+    "status",
+    "search_scope",
+    "milestones",
+    "origin",
+    "evidence_ids",
+    "interpretive_limit"
+  ],
+  "properties": {
+    "schema_version": {"const": "structural-anatomy/v1"},
+    "anatomy_id": {"type": "string", "minLength": 1},
+    "status": {
+      "enum": [
+        "EARLIEST_LOCAL_METADATA_CANDIDATES",
+        "NOT_WITNESSED_IN_LOCAL_METADATA",
+        "EARLIEST_BOUNDED_CAPTURE_CANDIDATES",
+        "PARTIAL",
+        "UNRESOLVED",
+        "REJECTED"
+      ]
+    },
+    "search_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "search_scope_id",
+        "path",
+        "sha256",
+        "units",
+        "fields",
+        "completeness",
+        "negative_search_performed"
+      ],
+      "properties": {
+        "search_scope_id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "units": {"type": "integer", "minimum": 1},
+        "fields": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "completeness": {"enum": ["METADATA_ONLY_BOUNDED", "CAPTURE_BOUNDED", "FULL_CORPUS"]},
+        "negative_search_performed": {"type": "boolean"}
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/milestone"}
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "NOT_WITNESSED_IN_LOCAL_METADATA"}}, "required": ["status"]},
+      "then": {"properties": {"milestones": {"maxItems": 0}, "evidence_ids": {"minItems": 1}}},
+      "else": {"properties": {"milestones": {"minItems": 1}, "evidence_ids": {"minItems": 1}}}
+    }
+  ],
+  "$defs": {
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "manifestation_id",
+        "relation_summary",
+        "origin",
+        "provenance_mode",
+        "evidence_ids"
+      ],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "manifestation_id": {"type": "string", "minLength": 1},
+        "relation_summary": {"type": "string", "minLength": 1},
+        "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+        "provenance_mode": {
+          "enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "MIXED", "UNRESOLVED"]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

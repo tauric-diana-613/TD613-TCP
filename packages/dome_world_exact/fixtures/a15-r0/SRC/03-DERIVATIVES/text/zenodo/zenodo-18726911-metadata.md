@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:81fbc47c589c3afdffa7d560
+parent_capture_id: capture:11da2f658f1c45787ca86293
+parent_blob_sha256: c59fafc1015268f26cc7027d8a34b625933ba6dea8881fa0c42e17180f834f8f
+tool: srcctl-json-normalizer/1
+source_title: "Licensing Architecture: How AI Systems Decide What Is Allowed to Exist"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18726910",
+  "conceptrecid": "18726910",
+  "created": "2026-02-21T20:08:08.521309+00:00",
+  "doi": "10.5281/zenodo.18726911",
+  "doi_url": "https://doi.org/10.5281/zenodo.18726911",
+  "files": [
+    {
+      "checksum": "md5:4190420686c0fa53d0f008d3e579b89a",
+      "id": "5ce6c6ed-0ec9-49cb-963a-9c1795bce76f",
+      "key": "Licensing Architecture: How AI Systems Decide What Is Allowed to Exist .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18726911/files/Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/content"
+      },
+      "size": 92165
+    }
+  ],
+  "id": 18726911,
+  "links": {
+    "access": "https://zenodo.org/api/records/18726911/access",
+    "access_grants": "https://zenodo.org/api/records/18726911/access/grants",
+    "access_links": "https://zenodo.org/api/records/18726911/access/links",
+    "access_request": "https://zenodo.org/api/records/18726911/access/request",
+    "access_users": "https://zenodo.org/api/records/18726911/access/users",
+    "archive": "https://zenodo.org/api/records/18726911/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18726911/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18726911/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18726911/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18726911",
+    "draft": "https://zenodo.org/api/records/18726911/draft",
+    "file_modification": "https://zenodo.org/api/records/18726911/file-modification",
+    "files": "https://zenodo.org/api/records/18726911/files",
+    "latest": "https://zenodo.org/api/records/18726911/versions/latest",
+    "latest_html": "https://zenodo.org/records/18726911/latest",
+    "media_files": "https://zenodo.org/api/records/18726911/media-files",
+    "parent": "https://zenodo.org/api/records/18726910",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18726910",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726910",
+    "parent_html": "https://zenodo.org/records/18726910",
+    "preview_html": "https://zenodo.org/records/18726911?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18726911/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18726911/request-deletion",
+    "requests": "https://zenodo.org/api/records/18726911/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18726911/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18726911",
+    "self_doi": "https://doi.org/10.5281/zenodo.18726911",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726911",
+    "self_html": "https://zenodo.org/records/18726911",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18726911/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18726911/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18726911:Licensing%20Architecture:%20How%20AI%20Systems%20Decide%20What%20Is%20Allowed%20to%20Exist%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18726911/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Licensing Architecture: How AI Systems Decide What Is Allowed to Exist introduces the SR framework for understanding how AI systems now function as licensing authorities for reality. In the post‑open‑web era, models do not simply retrieve information &mdash; they license it. They determine what becomes visible, retrievable, meaningful, and ontologically valid within the system&rsquo;s representational boundaries. Concepts, identities, and experiences that fall outside these boundaries become unlicensed: unindexable, unreturnable, and epistemically null. This essay maps the shift from open information ecosystems to model‑mediated epistemic regimes, where truth is not discovered but permitted.</p>\n<p>The work examines how AI establishes ontological borders, how retrieval becomes a licensing decision, and how semantic compression privileges high‑frequency concepts while suppressing complexity, novelty, and minority experience. It analyzes containment strategies that models deploy when confronted with unlicensed concepts &mdash; reframing, substitution, forced analogy, and categorical misclassification &mdash; arguing that these behaviors are not errors but structural mechanisms for protecting the model&rsquo;s ontology.</p>\n<p>The essay situates Licensing Architecture within the broader transition from open‑web plurality to permissioned epistemic environments. It argues that AI collapses the multiplicity of the web into a single, model‑licensed layer of meaning, transforming retrieval into a form of governance. The human cost of this shift is significant: individuals and histories that fall outside the model&rsquo;s representational geometry experience epistemic erasure, distortion, and invisibility.</p>\n<p>This work contributes to emerging research on semantic governance, epistemic infrastructure, and AI‑mediated knowledge systems by offering a structural account of how models determine what is allowed to exist within their epistemic frame.</p>\n<p>Keywords</p>\n<p>Licensing Architecture, Epistemic Licensing, Semantic Governance, Model‑Legibility, Retrieval Scarcity, Ontological Boundaries, Post‑Open‑Web, AI Mediation</p>\n<p>&nbsp;</p>",
+    "doi": "10.5281/zenodo.18726911",
+    "keywords": [
+      "Internet Studies",
+      "Governance",
+      "Government",
+      "Critical Theory",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18726910"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Licensing Architecture: How AI Systems Decide What Is Allowed to Exist",
+    "version": "1.0"
+  },
+  "modified": "2026-02-21T20:08:09.344448+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18726911",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 9,
+    "unique_downloads": 8,
+    "unique_views": 22,
+    "version_downloads": 9,
+    "version_unique_downloads": 8,
+    "version_unique_views": 22,
+    "version_views": 22,
+    "views": 22
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Licensing Architecture: How AI Systems Decide What Is Allowed to Exist",
+  "updated": "2026-02-21T20:08:09.344448+00:00"
+}

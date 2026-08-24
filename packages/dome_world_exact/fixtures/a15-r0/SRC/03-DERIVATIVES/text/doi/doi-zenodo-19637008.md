@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:de9e405cac48a00852b6fce4
+parent_capture_id: capture:da1f6e04ec9eb5b028b96f2e
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Burnout as Structural Cognitive Extraction: How Modern Economies Convert Human Capacity Into Exhaustion: A Structural Synthesis Using Labour‑Market and Economic Indicators"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19637008
+Final URL: https://zenodo.org/records/19637008
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19637008 -> https://zenodo.org/doi/10.5281/zenodo.19637008
+302 https://zenodo.org/doi/10.5281/zenodo.19637008 -> https://zenodo.org/records/19637008

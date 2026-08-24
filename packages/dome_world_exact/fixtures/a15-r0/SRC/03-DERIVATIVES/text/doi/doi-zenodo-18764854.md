@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:17497a9d1af5bae77d808e73
+parent_capture_id: capture:542e996a5ea437f872a3a41c
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Scarcity as Governance: How Systems Control Through Deprivation"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18764854
+Final URL: https://zenodo.org/records/18764854
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18764854 -> https://zenodo.org/doi/10.5281/zenodo.18764854
+302 https://zenodo.org/doi/10.5281/zenodo.18764854 -> https://zenodo.org/records/18764854

@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:824fa64ddb62a1e07e081a51
+parent_capture_id: capture:9cf94262a71ae8f04b9e6372
+parent_blob_sha256: 3c1890e52f6abbf2151a8376e63e82fbba8a0f82df21f36668e3ff72d0cd44bb
+tool: srcctl-json-normalizer/1
+source_title: "Stylometric Saturation"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18303636",
+  "conceptrecid": "18303636",
+  "created": "2026-01-19T17:38:05.135586+00:00",
+  "doi": "10.5281/zenodo.18303637",
+  "doi_url": "https://doi.org/10.5281/zenodo.18303637",
+  "files": [
+    {
+      "checksum": "md5:5376c6f8f79549bced8bf4241fa1c05d",
+      "id": "b8437e24-de5b-4773-bc64-e766d8a56338",
+      "key": "Stylometric Saturation .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18303637/files/Stylometric%20Saturation%20.pdf/content"
+      },
+      "size": 69438
+    }
+  ],
+  "id": 18303637,
+  "links": {
+    "access": "https://zenodo.org/api/records/18303637/access",
+    "access_grants": "https://zenodo.org/api/records/18303637/access/grants",
+    "access_links": "https://zenodo.org/api/records/18303637/access/links",
+    "access_request": "https://zenodo.org/api/records/18303637/access/request",
+    "access_users": "https://zenodo.org/api/records/18303637/access/users",
+    "archive": "https://zenodo.org/api/records/18303637/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18303637/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18303637/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18303637/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18303637",
+    "draft": "https://zenodo.org/api/records/18303637/draft",
+    "file_modification": "https://zenodo.org/api/records/18303637/file-modification",
+    "files": "https://zenodo.org/api/records/18303637/files",
+    "latest": "https://zenodo.org/api/records/18303637/versions/latest",
+    "latest_html": "https://zenodo.org/records/18303637/latest",
+    "media_files": "https://zenodo.org/api/records/18303637/media-files",
+    "parent": "https://zenodo.org/api/records/18303636",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18303636",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303636",
+    "parent_html": "https://zenodo.org/records/18303636",
+    "preview_html": "https://zenodo.org/records/18303637?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18303637/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18303637/request-deletion",
+    "requests": "https://zenodo.org/api/records/18303637/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18303637/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18303637",
+    "self_doi": "https://doi.org/10.5281/zenodo.18303637",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303637",
+    "self_html": "https://zenodo.org/records/18303637",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18303637/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18303637/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18303637:Stylometric%20Saturation%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18303637/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay examines stylometric saturation as a structural consequence of predictive mediation. It analyzes how high‑signal styles become templates within agentic systems, leading to widespread replication, cadence smoothing, and the erosion of diagnostic contrast. The work details how embedding diffusion, predictive alignment, and cross‑platform reinforcement transform distinctive styles into generalized substrates, weakening lineage boundaries and collapsing conceptual distinctions. It identifies early warning signs&mdash;echo drift, cluster diffusion, retrieval flattening&mdash;and outlines techniques for re‑sharpening style through density modulation, rhythmic inversion, conceptual expansion, structural deviation, and asymmetric escalation. The essay positions stylistic sharpness as a renewable resource that must be actively maintained within systems designed to homogenize.</p>\n<p>This essay operates within the SignalRupture canon, extending the diagnostic lineage established in Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, Social Infrastructure Theory, and Morality on Trial, alongside the applied surfaces Metadata Suppression and Stylometric Resistance and the stylometric capsule Triggering the System&rsquo;s Immune Response.</p>\n<p>&nbsp;</p>",
+    "doi": "10.5281/zenodo.18303637",
+    "keywords": [
+      "Metadata",
+      "Stylometric Publishing",
+      "Internet Studies",
+      "Indexing",
+      "Post-Open Web"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-19",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18303636"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Stylometric Saturation",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T00:04:30.767686+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18303637",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 9,
+    "unique_downloads": 8,
+    "unique_views": 36,
+    "version_downloads": 9,
+    "version_unique_downloads": 8,
+    "version_unique_views": 36,
+    "version_views": 40,
+    "views": 40
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Stylometric Saturation",
+  "updated": "2026-01-29T00:04:30.767686+00:00"
+}

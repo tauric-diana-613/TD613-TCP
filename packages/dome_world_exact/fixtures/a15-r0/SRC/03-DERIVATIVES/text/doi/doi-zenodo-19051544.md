@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:121b6a64bea91aceff89d49f
+parent_capture_id: capture:b861e665e20ba973829f23ae
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "HEALTHCARE: THE PRESSURE‑CONVERSION INFRASTRUCTURE OF HUMAN HARM"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19051544
+Final URL: https://zenodo.org/records/19051544
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19051544 -> https://zenodo.org/doi/10.5281/zenodo.19051544
+302 https://zenodo.org/doi/10.5281/zenodo.19051544 -> https://zenodo.org/records/19051544

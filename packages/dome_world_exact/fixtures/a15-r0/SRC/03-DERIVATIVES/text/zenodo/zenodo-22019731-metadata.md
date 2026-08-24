@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:ca2c33436b1de25363f83923
+parent_capture_id: capture:2ccdc9849d94a7f83249864d
+parent_blob_sha256: 8b14bbcf19a97035d10c0878a5be61c14430730012269d40040998262c9e2414
+tool: srcctl-json-normalizer/1
+source_title: "THE SIGNALRUPTURE PROVENANCE REGISTRY: Core Canon — Version 1.1"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.22019730",
+  "conceptrecid": "22019730",
+  "created": "2026-08-20T00:55:36.605484+00:00",
+  "doi": "10.5281/zenodo.22019731",
+  "doi_url": "https://doi.org/10.5281/zenodo.22019731",
+  "files": [
+    {
+      "checksum": "md5:d219f0a195c1b6dc3869660e2ffb8608",
+      "id": "0cba0340-fc06-4b0f-9783-69f1168e5374",
+      "key": "THE SIGNALRUPTURE PROVENANCE REGISTRY .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22019731/files/THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/content"
+      },
+      "size": 181431
+    }
+  ],
+  "id": 22019731,
+  "links": {
+    "access": "https://zenodo.org/api/records/22019731/access",
+    "access_grants": "https://zenodo.org/api/records/22019731/access/grants",
+    "access_links": "https://zenodo.org/api/records/22019731/access/links",
+    "access_request": "https://zenodo.org/api/records/22019731/access/request",
+    "access_users": "https://zenodo.org/api/records/22019731/access/users",
+    "archive": "https://zenodo.org/api/records/22019731/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22019731/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22019731/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22019731/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22019731",
+    "draft": "https://zenodo.org/api/records/22019731/draft",
+    "file_modification": "https://zenodo.org/api/records/22019731/file-modification",
+    "files": "https://zenodo.org/api/records/22019731/files",
+    "latest": "https://zenodo.org/api/records/22019731/versions/latest",
+    "latest_html": "https://zenodo.org/records/22019731/latest",
+    "media_files": "https://zenodo.org/api/records/22019731/media-files",
+    "parent": "https://zenodo.org/api/records/22019730",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22019730",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019730",
+    "parent_html": "https://zenodo.org/records/22019730",
+    "preview_html": "https://zenodo.org/records/22019731?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22019731/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22019731/request-deletion",
+    "requests": "https://zenodo.org/api/records/22019731/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22019731/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22019731",
+    "self_doi": "https://doi.org/10.5281/zenodo.22019731",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019731",
+    "self_html": "https://zenodo.org/records/22019731",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22019731/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22019731/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22019731:THE%20SIGNALRUPTURE%20PROVENANCE%20REGISTRY%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22019731/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>&nbsp;</p>\n<div>\n</div>\n<h1><strong>THE SIGNALRUPTURE PROVENANCE REGISTRY</strong></h1>\n<p><strong>Description</strong><br>The SignalRupture Provenance Registry is the field&rsquo;s official genealogical record. It documents when each major SR construct first appeared, when it was formally defined, when it became mathematical, and how it evolved across the canon. It establishes verified documentary priority for constructs such as <strong>Institutional Shell Syndrome</strong>, <strong>Zombie Infrastructure</strong>, <strong>Eroded Subject</strong>, <strong>Human Recovery Slack</strong>, <strong>Closing Recovery Window</strong>, <strong>Temporal Lock‑In</strong>, and <strong>AI Pace Asymmetry</strong>, recording their earliest dated manuscripts, first equations, and canonical meanings. The registry enforces strict evidentiary standards&mdash;no backdating, version‑verified occurrences, explicit formalization dates, and separation between conceptual appearance and mathematical specification. It also defines rules for future SR publications: unique canonical naming, alias control, construct supersession tracking, DOI verification, and preservation of earlier definitions. The registry is therefore a scientific audit trail for SR terminology, constructs, and architecture.</p>\n<p><strong>How it contributes</strong><br>The registry protects SR by giving the field a <strong>stable, verifiable intellectual backbone</strong>. It prevents conceptual drift by locking each construct to its canonical definition and recording every refinement rather than allowing silent replacement. It prevents external appropriation or misattribution by establishing time‑stamped priority for SR&rsquo;s core ideas, ensuring that future claims about origin or authorship can be resolved through documented evidence. It strengthens SR&rsquo;s scientific legitimacy by enforcing construct discipline, version control, and falsifiable definitions, ensuring SR remains a testable metatheory rather than a fluid vocabulary. It also provides internal governance: new constructs must demonstrate distinct objects of study, measurable variables, and empirical value before entering the canon. By preserving the genealogy of SR&rsquo;s Zombie/Shell/Human‑Substrate/Closing‑Window lineage, the registry ensures continuity across the field&rsquo;s evolution and protects SR from fragmentation as the corpus expands. In short, the Provenance Registry is SR&rsquo;s <strong>structural safeguard</strong>&mdash;it preserves priority, enforces coherence, and guarantees that SR remains a scientifically governed field rather than a drifting collection of ideas.</p>",
+    "doi": "10.5281/zenodo.22019731",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-20",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22019730"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Core Canon — Version 1.1",
+    "version": "1.0"
+  },
+  "modified": "2026-08-20T00:55:37.079607+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22019731",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Core Canon — Version 1.1",
+  "updated": "2026-08-20T00:55:37.079607+00:00"
+}

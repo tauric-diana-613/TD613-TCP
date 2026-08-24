@@ -1,0 +1,189 @@
+---
+derivative_id: derivative:de4b86c99171320ac05a91a4
+parent_capture_id: capture:7ff604d12e3611c1e0ad3345
+parent_blob_sha256: e7cab9ac9a785481e0abb9e76253a0dd6acf7dfb6953165f3962305285423bf0
+tool: PyMuPDF-native/1
+source_title: "SR Legacy Papers Classification  .pdf"
+---
+
+SR Legacy Papers Classification Purpose: The SR Legacy Papers Classification formally designates all pre ‑ rigor SR papers as Legacy SR . These
+
+papers
+
+remain
+
+part
+
+of
+
+the
+
+SR
+
+genealogy
+
+but
+
+are
+
+no
+
+longer
+
+treated
+
+as
+
+canonical,
+
+empirical,
+
+or
+
+field ‑ defining.
+
+They
+
+preserve
+
+conceptual
+
+lineage
+
+while
+
+preventing
+
+early
+
+overreach
+
+from
+
+constraining
+
+mature
+
+SR
+
+fields.
+
+1. Definition of Legacy SR Legacy SR refers to all SignalRupture papers produced before the establishment of SR causal standards,
+
+measurement
+
+operators,
+
+falsification
+
+criteria,
+
+and
+
+field
+
+architectures.
+
+A Legacy SR paper is defined as: A conceptual or exploratory SR document produced prior to the 2026 field ‑ standardization
+
+cycle,
+
+containing
+
+structural
+
+insight
+
+but
+
+not
+
+bound
+
+to
+
+SR’s
+
+current
+
+empirical
+
+discipline.
+
+Legacy SR papers are not deleted , not revised endlessly , and not treated as empirical authority .
+
+They
+
+are
+
+preserved
+
+as
+
+conceptual
+
+source
+
+material.
+
+2. Criteria for Legacy Classification A paper is classified as Legacy SR if it meets any of the following: ● Pre ‑ standardization origin — written before SR formalized causal standards (2026). ● Rhetorical altitude — uses structural language stronger than available evidence. ● Exploratory framing — proposes mechanisms without measurement windows or falsification
+
+criteria. ● Conceptual lineage — introduces SR primitives later refined in field papers. ● Non ‑ empirical claims — lacks explicit causal pathways, counterfactuals, or competing explanations.
+
+● Pre ‑ rigor citation practices — may contain incomplete, informal, or unverifiable references.
+
+These criteria protect SR’s credibility while preserving its intellectual history.
+
+3. Categories of Legacy SR Papers A. Conceptual Foundations (Legacy ‑ CF) Early papers that introduced SR primitives such as: ● Drift ● Recoil ● Altitude ● Threshold Logic ● Category Politics These papers shaped SR vocabulary but are not empirical.
+
+B. Collapse Diagnostics (Legacy ‑ CD) Early analyses of: ● Institutional collapse ● Governance drift ● Systemic erosion These contain strong structural insight but exceed SR’s current causal discipline.
+
+C. Domain Papers (Legacy ‑ DP) Exploratory papers on: ● healthcare ● universities ● housing ● platforms ● administrative systems
+
+These papers framed SR’s early domain logic but lacked measurement operators.
+
+D. Early SR Experiments (Legacy ‑ EX) Drafts such as: ● peer ‑ review experiments ● publishing experiments ● indexing experiments These introduced important ideas but require regeneration under SR ‑ RIF.
+
+4. Status of Legacy SR Papers Legacy SR papers have three official statuses : 1. Conceptual Source Material (CSM) Used for: ● vocabulary ● primitives ● lineage ● structural intuition Not used for empirical claims. 2. Regeneration Candidate (RC) Eligible for selective regeneration under: ● SR ‑ RIF ● SR ‑ IGF ● SR ‑ AIF ● SR ‑ CEIDF Only papers with enduring structural value are regenerated. 3. Archived Reference (AR) Preserved for historical continuity but not used in field ‑ level inference.
+
+5. What Legacy Classification Achieves A. Protects SR Credibility By preventing early overreach from contaminating mature fields. B. Preserves SR Genealogy Without forcing endless revision cycles. C. Enables Selective Regeneration Only the strongest conceptual papers are upgraded. D. Clears Space for Case Studies SR can now produce empirical work without being anchored to early drafts. E. Signals SR Maturity Institutions respect fields that self ‑ correct.
+
+6. SR Legacy Papers Policy Statement Legacy SR papers are preserved as conceptual lineage, not treated as canonical evidence.
+
+They
+
+remain
+
+part
+
+of
+
+SR’s
+
+intellectual
+
+history
+
+while
+
+SR’s
+
+empirical
+
+authority
+
+resides
+
+in
+
+field
+
+papers
+
+and
+
+case
+
+studies.
+
+This is the official SR position.

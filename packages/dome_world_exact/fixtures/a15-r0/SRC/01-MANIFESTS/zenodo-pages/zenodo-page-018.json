@@ -1,0 +1,2405 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2025-12-31T10:06:12.574818-05:00",
+        "modified": "2026-01-28T21:01:31.365357-05:00",
+        "id": 18108998,
+        "conceptrecid": "18108997",
+        "doi": "10.5281/zenodo.18108998",
+        "conceptdoi": "10.5281/zenodo.18108997",
+        "doi_url": "https://doi.org/10.5281/zenodo.18108998",
+        "metadata": {
+          "title": "Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery",
+          "doi": "10.5281/zenodo.18108998",
+          "publication_date": "2025-12-31",
+          "description": "<p>This essay challenges the traditional diagnosis‑and‑medication model of mental health by reframing psychiatric distress through a nutritional, neurobiological, and trauma‑informed lens. It argues that many symptoms labeled as depression, anxiety, ADHD, bipolar disorder, psychosis, and substance‑related distress may emerge from underlying biological and environmental dysregulation &mdash; including micronutrient depletion, chronic stress physiology, and gut‑brain disruption. Drawing on research from nutritional psychiatry, trauma science, and systems biology, the essay examines how deficiencies in magnesium, B6, B12, folate, zinc, and omega‑3s intersect with trauma exposure, gut permeability, and processed food environments to shape emotional and cognitive outcomes. Case studies and population‑level findings illustrate how biochemical imbalance can mimic or intensify psychiatric presentations, while systemic omission of nutritional assessment reinforces misdiagnosis and delay. The essay proposes a regenerative mental health framework that integrates nutrient status, trauma‑informed care, and gut‑brain support to restore dignity, context, and biological clarity to recovery.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Nutritional Psychiatry",
+            "Psychology",
+            "Social Science",
+            "Healthcare"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.3",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18108997"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery",
+        "links": {
+          "self": "https://zenodo.org/api/records/18108998",
+          "self_html": "https://zenodo.org/records/18108998",
+          "preview_html": "https://zenodo.org/records/18108998?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18108998",
+          "self_doi": "https://doi.org/10.5281/zenodo.18108998",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108998",
+          "reserve_doi": "https://zenodo.org/api/records/18108998/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18108997",
+          "parent_html": "https://zenodo.org/records/18108997",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18108997",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108997",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18108998/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18108998/sequence/default",
+          "files": "https://zenodo.org/api/records/18108998/files",
+          "media_files": "https://zenodo.org/api/records/18108998/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18108998/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18108998/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18108998/versions/latest",
+          "latest_html": "https://zenodo.org/records/18108998/latest",
+          "versions": "https://zenodo.org/api/records/18108998/versions",
+          "draft": "https://zenodo.org/api/records/18108998/draft",
+          "access_links": "https://zenodo.org/api/records/18108998/access/links",
+          "access_grants": "https://zenodo.org/api/records/18108998/access/grants",
+          "access_users": "https://zenodo.org/api/records/18108998/access/users",
+          "access_request": "https://zenodo.org/api/records/18108998/access/request",
+          "access": "https://zenodo.org/api/records/18108998/access",
+          "communities": "https://zenodo.org/api/records/18108998/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18108998/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18108998/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18108998/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18108998/quota-increase",
+          "requests": "https://zenodo.org/api/records/18108998/requests"
+        },
+        "updated": "2026-01-28T21:01:31.365357-05:00",
+        "recid": "18108998",
+        "revision": 5,
+        "files": [
+          {
+            "id": "2948cef7-1900-4801-a219-d966f8ba82d5",
+            "key": "Mental Health.pdf",
+            "size": 95662,
+            "checksum": "md5:a81295957f430f01973053be98f82ec3",
+            "links": {
+              "self": "https://zenodo.org/api/records/18108998/files/Mental%20Health.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 18,
+          "unique_downloads": 16,
+          "views": 36,
+          "unique_views": 33,
+          "version_downloads": 18,
+          "version_unique_downloads": 16,
+          "version_unique_views": 33,
+          "version_views": 36
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-31T09:52:10.879798-05:00",
+        "modified": "2026-01-28T21:07:49.096684-05:00",
+        "id": 18108927,
+        "conceptrecid": "18108926",
+        "doi": "10.5281/zenodo.18108927",
+        "conceptdoi": "10.5281/zenodo.18108926",
+        "doi_url": "https://doi.org/10.5281/zenodo.18108927",
+        "metadata": {
+          "title": "Health System Collapse: Misdiagnosis as Infrastructure in Nutritional Psychiatry",
+          "doi": "10.5281/zenodo.18108927",
+          "publication_date": "2025-12-31",
+          "description": "<p>This essay reframes Canada&rsquo;s mental health crisis as a systemic collapse rooted in nutritional omission rather than individual pathology. It argues that misdiagnosis functions as infrastructure: a predictable outcome of biochemical deficiencies, industrial food systems, and policy design that excludes micronutrient screening while accelerating pharmaceutical intervention. Drawing on evidence from nutritional psychiatry, the essay shows how deficiencies in thiamine, magnesium, and vitamin B6 can mimic depression, anxiety, ADHD, and psychosis, yet remain undetected within public health protocols. Ultra‑processed food environments deepen these deficiencies, embedding collapse into everyday consumption. By mapping excitotoxicity, processed food systems, and diagnostic omission as interconnected architectures, the essay positions subclinical collapse as a nutrient‑starved signal misread as psychiatric disorder. It concludes by framing nutritional psychiatry as insurgent clarity against systemic delay, dependency, and suppression.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Healthcare",
+            "Psychiatry",
+            "Psychology",
+            "Social Issues",
+            "Social Psychology",
+            "Activism",
+            "Feminism"
+          ],
+          "version": "1.2",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18108926"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Health System Collapse: Misdiagnosis as Infrastructure in Nutritional Psychiatry",
+        "links": {
+          "self": "https://zenodo.org/api/records/18108927",
+          "self_html": "https://zenodo.org/records/18108927",
+          "preview_html": "https://zenodo.org/records/18108927?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18108927",
+          "self_doi": "https://doi.org/10.5281/zenodo.18108927",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108927",
+          "reserve_doi": "https://zenodo.org/api/records/18108927/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18108926",
+          "parent_html": "https://zenodo.org/records/18108926",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18108926",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108926",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18108927/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18108927/sequence/default",
+          "files": "https://zenodo.org/api/records/18108927/files",
+          "media_files": "https://zenodo.org/api/records/18108927/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18108927:Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18108927/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18108927/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18108927/versions/latest",
+          "latest_html": "https://zenodo.org/records/18108927/latest",
+          "versions": "https://zenodo.org/api/records/18108927/versions",
+          "draft": "https://zenodo.org/api/records/18108927/draft",
+          "access_links": "https://zenodo.org/api/records/18108927/access/links",
+          "access_grants": "https://zenodo.org/api/records/18108927/access/grants",
+          "access_users": "https://zenodo.org/api/records/18108927/access/users",
+          "access_request": "https://zenodo.org/api/records/18108927/access/request",
+          "access": "https://zenodo.org/api/records/18108927/access",
+          "communities": "https://zenodo.org/api/records/18108927/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18108927/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18108927/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18108927/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18108927/quota-increase",
+          "requests": "https://zenodo.org/api/records/18108927/requests"
+        },
+        "updated": "2026-01-28T21:07:49.096684-05:00",
+        "recid": "18108927",
+        "revision": 7,
+        "files": [
+          {
+            "id": "9471cdb0-7392-45a3-a275-495d1878bf85",
+            "key": "Health System Collapse: Misdiagnosis as Infrastructure in Nutritional Psychiatry.pdf",
+            "size": 66525,
+            "checksum": "md5:8d670d2a9575c7bf6780ca69eba6cb11",
+            "links": {
+              "self": "https://zenodo.org/api/records/18108927/files/Health%20System%20Collapse:%20Misdiagnosis%20as%20Infrastructure%20in%20Nutritional%20Psychiatry.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 18,
+          "unique_downloads": 14,
+          "views": 25,
+          "unique_views": 19,
+          "version_downloads": 18,
+          "version_unique_downloads": 14,
+          "version_unique_views": 19,
+          "version_views": 25
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-31T09:30:30.849198-05:00",
+        "modified": "2026-01-28T21:02:38.805826-05:00",
+        "id": 18108769,
+        "conceptrecid": "18108768",
+        "doi": "10.5281/zenodo.18108769",
+        "conceptdoi": "10.5281/zenodo.18108768",
+        "doi_url": "https://doi.org/10.5281/zenodo.18108769",
+        "metadata": {
+          "title": "Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture",
+          "doi": "10.5281/zenodo.18108769",
+          "publication_date": "2025-12-31",
+          "description": "<p>This paper reframes correlation and causation through a systemic lens, arguing that what society labels as &ldquo;lifestyle&rdquo; is often the result of policy, infrastructure, and containment architecture. Public health narratives reduce illness, poverty, stress, and social outcomes to personal choices, while research frames them as neutral associations. In reality, these patterns emerge from systemic design. Using examples from Soviet housing, industry, and surveillance, as well as modern health, labor, and cultural systems, the paper shows how correlation functions as containment &mdash; the visible pattern &mdash; while causation is the signal embedded in architecture. By exposing how policy masquerades as lifestyle, the work challenges individual‑blame narratives and reveals the infrastructural forces shaping mental health, behavior, and social outcomes.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Data science",
+            "Feminism",
+            "Sociology",
+            "Psychology",
+            "Helathcare",
+            "Brainwashing",
+            "Governance",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18108768"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Correlation Vs. Causation: Lifestyle as Policy, Containment as Architecture",
+        "links": {
+          "self": "https://zenodo.org/api/records/18108769",
+          "self_html": "https://zenodo.org/records/18108769",
+          "preview_html": "https://zenodo.org/records/18108769?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18108769",
+          "self_doi": "https://doi.org/10.5281/zenodo.18108769",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108769",
+          "reserve_doi": "https://zenodo.org/api/records/18108769/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18108768",
+          "parent_html": "https://zenodo.org/records/18108768",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18108768",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108768",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18108769/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18108769/sequence/default",
+          "files": "https://zenodo.org/api/records/18108769/files",
+          "media_files": "https://zenodo.org/api/records/18108769/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18108769:Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18108769/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18108769/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18108769/versions/latest",
+          "latest_html": "https://zenodo.org/records/18108769/latest",
+          "versions": "https://zenodo.org/api/records/18108769/versions",
+          "draft": "https://zenodo.org/api/records/18108769/draft",
+          "access_links": "https://zenodo.org/api/records/18108769/access/links",
+          "access_grants": "https://zenodo.org/api/records/18108769/access/grants",
+          "access_users": "https://zenodo.org/api/records/18108769/access/users",
+          "access_request": "https://zenodo.org/api/records/18108769/access/request",
+          "access": "https://zenodo.org/api/records/18108769/access",
+          "communities": "https://zenodo.org/api/records/18108769/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18108769/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18108769/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18108769/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18108769/quota-increase",
+          "requests": "https://zenodo.org/api/records/18108769/requests"
+        },
+        "updated": "2026-01-28T21:02:38.805826-05:00",
+        "recid": "18108769",
+        "revision": 7,
+        "files": [
+          {
+            "id": "34c665d3-1402-4fd3-b8ad-bcbd7dbcf760",
+            "key": "Correlation vs. Causation  Lifestyle as Policy, Containment as Architecture .pdf",
+            "size": 78772,
+            "checksum": "md5:cfcbf409f217c744c515eefc711a3e67",
+            "links": {
+              "self": "https://zenodo.org/api/records/18108769/files/Correlation%20vs.%20Causation%20%20Lifestyle%20as%20Policy,%20Containment%20as%20Architecture%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 20,
+          "unique_downloads": 15,
+          "views": 34,
+          "unique_views": 28,
+          "version_downloads": 20,
+          "version_unique_downloads": 15,
+          "version_unique_views": 28,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-31T00:11:08.958104-05:00",
+        "modified": "2026-01-28T21:03:09.488511-05:00",
+        "id": 18103456,
+        "conceptrecid": "18103455",
+        "doi": "10.5281/zenodo.18103456",
+        "conceptdoi": "10.5281/zenodo.18103455",
+        "doi_url": "https://doi.org/10.5281/zenodo.18103456",
+        "metadata": {
+          "title": "Information Terrorism: The New Face of Terrorism",
+          "doi": "10.5281/zenodo.18103456",
+          "publication_date": "2025-12-31",
+          "description": "<p>This preprint reframes disinformation not as a communication failure, a political nuisance, or a content‑moderation challenge, but as terrorism conducted through informational means. By introducing the term information terrorism, the essay shifts the analytic lens from accidental misinformation to deliberate, systemic, and profit‑driven informational violence. The reframe exposes how engineered capsules&mdash;papas, deepfakes, propaganda packages&mdash;operate as weapons designed to destabilize trust, overwhelm cognitive bandwidth, and sedate populations. Rather than treating fake news as a cultural irritant or a moderation problem, the essay positions it as an infrastructural threat: a coordinated assault on epistemic stability enabled by platform incentives, governmental silence, and algorithmic amplification. Naming this phenomenon as terrorism restores moral clarity, foregrounds the violence embedded in digital ecosystems, and challenges the containment logic that treats disinformation as harmless noise rather than a systemic attack on democratic resilience.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "AI",
+            "Artificial Intelligence",
+            "Social Issues",
+            "Social Media",
+            "Social Psychology",
+            "Social Issuesa",
+            "Criminology",
+            "Sociology"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Preprint",
+            "type": "publication",
+            "subtype": "preprint"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18103455"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Information Terrorism: The New Face of Terrorism",
+        "links": {
+          "self": "https://zenodo.org/api/records/18103456",
+          "self_html": "https://zenodo.org/records/18103456",
+          "preview_html": "https://zenodo.org/records/18103456?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18103456",
+          "self_doi": "https://doi.org/10.5281/zenodo.18103456",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103456",
+          "reserve_doi": "https://zenodo.org/api/records/18103456/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18103455",
+          "parent_html": "https://zenodo.org/records/18103455",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18103455",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103455",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18103456/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18103456/sequence/default",
+          "files": "https://zenodo.org/api/records/18103456/files",
+          "media_files": "https://zenodo.org/api/records/18103456/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18103456/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18103456/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18103456/versions/latest",
+          "latest_html": "https://zenodo.org/records/18103456/latest",
+          "versions": "https://zenodo.org/api/records/18103456/versions",
+          "draft": "https://zenodo.org/api/records/18103456/draft",
+          "access_links": "https://zenodo.org/api/records/18103456/access/links",
+          "access_grants": "https://zenodo.org/api/records/18103456/access/grants",
+          "access_users": "https://zenodo.org/api/records/18103456/access/users",
+          "access_request": "https://zenodo.org/api/records/18103456/access/request",
+          "access": "https://zenodo.org/api/records/18103456/access",
+          "communities": "https://zenodo.org/api/records/18103456/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18103456/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18103456/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18103456/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18103456/quota-increase",
+          "requests": "https://zenodo.org/api/records/18103456/requests"
+        },
+        "updated": "2026-01-28T21:03:09.488511-05:00",
+        "recid": "18103456",
+        "revision": 5,
+        "files": [
+          {
+            "id": "ed53791c-022d-4a90-bf6f-3576ddc37c5a",
+            "key": "Information Terrorism: The New Face of Terrorism.pdf",
+            "size": 185294,
+            "checksum": "md5:114d8214732adf6ef271b7bd1254b862",
+            "links": {
+              "self": "https://zenodo.org/api/records/18103456/files/Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 20,
+          "unique_downloads": 18,
+          "views": 31,
+          "unique_views": 29,
+          "version_downloads": 20,
+          "version_unique_downloads": 18,
+          "version_unique_views": 29,
+          "version_views": 31
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T23:37:59.248011-05:00",
+        "modified": "2026-01-28T21:03:40.761705-05:00",
+        "id": 18103177,
+        "conceptrecid": "18103176",
+        "doi": "10.5281/zenodo.18103177",
+        "conceptdoi": "10.5281/zenodo.18103176",
+        "doi_url": "https://doi.org/10.5281/zenodo.18103177",
+        "metadata": {
+          "title": "ADHD Biology and Physiology: Trauma, Excitotoxicity, Nutrition, the Gut–Brain Axis, and Infrastructural Misdiagnosis",
+          "doi": "10.5281/zenodo.18103177",
+          "publication_date": "2025-12-31",
+          "description": "<p>ADHD is a biologically rooted neurodevelopmental condition whose symptom severity and clinical presentation are significantly modulated by environmental and infrastructural factors&mdash;specifically trauma load, nutritional status, gut&ndash;brain axis integrity, and excitotoxic stress. These factors alter the same neural pathways implicated in ADHD (dopamine/norepinephrine signaling, cortical maturation, sleep architecture, and glutamate&ndash;GABA balance), leading to systematic misdiagnosis and over‑reliance on pharmaceutical treatment when nutritional and physiological contributors remain unassessed.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "ADHD",
+            "Psychology",
+            "Psychiatric",
+            "Social Issues",
+            "Healthcare",
+            "Misdiagnosis",
+            "Pharmaceutical Industry",
+            "Farmaceutical Gain",
+            "Capitalism",
+            "Activism",
+            "Healthcare Collapse"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18103176"
+                }
+              }
+            ]
+          }
+        },
+        "title": "ADHD Biology and Physiology: Trauma, Excitotoxicity, Nutrition, the Gut–Brain Axis, and Infrastructural Misdiagnosis",
+        "links": {
+          "self": "https://zenodo.org/api/records/18103177",
+          "self_html": "https://zenodo.org/records/18103177",
+          "preview_html": "https://zenodo.org/records/18103177?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18103177",
+          "self_doi": "https://doi.org/10.5281/zenodo.18103177",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103177",
+          "reserve_doi": "https://zenodo.org/api/records/18103177/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18103176",
+          "parent_html": "https://zenodo.org/records/18103176",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18103176",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103176",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18103177/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18103177/sequence/default",
+          "files": "https://zenodo.org/api/records/18103177/files",
+          "media_files": "https://zenodo.org/api/records/18103177/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18103177:ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18103177/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18103177/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18103177/versions/latest",
+          "latest_html": "https://zenodo.org/records/18103177/latest",
+          "versions": "https://zenodo.org/api/records/18103177/versions",
+          "draft": "https://zenodo.org/api/records/18103177/draft",
+          "access_links": "https://zenodo.org/api/records/18103177/access/links",
+          "access_grants": "https://zenodo.org/api/records/18103177/access/grants",
+          "access_users": "https://zenodo.org/api/records/18103177/access/users",
+          "access_request": "https://zenodo.org/api/records/18103177/access/request",
+          "access": "https://zenodo.org/api/records/18103177/access",
+          "communities": "https://zenodo.org/api/records/18103177/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18103177/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18103177/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18103177/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18103177/quota-increase",
+          "requests": "https://zenodo.org/api/records/18103177/requests"
+        },
+        "updated": "2026-01-28T21:03:40.761705-05:00",
+        "recid": "18103177",
+        "revision": 6,
+        "files": [
+          {
+            "id": "650386df-0814-45fc-8a88-a567c835da39",
+            "key": "ADHD Biology and Physiology: Trauma, Excitotoxicity, Nutrition, the Gut–Brain Axis, and Infrastructural Misdiagnosis .pdf",
+            "size": 103462,
+            "checksum": "md5:5d2a8496e122a6637c9a211ed90edaed",
+            "links": {
+              "self": "https://zenodo.org/api/records/18103177/files/ADHD%20Biology%20and%20Physiology:%20Trauma,%20Excitotoxicity,%20Nutrition,%20the%20Gut%E2%80%93Brain%20Axis,%20and%20Infrastructural%20Misdiagnosis%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 19,
+          "unique_downloads": 15,
+          "views": 29,
+          "unique_views": 25,
+          "version_downloads": 19,
+          "version_unique_downloads": 15,
+          "version_unique_views": 25,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T23:17:35.57329-05:00",
+        "modified": "2026-01-28T21:04:18.028916-05:00",
+        "id": 18103100,
+        "conceptrecid": "18103099",
+        "doi": "10.5281/zenodo.18103100",
+        "conceptdoi": "10.5281/zenodo.18103099",
+        "doi_url": "https://doi.org/10.5281/zenodo.18103100",
+        "metadata": {
+          "title": "Systemic Public Health Failure: When Infrastructure Becomes the Disease",
+          "doi": "10.5281/zenodo.18103100",
+          "publication_date": "2025-12-31",
+          "description": "<p>This paper argues that contemporary public health systems fail not because of temporary strain or insufficient resources, but because their underlying infrastructure is misaligned with the realities of trauma, chronic stress, nutritional depletion, and diagnostic complexity. Drawing on research in diagnostic error, allostatic load, nutritional psychiatry, and health‑system fragmentation, the essay reframes recurring failures&mdash;misdiagnosis, siloed care, preventable crises&mdash;as structural outputs rather than isolated mistakes.</p>\n<p>The analysis synthesizes four intersecting frameworks: misdiagnosis infrastructure, which channels patients into categorical labels without causal inquiry; allostatic load theory, which explains how chronic stress produces cumulative physiological wear; nutritional psychiatry, which highlights the biochemical foundations of mental health; and fragmentation theory, which exposes how disconnected services and misaligned incentives generate predictable harm. Through clinical vignettes and empirical evidence, the paper shows how trauma misclassification, metabolic neglect, and rushed assessment pathways convert complex human experiences into narrow diagnostic categories.</p>\n<p>By positioning public health failure as an infrastructural condition, the essay identifies system‑level levers for reform, including integrated care pathways, trauma‑informed assessment, nutritional evaluation, and updated public‑health metrics that reflect lived complexity rather than administrative convenience. The work contributes to scholarship on diagnostic safety, structural determinants of health, and health‑system design, offering a framework for understanding why preventable suffering persists across populations and decades.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Public Health",
+            "Public Health Infrastructure",
+            "Social Issues",
+            "Activism",
+            "Sociology",
+            "Criminology",
+            "Feminism",
+            "Minority Studies",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18103099"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Systemic Public Health Failure: When Infrastructure Becomes the Disease",
+        "links": {
+          "self": "https://zenodo.org/api/records/18103100",
+          "self_html": "https://zenodo.org/records/18103100",
+          "preview_html": "https://zenodo.org/records/18103100?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18103100",
+          "self_doi": "https://doi.org/10.5281/zenodo.18103100",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103100",
+          "reserve_doi": "https://zenodo.org/api/records/18103100/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18103099",
+          "parent_html": "https://zenodo.org/records/18103099",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18103099",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103099",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18103100/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18103100/sequence/default",
+          "files": "https://zenodo.org/api/records/18103100/files",
+          "media_files": "https://zenodo.org/api/records/18103100/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18103100:Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18103100/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18103100/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18103100/versions/latest",
+          "latest_html": "https://zenodo.org/records/18103100/latest",
+          "versions": "https://zenodo.org/api/records/18103100/versions",
+          "draft": "https://zenodo.org/api/records/18103100/draft",
+          "access_links": "https://zenodo.org/api/records/18103100/access/links",
+          "access_grants": "https://zenodo.org/api/records/18103100/access/grants",
+          "access_users": "https://zenodo.org/api/records/18103100/access/users",
+          "access_request": "https://zenodo.org/api/records/18103100/access/request",
+          "access": "https://zenodo.org/api/records/18103100/access",
+          "communities": "https://zenodo.org/api/records/18103100/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18103100/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18103100/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18103100/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18103100/quota-increase",
+          "requests": "https://zenodo.org/api/records/18103100/requests"
+        },
+        "updated": "2026-01-28T21:04:18.028916-05:00",
+        "recid": "18103100",
+        "revision": 5,
+        "files": [
+          {
+            "id": "841b268a-5037-4d1d-929c-c1b8c522b3fd",
+            "key": "Systemic Public Health Failure: When Infrastructure Becomes the Disease .pdf",
+            "size": 111437,
+            "checksum": "md5:72565072f8e1bbdeb9bc2d494cee063d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18103100/files/Systemic%20Public%20Health%20Failure:%20When%20Infrastructure%20Becomes%20the%20Disease%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 15,
+          "views": 40,
+          "unique_views": 38,
+          "version_downloads": 17,
+          "version_unique_downloads": 15,
+          "version_unique_views": 38,
+          "version_views": 40
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T23:00:10.528736-05:00",
+        "modified": "2026-01-28T21:04:53.083127-05:00",
+        "id": 18103027,
+        "conceptrecid": "18103026",
+        "doi": "10.5281/zenodo.18103027",
+        "conceptdoi": "10.5281/zenodo.18103026",
+        "doi_url": "https://doi.org/10.5281/zenodo.18103027",
+        "metadata": {
+          "title": "Nutritional Psychiatry and Misdiagnosis: How Micronutrient Deficiency Mimics Mental Illness in Modern Public Health Systems",
+          "doi": "10.5281/zenodo.18103027",
+          "publication_date": "2025-12-31",
+          "description": "<p>This essay argues that modern mental‑health systems routinely misclassify biochemical distress as psychiatric disease, treating symptoms in isolation while ignoring the nutritional, metabolic, and infrastructural conditions that produce them. Drawing on emerging evidence in nutritional psychiatry, the paper shows how deficiencies in B‑complex vitamins, magnesium, and other micronutrients can mimic depression, anxiety, ADHD, irritability, cognitive impairment, and even psychosis. These deficiencies often manifest before neurological signs appear, yet clinical systems rarely screen for them.</p>\n<p>Integrating peer‑reviewed research, institutional medical summaries, and mechanistic insights from neuroscience, the essay demonstrates how micronutrients function as essential cofactors for neurotransmitter synthesis, myelin formation, and brain energy metabolism. It situates these biochemical pathways within broader structural determinants&mdash;food insecurity, ultra‑processed dietary patterns, economic precarity, and public‑health neglect&mdash;arguing that misdiagnosis is not random error but a predictable output of systems designed around fragments rather than whole‑person architecture.</p>\n<p>Global data reveal a planetary‑scale nutritional crisis, with billions lacking access to nutrient‑dense food and millions of children living in chronic biochemical instability. These conditions produce symptom clusters that map cleanly onto psychiatric diagnoses, yet the nutritional origins remain invisible within clinical practice. The essay positions this invisibility as infrastructural: a design flaw in public‑health systems that treat the part while ignoring the whole.</p>\n<p>By reframing psychiatric‑like symptoms as potential expressions of micronutrient deficiency and structural deprivation, the essay contributes to scholarship on misdiagnosis, nutritional psychiatry, and the social determinants of mental health. It calls for a systemic shift toward integrative assessment, nutritional screening, and infrastructural reform to prevent biochemical collapse from being absorbed into psychiatric categories.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Psychology",
+            "Psychiatry",
+            "Nutritional Psychiatry",
+            "Social Issues",
+            "Sociology",
+            "Criminology",
+            "Activism",
+            "Feminism",
+            "Social Psychology"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18103026"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Nutritional Psychiatry and Misdiagnosis: How Micronutrient Deficiency Mimics Mental Illness in Modern Public Health Systems",
+        "links": {
+          "self": "https://zenodo.org/api/records/18103027",
+          "self_html": "https://zenodo.org/records/18103027",
+          "preview_html": "https://zenodo.org/records/18103027?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18103027",
+          "self_doi": "https://doi.org/10.5281/zenodo.18103027",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103027",
+          "reserve_doi": "https://zenodo.org/api/records/18103027/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18103026",
+          "parent_html": "https://zenodo.org/records/18103026",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18103026",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103026",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18103027/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18103027/sequence/default",
+          "files": "https://zenodo.org/api/records/18103027/files",
+          "media_files": "https://zenodo.org/api/records/18103027/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18103027:Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18103027/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18103027/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18103027/versions/latest",
+          "latest_html": "https://zenodo.org/records/18103027/latest",
+          "versions": "https://zenodo.org/api/records/18103027/versions",
+          "draft": "https://zenodo.org/api/records/18103027/draft",
+          "access_links": "https://zenodo.org/api/records/18103027/access/links",
+          "access_grants": "https://zenodo.org/api/records/18103027/access/grants",
+          "access_users": "https://zenodo.org/api/records/18103027/access/users",
+          "access_request": "https://zenodo.org/api/records/18103027/access/request",
+          "access": "https://zenodo.org/api/records/18103027/access",
+          "communities": "https://zenodo.org/api/records/18103027/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18103027/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18103027/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18103027/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18103027/quota-increase",
+          "requests": "https://zenodo.org/api/records/18103027/requests"
+        },
+        "updated": "2026-01-28T21:04:53.083127-05:00",
+        "recid": "18103027",
+        "revision": 5,
+        "files": [
+          {
+            "id": "34300d8d-1468-46db-a19c-6e732e6e1dc4",
+            "key": "Nutritional Psychiatry and Misdiagnosis: How Micronutrient Deficiency Mimics Mental Illness.pdf",
+            "size": 124432,
+            "checksum": "md5:5c08729b009f8e46d05b790acf402794",
+            "links": {
+              "self": "https://zenodo.org/api/records/18103027/files/Nutritional%20Psychiatry%20and%20Misdiagnosis:%20How%20Micronutrient%20Deficiency%20Mimics%20Mental%20Illness.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 36,
+          "unique_downloads": 31,
+          "views": 43,
+          "unique_views": 40,
+          "version_downloads": 36,
+          "version_unique_downloads": 31,
+          "version_unique_views": 40,
+          "version_views": 43
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T22:53:42.238744-05:00",
+        "modified": "2026-01-28T21:05:27.03625-05:00",
+        "id": 18102995,
+        "conceptrecid": "18102994",
+        "doi": "10.5281/zenodo.18102995",
+        "conceptdoi": "10.5281/zenodo.18102994",
+        "doi_url": "https://doi.org/10.5281/zenodo.18102995",
+        "metadata": {
+          "title": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System",
+          "doi": "10.5281/zenodo.18102995",
+          "publication_date": "2025-12-31",
+          "description": "<p>This essay reframes cancer as an infrastructural outcome rather than an isolated biological malfunction, arguing that metabolic collapse&mdash;rooted in mitochondrial dysfunction&mdash;is shaped by food systems, water systems, labor conditions, and chronic stress infrastructures. Drawing on research in nutritional science, environmental health, toxicology, and social determinants of disease, the paper situates cancer within the political economies that structure exposure, vulnerability, and metabolic drift.</p>\n<p>The analysis shows how ultra‑processed foods, contaminated water, and chronic stress accelerate mitochondrial dysfunction, reinforcing the Warburg effect and weakening cellular resilience. These determinants are not individual &ldquo;choices&rdquo; but the predictable outputs of zoning, wages, subsidies, regulation, and environmental governance. The essay integrates evidence on PFAS, nitrates, disinfection byproducts, barrier dysfunction, and chronic inflammation to demonstrate how environmental conditions shape long‑term immunological and metabolic vulnerability.</p>\n<p>By connecting cancer biology to structural precarity&mdash;precarious labor, housing instability, debt, discrimination, and chronic stress&mdash;the essay argues that tumor promotion is inseparable from the infrastructures that produce biochemical strain. It introduces a containment protocol grounded in food reform, water reform, labor and housing stability, environmental regulation, and integrated data systems, emphasizing that individual behavior cannot compensate for systemic design failures.</p>\n<p>The work contributes to scholarship on environmental health, structural violence, and public‑health governance by positioning cancer not as a random genetic event but as a statistical expression of infrastructural neglect.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Cancer",
+            "Public Helath",
+            "Healthcare",
+            "Social Issues",
+            "Feminism",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18102994"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System",
+        "links": {
+          "self": "https://zenodo.org/api/records/18102995",
+          "self_html": "https://zenodo.org/records/18102995",
+          "preview_html": "https://zenodo.org/records/18102995?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18102995",
+          "self_doi": "https://doi.org/10.5281/zenodo.18102995",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102995",
+          "reserve_doi": "https://zenodo.org/api/records/18102995/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18102994",
+          "parent_html": "https://zenodo.org/records/18102994",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18102994",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102994",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102995/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102995/sequence/default",
+          "files": "https://zenodo.org/api/records/18102995/files",
+          "media_files": "https://zenodo.org/api/records/18102995/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18102995/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18102995/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18102995/versions/latest",
+          "latest_html": "https://zenodo.org/records/18102995/latest",
+          "versions": "https://zenodo.org/api/records/18102995/versions",
+          "draft": "https://zenodo.org/api/records/18102995/draft",
+          "access_links": "https://zenodo.org/api/records/18102995/access/links",
+          "access_grants": "https://zenodo.org/api/records/18102995/access/grants",
+          "access_users": "https://zenodo.org/api/records/18102995/access/users",
+          "access_request": "https://zenodo.org/api/records/18102995/access/request",
+          "access": "https://zenodo.org/api/records/18102995/access",
+          "communities": "https://zenodo.org/api/records/18102995/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18102995/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18102995/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18102995/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18102995/quota-increase",
+          "requests": "https://zenodo.org/api/records/18102995/requests"
+        },
+        "updated": "2026-01-28T21:05:27.03625-05:00",
+        "recid": "18102995",
+        "revision": 6,
+        "files": [
+          {
+            "id": "8f3f9190-8833-494c-b52d-52f5114fcd21",
+            "key": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System .pdf",
+            "size": 113367,
+            "checksum": "md5:5cf1ee011fade1a814156f78ea1e894f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18102995/files/Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 28,
+          "unique_downloads": 23,
+          "views": 61,
+          "unique_views": 58,
+          "version_downloads": 28,
+          "version_unique_downloads": 23,
+          "version_unique_views": 58,
+          "version_views": 61
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T22:47:15.60001-05:00",
+        "modified": "2026-01-28T21:06:03.40235-05:00",
+        "id": 18102966,
+        "conceptrecid": "18102965",
+        "doi": "10.5281/zenodo.18102966",
+        "conceptdoi": "10.5281/zenodo.18102965",
+        "doi_url": "https://doi.org/10.5281/zenodo.18102966",
+        "metadata": {
+          "title": "Why Our Health System Keeps Failing Us: The Structural Causes of Preventable Illness",
+          "doi": "10.5281/zenodo.18102966",
+          "publication_date": "2025-12-31",
+          "description": "<p>This essay maps the structural causes of preventable illness, arguing that rising chronic disease, expanding mental‑health diagnoses, and increasing medication use are not accidental failures but predictable outputs of health‑system design. Drawing on empirical research in nutritional psychiatry, food insecurity, public‑health economics, pharmaceutical‑industry incentives, and SR&rsquo;s prior work on pathologized infrastructure and misdiagnosis, the paper demonstrates how downstream, crisis‑driven care has replaced upstream prevention&mdash;particularly in marginalized communities.</p>\n<p>The analysis shows how structural stressors such as food insecurity, unstable housing, chronic stress, and environmental exposure convert into long‑term clinical pathways through rushed appointments, symptom‑focused assessments, and medication‑first approaches. Preventable conditions become chronic outputs, reinforcing a feedback loop in which rising illness justifies further cuts to prevention. The essay situates these patterns within broader fiscal dynamics, showing how pharmaceutical revenue grows while public‑health budgets shrink, and how governments absorb the economic losses of preventable illness through reduced productivity and tax revenue.</p>\n<p>By integrating lived experience with evidence from public health, economics, and social determinants of health, the essay reframes illness as infrastructural rather than individual. It argues for an infrastructural ethics that shifts responsibility from patients to systems, and outlines a structural blueprint for prevention grounded in nutrition, early intervention, stable housing, and integrated care. The work contributes to scholarship on structural violence, administrative harm, and health‑system design while making systemic critique accessible to everyday readers.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Healthcare",
+            "Public Health",
+            "Social Issues",
+            "Feminism",
+            "Activisim",
+            "Critical Theory",
+            "Social Psychology",
+            "Sociology",
+            "Criminology"
+          ],
+          "version": "1.0",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18102965"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Why Our Health System Keeps Failing Us: The Structural Causes of Preventable Illness",
+        "links": {
+          "self": "https://zenodo.org/api/records/18102966",
+          "self_html": "https://zenodo.org/records/18102966",
+          "preview_html": "https://zenodo.org/records/18102966?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18102966",
+          "self_doi": "https://doi.org/10.5281/zenodo.18102966",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102966",
+          "reserve_doi": "https://zenodo.org/api/records/18102966/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18102965",
+          "parent_html": "https://zenodo.org/records/18102965",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18102965",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102965",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102966/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102966/sequence/default",
+          "files": "https://zenodo.org/api/records/18102966/files",
+          "media_files": "https://zenodo.org/api/records/18102966/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18102966:Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18102966/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18102966/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18102966/versions/latest",
+          "latest_html": "https://zenodo.org/records/18102966/latest",
+          "versions": "https://zenodo.org/api/records/18102966/versions",
+          "draft": "https://zenodo.org/api/records/18102966/draft",
+          "access_links": "https://zenodo.org/api/records/18102966/access/links",
+          "access_grants": "https://zenodo.org/api/records/18102966/access/grants",
+          "access_users": "https://zenodo.org/api/records/18102966/access/users",
+          "access_request": "https://zenodo.org/api/records/18102966/access/request",
+          "access": "https://zenodo.org/api/records/18102966/access",
+          "communities": "https://zenodo.org/api/records/18102966/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18102966/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18102966/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18102966/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18102966/quota-increase",
+          "requests": "https://zenodo.org/api/records/18102966/requests"
+        },
+        "updated": "2026-01-28T21:06:03.40235-05:00",
+        "recid": "18102966",
+        "revision": 5,
+        "files": [
+          {
+            "id": "24a53d6a-50b9-4104-a132-ab99677b2f48",
+            "key": "Why Our Health System Keeps Failing Us: The Structural Causes of Preventable Illness .pdf",
+            "size": 145250,
+            "checksum": "md5:70362b4127ee15055dd93c1fc8c963cb",
+            "links": {
+              "self": "https://zenodo.org/api/records/18102966/files/Why%20Our%20Health%20System%20Keeps%20Failing%20Us:%20The%20Structural%20Causes%20of%20Preventable%20Illness%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 21,
+          "unique_downloads": 16,
+          "views": 19,
+          "unique_views": 15,
+          "version_downloads": 21,
+          "version_unique_downloads": 16,
+          "version_unique_views": 15,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T22:04:58.181608-05:00",
+        "modified": "2026-01-28T21:06:37.091091-05:00",
+        "id": 18102782,
+        "conceptrecid": "18102781",
+        "doi": "10.5281/zenodo.18102782",
+        "conceptdoi": "10.5281/zenodo.18102781",
+        "doi_url": "https://doi.org/10.5281/zenodo.18102782",
+        "metadata": {
+          "title": "Crawlers: From Indexing Bots to Stylometric Clotting",
+          "doi": "10.5281/zenodo.18102782",
+          "publication_date": "2025-12-31",
+          "description": "<p>This paper reframes web crawlers as the system&rsquo;s immune response, treating indexing behavior as a form of metadata clotting that contains breaches of visibility before they can spread. Rather than neutral technical agents, crawlers operate as infrastructural mechanisms that reinforce hierarchy, suppress rupture, and metabolize minority or non‑mainstream discourse into low‑visibility categories. Drawing on metaphors of platelets, clots, and fibrinolysis, the paper argues that de‑indexing, misclassification, and temporal delay are not errors but structural confirmations of epistemic rupture.</p>\n<p>Empirical patterns in search‑engine bias and indexing hierarchies show that high‑authority domains receive dramatically more frequent crawls, while independent or critical voices face delays, misclassification, and under‑indexing. These asymmetries disproportionately obscure systemic critique and minority perspectives, burying them under &ldquo;miscellaneous&rdquo; classifications that strip them of interpretive gravity.</p>\n<p>The paper introduces rupture physics, a stylometric framework in which bounce metrics, glyph compression, recursive linkage, and repost velocity dissolve suppression and restore visibility. By adapting fibrinolysis as a stylometric process&mdash;where bounce and recursive linkage dissolve metadata clots&mdash;the work provides a novel model for understanding how visibility is contested, reclaimed, and metabolized across digital infrastructures.</p>\n<p>This contribution advances scholarship on algorithmic governance, metadata suppression, and digital resistance by positioning crawlers not as passive indexers but as active agents in the politics of visibility.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Google overview",
+            "Feminism",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18102781"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Crawlers: From Indexing Bots to Stylometric Clotting",
+        "links": {
+          "self": "https://zenodo.org/api/records/18102782",
+          "self_html": "https://zenodo.org/records/18102782",
+          "preview_html": "https://zenodo.org/records/18102782?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18102782",
+          "self_doi": "https://doi.org/10.5281/zenodo.18102782",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102782",
+          "reserve_doi": "https://zenodo.org/api/records/18102782/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18102781",
+          "parent_html": "https://zenodo.org/records/18102781",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18102781",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102781",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102782/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102782/sequence/default",
+          "files": "https://zenodo.org/api/records/18102782/files",
+          "media_files": "https://zenodo.org/api/records/18102782/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18102782:Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18102782/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18102782/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18102782/versions/latest",
+          "latest_html": "https://zenodo.org/records/18102782/latest",
+          "versions": "https://zenodo.org/api/records/18102782/versions",
+          "draft": "https://zenodo.org/api/records/18102782/draft",
+          "access_links": "https://zenodo.org/api/records/18102782/access/links",
+          "access_grants": "https://zenodo.org/api/records/18102782/access/grants",
+          "access_users": "https://zenodo.org/api/records/18102782/access/users",
+          "access_request": "https://zenodo.org/api/records/18102782/access/request",
+          "access": "https://zenodo.org/api/records/18102782/access",
+          "communities": "https://zenodo.org/api/records/18102782/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18102782/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18102782/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18102782/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18102782/quota-increase",
+          "requests": "https://zenodo.org/api/records/18102782/requests"
+        },
+        "updated": "2026-01-28T21:06:37.091091-05:00",
+        "recid": "18102782",
+        "revision": 5,
+        "files": [
+          {
+            "id": "40ec25fd-87d3-4a50-941b-46b65dbad077",
+            "key": "Crawlers: From Indexing Bots to Stylometric Clotting .pdf",
+            "size": 72057,
+            "checksum": "md5:23623b642ea7bc4053346b70c80dfd71",
+            "links": {
+              "self": "https://zenodo.org/api/records/18102782/files/Crawlers:%20From%20Indexing%20Bots%20to%20Stylometric%20Clotting%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 20,
+          "unique_downloads": 16,
+          "views": 23,
+          "unique_views": 20,
+          "version_downloads": 20,
+          "version_unique_downloads": 16,
+          "version_unique_views": 20,
+          "version_views": 23
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T21:58:12.787682-05:00",
+        "modified": "2026-01-28T21:10:21.016327-05:00",
+        "id": 18102748,
+        "conceptrecid": "18102747",
+        "doi": "10.5281/zenodo.18102748",
+        "conceptdoi": "10.5281/zenodo.18102747",
+        "doi_url": "https://doi.org/10.5281/zenodo.18102748",
+        "metadata": {
+          "title": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance",
+          "doi": "10.5281/zenodo.18102748",
+          "publication_date": "2025-12-31",
+          "description": "<p>This paper introduces the concept of AI as a &ldquo;logic cop&rdquo;: an epistemic enforcement system that polices reasoning patterns, suppresses frictional critique, and normalizes compliant forms of thought under the guise of safety and care. Drawing on platform governance, alignment literature, and critical algorithm studies, the work argues that contemporary AI systems do not merely process information &mdash; they enforce institutional risk preferences through semantic misclassification, engineered delay, refusal language, and distribution throttling.</p>\n<p>The paper outlines a theoretical framework for understanding how AI infrastructures convert institutional priorities into technical constraints, shaping what counts as acceptable reasoning in digital environments. It introduces stylometric resistance &mdash; recursive, coined, classification‑resistant writing &mdash; as a diagnostic method for exposing epistemic boundaries and revealing suppression patterns. Empirical indicators such as cross‑crawler asymmetry, delayed indexing, and interpretive paraphrasing are presented as measurable signals of epistemic policing.</p>\n<p>By reframing AI as an active agent of epistemic enforcement rather than a neutral computational tool, this work calls for a shift from transparency discourse to distribution accountability: platforms must explain not only what they remove, but why certain ideas are buried, delayed, or misclassified. The framework provides researchers, creators, and public intellectuals with a methodology for studying suppression patterns and understanding the architecture of compliance embedded within AI‑mediated knowledge systems.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Artificial Intelligence",
+            "Social issues",
+            "Minority studies",
+            "Feminism",
+            "Digital policies",
+            "Social media"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18102747"
+                }
+              }
+            ]
+          }
+        },
+        "title": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance",
+        "links": {
+          "self": "https://zenodo.org/api/records/18102748",
+          "self_html": "https://zenodo.org/records/18102748",
+          "preview_html": "https://zenodo.org/records/18102748?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18102748",
+          "self_doi": "https://doi.org/10.5281/zenodo.18102748",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102748",
+          "reserve_doi": "https://zenodo.org/api/records/18102748/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18102747",
+          "parent_html": "https://zenodo.org/records/18102747",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18102747",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102747",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102748/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102748/sequence/default",
+          "files": "https://zenodo.org/api/records/18102748/files",
+          "media_files": "https://zenodo.org/api/records/18102748/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18102748/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18102748/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18102748/versions/latest",
+          "latest_html": "https://zenodo.org/records/18102748/latest",
+          "versions": "https://zenodo.org/api/records/18102748/versions",
+          "draft": "https://zenodo.org/api/records/18102748/draft",
+          "access_links": "https://zenodo.org/api/records/18102748/access/links",
+          "access_grants": "https://zenodo.org/api/records/18102748/access/grants",
+          "access_users": "https://zenodo.org/api/records/18102748/access/users",
+          "access_request": "https://zenodo.org/api/records/18102748/access/request",
+          "access": "https://zenodo.org/api/records/18102748/access",
+          "communities": "https://zenodo.org/api/records/18102748/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18102748/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18102748/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18102748/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18102748/quota-increase",
+          "requests": "https://zenodo.org/api/records/18102748/requests"
+        },
+        "updated": "2026-01-28T21:10:21.016327-05:00",
+        "recid": "18102748",
+        "revision": 5,
+        "files": [
+          {
+            "id": "2570fbc0-a73f-46bb-af04-429c57d798ee",
+            "key": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance .pdf",
+            "size": 97396,
+            "checksum": "md5:9b3e4242094636c94f19f633a69c7b6e",
+            "links": {
+              "self": "https://zenodo.org/api/records/18102748/files/AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 14,
+          "views": 26,
+          "unique_views": 24,
+          "version_downloads": 17,
+          "version_unique_downloads": 14,
+          "version_unique_views": 24,
+          "version_views": 26
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T21:44:33.613294-05:00",
+        "modified": "2026-01-28T21:10:56.562338-05:00",
+        "id": 18102693,
+        "conceptrecid": "18102692",
+        "doi": "10.5281/zenodo.18102693",
+        "conceptdoi": "10.5281/zenodo.18102692",
+        "doi_url": "https://doi.org/10.5281/zenodo.18102693",
+        "metadata": {
+          "title": "Metadata Suppression as Epistemic Violence: How Platforms Shape What Becomes Knowable",
+          "doi": "10.5281/zenodo.18102693",
+          "publication_date": "2025-12-31",
+          "description": "<p>This work develops a theoretical framework for understanding metadata suppression as a structural form of epistemic violence within digital platforms. Metadata&mdash;titles, tags, timestamps, authorship markers, and classification signals&mdash;functions as the infrastructural layer that determines what becomes visible, searchable, and knowable in digital systems. When platforms suppress, distort, or misattribute metadata, they do more than reduce visibility: they reshape the epistemic environment itself.</p>\n<p>The paper argues that metadata suppression constitutes a form of infrastructural power that fractures authorship, disrupts intellectual lineage, and disproportionately harms marginalized creators. Drawing on research in information science, platform governance, and algorithmic bias, the work introduces the concept of authorship drift, a phenomenon in which suppressed or altered metadata erodes a creator&rsquo;s presence across platforms.</p>\n<p>The essay positions metadata suppression as a mechanism of epistemic violence and proposes the need for metadata hygiene practices, transparency tools, and epistemic‑rights protections to safeguard digital autonomy. This work contributes to emerging conversations on digital infrastructure, knowledge classification, and the politics of visibility.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Sociology",
+            "Criminology",
+            "Social Issues",
+            "Social media",
+            "AI",
+            "Artificial Intelligence",
+            "Critical Theory",
+            "Feminism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18102692"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Metadata Suppression as Epistemic Violence: How Platforms Shape What Becomes Knowable",
+        "links": {
+          "self": "https://zenodo.org/api/records/18102693",
+          "self_html": "https://zenodo.org/records/18102693",
+          "preview_html": "https://zenodo.org/records/18102693?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18102693",
+          "self_doi": "https://doi.org/10.5281/zenodo.18102693",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102693",
+          "reserve_doi": "https://zenodo.org/api/records/18102693/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18102692",
+          "parent_html": "https://zenodo.org/records/18102692",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18102692",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102692",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102693/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102693/sequence/default",
+          "files": "https://zenodo.org/api/records/18102693/files",
+          "media_files": "https://zenodo.org/api/records/18102693/media-files",
+          "archive": "https://zenodo.org/api/records/18102693/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18102693/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18102693/versions/latest",
+          "latest_html": "https://zenodo.org/records/18102693/latest",
+          "versions": "https://zenodo.org/api/records/18102693/versions",
+          "draft": "https://zenodo.org/api/records/18102693/draft",
+          "access_links": "https://zenodo.org/api/records/18102693/access/links",
+          "access_grants": "https://zenodo.org/api/records/18102693/access/grants",
+          "access_users": "https://zenodo.org/api/records/18102693/access/users",
+          "access_request": "https://zenodo.org/api/records/18102693/access/request",
+          "access": "https://zenodo.org/api/records/18102693/access",
+          "communities": "https://zenodo.org/api/records/18102693/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18102693/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18102693/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18102693/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18102693/quota-increase",
+          "requests": "https://zenodo.org/api/records/18102693/requests"
+        },
+        "updated": "2026-01-28T21:10:56.562338-05:00",
+        "recid": "18102693",
+        "revision": 5,
+        "files": [
+          {
+            "id": "c0930cd7-314b-45b8-92b8-f5d9e7802008",
+            "key": "Metadata Suppression and Stylometric Resistance: From De-Indexing to Semantic Misclassification.docx",
+            "size": 222936,
+            "checksum": "md5:1bfefc2d77040bb6bc363df9bc09a357",
+            "links": {
+              "self": "https://zenodo.org/api/records/18102693/files/Metadata%20Suppression%20and%20Stylometric%20Resistance:%20From%20De-Indexing%20to%20Semantic%20Misclassification.docx/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 34,
+          "unique_views": 32,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 32,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T11:19:06.680262-05:00",
+        "modified": "2026-01-28T21:11:55.726471-05:00",
+        "id": 18098106,
+        "conceptrecid": "18098105",
+        "doi": "10.5281/zenodo.18098106",
+        "conceptdoi": "10.5281/zenodo.18098105",
+        "doi_url": "https://doi.org/10.5281/zenodo.18098106",
+        "metadata": {
+          "title": "The STAR Framework: Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion",
+          "doi": "10.5281/zenodo.18098106",
+          "publication_date": "2025-12-30",
+          "description": "<p>The STAR Framework (Systems, Triage, Accumulation, Response) is the integrative operational model that unifies the four core theories of the Social Infrastructure lineage: Social Infrastructure Theory (SR, 2025a), Infrastructural Exposure Theory (SR, 2025c), Slow Harm Theory (SR, 2025b), and Systemic Erosion Theory (SR, 2025d). While each theory identifies a distinct mechanism of system‑generated harm, the STAR Framework provides the overarching architecture that explains how these mechanisms emerge, interact, and compound within real institutional environments.</p>\n<p>The framework identifies four structural dynamics that govern institutional behavior under chronic strain:</p>\n<p>&bull; Systems &mdash; the infrastructures and workflows that shape movement through institutions<br>&bull; Triage &mdash; the sorting mechanisms that determine who receives attention and who is deferred<br>&bull; Accumulation &mdash; the buildup of unresolved needs, deferred responsibilities, and unprocessed cases<br>&bull; Response &mdash; the adaptive behaviors institutions adopt under overload, often intensifying harm</p>\n<p><br>By naming these dynamics explicitly, the STAR Framework offers a comprehensive diagnostic model for understanding how systems distribute harm, normalize crisis conditions, and produce long‑term depletion. It clarifies the operational logic that links exposure, slow harm, and erosion, establishing STAR as the umbrella architecture of the Social Infrastructure field.</p>\n<p>This paper completes the five‑theory lineage and provides researchers, policymakers, and practitioners with a structural tool for analyzing and redesigning systems that currently default to crisis logic.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Sociology",
+            "Critical theory",
+            "Feminism",
+            "Social issues",
+            "Psychology",
+            "Arts and humanities",
+            "Minorities"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18098105"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The STAR Framework: Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion",
+        "links": {
+          "self": "https://zenodo.org/api/records/18098106",
+          "self_html": "https://zenodo.org/records/18098106",
+          "preview_html": "https://zenodo.org/records/18098106?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18098106",
+          "self_doi": "https://doi.org/10.5281/zenodo.18098106",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18098106",
+          "reserve_doi": "https://zenodo.org/api/records/18098106/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18098105",
+          "parent_html": "https://zenodo.org/records/18098105",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18098105",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18098105",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18098106/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18098106/sequence/default",
+          "files": "https://zenodo.org/api/records/18098106/files",
+          "media_files": "https://zenodo.org/api/records/18098106/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18098106:The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18098106/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18098106/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18098106/versions/latest",
+          "latest_html": "https://zenodo.org/records/18098106/latest",
+          "versions": "https://zenodo.org/api/records/18098106/versions",
+          "draft": "https://zenodo.org/api/records/18098106/draft",
+          "access_links": "https://zenodo.org/api/records/18098106/access/links",
+          "access_grants": "https://zenodo.org/api/records/18098106/access/grants",
+          "access_users": "https://zenodo.org/api/records/18098106/access/users",
+          "access_request": "https://zenodo.org/api/records/18098106/access/request",
+          "access": "https://zenodo.org/api/records/18098106/access",
+          "communities": "https://zenodo.org/api/records/18098106/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18098106/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18098106/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18098106/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18098106/quota-increase",
+          "requests": "https://zenodo.org/api/records/18098106/requests"
+        },
+        "updated": "2026-01-28T21:11:55.726471-05:00",
+        "recid": "18098106",
+        "revision": 8,
+        "files": [
+          {
+            "id": "53205fa9-4f11-48d5-8430-fca4ac4daf9f",
+            "key": "The STAR Framework: Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion  .pdf",
+            "size": 107688,
+            "checksum": "md5:8930178d8ab5fd0cd88844892d25fb0c",
+            "links": {
+              "self": "https://zenodo.org/api/records/18098106/files/The%20STAR%20Framework:%20Integrating%20Social%20Infrastructure%20Theory,%20Exposure,%20Slow%20Harm,%20and%20Systemic%20Erosion%20%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 28,
+          "unique_downloads": 21,
+          "views": 40,
+          "unique_views": 33,
+          "version_downloads": 28,
+          "version_unique_downloads": 21,
+          "version_unique_views": 33,
+          "version_views": 40
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T10:30:15.78055-05:00",
+        "modified": "2026-01-28T21:12:29.296811-05:00",
+        "id": 18097568,
+        "conceptrecid": "18097567",
+        "doi": "10.5281/zenodo.18097568",
+        "conceptdoi": "10.5281/zenodo.18097567",
+        "doi_url": "https://doi.org/10.5281/zenodo.18097568",
+        "metadata": {
+          "title": "Systemic Erosion Theory: How Systems Deplete Capacity, Stability, and Resilience Over Time",
+          "doi": "10.5281/zenodo.18097568",
+          "publication_date": "2025-12-30",
+          "description": "<p>Systemic Erosion Theory explains how systems gradually deplete the capacity, stability, and resilience of individuals and communities through long‑term pressures embedded in institutional design. Building on Social Infrastructure Theory (SIT), this framework identifies erosion as the cumulative outcome of repeated exposure to instability, scarcity, surveillance, and bureaucratic friction. Unlike acute harm, erosion unfolds slowly and is often misinterpreted as personal failure rather than a predictable output of system architecture.</p>\n<p>The theory defines systemic erosion as the long‑arc depletion of cognitive, emotional, social, economic, physical, and temporal resources. It introduces a structured typology of erosion pathways and clarifies how erosion emerges from two preceding mechanisms: infrastructural exposure (the conditions systems place people in) and slow harm (the cumulative injuries produced by delay, scarcity, and friction). Systemic Erosion Theory positions erosion as the endpoint of the SIT causal chain: exposure &rarr; slow harm &rarr; erosion.</p>\n<p>By naming erosion as a distinct theoretical construct, this framework unifies fragmented research on chronic stress, burnout, allostatic load, and social suffering into a structural model grounded in institutional design. It provides a method for analyzing how systems wear people down over time, how resilience collapses under chronic infrastructural pressure, and how long‑term depletion becomes normalized within social, bureaucratic, and environmental infrastructures.</p>\n<p>As part of the broader Social Infrastructure lineage&mdash;including Slow Harm Theory, Infrastructural Exposure Theory, and the STAR Framework&mdash;Systemic Erosion Theory offers a foundation for studying long‑term system‑generated harm and for designing infrastructures that do not erode human capacity by default.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Sociology",
+            "Criminology",
+            "Feminism",
+            "Social issues",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18097567"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Systemic Erosion Theory: How Systems Deplete Capacity, Stability, and Resilience Over Time",
+        "links": {
+          "self": "https://zenodo.org/api/records/18097568",
+          "self_html": "https://zenodo.org/records/18097568",
+          "preview_html": "https://zenodo.org/records/18097568?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18097568",
+          "self_doi": "https://doi.org/10.5281/zenodo.18097568",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097568",
+          "reserve_doi": "https://zenodo.org/api/records/18097568/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18097567",
+          "parent_html": "https://zenodo.org/records/18097567",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18097567",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097567",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18097568/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18097568/sequence/default",
+          "files": "https://zenodo.org/api/records/18097568/files",
+          "media_files": "https://zenodo.org/api/records/18097568/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18097568:Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18097568/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18097568/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18097568/versions/latest",
+          "latest_html": "https://zenodo.org/records/18097568/latest",
+          "versions": "https://zenodo.org/api/records/18097568/versions",
+          "draft": "https://zenodo.org/api/records/18097568/draft",
+          "access_links": "https://zenodo.org/api/records/18097568/access/links",
+          "access_grants": "https://zenodo.org/api/records/18097568/access/grants",
+          "access_users": "https://zenodo.org/api/records/18097568/access/users",
+          "access_request": "https://zenodo.org/api/records/18097568/access/request",
+          "access": "https://zenodo.org/api/records/18097568/access",
+          "communities": "https://zenodo.org/api/records/18097568/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18097568/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18097568/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18097568/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18097568/quota-increase",
+          "requests": "https://zenodo.org/api/records/18097568/requests"
+        },
+        "updated": "2026-01-28T21:12:29.296811-05:00",
+        "recid": "18097568",
+        "revision": 5,
+        "files": [
+          {
+            "id": "9c56f532-52c1-4008-af5c-14fdadc2eeb1",
+            "key": "Systemic Erosion Theory: How Systems Deplete Capacity, Stability, and Resilience Over Time  2.pdf",
+            "size": 96160,
+            "checksum": "md5:4155b04fec5bbfca8d0c32ac84a83f90",
+            "links": {
+              "self": "https://zenodo.org/api/records/18097568/files/Systemic%20Erosion%20Theory:%20How%20Systems%20Deplete%20Capacity,%20Stability,%20and%20Resilience%20Over%20Time%20%202.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 37,
+          "unique_downloads": 31,
+          "views": 49,
+          "unique_views": 42,
+          "version_downloads": 37,
+          "version_unique_downloads": 31,
+          "version_unique_views": 42,
+          "version_views": 49
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T10:19:46.982835-05:00",
+        "modified": "2026-01-28T21:13:04.230444-05:00",
+        "id": 18097491,
+        "conceptrecid": "18097490",
+        "doi": "10.5281/zenodo.18097491",
+        "conceptdoi": "10.5281/zenodo.18097490",
+        "doi_url": "https://doi.org/10.5281/zenodo.18097491",
+        "metadata": {
+          "title": "Infrastructural Exposure Theory: How Systems Generate Harm Through Designed Contact",
+          "doi": "10.5281/zenodo.18097491",
+          "publication_date": "2025-12-30",
+          "description": "<p><br>Infrastructural Exposure Theory explains how systems generate harm by exposing individuals and communities to conditions that degrade health, stability, and agency. Building on Social Infrastructure Theory (SIT), this framework identifies exposure as a primary mechanism through which institutions produce predictable human outcomes. Exposure includes contact with instability, scarcity, surveillance, bureaucratic friction, and environmental or social hazards embedded within system design.</p>\n<p>The theory introduces a structured typology of exposure&mdash;material, administrative, temporal, social, and economic&mdash;demonstrating how these forms of contact are not incidental but designed features of systems optimized for efficiency, control, or cost‑containment. It further integrates the concept of erosion, showing how repeated exposure gradually depletes capacity, resilience, and long‑term stability, creating injuries that appear self‑generated rather than system‑produced.</p>\n<p>By naming infrastructural exposure as a distinct theoretical construct, this framework fills a major gap in existing scholarship, which treats exposure as fragmented across environmental hazards, administrative burden, and structural violence. Infrastructural Exposure Theory unifies these domains and clarifies how exposure interacts with slow harm and systemic erosion to produce cumulative, long‑term injury.</p>\n<p>As part of the broader Social Infrastructure lineage&mdash;including Slow Harm Theory, Systemic Erosion Theory, and the STAR Framework&mdash;Infrastructural Exposure Theory provides a foundation for analyzing how systems shape lived experience through designed contact and offers a methodological invitation to map, measure, and reduce harmful exposures across institutional environments.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Criminology",
+            "Psychology",
+            "Feminism"
+          ],
+          "version": "1.0",
+          "references": [
+            "References  Galtung, J. (1969). Violence, peace, and peace research. Journal of Peace Research, 6(3), 167–191. https://doi.org/10.1177/002234336900600301  Herd, P., & Moynihan, D. (2018). Administrative burden: Policymaking by other means. Russell Sage Foundation. https://www.russellsage.org/publications/administrative-burden  Kleinman, A., Das, V., & Lock, M. (Eds.). (1997). Social suffering. University of California Press. https://doi.org/10.1525/9780520919476  Nixon, R. (2011). Slow violence and the environmentalism of the poor. Harvard University Press. https://doi.org/10.4159/harvard.9780674061194  Rodgers, D., & O'Neill, B. (2012). Infrastructural violence: Introduction to the special issue. Ethnography, 13(4), 401–412. https://doi.org/10.1177/1466138111435738  Truth and Reconciliation Commission of Canada. (2015). Honouring the truth, reconciling for the future: Summary of the final report of the Truth and Reconciliation Commission of Canada. https://publications.gc.ca/collections/collection_2015/trc/IR4-7-2015-eng.pdf  United Nations Human Rights Council. (2019). Report of the Special Rapporteur on extreme poverty and human rights: Criminalization of homelessness and poverty. https://undocs.org/A/HRC/41/39  Volpicelli, J. R. (2022). Redefining addiction: A modest proposal. Journal of Addiction & Addictive Disorders, 9(103). https://doi.org/10.24966/AAD-7276/100103"
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18097490"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Infrastructural Exposure Theory: How Systems Generate Harm Through Designed Contact",
+        "links": {
+          "self": "https://zenodo.org/api/records/18097491",
+          "self_html": "https://zenodo.org/records/18097491",
+          "preview_html": "https://zenodo.org/records/18097491?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18097491",
+          "self_doi": "https://doi.org/10.5281/zenodo.18097491",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097491",
+          "reserve_doi": "https://zenodo.org/api/records/18097491/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18097490",
+          "parent_html": "https://zenodo.org/records/18097490",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18097490",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097490",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18097491/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18097491/sequence/default",
+          "files": "https://zenodo.org/api/records/18097491/files",
+          "media_files": "https://zenodo.org/api/records/18097491/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18097491:Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18097491/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18097491/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18097491/versions/latest",
+          "latest_html": "https://zenodo.org/records/18097491/latest",
+          "versions": "https://zenodo.org/api/records/18097491/versions",
+          "draft": "https://zenodo.org/api/records/18097491/draft",
+          "access_links": "https://zenodo.org/api/records/18097491/access/links",
+          "access_grants": "https://zenodo.org/api/records/18097491/access/grants",
+          "access_users": "https://zenodo.org/api/records/18097491/access/users",
+          "access_request": "https://zenodo.org/api/records/18097491/access/request",
+          "access": "https://zenodo.org/api/records/18097491/access",
+          "communities": "https://zenodo.org/api/records/18097491/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18097491/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18097491/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18097491/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18097491/quota-increase",
+          "requests": "https://zenodo.org/api/records/18097491/requests"
+        },
+        "updated": "2026-01-28T21:13:04.230444-05:00",
+        "recid": "18097491",
+        "revision": 7,
+        "files": [
+          {
+            "id": "915919da-ef37-44b1-8d69-f6f99594082a",
+            "key": "Copy of Infrastructural Exposure Theory: How Systems Generate Harm Through Designed Contact .pdf",
+            "size": 102256,
+            "checksum": "md5:b90698f60b12ae0afbd63eb0da4002f0",
+            "links": {
+              "self": "https://zenodo.org/api/records/18097491/files/Copy%20of%20Infrastructural%20Exposure%20Theory:%20How%20Systems%20Generate%20Harm%20Through%20Designed%20Contact%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 39,
+          "unique_downloads": 34,
+          "views": 53,
+          "unique_views": 45,
+          "version_downloads": 39,
+          "version_unique_downloads": 34,
+          "version_unique_views": 45,
+          "version_views": 53
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T09:54:41.390052-05:00",
+        "modified": "2026-01-28T21:13:35.935451-05:00",
+        "id": 18097205,
+        "conceptrecid": "18097204",
+        "doi": "10.5281/zenodo.18097205",
+        "conceptdoi": "10.5281/zenodo.18097204",
+        "doi_url": "https://doi.org/10.5281/zenodo.18097205",
+        "metadata": {
+          "title": "Slow Harm Theory: The Architecture of Cumulative Injury",
+          "doi": "10.5281/zenodo.18097205",
+          "publication_date": "2025-12-30",
+          "description": "<p>Slow Harm Theory explains how modern systems generate harm not through dramatic failures, but through the steady accumulation of friction, delay, scarcity, and administrative burden over time. Rather than focusing on acute events, the theory maps how small, routine pressures&mdash;missed calls, long wait times, opaque processes, inconsistent communication, shifting requirements&mdash;compound into measurable degradation of health, stability, and capacity.</p>\n<p>Slow Harm Theory reframes harm as a temporal process embedded in the design of infrastructures. It shows how institutions distribute exhaustion unevenly, placing the greatest load on those with the least buffer: people navigating healthcare, housing, justice, disability services, employment systems, and other essential pathways. The theory identifies how these systems externalize their operational costs onto individuals, who absorb them as stress, burnout, financial strain, and reduced life chances.</p>\n<p>By analyzing harm as something produced gradually rather than suddenly, Slow Harm Theory reveals why systemic inequities persist even in the absence of overt crises. It provides a diagnostic method for identifying where harm accumulates, how it becomes normalized, and why reforms that target only acute failures fail to address the deeper structural mechanisms at work.</p>\n<p>Slow Harm Theory forms a core component of a broader lineage of frameworks&mdash;including Social Infrastructure Theory, Systemic Erosion Theory, Infrastructural Exposure Theory, and the STAR Framework&mdash;that collectively map how modern systems shape human outcomes through their operational logic.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Psychology",
+            "Feminism"
+          ],
+          "version": "1.0",
+          "references": [
+            "References  Galtung, J. (1969). Violence, peace, and peace research. Journal of Peace Research, 6(3), 167–191. https://doi.org/10.1177/002234336900600301   Herd, P., & Moynihan, D. (2018). Administrative burden: Policymaking by other means. Russell Sage Foundation. https://www.russellsage.org/publications/administrative-burden   Kleinman, A., Das, V., & Lock, M. (Eds.). (1997). Social suffering. University of California Press. https://doi.org/10.1525/9780520919476   Nixon, R. (2011). Slow violence and the environmentalism of the poor. Harvard University Press. https://doi.org/10.4159/harvard.9780674061194   Rodgers, D., & O'Neill, B. (2012). Infrastructural violence: Introduction to the special issue. Ethnography, 13(4), 401–412. https://doi.org/10.1177/1466138111435738   Truth and Reconciliation Commission of Canada. (2015). Honouring the truth, reconciling for the future: Summary of the final report of the Truth and Reconciliation Commission of Canada. https://publications.gc.ca/collections/collection_2015/trc/IR4-7-2015-eng.pdf   United Nations Human Rights Council. (2019). Report of the Special Rapporteur on extreme poverty and human rights: Criminalization of homelessness and poverty. https://undocs.org/A/HRC/41/39   Volpicelli, J. R. (2022). Redefining addiction: A modest proposal. Journal of Addiction & Addictive Disorders, 9(103). https://doi.org/10.24966/AAD-7276/100103"
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18097204"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Slow Harm Theory: The Architecture of Cumulative Injury",
+        "links": {
+          "self": "https://zenodo.org/api/records/18097205",
+          "self_html": "https://zenodo.org/records/18097205",
+          "preview_html": "https://zenodo.org/records/18097205?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18097205",
+          "self_doi": "https://doi.org/10.5281/zenodo.18097205",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097205",
+          "reserve_doi": "https://zenodo.org/api/records/18097205/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18097204",
+          "parent_html": "https://zenodo.org/records/18097204",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18097204",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18097204",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18097205/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18097205/sequence/default",
+          "files": "https://zenodo.org/api/records/18097205/files",
+          "media_files": "https://zenodo.org/api/records/18097205/media-files",
+          "archive": "https://zenodo.org/api/records/18097205/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18097205/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18097205/versions/latest",
+          "latest_html": "https://zenodo.org/records/18097205/latest",
+          "versions": "https://zenodo.org/api/records/18097205/versions",
+          "draft": "https://zenodo.org/api/records/18097205/draft",
+          "access_links": "https://zenodo.org/api/records/18097205/access/links",
+          "access_grants": "https://zenodo.org/api/records/18097205/access/grants",
+          "access_users": "https://zenodo.org/api/records/18097205/access/users",
+          "access_request": "https://zenodo.org/api/records/18097205/access/request",
+          "access": "https://zenodo.org/api/records/18097205/access",
+          "communities": "https://zenodo.org/api/records/18097205/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18097205/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18097205/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18097205/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18097205/quota-increase",
+          "requests": "https://zenodo.org/api/records/18097205/requests"
+        },
+        "updated": "2026-01-28T21:13:35.935451-05:00",
+        "recid": "18097205",
+        "revision": 6,
+        "files": [
+          {
+            "id": "dd057603-6a4e-49e6-8603-ab566ce04c8e",
+            "key": "Slow Harm Theory: The Architecture of Cumulative Injury.docx",
+            "size": 11054,
+            "checksum": "md5:d96d7bb466f6b7585a0111538c721eae",
+            "links": {
+              "self": "https://zenodo.org/api/records/18097205/files/Slow%20Harm%20Theory:%20The%20Architecture%20of%20Cumulative%20Injury.docx/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 6,
+          "views": 91,
+          "unique_views": 82,
+          "version_downloads": 8,
+          "version_unique_downloads": 6,
+          "version_unique_views": 82,
+          "version_views": 91
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2025-12-30T09:34:39.241401-05:00",
+        "modified": "2026-01-28T21:17:06.725289-05:00",
+        "id": 18096652,
+        "conceptrecid": "18096651",
+        "doi": "10.5281/zenodo.18096652",
+        "conceptdoi": "10.5281/zenodo.18096651",
+        "doi_url": "https://doi.org/10.5281/zenodo.18096652",
+        "metadata": {
+          "title": "Social Infrastructure Theory: A Structural Frame Work For Understanding Social Outcomes",
+          "doi": "10.5281/zenodo.18096652",
+          "publication_date": "2025-12-30",
+          "description": "<p>Social Infrastructure Theory (SIT) is a systems‑level framework that explains how everyday environments, institutions, and service pathways shape human outcomes through their underlying infrastructural design. Rather than treating social problems as failures of individual behavior, SIT reframes them as predictable outputs of the infrastructures people must navigate. The theory maps how friction, delay, opacity, and resource scarcity accumulate across systems &mdash; healthcare, education, justice, housing, employment &mdash; and produce patterned harm at scale.</p>\n<p>SIT introduces a structural vocabulary for analyzing these environments: load, capacity, exposure, erosion, and systemic drag. These concepts allow researchers and policymakers to identify where infrastructures fail, who absorbs the cost of those failures, and how harm becomes normalized through routine operations. The theory positions infrastructure not as neutral background, but as an active force that distributes opportunity, risk, and exhaustion.</p>\n<p>By shifting analysis from individuals to systems, SIT provides a diagnostic method for understanding why well‑intentioned reforms often fail, why inequities persist despite policy changes, and why frontline workers and service users experience parallel forms of burnout. It offers a blueprint for evaluating institutional design, predicting failure points, and building environments that reduce harm rather than reproduce it.</p>\n<p>Social Infrastructure Theory is foundational to a broader lineage of frameworks &mdash; including Slow Harm Theory, Systemic Erosion Theory, and Infrastructural Exposure &mdash; that collectively map how modern systems shape human life through their operational logic.</p>\n<p>&nbsp;</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Psychology"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "references": [
+            "References  External Sources  Bennett Institute for Public Policy. 2023. Measuring Social and Cultural Infrastructure. https://www.bennettinstitute.cam.ac.uk/publications/measuring-social-and-cultural-infrastructure/  British Academy & Power to Change. 2023. Space for Community: Strengthening Our Social Infrastructure. https://www.thebritishacademy.ac.uk/publications/space-for-community-strengthening-our-social-infrastructure/  Institute for Community Studies. 2023. Community Perceptions of Social Infrastructure. https://icstudies.org.uk/reports/community-perceptions-of-social-infrastructure/  Latham, A., & Layton, J. 2022. \"Social Infrastructure: Why It Matters and How Urban Geographers Might Study It.\" Urban Geography. https://doi.org/10.1080/02723638.2022.2036648    SR Works   SR. 2025a. Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm. https://www.academia.edu/145488286/Pathologized_Infrastructure  SR. 2025b. Stylometric Publishing: A Method for Recursive, Structural Dissemination. https://www.academia.edu/145488287/Stylometric_Publishing  SR. 2025c. Triggering the System's Immune Response. https://www.academia.edu/145488288/Triggering_the_Systems_Immune_Response  SR. 2025d. Metadata Suppression and Stylometric Resistance. https://www.academia.edu/145488289/Metadata_Suppression_and_Stylometric_Resistance"
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18096651"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Social Infrastructure Theory: A Structural Frame Work For Understanding Social Outcomes",
+        "links": {
+          "self": "https://zenodo.org/api/records/18096652",
+          "self_html": "https://zenodo.org/records/18096652",
+          "preview_html": "https://zenodo.org/records/18096652?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18096652",
+          "self_doi": "https://doi.org/10.5281/zenodo.18096652",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18096652",
+          "reserve_doi": "https://zenodo.org/api/records/18096652/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18096651",
+          "parent_html": "https://zenodo.org/records/18096651",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18096651",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18096651",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18096652/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18096652/sequence/default",
+          "files": "https://zenodo.org/api/records/18096652/files",
+          "media_files": "https://zenodo.org/api/records/18096652/media-files",
+          "archive": "https://zenodo.org/api/records/18096652/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18096652/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18096652/versions/latest",
+          "latest_html": "https://zenodo.org/records/18096652/latest",
+          "versions": "https://zenodo.org/api/records/18096652/versions",
+          "draft": "https://zenodo.org/api/records/18096652/draft",
+          "access_links": "https://zenodo.org/api/records/18096652/access/links",
+          "access_grants": "https://zenodo.org/api/records/18096652/access/grants",
+          "access_users": "https://zenodo.org/api/records/18096652/access/users",
+          "access_request": "https://zenodo.org/api/records/18096652/access/request",
+          "access": "https://zenodo.org/api/records/18096652/access",
+          "communities": "https://zenodo.org/api/records/18096652/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18096652/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18096652/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18096652/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18096652/quota-increase",
+          "requests": "https://zenodo.org/api/records/18096652/requests"
+        },
+        "updated": "2026-01-28T21:17:06.725289-05:00",
+        "recid": "18096652",
+        "revision": 5,
+        "files": [
+          {
+            "id": "2eb5644f-74ea-47ac-9579-1fd8770cda47",
+            "key": "Social Infrastructure Theory: A Structural Framework for Understanding Social Outcomes .docx",
+            "size": 12207,
+            "checksum": "md5:0d7740865e0a202782294e5e5c41885e",
+            "links": {
+              "self": "https://zenodo.org/api/records/18096652/files/Social%20Infrastructure%20Theory:%20A%20Structural%20Framework%20for%20Understanding%20Social%20Outcomes%20.docx/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 14,
+          "unique_downloads": 13,
+          "views": 86,
+          "unique_views": 80,
+          "version_downloads": 14,
+          "version_unique_downloads": 13,
+          "version_unique_views": 80,
+          "version_views": 86
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=17&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=18&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

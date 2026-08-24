@@ -1,0 +1,92 @@
+{
+  "assay": "Phase 1.5 local-only authority migration and canon recompilation assay",
+  "assay_version": "phase15-authority-recompilation/v1",
+  "network_requests": 0,
+  "new_acquisitions": 0,
+  "phase_2": "NOT_RUN_HUMAN_GATE_CLOSED",
+  "source_units_scanned": 2163,
+  "source_unit_counts_by_field": {
+    "title": 1408,
+    "description": 442,
+    "subtitle": 134,
+    "captured_full_text": 179
+  },
+  "source_unit_counts_by_platform": {
+    "Zenodo": 1063,
+    "Substack": 391,
+    "Medium": 210,
+    "Academia.edu": 499
+  },
+  "captured_original_files_scanned": 5,
+  "evidence_candidate_sentences": 854,
+  "category_candidate_counts": {
+    "declarative_ceiling": 225,
+    "compiler": 487,
+    "authority": 94,
+    "empirical_brake": 87,
+    "operator_bone": 10
+  },
+  "pattern_candidate_counts": {
+    "compiler:INTEGRATES": 144,
+    "compiler:FORMALIZES": 144,
+    "compiler:UNIFIES": 135,
+    "declarative_ceiling:FIRST": 77,
+    "declarative_ceiling:CANNOT": 76,
+    "empirical_brake:FALSIFIER": 72,
+    "authority:GENEALOGICAL_RETENTION": 37,
+    "compiler:CONSOLIDATES": 36,
+    "authority:LEGACY_STATUS": 35,
+    "compiler:CONVERTS_INTO": 29,
+    "declarative_ceiling:MUST": 28,
+    "declarative_ceiling:UNIVERSAL": 28,
+    "compiler:MAPS_TO": 25,
+    "declarative_ceiling:INEVITABLE": 10,
+    "authority:EMPIRICAL_AUTHORITY": 9,
+    "authority:FIELD_DEFINING_AUTHORITY": 6,
+    "declarative_ceiling:PROVES": 6,
+    "empirical_brake:HYPOTHESIS": 6,
+    "authority:REGENERATION": 6,
+    "operator_bone:POSSIBLE_INQUIRY_SELECTION": 5,
+    "empirical_brake:BOUNDARY_CONDITION": 4,
+    "operator_bone:REPRESENTATIONAL_COMPRESSION": 4,
+    "authority:SUPERSESSION_OR_DEMOTION": 3,
+    "authority:NOT_USED_AS_EVIDENCE": 3,
+    "compiler:RETROSPECTIVELY_TYPES": 2,
+    "declarative_ceiling:APEX": 2,
+    "empirical_brake:CANDIDATE": 2,
+    "empirical_brake:NULL_NARROWS": 2,
+    "authority:CANONICAL_NEGATION": 2,
+    "operator_bone:OBSERVATION_REPRESENTATION_CHAIN": 1,
+    "empirical_brake:SELF_APPLICATION": 1,
+    "operator_bone:PERSISTENCE_VS_AUTHORITY": 1,
+    "authority:CURRENT_AUTHORITY": 1,
+    "compiler:RESOLVES_CONFLICT": 1,
+    "empirical_brake:EVIDENCE_CLASS": 1,
+    "empirical_brake:NOT_ESTABLISHED": 1
+  },
+  "canon_map_snapshots": 3,
+  "claim_marker_lineage_rows": 16,
+  "first_appearance_queries": 4,
+  "retitle_phase_contrast": {
+    "march_april": {
+      "total": 46,
+      "retitled": 14,
+      "unchanged": 32
+    },
+    "outside_march_april": {
+      "total": 45,
+      "retitled": 3,
+      "unchanged": 42
+    },
+    "odds_ratio": 6.125,
+    "one_sided_greater_p": 0.003443431521719987,
+    "two_sided_p": 0.005985325148125866
+  },
+  "limits": [
+    "Only five original files are locally preserved; most findings are bounded to retained platform metadata.",
+    "Lexical candidates are not automatically promoted to graph edges or authority transitions.",
+    "Map records with related titles are immutable observations; their edition lineage remains unresolved.",
+    "Claim-marker counts are descriptive and cannot substitute for aligned-claim reading.",
+    "Collaborator-reported full-text findings remain acquisition targets when their exact spans are absent locally."
+  ]
+}

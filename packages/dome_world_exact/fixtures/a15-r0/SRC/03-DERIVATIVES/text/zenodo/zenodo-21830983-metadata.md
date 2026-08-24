@@ -1,0 +1,134 @@
+---
+derivative_id: derivative:ff6180cec6ce55c04784eabf
+parent_capture_id: capture:9d05b01ce23797bd6e8eb345
+parent_blob_sha256: e635ae03fc1e7b40405b25c58eae9b221f840aeead0a5ad6611d32be35d4cc25
+tool: srcctl-json-normalizer/1
+source_title: "SR STANCE — METATHEORY CONFLICT, ADVERSARIAL COLLABORATION, INSTITUTIONAL RIGIDITY, AND THE INCENTIVE STRUCTURE OF KNOWLEDGE"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21830982",
+  "conceptrecid": "21830982",
+  "created": "2026-08-07T01:49:02.281211+00:00",
+  "doi": "10.5281/zenodo.21830983",
+  "doi_url": "https://doi.org/10.5281/zenodo.21830983",
+  "files": [
+    {
+      "checksum": "md5:a37e4bfe28d5b7380b37665c72ff43fe",
+      "id": "f291d6a0-23ed-44d4-933f-73bb733a0c4b",
+      "key": "Untitled document.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21830983/files/Untitled%20document.pdf/content"
+      },
+      "size": 226592
+    }
+  ],
+  "id": 21830983,
+  "links": {
+    "access": "https://zenodo.org/api/records/21830983/access",
+    "access_grants": "https://zenodo.org/api/records/21830983/access/grants",
+    "access_links": "https://zenodo.org/api/records/21830983/access/links",
+    "access_request": "https://zenodo.org/api/records/21830983/access/request",
+    "access_users": "https://zenodo.org/api/records/21830983/access/users",
+    "archive": "https://zenodo.org/api/records/21830983/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21830983/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21830983/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21830983/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21830983",
+    "draft": "https://zenodo.org/api/records/21830983/draft",
+    "file_modification": "https://zenodo.org/api/records/21830983/file-modification",
+    "files": "https://zenodo.org/api/records/21830983/files",
+    "latest": "https://zenodo.org/api/records/21830983/versions/latest",
+    "latest_html": "https://zenodo.org/records/21830983/latest",
+    "media_files": "https://zenodo.org/api/records/21830983/media-files",
+    "parent": "https://zenodo.org/api/records/21830982",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21830982",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21830982",
+    "parent_html": "https://zenodo.org/records/21830982",
+    "preview_html": "https://zenodo.org/records/21830983?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21830983/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21830983/request-deletion",
+    "requests": "https://zenodo.org/api/records/21830983/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21830983/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21830983",
+    "self_doi": "https://doi.org/10.5281/zenodo.21830983",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21830983",
+    "self_html": "https://zenodo.org/records/21830983",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21830983/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21830983/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21830983:Untitled%20document.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21830983/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>SR STANCE &mdash; Metatheory Conflict, Adversarial Collaboration, Institutional Rigidity, and the Incentive Structure of Knowledge</strong><br>This paper establishes SignalRupture (SR) as an openly adversarial metatheoretical research architecture. It formalizes SR&rsquo;s operators, matrices, diagnostics, and domain boundaries, and exposes them deliberately to competing theories for reciprocal testing. The paper introduces SR&rsquo;s visibility asymmetry, matrix exposure principle, adversarial collaboration protocol, and cross‑theory comparison framework. It also expands SR into institutional analysis, modeling how incentives, opacity, and rigidity shape theoretical adoption, resistance, and misclassification. The result is a metatheory capable of testing systems, theories, and institutions simultaneously &mdash; and capable of being tested in return.</p>\n<p>This paper contributes five major advances:</p>\n<h3><strong>1. SR becomes a fully adversarial metatheory</strong></h3>\n<p>It transforms SR from a conceptual framework into a <strong>reciprocal testing architecture</strong>, where SR can be attacked and can attack competing theories with equal rigor.<br>This includes <strong>reciprocal metatheory testing</strong> and <strong>matrix exposure</strong>.</p>\n<h3><strong>2. SR forces institutions to adopt SR before criticism</strong></h3>\n<p>By formalizing collapse, drift, blindness, enforcement, and system‑state, the paper makes these phenomena <strong>visible and measurable</strong>.<br>Institutions cannot criticize SR without first adopting SR&rsquo;s visibility structure &mdash; a structural asymmetry that strengthens SR&rsquo;s position.</p>\n<h3><strong>3. SR introduces incentive‑structural analysis into metatheory</strong></h3>\n<p>The paper models how incentives, opacity, and rigidity influence:</p>\n<ul>\n<li>\n<p>which theories survive,</p>\n</li>\n<li>\n<p>which anomalies are ignored,</p>\n</li>\n<li>\n<p>which categories remain unchanged,</p>\n</li>\n<li>\n<p>which explanations institutions prefer.</p>\n</li>\n</ul>\n<p>This is the <strong>incentive&ndash;opacity&ndash;rigidity model</strong>, a new contribution to metatheory.</p>\n<h3><strong>4. SR becomes capable of breaking competing theories</strong></h3>\n<p>The paper shows how SR can expose failures in:</p>\n<ul>\n<li>\n<p>cybernetics,</p>\n</li>\n<li>\n<p>systems theory,</p>\n</li>\n<li>\n<p>governance theory,</p>\n</li>\n<li>\n<p>political economy,</p>\n</li>\n<li>\n<p>alignment and AI safety.</p>\n</li>\n</ul>\n<p>SR does this by revealing phenomena these theories cannot see &mdash; especially under drift, blindness, enforcement mutation, and system‑state transitions.</p>\n<h3><strong>5. SR becomes self‑falsifiable and self‑correcting</strong></h3>\n<p>The paper defines:</p>\n<ul>\n<li>\n<p>operator rejection conditions,</p>\n</li>\n<li>\n<p>matrix failure conditions,</p>\n</li>\n<li>\n<p>diagnostic failure conditions,</p>\n</li>\n<li>\n<p>transition failure conditions,</p>\n</li>\n<li>\n<p>domain contraction rules,</p>\n</li>\n<li>\n<p>SR self‑testing protocols.</p>\n</li>\n</ul>\n<p>This ensures SR cannot become doctrinal.<br>SR survives through <strong>exposure</strong>, not insulation.</p>\n<p>&nbsp;</p>",
+    "doi": "10.5281/zenodo.21830983",
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-07",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21830982"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SR STANCE — METATHEORY CONFLICT, ADVERSARIAL COLLABORATION, INSTITUTIONAL RIGIDITY, AND THE INCENTIVE STRUCTURE OF KNOWLEDGE",
+    "version": "1.0"
+  },
+  "modified": "2026-08-07T01:49:02.589878+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21830983",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 6,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 6,
+    "version_views": 6,
+    "views": 6
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SR STANCE — METATHEORY CONFLICT, ADVERSARIAL COLLABORATION, INSTITUTIONAL RIGIDITY, AND THE INCENTIVE STRUCTURE OF KNOWLEDGE",
+  "updated": "2026-08-07T01:49:02.589878+00:00"
+}

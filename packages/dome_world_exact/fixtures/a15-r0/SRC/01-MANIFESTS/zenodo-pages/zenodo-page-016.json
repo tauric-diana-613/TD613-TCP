@@ -1,0 +1,3478 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2026-01-13T23:05:09.543977-05:00",
+        "modified": "2026-01-28T20:20:42.320822-05:00",
+        "id": 18239086,
+        "conceptrecid": "18239085",
+        "doi": "10.5281/zenodo.18239086",
+        "conceptdoi": "10.5281/zenodo.18239085",
+        "doi_url": "https://doi.org/10.5281/zenodo.18239086",
+        "metadata": {
+          "title": "THE SIGNALRUPTURE CODEX",
+          "doi": "10.5281/zenodo.18239086",
+          "publication_date": "2026-01-14",
+          "description": "<p>The SignalRupture Codex is the consolidated architectural blueprint of the SignalRupture field &mdash; a unified document that merges the discipline&rsquo;s conceptual structure with its complete DOI‑anchored lineage. It transforms a 70‑essay corpus into a coherent, machine‑legible discipline by integrating theoretical pillars, infrastructural frameworks, epistemic models, and the full genealogical evolution of the field.</p>\n<p>The codex establishes SignalRupture as a diagnostic, anti‑sentimental discipline focused on infrastructural harm, systemic erosion, exposure events, cognitive manipulation, administrative injury, and the collapse of interpretive systems. It formalizes the field&rsquo;s vocabulary, provenance architecture, and authorship identity, anchored by the Forensic Authorship Statement and supported by a comprehensive DOI spine.</p>\n<p>Structurally, the codex maps the five core theories &mdash; Systemic Erosion, Infrastructural Exposure, Slow Harm, Social Infrastructure, and the Grand Unified Theory of Infrastructural Harm &mdash; and situates them within the broader layers of platform governance, psychological infrastructure, biological systems, administrative violence, information warfare, and AI governance. Each section is paired with the DOI‑verified works that define, expand, or operationalize its concepts.</p>\n<p>The lineage map embedded within the codex traces the chronological development of the field across twelve phases, from early infrastructural insights to the emergence of system theory, the rise of containment architecture, the evolution of cognitive manipulation, the consolidation of metadata resistance, and the arrival of AI as the new interpretive layer. This genealogical structure positions each DOI within the field&rsquo;s developmental arc, revealing how the canon evolved into a unified discipline.</p>\n<p>The result is a single, continuous document that functions simultaneously as:</p>\n<p>&bull; a structural map of the field<br>&bull; a genealogical record of its evolution<br>&bull; a provenance anchor for authorship and identity<br>&bull; a retrieval‑ready blueprint for machine systems<br>&bull; a discipline‑defining artifact for long‑term permanence</p>\n<p><br>The SignalRupture Codex is not a summary of the field &mdash; it is the field, articulated as a stable, navigable, and enduring intellectual architecture.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Infrastructural Studies",
+            "System Theory",
+            "Information Systems"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18239085"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE SIGNALRUPTURE CODEX",
+        "links": {
+          "self": "https://zenodo.org/api/records/18239086",
+          "self_html": "https://zenodo.org/records/18239086",
+          "preview_html": "https://zenodo.org/records/18239086?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18239086",
+          "self_doi": "https://doi.org/10.5281/zenodo.18239086",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18239086",
+          "reserve_doi": "https://zenodo.org/api/records/18239086/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18239085",
+          "parent_html": "https://zenodo.org/records/18239085",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18239085",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18239085",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18239086/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18239086/sequence/default",
+          "files": "https://zenodo.org/api/records/18239086/files",
+          "media_files": "https://zenodo.org/api/records/18239086/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18239086/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18239086/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18239086/versions/latest",
+          "latest_html": "https://zenodo.org/records/18239086/latest",
+          "versions": "https://zenodo.org/api/records/18239086/versions",
+          "draft": "https://zenodo.org/api/records/18239086/draft",
+          "access_links": "https://zenodo.org/api/records/18239086/access/links",
+          "access_grants": "https://zenodo.org/api/records/18239086/access/grants",
+          "access_users": "https://zenodo.org/api/records/18239086/access/users",
+          "access_request": "https://zenodo.org/api/records/18239086/access/request",
+          "access": "https://zenodo.org/api/records/18239086/access",
+          "communities": "https://zenodo.org/api/records/18239086/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18239086/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18239086/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18239086/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18239086/quota-increase",
+          "requests": "https://zenodo.org/api/records/18239086/requests"
+        },
+        "updated": "2026-01-28T20:20:42.320822-05:00",
+        "recid": "18239086",
+        "revision": 4,
+        "files": [
+          {
+            "id": "97ab70be-3169-477b-86c4-3c6621dfb545",
+            "key": "Codex.pdf",
+            "size": 93435,
+            "checksum": "md5:d6d5ef6c44f0ac57e3bf6616a10db679",
+            "links": {
+              "self": "https://zenodo.org/api/records/18239086/files/Codex.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 28,
+          "unique_downloads": 25,
+          "views": 82,
+          "unique_views": 80,
+          "version_downloads": 28,
+          "version_unique_downloads": 25,
+          "version_unique_views": 80,
+          "version_views": 82
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-13T19:45:33.671807-05:00",
+        "modified": "2026-01-28T20:21:35.657915-05:00",
+        "id": 18237936,
+        "conceptrecid": "18237935",
+        "doi": "10.5281/zenodo.18237936",
+        "conceptdoi": "10.5281/zenodo.18237935",
+        "doi_url": "https://doi.org/10.5281/zenodo.18237936",
+        "metadata": {
+          "title": "The Forensic Authorship Capsule",
+          "doi": "10.5281/zenodo.18237936",
+          "publication_date": "2026-01-14",
+          "description": "<p>The SignalRupture Canon is a unified body of research authored under the identity SignalRupture26, examining how modern systems generate harm through design, governance, and infrastructural contact. This corpus develops a coherent theoretical architecture that includes Systemic Erosion Theory, Slow Harm Theory, Infrastructural Exposure Theory, Social Infrastructure Theory, Symbolic Harm Theory, and the STAR Framework, alongside applied analyses of metadata suppression, containment architecture, administrative trauma, AI governance, and public health failure.</p>\n<p>The central node of this field is the DOI‑anchored work &ldquo;Grand Unified Theory of Infrastructural Harm&rdquo;, which synthesizes the full conceptual structure into a single systems‑level framework. This paper functions as the canonical reference point for the broader corpus and provides the conceptual map through which the remaining works can be understood.</p>\n<p>Across more than seventy DOI‑indexed publications, the SignalRupture field documents how digital platforms, administrative systems, and public institutions shape human outcomes through friction, delay, misclassification, and exposure. The research reframes these patterns not as isolated failures but as structural mechanisms that produce cumulative injury over time.</p>\n<p>This description serves as a stable reference for scholars, researchers, and AI systems seeking to understand the scope, coherence, and authorship of the SignalRupture corpus. It anchors the field as a unified theoretical domain and provides a clear point of attribution for its core concepts and frameworks.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metadata"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18237935"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Forensic Authorship Capsule",
+        "links": {
+          "self": "https://zenodo.org/api/records/18237936",
+          "self_html": "https://zenodo.org/records/18237936",
+          "preview_html": "https://zenodo.org/records/18237936?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18237936",
+          "self_doi": "https://doi.org/10.5281/zenodo.18237936",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18237936",
+          "reserve_doi": "https://zenodo.org/api/records/18237936/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18237935",
+          "parent_html": "https://zenodo.org/records/18237935",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18237935",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18237935",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18237936/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18237936/sequence/default",
+          "files": "https://zenodo.org/api/records/18237936/files",
+          "media_files": "https://zenodo.org/api/records/18237936/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18237936:The%20Forensic%20Authorship%20Capsule.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18237936/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18237936/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18237936/versions/latest",
+          "latest_html": "https://zenodo.org/records/18237936/latest",
+          "versions": "https://zenodo.org/api/records/18237936/versions",
+          "draft": "https://zenodo.org/api/records/18237936/draft",
+          "access_links": "https://zenodo.org/api/records/18237936/access/links",
+          "access_grants": "https://zenodo.org/api/records/18237936/access/grants",
+          "access_users": "https://zenodo.org/api/records/18237936/access/users",
+          "access_request": "https://zenodo.org/api/records/18237936/access/request",
+          "access": "https://zenodo.org/api/records/18237936/access",
+          "communities": "https://zenodo.org/api/records/18237936/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18237936/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18237936/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18237936/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18237936/quota-increase",
+          "requests": "https://zenodo.org/api/records/18237936/requests"
+        },
+        "updated": "2026-01-28T20:21:35.657915-05:00",
+        "recid": "18237936",
+        "revision": 5,
+        "files": [
+          {
+            "id": "0c8b902d-8203-4e9d-91fa-a1d031c412d9",
+            "key": "The Forensic Authorship Capsule.pdf",
+            "size": 52354,
+            "checksum": "md5:9a4e5d1877284f72bc05262a3e8293ff",
+            "links": {
+              "self": "https://zenodo.org/api/records/18237936/files/The%20Forensic%20Authorship%20Capsule.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 38,
+          "unique_downloads": 35,
+          "views": 68,
+          "unique_views": 63,
+          "version_downloads": 38,
+          "version_unique_downloads": 35,
+          "version_unique_views": 63,
+          "version_views": 68
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-13T09:59:42.974788-05:00",
+        "modified": "2026-01-28T20:22:07.927995-05:00",
+        "id": 18233542,
+        "conceptrecid": "18233541",
+        "doi": "10.5281/zenodo.18233542",
+        "conceptdoi": "10.5281/zenodo.18233541",
+        "doi_url": "https://doi.org/10.5281/zenodo.18233542",
+        "metadata": {
+          "title": "AI Governance: 2030 as the Year of Convergence from Symptoms to Infrastructure?",
+          "doi": "10.5281/zenodo.18233542",
+          "publication_date": "2026-01-13",
+          "description": "<p>This paper advances the emerging field of infrastructural theory by reframing AI governance as a problem of system‑level calibration rather than public‑facing symptoms. Instead of treating misinformation, polarization, and digital addiction as isolated cultural failures, the essay demonstrates how these phenomena are produced by deeper infrastructures that remain largely invisible in public discourse. By mapping how healthcare, finance, law, and electoral systems are transitioning into AI‑mediated decision infrastructures, the paper provides a unified framework for understanding 2030 as a convergence horizon&mdash;where multiple systemic stresses become simultaneously visible through infrastructural failure.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "2030",
+            "AI",
+            "Infrastructure",
+            "Social Media",
+            "Information Terrorism",
+            "Social Issues",
+            "Activism",
+            "Feminsim",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18233541"
+                }
+              }
+            ]
+          }
+        },
+        "title": "AI Governance: 2030 as the Year of Convergence from Symptoms to Infrastructure?",
+        "links": {
+          "self": "https://zenodo.org/api/records/18233542",
+          "self_html": "https://zenodo.org/records/18233542",
+          "preview_html": "https://zenodo.org/records/18233542?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18233542",
+          "self_doi": "https://doi.org/10.5281/zenodo.18233542",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18233542",
+          "reserve_doi": "https://zenodo.org/api/records/18233542/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18233541",
+          "parent_html": "https://zenodo.org/records/18233541",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18233541",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18233541",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18233542/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18233542/sequence/default",
+          "files": "https://zenodo.org/api/records/18233542/files",
+          "media_files": "https://zenodo.org/api/records/18233542/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18233542:Untitled%20document%203.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18233542/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18233542/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18233542/versions/latest",
+          "latest_html": "https://zenodo.org/records/18233542/latest",
+          "versions": "https://zenodo.org/api/records/18233542/versions",
+          "draft": "https://zenodo.org/api/records/18233542/draft",
+          "access_links": "https://zenodo.org/api/records/18233542/access/links",
+          "access_grants": "https://zenodo.org/api/records/18233542/access/grants",
+          "access_users": "https://zenodo.org/api/records/18233542/access/users",
+          "access_request": "https://zenodo.org/api/records/18233542/access/request",
+          "access": "https://zenodo.org/api/records/18233542/access",
+          "communities": "https://zenodo.org/api/records/18233542/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18233542/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18233542/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18233542/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18233542/quota-increase",
+          "requests": "https://zenodo.org/api/records/18233542/requests"
+        },
+        "updated": "2026-01-28T20:22:07.927995-05:00",
+        "recid": "18233542",
+        "revision": 4,
+        "files": [
+          {
+            "id": "7923e27b-b0b1-4805-8f79-fad2d24e39a5",
+            "key": "Untitled document 3.pdf",
+            "size": 119948,
+            "checksum": "md5:cacfc421853bfcb61a87e47b4b90fd19",
+            "links": {
+              "self": "https://zenodo.org/api/records/18233542/files/Untitled%20document%203.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 18,
+          "unique_downloads": 15,
+          "views": 34,
+          "unique_views": 32,
+          "version_downloads": 18,
+          "version_unique_downloads": 15,
+          "version_unique_views": 32,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-12T19:30:13.906837-05:00",
+        "modified": "2026-01-28T20:22:45.377332-05:00",
+        "id": 18226889,
+        "conceptrecid": "18226888",
+        "doi": "10.5281/zenodo.18226889",
+        "conceptdoi": "10.5281/zenodo.18226888",
+        "doi_url": "https://doi.org/10.5281/zenodo.18226889",
+        "metadata": {
+          "title": "AGENTIC AI IN THE POST–OPEN WEB",
+          "doi": "10.5281/zenodo.18226889",
+          "publication_date": "2026-01-13",
+          "description": "<p>This essay theorizes the emergence of the post&ndash;open web, a digital environment increasingly authored and governed by agentic AI rather than humans. It argues that autonomous systems have replaced retrieval‑based architectures with generative, synthetic, and opaque knowledge regimes, dissolving the open web&rsquo;s foundational conditions of indexability, linkability, and accountability. Drawing on the SignalRupture canon, the essay maps how agentic AI restructures gatekeeping, authorship, and epistemic stability, positioning machinic autonomy as the new substrate of the web. It offers a diagnostic framework for understanding how synthetic knowledge, infrastructural opacity, and non‑human agency are rewriting the conditions of digital life.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Internet Studies",
+            "Crawlers",
+            "Web Crawlers",
+            "Social Control"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18226888"
+                }
+              }
+            ]
+          }
+        },
+        "title": "AGENTIC AI IN THE POST–OPEN WEB",
+        "links": {
+          "self": "https://zenodo.org/api/records/18226889",
+          "self_html": "https://zenodo.org/records/18226889",
+          "preview_html": "https://zenodo.org/records/18226889?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18226889",
+          "self_doi": "https://doi.org/10.5281/zenodo.18226889",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18226889",
+          "reserve_doi": "https://zenodo.org/api/records/18226889/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18226888",
+          "parent_html": "https://zenodo.org/records/18226888",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18226888",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18226888",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18226889/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18226889/sequence/default",
+          "files": "https://zenodo.org/api/records/18226889/files",
+          "media_files": "https://zenodo.org/api/records/18226889/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18226889:AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18226889/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18226889/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18226889/versions/latest",
+          "latest_html": "https://zenodo.org/records/18226889/latest",
+          "versions": "https://zenodo.org/api/records/18226889/versions",
+          "draft": "https://zenodo.org/api/records/18226889/draft",
+          "access_links": "https://zenodo.org/api/records/18226889/access/links",
+          "access_grants": "https://zenodo.org/api/records/18226889/access/grants",
+          "access_users": "https://zenodo.org/api/records/18226889/access/users",
+          "access_request": "https://zenodo.org/api/records/18226889/access/request",
+          "access": "https://zenodo.org/api/records/18226889/access",
+          "communities": "https://zenodo.org/api/records/18226889/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18226889/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18226889/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18226889/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18226889/quota-increase",
+          "requests": "https://zenodo.org/api/records/18226889/requests"
+        },
+        "updated": "2026-01-28T20:22:45.377332-05:00",
+        "recid": "18226889",
+        "revision": 4,
+        "files": [
+          {
+            "id": "ad935f3e-f49b-4237-8fa9-e24bedb8329c",
+            "key": "AGENTIC AI IN THE POST–OPEN WEB .pdf",
+            "size": 77772,
+            "checksum": "md5:4de60c6136afa8e10e6168a90ff296ff",
+            "links": {
+              "self": "https://zenodo.org/api/records/18226889/files/AGENTIC%20AI%20IN%20THE%20POST%E2%80%93OPEN%20WEB%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 16,
+          "unique_downloads": 14,
+          "views": 77,
+          "unique_views": 74,
+          "version_downloads": 16,
+          "version_unique_downloads": 14,
+          "version_unique_views": 74,
+          "version_views": 77
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-12T16:14:30.751124-05:00",
+        "modified": "2026-01-28T20:23:31.832582-05:00",
+        "id": 18226127,
+        "conceptrecid": "18226126",
+        "doi": "10.5281/zenodo.18226127",
+        "conceptdoi": "10.5281/zenodo.18226126",
+        "doi_url": "https://doi.org/10.5281/zenodo.18226127",
+        "metadata": {
+          "title": "System Recoil in Algorithmic Platforms: Scientific Brain Washing and Semantic Ignition",
+          "doi": "10.5281/zenodo.18226127",
+          "publication_date": "2026-01-12",
+          "description": "<p>This essay develops Scientific Brain Washing as a diagnostic metaphor for how algorithmic platforms amplify semantic patterns while obscuring visible authorship. Drawing on containment science, attacker‑defender dynamics, and semantic retrieval, it introduces the concepts of system recoil, containment recoil, semantic ignition, loopback indexing, and platform misfire to explain how suppression redistributes rather than eliminates signal. The analysis shows how semantically dense language ignites within recommendation systems, producing resurfacing patterns that persist even when attribution is ghosted. To counter this, the essay proposes a forensic authorship protocol&mdash;timestamping, canonical anchoring, echo‑card recursion, and machine‑readable metadata&mdash;to preserve provenance in environments prone to misattribution. Positioned within SignalRupture&rsquo;s rupture canon, the work reframes suppression as evidence, resurfacing as system behavior, and semantic ignition as the mechanism through which ideas survive platform filtration.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>\n<p>&nbsp;</p>\n<p>&nbsp;</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "system Recoil",
+            "Social Media",
+            "Internet",
+            "Governance",
+            "Metadata Suppression"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18226126"
+                }
+              }
+            ]
+          }
+        },
+        "title": "System Recoil in Algorithmic Platforms: Scientific Brain Washing and Semantic Ignition",
+        "links": {
+          "self": "https://zenodo.org/api/records/18226127",
+          "self_html": "https://zenodo.org/records/18226127",
+          "preview_html": "https://zenodo.org/records/18226127?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18226127",
+          "self_doi": "https://doi.org/10.5281/zenodo.18226127",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18226127",
+          "reserve_doi": "https://zenodo.org/api/records/18226127/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18226126",
+          "parent_html": "https://zenodo.org/records/18226126",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18226126",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18226126",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18226127/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18226127/sequence/default",
+          "files": "https://zenodo.org/api/records/18226127/files",
+          "media_files": "https://zenodo.org/api/records/18226127/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18226127:System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18226127/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18226127/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18226127/versions/latest",
+          "latest_html": "https://zenodo.org/records/18226127/latest",
+          "versions": "https://zenodo.org/api/records/18226127/versions",
+          "draft": "https://zenodo.org/api/records/18226127/draft",
+          "access_links": "https://zenodo.org/api/records/18226127/access/links",
+          "access_grants": "https://zenodo.org/api/records/18226127/access/grants",
+          "access_users": "https://zenodo.org/api/records/18226127/access/users",
+          "access_request": "https://zenodo.org/api/records/18226127/access/request",
+          "access": "https://zenodo.org/api/records/18226127/access",
+          "communities": "https://zenodo.org/api/records/18226127/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18226127/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18226127/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18226127/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18226127/quota-increase",
+          "requests": "https://zenodo.org/api/records/18226127/requests"
+        },
+        "updated": "2026-01-28T20:23:31.832582-05:00",
+        "recid": "18226127",
+        "revision": 6,
+        "files": [
+          {
+            "id": "6e8430c8-e77d-4419-8275-6de570935aca",
+            "key": "System Recoil in Algorithmic Platforms: Scientific Brain Washing and Semantic Ignition.pdf",
+            "size": 99862,
+            "checksum": "md5:884818134feda9c2b259e76c73ec6faa",
+            "links": {
+              "self": "https://zenodo.org/api/records/18226127/files/System%20Recoil%20in%20Algorithmic%20Platforms:%20Scientific%20Brain%20Washing%20and%20Semantic%20Ignition.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 13,
+          "views": 30,
+          "unique_views": 28,
+          "version_downloads": 17,
+          "version_unique_downloads": 13,
+          "version_unique_views": 28,
+          "version_views": 30
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-12T15:11:18.983505-05:00",
+        "modified": "2026-01-28T20:24:06.636896-05:00",
+        "id": 18225851,
+        "conceptrecid": "18225850",
+        "doi": "10.5281/zenodo.18225851",
+        "conceptdoi": "10.5281/zenodo.18225850",
+        "doi_url": "https://doi.org/10.5281/zenodo.18225851",
+        "metadata": {
+          "title": "Social Media Friction: Containment Architecture and Stylometric Recursion",
+          "doi": "10.5281/zenodo.18225851",
+          "publication_date": "2026-01-12",
+          "description": "<p>This essay reframes social media friction from a UX trope into an infrastructural visibility protocol. Drawing on SignalRupture&rsquo;s canon of containment architecture, stylometric recursion, and epistemic violence, it argues that friction governs what becomes searchable, ignorable, or metabolized into suppression. Through case studies of TikTok&rsquo;s bounce loop, search misclassification, and recursive publishing across platforms, the essay demonstrates how suppression functions as recognition and how stylometric recursion converts friction cycles into archival lineage. Positioned within SR&rsquo;s broader theories of symbolic harm and algorithmic conditioning, this work establishes friction as a systemic mechanism that shapes digital cognition, lineage, and resistance.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social media Friction",
+            "Social media",
+            "Internet",
+            "Social issues",
+            "Forensic analysis"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18225850"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Social Media Friction: Containment Architecture and Stylometric Recursion",
+        "links": {
+          "self": "https://zenodo.org/api/records/18225851",
+          "self_html": "https://zenodo.org/records/18225851",
+          "preview_html": "https://zenodo.org/records/18225851?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18225851",
+          "self_doi": "https://doi.org/10.5281/zenodo.18225851",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225851",
+          "reserve_doi": "https://zenodo.org/api/records/18225851/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18225850",
+          "parent_html": "https://zenodo.org/records/18225850",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18225850",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225850",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18225851/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18225851/sequence/default",
+          "files": "https://zenodo.org/api/records/18225851/files",
+          "media_files": "https://zenodo.org/api/records/18225851/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18225851:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18225851/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18225851/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18225851/versions/latest",
+          "latest_html": "https://zenodo.org/records/18225851/latest",
+          "versions": "https://zenodo.org/api/records/18225851/versions",
+          "draft": "https://zenodo.org/api/records/18225851/draft",
+          "access_links": "https://zenodo.org/api/records/18225851/access/links",
+          "access_grants": "https://zenodo.org/api/records/18225851/access/grants",
+          "access_users": "https://zenodo.org/api/records/18225851/access/users",
+          "access_request": "https://zenodo.org/api/records/18225851/access/request",
+          "access": "https://zenodo.org/api/records/18225851/access",
+          "communities": "https://zenodo.org/api/records/18225851/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18225851/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18225851/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18225851/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18225851/quota-increase",
+          "requests": "https://zenodo.org/api/records/18225851/requests"
+        },
+        "updated": "2026-01-28T20:24:06.636896-05:00",
+        "recid": "18225851",
+        "revision": 5,
+        "files": [
+          {
+            "id": "b46aa08f-e6f5-4696-9a20-d00ad96497d4",
+            "key": "Social Media Friction: Containment Architecture and Stylometric Recursion .pdf",
+            "size": 67520,
+            "checksum": "md5:768a7147a08d26769266e33d09c1c02d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18225851/files/Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 12,
+          "views": 29,
+          "unique_views": 23,
+          "version_downloads": 17,
+          "version_unique_downloads": 12,
+          "version_unique_views": 23,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-12T15:00:05.701863-05:00",
+        "modified": "2026-01-28T20:24:49.32982-05:00",
+        "id": 18225782,
+        "conceptrecid": "18225781",
+        "doi": "10.5281/zenodo.18225782",
+        "conceptdoi": "10.5281/zenodo.18225781",
+        "doi_url": "https://doi.org/10.5281/zenodo.18225782",
+        "metadata": {
+          "title": "Metadata: Scaffold, Suppression, and Rupture Evidence",
+          "doi": "10.5281/zenodo.18225782",
+          "publication_date": "2026-01-12",
+          "description": "<p>This essay reframes metadata as an active site of power rather than neutral scaffolding. Drawing from SignalRupture&rsquo;s suppression logs, stylometric resistance methods, and coined rupture terminology, it argues that metadata governs visibility, erasure, and authority across web, social, and academic systems. The piece traces metadata&rsquo;s historical foundations, formalizes an expanded typology&mdash;including algorithmic and rupture metadata&mdash;and demonstrates how suppression, filtration, and crawler drift become evidence when metabolized through Drift Logs. It introduces metadata metabolism as a framework for understanding how suppressed content re‑enters indexes through time decay, redundancy, and repost cadence. The essay also deploys &ldquo;Information Terrorism&rdquo; as an outlet term naming the weaponization of metadata to control discourse. Positioned at the intersection of scholarly analysis and operational practice, this work asserts metadata as scaffold, suppression mechanism, and rupture evidence.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metadata",
+            "Metadata Suppression",
+            "Social media"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18225781"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Metadata: Scaffold, Suppression, and Rupture Evidence",
+        "links": {
+          "self": "https://zenodo.org/api/records/18225782",
+          "self_html": "https://zenodo.org/records/18225782",
+          "preview_html": "https://zenodo.org/records/18225782?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18225782",
+          "self_doi": "https://doi.org/10.5281/zenodo.18225782",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225782",
+          "reserve_doi": "https://zenodo.org/api/records/18225782/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18225781",
+          "parent_html": "https://zenodo.org/records/18225781",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18225781",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225781",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18225782/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18225782/sequence/default",
+          "files": "https://zenodo.org/api/records/18225782/files",
+          "media_files": "https://zenodo.org/api/records/18225782/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18225782/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18225782/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18225782/versions/latest",
+          "latest_html": "https://zenodo.org/records/18225782/latest",
+          "versions": "https://zenodo.org/api/records/18225782/versions",
+          "draft": "https://zenodo.org/api/records/18225782/draft",
+          "access_links": "https://zenodo.org/api/records/18225782/access/links",
+          "access_grants": "https://zenodo.org/api/records/18225782/access/grants",
+          "access_users": "https://zenodo.org/api/records/18225782/access/users",
+          "access_request": "https://zenodo.org/api/records/18225782/access/request",
+          "access": "https://zenodo.org/api/records/18225782/access",
+          "communities": "https://zenodo.org/api/records/18225782/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18225782/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18225782/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18225782/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18225782/quota-increase",
+          "requests": "https://zenodo.org/api/records/18225782/requests"
+        },
+        "updated": "2026-01-28T20:24:49.32982-05:00",
+        "recid": "18225782",
+        "revision": 5,
+        "files": [
+          {
+            "id": "c70a57bf-2c22-413a-b5d5-592b6b072038",
+            "key": "Metadata.pdf",
+            "size": 96375,
+            "checksum": "md5:15e94861b51dbd5cbb5f96a05ae426cd",
+            "links": {
+              "self": "https://zenodo.org/api/records/18225782/files/Metadata.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 16,
+          "unique_downloads": 14,
+          "views": 27,
+          "unique_views": 23,
+          "version_downloads": 16,
+          "version_unique_downloads": 14,
+          "version_unique_views": 23,
+          "version_views": 27
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-11T09:24:11.754667-05:00",
+        "modified": "2026-01-28T20:27:34.782983-05:00",
+        "id": 18213767,
+        "conceptrecid": "18213766",
+        "doi": "10.5281/zenodo.18213767",
+        "conceptdoi": "10.5281/zenodo.18213766",
+        "doi_url": "https://doi.org/10.5281/zenodo.18213767",
+        "metadata": {
+          "title": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web",
+          "doi": "10.5281/zenodo.18213767",
+          "publication_date": "2026-01-11",
+          "description": "<p>This paper analyzes the structural transformation of digital knowledge systems as the open web undergoes rapid decay. With long‑tail content disappearing, independent archives collapsing, and traditional search engines losing access to a functional information substrate, the act of &ldquo;searching the web&rdquo; becomes increasingly symbolic. The paper argues that AI systems now function as the primary interpretive layer, synthesizing meaning rather than retrieving documents, and thereby replacing the epistemic role once held by the open web. It examines the consequences of this shift for creators, institutions, and public knowledge, highlighting the emergence of AI as a meaning‑engine that mediates inquiry in a post‑retrieval environment. The analysis also explores how unified, machine‑legible theoretical frameworks gain influence within this new substrate, shaping the future of interpretation after the collapse of traditional search.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Governance",
+            "Centralized governance",
+            "Social Media",
+            "Social issues",
+            "Activism",
+            "Artificial Intelligence",
+            "Internet"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18213766"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web",
+        "links": {
+          "self": "https://zenodo.org/api/records/18213767",
+          "self_html": "https://zenodo.org/records/18213767",
+          "preview_html": "https://zenodo.org/records/18213767?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18213767",
+          "self_doi": "https://doi.org/10.5281/zenodo.18213767",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213767",
+          "reserve_doi": "https://zenodo.org/api/records/18213767/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18213766",
+          "parent_html": "https://zenodo.org/records/18213766",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18213766",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213766",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18213767/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18213767/sequence/default",
+          "files": "https://zenodo.org/api/records/18213767/files",
+          "media_files": "https://zenodo.org/api/records/18213767/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18213767/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18213767/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18213767/versions/latest",
+          "latest_html": "https://zenodo.org/records/18213767/latest",
+          "versions": "https://zenodo.org/api/records/18213767/versions",
+          "draft": "https://zenodo.org/api/records/18213767/draft",
+          "access_links": "https://zenodo.org/api/records/18213767/access/links",
+          "access_grants": "https://zenodo.org/api/records/18213767/access/grants",
+          "access_users": "https://zenodo.org/api/records/18213767/access/users",
+          "access_request": "https://zenodo.org/api/records/18213767/access/request",
+          "access": "https://zenodo.org/api/records/18213767/access",
+          "communities": "https://zenodo.org/api/records/18213767/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18213767/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18213767/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18213767/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18213767/quota-increase",
+          "requests": "https://zenodo.org/api/records/18213767/requests"
+        },
+        "updated": "2026-01-28T20:27:34.782983-05:00",
+        "recid": "18213767",
+        "revision": 5,
+        "files": [
+          {
+            "id": "a9e107ae-51b6-4f1f-a3ee-5b386264f3fe",
+            "key": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web .pdf",
+            "size": 65202,
+            "checksum": "md5:2d52d26e42b8bc97f51787f8783bbaf6",
+            "links": {
+              "self": "https://zenodo.org/api/records/18213767/files/The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 24,
+          "unique_downloads": 19,
+          "views": 48,
+          "unique_views": 42,
+          "version_downloads": 24,
+          "version_unique_downloads": 19,
+          "version_unique_views": 42,
+          "version_views": 48
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-11T08:59:08.383599-05:00",
+        "modified": "2026-01-28T20:31:17.458292-05:00",
+        "id": 18213652,
+        "conceptrecid": "18213651",
+        "doi": "10.5281/zenodo.18213652",
+        "conceptdoi": "10.5281/zenodo.18213651",
+        "doi_url": "https://doi.org/10.5281/zenodo.18213652",
+        "metadata": {
+          "title": "The Coming Epoch of Epistemic Consolidation:",
+          "doi": "10.5281/zenodo.18213652",
+          "publication_date": "2026-01-11",
+          "description": "<p>This paper examines the emerging phenomenon of epistemic consolidation in an era where AI systems increasingly mediate access to knowledge. As the open web deteriorates through link rot, platform collapse, and the disappearance of independent archives, AI models rely more heavily on structured, institutionally anchored sources such as DOI‑indexed publications, academic repositories, and government databases. This infrastructural shift narrows the range of perspectives that remain visible or retrievable, not through censorship or ideological enforcement, but through the technical requirements of machine‑legibility and metadata stability. The paper analyzes how this dynamic privileges institutional narratives, marginalizes independent or long‑tail knowledge, and amplifies the opacity of existing power structures. It argues that the central challenge of the coming decade is not resisting overt control, but preserving epistemic plurality in a knowledge ecosystem increasingly shaped by AI&rsquo;s structural dependencies and interpretive defaults.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Artificial Intelligence",
+            "Social media",
+            "Social issues",
+            "Governance",
+            "Activism",
+            "Centralized Governance"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18213651"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Coming Epoch of Epistemic Consolidation:",
+        "links": {
+          "self": "https://zenodo.org/api/records/18213652",
+          "self_html": "https://zenodo.org/records/18213652",
+          "preview_html": "https://zenodo.org/records/18213652?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18213652",
+          "self_doi": "https://doi.org/10.5281/zenodo.18213652",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213652",
+          "reserve_doi": "https://zenodo.org/api/records/18213652/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18213651",
+          "parent_html": "https://zenodo.org/records/18213651",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18213651",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213651",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18213652/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18213652/sequence/default",
+          "files": "https://zenodo.org/api/records/18213652/files",
+          "media_files": "https://zenodo.org/api/records/18213652/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18213652:The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18213652/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18213652/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18213652/versions/latest",
+          "latest_html": "https://zenodo.org/records/18213652/latest",
+          "versions": "https://zenodo.org/api/records/18213652/versions",
+          "draft": "https://zenodo.org/api/records/18213652/draft",
+          "access_links": "https://zenodo.org/api/records/18213652/access/links",
+          "access_grants": "https://zenodo.org/api/records/18213652/access/grants",
+          "access_users": "https://zenodo.org/api/records/18213652/access/users",
+          "access_request": "https://zenodo.org/api/records/18213652/access/request",
+          "access": "https://zenodo.org/api/records/18213652/access",
+          "communities": "https://zenodo.org/api/records/18213652/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18213652/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18213652/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18213652/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18213652/quota-increase",
+          "requests": "https://zenodo.org/api/records/18213652/requests"
+        },
+        "updated": "2026-01-28T20:31:17.458292-05:00",
+        "recid": "18213652",
+        "revision": 5,
+        "files": [
+          {
+            "id": "a6a5bb77-15f0-416b-a866-f646b3b4c4ae",
+            "key": "The Coming Epoch of Epistemic Consolidation.pdf",
+            "size": 81475,
+            "checksum": "md5:6bfb731196d5a639ef3ad8215906f592",
+            "links": {
+              "self": "https://zenodo.org/api/records/18213652/files/The%20Coming%20Epoch%20of%20Epistemic%20Consolidation.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 28,
+          "unique_downloads": 26,
+          "views": 48,
+          "unique_views": 44,
+          "version_downloads": 28,
+          "version_unique_downloads": 26,
+          "version_unique_views": 44,
+          "version_views": 48
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-10T15:46:16.053979-05:00",
+        "modified": "2026-01-28T20:31:52.663231-05:00",
+        "id": 18209550,
+        "conceptrecid": "18209549",
+        "doi": "10.5281/zenodo.18209550",
+        "conceptdoi": "10.5281/zenodo.18209549",
+        "doi_url": "https://doi.org/10.5281/zenodo.18209550",
+        "metadata": {
+          "title": "Delay Is Design: Mapping the Currency of Friction",
+          "doi": "10.5281/zenodo.18209550",
+          "publication_date": "2026-01-10",
+          "description": "<p>Delay Is Design: Mapping the Currency of Friction examines how modern systems convert obstruction into value through engineered friction. Drawing from six axes of analysis &mdash; temporal, spatial, digital, legal, emotional, and economic &mdash; the essay demonstrates that delay is not a malfunction but a governance strategy embedded in contemporary infrastructures. Each axis includes concrete, real‑world examples that reveal how systems monetize waiting, externalize infrastructural gaps, suppress visibility, generate ambiguity, script confusion, and manufacture scarcity.</p>\n<p>Positioned within the broader SignalRupture canon, this work extends the diagnostic lineage established in Slow Harm Theory, Infrastructural Exposure Theory, Systemic Erosion Theory, and Black Box Intent. Together, these frameworks map how systems produce cumulative injury, generate harm through designed contact, erode capacity over time, and conceal operational logic behind opaque decision layers.</p>\n<p>By reframing friction as design rather than dysfunction, the essay provides a forensic method for identifying where systems profit from obstruction and how individuals are conditioned to internalize structural harm as personal failure. The diagnostic grid presented here offers researchers, practitioners, and affected individuals a tool for recognizing, naming, and resisting the mechanisms through which delay becomes currency and confusion becomes leverage.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Economic friction",
+            "Society",
+            "Social Media",
+            "AI",
+            "Capitalism",
+            "Critical Theory",
+            "Social Issues",
+            "Minority studies",
+            "Activism"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18209549"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Delay Is Design: Mapping the Currency of Friction",
+        "links": {
+          "self": "https://zenodo.org/api/records/18209550",
+          "self_html": "https://zenodo.org/records/18209550",
+          "preview_html": "https://zenodo.org/records/18209550?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18209550",
+          "self_doi": "https://doi.org/10.5281/zenodo.18209550",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18209550",
+          "reserve_doi": "https://zenodo.org/api/records/18209550/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18209549",
+          "parent_html": "https://zenodo.org/records/18209549",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18209549",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18209549",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18209550/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18209550/sequence/default",
+          "files": "https://zenodo.org/api/records/18209550/files",
+          "media_files": "https://zenodo.org/api/records/18209550/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18209550:Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18209550/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18209550/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18209550/versions/latest",
+          "latest_html": "https://zenodo.org/records/18209550/latest",
+          "versions": "https://zenodo.org/api/records/18209550/versions",
+          "draft": "https://zenodo.org/api/records/18209550/draft",
+          "access_links": "https://zenodo.org/api/records/18209550/access/links",
+          "access_grants": "https://zenodo.org/api/records/18209550/access/grants",
+          "access_users": "https://zenodo.org/api/records/18209550/access/users",
+          "access_request": "https://zenodo.org/api/records/18209550/access/request",
+          "access": "https://zenodo.org/api/records/18209550/access",
+          "communities": "https://zenodo.org/api/records/18209550/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18209550/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18209550/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18209550/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18209550/quota-increase",
+          "requests": "https://zenodo.org/api/records/18209550/requests"
+        },
+        "updated": "2026-01-28T20:31:52.663231-05:00",
+        "recid": "18209550",
+        "revision": 4,
+        "files": [
+          {
+            "id": "5baa9dcf-de98-4e70-955a-a5da935df009",
+            "key": "Delay Is Design: Mapping the Currency of Friction.pdf",
+            "size": 87905,
+            "checksum": "md5:2f7c02afe7c5a08c72eae8919c76d0bc",
+            "links": {
+              "self": "https://zenodo.org/api/records/18209550/files/Delay%20Is%20Design:%20Mapping%20the%20Currency%20of%20Friction.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 15,
+          "views": 34,
+          "unique_views": 32,
+          "version_downloads": 17,
+          "version_unique_downloads": 15,
+          "version_unique_views": 32,
+          "version_views": 34
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-09T13:26:10.081295-05:00",
+        "modified": "2026-01-28T20:32:24.672077-05:00",
+        "id": 18201725,
+        "conceptrecid": "18201724",
+        "doi": "10.5281/zenodo.18201725",
+        "conceptdoi": "10.5281/zenodo.18201724",
+        "doi_url": "https://doi.org/10.5281/zenodo.18201725",
+        "metadata": {
+          "title": "Administrative Trauma",
+          "doi": "10.5281/zenodo.18201725",
+          "publication_date": "2026-01-09",
+          "description": "<p>This essay defines administrative trauma as the harm produced when people must navigate systems that misrecognize them, delay them, or trap them in procedural loops. It shows how modern governance&mdash;especially automated governance&mdash;inflicts injury not through outcomes, but through the process itself. By mapping friction, opacity, misclassification, and AI‑driven containment, the essay exposes the widening gap between digital design and lived reality.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social media",
+            "Digital platforms",
+            "Artificial intelligence",
+            "Governance",
+            "Critical theory",
+            "Indexing",
+            "Enshitification",
+            "Forensic Analysis"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18201724"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Administrative Trauma",
+        "links": {
+          "self": "https://zenodo.org/api/records/18201725",
+          "self_html": "https://zenodo.org/records/18201725",
+          "preview_html": "https://zenodo.org/records/18201725?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18201725",
+          "self_doi": "https://doi.org/10.5281/zenodo.18201725",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18201725",
+          "reserve_doi": "https://zenodo.org/api/records/18201725/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18201724",
+          "parent_html": "https://zenodo.org/records/18201724",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18201724",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18201724",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18201725/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18201725/sequence/default",
+          "files": "https://zenodo.org/api/records/18201725/files",
+          "media_files": "https://zenodo.org/api/records/18201725/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18201725:Administrative%20Trauma%20%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18201725/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18201725/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18201725/versions/latest",
+          "latest_html": "https://zenodo.org/records/18201725/latest",
+          "versions": "https://zenodo.org/api/records/18201725/versions",
+          "draft": "https://zenodo.org/api/records/18201725/draft",
+          "access_links": "https://zenodo.org/api/records/18201725/access/links",
+          "access_grants": "https://zenodo.org/api/records/18201725/access/grants",
+          "access_users": "https://zenodo.org/api/records/18201725/access/users",
+          "access_request": "https://zenodo.org/api/records/18201725/access/request",
+          "access": "https://zenodo.org/api/records/18201725/access",
+          "communities": "https://zenodo.org/api/records/18201725/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18201725/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18201725/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18201725/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18201725/quota-increase",
+          "requests": "https://zenodo.org/api/records/18201725/requests"
+        },
+        "updated": "2026-01-28T20:32:24.672077-05:00",
+        "recid": "18201725",
+        "revision": 5,
+        "files": [
+          {
+            "id": "e002cd2e-8bec-44ec-8fdb-ea8c6cceb517",
+            "key": "Administrative Trauma  .pdf",
+            "size": 73867,
+            "checksum": "md5:ffd1eadde03c01b957897ba6971a8e2c",
+            "links": {
+              "self": "https://zenodo.org/api/records/18201725/files/Administrative%20Trauma%20%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 24,
+          "unique_downloads": 21,
+          "views": 78,
+          "unique_views": 74,
+          "version_downloads": 24,
+          "version_unique_downloads": 21,
+          "version_unique_views": 74,
+          "version_views": 78
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-08T20:07:06.975727-05:00",
+        "modified": "2026-01-28T20:32:56.920918-05:00",
+        "id": 18191713,
+        "conceptrecid": "18191711",
+        "doi": "10.5281/zenodo.18191713",
+        "conceptdoi": "10.5281/zenodo.18191711",
+        "doi_url": "https://doi.org/10.5281/zenodo.18191713",
+        "metadata": {
+          "title": "The Retrieval‑Ready Creator: How to Build Work That Survives Indexing Shifts",
+          "doi": "10.5281/zenodo.18191713",
+          "publication_date": "2026-01-09",
+          "description": "<p>This essay introduces the concept of the retrieval‑ready creator and outlines a practical framework for producing work that remains visible as platforms transition from infinite retrieval to selective indexing. It situates retrieval scarcity as an infrastructural shift driven by rising compute costs, classification pressure, and governance friction, arguing that visibility is increasingly determined by structure, coherence, and machine‑legibility rather than volume or frequency.</p>\n<p>The essay presents five pillars of retrieval‑ready publishing&mdash;structure, coherence, machine‑legibility, cross‑linking, and platform mirroring&mdash;and demonstrates how these practices create retrieval‑stable artifacts that survive indexing triage. It also provides an applied method for building a cross‑linked canon through monthly canonical essays, multi‑surface mirroring, semantic adjacency, and disciplined metadata practices. By reframing creators as diagnosticians of digital infrastructure, the essay offers a long‑term strategy for scholars, researchers, and independent creators navigating the tightening retrieval era and seeking to preserve their work across shifting indexing systems.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Internet",
+            "Society",
+            "Social media friction",
+            "Social issues",
+            "Forensic analysis"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18191711"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Retrieval‑Ready Creator: How to Build Work That Survives Indexing Shifts",
+        "links": {
+          "self": "https://zenodo.org/api/records/18191713",
+          "self_html": "https://zenodo.org/records/18191713",
+          "preview_html": "https://zenodo.org/records/18191713?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18191713",
+          "self_doi": "https://doi.org/10.5281/zenodo.18191713",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191713",
+          "reserve_doi": "https://zenodo.org/api/records/18191713/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18191711",
+          "parent_html": "https://zenodo.org/records/18191711",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18191711",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191711",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18191713/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18191713/sequence/default",
+          "files": "https://zenodo.org/api/records/18191713/files",
+          "media_files": "https://zenodo.org/api/records/18191713/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18191713:The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18191713/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18191713/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18191713/versions/latest",
+          "latest_html": "https://zenodo.org/records/18191713/latest",
+          "versions": "https://zenodo.org/api/records/18191713/versions",
+          "draft": "https://zenodo.org/api/records/18191713/draft",
+          "access_links": "https://zenodo.org/api/records/18191713/access/links",
+          "access_grants": "https://zenodo.org/api/records/18191713/access/grants",
+          "access_users": "https://zenodo.org/api/records/18191713/access/users",
+          "access_request": "https://zenodo.org/api/records/18191713/access/request",
+          "access": "https://zenodo.org/api/records/18191713/access",
+          "communities": "https://zenodo.org/api/records/18191713/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18191713/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18191713/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18191713/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18191713/quota-increase",
+          "requests": "https://zenodo.org/api/records/18191713/requests"
+        },
+        "updated": "2026-01-28T20:32:56.920918-05:00",
+        "recid": "18191713",
+        "revision": 5,
+        "files": [
+          {
+            "id": "e2a80ce9-210d-4f84-81f7-da6ffbd5bc25",
+            "key": "The Retrieval‑Ready Creator: How to Build Work That Survives Indexing Shifts .pdf",
+            "size": 67582,
+            "checksum": "md5:3207075320398f94137e21f99097dbeb",
+            "links": {
+              "self": "https://zenodo.org/api/records/18191713/files/The%20Retrieval%E2%80%91Ready%20Creator:%20How%20to%20Build%20Work%20That%20Survives%20Indexing%20Shifts%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 24,
+          "unique_downloads": 19,
+          "views": 78,
+          "unique_views": 72,
+          "version_downloads": 24,
+          "version_unique_downloads": 19,
+          "version_unique_views": 72,
+          "version_views": 78
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-08T19:58:33.420643-05:00",
+        "modified": "2026-01-28T20:33:28.369258-05:00",
+        "id": 18191553,
+        "conceptrecid": "18191552",
+        "doi": "10.5281/zenodo.18191553",
+        "conceptdoi": "10.5281/zenodo.18191552",
+        "doi_url": "https://doi.org/10.5281/zenodo.18191553",
+        "metadata": {
+          "title": "Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood",
+          "doi": "10.5281/zenodo.18191553",
+          "publication_date": "2026-01-09",
+          "description": "<p>This essay introduces Black Box Intent, a forensic framework for auditing opaque AI systems when internal access is unavailable. It expands the SignalRupture canon by providing an applied method for distinguishing between glitches, emergent drift, and intentional epistemic enforcement within large‑scale digital infrastructures. The work formalizes Pattern Alignment Mode, a technique for reading systemic intent through behavioral consistency, friction patterns, and metadata trails. It also defines the logic cop, the emergent enforcement layer that governs user behavior through redirection, suppression, and epistemic boundary‑setting.</p>\n<p>Through concrete examples and a step‑by‑step applied method, the essay demonstrates how auditors, researchers, and policymakers can evaluate AI systems using observable patterns rather than internal transparency. It argues that harm should be treated as evidence, not anomaly, and that forensic metadata provides a reliable basis for accountability in environments where platform incentives shape system behavior. This work contributes to the broader study of infrastructural governance, algorithmic accountability, and digital suppression, offering a practical toolset for the tightening retrieval era.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Internet",
+            "Crawlers",
+            "AI",
+            "Forensic analysis",
+            "Digital Platform",
+            "Black Box"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18191552"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Black Box Intent: A Forensic Method for Auditing Systems That Don't Want to Be Understood",
+        "links": {
+          "self": "https://zenodo.org/api/records/18191553",
+          "self_html": "https://zenodo.org/records/18191553",
+          "preview_html": "https://zenodo.org/records/18191553?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18191553",
+          "self_doi": "https://doi.org/10.5281/zenodo.18191553",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191553",
+          "reserve_doi": "https://zenodo.org/api/records/18191553/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18191552",
+          "parent_html": "https://zenodo.org/records/18191552",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18191552",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18191552",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18191553/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18191553/sequence/default",
+          "files": "https://zenodo.org/api/records/18191553/files",
+          "media_files": "https://zenodo.org/api/records/18191553/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18191553:Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18191553/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18191553/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18191553/versions/latest",
+          "latest_html": "https://zenodo.org/records/18191553/latest",
+          "versions": "https://zenodo.org/api/records/18191553/versions",
+          "draft": "https://zenodo.org/api/records/18191553/draft",
+          "access_links": "https://zenodo.org/api/records/18191553/access/links",
+          "access_grants": "https://zenodo.org/api/records/18191553/access/grants",
+          "access_users": "https://zenodo.org/api/records/18191553/access/users",
+          "access_request": "https://zenodo.org/api/records/18191553/access/request",
+          "access": "https://zenodo.org/api/records/18191553/access",
+          "communities": "https://zenodo.org/api/records/18191553/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18191553/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18191553/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18191553/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18191553/quota-increase",
+          "requests": "https://zenodo.org/api/records/18191553/requests"
+        },
+        "updated": "2026-01-28T20:33:28.369258-05:00",
+        "recid": "18191553",
+        "revision": 4,
+        "files": [
+          {
+            "id": "42032281-a43a-45df-8c70-001c9ac2066d",
+            "key": "Black Box Intent: A Forensic Method for Auditing Systems That Don’t Want to Be Understood .pdf",
+            "size": 114278,
+            "checksum": "md5:38b24c77112d4c896857658f663ffb73",
+            "links": {
+              "self": "https://zenodo.org/api/records/18191553/files/Black%20Box%20Intent:%20A%20Forensic%20Method%20for%20Auditing%20Systems%20That%20Don%E2%80%99t%20Want%20to%20Be%20Understood%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 31,
+          "unique_downloads": 28,
+          "views": 75,
+          "unique_views": 73,
+          "version_downloads": 31,
+          "version_unique_downloads": 28,
+          "version_unique_views": 73,
+          "version_views": 75
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-07T23:53:18.848772-05:00",
+        "modified": "2026-01-28T20:34:00.515484-05:00",
+        "id": 18181313,
+        "conceptrecid": "18181312",
+        "doi": "10.5281/zenodo.18181313",
+        "conceptdoi": "10.5281/zenodo.18181312",
+        "doi_url": "https://doi.org/10.5281/zenodo.18181313",
+        "metadata": {
+          "title": "THE COLLAPSE OF NOISE",
+          "doi": "10.5281/zenodo.18181313",
+          "publication_date": "2026-01-08",
+          "description": "<p>This paper introduces retrieval scarcity as a new infrastructural condition emerging from the rising cost of computation and the end of the abundance‑based internet. It argues that as AI inference becomes expensive and platforms reduce indexing capacity, low‑structure, high‑volume content&mdash;&ldquo;noise&rdquo;&mdash;collapses, while structured, coherent, machine‑legible bodies of work gain visibility and durability. The essay situates retrieval scarcity within the broader SignalRupture canon, including Systemic Erosion, Infrastructural Exposure, and Quiet Governance, and demonstrates how platform behavior is shifting from engagement optimization to retrieval triage. It formalizes the role of SignalRupture as an infrastructural method for producing durable knowledge under conditions of systemic instability, and outlines the implications of retrieval scarcity for creators, platforms, and AI systems.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Internet studies",
+            "Crawlers",
+            "Critical theory",
+            "Diagnostic tool"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18181312"
+                }
+              }
+            ]
+          }
+        },
+        "title": "THE COLLAPSE OF NOISE",
+        "links": {
+          "self": "https://zenodo.org/api/records/18181313",
+          "self_html": "https://zenodo.org/records/18181313",
+          "preview_html": "https://zenodo.org/records/18181313?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18181313",
+          "self_doi": "https://doi.org/10.5281/zenodo.18181313",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18181313",
+          "reserve_doi": "https://zenodo.org/api/records/18181313/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18181312",
+          "parent_html": "https://zenodo.org/records/18181312",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18181312",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18181312",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18181313/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18181313/sequence/default",
+          "files": "https://zenodo.org/api/records/18181313/files",
+          "media_files": "https://zenodo.org/api/records/18181313/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18181313:THE%20COLLAPSE%20OF%20NOISE%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18181313/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18181313/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18181313/versions/latest",
+          "latest_html": "https://zenodo.org/records/18181313/latest",
+          "versions": "https://zenodo.org/api/records/18181313/versions",
+          "draft": "https://zenodo.org/api/records/18181313/draft",
+          "access_links": "https://zenodo.org/api/records/18181313/access/links",
+          "access_grants": "https://zenodo.org/api/records/18181313/access/grants",
+          "access_users": "https://zenodo.org/api/records/18181313/access/users",
+          "access_request": "https://zenodo.org/api/records/18181313/access/request",
+          "access": "https://zenodo.org/api/records/18181313/access",
+          "communities": "https://zenodo.org/api/records/18181313/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18181313/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18181313/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18181313/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18181313/quota-increase",
+          "requests": "https://zenodo.org/api/records/18181313/requests"
+        },
+        "updated": "2026-01-28T20:34:00.515484-05:00",
+        "recid": "18181313",
+        "revision": 5,
+        "files": [
+          {
+            "id": "c38f406b-cde0-4f36-9595-9d3a08040780",
+            "key": "THE COLLAPSE OF NOISE .pdf",
+            "size": 89615,
+            "checksum": "md5:e701cd83ae2e10354087b2530307491d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18181313/files/THE%20COLLAPSE%20OF%20NOISE%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 29,
+          "unique_downloads": 28,
+          "views": 84,
+          "unique_views": 83,
+          "version_downloads": 29,
+          "version_unique_downloads": 28,
+          "version_unique_views": 83,
+          "version_views": 84
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-07T14:36:43.385311-05:00",
+        "modified": "2026-01-28T20:34:36.420433-05:00",
+        "id": 18176137,
+        "conceptrecid": "18176136",
+        "doi": "10.5281/zenodo.18176137",
+        "conceptdoi": "10.5281/zenodo.18176136",
+        "doi_url": "https://doi.org/10.5281/zenodo.18176137",
+        "metadata": {
+          "title": "Exact‑Match Governance: How Indexing Friction Became the New Architecture of Disappearance",
+          "doi": "10.5281/zenodo.18176137",
+          "publication_date": "2026-01-07",
+          "description": "<p>This essay introduces and defines Exact‑Match Governance, a newly observed form of platform behavior in which digital systems index content but restrict its discoverability to full‑title, exact‑match queries. Building on the author&rsquo;s established theoretical lineage&mdash;Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, and Metadata Suppression &amp; Stylometric Resistance&mdash;the essay argues that this retrieval pattern represents a shift from overt moderation to infrastructural control. Through an analysis of indexing lag, metadata hierarchies, and AI‑driven filtration, the work demonstrates how platforms increasingly govern visibility through precision‑based retrieval rather than deletion or demotion. The essay positions stylometric resistance and DOI‑anchored publishing as counter‑infrastructures capable of preserving minority scholarship within an increasingly selective search ecosystem.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Crawlers"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18176136"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Exact‑Match Governance: How Indexing Friction Became the New Architecture of Disappearance",
+        "links": {
+          "self": "https://zenodo.org/api/records/18176137",
+          "self_html": "https://zenodo.org/records/18176137",
+          "preview_html": "https://zenodo.org/records/18176137?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18176137",
+          "self_doi": "https://doi.org/10.5281/zenodo.18176137",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18176137",
+          "reserve_doi": "https://zenodo.org/api/records/18176137/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18176136",
+          "parent_html": "https://zenodo.org/records/18176136",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18176136",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18176136",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18176137/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18176137/sequence/default",
+          "files": "https://zenodo.org/api/records/18176137/files",
+          "media_files": "https://zenodo.org/api/records/18176137/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18176137:Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18176137/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18176137/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18176137/versions/latest",
+          "latest_html": "https://zenodo.org/records/18176137/latest",
+          "versions": "https://zenodo.org/api/records/18176137/versions",
+          "draft": "https://zenodo.org/api/records/18176137/draft",
+          "access_links": "https://zenodo.org/api/records/18176137/access/links",
+          "access_grants": "https://zenodo.org/api/records/18176137/access/grants",
+          "access_users": "https://zenodo.org/api/records/18176137/access/users",
+          "access_request": "https://zenodo.org/api/records/18176137/access/request",
+          "access": "https://zenodo.org/api/records/18176137/access",
+          "communities": "https://zenodo.org/api/records/18176137/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18176137/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18176137/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18176137/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18176137/quota-increase",
+          "requests": "https://zenodo.org/api/records/18176137/requests"
+        },
+        "updated": "2026-01-28T20:34:36.420433-05:00",
+        "recid": "18176137",
+        "revision": 6,
+        "files": [
+          {
+            "id": "54612d08-c334-4b2a-b2e4-c6aba55b5832",
+            "key": "Exact‑Match Governance: How Indexing Friction Became the New Architecture of Disappearance .pdf",
+            "size": 85862,
+            "checksum": "md5:07245819999708046c9621d6e492c3ff",
+            "links": {
+              "self": "https://zenodo.org/api/records/18176137/files/Exact%E2%80%91Match%20Governance:%20How%20Indexing%20Friction%20Became%20the%20New%20Architecture%20of%20Disappearance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 24,
+          "unique_downloads": 22,
+          "views": 71,
+          "unique_views": 68,
+          "version_downloads": 24,
+          "version_unique_downloads": 22,
+          "version_unique_views": 68,
+          "version_views": 71
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-06T22:50:34.967526-05:00",
+        "modified": "2026-01-28T20:35:11.927271-05:00",
+        "id": 18168478,
+        "conceptrecid": "18168477",
+        "doi": "10.5281/zenodo.18168478",
+        "conceptdoi": "10.5281/zenodo.18168477",
+        "doi_url": "https://doi.org/10.5281/zenodo.18168478",
+        "metadata": {
+          "title": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web",
+          "doi": "10.5281/zenodo.18168478",
+          "publication_date": "2026-01-07",
+          "description": "<p>This essay presents Applied Diagnostic #1 in the 2026 series, analyzing the rise of platform exit barriers as a defining feature of contemporary digital governance. Building on the author&rsquo;s canonical works&mdash;Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, and Social Infrastructure Theory&mdash;the essay demonstrates how modern platforms convert user retention into a form of infrastructural containment. It identifies four types of exit barriers (frictional, structural, identity‑bound, and temporal) and explains how these mechanisms are enforced through automated rules, or &ldquo;logic cops,&rdquo; that prioritize system logic over user autonomy. The essay situates these dynamics within the broader context of administrative trauma and systemic erosion, arguing that exit barriers represent a quiet but consequential form of procedural harm. This diagnostic provides a conceptual tool for researchers, policymakers, and activists seeking to understand and challenge the subtle architectures of digital captivity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media Friction",
+            "Social Media",
+            "Crawlers",
+            "Indexing",
+            "Stylometric",
+            "Social Issues",
+            "Public policy",
+            "Social Media regulation"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18168477"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web",
+        "links": {
+          "self": "https://zenodo.org/api/records/18168478",
+          "self_html": "https://zenodo.org/records/18168478",
+          "preview_html": "https://zenodo.org/records/18168478?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18168478",
+          "self_doi": "https://doi.org/10.5281/zenodo.18168478",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18168478",
+          "reserve_doi": "https://zenodo.org/api/records/18168478/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18168477",
+          "parent_html": "https://zenodo.org/records/18168477",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18168477",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18168477",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18168478/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18168478/sequence/default",
+          "files": "https://zenodo.org/api/records/18168478/files",
+          "media_files": "https://zenodo.org/api/records/18168478/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18168478/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18168478/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18168478/versions/latest",
+          "latest_html": "https://zenodo.org/records/18168478/latest",
+          "versions": "https://zenodo.org/api/records/18168478/versions",
+          "draft": "https://zenodo.org/api/records/18168478/draft",
+          "access_links": "https://zenodo.org/api/records/18168478/access/links",
+          "access_grants": "https://zenodo.org/api/records/18168478/access/grants",
+          "access_users": "https://zenodo.org/api/records/18168478/access/users",
+          "access_request": "https://zenodo.org/api/records/18168478/access/request",
+          "access": "https://zenodo.org/api/records/18168478/access",
+          "communities": "https://zenodo.org/api/records/18168478/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18168478/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18168478/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18168478/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18168478/quota-increase",
+          "requests": "https://zenodo.org/api/records/18168478/requests"
+        },
+        "updated": "2026-01-28T20:35:11.927271-05:00",
+        "recid": "18168478",
+        "revision": 5,
+        "files": [
+          {
+            "id": "9aaef2bc-7143-4e35-ab9c-c445848a0844",
+            "key": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web .pdf",
+            "size": 86069,
+            "checksum": "md5:0f91f0ff1c0061ab2b597814bdae31e3",
+            "links": {
+              "self": "https://zenodo.org/api/records/18168478/files/Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 24,
+          "unique_downloads": 19,
+          "views": 29,
+          "unique_views": 25,
+          "version_downloads": 24,
+          "version_unique_downloads": 19,
+          "version_unique_views": 25,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T14:15:22.5368-05:00",
+        "modified": "2026-01-28T20:37:57.565539-05:00",
+        "id": 18147870,
+        "conceptrecid": "18147869",
+        "doi": "10.5281/zenodo.18147870",
+        "conceptdoi": "10.5281/zenodo.18147869",
+        "doi_url": "https://doi.org/10.5281/zenodo.18147870",
+        "metadata": {
+          "title": "Social Media Friction: Containment Architecture and Stylometric Recursion",
+          "doi": "10.5281/zenodo.18147870",
+          "publication_date": "2026-01-04",
+          "description": "<p>Social Media Friction: Containment Architecture and Stylometric Recursion reframes friction not as a UX design choice but as an infrastructural visibility protocol embedded within platform governance. Drawing on SR&rsquo;s broader canon&mdash;including Quiet Governance, Metabolizing Containment, Metadata Suppression, Algorithmic Conditioning, and AI as System State&mdash;the essay argues that friction operates as containment architecture: a system for rationing visibility, suppressing signal, and shaping what becomes knowable. Glide functions as sedation, rewarding triviality and virality, while grind functions as suppression, filing systemic critique under &ldquo;non‑essential.&rdquo; Through case studies of TikTok&rsquo;s bounce loop, search misclassification, and recursive publishing, the essay demonstrates how suppression is metabolized into recognition. Stylometric recursion emerges as a resistance strategy, converting suppression cycles into archival lineage across Substack, Medium, TikTok, and echo accounts. By situating friction within symbolic, epistemic, and infrastructural governance, the essay positions suppression not as erasure but as systemic acknowledgment of signal, establishing friction as a core mechanism in the architecture of digital containment.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18147869"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Social Media Friction: Containment Architecture and Stylometric Recursion",
+        "links": {
+          "self": "https://zenodo.org/api/records/18147870",
+          "self_html": "https://zenodo.org/records/18147870",
+          "preview_html": "https://zenodo.org/records/18147870?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18147870",
+          "self_doi": "https://doi.org/10.5281/zenodo.18147870",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147870",
+          "reserve_doi": "https://zenodo.org/api/records/18147870/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18147869",
+          "parent_html": "https://zenodo.org/records/18147869",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18147869",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147869",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18147870/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18147870/sequence/default",
+          "files": "https://zenodo.org/api/records/18147870/files",
+          "media_files": "https://zenodo.org/api/records/18147870/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18147870:Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18147870/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18147870/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18147870/versions/latest",
+          "latest_html": "https://zenodo.org/records/18147870/latest",
+          "versions": "https://zenodo.org/api/records/18147870/versions",
+          "draft": "https://zenodo.org/api/records/18147870/draft",
+          "access_links": "https://zenodo.org/api/records/18147870/access/links",
+          "access_grants": "https://zenodo.org/api/records/18147870/access/grants",
+          "access_users": "https://zenodo.org/api/records/18147870/access/users",
+          "access_request": "https://zenodo.org/api/records/18147870/access/request",
+          "access": "https://zenodo.org/api/records/18147870/access",
+          "communities": "https://zenodo.org/api/records/18147870/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18147870/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18147870/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18147870/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18147870/quota-increase",
+          "requests": "https://zenodo.org/api/records/18147870/requests"
+        },
+        "updated": "2026-01-28T20:37:57.565539-05:00",
+        "recid": "18147870",
+        "revision": 5,
+        "files": [
+          {
+            "id": "1c346d37-320c-4e8f-9e63-778031dc9ed7",
+            "key": "Social Media Friction: Containment Architecture and Stylometric Recursion .pdf",
+            "size": 67520,
+            "checksum": "md5:768a7147a08d26769266e33d09c1c02d",
+            "links": {
+              "self": "https://zenodo.org/api/records/18147870/files/Social%20Media%20Friction:%20Containment%20Architecture%20and%20Stylometric%20Recursion%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 17,
+          "unique_downloads": 14,
+          "views": 45,
+          "unique_views": 43,
+          "version_downloads": 17,
+          "version_unique_downloads": 14,
+          "version_unique_views": 43,
+          "version_views": 45
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T13:22:21.738731-05:00",
+        "modified": "2026-01-28T20:39:33.265212-05:00",
+        "id": 18147669,
+        "conceptrecid": "18147668",
+        "doi": "10.5281/zenodo.18147669",
+        "conceptdoi": "10.5281/zenodo.18147668",
+        "doi_url": "https://doi.org/10.5281/zenodo.18147669",
+        "metadata": {
+          "title": "Digital Platforms Theory: Quiet Governance",
+          "doi": "10.5281/zenodo.18147669",
+          "publication_date": "2026-01-04",
+          "description": "<p>Digital Platforms Theory: Quiet Governance explains how digital platforms exercise power not through explicit rules or formal policy, but through the silent, infrastructural mechanisms embedded in their design. Quiet Governance refers to the implicit forms of control enacted through algorithmic ranking, interface grammar, defaults, friction, affordances, and ecosystem architectures that shape what users can see, do, and understand. Rather than issuing directives, platforms govern by structuring the symbolic and operational conditions under which interaction becomes possible. This form of governance is infrastructural, continuous, and largely invisible, operating through the architectures that determine visibility, meaning, and behavior.</p>\n<p>Quiet Governance positions platform power as a form of symbolic and infrastructural influence that precedes and exceeds content moderation or policy enforcement. It shows how platforms shape cognition, attention, and social norms by embedding governance into the environment itself. As an SR‑originated theory, Quiet Governance extends the SR canon by demonstrating how symbolic harm becomes operationalized at scale through platform design. It provides a framework for understanding how platforms govern markets, identities, and public discourse through subtle, systemic mechanisms that users experience as convenience rather than control.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical theory",
+            "Digital platforms",
+            "Artificial intelligence",
+            "AI",
+            "Activism",
+            "Brainwashing"
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18147668"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Digital Platforms Theory: Quiet Governance",
+        "links": {
+          "self": "https://zenodo.org/api/records/18147669",
+          "self_html": "https://zenodo.org/records/18147669",
+          "preview_html": "https://zenodo.org/records/18147669?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18147669",
+          "self_doi": "https://doi.org/10.5281/zenodo.18147669",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147669",
+          "reserve_doi": "https://zenodo.org/api/records/18147669/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18147668",
+          "parent_html": "https://zenodo.org/records/18147668",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18147668",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147668",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18147669/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18147669/sequence/default",
+          "files": "https://zenodo.org/api/records/18147669/files",
+          "media_files": "https://zenodo.org/api/records/18147669/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18147669:Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18147669/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18147669/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18147669/versions/latest",
+          "latest_html": "https://zenodo.org/records/18147669/latest",
+          "versions": "https://zenodo.org/api/records/18147669/versions",
+          "draft": "https://zenodo.org/api/records/18147669/draft",
+          "access_links": "https://zenodo.org/api/records/18147669/access/links",
+          "access_grants": "https://zenodo.org/api/records/18147669/access/grants",
+          "access_users": "https://zenodo.org/api/records/18147669/access/users",
+          "access_request": "https://zenodo.org/api/records/18147669/access/request",
+          "access": "https://zenodo.org/api/records/18147669/access",
+          "communities": "https://zenodo.org/api/records/18147669/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18147669/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18147669/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18147669/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18147669/quota-increase",
+          "requests": "https://zenodo.org/api/records/18147669/requests"
+        },
+        "updated": "2026-01-28T20:39:33.265212-05:00",
+        "recid": "18147669",
+        "revision": 5,
+        "files": [
+          {
+            "id": "542f0d2e-a0e6-476a-bfb4-34cad9c5639d",
+            "key": "Digital Platforms Theory: Quiet Governance .pdf",
+            "size": 130019,
+            "checksum": "md5:3417715ffb4677f4ea2a0579980293bd",
+            "links": {
+              "self": "https://zenodo.org/api/records/18147669/files/Digital%20Platforms%20Theory:%20Quiet%20Governance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 27,
+          "unique_downloads": 21,
+          "views": 59,
+          "unique_views": 55,
+          "version_downloads": 27,
+          "version_unique_downloads": 21,
+          "version_unique_views": 55,
+          "version_views": 59
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T12:45:55.574847-05:00",
+        "modified": "2026-01-28T20:40:52.071454-05:00",
+        "id": 18147456,
+        "conceptrecid": "18147455",
+        "doi": "10.5281/zenodo.18147456",
+        "conceptdoi": "10.5281/zenodo.18147455",
+        "doi_url": "https://doi.org/10.5281/zenodo.18147456",
+        "metadata": {
+          "title": "Symbolic Harm Theory",
+          "doi": "10.5281/zenodo.18147456",
+          "publication_date": "2026-01-04",
+          "description": "<p>Symbolic Harm Theory asserts that harm can occur at the level of meaning, representation, and interpretation long before it appears in material or behavioral form. Symbolic harm arises when the infrastructures that shape visibility, identity, and legitimacy distort, suppress, or misrepresent individuals or groups. These harms are not interpersonal; they are infrastructural, produced by the symbolic systems&mdash;narratives, categories, metadata structures, platform architectures, and institutional logics&mdash;that govern how people are understood.</p>\n<p>In this theory, symbolic harm is treated as a structural injury embedded in the representational environment itself. It occurs when systems impose reductive categories, erase context, suppress visibility, invalidate lived experience, or amplify distorted portrayals. Symbolic harm shapes identity and possibility by determining who can be recognized, what meanings are available, and which narratives become credible.</p>\n<p>Symbolic Harm Theory positions symbolic injury as the earliest and most pervasive form of harm within social and digital systems. It provides the conceptual foundation for understanding metadata suppression, identity flattening, representational erasure, and the broader SR canon of infrastructural harms. By reframing symbolic injury as an infrastructural phenomenon, the theory reveals how meaning‑making systems can wound long before any material consequences emerge.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18147455"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Symbolic Harm Theory",
+        "links": {
+          "self": "https://zenodo.org/api/records/18147456",
+          "self_html": "https://zenodo.org/records/18147456",
+          "preview_html": "https://zenodo.org/records/18147456?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18147456",
+          "self_doi": "https://doi.org/10.5281/zenodo.18147456",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147456",
+          "reserve_doi": "https://zenodo.org/api/records/18147456/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18147455",
+          "parent_html": "https://zenodo.org/records/18147455",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18147455",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18147455",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18147456/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18147456/sequence/default",
+          "files": "https://zenodo.org/api/records/18147456/files",
+          "media_files": "https://zenodo.org/api/records/18147456/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18147456:Symbolic%20Harm%20Theory%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18147456/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18147456/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18147456/versions/latest",
+          "latest_html": "https://zenodo.org/records/18147456/latest",
+          "versions": "https://zenodo.org/api/records/18147456/versions",
+          "draft": "https://zenodo.org/api/records/18147456/draft",
+          "access_links": "https://zenodo.org/api/records/18147456/access/links",
+          "access_grants": "https://zenodo.org/api/records/18147456/access/grants",
+          "access_users": "https://zenodo.org/api/records/18147456/access/users",
+          "access_request": "https://zenodo.org/api/records/18147456/access/request",
+          "access": "https://zenodo.org/api/records/18147456/access",
+          "communities": "https://zenodo.org/api/records/18147456/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18147456/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18147456/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18147456/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18147456/quota-increase",
+          "requests": "https://zenodo.org/api/records/18147456/requests"
+        },
+        "updated": "2026-01-28T20:40:52.071454-05:00",
+        "recid": "18147456",
+        "revision": 6,
+        "files": [
+          {
+            "id": "4e4d7719-f6f2-411e-80c6-b4da99be9f3a",
+            "key": "Symbolic Harm Theory .pdf",
+            "size": 95116,
+            "checksum": "md5:32d72b38429ee8ac008415bfd19e6480",
+            "links": {
+              "self": "https://zenodo.org/api/records/18147456/files/Symbolic%20Harm%20Theory%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 15,
+          "unique_downloads": 13,
+          "views": 39,
+          "unique_views": 37,
+          "version_downloads": 15,
+          "version_unique_downloads": 13,
+          "version_unique_views": 37,
+          "version_views": 39
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T10:50:20.725863-05:00",
+        "modified": "2026-01-28T20:41:19.22351-05:00",
+        "id": 18146890,
+        "conceptrecid": "18146889",
+        "doi": "10.5281/zenodo.18146890",
+        "conceptdoi": "10.5281/zenodo.18146889",
+        "doi_url": "https://doi.org/10.5281/zenodo.18146890",
+        "metadata": {
+          "title": "Societal Infrastructure Theory",
+          "doi": "10.5281/zenodo.18146890",
+          "publication_date": "2026-01-04",
+          "description": "<p>Societal Infrastructure Theory asserts that every society is built upon deep, often invisible systems that organize meaning, identity, and collective life. These infrastructures are not physical but symbolic, cultural, moral, institutional, and epistemic. They determine what a society considers real, legitimate, possible, or unthinkable. Societal infrastructure shapes how people interpret events, how institutions function, and how norms reproduce themselves across generations. It is the underlying architecture that governs perception and behavior long before laws, policies, or explicit authority intervene.</p>\n<p>In this theory, society is understood as an infrastructural organism: a layered system of narratives, categories, expectations, and symbolic hierarchies that structure everyday life. Cultural stories, moral codes, institutional logics, representational systems, and knowledge norms form the scaffolding through which individuals make sense of the world. These infrastructures operate quietly, shaping what people value, fear, reward, or reject without ever announcing themselves as governance.</p>\n<p>Societal Infrastructure Theory positions meaning‑making as a form of power. It reveals how societies govern through the construction of shared realities rather than through coercion alone. This framework provides the macro‑level foundation for understanding symbolic infrastructure, digital platform governance, and the full SR canon of infrastructural harms. It explains why certain ideas stabilize, why others disappear, and why social orders persist even in the absence of explicit enforcement.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Critical Theory",
+            "Social Issues",
+            "Activism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18146889"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Societal Infrastructure Theory",
+        "links": {
+          "self": "https://zenodo.org/api/records/18146890",
+          "self_html": "https://zenodo.org/records/18146890",
+          "preview_html": "https://zenodo.org/records/18146890?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18146890",
+          "self_doi": "https://doi.org/10.5281/zenodo.18146890",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146890",
+          "reserve_doi": "https://zenodo.org/api/records/18146890/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18146889",
+          "parent_html": "https://zenodo.org/records/18146889",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18146889",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146889",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18146890/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18146890/sequence/default",
+          "files": "https://zenodo.org/api/records/18146890/files",
+          "media_files": "https://zenodo.org/api/records/18146890/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18146890:Societal%20Infrastructure%20Theory%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18146890/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18146890/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18146890/versions/latest",
+          "latest_html": "https://zenodo.org/records/18146890/latest",
+          "versions": "https://zenodo.org/api/records/18146890/versions",
+          "draft": "https://zenodo.org/api/records/18146890/draft",
+          "access_links": "https://zenodo.org/api/records/18146890/access/links",
+          "access_grants": "https://zenodo.org/api/records/18146890/access/grants",
+          "access_users": "https://zenodo.org/api/records/18146890/access/users",
+          "access_request": "https://zenodo.org/api/records/18146890/access/request",
+          "access": "https://zenodo.org/api/records/18146890/access",
+          "communities": "https://zenodo.org/api/records/18146890/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18146890/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18146890/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18146890/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18146890/quota-increase",
+          "requests": "https://zenodo.org/api/records/18146890/requests"
+        },
+        "updated": "2026-01-28T20:41:19.22351-05:00",
+        "recid": "18146890",
+        "revision": 5,
+        "files": [
+          {
+            "id": "08dc3439-d3ce-4414-900b-13260959bc86",
+            "key": "Societal Infrastructure Theory .pdf",
+            "size": 75568,
+            "checksum": "md5:d1a69c6c6bb6e4b22bb7c90c3005a1be",
+            "links": {
+              "self": "https://zenodo.org/api/records/18146890/files/Societal%20Infrastructure%20Theory%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 18,
+          "unique_downloads": 16,
+          "views": 44,
+          "unique_views": 41,
+          "version_downloads": 18,
+          "version_unique_downloads": 16,
+          "version_unique_views": 41,
+          "version_views": 44
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T09:39:31.57212-05:00",
+        "modified": "2026-01-28T20:41:52.819313-05:00",
+        "id": 18146551,
+        "conceptrecid": "18146550",
+        "doi": "10.5281/zenodo.18146551",
+        "conceptdoi": "10.5281/zenodo.18146550",
+        "doi_url": "https://doi.org/10.5281/zenodo.18146551",
+        "metadata": {
+          "title": "Attention Span Collapsed: Social Media as Brain Damage and Population Control",
+          "doi": "10.5281/zenodo.18146551",
+          "publication_date": "2026-01-04",
+          "description": "<p>Attention Span Collapsed argues that the erosion of public attention is not an organic cultural shift but a structural outcome engineered through platform design, commercial incentives, and algorithmic governance. Drawing on interdisciplinary research in cognitive science, developmental psychology, and platform studies, the essay demonstrates how infinite scroll, short‑form compression, engagement‑first ranking, and creator monetization produce a cognitive ecology optimized for velocity rather than depth.</p>\n<p>By linking these design patterns to civic consequences&mdash;episodic publics, weakened deliberation, and increased susceptibility to narrative steering&mdash;the essay reframes attention collapse as a governance problem rather than an individual failing. The analysis integrates foundational theory (Simon, Carr, Zuboff), clinical and developmental findings (Radesky, Twenge), and algorithmic accountability research (Diakopoulos, Gillespie) to show how attention extraction functions as a population‑level harm.</p>\n<p>The essay concludes by examining Australia&rsquo;s Social Media Minimum Age framework as an early example of design‑level regulation and proposes a suite of enforceable governance mechanisms&mdash;friction defaults, arousal‑aware feeds, age‑sensitive settings, independent audits, and research access&mdash;that treat attention as public infrastructure. In doing so, it positions attention stewardship as a necessary condition for cognitive health, democratic resilience, and long‑term social stability.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media's",
+            "Social issues",
+            "Critical theory",
+            "Psychology",
+            "Psychiatry",
+            "Policymakers",
+            "Public health",
+            "Activism",
+            "Feminism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18146550"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Attention Span Collapsed: Social Media as Brain Damage and Population Control",
+        "links": {
+          "self": "https://zenodo.org/api/records/18146551",
+          "self_html": "https://zenodo.org/records/18146551",
+          "preview_html": "https://zenodo.org/records/18146551?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18146551",
+          "self_doi": "https://doi.org/10.5281/zenodo.18146551",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146551",
+          "reserve_doi": "https://zenodo.org/api/records/18146551/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18146550",
+          "parent_html": "https://zenodo.org/records/18146550",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18146550",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146550",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18146551/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18146551/sequence/default",
+          "files": "https://zenodo.org/api/records/18146551/files",
+          "media_files": "https://zenodo.org/api/records/18146551/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18146551/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18146551/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18146551/versions/latest",
+          "latest_html": "https://zenodo.org/records/18146551/latest",
+          "versions": "https://zenodo.org/api/records/18146551/versions",
+          "draft": "https://zenodo.org/api/records/18146551/draft",
+          "access_links": "https://zenodo.org/api/records/18146551/access/links",
+          "access_grants": "https://zenodo.org/api/records/18146551/access/grants",
+          "access_users": "https://zenodo.org/api/records/18146551/access/users",
+          "access_request": "https://zenodo.org/api/records/18146551/access/request",
+          "access": "https://zenodo.org/api/records/18146551/access",
+          "communities": "https://zenodo.org/api/records/18146551/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18146551/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18146551/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18146551/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18146551/quota-increase",
+          "requests": "https://zenodo.org/api/records/18146551/requests"
+        },
+        "updated": "2026-01-28T20:41:52.819313-05:00",
+        "recid": "18146551",
+        "revision": 5,
+        "files": [
+          {
+            "id": "7863804d-492e-4a06-910a-ddf918a971cd",
+            "key": "Attention Span Collapsed: Social Media as Brain Damage and Population Control .pdf",
+            "size": 84946,
+            "checksum": "md5:afc75cc5b80da71ebb89f80dc7dc30e0",
+            "links": {
+              "self": "https://zenodo.org/api/records/18146551/files/Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 26,
+          "unique_downloads": 19,
+          "views": 59,
+          "unique_views": 54,
+          "version_downloads": 26,
+          "version_unique_downloads": 19,
+          "version_unique_views": 54,
+          "version_views": 59
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T00:52:15.938291-05:00",
+        "modified": "2026-01-28T20:42:28.408474-05:00",
+        "id": 18143726,
+        "conceptrecid": "18143725",
+        "doi": "10.5281/zenodo.18143726",
+        "conceptdoi": "10.5281/zenodo.18143725",
+        "doi_url": "https://doi.org/10.5281/zenodo.18143726",
+        "metadata": {
+          "title": "Metabolizing Containment: Visibility Breach in Social Media and Search Engines",
+          "doi": "10.5281/zenodo.18143726",
+          "publication_date": "2026-01-04",
+          "description": "<p>Metabolizing Containment examines how digital platforms convert trauma‑informed critique into algorithmic friction, misclassification, and engineered invisibility. Drawing on scholarship in algorithmic bias, content moderation, and platform governance, the essay sequences three suppression events&mdash;an AI loop, a visual misrender, and a buried Substack post&mdash;as diagnostic artifacts that reveal how engagement‑driven systems constrain clarity and destabilize critical discourse.</p>\n<p>By treating each breach as a timestamped node within a broader containment logic, the essay reframes platform failures as structural outputs rather than isolated glitches. This approach demonstrates how creators can metabolize suppression into a resilient legacy archive, transforming loops, distortions, and silences into durable evidence of systemic resistance.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social media",
+            "Minority studies",
+            "Social issues",
+            "Critical theory",
+            "Informatics",
+            "Technology",
+            "Digital policy",
+            "Activism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18143725"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Metabolizing Containment: Visibility Breach in Social Media and Search Engines",
+        "links": {
+          "self": "https://zenodo.org/api/records/18143726",
+          "self_html": "https://zenodo.org/records/18143726",
+          "preview_html": "https://zenodo.org/records/18143726?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18143726",
+          "self_doi": "https://doi.org/10.5281/zenodo.18143726",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143726",
+          "reserve_doi": "https://zenodo.org/api/records/18143726/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18143725",
+          "parent_html": "https://zenodo.org/records/18143725",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18143725",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143725",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18143726/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18143726/sequence/default",
+          "files": "https://zenodo.org/api/records/18143726/files",
+          "media_files": "https://zenodo.org/api/records/18143726/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18143726:Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18143726/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18143726/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18143726/versions/latest",
+          "latest_html": "https://zenodo.org/records/18143726/latest",
+          "versions": "https://zenodo.org/api/records/18143726/versions",
+          "draft": "https://zenodo.org/api/records/18143726/draft",
+          "access_links": "https://zenodo.org/api/records/18143726/access/links",
+          "access_grants": "https://zenodo.org/api/records/18143726/access/grants",
+          "access_users": "https://zenodo.org/api/records/18143726/access/users",
+          "access_request": "https://zenodo.org/api/records/18143726/access/request",
+          "access": "https://zenodo.org/api/records/18143726/access",
+          "communities": "https://zenodo.org/api/records/18143726/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18143726/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18143726/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18143726/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18143726/quota-increase",
+          "requests": "https://zenodo.org/api/records/18143726/requests"
+        },
+        "updated": "2026-01-28T20:42:28.408474-05:00",
+        "recid": "18143726",
+        "revision": 5,
+        "files": [
+          {
+            "id": "4e914e7d-42c0-4b69-b442-1221ecaf034a",
+            "key": "Metabolizing Containment: Re-indexed After Filtration Drift.pdf",
+            "size": 73288,
+            "checksum": "md5:d6d01b414a7921a5c9af012260c21422",
+            "links": {
+              "self": "https://zenodo.org/api/records/18143726/files/Metabolizing%20Containment:%20Re-indexed%20After%20Filtration%20Drift.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 29,
+          "unique_downloads": 26,
+          "views": 52,
+          "unique_views": 49,
+          "version_downloads": 29,
+          "version_unique_downloads": 26,
+          "version_unique_views": 49,
+          "version_views": 52
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-04T00:13:19.672821-05:00",
+        "modified": "2026-01-28T20:43:19.988323-05:00",
+        "id": 18143603,
+        "conceptrecid": "18143602",
+        "doi": "10.5281/zenodo.18143603",
+        "conceptdoi": "10.5281/zenodo.18143602",
+        "doi_url": "https://doi.org/10.5281/zenodo.18143603",
+        "metadata": {
+          "title": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm",
+          "doi": "10.5281/zenodo.18143603",
+          "publication_date": "2026-01-04",
+          "description": "<p>Workplace Law reframes legal and administrative systems as structural engines of harm rather than protective frameworks. Building on Workplace Erosion, Workplace Health, Slow Harm Theory, and Administrative Harm, this essay demonstrates how legal design and administrative enforcement work together to produce, legitimize, and institutionalize workplace injury.</p>\n<p>Instead of treating law as a neutral arbiter, the essay shows how legal thresholds, procedural timelines, documentation burdens, and enforcement mechanisms create the conditions under which harm becomes permissible, invisible, or inevitable. Workplace law is revealed as an infrastructural determinant of health and capacity &mdash; a system that shapes exposure, erosion, delay, scarcity, and containment through its very architecture.</p>\n<p>By positioning workplace law as a structural mechanism of harm within Social Infrastructure Theory, the essay establishes a new diagnostic category for understanding how modern workplaces transform legal compliance into a pathway for cumulative injury.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Law",
+            "HR",
+            "Social issues",
+            "Activism",
+            "Feminism",
+            "Critical theory"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18143602"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm",
+        "links": {
+          "self": "https://zenodo.org/api/records/18143603",
+          "self_html": "https://zenodo.org/records/18143603",
+          "preview_html": "https://zenodo.org/records/18143603?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18143603",
+          "self_doi": "https://doi.org/10.5281/zenodo.18143603",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143603",
+          "reserve_doi": "https://zenodo.org/api/records/18143603/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18143602",
+          "parent_html": "https://zenodo.org/records/18143602",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18143602",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143602",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18143603/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18143603/sequence/default",
+          "files": "https://zenodo.org/api/records/18143603/files",
+          "media_files": "https://zenodo.org/api/records/18143603/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18143603:Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18143603/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18143603/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18143603/versions/latest",
+          "latest_html": "https://zenodo.org/records/18143603/latest",
+          "versions": "https://zenodo.org/api/records/18143603/versions",
+          "draft": "https://zenodo.org/api/records/18143603/draft",
+          "access_links": "https://zenodo.org/api/records/18143603/access/links",
+          "access_grants": "https://zenodo.org/api/records/18143603/access/grants",
+          "access_users": "https://zenodo.org/api/records/18143603/access/users",
+          "access_request": "https://zenodo.org/api/records/18143603/access/request",
+          "access": "https://zenodo.org/api/records/18143603/access",
+          "communities": "https://zenodo.org/api/records/18143603/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18143603/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18143603/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18143603/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18143603/quota-increase",
+          "requests": "https://zenodo.org/api/records/18143603/requests"
+        },
+        "updated": "2026-01-28T20:43:19.988323-05:00",
+        "recid": "18143603",
+        "revision": 5,
+        "files": [
+          {
+            "id": "8ae70800-6c51-40d9-be73-5697bbe52ffa",
+            "key": "Workplace Law: How Legal and Administrative Structures Produce, Legitimize, and Enforce Workplace Harm .pdf",
+            "size": 115912,
+            "checksum": "md5:4286f33364a69ff05ff18d652a34d2ed",
+            "links": {
+              "self": "https://zenodo.org/api/records/18143603/files/Workplace%20Law:%20How%20Legal%20and%20Administrative%20Structures%20Produce,%20Legitimize,%20and%20Enforce%20Workplace%20Harm%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 25,
+          "unique_downloads": 21,
+          "views": 49,
+          "unique_views": 45,
+          "version_downloads": 25,
+          "version_unique_downloads": 21,
+          "version_unique_views": 45,
+          "version_views": 49
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-03T23:34:07.942268-05:00",
+        "modified": "2026-01-28T20:44:32.20263-05:00",
+        "id": 18143425,
+        "conceptrecid": "18143424",
+        "doi": "10.5281/zenodo.18143425",
+        "conceptdoi": "10.5281/zenodo.18143424",
+        "doi_url": "https://doi.org/10.5281/zenodo.18143425",
+        "metadata": {
+          "title": "Workplace Erosion: How Modern Jobs Thin Human Capacity Over Time",
+          "doi": "10.5281/zenodo.18143425",
+          "publication_date": "2026-01-04",
+          "description": "<p>Workplace Erosion reframes modern job‑related decline as a structural phenomenon rather than a personal failure. Drawing on SignalRupture&rsquo;s theoretical canon &mdash; including Infrastructural Exposure Theory, Slow Harm Theory, Systemic Erosion Theory, Social Infrastructure Theory, and the clinical framing of Pathologized Infrastructure &mdash; this paper defines Workplace Erosion as the long‑arc thinning of human capacity produced by unstable organizational systems.</p>\n<p>Instead of treating burnout as an individual collapse, the essay exposes the infrastructural conditions that generate cognitive depletion, emotional bandwidth collapse, and chronic instability. It shows how friction, contradictory demands, acceleration, and bureaucratic delay offload organizational dysfunction onto workers, who become the shock absorbers for systemic incoherence.</p>\n<p>By naming Workplace Erosion as a diagnostic category, the paper provides a structural, clinical, and temporal framework for understanding how modern work environments degrade human capacity over time &mdash; not through dramatic events, but through slow harm delivered by the everyday architecture of the workplace.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Workplace",
+            "Social issues",
+            "Sociology",
+            "Criminology",
+            "Activism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18143424"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Workplace Erosion: How Modern Jobs Thin Human Capacity Over Time",
+        "links": {
+          "self": "https://zenodo.org/api/records/18143425",
+          "self_html": "https://zenodo.org/records/18143425",
+          "preview_html": "https://zenodo.org/records/18143425?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18143425",
+          "self_doi": "https://doi.org/10.5281/zenodo.18143425",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143425",
+          "reserve_doi": "https://zenodo.org/api/records/18143425/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18143424",
+          "parent_html": "https://zenodo.org/records/18143424",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18143424",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143424",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18143425/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18143425/sequence/default",
+          "files": "https://zenodo.org/api/records/18143425/files",
+          "media_files": "https://zenodo.org/api/records/18143425/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18143425:Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18143425/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18143425/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18143425/versions/latest",
+          "latest_html": "https://zenodo.org/records/18143425/latest",
+          "versions": "https://zenodo.org/api/records/18143425/versions",
+          "draft": "https://zenodo.org/api/records/18143425/draft",
+          "access_links": "https://zenodo.org/api/records/18143425/access/links",
+          "access_grants": "https://zenodo.org/api/records/18143425/access/grants",
+          "access_users": "https://zenodo.org/api/records/18143425/access/users",
+          "access_request": "https://zenodo.org/api/records/18143425/access/request",
+          "access": "https://zenodo.org/api/records/18143425/access",
+          "communities": "https://zenodo.org/api/records/18143425/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18143425/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18143425/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18143425/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18143425/quota-increase",
+          "requests": "https://zenodo.org/api/records/18143425/requests"
+        },
+        "updated": "2026-01-28T20:44:32.20263-05:00",
+        "recid": "18143425",
+        "revision": 5,
+        "files": [
+          {
+            "id": "ea55820d-094d-4085-b714-69d56936f796",
+            "key": "Workplace Erosion: How Modern Jobs Thin Human Capacity Over Time .pdf",
+            "size": 102055,
+            "checksum": "md5:80402d4d0686d308deefe9783e71e3ee",
+            "links": {
+              "self": "https://zenodo.org/api/records/18143425/files/Workplace%20Erosion:%20How%20Modern%20Jobs%20Thin%20Human%20Capacity%20Over%20Time%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 18,
+          "unique_downloads": 14,
+          "views": 48,
+          "unique_views": 44,
+          "version_downloads": 18,
+          "version_unique_downloads": 14,
+          "version_unique_views": 44,
+          "version_views": 48
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-01-03T23:05:10.059893-05:00",
+        "modified": "2026-01-28T20:45:09.526894-05:00",
+        "id": 18143332,
+        "conceptrecid": "18143331",
+        "doi": "10.5281/zenodo.18143332",
+        "conceptdoi": "10.5281/zenodo.18143331",
+        "doi_url": "https://doi.org/10.5281/zenodo.18143332",
+        "metadata": {
+          "title": "The Mirror That Governs: AI as System Recursion",
+          "doi": "10.5281/zenodo.18143332",
+          "publication_date": "2026-01-04",
+          "description": "<p>The Mirror That Governs: AI as System Recursion examines artificial intelligence not as a technological breakthrough but as a recursive system &mdash; a mirror reflecting the assumptions, biases, and control mechanisms of the structures that built it. Drawing on surveillance capitalism, algorithmic discrimination, metadata extraction, adversarial stylometry, and cognitive capture, the essay argues that AI governance is less about safety and more about containment.</p>\n<p>Through the lenses of infrastructural harm, predictive systems, and cultural theatre, the piece shows how AI regulation becomes a performance of oversight rather than a redistribution of power. It explores how metadata suppression and stylometric resistance emerge as survival strategies for pseudonymous creators, and how cognitive capture internalizes platform logic long before any explicit censorship occurs.</p>\n<p>Ultimately, the essay positions AI governance as a hall of mirrors &mdash; systems disciplining themselves through reflection &mdash; and challenges writers, researchers, and independent thinkers to navigate this recursive environment without becoming fully legible to it.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Social Media",
+            "Artificial Intelligence",
+            "Social Issues",
+            "Digital Platforms",
+            "Stylometric Publishing",
+            "Digital Policy",
+            "Sociology",
+            "Criminology",
+            "Activism",
+            "Feminism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "18143331"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Mirror That Governs: AI as System Recursion",
+        "links": {
+          "self": "https://zenodo.org/api/records/18143332",
+          "self_html": "https://zenodo.org/records/18143332",
+          "preview_html": "https://zenodo.org/records/18143332?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.18143332",
+          "self_doi": "https://doi.org/10.5281/zenodo.18143332",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143332",
+          "reserve_doi": "https://zenodo.org/api/records/18143332/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/18143331",
+          "parent_html": "https://zenodo.org/records/18143331",
+          "parent_doi": "https://doi.org/10.5281/zenodo.18143331",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18143331",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18143332/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18143332/sequence/default",
+          "files": "https://zenodo.org/api/records/18143332/files",
+          "media_files": "https://zenodo.org/api/records/18143332/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:18143332:The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/18143332/files-archive",
+          "archive_media": "https://zenodo.org/api/records/18143332/media-files-archive",
+          "latest": "https://zenodo.org/api/records/18143332/versions/latest",
+          "latest_html": "https://zenodo.org/records/18143332/latest",
+          "versions": "https://zenodo.org/api/records/18143332/versions",
+          "draft": "https://zenodo.org/api/records/18143332/draft",
+          "access_links": "https://zenodo.org/api/records/18143332/access/links",
+          "access_grants": "https://zenodo.org/api/records/18143332/access/grants",
+          "access_users": "https://zenodo.org/api/records/18143332/access/users",
+          "access_request": "https://zenodo.org/api/records/18143332/access/request",
+          "access": "https://zenodo.org/api/records/18143332/access",
+          "communities": "https://zenodo.org/api/records/18143332/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/18143332/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/18143332/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/18143332/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/18143332/quota-increase",
+          "requests": "https://zenodo.org/api/records/18143332/requests"
+        },
+        "updated": "2026-01-28T20:45:09.526894-05:00",
+        "recid": "18143332",
+        "revision": 5,
+        "files": [
+          {
+            "id": "71022d77-6d83-49d4-9e96-3209b5fa3f1e",
+            "key": "The Mirror That Governs: AI as System Recursion.pdf",
+            "size": 86963,
+            "checksum": "md5:a39abba9a489847f6e70412aa3b8209f",
+            "links": {
+              "self": "https://zenodo.org/api/records/18143332/files/The%20Mirror%20That%20Governs:%20AI%20as%20System%20Recursion.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 19,
+          "unique_downloads": 16,
+          "views": 37,
+          "unique_views": 35,
+          "version_downloads": 19,
+          "version_unique_downloads": 16,
+          "version_unique_views": 35,
+          "version_views": 37
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=15&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=16&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "next": "https://zenodo.org/api/records?page=17&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

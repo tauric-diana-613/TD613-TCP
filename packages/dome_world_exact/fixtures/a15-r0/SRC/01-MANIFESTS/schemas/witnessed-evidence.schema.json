@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:witnessed-evidence:v1",
+  "title": "SignalRupture manifestation-level witnessed evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "evidence_kind",
+    "label",
+    "manifestation_id",
+    "source_path",
+    "source_locator",
+    "source_title",
+    "source_publication_at",
+    "source_updated_at",
+    "interpretive_limit"
+  ],
+  "properties": {
+    "schema_version": {"const": "witnessed-evidence/v1"},
+    "evidence_id": {"type": "string", "minLength": 1},
+    "evidence_kind": {
+      "enum": [
+        "ARCHIVE_DERIVED_RECEIPT",
+        "AUTHOR_SUPPLIED_PLATFORM_METADATA",
+        "CAPTURED_ORIGINAL",
+        "CAPTURED_PLATFORM_CATALOG_METADATA",
+        "CAPTURED_PLATFORM_METADATA"
+      ]
+    },
+    "label": {"type": "string", "minLength": 1},
+    "manifestation_id": {"type": "string", "minLength": 1},
+    "source_path": {"type": "string", "minLength": 1},
+    "source_locator": {"$ref": "#/$defs/sourceLocator"},
+    "source_title": {"type": ["string", "null"], "minLength": 1},
+    "source_publication_at": {"type": ["string", "null"], "minLength": 1},
+    "source_updated_at": {"type": ["string", "null"], "minLength": 1},
+    "observed_values": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {"type": "string", "minLength": 1},
+          {"type": "string", "minLength": 1}
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 1
+    },
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "sourceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field": {"type": "string", "minLength": 1},
+        "fields": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "jsonl_line": {"type": "integer", "minimum": 1},
+        "jsonl_lines": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 1, "uniqueItems": true},
+        "page": {"type": "integer", "minimum": 1},
+        "pages": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "rows": {"type": "integer", "minimum": 1},
+        "files": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "record_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "record_id": {"type": "string", "minLength": 1},
+        "query_concepts": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "anyOf": [
+        {"required": ["jsonl_line"]},
+        {"required": ["jsonl_lines"]},
+        {"required": ["page"]},
+        {"required": ["pages"]},
+        {"required": ["rows"]},
+        {"required": ["record_ids"]},
+        {"required": ["record_id"]},
+        {"required": ["query_concepts"]}
+      ]
+    }
+  }
+}

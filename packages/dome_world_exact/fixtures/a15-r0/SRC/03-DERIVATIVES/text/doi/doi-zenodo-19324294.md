@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:1da9299a4da30a9aace63f2d
+parent_capture_id: capture:6019d3d4433195fce96cca32
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Architect and the Oracle"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19324294
+Final URL: https://zenodo.org/records/19324294
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19324294 -> https://zenodo.org/doi/10.5281/zenodo.19324294
+302 https://zenodo.org/doi/10.5281/zenodo.19324294 -> https://zenodo.org/records/19324294

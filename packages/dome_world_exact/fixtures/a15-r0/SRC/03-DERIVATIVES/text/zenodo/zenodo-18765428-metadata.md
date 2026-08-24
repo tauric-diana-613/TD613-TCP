@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:0a188e005a4fcec15088f02b
+parent_capture_id: capture:09d39d340df614b5b539ef51
+parent_blob_sha256: b6d8a6680123e006b76b279f6a1c5548721beceb572f68810383cdff05730c9d
+tool: srcctl-json-normalizer/1
+source_title: "Dependency as Governance: The Architecture of Modern Control"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18765427",
+  "conceptrecid": "18765427",
+  "created": "2026-02-25T03:06:45.645839+00:00",
+  "doi": "10.5281/zenodo.18765428",
+  "doi_url": "https://doi.org/10.5281/zenodo.18765428",
+  "files": [
+    {
+      "checksum": "md5:67a50babc60820047daf0b1a431148fa",
+      "id": "a922de6d-9067-4c05-9e7b-2f7ca55cdf86",
+      "key": "Dependency as Governance: The Architecture of Modern Control .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18765428/files/Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/content"
+      },
+      "size": 85287
+    }
+  ],
+  "id": 18765428,
+  "links": {
+    "access": "https://zenodo.org/api/records/18765428/access",
+    "access_grants": "https://zenodo.org/api/records/18765428/access/grants",
+    "access_links": "https://zenodo.org/api/records/18765428/access/links",
+    "access_request": "https://zenodo.org/api/records/18765428/access/request",
+    "access_users": "https://zenodo.org/api/records/18765428/access/users",
+    "archive": "https://zenodo.org/api/records/18765428/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18765428/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18765428/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18765428/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18765428",
+    "draft": "https://zenodo.org/api/records/18765428/draft",
+    "file_modification": "https://zenodo.org/api/records/18765428/file-modification",
+    "files": "https://zenodo.org/api/records/18765428/files",
+    "latest": "https://zenodo.org/api/records/18765428/versions/latest",
+    "latest_html": "https://zenodo.org/records/18765428/latest",
+    "media_files": "https://zenodo.org/api/records/18765428/media-files",
+    "parent": "https://zenodo.org/api/records/18765427",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18765427",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765427",
+    "parent_html": "https://zenodo.org/records/18765427",
+    "preview_html": "https://zenodo.org/records/18765428?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18765428/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18765428/request-deletion",
+    "requests": "https://zenodo.org/api/records/18765428/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18765428/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18765428",
+    "self_doi": "https://doi.org/10.5281/zenodo.18765428",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18765428",
+    "self_html": "https://zenodo.org/records/18765428",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18765428/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18765428/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18765428:Dependency%20as%20Governance:%20The%20Architecture%20of%20Modern%20Control%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18765428/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Dependency as Governance: The Architecture of Modern Control is a canonical SignalRupture essay analyzing dependency as the foundational mechanism of contemporary governance. While institutions claim to empower individuals through opportunity, mobility, and choice, the structural design of modern life produces the opposite: widespread reliance on wages, food systems, healthcare infrastructures, debt cycles, and state bureaucracies. This essay maps how dependency is manufactured, maintained, and weaponized to ensure compliance without overt force, transforming survival into a managed relationship with institutions. By reframing dependency as an engineered condition rather than a social failure, the work deepens the SignalRupture framework for understanding structural coercion, economic control, and the mechanisms through which modern systems govern by limiting alternatives and constraining exit.</p>",
+    "doi": "10.5281/zenodo.18765428",
+    "keywords": [
+      "Institutions",
+      "Social science",
+      "Social Issues",
+      "Critical theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18765427"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Dependency as Governance: The Architecture of Modern Control",
+    "version": "1.0"
+  },
+  "modified": "2026-02-25T03:06:46.140797+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18765428",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 14,
+    "unique_downloads": 14,
+    "unique_views": 21,
+    "version_downloads": 14,
+    "version_unique_downloads": 14,
+    "version_unique_views": 21,
+    "version_views": 22,
+    "views": 22
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Dependency as Governance: The Architecture of Modern Control",
+  "updated": "2026-02-25T03:06:46.140797+00:00"
+}

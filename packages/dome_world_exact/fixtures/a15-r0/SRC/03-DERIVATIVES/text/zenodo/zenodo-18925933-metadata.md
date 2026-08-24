@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:c87cd8f0fa7e3c0d9f66cd3d
+parent_capture_id: capture:dd0e3edb4fb72b042ba770e5
+parent_blob_sha256: c1b050dfb19a9399d957f6b550fdeac3f61500dddb28b47fe0084fc12138b873
+tool: srcctl-json-normalizer/1
+source_title: "The System That Doesn't Need to Win to Rule"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18925932",
+  "conceptrecid": "18925932",
+  "created": "2026-03-09T15:53:31.474045+00:00",
+  "doi": "10.5281/zenodo.18925933",
+  "doi_url": "https://doi.org/10.5281/zenodo.18925933",
+  "files": [
+    {
+      "checksum": "md5:787430e384f4e96bd8883a5f70d6eb5c",
+      "id": "350758cc-9cd5-4752-b822-9c1297d0714c",
+      "key": "The System That Doesn’t Need to Win to Rule .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18925933/files/The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/content"
+      },
+      "size": 75131
+    }
+  ],
+  "id": 18925933,
+  "links": {
+    "access": "https://zenodo.org/api/records/18925933/access",
+    "access_grants": "https://zenodo.org/api/records/18925933/access/grants",
+    "access_links": "https://zenodo.org/api/records/18925933/access/links",
+    "access_request": "https://zenodo.org/api/records/18925933/access/request",
+    "access_users": "https://zenodo.org/api/records/18925933/access/users",
+    "archive": "https://zenodo.org/api/records/18925933/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18925933/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18925933/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18925933/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18925933",
+    "draft": "https://zenodo.org/api/records/18925933/draft",
+    "file_modification": "https://zenodo.org/api/records/18925933/file-modification",
+    "files": "https://zenodo.org/api/records/18925933/files",
+    "latest": "https://zenodo.org/api/records/18925933/versions/latest",
+    "latest_html": "https://zenodo.org/records/18925933/latest",
+    "media_files": "https://zenodo.org/api/records/18925933/media-files",
+    "parent": "https://zenodo.org/api/records/18925932",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18925932",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18925932",
+    "parent_html": "https://zenodo.org/records/18925932",
+    "preview_html": "https://zenodo.org/records/18925933?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18925933/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18925933/request-deletion",
+    "requests": "https://zenodo.org/api/records/18925933/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18925933/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18925933",
+    "self_doi": "https://doi.org/10.5281/zenodo.18925933",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18925933",
+    "self_html": "https://zenodo.org/records/18925933",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18925933/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18925933/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18925933:The%20System%20That%20Doesn%E2%80%99t%20Need%20to%20Win%20to%20Rule%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18925933/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Power in the 21st century no longer depends on victory, dominance, or explicit control. Instead, systems exert influence through persistence, scale, and infrastructural entanglement. This essay introduces the concept of non‑victory power&mdash;systems that rule not by defeating opponents, but by becoming unavoidable. These systems shape behavior, constrain choices, and define the conditions of life simply by persisting, embedding, and structuring the environment. The essay maps how infrastructural entrenchment, dependency, and the disappearance of alternatives produce a new form of governance in which systems rule by existing rather than winning.</p>\n<p>Keywords:<br>non‑victory power, infrastructural entrenchment, systemic dependency, platform power, environmental governance, infrastructural inevitability, world infrastructure, post‑web power</p>\n<p>Contribution to the SR Canon:<br>This essay formalizes non‑victory power as a foundational concept within the SignalRupture framework. It extends SR&rsquo;s analysis of infrastructural governance by showing how systems exert control through persistence and entrenchment rather than competition or coercion. The essay deepens the canon&rsquo;s treatment of dependency, lock‑in, and environmental power, offering a structural explanation for why modern systems govern without needing to win. It strengthens SR&rsquo;s diagnostic architecture by reframing power as an infrastructural condition rather than an adversarial outcome.</p>",
+    "doi": "10.5281/zenodo.18925933",
+    "keywords": [
+      "Artificial intelligence",
+      "Institutions",
+      "Metatheory",
+      "Social science"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-09",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18925932"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The System That Doesn't Need to Win to Rule",
+    "version": "1.0"
+  },
+  "modified": "2026-03-09T15:53:31.854292+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18925933",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 10,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 10,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The System That Doesn't Need to Win to Rule",
+  "updated": "2026-03-09T15:53:31.854292+00:00"
+}

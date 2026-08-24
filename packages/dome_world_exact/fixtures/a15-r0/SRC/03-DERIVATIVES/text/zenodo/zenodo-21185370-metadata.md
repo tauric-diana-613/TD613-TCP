@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:b6c7d2f13786d1630e43f7b0
+parent_capture_id: capture:db381ea30425a7bf284d7862
+parent_blob_sha256: 4d4c5476ae3a5ff279ff00e2a047d1296a43cde561bbfb8518b885f0bc15cfd9
+tool: srcctl-json-normalizer/1
+source_title: "SR Flagship Theory Paper"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21185369",
+  "conceptrecid": "21185369",
+  "created": "2026-07-04T03:00:43.695986+00:00",
+  "doi": "10.5281/zenodo.21185370",
+  "doi_url": "https://doi.org/10.5281/zenodo.21185370",
+  "files": [
+    {
+      "checksum": "md5:9e802ee2778a29af4797bbba44c0fe32",
+      "id": "3018fa2a-044c-4135-b7de-d86b04c841fb",
+      "key": "SR Flagship Theory Paper .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21185370/files/SR%20Flagship%20Theory%20Paper%20.pdf/content"
+      },
+      "size": 2673180
+    }
+  ],
+  "id": 21185370,
+  "links": {
+    "access": "https://zenodo.org/api/records/21185370/access",
+    "access_grants": "https://zenodo.org/api/records/21185370/access/grants",
+    "access_links": "https://zenodo.org/api/records/21185370/access/links",
+    "access_request": "https://zenodo.org/api/records/21185370/access/request",
+    "access_users": "https://zenodo.org/api/records/21185370/access/users",
+    "archive": "https://zenodo.org/api/records/21185370/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21185370/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21185370/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21185370/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21185370",
+    "draft": "https://zenodo.org/api/records/21185370/draft",
+    "file_modification": "https://zenodo.org/api/records/21185370/file-modification",
+    "files": "https://zenodo.org/api/records/21185370/files",
+    "latest": "https://zenodo.org/api/records/21185370/versions/latest",
+    "latest_html": "https://zenodo.org/records/21185370/latest",
+    "media_files": "https://zenodo.org/api/records/21185370/media-files",
+    "parent": "https://zenodo.org/api/records/21185369",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21185369",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185369",
+    "parent_html": "https://zenodo.org/records/21185369",
+    "preview_html": "https://zenodo.org/records/21185370?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21185370/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21185370/request-deletion",
+    "requests": "https://zenodo.org/api/records/21185370/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21185370/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21185370",
+    "self_doi": "https://doi.org/10.5281/zenodo.21185370",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21185370",
+    "self_html": "https://zenodo.org/records/21185370",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21185370/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21185370/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21185370:SR%20Flagship%20Theory%20Paper%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21185370/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h3><em>SignalRupture: A Structural Systems Model of Pressure, Topology, and Constrained System Behavior</em></h3>\n<p>The <strong>SignalRupture Flagship Paper</strong> presents the complete architecture of SR, a structural systems theory describing how pressure propagates through constrained topology to generate recurring patterns of behavior, instability, and reorganization across complex systems. The flagship unifies SR&rsquo;s primitives, cycle logic, topology geometry, propagation dynamics, structural laws, and modeling grammar into a single coherent framework.</p>\n<p>SR proposes that many sociotechnical, institutional, infrastructural, and organizational phenomena can be understood through a common structural mechanism: <strong>pressure interacting with topology under constraint</strong>. The paper formalizes this mechanism through the SR invariant loop (P &rarr; T &rarr; &Phi; &rarr; R &rarr; P&prime;), demonstrating how systems evolve through cycles of accumulation, strain, propagation, failure, and reconfiguration.</p>\n<p>The flagship consolidates SR&rsquo;s conceptual, methodological, and theoretical foundations into a unified architecture, providing the core definitions, structural laws, modeling constructs, and interpretive boundaries necessary for SR to function as a formal theory. It also harmonizes SR&rsquo;s representational layers&mdash;ISA, runtime, execution model, continuity principle&mdash;into symbolic modeling tools rather than literal computational engines, ensuring epistemic clarity and academic defensibility.</p>\n<p>This volume serves as the <strong>canonical reference</strong> for the SR framework. Companion papers supply empirical evidence, axiomatic foundations, methodological derivations, and domain‑specific applications, but the flagship provides the integrated system: the theory&rsquo;s ontology, cycle logic, structural constraints, and unified interpretation layer.</p>",
+    "doi": "10.5281/zenodo.21185370",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "SignalRupture",
+      "World Infrastructure"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-07-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21185369"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SR Flagship Theory Paper",
+    "version": "1.0"
+  },
+  "modified": "2026-07-04T03:00:43.910413+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21185370",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 6,
+    "unique_downloads": 5,
+    "unique_views": 11,
+    "version_downloads": 6,
+    "version_unique_downloads": 5,
+    "version_unique_views": 11,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SR Flagship Theory Paper",
+  "updated": "2026-07-04T03:00:43.910413+00:00"
+}

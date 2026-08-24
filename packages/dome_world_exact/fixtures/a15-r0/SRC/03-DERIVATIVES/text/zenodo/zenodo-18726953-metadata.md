@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:09d018d1e913efe86ffe6e39
+parent_capture_id: capture:4511d68d085adb425ffbaeb5
+parent_blob_sha256: 1c5888a05a130bfc0769a1e3fdeaaaed3ff95754afc3ce09b719097648f8bed0
+tool: srcctl-json-normalizer/1
+source_title: "The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18726952",
+  "conceptrecid": "18726952",
+  "created": "2026-02-21T20:18:50.514502+00:00",
+  "doi": "10.5281/zenodo.18726953",
+  "doi_url": "https://doi.org/10.5281/zenodo.18726953",
+  "files": [
+    {
+      "checksum": "md5:cb13cde9bb69a634df53d0c137224f8d",
+      "id": "114e6920-5d7b-49db-b155-eed1601e9a73",
+      "key": "The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18726953/files/The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/content"
+      },
+      "size": 84636
+    }
+  ],
+  "id": 18726953,
+  "links": {
+    "access": "https://zenodo.org/api/records/18726953/access",
+    "access_grants": "https://zenodo.org/api/records/18726953/access/grants",
+    "access_links": "https://zenodo.org/api/records/18726953/access/links",
+    "access_request": "https://zenodo.org/api/records/18726953/access/request",
+    "access_users": "https://zenodo.org/api/records/18726953/access/users",
+    "archive": "https://zenodo.org/api/records/18726953/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18726953/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18726953/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18726953/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18726953",
+    "draft": "https://zenodo.org/api/records/18726953/draft",
+    "file_modification": "https://zenodo.org/api/records/18726953/file-modification",
+    "files": "https://zenodo.org/api/records/18726953/files",
+    "latest": "https://zenodo.org/api/records/18726953/versions/latest",
+    "latest_html": "https://zenodo.org/records/18726953/latest",
+    "media_files": "https://zenodo.org/api/records/18726953/media-files",
+    "parent": "https://zenodo.org/api/records/18726952",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18726952",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726952",
+    "parent_html": "https://zenodo.org/records/18726952",
+    "preview_html": "https://zenodo.org/records/18726953?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18726953/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18726953/request-deletion",
+    "requests": "https://zenodo.org/api/records/18726953/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18726953/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18726953",
+    "self_doi": "https://doi.org/10.5281/zenodo.18726953",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726953",
+    "self_html": "https://zenodo.org/records/18726953",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18726953/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18726953/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18726953:The%20Invisible%20Patient%20in%20the%20Post%E2%80%91Open%E2%80%91Web%20Era:%20A%20SignalRupture%20Case%20Study%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18726953/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study presents a near‑future scenario illustrating how healthcare systems transform when mediated by AI triage, rigid data architectures, and semantic governance. This is not a depiction of current medical practice but a structural model of what happens when institutions prioritize model‑legibility over human complexity. Through the lens of SignalRupture&rsquo;s core theories &mdash; Semantic Governance, Model‑Indexed Epistemic Collapse, Engineered Containment, and Slow Harm &mdash; the essay demonstrates how patients with complex, nuanced conditions become illegible to systems that only recognize high‑frequency, model‑approved data tokens.</p>\n<p>The case study examines how AI‑first triage reduces human language to categorical inputs, how digital twins replace direct clinical observation, and how administrative friction functions as a containment strategy rather than a failure mode. It maps the emergence of infrastructural trauma as patients encounter systems that treat their lived experience as computational noise. As the model&rsquo;s ontology becomes the institution&rsquo;s truth, human suffering is reframed as error, anomaly, or psychological misinterpretation.</p>\n<p>By situating healthcare within the broader post‑open‑web transition, the essay shows how retrieval scarcity, semantic compression, and institutional optimization for stability produce the &ldquo;Invisible Patient&rdquo; as a structural inevitability. The work contributes to emerging research on AI mediation, epistemic governance, and infrastructural harm by offering a diagnostic framework for understanding how human reality is erased when systems privilege legibility over care.</p>\n<p>Keywords</p>\n<p>Semantic Governance, Engineered Containment, Model‑Indexed Epistemic Collapse, Slow Harm, Infrastructural Trauma, Post‑Open‑Web, AI Triage, Administrative Friction</p>",
+    "doi": "10.5281/zenodo.18726953",
+    "keywords": [
+      "Public Health Policy",
+      "Critical Theory",
+      "Society",
+      "Social Issues",
+      "Health"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18726952"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study",
+    "version": "1.0"
+  },
+  "modified": "2026-02-21T20:18:50.982491+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18726953",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 7,
+    "unique_views": 23,
+    "version_downloads": 8,
+    "version_unique_downloads": 7,
+    "version_unique_views": 23,
+    "version_views": 23,
+    "views": 23
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Invisible Patient in the Post‑Open‑Web Era: A SignalRupture Case Study",
+  "updated": "2026-02-21T20:18:50.982491+00:00"
+}

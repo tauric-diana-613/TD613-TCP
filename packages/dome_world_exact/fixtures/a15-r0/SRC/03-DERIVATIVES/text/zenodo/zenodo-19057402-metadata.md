@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:4fe0a8f1f2fc1b8b636113c4
+parent_capture_id: capture:ba0ac4c806ecd929b95d23ac
+parent_blob_sha256: 0cd181d0c46fba634b732101bbeea280f5dcd961315b612c1660c3c3e24a5052
+tool: srcctl-json-normalizer/1
+source_title: "Engineered Containment: Canonical Definition"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19057401",
+  "conceptrecid": "19057401",
+  "created": "2026-03-16T22:34:47.814338+00:00",
+  "doi": "10.5281/zenodo.19057402",
+  "doi_url": "https://doi.org/10.5281/zenodo.19057402",
+  "files": [
+    {
+      "checksum": "md5:9ae883e254a4457f98ea9e00dad41007",
+      "id": "6610e413-a6f8-4c95-8888-b98e9772153d",
+      "key": "Engineered Containment: Canonical Definition.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19057402/files/Engineered%20Containment:%20Canonical%20Definition.pdf/content"
+      },
+      "size": 97215
+    }
+  ],
+  "id": 19057402,
+  "links": {
+    "access": "https://zenodo.org/api/records/19057402/access",
+    "access_grants": "https://zenodo.org/api/records/19057402/access/grants",
+    "access_links": "https://zenodo.org/api/records/19057402/access/links",
+    "access_request": "https://zenodo.org/api/records/19057402/access/request",
+    "access_users": "https://zenodo.org/api/records/19057402/access/users",
+    "archive": "https://zenodo.org/api/records/19057402/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19057402/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19057402/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19057402/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19057402",
+    "draft": "https://zenodo.org/api/records/19057402/draft",
+    "file_modification": "https://zenodo.org/api/records/19057402/file-modification",
+    "files": "https://zenodo.org/api/records/19057402/files",
+    "latest": "https://zenodo.org/api/records/19057402/versions/latest",
+    "latest_html": "https://zenodo.org/records/19057402/latest",
+    "media_files": "https://zenodo.org/api/records/19057402/media-files",
+    "parent": "https://zenodo.org/api/records/19057401",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19057401",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19057401",
+    "parent_html": "https://zenodo.org/records/19057401",
+    "preview_html": "https://zenodo.org/records/19057402?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19057402/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19057402/request-deletion",
+    "requests": "https://zenodo.org/api/records/19057402/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19057402/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19057402",
+    "self_doi": "https://doi.org/10.5281/zenodo.19057402",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19057402",
+    "self_html": "https://zenodo.org/records/19057402",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19057402/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19057402/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19057402:Engineered%20Containment:%20Canonical%20Definition.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19057402/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Engineered Containment defines a core infrastructural mechanism through which modern institutions manage overload, suppress escalation, and convert systemic responsibility into individual burden. Rather than treating bureaucratic obstruction as inefficiency or error, the essay demonstrates that many contemporary support systems&mdash;customer service portals, government benefits platforms, healthcare scheduling systems, university administration, and financial dispute processes&mdash;are intentionally designed to exhaust individuals into abandonment. These systems appear to offer help but are structurally optimized to prevent resolution, minimize institutional cost, and avoid accountability.</p>\n<p>The analysis identifies the architectural components of engineered containment, including funnels that replace human judgment, menus that misclassify real problems, loops that force repetition, the removal of escalation pathways, and exhaustion‑based resolution. Through detailed examples across public and private institutions, the essay shows how containment functions as a form of soft coercion and infrastructural violence, shaping outcomes not through explicit denial but through procedural friction.</p>\n<p>By situating engineered containment within the broader SR framework, the essay reveals how institutions use automated decision‑trees, restricted interfaces, and procedural opacity to manage scarcity, suppress complaints, and maintain the appearance of service while delivering obstruction. It argues that containment is not a service failure but a governance strategy&mdash;an infrastructural pattern that shifts the burden of problem‑solving onto the population while protecting institutional resources and legitimacy.</p>",
+    "doi": "10.5281/zenodo.19057402",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Social Issues",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19057401"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Engineered Containment: Canonical Definition",
+    "version": "1.0"
+  },
+  "modified": "2026-03-16T22:34:48.106065+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19057402",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 7,
+    "unique_views": 18,
+    "version_downloads": 8,
+    "version_unique_downloads": 7,
+    "version_unique_views": 18,
+    "version_views": 18,
+    "views": 18
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Engineered Containment: Canonical Definition",
+  "updated": "2026-03-16T22:34:48.106065+00:00"
+}

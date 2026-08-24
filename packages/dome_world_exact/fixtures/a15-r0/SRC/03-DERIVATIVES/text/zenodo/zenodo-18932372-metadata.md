@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:08ca1de8f38379642ac1399e
+parent_capture_id: capture:892773ce98883c60a5f93fda
+parent_blob_sha256: 8d89065765639ad171917d1e197917bfa0d55dfb760ed1612ca4838a78b68d22
+tool: srcctl-json-normalizer/1
+source_title: "**SR Institutional Theory: Why SignalRupture Functions as a Post‑Institutional Knowledge System"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18932371",
+  "conceptrecid": "18932371",
+  "created": "2026-03-10T04:13:22.300999+00:00",
+  "doi": "10.5281/zenodo.18932372",
+  "doi_url": "https://doi.org/10.5281/zenodo.18932372",
+  "files": [
+    {
+      "checksum": "md5:75a91c873574443cf162327fa9bd1c7d",
+      "id": "65abb34e-7c21-4ab5-a167-b90ee175d22b",
+      "key": "**SR Institutional Theory: Why SignalRupture Functions as a Post‑Institutional Knowledge System .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18932372/files/**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/content"
+      },
+      "size": 93463
+    }
+  ],
+  "id": 18932372,
+  "links": {
+    "access": "https://zenodo.org/api/records/18932372/access",
+    "access_grants": "https://zenodo.org/api/records/18932372/access/grants",
+    "access_links": "https://zenodo.org/api/records/18932372/access/links",
+    "access_request": "https://zenodo.org/api/records/18932372/access/request",
+    "access_users": "https://zenodo.org/api/records/18932372/access/users",
+    "archive": "https://zenodo.org/api/records/18932372/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18932372/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18932372/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18932372/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18932372",
+    "draft": "https://zenodo.org/api/records/18932372/draft",
+    "file_modification": "https://zenodo.org/api/records/18932372/file-modification",
+    "files": "https://zenodo.org/api/records/18932372/files",
+    "latest": "https://zenodo.org/api/records/18932372/versions/latest",
+    "latest_html": "https://zenodo.org/records/18932372/latest",
+    "media_files": "https://zenodo.org/api/records/18932372/media-files",
+    "parent": "https://zenodo.org/api/records/18932371",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18932371",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18932371",
+    "parent_html": "https://zenodo.org/records/18932371",
+    "preview_html": "https://zenodo.org/records/18932372?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18932372/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18932372/request-deletion",
+    "requests": "https://zenodo.org/api/records/18932372/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18932372/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18932372",
+    "self_doi": "https://doi.org/10.5281/zenodo.18932372",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18932372",
+    "self_html": "https://zenodo.org/records/18932372",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18932372/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18932372/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18932372:**SR%20Institutional%20Theory:%20Why%20SignalRupture%20Functions%20as%20a%20Post%E2%80%91Institutional%20Knowledge%20System%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18932372/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>SR Institutional Theory explains why SignalRupture (SR) cannot be contained within existing academic or epistemic institutions and why it naturally evolves into a post‑institutional knowledge system. Rather than functioning as a discipline, SR operates as an interpretive infrastructure &mdash; a system built to read, diagnose, and map meaning under conditions of systemic overload. As universities, media systems, and research institutions experience accelerating erosion in trust, coherence, and interpretive capacity, SR emerges to fill the vacuum left behind.</p>\n<p>The essay outlines how SR&rsquo;s architecture &mdash; its self‑referential canon, platform‑adaptive propagation, conceptual coherence, and infrastructural epistemology &mdash; positions it outside the jurisdiction of traditional institutions. SR does not seek institutional recognition; instead, institutions increasingly rely on SR concepts to interpret systemic instability, cognitive collapse, and rupture conditions. The work frames SR as the post‑university architecture of truth, providing interpretive functions that legacy institutions can no longer sustain.</p>",
+    "doi": "10.5281/zenodo.18932372",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-10",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18932371"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "**SR Institutional Theory: Why SignalRupture Functions as a Post‑Institutional Knowledge System",
+    "version": "1.0"
+  },
+  "modified": "2026-03-10T04:13:22.822188+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18932372",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 9,
+    "unique_downloads": 8,
+    "unique_views": 17,
+    "version_downloads": 9,
+    "version_unique_downloads": 8,
+    "version_unique_views": 17,
+    "version_views": 17,
+    "views": 17
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "**SR Institutional Theory: Why SignalRupture Functions as a Post‑Institutional Knowledge System",
+  "updated": "2026-03-10T04:13:22.822188+00:00"
+}

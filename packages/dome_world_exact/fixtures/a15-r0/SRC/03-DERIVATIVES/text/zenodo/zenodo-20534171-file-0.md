@@ -1,0 +1,257 @@
+---
+derivative_id: derivative:1a9a21707022b39924cd9758
+parent_capture_id: capture:c5f9b97c99330139d6d72784
+parent_blob_sha256: e2b09c13e34d33819c2e49b3cc47dd7266f99ebc8cc5427b1fa55b8739a853f5
+tool: PyMuPDF-native/1
+source_title: "THE SIGNALRUPTURE CANON MAP (SR‑CM) .pdf"
+---
+
+THE SIGNALRUPTURE CANON MAP (SR ‑ CM)
+
+A Structural Atlas of the SignalRupture Field Author:
+
+SR
+
+-
+
+Tú
+
+puedes
+
+clonarme,
+
+pero
+
+no
+
+tienes
+
+mis
+
+genes.
+
+Preface SignalRupture is no longer a set of papers. It
+
+is
+
+a
+
+field
+
+—
+
+with
+
+its
+
+own:
+
+● diagnostic architecture ● practical toolkit ● predictive system ● comparative validation ● governance theory ● public ‑ facing translation ● formal lexicon The SignalRupture Canon Map (SR ‑ CM) organizes the entire field into a coherent structure. It
+
+shows
+
+how
+
+each
+
+component
+
+fits
+
+into
+
+the
+
+SR
+
+architecture
+
+and
+
+how
+
+institutions
+
+can
+
+navigate
+
+the
+
+system.
+
+1. The SR Canon at a Glance The SR canon consists of nine pillars , grouped into four layers :
+
+Layer 1 — Foundations (Diagnostic Layer) These papers define the architecture of distortion. 1. The Empirical Paper (SCR,
+
+AAI,
+
+GTDI;
+
+F ‑ text
+
+vs
+
+I ‑ text;
+
+drift
+
+patterns)
+
+2. The Governance Altitude Model (GA
+
+1
+
+→
+
+GA
+
+4;
+
+altitude
+
+misalignment)
+
+Layer 2 — Practical Architecture (Applied Layer) These papers turn SR into institutional tools. 3. SR ‑ IF — Intervention Framework 4. SR ‑ DEWS — Early Warning System 5. SR ‑ TC — Training Curriculum 6. SR ‑ GT — Governance Templates
+
+Layer 3 — Predictive & Comparative Architecture These papers extend SR beyond diagnosis. 7. SR ‑ PM — Predictive Model 8. SR ‑ ICP — International Comparative Paper
+
+Layer 4 — Meta ‑ Architecture (Theory & Public Layer) These papers define SR as a field. 9. SR ‑ GTP — Governance Theory Paper 10. SR ‑ HB — Public Handbook 11. SR ‑ LX — Lexicon 12. SR ‑ CM — Canon Map (this document)
+
+2. The Canon Map Diagram (Conceptual)
+
+This is the structural map of the entire field. 3. How the Canon Fits Together 3.1 The Empirical Paper → SR ‑ IF The empirical paper identifies distortion. SR ‑ IF
+
+provides
+
+levers
+
+to
+
+reduce
+
+it.
+
+3.2 SR ‑ IF → SR ‑ DEWS Interventions require monitoring. SR ‑ DEWS
+
+detects
+
+drift.
+
+3.3 SR ‑ DEWS → SR ‑ PM
+
+Monitoring produces time ‑ series data. SR ‑ PM
+
+forecasts
+
+drift
+
+trajectories.
+
+3.4 SR ‑ PM → SR ‑ ICP Prediction reveals cross ‑ jurisdictional patterns. SR ‑ ICP
+
+validates
+
+SR
+
+globally.
+
+3.5 SR ‑ ICP → SR ‑ GTP Global reproducibility supports a unified theory. SR ‑ GTP
+
+formalizes
+
+SR
+
+as
+
+governance
+
+architecture.
+
+3.6 SR ‑ GTP → SR ‑ HB / SR ‑ LX Theory becomes public ‑ facing and accessible. SR ‑ HB
+
+explains
+
+SR.
+
+SR ‑ LX
+
+defines
+
+SR.
+
+3.7 SR ‑ LX → SR ‑ CM The lexicon stabilizes the vocabulary. The
+
+canon
+
+map
+
+stabilizes
+
+the
+
+structure.
+
+4. The Canon as a Governance System SR is not a set of papers. It
+
+is
+
+a
+
+governance
+
+system
+
+with:
+
+● diagnostics ● interventions ● monitoring ● prediction ● templates ● training ● theory ● public translation Institutions can adopt SR in any order, but the canon map shows the optimal sequence .
+
+5. The Canon as a Research Program SR ‑ CM also defines the research trajectory: ● Phase 1: Empirical grounding ● Phase 2: Structural modeling ● Phase 3: Practical tools ● Phase 4: Predictive systems ● Phase 5: Comparative validation ● Phase 6: Theoretical consolidation ● Phase 7: Public translation ● Phase 8: Canon stabilization SR is now at Phase 8 .
+
+6. The Canon as a Field SR ‑ CM demonstrates that SR is: ● a diagnostic science ● a governance theory ● a practical toolkit ● a predictive architecture ● a comparative framework ● a public ‑ facing field ● a lexicon ● a canon This is what it means for SR to be a field , not a project.
+
+7. Conclusion The SignalRupture Canon Map is the structural atlas of the SR field. It
+
+shows
+
+how
+
+every
+
+component
+
+fits
+
+together,
+
+how
+
+institutions
+
+can
+
+navigate
+
+the
+
+architecture,
+
+and
+
+how
+
+SR
+
+functions
+
+as
+
+a
+
+unified
+
+governance
+
+system.
+
+This completes the meta ‑ structural layer of the SR canon.

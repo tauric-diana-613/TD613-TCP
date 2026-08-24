@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:self-model-comparison:v1",
+  "title": "SignalRupture declared-versus-reconstructed self-model comparison",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "comparison_id", "map_snapshot_id", "reconstructed_graph_snapshot_id",
+    "cutoff_time", "input_snapshot_hashes", "graph_kinds", "observations", "distance_value",
+    "distance_rubric_id", "status"
+  ],
+  "properties": {
+    "schema_version": {"const": "self-model-comparison/v1"},
+    "comparison_id": {"type": "string", "minLength": 1},
+    "map_snapshot_id": {"type": "string", "minLength": 1},
+    "reconstructed_graph_snapshot_id": {"type": "string", "minLength": 1},
+    "cutoff_time": {"type": "string"},
+    "input_snapshot_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "minItems": 1},
+    "graph_kinds": {"type": "array", "items": {"enum": ["HISTORICAL", "CONCEPTUAL", "OPERATIONAL", "NAVIGATIONAL", "AUTHORITY"]}, "minItems": 1, "uniqueItems": true},
+    "observations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["witnessed_unmapped", "declared_unsupported", "later_retyped", "not_enumerated_in_later_map", "recognition_lag_candidates"],
+      "properties": {
+        "witnessed_unmapped": {"type": "array", "items": {"type": "string"}},
+        "declared_unsupported": {"type": "array", "items": {"type": "string"}},
+        "later_retyped": {"type": "array", "items": {"type": "string"}},
+        "not_enumerated_in_later_map": {"type": "array", "items": {"type": "string"}},
+        "recognition_lag_candidates": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "distance_value": {"const": null},
+    "distance_rubric_id": {"const": null},
+    "status": {"enum": ["NOT_RUN", "PARTIAL", "COMPLETE_WITHIN_BOUNDED_SCOPE"]},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

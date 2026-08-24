@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:9ff6136a267faa74673d1ee1
+parent_capture_id: capture:9cbd572aeaa002c6a4354e46
+parent_blob_sha256: 3693c9e2a7830a1dfd033626c9ab0a95e1f5fc3931fb0c5bf79ca14dff23c336
+tool: srcctl-json-normalizer/1
+source_title: "Engineered Containment: How Systems Design the Boundaries of Failure"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18615850",
+  "conceptrecid": "18615850",
+  "created": "2026-02-12T01:02:56.048915+00:00",
+  "doi": "10.5281/zenodo.18615851",
+  "doi_url": "https://doi.org/10.5281/zenodo.18615851",
+  "files": [
+    {
+      "checksum": "md5:bdc1e72d46e3d41abcfd8222c6339a48",
+      "id": "825086b3-89e6-4c9b-a500-1540ef627218",
+      "key": "Engineered Containment: How Systems Design the Boundaries of Failure  .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18615851/files/Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/content"
+      },
+      "size": 101746
+    }
+  ],
+  "id": 18615851,
+  "links": {
+    "access": "https://zenodo.org/api/records/18615851/access",
+    "access_grants": "https://zenodo.org/api/records/18615851/access/grants",
+    "access_links": "https://zenodo.org/api/records/18615851/access/links",
+    "access_request": "https://zenodo.org/api/records/18615851/access/request",
+    "access_users": "https://zenodo.org/api/records/18615851/access/users",
+    "archive": "https://zenodo.org/api/records/18615851/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18615851/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18615851/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18615851/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18615851",
+    "draft": "https://zenodo.org/api/records/18615851/draft",
+    "file_modification": "https://zenodo.org/api/records/18615851/file-modification",
+    "files": "https://zenodo.org/api/records/18615851/files",
+    "latest": "https://zenodo.org/api/records/18615851/versions/latest",
+    "latest_html": "https://zenodo.org/records/18615851/latest",
+    "media_files": "https://zenodo.org/api/records/18615851/media-files",
+    "parent": "https://zenodo.org/api/records/18615850",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18615850",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18615850",
+    "parent_html": "https://zenodo.org/records/18615850",
+    "preview_html": "https://zenodo.org/records/18615851?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18615851/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18615851/request-deletion",
+    "requests": "https://zenodo.org/api/records/18615851/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18615851/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18615851",
+    "self_doi": "https://doi.org/10.5281/zenodo.18615851",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18615851",
+    "self_html": "https://zenodo.org/records/18615851",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18615851/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18615851/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18615851:Engineered%20Containment:%20How%20Systems%20Design%20the%20Boundaries%20of%20Failure%20%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18615851/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This conceptual illustration visualizes the architecture of Engineered Containment as a minimalist, high-contrast institutional structure. The image depicts a system with visible outer walls and hidden internal compartments, emphasizing how failure is choreographed to remain peripheral. A controlled failure path is illuminated, showing sacrificial nodes and narrative choke points, while the core infrastructure remains untouched. The design evokes a blueprint-like aesthetic, reinforcing the essay&rsquo;s argument that containment is not reactive but pre-designed. This image complements the essay&rsquo;s diagnostic mapping of opacity, exposure, and moral technology within institutional governance.</p>",
+    "doi": "10.5281/zenodo.18615851",
+    "keywords": [
+      "Institutions",
+      "Social Issues",
+      "Critical Theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-12",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18615850"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Engineered Containment: How Systems Design the Boundaries of Failure",
+    "version": "1.0"
+  },
+  "modified": "2026-02-12T01:13:00.087465+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18615851",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 12,
+    "unique_downloads": 9,
+    "unique_views": 24,
+    "version_downloads": 12,
+    "version_unique_downloads": 9,
+    "version_unique_views": 24,
+    "version_views": 26,
+    "views": 26
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Engineered Containment: How Systems Design the Boundaries of Failure",
+  "updated": "2026-02-12T01:13:00.087465+00:00"
+}

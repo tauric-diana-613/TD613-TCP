@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:8d0c35c4d25ca6e7f95aa61a
+parent_capture_id: capture:d032a0fc2f9685763e047cb9
+parent_blob_sha256: 600c299c2239469737e885a47c9a77b3fe04a994489555fc1cc94464c98aec37
+tool: srcctl-json-normalizer/1
+source_title: "The Coercive Economy: When Work Becomes a Containment System"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18764909",
+  "conceptrecid": "18764909",
+  "created": "2026-02-25T01:36:58.106858+00:00",
+  "doi": "10.5281/zenodo.18764910",
+  "doi_url": "https://doi.org/10.5281/zenodo.18764910",
+  "files": [
+    {
+      "checksum": "md5:e928b438f4622c9d85a6ccbfd452635f",
+      "id": "2f5d8709-4472-40ef-a5cc-3a18b87e2e8d",
+      "key": "The Coercive Economy: When Work Becomes a Containment System .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18764910/files/The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/content"
+      },
+      "size": 87985
+    }
+  ],
+  "id": 18764910,
+  "links": {
+    "access": "https://zenodo.org/api/records/18764910/access",
+    "access_grants": "https://zenodo.org/api/records/18764910/access/grants",
+    "access_links": "https://zenodo.org/api/records/18764910/access/links",
+    "access_request": "https://zenodo.org/api/records/18764910/access/request",
+    "access_users": "https://zenodo.org/api/records/18764910/access/users",
+    "archive": "https://zenodo.org/api/records/18764910/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18764910/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18764910/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18764910/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18764910",
+    "draft": "https://zenodo.org/api/records/18764910/draft",
+    "file_modification": "https://zenodo.org/api/records/18764910/file-modification",
+    "files": "https://zenodo.org/api/records/18764910/files",
+    "latest": "https://zenodo.org/api/records/18764910/versions/latest",
+    "latest_html": "https://zenodo.org/records/18764910/latest",
+    "media_files": "https://zenodo.org/api/records/18764910/media-files",
+    "parent": "https://zenodo.org/api/records/18764909",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18764909",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764909",
+    "parent_html": "https://zenodo.org/records/18764909",
+    "preview_html": "https://zenodo.org/records/18764910?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18764910/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18764910/request-deletion",
+    "requests": "https://zenodo.org/api/records/18764910/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18764910/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18764910",
+    "self_doi": "https://doi.org/10.5281/zenodo.18764910",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18764910",
+    "self_html": "https://zenodo.org/records/18764910",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18764910/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18764910/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18764910:The%20Coercive%20Economy:%20When%20Work%20Becomes%20a%20Containment%20System%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18764910/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Coercive Economy: When Work Becomes a Containment System is a canonical SignalRupture essay analyzing how modern economies use employment as a mechanism of control rather than a path to autonomy. While institutions frame work as a source of dignity, purpose, and upward mobility, the material conditions of contemporary labor&mdash;low wages, unpredictable schedules, toxic management, rising living costs, and structural dependency&mdash;reveal a system designed to trap individuals in cycles of survival. This essay maps how the coercive economy operates through architectural constraints that make exit impossible and compliance mandatory, transforming work into a containment system maintained by economic necessity and institutional rhetoric. By reframing employment as a form of captivity rather than empowerment, the piece deepens the SignalRupture framework for understanding labor exploitation, autonomy collapse, and the infrastructural production of precarity in the post‑web era.</p>",
+    "doi": "10.5281/zenodo.18764910",
+    "keywords": [
+      "Critical Theory",
+      "Social science",
+      "Social issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18764909"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Coercive Economy: When Work Becomes a Containment System",
+    "version": "1.0"
+  },
+  "modified": "2026-02-25T01:36:58.655111+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18764910",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 15,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 15,
+    "version_views": 15,
+    "views": 15
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Coercive Economy: When Work Becomes a Containment System",
+  "updated": "2026-02-25T01:36:58.655111+00:00"
+}

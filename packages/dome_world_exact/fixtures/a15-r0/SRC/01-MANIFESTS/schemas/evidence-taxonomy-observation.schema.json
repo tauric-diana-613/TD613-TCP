@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:evidence-taxonomy-observation:v1",
+  "title": "SignalRupture source-specific evidence taxonomy observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "taxonomy_id",
+    "manifestation_id",
+    "status",
+    "raw_classes",
+    "origin",
+    "evidence_ids",
+    "interpretive_limit"
+  ],
+  "properties": {
+    "schema_version": {"const": "evidence-taxonomy-observation/v1"},
+    "taxonomy_id": {"type": "string", "minLength": 1},
+    "manifestation_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["WITNESSED_IN_LOCAL_METADATA", "NOT_WITNESSED_IN_LOCAL_METADATA", "PARTIAL", "DISPUTED"]},
+    "raw_classes": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "WITNESSED_IN_LOCAL_METADATA"}},
+        "required": ["status"]
+      },
+      "then": {"properties": {"raw_classes": {"minItems": 1}}}
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "NOT_WITNESSED_IN_LOCAL_METADATA"}},
+        "required": ["status"]
+      },
+      "then": {"properties": {"raw_classes": {"maxItems": 0}}}
+    }
+  ]
+}

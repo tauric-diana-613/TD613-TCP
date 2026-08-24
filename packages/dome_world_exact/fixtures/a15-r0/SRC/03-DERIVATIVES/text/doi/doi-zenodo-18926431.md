@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:8841c5fa67a153a5667ff9c8
+parent_capture_id: capture:9da0b6f7e0b799ff1b1cb993
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Platform Power and the Collapse of Democratic Legibility"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18926431
+Final URL: https://zenodo.org/records/18926431
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18926431 -> https://zenodo.org/doi/10.5281/zenodo.18926431
+302 https://zenodo.org/doi/10.5281/zenodo.18926431 -> https://zenodo.org/records/18926431

@@ -1,0 +1,8 @@
+{"path":"assay-manifest.json","sha256":"2e7400c87eb20268b08954cab947c28115d6aa5910cb9a1eb2b29c54bf8522a7","bytes":4119}
+{"path":"declared-language-candidates.jsonl","sha256":"81686d21118fa02b03292129c8be5d6ee8cfd56ec2945e5134c5a32403dba2bf","bytes":910573}
+{"path":"implicit-term-occurrences.jsonl","sha256":"2e3d143d65666463e094da745c3044fee267ce7ccfd3a3cdb3ac22206cec3273","bytes":24205}
+{"path":"input-hashes.jsonl","sha256":"1244b8b8c323ea28754cc5f40cc061f1252c72902f260ac2f5fc1a4f04ba666d","bytes":2676}
+{"path":"interpretive-results.jsonl","sha256":"a450a99937aabd57dacd68ab36c01ec733de1f126ed9f9bb6ae61e05205dc026","bytes":6629}
+{"path":"retitle-assay.jsonl","sha256":"c2e90ccccb0e6d0bc630a0b16042fd7c9ef730978d5641377df56a19c771cc2c","bytes":27734}
+{"path":"summary.json","sha256":"5cd7def406257b19f875049b81fc588f4b67a6488bc39ca303a09ca33b559666","bytes":3865}
+{"path":"witnessed-edge-candidates.jsonl","sha256":"bde9d124e896ff551fd7dd088fb8ac828b8fdb04ecfcdc7795329319c36d5ceb","bytes":11661}

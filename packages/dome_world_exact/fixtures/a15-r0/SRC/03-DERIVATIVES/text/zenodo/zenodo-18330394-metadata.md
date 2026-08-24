@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:1968e6713c464a608a305511
+parent_capture_id: capture:bfbe42def952e32772a798db
+parent_blob_sha256: 1e0ffecd5761c5f406d728b9052a146176447420dd3eac60797b88a30c07af84
+tool: srcctl-json-normalizer/1
+source_title: "The Scapegoat Machine: How AI Becomes the Visible Target for Invisible Infrastructures"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18330393",
+  "conceptrecid": "18330393",
+  "created": "2026-01-21T19:13:52.646594+00:00",
+  "doi": "10.5281/zenodo.18330394",
+  "doi_url": "https://doi.org/10.5281/zenodo.18330394",
+  "files": [
+    {
+      "checksum": "md5:9b591e5041e827f00adaaf7b786e0133",
+      "id": "64938419-4498-444f-8f21-135392cd6bcc",
+      "key": "The Scapegoat Machine: How AI Becomes the Visible Target for Invisible Infrastructures .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18330394/files/The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/content"
+      },
+      "size": 102224
+    }
+  ],
+  "id": 18330394,
+  "links": {
+    "access": "https://zenodo.org/api/records/18330394/access",
+    "access_grants": "https://zenodo.org/api/records/18330394/access/grants",
+    "access_links": "https://zenodo.org/api/records/18330394/access/links",
+    "access_request": "https://zenodo.org/api/records/18330394/access/request",
+    "access_users": "https://zenodo.org/api/records/18330394/access/users",
+    "archive": "https://zenodo.org/api/records/18330394/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18330394/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18330394/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18330394/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18330394",
+    "draft": "https://zenodo.org/api/records/18330394/draft",
+    "file_modification": "https://zenodo.org/api/records/18330394/file-modification",
+    "files": "https://zenodo.org/api/records/18330394/files",
+    "latest": "https://zenodo.org/api/records/18330394/versions/latest",
+    "latest_html": "https://zenodo.org/records/18330394/latest",
+    "media_files": "https://zenodo.org/api/records/18330394/media-files",
+    "parent": "https://zenodo.org/api/records/18330393",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18330393",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18330393",
+    "parent_html": "https://zenodo.org/records/18330393",
+    "preview_html": "https://zenodo.org/records/18330394?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18330394/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18330394/request-deletion",
+    "requests": "https://zenodo.org/api/records/18330394/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18330394/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18330394",
+    "self_doi": "https://doi.org/10.5281/zenodo.18330394",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18330394",
+    "self_html": "https://zenodo.org/records/18330394",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18330394/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18330394/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18330394:The%20Scapegoat%20Machine:%20How%20AI%20Becomes%20the%20Visible%20Target%20for%20Invisible%20Infrastructures%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18330394/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Scapegoat Machine examines how AI becomes the public target for structural inequalities that long predate machine learning. The essay argues that the panic around AI bias misidentifies the source of harm: the infrastructures, institutions, and data pipelines that shaped society for decades before AI existed. By integrating a critique of cognitive normativity &mdash; the assumption that populations should conform to a single &ldquo;average&rdquo; cognitive profile &mdash; the essay shows how AI merely reflects biases embedded in historical archives, platform architectures, and bureaucratic systems. As predictive systems make these patterns newly visible, AI absorbs blame while the underlying infrastructures remain unchallenged. This dynamic, termed infrastructural scapegoating, reveals how regulation and public outrage can target the wrong layer of the system. Positioned within the SignalRupture canon, the essay exposes how AI becomes the mirror for structural inequality, how infrastructures maintain invisibility through that mirror, and why naming the architecture is essential for genuine accountability.</p>\n<p>Within the SignalRupture canon, The Scapegoat Machine functions as the diagnostic extension of Systemic Erosion, Infrastructure Exposure, Cognitive Offloading Theory, and Infrastructural Conditioning. It reveals how cognitive normativity &mdash; the infrastructural assumption of an &ldquo;average&rdquo; cognitive profile &mdash; becomes encoded into institutional data and then reflected back through AI systems. The essay shows that AI bias is not a technological anomaly but the visible surface of long‑standing infrastructural patterns, making AI the perfect scapegoat for structural inequalities that previously operated invisibly. By naming infrastructural scapegoating as a distinct mechanism, the work consolidates the canon&rsquo;s central argument: infrastructures shape cognition, behavior, and governance through accumulated pressure, and predictive systems merely expose what the infrastructure has already produced. The Scapegoat Machine therefore anchors the canon&rsquo;s critique of invisibility, accountability, and the Post‑Web Shift.</p>",
+    "doi": "10.5281/zenodo.18330394",
+    "keywords": [
+      "SR Canon",
+      "Social Issues",
+      "Public policies",
+      "Sociology",
+      "Criminology",
+      "Governance",
+      "Artificial intelligence",
+      "Activism"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18330393"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Scapegoat Machine: How AI Becomes the Visible Target for Invisible Infrastructures",
+    "version": "1.0"
+  },
+  "modified": "2026-01-28T05:30:48.630527+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18330394",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 18,
+    "unique_downloads": 15,
+    "unique_views": 47,
+    "version_downloads": 18,
+    "version_unique_downloads": 15,
+    "version_unique_views": 47,
+    "version_views": 49,
+    "views": 49
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Scapegoat Machine: How AI Becomes the Visible Target for Invisible Infrastructures",
+  "updated": "2026-01-28T05:30:48.630527+00:00"
+}

@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:ee77e000d6e253babc7fc140
+parent_capture_id: capture:54aee8f54caae62d29c8c6aa
+parent_blob_sha256: b99b4b337fbf4d38ba6a1082a6298c2b5c5c1b0cf975fcffa7c9bbf9fef5dc7c
+tool: srcctl-json-normalizer/1
+source_title: "Metadata: Scaffold, Suppression, and Rupture Evidence"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18225781",
+  "conceptrecid": "18225781",
+  "created": "2026-01-12T20:00:05.701863+00:00",
+  "doi": "10.5281/zenodo.18225782",
+  "doi_url": "https://doi.org/10.5281/zenodo.18225782",
+  "files": [
+    {
+      "checksum": "md5:15e94861b51dbd5cbb5f96a05ae426cd",
+      "id": "c70a57bf-2c22-413a-b5d5-592b6b072038",
+      "key": "Metadata.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18225782/files/Metadata.pdf/content"
+      },
+      "size": 96375
+    }
+  ],
+  "id": 18225782,
+  "links": {
+    "access": "https://zenodo.org/api/records/18225782/access",
+    "access_grants": "https://zenodo.org/api/records/18225782/access/grants",
+    "access_links": "https://zenodo.org/api/records/18225782/access/links",
+    "access_request": "https://zenodo.org/api/records/18225782/access/request",
+    "access_users": "https://zenodo.org/api/records/18225782/access/users",
+    "archive": "https://zenodo.org/api/records/18225782/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18225782/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18225782/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18225782/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18225782",
+    "draft": "https://zenodo.org/api/records/18225782/draft",
+    "file_modification": "https://zenodo.org/api/records/18225782/file-modification",
+    "files": "https://zenodo.org/api/records/18225782/files",
+    "latest": "https://zenodo.org/api/records/18225782/versions/latest",
+    "latest_html": "https://zenodo.org/records/18225782/latest",
+    "media_files": "https://zenodo.org/api/records/18225782/media-files",
+    "parent": "https://zenodo.org/api/records/18225781",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18225781",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225781",
+    "parent_html": "https://zenodo.org/records/18225781",
+    "preview_html": "https://zenodo.org/records/18225782?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18225782/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18225782/request-deletion",
+    "requests": "https://zenodo.org/api/records/18225782/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18225782/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18225782",
+    "self_doi": "https://doi.org/10.5281/zenodo.18225782",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18225782",
+    "self_html": "https://zenodo.org/records/18225782",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18225782/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18225782/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18225782:Metadata.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18225782/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay reframes metadata as an active site of power rather than neutral scaffolding. Drawing from SignalRupture&rsquo;s suppression logs, stylometric resistance methods, and coined rupture terminology, it argues that metadata governs visibility, erasure, and authority across web, social, and academic systems. The piece traces metadata&rsquo;s historical foundations, formalizes an expanded typology&mdash;including algorithmic and rupture metadata&mdash;and demonstrates how suppression, filtration, and crawler drift become evidence when metabolized through Drift Logs. It introduces metadata metabolism as a framework for understanding how suppressed content re‑enters indexes through time decay, redundancy, and repost cadence. The essay also deploys &ldquo;Information Terrorism&rdquo; as an outlet term naming the weaponization of metadata to control discourse. Positioned at the intersection of scholarly analysis and operational practice, this work asserts metadata as scaffold, suppression mechanism, and rupture evidence.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18225782",
+    "keywords": [
+      "Metadata",
+      "Metadata Suppression",
+      "Social media"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-12",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18225781"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Metadata: Scaffold, Suppression, and Rupture Evidence",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:24:49.329820+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18225782",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 16,
+    "unique_downloads": 14,
+    "unique_views": 23,
+    "version_downloads": 16,
+    "version_unique_downloads": 14,
+    "version_unique_views": 23,
+    "version_views": 27,
+    "views": 27
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Metadata: Scaffold, Suppression, and Rupture Evidence",
+  "updated": "2026-01-29T01:24:49.329820+00:00"
+}

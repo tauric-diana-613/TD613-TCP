@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:representation-family:v1",
+  "title": "SignalRupture non-collapsed representation family",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "family_id",
+    "status",
+    "members",
+    "origin",
+    "relation_provenance_mode",
+    "evidence_ids",
+    "interpretive_limit"
+  ],
+  "properties": {
+    "schema_version": {"const": "representation-family/v1"},
+    "family_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "role": {"type": "string", "minLength": 1}
+        }
+      },
+      "minItems": 2
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+    "relation_provenance_mode": {
+      "enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "MIXED", "UNRESOLVED"]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "claim_scope_pattern": {"type": "string", "minLength": 1},
+    "metadata_contamination": {"type": "boolean"},
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  }
+}
