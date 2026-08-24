@@ -259,16 +259,18 @@ function tablePremiseCertificate(generatorTables) {
 
 function symbolicCanonicalCertificate(parentNormalForm) {
   const premises = tablePremiseCertificate(parentNormalForm.generator_tables);
+
   const mutationPeriodTwo = clone(parentNormalForm.generator_tables);
   mutationPeriodTwo.D_Q.S2 = [...mutationPeriodTwo.D_Q.S2];
   mutationPeriodTwo.D_Q.S2[1] += 1;
-  const mutationCycle = clone(parentNormalForm.generator_tables);
-  mutationCycle.F_Q.S0 = [...mutationCycle.F_Q.S0];
-  const witnessCoordinate = premises.nonzero_t_cycle_witness_coordinates?.[0] ?? 1;
-  for (const season of SEASONS) mutationCycle.D_Q[season][witnessCoordinate] = 1;
-
   const periodTwoMutationRejected = !tablePremiseCertificate(mutationPeriodTwo).passed;
-  const cycleWitnessMutationRejected = !tablePremiseCertificate(mutationCycle).passed;
+
+  const mutationCycleWitness = clone(parentNormalForm.generator_tables);
+  for (const coordinate of premises.nonzero_t_cycle_witness_coordinates ?? []) {
+    for (const season of SEASONS) mutationCycleWitness.D_Q[season][coordinate] = 1;
+  }
+  const cycleWitnessMutationRejected = !tablePremiseCertificate(mutationCycleWitness).passed;
+
   const passed = premises.passed && periodTwoMutationRejected && cycleWitnessMutationRejected;
   return freeze({
     passed,
@@ -278,6 +280,7 @@ function symbolicCanonicalCertificate(parentNormalForm) {
     unique_block_decomposition: true,
     rewrite_block_action: 'a_i += 1; a_(i+2) -= 1',
     rewrite_invariants: freeze(['t', 'E', 'O']),
+    redex_existence_argument: 'If some a_j>0 for j>=2, the preceding two T separators expose T Q^(a_(j-1)) T Q as a typed R_k redex using the first Q in block j. Conversely, if every a_j=0 for j>=2, no R_k left side can occur.',
     descent_potential: 'P(w)=sum_i i*a_i; each R_k step decreases P by exactly 2',
     irreducible_characterization: 'R_k-irreducible iff a_i=0 for every i>=2',
     canonical_form: 't=0: Q^E; t>=1: Q^E T Q^O T^(t-1)',
@@ -286,7 +289,7 @@ function symbolicCanonicalCertificate(parentNormalForm) {
     theorem: 'For each retained lawful source h_s separately and all finite authored T/Q words u,v: Target_s(u)=Target_s(v) iff (t,E,O)_u=(t,E,O)_v iff NF_R(u)=NF_R(v).',
     synthetic_dependency_controls: freeze({
       period_two_question_delta_mutation_rejected: periodTwoMutationRejected,
-      t_cycle_witness_erasure_mutation_rejected: cycleWitnessMutationRejected,
+      all_t_cycle_witness_coordinates_poisoned_and_rejected: cycleWitnessMutationRejected,
     }),
     bounded_enumeration_used_as_universal_proof: false,
   });
