@@ -30,7 +30,7 @@ function bigintBitsForCardinality(value) {
 
 function chooseBigInt(n, k) {
   if (!nat(n) || !nat(k) || k > n) return null;
-  let r = Math.min(k, n - k);
+  const r = Math.min(k, n - k);
   let out = 1n;
   for (let i = 1; i <= r; i += 1) {
     out = (out * BigInt(n - r + i)) / BigInt(i);
@@ -174,7 +174,12 @@ export function fixedC1RouteGeneratingPolynomial(t, E, O) {
   if (!even || !odd) return freeze({ status: 'FIXED_C1_ROUTE_GENERATING_POLYNOMIAL_NUMERIC_ABSTAIN' });
   const product = convolveBigInt(even, odd);
   const total = product.reduce((acc, x) => acc + x, 0n);
-  const expected = chooseBigInt(E + a, E) * chooseBigInt(O + b, O);
+  const evenCount = chooseBigInt(E + a, E);
+  const oddCount = chooseBigInt(O + b, O);
+  if (evenCount === null || oddCount === null) {
+    return freeze({ status: 'FIXED_C1_ROUTE_GENERATING_POLYNOMIAL_NUMERIC_ABSTAIN' });
+  }
+  const expected = evenCount * oddCount;
   const passed = total === expected;
   return freeze({
     status: passed ? 'FIXED_C1_ROUTE_GENERATING_POLYNOMIAL_DERIVED' : 'FIXED_C1_ROUTE_GENERATING_POLYNOMIAL_INTERNAL_MISMATCH',
@@ -251,7 +256,13 @@ export function enumerateFixedBaseRoutes(t, E, O) {
     if (O !== 0) return freeze({ status: 'FIXED_BASE_ROUTE_ENUMERATION_ABSTAINS_UNLAWFUL_T0' });
     const blocks = [E];
     const derived = c1FromBlocks(blocks);
-    return freeze({ status: 'FIXED_BASE_ROUTE_ENUMERATION_DERIVED', t, E, O, rows: freeze([derived]) });
+    const row = freeze({
+      evenAllocation: freeze([E]),
+      oddAllocation: freeze([]),
+      blocks: freeze(blocks),
+      derived,
+    });
+    return freeze({ status: 'FIXED_BASE_ROUTE_ENUMERATION_DERIVED', t, E, O, rows: freeze([row]) });
   }
   const a = Math.floor(t / 2);
   const b = Math.floor((t - 1) / 2);
@@ -428,15 +439,19 @@ function custodyHostiles() {
 
 function edgeHostiles() {
   const t0 = fixedC1RouteCount(0, 7, 0, 0);
+  const t0Fiber = enumerateFixedC1RouteFiber(0, 7, 0, 0);
   const t1 = fixedC1RouteCount(1, 4, 3, 3);
   const parity = fixedC1RouteCount(3, 1, 1, 2);
   const high = fixedC1RouteCount(3, 1, 1, 9);
   return freeze({
     passed: t0.route_count === '1' && t0.minimum_fixed_width_binary_bits === 0
+      && t0Fiber.status === 'FIXED_C1_ROUTE_FIBER_ENUMERATED'
+      && t0Fiber.rows.length === 1
+      && key(t0Fiber.rows[0].blocks) === key([7])
       && t1.route_count === '1' && t1.minimum_fixed_width_binary_bits === 0
       && parity.status === 'FIXED_C1_ROUTE_COUNT_ABSTAINS_UNLAWFUL_STATE'
       && high.status === 'FIXED_C1_ROUTE_COUNT_ABSTAINS_UNLAWFUL_STATE',
-    t0, t1, parity, high,
+    t0, t0Fiber, t1, parity, high,
   });
 }
 
