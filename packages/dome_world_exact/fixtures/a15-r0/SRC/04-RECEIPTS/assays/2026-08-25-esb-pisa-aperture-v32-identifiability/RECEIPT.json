@@ -1,0 +1,101 @@
+{
+  "claim_ceiling": [
+    "TD613-authored calibration geometry",
+    "not SR empirical validation",
+    "not proof direct joint-table measurement is feasible or noiseless"
+  ],
+  "claim_conditioned_stop": {
+    "exact_union_after_direct_union_observation": "IDENTIFIABLE_WHILE_FULL_JOINT_REMAINS_UNDERDETERMINED",
+    "exact_union_from_marginals_only": "NOT_IDENTIFIABLE",
+    "full_joint_after_triple": "FULL_RANK_BUT_LOCALLY_FRAGILE",
+    "full_joint_direct_cell_table": "IDENTIFIABLE_AND_STABLE_UNDER_FIXTURE",
+    "full_joint_from_all_pairwise_without_triple": "NOT_IDENTIFIABLE"
+  },
+  "families": {
+    "DIRECT_JOINT_CELL_TABLE": {
+      "condition_number": 1.0,
+      "nullity": 0,
+      "rank": 8,
+      "sigma_min": 1.0,
+      "v32_fixture_classification": [
+        "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "ASK_NOTHING"
+      ]
+    },
+    "MARGINALS_ONLY": {
+      "condition_number": "Infinity",
+      "nullity": 4,
+      "rank": 4,
+      "sigma_min": 0.0,
+      "union_claim_identifiable": false,
+      "v32_fixture_classification": [
+        "STRUCTURAL_RANK_DEFICIT",
+        "PROPOSE"
+      ]
+    },
+    "MARGINALS_PLUS_DIRECT_UNION": {
+      "nullity": 3,
+      "rank": 5,
+      "union_claim_identifiable": true
+    },
+    "PLUS_ALL_PAIRWISE": {
+      "condition_number": "Infinity",
+      "nullity": 1,
+      "rank": 7,
+      "sigma_min": 0.0,
+      "v32_fixture_classification": [
+        "STRUCTURAL_RANK_DEFICIT",
+        "PROPOSE"
+      ]
+    },
+    "PLUS_ALL_PAIRWISE_AND_TRIPLE": {
+      "condition_number": 17.94427190999915,
+      "nullity": 0,
+      "rank": 8,
+      "sigma_min": 0.23606797749978978,
+      "v32_fixture_classification": [
+        "NUMERICAL_STABILITY_DEFICIT",
+        "PROPOSE"
+      ]
+    },
+    "PLUS_ONE_PAIRWISE": {
+      "condition_number": "Infinity",
+      "nullity": 3,
+      "rank": 5,
+      "sigma_min": 0.0,
+      "v32_fixture_classification": [
+        "STRUCTURAL_RANK_DEFICIT",
+        "PROPOSE"
+      ]
+    }
+  },
+  "local_thresholds": {
+    "authority": "FIXTURE_DECLARED_LOCAL",
+    "condition_number_ceiling": 10.0,
+    "sigma_min_floor": 0.25
+  },
+  "schema": "td613.aperture.v32-esb-pisa-joint-exposure-calibration/v0.1",
+  "source_frechet_union_bounds": [
+    0.3,
+    0.58
+  ],
+  "source_marginals": {
+    "bullying": 0.2,
+    "digital_distraction": 0.3,
+    "food_insecurity": 0.08
+  },
+  "source_records": [
+    "zenodo:22019313",
+    "zenodo:22019370"
+  ],
+  "latent_state_order": [
+    "000",
+    "001",
+    "010",
+    "011",
+    "100",
+    "101",
+    "110",
+    "111"
+  ]
+}
