@@ -89,10 +89,52 @@ Explore SR identity.
 
 The same manuscript describes SR as lens / orientation, hands concepts/categories/mechanisms/signatures/diagnostics to the reader, and ends with instructions to carry proximity into interpretation.
 
+### Hostile target-resolution sample
+
+Distinctive `Explore:X` targets do not behave like hard identifiers.
+
+Observed classes:
+
+```text
+Explore eroded subject
+  -> strong standalone-work / version neighborhood exists around The Eroded Subject
+
+Explore collapse navigation
+  -> current exact-phrase resolution remains internal to Collapse Sociology
+
+Explore terminality theory
+  -> current exact-phrase resolution remains internal to Collapse Sociology
+
+Explore new human sciences
+  -> current exact-phrase resolution remains internal to Collapse Sociology
+
+Explore SR Grand Unified Theory
+  -> exact wording remains internal while the manuscript separately uses the related alias SR-GUT
+```
+
+This mixed resolution profile supports:
+
+```text
+EXPLORE_X = semantic address / conceptual traversal cue
+EXPLORE_X != URI / DOI / exact work identifier
+```
+
+A semantic address can therefore point to:
+
+```text
+standalone work neighborhood
+internal concept neighborhood
+alias / renamed conceptual object
+possible later manifestation
+```
+
+This supplies a normal mechanism for apparently `future-resolving` Explore targets without requiring prediction or hidden private knowledge.
+
 Bounded classification:
 
 ```text
 EXPLORE_X_HUMAN_CONCEPTUAL_TRAVERSAL_MARKER = witnessed
+EXPLORE_X_SEMANTIC_ADDRESS_NOT_IDENTIFIER = supported
 EXPLORE_X_FORMAL_GRAPH_EDGE_ENCODING = not_witnessed
 EXPLORE_X_SPECIFIC_EDGE_TYPE = unearned
 ```
@@ -223,6 +265,8 @@ DIRECTED CONCEPTUAL GRAPH
   - methodological compatibility
         |
         +---- reader projection ----> Explore:X / signatures / lens / orientation
+        |                                  |
+        |                                  +-> semantic address, not hard identifier
         |
         +---- surface projection ---> Surface Translation
                                       + stylometric coherence
@@ -279,6 +323,7 @@ TYPED_CONCEPTUAL_GRAPH_SOURCE_WITNESSED
 CANONICAL_COMPRESSION_NODE_LAYER_SOURCE_WITNESSED
 SURFACE_TRANSLATION_SOURCE_WITNESSED
 HUMAN_CONCEPTUAL_TRAVERSAL_MARKER_WITNESSED
+EXPLORE_X_SEMANTIC_ADDRESS_NOT_IDENTIFIER_SUPPORTED
 TYPED_REPRESENTATIONAL_SPECIALIZATION_WITNESSED
 SEMANTIC_NAVIGATION_STACK_RECONSTRUCTION_SUPPORTED
 ```
@@ -306,7 +351,7 @@ authorship from resemblance
 
 ## Hostile controls still required
 
-1. Resolve a sample of `Explore:X` targets to captured node identities and classify whether target behavior beats neighboring-domain completion.
+1. Compare `Explore:X` resolution against matched non-Explore concept phrases / neighboring-domain completion.
 2. Compare exact declared signature-library members against non-library epithets under blinded host-fit coding.
 3. Run anchor ablation: remove signature / canonical paragraph / explicit references and test whether graph neighborhood remains recoverable.
 4. Run shuffled-edge and template-preserving nulls.
@@ -317,6 +362,8 @@ authorship from resemblance
 
 ```text
 human traversal marker != machine edge encoding
+semantic address != exact identifier
+future resolution != prediction
 canonical paragraph != whole node
 compression != empirical truth
 semantic anchor != authorship fingerprint
