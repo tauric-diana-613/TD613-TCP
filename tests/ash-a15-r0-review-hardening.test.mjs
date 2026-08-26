@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_772_RECEIPT = '1da4875227a97af4a8a41d00955c73b4ed45112d';
-execFileSync('git', ['cat-file', '-e', `${PARENT_772_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_772_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_773_RECEIPT = '50ada0bb0e7b25f9c1bde7e2feafeebbb5067a8f';
+execFileSync('git', ['cat-file', '-e', `${PARENT_773_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_773_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_772_RECEIPT}..HEAD`,
+    `${PARENT_773_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -24,12 +24,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_POST_WITNESS_REPAIR_PREREGISTRATION_001.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-h2-transport-classification-holonomy-completeness.js',
-  'tests/ash-a15-r0-aperture-pedagogue-h2-transport-classification-holonomy-completeness.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_HOLONOMY_FAITHFULNESS_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_HOLONOMY_FAITHFULNESS_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_HOLONOMY_FAITHFULNESS_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-exact-bar-h2-torsion-holonomy-faithfulness.js',
+  'tests/ash-a15-r0-aperture-pedagogue-exact-bar-h2-torsion-holonomy-faithfulness.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -37,14 +36,14 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#772 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#773 exact-H2 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
-// Parent authority is carried by exact #772 receipt ancestry.
+// Parent authority is carried by exact #773 receipt ancestry.
 // Execute only current science plus standing sharded and wedding sentinels;
 // do not recursively reenact receipt-witnessed ancestor assays.
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-h2-transport-classification-holonomy-completeness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-exact-bar-h2-torsion-holonomy-faithfulness.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 H2 transport classification and closed formal 2-holonomy completeness hardening tests passed.');
+console.log('Ash A15-R0 exact bar-H2 torsion and holonomy-faithfulness hardening tests passed.');
