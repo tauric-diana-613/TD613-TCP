@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_773_RECEIPT = '50ada0bb0e7b25f9c1bde7e2feafeebbb5067a8f';
-execFileSync('git', ['cat-file', '-e', `${PARENT_773_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_773_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_775_RECEIPT = '39b8f6e8ba319154378d03c28a1bf42c02870de1';
+execFileSync('git', ['cat-file', '-e', `${PARENT_775_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_775_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_773_RECEIPT}..HEAD`,
+    `${PARENT_775_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -24,11 +24,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_SENSITIVE_HOLONOMY_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_SENSITIVE_HOLONOMY_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_EXACT_BAR_H2_TORSION_SENSITIVE_HOLONOMY_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-exact-bar-h2-torsion-sensitive-holonomy.js',
-  'tests/ash-a15-r0-aperture-pedagogue-exact-bar-h2-torsion-sensitive-holonomy.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TATE_NORM_ANTINORM_TWO_PRIMARY_DEFECT_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_TATE_NORM_ANTINORM_TWO_PRIMARY_DEFECT_CORRECTION_001.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-tate-norm-antinorm-two-primary-defect.js',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-tate-norm-antinorm-two-primary-defect-correction-001.js',
+  'tests/ash-a15-r0-aperture-pedagogue-tate-norm-antinorm-two-primary-defect.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -36,14 +36,14 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#773 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#775 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
-// Parent authority is carried by exact #773 receipt ancestry.
-// Execute only current science plus standing sharded and wedding sentinels;
-// do not recursively reenact receipt-witnessed ancestor assays.
+// #775 is receipt-witnessed parent authority. Execute only the current theorem
+// assay plus standing sharded and wedding sentinels; do not recursively reenact
+// parent science, and do not borrow unevaluated #778/#780/#781 chambers.
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-exact-bar-h2-torsion-sensitive-holonomy.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-tate-norm-antinorm-two-primary-defect.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 exact bar-H2 and torsion-sensitive formal 2-holonomy hardening tests passed.');
+console.log('Ash A15-R0 Tate norm/anti-norm two-primary defect hardening tests passed.');
