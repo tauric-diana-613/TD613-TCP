@@ -39,6 +39,13 @@ assert.deepEqual(
   `post-#770 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
+// Initial routed witness run 2305 / 33015421847 was green but deliberately
+// withheld from naming promotion after post-witness audit found one missing
+// explicit hostile: the formal C1 1-cell inverse/group law required by the
+// word "2-groupoid". Repair 001 was preregistered before the hostile update,
+// changed no theorem equation, and is now included in the current test file.
+// This frozen head therefore requires a fresh exact-head witness.
+
 // Parent authority is carried by exact #770 receipt ancestry.
 // Execute only current science plus standing sharded and wedding sentinels;
 // do not recursively reenact witnessed ancestor assays.
@@ -46,4 +53,4 @@ await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-formal-bar-chain-2-groupoid-holonomy.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 #772 formal bar-chain 2-groupoid and 2-holonomy hardening tests passed.');
+console.log('Ash A15-R0 #772 repaired formal bar-chain 2-groupoid and 2-holonomy hardening tests passed.');
