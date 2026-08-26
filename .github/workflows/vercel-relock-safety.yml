@@ -266,3 +266,205 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="𝌋 Zero-deploy production confirmation held. deployment_count = 0; git_auto_deploy remains disabled; no deployment, unlock, retry, or application-mutation authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
+
+  src-zenodo-sync:
+    if: >-
+      github.event.issue.number == 758 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      github.event.comment.body == '/src-zenodo-sync ATELIER'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GATE_ISSUE: '758'
+      ATELIER_PR: '731'
+      ATELIER_BRANCH: amari/src-projective-routing-grammar
+      SRC_ROOT: packages/dome_world_exact/fixtures/a15-r0/SRC
+      CREATOR_ORCID: 0009-0009-9348-3534
+      SYNC_SUMMARY: /tmp/src-zenodo-sync-summary.json
+
+    steps:
+      - name: Record accepted SRC sync gesture
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 SRC Zenodo sync gesture accepted.
+
+          \`\`\`text
+          command = /src-zenodo-sync ATELIER
+          relay = ${{ github.event.comment.user.login }}
+          target_branch = $ATELIER_BRANCH
+          target_pr = #$ATELIER_PR
+          creator_orcid = $CREATOR_ORCID
+          run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          authority = one bounded public-Zenodo delta sync
+          \`\`\`
+
+          No merge, seal promotion, scientific promotion, publication, production, or Vercel authority is created. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Verify configured live Atelier surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR_JSON="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$ATELIER_PR")"
+          STATE="$(jq -r '.state' <<<"$PR_JSON")"
+          MERGED="$(jq -r '.merged' <<<"$PR_JSON")"
+          HEAD_REF="$(jq -r '.head.ref' <<<"$PR_JSON")"
+          [[ "$STATE" == 'open' ]] || { echo "Atelier PR #$ATELIER_PR is not open." >&2; exit 1; }
+          [[ "$MERGED" == 'false' ]] || { echo "Atelier PR #$ATELIER_PR is merged; rotate the gate target." >&2; exit 1; }
+          [[ "$HEAD_REF" == "$ATELIER_BRANCH" ]] || { echo "Atelier branch mismatch: $HEAD_REF != $ATELIER_BRANCH" >&2; exit 1; }
+
+      - name: Check out live Atelier branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ATELIER_BRANCH }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate SRC acquisition implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f scripts/src-zenodo-operator-sync.py
+          python -m py_compile scripts/src-zenodo-operator-sync.py
+
+      - name: Install bounded PDF text extractor
+        run: python -m pip install --disable-pip-version-check 'pypdf>=5,<7'
+
+      - name: Freeze pre-sync custody witnesses
+        id: src_before
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "phase2_tree=$(git rev-parse HEAD:$SRC_ROOT/04-RECEIPTS/phase2)" >> "$GITHUB_OUTPUT"
+          echo "phase2_manifest_tree=$(git rev-parse HEAD:$SRC_ROOT/01-MANIFESTS/phase2)" >> "$GITHUB_OUTPUT"
+
+      - name: Run exact-creator Zenodo delta sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/src-zenodo-operator-sync.py \
+            --root "$SRC_ROOT" \
+            --creator-orcid "$CREATOR_ORCID" \
+            --run-id "$GITHUB_RUN_ID" \
+            --gate-issue "$GATE_ISSUE" \
+            --relay-identity '${{ github.event.comment.user.login }}' \
+            --atelier-branch "$ATELIER_BRANCH" \
+            --summary-path "$SYNC_SUMMARY"
+          jq . "$SYNC_SUMMARY"
+
+      - name: Enforce SRC live-post-seal write membrane
+        shell: bash
+        env:
+          BEFORE_PHASE2_TREE: ${{ steps.src_before.outputs.phase2_tree }}
+          BEFORE_PHASE2_MANIFEST_TREE: ${{ steps.src_before.outputs.phase2_manifest_tree }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+
+          allowed = (
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/02-ORIGINALS/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/live/',
+          )
+          raw = subprocess.check_output(['git', 'status', '--porcelain=v1', '-z'])
+          entries = [x for x in raw.decode('utf-8', errors='surrogateescape').split('\0') if x]
+          paths = [entry[3:] for entry in entries]
+          bad = [path for path in paths if not path.startswith(allowed)]
+          if bad:
+              raise SystemExit('Zenodo sync write membrane violated by: ' + ', '.join(bad))
+          print(f'SRC live-path membrane PASS ({len(paths)} changed paths)')
+          PY
+          [[ "$(git rev-parse HEAD:$SRC_ROOT/04-RECEIPTS/phase2)" == "$BEFORE_PHASE2_TREE" ]]
+          [[ "$(git rev-parse HEAD:$SRC_ROOT/01-MANIFESTS/phase2)" == "$BEFORE_PHASE2_MANIFEST_TREE" ]]
+
+      - name: Commit one bounded SRC live-intake packet
+        id: src_commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for path in \
+            "$SRC_ROOT/01-MANIFESTS/live" \
+            "$SRC_ROOT/02-ORIGINALS/live" \
+            "$SRC_ROOT/03-DERIVATIVES/text/live" \
+            "$SRC_ROOT/04-RECEIPTS/live"; do
+            [[ -e "$path" ]] && git add -A -- "$path"
+          done
+          git diff --cached --quiet && { echo 'No SRC live intake changes were produced.' >&2; exit 1; }
+          git commit -m "src: operator Zenodo delta sync run $GITHUB_RUN_ID"
+          AFTER_SHA="$(git rev-parse HEAD)"
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "after_sha=$AFTER_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Record completed SRC sync and return gate to dormant
+        if: success()
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ steps.src_before.outputs.head }}
+          AFTER_SHA: ${{ steps.src_commit.outputs.after_sha }}
+        run: |
+          set -euo pipefail
+          COUNT="$(jq -r '.new_record_count' "$SYNC_SUMMARY")"
+          IDS="$(jq -r '.new_record_ids | join(", ")' "$SYNC_SUMMARY")"
+          PARTIAL="$(jq -r '.partial_body_extraction_record_ids | join(", ")' "$SYNC_SUMMARY")"
+          [[ -n "$IDS" ]] || IDS='none'
+          [[ -n "$PARTIAL" ]] || PARTIAL='none'
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Zenodo delta sync complete.
+
+          \`\`\`text
+          run = $GITHUB_RUN_ID
+          before_head = $BEFORE_SHA
+          after_head = $AFTER_SHA
+          new_record_count = $COUNT
+          new_record_ids = $IDS
+          partial_body_extraction = $PARTIAL
+          target = $ATELIER_BRANCH / PR #$ATELIER_PR
+          sealed_phase2_mutation = false
+          A15-R0_scientific_mutation = false
+          merge = false
+          publication = false
+          production = false
+          \`\`\`
+
+          Gate #$GATE_ISSUE returns to **DORMANT**. A later sync requires a fresh explicit operator gesture. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held SRC sync
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Zenodo delta sync **HELD**.
+
+          \`\`\`text
+          run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          target = $ATELIER_BRANCH / PR #$ATELIER_PR
+          repository_push_after_failure = not authorized
+          automatic_retry = not authorized
+          \`\`\`
+
+          The gate returns to **DORMANT**. A failed run creates no retry, merge, seal, publication, or production authority. ⟐
+          EOF_COMMENT
+          )"
