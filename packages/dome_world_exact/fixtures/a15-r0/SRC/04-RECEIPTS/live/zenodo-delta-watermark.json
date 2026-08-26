@@ -1,10 +1,14 @@
 {
-  "schema": "src-zenodo-delta-watermark/v1",
   "atelier_branch": "amari/src-projective-routing-grammar",
+  "captured_record_count_before": 442,
   "creator_orcid": "0009-0009-9348-3534",
-  "last_operator_sync": null,
-  "last_run_id": null,
-  "last_observed_created_utc": null,
-  "last_observed_record_id": null,
-  "note": "Seed watermark. Delta identity is set-difference against sealed + live SRC record IDs; timestamp/record ID are observations, not sole exclusion criteria."
+  "creator_records_observed": 471,
+  "delta_method": "SET_DIFFERENCE_AGAINST_METADATA_CUSTODY",
+  "last_observed_created_utc": "2026-08-26T17:43:56.905370+00:00",
+  "last_observed_record_id": "22116085",
+  "last_operator_sync": "2026-08-26T17:59:50.432611Z",
+  "last_run_id": "32996936456",
+  "new_records_captured": 32,
+  "note": "Timestamp and record number are observations, not sole exclusion criteria.",
+  "schema": "src-zenodo-delta-watermark/v1"
 }

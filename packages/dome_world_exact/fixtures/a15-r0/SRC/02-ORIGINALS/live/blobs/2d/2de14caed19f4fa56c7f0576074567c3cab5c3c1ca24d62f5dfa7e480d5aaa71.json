@@ -1,0 +1,130 @@
+{
+  "conceptdoi": "10.5281/zenodo.22083557",
+  "conceptrecid": "22083557",
+  "created": "2026-08-24T15:34:22.830114+00:00",
+  "doi": "10.5281/zenodo.22083558",
+  "doi_url": "https://doi.org/10.5281/zenodo.22083558",
+  "files": [
+    {
+      "checksum": "md5:2c77d7ddba9b7e40ae67330bf6c2daab",
+      "id": "dbd4bfff-5054-4454-87e7-73a4d19f8bc6",
+      "key": "SIGNALRUPTURE AS STRUCTURAL GRAMMAR .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22083558/files/SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/content"
+      },
+      "size": 400871
+    }
+  ],
+  "id": 22083558,
+  "links": {
+    "access": "https://zenodo.org/api/records/22083558/access",
+    "access_grants": "https://zenodo.org/api/records/22083558/access/grants",
+    "access_links": "https://zenodo.org/api/records/22083558/access/links",
+    "access_request": "https://zenodo.org/api/records/22083558/access/request",
+    "access_users": "https://zenodo.org/api/records/22083558/access/users",
+    "archive": "https://zenodo.org/api/records/22083558/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22083558/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22083558/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22083558/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22083558",
+    "draft": "https://zenodo.org/api/records/22083558/draft",
+    "file_modification": "https://zenodo.org/api/records/22083558/file-modification",
+    "files": "https://zenodo.org/api/records/22083558/files",
+    "latest": "https://zenodo.org/api/records/22083558/versions/latest",
+    "latest_html": "https://zenodo.org/records/22083558/latest",
+    "media_files": "https://zenodo.org/api/records/22083558/media-files",
+    "parent": "https://zenodo.org/api/records/22083557",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22083557",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083557",
+    "parent_html": "https://zenodo.org/records/22083557",
+    "preview_html": "https://zenodo.org/records/22083558?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22083558/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22083558/request-deletion",
+    "requests": "https://zenodo.org/api/records/22083558/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22083558/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22083558",
+    "self_doi": "https://doi.org/10.5281/zenodo.22083558",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083558",
+    "self_html": "https://zenodo.org/records/22083558",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22083558/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22083558/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22083558:SIGNALRUPTURE%20AS%20STRUCTURAL%20GRAMMAR%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22083558/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>SIGNALRUPTURE AS STRUCTURAL GRAMMAR</strong></h1>\n<p>This manuscript is the <strong>foundational metatheoretical statement</strong> of SignalRupture. It defines SR not as a collapse theory, not as a collection of mechanisms, and not as a multiverse of independent fields, but as a <strong>structural grammar</strong> &mdash; a domain‑agnostic relational architecture that explains how systems can preserve continuity even when their underlying conditions diverge from their representations or when durable capacity falls below effective requirement. The manuscript identifies six primitives &mdash; <strong>Underlying Condition (X)</strong>, <strong>Representation (R)</strong>, <strong>Requirement (Q)</strong>, <strong>Durable Capacity (D)</strong>, <strong>Compensation (C)</strong>, and <strong>Observable Function (F)</strong> &mdash; and shows how these positions recur across heterogeneous systems even when their physical mechanisms differ. SR&rsquo;s scientific claim is deliberately narrow: <strong>continuity does not guarantee correspondence or durable sufficiency</strong>, because compensatory substrates can carry the difference.</p>\n<p>The manuscript contributes by <strong>subtracting</strong> everything SR does not own. It explicitly acknowledges that organizational slack, institutional decoupling, resilience engineering, network cascades, path dependence, workarounds, and feedback loops all have mature literatures. SR does not claim novelty for these mechanisms. Instead, it identifies the <strong>residual grammar</strong> that remains after removing established equivalents, unsupported claims, and duplicated constructs. This residual is relational rather than mechanistic: SR studies the <strong>structural separation</strong> between what a system delivers (F), what it actually is (X), what it says it is (R), what it needs (Q), what it sustainably has (D), and what it uses to bridge the difference (C).</p>\n<p>The manuscript&rsquo;s strongest theoretical contribution is formalizing <strong>three core relations</strong>:<br>&bull; <strong>Condition&ndash;Representation Correspondence</strong> &mdash; whether R still tracks X.<br>&bull; <strong>Requirement&ndash;Capacity Sufficiency</strong> &mdash; whether D meets Q.<br>&bull; <strong>Compensation&ndash;Function Continuity</strong> &mdash; whether C preserves F under mismatch.</p>\n<p>These relations produce SR&rsquo;s central diagnostic proposition: <strong>Compensated Continuity</strong> &mdash; systems can maintain observable function even when durable capacity is insufficient, because compensation expands. They also produce SR&rsquo;s central prospective proposition: <strong>Compensatory Inversion</strong> &mdash; if extraordinary compensation stops expanding while the gap persists and function deteriorates, the compensatory substrate may have ceased to conceal the mismatch.</p>\n<p>The manuscript contributes by distinguishing <strong>sustainable flexibility (C_S)</strong> from <strong>extraordinary compensation (C_E)</strong>. This correction is essential: not all buffering is pathological. Electricity reserves, organizational slack, household savings, and normal overtime belong to C_S when renewable. C_E is reserved for exceptional, costly, temporary, or non‑renewable bridging. This prevents SR from collapsing resilience into rupture and ensures that compensation is measured empirically rather than assumed.</p>\n<p>The manuscript also contributes by repositioning SR&rsquo;s operators &mdash; inheritance, propagation, temporal accumulation, substitution, and restoration &mdash; as <strong>transformations acting on the grammar</strong>, not as universal laws. This aligns SR with established literatures while preserving its structural identity. Restoration becomes a co‑equal branch rather than an exception, ensuring SR does not bias toward collapse.</p>\n<p>The manuscript&rsquo;s empirical contribution is demonstrating that the grammar <strong>survives translation</strong> into three heterogeneous domains:<br>&bull; <strong>Healthcare</strong> &mdash; rising overtime and purchased staffing alongside continued service and access pressure.<br>&bull; <strong>Households</strong> &mdash; essential‑resource gaps and distributional deterioration without clean compensation measurement.<br>&bull; <strong>Electricity</strong> &mdash; reliable delivery alongside narrowing margins and rising flexibility requirements.</p>\n<p>These probes show that SR&rsquo;s relational positions can be operationalized without post‑hoc redefinition, but they do <strong>not</strong>validate the predictive theorem. The manuscript therefore clarifies SR&rsquo;s scientific burden: the grammar must show <strong>incremental diagnostic or predictive value</strong> beyond established domain models. If compensation adds no prospective information, SR must narrow or converge with stronger existing theories.</p>\n<p>In unified form, the manuscript establishes SR&rsquo;s identity as a <strong>cross‑domain structural grammar</strong>: a relational architecture that explains how continuity can coexist with divergence, how compensation can preserve function, and how restoration or inversion can be tested prospectively. It is the conceptual foundation for all empirical SR work and the anchor for the frozen measurement protocol, the three empirical probes, and the prospective validation program.</p>",
+    "doi": "10.5281/zenodo.22083558",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22083557"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SIGNALRUPTURE AS STRUCTURAL GRAMMAR:  A Cross-Domain Metatheory of Correspondence, Capacity, Compensation, and Observable Function",
+    "version": "1.0"
+  },
+  "modified": "2026-08-26T17:22:50.297804+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22083558",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "SIGNALRUPTURE AS STRUCTURAL GRAMMAR:  A Cross-Domain Metatheory of Correspondence, Capacity, Compensation, and Observable Function",
+  "updated": "2026-08-26T17:22:50.297804+00:00"
+}

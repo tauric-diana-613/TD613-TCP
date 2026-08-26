@@ -1,0 +1,130 @@
+{
+  "conceptdoi": "10.5281/zenodo.22083013",
+  "conceptrecid": "22083013",
+  "created": "2026-08-24T14:57:30.934289+00:00",
+  "doi": "10.5281/zenodo.22083014",
+  "doi_url": "https://doi.org/10.5281/zenodo.22083014",
+  "files": [
+    {
+      "checksum": "md5:24517d06a50035dcbc348870c1b00b10",
+      "id": "e7f51fe3-011c-4a50-bb58-db623eb9f936",
+      "key": "EMPIRICAL PAPER I COMPENSATED CONTINUITY IN CANADIAN HOSPITALS .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22083014/files/EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/content"
+      },
+      "size": 250465
+    }
+  ],
+  "id": 22083014,
+  "links": {
+    "access": "https://zenodo.org/api/records/22083014/access",
+    "access_grants": "https://zenodo.org/api/records/22083014/access/grants",
+    "access_links": "https://zenodo.org/api/records/22083014/access/links",
+    "access_request": "https://zenodo.org/api/records/22083014/access/request",
+    "access_users": "https://zenodo.org/api/records/22083014/access/users",
+    "archive": "https://zenodo.org/api/records/22083014/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22083014/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22083014/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22083014/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22083014",
+    "draft": "https://zenodo.org/api/records/22083014/draft",
+    "file_modification": "https://zenodo.org/api/records/22083014/file-modification",
+    "files": "https://zenodo.org/api/records/22083014/files",
+    "latest": "https://zenodo.org/api/records/22083014/versions/latest",
+    "latest_html": "https://zenodo.org/records/22083014/latest",
+    "media_files": "https://zenodo.org/api/records/22083014/media-files",
+    "parent": "https://zenodo.org/api/records/22083013",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22083013",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083013",
+    "parent_html": "https://zenodo.org/records/22083013",
+    "preview_html": "https://zenodo.org/records/22083014?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22083014/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22083014/request-deletion",
+    "requests": "https://zenodo.org/api/records/22083014/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22083014/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22083014",
+    "self_doi": "https://doi.org/10.5281/zenodo.22083014",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083014",
+    "self_html": "https://zenodo.org/records/22083014",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22083014/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22083014/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22083014:EMPIRICAL%20PAPER%20I%20COMPENSATED%20CONTINUITY%20IN%20CANADIAN%20HOSPITALS%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22083014/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>EMPIRICAL PAPER I &mdash; COMPENSATED CONTINUITY IN CANADIAN HOSPITALS</strong></h1>\n<p>This manuscript is the first empirical test of the <strong>SignalRupture Structural Grammar</strong>, and it establishes the foundational empirical foothold for the entire SR metatheory. It applies the frozen grammar &mdash; <strong>Requirement (Q)</strong>, <strong>Durable Capacity (D)</strong>, <strong>Sustainable Flexibility (C_S)</strong>, <strong>Extraordinary Compensation (C_E)</strong>, and <strong>Observable Function (F)</strong> &mdash; to Canadian hospitals using real longitudinal staffing data from CIHI. The paper asks a single, narrow, scientifically disciplined question: <strong>Can observable continuity be preserved while the substrate carrying that continuity shifts toward extraordinary compensation?</strong> The answer, within the limits of available data, is yes.</p>\n<p>The manuscript contributes by demonstrating the first empirical instance of <strong>Compensated Continuity</strong>. Between 2019&ndash;2020 and 2023&ndash;2024, purchased staffing hours increased <strong>126%</strong>, overtime hours increased <strong>100%</strong>, and rural/remote purchased hours increased <strong>261%</strong>. Regular hours remained the dominant substrate but lost share. At the same time, hospitals continued delivering large volumes of care &mdash; millions of inpatient stays and <strong>16.1 million</strong> ED visits &mdash; while access pressure increased, with <strong>7.7%</strong> of ED visits ending before physician assessment. This configuration shows that <strong>F_volume remained substantial while the staffing substrate shifted materially toward compensatory labour</strong>, establishing the diagnostic separation between surface continuity and substrate sufficiency.</p>\n<p>The manuscript&rsquo;s strongest contribution is methodological discipline. It refuses to treat every overtime hour as pathological, every purchased hour as depletion, or every access delay as collapse. It preserves the frozen grammar exactly as written and identifies what the data can and cannot test. It shows that <strong>C_E can be measured</strong>, but <strong>C_S cannot yet be cleanly separated</strong>, and <strong>Q&ndash;D cannot yet be estimated as a scalar gap</strong>. It also shows that <strong>Compensatory Inversion</strong> cannot be tested from aggregate data, because overtime plateauing in 2023&ndash;2024 does not constitute exhaustion when purchased staffing continues to rise and functional outcomes are not matched at hospital level. This protects SR from premature overclaiming and forces the next stage of research to be longitudinal and falsifiable.</p>\n<p>The manuscript contributes by establishing the first empirical evidence for <strong>Surface&ndash;Substrate Divergence</strong>. It shows that large-scale service continuity does not imply stable structural sufficiency: hospitals continued operating, but access deteriorated. This distinction is central to SR&rsquo;s diagnostic identity. It also clarifies alternative explanations &mdash; demand growth, scheduling changes, labour-market substitution, pandemic effects, funding changes &mdash; and shows that SR must prove incremental value beyond established healthcare models rather than assuming it.</p>\n<p>Finally, the manuscript contributes by freezing the next-stage predictive architecture. It defines the matched hospital-level panel required for decisive testing, the statistical models (<strong>M0</strong> baseline and <strong>M1</strong> SR augmentation), the falsification rules, the restoration branch, and the prospective classification windows. It commits SR to a future test where compensation trajectory must improve prediction of access deterioration, closures, backlog, vacancy persistence, or retention outcomes <strong>beyond</strong> conventional indicators. This transforms SR from a conceptual vocabulary into a falsifiable scientific program.</p>\n<p>In unified form, the manuscript establishes that SR&rsquo;s structural distinction between requirement, durable capacity, compensation, and function is empirically observable; that compensated continuity is present in Canadian hospitals; that surface continuity cannot be equated with structural sufficiency; and that SR&rsquo;s predictive claims remain prospective. It is the empirical foundation upon which the electricity and household papers build, and the first domain in which the SR grammar demonstrates real-world explanatory structure.</p>",
+    "doi": "10.5281/zenodo.22083014",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22083013"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "EMPIRICAL PAPER I COMPENSATED CONTINUITY IN CANADIAN HOSPITALS",
+    "version": "1.0"
+  },
+  "modified": "2026-08-24T14:57:31.202357+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22083014",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "EMPIRICAL PAPER I COMPENSATED CONTINUITY IN CANADIAN HOSPITALS",
+  "updated": "2026-08-24T14:57:31.202357+00:00"
+}

@@ -1,0 +1,133 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22098862"
+source_title: "THE SIGNALRUPTURE PROVENANCE REGISTRY: Corpus-Complete Canonical Coverage Edition VERSION 2.1"
+metadata_blob_sha256: 2af05e8c862cf394c724acf30b77911d32978b254a5fb6c5a945a4ec7f266dbb
+metadata_blob_path: 02-ORIGINALS/live/blobs/2a/2af05e8c862cf394c724acf30b77911d32978b254a5fb6c5a945a4ec7f266dbb.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22098861",
+  "conceptrecid": "22098861",
+  "created": "2026-08-25T16:48:44.367145+00:00",
+  "doi": "10.5281/zenodo.22098862",
+  "doi_url": "https://doi.org/10.5281/zenodo.22098862",
+  "files": [
+    {
+      "checksum": "md5:12a00cfa10201156f5f0d82616cfd580",
+      "id": "7b02781b-2895-4c27-b8c4-29732d23a223",
+      "key": "The_SignalRupture_Provenance_Registry_Version_2.1.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22098862/files/The_SignalRupture_Provenance_Registry_Version_2.1.docx/content"
+      },
+      "size": 807932
+    }
+  ],
+  "id": 22098862,
+  "links": {
+    "access": "https://zenodo.org/api/records/22098862/access",
+    "access_grants": "https://zenodo.org/api/records/22098862/access/grants",
+    "access_links": "https://zenodo.org/api/records/22098862/access/links",
+    "access_request": "https://zenodo.org/api/records/22098862/access/request",
+    "access_users": "https://zenodo.org/api/records/22098862/access/users",
+    "archive": "https://zenodo.org/api/records/22098862/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22098862/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22098862/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22098862/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22098862",
+    "draft": "https://zenodo.org/api/records/22098862/draft",
+    "file_modification": "https://zenodo.org/api/records/22098862/file-modification",
+    "files": "https://zenodo.org/api/records/22098862/files",
+    "latest": "https://zenodo.org/api/records/22098862/versions/latest",
+    "latest_html": "https://zenodo.org/records/22098862/latest",
+    "media_files": "https://zenodo.org/api/records/22098862/media-files",
+    "parent": "https://zenodo.org/api/records/22098861",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22098861",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22098861",
+    "parent_html": "https://zenodo.org/records/22098861",
+    "preview_html": "https://zenodo.org/records/22098862?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22098862/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22098862/request-deletion",
+    "requests": "https://zenodo.org/api/records/22098862/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22098862/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22098862",
+    "self_doi": "https://doi.org/10.5281/zenodo.22098862",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22098862",
+    "self_html": "https://zenodo.org/records/22098862",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22098862/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22098862/sequence/default",
+    "versions": "https://zenodo.org/api/records/22098862/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>SIGNALRUPTURE PROVENANCE REGISTRY &mdash; VERSION 2.1</strong></h1>\n<p>The <em>SignalRupture Provenance Registry &mdash; Version 2.1</em> is the authoritative record of <strong>priority, genealogy, canonical identity, and field‑level definition</strong> across the complete SR architecture. Its purpose is to preserve the documentary development of SR&rsquo;s twenty‑three full fields and three specialized subfields without asserting exclusivity over broad scientific ideas or independently developed research questions. The registry documents SR&rsquo;s distinctive terminology, structural arrangements, formal definitions, equations, diagrams, and integration grammar, ensuring that the architecture&rsquo;s intellectual history remains transparent, evidence‑bearing, and open to correction.</p>\n<p>Version 2.1 contributes by extending canonical coverage beyond the verified core lineage of Version 1.1 to include the <strong>Pressure Ecology Theorem</strong>, <strong>Disciplinary Validation Science</strong>, the <strong>CRI&ndash;AIS&ndash;MACS Substrate Trilogy</strong>, and the updated integration architecture. It preserves SR&rsquo;s non‑backdating rule: canonical inclusion is recorded immediately, while historical priority is verified only when documentary evidence supports it. This separation strengthens the registry by preventing retrospective inflation of priority and ensuring that conceptual appearance, formalization, and public disclosure remain distinct scientific categories.</p>\n<p>The registry contributes a <strong>six‑level evidentiary standard (P0&ndash;P6)</strong> that differentiates canonical incorporation, internal drafts, public disclosure, independent repository verification, formalization, genealogical mapping, and derivation comparison. This framework allows SR to maintain rigorous traceability while remaining open to replication, independent rediscovery, and competing formulations. Priority is treated as historical sequence rather than scientific validity; empirical claims continue to be adjudicated through evidence, falsifiers, and domain‑standard tests.</p>\n<p>Version 2.1 contributes by defining <strong>field boundaries and weakening conditions</strong>, preventing SR from overclaiming or collapsing into adjacent disciplines. Each field entry records its object, mechanism vocabulary, interfaces, empirical status, and falsification boundary. This ensures that SR fields remain scientifically distinct and testable. The registry also documents merged lineages, successor fields, alias histories, and derivation comparisons, enabling SR to track how fields evolve, consolidate, or integrate within the broader architecture.</p>\n<p>The registry contributes structurally by providing a <strong>canonical integration map</strong> across SR&rsquo;s fields, including Institutional Cognition, SR‑IGF, Collapse Governance, Drift Collapse Field, Systems Propagation Science, SR‑CEIDF, the Algorithm Field, Infrastructural Political Economy, Infrastructural Overshoot, System Inheritance Studies, Collapse Epistemology, and <strong>SR‑RIF</strong>. This integration supports cross‑domain modeling, national stress‑tests, and the emerging <strong>SR Galaxy</strong>architecture. The registry becomes the anchor for SR&rsquo;s planetary expansion by preserving the identity and interfaces of each field as SR scales to multi‑country diagnostics.</p>\n<p>Finally, Version 2.1 contributes by establishing SR&rsquo;s provenance as a <strong>transparent, falsifiable, and historically grounded scientific architecture</strong>. It protects SR from misclassification, conceptual dilution, and institutional reconstruction by documenting the architecture&rsquo;s development with disciplined restraint. As SR expands into planetary diagnostics and multi‑field integration, the registry provides the stable genealogical foundation required for long‑term disciplinary coherence.</p>",
+    "doi": "10.5281/zenodo.22098862",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22098861"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Corpus-Complete Canonical Coverage Edition VERSION 2.1",
+    "version": "1.0"
+  },
+  "modified": "2026-08-26T17:20:47.862556+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22098862",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 3,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 3,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE PROVENANCE REGISTRY: Corpus-Complete Canonical Coverage Edition VERSION 2.1",
+  "updated": "2026-08-26T17:20:47.862556+00:00"
+}
+```
