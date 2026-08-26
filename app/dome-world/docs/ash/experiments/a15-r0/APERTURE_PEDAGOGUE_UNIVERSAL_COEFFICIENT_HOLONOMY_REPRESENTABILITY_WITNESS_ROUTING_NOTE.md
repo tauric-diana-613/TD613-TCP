@@ -13,7 +13,8 @@ observed_duplicate_776   = CLOSED_UNMERGED
 observed_duplicate_777   = CLOSED_UNMERGED
 routing_base             = main
 routing_base_sha         = d652c5e151471be7e40ff6a08936ba26c0cef1ad
-routing_event            = INITIAL_METADATA_ONLY_WITNESS_ROUTING
+routing_retargeted       = true
+routing_event            = METADATA_ONLY_SYNCHRONIZATION_FOR_EXACT_HEAD_VALIDATION_AFTER_MAIN_RETARGET
 ```
 
 `main` is temporary workflow-registration plumbing only. It is not #778 scientific ancestry.
