@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any, Iterable
 from xml.etree import ElementTree as ET
 
-USER_AGENT = "SRC-Zenodo-Operator-Sync/1.1 (+public preservation; operator gated)"
+USER_AGENT = "SRC-Zenodo-Operator-Sync/1.2 (+public preservation; operator gated)"
 SCHEMA = "src-zenodo-operator-sync/v1"
 ALLOWED_LICENSES = {"cc-by-4.0"}
 # Zenodo caps anonymous /api/records search responses at 25 results/page.
@@ -331,11 +331,8 @@ def main() -> int:
                 if not isinstance(source_file, dict):
                     continue
                 name = str(source_file.get("key") or source_file.get("id") or "source.bin")
-                links = source_file.get("links") or {}
-                url = str(links.get("self") or links.get("content") or "")
-                if not url:
-                    file_rows.append({"source_name": name, "capture_status": "NO_PUBLIC_FILE_URL"})
-                    continue
+                encoded_name = urllib.parse.quote(name, safe="")
+                url = f"https://zenodo.org/records/{rid}/files/{encoded_name}?download=1"
                 data = fetch(url, accept="application/octet-stream", timeout=120)
                 verify_source_checksum(data, source_file.get("checksum"), name)
                 digest, blob_path = store_live_blob(src_root, data, safe_extension(name))
