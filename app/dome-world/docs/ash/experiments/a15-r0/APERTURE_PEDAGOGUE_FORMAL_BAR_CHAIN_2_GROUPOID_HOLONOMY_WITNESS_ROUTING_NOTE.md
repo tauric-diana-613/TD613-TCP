@@ -8,6 +8,7 @@ frozen_science    = 6ebb487f77de7c1bcb5dbf70f10c1493c4d42de6
 observed_main     = d652c5e151471be7e40ff6a08936ba26c0cef1ad
 observed_SRC_731  = e09f588b17415d7f87a82e5e31f7f3cd0b2691a0
 observed_SRC_771  = e86ef81e417c6739ae91db591eca660716c2f50a
+registration      = metadata-only synchronization pulse after temporary retarget
 ```
 
 `main` is used temporarily only to register the repository's existing pull-request validation workflow. It is not #772 scientific ancestry. SRC #731 and continuation #771 are separate custody lineages and remain untouched.
