@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_763_RECEIPT = '6af55b5bca86a4578c8cb6edbfa3721d427207d9';
-execFileSync('git', ['cat-file', '-e', `${PARENT_763_RECEIPT}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', PARENT_763_RECEIPT, 'HEAD'], { stdio: 'pipe' });
+const PARENT_764_RECEIPT = '142cf2fc7b0814dc56fd131df076b9071fe369ff';
+execFileSync('git', ['cat-file', '-e', `${PARENT_764_RECEIPT}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_764_RECEIPT, 'HEAD'], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${PARENT_763_RECEIPT}..HEAD`,
+    `${PARENT_764_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -24,11 +24,11 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_RELATION_GROUPOID_EXACTNESS_DESCENT_OBSTRUCTION_SPEC_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_RELATION_GROUPOID_EXACTNESS_DESCENT_OBSTRUCTION_RECEIPT_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_RELATION_GROUPOID_EXACTNESS_DESCENT_OBSTRUCTION_WITNESS_ROUTING_NOTE.md',
-  'app/dome-world/previews/a15-r0/aperture-pedagogue-relation-groupoid-exactness-descent-obstruction.js',
-  'tests/ash-a15-r0-aperture-pedagogue-relation-groupoid-exactness-descent-obstruction.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_BAR_H2_PERIOD_RETURN_REPRESENTATION_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_BAR_H2_PERIOD_RETURN_REPRESENTATION_RECEIPT_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_BAR_H2_PERIOD_RETURN_REPRESENTATION_WITNESS_ROUTING_NOTE.md',
+  'app/dome-world/previews/a15-r0/aperture-pedagogue-bar-h2-period-return-representation.js',
+  'tests/ash-a15-r0-aperture-pedagogue-bar-h2-period-return-representation.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -36,14 +36,14 @@ const historicalMutations = changedA15R0.filter((path) => !allowedCurrentChamber
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#763 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#764 chamber may not mutate receipt-witnessed historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
-// Parent authority is carried by exact #763 receipt ancestry.
+// Parent authority is carried by exact #764 receipt ancestry.
 // Execute only current science plus standing sharded and wedding sentinels;
 // do not recursively reenact witnessed ancestor assays.
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-relation-groupoid-exactness-descent-obstruction.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-bar-h2-period-return-representation.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 #764 relation-groupoid exactness/descent obstruction hardening tests passed.');
+console.log('Ash A15-R0 #765 bar-H2 period return representation hardening tests passed.');
