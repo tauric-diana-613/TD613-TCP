@@ -14,10 +14,15 @@ observed_duplicate_777   = CLOSED_UNMERGED
 routing_base             = main
 routing_base_sha         = d652c5e151471be7e40ff6a08936ba26c0cef1ad
 routing_retargeted       = true
-routing_event            = METADATA_ONLY_SYNCHRONIZATION_FOR_EXACT_HEAD_VALIDATION_AFTER_MAIN_RETARGET
+first_routed_head        = 7461b190826152a8493cca2ba23cb7a4a5355769
+first_actions_runs       = 0
+ready_for_review_events  = 2
+routing_event            = ROUTING_ONLY_SYNCHRONIZATION_RETRY_WHILE_READY_AFTER_ACTIONS_REGISTRATION_MISS
 ```
 
 `main` is temporary workflow-registration plumbing only. It is not #778 scientific ancestry.
+
+The first routed synchronization and two branch-byte-preserving `ready_for_review` events did not instantiate TD613 Actions in the immediate registry. This one retry changes only this routing note while the PR is ready so the repository's declared `pull_request:synchronize` trigger receives a fresh exact head.
 
 No theorem, arbitrary-coefficient classification, UCT statement, naturality law, universal identity class, faithful-target criterion, minimal-image theorem, SRC branch, sync gate, merge authority, publication authority, production authority, Vercel authority, or Proto-Loom/A16 authority changes through this note.
 
