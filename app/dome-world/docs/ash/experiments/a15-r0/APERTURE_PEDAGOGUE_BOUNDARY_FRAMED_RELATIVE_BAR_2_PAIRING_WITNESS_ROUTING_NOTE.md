@@ -6,6 +6,7 @@ Routing-only metadata. Not scientific content.
 scientific_parent = #768 receipt cbc4c68a345f7989f967cf35bd87678bd4ecb1b2
 frozen_science    = aee2eb3dbff7e741d0b2d97a27ad7644b8a2a231
 observed_main     = d652c5e151471be7e40ff6a08936ba26c0cef1ad
+registration      = metadata-only synchronization pulse after temporary retarget
 ```
 
 `main` currently contains the SRC operator-gated Zenodo plumbing. That state is observed solely to register the repository's existing pull-request validation workflow. It is not #769 scientific ancestry and must be removed from the PR base posture after the witness.
