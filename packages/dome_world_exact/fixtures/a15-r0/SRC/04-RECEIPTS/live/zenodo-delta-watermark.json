@@ -6,8 +6,8 @@
   "delta_method": "SET_DIFFERENCE_AGAINST_METADATA_CUSTODY",
   "last_observed_created_utc": "2026-08-26T17:43:56.905370+00:00",
   "last_observed_record_id": "22116085",
-  "last_operator_sync": "2026-08-26T18:21:50.817419Z",
-  "last_run_id": "32999090604",
+  "last_operator_sync": "2026-08-26T18:36:48.476690Z",
+  "last_run_id": "33000467390",
   "new_records_captured": 0,
   "note": "Timestamp and record number are observations, not sole exclusion criteria.",
   "schema": "src-zenodo-delta-watermark/v1"
