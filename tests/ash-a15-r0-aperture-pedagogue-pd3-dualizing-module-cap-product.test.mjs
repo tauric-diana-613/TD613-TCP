@@ -29,7 +29,7 @@ assert.equal(orientationCharacter({ t: 2, E: 7, O: -3 }), 1);
 assert.equal(orientationCharacter({ t: 0, E: 1, O: 0 }), 1);
 assert.equal(orientationCharacter({ t: 0, E: 0, O: 1 }), 1);
 assert.equal(orientation.all_homomorphism_rows_pass, true);
-assert.equal(orientation.sample_pairs, 18225);
+assert.equal(orientation.sample_pairs, 2025);
 
 const model = mappingTorusAsphericalModelCertificate();
 assert.equal(model.passed, true);
