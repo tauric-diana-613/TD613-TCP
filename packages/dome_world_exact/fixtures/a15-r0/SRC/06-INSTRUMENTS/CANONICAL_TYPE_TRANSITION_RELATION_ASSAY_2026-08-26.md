@@ -1,6 +1,6 @@
 # SRC Canonical Type-Transition Relation Assay · 2026-08-26
 
-Status: **PREREGISTERED / OPEN / SOURCE-GROUNDED / NONCANONICAL**
+Status: **PREREGISTERED / CLOSED-BY-NARROWED-RESULT / LOCAL 𝄐 REST / SOURCE-GROUNDED / NONCANONICAL**
 
 Authority boundary:
 
@@ -31,11 +31,9 @@ The Field Compendium states that a field may remain a field while emerging, nest
 
 Canon and Field Architecture states that a field/operator failing the gauntlet is `merged, narrowed, demoted, or rejected` rather than protected by definition.
 
-### DVS explicit branch ambiguity
+### DVS initial branch ambiguity
 
 Disciplinary Validation Science states that if its integration is already performed adequately by existing disciplines, if DVS constructs fail invariance, or if validation asymmetry disappears under matched controls, DVS `must be merged or demoted`.
-
-No unique destination is assigned in that source sentence.
 
 ### Specific branch control
 
@@ -46,85 +44,69 @@ no incremental validity -> demote to a framework
 construct non-discrimination -> terminology narrowed or merged
 ```
 
-Thus the source already contains both:
+## Hostile-search adjudication
 
-- predicates with a specific declared destination; and
-- predicates with multiple declared destinations.
+The widened control-plane search found a later DVS tie-breaker in the Provenance Registry: DVS must merge with metascience or research evaluation if its residual object, measurement reliability, or incremental explanatory value fails independent testing.
 
-## Candidate classification
-
-If no broader captured source supplies a complete tie-breaker that uniquely resolves every declared multi-destination branch, earn only:
+Therefore the preregistered broad candidate
 
 ```text
-CANONICAL_TYPE_TRANSITION_DESTINATION_UNDERDETERMINATION_WITNESSED
+all multi-destination branches remain unresolved
 ```
 
-Archive interpretation:
+is **NOT EARNED**.
+
+The hostile search also produced a stronger bounded counterexample to the coarse deterministic model:
 
 ```text
-SR exposes a guarded / partial type-transition relation rather than a source-witnessed deterministic total compiler.
+current type = FIELD
+coarse failure family = NO_INCREMENTAL_VALUE_BEYOND_STRONG_EXISTING_BASELINE
+
+Collapse Society         -> DEMOTE_TO_FRAMEWORK
+Infrastructural Medicine -> NARROW_FIELD
 ```
 
-The stronger statement `SR IS NONDETERMINISTIC` is prohibited.
+SR-CEIDF additionally states `narrowed or demoted to a framework` under a closely matched incremental-value failure family.
 
-## Hostile controls / falsifiers
-
-The candidate must be rejected or narrowed if the broader captured corpus supplies any of the following:
-
-1. a source-native total transition table assigning exactly one destination to every relevant failure predicate;
-2. an explicit tie-breaker resolving `merged or demoted` and `narrowed or merged` branches from information already included in the stated antecedent;
-3. evidence that the apparent alternatives are merely shorthand for mutually exclusive hidden conditions stated elsewhere in the same canonical protocol;
-4. evidence that `merge`, `narrow`, `demote`, and `reject` are synonyms rather than distinct canonical operations.
-
-Positive controls that do not falsify the candidate:
-
-- a uniquely classified architectural object such as Pressure Ecology;
-- a specific one-condition demotion rule;
-- realized merger examples such as SR-AI -> SR-CEIDF.
-
-Those demonstrate local determinacy, not a total deterministic compiler.
-
-## Required widened search
-
-Search captured source bodies for exact families:
+Thus the surviving result is narrower:
 
 ```text
-merge / merged / merger
-narrow / narrowed
- demote / demoted / demotion
-reject / rejected
-field test
-field identity
-field status
-subfield
-program
-incorrectly classified
-redundant
-non-invariant
-incremental validity
+TYPE_PLUS_COARSE_FAILURE_STATE_UNIQUE_DESTINATION = FALSE_BY_SOURCE_COUNTEREXAMPLE
+OBJECT_CONDITIONED_TRANSITION_BRANCHING = WITNESSED
 ```
 
-For every candidate tie-breaker record:
+The source evidence does not rule out a richer object-specific deterministic adjudicator. It shows only that canonical type plus a coarse normalized failure class does not suffice.
 
-- preserve source title / record identity;
-- separate rule from realized historical outcome;
-- distinguish necessary conditions from sufficient conditions;
-- distinguish source-declared alternatives from archive inference.
+## Claim ceiling
 
-## Stop law
+The assay does not establish:
 
-A local 𝄐 may be earned only when the widened search either:
+- intrinsic nondeterminism of SR authorship;
+- a literal software compiler;
+- a total transition table;
+- a minimal sufficient canonical state vector;
+- permanent ambiguity of every source-declared branch;
+- intentional puzzle/ARG design;
+- the meaning of `clone/genes`.
 
-A. finds a total source-native tie-breaker, falsifying the candidate; or
-B. exhausts the declared captured search family without finding one, leaving at least one explicit multi-destination branch unresolved by source-native rules.
+## Rest receipt
+
+Full narrowed receipt:
+
+```text
+06-INSTRUMENTS/SRC_CANONICAL_TYPE_TRANSITION_COARSE_STATE_REST_2026-08-26.md
+```
+
+The coarse-state question is now exhausted. A lawful reopening requires materially richer object-specific transition state or a new source-native classifier/tie-breaker.
 
 Queue C / Unified Empirical Test remains independent and untouched.
 `clone/genes` remains undecoded.
 Intentional metapuzzle remains unproved.
 
 ```text
-TYPE_TRANSITION_RELATION_ASSAY = OPEN
-REST = UNEARNED
+TYPE_TRANSITION_RELATION_ASSAY = CLOSED_BY_NARROWED_RESULT
+REST = EARNED
+rest_symbol = 𝄐
 ```
 
 𝌋
