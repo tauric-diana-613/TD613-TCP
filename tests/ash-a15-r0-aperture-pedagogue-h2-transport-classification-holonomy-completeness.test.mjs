@@ -81,10 +81,21 @@ assert.equal(transports.status, 'STRICT_FORMAL_TRANSPORT_CLASSIFICATION_CERTIFIC
 assert.equal(transports.passed, true);
 assert.equal(transports.omega_defects.every((value) => value === 0), true);
 assert.equal(transports.swapped_defects.every((value) => value === 0), true);
+assert.deepEqual(
+  transports.parity_fragile_fake_witness,
+  { x: T_COORDINATE, y: T_COORDINATE, z: Q_COORDINATE },
+  'Repair 001 pins the representative-invariance hostile to the same T,T,Q witness used for dκ_E',
+);
 assert.notEqual(transports.parity_fragile_fake_defect, 0, 'noncocycle hostile must actually fail dκ=0');
 assert.equal(transports.additive_pairing_control, true);
 assert.equal(transports.omega_on_bar3_boundary, 0);
 assert.notEqual(transports.fake_on_bar3_boundary, 0, 'noncocycle must fail representative invariance on the explicit bar-3 boundary');
+assert.equal(
+  transports.fake_on_bar3_boundary,
+  transports.parity_fragile_fake_defect,
+  'the explicit bar-3 boundary pairing must equal the independently computed cocycle defect on T,T,Q',
+);
+assert.equal(transports.fake_boundary_matches_defect, true);
 assert.equal(transports.classification, 'Z_bar^2(B;Z) ≅ Rep_bar^2(B;Z)');
 assert.equal(transports.geometric_transport_authority, false);
 
