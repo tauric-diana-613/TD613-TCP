@@ -25,6 +25,7 @@ const changedA15R0 = execFileSync(
 
 const allowedCurrentChamberPaths = new Set([
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_SPEC_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_POST_WITNESS_REPAIR_PREREGISTRATION_001.md',
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_RECEIPT_V0_1.md',
   'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_H2_TRANSPORT_CLASSIFICATION_HOLONOMY_COMPLETENESS_WITNESS_ROUTING_NOTE.md',
   'app/dome-world/previews/a15-r0/aperture-pedagogue-h2-transport-classification-holonomy-completeness.js',
