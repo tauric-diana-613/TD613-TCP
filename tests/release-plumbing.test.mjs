@@ -92,8 +92,10 @@ assert.doesNotMatch(relock, /vercel@latest deploy/);
 assert.match(relock, /deployment_count = 0/);
 
 const confirmationIndex = relock.indexOf('  confirm-production-practice:');
+const zenodoSyncIndex = relock.indexOf('  src-zenodo-sync:');
 assert.ok(confirmationIndex >= 0, 'zero-deploy production practice confirmation job must remain in the existing relock workflow');
-const confirmation = relock.slice(confirmationIndex);
+assert.ok(zenodoSyncIndex > confirmationIndex, 'SRC Zenodo sync must remain a separately addressable job after production confirmation');
+const confirmation = relock.slice(confirmationIndex, zenodoSyncIndex);
 assert.match(confirmation, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-confirm '\)/,
   'production confirmation requires its own exact #405 command');
 assert.match(confirmation, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
@@ -114,7 +116,51 @@ assert.doesNotMatch(confirmation, /^\s*git push\b/m,
 assert.doesNotMatch(confirmation, /deploymentEnabled = true/,
   'zero-deploy confirmation may never open the Vercel Git gate');
 
+const zenodoSync = relock.slice(zenodoSyncIndex);
+assert.match(zenodoSync, /github\.event\.issue\.number == 758/,
+  'SRC Zenodo synchronization requires the permanent #758 intake gate');
+assert.match(zenodoSync, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
+  'only the exact installed chat relay may transport operator authority to #758');
+assert.doesNotMatch(zenodoSync, /endsWith\([^\n]*\[bot\]/,
+  'SRC sync relay authority must never widen to arbitrary bot identities');
+assert.match(zenodoSync, /github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/,
+  'SRC synchronization requires the exact one-run operator command');
+assert.match(zenodoSync, /^\s{6}contents:\s*write\s*$/m,
+  'the isolated SRC sync job requires bounded repository write permission');
+assert.match(zenodoSync, /^\s{6}pull-requests:\s*read\s*$/m,
+  'the SRC sync job may read PR #731 state before writing');
+assert.match(zenodoSync, /ATELIER_PR: '731'/,
+  'SRC synchronization must bind to the active Atelier PR');
+assert.match(zenodoSync, /ATELIER_BRANCH: amari\/src-projective-routing-grammar/,
+  'SRC synchronization must bind to the active Atelier branch');
+assert.match(zenodoSync, /CREATOR_ORCID: 0009-0009-9348-3534/,
+  'SRC synchronization must use the exact SignalRupture Zenodo creator ORCID');
+assert.match(zenodoSync, /scripts\/src-zenodo-operator-sync\.py/,
+  'SRC synchronization must invoke the bounded Atelier acquisition runner');
+assert.match(zenodoSync, /SRC\/01-MANIFESTS\/live\//,
+  'SRC synchronization writes live manifests only');
+assert.match(zenodoSync, /SRC\/02-ORIGINALS\/live\//,
+  'SRC synchronization writes live originals only');
+assert.match(zenodoSync, /SRC\/03-DERIVATIVES\/text\/live\//,
+  'SRC synchronization writes live text derivatives only');
+assert.match(zenodoSync, /SRC\/04-RECEIPTS\/live\//,
+  'SRC synchronization writes live receipts only');
+assert.match(zenodoSync, /04-RECEIPTS\/phase2/,
+  'SRC synchronization must freeze and re-check the sealed Phase-2 receipt tree');
+assert.match(zenodoSync, /01-MANIFESTS\/phase2/,
+  'SRC synchronization must freeze and re-check the sealed Phase-2 manifest tree');
+assert.match(zenodoSync, /git push origin "HEAD:\$ATELIER_BRANCH"/,
+  'SRC synchronization may push only its bounded packet back to the live Atelier branch');
+assert.doesNotMatch(zenodoSync, /^\s*git push origin HEAD:main\s*$/m,
+  'SRC synchronization has no main-branch write authority');
+assert.doesNotMatch(zenodoSync, /vercel@latest deploy|deploymentEnabled = true/,
+  'SRC synchronization has no Vercel deployment or unlock authority');
+assert.match(zenodoSync, /Gate #\$GATE_ISSUE returns to \*\*DORMANT\*\*/,
+  'one successful SRC synchronization must explicitly return the gate to dormancy');
+assert.match(zenodoSync, /automatic_retry = not authorized/,
+  'a held SRC synchronization creates no automatic retry authority');
+
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, immediate fallback relock, and zero-deploy production practice confirmation');
+console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, immediate fallback relock, zero-deploy production confirmation, and operator-gated live SRC Zenodo intake');
