@@ -11,6 +11,7 @@ repair_001_preregistered = 52233ca94ce1c13424269323777ea8ad7176f43b
 repair_001_hostiles      = bdfca7ef15874ae4d0ad3552762c356de00d34b6
 repaired_frozen_science  = 4fb6f9e8d669c20a66178cc07833efdeb446f154
 observed_main            = d652c5e151471be7e40ff6a08936ba26c0cef1ad
+registration             = metadata-only synchronization pulse after temporary retarget
 ```
 
 Repair 001 adds explicit C1 additive identity/inverse/associativity hostile coverage required for strict 2-groupoid naming. It changes no theorem equation.
