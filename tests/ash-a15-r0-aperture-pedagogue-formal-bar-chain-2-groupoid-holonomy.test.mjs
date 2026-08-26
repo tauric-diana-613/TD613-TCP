@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {
   normalizeFormalBar1Chain,
   addFormalBar1Chains,
+  scaleFormalBar1Chain,
+  sameFormalBar1Chain,
   formalBar2Cell,
   formalBar2CellFromSource,
   identityFormalBar2Cell,
@@ -27,6 +29,51 @@ import {
 const cert = formalBarChainTwoGroupoidHolonomyCertificate();
 assert.equal(cert.status, 'FORMAL_BAR_CHAIN_TWO_GROUPOID_HOLONOMY_CERTIFICATE_PASSED');
 assert.equal(cert.passed, true);
+
+// Repair 001: the word "2-groupoid" requires the formal C1 1-cells themselves
+// to carry the declared additive identity, inverse, and associativity laws.
+// This is chain-group authority only; it creates no inverse operational route.
+const u1 = normalizeFormalBar1Chain([
+  { coordinate: T_COORDINATE, coefficient: 2 },
+  { coordinate: Q_COORDINATE, coefficient: -1 },
+]);
+const v1 = normalizeFormalBar1Chain([
+  { coordinate: T_COORDINATE, coefficient: -3 },
+  { coordinate: Q_COORDINATE, coefficient: 4 },
+]);
+const w1 = normalizeFormalBar1Chain([
+  { coordinate: T_COORDINATE, coefficient: 1 },
+  { coordinate: Q_COORDINATE, coefficient: 2 },
+]);
+const zero1 = normalizeFormalBar1Chain([]);
+assert.equal(u1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(v1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(w1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(zero1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+
+const minusU1 = scaleFormalBar1Chain(u1.chain, -1);
+assert.equal(minusU1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+const uPlusMinusU = addFormalBar1Chains(u1.chain, minusU1.chain);
+const minusUPlusU = addFormalBar1Chains(minusU1.chain, u1.chain);
+assert.equal(uPlusMinusU.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(minusUPlusU.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(uPlusMinusU.is_zero, true);
+assert.equal(minusUPlusU.is_zero, true);
+assert.equal(sameFormalBar1Chain(uPlusMinusU.chain, zero1.chain), true);
+assert.equal(sameFormalBar1Chain(minusUPlusU.chain, zero1.chain), true);
+
+const leftIdentity1 = addFormalBar1Chains(zero1.chain, u1.chain);
+const rightIdentity1 = addFormalBar1Chains(u1.chain, zero1.chain);
+assert.equal(sameFormalBar1Chain(leftIdentity1.chain, u1.chain), true);
+assert.equal(sameFormalBar1Chain(rightIdentity1.chain, u1.chain), true);
+
+const uv1 = addFormalBar1Chains(u1.chain, v1.chain);
+const lhsAssoc1 = addFormalBar1Chains(uv1.chain, w1.chain);
+const vw1 = addFormalBar1Chains(v1.chain, w1.chain);
+const rhsAssoc1 = addFormalBar1Chains(u1.chain, vw1.chain);
+assert.equal(lhsAssoc1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(rhsAssoc1.status, 'FORMAL_BAR_1_CHAIN_NORMALIZED');
+assert.equal(sameFormalBar1Chain(lhsAssoc1.chain, rhsAssoc1.chain), true);
 
 // Source/target typing is mathematical authority. An open basis 2-cell has a
 // lawful transport value but is forbidden from borrowing the holonomy name.
