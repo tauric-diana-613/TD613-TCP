@@ -20,7 +20,13 @@ Current default-branch routing anchor observed before retarget:
 main = d652c5e151471be7e40ff6a08936ba26c0cef1ad
 ```
 
-This file is metadata-only workflow-registration scaffolding. The Draft PR may be retargeted temporarily to `main` solely to expose the exact-head consolidated-validation event. It changes no theorem, hostile, executable, claim ceiling, or scientific parent.
+This file is metadata-only workflow-registration scaffolding. The Draft PR is temporarily retargeted to `main` solely to expose the exact-head consolidated-validation event. It changes no theorem, hostile, executable, claim ceiling, or scientific parent.
+
+Registration synchronization pulse:
+
+```text
+2026-08-26 · post-retarget metadata-only synchronize
+```
 
 After an authority-bearing witness, delete this file, restore the PR base to the #760 scientific branch, and require frozen science -> post-routing cleanup to have zero net changed files.
 
