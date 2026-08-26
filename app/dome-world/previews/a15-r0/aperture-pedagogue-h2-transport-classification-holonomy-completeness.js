@@ -304,7 +304,8 @@ export function strictFormalTransportClassificationCertificate() {
   const omegaDefects = triples.map(([x, y, z]) => cocycleDefect(transportIncrementCocycle, x, y, z));
   const swapDefects = triples.map(([x, y, z]) => cocycleDefect(swappedTransportCocycle, x, y, z));
   const fakeParityCochain = (x, y) => x.t * y.E;
-  const fakeDefect = cocycleDefect(fakeParityCochain, T_COORDINATE, T_COORDINATE, Q_COORDINATE);
+  const fakeWitness = freeze({ x: T_COORDINATE, y: T_COORDINATE, z: Q_COORDINATE });
+  const fakeDefect = cocycleDefect(fakeParityCochain, fakeWitness.x, fakeWitness.y, fakeWitness.z);
 
   const cA = oneBar2(T_COORDINATE, Q_COORDINATE, 2, '2[T|Q]');
   const cB = oneBar2(Q_COORDINATE, T_COORDINATE, -3, '-3[Q|T]');
@@ -313,7 +314,7 @@ export function strictFormalTransportClassificationCertificate() {
     === pairingValue(transportIncrementCocycle, cA) + pairingValue(transportIncrementCocycle, cB);
 
   const b3 = freeze([
-    freeze({ coefficient: 1, x: T_COORDINATE, y: Q_COORDINATE, z: T_COORDINATE }),
+    freeze({ coefficient: 1, x: fakeWitness.x, y: fakeWitness.y, z: fakeWitness.z }),
   ]);
   const b3Boundary = boundaryOfBar3Chain(b3);
   const omegaOnBoundary = b3Boundary.status === 'NORMALIZED_BAR_3_BOUNDARY_DERIVED'
@@ -322,24 +323,28 @@ export function strictFormalTransportClassificationCertificate() {
   const fakeOnBoundary = b3Boundary.status === 'NORMALIZED_BAR_3_BOUNDARY_DERIVED'
     ? pairingValue(fakeParityCochain, b3Boundary.chain)
     : null;
+  const fakeBoundaryMatchesDefect = fakeOnBoundary === fakeDefect;
 
   const passed = omegaDefects.every((value) => value === 0)
     && swapDefects.every((value) => value === 0)
     && fakeDefect !== 0
     && additivity
     && omegaOnBoundary === 0
-    && fakeOnBoundary !== 0;
+    && fakeOnBoundary !== 0
+    && fakeBoundaryMatchesDefect;
 
   return freeze({
     status: passed ? 'STRICT_FORMAL_TRANSPORT_CLASSIFICATION_CERTIFICATE_PASSED' : 'STRICT_FORMAL_TRANSPORT_CLASSIFICATION_CERTIFICATE_FAILED',
     passed,
     omega_defects: freeze(omegaDefects),
     swapped_defects: freeze(swapDefects),
+    parity_fragile_fake_witness: fakeWitness,
     parity_fragile_fake_defect: fakeDefect,
     additive_pairing_control: additivity,
     bar3_boundary: b3Boundary,
     omega_on_bar3_boundary: omegaOnBoundary,
     fake_on_bar3_boundary: fakeOnBoundary,
+    fake_boundary_matches_defect: fakeBoundaryMatchesDefect,
     universal_proof: freeze([
       'C2 is free abelian on normalized bar-2 basis cells. A strict B²Z-valued formal transport preserving both additive compositions is therefore exactly a homomorphism F:C2->Z.',
       'Every homomorphism F:C2->Z is uniquely evaluation against the 2-cochain κ defined by κ(x,y)=F([x|y]).',
