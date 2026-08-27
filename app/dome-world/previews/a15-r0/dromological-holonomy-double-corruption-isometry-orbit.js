@@ -416,6 +416,9 @@ function systematicProfileCertificate() {
     profileCounts[row.profile] = (profileCounts[row.profile] ?? 0) + 1;
     if (row.long_type) longTypeCounts[row.long_type] += 1;
   }
+  const observedProfileCounts = Object.fromEntries(
+    Object.entries(profileCounts).sort(([left], [right]) => left.localeCompare(right)),
+  );
 
   const lifted = freeze({
     H: longTypeCounts.H * 64,
@@ -429,7 +432,7 @@ function systematicProfileCertificate() {
     expected_ordered_linear_coefficient_sextuples_checked: 4096,
     successful_linear_coefficient_sextuples: successful.length,
     expected_successful_linear_coefficient_sextuples: 210,
-    profile_counts: freeze(profileCounts),
+    profile_counts: freeze(observedProfileCounts),
     expected_profile_counts: freeze({
       '1,2,3,0': 60,
       '2,1,3,0': 60,
@@ -445,7 +448,7 @@ function systematicProfileCertificate() {
     every_success_has_no_zero_coefficient: successful.every(row => !row.profile.endsWith(',1') && !row.profile.endsWith(',2')
       && !row.profile.endsWith(',3') && !row.profile.endsWith(',4') && !row.profile.endsWith(',5') && !row.profile.endsWith(',6')),
     exact: successful.length === 210
-      && same(profileCounts, { '1,2,3,0': 60, '2,1,3,0': 60, '2,2,2,0': 90 })
+      && same(observedProfileCounts, { '1,2,3,0': 60, '2,1,3,0': 60, '2,2,2,0': 90 })
       && same(longTypeCounts, { H: 60, I: 60, X: 90 })
       && same(lifted, { H: 3840, I: 3840, X: 5760 })
       && lifted.H + lifted.I + lifted.X === 13440
