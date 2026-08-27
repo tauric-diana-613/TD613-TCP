@@ -50,6 +50,11 @@ function same(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
+function sameSet(left, right) {
+  return left.length === right.length
+    && [...left].sort().every((value, index) => value === [...right].sort()[index]);
+}
+
 function assertBenchFixture(fixture) {
   if (!fixture || fixture.schema !== 'td613.loom.heterostratigraphic-research-bench-fixture/v0.1') {
     throw new Error('Research bench requires the canonical bench fixture schema.');
@@ -212,7 +217,7 @@ export function compileHolonomyLoomHeterostratigraphicResearchBench(receipt, pro
   }
 
   const exposedControls = [...fixture.allowed_controls];
-  if (!same(exposedControls, projection.available_actions)) {
+  if (!sameSet(exposedControls, projection.available_actions)) {
     throw new Error('Research bench control inventory must match the read-only Ash projection.');
   }
   if (exposedControls.some(action => FORBIDDEN_ACTIONS.includes(action))) {
