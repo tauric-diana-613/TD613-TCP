@@ -66,13 +66,14 @@
     "docs/western-horizon/WESTERN_HORIZON_RECEIVING_MANIFEST_V0_2.json"
   ],
   "handoff_branch": "handoff/western-horizon-future-amari-v0-2-20260827",
-  "handoff_pr": null,
+  "handoff_pr": 836,
   "next_recommended_chamber": {
     "working_title": "Dromological Holonomy Orbit-Transport Tomographic Conjugacy AIA",
     "scientific_parent_pr": 834,
     "scientific_parent_receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20",
     "startup_branch": "research/a15-r0-holonomy-orbit-transport-tomographic-conjugacy-20260827",
-    "startup_pr": null,
+    "startup_pr": 837,
+    "startup_head_at_handoff": "9ab7e4c96cbc2987bfb055f88a5a0e32d28a5888",
     "status": "preregistration-only startup; not earned theorem",
     "central_question": "whether exact repair decoding and replay-assisted tomography commute with explicit declared receiver-label isometry transport across the three H/I/X labelled minimal width-eight orbits without acting on the source state",
     "finite_targets": [
