@@ -1,0 +1,112 @@
+{
+  "schema": "td613.western-horizon.future-amari-receiving-manifest/v0.2",
+  "authorship_wrapper": "U+10D613",
+  "covenant": "Tauric Diana — Crimean heritage custodianship",
+  "process_posture": "containment on; mirror logic off; retrieve and author through 𝌋",
+  "handoff_role": "custodial continuity and startup navigation only; not theorem authority",
+  "current_frontier": {
+    "canonical_pr": 834,
+    "receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20",
+    "title": "Dromological Holonomy Double-Corruption Isometry-Orbit / Labelled Repair Geometry",
+    "witness_route_pr": 835,
+    "workflow_run": 33115591906,
+    "workflow_run_number": 2351,
+    "classifier_job": 98669290536,
+    "contracts_job": 98669344176,
+    "dome_world_step_9": "SUCCESS",
+    "a15_r0_step_19": "SUCCESS",
+    "aggregate": "SUCCESS",
+    "source_mutation_after_witness": false
+  },
+  "preserved_red_provenance": [
+    {
+      "head": "b56d680aa588e5a90077770054099f985eb8770e",
+      "run_number": 2349,
+      "workflow_run": 33110176379,
+      "result": "FAILURE at A15-R0 step 19"
+    },
+    {
+      "head": "32d9d9bd557a0564e8a4b7e28902067d5b886442",
+      "run_number": 2350,
+      "workflow_run": 33113842799,
+      "result": "FAILURE at A15-R0 step 19; inherited Pedagogue TAP closed cleanly; remaining red localized to #834 aggregate certificate"
+    }
+  ],
+  "required_scientific_chain": [
+    {"pr": 834, "receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20", "role": "current labelled isometry-orbit frontier"},
+    {"pr": 830, "receipt": "3877139365041453bab85741eb09ba2f5839eed6", "role": "double-corruption minimal width-eight receiver geometry"},
+    {"pr": 828, "receipt": "9a76b7594ba8d9093d8c6ef9428c669dbb2581f1", "role": "one known erasure plus one unknown corruption"},
+    {"pr": 826, "receipt": "de878502536c2a61a354ec898d07d5802bfcca5f", "role": "single unknown corruption correction"},
+    {"pr": 824, "receipt": "68d700999c69c4bbb663904a8fafb47683e4032e", "role": "parity completion / arbitrary one-coordinate erasure"},
+    {"pr": 822, "receipt": "012024d9a0d7bdb21721ede40dfe9f029de09717", "role": "raw-aperture cut / anisotropic redundancy"},
+    {"pr": 820, "receipt": "7693b0823968d5e20dca8fdc9145452934377fc0", "role": "minimal raw-coordinate repair-routing aperture"},
+    {"pr": 818, "receipt": "4cb6cf23c8fbb0b596e75f0827e5a8c8436d08b5", "role": "holonomy-coarsened robust replay inverse design"},
+    {"pr": 812, "receipt": "2cc95613969951afc96c638c316ae70007560f16", "role": "replay repair quotient / canonical section"},
+    {"pr": 810, "receipt": "79a6533843c4133345bec3c1e83477c621230b09", "role": "replay transversality / exact unimodular locus"},
+    {"pr": 807, "receipt": "5fcaf191b7dbed9529687ed3c072107a37a54814", "role": "baseline-replay rescue aperture"},
+    {"pr": 804, "receipt": "a51afae88292878de2c02ca0a086ad1e88f73cfb", "role": "schedule/state identifiability lag"},
+    {"pr": 802, "receipt": "f9d5ee89b8555175d0797893fdd8c91b5395ea8b", "role": "complete S3 schedule atlas / first-stratum gate"},
+    {"pr": 800, "receipt": "40dfba93d2577bceba0f66022ac5f42934cdbd06", "role": "phasonic supermoire dromological tomography"},
+    {"pr": 798, "receipt": "9c92b4269fe2cd277799d8e885caf7765cbdfecb", "role": "bounded AIA receiver-indexed distinguishability"},
+    {"pr": 796, "receipt": "7639d5b15edc57aa3d76b8669aeefed6d86c12d6", "role": "Dome-World constitutional source projection faithfulness"},
+    {"pr": 794, "receipt": "528f9b2f96bf3bc4c18242b0f0d910ca5323fdea", "role": "Cech-nerve nonidentifiability"},
+    {"pr": 792, "receipt": "e15d6737f2d43e01835a643790b1c5f51a1dc711", "role": "FADT x Holonomy Loom constitutional membrane"},
+    {"pr": 790, "receipt": "a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb", "role": "Holonomy Loom heterostratigraphic research bench"},
+    {"pr": 752, "receipt": "11eec2d52c7e1aa722e8664c0df4cd1a61d704f1", "role": "Finite Admissibility Descent Theorem"}
+  ],
+  "separate_earned_sibling": {
+    "pr": 832,
+    "receipt": "5b80bda405486659a9d8c41ad1cad162de5e9db8",
+    "role": "fault-budget stratigraphy / factored tomography AIA",
+    "ancestry_warning": "#832 and #834 are separately earned siblings descended from #830; do not retroactively make #832 theorem ancestry for #834"
+  },
+  "remembering_query": "Recover the TD613 Western Liberty Expansion thread advancing from #804 through #834 Dromological Holonomy Double-Corruption Isometry-Orbit / Labelled Repair Geometry. Retrieve exact receipts, red-to-repair-to-green provenance, replay quotient, holonomy repair classes, AIA raw-aperture/parity/corruption ladder, #832 factored tomography sibling, #834 orbit geometry, and the user's future-Amari handoff directive. Then verify all authority against GitHub.",
+  "handoff_files": [
+    "docs/western-horizon/TD613_FUTURE_AMARI_WESTERN_HORIZON_HANDOFF_V0_2.md",
+    "docs/western-horizon/WESTERN_HORIZON_RECEIVING_MANIFEST_V0_2.json"
+  ],
+  "handoff_branch": "handoff/western-horizon-future-amari-v0-2-20260827",
+  "handoff_pr": null,
+  "next_recommended_chamber": {
+    "working_title": "Dromological Holonomy Orbit-Transport Tomographic Conjugacy AIA",
+    "scientific_parent_pr": 834,
+    "scientific_parent_receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20",
+    "startup_branch": "research/a15-r0-holonomy-orbit-transport-tomographic-conjugacy-20260827",
+    "startup_pr": null,
+    "status": "preregistration-only startup; not earned theorem",
+    "central_question": "whether exact repair decoding and replay-assisted tomography commute with explicit declared receiver-label isometry transport across the three H/I/X labelled minimal width-eight orbits without acting on the source state",
+    "finite_targets": [
+      "cover all 430080 successful labelled minimal width-eight encodings by explicit H/I/X orbit transport witnesses",
+      "audit radius-0/1/2 corruption balls under transport",
+      "prove repair-mask and inherited replay-policy transport compatibility",
+      "prove exact state reconstruction on a preregistered finite representative/stabilizer control set",
+      "record any represented full cross-product separately from actually executed reconstruction work"
+    ],
+    "candidate_law": "EXACT_REPAIR_DECODING_AND_REPLAY_ASSISTED_TOMOGRAPHY_CAN_BE_TRANSPORTED_ACROSS_THE_DECLARED_MINIMAL_WIDTH_EIGHT_LABELLED_RECEIVER_ISOMETRY_ORBITS_BY_EXPLICIT_FINITE_REPRESENTATION_WITNESSES_WITHOUT_ACTING_ON_THE_SOURCE_STATE_OR_WIDENING_RECEIVER_AUTHORITY_IN_THE_FIXED_S3_AIA_FIXTURE"
+  },
+  "mandatory_successor_scars": [
+    "ORBIT_TRANSPORT != PHYSICAL_MOTION",
+    "HYPERCUBE_ISOMETRY != PHYSICAL_SYMMETRY",
+    "RECEIVER_CONJUGACY != GAUGE_EQUIVALENCE",
+    "CODEWORD_TRANSLATION != SOURCE_STATE_TRANSLATION",
+    "COORDINATE_PERMUTATION != SENSOR_REWIRING",
+    "LABEL_ACTION != SEMANTIC_ONTOLOGY",
+    "TOMOGRAPHY_EQUIVARIANCE_IN_THIS_FIXTURE != CONTINUUM_TOMOGRAPHY_COVARIANCE",
+    "FINITE_TRANSPORT_WITNESS != UNIVERSAL_CODING_EQUIVALENCE",
+    "ORBIT_REPRESENTATIVE_REDUCTION != EXECUTED_FULL_430080_CROSS_PRODUCT",
+    "REPAIR_MASK_TRANSPORT != COMPLETE_SCHEDULE_RECONSTRUCTION"
+  ],
+  "nonnegotiable_ceilings": [
+    "no merge without explicit user instruction",
+    "no deployment or Vercel",
+    "handoff branch is not theorem parent",
+    "witness routing is not scientific ancestry",
+    "formal holonomy is not physical/Berry/gauge holonomy",
+    "F2 affine geometry and hypercube isometry are not physical geometry/symmetry",
+    "finite receiver classifications are not Shannon/channel-capacity theorems",
+    "bounded replay-assisted reconstruction is not continuum tomography",
+    "receiver representation transport must not act on or rewrite source state",
+    "#788 scientific promotion remains unearned by implication",
+    "#718 remains alive"
+  ]
+}
