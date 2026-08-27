@@ -263,7 +263,7 @@ assert.equal(reconstructions, 4500);
 
 const mixedClass = classes.find(row => row.schedule_ids.length === 2 && row.defect_directions.length === 2);
 assert.ok(mixedClass);
-assert.deepEqual(mixedClass.schedule_ids.sort(), ['H-I-P', 'I-H-P'].sort());
+assert.deepEqual([...mixedClass.schedule_ids].sort(), ['H-I-P', 'I-H-P'].sort());
 
 const certificate = dromologicalHolonomyParityCompletionCertificate();
 assert.equal(certificate.schema, DROMOLOGICAL_HOLONOMY_PARITY_COMPLETION_SCHEMA);
