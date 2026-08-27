@@ -95,12 +95,15 @@ function assertSources(receipt, projection) {
   return freeze({ monotonicity, widening });
 }
 
-function paneFromCard(card, fixture) {
+function paneFromCard(card, sourcePanel, fixture) {
+  if (!sourcePanel || sourcePanel.id !== card.stratum) {
+    throw new Error(`Research bench missing Loom technical panel for ${card.stratum}.`);
+  }
   return freeze({
     stratum: card.stratum,
     label: card.title,
     technical_status: card.status,
-    observable_kind: card.observable_kind ?? null,
+    observable_kind: sourcePanel.observable_kind,
     what_changed: card.what_changed,
     what_remains_uncertain: card.what_remains_uncertain,
     claim_ceiling: card.claim_ceiling,
@@ -138,6 +141,7 @@ function staticTruth(sceneCore, receipt, fixture) {
     panes: freeze(sceneCore.stratum_panes.map(pane => ({
       stratum: pane.stratum,
       technical_status: pane.technical_status,
+      observable_kind: pane.observable_kind,
       consequence: pane.label,
       uncertainty: pane.what_remains_uncertain,
       claim_ceiling: pane.claim_ceiling,
@@ -176,11 +180,16 @@ export function compileHolonomyLoomHeterostratigraphicResearchBench(receipt, pro
   if (!same(projection.cards.map(card => card.stratum), CANONICAL_STRATA)) {
     throw new Error('Research bench requires all four Ash cards in canonical order.');
   }
+  if (!same(receipt.stratum_panels.map(panel => panel.id), CANONICAL_STRATA)) {
+    throw new Error('Research bench requires all four Loom technical panels in canonical order.');
+  }
   if (receipt.static_truth?.comparisons?.length !== fixture.comparison_expectations.edge_count) {
     throw new Error('Research bench comparison custody incomplete.');
   }
 
-  const stratumPanes = projection.cards.map(card => paneFromCard(card, fixture));
+  const stratumPanes = projection.cards.map(card => (
+    paneFromCard(card, receipt.stratum_panels.find(panel => panel.id === card.stratum), fixture)
+  ));
   const comparisonRail = [
     ...receipt.partial_bridges.map(item => comparisonSurface(item, fixture)),
     ...receipt.comparison_holds.map(item => comparisonSurface(item, fixture)),
@@ -291,6 +300,7 @@ export function researchBenchStaticTruthParityCertificate(scene) {
     && scene.stratum_panes.every(pane => scene.static_truth.panes.some(item => (
       item.stratum === pane.stratum
       && item.technical_status === pane.technical_status
+      && item.observable_kind === pane.observable_kind
       && item.consequence === pane.label
       && item.uncertainty === pane.what_remains_uncertain
       && item.claim_ceiling === pane.claim_ceiling
