@@ -51,8 +51,9 @@ function same(left, right) {
 }
 
 function sameSet(left, right) {
-  return left.length === right.length
-    && [...left].sort().every((value, index) => value === [...right].sort()[index]);
+  const a = [...left].sort();
+  const b = [...right].sort();
+  return a.length === b.length && a.every((value, index) => value === b[index]);
 }
 
 function assertBenchFixture(fixture) {
@@ -165,6 +166,8 @@ function staticTruth(sceneCore, receipt, fixture) {
     defined_bridge_count: receipt.defined_bridges.length,
     allowed_controls: freeze([...fixture.allowed_controls]),
     forbidden_controls: freeze([...fixture.forbidden_controls]),
+    rest_contract: freeze({ ...fixture.rest_contract }),
+    return_contract: freeze({ ...fixture.return_contract }),
     authority: fixture.authority,
     runtime_binding: false,
     global_synthesis_authority: false,
@@ -321,15 +324,35 @@ export function researchBenchStaticTruthParityCertificate(scene) {
       && item.plain_language === edge.plain_language
     )));
 
+  const controlParity = same(
+    scene.controls.map(item => item.action),
+    scene.static_truth.allowed_controls,
+  );
+
+  const restReturnParity =
+    scene.rest_state.preserve_scene === scene.static_truth.rest_contract.preserve_scene
+    && scene.rest_state.preserve_receipt === scene.static_truth.rest_contract.preserve_receipt
+    && scene.rest_state.mutate_custody === scene.static_truth.rest_contract.mutate_custody
+    && scene.rest_state.write_route_memory === scene.static_truth.rest_contract.write_route_memory
+    && scene.rest_state.promote_claim === scene.static_truth.rest_contract.promote_claim
+    && scene.return_state.exit_scene === scene.static_truth.return_contract.exit_scene
+    && scene.return_state.authorize_release === scene.static_truth.return_contract.authorize_release
+    && scene.return_state.transmit_source_content === scene.static_truth.return_contract.transmit_source_content
+    && scene.return_state.mutate_custody === scene.static_truth.return_contract.mutate_custody
+    && scene.return_state.write_route_memory === scene.static_truth.return_contract.write_route_memory;
+
   const authorityParity = same(scene.authority, scene.static_truth.authority)
     && Object.values(scene.authority).every(value => value === false);
 
+  const passed = paneParity && comparisonParity && controlParity && restReturnParity && authorityParity;
   return freeze({
     pane_parity: paneParity,
     comparison_parity: comparisonParity,
+    control_parity: controlParity,
+    rest_return_parity: restReturnParity,
     authority_parity: authorityParity,
-    static_truth_carries_all_scene_information: paneParity && comparisonParity && authorityParity,
-    passed: paneParity && comparisonParity && authorityParity,
+    static_truth_carries_all_scene_information: passed,
+    passed,
     scar: 'ANIMATED_OR_INTERACTIVE_SCENE_INFORMATION <= STATIC_TRUTH_INFORMATION',
   });
 }
