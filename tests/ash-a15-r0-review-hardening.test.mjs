@@ -1,16 +1,18 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const STACKED_PARENT_788 = 'aad04e9cbb4532b4fc63dea16ef179f2e66200ed';
-execFileSync('git', ['cat-file', '-e', `${STACKED_PARENT_788}^{commit}`], { stdio: 'pipe' });
-execFileSync('git', ['merge-base', '--is-ancestor', STACKED_PARENT_788, 'HEAD'], { stdio: 'pipe' });
+const STACKED_PARENT_789 = 'c5c354413f721277760baefe946f602db8624b15';
+execFileSync('git', ['cat-file', '-e', `${STACKED_PARENT_789}^{commit}`], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', STACKED_PARENT_789, 'HEAD'], { stdio: 'pipe' });
+
+const BENCH_FIXTURE = 'tests/fixtures/pedagogue/holonomy-loom-heterostratigraphic-research-bench-v01.json';
 
 const changedA15R0 = execFileSync(
   'git',
   [
     'diff',
     '--name-only',
-    `${STACKED_PARENT_788}..HEAD`,
+    `${STACKED_PARENT_789}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -21,12 +23,14 @@ const changedA15R0 = execFileSync(
   path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')
   || path.startsWith('app/dome-world/previews/a15-r0/')
   || path.startsWith('tests/ash-a15-r0-')
+  || path === BENCH_FIXTURE
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_HOLONOMY_LOOM_HETEROSTRATIGRAPHIC_APPARATUS_ADAPTER_SPEC_V0_1.md',
-  'app/dome-world/previews/a15-r0/holonomy-loom-heterostratigraphic-apparatus-adapter.js',
-  'tests/ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-apparatus-adapter.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_HOLONOMY_LOOM_HETEROSTRATIGRAPHIC_RESEARCH_BENCH_SPEC_V0_1.md',
+  'app/dome-world/previews/a15-r0/holonomy-loom-heterostratigraphic-research-bench.js',
+  'tests/ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs',
+  BENCH_FIXTURE,
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -34,23 +38,23 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#788 apparatus adapter may not mutate frozen bridge or historical A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#789 research bench may not mutate frozen adapter, bridge, or historical A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `apparatus adapter chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `Holonomy Loom research bench chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered apparatus adapter path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered Holonomy Loom research bench path: ${path}`);
 }
 
-// #788 is an explicitly unevaluated stacked engineering parent.
-// This chamber does not promote its theorem status; exact ancestry only preserves byte custody.
-// Execute the current adapter assay plus standing constitutional sentinels.
+// #789 is an explicitly unevaluated stacked engineering parent over unevaluated #788.
+// This chamber does not promote either scientific or engineering authority status.
+// Execute the current research-bench assay plus standing constitutional sentinels only.
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
-await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-apparatus-adapter.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 Holonomy Loom heterostratigraphic apparatus adapter hardening tests passed.');
+console.log('Ash A15-R0 Holonomy Loom heterostratigraphic research bench hardening tests passed.');
