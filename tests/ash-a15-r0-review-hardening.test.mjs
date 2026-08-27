@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_824_RECEIPT = '68d700999c69c4bbb663904a8fafb47683e4032e';
 const PARENT_822_RECEIPT = '012024d9a0d7bdb21721ede40dfe9f029de09717';
 const PARENT_820_RECEIPT = '7693b0823968d5e20dca8fdc9145452934377fc0';
 const PARENT_818_RECEIPT = '4cb6cf23c8fbb0b596e75f0827e5a8c8436d08b5';
@@ -18,6 +19,7 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
+  PARENT_824_RECEIPT,
   PARENT_822_RECEIPT,
   PARENT_820_RECEIPT,
   PARENT_818_RECEIPT,
@@ -38,6 +40,7 @@ for (const receipt of [
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_822_RECEIPT, PARENT_824_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_820_RECEIPT, PARENT_822_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_818_RECEIPT, PARENT_820_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_812_RECEIPT, PARENT_818_RECEIPT], { stdio: 'pipe' });
@@ -58,7 +61,7 @@ const changedA15R0 = execFileSync(
   [
     'diff',
     '--name-only',
-    `${PARENT_822_RECEIPT}..HEAD`,
+    `${PARENT_824_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -72,9 +75,9 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_PARITY_COMPLETION_ERASURE_ROBUST_AIA_STARTUP_V0_1.md',
-  'app/dome-world/previews/a15-r0/dromological-holonomy-parity-completion-erasure-robust-aia.js',
-  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-parity-completion-erasure-robust-aia.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_SINGLE_CORRUPTION_CORRECTING_AIA_STARTUP_V0_1.md',
+  'app/dome-world/previews/a15-r0/dromological-holonomy-single-corruption-correcting-aia.js',
+  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-single-corruption-correcting-aia.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -82,15 +85,15 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#822 holonomy parity-completion chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#824 single-corruption chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `holonomy parity-completion chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `single-corruption chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered holonomy parity-completion path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered single-corruption path: ${path}`);
 }
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
@@ -109,6 +112,7 @@ await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-coarsened-ro
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-minimal-coordinate-repair-routing-aperture.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-raw-aperture-cut-anisotropic-redundancy.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-parity-completion-erasure-robust-aia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-single-corruption-correcting-aia.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 dromological holonomy parity-completion / erasure-robust AIA hardening tests passed.');
+console.log('Ash A15-R0 dromological holonomy single-corruption-correcting AIA hardening tests passed.');
