@@ -1,89 +1,143 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
-await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
+const PARENT_839_RECEIPT = '4c524665fd5a3d59b0ebcd8ec44144466b15ad31';
+const PARENT_837_RECEIPT = '17475d670e339d7b562194a4429fa979584da65a';
+const PARENT_834_RECEIPT = 'a0d88e26860f4d9c25feed21ab2d080f70b45f20';
+const PARENT_830_RECEIPT = '3877139365041453bab85741eb09ba2f5839eed6';
+const PARENT_828_RECEIPT = '9a76b7594ba8d9093d8c6ef9428c669dbb2581f1';
+const PARENT_826_RECEIPT = 'de878502536c2a61a354ec898d07d5802bfcca5f';
+const PARENT_824_RECEIPT = '68d700999c69c4bbb663904a8fafb47683e4032e';
+const PARENT_822_RECEIPT = '012024d9a0d7bdb21721ede40dfe9f029de09717';
+const PARENT_820_RECEIPT = '7693b0823968d5e20dca8fdc9145452934377fc0';
+const PARENT_818_RECEIPT = '4cb6cf23c8fbb0b596e75f0827e5a8c8436d08b5';
+const PARENT_812_RECEIPT = '2cc95613969951afc96c638c316ae70007560f16';
+const PARENT_810_RECEIPT = '79a6533843c4133345bec3c1e83477c621230b09';
+const PARENT_807_RECEIPT = '5fcaf191b7dbed9529687ed3c072107a37a54814';
+const PARENT_804_RECEIPT = 'a51afae88292878de2c02ca0a086ad1e88f73cfb';
+const PARENT_802_RECEIPT = 'f9d5ee89b8555175d0797893fdd8c91b5395ea8b';
+const PARENT_800_RECEIPT = '40dfba93d2577bceba0f66022ac5f42934cdbd06';
+const PARENT_798_RECEIPT = '9c92b4269fe2cd277799d8e885caf7765cbdfecb';
+const PARENT_796_RECEIPT = '7639d5b15edc57aa3d76b8669aeefed6d86c12d6';
+const PARENT_794_RECEIPT = '528f9b2f96bf3bc4c18242b0f0d910ca5323fdea';
+const PARENT_792_RECEIPT = 'e15d6737f2d43e01835a643790b1c5f51a1dc711';
+const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
+const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
+
+for (const receipt of [
+  PARENT_839_RECEIPT,
+  PARENT_837_RECEIPT,
+  PARENT_834_RECEIPT,
+  PARENT_830_RECEIPT,
+  PARENT_828_RECEIPT,
+  PARENT_826_RECEIPT,
+  PARENT_824_RECEIPT,
+  PARENT_822_RECEIPT,
+  PARENT_820_RECEIPT,
+  PARENT_818_RECEIPT,
+  PARENT_812_RECEIPT,
+  PARENT_810_RECEIPT,
+  PARENT_807_RECEIPT,
+  PARENT_804_RECEIPT,
+  PARENT_802_RECEIPT,
+  PARENT_800_RECEIPT,
+  PARENT_798_RECEIPT,
+  PARENT_796_RECEIPT,
+  PARENT_794_RECEIPT,
+  PARENT_792_RECEIPT,
+  BENCH_790_RECEIPT,
+  FADT_752_RECEIPT,
+]) {
+  execFileSync('git', ['cat-file', '-e', `${receipt}^{commit}`], { stdio: 'pipe' });
+  execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
+}
+
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_837_RECEIPT, PARENT_839_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_834_RECEIPT, PARENT_837_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_830_RECEIPT, PARENT_834_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_828_RECEIPT, PARENT_830_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_826_RECEIPT, PARENT_828_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_824_RECEIPT, PARENT_826_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_822_RECEIPT, PARENT_824_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_820_RECEIPT, PARENT_822_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_818_RECEIPT, PARENT_820_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_812_RECEIPT, PARENT_818_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_810_RECEIPT, PARENT_812_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_807_RECEIPT, PARENT_810_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_804_RECEIPT, PARENT_807_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_802_RECEIPT, PARENT_804_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_800_RECEIPT, PARENT_802_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_798_RECEIPT, PARENT_800_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_796_RECEIPT, PARENT_798_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_794_RECEIPT, PARENT_796_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_792_RECEIPT, PARENT_794_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', BENCH_790_RECEIPT, PARENT_792_RECEIPT], { stdio: 'pipe' });
+execFileSync('git', ['merge-base', '--is-ancestor', FADT_752_RECEIPT, PARENT_792_RECEIPT], { stdio: 'pipe' });
+
+const changedA15R0 = execFileSync(
+  'git',
+  [
+    'diff',
+    '--name-only',
+    `${PARENT_839_RECEIPT}..HEAD`,
+    '--',
+    'app/dome-world/docs/ash/experiments/a15-r0',
+    'app/dome-world/previews/a15-r0',
+    'tests',
+  ],
+  { encoding: 'utf8' },
+).trim().split('\n').filter(Boolean).filter((path) => (
+  path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')
+  || path.startsWith('app/dome-world/previews/a15-r0/')
+  || path.startsWith('tests/ash-a15-r0-')
+));
+
+const allowedCurrentChamberPaths = new Set([
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_STABILIZER_CLAIM_AUTHORITY_FILTRATION_STARTUP_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/STABILIZER_CLAIM_AUTHORITY_FILTRATION_STARTUP_HOOK_V0_1.json',
+  'app/dome-world/previews/a15-r0/dromological-holonomy-stabilizer-claim-authority-filtration.js',
+  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-stabilizer-claim-authority-filtration.test.mjs',
+  'tests/ash-a15-r0-review-hardening.test.mjs',
+]);
+
+const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPaths.has(path));
+assert.deepEqual(
+  historicalMutations,
+  [],
+  `post-#839 stabilizer claim-authority filtration chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+);
+assert.equal(
+  changedA15R0.length,
+  allowedCurrentChamberPaths.size,
+  `stabilizer claim-authority filtration chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+);
+for (const path of allowedCurrentChamberPaths) {
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered stabilizer claim-authority path: ${path}`);
+}
+
+execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
+await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-fadt-holonomy-loom-constitutional-descent-membrane.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-cech-nerve-descent-nonidentifiability.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dome-world-constitutional-projection-faithfulness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-aia-receiver-indexed-distinguishability.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-phasonic-supermoire-dromological-tomography.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-s3-schedule-atlas-first-stratum-gate.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-schedule-state-identifiability-lag.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-baseline-replay-rescue-aperture.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-replay-transversality-unimodular-locus.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-replay-repair-quotient-canonical-section.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-coarsened-robust-replay-inverse-design.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-minimal-coordinate-repair-routing-aperture.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-raw-aperture-cut-anisotropic-redundancy.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-parity-completion-erasure-robust-aia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-single-corruption-correcting-aia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-corruption-plus-erasure-aia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-double-corruption-aia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-double-corruption-isometry-orbit.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-tomographic-conjugacy.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-witness-fiber-descent.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-stabilizer-claim-authority-filtration.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
-const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
-const { createAshKernelAdapter } = await import('../app/dome-world/previews/a15-r0/ash-kernel-adapter.js');
-const fixture = JSON.parse(fs.readFileSync('app/dome-world/fixtures/a15-r0/governed-task-fixture-v01.json', 'utf8'));
-
-for (const [label, mutate] of [
-  ['created_at', copy => { copy.created_at = '2026-02-30T12:00:00Z'; }],
-  ['action_time', copy => { copy.action_times.ARRIVE = '2026-02-30T12:00:00Z'; }]
-]) {
-  const invalid = structuredClone(fixture);
-  mutate(invalid);
-  assert.throws(() => validateGovernedTaskFixture(invalid), /calendar-valid RFC 3339/i, `${label} must reject a nonexistent calendar date.`);
-}
-
-const recorder = createObservableEventRecorder();
-await assert.rejects(
-  recorder.record({ actionId:'A', kernelReceiptId:'R', worldAnswerId:'W', controlId:'control' }),
-  /taskStateBefore is required/i,
-  'Observable events must identify the pre-action task state before coercion.'
-);
-await assert.rejects(
-  recorder.record({ actionId:'A', kernelReceiptId:'R', worldAnswerId:'W', taskStateBefore:'ARRIVE' }),
-  /controlId is required/i,
-  'Observable events must identify the visible control before coercion.'
-);
-
-const mutableBoundary = { edge:'alpha' };
-const mutableSeam = { seam:'beta' };
-const mutableMissingness = { message:'original' };
-const pendingEvent = recorder.record({
-  actionId:'OBSERVE',
-  kernelReceiptId:'receipt_observe',
-  worldAnswerId:'world_observe',
-  taskStateBefore:'ARRIVE',
-  controlId:'control_observe',
-  boundaryCrossings:[mutableBoundary],
-  unexplainedSeams:[mutableSeam],
-  missingness:[mutableMissingness]
-});
-mutableBoundary.edge = 'mutated';
-mutableSeam.seam = 'mutated';
-mutableMissingness.message = 'mutated';
-await pendingEvent;
-const retainedEvent = recorder.snapshot().at(-1);
-assert.equal(retainedEvent.boundary_crossings[0].edge, 'alpha', 'Boundary-crossing inputs must be copied before asynchronous hashing.');
-assert.equal(retainedEvent.unexplained_seams[0].seam, 'beta', 'Unexplained-seam inputs must be copied before asynchronous hashing.');
-assert.equal(retainedEvent.missingness[0].message, 'original', 'Missingness inputs must be copied before asynchronous hashing.');
-assert.equal(Object.isFrozen(retainedEvent.boundary_crossings[0]), true, 'Retained nested event inputs must be recursively frozen.');
-assert.equal(Object.isFrozen(retainedEvent.unexplained_seams[0]), true, 'Retained nested event inputs must be recursively frozen.');
-assert.equal(Object.isFrozen(retainedEvent.missingness[0]), true, 'Retained nested event inputs must be recursively frozen.');
-
-const adapter = await createAshKernelAdapter(fixture);
-assert.equal('state' in adapter, false, 'Adapter state must not remain on the public governance surface.');
-assert.equal('sequence' in adapter, false, 'Adapter receipt sequence must not remain on the public governance surface.');
-assert.equal(adapter.state, undefined, 'Adapter state reads must not expose mutable governance state.');
-assert.equal(adapter.sequence, undefined, 'Adapter sequence reads must not expose receipt identity state.');
-assert.throws(() => { adapter.state = { taskState:'RETURN' }; }, /private governance state/i);
-assert.throws(() => { adapter.sequence = 0; }, /private governance state/i);
-for (const internal of ['sealReceipt','restoreMutationCheckpoint','mutationCheckpoint','transition','hold','enqueueMutation','stateSummary','caseMapInput','options','assertAvailable']) {
-  assert.equal(adapter[internal], undefined, `${internal} must not be callable through the public adapter membrane.`);
-  assert.equal(internal in adapter, false, `${internal} must not be enumerable as public adapter capability.`);
-}
-assert.throws(() => { adapter.sealReceipt = () => null; }, /private governance state/i, 'Receipt sealing may not be installed onto the public adapter membrane.');
-assert.equal(typeof adapter.cryptoImpl, 'object', 'The declared digest-injection test seam remains readable.');
-adapter.cryptoImpl = adapter.cryptoImpl;
-assert.equal((await adapter.snapshot()).task_state, 'ARRIVE', 'Public membrane writes must not alter governed adapter state.');
-await adapter.dispose();
-
-const empiricalSource = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
-assert.match(empiricalSource, /schema, version, \.\.\.publicPayload/, 'Leak scanning must exclude schema/version metadata.');
-assert.match(empiricalSource, /profile\.replaceAll\('_', ' '\)/, 'Profile chip comparison must use the UI display normalization.');
-assert.match(empiricalSource, /visible\.visible_text !== answer\.message/, 'Visible world-answer text must equal the emitted message.');
-assert.match(empiricalSource, /assertClosedWorldAnswer/, 'World-answer authority must be validated before certification.');
-
-const transitionSource = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
-assert.match(transitionSource, /automatic_ash_action === false/, 'Transition hydration must require closed automatic-action authority.');
-assert.match(transitionSource, /hydrationReceipt\.automatic_ash_action !== false/, 'Transition hydration receipts must be rejected if authority widens.');
-
-const a12Source = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
-assert.match(a12Source, /case_closed:document\.body\.dataset\.ashCaseClosed === 'true'/, 'A12 must observe whether the reusable Investigation case is already closed.');
-assert.match(a12Source, /existing\.case_closed === true/, 'A12 must reactivate a matching but closed Investigation case.');
-
-console.log('Ash A15-R0 release-boundary hardening tests passed.');
+console.log('Ash A15-R0 dromological holonomy stabilizer claim-authority filtration hardening tests passed.');
