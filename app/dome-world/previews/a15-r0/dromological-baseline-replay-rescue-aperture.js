@@ -131,7 +131,10 @@ function inverseUnimodular3(matrix, observation) {
     [d * h - e * g, b * g - a * h, a * e - b * d],
   ];
   const numerator = matrixTimesVector(adjugate, observation);
-  const recovered = numerator.map(value => value / det);
+  const recovered = numerator.map((value) => {
+    const coordinate = value / det;
+    return coordinate === 0 ? 0 : coordinate;
+  });
   if (!recovered.every(Number.isInteger)) {
     throw new Error('unimodular replay inverse produced a noninteger coordinate');
   }
