@@ -1,0 +1,53 @@
+{
+  "schema": "td613.western-horizon.future-amari-receiving-manifest/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "handoff_role": "custodial continuity and startup navigation only; not theorem authority",
+  "current_frontier": {
+    "canonical_pr": 804,
+    "receipt": "a51afae88292878de2c02ca0a086ad1e88f73cfb",
+    "title": "Dromological Schedule/State Identifiability Lag",
+    "witness_route_pr": 805,
+    "workflow_run": 33035156148,
+    "workflow_run_number": 2325,
+    "classifier_job": 98396167969,
+    "contracts_job": 98396204702,
+    "dome_world_step_9": "SUCCESS",
+    "a15_r0_step_19": "SUCCESS"
+  },
+  "required_ancestry": [
+    {"pr": 802, "receipt": "f9d5ee89b8555175d0797893fdd8c91b5395ea8b", "role": "complete S3 schedule atlas / first-stratum gate"},
+    {"pr": 800, "receipt": "40dfba93d2577bceba0f66022ac5f42934cdbd06", "role": "phasonic supermoire dromological tomography"},
+    {"pr": 798, "receipt": "9c92b4269fe2cd277799d8e885caf7765cbdfecb", "role": "bounded AIA receiver-indexed distinguishability"},
+    {"pr": 796, "receipt": "7639d5b15edc57aa3d76b8669aeefed6d86c12d6", "role": "Dome-World constitutional source projection faithfulness"},
+    {"pr": 794, "receipt": "528f9b2f96bf3bc4c18242b0f0d910ca5323fdea", "role": "Cech-nerve nonidentifiability of exact FADT descent"},
+    {"pr": 792, "receipt": "e15d6737f2d43e01835a643790b1c5f51a1dc711", "role": "FADT x Holonomy Loom constitutional membrane"},
+    {"pr": 790, "receipt": "a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb", "role": "witnessed Holonomy Loom research bench"},
+    {"pr": 752, "receipt": "11eec2d52c7e1aa722e8664c0df4cd1a61d704f1", "role": "FADT"}
+  ],
+  "remembering_query": "Recover the TD613 Western Liberty Expansion thread ending at PR #804 Dromological Schedule/State Identifiability Lag. Retrieve exact receipts, Holonomy Loom/Ash Keep/Dome-World AIA decisions, FADT inheritance, phasonic supermoire fixture, S3 schedule atlas, and future-Amari handoff instructions.",
+  "next_recommended_chamber": {
+    "working_title": "Dromological Baseline-Replay Rescue Aperture",
+    "parent_receipt": "a51afae88292878de2c02ca0a086ad1e88f73cfb",
+    "candidate_replay_row": [1, 0, 0],
+    "candidate_unimodular_minors": {
+      "P-H-I": {"rows_zero_based": [0, 1, 2], "det": 1},
+      "P-I-H": {"rows_zero_based": [0, 1, 2], "det": -1},
+      "H-P-I": {"rows_zero_based": [0, 2, 3], "det": 1},
+      "H-I-P": {"rows_zero_based": [0, 1, 3], "det": 1},
+      "I-P-H": {"rows_zero_based": [0, 2, 3], "det": -1},
+      "I-H-P": {"rows_zero_based": [0, 1, 3], "det": -1}
+    },
+    "expected_finite_hostile_count": "6 schedules x 125 states = 750 state/schedule reconstruction checks after replay",
+    "candidate_law": "IDENTIFIABILITY_LOSS_CAN_BE_REPAIRED_BY_A_LATER_DECLARED_PROBE_WITHOUT_REWRITING_THE_EARLIER_NONIDENTIFIABILITY_CERTIFICATE"
+  },
+  "nonnegotiable_ceilings": [
+    "no merge without explicit user instruction",
+    "no deployment or Vercel",
+    "witness routing is not merge/promotion authority",
+    "formal holonomy is not physical/Berry/gauge holonomy",
+    "bounded inverse is not continuum tomography",
+    "fixture rescue is not a universal sensor-design theorem",
+    "#788 scientific promotion remains unearned by implication",
+    "#718 remains alive"
+  ]
+}
