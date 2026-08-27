@@ -120,7 +120,7 @@ function actualReplaySideMinorTriple(schedule, replayRow) {
   const sideMinors = enumerateReplayMinors(schedule, replayRow)
     .filter(minor => minor.rows.includes(3));
   if (sideMinors.length !== 3) throw new Error('expected exactly three replay-dependent side minors');
-  return freeze(sideMinors.map(minor => minor.determinant));
+  return freeze(sideMinors.map(minor => canonicalizeZero(minor.determinant)));
 }
 
 function coordinateRowForSchedule(schedule) {
