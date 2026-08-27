@@ -1,0 +1,78 @@
+{
+  "schema": "td613.loom.heterostratigraphic-calibration/v0.1",
+  "fixture_id": "strata-lantern.moss-lantern-heterostratigraphic/v0.1",
+  "operator_label": "Strata Lantern — Moss Lantern heterostratigraphic calibration",
+  "manifestly_fictional": true,
+  "runtime_binding": false,
+  "live_ash_binding": false,
+  "global_synthesis_authority": false,
+  "strata": [
+    {
+      "id": "ROUTE",
+      "state_space": "DECLARED_ROUTE_SYMBOL_SEQUENCE",
+      "expected_route": [
+        "open-practice-case",
+        "custody-hold",
+        "projection-observe",
+        "rest",
+        "return"
+      ],
+      "observed_route": [
+        "open-practice-case",
+        "custody-hold",
+        "projection-bypass",
+        "rest",
+        "return"
+      ],
+      "expected_endpoint": "returned-practice-capsule",
+      "observed_endpoint": "returned-practice-capsule"
+    },
+    {
+      "id": "TEMPORAL",
+      "state_space": "Z_31^2_CLASSICAL_TERMINAL_WITNESS",
+      "source_assay": "td613.ash.a15-r0.moss-lantern-temporal-order/v0.1"
+    },
+    {
+      "id": "FACE_HOLONOMY",
+      "state_space": "GL2_F31_TWO_CELL_TRANSPORT",
+      "source_assay": "td613.ash.noncommuting-two-face-holonomy-tomography/v0.1"
+    },
+    {
+      "id": "OBSERVABILITY_ECOLOGY",
+      "state_space": "PROJECTIVE_READOUT_DIRECTIONS_PLUS_UNLABELED_PARTITIONS_F31",
+      "source_assay": "td613.aia.partition-only-holonomy-tomography-ecology/v0.1"
+    }
+  ],
+  "comparison_registry": [
+    {
+      "from": "ROUTE",
+      "to": "TEMPORAL",
+      "status": "PARTIAL_NONINVERTIBLE",
+      "declared_map": "drop-open-boundary; prepare-return->return; retain-operation-order"
+    },
+    {
+      "from": "TEMPORAL",
+      "to": "ROUTE",
+      "status": "PARTIAL_NONINVERTIBLE",
+      "declared_map": "canonical-order-to-route-skeleton-only"
+    },
+    { "from": "ROUTE", "to": "FACE_HOLONOMY", "status": "ENCODER_REQUIRED" },
+    { "from": "FACE_HOLONOMY", "to": "ROUTE", "status": "ENCODER_REQUIRED" },
+    { "from": "ROUTE", "to": "OBSERVABILITY_ECOLOGY", "status": "ENCODER_REQUIRED" },
+    { "from": "OBSERVABILITY_ECOLOGY", "to": "ROUTE", "status": "ENCODER_REQUIRED" },
+    { "from": "TEMPORAL", "to": "FACE_HOLONOMY", "status": "ENCODER_REQUIRED" },
+    { "from": "FACE_HOLONOMY", "to": "TEMPORAL", "status": "ENCODER_REQUIRED" },
+    { "from": "TEMPORAL", "to": "OBSERVABILITY_ECOLOGY", "status": "ENCODER_REQUIRED" },
+    { "from": "OBSERVABILITY_ECOLOGY", "to": "TEMPORAL", "status": "ENCODER_REQUIRED" },
+    { "from": "FACE_HOLONOMY", "to": "OBSERVABILITY_ECOLOGY", "status": "INCOMMENSURABLE" },
+    { "from": "OBSERVABILITY_ECOLOGY", "to": "FACE_HOLONOMY", "status": "INCOMMENSURABLE" }
+  ],
+  "forbidden_global_fields": [
+    "truth",
+    "global_truth",
+    "global_holonomy",
+    "global_route",
+    "global_confidence",
+    "privileged_stratum"
+  ]
+}
