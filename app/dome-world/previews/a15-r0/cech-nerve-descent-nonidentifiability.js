@@ -36,14 +36,20 @@ function setDifference(left, right) {
 function nonemptyIndexSubsets(n) {
   requireIntegerAtLeast(n, 1, 'n');
   const subsets = [];
-  const upper = 2 ** n;
-  for (let mask = 1; mask < upper; mask += 1) {
-    const subset = [];
-    for (let index = 0; index < n; index += 1) {
-      if (mask & (1 << index)) subset.push(index);
+  const current = [];
+
+  function visit(index) {
+    if (index === n) {
+      if (current.length > 0) subsets.push([...current]);
+      return;
     }
-    subsets.push(subset);
+    visit(index + 1);
+    current.push(index);
+    visit(index + 1);
+    current.pop();
   }
+
+  visit(0);
   return subsets;
 }
 
