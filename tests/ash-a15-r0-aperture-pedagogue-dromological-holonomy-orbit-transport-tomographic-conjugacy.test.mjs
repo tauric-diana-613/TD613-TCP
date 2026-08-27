@@ -204,12 +204,15 @@ const wrongOrbit = {
 assert.equal(validateDromologicalHolonomyOrbitTransportAtlas(wrongOrbit, 'I').accepted, false);
 
 // Hostile 3: non-Hamming-isometry bit map duplicates one coordinate and drops another.
-const first = canonical[1];
-const second = canonical[2];
+// c0 -> c1 has distance 5, while the malformed duplicate-0/drop-1 map reduces it to 4.
+const first = canonical[0];
+const second = canonical[1];
 const malformedMap = value => {
   const bits = integerToWord(value);
   return wordToInteger([bits[0], bits[0], bits[2], bits[3], bits[4], bits[5], bits[6], bits[7]]);
 };
+assert.equal(hamming(first, second), 5);
+assert.equal(hamming(malformedMap(first), malformedMap(second)), 4);
 assert.notEqual(hamming(first, second), hamming(malformedMap(first), malformedMap(second)));
 
 // Hostiles 4 and 5: translation-only and permutation-only generation are both insufficient.
