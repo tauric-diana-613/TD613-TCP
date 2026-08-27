@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_804_RECEIPT = 'a51afae88292878de2c02ca0a086ad1e88f73cfb';
 const PARENT_802_RECEIPT = 'f9d5ee89b8555175d0797893fdd8c91b5395ea8b';
 const PARENT_800_RECEIPT = '40dfba93d2577bceba0f66022ac5f42934cdbd06';
 const PARENT_798_RECEIPT = '9c92b4269fe2cd277799d8e885caf7765cbdfecb';
@@ -11,6 +12,7 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
+  PARENT_804_RECEIPT,
   PARENT_802_RECEIPT,
   PARENT_800_RECEIPT,
   PARENT_798_RECEIPT,
@@ -24,6 +26,7 @@ for (const receipt of [
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_802_RECEIPT, PARENT_804_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_800_RECEIPT, PARENT_802_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_798_RECEIPT, PARENT_800_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_796_RECEIPT, PARENT_798_RECEIPT], { stdio: 'pipe' });
@@ -37,7 +40,7 @@ const changedA15R0 = execFileSync(
   [
     'diff',
     '--name-only',
-    `${PARENT_802_RECEIPT}..HEAD`,
+    `${PARENT_804_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -51,9 +54,9 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_SCHEDULE_STATE_IDENTIFIABILITY_LAG_SPEC_V0_1.md',
-  'app/dome-world/previews/a15-r0/dromological-schedule-state-identifiability-lag.js',
-  'tests/ash-a15-r0-aperture-pedagogue-dromological-schedule-state-identifiability-lag.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_BASELINE_REPLAY_RESCUE_APERTURE_STARTUP_V0_1.md',
+  'app/dome-world/previews/a15-r0/dromological-baseline-replay-rescue-aperture.js',
+  'tests/ash-a15-r0-aperture-pedagogue-dromological-baseline-replay-rescue-aperture.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -61,16 +64,16 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#802 schedule/state identifiability-lag chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#804 baseline-replay rescue chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `schedule/state identifiability-lag chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `baseline-replay rescue chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered schedule/state lag path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered baseline-replay rescue path: ${path}`);
 }
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
@@ -82,6 +85,7 @@ await import('./ash-a15-r0-aperture-pedagogue-aia-receiver-indexed-distinguishab
 await import('./ash-a15-r0-aperture-pedagogue-phasonic-supermoire-dromological-tomography.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-s3-schedule-atlas-first-stratum-gate.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-schedule-state-identifiability-lag.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-baseline-replay-rescue-aperture.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 dromological schedule/state identifiability-lag hardening tests passed.');
+console.log('Ash A15-R0 dromological baseline-replay rescue hardening tests passed.');
