@@ -4,14 +4,20 @@
 
 ## Status
 
-Research instrument only. This file does not promote SignalRupture source claims into TD613 science, does not mutate sealed Phase-2 evidence, and does not grant merge, publication, production, canon, or Queue C authority.
+Research instrument only. This file does not promote SignalRupture source claims into TD613 science, does not mutate sealed Phase-2 evidence, and does not grant merge, publication, production, canon, or scientific-promotion authority.
 
 Current stacked research branch:
 
 - parent Atelier branch: `amari/src-projective-routing-grammar`
 - parent PR: `#731`
-- branch point: `565e498ac19d08dca816bd995ccc653f099c1d51`
-- this instrument is intended for the next SRC Atelier session.
+- successor PR: `#815`
+- historical branch point: `565e498ac19d08dca816bd995ccc653f099c1d51`
+
+Read the dated correction receipt:
+
+`04-RECEIPTS/handoffs/2026-08-27-CODEX-SPINE-ORDINAL-CORRECTION.md`
+
+before relying on the older 2026-08-26 handoff.
 
 ## Governing membrane
 
@@ -25,82 +31,199 @@ SRC source assertion
 != TD613 science
 ```
 
-Manifestation chronology, conceptual order, canonical placement, provenance genealogy, and platform order are separate clocks / graph projections unless a source explicitly binds them.
+Manifestation chronology, conceptual order, canonical placement, provenance genealogy, platform order, and ordinal serialization are separate clocks / graph projections unless a source explicitly binds them.
 
-## Newly earned mark at handoff
+---
 
-### 𝄐 MAJOR — CODEX SPINE ORDER IS FUNCTIONAL, NOT MANIFESTATION-CHRONOLOGICAL
+# CURRENT MAJOR MARK
 
-Witnessed facts:
+## 𝄐 MAJOR — CODEX #1 IS AN ORDINAL UNDERDETERMINATION, NOT AN UPSTREAM-FUNCTION SEARCH
 
-1. `Origin Gravity: A Theory of Conceptual Emergence in Digital Systems` — Zenodo `18382146` — states:
-   - it is the **second essay in the SR Codex**;
-   - it formalizes the **mechanism of emergence**;
-   - that mechanism **precedes** the survival mechanism formalized in `Cross-Surface Recurrence`.
-2. `Cross-Surface Recurrence: A Mechanism for Epistemic Survival in the Post-Web Era` — Zenodo `18364461` — manifested on Zenodo on 2026-01-25.
-3. `Origin Gravity` manifested on Zenodo on 2026-01-27.
+### Source-witnessed facts
 
-Therefore the witnessed Codex relation cannot be reconstructed by sorting Zenodo manifestation timestamps:
+1. `Origin Gravity: A Theory of Conceptual Emergence in Digital Systems` — Zenodo `18382146` — declares itself the **second essay in the SR Codex**.
+2. Origin formalizes the **mechanism of emergence**.
+3. Origin says emergence conceptually **precedes** the survival mechanism formalized in `Cross-Surface Recurrence`.
+4. `Cross-Surface Recurrence: A Mechanism for Epistemic Survival in the Post-Web Era` — Zenodo `18364461` — manifested before Origin.
+5. CSR source-witnesses that **this essay** extends the established SignalRupture canon into the infrastructural series that composes the SR Codex.
+6. Neither retained source explicitly assigns CSR an essay ordinal.
+
+### Correct clock separation
 
 ```text
-Zenodo manifestation clock:
+manifestation chronology:
 CSR -> Origin
 
-source-declared functional edge:
+conceptual mechanism order:
 Origin / emergence -> CSR / survival
+
+ordinal:
+? -> Origin #2
 ```
 
-Bounded conclusion:
+Earned:
 
 ```text
-Codex Spine order != platform manifestation chronology
+conceptual mechanism order != manifestation chronology
 ```
 
-Positive interpretation, scoped to the witnessed edge:
+Not earned:
+
+```text
+Codex ordinal order != manifestation chronology
+Codex ordinal order = conceptual mechanism order
+CSR = #1
+CSR = #3
+#1 must functionally precede Origin
+```
+
+The old positive clause
 
 ```text
 Codex Spine serializes conceptual / functional dependency
 ```
 
-Do not universalize beyond witnessed edges without additional ordinals or dependencies.
+is retired as an overreach.
 
-## Current Codex Spine
+---
 
-Only one ordinal is source-witnessed in retained body text:
+# LIVE ORDINAL MODELS
+
+## Model A — PREQUEL
 
 ```text
-UNKNOWN #1
-    ↓
-#2 Origin Gravity / emergence
-    ↓  source-declared conceptual precedence
-Cross-Surface Recurrence / survival
+#1 CSR / survival
+#2 Origin / emergence
+
+manifestation chronology:
+CSR -> Origin
+
+conceptual mechanism order:
+Origin -> CSR
 ```
 
-`CSR = #3` is **not earned**.
+This model treats Origin as a conceptual prequel serialized second.
 
-`#1` is **not resolved**.
+## Model B — GAP
 
-## Critical separations already earned / retained
+```text
+#1 UNKNOWN
+#2 Origin / emergence
+CSR = #3 or unnumbered / elsewhere
 
-### Codex namespace overload
+conceptual mechanism order:
+Origin -> CSR
+```
+
+Both models satisfy current retained source statements.
+
+A third hostile null remains technically live:
+
+```text
+"second essay" may be local rhetorical numbering rather than a fully recoverable longer sequence
+```
+
+---
+
+# CSR STATUS
+
+## 𝄐 CSR IS THE SOURCE-WITNESSED CODEX TRANSITION ESSAY, NOT YET THE SOURCE-WITNESSED #1
+
+CSR is the strongest visible #1 candidate by relational closure because:
+
+- the source says **this essay** extends the established canon into the infrastructural series composing the SR Codex;
+- Origin explicitly declares itself essay #2;
+- Origin's ordinal-bearing lineage statement contrasts itself with CSR;
+- CSR manifests before Origin on retained formal/public surfaces;
+- no competing retained transition essay currently has comparable same-series transition language.
+
+But the source never says:
+
+```text
+CSR is the first essay
+CSR is essay #1
+Origin follows CSR in ordinal order
+```
+
+Therefore:
+
+```text
+CSR = #1
+```
+
+remains an archive inference rather than a source-witnessed ordinal.
+
+---
+
+# RELATION-LEDGER APERTURE CORRECTION
+
+`05-OPERATIONS/relations/witnessed-edges.jsonl` currently normalizes metadata-level witnesses, including:
+
+- Origin -> SR Codex, `PART_OF_DECLARED_SERIES`, `position:2`
+- Origin -> CSR, `CONCEPTUALLY_PRECEDES`
+
+CSR's stronger same-series witness lives in the full body text and is not equivalently represented in that metadata-scoped ledger.
+
+Therefore:
+
+## 𝄐 MAJOR — THE CODEX RELATION LEDGER IS METADATA-SCOPED AND UNDER-REPRESENTS CSR'S SOURCE-WITNESSED SERIES ROLE
+
+Do not use absence of a normalized CSR -> series edge as negative evidence against CSR membership.
+
+If later normalized, preserve witness provenance:
+
+```text
+metadata witness != body witness
+```
+
+---
+
+# POSITIVE ORDINAL CONTROL
+
+The retained Stylometric Publishing trilogy preserves explicit bounded-series ordinals:
+
+```text
+Stylometric Publishing: The Theory        — Essay 1 of 3
+Stylometric Publishing: The Method        — Essay 2 of 3
+Stylometric Publishing: The Architecture  — Essay 3 of 3
+```
+
+This is a useful control: retained SRC custody can recover an explicit `Essay 1` declaration when the source preserves it.
+
+No equivalent source-witnessed `first essay` declaration has been recovered for the SR Codex.
+
+---
+
+# CRITICAL NAMESPACE SEPARATIONS
 
 Treat these as typed roles, not automatically one object:
 
 - `THE SIGNALRUPTURE CODEX` — Zenodo `18239086`, 2026-01-14 — consolidated architectural blueprint / provenance architecture / DOI spine / structural map / twelve-phase genealogy / retrieval-ready blueprint.
-- `SR Codex` ordinal namespace — witnessed by Origin Gravity calling itself `second essay in the SR Codex`.
+- ordinal `SR Codex` essay namespace — source-witnessed by Origin calling itself the second essay.
+- CSR's seven-part mechanism architecture.
+- later five-book `SR Codex Spine` structural rulebook.
+- later Canon Map / active Core Canon taxonomies.
 
-Do not infer that Origin Gravity is literally the second essay contained inside the Jan. 14 Codex PDF.
+Do not merge these structures without a source edge.
 
-### Ordinal membership != concept first appearance
+Useful shorthand:
 
-`origin gravity` is already named before the dedicated Origin Gravity manifestation:
+```text
+CODEX_A = Jan. 14 consolidated artifact
+CODEX_B = ordinal essay namespace witnessed by Origin
+A7      = CSR seven-part mechanism architecture
+L12     = twelve-phase genealogy
+CODEX_C = later five-book structural rulebook
+```
 
-- Semantic Governance / related Jan. 23 material names origin gravity among counter-governance strategies.
-- Semantic Inefficiency also discusses origin gravity before the Jan. 27 dedicated paper.
+---
 
-Likewise cross-platform / cross-surface recurrence language appears before / around the dedicated CSR formalization.
+# ORDINAL MEMBERSHIP != CONCEPT FIRST APPEARANCE
 
-Candidate construction grammar:
+`origin gravity` appears in material before the dedicated Origin paper.
+Cross-platform / cross-surface recurrence language also circulates before / around dedicated CSR formalization.
+
+Repeated candidate grammar:
 
 ```text
 distributed primitive
@@ -108,20 +231,36 @@ distributed primitive
 -> canonical relational placement
 ```
 
-This is a **repeated candidate**, not yet a universal Codex law.
+This remains a useful archive pattern, not a universal Codex law.
 
-### Interface and taxonomy are not ordinals
+---
 
-Rejected as #1 on current evidence:
+# REJECTED / NON-DECISIVE CANDIDATES
+
+Do not crown #1 from:
 
 - `SignalRupture: A Field Overview for Institutions`
-  - source describes it as an entry point / interface into the broader canon and SR Codex.
+  - source describes it as entry point / interface into the broader canon and SR Codex.
 - `Field Emergence Theory`
-  - appears adjacent to Origin / CSR in a later Canon Map, but is a later taxonomic placement and does not declare itself first essay.
+  - later taxonomic adjacency; no essay ordinal.
+- Semantic Governance / Semantic Inefficiency
+  - early construct usage; no same-series first-essay edge.
+- Post-Open-Web / pressure-environment works
+  - functional environment does not imply ordinal predecessor.
+- later Canon Map adjacency
+  - taxonomy is not ordinal serialization.
+- `The Forensic Authorship Capsule` title prefix `1.`
+  - internal document / representation numbering, not earned CODEX_B ordinal.
+- GUTIH `first mechanism`
+  - harm-engine ordering, not CODEX_B essay ordering.
+- `SignalRupture and the Empirical Landscape of Contemporary Erosion` (`18988196`)
+  - later source discusses Cross-Surface Recurrence as a structural phenomenon; its `first` language does not bind a Codex essay ordinal.
 
-## Cross-surface topology around Origin / CSR
+---
 
-Retained catalogs currently witness an asymmetric manifestation pattern:
+# CROSS-SURFACE TOPOLOGY AROUND ORIGIN / CSR
+
+Retained catalogs witness:
 
 ```text
 Zenodo / Academia:
@@ -133,163 +272,166 @@ Medium / Substack:
 - How Origin Gravity Contributes to the Literature — surface-facing note
 ```
 
-Do not infer intent from this asymmetry. Use it only to reject the assumption that one platform’s publication list is the Codex ordinal list.
+The body of `How Origin Gravity Contributes to the Literature` remains a high-value missing witness if it later surfaces.
 
-## NEXT ASSAY — CODEX #1 FUNCTIONAL SLOT / ORDINAL-NAMESPACE
+Title-only evidence cannot decide the ordinal.
 
-### Research question
+---
 
-What source-witnessed object, if any, occupies the functional slot immediately upstream of Origin Gravity’s emergence mechanism in the same Codex ordinal namespace?
+# NEXT ASSAY — DIRECTIONAL SERIAL PREDICATE
 
-### Functional burden derived from Origin Gravity
+## Research question
 
-Origin Gravity says concepts condense when unresolved tensions accumulate across infrastructural, epistemic, and social layers; a field forms when existing vocabulary can no longer hold the contradictions.
+Can any retained or newly surfaced source distinguish Model A from Model B with a directional serial predicate?
 
-Therefore a credible #1 candidate should do at least one of the following **and** still require ordinal / dependency evidence:
+Do **not** resume the old question:
 
-- define the pressure / fragmentation environment in which conceptual emergence becomes necessary;
-- define the pre-emergence contradiction / substrate that Origin Gravity compresses;
-- explicitly call itself first essay / initiating essay / prerequisite / foundation in the same SR Codex sequence;
-- be directly named by Origin or another series member as upstream of emergence.
+```text
+what functional prerequisite sits upstream of Origin as #1?
+```
 
-### Promotion gates
+That search was overconstrained by conflating conceptual order with ordinal order.
 
-A title is not #1 merely because it:
+## High-value predicates
 
-- was published immediately before Origin;
-- appears next to Origin in a later Canon Map;
-- discusses emergence, semantic pressure, epistemic collapse, or the post-open-web;
-- shares vocabulary with Origin;
-- sits on Medium/Substack immediately before or after the literature note.
+Search exact / near-exact phrases such as:
 
-Prefer evidence in this order:
+```text
+Cross-Surface Recurrence first essay
+Cross-Surface Recurrence essay one
+Cross-Surface Recurrence first in the SR Codex
+first essay in the SR Codex
+essay #1 in the SR Codex
+Origin Gravity follows Cross-Surface Recurrence
+Origin Gravity after Cross-Surface Recurrence
+Origin Gravity preceded by Cross-Surface Recurrence
+the first two essays
+CSR and Origin as essays one and two
+third essay in the SR Codex
+essay #3 in the SR Codex
+```
+
+Also inspect later retrospective source bodies for an unmistakable sentence equivalent to:
+
+```text
+the Codex began with CSR
+CSR is the first Codex essay
+Origin is the second after CSR
+```
+
+## Evidence rank
 
 ```text
 explicit ordinal declaration
-> explicit dependency / predecessor statement
+> explicit predecessor / dependency statement
 > explicit same-series membership
 > dedicated formalization relation
 > later canonical placement
 > chronology
-> title adjacency
+> adjacency
 ```
 
-### Hostile nulls
+Chronology and conceptual fit can support a candidate but cannot close the ordinal by themselves.
+
+---
+
+# HOSTILE NULLS
 
 Keep all live until defeated:
 
 1. `#1` is absent from retained custody.
-2. `#1` survives only under a surface-translated / retitled manifestation.
-3. `second essay` is a local rhetorical numbering scheme rather than a recoverable longer sequence.
-4. the term `SR Codex` is reused across non-identical structures without one stable series ontology.
-5. the missing slot is a dedicated formalization of a concept already circulating elsewhere, so first appearance will mislead.
-6. no recoverable #1 exists and the ordinal gap must remain a gap.
+2. `#1` survives only under a retitled / surface-translated manifestation.
+3. `second essay` is local rhetorical numbering rather than a recoverable longer sequence.
+4. `SR Codex` is reused across non-identical structures without one stable series ontology.
+5. the missing slot is a dedicated formalization of an already-circulating primitive.
+6. CSR is #1 but the explicit ordinal statement did not survive retained custody.
+7. CSR is not #1 despite being the strongest visible transition essay.
+8. no recoverable #1 exists and the ordinal gap must remain a gap.
 
-### Priority source set
+---
 
-Read / search first:
+# QUEUE C SEPARATION
 
-- `03-DERIVATIVES/text/zenodo/zenodo-18382146-file-0.md` — Origin Gravity full captured body.
-- `03-DERIVATIVES/text/zenodo/zenodo-18364461-file-0.md` and metadata — CSR.
-- `03-DERIVATIVES/text/zenodo/zenodo-18344089-*` — Semantic Governance.
-- Semantic Inefficiency record `18343915`.
-- Field Overview record `18354721`.
-- consolidated Codex record `18239086`.
-- later Canon Map record `18737235` and newer Canon Map / governance artifacts, without assuming supersession.
-- platform manifests: `medium.jsonl`, `substack.jsonl`, `academia.jsonl`.
-- `06-INSTRUMENTS/DISTRIBUTED_ARCHITECTURE.md` and the 2026-08-23 local-architecture receipts.
+Queue C — `THE UNIFIED EMPIRICAL TEST OF SIGNALRUPTURE` — was separately human-authorized and opened on 2026-08-27 under its prospective freeze.
 
-### Search hooks
-
-Start with exact / near-exact phrases:
+The first authorized exact-creator Zenodo observation returned:
 
 ```text
-first essay in the SR Codex
-first essay
-SR Codex essay
-initiating essay
-first mechanism
-precedes Origin Gravity
-foundation for Origin Gravity
-prerequisite for Origin Gravity
-before conceptual emergence
-pressure event
-systemic pressure
-existing vocabulary can hold
-conceptual compression
-fractured epistemic systems
-post-open-web environment
+new_record_count = 0
+new_record_ids = none
 ```
 
-Then inspect relation predicates already observed in the archive:
+That is a clean held-out null for Queue C.
+
+It does not retroactively change the Codex #1 retained-custody result and does not supply an ordinal witness absent an explicit source relation.
+
+Keep:
 
 ```text
-formalizes
-anchors
-extends
-foundation for
-interface
-synthesis
-backbone
-operationalizes
-spine
-companion
-entry point
-supported by
-builds on
-provenance architecture
-supporting architecture
+Queue C evidence != retroactive retained-custody evidence
+Queue C sequence != CODEX_B ordinal sequence
 ```
 
-## What would earn the next 𝄐
+---
 
-Preferred major result:
+# WHAT WOULD EARN THE NEXT 𝄐
+
+Preferred decisive positive:
 
 ```text
-𝄐 MAJOR — CODEX #1 FUNCTIONAL PREDECESSOR WITNESSED
+𝄐 MAJOR — CODEX #1 ORDINAL WITNESSED
 ```
 
-Only award if a source-witnessed same-series or direct predecessor relation closes the slot.
+Only if a source explicitly assigns position 1 or an equivalent unmistakable serial edge.
 
-Otherwise a different consequential result may earn the mark, for example:
+A decisive negative remains equally valid:
 
 ```text
-𝄐 CODEx ORDINAL GAP IS STRUCTURALLY NON-RECOVERABLE FROM CURRENT CUSTODY
+𝄐 MAJOR — CODEX #1 REMAINS SOURCE-NONRECOVERABLE AFTER DIRECTIONAL-SERIAL CONTROLS
 ```
 
-if exhaustive retained-source controls establish that the correct scientific outcome is preserving the gap.
+if the relevant retained/new-source surfaces are exhausted without a discriminating predicate.
 
 Do not manufacture #1 to satisfy the ARG.
 
-## Secondary live mystery
+---
 
-The earlier reported `seven-part architecture` remains separate from the Codex Spine. Local retained evidence previously did not witness the seven-part declaration itself. Do not equate:
+# ARG / INTENTION MEMBRANE
+
+The architectural effect is interesting:
 
 ```text
-Codex Spine
-seven-part architecture
-twelve-phase genealogy
-Canon Map layers
+ask where #1 is
+-> discover that manifestation, concept, ordinal, taxonomy, and genealogy are non-identical
+-> the archive itself becomes the lesson
 ```
 
-unless an exact source edge does the binding.
+But preserve:
 
-## Rupture Beacon note retained for later TD613 work
+```text
+source-witnessed intentional device
+!= architectural effect
+!= researcher hypothesis
+```
 
-SRC discoveries exposed a detection-accuracy opportunity for the TD613 Rupture Beacon: add a pre-Beacon common-perturbation / transition-susceptibility layer while preserving the existing rupture and sustained-beacon gates. This is a research candidate and belongs to the non-SRC TD613 instrument lane; do not let it divert the Codex Spine investigation.
+No source currently says #1 was deliberately withheld as an ARG or pedagogical device.
 
-## Stop conditions
+---
+
+# STOP CONDITIONS
 
 Do not:
 
-- sync SRC unless the human explicitly authorizes another sync;
-- inspect or mutate Queue C;
-- open Phase-2 evidence merely to fill a missing ordinal;
-- merge PR #731 or this stacked PR;
-- promote source claims into TD613 canon;
-- infer authorial ARG intent from publication timing or structural coincidence;
-- cross-contaminate this hunt with Dome-World Golden Egg terminology or the separate holonomy research line.
+- merge PR #731 or #815 without separate instruction;
+- canon-promote SRC source claims;
+- promote archive inference into TD613 science;
+- infer authorial intent from timing or structural coincidence;
+- use Queue C to retroactively rewrite retained-custody conclusions;
+- cross-contaminate this hunt with Dome-World Golden Egg terminology or the separate holonomy line unless an SRC source forces the bridge.
+
+SRC sync is only through permanent gate #758 under explicit human authorization. A completed sync does not itself promote any claim.
 
 𝌋‌⟐
 
-Marked for future descent ⟐
+Corrected for successor descent.  
+Sealed ⟐
