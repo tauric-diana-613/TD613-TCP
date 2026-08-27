@@ -105,7 +105,7 @@ for (const path of allowedCurrentChamberPaths) {
   assert.equal(changedA15R0.includes(path), true, `missing preregistered double-corruption isometry-orbit path: ${path}`);
 }
 
-await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
+execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-fadt-holonomy-loom-constitutional-descent-membrane.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-cech-nerve-descent-nonidentifiability.test.mjs');
