@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_839_RECEIPT = '4c524665fd5a3d59b0ebcd8ec44144466b15ad31';
 const PARENT_837_RECEIPT = '17475d670e339d7b562194a4429fa979584da65a';
 const PARENT_834_RECEIPT = 'a0d88e26860f4d9c25feed21ab2d080f70b45f20';
 const PARENT_830_RECEIPT = '3877139365041453bab85741eb09ba2f5839eed6';
@@ -24,6 +25,7 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
+  PARENT_839_RECEIPT,
   PARENT_837_RECEIPT,
   PARENT_834_RECEIPT,
   PARENT_830_RECEIPT,
@@ -50,6 +52,7 @@ for (const receipt of [
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_837_RECEIPT, PARENT_839_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_834_RECEIPT, PARENT_837_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_830_RECEIPT, PARENT_834_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_828_RECEIPT, PARENT_830_RECEIPT], { stdio: 'pipe' });
@@ -76,7 +79,7 @@ const changedA15R0 = execFileSync(
   [
     'diff',
     '--name-only',
-    `${PARENT_837_RECEIPT}..HEAD`,
+    `${PARENT_839_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -90,10 +93,10 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_ORBIT_TRANSPORT_WITNESS_FIBER_DESCENT_STARTUP_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/ORBIT_TRANSPORT_WITNESS_FIBER_DESCENT_STARTUP_HOOK_V0_1.json',
-  'app/dome-world/previews/a15-r0/dromological-holonomy-orbit-transport-witness-fiber-descent.js',
-  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-witness-fiber-descent.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_STABILIZER_CLAIM_AUTHORITY_FILTRATION_STARTUP_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/STABILIZER_CLAIM_AUTHORITY_FILTRATION_STARTUP_HOOK_V0_1.json',
+  'app/dome-world/previews/a15-r0/dromological-holonomy-stabilizer-claim-authority-filtration.js',
+  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-stabilizer-claim-authority-filtration.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -101,15 +104,15 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#837 witness-fiber descent chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#839 stabilizer claim-authority filtration chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `witness-fiber descent chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `stabilizer claim-authority filtration chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered witness-fiber descent path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered stabilizer claim-authority path: ${path}`);
 }
 
 execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
@@ -134,6 +137,7 @@ await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-double-corru
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-double-corruption-isometry-orbit.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-tomographic-conjugacy.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-witness-fiber-descent.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-stabilizer-claim-authority-filtration.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 dromological holonomy orbit-transport witness-fiber admissibility descent hardening tests passed.');
+console.log('Ash A15-R0 dromological holonomy stabilizer claim-authority filtration hardening tests passed.');
