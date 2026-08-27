@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_812_RECEIPT = '2cc95613969951afc96c638c316ae70007560f16';
 const PARENT_810_RECEIPT = '79a6533843c4133345bec3c1e83477c621230b09';
 const PARENT_807_RECEIPT = '5fcaf191b7dbed9529687ed3c072107a37a54814';
 const PARENT_804_RECEIPT = 'a51afae88292878de2c02ca0a086ad1e88f73cfb';
@@ -14,6 +15,7 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
+  PARENT_812_RECEIPT,
   PARENT_810_RECEIPT,
   PARENT_807_RECEIPT,
   PARENT_804_RECEIPT,
@@ -30,6 +32,7 @@ for (const receipt of [
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_810_RECEIPT, PARENT_812_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_807_RECEIPT, PARENT_810_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_804_RECEIPT, PARENT_807_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_802_RECEIPT, PARENT_804_RECEIPT], { stdio: 'pipe' });
@@ -46,7 +49,7 @@ const changedA15R0 = execFileSync(
   [
     'diff',
     '--name-only',
-    `${PARENT_810_RECEIPT}..HEAD`,
+    `${PARENT_812_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -60,9 +63,9 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_REPLAY_REPAIR_QUOTIENT_CANONICAL_SECTION_STARTUP_V0_1.md',
-  'app/dome-world/previews/a15-r0/dromological-replay-repair-quotient-canonical-section.js',
-  'tests/ash-a15-r0-aperture-pedagogue-dromological-replay-repair-quotient-canonical-section.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_P_FIRST_SIDE_MINOR_REPLAY_IDENTIFIABILITY_STARTUP_V0_1.md',
+  'app/dome-world/previews/a15-r0/p-first-side-minor-replay-identifiability.js',
+  'tests/ash-a15-r0-aperture-pedagogue-p-first-side-minor-replay-identifiability.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -70,16 +73,16 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#810 replay-repair quotient chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#812 P-first side-minor chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `replay-repair quotient chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `P-first side-minor chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered replay-repair quotient path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered P-first side-minor path: ${path}`);
 }
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
@@ -94,6 +97,7 @@ await import('./ash-a15-r0-aperture-pedagogue-dromological-schedule-state-identi
 await import('./ash-a15-r0-aperture-pedagogue-dromological-baseline-replay-rescue-aperture.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-replay-transversality-unimodular-locus.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-replay-repair-quotient-canonical-section.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-p-first-side-minor-replay-identifiability.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 dromological replay repair quotient / canonical-section hardening tests passed.');
+console.log('Ash A15-R0 P-first side-minor replay identifiability hardening tests passed.');
