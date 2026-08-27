@@ -201,6 +201,7 @@ function minimalityCertificate() {
 
   return freeze({
     atlas,
+    injective_pairs: atlas.injective_pairs,
     expected_pair_distinct_class_count_distribution: expectedDistribution,
     expected_injective_pairs: expectedInjectivePairs,
     no_single_raw_coordinate_is_injective: noSingletonInjective,
