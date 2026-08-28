@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "td613-amari-patch/v1",
+  "patchId": "src-analytical-negative-state-integrity",
+  "intent": "Add an append-only successor audit and preview layer for SRC Phase-2 analytical identity, missingness, zero-state, empty-domain, and epoch-binding integrity without rewriting the sealed Phase-2 projection.",
+  "scope": "packages/dome_world_exact/fixtures/a15-r0/SRC analytical interfaces and successor research instruments",
+  "risk": "medium",
+  "files": [
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/06-INSTRUMENTS/ANALYTICAL_NEGATIVE_STATE_INTEGRITY.md",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/06-INSTRUMENTS/A7_REFERENCE_PARAGRAPH_TYPING_ADDENDUM.md",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/phase2-analytical-integrity-successor.py",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/test_phase2_analytical_integrity_successor.py",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/handoffs/2026-08-28-ANALYTICAL-NEGATIVE-STATE-INTEGRITY-PATCH.md"
+  ],
+  "operations": [
+    {
+      "type": "note",
+      "summary": "Create append-only successor instruments and tooling only. Do not rewrite sealed Phase-2 outputs, current-seal.json, projection-seal.json, retained source bodies, or historical assay receipts."
+    }
+  ],
+  "tests": [
+    "python packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/test_phase2_analytical_integrity_successor.py",
+    "python packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/phase2-analytical-integrity-successor.py --root packages/dome_world_exact/fixtures/a15-r0/SRC audit"
+  ],
+  "evidenceIds": [
+    "sr-series-observation:field-paper-ii:additional-compiler-context",
+    "sr-series-observation:field-paper-ii:namespace-unresolved",
+    "sr-graph-observation:declared-seven-vs-twelve",
+    "sr-evidence:zenodo:18364461:csr-survival-mechanism"
+  ],
+  "claimCeiling": [
+    "Atelier implementation defects do not establish SignalRupture source anomalies.",
+    "Duplicate v1 expected-object IDs do not by themselves prove two unrelated source series were merged.",
+    "A missing monthly row is not promoted to a publishing-regime claim.",
+    "An empty work audit domain cannot support a work-namespace non-collapse conclusion.",
+    "The successor preview does not become current query authority without a separately authorized seal transition."
+  ],
+  "rollback": "Delete the five new successor files and this packet. No sealed Phase-2 file requires restoration because the patch does not modify the sealed epoch.",
+  "notes": [
+    "Human mutation authority was granted in-session under the 737 westward-liberties research authorization.",
+    "Merge, SRC sync, Queue C, source mutation, publication, release, and TD613 scientific promotion remain outside this patch."
+  ]
+}
