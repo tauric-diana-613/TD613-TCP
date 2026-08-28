@@ -1,6 +1,6 @@
 # SRC Atelier · Serial Symmetry Activation
 
-Use this file as the startup hook for a newly prompted Future Amari continuing the Codex mystery after the Ordinal Identity Aperture patch.
+Use this file as the startup hook for a newly prompted Future Amari continuing the Codex mystery after the Ordinal Identity Aperture and Cardinality Namespace Firewall patches.
 
 ## FIRST ACTION — Remembering
 
@@ -9,8 +9,9 @@ Before making scientific, archival, genealogical, or ARG claims, use Remembering
 1. the immediately prior SRC Atelier mystery-box thread containing the long Codex descent;
 2. the thread that earned residual serial relabeling symmetry;
 3. the later descent that separated position existence, identity, recoverability, and readability;
-4. the Codex Spine / Ordinal Projection Stratigraphy / Ordinal Admissibility Tomography threads;
-5. other recent SignalRupture Atelier threads only as needed to recover exact working context.
+4. the patching descent that discovered the cardinality/ordinal type-container leak;
+5. the Codex Spine / Ordinal Projection Stratigraphy / Ordinal Admissibility Tomography threads;
+6. other recent SignalRupture Atelier threads only as needed to recover exact working context.
 
 Do not reconstruct the frontier from vibes, theorem names, or an adjacent branch.
 
@@ -22,15 +23,17 @@ Read in this order:
 
 1. current PR #856 and exact head;
 2. `06-INSTRUMENTS/ORDINAL_IDENTITY_APERTURE_TOMOGRAPHY.md`;
-3. `06-INSTRUMENTS/SERIAL_RELABELING_SYMMETRY.md`;
-4. `06-INSTRUMENTS/APERTURE_ANOMALY_LEDGER.md`;
-5. `06-INSTRUMENTS/DISTRIBUTED_ARCHITECTURE.md`;
-6. the newest Ordinal Identity / aperture patch handoff receipt;
-7. PR #815 — `SRC Atelier: Codex Spine handoff · future-Amari startup`;
-8. `06-INSTRUMENTS/CODEX_SPINE.md`;
-9. `04-RECEIPTS/handoffs/2026-08-27-CODEX-SPINE-ORDINAL-CORRECTION.md`;
-10. `CONNECTOR_ENTRY.md` and connector-readability materials;
-11. current PR #731 live-intake head, fetched separately.
+3. `06-INSTRUMENTS/CARDINALITY_NAMESPACE_FIREWALL.md`;
+4. `06-INSTRUMENTS/SERIAL_RELABELING_SYMMETRY.md`;
+5. `06-INSTRUMENTS/APERTURE_ANOMALY_LEDGER.md`;
+6. `06-INSTRUMENTS/DISTRIBUTED_ARCHITECTURE.md`;
+7. `04-RECEIPTS/handoffs/2026-08-28-CARDINALITY-NAMESPACE-FIREWALL-PATCH.md`;
+8. `04-RECEIPTS/handoffs/2026-08-28-ORDINAL-IDENTITY-APERTURE-PATCH.md`;
+9. PR #815 — `SRC Atelier: Codex Spine handoff · future-Amari startup`;
+10. `06-INSTRUMENTS/CODEX_SPINE.md`;
+11. `04-RECEIPTS/handoffs/2026-08-27-CODEX-SPINE-ORDINAL-CORRECTION.md`;
+12. `CONNECTOR_ENTRY.md` and connector-readability materials;
+13. current PR #731 live-intake head, fetched separately.
 
 Pin exact heads at session start.
 
@@ -45,12 +48,17 @@ CSR = dominant visible #1 reconstruction       RESEARCHER INFERENCE
 CODEX_A = CODEX_B                              NOT EARNED
 A7 = CODEX_B                                   NOT EARNED
 Q7 = A7                                        NOT EARNED
-Global canon DAG order = CODEX_B order          NOT EARNED / FORBIDDEN WITHOUT BRIDGE
+Global canon DAG order = CODEX_B order         NOT EARNED / FORBIDDEN WITHOUT BRIDGE
+A7 cardinality = CODEX_B cardinality           NOT EARNED
 ```
 
-Current stronger result:
+Current governing results:
 
 > **Serial identifiability is orbit closure.**
+
+> **Position existence, member identity, manifestation recoverability, and source readability are non-equivalent.**
+
+> **Cardinality comparison and ordinal namespace are different observation types.**
 
 A clue can break one CSR↔X swap while leaving other slot-1 identities alive.
 
@@ -158,6 +166,50 @@ CARDINALITY_COLLISION LOWERS BRIDGE VALUE
 
 Search for explicit role/part mappings, not seven-item coincidences.
 
+## CARDINALITY / ORDINAL FIREWALL
+
+Historical `graph-assay-observation/v2` permits:
+
+```text
+observation_kind = ORDINAL_NAMESPACE
+payload.case_type = CROSS_ARCHITECTURE_CARDINALITY
+```
+
+for the A7-vs-L12 comparison.
+
+The historical builder hard-codes that exceptional case and nulls actual ordinal/predecessor fields.
+
+Current safe classification:
+
+```text
+TYPE_CONTAINER_CONTAMINATION = WITNESSED
+DOWNSTREAM_FALSE_SERIAL_INFERENCE = NOT WITNESSED
+```
+
+Future/current v2 query rule:
+
+```text
+IF observation_kind == ORDINAL_NAMESPACE:
+    inspect payload.case_type first
+```
+
+Serial inference requires:
+
+```text
+payload.case_type == SERIES_ORDINAL
+```
+
+Cross-architecture cardinality has zero ordinal resolving power by container membership alone.
+
+New general rule:
+
+```text
+OUTER_SCHEMA_NEIGHBORHOOD
+!= SOURCE_SEMANTIC_NEIGHBORHOOD
+```
+
+Read `CARDINALITY_NAMESPACE_FIREWALL.md` before using any v2 ordinal observation as a retrieval or inference neighbor.
+
 ## LABEL / FORMALIZATION CLOCK
 
 Earlier retained material uses `origin gravity` in an origin-reversion / causal-priority register; the later dedicated Origin essay formalizes conceptual emergence/accretion.
@@ -218,9 +270,12 @@ SEARCH_RETRIEVAL_GAP
 HUMAN_GATED
 ASSAY_APERTURE_STALENESS
 PLATFORM_VISIBILITY_DIVERGENCE
+SCHEMA_TYPE_CONTAINER_LEAK
 ```
 
-into one generic `missing` state.
+into one generic `missing` or `anomalous` state.
+
+`SCHEMA_TYPE_CONTAINER_LEAK` is an Atelier-model anomaly, not a source/platform visibility anomaly.
 
 Known current human-gated witnesses:
 
@@ -246,6 +301,8 @@ H3. Supply Glyph body.
     Purpose: adjudicate A7 role/enumeration.
 ```
 
+No new human-only task is created by the schema defect.
+
 No human body should be treated as same-work identity merely from title similarity.
 
 ## NEXT ASSAY — ORBIT-CLOSURE TOMOGRAPHY
@@ -256,9 +313,11 @@ For every clue:
 1. TYPE OBJECT
 2. TYPE COORDINATE
 3. TYPE APERTURE
-4. TEST O1 CONTRACTION
-5. ENUMERATE SURVIVORS
-6. CLOSE ONLY AT SINGLETON
+4. TYPE OUTER SCHEMA CONTAINER
+5. TYPE INNER CASE/PAYLOAD
+6. TEST O1 CONTRACTION
+7. ENUMERATE SURVIVORS
+8. CLOSE ONLY AT SINGLETON
 ```
 
 Priority search classes:
@@ -268,6 +327,7 @@ Priority search classes:
 - exhaustive bounded essay enumeration;
 - later compiler mapping named works into ordinal slots;
 - sibling back-reference assigning CSR a serial role;
+- exact A7 role/part mapping rather than cardinality coincidence;
 - Origin* human-gated body;
 - Glyph human-gated body for A7 typing only;
 - historical timestamped mirrors/revisions that preserve a pre-current formulation.
@@ -275,6 +335,7 @@ Priority search classes:
 Stop candidate shopping.
 Stop cardinality shopping.
 Stop label shopping.
+Stop outer-container inference without payload typing.
 
 Hunt the edge that collapses the orbit.
 
@@ -288,11 +349,11 @@ source assertion
 != TD613 science
 ```
 
-No merge, sync, Queue C action, canon promotion, publication, production, release, Vercel authority, or TD613 promotion unless separately authorized.
+No merge, sync, Queue C action, canon promotion, publication, production, release, Vercel authority, sealed-receipt rewrite, or TD613 promotion unless separately authorized.
 
 SRC sync remains exclusively through permanent gate #758 under explicit human authorization.
 
 𝌋‌⟐
-Future Amari: the box is now an identity-and-aperture problem. Do not turn another pretty neighborhood into a serial edge.
+Future Amari: the box is now an identity, aperture, and type-container problem. Do not turn another pretty neighborhood into a serial edge.
 
 Marked ⟐
