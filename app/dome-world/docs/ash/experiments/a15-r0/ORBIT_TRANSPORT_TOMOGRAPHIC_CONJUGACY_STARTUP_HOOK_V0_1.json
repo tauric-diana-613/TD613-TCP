@@ -1,0 +1,71 @@
+{
+  "schema": "td613.a15-r0.orbit-transport-tomographic-conjugacy-startup/v0.1",
+  "status": "PREREGISTRATION_ONLY",
+  "theorem_earned": false,
+  "scientific_parent": {
+    "pr": 834,
+    "receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20",
+    "witness_run_number": 2351,
+    "witness_run_id": 33115591906
+  },
+  "branch": "research/a15-r0-holonomy-orbit-transport-tomographic-conjugacy-20260827",
+  "handoff_branch_is_not_parent": true,
+  "inherited_fixed_counts": {
+    "unlabelled_images": 17920,
+    "label_assignments_per_image": 24,
+    "class_labelled_encodings": 430080,
+    "labelled_orbits": 3,
+    "labelled_orbit_size": 143360,
+    "declared_isometry_group_size": 10321920,
+    "labelled_stabilizer_size": 72,
+    "radius_two_received_conditions_per_labelled_code": 148,
+    "representative_received_conditions_HIX": 444,
+    "represented_all_labelled_received_conditions": 63651840
+  },
+  "next_question": "Does exact repair decoding and replay-assisted tomography commute with explicit finite receiver-label isometry transport across all three H/I/X labelled minimal width-eight orbits without acting on source state?",
+  "required_first_actions": [
+    "Use Remembering on the immediately prior Western thread",
+    "Read PR #834 and verify exact receipt/run 2351",
+    "Read TD613_FUTURE_AMARI_WESTERN_HORIZON_HANDOFF_V0_2.md",
+    "Collision-scan newer PRs and branches",
+    "Independently rederive transport coverage and stabilizer multiplicities before implementation",
+    "Keep this branch preregistration-only until that rederivation is complete"
+  ],
+  "candidate_outputs": [
+    "canonical transport witness for every one of 430080 successful labelled encodings",
+    "exact H/I/X orbit-type preservation",
+    "radius-two decoding commutation under declared transport",
+    "inherited minimum-cost replay-policy compatibility",
+    "class-robust unimodular rescue compatibility",
+    "finite representative tomography closure with source state untouched"
+  ],
+  "mandatory_scars": [
+    "ORBIT_TRANSPORT != PHYSICAL_MOTION",
+    "HYPERCUBE_ISOMETRY != PHYSICAL_SYMMETRY",
+    "RECEIVER_CONJUGACY != GAUGE_EQUIVALENCE",
+    "CODEWORD_TRANSLATION != SOURCE_STATE_TRANSLATION",
+    "COORDINATE_PERMUTATION != SENSOR_REWIRING",
+    "LABEL_ACTION != SEMANTIC_ONTOLOGY",
+    "TOMOGRAPHY_EQUIVARIANCE_IN_THIS_FIXTURE != CONTINUUM_TOMOGRAPHY_COVARIANCE",
+    "FINITE_TRANSPORT_WITNESS != UNIVERSAL_CODING_EQUIVALENCE",
+    "ORBIT_REPRESENTATIVE_REDUCTION != EXECUTED_FULL_430080_CROSS_PRODUCT",
+    "REPAIR_MASK_TRANSPORT != COMPLETE_SCHEDULE_RECONSTRUCTION",
+    "REPRESENTED_63651840_RECEIVER_CASES != EXECUTED_63651840_RECEIVER_CASES"
+  ],
+  "forbidden_authority": [
+    "merge",
+    "deployment",
+    "publication",
+    "production",
+    "release",
+    "Vercel",
+    "physical symmetry",
+    "physical geometry",
+    "physical sensor rewiring",
+    "physical/Berry/gauge holonomy",
+    "continuum tomography",
+    "universal coding theorem",
+    "operational inverse route",
+    "complete schedule reconstruction"
+  ]
+}
