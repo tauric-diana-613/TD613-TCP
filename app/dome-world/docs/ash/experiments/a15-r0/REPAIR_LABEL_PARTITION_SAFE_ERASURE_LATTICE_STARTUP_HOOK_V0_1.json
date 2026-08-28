@@ -1,0 +1,77 @@
+{
+  "schema": "td613.a15-r0.repair-label-partition-safe-erasure-lattice-startup/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 841,
+    "receipt": "e0cc001a7b25b2e03deb08a9972d10ab7e47f4f5",
+    "authority_run": 2355,
+    "authority_run_id": 33127525557
+  },
+  "witness_route_parent": {
+    "pr": 842,
+    "scientific_authority": false
+  },
+  "collision_membrane": {
+    "finite_claim_authority_partition_pr_753_preserved": true,
+    "this_partition_domain": "FOUR_EARNED_REPAIR_LABELS_UNDER_PR_841_INDUCED_ACTION",
+    "fadt_universal_authority_partition_restatement": false
+  },
+  "finite_domain": {
+    "repair_label_count": 4,
+    "set_partition_count": 15,
+    "ambient_s4_permutation_count": 24,
+    "matching_automorphism_count": 8,
+    "receiver_action_multiplicity": 72,
+    "setwise_receiver_family": 576
+  },
+  "candidate_safe_family_distribution": {
+    "576": 1,
+    "288": 1,
+    "144": 8,
+    "72": 5
+  },
+  "candidate_refinement_covers": {
+    "total": 31,
+    "strict_contractions": 23,
+    "equality_covers": 8
+  },
+  "required_receiver_partition_label_checks": 34560,
+  "required_total_safe_partition_witness_incidences": 2376,
+  "required_total_unsafe_partition_witness_incidences": 6264,
+  "required_downstream_state_reconstructions": 750,
+  "required_hostiles": [
+    "COMPLETE_15_PARTITION_ENUMERATION",
+    "INDEPENDENT_DISTANCE_SIX_MATCHING_DERIVATION",
+    "UNIQUE_288_LAYER",
+    "NONMATCHING_2_2_288_REJECTION",
+    "CROSSING_2_1_1_144_REJECTION",
+    "STRICT_REFINEMENT_FALLACY_REJECTION",
+    "ANTITONE_COVER_INCLUSION",
+    "SAME_SAFE_SUBGROUP_NOT_SAME_CLAIM",
+    "MALFORMED_PARTITION_REJECTION",
+    "OUTSIDE_SAFE_FAMILY_TWO_WITNESS_FADT_CONFLICT",
+    "CARDINALITY_ONLY_CERTIFICATION_REJECTION",
+    "SOURCE_STATE_AND_AUTHORITY_WIDENING_REJECTION",
+    "ASH_FULL_ATLAS_NONEXPOSURE"
+  ],
+  "claim_ceiling": {
+    "fixed_fixture_repair_label_partition_safe_erasure": true,
+    "universal_information_lattice_theorem": false,
+    "universal_ai_architecture_theorem": false,
+    "universal_group_action_theorem": false,
+    "universal_coding_theorem": false,
+    "shannon_capacity": false,
+    "operational_inverse": false,
+    "operational_path_groupoid": false,
+    "physical_symmetry": false,
+    "physical_gauge": false,
+    "physical_holonomy": false,
+    "continuum_tomography": false,
+    "complete_schedule_reconstruction": false,
+    "source_state_mutation": false,
+    "production": false,
+    "release": false,
+    "deployment": false
+  },
+  "theorem_earned": false
+}
