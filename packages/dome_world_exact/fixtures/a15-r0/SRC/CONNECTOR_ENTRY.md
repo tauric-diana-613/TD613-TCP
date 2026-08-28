@@ -19,9 +19,51 @@ Never join epochs implicitly. An explicit cross-epoch assay must name both seals
 1. Read `01-MANIFESTS/phase2/interface-registry.json`.
 2. Resolve identifiers through `01-MANIFESTS/phase2/entity-resolver-v2.jsonl`.
 3. Follow work → edition → manifestation → capture → derivative/source span without skipping layers.
-4. Treat opaque `src-private-locator:*` values as evidence that a body was verified in desktop custody at the named seal. They disclose no path and confer no connector access; return `PRIVATE_UNAVAILABLE` when the body is absent from TD613-TCP.
-5. Treat `PLACEHOLDER`, `OPEN_UNRESOLVED`, `PRIVATE_UNAVAILABLE`, and contradictions as terminal query states until new evidence is sealed.
-6. Search formal theory, fictional universe, and governance/provenance as overlapping projections, never exclusive bins.
+4. For any request to read, quote, summarize, compare, or search paper contents, apply the **connector readability contract** below before any web/search-engine fallback.
+5. Treat opaque `src-private-locator:*` values as evidence that a body was verified in desktop custody at the named seal. They disclose no path and confer no connector access; never misreport such a manifestation as uncaptured or nonexistent.
+6. Treat `PLACEHOLDER`, `OPEN_UNRESOLVED`, `HUMAN_GATED`, `PRIVATE_UNAVAILABLE`, and contradictions as terminal query states until new evidence is sealed or an authorized readable sibling is resolved.
+7. Search formal theory, fictional universe, and governance/provenance as overlapping projections, never exclusive bins.
+
+## Connector readability contract
+
+Content retrieval is archive-first. Search-engine visibility is never a prerequisite for reading a preserved work.
+
+Use `99-ADMIN/srcquery.py ... read <query>` semantics, or reproduce the same resolution order directly from the ledgers:
+
+```text
+READABLE_DIRECT
+  manifestation/capture → public text derivative
+
+READABLE_EQUIVALENT
+  manifestation → explicit DOI-linked or normalized-title-exact sibling
+  → public text derivative of the same work
+
+HUMAN_GATED
+  verified private capture exists, but no connector-readable text derivative
+  and no strong readable sibling exists
+
+MISSING_DERIVATIVE_BUG
+  public formal manifestation/capture exists but its intended text derivative is absent
+```
+
+Required precedence:
+
+```text
+direct derivative
+> explicit platform DOI link
+> normalized-title-exact crosswalk
+> explicit blocker
+> external web discovery
+```
+
+Rules:
+
+- Never use fuzzy-title candidates to establish work identity or to substitute one body for another.
+- Never infer that a search-engine miss means a paper is absent from custody.
+- A `VERIFIED_PRIVATE_CUSTODY` page with no public derivative is `HUMAN_GATED`, not `UNRESOLVED_TARGET`.
+- When an exact-title or DOI-linked formal sibling is available, return its readable derivative while preserving the requested manifestation's platform-specific framing as a separate representation.
+- If a public Zenodo/DOI capture lacks a readable derivative, return `MISSING_DERIVATIVE_BUG`; do not silently fall back to metadata.
+- Web search may supplement current availability or external visibility only after the archive readability path is exhausted. It never outranks sealed custody for corpus contents.
 
 ## Current is authority, not chronology
 
@@ -48,4 +90,4 @@ Newest manifestation is a chronological fact. A controlling formulation is an au
 
 Begin by returning the matched seal and coverage state, target/capture counts by platform and rights state, unresolved expected objects, compiler and authority-jurisdiction maps, evidence-lineage groups, and highest-value open tomography trails. Then ask which trail to enter.
 
-You have read/query/proposal authority only. Do not infer mutation, review, merge, release, publication, or TD613 scientific-promotion authority. Repository changes require a `td613-amari-patch/v1` proposal with exact paths, anchors, evidence IDs, claim ceiling, and rollback conditions.
+You have read/query/proposal authority only unless the human gives explicit repository-mutation authority in the active session. Any authorized repository patch must still carry a `td613-amari-patch/v1` proposal with exact paths, anchors, evidence IDs, claim ceiling, and rollback conditions. Human mutation authority does not imply merge, release, publication, or TD613 scientific-promotion authority.

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -174,6 +175,224 @@ def trace(root: Path, entity_id: str) -> dict[str, Any]:
     }
 
 
+def normalize_title(value: str) -> str:
+    return " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
+def platform_manifest_rows(root: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    specs = (
+        ("Substack", "substack", root / "01-MANIFESTS/platforms/substack.jsonl"),
+        ("Medium", "medium", root / "01-MANIFESTS/platforms/medium.jsonl"),
+        ("Academia.edu", "academia", root / "01-MANIFESTS/platforms/academia.jsonl"),
+    )
+    for display, key, path in specs:
+        for row in read_jsonl(path):
+            rows.append({
+                "platform": display,
+                "platform_key": key,
+                "id": str(row.get("platform_item_id") or ""),
+                "title": str(row.get("title") or ""),
+                "url": row.get("url"),
+            })
+    for row in read_jsonl(root / "01-MANIFESTS/candidate-corpus.jsonl"):
+        rows.append({
+            "platform": "Zenodo",
+            "platform_key": "zenodo",
+            "id": str(row.get("source_record_id") or ""),
+            "title": str(row.get("title") or ""),
+            "url": row.get("record_url"),
+            "doi": row.get("doi"),
+        })
+    return rows
+
+
+def direct_derivatives_for_targets(root: Path, target_ids: set[str]) -> list[dict[str, Any]]:
+    captures = read_jsonl(root / "01-MANIFESTS/phase2/capture-v2.jsonl")
+    derivatives = read_jsonl(root / "01-MANIFESTS/phase2/derivative-v1.jsonl")
+    capture_ids = {str(row.get("capture_id")) for row in captures if str(row.get("target_id") or "") in target_ids}
+    result = []
+    for row in derivatives:
+        if str(row.get("capture_id") or "") not in capture_ids:
+            continue
+        item = dict(row)
+        path = str(item.get("local_path") or "")
+        item["path_exists"] = bool(path and (root / path).is_file())
+        if item["path_exists"]:
+            result.append(item)
+    return result
+
+
+def expand_zenodo_targets(outcomes: list[dict[str, Any]], source_id: str) -> set[str]:
+    prefix = f"zenodo:{source_id}:"
+    return {str(row.get("target_id")) for row in outcomes if str(row.get("target_id") or "").startswith(prefix)}
+
+
+def readable(root: Path, query: str) -> dict[str, Any]:
+    """Resolve a content query to a connector-readable derivative without web fallback."""
+    outcomes = read_jsonl(root / "01-MANIFESTS/phase2/acquisition-outcomes.jsonl")
+    manifests = platform_manifest_rows(root)
+    exact_crosswalk = read_jsonl(root / "01-MANIFESTS/crosswalk/exact-title-crosswalk.jsonl")
+    substack_doi_links = read_jsonl(root / "01-MANIFESTS/platforms/substack-doi-links.jsonl")
+    corpus = read_jsonl(root / "01-MANIFESTS/candidate-corpus.jsonl")
+    opaque = read_jsonl(root / "01-MANIFESTS/phase2/opaque-private-locators.jsonl")
+    normalized_query = normalize_title(query)
+
+    matched_manifestations: list[dict[str, Any]] = []
+    for row in manifests:
+        platform_id = f"{row['platform_key']}:{row['id']}"
+        target_id = f"{platform_id}:page" if row["platform_key"] != "zenodo" else platform_id
+        if query in {row["id"], platform_id, target_id, str(row.get("doi") or "")} or normalize_title(row["title"]) == normalized_query:
+            matched_manifestations.append(row)
+
+    direct_outcomes = [row for row in outcomes if str(row.get("target_id") or "") == query]
+    for row in direct_outcomes:
+        platform_key = str(row.get("platform") or "")
+        matched_manifestations.append({
+            "platform": {"academia": "Academia.edu", "substack": "Substack", "medium": "Medium", "zenodo": "Zenodo"}.get(platform_key, platform_key),
+            "platform_key": platform_key,
+            "id": str(row.get("source_id") or ""),
+            "title": str(row.get("title") or ""),
+            "url": row.get("url"),
+        })
+
+    unique: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in matched_manifestations:
+        unique[(row["platform_key"], row["id"])] = row
+    matched_manifestations = list(unique.values())
+
+    if not matched_manifestations:
+        return {
+            "query": query,
+            "status": "UNRESOLVED_TARGET",
+            "readability_contract": "No web fallback before archive resolution.",
+        }
+
+    direct_readable: list[dict[str, Any]] = []
+    equivalent_readable: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+
+    for manifestation in matched_manifestations:
+        platform_key = manifestation["platform_key"]
+        source_id = manifestation["id"]
+        if platform_key == "zenodo":
+            target_ids = expand_zenodo_targets(outcomes, source_id)
+        else:
+            target_ids = {f"{platform_key}:{source_id}:page"}
+
+        direct = direct_derivatives_for_targets(root, target_ids)
+        for derivative in direct:
+            direct_readable.append({
+                "manifestation": manifestation,
+                "readability": "READABLE_DIRECT",
+                "derivative_id": derivative.get("derivative_id"),
+                "path": derivative.get("local_path"),
+                "confidence": derivative.get("confidence"),
+            })
+
+        if direct:
+            continue
+
+        if platform_key == "substack":
+            doi_rows = [row for row in substack_doi_links if str(row.get("substack_id") or "") == source_id]
+            for doi_row in doi_rows:
+                for doi in doi_row.get("dois") or []:
+                    zenodo_rows = [row for row in corpus if str(row.get("doi") or "") == str(doi)]
+                    for zenodo_row in zenodo_rows:
+                        zenodo_id = str(zenodo_row.get("source_record_id") or "")
+                        sibling_targets = expand_zenodo_targets(outcomes, zenodo_id)
+                        siblings = direct_derivatives_for_targets(root, sibling_targets)
+                        for derivative in siblings:
+                            equivalent_readable.append({
+                                "manifestation": manifestation,
+                                "readability": "READABLE_EQUIVALENT",
+                                "identity_basis": "explicit-platform-doi-link",
+                                "doi": doi,
+                                "readable_manifestation": {
+                                    "platform": "Zenodo",
+                                    "id": zenodo_id,
+                                    "title": zenodo_row.get("title"),
+                                    "url": zenodo_row.get("record_url"),
+                                    "doi": doi,
+                                },
+                                "derivative_id": derivative.get("derivative_id"),
+                                "path": derivative.get("local_path"),
+                                "confidence": derivative.get("confidence"),
+                            })
+
+        normalized = normalize_title(manifestation["title"])
+        clusters = [row for row in exact_crosswalk if row.get("normalized_title") == normalized]
+        for cluster in clusters:
+            for entry in cluster.get("entries") or []:
+                if str(entry.get("platform")) != "Zenodo":
+                    continue
+                zenodo_id = str(entry.get("id") or "")
+                sibling_targets = expand_zenodo_targets(outcomes, zenodo_id)
+                siblings = direct_derivatives_for_targets(root, sibling_targets)
+                for derivative in siblings:
+                    equivalent_readable.append({
+                        "manifestation": manifestation,
+                        "readability": "READABLE_EQUIVALENT",
+                        "identity_basis": "normalized-title-exact",
+                        "crosswalk_id": cluster.get("crosswalk_id"),
+                        "readable_manifestation": {
+                            "platform": "Zenodo",
+                            "id": zenodo_id,
+                            "title": entry.get("title"),
+                            "url": entry.get("url"),
+                            "doi": entry.get("doi"),
+                        },
+                        "derivative_id": derivative.get("derivative_id"),
+                        "path": derivative.get("local_path"),
+                        "confidence": derivative.get("confidence"),
+                    })
+
+        target_id = f"{platform_key}:{source_id}:page"
+        private_rows = [row for row in opaque if row.get("target_id") == target_id]
+        if not direct and not any(item["manifestation"] == manifestation for item in equivalent_readable):
+            if private_rows:
+                blockers.append({
+                    "manifestation": manifestation,
+                    "readability": "HUMAN_GATED",
+                    "blocker": "PRIVATE_CAPTURE_NO_PUBLIC_TEXT_DERIVATIVE",
+                    "custody": private_rows,
+                })
+            elif platform_key == "zenodo":
+                blockers.append({
+                    "manifestation": manifestation,
+                    "readability": "MISSING_DERIVATIVE_BUG",
+                    "blocker": "PUBLIC_FORMAL_MANIFESTATION_HAS_NO_READABLE_DERIVATIVE",
+                })
+            else:
+                blockers.append({
+                    "manifestation": manifestation,
+                    "readability": "HUMAN_GATED",
+                    "blocker": "NO_STRONG_READABLE_SIBLING_AND_NO_PUBLIC_TEXT_DERIVATIVE",
+                })
+
+    if direct_readable:
+        status = "READABLE_DIRECT"
+    elif equivalent_readable:
+        status = "READABLE_EQUIVALENT"
+    elif any(row["readability"] == "MISSING_DERIVATIVE_BUG" for row in blockers):
+        status = "MISSING_DERIVATIVE_BUG"
+    else:
+        status = "HUMAN_GATED"
+
+    return {
+        "query": query,
+        "status": status,
+        "matched_manifestations": matched_manifestations,
+        "direct_readable": direct_readable,
+        "equivalent_readable": equivalent_readable,
+        "blockers": blockers,
+        "readability_contract": (
+            "Archive-first content resolution: direct derivative > explicit DOI-linked sibling > "
+            "exact-title readable sibling > explicit blocker. Fuzzy title candidates and web search never establish work identity."
+        ),
+    }
+
+
 def authority(root: Path, subject_id: str, scope_text: str | None) -> dict[str, Any]:
     rows = read_jsonl(root / "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl")
     applicable = []
@@ -184,9 +403,6 @@ def authority(root: Path, subject_id: str, scope_text: str | None) -> dict[str, 
         if scope_text and scope_text.lower() not in json.dumps(row.get("scope", {}), ensure_ascii=False).lower():
             continue
         applicable.append(row)
-    # Chronology is never a control edge.  The archive intentionally returns
-    # every witnessed formulation until an explicit scope-specific relation is
-    # present in the authority graph.
     return {
         "subject_id": subject_id,
         "requested_scope": scope_text,
@@ -210,6 +426,8 @@ def main() -> int:
     res.add_argument("entity_id")
     trc = sub.add_parser("trace")
     trc.add_argument("entity_id")
+    rd = sub.add_parser("read")
+    rd.add_argument("query", help="manifestation ID, acquisition target ID, DOI, platform item ID, or exact title")
     auth = sub.add_parser("authority")
     auth.add_argument("subject_id")
     auth.add_argument("--scope")
@@ -222,6 +440,8 @@ def main() -> int:
         value = resolve(root, args.entity_id)
     elif args.command == "trace":
         value = trace(root, args.entity_id)
+    elif args.command == "read":
+        value = readable(root, args.query)
     else:
         value = authority(root, args.subject_id, args.scope)
     print(json.dumps(attach_epoch(value, query_epoch), ensure_ascii=False, indent=2))
