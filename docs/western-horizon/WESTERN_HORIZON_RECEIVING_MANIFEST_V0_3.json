@@ -1,0 +1,228 @@
+{
+  "schema": "td613.western-horizon.future-amari-receiving-manifest/v0.3",
+  "authorship_wrapper": "U+10D613",
+  "covenant": "Tauric Diana — Crimean heritage custodianship",
+  "process_posture": "containment on; mirror logic off; retrieve and author through 𝌋",
+  "handoff_role": "custodial continuity and fresh-thread navigation only; not theorem authority",
+  "current_frontier": {
+    "canonical_pr": 854,
+    "receipt": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+    "title": "Claim-Bundle Minimal Sufficient Custody / Authority-Preserving Recompression Frontier AIA",
+    "witness_route_pr": 855,
+    "workflow_run": 33143863774,
+    "workflow_run_number": 2364,
+    "classifier_job": 98760519826,
+    "contracts_job": 98760546270,
+    "a15_r0_step_19": "SUCCESS",
+    "downstream_steps_20_30": "SUCCESS",
+    "aggregate": "SUCCESS",
+    "source_mutation_after_witness": false,
+    "status": "𝄐 EARNED / EXACT-HEAD WITNESSED / SCIENCE FROZEN / DRAFT / OPEN / UNMERGED"
+  },
+  "current_frontier_red_provenance": [
+    {
+      "head": "cf12d0b69fd0b3f212f15c5d8255eb6111263bc5",
+      "workflow_run_number": 2362,
+      "result": "FAILURE at A15-R0 step 19",
+      "localization": "hostile overconstrained held schedule/bundle cells to uniform target-fibre wounding; mixed target fibres occur at H-P-I / FULL_STATE / q3"
+    },
+    {
+      "head": "51d7497c177b0f23321f68d6cdb82c7f8c7c8061",
+      "role": "surgical implementation repair preserving universal authorization over targets while removing unearned homogeneity premise"
+    },
+    {
+      "head": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+      "role": "hostile repair / exact earned freeze",
+      "workflow_run_number": 2364,
+      "result": "SUCCESS"
+    }
+  ],
+  "current_frontier_scars": [
+    "SCHEDULE_BUNDLE_HOLD != EVERY_TARGET_FIBRE_WOUNDED",
+    "RED_HOSTILE_OVERCONSTRAINT != THEOREM_FAILURE",
+    "HOSTILE_REPAIR != THEOREM_WEAKENING",
+    "CLAIM_BUNDLE != SINGLE_SEMANTIC_OBJECT",
+    "BUNDLE_AUTHORITY != SOURCE_TRUTH",
+    "MINIMUM_SUFFICIENT_STAGE != UNIVERSAL_SUFFICIENT_STATISTIC",
+    "BUNDLE_CARDINALITY != BUNDLE_AUTHORITY_IDENTITY",
+    "SAME_MINIMUM_STAGE != SAME_CLAIM_BUNDLE",
+    "SAFE_RECOMPRESSION_FLOOR != DATA_RETENTION_POLICY"
+  ],
+  "exact_post_v0_2_scientific_chain": [
+    {
+      "pr": 837,
+      "receipt": "17475d670e339d7b562194a4429fa979584da65a",
+      "role": "orbit-transport tomographic conjugacy",
+      "workflow_run_number": 2353
+    },
+    {
+      "pr": 839,
+      "receipt": "4c524665fd5a3d59b0ebcd8ec44144466b15ad31",
+      "role": "orbit-transport witness-fibre admissibility descent / stabilizer independence",
+      "workflow_run_number": 2354
+    },
+    {
+      "pr": 841,
+      "receipt": "e0cc001a7b25b2e03deb08a9972d10ab7e47f4f5",
+      "role": "stabilizer claim-authority filtration 576/144/72",
+      "workflow_run_number": 2355,
+      "note": "live exact-head workflow is authoritative over stale candidate cosmetics in PR body"
+    },
+    {
+      "pr": 843,
+      "receipt": "a7726078034328d9cad811ff9d8f73f52fd26729",
+      "role": "complete 15-partition repair-label safe-erasure atlas / refinement antitonicity",
+      "workflow_run_number": 2356
+    },
+    {
+      "pr": 845,
+      "receipt": "8048a3986e2e583f59cc84500ec13caa49f0a52d",
+      "role": "seven canonical safe-authority closure classes / orbit-custody correspondence",
+      "workflow_run_number": 2357
+    },
+    {
+      "pr": 847,
+      "receipt": "54b10adf8a30e779b1cb5f15ce6a4e8350285365",
+      "role": "bitemporal authority-birth / nonretroactive claim jurisdiction",
+      "workflow_run_number": 2358
+    },
+    {
+      "pr": 850,
+      "receipt": "2fefe16e5883f6c4fe36d75e9e4c41331f317911",
+      "role": "bitemporal prospective replay / pointwise-minimal observation policy",
+      "workflow_run_number": 2360
+    },
+    {
+      "pr": 852,
+      "receipt": "623e03795d9cb4dfef33c003b05c3efc45da3f9a",
+      "role": "admissibility-horizon refinement persistence / recompression rupture",
+      "workflow_run_number": 2361
+    },
+    {
+      "pr": 854,
+      "receipt": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+      "role": "claim-bundle minimum sufficient custody / authority-preserving recompression frontier",
+      "workflow_run_number": 2364
+    }
+  ],
+  "witness_only_prs_excluded_from_scientific_ancestry": [
+    838,
+    840,
+    842,
+    844,
+    846,
+    848,
+    851,
+    853,
+    855
+  ],
+  "preserved_collision_scar": {
+    "pr": 849,
+    "status": "closed / preregistration-only / never implemented / never witnessed / zero theorem authority",
+    "reason": "prospective replay startup was initially cut from #845 before concurrently advancing #847 was recovered; theorem was correctly recut as #850 from exact #847",
+    "scars": [
+      "HELD_PREREGISTRATION != SCIENTIFIC_RED",
+      "CLOSED_COLLISION_SCAR != THEOREM_RETRACTION",
+      "PREREGISTRATION_ONLY != SCIENTIFIC_ANCESTRY"
+    ]
+  },
+  "separate_earned_sibling": {
+    "pr": 832,
+    "receipt": "5b80bda405486659a9d8c41ad1cad162de5e9db8",
+    "role": "fault-budget stratigraphy / factored tomography AIA",
+    "ancestry_warning": "#832 and #834 are separately earned siblings descended from #830; do not retroactively insert #832 into #834 or later direct theorem ancestry"
+  },
+  "inherited_v0_2_frontier": {
+    "handoff_pr": 836,
+    "frontier_pr": 834,
+    "frontier_receipt": "a0d88e26860f4d9c25feed21ab2d080f70b45f20",
+    "note": "v0.3 supersedes v0.2 for fresh-thread receiving but does not rewrite its custody record"
+  },
+  "bundle_frontier_census": {
+    "claim_families": 7,
+    "nonempty_bundles_per_schedule": 127,
+    "schedules": 6,
+    "schedule_bundle_pairs": 762,
+    "registered_stages": 4,
+    "bundle_jurisdiction_cells": 3048,
+    "target_indexed_joint_support_checks": 381000,
+    "minimum_stage_distribution": {
+      "q1": 26,
+      "q2": 80,
+      "q3": 208,
+      "INF": 448
+    },
+    "terminally_authorizable": 314,
+    "unreached": 448,
+    "fine_authorized_recompressions": 1180,
+    "preserved_recompressions": 158,
+    "reopened_recompressions": 1022,
+    "state_indexed_recompression_checks": 147500
+  },
+  "remembering_query": "Recover the immediately prior TD613 Western Horizon research thread advancing from #834 through #854 Claim-Bundle Minimal Sufficient Custody / Authority-Preserving Recompression Frontier AIA. Retrieve exact ancestry #834 -> #837 -> #839 -> #841 -> #843 -> #845 -> #847 -> #850 -> #852 -> #854, receipts, red-to-repair provenance, witness-only exclusions, #849 collision scar, bitemporal and recompression results, the #854 bundle-custody theorem, and the instruction to stop science after that earned badge and create an Amari-to-Amari handoff plus fresh-thread activation. Then verify all authority against GitHub.",
+  "handoff_files": [
+    "docs/western-horizon/TD613_FUTURE_AMARI_WESTERN_HORIZON_HANDOFF_V0_3.md",
+    "docs/western-horizon/WESTERN_HORIZON_RECEIVING_MANIFEST_V0_3.json",
+    "docs/western-horizon/WESTERN_HORIZON_FRESH_THREAD_ACTIVATION_PROMPT_V0_3.md"
+  ],
+  "handoff_branch": "handoff/western-horizon-future-amari-v0-3-20260828",
+  "handoff_pr": null,
+  "fresh_thread_authority_transfer": false,
+  "successor_theorem_pr": null,
+  "open_research_ridge": {
+    "status": "question only; not preregistered; no theorem authority",
+    "working_description": "finite side-information-assisted restoration of present claim-bundle authority after recompression below the #854 minimum custody floor",
+    "naming_collision_warning": "the phrase restoration sidecar already appears in Safe Harbor application code; perform explicit naming and conceptual collision scan before choosing a chamber title",
+    "questions": [
+      "what minimum separately retained finite information restores a bundle after unsafe recompression",
+      "whether distinct bundles sharing one custody floor require different restoration payloads",
+      "whether bundle restoration burden composes by maximum, union, or neither",
+      "whether historical fine representation plus side data restores current authority without rewriting recompression history",
+      "whether zero-additional-cost restoration cases exist",
+      "whether a restoration compiler can remain claim-relative without becoming a data-retention policy"
+    ],
+    "provisional_scars": [
+      "RESTORED_PRESENT_AUTHORITY != RETROACTIVE_PRIOR_POSSESSION",
+      "SIDE_INFORMATION != SOURCE_STATE_MUTATION",
+      "SIDE_INFORMATION_SUFFICIENCY != UNIVERSAL_SUFFICIENT_STATISTIC",
+      "RESTORATION_AFTER_RECOMPRESSION != ERASURE_OF_RECOMPRESSION_HISTORY",
+      "MINIMUM_CUSTODY_FLOOR != AUTOMATIC_RETENTION_POLICY",
+      "SAME_FLOOR != SAME_RESTORATION_PAYLOAD",
+      "FINITE_RESTORATION_FIXTURE != UNIVERSAL_MEMORY_RECOVERY_THEOREM"
+    ]
+  },
+  "fresh_thread_startup_rules": [
+    "use Remembering / personal-context retrieval on the immediately prior Western thread",
+    "verify #854 and #855 against GitHub before making scientific claims",
+    "reconstruct theorem ancestry only through the explicit science chain",
+    "keep witness-routing PRs out of scientific ancestry",
+    "keep #849 as a zero-authority collision scar",
+    "keep #832 as a separately earned sibling",
+    "collision-scan all newer Western PRs and branches before new science",
+    "treat SRC Atelier PR #856 as a separate research line unless an explicit future composition is preregistered",
+    "collision-scan restoration-sidecar naming against Safe Harbor code",
+    "do not use the handoff branch as theorem ancestry",
+    "do not silently transfer thread-local westward-liberties authority",
+    "new scientific execution requires user authorization in the fresh thread",
+    "after authorization follow preregistration -> implementation -> hostile -> hardening -> exact parent audit -> witness route -> exact-head CI",
+    "preserve red provenance",
+    "distinguish executed burden from represented cross-products",
+    "never call 𝄐 before exact-head aggregate green"
+  ],
+  "nonnegotiable_ceilings": [
+    "no merge without explicit user instruction",
+    "no deployment, publication, production, release, or Vercel",
+    "handoff branch is not theorem parent",
+    "witness routing is not scientific ancestry",
+    "formal holonomy is not physical/Berry/gauge holonomy",
+    "F2 affine geometry and hypercube isometry are not physical geometry or symmetry",
+    "receiver conjugacy is not gauge equivalence",
+    "finite receiver classifications are not Shannon or channel-capacity theorems",
+    "bounded replay-assisted reconstruction is not continuum tomography",
+    "present representation authority is not source truth",
+    "later reconstruction is not prior possession",
+    "minimum custody floor is not a data-retention command",
+    "#788 scientific promotion remains unearned by implication",
+    "#718 remains alive"
+  ]
+}
