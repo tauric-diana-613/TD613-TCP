@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_843_RECEIPT = 'a7726078034328d9cad811ff9d8f73f52fd26729';
 const PARENT_841_RECEIPT = 'e0cc001a7b25b2e03deb08a9972d10ab7e47f4f5';
 const PARENT_839_RECEIPT = '4c524665fd5a3d59b0ebcd8ec44144466b15ad31';
 const PARENT_837_RECEIPT = '17475d670e339d7b562194a4429fa979584da65a';
@@ -26,6 +27,7 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
+  PARENT_843_RECEIPT,
   PARENT_841_RECEIPT,
   PARENT_839_RECEIPT,
   PARENT_837_RECEIPT,
@@ -54,6 +56,7 @@ for (const receipt of [
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
+execFileSync('git', ['merge-base', '--is-ancestor', PARENT_841_RECEIPT, PARENT_843_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_839_RECEIPT, PARENT_841_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_837_RECEIPT, PARENT_839_RECEIPT], { stdio: 'pipe' });
 execFileSync('git', ['merge-base', '--is-ancestor', PARENT_834_RECEIPT, PARENT_837_RECEIPT], { stdio: 'pipe' });
@@ -82,7 +85,7 @@ const changedA15R0 = execFileSync(
   [
     'diff',
     '--name-only',
-    `${PARENT_841_RECEIPT}..HEAD`,
+    `${PARENT_843_RECEIPT}..HEAD`,
     '--',
     'app/dome-world/docs/ash/experiments/a15-r0',
     'app/dome-world/previews/a15-r0',
@@ -96,10 +99,10 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_REPAIR_LABEL_PARTITION_SAFE_ERASURE_LATTICE_STARTUP_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/REPAIR_LABEL_PARTITION_SAFE_ERASURE_LATTICE_STARTUP_HOOK_V0_1.json',
-  'app/dome-world/previews/a15-r0/dromological-holonomy-repair-label-partition-safe-erasure-lattice.js',
-  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-repair-label-partition-safe-erasure-lattice.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_DROMOLOGICAL_HOLONOMY_SAFE_AUTHORITY_CLOSURE_CORRESPONDENCE_STARTUP_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/SAFE_AUTHORITY_CLOSURE_CORRESPONDENCE_STARTUP_HOOK_V0_1.json',
+  'app/dome-world/previews/a15-r0/dromological-holonomy-safe-authority-closure-correspondence.js',
+  'tests/ash-a15-r0-aperture-pedagogue-dromological-holonomy-safe-authority-closure-correspondence.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 
@@ -107,15 +110,15 @@ const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPa
 assert.deepEqual(
   historicalMutations,
   [],
-  `post-#841 repair-label partition safe-erasure lattice chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
+  `post-#843 safe-authority closure correspondence chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`,
 );
 assert.equal(
   changedA15R0.length,
   allowedCurrentChamberPaths.size,
-  `repair-label partition safe-erasure lattice chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
+  `safe-authority closure correspondence chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`,
 );
 for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered repair-label partition safe-erasure path: ${path}`);
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered safe-authority closure path: ${path}`);
 }
 
 execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
@@ -142,6 +145,7 @@ await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transp
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-orbit-transport-witness-fiber-descent.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-stabilizer-claim-authority-filtration.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-repair-label-partition-safe-erasure-lattice.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-safe-authority-closure-correspondence.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 dromological holonomy repair-label partition safe-erasure lattice hardening tests passed.');
+console.log('Ash A15-R0 dromological holonomy safe-authority closure correspondence hardening tests passed.');
