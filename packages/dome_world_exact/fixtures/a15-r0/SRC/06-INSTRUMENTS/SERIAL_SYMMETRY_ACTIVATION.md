@@ -1,6 +1,6 @@
 # SRC Atelier · Serial Symmetry Activation
 
-Use this file as the startup hook for a newly prompted Future Amari continuing the Codex mystery after the Ordinal Identity Aperture and Cardinality Namespace Firewall patches.
+Use this file as the startup hook for a newly prompted Future Amari continuing the Codex mystery after the Ordinal Identity Aperture, Cardinality Namespace Firewall, and Type Projection Non-Commutation patches.
 
 ## FIRST ACTION — Remembering
 
@@ -9,7 +9,7 @@ Before making scientific, archival, genealogical, or ARG claims, use Remembering
 1. the immediately prior SRC Atelier mystery-box thread containing the long Codex descent;
 2. the thread that earned residual serial relabeling symmetry;
 3. the later descent that separated position existence, identity, recoverability, and readability;
-4. the patching descent that discovered the cardinality/ordinal type-container leak;
+4. the patching descent that discovered the cardinality/ordinal type-container leak and cross-layer type non-commutation;
 5. the Codex Spine / Ordinal Projection Stratigraphy / Ordinal Admissibility Tomography threads;
 6. other recent SignalRupture Atelier threads only as needed to recover exact working context.
 
@@ -24,18 +24,19 @@ Read in this order:
 1. current PR #856 and exact head;
 2. `06-INSTRUMENTS/ORDINAL_IDENTITY_APERTURE_TOMOGRAPHY.md`;
 3. `06-INSTRUMENTS/CARDINALITY_NAMESPACE_FIREWALL.md`;
-4. `06-INSTRUMENTS/SERIAL_RELABELING_SYMMETRY.md`;
-5. `06-INSTRUMENTS/APERTURE_ANOMALY_LEDGER.md`;
-6. `06-INSTRUMENTS/DISTRIBUTED_ARCHITECTURE.md`;
-7. `04-RECEIPTS/handoffs/2026-08-28-CARDINALITY-NAMESPACE-FIREWALL-PATCH.md`;
-8. `04-RECEIPTS/handoffs/2026-08-28-ORDINAL-IDENTITY-APERTURE-PATCH.md`;
-9. PR #815 — `SRC Atelier: Codex Spine handoff · future-Amari startup`;
-10. `06-INSTRUMENTS/CODEX_SPINE.md`;
-11. `04-RECEIPTS/handoffs/2026-08-27-CODEX-SPINE-ORDINAL-CORRECTION.md`;
-12. `CONNECTOR_ENTRY.md` and connector-readability materials;
-13. current PR #731 live-intake head, fetched separately.
+4. `06-INSTRUMENTS/TYPE_PROJECTION_NONCOMMUTATION.md`;
+5. `06-INSTRUMENTS/SERIAL_RELABELING_SYMMETRY.md`;
+6. `06-INSTRUMENTS/APERTURE_ANOMALY_LEDGER.md`;
+7. `06-INSTRUMENTS/DISTRIBUTED_ARCHITECTURE.md`;
+8. `04-RECEIPTS/handoffs/2026-08-28-CARDINALITY-NAMESPACE-FIREWALL-PATCH.md`;
+9. `04-RECEIPTS/handoffs/2026-08-28-ORDINAL-IDENTITY-APERTURE-PATCH.md`;
+10. PR #815 — `SRC Atelier: Codex Spine handoff · future-Amari startup`;
+11. `06-INSTRUMENTS/CODEX_SPINE.md`;
+12. `04-RECEIPTS/handoffs/2026-08-27-CODEX-SPINE-ORDINAL-CORRECTION.md`;
+13. `CONNECTOR_ENTRY.md` and connector-readability materials;
+14. current PR #731 live-intake head, fetched separately.
 
-Pin exact heads at session start.
+Pin exact heads and the current Phase-2 seal at session start.
 
 Never silently fuse #856/#815 with #731. They remain different projections/epochs.
 
@@ -59,6 +60,10 @@ Current governing results:
 > **Position existence, member identity, manifestation recoverability, and source readability are non-equivalent.**
 
 > **Cardinality comparison and ordinal namespace are different observation types.**
+
+> **Entity-type separation does not guarantee observation-type separation: archive type projection can fail to commute across layers.**
+
+> **Custody migration and relation migration are non-equivalent.**
 
 A clue can break one CSR↔X swap while leaving other slot-1 identities alive.
 
@@ -86,6 +91,7 @@ MEMBER_IDENTITY
 MANIFESTATION_IDENTITY
 SOURCE_RECOVERABILITY
 SOURCE_READABILITY
+RELATION_MIGRATION_STATE
 ```
 
 Origin's #2 witness may structurally imply an earlier position under ordinary serialization semantics while still leaving the occupant identity unresolved.
@@ -96,6 +102,27 @@ Therefore:
 ORDINAL_PREDECESSOR_EXPECTATION
 != PREDECESSOR_IDENTITY
 ```
+
+## CURRENT CONNECTOR EPOCH
+
+`CONNECTOR_ENTRY.md` makes current query authority depend on:
+
+```text
+04-RECEIPTS/phase2/current-seal.json
+01-MANIFESTS/phase2/interface-registry.json
+01-MANIFESTS/phase2/entity-resolver-v2.jsonl
+```
+
+The older `01-MANIFESTS/registry-index.json` is a historical Phase-1.5 registry surface.
+
+Therefore:
+
+```text
+LEGACY_PHASE15_REGISTRY
+!= CURRENT_PHASE2_CONNECTOR_AUTHORITY
+```
+
+Do not misclassify its historical phase flag as a current connector failure.
 
 ## LOCAL SERIAL COORDINATE
 
@@ -201,14 +228,69 @@ payload.case_type == SERIES_ORDINAL
 
 Cross-architecture cardinality has zero ordinal resolving power by container membership alone.
 
-New general rule:
+## TYPE PROJECTION NON-COMMUTATION
+
+Historical object typing preserves:
+
+```text
+sr-architecture:csr:seven-part -> ARCHITECTURE
+sr-genealogy:codex:twelve-phase -> GENEALOGY
+```
+
+while the comparison is wrapped by the observation layer as:
+
+```text
+ORDINAL_NAMESPACE / CROSS_ARCHITECTURE_CARDINALITY
+```
+
+Therefore:
+
+```text
+ENTITY_TYPE_SEPARATION
+!= OBSERVATION_TYPE_SEPARATION
+
+TYPE PRESERVATION AT LAYER k
+DOES NOT ENTAIL
+TYPE PRESERVATION AT LAYER k+1
+```
+
+Current status:
+
+```text
+CROSS_LAYER_TYPE_MISMATCH = WITNESSED
+REALIZED_FALSE_SERIAL_INFERENCE = NOT WITNESSED
+```
+
+General rule:
 
 ```text
 OUTER_SCHEMA_NEIGHBORHOOD
 != SOURCE_SEMANTIC_NEIGHBORHOOD
 ```
 
-Read `CARDINALITY_NAMESPACE_FIREWALL.md` before using any v2 ordinal observation as a retrieval or inference neighbor.
+Read `TYPE_PROJECTION_NONCOMMUTATION.md` and `CARDINALITY_NAMESPACE_FIREWALL.md` before using any historical v2 ordinal observation as a retrieval or inference neighbor.
+
+## CUSTODY / RELATION MIGRATION SPLIT
+
+Current Phase-2 resolver has readable capture/derivative paths for Origin body and metadata.
+
+Current `typed-edges.jsonl` preserves the Origin→CSR conceptual-precedence edge with `ordinal=null`.
+
+Current `ordinal-series-observations.jsonl` contains no Origin 18382146 stage.
+
+Older witnessed-edge normalization preserves the #2 predicate.
+
+Therefore:
+
+```text
+BODY_CAPTURED
+!= ORDINAL_RELATION_MIGRATED
+
+CUSTODY_MIGRATION
+!= RELATION_MIGRATION
+```
+
+Classify this as `NORMALIZATION_MIGRATION_GAP / RELATION_MIGRATION_LAG`, not source silence.
 
 ## LABEL / FORMALIZATION CLOCK
 
@@ -260,7 +342,7 @@ Current source/archive distance remains unknown.
 
 ## APERTURE / ANOMALY DISCIPLINE
 
-Read `APERTURE_ANOMALY_LEDGER.md` before interpreting inaccessible objects.
+Read `APERTURE_ANOMALY_LEDGER.md` before interpreting inaccessible objects or registry silence.
 
 Never collapse:
 
@@ -271,11 +353,11 @@ HUMAN_GATED
 ASSAY_APERTURE_STALENESS
 PLATFORM_VISIBILITY_DIVERGENCE
 SCHEMA_TYPE_CONTAINER_LEAK
+NORMALIZATION_MIGRATION_GAP
+RELATION_MIGRATION_LAG
 ```
 
 into one generic `missing` or `anomalous` state.
-
-`SCHEMA_TYPE_CONTAINER_LEAK` is an Atelier-model anomaly, not a source/platform visibility anomaly.
 
 Known current human-gated witnesses:
 
@@ -301,7 +383,7 @@ H3. Supply Glyph body.
     Purpose: adjudicate A7 role/enumeration.
 ```
 
-No new human-only task is created by the schema defect.
+No new human-only task is created by the schema/type or relation-migration defects.
 
 No human body should be treated as same-work identity merely from title similarity.
 
@@ -310,14 +392,16 @@ No human body should be treated as same-work identity merely from title similari
 For every clue:
 
 ```text
-1. TYPE OBJECT
-2. TYPE COORDINATE
-3. TYPE APERTURE
-4. TYPE OUTER SCHEMA CONTAINER
-5. TYPE INNER CASE/PAYLOAD
-6. TEST O1 CONTRACTION
-7. ENUMERATE SURVIVORS
-8. CLOSE ONLY AT SINGLETON
+1. BIND CURRENT SEAL / EPOCH
+2. TYPE OBJECT
+3. TYPE COORDINATE
+4. TYPE APERTURE
+5. TYPE OUTER SCHEMA CONTAINER
+6. TYPE INNER CASE/PAYLOAD
+7. TYPE RELATION-MIGRATION STATE
+8. TEST O1 CONTRACTION
+9. ENUMERATE SURVIVORS
+10. CLOSE ONLY AT SINGLETON
 ```
 
 Priority search classes:
@@ -336,6 +420,7 @@ Stop candidate shopping.
 Stop cardinality shopping.
 Stop label shopping.
 Stop outer-container inference without payload typing.
+Stop registry-silence inference without migration typing.
 
 Hunt the edge that collapses the orbit.
 
@@ -354,6 +439,6 @@ No merge, sync, Queue C action, canon promotion, publication, production, releas
 SRC sync remains exclusively through permanent gate #758 under explicit human authorization.
 
 𝌋‌⟐
-Future Amari: the box is now an identity, aperture, and type-container problem. Do not turn another pretty neighborhood into a serial edge.
+Future Amari: the box is now an identity, aperture, type-projection, and migration-state problem. Do not turn another pretty neighborhood into a serial edge.
 
 Marked ⟐
