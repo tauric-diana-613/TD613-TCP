@@ -14,26 +14,30 @@ TD613 Consolidated Validation run 2356 / 33131032209 — SUCCESS
 
 #844 remains witness routing only and carries zero theorem ancestry.
 
-## Preimplementation arithmetic correction scar
+## Preimplementation correction scars
 
-The first preregistration commit wrote `120` unordered partition-pair comparisons. Before any theorem implementation existed, this was corrected to the exact finite burden:
+Two preregistration corrections occurred before any theorem implementation existed:
 
 ```text
-C(15,2) = 105.
+1. unordered partition pairs: 120 -> C(15,2)=105
+2. fixed numeric noncongruence witness -> matching-relative H/I/X construction
 ```
 
-The startup hook already carried `105`. No scientific result existed when this arithmetic typo was corrected.
+The second correction is required because the earned labelled distance-six matchings differ by orbit type:
 
-## Why this chamber is consequential
+```text
+H : 0,2 | 1,3
+I : 0,1 | 2,3
+X : 0,3 | 1,2
+```
 
-#843 earned a complete atlas of all 15 set partitions of the four repair labels and found eight refinement covers where a stricter claim costs zero additional receiver-witness detail. That atlas does not yet explain *why* those eight equalities occur or identify a canonical representative for claims carrying the same safe-erasure authority.
+No result existed when either correction was made.
 
-This chamber asks whether the equalities are the visible edge-set of a finite closure correspondence between:
+## Major research question
 
-1. repair-label claim partitions; and
-2. subgroups of the earned eight-action repair-label symmetry image from #841.
+#843 earned all 15 set partitions of the four repair labels and found eight proper refinement covers where a stricter claim costs zero additional receiver-witness detail. This chamber tests whether those equalities are exactly the visible edges of a canonical finite closure correspondence between raw repair-label claims and safe action subgroups.
 
-The chamber must separate three objects that may not impersonate each other:
+The chamber must keep distinct:
 
 ```text
 raw claim partition
@@ -51,33 +55,28 @@ G = earned eight-element induced repair-label action from #841
 rho = earned map from 576 receiver witnesses onto G
 ```
 
-For every set partition `pi` of `M`, define the already-earned #843 blockwise safe action subgroup:
+For partition `pi` of `M`:
 
 ```text
-K(pi) = { g in G : g(m) remains in the same pi-block as m for every m in M }
+K(pi) = { g in G : g(m) remains in the same pi-block as m for every m }
+S(pi) = rho^-1(K(pi))
 ```
 
-and receiver-witness preimage:
-
-```text
-S(pi) = rho^-1(K(pi)).
-```
-
-For every subgroup `H <= G`, define:
+For subgroup `H <= G`:
 
 ```text
 Orb(H) = partition of M into H-orbits.
 ```
 
-Candidate elementary correspondence to be tested exhaustively:
+Candidate elementary relation to test exhaustively:
 
 ```text
-H <= K(pi)  iff  Orb(H) refines pi.
+H <= K(pi) iff Orb(H) refines pi.
 ```
 
-This correspondence is an elementary finite-action relation; no claim of mathematical novelty for the generic relation follows. The research question is its exact realized custody geometry in the earned A15-R0 fixture.
+This is treated as an elementary finite-action relation, not a TD613 claim of generic mathematical novelty.
 
-## Candidate claim-side closure
+## Candidate claim closure
 
 Define:
 
@@ -85,7 +84,7 @@ Define:
 Cl(pi) = Orb(K(pi)).
 ```
 
-Candidate exact laws in this fixture:
+Candidate laws:
 
 ```text
 Cl(pi) refines pi
@@ -95,7 +94,7 @@ K(Cl(pi)) = K(pi)
 S(Cl(pi)) = S(pi)
 ```
 
-Interpretation under test: `Cl(pi)` is the unique finest repair-label claim that can be asserted with **zero additional witness-retention cost** beyond the authority already required by `pi`.
+Interpretation under test: `Cl(pi)` is the unique finest repair-label claim available at zero additional witness-retention cost beyond `pi`.
 
 Candidate maximal-free-refinement law:
 
@@ -105,22 +104,15 @@ sigma strictly refines Cl(pi) => S(sigma) is a strict subset of S(pi).
 
 ## Preregistered complete claim census
 
-The chamber must enumerate all Bell-number `B4 = 15` raw claim partitions and test the following candidate fixed-point census independently:
-
 ```text
-raw claim partitions                 15
-Cl-fixed canonical claims             7
-nonfixed raw claims                    8
-safe-authority equivalence classes    7
+raw claim partitions                  15
+Cl-fixed canonical claims              7
+nonfixed raw claims                     8
+safe-authority equivalence classes     7
+fiber sizes descending                 5,3,3,1,1,1,1
 ```
 
-Candidate safe-equivalence fiber sizes, sorted descending:
-
-```text
-5, 3, 3, 1, 1, 1, 1
-```
-
-Candidate distinct maximum-safe receiver-witness families after closure:
+Candidate distinct maximum-safe receiver-witness families:
 
 ```text
 576 : 1 distinct family
@@ -129,98 +121,87 @@ Candidate distinct maximum-safe receiver-witness families after closure:
  72 : 1 distinct family
 ```
 
-This explicitly tests the stronger scar:
+Therefore the chamber explicitly tests:
 
 ```text
 SAFE_FAMILY_CARDINALITY != SAFE_FAMILY_IDENTITY
 ```
 
-because four distinct closed authority classes are expected to carry cardinality 144.
-
 Candidate exact equivalence:
 
 ```text
-S(pi) = S(sigma)
-iff K(pi) = K(sigma)
-iff Cl(pi) = Cl(sigma).
+S(pi)=S(sigma)
+iff K(pi)=K(sigma)
+iff Cl(pi)=Cl(sigma).
 ```
 
-Every safe-equivalence fiber must contain exactly one Cl-fixed member, and that member must be the unique finest partition in its fiber.
+Every safe-equivalence fiber must contain exactly one Cl-fixed member, and that fixed member must be the unique finest partition in the fiber.
 
-## Preregistered explanation of #843's eight equality covers
+## Candidate explanation of #843's eight equality covers
 
-#843 earned:
+Inherited earned raw cover census:
 
 ```text
-31 refinement covers
+31 total covers
 23 strict safe-family contractions
  8 equality covers
 ```
 
-Candidate explanation to be tested:
+Candidate explanation:
 
 ```text
-all 8 equality covers are exactly pi -> Cl(pi) for the 8 nonfixed claims
-all 23 strict covers cross distinct Cl-fibers
+all 8 equality covers are exactly the 8 nonfixed pi -> Cl(pi) arrows
+all 23 strict covers cross distinct closure fibers
 ```
-
-Thus the candidate statement is stronger than merely recounting eight equalities: every zero-cost cover is predicted by canonical orbit closure, and every nonclosed claim has exactly one zero-cost closure cover.
 
 ## Preregistered subgroup census
 
-The hostile must independently enumerate **all subgroups** of the earned eight-action group rather than only the seven subgroups already realized as #843 blockwise safe families.
+The hostile must enumerate all subgroups of the earned eight-action group, not merely the subgroups already realized by #843 claims.
 
-Candidate subgroup census:
+Candidate census:
 
 ```text
-|G| = 8
 all subgroups = 10
-size distribution:
-  order 1 : 1
-  order 2 : 5
-  order 4 : 3
-  order 8 : 1
+order 1 : 1
+order 2 : 5
+order 4 : 3
+order 8 : 1
 ```
 
-Define subgroup-side orbit closure:
+Define subgroup-side closure:
 
 ```text
 Cg(H) = K(Orb(H)).
 ```
 
-Candidate exact laws:
+Candidate laws and census:
 
 ```text
 H <= Cg(H)
 Cg(Cg(H)) = Cg(H)
-```
-
-Candidate fixed census:
-
-```text
 orbit-closed / claim-realizable subgroups = 7
-nonclosed subgroups                      = 3
+nonclosed subgroups = 3
 ```
 
-Candidate nonclosed expansion spectrum:
+Candidate strict expansion spectrum:
 
 ```text
-one order-2 subgroup   -> order-4 closure
-two order-4 subgroups  -> order-8 closure
+one order-2 subgroup  -> order-4 closure
+two order-4 subgroups -> order-8 closure
 ```
 
-Interpretation under test: an arbitrary subgroup may preserve a claim without being the **maximum** safe subgroup for that claim. Maximum-safe claim authority is the orbit-closed subgroup `K(Orb(H))`, not arbitrary subgroup membership.
+Interpretation under test: arbitrary subgroup membership can understate maximum safe erasure for its own orbit claim. Maximum-safe claim authority is `K(Orb(H))`.
 
 ## Candidate fixed-point correspondence
 
-If both closure operators pass, the seven Cl-fixed claim partitions and seven Cg-fixed safe action subgroups should correspond bijectively by:
+The seven Cl-fixed claims and seven Cg-fixed safe subgroups should correspond bijectively:
 
 ```text
-pi  -> K(pi)
-H   -> Orb(H)
+pi -> K(pi)
+H  -> Orb(H)
 ```
 
-with inclusion/refinement reversed in the direct correspondence.
+and reverse refinement/inclusion exactly on those fixed points.
 
 Candidate fixed-point claim lattice:
 
@@ -229,17 +210,24 @@ nodes = 7
 covers = 9
 ```
 
-The fixed claims may form a closure lattice under the inherited coarse-to-fine claim order, with meet inherited where closed and join closed by `Cl` when necessary.
+The chamber must test whether these seven fixed claims are closed under the inherited ambient partition meet and join in this fixture.
 
-## Mandatory negative: raw safe-equivalence must NOT be promoted to a lattice congruence without proof
+## Mandatory negative: raw safe-equivalence is not assumed to be a lattice congruence
 
-Preregistered counterexample candidate under the coarse-to-fine partition lattice order:
+For each orbit type, derive the witness from its own inherited matching.
+
+Let the matching edges be:
 
 ```text
-pi0 = 0|1|2|3
-pi1 = 0,2|1|3
+{a,b} and {c,d}.
+```
 
-tau = 0,3|1|2
+Define:
+
+```text
+pi0 = a|b|c|d
+pi1 = a,c | b | d
+tau = a,d | b | c
 ```
 
 Candidate facts:
@@ -248,63 +236,71 @@ Candidate facts:
 K(pi0) = K(pi1) = identity
 ```
 
-but for ambient lattice meet (common coarsening):
+while ambient meet/common-coarsening gives:
 
 ```text
-meet(pi0, tau) = 0,3|1|2
-meet(pi1, tau) = 0,2,3|1
+meet(pi0,tau) = tau
+meet(pi1,tau) = a,c,d | b
 ```
 
-and those two meets are predicted to have different safe action subgroups.
+and the second meet contains the untouched inherited matching edge `{c,d}`, so its safe subgroup is predicted to be strictly larger.
 
-If confirmed:
+The I-labelled concrete instance is:
+
+```text
+matching = 0,1 | 2,3
+pi0     = 0|1|2|3
+pi1     = 0,2|1|3
+tau     = 0,3|1|2
+meet(pi1,tau) = 0,2,3|1
+```
+
+If the H-, I-, and X-relative witnesses all pass:
 
 ```text
 SAME_SAFE_FAMILY_EQUIVALENCE_IS_NOT_A_PARTITION_LATTICE_CONGRUENCE
 ```
 
-Therefore this chamber must call the seven-node earned object a **closure/fixed-point lattice**, not a naive quotient lattice inheriting ambient meet/join from equivalence classes.
+Therefore the seven-node object may be called a closure/fixed-point lattice if earned, but not a naive equivalence quotient inheriting ambient meet/join.
 
 ## Required independent hostile burden
 
-The hostile may import earned lower-level repair-code primitives, but it may not trust the successor implementation's partition generator, subgroup enumerator, closure tables, fixed-point census, or equivalence classes.
+The hostile may import earned lower-level repair-code primitives but may not trust this successor's partition generator, subgroup enumerator, closure tables, or fixed-point census. It must independently:
 
-It must independently:
-
-1. reconstruct the 576 setwise receiver witnesses from the width-eight code;
-2. derive the exact eight-action repair-label image;
-3. enumerate all 15 repair-label partitions by an algorithm different from implementation;
-4. enumerate all `2^8 = 256` action subsets and certify exactly 10 subgroups by identity/inverse/composition closure;
-5. test `H <= K(pi) iff Orb(H) refines pi` across all `10 * 15 = 150` subgroup/claim pairs;
+1. reconstruct the 576 setwise receiver witnesses;
+2. derive the exact eight-action repair-label image for H/I/X;
+3. enumerate all 15 partitions via a different algorithm;
+4. enumerate all `2^8=256` action subsets and certify exactly 10 subgroups;
+5. test the correspondence on all `10*15=150` subgroup/claim pairs per type;
 6. test both closure operators and idempotence;
-7. recover all seven fixed claims and seven fixed subgroups independently;
-8. recover the 7 safe-equivalence fibers and their exact sizes;
-9. prove the eight #843 equality covers are exactly the eight nonfixed closure arrows;
+7. recover seven fixed claims and seven fixed subgroups;
+8. recover the seven safe-equivalence fibers and exact sizes;
+9. prove the eight #843 equality covers equal the eight nonfixed closure arrows;
 10. recover the nine covers of the fixed-point claim lattice;
-11. exhibit four distinct 144-witness safe families rather than cardinality-only certification;
-12. verify the preregistered noncongruence counterexample;
-13. preserve #843 downstream state reconstruction and mixed-schedule ambiguity controls.
+11. exhibit four distinct 144-witness safe families;
+12. instantiate and verify the matching-relative noncongruence witness separately for H, I, X;
+13. preserve #843's 750 downstream reconstructions and mixed-schedule ambiguity control.
 
-Required explicit finite burden per H/I/X labelled orbit includes at minimum:
+Required finite burden per H/I/X includes:
 
 ```text
 15 partitions
 10 subgroups
 150 subgroup/partition correspondence checks
-105 partition-pair safe-equivalence comparisons (unordered pairs)
+105 unordered partition-pair safe-equivalence checks
 31 inherited raw refinement covers
 9 fixed-point closure-lattice covers
 ```
 
-The implementation must additionally account for every action/partition incidence it actually executes and may not claim a larger cross product.
+The implementation must report only burdens actually executed.
 
 ## Collision membranes
 
 #753 retains FADT universal claim-authority partition jurisdiction.
 
-#843 retains the 15-partition maximum-safe-family atlas and its earned 576/288/144/72 distribution.
+#843 retains the complete raw 15-partition maximum-safe-family atlas and its 576/288/144/72 distribution.
 
-This chamber may explain and canonically compress #843's **authority redundancy**, but may not rewrite #843's earned raw atlas or replace its hostile scars.
+This chamber may canonically explain #843's authority redundancy but may not rewrite its raw atlas.
 
 ## Candidate finite laws — UNEARNED UNTIL GREEN
 
