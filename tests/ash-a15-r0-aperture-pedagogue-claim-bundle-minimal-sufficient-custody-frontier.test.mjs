@@ -191,7 +191,8 @@ function claimExact(stage, target, claim) {
 
 const rows = [];
 let jointTargetChecks = 0;
-let homogeneityChecks = 0;
+let cellAuthorizationChecks = 0;
+let mixedHeldCells = 0;
 for (const [id, targets] of targetsBySchedule.entries()) {
   for (const bundle of bundles) {
     const cells = [];
@@ -201,9 +202,11 @@ for (const [id, targets] of targetsBySchedule.entries()) {
         jointTargetChecks += 1;
         if (jointExact(stage, target, bundle)) exactCount += 1;
       }
-      homogeneityChecks += 1;
-      assert.ok(exactCount === 0 || exactCount === 125, `nonhomogeneous bundle authority ${id} ${bundle.join('+')} q${stage}`);
-      cells.push({ stage, authorized: exactCount === 125 });
+      cellAuthorizationChecks += 1;
+      const authorized = exactCount === 125;
+      const mixed = exactCount > 0 && exactCount < 125;
+      if (!authorized && mixed) mixedHeldCells += 1;
+      cells.push({ stage, authorized, exactCount, mixed });
     }
     const actualBirth = cells.find(cell => cell.authorized)?.stage ?? 'INF';
     const predictedBirth = maxBirth(bundle, births.get(id));
@@ -220,7 +223,14 @@ for (const [id, targets] of targetsBySchedule.entries()) {
 }
 assert.equal(rows.length, 762);
 assert.equal(jointTargetChecks, 381000);
-assert.equal(homogeneityChecks, 3048);
+assert.equal(cellAuthorizationChecks, 3048);
+assert.ok(mixedHeldCells > 0);
+
+// Red-run 2362 scar: a held schedule-level cell may mix exact and wounded target fibres.
+const hpiFullState = rows.find(row => row.schedule_id === 'H-P-I' && row.bundle_id === 'FULL_STATE');
+const hpiFullStateQ3 = hpiFullState.cells.find(cell => cell.stage === 3);
+assert.equal(hpiFullStateQ3.authorized, false);
+assert.ok(hpiFullStateQ3.exactCount > 0 && hpiFullStateQ3.exactCount < 125);
 
 const distribution = { '1': 0, '2': 0, '3': 0, INF: 0 };
 const perSchedule = {};
@@ -309,6 +319,7 @@ for (const row of rows) {
         reopened += 1;
         byBirth[String(birth)].reopened += 1;
       }
+      let coarseWounds = 0;
       for (const target of targets) {
         assert.equal(jointExact(fine, target, row.bundle), true);
         const coarseExact = jointExact(coarse, target, row.bundle);
@@ -317,10 +328,13 @@ for (const row of rows) {
           assert.equal(coarseExact, true);
         } else {
           reopeningChecks += 1;
-          assert.equal(coarseExact, false);
-          assert.equal(row.bundle.some(claim => !claimExact(coarse, target, claim)), true);
+          if (!coarseExact) {
+            coarseWounds += 1;
+            assert.equal(row.bundle.some(claim => !claimExact(coarse, target, claim)), true);
+          }
         }
       }
+      if (!shouldPreserve) assert.ok(coarseWounds > 0, `missing reopened wound ${row.schedule_id} ${row.bundle_id} q${fine}->q${coarse}`);
     }
   }
 }
@@ -343,7 +357,8 @@ assert.equal(certificate.finite_domain.nonempty_bundles_per_schedule, 127);
 assert.equal(certificate.finite_domain.schedule_bundle_pairs, 762);
 assert.equal(certificate.finite_domain.bundle_jurisdiction_cells, 3048);
 assert.equal(certificate.bundle_support_certificate.joint_support_target_checks, 381000);
-assert.equal(certificate.bundle_support_certificate.cell_homogeneity_violations, 0);
+assert.equal(certificate.bundle_support_certificate.cell_authorization_checks, 3048);
+assert.ok(certificate.bundle_support_certificate.mixed_held_cells > 0);
 assert.deepEqual(certificate.minimum_sufficient_custody_census.minimum_stage_distribution,
   { '1': 26, '2': 80, '3': 208, INF: 448 });
 assert.deepEqual(certificate.minimum_sufficient_custody_census.stage_rows.map(row => row.authorized), [0, 26, 106, 314]);
