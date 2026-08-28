@@ -1,0 +1,79 @@
+{
+  "schema": "td613.a15-r0.two-surface-horizon-aliasing-preregistration/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "FINITE_CENSUS_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 862,
+    "receipt": "3b58898bbdb64af056913f770ba4891176b27789",
+    "validation_run_number": 2367,
+    "validation_run_id": 33154079868,
+    "result": "SUCCESS"
+  },
+  "domain": {
+    "contexts": 208,
+    "birth": 3,
+    "fine": 3,
+    "visible_stages": [2,1],
+    "future_terminal": 0
+  },
+  "scalar_two_surface": {
+    "all_m2": 5,
+    "m1_distribution": {
+      "5": 24,
+      "10": 24,
+      "25": 80,
+      "50": 80
+    },
+    "class_count": 4,
+    "future_ambiguous_class_count": 4,
+    "classes": {
+      "5->5": {"count":24,"m0":{"5":4,"10":4,"15":8,"25":2,"50":2,"75":4}},
+      "5->10": {"count":24,"m0":{"30":16,"150":8}},
+      "5->25": {"count":80,"m0":{"25":2,"50":2,"75":4,"125":18,"250":18,"375":36}},
+      "5->50": {"count":80,"m0":{"150":8,"750":72}}
+    }
+  },
+  "marginal_profiles": {
+    "class_count": 6,
+    "ambiguous_class_count": 5,
+    "identifying_class_count": 1,
+    "ambiguous_contexts": 200,
+    "identifying_contexts": 8,
+    "classes": {
+      "A": {"q2":{"fibres":25,"support":5},"q1":{"fibres":5,"support":5},"count":16,"m0":[5,10,15,25,50,75]},
+      "B": {"q2":{"fibres":25,"support":5},"q1":{"fibres":5,"support":25},"count":80,"m0":[25,50,75,125,250,375]},
+      "C": {"q2":{"fibres":25,"support":5},"q1":{"fibres":5,"support":10},"count":16,"m0":[30,150]},
+      "D": {"q2":{"fibres":25,"support":5},"q1":{"fibres":5,"support":50},"count":80,"m0":[150,750]},
+      "E": {"q2":{"fibres":9,"support":5},"q1":{"fibres":9,"support":5},"count":8,"m0":[5,10,15]},
+      "F": {"q2":{"fibres":9,"support":5},"q1":{"fibres":9,"support":10},"count":8,"m0":[30]}
+    }
+  },
+  "named_aliases": [
+    {
+      "schedule":"P-H-I",
+      "bundle_size":2,
+      "left":{"bundle":["FIRST_STRATUM","X3"],"q2_profile":"25x5","q1_profile":"5x5","m0":15},
+      "right":{"bundle":["X1","X3"],"q2_profile":"25x5","q1_profile":"5x5","m0":25}
+    },
+    {
+      "schedule":"P-H-I",
+      "bundle_size":2,
+      "left":{"bundle":["FIRST_STRATUM","FULL_STATE"],"q2_profile":"25x5","q1_profile":"5x25","m0":375},
+      "right":{"bundle":["X2","X3"],"q2_profile":"25x5","q1_profile":"5x25","m0":25},
+      "future_obligation_ratio":15
+    }
+  ],
+  "candidate_laws": [
+    "ONE_MORE_CONTROL_SURFACE_DOES_NOT_IDENTIFY_FUTURE_CUSTODY_IN_THE_FIXED_208_CONTEXT_DOMAIN",
+    "PER_STAGE_SUPPORT_CARDINALITY_MARGINALS_AT_Q2_AND_Q1_ARE_NOT_GENERALLY_SUFFICIENT_TO_IDENTIFY_Q0_FUTURE_ROBUST_CUSTODY"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false
+  }
+}
