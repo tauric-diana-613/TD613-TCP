@@ -1,0 +1,154 @@
+{
+  "schema": "td613.a15-r0.restoration-holonomy-path-dependent-custody-preregistration/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "FINITE_PATH_CENSUS_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 858,
+    "receipt": "53e713059cde5dd6c2b4d4cbc20f882601360f7c",
+    "validation_run_number": 2365,
+    "validation_run_id": 33149246351,
+    "result": "SUCCESS"
+  },
+  "path_domain": {
+    "definition": "f >= birth; c < d < birth <= f",
+    "total_paths": 784,
+    "birth_q2_paths": 160,
+    "birth_q3_paths": 624,
+    "birth_q1_paths": 0
+  },
+  "transport_census": {
+    "plateau_md_eq_mc": 42,
+    "rupture_md_lt_mc": 742,
+    "strict_decrease_md_gt_mc": 0
+  },
+  "by_birth": {
+    "2": {"plateau": 8, "rupture": 152, "total": 160},
+    "3": {"plateau": 34, "rupture": 590, "total": 624}
+  },
+  "by_second_leg": {
+    "q1_to_q0": {"plateau": 14, "rupture": 354, "total": 368},
+    "q2_to_q1": {"plateau": 24, "rupture": 184, "total": 208},
+    "q2_to_q0": {"plateau": 4, "rupture": 204, "total": 208}
+  },
+  "by_schedule": {
+    "P-H-I": {"plateau": 13, "rupture": 323, "total": 336},
+    "P-I-H": {"plateau": 13, "rupture": 323, "total": 336},
+    "H-P-I": {"plateau": 6, "rupture": 26, "total": 32},
+    "H-I-P": {"plateau": 2, "rupture": 22, "total": 24},
+    "I-P-H": {"plateau": 6, "rupture": 26, "total": 32},
+    "I-H-P": {"plateau": 2, "rupture": 22, "total": 24}
+  },
+  "plateau_supports": {
+    "5_to_5": 40,
+    "25_to_25": 2
+  },
+  "support_pair_spectrum": {
+    "5->25": 90,
+    "5->50": 90,
+    "50->750": 72,
+    "5->750": 72,
+    "2->6": 48,
+    "10->30": 48,
+    "5->5": 40,
+    "5->10": 40,
+    "25->375": 36,
+    "5->375": 36,
+    "5->15": 32,
+    "10->150": 24,
+    "5->75": 20,
+    "25->125": 18,
+    "5->125": 18,
+    "25->250": 18,
+    "5->250": 18,
+    "2->30": 16,
+    "5->30": 16,
+    "5->150": 16,
+    "50->150": 8,
+    "25->75": 4,
+    "25->25": 2,
+    "25->50": 2
+  },
+  "maximum_support_cardinality_expansion": {
+    "difference": 745,
+    "witness": {
+      "schedule": "P-H-I",
+      "bundle": ["SCHEDULE", "FULL_STATE"],
+      "birth": 3,
+      "fine": 3,
+      "intermediate": 2,
+      "terminal": 0,
+      "m_d": 5,
+      "m_c": 750
+    }
+  },
+  "same_endpoint_path_dependence": [
+    {
+      "schedule": "P-H-I",
+      "bundle": ["X2", "X3"],
+      "birth": 3,
+      "fine": 3,
+      "terminal": 0,
+      "path_A": {"intermediate": 1, "m_d": 25, "m_c": 25, "transportable": true},
+      "path_B": {"intermediate": 2, "m_d": 5, "m_c": 25, "transportable": false}
+    },
+    {
+      "schedule": "P-I-H",
+      "bundle": ["X2", "X3"],
+      "birth": 3,
+      "fine": 3,
+      "terminal": 0,
+      "path_A": {"intermediate": 1, "m_d": 25, "m_c": 25, "transportable": true},
+      "path_B": {"intermediate": 2, "m_d": 5, "m_c": 25, "transportable": false}
+    }
+  ],
+  "local_cost_nonidentity": {
+    "transportable_m5": {
+      "schedule": "P-H-I",
+      "bundle": ["X2"],
+      "birth": 2,
+      "fine": 2,
+      "intermediate": 1,
+      "terminal": 0,
+      "m_d": 5,
+      "m_c": 5
+    },
+    "nontransportable_m5": {
+      "schedule": "P-H-I",
+      "bundle": ["FULL_STATE"],
+      "birth": 3,
+      "fine": 3,
+      "intermediate": 2,
+      "terminal": 0,
+      "m_d": 5,
+      "m_c": 125
+    }
+  },
+  "candidate_criterion": "PATH_CONDITIONED_LOCALLY_MINIMUM_D_SIDECAR_CAN_REMAIN_EXACT_AFTER_D_IS_DISCARDED_TO_C_IFF_M_D_EQUALS_M_C",
+  "mandatory_scars": [
+    "LOCAL_MINIMUM != COMPOSITIONALLY_SUFFICIENT",
+    "SAME_ENDPOINT != SAME_CUSTODY_PATH",
+    "SAME_VISIBLE_TERMINAL_COARSE_SURFACE != SAME_RETAINED_CUSTODY_AUTHORITY",
+    "FINER_INTERMEDIATE_REPRESENTATION != MORE_FUTURE_ROBUST_MINIMUM_SIDECAR",
+    "LOCAL_MINIMUM_SIDECAR_CARDINALITY != FUTURE_TRANSPORTABILITY_IDENTITY",
+    "EXISTS_COMPATIBLE_MINIMAL_LABELING != EVERY_MINIMAL_LABELING_TRANSPORTS",
+    "FORMAL_RESTORATION_HOLONOMY != PHYSICAL_BERRY_OR_GAUGE_HOLONOMY",
+    "FORMAL_RESTORATION_HOLONOMY != OPERATIONAL_PATH_GROUPOID",
+    "PATH_DEPENDENCE != SOURCE_STATE_MUTATION",
+    "TRANSPORT_PLATEAU != ZERO_BIT_COST",
+    "SUPPORT_CARDINALITY_EXPANSION != MINIMUM_AUGMENTATION_ALPHABET",
+    "SIDECAR_LABEL_COORDINATION != CRYPTOGRAPHIC_KEY_AGREEMENT",
+    "RESTORED_PRESENT_AUTHORITY != RETROACTIVE_POSSESSION",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY",
+    "FINITE_PATH_CENSUS != ASYMPTOTIC_INFORMATION_THEOREM"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false,
+    "source_mutation": false
+  }
+}
