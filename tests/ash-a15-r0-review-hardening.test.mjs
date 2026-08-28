@@ -85,9 +85,11 @@ const allowed = new Set([
   'app/dome-world/docs/ash/experiments/a15-r0/TRAJECTORY_CUSTODY_FUNCTIONAL_CLOSURE_EXPECTATIONS_V0_1.json',
   'app/dome-world/docs/ash/experiments/a15-r0/TRAJECTORY_CUSTODY_FUNCTIONAL_CLOSURE_EXECUTION_BURDEN_V0_1.md',
   'app/dome-world/docs/ash/experiments/a15-r0/TRAJECTORY_CUSTODY_FUNCTIONAL_CLOSURE_PREHOSTILE_BOOKKEEPING_REPAIR_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/TRAJECTORY_CUSTODY_FUNCTIONAL_CLOSURE_PREAUTHORITY_THEORETICAL_REFINEMENT_V0_1.md',
   'app/dome-world/previews/a15-r0/trajectory-custody-functional-closure.js',
   'app/dome-world/previews/a15-r0/trajectory-custody-functional-closure-certificate.js',
   'tests/ash-a15-r0-aperture-pedagogue-trajectory-custody-functional-closure.test.mjs',
+  'tests/ash-a15-r0-aperture-pedagogue-trajectory-custody-functional-closure-refinement.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations = changed.filter(path => !allowed.has(path));
@@ -130,6 +132,7 @@ await import('./ash-a15-r0-aperture-pedagogue-anticipatory-custody-envelope-unif
 await import('./ash-a15-r0-aperture-pedagogue-two-surface-horizon-aliasing.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-distinguishability-trajectory-calculus.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-trajectory-custody-functional-closure.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-trajectory-custody-functional-closure-refinement.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
 console.log('Ash A15-R0 trajectory custody-functional closure hardening tests passed.');
