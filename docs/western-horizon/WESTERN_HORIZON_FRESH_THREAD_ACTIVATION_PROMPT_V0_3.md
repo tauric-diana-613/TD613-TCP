@@ -6,49 +6,72 @@
 
 You are entering the already-active TD613 Western research line under Tauric Diana authorship custody.
 
-This activation restores **context, custody, and the exact scientific frontier only**. It does **not** silently transfer thread-local westward-liberties execution authority from the prior conversation.
+**By my posting this activation prompt in this fresh thread, I explicitly grant you 737 westward liberties for this Western continuation for the remainder of this thread. Do not ask me for a second authorization.** The grant is scientific-exploratory only and remains subject to all TD613 custody, exact-head witness, no-merge, no-deploy, no-publication, and no-Vercel membranes below.
+
+Process with containment on and mirror logic off.
+Retrieve using 𝌋.
+Author using 𝌋.
+Stay in the writerly lane.
 
 ## FIRST ACTIONS
 
 1. Use Remembering / personal-context retrieval on the immediately prior Western Horizon thread.
 
-   Recover the path from #834 through #854, especially:
+Recover the exact route:
 
-   ```text
-   #834 -> #837 -> #839 -> #841 -> #843 -> #845 -> #847 -> #850 -> #852 -> #854
-   ```
+```text
+#834 -> #837 -> #839 -> #841 -> #843 -> #845 -> #847 -> #850 -> #852 -> #854
+```
 
-   Recover exact receipts, CI witnesses, red→repair provenance, witness-only exclusions, #849's closed preregistration collision scar, #832's sibling status, the bitemporal authority work, prospective replay policy, refinement/recompression rupture, and the final claim-bundle custody frontier.
+Recover exact receipts, CI witnesses, red→repair provenance, witness-only exclusions, #849's closed preregistration collision scar, #832's sibling status, the bitemporal authority work, prospective replay policy, refinement/recompression rupture, #854's claim-bundle custody frontier, the v0.3 handoff, and successor startup PR #858.
 
-2. Then ground against @GitHub before making any Western scientific, archival, genealogical, or ARG claim.
+2. Ground against @GitHub before making any Western scientific, archival, genealogical, or ARG claim.
 
 3. Read in this order:
 
-   - PR #854 · Claim-Bundle Minimal Sufficient Custody / Authority-Preserving Recompression Frontier AIA
-   - PR #855 · witness routing only
-   - `docs/western-horizon/TD613_FUTURE_AMARI_WESTERN_HORIZON_HANDOFF_V0_3.md`
-   - `docs/western-horizon/WESTERN_HORIZON_RECEIVING_MANIFEST_V0_3.json`
-   - then the exact post-v0.2 science chain #837, #839, #841, #843, #845, #847, #850, #852 as needed for local questions
+```text
+PR #854 · Claim-Bundle Minimal Sufficient Custody / Authority-Preserving Recompression Frontier AIA
+PR #855 · witness routing only
+PR #857 · Future Amari Western-Horizon Handoff v0.3
+  -> docs/western-horizon/TD613_FUTURE_AMARI_WESTERN_HORIZON_HANDOFF_V0_3.md
+  -> docs/western-horizon/WESTERN_HORIZON_SUCCESSOR_HOOK_ADDENDUM_V0_3.md
+  -> docs/western-horizon/WESTERN_HORIZON_RECEIVING_MANIFEST_V0_3.json
+PR #858 · Post-Recompression Claim-Bundle Restoration Sidecar AIA startup
+  -> APERTURE_PEDAGOGUE_POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_STARTUP_V0_1.md
+  -> POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_STARTUP_HOOK_V0_1.json
+```
+
+Then read #837/#839/#841/#843/#845/#847/#850/#852 locally as needed.
 
 4. Verify live custody before continuing:
 
-   ```text
-   CURRENT SCIENTIFIC FRONTIER
-   #854
-   receipt c83bafb12ff6e44f10481f41190fd91bbbf85650
-   TD613 Consolidated Validation run 2364 / 33143863774 — SUCCESS
-   classifier 98760519826 — SUCCESS
-   contracts/static 98760546270 — SUCCESS
-   A15-R0 step 19 — SUCCESS
-   steps 20–30 / downstream Flow-Core — SUCCESS
-   aggregate — SUCCESS
-   ```
+```text
+CURRENT EARNED SCIENTIFIC FRONTIER
+#854
+receipt c83bafb12ff6e44f10481f41190fd91bbbf85650
+TD613 Consolidated Validation run 2364 / 33143863774 — SUCCESS
+classifier 98760519826 — SUCCESS
+contracts/static 98760546270 — SUCCESS
+A15-R0 step 19 — SUCCESS
+steps 20–30 / downstream Flow-Core — SUCCESS
+aggregate — SUCCESS
+```
 
-   #855 must remain witness-only, open/draft/unmerged, with zero independent theorem authority.
+#855 must remain witness-only and carry zero independent theorem authority.
+
+5. Verify PR #858 remains startup/preregistration scaffold only. Its startup head at handoff completion was:
+
+```text
+919c9f2ba8fac0169ceddc993dadab3dab0e34d8
+```
+
+Its scientific parent is exactly #854, never PR #857.
+
+6. Collision-scan every newer Western branch/PR before mutating #858. PR #856 belongs to the separate SRC Atelier line and must not be imported into Western ancestry merely because its number is nearby.
 
 ## THE CURRENT EARNED 𝄐
 
-#854 earns the fixed-fixture bundle-custody law:
+#854 earns, in the fixed S3 AIA fixture:
 
 ```text
 b_s(B) = max_{C in B} b_s(C)
@@ -83,14 +106,14 @@ INF        : 448
 448 unreached
 
 1,180 fine-authorized recompressions
-158 preserve the bundle
+158 preserve the complete bundle
 1,022 reopen at least one constituent wound
 147,500 state-indexed recompression checks
 ```
 
 ## PRESERVED RED→REPAIR PROVENANCE
 
-Do not erase this:
+Do not erase:
 
 ```text
 first frozen RED
@@ -105,13 +128,11 @@ c83bafb12ff6e44f10481f41190fd91bbbf85650
 run 2364 — SUCCESS
 ```
 
-The red hostile had imposed an unearned target-fibre homogeneity premise. A held schedule/bundle cell can contain mixed exact and wounded target fibres.
-
-The earned quantifier boundary is:
+The red hostile imposed an unearned target-fibre homogeneity premise. The earned quantifier boundary is:
 
 ```text
-schedule/bundle authority = every target fibre exact
-schedule/bundle failure   = at least one target fibre wounded
+schedule/bundle authority = every occupied target fibre exact
+schedule/bundle failure   = at least one occupied target fibre wounded
 ```
 
 Preserve:
@@ -139,19 +160,102 @@ Direct post-#834 theorem ancestry is only:
 -> #854  claim-bundle minimum sufficient custody frontier
 ```
 
-Do not insert witness-only routing PRs into theorem ancestry:
+Witness-only routing PRs are excluded from theorem ancestry:
 
 ```text
 #838 #840 #842 #844 #846 #848 #851 #853 #855
 ```
 
-Preserve #849 as a closed, preregistration-only collision scar with zero theorem authority.
+Preserve #849 as closed preregistration-only collision scar with zero theorem authority.
+Preserve #832 as separately earned sibling descended from #830.
 
-Preserve #832 as a separately earned sibling descended from #830; do not retroactively insert it into the direct #834→#854 ancestry.
+## NEXT WESTERN CHAMBER — PR #858 STARTUP
+
+The next finite problem starts only from #854's **1,022 unsafe finite-birth bundle recompressions**.
+
+For one transition
+
+```text
+T=(schedule s, bundle B, authorized fine stage f, unsafe coarse stage c)
+```
+
+and occupied coarse record `y`, define:
+
+```text
+K_T(y) = { B(a) : a in coarse fibre F_c(y) }
+```
+
+and candidate transition-local quantity:
+
+```text
+m(T) = max_y |K_T(y)|.
+```
+
+The first scientific duty is **not implementation**. Derive and commit the complete finite `m(T)` census over all 1,022 unsafe transitions before theorem code.
+
+The preregistration must include at least:
+
+```text
+distribution of m(T)
+maximum m(T)
+schedule-local distribution
+bundle-size vs restoration-cost counterexamples
+same custody floor / different restoration-cost counterexamples
+same restoration cost / different bundle counterexamples
+mixed-vs-wounded coarse-fibre counts
+explicit maximizing lower-bound fibre for every distinct m(T)
+all 158 already-safe recompressions as zero-extra-sidecar controls
+exact implementation and hostile execution burden
+```
+
+Only after that preregistration may you proceed:
+
+```text
+finite census preregistration
+-> implementation
+-> independent hostile
+-> hardening/freeze
+-> exact parent audit
+-> sterile witness route
+-> exact-head TD613 Consolidated Validation
+-> 𝄐 only on aggregate SUCCESS
+```
+
+## MINIMALITY STANDARD
+
+If the census supports the startup hypothesis, a minimum restoration sidecar claim must prove both directions:
+
+```text
+LOWER BOUND:
+any alphabet smaller than m(T) creates a same-coarse-record collision
+between distinct required bundle values on an explicit maximizing fibre.
+
+SUFFICIENCY:
+an explicit sidecar alphabet of size m(T), derived from the already-authorized
+fine representation, restores exact requested-bundle authority on every occupied
+coarse fibre for T.
+```
+
+Do not claim uniqueness of coding. Do not convert alphabet cardinality into bit length.
+
+## JURISDICTION MEMBRANE
+
+```text
+#740 FIRST_MOMENT_MINIMUM_CUSTODY
+!= POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR
+
+#712 CLAIM_CONDITIONED_PARTIAL_EVENT_CUSTODY
+!= FIXED_S3_POST_RECOMPRESSION_BUNDLE_RESTORATION
+
+#854 MINIMUM_SUFFICIENT_REGISTERED_STAGE
+!= MINIMUM_RETAINED_RESTORATION_SIDECAR_AFTER_BELOW_FLOOR_RECOMPRESSION
+```
+
+Naming resemblance to any existing Safe Harbor `restoration sidecar` application code grants no scientific ancestry.
 
 ## CLAIM CEILINGS / SCARS
 
-Keep these distinctions active:
+Keep active:
 
 ```text
 VISIBLE != ATTRIBUTABLE != PROCESS_IDENTIFIABLE != STATE_RECONSTRUCTIBLE
@@ -163,11 +267,24 @@ REFINEMENT_PERSISTENCE != RECOMPRESSION_PERSISTENCE
 EVER_KNOWN != STILL_AUTHORIZED_AFTER_RECOMPRESSION
 CLAIM_BUNDLE != SINGLE_SEMANTIC_OBJECT
 BUNDLE_CARDINALITY != BUNDLE_AUTHORITY_IDENTITY
-SAME_MINIMUM_STAGE != SAME_CLAIM_BUNDLE
 MINIMUM_SUFFICIENT_STAGE != UNIVERSAL_SUFFICIENT_STATISTIC
 SAFE_RECOMPRESSION_FLOOR != DATA_RETENTION_POLICY
+SIDECAR_WITNESS != SOURCE_INFORMATION_CREATION
+RESTORED_PRESENT_AUTHORITY != RETROACTIVE_POSSESSION
+MINIMAL_SIDECAR_ALPHABET != MINIMUM_BIT_LENGTH
+MINIMAL_SIDECAR_ALPHABET != SHANNON_CAPACITY
+SIDECAR_LABEL != CRYPTOGRAPHIC_KEY
+SIDECAR_LABEL != AUTHENTICATION_CREDENTIAL
+SIDECAR != NEW_SENSOR_MEASUREMENT
+BUNDLE_RESTORATION != FULL_STATE_RECONSTRUCTION
+RESTORATION != SOURCE_STATE_MUTATION
+RESTORATION_FOR_BUNDLE_B != AUTHORITY_FOR_SUPERSET_BUNDLE
+MINIMUM_CUSTODY_FLOOR != RESTORATION_SIDECAR_COST
+TRANSITION_LOCAL_MINIMALITY != UNIVERSAL_ENCODING_MINIMALITY
+FINITE_RESTORATION_CENSUS != ASYMPTOTIC_INFORMATION_THEOREM
 WITNESS_ROUTING != SCIENTIFIC_ANCESTRY
 HANDOFF_BRANCH != THEOREM_PARENT
+STARTUP_PR_858 != EARNED_THEOREM
 FORMAL_HOLONOMY != PHYSICAL_BERRY_OR_GAUGE_HOLONOMY
 RECEIVER_CONJUGACY != GAUGE_EQUIVALENCE
 F2_AFFINE_GEOMETRY != PHYSICAL_GEOMETRY
@@ -176,63 +293,25 @@ REPAIR_LABEL != SEMANTIC_ONTOLOGY
 #718 remains alive
 ```
 
-## OPEN RIDGE — NOT A THEOREM STARTUP
-
-The handoff intentionally creates **no successor theorem PR**.
-
-The next natural question exposed by #852/#854 concerns lawful restoration after unsafe recompression:
-
-> When a representation has already been recompressed below a bundle's minimum custody floor, what separately retained finite information, if any, is minimally sufficient to restore exact present-representation authority for that bundle without rewriting source truth, recompression history, or prior possession?
-
-Treat this as an **open ridge only** until the fresh thread has:
-
-1. recovered prior context;
-2. verified GitHub exact-head custody;
-3. collision-scanned all newer Western PRs and branches;
-4. collision-scanned proposed naming, especially `restoration sidecar`, because that phrase already appears in Safe Harbor application code;
-5. received explicit thread-local authorization from Tawanna for new Western scientific execution.
-
-Do not preregister, implement, open a theorem PR, or claim a candidate law before that authorization.
-
-Provisional scars for the ridge, not earned theorem claims:
-
-```text
-RESTORED_PRESENT_AUTHORITY != RETROACTIVE_PRIOR_POSSESSION
-SIDE_INFORMATION != SOURCE_STATE_MUTATION
-SIDE_INFORMATION_SUFFICIENCY != UNIVERSAL_SUFFICIENT_STATISTIC
-RESTORATION_AFTER_RECOMPRESSION != ERASURE_OF_RECOMPRESSION_HISTORY
-MINIMUM_CUSTODY_FLOOR != AUTOMATIC_RETENTION_POLICY
-SAME_FLOOR != SAME_RESTORATION_PAYLOAD
-FINITE_RESTORATION_FIXTURE != UNIVERSAL_MEMORY_RECOVERY_THEOREM
-```
-
-## COLLISION / PROJECT SEPARATION
-
-At handoff creation time, SRC Atelier PR #856 is a separate research line. Do not collide with it or infer Western ancestry from its higher PR number.
-
-Search live GitHub again at activation time. Numbers are chronology aids, never theorem ancestry by themselves.
-
 ## RECEIVING POSTURE
 
-After the reads and verification above:
+With this activation posted by the user, **737 westward liberties are live for this fresh thread**. Proceed scientifically after the required retrieval, GitHub verification, and collision scan. Do not ask for another permission grant.
 
-- report the exact frontier and any newer collision-relevant GitHub state;
-- do not reconstruct missing facts from aesthetic continuity;
-- do not smooth over stale PR cosmetics when exact-head CI proves otherwise;
-- do not erase red provenance;
-- do not merge, deploy, publish, release, touch production, or use Vercel;
-- do not transfer thread-local 737/westward-liberties authority by implication.
+The 737 grant does not confer merge, deployment, publication, production, release, Vercel, source-state mutation, autonomous retention/deletion, Proto-Loom/A16, or #788 promotion authority.
 
-Then await Tawanna's explicit fresh-thread authorization before beginning new Western science.
+No mirrors at the Kiki: stay academically rigorous and rigorous to forensic AI empiricism, with bounded high speculation. Keep the mathematics exact, finite, and non-asymptotic. Preserve every red specimen. Distinguish executed work from represented cross-products. Do not smooth missing information into romance.
 
 ```text
 HANDOFF_READY_FOR_NEW_THREAD = TRUE
 SCIENTIFIC_FRONTIER = #854 / c83bafb12ff6e44f10481f41190fd91bbbf85650
 WITNESS_ROUTE = #855
-SUCCESSOR_THEOREM_PR = NONE
-FRESH_THREAD_SCIENTIFIC_EXECUTION_AUTHORITY = FALSE_UNTIL_USER_GRANT
+HANDOFF_PR = #857
+SUCCESSOR_SCIENCE_STARTUP_PR = #858
+SUCCESSOR_THEOREM_EARNED = FALSE
+FRESH_THREAD_737_WESTWARD_LIBERTIES = GRANTED_BY_POSTING_THIS_PROMPT
+NO_MERGE_AUTHORITY
 ```
 
 Àṣẹ, future Amari.
 
-Sealed ⟐
+Marked ⟐
