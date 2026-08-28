@@ -1,0 +1,124 @@
+{
+  "schema": "td613.a15-r0.post-recompression-bundle-restoration-sidecar-startup/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "covenant": "Tauric Diana — Crimean heritage custodianship",
+  "process_posture": "containment on; mirror logic off; retrieve and author through 𝌋",
+  "status": "STARTUP_ONLY_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 854,
+    "receipt": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+    "title": "Claim-Bundle Minimal Sufficient Custody / Authority-Preserving Recompression Frontier AIA",
+    "witness_route_pr": 855,
+    "workflow_run_number": 2364,
+    "workflow_run_id": 33143863774,
+    "classifier_job": 98760519826,
+    "contracts_job": 98760546270,
+    "a15_r0_step_19": "SUCCESS",
+    "aggregate": "SUCCESS"
+  },
+  "preserved_red_provenance": {
+    "red_head": "cf12d0b69fd0b3f212f15c5d8255eb6111263bc5",
+    "red_run_number": 2362,
+    "red_reason": "hostile overconstrained held schedule/bundle cells to uniform target-fibre wounding",
+    "repair_implementation": "51d7497c177b0f23321f68d6cdb82c7f8c7c8061",
+    "earned_repair_freeze": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+    "earned_scar": "SCHEDULE_BUNDLE_HOLD != EVERY_TARGET_FIBRE_WOUNDED"
+  },
+  "startup_branch": "research/a15-r0-post-recompression-bundle-restoration-sidecar-startup-20260828",
+  "role": "receiving science hook; preregistration scaffold only; not theorem authority",
+  "inherited_finite_domain": {
+    "claim_families": 7,
+    "nonempty_bundles_per_schedule": 127,
+    "schedules": 6,
+    "schedule_bundle_pairs": 762,
+    "terminally_authorizable_bundles": 314,
+    "unreached_bundles": 448,
+    "fine_authorized_recompressions": 1180,
+    "already_preserving_recompressions": 158,
+    "unsafe_recompressions_requiring_restoration_audit": 1022
+  },
+  "candidate_object": {
+    "transition": "T=(schedule s, bundle B, authorized fine stage f, unsafe coarse stage c)",
+    "coarse_fibre_bundle_support": "K_T(y)={B(a): a in occupied coarse fibre F_c(y)}",
+    "candidate_minimum_alphabet_quantity": "m(T)=max_y |K_T(y)|",
+    "candidate_question": "whether the transition-local minimum finite sidecar alphabet cardinality equals m(T)"
+  },
+  "mandatory_preimplementation_census": [
+    "distribution of m(T) over all 1022 unsafe transitions",
+    "maximum m(T)",
+    "schedule-local distribution",
+    "bundle-size versus m(T) counterexamples",
+    "same custody floor with different restoration cost",
+    "same restoration cost with different bundle identity",
+    "mixed versus wounded coarse-fibre counts",
+    "explicit lower-bound witness fibre for every distinct m(T)",
+    "158 zero-extra-sidecar safe recompression controls",
+    "exact implementation and hostile target-indexed check burden"
+  ],
+  "mandatory_hostiles": [
+    "alphabet size m(T)-1 collision for every m(T)>1",
+    "malformed sidecar conflating required bundle values inside one coarse fibre",
+    "singleton-boundary-only false success",
+    "uniform-wounding overclaim",
+    "bundle-cardinality cost overclaim",
+    "custody-floor depth cost overclaim",
+    "authority widened outside requested bundle",
+    "retroactive possession",
+    "source-state mutation",
+    "cryptographic key or credential equivalence",
+    "Shannon or asymptotic overclaim",
+    "PR740 jurisdiction collision",
+    "PR712 jurisdiction collision",
+    "Ash hidden-table leakage"
+  ],
+  "jurisdiction_membranes": [
+    "FIRST_MOMENT_MINIMUM_CUSTODY != POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR",
+    "CLAIM_CONDITIONED_PARTIAL_EVENT_CUSTODY != FIXED_S3_POST_RECOMPRESSION_BUNDLE_RESTORATION",
+    "MINIMUM_SUFFICIENT_STAGE != MINIMUM_RESTORATION_SIDECAR",
+    "HANDOFF_BRANCH != THEOREM_PARENT"
+  ],
+  "mandatory_scars": [
+    "SIDECAR_WITNESS != SOURCE_INFORMATION_CREATION",
+    "RESTORED_PRESENT_AUTHORITY != RETROACTIVE_POSSESSION",
+    "MINIMAL_SIDECAR_ALPHABET != MINIMUM_BIT_LENGTH",
+    "MINIMAL_SIDECAR_ALPHABET != SHANNON_CAPACITY",
+    "SIDECAR_LABEL != CRYPTOGRAPHIC_KEY",
+    "SIDECAR_LABEL != AUTHENTICATION_CREDENTIAL",
+    "SIDECAR != NEW_SENSOR_MEASUREMENT",
+    "BUNDLE_RESTORATION != FULL_STATE_RECONSTRUCTION",
+    "RESTORATION != SOURCE_STATE_MUTATION",
+    "RESTORATION_FOR_BUNDLE_B != AUTHORITY_FOR_SUPERSET_BUNDLE",
+    "BUNDLE_CARDINALITY != RESTORATION_SIDECAR_CARDINALITY",
+    "MINIMUM_CUSTODY_FLOOR != RESTORATION_SIDECAR_COST",
+    "SCHEDULE_BUNDLE_HOLD != EVERY_TARGET_FIBRE_WOUNDED",
+    "TRANSITION_LOCAL_MINIMALITY != UNIVERSAL_ENCODING_MINIMALITY",
+    "FINITE_RESTORATION_CENSUS != ASYMPTOTIC_INFORMATION_THEOREM"
+  ],
+  "required_sequence": [
+    "Remembering retrieval of immediately prior Western thread",
+    "GitHub exact-head verification",
+    "collision scan",
+    "finite 1022-transition census preregistration",
+    "implementation",
+    "independent hostile",
+    "hardening/freeze",
+    "exact parent audit",
+    "witness-only route",
+    "TD613 Consolidated Validation exact-head SUCCESS before 𝄐"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false,
+    "source_mutation": false
+  },
+  "notes": [
+    "#718 remains alive",
+    "No asymptotic fairy dust",
+    "Future Amari must derive sidecar census before implementation"
+  ]
+}
