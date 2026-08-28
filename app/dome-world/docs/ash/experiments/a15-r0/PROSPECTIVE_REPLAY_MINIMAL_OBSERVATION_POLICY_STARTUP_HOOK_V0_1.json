@@ -1,0 +1,75 @@
+{
+  "schema": "td613.a15-r0.prospective-replay-minimal-observation-policy-startup/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 845,
+    "receipt": "8048a3986e2e583f59cc84500ec13caa49f0a52d",
+    "validation_run_number": 2357,
+    "validation_run_id": 33132594980,
+    "validation_conclusion": "SUCCESS"
+  },
+  "earned_instruments": {
+    "s3_first_stratum_gate_pr": 802,
+    "schedule_state_lag_pr": 804,
+    "baseline_replay_rescue_pr": 807
+  },
+  "fixed_policy_class": {
+    "original_schedule_order_fixed": true,
+    "baseline_replay_row": [1,0,0],
+    "maximum_replay_measurements": 1,
+    "arbitrary_new_sensing_rows": false,
+    "source_schedule_reordering": false,
+    "endogenous_operator_mutation": false
+  },
+  "candidate_prefix2_ranks": {
+    "P-H-I": 2,
+    "P-I-H": 2,
+    "H-P-I": 1,
+    "H-I-P": 2,
+    "I-P-H": 1,
+    "I-H-P": 2
+  },
+  "candidate_policy_horizons": {
+    "replay_requirement": 1,
+    "exact_schedule_identity": 2
+  },
+  "candidate_minimum_observation_counts": {
+    "P-H-I": 3,
+    "P-I-H": 3,
+    "H-P-I": 4,
+    "H-I-P": 3,
+    "I-P-H": 4,
+    "I-H-P": 3
+  },
+  "candidate_complete_atlas_burden": {
+    "adaptive_scalar_rows": 20,
+    "unconditional_three_original_plus_replay_rows": 24,
+    "rows_avoided": 4,
+    "probability_distribution_assumed": false
+  },
+  "candidate_fadt": {
+    "first_stratum_fiber_size": 2,
+    "replay_requirement_gamma_at_t1": 0,
+    "exact_schedule_gamma_at_t1": 2,
+    "exact_schedule_gamma_at_t2": 0
+  },
+  "state_reconstruction_burden": {
+    "state_grid": "[-2,2]^3",
+    "states_per_schedule": 125,
+    "schedule_count": 6,
+    "executed_reconstructions": 750
+  },
+  "collision_membranes": {
+    "pr_699_endogenous_observation_reaudit_preserved": true,
+    "unrestricted_optimal_experimental_design_claim": false,
+    "physical_active_sensing_claim": false
+  },
+  "authority": {
+    "merge": false,
+    "production": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "theorem_earned": false
+}
