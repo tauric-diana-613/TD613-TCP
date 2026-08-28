@@ -1,0 +1,137 @@
+{
+  "schema": "td613.a15-r0.post-recompression-bundle-restoration-sidecar-census-preregistration/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "FINITE_CENSUS_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 854,
+    "receipt": "c83bafb12ff6e44f10481f41190fd91bbbf85650",
+    "validation_run_number": 2364,
+    "validation_run_id": 33143863774,
+    "result": "SUCCESS"
+  },
+  "startup_pr": 858,
+  "startup_head_before_census": "919c9f2ba8fac0169ceddc993dadab3dab0e34d8",
+  "domain": {
+    "schedules": 6,
+    "states_per_schedule": 125,
+    "antecedents": 750,
+    "claim_families": 7,
+    "fine_authorized_recompressions": 1180,
+    "safe_controls": 158,
+    "unsafe_transitions": 1022
+  },
+  "m_distribution": {
+    "2": 82,
+    "3": 36,
+    "5": 298,
+    "6": 48,
+    "10": 90,
+    "15": 36,
+    "25": 88,
+    "30": 64,
+    "50": 88,
+    "75": 16,
+    "125": 18,
+    "150": 32,
+    "250": 18,
+    "375": 36,
+    "750": 72
+  },
+  "maximum_m": 750,
+  "per_schedule_m_distribution": {
+    "P-H-I": {"2":19,"3":6,"5":126,"6":8,"10":30,"15":12,"25":44,"30":20,"50":44,"75":8,"125":9,"150":16,"250":9,"375":18,"750":36},
+    "P-I-H": {"2":19,"3":6,"5":126,"6":8,"10":30,"15":12,"25":44,"30":20,"50":44,"75":8,"125":9,"150":16,"250":9,"375":18,"750":36},
+    "H-P-I": {"2":11,"3":6,"5":13,"6":8,"10":5,"15":2,"30":4},
+    "H-I-P": {"2":11,"3":6,"5":10,"6":8,"10":10,"15":4,"30":8},
+    "I-P-H": {"2":11,"3":6,"5":13,"6":8,"10":5,"15":2,"30":4},
+    "I-H-P": {"2":11,"3":6,"5":10,"6":8,"10":10,"15":4,"30":8}
+  },
+  "maximizing_lower_bound_fibres": [
+    {"m":2,"schedule":"H-I-P","bundle":["REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":1,"fine":1,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":3,"schedule":"H-I-P","bundle":["FIRST_STRATUM"],"birth":1,"fine":1,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":5,"schedule":"H-I-P","bundle":["X3"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":6,"schedule":"H-I-P","bundle":["SCHEDULE"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":10,"schedule":"H-I-P","bundle":["X3","REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":15,"schedule":"H-I-P","bundle":["FIRST_STRATUM","X3"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":25,"schedule":"P-H-I","bundle":["X1","X2"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":30,"schedule":"H-I-P","bundle":["SCHEDULE","X3"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":50,"schedule":"P-H-I","bundle":["X1","X2","REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":75,"schedule":"P-H-I","bundle":["FIRST_STRATUM","X1","X2"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":125,"schedule":"P-H-I","bundle":["FULL_STATE"],"birth":3,"fine":3,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":150,"schedule":"P-H-I","bundle":["SCHEDULE","X1","X2"],"birth":2,"fine":2,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":250,"schedule":"P-H-I","bundle":["FULL_STATE","REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":3,"fine":3,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":375,"schedule":"P-H-I","bundle":["FIRST_STRATUM","FULL_STATE"],"birth":3,"fine":3,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]},
+    {"m":750,"schedule":"P-H-I","bundle":["SCHEDULE","FULL_STATE"],"birth":3,"fine":3,"coarse":0,"coarse_record":["NULL_REGISTERED_TRACE"]}
+  ],
+  "counterexamples": {
+    "same_bundle_size_different_cost": [
+      {"schedule":"P-H-I","bundle":["REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":1,"fine":1,"coarse":0,"m":2},
+      {"schedule":"P-H-I","bundle":["X1"],"birth":1,"fine":1,"coarse":0,"m":5}
+    ],
+    "same_floor_different_cost": [
+      {"schedule":"P-H-I","bundle":["FIRST_STRATUM"],"birth":1,"fine":1,"coarse":0,"m":3},
+      {"schedule":"P-H-I","bundle":["X1"],"birth":1,"fine":1,"coarse":0,"m":5}
+    ],
+    "same_cost_different_bundle": [
+      {"schedule":"P-H-I","bundle":["FIRST_STRATUM"],"birth":1,"fine":1,"coarse":0,"m":3},
+      {"schedule":"P-H-I","bundle":["FIRST_STRATUM","REPLAY_REQUIRED_FOR_EXACT_STATE"],"birth":1,"fine":1,"coarse":0,"m":3}
+    ]
+  },
+  "coarse_fibre_census": {
+    "unsafe_occupied_fibre_incidences": 7550,
+    "unsafe_wounded_fibre_incidences": 7550,
+    "unsafe_exact_fibre_incidences": 0,
+    "unsafe_mixed_transitions": 0,
+    "unsafe_all_occupied_fibres_wounded_transitions": 1022,
+    "safe_occupied_fibre_incidences": 3382,
+    "safe_wounded_fibre_incidences": 0,
+    "safe_exact_fibre_incidences": 3382,
+    "parent_mixed_held_cell_remains_outside_domain": "H-P-I / FULL_STATE / q3 is INF/unreached and excluded from the finite-birth unsafe-transition chamber"
+  },
+  "safe_controls": {
+    "transitions": 158,
+    "maximum_support_cardinality": 1,
+    "extra_distinguishing_sidecar_information": 0,
+    "uniform_control_label_alphabet_cardinality_if_materialized": 1
+  },
+  "execution_burden_per_implementation_or_hostile": {
+    "unsafe_coarse_fibre_support_evaluations": 7550,
+    "safe_coarse_fibre_support_evaluations": 3382,
+    "total_coarse_fibre_support_evaluations": 10932,
+    "unsafe_transition_lower_bound_checks": 1022,
+    "unsafe_target_indexed_restoration_checks": 127750,
+    "safe_target_indexed_control_checks": 19750,
+    "total_target_indexed_checks": 147500
+  },
+  "paired_implementation_and_hostile_burden": {
+    "coarse_fibre_support_evaluations": 21864,
+    "lower_bound_checks": 2044,
+    "target_indexed_checks": 295000
+  },
+  "mandatory_scars": [
+    "SCHEDULE_BUNDLE_HOLD != EVERY_TARGET_FIBRE_WOUNDED",
+    "RED_HOSTILE_OVERCONSTRAINT != THEOREM_FAILURE",
+    "HOSTILE_REPAIR != THEOREM_WEAKENING",
+    "BUNDLE_CARDINALITY != RESTORATION_SIDECAR_CARDINALITY",
+    "MINIMUM_CUSTODY_FLOOR != RESTORATION_SIDECAR_COST",
+    "SAME_RESTORATION_COST != SAME_BUNDLE_IDENTITY",
+    "MINIMAL_SIDECAR_ALPHABET != MINIMUM_BIT_LENGTH",
+    "MINIMAL_SIDECAR_ALPHABET != SHANNON_CAPACITY",
+    "SIDECAR_WITNESS != SOURCE_INFORMATION_CREATION",
+    "RESTORED_PRESENT_AUTHORITY != RETROACTIVE_POSSESSION",
+    "TRANSITION_LOCAL_MINIMALITY != UNIVERSAL_ENCODING_MINIMALITY",
+    "FINITE_RESTORATION_CENSUS != ASYMPTOTIC_INFORMATION_THEOREM",
+    "HANDOFF_BRANCH != THEOREM_PARENT",
+    "STARTUP_PR_858 != EARNED_THEOREM"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false,
+    "source_mutation": false
+  }
+}
