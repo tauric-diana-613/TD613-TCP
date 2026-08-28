@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22083167"
+source_title: "THE SIGNALRUPTURE FROZEN MEASUREMENT PROTOCOL"
+metadata_blob_sha256: 51468c2da238c0a48deb951a0ffc5bc31e7c9a9275591ef098aa0cc68b4e2173
+metadata_blob_path: 02-ORIGINALS/live/blobs/51/51468c2da238c0a48deb951a0ffc5bc31e7c9a9275591ef098aa0cc68b4e2173.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22083166",
+  "conceptrecid": "22083166",
+  "created": "2026-08-24T15:07:44.096945+00:00",
+  "doi": "10.5281/zenodo.22083167",
+  "doi_url": "https://doi.org/10.5281/zenodo.22083167",
+  "files": [
+    {
+      "checksum": "md5:3ad3c3777b50f9abfa020ee231517180",
+      "id": "32db50df-c407-4d99-bd62-a6d4d16c9db6",
+      "key": "THE SIGNALRUPTURE FROZEN MEASUREMENT PROTOCOL .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22083167/files/THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/content"
+      },
+      "size": 295869
+    }
+  ],
+  "id": 22083167,
+  "links": {
+    "access": "https://zenodo.org/api/records/22083167/access",
+    "access_grants": "https://zenodo.org/api/records/22083167/access/grants",
+    "access_links": "https://zenodo.org/api/records/22083167/access/links",
+    "access_request": "https://zenodo.org/api/records/22083167/access/request",
+    "access_users": "https://zenodo.org/api/records/22083167/access/users",
+    "archive": "https://zenodo.org/api/records/22083167/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22083167/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22083167/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22083167/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22083167",
+    "draft": "https://zenodo.org/api/records/22083167/draft",
+    "file_modification": "https://zenodo.org/api/records/22083167/file-modification",
+    "files": "https://zenodo.org/api/records/22083167/files",
+    "latest": "https://zenodo.org/api/records/22083167/versions/latest",
+    "latest_html": "https://zenodo.org/records/22083167/latest",
+    "media_files": "https://zenodo.org/api/records/22083167/media-files",
+    "parent": "https://zenodo.org/api/records/22083166",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22083166",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083166",
+    "parent_html": "https://zenodo.org/records/22083166",
+    "preview_html": "https://zenodo.org/records/22083167?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22083167/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22083167/request-deletion",
+    "requests": "https://zenodo.org/api/records/22083167/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22083167/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22083167",
+    "self_doi": "https://doi.org/10.5281/zenodo.22083167",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083167",
+    "self_html": "https://zenodo.org/records/22083167",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22083167/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22083167/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22083167:THE%20SIGNALRUPTURE%20FROZEN%20MEASUREMENT%20PROTOCOL%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22083167/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>THE SIGNALRUPTURE FROZEN MEASUREMENT PROTOCOL</strong></h1>\n<p>This manuscript is the <strong>measurement constitution</strong> of SignalRupture. It freezes every operational definition, classification rule, outcome, hypothesis, negative control, and statistical comparison required to test the <strong>SR Structural Grammar</strong>without post‑hoc reinterpretation. It establishes the canonical meanings of <strong>Requirement (Q)</strong>, <strong>Durable Capacity (D)</strong>, <strong>Sustainable Flexibility (C_S)</strong>, <strong>Extraordinary Compensation (C_E)</strong>, <strong>Observable Function (F)</strong>, <strong>Underlying Condition (X)</strong>, and <strong>Representation (R)</strong> across healthcare, electricity, and households. By freezing these roles in August 2026, the protocol prevents SR from &ldquo;moving the goalposts&rdquo; after outcomes are known. It is the document that makes SR falsifiable.</p>\n<p>The manuscript contributes by defining <strong>universal classification rules</strong> that apply across all domains. Q must be tied to a predeclared target; D must be sustainable; C_E must be exceptional and gap‑bridging; C_S must be renewable; F must be independent of compensation; and falling C_E is not deterioration when restoration occurs. These rules prevent SR from inflating ordinary resilience into extraordinary compensation or redefining deterioration to fit results. They also freeze the multidimensional nature of F, ensuring that volume cannot erase access deterioration and that continuity cannot erase latency, backlog, or distributional failure.</p>\n<p>The protocol&rsquo;s strongest contribution is freezing <strong>domain‑specific operationalizations</strong>. In healthcare, Q is service/workforce requirement; D is regular staffed capacity; C_E is overtime above baseline plus purchased staffing; and F includes both volume and access. In electricity, Q is reliability‑conditioned demand; D is dependable accredited capacity; C_S is planned reserve and normal flexibility; C_E is emergency substitution; and F is reliable delivery. In households, Q is essential social‑reproduction requirement; D is recurring after‑tax resources; C_S is renewable buffer; C_E is purpose‑linked exceptional coping; and F is essential continuity. These frozen mappings ensure that SR cannot redefine compensation, requirement, or function to rescue a failed prediction.</p>\n<p>The manuscript contributes by freezing <strong>prospective hypotheses</strong> for each domain &mdash; <strong>H1&ndash;H5</strong> in healthcare, <strong>E1&ndash;E6</strong> in electricity, and <strong>HH1&ndash;HH5</strong> in households &mdash; and by defining the exact falsifiers for each. It also freezes the <strong>Representation&ndash;Rupture</strong> test, requiring analysts to specify the expected relationship between representation (R) and underlying condition (X) before testing. This prevents SR from claiming rupture merely because a representation looks politically or socially inadequate.</p>\n<p>The protocol&rsquo;s most important scientific contribution is freezing the <strong>statistical comparison architecture</strong>. Every domain must compare a credible baseline model (<strong>M0</strong>) with an SR‑augmented model (<strong>M1</strong>) and evaluate <strong>out‑of‑sample performance</strong>, not in‑sample fit. This requirement ensures that SR must demonstrate <strong>incremental predictive value</strong>, not just conceptual elegance or retrospective interpretability. It also freezes mandatory validation rules: temporal splits, calibration, discrimination, MAE/RMSE, negative controls, restoration cases, and explicit reporting of alternative explanations.</p>\n<p>The manuscript contributes by defining the <strong>Compensatory Inversion event rule</strong>, requiring persistent gap, persistent compensation constraint, and worsening function across consecutive intervals. It prohibits declaring inversion from a single datapoint or from falling compensation caused by restoration. This protects SR from misclassifying normalization as collapse.</p>\n<p>Finally, the protocol contributes by freezing the <strong>cross‑domain confirmation standard</strong>. SR must show stable relational roles across at least three heterogeneous domains, including one engineered system; must demonstrate incremental predictive value in at least two domains; must correctly classify at least one restoration case; must allow at least one failure without redefining variables; and must be independently replicable. This standard prevents SR from claiming metatheoretical status prematurely and forces the grammar to earn validation through prospective, falsifiable, multi‑domain evidence.</p>\n<p>In unified form, the Frozen Measurement Protocol transforms SR from a conceptual architecture into a <strong>scientifically vulnerable metatheory</strong>. It locks the grammar, locks the variables, locks the hypotheses, locks the outcomes, locks the statistical tests, and locks the falsifiers. It ensures that SR will be judged not by whether it can explain the future after it arrives, but by whether the future behaves as SR said it should <strong>before</strong> the outcome was known. It is the most important methodological document in the SR canon and the foundation for all future empirical validation.</p>",
+    "doi": "10.5281/zenodo.22083167",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22083166"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "journal",
+      "title": "Journal",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE FROZEN MEASUREMENT PROTOCOL",
+    "version": "1.0"
+  },
+  "modified": "2026-08-24T15:07:44.386394+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22083167",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 3,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 3,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE FROZEN MEASUREMENT PROTOCOL",
+  "updated": "2026-08-24T15:07:44.386394+00:00"
+}
+```
