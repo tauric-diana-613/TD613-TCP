@@ -18,7 +18,10 @@
     "original_prefix_acquisition_no_skip": true,
     "later_original_requires_all_earlier_originals_acquired": true,
     "replay_may_be_inserted_once_or_omitted": true,
-    "arbitrary_original_subsequence_selection": false
+    "arbitrary_original_subsequence_selection": false,
+    "minimum_observation_budget_claimed_unique": true,
+    "optimal_replay_timing_claimed_unique": false,
+    "immediate_replay_is_canonical_executed_trace_only": true
   },
   "fixed_policy_class": {
     "original_schedule_order_fixed": true,
