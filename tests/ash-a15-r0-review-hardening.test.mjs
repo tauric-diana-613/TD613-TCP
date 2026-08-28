@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_862_RECEIPT = '3b58898bbdb64af056913f770ba4891176b27789';
 const PARENT_860_RECEIPT = '082de53b0972a5fd0d235973a8deee2faaebce71';
 const PARENT_858_RECEIPT = '53e713059cde5dd6c2b4d4cbc20f882601360f7c';
 const PARENT_854_RECEIPT = 'c83bafb12ff6e44f10481f41190fd91bbbf85650';
@@ -33,69 +34,63 @@ const PARENT_792_RECEIPT = 'e15d6737f2d43e01835a643790b1c5f51a1dc711';
 const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
-for (const receipt of [
-  PARENT_860_RECEIPT, PARENT_858_RECEIPT, PARENT_854_RECEIPT, PARENT_852_RECEIPT,
-  PARENT_850_RECEIPT, PARENT_847_RECEIPT, PARENT_845_RECEIPT, PARENT_843_RECEIPT,
-  PARENT_841_RECEIPT, PARENT_839_RECEIPT, PARENT_837_RECEIPT, PARENT_834_RECEIPT,
-  PARENT_830_RECEIPT, PARENT_828_RECEIPT, PARENT_826_RECEIPT, PARENT_824_RECEIPT,
-  PARENT_822_RECEIPT, PARENT_820_RECEIPT, PARENT_818_RECEIPT, PARENT_812_RECEIPT,
-  PARENT_810_RECEIPT, PARENT_807_RECEIPT, PARENT_804_RECEIPT, PARENT_802_RECEIPT,
-  PARENT_800_RECEIPT, PARENT_798_RECEIPT, PARENT_796_RECEIPT, PARENT_794_RECEIPT,
-  PARENT_792_RECEIPT, BENCH_790_RECEIPT, FADT_752_RECEIPT,
-]) {
-  execFileSync('git', ['cat-file', '-e', `${receipt}^{commit}`], { stdio: 'pipe' });
-  execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
+const ancestry = [
+  PARENT_862_RECEIPT,PARENT_860_RECEIPT,PARENT_858_RECEIPT,PARENT_854_RECEIPT,
+  PARENT_852_RECEIPT,PARENT_850_RECEIPT,PARENT_847_RECEIPT,PARENT_845_RECEIPT,
+  PARENT_843_RECEIPT,PARENT_841_RECEIPT,PARENT_839_RECEIPT,PARENT_837_RECEIPT,
+  PARENT_834_RECEIPT,PARENT_830_RECEIPT,PARENT_828_RECEIPT,PARENT_826_RECEIPT,
+  PARENT_824_RECEIPT,PARENT_822_RECEIPT,PARENT_820_RECEIPT,PARENT_818_RECEIPT,
+  PARENT_812_RECEIPT,PARENT_810_RECEIPT,PARENT_807_RECEIPT,PARENT_804_RECEIPT,
+  PARENT_802_RECEIPT,PARENT_800_RECEIPT,PARENT_798_RECEIPT,PARENT_796_RECEIPT,
+  PARENT_794_RECEIPT,PARENT_792_RECEIPT,BENCH_790_RECEIPT,FADT_752_RECEIPT,
+];
+for (const receipt of ancestry) {
+  execFileSync('git',['cat-file','-e',`${receipt}^{commit}`],{stdio:'pipe'});
+  execFileSync('git',['merge-base','--is-ancestor',receipt,'HEAD'],{stdio:'pipe'});
 }
 
-for (const [ancestor, descendant] of [
-  [PARENT_858_RECEIPT, PARENT_860_RECEIPT], [PARENT_854_RECEIPT, PARENT_858_RECEIPT],
-  [PARENT_852_RECEIPT, PARENT_854_RECEIPT], [PARENT_850_RECEIPT, PARENT_852_RECEIPT],
-  [PARENT_847_RECEIPT, PARENT_850_RECEIPT], [PARENT_845_RECEIPT, PARENT_847_RECEIPT],
-  [PARENT_843_RECEIPT, PARENT_845_RECEIPT], [PARENT_841_RECEIPT, PARENT_843_RECEIPT],
-  [PARENT_839_RECEIPT, PARENT_841_RECEIPT], [PARENT_837_RECEIPT, PARENT_839_RECEIPT],
-  [PARENT_834_RECEIPT, PARENT_837_RECEIPT], [PARENT_830_RECEIPT, PARENT_834_RECEIPT],
-  [PARENT_828_RECEIPT, PARENT_830_RECEIPT], [PARENT_826_RECEIPT, PARENT_828_RECEIPT],
-  [PARENT_824_RECEIPT, PARENT_826_RECEIPT], [PARENT_822_RECEIPT, PARENT_824_RECEIPT],
-  [PARENT_820_RECEIPT, PARENT_822_RECEIPT], [PARENT_818_RECEIPT, PARENT_820_RECEIPT],
-  [PARENT_812_RECEIPT, PARENT_818_RECEIPT], [PARENT_810_RECEIPT, PARENT_812_RECEIPT],
-  [PARENT_807_RECEIPT, PARENT_810_RECEIPT], [PARENT_804_RECEIPT, PARENT_807_RECEIPT],
-  [PARENT_802_RECEIPT, PARENT_804_RECEIPT], [PARENT_800_RECEIPT, PARENT_802_RECEIPT],
-  [PARENT_798_RECEIPT, PARENT_800_RECEIPT], [PARENT_796_RECEIPT, PARENT_798_RECEIPT],
-  [PARENT_794_RECEIPT, PARENT_796_RECEIPT], [PARENT_792_RECEIPT, PARENT_794_RECEIPT],
-  [BENCH_790_RECEIPT, PARENT_792_RECEIPT], [FADT_752_RECEIPT, PARENT_792_RECEIPT],
-]) execFileSync('git', ['merge-base', '--is-ancestor', ancestor, descendant], { stdio: 'pipe' });
+for (const [ancestor,descendant] of [
+  [PARENT_860_RECEIPT,PARENT_862_RECEIPT],[PARENT_858_RECEIPT,PARENT_860_RECEIPT],
+  [PARENT_854_RECEIPT,PARENT_858_RECEIPT],[PARENT_852_RECEIPT,PARENT_854_RECEIPT],
+  [PARENT_850_RECEIPT,PARENT_852_RECEIPT],[PARENT_847_RECEIPT,PARENT_850_RECEIPT],
+  [PARENT_845_RECEIPT,PARENT_847_RECEIPT],[PARENT_843_RECEIPT,PARENT_845_RECEIPT],
+  [PARENT_841_RECEIPT,PARENT_843_RECEIPT],[PARENT_839_RECEIPT,PARENT_841_RECEIPT],
+  [PARENT_837_RECEIPT,PARENT_839_RECEIPT],[PARENT_834_RECEIPT,PARENT_837_RECEIPT],
+  [PARENT_830_RECEIPT,PARENT_834_RECEIPT],[PARENT_828_RECEIPT,PARENT_830_RECEIPT],
+  [PARENT_826_RECEIPT,PARENT_828_RECEIPT],[PARENT_824_RECEIPT,PARENT_826_RECEIPT],
+  [PARENT_822_RECEIPT,PARENT_824_RECEIPT],[PARENT_820_RECEIPT,PARENT_822_RECEIPT],
+  [PARENT_818_RECEIPT,PARENT_820_RECEIPT],[PARENT_812_RECEIPT,PARENT_818_RECEIPT],
+  [PARENT_810_RECEIPT,PARENT_812_RECEIPT],[PARENT_807_RECEIPT,PARENT_810_RECEIPT],
+  [PARENT_804_RECEIPT,PARENT_807_RECEIPT],[PARENT_802_RECEIPT,PARENT_804_RECEIPT],
+  [PARENT_800_RECEIPT,PARENT_802_RECEIPT],[PARENT_798_RECEIPT,PARENT_800_RECEIPT],
+  [PARENT_796_RECEIPT,PARENT_798_RECEIPT],[PARENT_794_RECEIPT,PARENT_796_RECEIPT],
+  [PARENT_792_RECEIPT,PARENT_794_RECEIPT],[BENCH_790_RECEIPT,PARENT_792_RECEIPT],
+  [FADT_752_RECEIPT,PARENT_792_RECEIPT],
+]) execFileSync('git',['merge-base','--is-ancestor',ancestor,descendant],{stdio:'pipe'});
 
-const changedA15R0 = execFileSync(
-  'git',
-  ['diff', '--name-only', `${PARENT_860_RECEIPT}..HEAD`, '--',
-    'app/dome-world/docs/ash/experiments/a15-r0', 'app/dome-world/previews/a15-r0', 'tests'],
-  { encoding: 'utf8' },
-).trim().split('\n').filter(Boolean).filter(path => (
+const changed = execFileSync('git',[
+  'diff','--name-only',`${PARENT_862_RECEIPT}..HEAD`,'--',
+  'app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests',
+],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path => (
   path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')
   || path.startsWith('app/dome-world/previews/a15-r0/')
   || path.startsWith('tests/ash-a15-r0-')
 ));
 
-const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/ANTICIPATORY_CUSTODY_ENVELOPE_UNIFORM_SURFACE_PREREGISTRATION_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/ANTICIPATORY_CUSTODY_ENVELOPE_EXPECTATIONS_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/ANTICIPATORY_CUSTODY_ENVELOPE_EXECUTION_BURDEN_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/ANTICIPATORY_CUSTODY_ENVELOPE_PREHOSTILE_REPRESENTATIVE_REPAIR_V0_1.md',
-  'app/dome-world/previews/a15-r0/anticipatory-custody-envelope-uniform-surface.js',
-  'app/dome-world/previews/a15-r0/anticipatory-custody-envelope-uniform-surface-certificate.js',
-  'tests/ash-a15-r0-aperture-pedagogue-anticipatory-custody-envelope-uniform-surface.test.mjs',
+const allowed = new Set([
+  'app/dome-world/docs/ash/experiments/a15-r0/TWO_SURFACE_HORIZON_ALIASING_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/TWO_SURFACE_HORIZON_ALIASING_EXPECTATIONS_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/TWO_SURFACE_HORIZON_ALIASING_EXECUTION_BURDEN_V0_1.md',
+  'app/dome-world/previews/a15-r0/two-surface-horizon-aliasing.js',
+  'tests/ash-a15-r0-aperture-pedagogue-two-surface-horizon-aliasing.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
-const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPaths.has(path));
-assert.deepEqual(historicalMutations, [],
-  `post-#860 anticipatory-custody chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
-assert.equal(changedA15R0.length, allowedCurrentChamberPaths.size,
-  `anticipatory-custody chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`);
-for (const path of allowedCurrentChamberPaths) {
-  assert.equal(changedA15R0.includes(path), true, `missing preregistered anticipatory-custody path: ${path}`);
-}
+const historicalMutations = changed.filter(path => !allowed.has(path));
+assert.deepEqual(historicalMutations,[],`post-#862 chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.equal(changed.length,allowed.size,`two-surface chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
+for (const path of allowed) assert.equal(changed.includes(path),true,`missing two-surface chamber path: ${path}`);
 
-execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
+execFileSync(process.execPath,['tests/ash-a15-r0-review-hardening-sharded.test.mjs'],{stdio:'inherit'});
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-fadt-holonomy-loom-constitutional-descent-membrane.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-cech-nerve-descent-nonidentifiability.test.mjs');
@@ -127,6 +122,7 @@ await import('./ash-a15-r0-aperture-pedagogue-claim-bundle-minimal-sufficient-cu
 await import('./ash-a15-r0-aperture-pedagogue-post-recompression-bundle-restoration-sidecar.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-restoration-holonomy-path-dependent-custody.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-anticipatory-custody-envelope-uniform-surface.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-two-surface-horizon-aliasing.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 anticipatory custody envelope hardening tests passed.');
+console.log('Ash A15-R0 two-surface horizon aliasing hardening tests passed.');
