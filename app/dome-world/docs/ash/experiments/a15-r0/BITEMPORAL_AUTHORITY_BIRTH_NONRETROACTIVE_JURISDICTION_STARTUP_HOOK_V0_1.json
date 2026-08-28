@@ -1,0 +1,99 @@
+{
+  "schema": "td613.a15-r0.bitemporal-authority-birth-nonretroactive-jurisdiction-startup/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 845,
+    "receipt": "8048a3986e2e583f59cc84500ec13caa49f0a52d",
+    "validation_run_number": 2357,
+    "validation_run_id": 33132594980,
+    "validation_conclusion": "SUCCESS"
+  },
+  "explicit_dependencies": {
+    "fadt_receipt": "11eec2d52c7e1aa722e8664c0df4cd1a61d704f1",
+    "schedule_state_lag_receipt": "a51afae88292878de2c02ca0a086ad1e88f73cfb",
+    "schedule_atlas_receipt": "f9d5ee89b8555175d0797893fdd8c91b5395ea8b"
+  },
+  "finite_domain": {
+    "schedules": 6,
+    "states_per_schedule": 125,
+    "antecedents": 750,
+    "claim_families": 6,
+    "prefixes": 3,
+    "jurisdiction_cells": 108
+  },
+  "claim_order": [
+    "FIRST_STRATUM",
+    "SCHEDULE",
+    "X1",
+    "X2",
+    "X3",
+    "FULL_STATE"
+  ],
+  "candidate_birth_signatures": {
+    "P-H-I": [1, 2, 1, 2, 3, 3],
+    "P-I-H": [1, 2, 1, 3, 2, 3],
+    "H-P-I": [1, 2, "INF", "INF", 3, "INF"],
+    "H-I-P": [1, 2, "INF", "INF", 2, "INF"],
+    "I-P-H": [1, 2, "INF", 3, "INF", "INF"],
+    "I-H-P": [1, 2, "INF", 2, "INF", "INF"]
+  },
+  "candidate_birth_spectrum": {
+    "1": 8,
+    "2": 10,
+    "3": 6,
+    "INF": 12
+  },
+  "candidate_authorized_accumulation": {
+    "1": 8,
+    "2": 18,
+    "3": 24
+  },
+  "candidate_ledger_totals": {
+    "authorized": 50,
+    "held": 58,
+    "eventually_authorized_but_earlier_held": 22,
+    "never_authorized_cells": 36
+  },
+  "candidate_process_equivalence_classes": {
+    "1": 3,
+    "2": 6,
+    "3": 6
+  },
+  "candidate_hierarchy_failures": {
+    "partial_latent_precedes_full_process_identity": 2,
+    "partial_latent_exists_with_full_state_infinite": 4
+  },
+  "candidate_laws": {
+    "all_six_birth_signatures_distinct": true,
+    "forward_authority_monotone": true,
+    "later_exact_descent_does_not_backdate_authority": true,
+    "every_held_cell_has_two_antecedent_fadt_wound": true,
+    "every_authorized_cell_has_empty_fadt_gaps": true
+  },
+  "required_hostile": {
+    "independent_antecedent_reconstruction": true,
+    "independent_operator_prefix_derivation": true,
+    "independent_trace_partitioning": true,
+    "independent_claim_labeling": true,
+    "independent_birth_atlas": true,
+    "held_cell_conflict_witnesses": 58,
+    "authorized_cell_gap_checks": 50,
+    "jurisdiction_cells": 108
+  },
+  "collision_membranes": {
+    "pr_752_generic_fadt_preserved": true,
+    "pr_804_schedule_full_state_lag_preserved": true,
+    "pr_845_safe_erasure_closure_preserved": true,
+    "commercial_ai_architecture_claim": false,
+    "general_bitemporal_database_theorem": false,
+    "physical_braid_claim": false
+  },
+  "authority": {
+    "merge": false,
+    "production": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "theorem_earned": false
+}
