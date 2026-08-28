@@ -1,0 +1,90 @@
+{
+  "schema": "td613.a15-r0.safe-authority-closure-correspondence-startup/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 843,
+    "receipt": "a7726078034328d9cad811ff9d8f73f52fd26729",
+    "validation_run_number": 2356,
+    "validation_run_id": 33131032209,
+    "validation_conclusion": "SUCCESS"
+  },
+  "domain": {
+    "repair_labels": 4,
+    "raw_claim_partitions": 15,
+    "earned_action_group_order": 8,
+    "earned_receiver_witness_family": 576,
+    "action_multiplicity": 72
+  },
+  "candidate_claim_closure": {
+    "definition": "Cl(pi)=Orb(K(pi))",
+    "fixed_claims": 7,
+    "nonfixed_claims": 8,
+    "safe_equivalence_classes": 7,
+    "fiber_sizes_descending": [5, 3, 3, 1, 1, 1, 1],
+    "fixed_claim_lattice_covers": 9,
+    "zero_cost_raw_refinement_covers": 8,
+    "strict_raw_refinement_covers": 23,
+    "every_nonfixed_claim_has_one_zero_cost_closure_cover": true
+  },
+  "candidate_distinct_safe_families": {
+    "576": 1,
+    "288": 1,
+    "144": 4,
+    "72": 1
+  },
+  "candidate_subgroup_census": {
+    "all_subgroups": 10,
+    "order_distribution": {
+      "1": 1,
+      "2": 5,
+      "4": 3,
+      "8": 1
+    },
+    "orbit_closed_claim_realizable_subgroups": 7,
+    "nonclosed_subgroups": 3,
+    "nonclosed_expansion_spectrum": {
+      "2_to_4": 1,
+      "4_to_8": 2
+    }
+  },
+  "candidate_correspondence": {
+    "law": "H<=K(pi) iff Orb(H) refines pi",
+    "claim_closure_idempotent": true,
+    "subgroup_closure_idempotent": true,
+    "same_safe_family_iff_same_closed_claim": true,
+    "raw_safe_equivalence_is_lattice_congruence": false
+  },
+  "preregistered_noncongruence_witness": {
+    "pi0": "0|1|2|3",
+    "pi1": "0,2|1|3",
+    "tau": "0,3|1|2",
+    "same_safe_subgroup_pi0_pi1": true,
+    "meet_pi0_tau": "0,3|1|2",
+    "meet_pi1_tau": "0,2,3|1",
+    "meet_safe_subgroups_predicted_distinct": true
+  },
+  "required_hostile": {
+    "independent_receiver_witness_reconstruction": true,
+    "independent_partition_generator": true,
+    "independent_subgroup_enumerator_over_256_action_subsets": true,
+    "subgroup_partition_correspondence_checks": 150,
+    "unordered_partition_pair_safe_equivalence_checks": 105,
+    "raw_refinement_covers": 31,
+    "fixed_claim_lattice_covers": 9,
+    "downstream_state_reconstructions": 750
+  },
+  "collision_membranes": {
+    "pr_753_fadt_universal_claim_partition_preserved": true,
+    "pr_843_raw_fifteen_partition_atlas_preserved": true,
+    "generic_group_action_novelty_claim": false,
+    "naive_quotient_lattice_claim": false
+  },
+  "authority": {
+    "merge": false,
+    "production": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "theorem_earned": false
+}
