@@ -25,6 +25,21 @@ TD613 Consolidated Validation run 2357 / 33132594980 — SUCCESS
 
 No theorem in this chamber rewrites those results.
 
+## Preimplementation protocol-tightening scar
+
+The first preregistration said the original schedule order was fixed. Before any theorem implementation existed, the acquisition contract was tightened to the exact intended sequential-prefix rule:
+
+```text
+ORIGINAL_PREFIX_ACQUISITION_IS_NO_SKIP
+```
+
+To acquire original stratum `k`, all earlier original strata `1..k-1` must already have been acquired. Replay may be inserted once or omitted, but the policy may not jump over an unobserved original stratum to cherry-pick a later row.
+
+This matters because `H-P-I` and `I-P-H` would admit a three-row set `{original1,replay,original3}` if original2 could be skipped. That is outside this chamber's sequential-prefix protocol and is therefore explicitly excluded before implementation.
+
+`FIXED_SCHEDULE_ORDER != SUFFICIENT_NO_SKIP_SPECIFICATION`
+`PREFIX_ACQUISITION != ARBITRARY_SUBSEQUENCE_SELECTION`
+
 ## Major question
 
 The inherited replay theorem proves that the fixed baseline replay row
@@ -37,11 +52,11 @@ rescues all six complete three-row schedules when appended after the original hi
 
 This chamber asks a different finite question:
 
-> If the original S3 schedule order remains fixed, the baseline replay row remains fixed, and at most one replay measurement may be inserted or skipped, what is the exact pointwise-minimal scalar-observation count required for three-coordinate latent-state reconstruction?
+> If original observations are acquired in no-skip prefix order, the baseline replay row remains fixed, and at most one replay measurement may be inserted or skipped, what is the exact pointwise-minimal scalar-observation count required for three-coordinate latent-state reconstruction?
 
-The policy may observe original strata sequentially and may stop as soon as an exact unimodular rank-three observation set is available.
+The policy may stop as soon as an exact unimodular rank-three observation set is available.
 
-This is **not** unrestricted optimal experimental design. It does not choose arbitrary new sensing rows, mutate the observation operators, reorder the source schedule, or run #699's endogenous question-transition model.
+This is **not** unrestricted optimal experimental design. It does not choose arbitrary new sensing rows, skip original prefix observations, mutate the observation operators, reorder the source schedule, or run #699's endogenous question-transition model.
 
 ## Preregistered two-prefix rank census
 
@@ -104,15 +119,15 @@ After first original stratum:
 ```text
 if first == P:
     skip baseline replay
-    continue inherited originals until rank 3
+    continue inherited original prefix until rank 3
 
 if first == H or first == I:
     baseline replay is already authorized as required
-    replay may be acquired immediately or deferred
-    continue inherited originals until rank 3
+    acquire replay immediately in the canonical executed policy
+    continue inherited original prefix until rank 3
 ```
 
-For the canonical executed policy, the replay row is acquired immediately after the first H/I stratum.
+Original observations are never skipped.
 
 Expected acquisition traces:
 
@@ -148,20 +163,20 @@ Every exact reconstruction of a three-coordinate state from scalar linear observ
 Within this chamber's fixed policy class:
 
 ```text
-- original source schedule order is fixed;
-- at most one copy of the declared baseline replay row [1,0,0] may be added;
+- original observations are acquired in strict prefix order without skipping;
+- at most one copy of the declared baseline replay row [1,0,0] may be inserted;
 - no arbitrary replacement sensing row is authorized.
 ```
 
-For the four rank-two prefix schedules, one additional independent scalar row can in principle close rank 3, so three total observations is the absolute lower bound and must be attained by the candidate policy.
+For the four schedules whose first two original rows have rank two, three scalar observations are the absolute dimension lower bound and the candidate policy must attain it.
 
-For `H-P-I` and `I-P-H`, the first two original rows are identical. Therefore, after two originals plus at most one replay row, there are at most two independent rows:
+For `H-P-I` and `I-P-H`, the first two mandatory original-prefix rows are identical. Any three-observation sequential-prefix history that has reached original2 and uses at most one replay therefore contains at most two independent rows:
 
 ```text
-rank <= 2.
+rank(original1, replay?, original2) <= 2.
 ```
 
-Exact state reconstruction in three scalar observations is therefore impossible for those two schedules inside the declared one-replay protocol. A fourth row is a strict lower bound and must be attained by the candidate policy.
+Original3 cannot lawfully be acquired without original2 already having been acquired. Exact state reconstruction in three scalar observations is therefore impossible for those two schedules inside the declared sequential-prefix one-replay protocol. A fourth observation is a strict lower bound and must be attained by the candidate policy.
 
 Candidate pointwise optimality law:
 
@@ -212,32 +227,33 @@ At minimum fail closed on:
 2. never-replay policy represented as exact on all six schedules;
 3. replay-required support claimed nonconstant inside a first-stratum fibre;
 4. exact schedule identity claimed at the first stratum;
-5. `H-P-I` claimed reconstructible in three rows under one baseline replay;
-6. `I-P-H` claimed reconstructible in three rows under one baseline replay;
+5. `H-P-I` claimed reconstructible in three rows under sequential-prefix one-replay acquisition;
+6. `I-P-H` claimed reconstructible in three rows under sequential-prefix one-replay acquisition;
 7. all-six-three-row claim;
-8. counting unacquired third originals on the two early-stop schedules as executed evidence;
-9. counting the inherited #807 24-row baseline as this chamber's adaptive execution;
-10. arbitrary new replay/sensing row introduced without preregistration;
-11. source schedule reordering;
-12. latent-state mutation;
-13. receiver-authority widening;
-14. schedule-identity backfill into t1;
-15. replay-policy authority confused with latent-state authority;
-16. #699 endogenous observation/operator mutation imported into this fixed-row theorem;
-17. physical active-sensing / sensor-control / universal optimal-experiment claim;
-18. Ash leakage of matrices, inverse coefficients, latent state, or schedule internals.
+8. original2 skipped to cherry-pick original3 inside a three-row lower-bound claim;
+9. counting unacquired third originals on the two early-stop schedules as executed evidence;
+10. counting the inherited #807 24-row baseline as this chamber's adaptive execution;
+11. arbitrary new replay/sensing row introduced without preregistration;
+12. source schedule reordering;
+13. latent-state mutation;
+14. receiver-authority widening;
+15. schedule-identity backfill into t1;
+16. replay-policy authority confused with latent-state authority;
+17. #699 endogenous observation/operator mutation imported into this fixed-row theorem;
+18. physical active-sensing / sensor-control / universal optimal-experiment claim;
+19. Ash leakage of matrices, inverse coefficients, latent state, or schedule internals.
 
 ## Candidate laws — UNEARNED UNTIL GREEN
 
 `IN_THE_FIXED_S3_AIA_FIXTURE_THE_EXACT_NEED_FOR_THE_DECLARED_BASELINE_REPLAY_PROBE_DESCENDS_AFTER_THE_FIRST_REGISTERED_STRATUM_BEFORE_EXACT_SCHEDULE_IDENTITY_DESCENDS_AFTER_TWO_STRATA`
 
-`A_FIXED_SEQUENTIAL_POLICY_USING_THE_FIRST_STRATUM_GATE_AND_AT_MOST_ONE_DECLARED_BASELINE_REPLAY_MEASUREMENT_ACHIEVES_POINTWISE_MINIMAL_EXACT_STATE_RECONSTRUCTION_COUNTS_3_3_4_3_4_3_ACROSS_THE_COMPLETE_SIX_SCHEDULE_ATLAS`
+`A_FIXED_SEQUENTIAL_PREFIX_POLICY_USING_THE_FIRST_STRATUM_GATE_AND_AT_MOST_ONE_DECLARED_BASELINE_REPLAY_MEASUREMENT_ACHIEVES_POINTWISE_MINIMAL_EXACT_STATE_RECONSTRUCTION_COUNTS_3_3_4_3_4_3_ACROSS_THE_COMPLETE_SIX_SCHEDULE_ATLAS`
 
 `THE_COMPLETE_ATLAS_ADAPTIVE_SCALAR_OBSERVATION_BURDEN_IS_20_RATHER_THAN_THE_UNCONDITIONAL_FOUR_ROW_REPLAY_PROTOCOLS_24_WITH_FOUR_ROWS_AVOIDED_WITHOUT_WEAKENING_EXACT_RECONSTRUCTION`
 
 `MEASUREMENT_POLICY_AUTHORITY_CAN_PRECEDE_EXACT_PROCESS_IDENTITY_WITHOUT_IMPLYING_LATENT_STATE_POSSESSION_IN_THE_FIXED_FINITE_FIXTURE`
 
-`THE_TWO_RANK_ONE_SECOND_PREFIX_SCHEDULES_H_P_I_AND_I_P_H_HAVE_AN_IRREDUCIBLE_FOUR_SCALAR_OBSERVATION_LOWER_BOUND_INSIDE_THE_DECLARED_ONE_BASELINE_REPLAY_PROTOCOL`
+`THE_TWO_RANK_ONE_SECOND_PREFIX_SCHEDULES_H_P_I_AND_I_P_H_HAVE_AN_IRREDUCIBLE_FOUR_SCALAR_OBSERVATION_LOWER_BOUND_INSIDE_THE_DECLARED_NO_SKIP_PREFIX_ONE_BASELINE_REPLAY_PROTOCOL`
 
 ## Mandatory scars
 
@@ -245,8 +261,9 @@ At minimum fail closed on:
 `POLICY_IDENTIFIABILITY != LATENT_STATE_IDENTIFIABILITY`
 `EARLY_REPLAY_AUTHORIZATION != EARLY_STATE_POSSESSION`
 `FIRST_STRATUM_GATE != UNIVERSAL_CAUSAL_PRIORITY`
-`POINTWISE_MINIMAL_IN_FIXED_ONE_REPLAY_PROTOCOL != UNIVERSAL_OPTIMAL_EXPERIMENT_DESIGN`
+`POINTWISE_MINIMAL_IN_FIXED_PREFIX_ONE_REPLAY_PROTOCOL != UNIVERSAL_OPTIMAL_EXPERIMENT_DESIGN`
 `FIXED_BASELINE_REPLAY != ARBITRARY_SENSOR_DESIGN`
+`PREFIX_ACQUISITION != ARBITRARY_SUBSEQUENCE_SELECTION`
 `REPLAY_INSERTION != SOURCE_SCHEDULE_REORDERING`
 `SCALAR_MEASUREMENT_BUDGET != SHANNON_CAPACITY`
 `FINITE_RANK_LOWER_BOUND != CONTINUUM_TOMOGRAPHY_LIMIT`
