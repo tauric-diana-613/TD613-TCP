@@ -13,7 +13,8 @@
     "raw_claim_partitions": 15,
     "earned_action_group_order": 8,
     "earned_receiver_witness_family": 576,
-    "action_multiplicity": 72
+    "action_multiplicity": 72,
+    "matching_edges_are_type_relative": true
   },
   "candidate_claim_closure": {
     "definition": "Cl(pi)=Orb(K(pi))",
@@ -55,12 +56,17 @@
     "raw_safe_equivalence_is_lattice_congruence": false
   },
   "preregistered_noncongruence_witness": {
-    "pi0": "0|1|2|3",
-    "pi1": "0,2|1|3",
-    "tau": "0,3|1|2",
-    "same_safe_subgroup_pi0_pi1": true,
-    "meet_pi0_tau": "0,3|1|2",
-    "meet_pi1_tau": "0,2,3|1",
+    "form": "matching_relative",
+    "construction": "for inherited matching edges {a,b} and {c,d}, let pi0 be discrete, pi1 have crossing pair {a,c}, and tau have crossing pair {a,d}; pi0 and pi1 have the same minimum safe subgroup, while meet(pi1,tau) contains the untouched matching edge {c,d} and acquires a larger safe subgroup",
+    "i_labelled_example": {
+      "matching": "0,1|2,3",
+      "pi0": "0|1|2|3",
+      "pi1": "0,2|1|3",
+      "tau": "0,3|1|2",
+      "meet_pi0_tau": "0,3|1|2",
+      "meet_pi1_tau": "0,2,3|1"
+    },
+    "must_be_instantiated_separately_for_H_I_X": true,
     "meet_safe_subgroups_predicted_distinct": true
   },
   "required_hostile": {
