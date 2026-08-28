@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_850_RECEIPT = '2fefe16e5883f6c4fe36d75e9e4c41331f317911';
 const PARENT_847_RECEIPT = '54b10adf8a30e779b1cb5f15ce6a4e8350285365';
 const PARENT_845_RECEIPT = '8048a3986e2e583f59cc84500ec13caa49f0a52d';
 const PARENT_843_RECEIPT = 'a7726078034328d9cad811ff9d8f73f52fd26729';
@@ -29,37 +30,37 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
-  PARENT_847_RECEIPT, PARENT_845_RECEIPT, PARENT_843_RECEIPT, PARENT_841_RECEIPT,
-  PARENT_839_RECEIPT, PARENT_837_RECEIPT, PARENT_834_RECEIPT, PARENT_830_RECEIPT,
-  PARENT_828_RECEIPT, PARENT_826_RECEIPT, PARENT_824_RECEIPT, PARENT_822_RECEIPT,
-  PARENT_820_RECEIPT, PARENT_818_RECEIPT, PARENT_812_RECEIPT, PARENT_810_RECEIPT,
-  PARENT_807_RECEIPT, PARENT_804_RECEIPT, PARENT_802_RECEIPT, PARENT_800_RECEIPT,
-  PARENT_798_RECEIPT, PARENT_796_RECEIPT, PARENT_794_RECEIPT, PARENT_792_RECEIPT,
-  BENCH_790_RECEIPT, FADT_752_RECEIPT,
+  PARENT_850_RECEIPT, PARENT_847_RECEIPT, PARENT_845_RECEIPT, PARENT_843_RECEIPT,
+  PARENT_841_RECEIPT, PARENT_839_RECEIPT, PARENT_837_RECEIPT, PARENT_834_RECEIPT,
+  PARENT_830_RECEIPT, PARENT_828_RECEIPT, PARENT_826_RECEIPT, PARENT_824_RECEIPT,
+  PARENT_822_RECEIPT, PARENT_820_RECEIPT, PARENT_818_RECEIPT, PARENT_812_RECEIPT,
+  PARENT_810_RECEIPT, PARENT_807_RECEIPT, PARENT_804_RECEIPT, PARENT_802_RECEIPT,
+  PARENT_800_RECEIPT, PARENT_798_RECEIPT, PARENT_796_RECEIPT, PARENT_794_RECEIPT,
+  PARENT_792_RECEIPT, BENCH_790_RECEIPT, FADT_752_RECEIPT,
 ]) {
   execFileSync('git', ['cat-file', '-e', `${receipt}^{commit}`], { stdio: 'pipe' });
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
 for (const [ancestor, descendant] of [
-  [PARENT_845_RECEIPT, PARENT_847_RECEIPT], [PARENT_843_RECEIPT, PARENT_845_RECEIPT],
-  [PARENT_841_RECEIPT, PARENT_843_RECEIPT], [PARENT_839_RECEIPT, PARENT_841_RECEIPT],
-  [PARENT_837_RECEIPT, PARENT_839_RECEIPT], [PARENT_834_RECEIPT, PARENT_837_RECEIPT],
-  [PARENT_830_RECEIPT, PARENT_834_RECEIPT], [PARENT_828_RECEIPT, PARENT_830_RECEIPT],
-  [PARENT_826_RECEIPT, PARENT_828_RECEIPT], [PARENT_824_RECEIPT, PARENT_826_RECEIPT],
-  [PARENT_822_RECEIPT, PARENT_824_RECEIPT], [PARENT_820_RECEIPT, PARENT_822_RECEIPT],
-  [PARENT_818_RECEIPT, PARENT_820_RECEIPT], [PARENT_812_RECEIPT, PARENT_818_RECEIPT],
-  [PARENT_810_RECEIPT, PARENT_812_RECEIPT], [PARENT_807_RECEIPT, PARENT_810_RECEIPT],
-  [PARENT_804_RECEIPT, PARENT_807_RECEIPT], [PARENT_802_RECEIPT, PARENT_804_RECEIPT],
-  [PARENT_800_RECEIPT, PARENT_802_RECEIPT], [PARENT_798_RECEIPT, PARENT_800_RECEIPT],
-  [PARENT_796_RECEIPT, PARENT_798_RECEIPT], [PARENT_794_RECEIPT, PARENT_796_RECEIPT],
-  [PARENT_792_RECEIPT, PARENT_794_RECEIPT], [BENCH_790_RECEIPT, PARENT_792_RECEIPT],
-  [FADT_752_RECEIPT, PARENT_792_RECEIPT],
+  [PARENT_847_RECEIPT, PARENT_850_RECEIPT], [PARENT_845_RECEIPT, PARENT_847_RECEIPT],
+  [PARENT_843_RECEIPT, PARENT_845_RECEIPT], [PARENT_841_RECEIPT, PARENT_843_RECEIPT],
+  [PARENT_839_RECEIPT, PARENT_841_RECEIPT], [PARENT_837_RECEIPT, PARENT_839_RECEIPT],
+  [PARENT_834_RECEIPT, PARENT_837_RECEIPT], [PARENT_830_RECEIPT, PARENT_834_RECEIPT],
+  [PARENT_828_RECEIPT, PARENT_830_RECEIPT], [PARENT_826_RECEIPT, PARENT_828_RECEIPT],
+  [PARENT_824_RECEIPT, PARENT_826_RECEIPT], [PARENT_822_RECEIPT, PARENT_824_RECEIPT],
+  [PARENT_820_RECEIPT, PARENT_822_RECEIPT], [PARENT_818_RECEIPT, PARENT_820_RECEIPT],
+  [PARENT_812_RECEIPT, PARENT_818_RECEIPT], [PARENT_810_RECEIPT, PARENT_812_RECEIPT],
+  [PARENT_807_RECEIPT, PARENT_810_RECEIPT], [PARENT_804_RECEIPT, PARENT_807_RECEIPT],
+  [PARENT_802_RECEIPT, PARENT_804_RECEIPT], [PARENT_800_RECEIPT, PARENT_802_RECEIPT],
+  [PARENT_798_RECEIPT, PARENT_800_RECEIPT], [PARENT_796_RECEIPT, PARENT_798_RECEIPT],
+  [PARENT_794_RECEIPT, PARENT_796_RECEIPT], [PARENT_792_RECEIPT, PARENT_794_RECEIPT],
+  [BENCH_790_RECEIPT, PARENT_792_RECEIPT], [FADT_752_RECEIPT, PARENT_792_RECEIPT],
 ]) execFileSync('git', ['merge-base', '--is-ancestor', ancestor, descendant], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
-  ['diff', '--name-only', `${PARENT_847_RECEIPT}..HEAD`, '--',
+  ['diff', '--name-only', `${PARENT_850_RECEIPT}..HEAD`, '--',
     'app/dome-world/docs/ash/experiments/a15-r0', 'app/dome-world/previews/a15-r0', 'tests'],
   { encoding: 'utf8' },
 ).trim().split('\n').filter(Boolean).filter(path => (
@@ -69,16 +70,16 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_BITEMPORAL_PROSPECTIVE_REPLAY_MINIMAL_OBSERVATION_POLICY_STARTUP_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/BITEMPORAL_PROSPECTIVE_REPLAY_MINIMAL_OBSERVATION_POLICY_STARTUP_HOOK_V0_1.json',
-  'app/dome-world/previews/a15-r0/bitemporal-prospective-replay-minimal-observation-policy.js',
-  'tests/ash-a15-r0-aperture-pedagogue-bitemporal-prospective-replay-minimal-observation-policy.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_ADMISSIBILITY_HORIZON_REFINEMENT_RECOMPRESSION_RUPTURE_STARTUP_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/ADMISSIBILITY_HORIZON_REFINEMENT_RECOMPRESSION_RUPTURE_STARTUP_HOOK_V0_1.json',
+  'app/dome-world/previews/a15-r0/admissibility-horizon-refinement-recompression-rupture.js',
+  'tests/ash-a15-r0-aperture-pedagogue-admissibility-horizon-refinement-recompression-rupture.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPaths.has(path));
-assert.deepEqual(historicalMutations, [], `post-#847 prospective replay chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.deepEqual(historicalMutations, [], `post-#850 admissibility-horizon chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
 assert.equal(changedA15R0.length, allowedCurrentChamberPaths.size);
-for (const path of allowedCurrentChamberPaths) assert.equal(changedA15R0.includes(path), true, `missing preregistered prospective replay path: ${path}`);
+for (const path of allowedCurrentChamberPaths) assert.equal(changedA15R0.includes(path), true, `missing preregistered admissibility-horizon path: ${path}`);
 
 execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -107,6 +108,7 @@ await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-repair-label
 await import('./ash-a15-r0-aperture-pedagogue-dromological-holonomy-safe-authority-closure-correspondence.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-bitemporal-authority-birth-nonretroactive-jurisdiction.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-bitemporal-prospective-replay-minimal-observation-policy.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-admissibility-horizon-refinement-recompression-rupture.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 bitemporal prospective replay minimal observation policy hardening tests passed.');
+console.log('Ash A15-R0 admissibility-horizon refinement/recompression hardening tests passed.');
