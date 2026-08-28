@@ -1,0 +1,82 @@
+{
+  "schema": "td613.a15-r0.claim-bundle-minimal-sufficient-custody-frontier.startup/v0.1",
+  "authorship_custody": "Tauric Diana — Crimean heritage custodianship",
+  "mode": "writerly-𝌋",
+  "status": "PREREGISTRATION_ONLY_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 852,
+    "receipt": "623e03795d9cb4dfef33c003b05c3efc45da3f9a",
+    "validation_run": 33137350922,
+    "validation_run_number": 2361,
+    "validation_conclusion": "SUCCESS"
+  },
+  "witness_only_parent_route": 853,
+  "question": "For every nonempty bundle of the seven earned claim families, what is the exact earliest/coarsest registered stage that preserves simultaneous claim authority, and what is the exact recompression boundary below which at least one constituent wound reopens?",
+  "finite_domain": {
+    "schedules": 6,
+    "claims": 7,
+    "nonempty_bundles_per_schedule": 127,
+    "schedule_bundle_pairs": 762,
+    "registered_stages": 4,
+    "bundle_jurisdiction_cells": 3048
+  },
+  "preregistered_minimum_stage_distribution": {
+    "q1": 26,
+    "q2": 80,
+    "q3": 208,
+    "INF": 448
+  },
+  "preregistered_stage_ledger": {
+    "q0": { "authorized": 0, "held": 762 },
+    "q1": { "authorized": 26, "held": 736 },
+    "q2": { "authorized": 106, "held": 656 },
+    "q3": { "authorized": 314, "held": 448 }
+  },
+  "preregistered_recompression_census": {
+    "fine_authorized_ordered_transitions": 1180,
+    "preserved": 158,
+    "reopened": 1022,
+    "state_indexed_preserving_checks": 19750,
+    "state_indexed_reopening_checks": 127750,
+    "state_indexed_total": 147500
+  },
+  "candidate_law": "bundle_birth_equals_maximum_constituent_birth_with_INF_absorbing",
+  "required_controls": [
+    "bundle_authorized_iff_joint_bundle_value_constant_on_every_occupied_target_fibre",
+    "no_INF_bundle_authorized_in_q0_q1_q2_q3",
+    "safe_recompression_iff_coarse_stage_at_or_after_bundle_birth",
+    "unsafe_recompression_must_pin_at_least_one_constituent_wound",
+    "same_bundle_size_does_not_imply_same_minimum_stage",
+    "no_source_state_mutation",
+    "no_retroactive_possession"
+  ],
+  "scars": [
+    "CLAIM_BUNDLE != SINGLE_SEMANTIC_OBJECT",
+    "BUNDLE_AUTHORITY != SOURCE_TRUTH",
+    "MINIMUM_SUFFICIENT_STAGE != MINIMUM_BIT_LENGTH",
+    "MINIMUM_SUFFICIENT_STAGE != UNIQUE_MINIMAL_ENCODING",
+    "MINIMUM_SUFFICIENT_STAGE != UNIVERSAL_SUFFICIENT_STATISTIC",
+    "BUNDLE_CARDINALITY != BUNDLE_AUTHORITY_IDENTITY",
+    "SAME_MINIMUM_STAGE != SAME_CLAIM_BUNDLE",
+    "INF_IN_THIS_FIXTURE != PRINCIPLED_UNKNOWABILITY",
+    "SAFE_RECOMPRESSION_FLOOR != DATA_RETENTION_POLICY",
+    "FINITE_STAGE_SYNTHESIS != ASYMPTOTIC_OPTIMIZATION"
+  ],
+  "hard_ceiling": {
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false,
+    "universal_sufficient_statistic": false,
+    "shannon_entropy": false,
+    "asymptotic_optimization": false,
+    "general_database_theorem": false,
+    "physical_sensing": false,
+    "source_state_mutation": false,
+    "proto_loom_a16": false,
+    "pr_788_promotion": false
+  },
+  "pr_718_remains_alive": true
+}
