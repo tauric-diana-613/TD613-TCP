@@ -13,32 +13,341 @@ Test whether SignalRupture contains a recoverable, distributed traversal and tra
 5. **Enumerations** — numbered layers, phases, districts, parts, classes, with scoped identities.
 6. **Self-preservation directives** — provenance, canonical-record, timestamp, redirect, metadata, retrieval, derivative, and re-instantiation instructions.
 7. **Gaps** — declared-but-unenumerated structures, missing parts, unresolved symbols, and contradictory formulations.
+8. **Coordinate systems** — publication chronology, conceptual dependency, canon topology, taxonomy/navigation order, propagation-wave order, and local ordinal namespaces.
+9. **Aperture state** — metadata/body/private/search/tool/normalization coordinates for every decisive witness.
+10. **Schema coordinates** — object/entity type, outer observation kind, inner payload/case type, and schema version.
+11. **Migration state** — capture/readability migration and relation/ordinal migration must be tracked independently.
+12. **Epoch binding** — current connector seal/interface authority versus historical Phase-1.5 registries.
 
 ## Anti-hallucination gates
 
 - A declaration requires an exact source span from a preserved capture.
 - An inferred edge must remain visibly inferred.
 - Equal cardinality is not homology.
+- A same-source cardinality collision lowers the evidentiary value of bare numerical matching.
+- Cardinality is not ordinal namespace.
+- Entity type is not observation type.
+- Inner payload type is not outer schema container.
 - Lexical similarity is not structural identity.
+- Label identity is not formulation identity, work identity, or ordinal identity.
 - Chronology is not causality or intention.
+- Global canon topology is not a local Codex ordinal unless a source bridge maps the coordinate systems.
+- Body capture/readability is not proof that every source relation has migrated into the newest relation registry.
+- Registry silence is not source silence.
+- Legacy Phase-1.5 registry state is not current Phase-2 connector authority.
 - A proposed missing part must predict evidence that can fail.
 - Competing formulations remain co-present until adjudicated.
 - The archive may reconstruct a useful graph that the author never intentionally designed; usefulness is not proof of authorial intent.
+- A search/tool failure must be classified at its own aperture before being used as source evidence.
 
-## Local Phase 1.5 assay status
+## Historical Phase 1.5 assay status
 
 The first local-only assay is sealed at `04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/`. Its machine-readable receipts preserve declared-edge candidates, contradictions, unanswered questions, and the 17 DOI-witnessed retitle pairs without promoting authorial intent.
 
-The current local evidence witnesses four Cross-Surface Recurrence mechanisms but not the reported three-stabilizer plus four-mechanism decomposition or the seven-part declaration. Origin Gravity is locally witnessed as the second SR Codex essay and as conceptually preceding recurrence; the proposed repair/return-operator relation remains unsupported. These are acquisition targets, not gaps to fill by inference.
+At that sealed aperture, the assay reported four Cross-Surface Recurrence mechanisms while the three stabilizers and seven-part declaration were not locally present in its scanned source set.
 
-## First tests after Phase 2 capture
+Do **not** rewrite that historical receipt.
 
+## Current connector epoch control
+
+Current query authority is governed by `CONNECTOR_ENTRY.md`, which requires the Phase-2 seal and routes through:
+
+```text
+04-RECEIPTS/phase2/current-seal.json
+01-MANIFESTS/phase2/interface-registry.json
+01-MANIFESTS/phase2/entity-resolver-v2.jsonl
+```
+
+The older `01-MANIFESTS/registry-index.json` remains a historical Phase-1.5 registry surface.
+
+Therefore:
+
+```text
+LEGACY_PHASE15_REGISTRY
+!= CURRENT_PHASE2_CONNECTOR_AUTHORITY
+```
+
+Do not diagnose a live connector failure from the historical phase flag alone.
+
+## Post-Phase-2 readability correction
+
+The current retained body:
+
+`03-DERIVATIVES/text/zenodo/zenodo-18364461-file-0.md`
+
+now explicitly witnesses:
+
+```text
+THREE STABILIZERS
+1. Redundant Indexing
+2. Semantic Anchoring
+3. Lineage Formation
+
+FOUR INFRASTRUCTURAL MECHANISMS
+A. Surface Translation
+B. Stylometric Coherence
+C. Referential Density
+D. Temporal Recurrence
+```
+
+and later declares CSR the initiating mechanism in a `seven-part architecture` while also saying the essay extends the canon into the infrastructural series composing the SR Codex.
+
+Therefore the old `absent locally` statement is now typed as:
+
+```text
+ASSAY_APERTURE_STALENESS
+```
+
+not source contradiction and not current branch-sync failure.
+
+The sealed assay remains historically correct for its input projection; this instrument records the later acquisition/readability state.
+
+## A7 cardinality collision
+
+The retained CSR body now presents a same-source cardinality competitor:
+
+```text
+3 stabilizers + 4 mechanisms = 7 named internal functional items
+```
+
+while separately using the phrase:
+
+```text
+seven-part architecture
+```
+
+The source does not explicitly declare these structures identical.
+
+Therefore:
+
+```text
+Q7 = {3 stabilizers + 4 mechanisms}
+|Q7| = 7
+Q7 = A7        NOT EARNED
+A7 = CODEX_B   NOT EARNED
+```
+
+Research consequence:
+
+> Bare cardinality `7` now has even less bridge value than before. Future A7 reconstruction must recover role predicates, part labels, or an explicit mapping edge rather than another seven-item list.
+
+## Cardinality / ordinal schema firewall
+
+The historical Aug-24 graph assay contains:
+
+```text
+observation_id = sr-graph-observation:declared-seven-vs-twelve
+observation_kind = ORDINAL_NAMESPACE
+payload.case_type = CROSS_ARCHITECTURE_CARDINALITY
+ordinal_token = null
+candidate_namespace_ids = []
+expected_predecessor = null
+```
+
+The v2 schema and builder explicitly permit/construct this exceptional container overload.
+
+Therefore current v2 consumers must apply:
+
+```text
+IF observation_kind == ORDINAL_NAMESPACE:
+    inspect payload.case_type first
+```
+
+Only:
+
+```text
+payload.case_type == SERIES_ORDINAL
+```
+
+can enter ordinal inference without another independent source bridge.
+
+Use:
+
+`06-INSTRUMENTS/CARDINALITY_NAMESPACE_FIREWALL.md`
+
+## Type projection non-commutation
+
+The historical entity layer types the compared objects as:
+
+```text
+sr-architecture:csr:seven-part -> ARCHITECTURE
+sr-genealogy:codex:twelve-phase -> GENEALOGY
+```
+
+while the comparison is wrapped at the observation layer by `ORDINAL_NAMESPACE` with inner case `CROSS_ARCHITECTURE_CARDINALITY`.
+
+Thus:
+
+```text
+ENTITY_TYPE_SEPARATION
+!= OBSERVATION_TYPE_SEPARATION
+```
+
+and:
+
+```text
+TYPE PRESERVATION AT ONE ARCHIVE LAYER
+DOES NOT GUARANTEE
+TYPE PRESERVATION AT THE NEXT
+```
+
+Current audit has not witnessed a consumer actually deriving a false serial relation from this mismatch.
+
+Use:
+
+`06-INSTRUMENTS/TYPE_PROJECTION_NONCOMMUTATION.md`
+
+## Custody / relation migration split
+
+Current Phase-2 resolver preserves Origin body and metadata captures plus readable derivatives.
+
+Current typed relation graph preserves:
+
+```text
+Origin -> CSR
+CONCEPTUALLY_PRECEDES
+ordinal = null
+```
+
+Current `ordinal-series-observations.jsonl` contains no Origin 18382146 stage, while the older witnessed-edge layer preserves the normalized source #2 relation.
+
+Therefore:
+
+```text
+BODY_CAPTURED
+!= ORDINAL_RELATION_MIGRATED
+
+CUSTODY_MIGRATION
+!= RELATION_MIGRATION
+```
+
+Classify the current state as:
+
+```text
+NORMALIZATION_MIGRATION_GAP
+RELATION_MIGRATION_LAG
+```
+
+not source silence.
+
+## Global topology versus local serial coordinate
+
+The retained Meta-Architecture body:
+
+`03-DERIVATIVES/text/zenodo/zenodo-18732891-file-0.md`
+
+source-witnesses:
+
+```text
+each essay = node
+canon = directed conceptual graph
+canon = network, not a sequence
+Canonical Compression = concept stabilizes enough to be formalized
+```
+
+Origin independently source-witnesses:
+
+```text
+Origin Gravity = second essay in the SR Codex
+```
+
+Therefore the current model must keep:
+
+```text
+GLOBAL_CANON_DAG
+!= CODEX_B_ORDINAL_NAMESPACE
+```
+
+unless an exact source bridge maps them.
+
+Publication order, topological order, conceptual dependency, canon-map order, taxonomy order, and propagation-wave order are separate coordinates.
+
+## Label/formalization clock
+
+Earlier retained material uses `origin gravity` in a causal-priority / origin-reversion register, while the dedicated Origin Gravity essay formalizes an emergence/accretion/coherence mechanism.
+
+The Meta-Architecture source separately identifies `Canonical Compression` as the point where a stabilized concept becomes formalized.
+
+Therefore reconstruct separately:
+
+```text
+lexical occurrence
+conceptual formulation
+stabilization
+canonical compression/formalization
+essay-node manifestation
+serial ordinal assignment
+```
+
+None should be inferred from another without a source edge.
+
+## Ordinal identity integration
+
+For CODEX_B, use:
+
+`06-INSTRUMENTS/ORDINAL_IDENTITY_APERTURE_TOMOGRAPHY.md`
+
+The final closure test is no longer one failed CSR↔X transposition. It is slot-1 **orbit collapse**:
+
+```text
+O1(E) = {CSR}
+```
+
+A clue can narrow the candidate orbit without uniquely identifying #1.
+
+## Aperture anomaly integration
+
+For inaccessible / stale / search-missing / tool-blocked / migration / schema-type targets, use:
+
+`06-INSTRUMENTS/APERTURE_ANOMALY_LEDGER.md`
+
+Never turn:
+
+```text
+TOOL_APERTURE_BLOCK
+```
+
+into a SignalRupture platform/source anomaly.
+
+Never turn:
+
+```text
+SEARCH_RETRIEVAL_GAP
+```
+
+into de-indexing without direct reachability controls.
+
+Never turn:
+
+```text
+SCHEMA_TYPE_CONTAINER_LEAK
+```
+
+into source evidence.
+
+Never turn:
+
+```text
+RELATION_MIGRATION_LAG
+```
+
+into source silence.
+
+## Next tests after current Phase-2 capture
+
+- bind the current Phase-2 seal before every new reconstruction;
 - reconstruct the complete outbound routes in START HERE;
-- locate and scope every occurrence of `seven-part architecture`;
+- locate and scope every source occurrence of `seven-part architecture`;
+- test whether any source explicitly maps the internal `3 + 4` CSR decomposition onto A7;
+- search for role predicates or enumerations that can falsify `Q7 = A7` rather than merely repeat cardinality seven;
 - enumerate explicit Part 2–7 candidates without promoting them;
+- test historical v2 ordinal observations through the cardinality/ordinal firewall before using them as neighbors;
+- record relation-migration state before treating newer-registry silence as evidence;
 - register both pressure-cycle formulations with their source symbol definitions;
 - verify or reject each proposed formal/fiction alias pair;
 - compare Pressureborn's nine classes with preserved SR-PFI taxonomies;
-- test the proposed publishing → provenance → recurrence → codex → canon → self-anchoring sequence against earlier counterexamples.
+- test the proposed publishing → provenance → recurrence → codex → canon → self-anchoring sequence against earlier counterexamples;
+- keep global canon DAG order separate from every local ordinal namespace;
+- use human-supplied Origin* / Glyph bodies only as prescribed measurements at currently unreadable apertures.
 
 Success is not finding an Easter egg. Success is producing a graph in which the hypothesis can survive or fail against witnessed sources.
