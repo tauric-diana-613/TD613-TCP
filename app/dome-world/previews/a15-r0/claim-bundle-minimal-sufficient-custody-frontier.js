@@ -191,8 +191,8 @@ function bundleAtlas(stageFibres, antecedents, bundles, birthsBySchedule) {
   const rows = [];
   let jointSupportChecks = 0;
   let maxBirthAgreementChecks = 0;
-  let cellHomogeneityChecks = 0;
-  let cellHomogeneityViolations = 0;
+  let cellAuthorizationChecks = 0;
+  let mixedHeldCells = 0;
 
   for (const [id, targets] of targetsBySchedule.entries()) {
     const births = birthsBySchedule.get(id);
@@ -208,15 +208,16 @@ function bundleAtlas(stageFibres, antecedents, bundles, birthsBySchedule) {
           if (profile.exact) exactTargets += 1;
           else inexactTargets += 1;
         }
-        cellHomogeneityChecks += 1;
-        const homogeneous = exactTargets === targets.length || inexactTargets === targets.length;
-        if (!homogeneous) cellHomogeneityViolations += 1;
+        cellAuthorizationChecks += 1;
+        const authorized = exactTargets === targets.length;
+        const mixed = exactTargets > 0 && inexactTargets > 0;
+        if (!authorized && mixed) mixedHeldCells += 1;
         cells.push(freeze({
           stage,
-          authorized: exactTargets === targets.length,
+          authorized,
           exact_target_count: exactTargets,
           inexact_target_count: inexactTargets,
-          homogeneous,
+          mixed_target_fibres: mixed,
         }));
       }
       const birthCell = cells.find(cell => cell.authorized);
@@ -240,14 +241,18 @@ function bundleAtlas(stageFibres, antecedents, bundles, birthsBySchedule) {
     rows: freeze(rows),
     joint_support_target_checks: jointSupportChecks,
     max_birth_agreement_checks: maxBirthAgreementChecks,
-    cell_homogeneity_checks: cellHomogeneityChecks,
-    cell_homogeneity_violations: cellHomogeneityViolations,
+    cell_authorization_checks: cellAuthorizationChecks,
+    mixed_held_cells: mixedHeldCells,
     exact: rows.length === 762
       && jointSupportChecks === 381000
       && maxBirthAgreementChecks === 762
-      && cellHomogeneityChecks === 3048
-      && cellHomogeneityViolations === 0
-      && rows.every(row => row.max_birth_agreement),
+      && cellAuthorizationChecks === 3048
+      && mixedHeldCells > 0
+      && rows.every(row => row.max_birth_agreement)
+      && rows.every(row => row.cells.every(cell => (
+        cell.authorized === (cell.exact_target_count === 125)
+        && cell.exact_target_count + cell.inexact_target_count === 125
+      ))),
   });
 }
 
@@ -333,6 +338,7 @@ function recompressionCertificate(atlasRows) {
           reopened += 1;
           byBirth[String(birth)].reopened += 1;
           reopeningStateChecks += 125;
+          if (!coarseCell || coarseCell.inexact_target_count < 1) frontierViolations += 1;
         }
       }
     }
@@ -454,6 +460,8 @@ export function claimBundleMinimalSufficientCustodyFrontierCertificate() {
       'INF_IN_THIS_FIXTURE != PRINCIPLED_UNKNOWABILITY',
       'SAFE_RECOMPRESSION_FLOOR != DATA_RETENTION_POLICY',
       'AUTHORITY_PRESERVING_RECOMPRESSION != SOURCE_STATE_COMPRESSION',
+      'SCHEDULE_BUNDLE_HOLD != EVERY_TARGET_FIBRE_WOUNDED',
+      'MIXED_EXACT_AND_WOUNDED_TARGET_FIBRES != SCHEDULE_LEVEL_AUTHORITY',
       'JOINT_CLAIM_CONSTANCY != SEMANTIC_COMPLETENESS',
       'FINITE_127_BUNDLE_CENSUS != UNIVERSAL_INFORMATION_LATTICE_THEOREM',
       'FINITE_STAGE_SYNTHESIS != ASYMPTOTIC_OPTIMIZATION',
