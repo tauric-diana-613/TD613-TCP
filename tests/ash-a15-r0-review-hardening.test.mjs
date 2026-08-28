@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_854_RECEIPT = 'c83bafb12ff6e44f10481f41190fd91bbbf85650';
 const PARENT_852_RECEIPT = '623e03795d9cb4dfef33c003b05c3efc45da3f9a';
 const PARENT_850_RECEIPT = '2fefe16e5883f6c4fe36d75e9e4c41331f317911';
 const PARENT_847_RECEIPT = '54b10adf8a30e779b1cb5f15ce6a4e8350285365';
@@ -31,38 +32,39 @@ const BENCH_790_RECEIPT = 'a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT = '11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
 for (const receipt of [
-  PARENT_852_RECEIPT, PARENT_850_RECEIPT, PARENT_847_RECEIPT, PARENT_845_RECEIPT,
-  PARENT_843_RECEIPT, PARENT_841_RECEIPT, PARENT_839_RECEIPT, PARENT_837_RECEIPT,
-  PARENT_834_RECEIPT, PARENT_830_RECEIPT, PARENT_828_RECEIPT, PARENT_826_RECEIPT,
-  PARENT_824_RECEIPT, PARENT_822_RECEIPT, PARENT_820_RECEIPT, PARENT_818_RECEIPT,
-  PARENT_812_RECEIPT, PARENT_810_RECEIPT, PARENT_807_RECEIPT, PARENT_804_RECEIPT,
-  PARENT_802_RECEIPT, PARENT_800_RECEIPT, PARENT_798_RECEIPT, PARENT_796_RECEIPT,
-  PARENT_794_RECEIPT, PARENT_792_RECEIPT, BENCH_790_RECEIPT, FADT_752_RECEIPT,
+  PARENT_854_RECEIPT, PARENT_852_RECEIPT, PARENT_850_RECEIPT, PARENT_847_RECEIPT,
+  PARENT_845_RECEIPT, PARENT_843_RECEIPT, PARENT_841_RECEIPT, PARENT_839_RECEIPT,
+  PARENT_837_RECEIPT, PARENT_834_RECEIPT, PARENT_830_RECEIPT, PARENT_828_RECEIPT,
+  PARENT_826_RECEIPT, PARENT_824_RECEIPT, PARENT_822_RECEIPT, PARENT_820_RECEIPT,
+  PARENT_818_RECEIPT, PARENT_812_RECEIPT, PARENT_810_RECEIPT, PARENT_807_RECEIPT,
+  PARENT_804_RECEIPT, PARENT_802_RECEIPT, PARENT_800_RECEIPT, PARENT_798_RECEIPT,
+  PARENT_796_RECEIPT, PARENT_794_RECEIPT, PARENT_792_RECEIPT, BENCH_790_RECEIPT,
+  FADT_752_RECEIPT,
 ]) {
   execFileSync('git', ['cat-file', '-e', `${receipt}^{commit}`], { stdio: 'pipe' });
   execFileSync('git', ['merge-base', '--is-ancestor', receipt, 'HEAD'], { stdio: 'pipe' });
 }
 
 for (const [ancestor, descendant] of [
-  [PARENT_850_RECEIPT, PARENT_852_RECEIPT], [PARENT_847_RECEIPT, PARENT_850_RECEIPT],
-  [PARENT_845_RECEIPT, PARENT_847_RECEIPT], [PARENT_843_RECEIPT, PARENT_845_RECEIPT],
-  [PARENT_841_RECEIPT, PARENT_843_RECEIPT], [PARENT_839_RECEIPT, PARENT_841_RECEIPT],
-  [PARENT_837_RECEIPT, PARENT_839_RECEIPT], [PARENT_834_RECEIPT, PARENT_837_RECEIPT],
-  [PARENT_830_RECEIPT, PARENT_834_RECEIPT], [PARENT_828_RECEIPT, PARENT_830_RECEIPT],
-  [PARENT_826_RECEIPT, PARENT_828_RECEIPT], [PARENT_824_RECEIPT, PARENT_826_RECEIPT],
-  [PARENT_822_RECEIPT, PARENT_824_RECEIPT], [PARENT_820_RECEIPT, PARENT_822_RECEIPT],
-  [PARENT_818_RECEIPT, PARENT_820_RECEIPT], [PARENT_812_RECEIPT, PARENT_818_RECEIPT],
-  [PARENT_810_RECEIPT, PARENT_812_RECEIPT], [PARENT_807_RECEIPT, PARENT_810_RECEIPT],
-  [PARENT_804_RECEIPT, PARENT_807_RECEIPT], [PARENT_802_RECEIPT, PARENT_804_RECEIPT],
-  [PARENT_800_RECEIPT, PARENT_802_RECEIPT], [PARENT_798_RECEIPT, PARENT_800_RECEIPT],
-  [PARENT_796_RECEIPT, PARENT_798_RECEIPT], [PARENT_794_RECEIPT, PARENT_796_RECEIPT],
-  [PARENT_792_RECEIPT, PARENT_794_RECEIPT], [BENCH_790_RECEIPT, PARENT_792_RECEIPT],
-  [FADT_752_RECEIPT, PARENT_792_RECEIPT],
+  [PARENT_852_RECEIPT, PARENT_854_RECEIPT], [PARENT_850_RECEIPT, PARENT_852_RECEIPT],
+  [PARENT_847_RECEIPT, PARENT_850_RECEIPT], [PARENT_845_RECEIPT, PARENT_847_RECEIPT],
+  [PARENT_843_RECEIPT, PARENT_845_RECEIPT], [PARENT_841_RECEIPT, PARENT_843_RECEIPT],
+  [PARENT_839_RECEIPT, PARENT_841_RECEIPT], [PARENT_837_RECEIPT, PARENT_839_RECEIPT],
+  [PARENT_834_RECEIPT, PARENT_837_RECEIPT], [PARENT_830_RECEIPT, PARENT_834_RECEIPT],
+  [PARENT_828_RECEIPT, PARENT_830_RECEIPT], [PARENT_826_RECEIPT, PARENT_828_RECEIPT],
+  [PARENT_824_RECEIPT, PARENT_826_RECEIPT], [PARENT_822_RECEIPT, PARENT_824_RECEIPT],
+  [PARENT_820_RECEIPT, PARENT_822_RECEIPT], [PARENT_818_RECEIPT, PARENT_820_RECEIPT],
+  [PARENT_812_RECEIPT, PARENT_818_RECEIPT], [PARENT_810_RECEIPT, PARENT_812_RECEIPT],
+  [PARENT_807_RECEIPT, PARENT_810_RECEIPT], [PARENT_804_RECEIPT, PARENT_807_RECEIPT],
+  [PARENT_802_RECEIPT, PARENT_804_RECEIPT], [PARENT_800_RECEIPT, PARENT_802_RECEIPT],
+  [PARENT_798_RECEIPT, PARENT_800_RECEIPT], [PARENT_796_RECEIPT, PARENT_798_RECEIPT],
+  [PARENT_794_RECEIPT, PARENT_796_RECEIPT], [PARENT_792_RECEIPT, PARENT_794_RECEIPT],
+  [BENCH_790_RECEIPT, PARENT_792_RECEIPT], [FADT_752_RECEIPT, PARENT_792_RECEIPT],
 ]) execFileSync('git', ['merge-base', '--is-ancestor', ancestor, descendant], { stdio: 'pipe' });
 
 const changedA15R0 = execFileSync(
   'git',
-  ['diff', '--name-only', `${PARENT_852_RECEIPT}..HEAD`, '--',
+  ['diff', '--name-only', `${PARENT_854_RECEIPT}..HEAD`, '--',
     'app/dome-world/docs/ash/experiments/a15-r0', 'app/dome-world/previews/a15-r0', 'tests'],
   { encoding: 'utf8' },
 ).trim().split('\n').filter(Boolean).filter(path => (
@@ -72,17 +74,22 @@ const changedA15R0 = execFileSync(
 ));
 
 const allowedCurrentChamberPaths = new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_CLAIM_BUNDLE_MINIMAL_SUFFICIENT_CUSTODY_FRONTIER_STARTUP_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/CLAIM_BUNDLE_MINIMAL_SUFFICIENT_CUSTODY_FRONTIER_STARTUP_HOOK_V0_1.json',
-  'app/dome-world/previews/a15-r0/claim-bundle-minimal-sufficient-custody-frontier.js',
-  'tests/ash-a15-r0-aperture-pedagogue-claim-bundle-minimal-sufficient-custody-frontier.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/APERTURE_PEDAGOGUE_POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_STARTUP_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_STARTUP_HOOK_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_CENSUS_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/POST_RECOMPRESSION_BUNDLE_RESTORATION_SIDECAR_CENSUS_EXPECTATIONS_V0_1.json',
+  'app/dome-world/previews/a15-r0/post-recompression-bundle-restoration-sidecar.js',
+  'tests/ash-a15-r0-aperture-pedagogue-post-recompression-bundle-restoration-sidecar.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations = changedA15R0.filter(path => !allowedCurrentChamberPaths.has(path));
-assert.deepEqual(historicalMutations, [], `post-#852 claim-bundle custody chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.deepEqual(historicalMutations, [],
+  `post-#854 restoration-sidecar chamber may not mutate inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
 assert.equal(changedA15R0.length, allowedCurrentChamberPaths.size,
-  `claim-bundle custody chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`);
-for (const path of allowedCurrentChamberPaths) assert.equal(changedA15R0.includes(path), true, `missing preregistered claim-bundle custody path: ${path}`);
+  `restoration-sidecar chamber must contain exactly ${allowedCurrentChamberPaths.size} live paths; observed ${changedA15R0.length}`);
+for (const path of allowedCurrentChamberPaths) {
+  assert.equal(changedA15R0.includes(path), true, `missing preregistered restoration-sidecar path: ${path}`);
+}
 
 execFileSync(process.execPath, ['tests/ash-a15-r0-review-hardening-sharded.test.mjs'], { stdio: 'inherit' });
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -113,6 +120,7 @@ await import('./ash-a15-r0-aperture-pedagogue-bitemporal-authority-birth-nonretr
 await import('./ash-a15-r0-aperture-pedagogue-bitemporal-prospective-replay-minimal-observation-policy.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-admissibility-horizon-refinement-recompression-rupture.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-claim-bundle-minimal-sufficient-custody-frontier.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-post-recompression-bundle-restoration-sidecar.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 claim-bundle minimal sufficient custody frontier hardening tests passed.');
+console.log('Ash A15-R0 post-recompression bundle restoration sidecar hardening tests passed.');
