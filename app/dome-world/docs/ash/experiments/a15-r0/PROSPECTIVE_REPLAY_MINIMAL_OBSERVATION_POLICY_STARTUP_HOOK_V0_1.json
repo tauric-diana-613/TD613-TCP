@@ -13,8 +13,16 @@
     "schedule_state_lag_pr": 804,
     "baseline_replay_rescue_pr": 807
   },
+  "preimplementation_protocol_tightening": {
+    "fixed_schedule_order_alone_was_insufficient": true,
+    "original_prefix_acquisition_no_skip": true,
+    "later_original_requires_all_earlier_originals_acquired": true,
+    "replay_may_be_inserted_once_or_omitted": true,
+    "arbitrary_original_subsequence_selection": false
+  },
   "fixed_policy_class": {
     "original_schedule_order_fixed": true,
+    "original_prefix_acquisition_no_skip": true,
     "baseline_replay_row": [1,0,0],
     "maximum_replay_measurements": 1,
     "arbitrary_new_sensing_rows": false,
