@@ -100,7 +100,22 @@ export function trajectoryCustodyFunctionalClosureCanonicalCertificate() {
       initial_specimen_preserved:true,
       corrected_comparison:'NORMALIZED_TOP_LEVEL_KEY_VALUE_IDENTITY',
     }),
-    hierarchy:initial.hierarchy,
+    preauthority_theoretical_refinement:freeze({
+      superseded_candidate_receipt:'aee13ca4c71f02ea7d7688e28b304adbf471b0aa',
+      withdrawn_claim:'864_REQUIRES_PER_FIBRE_CARDINALITY_PROFILES_BEYOND_STAGE_MAXIMA',
+      replacement_claim:'PER_FIBRE_CARDINALITY_PROFILES_ARE_A_DIRECT_SUFFICIENT_REPLAY_REPRESENTATION_FOR_864_WITHOUT_A_NECESSITY_CLAIM_BEYOND_SCHEDULE_CONDITIONED_MAXIMA',
+      replay_counts_changed:false,
+      parent_matches_changed:false,
+      theorem_core_changed:false,
+      interpretive_necessity_claim_narrowed:true,
+      preregistration_rewritten:false,
+    }),
+    hierarchy:freeze({
+      ...initial.hierarchy,
+      profile_sufficiency_for_864:true,
+      profile_strict_necessity_beyond_schedule_conditioned_maxima:false,
+      support_identity_still_required_for_866_semantic_union:true,
+    }),
     replay_858:initial.replay_858,
     replay_860:initial.replay_860,
     replay_862:initial.replay_862,
@@ -111,8 +126,8 @@ export function trajectoryCustodyFunctionalClosureCanonicalCertificate() {
     classifications:freeze(passed?[
       'IN_THE_FIXED_S3_REGISTERED_STAGE_DOMAIN_THE_SUPPORT_LABELLED_AMBIENT_DISTINGUISHABILITY_TRAJECTORY_TOGETHER_WITH_THE_INHERITED_AUTHORITY_BIRTH_INDEX_EXACTLY_REPLAYS_THE_EARNED_POST_RECOMPRESSION_RESTORATION_PATH_TRANSPORT_ANTICIPATORY_HORIZON_AND_TWO_SURFACE_ALIASING_CENSUSES',
       'THE_STAGE_MAXIMUM_VECTOR_CONDITIONAL_ON_THE_INHERITED_BIRTH_INDEX_IS_SUFFICIENT_FOR_THE_DECLARED_SCALAR_CARDINALITY_CUSTODY_FUNCTIONALS_OF_858_860_AND_862_IN_THE_FIXED_DOMAIN',
-      'THE_864_TWO_SURFACE_MARGINAL_ALIASING_CENSUS_REQUIRES_PER_FIBRE_CARDINALITY_PROFILES_BEYOND_STAGE_MAXIMA_WHILE_866_SUPPORT_UNION_SEMANTICS_REQUIRE_SUPPORT_IDENTITY_ON_THE_AMBIENT_MERGE_TRAJECTORY',
-      'THE_FIXED_WESTERN_CUSTODY_FRONTIER_FOR_858_860_862_864_FACTORS_THROUGH_EXPLICIT_LOSSY_PROJECTIONS_OF_THE_866_TRAJECTORY_WITHOUT_COLLAPSING_THE_TRAJECTORY_TO_ANY_ONE_OF_THOSE_PROJECTIONS',
+      'PER_FIBRE_CARDINALITY_PROFILES_ARE_A_DIRECT_SUFFICIENT_REPLAY_REPRESENTATION_FOR_THE_864_TWO_SURFACE_MARGINAL_ALIASING_CENSUS_WITHOUT_CLAIMING_STRICT_NECESSITY_BEYOND_SCHEDULE_CONDITIONED_MAXIMA',
+      'THE_FIXED_WESTERN_CUSTODY_FRONTIER_FOR_858_860_862_864_IS_EXACTLY_REPLAYABLE_FROM_EXPLICIT_CARDINALITY_PROJECTIONS_OF_THE_866_TRAJECTORY_WITHOUT_COLLAPSING_SUPPORT_LABELLED_AMBIENT_SEMANTICS_TO_CARDINALITY_ONLY',
     ]:[]),
     scars:freeze([
       ...initial.scars,
@@ -120,6 +135,11 @@ export function trajectoryCustodyFunctionalClosureCanonicalCertificate() {
       'PRE_HOSTILE_BOOKKEEPING_REPAIR != SCIENTIFIC_RED',
       'PRE_HOSTILE_BOOKKEEPING_REPAIR != THEOREM_WEAKENING',
       'INITIAL_IMPLEMENTATION_SPECIMEN != CANONICAL_CLOSURE_CERTIFICATE',
+      'SUFFICIENT_REPLAY_REPRESENTATION != NECESSARY_REPLAY_REPRESENTATION',
+      'RAW_UNCONDITIONED_MAXIMUM_ALIASING != SCHEDULE_CONDITIONED_PROFILE_IRRECOVERABILITY',
+      'SCHEDULE_CONDITIONED_FINITE_RECOVERABILITY != UNIVERSAL_INVERTIBILITY',
+      'PROFILE_RECOVERABILITY != SUPPORT_IDENTITY_RECOVERABILITY',
+      'PRE_AUTHORITY_THEORETICAL_REFINEMENT != RETROACTIVE_PREREGISTRATION',
     ]),
   });
   return cachedCertificate;
@@ -133,8 +153,9 @@ export function compileTrajectoryCustodyFunctionalClosureCanonicalProjection(rec
     payload_schema:'td613.dome-world.trajectory-custody-functional-closure-child-legible/v0.1',
     truths:freeze([
       'THE_FULL_MERGE_TRAJECTORY_CAN_BE_COMPRESSED_TO_SMALLER_SUMMARIES_FOR_SOME_CUSTODY_QUESTIONS_BUT_NOT_FOR_ALL_OF_THE_SEMANTIC_TESTS_WE_ALREADY_EARNED',
-      'THE_AUTHORITY_BIRTH_LEDGER_STAYS_SEPARATE_FROM_THE_SUPPORT_TRAJECTORY',
+      'THE_AUTHORITY_BIRTH_LEDGER_STAYS_SEPARATE_FROM_THE_SUPPORT_TRAJECTORY_IN_THIS_CHAMBER',
       'REPLAYING_ALL_PRIOR_CUSTODY_CENSUSES_SHOWS_THE_TRAJECTORY_IS_A_COMMON_FINITE_CARRIER_WITHOUT_MAKING_IT_A_UNIVERSAL_ANSWER_OBJECT',
+      'A_DIRECT_PROFILE_REPLAY_DOES_NOT_PROVE_THAT_THE_PROFILE_IS_STRICTLY_NECESSARY_BEYOND_SCHEDULE_CONDITIONED_MAXIMA',
     ]),
     stage_maximum_recoveries:certificate.execution_ledger.stage_maximum_recoveries,
     cross_theorem_row_comparisons:certificate.execution_ledger.cross_theorem_row_comparisons,
@@ -145,6 +166,7 @@ export function compileTrajectoryCustodyFunctionalClosureCanonicalProjection(rec
     stage_maximum_recoveries:certificate.execution_ledger.stage_maximum_recoveries,
     replay_rows:freeze({r858:1180,r860:784,r862:208,r864:208,total:2380}),
     parent_matches:certificate.parent_matches,
+    profile_strict_necessity_claim:false,
     full_support_tables_exposed:false,full_birth_table_exposed:false,full_replay_rows_exposed:false,
   });
   else throw new Error(`undeclared canonical closure receiver ${receiver}`);
