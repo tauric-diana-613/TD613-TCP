@@ -1,0 +1,82 @@
+{
+  "schema": "td613.a15-r0.bitemporal-prospective-replay-minimal-observation-policy-startup/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 847,
+    "receipt": "54b10adf8a30e779b1cb5f15ce6a4e8350285365",
+    "validation_run_number": 2358,
+    "validation_run_id": 33134210710,
+    "validation_conclusion": "SUCCESS"
+  },
+  "collision_custody": {
+    "witness_route_848_scientifically_sterile": true,
+    "held_preregistration_849_theorem_ancestry": false
+  },
+  "new_claim_family": "REPLAY_REQUIRED_FOR_EXACT_STATE",
+  "candidate_extended_ledger": {
+    "claim_families": 7,
+    "schedule_claim_pairs": 42,
+    "jurisdiction_cells": 126,
+    "birth_spectrum": {"1": 14, "2": 10, "3": 6, "INF": 12},
+    "authorized_cells": 68,
+    "held_cells": 58,
+    "inherited_held_cells_preserved": true
+  },
+  "candidate_policy_horizons": {
+    "replay_required": 1,
+    "exact_schedule": 2
+  },
+  "fixed_policy_class": {
+    "original_prefix_acquisition_no_skip": true,
+    "baseline_replay_row": [1,0,0],
+    "maximum_replay_measurements": 1,
+    "replay_after_first_original_or_later": true,
+    "arbitrary_original_subsequence_selection": false,
+    "arbitrary_new_sensing_rows": false,
+    "source_schedule_reordering": false,
+    "endogenous_operator_mutation": false
+  },
+  "candidate_three_row_rank_census": {
+    "P-H-I": [3,2,2],
+    "P-I-H": [3,2,2],
+    "H-P-I": [2,2,2],
+    "H-I-P": [2,3,3],
+    "I-P-H": [2,2,2],
+    "I-H-P": [2,3,3]
+  },
+  "candidate_minimum_observation_counts": {
+    "P-H-I": 3,
+    "P-I-H": 3,
+    "H-P-I": 4,
+    "H-I-P": 3,
+    "I-P-H": 4,
+    "I-H-P": 3
+  },
+  "candidate_complete_atlas_burden": {
+    "adaptive_scalar_rows": 20,
+    "unconditional_three_original_plus_replay_rows": 24,
+    "rows_avoided": 4,
+    "probability_distribution_assumed": false
+  },
+  "state_reconstruction_burden": {
+    "state_grid": "[-2,2]^3",
+    "states_per_schedule": 125,
+    "schedule_count": 6,
+    "executed_reconstructions_per_assay": 750
+  },
+  "anti_overclaim": {
+    "unique_optimal_replay_timing": false,
+    "universal_optimal_experimental_design": false,
+    "shannon_capacity": false,
+    "asymptotic_recovery": false,
+    "physical_active_sensing": false
+  },
+  "authority": {
+    "merge": false,
+    "production": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "theorem_earned": false
+}
