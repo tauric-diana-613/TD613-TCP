@@ -1,0 +1,161 @@
+{
+  "schema": "td613.a15-r0.anticipatory-custody-envelope-uniform-surface/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "FINITE_CENSUS_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 860,
+    "receipt": "082de53b0972a5fd0d235973a8deee2faaebce71",
+    "validation_run_number": 2366,
+    "validation_run_id": 33151620819,
+    "result": "SUCCESS"
+  },
+  "domain": {
+    "description": "q3-birth bundle contexts restored at q2 with declared future terminal horizon {q1,q0}",
+    "contexts": 208,
+    "by_schedule": {
+      "P-H-I": 96,
+      "P-I-H": 96,
+      "H-P-I": 8,
+      "H-I-P": 0,
+      "I-P-H": 8,
+      "I-H-P": 0
+    }
+  },
+  "local_surface": {
+    "stage": 2,
+    "uniform_minimum_sidecar_cardinality": 5,
+    "contexts_with_m2_equal_5": 208
+  },
+  "future_horizon": [1, 0],
+  "candidate_envelope_law": "MINIMUM_SINGLE_SIDECAR_FOR_Q1_OR_Q0_FUTURE_HORIZON_EQUALS_M0_REQUIRED_BUNDLE_SUPPORT_MAXIMUM",
+  "future_robust_spectrum": {
+    "5": 4,
+    "10": 4,
+    "15": 8,
+    "25": 4,
+    "30": 16,
+    "50": 4,
+    "75": 8,
+    "125": 18,
+    "150": 16,
+    "250": 18,
+    "375": 36,
+    "750": 72
+  },
+  "anticipatory_expansion": {
+    "plateau": 4,
+    "expand": 204,
+    "maximum_cardinality_difference": 745,
+    "maximum_cardinality_ratio": 150
+  },
+  "premium_ratio_spectrum": {
+    "1": 4,
+    "2": 4,
+    "3": 8,
+    "5": 4,
+    "6": 16,
+    "10": 4,
+    "15": 8,
+    "25": 18,
+    "30": 16,
+    "50": 18,
+    "75": 36,
+    "150": 72
+  },
+  "transport_signatures": {
+    "FLAT_FLAT": 4,
+    "FLAT_EXPAND": 20,
+    "EXPAND_FLAT": 2,
+    "EXPAND_EXPAND": 182
+  },
+  "support_triple_spectrum": {
+    "5->5->5": 4,
+    "5->5->10": 4,
+    "5->5->15": 8,
+    "5->5->25": 2,
+    "5->5->50": 2,
+    "5->5->75": 4,
+    "5->10->30": 16,
+    "5->10->150": 8,
+    "5->25->25": 2,
+    "5->25->50": 2,
+    "5->25->75": 4,
+    "5->25->125": 18,
+    "5->25->250": 18,
+    "5->25->375": 36,
+    "5->50->150": 8,
+    "5->50->750": 72
+  },
+  "representative_signatures": {
+    "FLAT_FLAT": {
+      "schedule": "P-H-I",
+      "bundle": ["X3"],
+      "m2": 5,
+      "m1": 5,
+      "m0": 5
+    },
+    "FLAT_EXPAND": {
+      "schedule": "P-H-I",
+      "bundle": ["FIRST_STRATUM", "X3"],
+      "m2": 5,
+      "m1": 5,
+      "m0": 15
+    },
+    "EXPAND_FLAT": {
+      "schedule": "P-H-I",
+      "bundle": ["X2", "X3"],
+      "m2": 5,
+      "m1": 25,
+      "m0": 25
+    },
+    "EXPAND_EXPAND": {
+      "schedule": "P-H-I",
+      "bundle": ["FULL_STATE"],
+      "m2": 5,
+      "m1": 25,
+      "m0": 125
+    },
+    "MAXIMUM_PREMIUM": {
+      "schedule": "P-H-I",
+      "bundle": ["SCHEDULE", "FULL_STATE"],
+      "m2": 5,
+      "m1": 50,
+      "m0": 750
+    }
+  },
+  "execution_burden_per_implementation_or_hostile": {
+    "unique_stage_profiles": 624,
+    "occupied_fibre_support_evaluations": 6256,
+    "horizon_lower_bound_witnesses": 208,
+    "target_indexed_robust_decode_checks": 26000,
+    "three_stage_signature_checks": 208
+  },
+  "mandatory_scars": [
+    "UNIFORM_LOCAL_MINIMUM != UNIFORM_FUTURE_ROBUST_OBLIGATION",
+    "LOCAL_SIDECAR_CARDINALITY != FUTURE_ROBUST_CUSTODY_IDENTITY",
+    "CURRENT_CONTROL_SURFACE_COST != HORIZON_ROBUST_CUSTODY_COST",
+    "LOCAL_CARDINALITY_EQUALITY != FUTURE_CUSTODY_EQUIVALENCE",
+    "ONE_STEP_TRANSPORT_SUCCESS != HORIZON_ROBUSTNESS",
+    "EARLY_TRANSPORT_RUPTURE != NECESSARILY_CONTINUED_CUSTODY_EXPANSION",
+    "ANTICIPATORY_CUSTODY_REQUIREMENT != RETROCAUSAL_INFORMATION_FLOW",
+    "DECLARED_FUTURE_PATH_SET != FUTURE_EVENT_OCCURRENCE",
+    "FUTURE_ROBUST_OVERPROVISIONING != NEW_SOURCE_INFORMATION",
+    "ROBUST_SIDECAR != SOURCE_STATE_MUTATION",
+    "CARDINALITY_RATIO != BIT_RATIO",
+    "CARDINALITY_RATIO != INFORMATION_GAIN_RATIO",
+    "UNIFORM_CARDINALITY_SURFACE != ZERO_MUTUAL_INFORMATION_THEOREM",
+    "FUTURE_HORIZON_MINIMUM != DATA_RETENTION_POLICY",
+    "FINITE_208_CONTEXT_CENSUS != ASYMPTOTIC_INFORMATION_THEOREM",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false,
+    "source_mutation": false
+  }
+}
