@@ -1,0 +1,89 @@
+{
+  "schema": "td613.a15-r0.finite-distinguishability-trajectory-calculus-preregistration/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "BIG_KAHUNA_FINITE_CENSUS_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 864,
+    "receipt": "b3902a14312d06eb91762ac0369fdb1daf5ff543",
+    "validation_run_number": 2368,
+    "validation_run_id": 33157166377,
+    "result": "SUCCESS"
+  },
+  "domain": {
+    "schedules": 6,
+    "nonempty_bundles_per_schedule": 127,
+    "contexts": 762,
+    "states_per_schedule": 125,
+    "ambient_antecedents": 750,
+    "registered_stages": [0,1,2,3]
+  },
+  "ambient_global_fibres": {
+    "q0": 1,
+    "q1": 23,
+    "q2": 158,
+    "q3": 430
+  },
+  "support_union_identities": {
+    "q1_to_q0": 762,
+    "q2_to_q0": 762,
+    "q2_to_q1": 5842,
+    "q3_to_q0": 762,
+    "q3_to_q1": 5842,
+    "q3_to_q2": 20066,
+    "total": 34036,
+    "adjacent_total": 26670
+  },
+  "associativity": {
+    "q2_q1_q0": 762,
+    "q3_q2_q1": 5842,
+    "q3_q2_q0": 762,
+    "q3_q1_q0": 762,
+    "total": 8128,
+    "expected_failures": 0
+  },
+  "support_maximum_monotonicity": {
+    "total": 4572,
+    "strict_expansions": 3884,
+    "plateaux": 688,
+    "strict_decreases": 0,
+    "pairs": {
+      "q3_to_q2": {"strict":384,"plateau":378},
+      "q2_to_q1": {"strict":576,"plateau":186},
+      "q1_to_q0": {"strict":736,"plateau":26},
+      "q3_to_q1": {"strict":688,"plateau":74},
+      "q2_to_q0": {"strict":746,"plateau":16},
+      "q3_to_q0": {"strict":754,"plateau":8}
+    }
+  },
+  "ambient_child_control": {
+    "schedule": "P-H-I",
+    "target_visible_q1_fibres": 5,
+    "ambient_global_q1_fibres_into_q0": 23,
+    "strict_ambient_excess": 18
+  },
+  "necessity_ablation": {
+    "same_schedule": "P-H-I",
+    "same_bundle_size": 2,
+    "left_bundle": ["FIRST_STRATUM","FULL_STATE"],
+    "left_m0": 375,
+    "right_bundle": ["X2","X3"],
+    "right_m0": 25,
+    "ratio": 15,
+    "unlabelled_merge_incidence_same": true
+  },
+  "candidate_laws": [
+    "AMBIENT_COARSE_FIBRE_SUPPORT_EQUALS_UNION_OF_ALL_AMBIENT_FINE_CHILD_SUPPORTS",
+    "AMBIENT_SUPPORT_UNION_PROPAGATION_IS_ASSOCIATIVE_ON_THE_FIXED_FOUR_STAGE_REGISTERED_LATTICE",
+    "SUPPORT_MAXIMUM_IS_MONOTONE_NONDECREASING_UNDER_COARSENING",
+    "ENDPOINT_SUPPORT_PATH_INDEPENDENCE_DOES_NOT_IMPLY_MINIMUM_CUSTODY_TRANSPORT_PATH_INDEPENDENCE"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false
+  }
+}
