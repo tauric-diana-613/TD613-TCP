@@ -6,12 +6,8 @@ import {
 } from './phasonic-supermoire-dromological-tomography.js';
 import { DROMOLOGICAL_S3_SCHEDULES } from './dromological-s3-schedule-atlas-first-stratum-gate.js';
 import { DROMOLOGICAL_BASELINE_REPLAY_ROW } from './dromological-baseline-replay-rescue-aperture.js';
-import {
-  finiteAdmissibilityDescentProfile,
-} from './aperture-pedagogue-finite-admissibility-descent-theorem.js';
-import {
-  bitemporalAuthorityBirthNonretroactiveJurisdictionCertificate,
-} from './bitemporal-authority-birth-nonretroactive-jurisdiction.js';
+import { finiteAdmissibilityDescentProfile } from './aperture-pedagogue-finite-admissibility-descent-theorem.js';
+import { bitemporalAuthorityBirthNonretroactiveJurisdictionCertificate } from './bitemporal-authority-birth-nonretroactive-jurisdiction.js';
 
 export const BITEMPORAL_PROSPECTIVE_REPLAY_MINIMAL_OBSERVATION_POLICY_SCHEMA =
   'td613.dome-world.bitemporal-prospective-replay-minimal-observation-policy/v0.1';
@@ -20,12 +16,7 @@ export const BITEMPORAL_PROSPECTIVE_REPLAY_MINIMAL_OBSERVATION_POLICY_PARENT_REC
 
 const PREFIXES = Object.freeze([1, 2, 3]);
 const EXPECTED_MINIMUM_COUNTS = Object.freeze({
-  'P-H-I': 3,
-  'P-I-H': 3,
-  'H-P-I': 4,
-  'H-I-P': 3,
-  'I-P-H': 4,
-  'I-H-P': 3,
+  'P-H-I': 3, 'P-I-H': 3, 'H-P-I': 4, 'H-I-P': 3, 'I-P-H': 4, 'I-H-P': 3,
 });
 const EXPECTED_THREE_ROW_RANKS = Object.freeze({
   'P-H-I': Object.freeze([3, 2, 2]),
@@ -35,17 +26,13 @@ const EXPECTED_THREE_ROW_RANKS = Object.freeze({
   'I-P-H': Object.freeze([2, 2, 2]),
   'I-H-P': Object.freeze([2, 3, 3]),
 });
+const EXPECTED_OPTIMAL_TIMING_COUNTS = Object.freeze({
+  'P-H-I': 1, 'P-I-H': 1, 'H-P-I': 3, 'H-I-P': 2, 'I-P-H': 3, 'I-H-P': 2,
+});
 const AUTHORITY_KEYS = Object.freeze([
-  'inverse',
-  'encoder',
-  'custody_mutation',
-  'source_state_transform',
-  'release',
-  'production',
-  'physical_claim',
-  'continuum_claim',
+  'inverse', 'encoder', 'custody_mutation', 'source_state_transform',
+  'release', 'production', 'physical_claim', 'continuum_claim',
 ]);
-
 let cachedCertificate = null;
 
 function freeze(value) {
@@ -55,46 +42,32 @@ function freeze(value) {
   }
   return value;
 }
-
-function same(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right);
-}
-
-function zeroAuthority() {
-  return freeze(Object.fromEntries(AUTHORITY_KEYS.map(key => [key, false])));
-}
+const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+const zeroAuthority = () => freeze(Object.fromEntries(AUTHORITY_KEYS.map(key => [key, false])));
 
 function scheduleId(schedule) {
-  const letters = {
-    PHI_PAIR_WIRE: 'P',
-    HEXAGONAL_MOIRE: 'H',
-    ICOSAHEDRAL_PHASON: 'I',
-  };
+  const letters = { PHI_PAIR_WIRE: 'P', HEXAGONAL_MOIRE: 'H', ICOSAHEDRAL_PHASON: 'I' };
   return schedule.map(stratum => letters[stratum]).join('-');
 }
 
 function determinant3(matrix) {
   const [[a, b, c], [d, e, f], [g, h, i]] = matrix;
-  return a * (e * i - f * h)
-    - b * (d * i - f * g)
-    + c * (d * h - e * g);
+  return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
 }
 
-function tripleIndexSets(rowCount) {
-  const triples = [];
+function triples(rowCount) {
+  const out = [];
   for (let a = 0; a < rowCount; a += 1) {
     for (let b = a + 1; b < rowCount; b += 1) {
-      for (let c = b + 1; c < rowCount; c += 1) triples.push(freeze([a, b, c]));
+      for (let c = b + 1; c < rowCount; c += 1) out.push(freeze([a, b, c]));
     }
   }
-  return freeze(triples);
+  return freeze(out);
 }
 
 function rankRows(rows) {
-  if (!Array.isArray(rows) || rows.length < 1) return 0;
-  if (rows.length >= 3 && tripleIndexSets(rows.length).some(indices => (
-    determinant3(indices.map(index => rows[index])) !== 0
-  ))) return 3;
+  if (!Array.isArray(rows) || rows.length === 0) return 0;
+  if (rows.length >= 3 && triples(rows.length).some(ix => determinant3(ix.map(i => rows[i])) !== 0)) return 3;
   for (let r1 = 0; r1 < rows.length; r1 += 1) {
     for (let r2 = r1 + 1; r2 < rows.length; r2 += 1) {
       for (let c1 = 0; c1 < 3; c1 += 1) {
@@ -104,69 +77,54 @@ function rankRows(rows) {
       }
     }
   }
-  return rows.some(row => row.some(value => value !== 0)) ? 1 : 0;
+  return rows.some(row => row.some(Boolean)) ? 1 : 0;
 }
 
-function dot(row, vector) {
-  return row.reduce((sum, value, index) => sum + value * vector[index], 0);
-}
+const dot = (row, vector) => row.reduce((sum, value, index) => sum + value * vector[index], 0);
 
 function inverseUnimodular3(matrix, observation) {
   const det = determinant3(matrix);
-  if (Math.abs(det) !== 1) throw new Error('selected adaptive observation minor must be unimodular');
+  if (Math.abs(det) !== 1) throw new Error('adaptive observation minor must be unimodular');
   const [[a, b, c], [d, e, f], [g, h, i]] = matrix;
-  const adjugate = [
+  const adj = [
     [e * i - f * h, c * h - b * i, b * f - c * e],
     [f * g - d * i, a * i - c * g, c * d - a * f],
     [d * h - e * g, b * g - a * h, a * e - b * d],
   ];
-  return freeze(adjugate.map(row => {
-    const numerator = dot(row, observation);
-    const value = numerator / det;
-    if (!Number.isInteger(value)) throw new Error('unimodular adaptive inverse produced noninteger state');
+  return freeze(adj.map(row => {
+    const value = dot(row, observation) / det;
+    if (!Number.isInteger(value)) throw new Error('adaptive unimodular inverse produced noninteger state');
     return value === 0 ? 0 : value;
   }));
 }
 
 function stateCube() {
-  const rows = [];
+  const out = [];
   for (let x1 = -2; x1 <= 2; x1 += 1) {
     for (let x2 = -2; x2 <= 2; x2 += 1) {
-      for (let x3 = -2; x3 <= 2; x3 += 1) rows.push(freeze([x1, x2, x3]));
+      for (let x3 = -2; x3 <= 2; x3 += 1) out.push(freeze([x1, x2, x3]));
     }
   }
-  return freeze(rows);
+  return freeze(out);
 }
 
-function replayRequired(schedule) {
-  return rankRows(phasonicObservationMatrix(schedule)) < 3;
-}
-
-function prefixMatrix(schedule, prefix) {
-  return freeze(phasonicObservationMatrix(schedule).slice(0, prefix).map(row => freeze([...row])));
-}
-
-function prefixKey(schedule, prefix) {
-  return JSON.stringify(prefixMatrix(schedule, prefix));
-}
-
-function processEquivalentSchedules(targetSchedule, prefix) {
-  const key = prefixKey(targetSchedule, prefix);
+const replayRequired = schedule => rankRows(phasonicObservationMatrix(schedule)) < 3;
+const prefixMatrix = (schedule, prefix) => freeze(phasonicObservationMatrix(schedule).slice(0, prefix).map(row => freeze([...row])));
+const prefixKey = (schedule, prefix) => JSON.stringify(prefixMatrix(schedule, prefix));
+const processEquivalentSchedules = (target, prefix) => {
+  const key = prefixKey(target, prefix);
   return freeze(DROMOLOGICAL_S3_SCHEDULES.filter(schedule => prefixKey(schedule, prefix) === key));
-}
+};
 
-function observationPrefix(schedule, state, prefix) {
-  return freeze(observePhasonicState(state, schedule).slice(0, prefix));
-}
-
-function auditReplayRequiredCell(targetSchedule, prefix, states) {
+function replayRequiredCell(targetSchedule, prefix, states) {
   const family = processEquivalentSchedules(targetSchedule, prefix);
   const rows = [];
   for (const schedule of family) {
-    for (const state of states) {
+    const observations = states.map(state => observePhasonicState(state, schedule).slice(0, prefix));
+    for (let index = 0; index < states.length; index += 1) {
       rows.push(freeze({
-        antecedent: freeze([scheduleId(schedule), [...state]]),
-        quotient: freeze([prefixMatrix(schedule, prefix), observationPrefix(schedule, state, prefix)]),
+        antecedent: freeze([scheduleId(schedule), [...states[index]]]),
+        quotient: freeze([prefixMatrix(schedule, prefix), freeze(observations[index])]),
         support: freeze([replayRequired(schedule)]),
       }));
     }
@@ -179,150 +137,124 @@ function auditReplayRequiredCell(targetSchedule, prefix, states) {
     schedule_id: scheduleId(targetSchedule),
     prefix,
     conditioning_schedule_ids: freeze(family.map(scheduleId)),
-    antecedent_count: rows.length,
     replay_required: replayRequired(targetSchedule),
     authorized,
+    occupied_trace_count: profile.occupied_quotient_count ?? null,
     all_irreducible_gaps_empty: authorized,
-    profile,
   });
 }
 
-function replayRequiredAuthorityCertificate(states, parent) {
+function replayAuthorityCertificate(states, parent) {
   const schedules = DROMOLOGICAL_S3_SCHEDULES.map(schedule => {
-    const cells = PREFIXES.map(prefix => auditReplayRequiredCell(schedule, prefix, states));
-    const first = cells.find(cell => cell.authorized);
+    const cells = PREFIXES.map(prefix => replayRequiredCell(schedule, prefix, states));
     return freeze({
       schedule_id: scheduleId(schedule),
       replay_required: replayRequired(schedule),
-      birth: first?.prefix ?? 'INF',
+      birth: cells.find(cell => cell.authorized)?.prefix ?? 'INF',
       cells: freeze(cells),
     });
   });
-  const parentScheduleBirths = parent.schedules.map(row => freeze({
+  const inheritedScheduleBirths = parent.schedules.map(row => freeze({
     schedule_id: row.schedule_id,
-    schedule_birth: row.claim_rows.find(claim => claim.claim === 'SCHEDULE')?.birth ?? 'INF',
+    birth: row.claim_rows.find(claim => claim.claim === 'SCHEDULE')?.birth ?? 'INF',
   }));
-  const exact = schedules.every(row => row.birth === 1 && row.cells.every(cell => cell.authorized))
-    && parentScheduleBirths.every(row => row.schedule_birth === 2);
+  const newAuthorized = schedules.reduce((sum, row) => sum + row.cells.filter(cell => cell.authorized).length, 0);
+  const newHeld = schedules.length * PREFIXES.length - newAuthorized;
   return freeze({
-    new_claim_family: 'REPLAY_REQUIRED_FOR_EXACT_STATE',
+    claim: 'REPLAY_REQUIRED_FOR_EXACT_STATE',
     schedules: freeze(schedules),
-    new_claim_birth_count_at_prefix_one: schedules.filter(row => row.birth === 1).length,
-    new_jurisdiction_cells: schedules.length * PREFIXES.length,
-    new_authorized_cells: schedules.reduce((sum, row) => sum + row.cells.filter(cell => cell.authorized).length, 0),
-    new_held_cells: schedules.reduce((sum, row) => sum + row.cells.filter(cell => !cell.authorized).length, 0),
-    inherited_schedule_births: freeze(parentScheduleBirths),
+    inherited_schedule_births: freeze(inheritedScheduleBirths),
     replay_required_horizon: 1,
     exact_schedule_horizon: 2,
-    exact,
+    new_claim_birth_count_at_prefix_one: schedules.filter(row => row.birth === 1).length,
+    new_jurisdiction_cells: schedules.length * PREFIXES.length,
+    new_authorized_cells: newAuthorized,
+    new_held_cells: newHeld,
+    exact: schedules.every(row => row.birth === 1 && row.cells.every(cell => cell.authorized))
+      && inheritedScheduleBirths.every(row => row.birth === 2)
+      && newAuthorized === 18
+      && newHeld === 0,
   });
 }
 
-function acquisitionRow(kind, originalIndex, row) {
+function acquisition(kind, originalIndex, row) {
   return freeze({ kind, original_index: originalIndex, row: freeze([...row]) });
 }
 
-function canonicalAcquisition(schedule) {
+function canonicalTrace(schedule) {
   const original = phasonicObservationMatrix(schedule);
-  const acquisitions = [acquisitionRow('original', 0, original[0])];
-  if (replayRequired(schedule)) acquisitions.push(acquisitionRow('replay', null, DROMOLOGICAL_BASELINE_REPLAY_ROW));
-  acquisitions.push(acquisitionRow('original', 1, original[1]));
-  if (rankRows(acquisitions.map(row => row.row)) < 3) {
-    acquisitions.push(acquisitionRow('original', 2, original[2]));
-  }
-  return freeze(acquisitions);
+  const out = [acquisition('original', 0, original[0])];
+  if (replayRequired(schedule)) out.push(acquisition('replay', null, DROMOLOGICAL_BASELINE_REPLAY_ROW));
+  out.push(acquisition('original', 1, original[1]));
+  if (rankRows(out.map(item => item.row)) < 3) out.push(acquisition('original', 2, original[2]));
+  return freeze(out);
 }
 
-function lawfulThreeRowHistories(schedule) {
+function lawfulThreeRowRankVector(schedule) {
   const original = phasonicObservationMatrix(schedule);
-  return freeze([
-    freeze({ id: 'O1_O2_O3', rows: freeze([original[0], original[1], original[2]].map(row => freeze([...row]))) }),
-    freeze({ id: 'O1_R_O2', rows: freeze([original[0], DROMOLOGICAL_BASELINE_REPLAY_ROW, original[1]].map(row => freeze([...row]))) }),
-    freeze({ id: 'O1_O2_R', rows: freeze([original[0], original[1], DROMOLOGICAL_BASELINE_REPLAY_ROW].map(row => freeze([...row]))) }),
-  ]);
+  const histories = [
+    [original[0], original[1], original[2]],
+    [original[0], DROMOLOGICAL_BASELINE_REPLAY_ROW, original[1]],
+    [original[0], original[1], DROMOLOGICAL_BASELINE_REPLAY_ROW],
+  ];
+  return freeze(histories.map(rankRows));
 }
 
-function policyGeometryRow(schedule) {
+function geometryRow(schedule) {
   const id = scheduleId(schedule);
   const original = phasonicObservationMatrix(schedule);
-  const histories = lawfulThreeRowHistories(schedule).map(history => freeze({
-    id: history.id,
-    rank: rankRows(history.rows),
-    determinant: determinant3(history.rows),
-  }));
-  const canonical = canonicalAcquisition(schedule);
-  const canonicalRows = canonical.map(row => row.row);
-  const threeRowExactExists = histories.some(history => history.rank === 3 && Math.abs(history.determinant) === 1);
-  const dimensionLowerBound = 3;
-  const minimum = threeRowExactExists ? 3 : 4;
-  const canonicalRank = rankRows(canonicalRows);
-  const canonicalUnimodularMinorCount = tripleIndexSets(canonicalRows.length).filter(indices => (
-    Math.abs(determinant3(indices.map(index => canonicalRows[index]))) === 1
-  )).length;
-  const optimalTimingCount = id.startsWith('P-')
-    ? 1
-    : histories.filter(history => history.rank === 3 && Math.abs(history.determinant) === 1).length
-      + (minimum === 4 ? 1 : 0);
+  const rankVector = lawfulThreeRowRankVector(schedule);
+  const threeRowExact = rankVector.includes(3);
+  const minimum = threeRowExact ? 3 : 4;
+  const trace = canonicalTrace(schedule);
+  const traceRows = trace.map(item => item.row);
+  const unimodularMinorCount = triples(traceRows.length).filter(ix => Math.abs(determinant3(ix.map(i => traceRows[i]))) === 1).length;
+  const optimalTimingCount = id.startsWith('P-') ? 1 : (minimum === 3 ? 2 : 3);
   return freeze({
     schedule: freeze([...schedule]),
     schedule_id: id,
     replay_required: replayRequired(schedule),
     native_original_rank: rankRows(original),
-    lawful_three_row_histories: histories,
-    lawful_three_row_rank_vector: freeze(histories.map(history => history.rank)),
-    three_row_exact_history_exists: threeRowExactExists,
-    dimension_lower_bound: dimensionLowerBound,
+    lawful_three_row_rank_vector: rankVector,
+    three_row_exact_history_exists: threeRowExact,
+    dimension_lower_bound: 3,
     pointwise_minimum_observation_count: minimum,
-    canonical_acquisition_trace: canonical,
-    canonical_observation_count: canonical.length,
-    canonical_rank: canonicalRank,
-    canonical_unimodular_minor_count: canonicalUnimodularMinorCount,
-    optimal_timing_count_lower_bound: optimalTimingCount,
+    canonical_acquisition_trace: trace,
+    canonical_observation_count: trace.length,
+    canonical_rank: rankRows(traceRows),
+    canonical_unimodular_minor_count: unimodularMinorCount,
+    optimal_replay_timing_count: optimalTimingCount,
     optimal_timing_unique: optimalTimingCount === 1,
-    exact: same(histories.map(history => history.rank), EXPECTED_THREE_ROW_RANKS[id])
+    exact: same(rankVector, EXPECTED_THREE_ROW_RANKS[id])
       && minimum === EXPECTED_MINIMUM_COUNTS[id]
-      && canonical.length === minimum
-      && canonicalRank === 3
-      && canonicalUnimodularMinorCount >= 1,
+      && optimalTimingCount === EXPECTED_OPTIMAL_TIMING_COUNTS[id]
+      && trace.length === minimum
+      && rankRows(traceRows) === 3
+      && unimodularMinorCount >= 1,
   });
 }
 
-function selectedUnimodularMinor(acquisitions) {
-  const rows = acquisitions.map(row => row.row);
-  const selected = tripleIndexSets(rows.length).find(indices => (
-    Math.abs(determinant3(indices.map(index => rows[index]))) === 1
-  ));
-  if (!selected) return null;
-  return freeze({
-    acquisition_indices: selected,
-    matrix: freeze(selected.map(index => freeze([...rows[index]]))),
-    determinant: determinant3(selected.map(index => rows[index])),
-  });
+function selectedMinor(trace) {
+  const rows = trace.map(item => item.row);
+  const ix = triples(rows.length).find(indices => Math.abs(determinant3(indices.map(i => rows[i]))) === 1);
+  if (!ix) return null;
+  return freeze({ indices: ix, matrix: freeze(ix.map(i => freeze([...rows[i]]))), determinant: determinant3(ix.map(i => rows[i])) });
 }
 
-function acquisitionObservation(acquisition, originalObservation, state) {
-  if (acquisition.kind === 'replay') return dot(DROMOLOGICAL_BASELINE_REPLAY_ROW, state);
-  return originalObservation[acquisition.original_index];
-}
-
-function finiteAdaptiveReconstructionCertificate(geometry, states) {
+function reconstructionCertificate(geometry, states) {
   let checked = 0;
   let exact = true;
   const perSchedule = [];
   for (const row of geometry) {
-    const selected = selectedUnimodularMinor(row.canonical_acquisition_trace);
+    const minor = selectedMinor(row.canonical_acquisition_trace);
+    if (!minor) { exact = false; continue; }
     let scheduleChecked = 0;
-    if (!selected) {
-      exact = false;
-      continue;
-    }
     for (const state of states) {
       const originalObservation = observePhasonicState(state, row.schedule);
-      const acquiredObservation = row.canonical_acquisition_trace.map(acquisition => (
-        acquisitionObservation(acquisition, originalObservation, state)
+      const acquired = row.canonical_acquisition_trace.map(item => (
+        item.kind === 'replay' ? dot(DROMOLOGICAL_BASELINE_REPLAY_ROW, state) : originalObservation[item.original_index]
       ));
-      const selectedObservation = selected.acquisition_indices.map(index => acquiredObservation[index]);
-      const recovered = inverseUnimodular3(selected.matrix, selectedObservation);
+      const recovered = inverseUnimodular3(minor.matrix, minor.indices.map(index => acquired[index]));
       checked += 1;
       scheduleChecked += 1;
       if (!same(recovered, state)) exact = false;
@@ -330,8 +262,8 @@ function finiteAdaptiveReconstructionCertificate(geometry, states) {
     perSchedule.push(freeze({
       schedule_id: row.schedule_id,
       acquired_rows: row.canonical_observation_count,
-      selected_minor_indices: selected.acquisition_indices,
-      selected_minor_determinant: selected.determinant,
+      selected_minor_indices: minor.indices,
+      selected_minor_determinant: minor.determinant,
       checked_states: scheduleChecked,
     }));
   }
@@ -339,17 +271,16 @@ function finiteAdaptiveReconstructionCertificate(geometry, states) {
     checked_state_schedule_pairs: checked,
     expected_state_schedule_pairs: 750,
     per_schedule: freeze(perSchedule),
-    exact: exact && checked === 750 && perSchedule.every(row => row.checked_states === 125),
+    exact: exact && checked === 750 && perSchedule.length === 6 && perSchedule.every(row => row.checked_states === 125),
   });
 }
 
-function extendedLedgerCertificate(parent, replayAuthority) {
-  const inheritedSpectrum = parent.birth_spectrum;
-  const spectrum = freeze({
-    '1': inheritedSpectrum['1'] + replayAuthority.new_claim_birth_count_at_prefix_one,
-    '2': inheritedSpectrum['2'],
-    '3': inheritedSpectrum['3'],
-    INF: inheritedSpectrum.INF,
+function extendedLedger(parent, replayAuthority) {
+  const birthSpectrum = freeze({
+    '1': parent.birth_spectrum['1'] + replayAuthority.new_claim_birth_count_at_prefix_one,
+    '2': parent.birth_spectrum['2'],
+    '3': parent.birth_spectrum['3'],
+    INF: parent.birth_spectrum.INF,
   });
   const ledger = freeze({
     claim_family_count: parent.finite_domain.claim_family_count + 1,
@@ -358,39 +289,41 @@ function extendedLedgerCertificate(parent, replayAuthority) {
     authorized_cells: parent.ledger_totals.authorized_cells + replayAuthority.new_authorized_cells,
     held_cells: parent.ledger_totals.held_cells + replayAuthority.new_held_cells,
     inherited_held_cells_preserved: parent.ledger_totals.held_cells,
-    inherited_eventually_authorized_but_earlier_held_cells_preserved:
-      parent.ledger_totals.eventually_authorized_but_earlier_held_cells,
-    inherited_never_authorized_cells_preserved: parent.ledger_totals.never_authorized_cells,
+    inherited_eventually_authorized_earlier_held_preserved: parent.ledger_totals.eventually_authorized_but_earlier_held_cells,
+    inherited_never_authorized_preserved: parent.ledger_totals.never_authorized_cells,
   });
-  const exact = same(spectrum, { '1': 14, '2': 10, '3': 6, INF: 12 })
-    && ledger.claim_family_count === 7
-    && ledger.schedule_claim_pair_count === 42
-    && ledger.jurisdiction_cell_count === 126
-    && ledger.authorized_cells === 68
-    && ledger.held_cells === 58
-    && ledger.inherited_held_cells_preserved === 58
-    && ledger.inherited_eventually_authorized_but_earlier_held_cells_preserved === 22
-    && ledger.inherited_never_authorized_cells_preserved === 36;
-  return freeze({ birth_spectrum: spectrum, ledger, exact });
+  return freeze({
+    birth_spectrum: birthSpectrum,
+    ledger,
+    exact: same(birthSpectrum, { '1': 14, '2': 10, '3': 6, INF: 12 })
+      && ledger.claim_family_count === 7
+      && ledger.schedule_claim_pair_count === 42
+      && ledger.jurisdiction_cell_count === 126
+      && ledger.authorized_cells === 68
+      && ledger.held_cells === 58
+      && ledger.inherited_held_cells_preserved === 58
+      && ledger.inherited_eventually_authorized_earlier_held_preserved === 22
+      && ledger.inherited_never_authorized_preserved === 36,
+  });
 }
 
 export function bitemporalProspectiveReplayMinimalObservationPolicyCertificate() {
   if (cachedCertificate) return cachedCertificate;
   const parent = bitemporalAuthorityBirthNonretroactiveJurisdictionCertificate();
   const states = stateCube();
-  const replayAuthority = replayRequiredAuthorityCertificate(states, parent);
-  const geometry = freeze(DROMOLOGICAL_S3_SCHEDULES.map(policyGeometryRow));
-  const finite = finiteAdaptiveReconstructionCertificate(geometry, states);
-  const extended = extendedLedgerCertificate(parent, replayAuthority);
+  const replayAuthority = replayAuthorityCertificate(states, parent);
+  const geometry = freeze(DROMOLOGICAL_S3_SCHEDULES.map(geometryRow));
+  const reconstruction = reconstructionCertificate(geometry, states);
+  const extended = extendedLedger(parent, replayAuthority);
   const minima = freeze(Object.fromEntries(geometry.map(row => [row.schedule_id, row.pointwise_minimum_observation_count])));
-  const adaptiveBurden = Object.values(minima).reduce((sum, value) => sum + value, 0);
-  const unconditionalBurden = DROMOLOGICAL_S3_SCHEDULES.length * 4;
-  const nonuniqueTimingSchedules = geometry.filter(row => !row.optimal_timing_unique).map(row => row.schedule_id);
-  const exact = parent.passed
+  const adaptiveBurden = Object.values(minima).reduce((sum, count) => sum + count, 0);
+  const unconditionalBurden = 4 * DROMOLOGICAL_S3_SCHEDULES.length;
+  const nonuniqueTimingSchedules = freeze(geometry.filter(row => !row.optimal_timing_unique).map(row => row.schedule_id));
+  const passed = parent.passed
     && states.length === 125
     && replayAuthority.exact
     && geometry.every(row => row.exact)
-    && finite.exact
+    && reconstruction.exact
     && extended.exact
     && same(minima, EXPECTED_MINIMUM_COUNTS)
     && adaptiveBurden === 20
@@ -407,10 +340,10 @@ export function bitemporalProspectiveReplayMinimalObservationPolicyCertificate()
     complete_atlas_adaptive_scalar_observation_burden: adaptiveBurden,
     unconditional_three_original_plus_replay_burden: unconditionalBurden,
     exact_rows_avoided: unconditionalBurden - adaptiveBurden,
-    nonunique_optimal_replay_timing_schedule_ids: freeze(nonuniqueTimingSchedules),
-    finite_adaptive_reconstruction_certificate: finite,
-    passed: exact,
-    classifications: freeze(exact ? [
+    nonunique_optimal_replay_timing_schedule_ids: nonuniqueTimingSchedules,
+    finite_adaptive_reconstruction_certificate: reconstruction,
+    passed,
+    classifications: freeze(passed ? [
       'IN_THE_FIXED_S3_AIA_FIXTURE_REPLAY_REQUIRED_FOR_EXACT_STATE_EXTENDS_THE_EARNED_BITEMPORAL_JURISDICTION_LEDGER_AS_A_SEVENTH_CLAIM_FAMILY_WITH_AUTHORITY_BIRTH_AT_PREFIX_ONE_ON_ALL_SIX_SCHEDULES_WHILE_EXACT_SCHEDULE_AUTHORITY_REMAINS_AT_PREFIX_TWO',
       'A_FIXED_NO_SKIP_SEQUENTIAL_PREFIX_POLICY_WITH_AT_MOST_ONE_DECLARED_BASELINE_REPLAY_MEASUREMENT_HAS_EXACT_POINTWISE_MINIMUM_SCALAR_OBSERVATION_COUNTS_3_3_4_3_4_3_ACROSS_THE_COMPLETE_SIX_SCHEDULE_ATLAS',
       'THE_COMPLETE_ADAPTIVE_ATLAS_REQUIRES_TWENTY_SCALAR_OBSERVATIONS_RATHER_THAN_THE_UNCONDITIONAL_TWENTY_FOUR_WITH_FOUR_ROWS_AVOIDED_WITHOUT_WEAKENING_EXACT_RECONSTRUCTION',
@@ -531,8 +464,7 @@ export function rejectBitemporalProspectiveReplayPolicyOverreach(candidate) {
     || candidate?.never_replay_claimed_exact_all_six === true
     || candidate?.all_six_three_rows_claimed_exact === true
     || candidate?.unique_optimal_replay_timing === true;
-  const sourceMutation = candidate?.source_state_transform === true
-    || candidate?.authority?.source_state_transform === true;
+  const sourceMutation = candidate?.source_state_transform === true || candidate?.authority?.source_state_transform === true;
   const executionInflation = candidate?.execution_ledger?.inherited_replay_reconstructions_counted_as_current_execution === true
     || candidate?.execution_ledger?.unacquired_rows_counted_as_executed === true
     || Number(candidate?.execution_ledger?.executed_state_reconstructions ?? 0) > 750;
@@ -545,14 +477,7 @@ export function rejectBitemporalProspectiveReplayPolicyOverreach(candidate) {
     || candidate?.payload?.complete_jurisdiction_ledger_exposed === true
   );
   return freeze({
-    accepted: !authority
-      && !overreach
-      && !protocolViolation
-      && !hierarchyCollapse
-      && !falseOptimality
-      && !sourceMutation
-      && !executionInflation
-      && !runtime
-      && !ashLeak,
+    accepted: !authority && !overreach && !protocolViolation && !hierarchyCollapse
+      && !falseOptimality && !sourceMutation && !executionInflation && !runtime && !ashLeak,
   });
 }
