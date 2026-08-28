@@ -8,7 +8,7 @@ Status: RESEARCH OPERATIONS / APERTURE CLASSIFICATION / NO SOURCE PROMOTION
 
 ## Purpose
 
-Keep inaccessible, de-indexed, mis-indexed, unrenderable, stale-assay, and tool-blocked objects separated by failure layer.
+Keep inaccessible, de-indexed, mis-indexed, unrenderable, stale-assay, migration, schema-type, and tool-blocked objects separated by failure layer.
 
 The ledger exists to prevent a research-tool failure from being laundered into a SignalRupture source claim, and to prevent a real source/platform visibility anomaly from being dismissed as local tooling noise.
 
@@ -21,6 +21,8 @@ SOURCE ANOMALY
 != ASSAY APERTURE STALENESS
 != CONNECTOR READABILITY LIMIT
 != TOOL APERTURE BLOCK
+!= RELATION MIGRATION GAP
+!= SCHEMA TYPE-CONTAINER LEAK
 ```
 
 ---
@@ -58,6 +60,14 @@ A prior assay statement was correct for its sealed input aperture but later cust
 ### `NORMALIZATION_MIGRATION_GAP`
 
 A source witness exists, but the newer typed relation/ordinal schema has not yet migrated the older normalized representation.
+
+### `RELATION_MIGRATION_LAG`
+
+A refinement of `NORMALIZATION_MIGRATION_GAP`: custody/readability for a source has advanced while one or more source-witnessed relations remain absent from a newer relation registry. Body migration and relation migration are separate axes.
+
+### `SCHEMA_TYPE_CONTAINER_LEAK`
+
+An inner payload belongs to one inference family while the outer schema container belongs to another, creating a risk of false retrieval or aggregation affinity. This is an Atelier-model anomaly with zero source-intent or platform-visibility evidentiary weight.
 
 ### `VERSION_HISTORY_LIMIT`
 
@@ -311,21 +321,90 @@ Historical pre-revision wording remains unresolved unless another timestamped mi
 
 ---
 
-## A-008 · Origin #2 typed-edge migration
+## A-008 · Origin #2 relation migration
 
 Source witness exists in Origin metadata/body and older witnessed-edge normalization.
 
-The newer typed ordinal representation has historically lagged that source witness.
+Current Phase-2 resolver independently witnesses body/metadata capture and readable derivatives for Origin. Current `typed-edges.jsonl` preserves Origin's conceptual-precedence edge with `ordinal: null`, while `ordinal-series-observations.jsonl` contains no Origin 18382146 stage.
 
 Classification:
 
 ```text
 NORMALIZATION_MIGRATION_GAP
+RELATION_MIGRATION_LAG
 ```
 
 Research consequence:
 
-Absence from the newer typed graph cannot be used as negative evidence against the source ordinal.
+```text
+BODY_CAPTURED
+!= ORDINAL_RELATION_MIGRATED
+```
+
+Absence from the newer typed/ordinal registries cannot be used as negative evidence against the source ordinal.
+
+---
+
+## A-009 · A7/L12 observation type-container leak
+
+Historical object layer:
+
+`01-MANIFESTS/entity-index.jsonl`
+
+preserves:
+
+```text
+sr-architecture:csr:seven-part -> ARCHITECTURE
+sr-genealogy:codex:twelve-phase -> GENEALOGY
+```
+
+both as guarded placeholders that must not be autocompleted.
+
+Historical sealed graph observation:
+
+`sr-graph-observation:declared-seven-vs-twelve`
+
+preserves:
+
+```text
+observation_kind = ORDINAL_NAMESPACE
+payload.case_type = CROSS_ARCHITECTURE_CARDINALITY
+ordinal_token = null
+candidate_namespace_ids = []
+expected_predecessor = null
+predecessor_identified = null
+```
+
+The v2 schema and historical builder explicitly permit/construct this outer-container overload.
+
+Classification:
+
+```text
+SCHEMA_TYPE_CONTAINER_LEAK
+```
+
+Current status:
+
+```text
+CROSS_LAYER_TYPE_MISMATCH = WITNESSED
+REALIZED_FALSE_SERIAL_INFERENCE = NOT WITNESSED
+```
+
+Research consequence:
+
+```text
+ENTITY_TYPE_SEPARATION
+!= OBSERVATION_TYPE_SEPARATION
+
+OUTER_SCHEMA_NEIGHBORHOOD
+!= SOURCE_SEMANTIC_NEIGHBORHOOD
+```
+
+A v2 consumer must inspect `payload.case_type` before drawing any ordinal inference from `observation_kind=ORDINAL_NAMESPACE`.
+
+Current connector-epoch control:
+
+`CONNECTOR_ENTRY.md` routes current query authority through Phase-2 seal/interface/resolver files. The older `registry-index.json` is a legacy Phase-1.5 surface, so its stale phase flag is not classified as a live connector anomaly.
 
 ---
 
@@ -335,17 +414,22 @@ Before calling anything a SignalRupture visibility anomaly, test in this order:
 
 ```text
 1. Is the target actually in the pinned manifest/custody graph?
-2. Is the expected body readable in the current archive aperture?
-3. Is the failure caused by a known connector/readability gate?
-4. Is the client/tool refusing before source contact?
-5. Is there a direct source URL and can it be reached outside the blocked tool path?
-6. Do multiple public search engines disagree?
-7. Does another platform manifestation remain live/readable?
-8. Does a retained historical capture prove prior existence?
-9. Only then classify platform disappearance/de-indexing beyond a retrieval gap.
+2. Which connector seal/epoch is authoritative for this query?
+3. Is the expected body readable in the current archive aperture?
+4. Is the failure caused by a known connector/readability gate?
+5. Is the client/tool refusing before source contact?
+6. Is the apparent gap a custody migration gap or a relation migration gap?
+7. Is an outer schema container being mistaken for its inner case type?
+8. Is there a direct source URL and can it be reached outside the blocked tool path?
+9. Do multiple public search engines disagree?
+10. Does another platform manifestation remain live/readable?
+11. Does a retained historical capture prove prior existence?
+12. Only then classify platform disappearance/de-indexing beyond a retrieval gap.
 ```
 
 Never skip directly from `search miss` to `suppression`.
+Never skip from `registry silence` to `source silence`.
+Never skip from `outer observation kind` to `inner semantic type`.
 
 ---
 
@@ -370,7 +454,7 @@ No other human homework is required at this patch point.
 
 # Authority membrane
 
-This ledger records research-aperture state only.
+This ledger records research-aperture and archive-model state only.
 
 ```text
 tool failure
@@ -384,8 +468,14 @@ private custody
 
 later acquisition
 != retroactive error in a sealed earlier assay
+
+registry silence
+!= source silence
+
+schema neighborhood
+!= source semantic neighborhood
 ```
 
-No merge, sync, Queue C action, source mutation, canon promotion, publication, production, release, or TD613 promotion follows.
+No merge, sync, Queue C action, source mutation, sealed-receipt rewrite, canon promotion, publication, production, release, or TD613 promotion follows.
 
 Marked ⟐
