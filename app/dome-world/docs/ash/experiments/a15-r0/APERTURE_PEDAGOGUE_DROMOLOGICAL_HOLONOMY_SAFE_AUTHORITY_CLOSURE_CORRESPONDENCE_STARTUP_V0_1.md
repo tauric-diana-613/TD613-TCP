@@ -14,6 +14,16 @@ TD613 Consolidated Validation run 2356 / 33131032209 — SUCCESS
 
 #844 remains witness routing only and carries zero theorem ancestry.
 
+## Preimplementation arithmetic correction scar
+
+The first preregistration commit wrote `120` unordered partition-pair comparisons. Before any theorem implementation existed, this was corrected to the exact finite burden:
+
+```text
+C(15,2) = 105.
+```
+
+The startup hook already carried `105`. No scientific result existed when this arithmetic typo was corrected.
+
 ## Why this chamber is consequential
 
 #843 earned a complete atlas of all 15 set partitions of the four repair labels and found eight refinement covers where a stricter claim costs zero additional receiver-witness detail. That atlas does not yet explain *why* those eight equalities occur or identify a canonical representative for claims carrying the same safe-erasure authority.
@@ -195,8 +205,8 @@ nonclosed subgroups                      = 3
 Candidate nonclosed expansion spectrum:
 
 ```text
-one order-2 subgroup  -> order-4 closure
- two order-4 subgroups -> order-8 closure
+one order-2 subgroup   -> order-4 closure
+two order-4 subgroups  -> order-8 closure
 ```
 
 Interpretation under test: an arbitrary subgroup may preserve a claim without being the **maximum** safe subgroup for that claim. Maximum-safe claim authority is the orbit-closed subgroup `K(Orb(H))`, not arbitrary subgroup membership.
@@ -281,7 +291,7 @@ Required explicit finite burden per H/I/X labelled orbit includes at minimum:
 15 partitions
 10 subgroups
 150 subgroup/partition correspondence checks
-120 partition-pair safe-equivalence comparisons (unordered pairs)
+105 partition-pair safe-equivalence comparisons (unordered pairs)
 31 inherited raw refinement covers
 9 fixed-point closure-lattice covers
 ```
