@@ -1,0 +1,102 @@
+{
+  "schema": "td613.a15-r0.trajectory-custody-functional-closure-preregistration/v0.1",
+  "authorship_wrapper": "U+10D613",
+  "status": "FINITE_CLOSURE_PREREGISTERED_PREIMPLEMENTATION_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 866,
+    "receipt": "a5a073bdf18cd1b7155422b4bd562de9c80aa3f5",
+    "validation_run_number": 2369,
+    "validation_run_id": 33159934438,
+    "result": "SUCCESS"
+  },
+  "domain": {
+    "schedules": 6,
+    "nonempty_bundles_per_schedule": 127,
+    "contexts": 762,
+    "registered_stages": 4,
+    "stage_maximum_recoveries": 3048
+  },
+  "replay_858": {
+    "total_finite_birth_recompressions": 1180,
+    "unsafe": 1022,
+    "safe": 158,
+    "unsafe_distribution": {
+      "2":82,"3":36,"5":298,"6":48,"10":90,"15":36,"25":88,"30":64,
+      "50":88,"75":16,"125":18,"150":32,"250":18,"375":36,"750":72
+    },
+    "maximum": 750
+  },
+  "replay_860": {
+    "paths": 784,
+    "plateau": 42,
+    "rupture": 742,
+    "strict_decrease": 0,
+    "endpoint_two_path_groups": 208,
+    "mixed_transport_endpoint_groups": 2,
+    "maximum_expansion": 745,
+    "same_endpoint_bundle": "X2+X3",
+    "same_endpoint_schedules": ["P-H-I","P-I-H"]
+  },
+  "replay_862": {
+    "contexts": 208,
+    "all_m2": 5,
+    "robust_distribution": {
+      "5":4,"10":4,"15":8,"25":4,"30":16,"50":4,"75":8,"125":18,
+      "150":16,"250":18,"375":36,"750":72
+    },
+    "local_to_robust_plateau": 4,
+    "anticipatory_expansion": 204,
+    "five_to_750": 72,
+    "signatures": {
+      "FLAT->FLAT":4,
+      "FLAT->EXPAND":20,
+      "EXPAND->FLAT":2,
+      "EXPAND->EXPAND":182
+    }
+  },
+  "replay_864": {
+    "contexts": 208,
+    "scalar_classes": {
+      "5->5":24,
+      "5->10":24,
+      "5->25":80,
+      "5->50":80
+    },
+    "scalar_ambiguous_classes": 4,
+    "marginal_profile_classes": 6,
+    "marginal_ambiguous_classes": 5,
+    "marginal_identifying_classes": 1,
+    "ambiguous_contexts": 200,
+    "identifying_contexts": 8,
+    "named_alias": {
+      "schedule":"P-H-I",
+      "bundle_size":2,
+      "left_bundle":"FIRST_STRATUM+FULL_STATE",
+      "left_m0":375,
+      "right_bundle":"X2+X3",
+      "right_m0":25,
+      "ratio":15
+    }
+  },
+  "cross_theorem_row_comparisons": {
+    "replay_858":1180,
+    "replay_860":784,
+    "replay_862":208,
+    "replay_864":208,
+    "total":2380
+  },
+  "candidate_laws": [
+    "SUPPORT_LABELLED_AMBIENT_TRAJECTORY_PLUS_INHERITED_BIRTH_INDEX_EXACTLY_REPLAYS_THE_DECLARED_WESTERN_CUSTODY_FRONTIER",
+    "STAGE_MAXIMUM_VECTOR_PLUS_BIRTH_INDEX_SUFFICES_FOR_858_860_862_SCALAR_CARDINALITY_FUNCTIONALS_IN_THE_FIXED_DOMAIN",
+    "864_REQUIRES_PER_FIBRE_CARDINALITY_PROFILES_WHILE_866_SUPPORT_UNION_SEMANTICS_REQUIRE_SUPPORT_IDENTITY"
+  ],
+  "authority": {
+    "theorem": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "release": false,
+    "vercel": false
+  }
+}
