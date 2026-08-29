@@ -303,9 +303,15 @@ for(const [name,spec] of Object.entries(ablationSpecs)) {
   hostileAblations[name]=actual;
 }
 
-// Only after the independent derivation above may the hostile consult the canonical certificate.
+// Only after the independent derivation above may the hostile consult the implementation specimen and repaired canonical certificate.
 const { finiteCustodyBehavioralQuotientTaskClosureCertificate } = await import('../app/dome-world/previews/a15-r0/finite-custody-behavioral-quotient-task-closure.js');
-const canonicalCertificate=finiteCustodyBehavioralQuotientTaskClosureCertificate();
+const { finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate } = await import('../app/dome-world/previews/a15-r0/finite-custody-behavioral-quotient-task-closure-certificate.js');
+const initialCertificate=finiteCustodyBehavioralQuotientTaskClosureCertificate();
+assert.equal(initialCertificate.exact,true);
+assert.equal(initialCertificate.passed,false);
+const canonicalCertificate=finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate();
+assert.equal(canonicalCertificate.initial_implementation_passed,false);
+assert.equal(canonicalCertificate.parent_binding_repair.initial_red_specimen_preserved,true);
 assert.equal(canonicalCertificate.passed,true);
 assert.equal(canonicalCertificate.partitions.D_support_labelled_trajectory_classes,dGroups.size);
 assert.equal(canonicalCertificate.partitions.C_schedule_conditioned_cardinality_classes,cGroups.size);
@@ -320,4 +326,4 @@ for(const [name,actual] of Object.entries(hostileAblations)) {
   for(const [key,value] of Object.entries(actual)) assert.equal(canonicalRow[key],value,`${name}.${key}`);
 }
 
-console.log('Ash A15-R0 finite custody behavioral quotient independent hostile passed.');
+console.log('Ash A15-R0 finite custody behavioral quotient independent hostile passed with canonical parent-binding repair.');
