@@ -5,13 +5,30 @@ import {
   finiteCustodyBehavioralQuotientTaskClosureCertificate,
 } from '../app/dome-world/previews/a15-r0/finite-custody-behavioral-quotient-task-closure.js';
 import {
+  finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate,
   compileFiniteCustodyBehavioralQuotientTaskClosureProjection,
   rejectFiniteCustodyBehavioralQuotientOverreach,
 } from '../app/dome-world/previews/a15-r0/finite-custody-behavioral-quotient-task-closure-certificate.js';
 
-const certificate=finiteCustodyBehavioralQuotientTaskClosureCertificate();
+const initialCertificate=finiteCustodyBehavioralQuotientTaskClosureCertificate();
 assert.equal(FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT,'d94c1b6cd47dbb611ae4a6a3297522ee99bb29ef');
+assert.equal(initialCertificate.parent_receipt,FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT);
+assert.equal(initialCertificate.exact,true);
+assert.equal(initialCertificate.passed,false);
+
+const certificate=finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate();
 assert.equal(certificate.parent_receipt,FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT);
+assert.equal(certificate.initial_implementation_passed,false);
+assert.equal(certificate.parent_binding_repair.kind,'CANONICAL_PARENT_ENTRY_POINT_BINDING_ONLY');
+assert.equal(certificate.parent_binding_repair.red_candidate_head,'d35796c3c9c923d4f8713f0522b74ac1eb56fe76');
+assert.equal(certificate.parent_binding_repair.red_witness_run,2376);
+assert.equal(certificate.parent_binding_repair.red_witness_run_id,33272893426);
+assert.equal(certificate.parent_binding_repair.parent_science_mutated,false);
+assert.equal(certificate.parent_binding_repair.child_exact_predicate_changed,false);
+assert.equal(certificate.parent_binding_repair.finite_counts_changed,false);
+assert.equal(certificate.parent_binding_repair.compact_quotient_changed,false);
+assert.equal(certificate.parent_binding_repair.preregistration_rewritten,false);
+assert.equal(certificate.parent_binding_repair.initial_red_specimen_preserved,true);
 assert.equal(certificate.exact,true);
 assert.equal(certificate.passed,true);
 assert.equal(certificate.research_only,true);
@@ -102,4 +119,4 @@ for(const key of [
 assert.throws(()=>rejectFiniteCustodyBehavioralQuotientOverreach({authority:{merge:true}}),/claim ceiling exceeded/);
 assert.throws(()=>rejectFiniteCustodyBehavioralQuotientOverreach({payload:{full_support_tables_exposed:true}}),/claim ceiling exceeded/);
 
-console.log('Ash A15-R0 finite custody behavioral quotient / exact declared-task closure canonical tests passed.');
+console.log('Ash A15-R0 finite custody behavioral quotient / exact declared-task closure canonical parent-binding repair tests passed.');
