@@ -79,7 +79,7 @@ for(const [ancestor,descendant] of [
 ]) execFileSync('git',['merge-base','--is-ancestor',ancestor,descendant],{stdio:'pipe'});
 
 const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_872_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.equal(ahead,7,'finite task topology rigidity chamber must freeze at seven scientific successor commits');
+assert.equal(ahead,9,'repaired finite task topology rigidity chamber must freeze at nine scientific successor commits');
 const changed=execFileSync('git',[
   'diff','--name-only',`${PARENT_872_RECEIPT}..${SCIENCE_HEAD}`,'--',
   'app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests',
@@ -144,4 +144,4 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-task-topology-rigidity-birk
 await import('./ash-a15-r0-aperture-pedagogue-finite-task-topology-rigidity-birkhoff-hostile.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 finite task topology rigidity / Birkhoff dual hardening tests passed.');
+console.log('Ash A15-R0 finite task topology rigidity / Birkhoff dual hardening tests passed after preserved receiver-interface repair.');
