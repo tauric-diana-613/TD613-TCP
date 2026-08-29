@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { AIA_RECEIVERS } from '../app/dome-world/previews/a15-r0/aia-receiver-indexed-distinguishability.js';
 import {
   finiteCustodyTaskDependencyPosetCertificate,
 } from '../app/dome-world/previews/a15-r0/finite-custody-task-dependency-poset.js';
@@ -196,7 +197,7 @@ for(const scar of [
   'AUTOMORPHISM_TRIVIALITY != UNIVERSAL_TASK_IDENTIFIABILITY',
 ]) assert.equal(child.scars.includes(scar),true,`missing hostile membrane ${scar}`);
 
-const ash=compileFiniteTaskTopologyRigidityBirkhoffProjection('ASH');
+const ash=compileFiniteTaskTopologyRigidityBirkhoffProjection(AIA_RECEIVERS.ASH);
 assert.equal(ash.payload.semantic_task_names_inherited,true);
 assert.equal(ash.payload.model_state_topology_claim,false);
 assert.equal(ash.payload.physical_topology_claim,false);
