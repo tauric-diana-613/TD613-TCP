@@ -1,0 +1,86 @@
+{
+  "schema": "td613.dome-world.finite-task-homotopy-amnesia-role-tomography-expectations/v0.1",
+  "scientific_parent_pr": 874,
+  "scientific_parent_receipt": "7c4cef95d4f704f05615d663e252d5a53775bdbe",
+  "parent_validation_run": 2384,
+  "task_points": ["A", "B", "T", "M", "R"],
+  "inherited_open_sets": 12,
+  "inherited_closed_sets": 12,
+  "self_functions": 3125,
+  "order_continuity_agreement": 3125,
+  "order_continuity_mismatches": 0,
+  "continuous_endomorphisms": 128,
+  "noncontinuous_functions": 2997,
+  "continuous_image_size_spectrum": {"1": 5, "2": 50, "3": 60, "4": 12, "5": 1},
+  "idempotent_continuous_endomorphisms": 61,
+  "idempotent_image_size_spectrum": {"1": 5, "2": 26, "3": 21, "4": 8, "5": 1},
+  "map_comparability_graph": {
+    "vertices": 128,
+    "edges": 1528,
+    "components": 1,
+    "diameter": 3,
+    "unordered_pair_distance_spectrum": {"1": 1528, "2": 5435, "3": 1165},
+    "unordered_pairs": 8128,
+    "identity_distance_spectrum": {"0": 1, "1": 6, "2": 49, "3": 72},
+    "identity_to_constants": {"A": 2, "R": 2, "B": 3, "T": 3, "M": 3}
+  },
+  "beat_collapse": {
+    "initial_beats": ["B", "T", "M"],
+    "complete_sequences": 36,
+    "reachable_subspaces": 19,
+    "reachable_by_size": {"5": 1, "4": 3, "3": 5, "2": 5, "1": 5},
+    "terminal_multiplicity": {"A": 12, "R": 12, "T": 6, "B": 3, "M": 3}
+  },
+  "order_complex": {
+    "full_f_vector": [5, 5, 1],
+    "euler_characteristic": 1,
+    "field": "F2",
+    "full_betti": [1, 0, 0],
+    "delete_f_vector": {
+      "A": [4, 2, 0],
+      "R": [4, 2, 0],
+      "B": [4, 4, 1],
+      "M": [4, 4, 1],
+      "T": [4, 3, 0]
+    },
+    "delete_f_partition": [["A", "R"], ["B", "M"], ["T"]],
+    "delete_betti": {
+      "A": [2, 0, 0],
+      "R": [2, 0, 0],
+      "B": [1, 0, 0],
+      "T": [1, 0, 0],
+      "M": [1, 0, 0]
+    },
+    "delete_betti_partition": [["A", "R"], ["B", "T", "M"]]
+  },
+  "local_role_tomography": {
+    "closure_size_partition": [["A", "B"], ["T", "M"], ["R"]],
+    "minimal_open_size_partition": [["R", "M"], ["B", "T"], ["A"]],
+    "joint_fingerprints": {"A": [1, 4], "B": [1, 2], "T": [2, 2], "M": [2, 1], "R": [4, 1]},
+    "joint_role_classes": 5,
+    "joint_ambiguity": 0
+  },
+  "role_distinguishability_ladder": [5, 3, 2, 1],
+  "required_membranes": [
+    "TASK_TOPOLOGY_RIGIDITY != HOMOTOPY_RIGIDITY",
+    "AUTOMORPHISM_RIGIDITY != HOMOTOPY_IDENTITY_RIGIDITY",
+    "CONTINUOUS_ENDOMORPHISM != AUTOMORPHISM",
+    "HOMOTOPY_EQUIVALENCE != TASK_ROLE_IDENTITY",
+    "CONTRACTIBLE != TOPOLOGICALLY_TRIVIAL",
+    "BEAT_POINT_REMOVAL != SEMANTIC_TASK_DELETION",
+    "BEAT_COLLAPSE_TERMINAL_POINT != STRUCTURAL_ROLE_IDENTITY",
+    "ORDER_COMPLEX != PHYSICAL_GEOMETRY",
+    "SIMPLICIAL_HOMOLOGY != INFORMATION_CONTENT",
+    "BETTI_EQUIVALENCE != TASK_ROLE_EQUIVALENCE",
+    "EULER_CHARACTERISTIC != SEMANTIC_COMPLETENESS",
+    "COARSE_TOPOLOGICAL_INVARIANT != FULL_TASK_TOPOLOGY",
+    "LOCAL_SCALAR_APERTURE_ALIASING != ROLE_IDENTITY",
+    "JOINT_LOCAL_FINGERPRINT_RECOVERY != UNIVERSAL_TOMOGRAPHY",
+    "FINITE_CONTINUITY_CENSUS != UNIVERSAL_DYNAMICAL_SYSTEM",
+    "POINTWISE_COMPARABILITY_GRAPH != PHYSICAL_EVOLUTION",
+    "HOMOTOPY_CLASS_COLLAPSE != SOURCE_STATE_COLLAPSE",
+    "ROLE_DISTINGUISHABILITY_LADDER != SHANNON_INFORMATION_LADDER",
+    "FINITE_ROLE_TOMOGRAPHY != NATURAL_LANGUAGE_SEMANTIC_RECONSTRUCTION",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ]
+}
