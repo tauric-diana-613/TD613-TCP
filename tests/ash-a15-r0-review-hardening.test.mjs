@@ -38,6 +38,22 @@ const PARENT_792_RECEIPT='e15d6737f2d43e01835a643790b1c5f51a1dc711';
 const BENCH_790_RECEIPT='a1e59ec70fb9217e0e581a8c0eeeeb0f9b9d8cdb';
 const FADT_752_RECEIPT='11eec2d52c7e1aa722e8664c0df4cd1a61d704f1';
 
+// GitHub pull_request validation checks out refs/pull/<n>/merge, not the science branch head.
+// For that synthetic two-parent commit the PR head is parent #2. Direct branch execution
+// has one parent and keeps HEAD as the scientific head. Audit science against that ref only.
+function resolveScientificHead(){
+  const parents=execFileSync('git',['show','-s','--format=%P','HEAD'],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean);
+  if(parents.length===2){
+    const candidate=parents[1];
+    try {
+      execFileSync('git',['merge-base','--is-ancestor',PARENT_870_RECEIPT,candidate],{stdio:'pipe'});
+      return candidate;
+    } catch {}
+  }
+  return 'HEAD';
+}
+const SCIENCE_HEAD=resolveScientificHead();
+
 const ancestry=[
   PARENT_870_RECEIPT,PARENT_868_RECEIPT,PARENT_866_RECEIPT,PARENT_864_RECEIPT,PARENT_862_RECEIPT,PARENT_860_RECEIPT,PARENT_858_RECEIPT,PARENT_854_RECEIPT,
   PARENT_852_RECEIPT,PARENT_850_RECEIPT,PARENT_847_RECEIPT,PARENT_845_RECEIPT,PARENT_843_RECEIPT,PARENT_841_RECEIPT,PARENT_839_RECEIPT,PARENT_837_RECEIPT,
@@ -47,7 +63,7 @@ const ancestry=[
 ];
 for(const receipt of ancestry){
   execFileSync('git',['cat-file','-e',`${receipt}^{commit}`],{stdio:'pipe'});
-  execFileSync('git',['merge-base','--is-ancestor',receipt,'HEAD'],{stdio:'pipe'});
+  execFileSync('git',['merge-base','--is-ancestor',receipt,SCIENCE_HEAD],{stdio:'pipe'});
 }
 for(const [ancestor,descendant] of [
   [PARENT_868_RECEIPT,PARENT_870_RECEIPT],[PARENT_866_RECEIPT,PARENT_868_RECEIPT],[PARENT_864_RECEIPT,PARENT_866_RECEIPT],[PARENT_862_RECEIPT,PARENT_864_RECEIPT],
@@ -61,10 +77,10 @@ for(const [ancestor,descendant] of [
   [PARENT_792_RECEIPT,PARENT_794_RECEIPT],[BENCH_790_RECEIPT,PARENT_792_RECEIPT],[FADT_752_RECEIPT,PARENT_792_RECEIPT],
 ]) execFileSync('git',['merge-base','--is-ancestor',ancestor,descendant],{stdio:'pipe'});
 
-const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_870_RECEIPT}..HEAD`],{encoding:'utf8'}).trim());
-assert.equal(ahead,7,'finite custody task dependency chamber must freeze at seven successor commits');
+const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_870_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
+assert.equal(ahead,8,'finite custody task dependency repaired chamber must freeze at eight scientific successor commits');
 const changed=execFileSync('git',[
-  'diff','--name-only',`${PARENT_870_RECEIPT}..HEAD`,'--',
+  'diff','--name-only',`${PARENT_870_RECEIPT}..${SCIENCE_HEAD}`,'--',
   'app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests',
 ],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>(
   path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-')
