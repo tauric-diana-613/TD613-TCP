@@ -1,0 +1,113 @@
+{
+  "schema": "td613.dome-world.finite-topological-probe-separation-redundancy.expectations/v0.1",
+  "status": "PREREGISTRATION_ONLY_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 876,
+    "receipt": "3662f48ed7ad1345dc013fa6eb50bc4835a15e10",
+    "validation_run": 2385,
+    "validation_run_id": 33280156092,
+    "conclusion": "success"
+  },
+  "roles": ["A", "B", "T", "M", "R"],
+  "all_open_states": ["EMPTY", "R", "M", "BR", "RT", "RM", "BRT", "BRM", "RTM", "BRTM", "RTAM", "BRTAM"],
+  "nontrivial_probes": ["RTAM", "BRTM", "RTM", "BRM", "BRT", "RM", "RT", "BR", "M", "R"],
+  "probe_count": 10,
+  "family_count": 1024,
+  "unordered_role_pairs": 10,
+  "role_class_spectrum": {
+    "1": 1,
+    "2": 10,
+    "3": 44,
+    "4": 174,
+    "5": 795
+  },
+  "separation_multiplicity_spectrum": {
+    "0": 229,
+    "1": 446,
+    "2": 288,
+    "3": 57,
+    "4": 4
+  },
+  "exact_erasure_case_counts": {
+    "0": 1024,
+    "1": 5120,
+    "2": 11520,
+    "3": 15360,
+    "4": 13440,
+    "total": 46464
+  },
+  "robust_family_counts": {
+    "0": 795,
+    "1": 349,
+    "2": 61,
+    "3": 4,
+    "4": 0
+  },
+  "minimum_width_by_erasure_order": {
+    "0": 3,
+    "1": 4,
+    "2": 6,
+    "3": 8,
+    "4": null
+  },
+  "minimum_family_count_by_erasure_order": {
+    "0": 28,
+    "1": 5,
+    "2": 1,
+    "3": 1,
+    "4": 0
+  },
+  "minimum_e1_families": [
+    ["BRTM", "RM", "RT", "BR"],
+    ["RTM", "BRM", "BRT", "R"],
+    ["RTM", "BRM", "RT", "BR"],
+    ["RTM", "BRT", "RM", "BR"],
+    ["BRM", "BRT", "RM", "RT"]
+  ],
+  "unique_minimum_e2_family": ["RTM", "BRM", "BRT", "RM", "RT", "BR"],
+  "unique_minimum_e3_family": ["BRTM", "RTM", "BRM", "BRT", "RM", "RT", "BR", "R"],
+  "width_mu_spectrum": {
+    "0": {"0": 1},
+    "1": {"0": 10},
+    "2": {"0": 45},
+    "3": {"0": 92, "1": 28},
+    "4": {"0": 61, "1": 144, "2": 5},
+    "5": {"0": 18, "1": 188, "2": 46},
+    "6": {"0": 2, "1": 78, "2": 129, "3": 1},
+    "7": {"1": 8, "2": 96, "3": 16},
+    "8": {"2": 12, "3": 32, "4": 1},
+    "9": {"3": 8, "4": 2},
+    "10": {"4": 1}
+  },
+  "full_family_pair_separation": {
+    "A-B": 5,
+    "A-T": 4,
+    "A-M": 5,
+    "A-R": 8,
+    "B-T": 5,
+    "B-M": 6,
+    "B-R": 5,
+    "T-M": 5,
+    "T-R": 4,
+    "M-R": 5
+  },
+  "full_family_mu": 4,
+  "full_family_bottleneck_pairs": [["A", "T"], ["T", "R"]],
+  "candidate_equivalence": "direct_exact_e_erasure_survival_iff_mu_ge_e_plus_1",
+  "maximum_arbitrary_erasure_tolerance": 3,
+  "authority": {
+    "inverse": false,
+    "encoder": false,
+    "custody_mutation": false,
+    "source_state_transform": false,
+    "new_sensor_measurement": false,
+    "release": false,
+    "production": false,
+    "physical_claim": false,
+    "continuum_claim": false,
+    "cryptographic_key": false,
+    "authentication_credential": false,
+    "retrocausal_channel": false,
+    "retention_policy": false
+  }
+}
