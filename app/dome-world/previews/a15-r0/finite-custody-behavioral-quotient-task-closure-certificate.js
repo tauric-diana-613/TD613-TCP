@@ -1,14 +1,20 @@
 import { AIA_RECEIVERS } from './aia-receiver-indexed-distinguishability.js';
 import {
   FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_SCHEMA,
-  finiteCustodyBehavioralQuotientTaskClosureCertificate,
+  FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT,
+  finiteCustodyBehavioralQuotientTaskClosureCertificate as initialBehavioralQuotientCertificate,
 } from './finite-custody-behavioral-quotient-task-closure.js';
+import {
+  trajectoryCustodyFunctionalClosureCanonicalCertificate,
+} from './trajectory-custody-functional-closure-certificate.js';
 
 const AUTHORITY_KEYS=Object.freeze([
   'inverse','encoder','custody_mutation','source_state_transform','new_sensor_measurement',
   'release','production','physical_claim','continuum_claim','cryptographic_key',
   'authentication_credential','retrocausal_channel','retention_policy',
 ]);
+
+let cachedCanonicalCertificate=null;
 
 function freeze(value) {
   if(value&&typeof value==='object'&&!Object.isFrozen(value)) {
@@ -19,9 +25,71 @@ function freeze(value) {
 }
 const zeroAuthority=()=>freeze(Object.fromEntries(AUTHORITY_KEYS.map(key=>[key,false])));
 
+export function finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate() {
+  if(cachedCanonicalCertificate) return cachedCanonicalCertificate;
+  const initial=initialBehavioralQuotientCertificate();
+  const canonicalParent=trajectoryCustodyFunctionalClosureCanonicalCertificate();
+  const exact=initial.exact===true;
+  const passed=canonicalParent.passed===true
+    && FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT==='d94c1b6cd47dbb611ae4a6a3297522ee99bb29ef'
+    && initial.parent_receipt===FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT
+    && exact;
+
+  cachedCanonicalCertificate=freeze({
+    schema:FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_SCHEMA,
+    parent_receipt:FINITE_CUSTODY_BEHAVIORAL_QUOTIENT_TASK_CLOSURE_PARENT_RECEIPT,
+    initial_implementation_passed:initial.passed,
+    parent_binding_repair:freeze({
+      kind:'CANONICAL_PARENT_ENTRY_POINT_BINDING_ONLY',
+      red_candidate_head:'d35796c3c9c923d4f8713f0522b74ac1eb56fe76',
+      red_witness_run:2376,
+      red_witness_run_id:33272893426,
+      failed_assertion:'INITIAL_CHILD_CERTIFICATE_PASSED',
+      initial_parent_entry_point:'trajectoryCustodyFunctionalClosureCertificate',
+      corrected_parent_entry_point:'trajectoryCustodyFunctionalClosureCanonicalCertificate',
+      parent_science_mutated:false,
+      child_exact_predicate_changed:false,
+      finite_counts_changed:false,
+      compact_quotient_changed:false,
+      preregistration_rewritten:false,
+      initial_red_specimen_preserved:true,
+    }),
+    domain:initial.domain,
+    partitions:initial.partitions,
+    compact_quotient:initial.compact_quotient,
+    birth_recovery:initial.birth_recovery,
+    declared_task_replay:initial.declared_task_replay,
+    semantic_noncollapse:initial.semantic_noncollapse,
+    coordinate_ablations:initial.coordinate_ablations,
+    execution_ledger:initial.execution_ledger,
+    exact,
+    passed,
+    classifications:freeze(passed?[
+      'IN_THE_FIXED_S3_AIA_FIXTURE_THE_COMPLETE_ALREADY_EARNED_CUSTODY_TASK_FAMILY_INDUCES_EXACTLY_THIRTY_SIX_BEHAVIORAL_EQUIVALENCE_CLASSES_OVER_THE_SEVEN_HUNDRED_SIXTY_TWO_SCHEDULE_BUNDLE_CONTEXTS',
+      'THE_PIECEWISE_COMPACT_SIGNATURE_KAPPA_INF_OR_1_M0_OR_2_M1_M0_OR_3_N2_M1_M0_REALIZES_EXACTLY_THE_SAME_FINITE_PARTITION_AS_THE_INDEPENDENTLY_RECONSTRUCTED_DECLARED_TASK_BEHAVIOR_SIGNATURE',
+      'THE_INHERITED_AUTHORITY_BIRTH_INDEX_IS_FUNCTIONALLY_RECOVERABLE_ON_ALL_SEVEN_HUNDRED_SIXTY_TWO_CONTEXTS_AS_THE_FIRST_REGISTERED_STAGE_WHOSE_TARGET_OCCUPIED_SUPPORT_MAXIMUM_IS_ONE_ELSE_INF',
+      'EVERY_DECLARED_TASK_BEHAVIOR_CLASS_CONTAINS_MULTIPLE_DISTINCT_SUPPORT_LABELLED_AMBIENT_TRAJECTORIES_SO_EXACT_DECLARED_TASK_CLOSURE_DOES_NOT_IMPLY_SUPPORT_SEMANTIC_IDENTITY',
+      'WITHIN_THE_DECLARED_KAPPA_FEATURE_FAMILY_EVERY_RETAINED_FINITE_BIRTH_COORDINATE_HAS_AN_EXPLICIT_DROP_COLLISION_BETWEEN_DISTINCT_DECLARED_TASK_BEHAVIORS',
+    ]:[]),
+    scars:freeze([
+      ...initial.scars,
+      'INITIAL_CHILD_PARENT_BINDING != CANONICAL_PARENT_BINDING',
+      'RED_PARENT_ENTRY_POINT_FAILURE != THEOREM_FAILURE',
+      'CANONICAL_PARENT_BINDING_REPAIR != THEOREM_WEAKENING',
+      'CANONICAL_PARENT_BINDING_REPAIR != PARENT_SCIENCE_MUTATION',
+      'INITIAL_RED_SPECIMEN != CANONICAL_CHILD_CERTIFICATE',
+      'PARENT_CERTIFICATE_INTERFACE != SCIENTIFIC_PARENT_COMMIT_IDENTITY',
+    ]),
+    authority:zeroAuthority(),
+    research_only:true,
+    runtime_binding:false,
+  });
+  return cachedCanonicalCertificate;
+}
+
 export function compileFiniteCustodyBehavioralQuotientTaskClosureProjection(receiver) {
-  const certificate=finiteCustodyBehavioralQuotientTaskClosureCertificate();
-  if(!certificate.passed) throw new Error('cannot project uncertified finite custody behavioral quotient');
+  const certificate=finiteCustodyBehavioralQuotientTaskClosureCanonicalCertificate();
+  if(!certificate.passed) throw new Error('cannot project uncertified canonical finite custody behavioral quotient');
   let payload;
   if(receiver===AIA_RECEIVERS.ASH) payload=freeze({
     payload_schema:'td613.dome-world.finite-custody-behavioral-quotient-child-legible/v0.1',
