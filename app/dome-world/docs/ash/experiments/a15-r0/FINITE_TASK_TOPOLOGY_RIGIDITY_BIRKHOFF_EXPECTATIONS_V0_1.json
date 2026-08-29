@@ -1,0 +1,89 @@
+{
+  "schema": "td613.dome-world.finite-task-topology-rigidity-birkhoff-expectations/v0.1",
+  "scientific_parent_pr": 872,
+  "scientific_parent_receipt": "d76ab8a3166916ebed1d189eee01343233ee3cfd",
+  "parent_validation_run": 2381,
+  "tasks": ["B", "R", "T", "A", "M"],
+  "task_permutations": 120,
+  "expected_preserving_automorphisms": 1,
+  "expected_nonidentity_automorphisms": 0,
+  "closed_sets": 12,
+  "open_sets": 12,
+  "clopen_sets": ["EMPTY", "BRTAM"],
+  "topology": {
+    "T0": true,
+    "T1": false,
+    "connected": true,
+    "finite_alexandrov": true
+  },
+  "principal_closures": {
+    "B": "B",
+    "A": "A",
+    "T": "TA",
+    "M": "AM",
+    "R": "BRTA"
+  },
+  "minimal_open_neighborhoods": {
+    "B": "BR",
+    "A": "RTAM",
+    "T": "RT",
+    "M": "M",
+    "R": "R"
+  },
+  "intrinsic_point_fingerprints": {
+    "B": [1, 2],
+    "A": [1, 4],
+    "T": [2, 2],
+    "M": [2, 1],
+    "R": [4, 1]
+  },
+  "lattice": {
+    "elements": 12,
+    "hasse_covers": 18,
+    "join_irreducibles": ["B", "A", "TA", "AM", "BRTA"],
+    "meet_irreducible_count": 5,
+    "join_irreducible_covers": [
+      ["B", "BRTA"],
+      ["A", "TA"],
+      ["A", "AM"],
+      ["TA", "BRTA"]
+    ],
+    "birkhoff_downsets": 12,
+    "birkhoff_exact_matches": 12,
+    "birkhoff_collisions": 0,
+    "rank_distribution": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 2,
+      "5": 1
+    }
+  },
+  "specialization_order": {
+    "covers": [
+      ["B", "R"],
+      ["A", "T"],
+      ["A", "M"],
+      ["T", "R"]
+    ],
+    "maximal_points": ["R", "M"],
+    "minimal_points": ["A", "B"],
+    "expected_unique_minimal_full_generator": ["R", "M"]
+  },
+  "required_membranes": [
+    "FINITE_TASK_TOPOLOGY != MODEL_STATE_TOPOLOGY",
+    "FINITE_TASK_TOPOLOGY != PHYSICAL_SPACE",
+    "SPECIALIZATION_ORDER != SCIENTIFIC_ANCESTRY",
+    "SPECIALIZATION_ORDER != CAUSAL_ORDER",
+    "MAXIMAL_SPECIALIZATION_POINT != CAUSAL_ROOT",
+    "TOPOLOGICAL_RIGIDITY != SEMANTIC_NAME_RECOVERY_FROM_NOTHING",
+    "TOPOLOGICAL_RIGIDITY != UNIQUE_ENCODING",
+    "BIRKHOFF_REPRESENTATION != CATEGORY_OR_FUNCTOR_THEOREM",
+    "JOIN_IRREDUCIBLE != INDEPENDENT_SCIENTIFIC_PRIMITIVE",
+    "CONNECTED_TOPOLOGY != DYNAMICAL_COUPLING",
+    "T0_TASK_SPACE != SOURCE_STATE_IDENTIFIABILITY",
+    "FINITE_ALEXANDROV != CONTINUUM_TOPOLOGY",
+    "AUTOMORPHISM_TRIVIALITY != UNIVERSAL_TASK_IDENTIFIABILITY"
+  ]
+}
