@@ -25,7 +25,12 @@ const setEqual=(a,b)=>a.size===b.size&&subsetOf(a,b);
 const intersection=(a,b)=>new Set([...a].filter(value=>b.has(value)));
 const pointSetFromId=id=>new Set(POINTS.filter(point=>id!=='EMPTY'&&id.includes(point)));
 const pointSetId=set=>POINTS.filter(point=>set.has(point)).join('')||'EMPTY';
-const canonical=value=>JSON.stringify(value);
+function canonicalize(value){
+  if(Array.isArray(value)) return value.map(canonicalize);
+  if(value&&typeof value==='object') return Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonicalize(value[key])]));
+  return value;
+}
+const canonical=value=>JSON.stringify(canonicalize(value));
 
 function allFunctions(points){
   const out=[];
