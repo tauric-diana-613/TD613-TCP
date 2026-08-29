@@ -1,0 +1,136 @@
+{
+  "schema": "td613.dome-world.finite-custody-behavioral-quotient-task-closure-expectations/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 868,
+    "sha": "d94c1b6cd47dbb611ae4a6a3297522ee99bb29ef",
+    "validation_run": 33163489230,
+    "validation_run_number": 2375,
+    "conclusion": "SUCCESS"
+  },
+  "domain": {
+    "schedules": 6,
+    "bundles_per_schedule": 127,
+    "contexts": 762,
+    "states": 125,
+    "antecedents": 750,
+    "registered_stages": 4
+  },
+  "partitions": {
+    "D_support_labelled_trajectory_classes": 762,
+    "C_schedule_conditioned_cardinality_classes": 154,
+    "Phi_declared_task_behavior_classes": 36,
+    "birth_classes": 4
+  },
+  "birth_context_distribution": {
+    "q1": 26,
+    "q2": 80,
+    "q3": 208,
+    "INF": 448
+  },
+  "C_class_distribution_by_birth": {
+    "q1": 18,
+    "q2": 32,
+    "q3": 40,
+    "INF": 64
+  },
+  "Phi_class_distribution_by_birth": {
+    "q1": 5,
+    "q2": 10,
+    "q3": 20,
+    "INF": 1
+  },
+  "C_to_Phi_merge_spectrum": {
+    "2": 28,
+    "4": 4,
+    "6": 3,
+    "64": 1
+  },
+  "birth_recovery": {
+    "rule": "first_registered_stage_with_m_t_equal_1_else_INF",
+    "matches": 762,
+    "mismatches": 0,
+    "distribution": {
+      "q1": 26,
+      "q2": 80,
+      "q3": 208,
+      "INF": 448
+    }
+  },
+  "compact_signature": {
+    "INF": ["INF"],
+    "q1": ["1", "m0"],
+    "q2": ["2", "m1", "m0"],
+    "q3": ["3", "n2", "m1", "m0"],
+    "expected_classes": 36,
+    "expected_kappa_to_Phi_ambiguity_classes": 0,
+    "expected_Phi_to_kappa_ambiguity_classes": 0
+  },
+  "coordinate_ablations": {
+    "q1_drop_m0": {
+      "ambiguous_keys": 1,
+      "contexts": 26,
+      "Phi_classes": 5,
+      "maximum_Phi_multiplicity": 5
+    },
+    "q2_drop_m1": {
+      "ambiguous_keys": 1,
+      "contexts": 24,
+      "Phi_classes": 2,
+      "maximum_Phi_multiplicity": 2
+    },
+    "q2_drop_m0": {
+      "ambiguous_keys": 3,
+      "contexts": 80,
+      "Phi_classes": 10,
+      "maximum_Phi_multiplicity": 6
+    },
+    "q3_drop_n2": {
+      "ambiguous_keys": 4,
+      "contexts": 32,
+      "Phi_classes": 8,
+      "maximum_Phi_multiplicity": 2
+    },
+    "q3_drop_m1": {
+      "ambiguous_keys": 4,
+      "contexts": 32,
+      "Phi_classes": 8,
+      "maximum_Phi_multiplicity": 2
+    },
+    "q3_drop_m0": {
+      "ambiguous_keys": 5,
+      "contexts": 200,
+      "Phi_classes": 19,
+      "maximum_Phi_multiplicity": 6
+    }
+  },
+  "semantic_noncollapse": {
+    "Phi_classes": 36,
+    "singleton_Phi_classes_under_D_identity": 0,
+    "all_Phi_classes_merge_multiple_D_trajectories": true
+  },
+  "failed_preimplementation_hypothesis": {
+    "hypothesis": "154_schedule_conditioned_cardinality_classes_are_the_minimal_declared_task_quotient",
+    "result": "FALSIFIED_BEFORE_PREREGISTRATION",
+    "replacement": "36_declared_task_behavior_classes"
+  },
+  "claim_ceilings": {
+    "universal_sufficient_statistic": false,
+    "semantic_closure": false,
+    "future_task_closure": false,
+    "minimum_bit_length": false,
+    "unique_encoding": false,
+    "shannon_capacity": false,
+    "entropy": false,
+    "mutual_information": false,
+    "natural_language_semantic_reconstruction": false,
+    "physical_holonomy": false,
+    "operational_path_groupoid": false,
+    "category_functor_theorem": false,
+    "merge": false,
+    "deploy": false,
+    "publish": false,
+    "release": false,
+    "vercel": false
+  }
+}
