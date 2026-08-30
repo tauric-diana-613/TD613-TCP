@@ -1,0 +1,103 @@
+{
+  "schema": "td613.dome-world.finite-topological-distinguishability-metric-amnesia.expectations/v0.1",
+  "status": "PREREGISTRATION_ONLY_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 878,
+    "receipt": "4ba3542aea8784586562032c57096248dc961db9",
+    "validation_run": 2387,
+    "validation_run_id": 33282971967,
+    "conclusion": "success"
+  },
+  "roles": ["A", "B", "T", "M", "R"],
+  "probe_presentation_order": ["RTAM", "BRTM", "RTM", "BRM", "BRT", "RM", "RT", "BR", "M", "R"],
+  "probe_count": 10,
+  "probe_family_count": 1024,
+  "exact_metric_family_count": 795,
+  "full_distance_matrix": {
+    "A": {"A": 0, "B": 5, "T": 4, "M": 5, "R": 8},
+    "B": {"A": 5, "B": 0, "T": 5, "M": 6, "R": 5},
+    "T": {"A": 4, "B": 5, "T": 0, "M": 5, "R": 4},
+    "M": {"A": 5, "B": 6, "T": 5, "M": 0, "R": 5},
+    "R": {"A": 8, "B": 5, "T": 4, "M": 5, "R": 0}
+  },
+  "full_minimum_positive_distance": 4,
+  "full_diameter": 8,
+  "full_point_distance_profiles": {
+    "A": [4, 5, 5, 8],
+    "B": [5, 5, 5, 6],
+    "T": [4, 4, 5, 5],
+    "M": [5, 5, 5, 6],
+    "R": [4, 5, 5, 8]
+  },
+  "full_distance_profile_partition": [["A", "R"], ["B", "M"], ["T"]],
+  "ordered_distinct_triangle_checks": 60,
+  "triangle_slack_spectrum": {"0": 2, "2": 4, "4": 22, "6": 20, "8": 12},
+  "zero_slack_ordered_triples": [["A", "T", "R"], ["R", "T", "A"]],
+  "full_metric_isometry_count": 4,
+  "full_metric_isometries_cycle_notation": ["id", "(A R)", "(B M)", "(A R)(B M)"],
+  "full_incidence_automorphism_count": 1,
+  "full_nonliftable_metric_isometries": 3,
+  "role_class_spectrum": {"1": 1, "2": 10, "3": 44, "4": 174, "5": 795},
+  "metric_isometry_group_size_spectrum_exact_families": {
+    "1": 372,
+    "2": 360,
+    "4": 40,
+    "6": 10,
+    "8": 8,
+    "12": 4,
+    "24": 1
+  },
+  "metric_incidence_joint_spectrum": {
+    "1,1": 372,
+    "2,1": 192,
+    "2,2": 168,
+    "4,1": 9,
+    "4,2": 21,
+    "4,4": 10,
+    "6,2": 2,
+    "6,6": 8,
+    "8,1": 2,
+    "8,2": 5,
+    "8,4": 1,
+    "12,6": 4,
+    "24,4": 1
+  },
+  "exact_families_no_extra_metric_symmetry": 558,
+  "exact_families_with_nonliftable_metric_symmetry": 237,
+  "maximum_metric_symmetry_control": {
+    "family": ["RTAM", "BRTM", "M", "R"],
+    "unique_at_metric_isometry_count_24": true,
+    "signatures": {
+      "A": "1000",
+      "B": "0100",
+      "T": "1100",
+      "M": "1110",
+      "R": "1101"
+    },
+    "metric_isometry_count": 24,
+    "incidence_automorphism_count": 4,
+    "nonliftable_metric_isometries": 20,
+    "center": "T",
+    "center_to_leaf_distance": 1,
+    "leaf_to_leaf_distance": 2,
+    "leaf_roles": ["A", "B", "M", "R"]
+  },
+  "erasure_family_order_comparisons": 4876,
+  "erasure_metric_criterion_mismatches": 0,
+  "exact_erasure_case_counts": {"0": 1024, "1": 5120, "2": 11520, "3": 15360, "4": 13440, "total": 46464},
+  "authority": {
+    "inverse": false,
+    "encoder": false,
+    "custody_mutation": false,
+    "source_state_transform": false,
+    "new_sensor_measurement": false,
+    "release": false,
+    "production": false,
+    "physical_claim": false,
+    "continuum_claim": false,
+    "cryptographic_key": false,
+    "authentication_credential": false,
+    "retrocausal_channel": false,
+    "retention_policy": false
+  }
+}
