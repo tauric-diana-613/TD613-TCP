@@ -1,0 +1,81 @@
+{
+  "schema": "td613.dome-world.finite-transport-signature-quotient-robustness-preserving-witness-compression.expectations/v0.1",
+  "status": "FROZEN_BEFORE_IMPLEMENTATION",
+  "exact_parent_pr": 888,
+  "exact_parent_receipt": "633cd75baaaebcc5f357bd503024aefbbcf11057",
+  "exact_parent_run": 2395,
+  "exact_parent_run_id": 33296570047,
+  "transport_order": ["(B M)", "(A R)", "(A R)(B M)"],
+  "classes": {
+    "specialization_comparability": {
+      "witnesses": 20,
+      "original_families": 1048576,
+      "signature_multiplicities": {"000": 6, "001": 2, "010": 2, "011": 6, "100": 2, "111": 2},
+      "signature_type_count": 6,
+      "quotient_states": 3969,
+      "weighted_mu_spectrum": {"0": 66880, "1": 267136, "2": 395520, "3": 257152, "4": 61888},
+      "weighted_robust_counts_e0_to_e4": [981696, 714560, 319040, 61888, 0],
+      "minimum_width_e0_to_e4": [1, 2, 4, 6, null],
+      "quotient_blocker_states": 3,
+      "weighted_blocker_lifts": 22
+    },
+    "principal_open_identity": {
+      "witnesses": 5,
+      "original_families": 32,
+      "signature_multiplicities": {"011": 2, "101": 1, "111": 2},
+      "signature_type_count": 3,
+      "quotient_states": 18,
+      "weighted_mu_spectrum": {"0": 5, "1": 13, "2": 11, "3": 3},
+      "weighted_robust_counts_e0_to_e4": [27, 14, 3, 0, 0],
+      "minimum_width_e0_to_e4": [1, 2, 4, null, null],
+      "quotient_blocker_states": 2,
+      "weighted_blocker_lifts": 4
+    },
+    "principal_open_size": {
+      "witnesses": 5,
+      "original_families": 32,
+      "signature_multiplicities": {"000": 1, "011": 2, "101": 2},
+      "signature_type_count": 3,
+      "quotient_states": 18,
+      "weighted_mu_spectrum": {"0": 14, "1": 16, "2": 2},
+      "weighted_robust_counts_e0_to_e4": [18, 2, 0, 0, 0],
+      "minimum_width_e0_to_e4": [2, 4, null, null, null],
+      "quotient_blocker_states": 1,
+      "weighted_blocker_lifts": 4
+    },
+    "cut_orientation": {
+      "witnesses": 10,
+      "original_families": 1024,
+      "signature_multiplicities": {"011": 8, "101": 2},
+      "signature_type_count": 2,
+      "quotient_states": 27,
+      "weighted_mu_spectrum": {"0": 259, "1": 518, "2": 247},
+      "weighted_robust_counts_e0_to_e4": [765, 247, 0, 0, 0],
+      "minimum_width_e0_to_e4": [2, 4, null, null, null],
+      "quotient_blocker_states": 1,
+      "weighted_blocker_lifts": 16
+    }
+  },
+  "ledger": {
+    "original_family_count": 1049664,
+    "quotient_state_count": 4032,
+    "quotient_transport_load_checks": 12096,
+    "quotient_depth_checks_e0_to_e4": 20160,
+    "expected_family_weight_checksum": 1049664,
+    "expected_signature_multiplicity_mismatches": 0,
+    "expected_weighted_mu_mismatches": 0,
+    "expected_weighted_robustness_mismatches": 0,
+    "expected_minimum_width_mismatches": 0,
+    "expected_blocker_lift_mismatches": 0
+  },
+  "membranes": [
+    "TRANSPORT_SIGNATURE_EQUIVALENCE != WITNESS_SEMANTIC_EQUIVALENCE",
+    "ROBUSTNESS_PRESERVING_QUOTIENT != UNIVERSAL_SUFFICIENT_STATISTIC",
+    "TRANSPORT_SIGNATURE != WITNESS_IDENTITY",
+    "SIGNATURE_MULTIPLICITY != SHANNON_INFORMATION",
+    "QUOTIENT_STATE_COUNT != MINIMUM_BIT_LENGTH",
+    "INERT_TRANSPORT_SIGNATURE != GLOBAL_SEMANTIC_IRRELEVANCE",
+    "TRANSPORT_SIGNATURE_BIT != PHYSICAL_BIT",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ]
+}
