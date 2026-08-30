@@ -1,32 +1,32 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_892_RECEIPT='5e1c459bccd58ba89e6a218198e69d8d1518424e';
+const PARENT_894_RECEIPT='961d6eae8491ca1c72da23c5f23c2b573dc8e8ce';
 function resolveScientificHead(){
   const parents=execFileSync('git',['show','-s','--format=%P','HEAD'],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean);
-  if(parents.length===2){ const candidate=parents[1]; try { execFileSync('git',['merge-base','--is-ancestor',PARENT_892_RECEIPT,candidate],{stdio:'pipe'}); return candidate; } catch {} }
+  if(parents.length===2){ const candidate=parents[1]; try { execFileSync('git',['merge-base','--is-ancestor',PARENT_894_RECEIPT,candidate],{stdio:'pipe'}); return candidate; } catch {} }
   return 'HEAD';
 }
 const SCIENCE_HEAD=resolveScientificHead();
-execFileSync('git',['cat-file','-e',`${PARENT_892_RECEIPT}^{commit}`],{stdio:'pipe'});
-execFileSync('git',['merge-base','--is-ancestor',PARENT_892_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
-const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_892_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.ok(ahead>=8,'prime-dual closure chamber must retain at least the eight preregistered/frozen scientific successor commits');
-const changed=execFileSync('git',['diff','--name-only',`${PARENT_892_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-'));
+execFileSync('git',['cat-file','-e',`${PARENT_894_RECEIPT}^{commit}`],{stdio:'pipe'});
+execFileSync('git',['merge-base','--is-ancestor',PARENT_894_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
+const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_894_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
+assert.ok(ahead>=8,'prime-dual fixed-point rest chamber must retain the eight preregistered/frozen scientific successor commits');
+const changed=execFileSync('git',['diff','--name-only',`${PARENT_894_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-'));
 const allowed=new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_WITNESS_LOGIC_DECLARED_APERTURE_CLOSURE_PREREGISTRATION_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_WITNESS_LOGIC_DECLARED_APERTURE_CLOSURE_EXPECTATIONS_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_WITNESS_LOGIC_DECLARED_APERTURE_CLOSURE_BURDEN_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_WITNESS_LOGIC_DECLARED_APERTURE_CLOSURE_FREEZE_V0_1.md',
-  'app/dome-world/previews/a15-r0/finite-prime-dual-witness-logic-declared-aperture-closure.js',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-declared-aperture-closure.test.mjs',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-declared-aperture-closure-hostile.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_EXPECTATIONS_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_BURDEN_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_FREEZE_V0_1.md',
+  'app/dome-world/previews/a15-r0/finite-prime-dual-fixed-point-rest-normalizer.js',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer.test.mjs',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer-hostile.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations=changed.filter(path=>!allowed.has(path));
-assert.deepEqual(historicalMutations,[],`post-#892 prime-dual closure chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
-assert.equal(changed.length,allowed.size,`prime-dual closure chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
-for(const path of allowed) assert.equal(changed.includes(path),true,`missing prime-dual closure path: ${path}`);
+assert.deepEqual(historicalMutations,[],`post-#894 prime-dual fixed-point chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.equal(changed.length,allowed.size,`prime-dual fixed-point chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
+for(const path of allowed) assert.equal(changed.includes(path),true,`missing prime-dual fixed-point path: ${path}`);
 
 execFileSync(process.execPath,['tests/ash-a15-r0-review-hardening-sharded.test.mjs'],{stdio:'inherit'});
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -88,5 +88,7 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-blocker-duality-minimal-obs
 await import('./ash-a15-r0-aperture-pedagogue-finite-blocker-duality-minimal-obstruction-reconstruction-hostile.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-declared-aperture-closure.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-declared-aperture-closure-hostile.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer-hostile.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
-console.log('Ash A15-R0 finite prime-dual witness logic / declared-aperture closure hardening tests passed.');
+console.log('Ash A15-R0 finite prime-dual fixed-point rest normalizer hardening tests passed.');
