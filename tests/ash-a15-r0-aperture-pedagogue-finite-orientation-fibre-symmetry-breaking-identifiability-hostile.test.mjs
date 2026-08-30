@@ -6,7 +6,10 @@ const INHERITED='1111111110';
 const CUTS=['A','AB','AT','AM','ABT','ABM','ATM','ABTM','ABTR','ATMR'];
 const GROUP=['id','(B M)','(A R)','(A R)(B M)'];
 const parent=parentCertificate();
-const compatible=parent.orientation_fibre?.compatible_topologies||parent.compatible_topologies||[];
+assert.equal(parent.passed,true);
+assert.equal(parent.orientation_fibre?.compatible_topology_count,4);
+assert.equal(parent.metric_isometry_action?.action_checks,16);
+const compatible=parent.orientation_fibre?.topologies||[];
 assert.equal(compatible.length,4);
 const topologies={};
 const setKey=s=>ROLES.filter(r=>s.has(r)).join('')||'EMPTY';
@@ -18,7 +21,9 @@ for(const row of compatible){
   topologies[row.bits]={bits:row.bits,rel,principal};
 }
 assert.deepEqual(Object.keys(topologies).sort(),['0000000001','0000000010','1111111101','1111111110']);
-const actionRows=parent.orientation_fibre?.action_rows||parent.action?.rows||[];
+assert.ok(topologies[INHERITED]);
+const actionRows=parent.metric_isometry_action?.action_rows||[];
+assert.equal(actionRows.length,16);
 const target=(source,g)=>actionRows.find(r=>r.source===source&&r.isometry===g)?.target||null;
 assert.equal(GROUP.filter(g=>target(INHERITED,g)===INHERITED).length,1);
 function cell(fn){ const v=fn(topologies[INHERITED]); return Object.keys(topologies).filter(k=>fn(topologies[k])===v).sort(); }
