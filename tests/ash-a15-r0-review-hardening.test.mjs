@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_884_RECEIPT='9456a6a44eaaff46fa796cd591bb2f61e3680187';
+const PARENT_884_RECEIPT='faef60c732e057fe6c678fe4cc7ae7318192f694';
 function resolveScientificHead(){
   const parents=execFileSync('git',['show','-s','--format=%P','HEAD'],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean);
   if(parents.length===2){ const candidate=parents[1]; try { execFileSync('git',['merge-base','--is-ancestor',PARENT_884_RECEIPT,candidate],{stdio:'pipe'}); return candidate; } catch {} }
@@ -11,21 +11,21 @@ const SCIENCE_HEAD=resolveScientificHead();
 execFileSync('git',['cat-file','-e',`${PARENT_884_RECEIPT}^{commit}`],{stdio:'pipe'});
 execFileSync('git',['merge-base','--is-ancestor',PARENT_884_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
 const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_884_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.ok(ahead>=7,'orientation-fibre symmetry-breaking chamber must retain at least the seven preregistered scientific successor commits');
+assert.ok(ahead>=7,'transport-opacity erasure chamber must retain at least the seven preregistered scientific successor commits');
 const changed=execFileSync('git',['diff','--name-only',`${PARENT_884_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-'));
 const allowed=new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_SYMMETRY_BREAKING_IDENTIFIABILITY_PREREGISTRATION_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_SYMMETRY_BREAKING_IDENTIFIABILITY_EXPECTATIONS_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_SYMMETRY_BREAKING_IDENTIFIABILITY_EXECUTION_BURDEN_V0_1.md',
-  'app/dome-world/previews/a15-r0/finite-orientation-fibre-symmetry-breaking-identifiability.js',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-symmetry-breaking-identifiability.test.mjs',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-symmetry-breaking-identifiability-hostile.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_TRANSPORT_OPACITY_ERASURE_ROBUSTNESS_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_TRANSPORT_OPACITY_ERASURE_ROBUSTNESS_EXPECTATIONS_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_ORIENTATION_FIBRE_TRANSPORT_OPACITY_ERASURE_ROBUSTNESS_EXECUTION_BURDEN_V0_1.md',
+  'app/dome-world/previews/a15-r0/finite-orientation-fibre-transport-opacity-erasure-robustness.js',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-transport-opacity-erasure-robustness.test.mjs',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-transport-opacity-erasure-robustness-hostile.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations=changed.filter(path=>!allowed.has(path));
-assert.deepEqual(historicalMutations,[],`post-#882 orientation-fibre chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
-assert.equal(changed.length,allowed.size,`orientation-fibre chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
-for(const path of allowed) assert.equal(changed.includes(path),true,`missing orientation-fibre path: ${path}`);
+assert.deepEqual(historicalMutations,[],`post-#884 transport-opacity chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.equal(changed.length,allowed.size,`transport-opacity chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
+for(const path of allowed) assert.equal(changed.includes(path),true,`missing transport-opacity path: ${path}`);
 
 execFileSync(process.execPath,['tests/ash-a15-r0-review-hardening-sharded.test.mjs'],{stdio:'inherit'});
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -79,5 +79,7 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-metric-cut-skeleton-topolog
 await import('./ash-a15-r0-aperture-pedagogue-finite-metric-cut-skeleton-topological-orientation-hostile.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-symmetry-breaking-identifiability.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-symmetry-breaking-identifiability-hostile.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-transport-opacity-erasure-robustness.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-orientation-fibre-transport-opacity-erasure-robustness-hostile.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
-console.log('Ash A15-R0 finite orientation-fibre symmetry-breaking hardening tests passed.');
+console.log('Ash A15-R0 finite orientation-fibre transport-opacity / witness-erasure hardening tests passed.');
