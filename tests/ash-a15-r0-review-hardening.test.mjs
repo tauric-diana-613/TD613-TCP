@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
+const PARENT_878_RECEIPT='4ba3542aea8784586562032c57096248dc961db9';
 const PARENT_876_RECEIPT='3662f48ed7ad1345dc013fa6eb50bc4835a15e10';
-const RED_878_PROBE_ORDER_SPECIMEN='d8a5d85ebb6f3e5fb1af18c71baad05f5d7abd78';
 const PARENT_874_RECEIPT='7c4cef95d4f704f05615d663e252d5a53775bdbe';
 const PARENT_872_RECEIPT='d76ab8a3166916ebed1d189eee01343233ee3cfd';
 const PARENT_870_RECEIPT='8a17d896a74d76f284081c29badd0ec5028c5ab1';
@@ -50,7 +50,7 @@ function resolveScientificHead(){
   if(parents.length===2){
     const candidate=parents[1];
     try {
-      execFileSync('git',['merge-base','--is-ancestor',PARENT_876_RECEIPT,candidate],{stdio:'pipe'});
+      execFileSync('git',['merge-base','--is-ancestor',PARENT_878_RECEIPT,candidate],{stdio:'pipe'});
       return candidate;
     } catch {}
   }
@@ -59,51 +59,50 @@ function resolveScientificHead(){
 const SCIENCE_HEAD=resolveScientificHead();
 
 const ancestry=[
-  PARENT_876_RECEIPT,PARENT_874_RECEIPT,PARENT_872_RECEIPT,PARENT_870_RECEIPT,PARENT_868_RECEIPT,PARENT_866_RECEIPT,PARENT_864_RECEIPT,PARENT_862_RECEIPT,
-  PARENT_860_RECEIPT,PARENT_858_RECEIPT,PARENT_854_RECEIPT,PARENT_852_RECEIPT,PARENT_850_RECEIPT,PARENT_847_RECEIPT,PARENT_845_RECEIPT,PARENT_843_RECEIPT,
-  PARENT_841_RECEIPT,PARENT_839_RECEIPT,PARENT_837_RECEIPT,PARENT_834_RECEIPT,PARENT_830_RECEIPT,PARENT_828_RECEIPT,PARENT_826_RECEIPT,PARENT_824_RECEIPT,
-  PARENT_822_RECEIPT,PARENT_820_RECEIPT,PARENT_818_RECEIPT,PARENT_812_RECEIPT,PARENT_810_RECEIPT,PARENT_807_RECEIPT,PARENT_804_RECEIPT,PARENT_802_RECEIPT,
-  PARENT_800_RECEIPT,PARENT_798_RECEIPT,PARENT_796_RECEIPT,PARENT_794_RECEIPT,PARENT_792_RECEIPT,BENCH_790_RECEIPT,FADT_752_RECEIPT,
+  PARENT_878_RECEIPT,PARENT_876_RECEIPT,PARENT_874_RECEIPT,PARENT_872_RECEIPT,PARENT_870_RECEIPT,PARENT_868_RECEIPT,PARENT_866_RECEIPT,PARENT_864_RECEIPT,
+  PARENT_862_RECEIPT,PARENT_860_RECEIPT,PARENT_858_RECEIPT,PARENT_854_RECEIPT,PARENT_852_RECEIPT,PARENT_850_RECEIPT,PARENT_847_RECEIPT,PARENT_845_RECEIPT,
+  PARENT_843_RECEIPT,PARENT_841_RECEIPT,PARENT_839_RECEIPT,PARENT_837_RECEIPT,PARENT_834_RECEIPT,PARENT_830_RECEIPT,PARENT_828_RECEIPT,PARENT_826_RECEIPT,
+  PARENT_824_RECEIPT,PARENT_822_RECEIPT,PARENT_820_RECEIPT,PARENT_818_RECEIPT,PARENT_812_RECEIPT,PARENT_810_RECEIPT,PARENT_807_RECEIPT,PARENT_804_RECEIPT,
+  PARENT_802_RECEIPT,PARENT_800_RECEIPT,PARENT_798_RECEIPT,PARENT_796_RECEIPT,PARENT_794_RECEIPT,PARENT_792_RECEIPT,BENCH_790_RECEIPT,FADT_752_RECEIPT,
 ];
 for(const receipt of ancestry){
   execFileSync('git',['cat-file','-e',`${receipt}^{commit}`],{stdio:'pipe'});
   execFileSync('git',['merge-base','--is-ancestor',receipt,SCIENCE_HEAD],{stdio:'pipe'});
 }
 for(const [ancestor,descendant] of [
-  [PARENT_874_RECEIPT,PARENT_876_RECEIPT],[PARENT_872_RECEIPT,PARENT_874_RECEIPT],[PARENT_870_RECEIPT,PARENT_872_RECEIPT],[PARENT_868_RECEIPT,PARENT_870_RECEIPT],
-  [PARENT_866_RECEIPT,PARENT_868_RECEIPT],[PARENT_864_RECEIPT,PARENT_866_RECEIPT],[PARENT_862_RECEIPT,PARENT_864_RECEIPT],[PARENT_860_RECEIPT,PARENT_862_RECEIPT],
-  [PARENT_858_RECEIPT,PARENT_860_RECEIPT],[PARENT_854_RECEIPT,PARENT_858_RECEIPT],[PARENT_852_RECEIPT,PARENT_854_RECEIPT],[PARENT_850_RECEIPT,PARENT_852_RECEIPT],
-  [PARENT_847_RECEIPT,PARENT_850_RECEIPT],[PARENT_845_RECEIPT,PARENT_847_RECEIPT],[PARENT_843_RECEIPT,PARENT_845_RECEIPT],[PARENT_841_RECEIPT,PARENT_843_RECEIPT],
-  [PARENT_839_RECEIPT,PARENT_841_RECEIPT],[PARENT_837_RECEIPT,PARENT_839_RECEIPT],[PARENT_834_RECEIPT,PARENT_837_RECEIPT],[PARENT_830_RECEIPT,PARENT_834_RECEIPT],
-  [PARENT_828_RECEIPT,PARENT_830_RECEIPT],[PARENT_826_RECEIPT,PARENT_828_RECEIPT],[PARENT_824_RECEIPT,PARENT_826_RECEIPT],[PARENT_822_RECEIPT,PARENT_824_RECEIPT],
-  [PARENT_820_RECEIPT,PARENT_822_RECEIPT],[PARENT_818_RECEIPT,PARENT_820_RECEIPT],[PARENT_812_RECEIPT,PARENT_818_RECEIPT],[PARENT_810_RECEIPT,PARENT_812_RECEIPT],
-  [PARENT_807_RECEIPT,PARENT_810_RECEIPT],[PARENT_804_RECEIPT,PARENT_807_RECEIPT],[PARENT_802_RECEIPT,PARENT_804_RECEIPT],[PARENT_800_RECEIPT,PARENT_802_RECEIPT],
-  [PARENT_798_RECEIPT,PARENT_800_RECEIPT],[PARENT_796_RECEIPT,PARENT_798_RECEIPT],[PARENT_794_RECEIPT,PARENT_796_RECEIPT],[PARENT_792_RECEIPT,PARENT_794_RECEIPT],
-  [BENCH_790_RECEIPT,PARENT_792_RECEIPT],[FADT_752_RECEIPT,PARENT_792_RECEIPT],
+  [PARENT_876_RECEIPT,PARENT_878_RECEIPT],[PARENT_874_RECEIPT,PARENT_876_RECEIPT],[PARENT_872_RECEIPT,PARENT_874_RECEIPT],[PARENT_870_RECEIPT,PARENT_872_RECEIPT],
+  [PARENT_868_RECEIPT,PARENT_870_RECEIPT],[PARENT_866_RECEIPT,PARENT_868_RECEIPT],[PARENT_864_RECEIPT,PARENT_866_RECEIPT],[PARENT_862_RECEIPT,PARENT_864_RECEIPT],
+  [PARENT_860_RECEIPT,PARENT_862_RECEIPT],[PARENT_858_RECEIPT,PARENT_860_RECEIPT],[PARENT_854_RECEIPT,PARENT_858_RECEIPT],[PARENT_852_RECEIPT,PARENT_854_RECEIPT],
+  [PARENT_850_RECEIPT,PARENT_852_RECEIPT],[PARENT_847_RECEIPT,PARENT_850_RECEIPT],[PARENT_845_RECEIPT,PARENT_847_RECEIPT],[PARENT_843_RECEIPT,PARENT_845_RECEIPT],
+  [PARENT_841_RECEIPT,PARENT_843_RECEIPT],[PARENT_839_RECEIPT,PARENT_841_RECEIPT],[PARENT_837_RECEIPT,PARENT_839_RECEIPT],[PARENT_834_RECEIPT,PARENT_837_RECEIPT],
+  [PARENT_830_RECEIPT,PARENT_834_RECEIPT],[PARENT_828_RECEIPT,PARENT_830_RECEIPT],[PARENT_826_RECEIPT,PARENT_828_RECEIPT],[PARENT_824_RECEIPT,PARENT_826_RECEIPT],
+  [PARENT_822_RECEIPT,PARENT_824_RECEIPT],[PARENT_820_RECEIPT,PARENT_822_RECEIPT],[PARENT_818_RECEIPT,PARENT_820_RECEIPT],[PARENT_812_RECEIPT,PARENT_818_RECEIPT],
+  [PARENT_810_RECEIPT,PARENT_812_RECEIPT],[PARENT_807_RECEIPT,PARENT_810_RECEIPT],[PARENT_804_RECEIPT,PARENT_807_RECEIPT],[PARENT_802_RECEIPT,PARENT_804_RECEIPT],
+  [PARENT_800_RECEIPT,PARENT_802_RECEIPT],[PARENT_798_RECEIPT,PARENT_800_RECEIPT],[PARENT_796_RECEIPT,PARENT_798_RECEIPT],[PARENT_794_RECEIPT,PARENT_796_RECEIPT],
+  [PARENT_792_RECEIPT,PARENT_794_RECEIPT],[BENCH_790_RECEIPT,PARENT_792_RECEIPT],[FADT_752_RECEIPT,PARENT_792_RECEIPT],
 ]) execFileSync('git',['merge-base','--is-ancestor',ancestor,descendant],{stdio:'pipe'});
 
-const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_876_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.equal(ahead,8,'finite topological probe separation redundancy chamber must freeze at eight scientific successor commits including the preserved post-validation probe-order repair');
-execFileSync('git',['merge-base','--is-ancestor',RED_878_PROBE_ORDER_SPECIMEN,SCIENCE_HEAD],{stdio:'pipe'});
+const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_878_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
+assert.equal(ahead,7,'finite topological distinguishability metric-amnesia chamber must freeze at seven scientific successor commits');
 const changed=execFileSync('git',[
-  'diff','--name-only',`${PARENT_876_RECEIPT}..${SCIENCE_HEAD}`,'--',
+  'diff','--name-only',`${PARENT_878_RECEIPT}..${SCIENCE_HEAD}`,'--',
   'app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests',
 ],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>(
   path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-')
 ));
 const allowed=new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_PROBE_SEPARATION_REDUNDANCY_PREREGISTRATION_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_PROBE_SEPARATION_REDUNDANCY_EXPECTATIONS_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_PROBE_SEPARATION_REDUNDANCY_EXECUTION_BURDEN_V0_1.md',
-  'app/dome-world/previews/a15-r0/finite-topological-probe-separation-redundancy.js',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-topological-probe-separation-redundancy.test.mjs',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-topological-probe-separation-redundancy-hostile.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_DISTINGUISHABILITY_METRIC_AMNESIA_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_DISTINGUISHABILITY_METRIC_AMNESIA_EXPECTATIONS_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_TOPOLOGICAL_DISTINGUISHABILITY_METRIC_AMNESIA_EXECUTION_BURDEN_V0_1.md',
+  'app/dome-world/previews/a15-r0/finite-topological-distinguishability-metric-amnesia.js',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-topological-distinguishability-metric-amnesia.test.mjs',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-topological-distinguishability-metric-amnesia-hostile.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations=changed.filter(path=>!allowed.has(path));
-assert.deepEqual(historicalMutations,[],`post-#876 finite topological probe separation redundancy chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
-assert.equal(changed.length,allowed.size,`finite topological probe separation redundancy chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
-for(const path of allowed) assert.equal(changed.includes(path),true,`missing finite topological probe separation redundancy path: ${path}`);
+assert.deepEqual(historicalMutations,[],`post-#878 metric-amnesia chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.equal(changed.length,allowed.size,`metric-amnesia chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
+for(const path of allowed) assert.equal(changed.includes(path),true,`missing metric-amnesia path: ${path}`);
 
 execFileSync(process.execPath,['tests/ash-a15-r0-review-hardening-sharded.test.mjs'],{stdio:'inherit'});
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -151,6 +150,8 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-task-homotopy-amnesia-role-
 await import('./ash-a15-r0-aperture-pedagogue-finite-task-homotopy-amnesia-role-tomography-hostile.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-topological-probe-separation-redundancy.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-topological-probe-separation-redundancy-hostile.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-topological-distinguishability-metric-amnesia.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-topological-distinguishability-metric-amnesia-hostile.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 
-console.log('Ash A15-R0 finite topological probe separation / erasure-robust role tomography hardening tests passed.');
+console.log('Ash A15-R0 finite topological distinguishability metric / non-liftable isometry amnesia hardening tests passed.');
