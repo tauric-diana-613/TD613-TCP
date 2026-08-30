@@ -1,0 +1,85 @@
+{
+  "schema": "td613.a15-r0.finite-metric-cut-skeleton-topological-orientation-expectations/v0.1",
+  "scientific_parent": {
+    "pr": 880,
+    "receipt": "29a8879571341d0ee68b14f3e52bef76005b438e",
+    "validation_run": 2388,
+    "validation_run_id": 33284398244
+  },
+  "roles": ["A", "B", "T", "M", "R"],
+  "pair_count": 10,
+  "nontrivial_unoriented_cut_count": 15,
+  "full_metric": {
+    "A": {"A":0,"B":5,"T":4,"M":5,"R":8},
+    "B": {"A":5,"B":0,"T":5,"M":6,"R":5},
+    "T": {"A":4,"B":5,"T":0,"M":5,"R":4},
+    "M": {"A":5,"B":6,"T":5,"M":0,"R":5},
+    "R": {"A":8,"B":5,"T":4,"M":5,"R":0}
+  },
+  "raw_nonnegative_integer_cut_decomposition_count": 5,
+  "raw_integer_decompositions": [
+    {"A":0,"AB":2,"AT":1,"AM":2,"AR":0,"ABT":1,"ABM":0,"ABR":0,"ATM":1,"ATR":1,"AMR":0,"ABTM":1,"ABTR":0,"ABMR":0,"ATMR":0},
+    {"A":0,"AB":2,"AT":2,"AM":2,"AR":0,"ABT":0,"ABM":0,"ABR":0,"ATM":0,"ATR":0,"AMR":0,"ABTM":2,"ABTR":1,"ABMR":0,"ATMR":1},
+    {"A":1,"AB":1,"AT":0,"AM":1,"AR":0,"ABT":2,"ABM":1,"ABR":0,"ATM":2,"ATR":1,"AMR":0,"ABTM":0,"ABTR":0,"ABMR":0,"ATMR":0},
+    {"A":1,"AB":1,"AT":1,"AM":1,"AR":0,"ABT":1,"ABM":1,"ABR":0,"ATM":1,"ATR":0,"AMR":0,"ABTM":1,"ABTR":1,"ABMR":0,"ATMR":1},
+    {"A":2,"AB":0,"AT":0,"AM":0,"AR":0,"ABT":2,"ABM":2,"ABR":0,"ATM":2,"ATR":0,"AMR":0,"ABTM":0,"ABTR":1,"ABMR":0,"ATMR":1}
+  ],
+  "binary_cut_family_enumeration_count": 32768,
+  "binary_exact_decomposition_count": 1,
+  "unique_ten_distinct_unit_cut_order": ["A","AB","AT","AM","ABT","ABM","ATM","ABTM","ABTR","ATMR"],
+  "orientation_assignment_count": 1024,
+  "topology_compatible_orientation_count": 4,
+  "topology_compatible_orientation_bits": [
+    "0000000001",
+    "0000000010",
+    "1111111101",
+    "1111111110"
+  ],
+  "inherited_topology_orientation_bits": "1111111110",
+  "orientation_topology_properties": {
+    "open_state_count": 12,
+    "t0": true,
+    "t1": false,
+    "connected": true,
+    "clopen_count": 2,
+    "finite_alexandrov": true,
+    "automorphism_count_each": 1
+  },
+  "specialization_cover_sets": {
+    "0000000001": ["M<A","R<B","R<T","T<A"],
+    "0000000010": ["B<A","R<M","R<T","T<A"],
+    "1111111101": ["A<B","A<T","M<R","T<R"],
+    "1111111110": ["A<M","A<T","B<R","T<R"]
+  },
+  "metric_role_permutation_count": 120,
+  "metric_isometry_count": 4,
+  "metric_isometries": ["id","(B M)","(A R)","(A R)(B M)"],
+  "topology_automorphism_permutation_checks": 480,
+  "metric_isometry_action_checks": 16,
+  "inherited_topology_orbit_size": 4,
+  "inherited_topology_stabilizer_size": 1,
+  "isometry_action_free": true,
+  "isometry_action_transitive": true,
+  "orientation_pair_closure_checks": 294912,
+  "candidate_laws": [
+    "RAW_METRIC_DOES_NOT_HAVE_UNIQUE_NONNEGATIVE_INTEGER_CUT_DECOMPOSITION",
+    "METRIC_PLUS_TEN_DISTINCT_UNIT_PROBE_PRIOR_HAS_UNIQUE_UNORIENTED_TEN_CUT_SKELETON",
+    "UNIQUE_UNORIENTED_TEN_CUT_SKELETON_HAS_EXACTLY_FOUR_TOPOLOGY_COMPATIBLE_ORIENTATIONS",
+    "FULL_METRIC_ISOMETRY_GROUP_ACTS_FREELY_AND_TRANSITIVELY_ON_THE_FOUR_COMPATIBLE_TOPOLOGICAL_ORIENTATIONS"
+  ],
+  "authority": {
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "production": false,
+    "vercel": false,
+    "source_state_mutation": false,
+    "proto_loom_a16": false,
+    "pr_788_promotion": false,
+    "physical_geometry": false,
+    "continuum_topology": false,
+    "gauge_theory": false,
+    "shannon_channel_coding": false,
+    "universal_inverse_problem": false
+  }
+}
