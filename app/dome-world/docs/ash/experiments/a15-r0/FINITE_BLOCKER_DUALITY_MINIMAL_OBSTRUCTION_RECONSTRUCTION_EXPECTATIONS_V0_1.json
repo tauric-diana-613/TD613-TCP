@@ -1,0 +1,77 @@
+{
+  "schema": "td613.dome-world.finite-blocker-duality-minimal-obstruction-reconstruction-expectations/v0.1",
+  "status": "PREREGISTERED_MACHINE_EXPECTATIONS_BEFORE_IMPLEMENTATION",
+  "exact_parent_receipt": "633cd75baaaebcc5f357bd503024aefbbcf11057",
+  "exact_parent_pr": 888,
+  "exact_parent_run": 2395,
+  "exact_parent_run_id": 33296570047,
+  "inherited_orientation": "1111111110",
+  "nonidentity_transport_count": 3,
+  "witness_classes": {
+    "specialization_comparability": {
+      "witness_count": 20,
+      "family_count": 1048576,
+      "earned_blocker_member_count": 22,
+      "earned_multicover_family_counts_depth_1_to_5": [981696, 714560, 319040, 61888, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [1, 2, 4, 6, null]
+    },
+    "principal_open_identity": {
+      "witness_count": 5,
+      "family_count": 32,
+      "earned_blocker_member_count": 4,
+      "earned_multicover_family_counts_depth_1_to_5": [27, 14, 3, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [1, 2, 4, null, null]
+    },
+    "principal_open_size": {
+      "witness_count": 5,
+      "family_count": 32,
+      "earned_blocker_member_count": 4,
+      "earned_multicover_family_counts_depth_1_to_5": [18, 2, 0, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [2, 4, null, null, null]
+    },
+    "cut_orientation": {
+      "witness_count": 10,
+      "family_count": 1024,
+      "earned_blocker_member_count": 16,
+      "earned_multicover_family_counts_depth_1_to_5": [765, 247, 0, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [2, 4, null, null, null]
+    }
+  },
+  "global_expected": {
+    "selected_family_count": 1049664,
+    "first_blocker_vs_parent_mismatches": 0,
+    "double_blocker_vs_clutter_mismatches": 0,
+    "mu_original_vs_clutter_mismatches": 0,
+    "multicover_count_mismatches": 0,
+    "minimum_width_mismatches": 0,
+    "canonical_vs_hostile_edge_mismatches": 0,
+    "canonical_vs_hostile_blocker_mismatches": 0,
+    "canonical_vs_hostile_double_blocker_mismatches": 0,
+    "transport_label_relabelling_changes_unlabelled_blocker": false
+  },
+  "discovery_not_preregistered": [
+    "clutter_edge_count_by_class",
+    "strict_superedge_count_removed_by_class",
+    "duplicate_edge_count_removed_by_class",
+    "clutter_edge_contents_by_class",
+    "double_blocker_edge_contents_by_class",
+    "all_parent_hypergraphs_already_clutters",
+    "transport_label_permutation_count_preserving_unlabelled_blocker"
+  ],
+  "membranes": [
+    "BLOCKER_DUAL_RECOVERY != TRANSPORT_LABEL_RECOVERY",
+    "MINIMAL_IDENTIFYING_FAMILIES != COMPLETE_WITNESS_SEMANTICS",
+    "OBSTRUCTION_CLUTTER != PHYSICAL_NETWORK",
+    "HYPERGRAPH_EDGE != CAUSAL_RELATION",
+    "CLUTTERIZATION != INFORMATION_THEORETIC_COMPRESSION",
+    "BLOCKER_CARDINALITY != MINIMUM_BIT_LENGTH",
+    "MULTICOVER_DEPTH != SHANNON_INFORMATION",
+    "TRANSPORT_EDGE_MULTICOVER != ERROR_CORRECTION_CAPACITY",
+    "TRANSPORT_SEPARATING_RANK != ACTION_GENERATING_RANK",
+    "TRANSPORT_SEPARATING_RANK != BEHAVIORAL_SEPARATING_RANK",
+    "METRIC_ISOMETRY_ACTION != PHYSICAL_DYNAMICS",
+    "FREE_TRANSITIVE_FINITE_ACTION != GAUGE_THEORY",
+    "ORIENTATION_FIBRE != HIDDEN_STATE_SPACE",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ]
+}
