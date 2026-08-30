@@ -98,7 +98,10 @@ export function finiteTopologicalProbeSeparationRedundancyCertificate(){
   const parent=finiteTaskHomotopyAmnesiaRoleTomographyCertificate();
   const topologyParent=finiteTaskTopologyRigidityBirkhoffCertificate();
   const openStates=[...(topologyParent.topology?.open_states||[])];
-  const probes=openStates.filter(id=>id!=='EMPTY'&&id!==FULL_ID);
+  const inheritedProbes=openStates.filter(id=>id!=='EMPTY'&&id!==FULL_ID);
+  const probeUniverseMatches=inheritedProbes.length===EXPECTED_PROBES.length
+    && familySetKey(inheritedProbes)===familySetKey(EXPECTED_PROBES);
+  const probes=probeUniverseMatches?[...EXPECTED_PROBES]:[...inheritedProbes];
   const probeSets=Object.fromEntries(probes.map(id=>[id,setFromId(id)]));
   const families=allSubsets(probes);
 
@@ -179,7 +182,7 @@ export function finiteTopologicalProbeSeparationRedundancyCertificate(){
     && topologyParent.topology?.T0===true&&topologyParent.rigidity?.preserving_automorphism_count===1;
 
   const exact=parentExact
-    && canonical(probes)===canonical(EXPECTED_PROBES)
+    && probeUniverseMatches
     && families.length===1024&&pairRows===10240
     && canonical(classSpectrum)===canonical({'1':1,'2':10,'3':44,'4':174,'5':795})
     && canonical(muSpectrum)===canonical({'0':229,'1':446,'2':288,'3':57,'4':4})
@@ -201,7 +204,7 @@ export function finiteTopologicalProbeSeparationRedundancyCertificate(){
     schema:FINITE_TOPOLOGICAL_PROBE_SEPARATION_REDUNDANCY_SCHEMA,
     parent_receipt:FINITE_TOPOLOGICAL_PROBE_SEPARATION_REDUNDANCY_PARENT_RECEIPT,
     domain:freeze({roles:ROLES.length,open_states:openStates.length,nontrivial_probes:probes.length,probe_families:families.length,unordered_role_pairs:10}),
-    probes:freeze({all_open_states:freeze(openStates),nontrivial:freeze([...probes])}),
+    probes:freeze({all_open_states:freeze(openStates),inherited_nontrivial:freeze([...inheritedProbes]),nontrivial:freeze([...probes]),universe_matches_preregistered:probeUniverseMatches}),
     family_census:freeze({role_class_spectrum:freeze({...classSpectrum}),separation_multiplicity_spectrum:freeze({...muSpectrum}),exact_identifying_families:classSpectrum[5],width_mu_spectrum:freeze({...widthMu})}),
     erasure_redundancy:freeze({
       exact_erasure_case_counts:freeze({...erasureCaseCounts}),total_erasure_cases:erasureCases,
@@ -222,7 +225,8 @@ export function finiteTopologicalProbeSeparationRedundancyCertificate(){
       'FINITE_SEPARATION_MULTIPLICITY != CHANNEL_DISTANCE_THEOREM','ERASURE_ROBUSTNESS != ERROR_CORRECTION_CAPACITY','MINIMUM_PROBE_WIDTH != MINIMUM_BIT_LENGTH',
       'MINIMUM_PROBE_WIDTH != SHANNON_BOUND','ROBUST_FAMILY_COUNT != PROBABILISTIC_RELIABILITY','ARBITRARY_DECLARED_ERASURE != STOCHASTIC_NOISE_MODEL',
       'PAIR_SEPARATION_BOTTLENECK != CAUSAL_BOTTLENECK','TOPOLOGICAL_OBSERVER_FAMILY != MODEL_OBSERVER_NETWORK','FINITE_ROLE_RECOVERY != NATURAL_LANGUAGE_SEMANTIC_RECONSTRUCTION',
-      'EXACT_ROLE_IDENTIFICATION != SOURCE_STATE_RECONSTRUCTION','FOUR_ERASURE_IMPOSSIBILITY_IN_THIS_TOPOLOGY != UNIVERSAL_IMPOSSIBILITY','WITNESS_ROUTING != SCIENTIFIC_ANCESTRY',
+      'EXACT_ROLE_IDENTIFICATION != SOURCE_STATE_RECONSTRUCTION','FOUR_ERASURE_IMPOSSIBILITY_IN_THIS_TOPOLOGY != UNIVERSAL_IMPOSSIBILITY',
+      'PROBE_UNIVERSE_IDENTITY != PROBE_ENUMERATION_ORDER','WITNESS_ROUTING != SCIENTIFIC_ANCESTRY',
     ]),
     custody_witness:PHASONIC_CUPOLA_CUSTODY_WITNESS,authority:zeroAuthority(),research_only:true,runtime_binding:false,
   });

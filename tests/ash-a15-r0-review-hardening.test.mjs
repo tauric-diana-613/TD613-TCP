@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
 const PARENT_876_RECEIPT='3662f48ed7ad1345dc013fa6eb50bc4835a15e10';
+const RED_878_PROBE_ORDER_SPECIMEN='d8a5d85ebb6f3e5fb1af18c71baad05f5d7abd78';
 const PARENT_874_RECEIPT='7c4cef95d4f704f05615d663e252d5a53775bdbe';
 const PARENT_872_RECEIPT='d76ab8a3166916ebed1d189eee01343233ee3cfd';
 const PARENT_870_RECEIPT='8a17d896a74d76f284081c29badd0ec5028c5ab1';
@@ -82,7 +83,8 @@ for(const [ancestor,descendant] of [
 ]) execFileSync('git',['merge-base','--is-ancestor',ancestor,descendant],{stdio:'pipe'});
 
 const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_876_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.equal(ahead,7,'finite topological probe separation redundancy chamber must freeze at seven scientific successor commits');
+assert.equal(ahead,8,'finite topological probe separation redundancy chamber must freeze at eight scientific successor commits including the preserved post-validation probe-order repair');
+execFileSync('git',['merge-base','--is-ancestor',RED_878_PROBE_ORDER_SPECIMEN,SCIENCE_HEAD],{stdio:'pipe'});
 const changed=execFileSync('git',[
   'diff','--name-only',`${PARENT_876_RECEIPT}..${SCIENCE_HEAD}`,'--',
   'app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests',

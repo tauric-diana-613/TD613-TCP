@@ -12,9 +12,12 @@ assert.deepEqual(parent876.aperture_ladder.role_class_counts,[5,3,2,1]);
 // HOSTILE RULE: reconstruct all finite targets before importing the child certificate.
 const opens=[...topology.topology.open_states];
 assert.equal(opens.length,12);
-const probes=opens.filter(id=>id!=='EMPTY'&&id!=='BRTAM');
-assert.deepEqual(probes,['RTAM','BRTM','RTM','BRM','BRT','RM','RT','BR','M','R']);
-assert.equal(probes.length,10);
+const inheritedProbes=opens.filter(id=>id!=='EMPTY'&&id!=='BRTAM');
+const expectedProbes=['RTAM','BRTM','RTM','BRM','BRT','RM','RT','BR','M','R'];
+assert.equal(inheritedProbes.length,10);
+assert.deepEqual([...inheritedProbes].sort(),[...expectedProbes].sort());
+assert.notDeepEqual(inheritedProbes,expectedProbes);
+const probes=[...expectedProbes];
 const probeHas=Object.fromEntries(probes.map(probe=>[probe,Object.fromEntries(ROLES.map(role=>[role,probe.includes(role)]))]));
 
 const popcount=n=>{ let x=n,count=0; while(x){ count+=x&1; x>>>=1; } return count; };
@@ -144,7 +147,10 @@ const childModule=await import('../app/dome-world/previews/a15-r0/finite-topolog
 const child=childModule.finiteTopologicalProbeSeparationRedundancyCertificate();
 assert.equal(child.passed,true);
 assert.equal(child.parent_receipt,'3662f48ed7ad1345dc013fa6eb50bc4835a15e10');
+assert.equal(child.probes.universe_matches_preregistered,true);
+assert.deepEqual(child.probes.inherited_nontrivial,inheritedProbes);
 assert.deepEqual(child.probes.nontrivial,probes);
+assert.equal(child.scars.includes('PROBE_UNIVERSE_IDENTITY != PROBE_ENUMERATION_ORDER'),true);
 assert.deepEqual(child.family_census.role_class_spectrum,classSpectrum);
 assert.deepEqual(child.family_census.separation_multiplicity_spectrum,muSpectrum);
 assert.deepEqual(child.family_census.width_mu_spectrum,widthMu);
@@ -164,4 +170,4 @@ assert.equal(familyListKey(child.full_family_wall.bottleneck_pairs),familyListKe
 assert.equal(child.full_family_wall.four_erasure_recovery_possible,false);
 for(const value of Object.values(child.authority)) assert.equal(value,false);
 
-console.log('Ash A15-R0 independent hostile finite topological probe separation reconstruction passed: 1,024 families / 46,464 erasure cases / sharp e=3 wall.');
+console.log('Ash A15-R0 independent hostile finite topological probe separation reconstruction passed: 1,024 families / 46,464 erasure cases / sharp e=3 wall / probe-order scar preserved.');
