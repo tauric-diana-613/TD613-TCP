@@ -1,0 +1,78 @@
+{
+  "schema": "td613.dome-world.one-sided-continuation-two-sided-syntactic-recovery-expectations/v0.1",
+  "exact_parent_pr": 900,
+  "exact_parent_receipt": "fa1c369abe3e628a92405aef03aeb6f9e2f76087",
+  "exact_parent_validation": {
+    "run_number": 2402,
+    "run_id": 33336622536,
+    "conclusion": "success"
+  },
+  "task_points": ["A", "B", "T", "M", "R"],
+  "calibration_point": "A",
+  "action_monoid_size": 128,
+  "unordered_distinct_action_pairs": 8128,
+  "state_indexed_action_pair_cases": 40640,
+  "endpoint_fiber_counts": {
+    "A": {"A":84,"B":18,"T":20,"M":2,"R":4},
+    "B": {"A":44,"B":23,"T":31,"M":9,"R":21},
+    "T": {"A":36,"B":10,"T":36,"M":10,"R":36},
+    "M": {"A":21,"B":9,"T":31,"M":23,"R":44},
+    "R": {"A":4,"B":2,"T":20,"M":18,"R":84}
+  },
+  "endpoint_alias_pairs": {
+    "A":3836,
+    "B":1910,
+    "T":1980,
+    "M":1910,
+    "R":3836,
+    "total":13472
+  },
+  "endpoint_separated_pairs": {
+    "A":4292,
+    "B":6218,
+    "T":6148,
+    "M":6218,
+    "R":4292,
+    "total":27168
+  },
+  "right_context": {
+    "complete_readout_comparisons": 5201920,
+    "alias_readout_comparisons": 1724416,
+    "required_alias_mismatches": 0,
+    "required_endpoint_kernel_mismatches": 0,
+    "quotient_classes_per_calibration": 5,
+    "baseline_A_alias_pairs": 3836,
+    "baseline_A_separated_pairs": 4292,
+    "baseline_A_quotient_classes": 5
+  },
+  "two_sided_context": {
+    "distinct_action_pairs": 8128,
+    "required_context_witnesses": 8128,
+    "required_unwitnessed_pairs": 0,
+    "maximum_prefix_actions": 1,
+    "maximum_suffix_actions": 1,
+    "syntactic_action_classes": 128
+  },
+  "access_actions_from_A": {
+    "A":"AAAAA",
+    "B":"BABBR",
+    "T":"TARRR",
+    "M":"MAMMM",
+    "R":"RARRR"
+  },
+  "required_laws": [
+    "RIGHT_CONTEXT_EQUIVALENCE_IFF_CALIBRATED_ENDPOINT_EQUALITY_FOR_EVERY_DECLARED_CALIBRATION_STATE",
+    "FIXED_CALIBRATION_RIGHT_CONTEXT_COLLAPSES_128_GLOBAL_ACTIONS_TO_FIVE_RESIDUAL_ENDPOINT_CLASSES",
+    "TWO_SIDED_CONTEXT_FROM_A_RECOVERS_ALL_128_GLOBAL_ACTION_CLASSES",
+    "EVERY_DISTINCT_GLOBAL_ACTION_PAIR_HAS_A_ONE_PREFIX_ONE_SUFFIX_CONTEXT_WITNESS",
+    "SAME_RETAINED_ENDPOINT_IMPLIES_EQUAL_ALL_FUTURE_STATE_ONLY_READOUTS_IN_THE_MEMORYLESS_DECLARED_MONOID"
+  ],
+  "required_membranes": [
+    "FUTURE_STATE_CONTINUATION_EQUIVALENCE != GLOBAL_ACTION_EQUIVALENCE",
+    "CALIBRATED_ENDPOINT_EQUALITY != OPERATOR_IDENTITY",
+    "OPERATOR_IDENTITY_IN_THIS_FIXTURE != HISTORICAL_SOURCE_PROVENANCE",
+    "STATE_ONLY_NONRECOVERABILITY != SOURCE_HISTORY_ERASURE",
+    "RIGHT_CONTEXT_EQUIVALENCE != TWO_SIDED_SYNTACTIC_EQUIVALENCE",
+    "MEMORYLESS_ENDPOINT_COLLAPSE != PROCEDURAL_MEMORY"
+  ]
+}
