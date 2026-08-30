@@ -1,32 +1,32 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const PARENT_894_RECEIPT='961d6eae8491ca1c72da23c5f23c2b573dc8e8ce';
+const PARENT_896_RECEIPT='2f0567e34dca5fc766f0858a6440db18e828bf00';
 function resolveScientificHead(){
   const parents=execFileSync('git',['show','-s','--format=%P','HEAD'],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean);
-  if(parents.length===2){ const candidate=parents[1]; try { execFileSync('git',['merge-base','--is-ancestor',PARENT_894_RECEIPT,candidate],{stdio:'pipe'}); return candidate; } catch {} }
+  if(parents.length===2){ const candidate=parents[1]; try { execFileSync('git',['merge-base','--is-ancestor',PARENT_896_RECEIPT,candidate],{stdio:'pipe'}); return candidate; } catch {} }
   return 'HEAD';
 }
 const SCIENCE_HEAD=resolveScientificHead();
-execFileSync('git',['cat-file','-e',`${PARENT_894_RECEIPT}^{commit}`],{stdio:'pipe'});
-execFileSync('git',['merge-base','--is-ancestor',PARENT_894_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
-const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_894_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.ok(ahead>=8,'prime-dual fixed-point rest chamber must retain the eight preregistered/frozen scientific successor commits');
-const changed=execFileSync('git',['diff','--name-only',`${PARENT_894_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-'));
+execFileSync('git',['cat-file','-e',`${PARENT_896_RECEIPT}^{commit}`],{stdio:'pipe'});
+execFileSync('git',['merge-base','--is-ancestor',PARENT_896_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
+const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_896_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
+assert.ok(ahead>=9,'diagnostic action monoid chamber must retain the nine preregistered/frozen scientific successor commits including the pre-test interface binding repair');
+const changed=execFileSync('git',['diff','--name-only',`${PARENT_896_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>path.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||path.startsWith('app/dome-world/previews/a15-r0/')||path.startsWith('tests/ash-a15-r0-'));
 const allowed=new Set([
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_PREREGISTRATION_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_EXPECTATIONS_V0_1.json',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_BURDEN_V0_1.md',
-  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_PRIME_DUAL_FIXED_POINT_REST_NORMALIZER_FREEZE_V0_1.md',
-  'app/dome-world/previews/a15-r0/finite-prime-dual-fixed-point-rest-normalizer.js',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer.test.mjs',
-  'tests/ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer-hostile.test.mjs',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_DIAGNOSTIC_ACTION_MONOID_RANK_GAP_PREREGISTRATION_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_DIAGNOSTIC_ACTION_MONOID_RANK_GAP_EXPECTATIONS_V0_1.json',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_DIAGNOSTIC_ACTION_MONOID_RANK_GAP_BURDEN_V0_1.md',
+  'app/dome-world/docs/ash/experiments/a15-r0/FINITE_DIAGNOSTIC_ACTION_MONOID_RANK_GAP_FREEZE_V0_1.md',
+  'app/dome-world/previews/a15-r0/finite-diagnostic-action-monoid-rank-gap.js',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-diagnostic-action-monoid-rank-gap.test.mjs',
+  'tests/ash-a15-r0-aperture-pedagogue-finite-diagnostic-action-monoid-rank-gap-hostile.test.mjs',
   'tests/ash-a15-r0-review-hardening.test.mjs',
 ]);
 const historicalMutations=changed.filter(path=>!allowed.has(path));
-assert.deepEqual(historicalMutations,[],`post-#894 prime-dual fixed-point chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
-assert.equal(changed.length,allowed.size,`prime-dual fixed-point chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
-for(const path of allowed) assert.equal(changed.includes(path),true,`missing prime-dual fixed-point path: ${path}`);
+assert.deepEqual(historicalMutations,[],`post-#896 diagnostic action monoid chamber mutated inherited A15-R0 paths: ${historicalMutations.join(', ')}`);
+assert.equal(changed.length,allowed.size,`diagnostic action monoid chamber must contain exactly ${allowed.size} live paths; observed ${changed.length}`);
+for(const path of allowed) assert.equal(changed.includes(path),true,`missing diagnostic action monoid path: ${path}`);
 
 execFileSync(process.execPath,['tests/ash-a15-r0-review-hardening-sharded.test.mjs'],{stdio:'inherit'});
 await import('./ash-a15-r0-aperture-pedagogue-holonomy-loom-heterostratigraphic-research-bench.test.mjs');
@@ -90,5 +90,7 @@ await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-de
 await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-witness-logic-declared-aperture-closure-hostile.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-finite-prime-dual-fixed-point-rest-normalizer-hostile.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-diagnostic-action-monoid-rank-gap.test.mjs');
+await import('./ash-a15-r0-aperture-pedagogue-finite-diagnostic-action-monoid-rank-gap-hostile.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
-console.log('Ash A15-R0 finite prime-dual fixed-point rest normalizer hardening tests passed.');
+console.log('Ash A15-R0 finite diagnostic action monoid / separation-generation rank-gap hardening tests passed.');
