@@ -7,7 +7,6 @@ export const FINITE_DIAGNOSTIC_ACTION_MONOID_RANK_GAP_PARENT_RECEIPT='2f0567e34d
 
 const POINTS=Object.freeze(['A','B','T','M','R']);
 const INDEX=Object.freeze(Object.fromEntries(POINTS.map((point,index)=>[point,index])));
-const IDENTITY=Object.freeze([...POINTS]);
 const IDENTITY_ID='ABTMR';
 const CALIBRATION_POINT='A';
 const NAMED_SEPARATOR='ATATR';
@@ -161,10 +160,8 @@ export function finiteDiagnosticActionMonoidRankGapCertificate(){
   const missing=continuous.filter(row=>!indispensableClosure.has(rowId(row)));
 
   let bestTenGeneratorClosureSize=indispensableClosure.size;
-  const oneAdditionClosureSizes={};
   for(const row of missing){
     const size=generatedClosure([...indispensableRows,row],rowById).size;
-    oneAdditionClosureSizes[rowId(row)]=size;
     bestTenGeneratorClosureSize=Math.max(bestTenGeneratorClosureSize,size);
   }
 
@@ -196,7 +193,7 @@ export function finiteDiagnosticActionMonoidRankGapCertificate(){
     topologyParent.passed===true&&
     topologyParent.domain?.task_points===5&&
     topologyParent.topology?.T0===true&&
-    homotopyParent.endomorphisms?.continuous_count===128;
+    homotopyParent.endomorphism_census?.continuous_endomorphisms===128;
 
   const exact=parentExact&&
     functions.length===3125&&
