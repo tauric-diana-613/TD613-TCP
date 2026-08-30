@@ -1,0 +1,42 @@
+{
+  "schema": "td613.dome-world.finite-prime-dual-fixed-point-rest-normalizer.expectations/v0.1",
+  "exact_earned_parent": "961d6eae8491ca1c72da23c5f23c2b573dc8e8ce",
+  "class_order": [
+    "specialization_comparability",
+    "principal_open_identity",
+    "principal_open_size",
+    "cut_orientation"
+  ],
+  "classes": {
+    "specialization_comparability": {"witness_count":20,"family_count":1048576,"minimal_true_count":22,"minimal_obstruction_count":3},
+    "principal_open_identity": {"witness_count":5,"family_count":32,"minimal_true_count":4,"minimal_obstruction_count":2},
+    "principal_open_size": {"witness_count":5,"family_count":32,"minimal_true_count":4,"minimal_obstruction_count":2},
+    "cut_orientation": {"witness_count":10,"family_count":1024,"minimal_true_count":16,"minimal_obstruction_count":2}
+  },
+  "ledger": {
+    "selected_family_count": 1049664,
+    "minimal_true_count": 46,
+    "minimal_obstruction_count": 9,
+    "transport_truth_intersection_checks": 3148992,
+    "hasse_edge_checks_per_normalization": 10491040,
+    "success_dnf_subset_zeta_updates": 10491040,
+    "obstruction_cnf_intersection_checks": 3147904,
+    "normalization_passes": 2,
+    "fixed_work_units": 37770016
+  },
+  "required_zero_mismatches": [
+    "first_minimal_true_vs_parent_blocker",
+    "first_minimal_obstruction_vs_parent_clutter",
+    "dnf_reconstruction_vs_transport_truth",
+    "cnf_reconstruction_vs_transport_truth",
+    "second_minimal_true_vs_first",
+    "second_minimal_obstruction_vs_first",
+    "hostile_vs_child"
+  ],
+  "required_laws": [
+    "PRIME_DUAL_NORMALIZER_RECOVERS_UNIQUE_MINIMAL_TRUE_AND_MAXIMAL_FALSE_COMPLEMENT_ANTICHAINS",
+    "PRIME_DUAL_RECONSTRUCTION_IS_EXACT_ON_THE_DECLARED_FINITE_TRUTH_SURFACE",
+    "PRIME_DUAL_NORMALIZATION_IS_IDEMPOTENT_ON_THE_DECLARED_FINITE_TRUTH_SURFACE",
+    "REPEATED_SAME_TUPLE_NORMALIZATION_CANNOT_CREATE_NEW_PRIME_SUCCESS_TERMS_OR_OBSTRUCTION_CLAUSES"
+  ]
+}
