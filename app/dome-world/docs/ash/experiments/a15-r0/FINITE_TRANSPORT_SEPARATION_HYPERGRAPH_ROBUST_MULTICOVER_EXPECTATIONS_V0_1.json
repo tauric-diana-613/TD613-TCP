@@ -1,0 +1,75 @@
+{
+  "schema": "td613.dome-world.finite-transport-separation-hypergraph-robust-multicover-expectations/v0.1",
+  "status": "PREREGISTERED_MACHINE_EXPECTATIONS_BEFORE_IMPLEMENTATION",
+  "exact_parent_receipt": "891cb4125e626c1145b4a6dcb3b1a82074bee510",
+  "exact_parent_pr": 886,
+  "exact_parent_run": 2394,
+  "exact_parent_run_id": 33295098820,
+  "inherited_orientation": "1111111110",
+  "metric_isometry_group": ["id", "(B M)", "(A R)", "(A R)(B M)"],
+  "nonidentity_transport_count": 3,
+  "witness_classes": {
+    "specialization_comparability": {
+      "witness_count": 20,
+      "family_count": 1048576,
+      "earned_exact_multicover_family_counts_depth_1_to_5": [981696, 714560, 319040, 61888, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [1, 2, 4, 6, null]
+    },
+    "principal_open_identity": {
+      "witness_count": 5,
+      "family_count": 32,
+      "earned_exact_multicover_family_counts_depth_1_to_5": [27, 14, 3, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [1, 2, 4, null, null]
+    },
+    "principal_open_size": {
+      "witness_count": 5,
+      "family_count": 32,
+      "earned_exact_multicover_family_counts_depth_1_to_5": [18, 2, 0, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [2, 4, null, null, null]
+    },
+    "cut_orientation": {
+      "witness_count": 10,
+      "family_count": 1024,
+      "earned_exact_multicover_family_counts_depth_1_to_5": [765, 247, 0, 0, 0],
+      "earned_minimum_multicover_width_depth_1_to_5": [2, 4, null, null, null]
+    }
+  },
+  "global_expected": {
+    "selected_family_count": 1049664,
+    "transport_labelled_edges_per_class": 3,
+    "family_transport_intersection_checks": 3148992,
+    "multicover_depth_checks_1_to_5": 5248320,
+    "all_family_single_witness_deletion_checks_for_blocker_minimality": 10491040,
+    "residual_transport_edge_avoidance_mismatches": 0,
+    "origin_identification_transversal_mismatches": 0,
+    "mu_hypergraph_vs_mu_tr_mismatches": 0,
+    "multicover_vs_parent_robustness_count_mismatches": 0,
+    "multicover_vs_parent_minimum_width_mismatches": 0,
+    "blocker_vs_inclusion_minimal_identifying_family_mismatches": 0,
+    "canonical_vs_hostile_incidence_mismatches": 0
+  },
+  "discovery_not_preregistered": [
+    "transport_labelled_edge_contents",
+    "deduplicated_edge_count_by_class",
+    "edge_size_spectrum_by_class",
+    "blocker_member_count_by_class",
+    "blocker_width_spectrum_by_class",
+    "essential_witness_vertices_by_class",
+    "never_minimal_witness_vertices_by_class",
+    "same_rank_nonisomorphic_incidence_examples"
+  ],
+  "membranes": [
+    "TRANSPORT_SEPARATION_HYPERGRAPH != PHYSICAL_NETWORK",
+    "HYPERGRAPH_EDGE != CAUSAL_RELATION",
+    "TRANSPORT_EDGE_MULTICOVER != ERROR_CORRECTION_CAPACITY",
+    "TRANSPORT_EDGE_MULTICOVER != SHANNON_CHANNEL_CAPACITY",
+    "MULTICOVER_DEPTH != MINIMUM_BIT_LENGTH",
+    "TRANSPORT_SEPARATING_RANK != ACTION_GENERATING_RANK",
+    "TRANSPORT_SEPARATING_RANK != BEHAVIORAL_SEPARATING_RANK",
+    "RESIDUAL_TRANSPORT_SET != SETWISE_STABILIZER",
+    "METRIC_ISOMETRY_ACTION != PHYSICAL_DYNAMICS",
+    "FREE_TRANSITIVE_FINITE_ACTION != GAUGE_THEORY",
+    "ORIENTATION_FIBRE != HIDDEN_STATE_SPACE",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ]
+}
