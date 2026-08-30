@@ -1,0 +1,31 @@
+{
+  "schema": "td613.dome-world.finite-prime-dual-witness-logic-declared-aperture-closure-burden/v0.1",
+  "exact_parent_receipt": "5e1c459bccd58ba89e6a218198e69d8d1518424e",
+  "declared_witness_counts": {
+    "specialization_comparability": 20,
+    "principal_open_identity": 5,
+    "principal_open_size": 5,
+    "cut_orientation": 10
+  },
+  "declared_family_counts": {
+    "specialization_comparability": 1048576,
+    "principal_open_identity": 32,
+    "principal_open_size": 32,
+    "cut_orientation": 1024,
+    "total": 1049664
+  },
+  "planned_algorithm": {
+    "minimal_success_dnf_evaluation": "seed minimal true masks then compute upward closure by finite subset-zeta propagation",
+    "minimal_obstruction_cnf_evaluation": "direct intersection against frozen minimal obstruction clutter",
+    "parent_truth_evaluation": "direct intersection against earned labelled transport-separation edges",
+    "dnf_irredundancy": "evaluate each minimal success term at its own mask after deleting that term",
+    "cnf_irredundancy": "evaluate each minimal obstruction clause at the complement of that clause after deleting that clause"
+  },
+  "maximum_fixed_family_truth_rows": 1049664,
+  "fixed_subset_zeta_edge_updates": 10491040,
+  "maximum_parent_transport_intersection_checks": 3148992,
+  "maximum_clutter_clause_intersection_checks": 3148992,
+  "forbidden_shortcut": "Do not evaluate a 7168-term-or-larger DNF by scanning every term against every 20-witness family; use exact upward closure instead.",
+  "required_mismatch_total": 0,
+  "status": "FROZEN_BEFORE_IMPLEMENTATION"
+}
