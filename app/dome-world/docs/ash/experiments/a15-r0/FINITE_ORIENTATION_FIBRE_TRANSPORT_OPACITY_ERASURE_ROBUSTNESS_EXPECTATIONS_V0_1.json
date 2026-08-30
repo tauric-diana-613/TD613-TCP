@@ -1,0 +1,74 @@
+{
+  "schema": "td613.dome-world.finite-orientation-fibre-transport-opacity-erasure-robustness.expectations/v0.1",
+  "status": "PREREGISTERED_BEFORE_THEOREM_CODE",
+  "parent_receipt": "faef60c732e057fe6c678fe4cc7ae7318192f694",
+  "parent_validation": {
+    "run_number": 2393,
+    "run_id": 33289854969,
+    "conclusion": "success"
+  },
+  "fibre": {
+    "size": 4,
+    "inherited": "1111111110",
+    "group_size": 4,
+    "nonidentity_transports": 3,
+    "action_free": true,
+    "action_transitive": true
+  },
+  "classes": {
+    "specialization_comparability": {
+      "witnesses": 20,
+      "families": 1048576,
+      "exact_identifying_families": 981696,
+      "mu_tr_spectrum": {"0": 66880, "1": 267136, "2": 395520, "3": 257152, "4": 61888},
+      "robust_family_counts_e0_to_e4": [981696, 714560, 319040, 61888, 0],
+      "minimum_width_e0_to_e4": [1, 2, 4, 6, null],
+      "residual_transport_vs_setwise_stabilizer_difference_families": 576,
+      "direct_deletion_cases_e0_to_e4": [1048576, 10485760, 49807360, 149422080, 317521920]
+    },
+    "principal_open_identity": {
+      "witnesses": 5,
+      "families": 32,
+      "exact_identifying_families": 27,
+      "mu_tr_spectrum": {"0": 5, "1": 13, "2": 11, "3": 3},
+      "robust_family_counts_e0_to_e4": [27, 14, 3, 0, 0],
+      "minimum_width_e0_to_e4": [1, 2, 4, null, null],
+      "residual_transport_vs_setwise_stabilizer_difference_families": 0,
+      "direct_deletion_cases_e0_to_e4": [32, 80, 80, 40, 10]
+    },
+    "principal_open_size": {
+      "witnesses": 5,
+      "families": 32,
+      "exact_identifying_families": 18,
+      "mu_tr_spectrum": {"0": 14, "1": 16, "2": 2},
+      "robust_family_counts_e0_to_e4": [18, 2, 0, 0, 0],
+      "minimum_width_e0_to_e4": [2, 4, null, null, null],
+      "residual_transport_vs_setwise_stabilizer_difference_families": 0,
+      "direct_deletion_cases_e0_to_e4": [32, 80, 80, 40, 10]
+    },
+    "cut_orientation": {
+      "witnesses": 10,
+      "families": 1024,
+      "exact_identifying_families": 765,
+      "mu_tr_spectrum": {"0": 259, "1": 518, "2": 247},
+      "robust_family_counts_e0_to_e4": [765, 247, 0, 0, 0],
+      "minimum_width_e0_to_e4": [2, 4, null, null, null],
+      "residual_transport_vs_setwise_stabilizer_difference_families": 0,
+      "direct_deletion_cases_e0_to_e4": [1024, 5120, 11520, 15360, 13440]
+    }
+  },
+  "expected_total_selected_families": 1049664,
+  "expected_total_direct_deletion_cases": 528332644,
+  "criterion_mismatches": 0,
+  "transport_stabilizer_counterexample_required": true,
+  "claim_ceiling": [
+    "RESIDUAL_TRANSPORT_SET != SETWISE_STABILIZER",
+    "TRANSPORT_SEPARATING_RANK != BEHAVIORAL_SEPARATING_RANK",
+    "TRANSPORT_SEPARATING_RANK != ACTION_GENERATING_RANK",
+    "WITNESS_ERASURE_ROBUSTNESS != ERROR_CORRECTION_CAPACITY",
+    "SEPARATION_MULTIPLICITY != SHANNON_DISTANCE",
+    "FINITE_WITNESS_WIDTH != MINIMUM_BIT_LENGTH",
+    "FREE_TRANSITIVE_FINITE_ACTION != GAUGE_THEORY",
+    "ORIENTATION_FIBRE != HIDDEN_STATE_SPACE"
+  ]
+}
