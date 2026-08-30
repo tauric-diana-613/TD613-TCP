@@ -1,0 +1,34 @@
+{
+  "schema": "td613.dome-world.finite-action-evaluation-boolean-fiber-descent-expectations/v0.1",
+  "parent_receipt": "ec837736399e2b5e65c281c1fc88f18cc99709ad",
+  "task_points": 5,
+  "continuous_endomorphisms": 128,
+  "calibration_subsets": 32,
+  "distinct_evaluation_partitions": 32,
+  "closure_identity_subsets": 32,
+  "boolean_hasse_edges": 80,
+  "strict_hasse_refinements": 80,
+  "ordered_subset_pairs": 1024,
+  "meet_identity_passes": 1024,
+  "join_identity_passes": 1024,
+  "proper_subsets": 31,
+  "proper_injective_subsets": 0,
+  "full_injective_subsets": 1,
+  "action_evaluation_rank": 5,
+  "parent_state_separation_rank": 1,
+  "parent_atomic_action_generating_rank": 11,
+  "tri_rank_signature": [1, 5, 11],
+  "subset_partitions": {
+    "EMPTY": [1,128], "A": [5,84], "B": [5,44], "T": [5,36], "M": [5,44], "R": [5,84],
+    "AB": [19,32], "AT": [10,36], "AM": [10,21], "AR": [10,48], "BT": [19,16], "BM": [24,14], "BR": [10,21], "TM": [19,16], "TR": [10,36], "MR": [19,32],
+    "ABT": [37,16], "ABM": [42,8], "ABR": [26,12], "ATM": [26,9], "ATR": [16,16], "AMR": [26,12], "BTM": [72,4], "BTR": [26,9], "BMR": [42,8], "TMR": [37,16],
+    "ABTM": [98,4], "ABTR": [46,4], "ABMR": [64,3], "ATMR": [46,4], "BTMR": [98,4], "ABTMR": [128,1]
+  },
+  "four_coordinate_deletions": {
+    "omit_A": {"observed":"BTMR","classes":98,"max_fiber":4,"fiber_spectrum":{"1":76,"2":18,"4":4},"ambiguous_classes":22,"ambiguous_actions":52,"colliding_pairs":42},
+    "omit_B": {"observed":"ATMR","classes":46,"max_fiber":4,"fiber_spectrum":{"1":6,"2":19,"4":21},"ambiguous_classes":40,"ambiguous_actions":122,"colliding_pairs":145},
+    "omit_T": {"observed":"ABMR","classes":64,"max_fiber":3,"fiber_spectrum":{"1":16,"2":32,"3":16},"ambiguous_classes":48,"ambiguous_actions":112,"colliding_pairs":80},
+    "omit_M": {"observed":"ABTR","classes":46,"max_fiber":4,"fiber_spectrum":{"1":6,"2":19,"4":21},"ambiguous_classes":40,"ambiguous_actions":122,"colliding_pairs":145},
+    "omit_R": {"observed":"ABTM","classes":98,"max_fiber":4,"fiber_spectrum":{"1":76,"2":18,"4":4},"ambiguous_classes":22,"ambiguous_actions":52,"colliding_pairs":42}
+  }
+}
