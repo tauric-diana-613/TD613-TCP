@@ -1,0 +1,59 @@
+{
+  "schema": "td613.dome-world.finite-prime-dual-witness-logic-declared-aperture-closure-expectations/v0.1",
+  "exact_parent_pr": 892,
+  "exact_parent_receipt": "5e1c459bccd58ba89e6a218198e69d8d1518424e",
+  "exact_parent_validation": {
+    "run_number": 2397,
+    "run_id": 33327765320,
+    "conclusion": "success"
+  },
+  "class_order": [
+    "specialization_comparability",
+    "principal_open_identity",
+    "principal_open_size",
+    "cut_orientation"
+  ],
+  "expected_selected_family_count": 1049664,
+  "required_parent_conditions": {
+    "blocker_parent_passed": true,
+    "transport_parent_passed": true,
+    "first_blocker_vs_parent_mismatches": 0,
+    "double_blocker_vs_clutter_mismatches": 0,
+    "mu_original_vs_clutter_mismatches": 0
+  },
+  "required_child_conditions": {
+    "origin_truth_vs_success_dnf_mismatches": 0,
+    "origin_truth_vs_obstruction_cnf_mismatches": 0,
+    "success_dnf_vs_obstruction_cnf_mismatches": 0,
+    "dnf_irredundancy_failures": 0,
+    "cnf_irredundancy_failures": 0,
+    "success_count_vs_parent_depth1_mismatches": 0,
+    "all_declared_classes_closed": true
+  },
+  "laws": [
+    "DECLARED_ORIGIN_IDENTIFICATION_TRUTH_EQUALS_MINIMAL_SUCCESS_DNF",
+    "DECLARED_ORIGIN_IDENTIFICATION_TRUTH_EQUALS_MINIMAL_OBSTRUCTION_CNF",
+    "MINIMAL_SUCCESS_DNF_AND_MINIMAL_OBSTRUCTION_CNF_ARE_BLOCKER_DUAL",
+    "PRIME_DUAL_FORMS_ARE_IRREDUNDANT_ON_THE_DECLARED_FINITE_WITNESS_UNIVERSE",
+    "EITHER_PRIME_ANTICHAIN_DETERMINES_THE_COMPLETE_DECLARED_ORIGIN_IDENTIFICATION_TRUTH_SURFACE",
+    "FURTHER_SUBFAMILY_ENUMERATION_OF_THE_SAME_DECLARED_APERTURE_CANNOT_ADD_NEW_ORIGIN_IDENTIFICATION_TRUTH_VALUES"
+  ],
+  "membranes": [
+    "FINITE_DECLARED_APERTURE_CLOSURE != UNIVERSAL_SCIENTIFIC_COMPLETENESS",
+    "PRIME_DUAL_IDENTIFICATION_LOGIC != COMPLETE_WITNESS_SEMANTICS",
+    "BLOCKER_DUAL_RECOVERY != TRANSPORT_LABEL_RECOVERY",
+    "BLOCKER_RECONSTRUCTION_OF_OBSTRUCTIONS != CANONICAL_RECONSTRUCTION_OF_ORIGIN",
+    "UNPOINTED_EQUIVARIANT_SECTION_OBSTRUCTION != POINTED_WITNESS_SEPARATION_OBSTRUCTION",
+    "STRUCTURAL_IDENTIFICATION != CUSTODIAL_DESIGNATION",
+    "IDENTIFIABILITY != INHERITANCE",
+    "REFINED_IDENTIFIABILITY != ANTERIOR_IDENTIFIABILITY",
+    "MONOTONE_BOOLEAN_NORMAL_FORM != SHANNON_INFORMATION_THEORY",
+    "PRIME_TERM_COUNT != MINIMUM_BIT_LENGTH",
+    "OBSTRUCTION_CLAUSE != PHYSICAL_BARRIER",
+    "HYPERGRAPH_EDGE != CAUSAL_RELATION",
+    "METRIC_ISOMETRY_ACTION != PHYSICAL_DYNAMICS",
+    "FREE_TRANSITIVE_FINITE_ACTION != GAUGE_THEORY",
+    "ORIENTATION_FIBRE != HIDDEN_STATE_SPACE",
+    "WITNESS_ROUTING != SCIENTIFIC_ANCESTRY"
+  ]
+}
