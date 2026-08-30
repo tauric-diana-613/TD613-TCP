@@ -4,7 +4,7 @@ Status: **FROZEN CANDIDATE / UNEARNED UNTIL EXACT-HEAD TD613 CONSOLIDATED VALIDA
 
 Exact earned parent: **#892 / `5e1c459bccd58ba89e6a218198e69d8d1518424e` / run 2397 / 33327765320 SUCCESS**.
 
-Preregistered chronology:
+Preregistered chronology and hardening:
 
 ```text
 human preregistration ad7853846dcd3a4dd7ec5d5d5588b8927dbd2a96
@@ -13,10 +13,12 @@ execution burden      729cf566f12ffa25528920b4a3a89a76f16f9b0e
 implementation        b12e2267f5b8d38a97012eb12c0aec4715b83d5c
 canonical contract    c54c823cfb87577bcc1df605af60cf0a44f4255d
 independent hostile   589cc7ef1d675fab5befadaa05dc99422ce893be
-hardening / freeze    THIS COMMIT
+initial freeze        0cbfaa0348ffd5453942f7ba1e8defaf49c2267a
+runner hardening      e35c6eed684fefc8386f6b0a5e4b0c640a186939
+freeze receipt seal   THIS COMMIT
 ```
 
-The candidate is frozen without changing its preregistered theorem question.
+The runner hardening does not change the preregistered theorem question, implementation, canonical contract, hostile contract, or frozen burden. It only advances the A15-R0 review-hardening aperture from #892 to this chamber and explicitly invokes both new theorem tests. The exact-head witness must therefore include the theorem rather than merely pass around it.
 
 Acceptance requires exact-head success with all of the following at zero:
 
