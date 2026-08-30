@@ -16,7 +16,7 @@ const intersect=(a,b)=>new Set([...a].filter(x=>b.has(x)));
 function combinations(items,k){ const out=[]; function walk(i,cur){ if(cur.length===k){out.push([...cur]);return;} for(let j=i;j<items.length;j++){cur.push(items[j]);walk(j+1,cur);cur.pop();}} walk(0,[]);return out; }
 function specialization(opens){ const rel={}; for(const x of ROLES){rel[x]={};for(const y of ROLES) rel[x][y]=opens.every(o=>!o.has(x)||o.has(y));} return rel; }
 function principalOpens(opens){ const out={}; for(const x of ROLES){ let m=new Set(ROLES); for(const o of opens.filter(o=>o.has(x))) m=intersect(m,o); out[x]=setKey(m);} return out; }
-function actionTable(parent){ return parent.orientation_fibre?.action_rows||parent.action?.rows||[]; }
+function actionTable(parent){ return parent.metric_isometry_action?.action_rows||[]; }
 function target(parent,source,g){ const row=actionTable(parent).find(r=>r.source===source&&r.isometry===g); return row?.target||null; }
 function stabilizer(parent,cell){ const C=new Set(cell); return GROUP.filter(g=>{ const image=new Set([...C].map(x=>target(parent,x,g))); return image.size===C.size&&[...image].every(x=>C.has(x)); }); }
 function evaluatePredicates(parent,topologies,predicates){
@@ -33,7 +33,7 @@ function minimumFamilies(rows){
 export function finiteOrientationFibreSymmetryBreakingCertificate(){
   if(cached) return cached;
   const parent=finiteMetricCutSkeletonTopologicalOrientationCertificate();
-  const compatible=parent.orientation_fibre?.compatible_topologies||parent.compatible_topologies||[];
+  const compatible=parent.orientation_fibre?.topologies||[];
   const topologies={};
   for(const row of compatible){ const opens=(row.opens||[]).map(a=>new Set(a)); topologies[row.bits]={bits:row.bits,opens,rel:specialization(opens),principal:principalOpens(opens)}; }
 
@@ -53,7 +53,7 @@ export function finiteOrientationFibreSymmetryBreakingCertificate(){
   const singletonSuccesses=Object.fromEntries(Object.entries(classes).map(([k,rows])=>[k,freeze(rows.filter(r=>r.identifies).map(r=>r.id))]));
   const singletonFailures=Object.fromEntries(Object.entries(classes).map(([k,rows])=>[k,freeze(rows.filter(r=>!r.identifies).map(r=>freeze({id:r.id,residual_size:r.residual_size,stabilizer_size:r.setwise_stabilizer_size})))]));
   const pointStabilizer=GROUP.filter(g=>target(parent,INHERITED,g)===INHERITED);
-  const parentExact=parent.passed===true&&Object.keys(topologies).length===4&&pointStabilizer.length===1;
+  const parentExact=parent.passed===true&&compatible.length===4&&Object.keys(topologies).length===4&&topologies[INHERITED]!==undefined&&actionTable(parent).length===16&&pointStabilizer.length===1;
   const passed=parentExact&&classes.specialization_comparability.length===20&&classes.principal_open_identity.length===5&&classes.principal_open_size.length===5&&classes.cut_orientation.length===10&&Object.values(minima).every(m=>m.minimum!==null);
   cached=freeze({schema:FINITE_ORIENTATION_FIBRE_SYMMETRY_BREAKING_SCHEMA,parent_receipt:FINITE_ORIENTATION_FIBRE_SYMMETRY_BREAKING_PARENT_RECEIPT,parent_exact:parentExact,orientation_fibre:freeze(Object.keys(topologies).sort()),inherited:INHERITED,metric_isometry_group:freeze([...GROUP]),inherited_point_stabilizer:freeze(pointStabilizer),classes:freeze(classes),singleton_residual_spectra:freeze(residualSpectra),singleton_successes:freeze(singletonSuccesses),singleton_failures:freeze(singletonFailures),minimum_identifying_families:freeze(minima),membranes:freeze(['METRIC_ORBIT != TOPOLOGY_IDENTITY','SYMMETRY_BREAKING_WITNESS != METRIC_INVARIANT','LABELLED_WITNESS != LABEL_FREE_INTRINSIC_INVARIANT','FINITE_WITNESS_CARDINALITY_MINIMUM != MINIMUM_BIT_LENGTH','FINITE_WITNESS_CARDINALITY_MINIMUM != SHANNON_INFORMATION','FREE_TRANSITIVE_FINITE_ACTION != GAUGE_THEORY']),passed});
   return cached;
