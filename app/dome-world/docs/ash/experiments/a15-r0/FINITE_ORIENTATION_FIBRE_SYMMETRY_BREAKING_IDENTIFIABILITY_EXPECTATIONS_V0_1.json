@@ -1,0 +1,48 @@
+{
+  "schema": "td613.dome-world.finite-orientation-fibre-symmetry-breaking-identifiability-expectations/v0.1",
+  "parent_receipt": "9456a6a44eaaff46fa796cd591bb2f61e3680187",
+  "parent_pr": 882,
+  "parent_run": 2389,
+  "parent_orientation_fibre": ["0000000001", "0000000010", "1111111101", "1111111110"],
+  "inherited_orientation": "1111111110",
+  "parent_metric_isometries": ["id", "(B M)", "(A R)", "(A R)(B M)"],
+  "parent_action": {
+    "fibre_size": 4,
+    "inherited_orbit_size": 4,
+    "inherited_stabilizer_size": 1,
+    "free": true,
+    "transitive": true
+  },
+  "declared_witness_classes": {
+    "specialization_comparability": {"ordered_distinct_role_predicates": 20},
+    "principal_open": {"labelled_roles": 5, "audit_identity": true, "audit_size": true},
+    "cut_orientation": {"parent_recovered_unoriented_cuts": 10}
+  },
+  "required_outputs": [
+    "observed inherited witness values",
+    "surviving orientation cells",
+    "residual fibre cardinalities",
+    "setwise stabilizers in parent metric isometry group",
+    "unique-identification flags",
+    "minimum identifying family cardinality per declared witness class",
+    "all minimum identifying families per declared witness class",
+    "all failing singleton predicates with residual spectra"
+  ],
+  "controls": {
+    "empty_witness_residual_fibre": 4,
+    "metric_only_residual_fibre": 4,
+    "constant_predicate_residual_fibre": 4,
+    "size_two_cell_is_identifying": false
+  },
+  "claim_ceiling": {
+    "universal_topology_reconstruction": false,
+    "minimum_bit_length": false,
+    "shannon_information": false,
+    "channel_coding": false,
+    "physical_gauge": false,
+    "physical_orientation": false,
+    "causal_order": false,
+    "hidden_state_space": false,
+    "continuum_topology": false
+  }
+}
