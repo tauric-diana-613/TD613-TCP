@@ -1,0 +1,36 @@
+{
+  "schema": "td613.a15-r0.holonomy-loom-moss-lantern-discrete-transport-expectations/v0.1",
+  "parent_receipt": "d840400c37d6ac36b744157c1fbae1bc9451ada1",
+  "fiber_states": 4,
+  "base_cycle_vertices": 4,
+  "base_cycle_edges": 4,
+  "transport_group_size": 8,
+  "transport_group_bijections": 8,
+  "transport_group_inverse_failures": 0,
+  "group_commutator_checks": 64,
+  "commutator_subgroup_size": 2,
+  "loop_basepoint_returns": 4,
+  "loop_nonidentity_fiber_outputs": 4,
+  "loop_unit_hamming_outputs": 4,
+  "loop_marker_splits": 4,
+  "loop_squared_identity_outputs": 4,
+  "backtrack_checks": 8,
+  "backtrack_nonidentity_outputs": 0,
+  "commuting_control_checks": 4,
+  "commuting_control_nonidentity_outputs": 0,
+  "memoryless_endpoint_divergences": 0,
+  "holonomy_map": {
+    "00": "01",
+    "01": "00",
+    "10": "11",
+    "11": "10"
+  },
+  "laws": {
+    "formal_discrete_holonomy_nontrivial": true,
+    "holonomy_order_two": true,
+    "commutator_subgroup_exactly_identity_plus_holonomy": true,
+    "backtrack_null": true,
+    "commuting_square_null": true,
+    "memoryless_endpoint_projection_blind": true
+  }
+}
