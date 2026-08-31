@@ -1,0 +1,67 @@
+{
+  "schema": "td613.dome-world.moss-lantern-procedural-memory-order-defect-expectations/v0.1",
+  "parent_receipt": "c0bdb1b0f19d94f987837a6cb2465e5933b623c2",
+  "fixture_id": "ash-loom.moss-lantern-calibration/v0.1",
+  "operator_label": "Moss Lantern practice capsule",
+  "expected_endpoint": "returned-practice-capsule",
+  "canonical_route": [
+    "open-practice-case",
+    "custody-hold",
+    "projection-observe",
+    "rest",
+    "return"
+  ],
+  "swapped_route": [
+    "open-practice-case",
+    "projection-observe",
+    "custody-hold",
+    "rest",
+    "return"
+  ],
+  "apparatus_field": "F2^2",
+  "apparatus_states": [[0,0],[0,1],[1,0],[1,1]],
+  "target_updates": {
+    "custody_hold": "A(x,y)=(x xor 1,y)",
+    "projection_observe": "B(x,y)=(x,y xor x)"
+  },
+  "target_orders": ["AB","BA"],
+  "target_state_order_executions": 8,
+  "target_order_pair_comparisons": 4,
+  "visible_endpoint_matches": 4,
+  "visible_endpoint_mismatches": 0,
+  "apparatus_endpoint_divergences": 4,
+  "apparatus_endpoint_matches": 0,
+  "apparatus_hamming_distances": [1,1,1,1],
+  "unit_hamming_apparatus_defects": 4,
+  "delayed_marker_divergences": 4,
+  "delayed_marker_matches": 0,
+  "memoryless_projection_divergences": 0,
+  "memoryless_projection_matches": 4,
+  "reset_control_delayed_divergences": 0,
+  "reset_control_delayed_matches": 4,
+  "commutative_control": {
+    "C": "C(x,y)=(x xor 1,y)",
+    "D": "D(x,y)=(x,y xor 1)",
+    "state_order_executions": 8,
+    "pair_comparisons": 4,
+    "apparatus_divergences": 0,
+    "apparatus_matches": 4,
+    "marker_divergences": 0,
+    "marker_matches": 4
+  },
+  "target_endpoint_rows": {
+    "00": {"AB":[1,1],"BA":[1,0]},
+    "01": {"AB":[1,0],"BA":[1,1]},
+    "10": {"AB":[0,0],"BA":[0,1]},
+    "11": {"AB":[0,1],"BA":[0,0]}
+  },
+  "required_parent_law": "memoryless_same_endpoint_same_future_state_readouts",
+  "candidate_laws": {
+    "same_visible_endpoint_all_target_starts": true,
+    "order_dependent_declared_apparatus_endpoint_all_target_starts": true,
+    "future_apparatus_probe_separates_all_target_orders": true,
+    "memoryless_projection_remains_collapsed": true,
+    "reset_extinguishes_delayed_difference": true,
+    "commutative_control_has_zero_order_defect": true
+  }
+}
