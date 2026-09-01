@@ -43,7 +43,7 @@ const add=(a,b)=>{const c=Array(Math.max(a.length,b.length)).fill(0n);for(let i=
 const shift=(a,s)=>Array(s).fill(0n).concat(a);
 const polyMemo=new Map();
 export function atlasGaussianPolynomial(d,k){
-  validateDK(d,k);const key=`${d}:${k}`;if(polyMemo.has(key))return [...polyMemo.get(key)];
+  validateDK(d,k);const key=`${d}:${k}`;if(polyMemo.has(key))return polyMemo.get(key).map(String);
   let value;
   if(k===0||d===1)value=[1n];
   else value=add(atlasGaussianPolynomial(d-1,k).map(BigInt),shift(atlasGaussianPolynomial(d,k-1).map(BigInt),d-1));
