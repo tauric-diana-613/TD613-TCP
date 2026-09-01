@@ -1,0 +1,20 @@
+{
+  "schema":"td613.dome-world.atlas-marginal-relational-incidence-separation.expectations/v0.1",
+  "parent_receipt":"94e644f8e718581c4764b0c1f43bd35017e0d476",
+  "M_tail":{"circuit_hyperplanes":[7,25,42,196],"degree_multiset":[2,2,2,2,1,1,1,1],"overlap_graph_degrees":[3,2,2,1],"overlap_edges":4,"max_overlap_degree":3},
+  "M_cycle":{"circuit_hyperplanes":[7,25,98,168],"degree_multiset":[2,2,2,2,1,1,1,1],"overlap_graph_degrees":[2,2,2,2],"overlap_edges":4,"max_overlap_degree":2},
+  "common_rank_frequency":{"0":1,"1":8,"2":32,"3":215},
+  "common_rank_generating":{"0,0":52,"0,1":70,"0,2":56,"0,3":28,"0,4":8,"0,5":1,"1,0":28,"1,1":4,"2,0":8,"3,0":1},
+  "common_tutte":{"0,1":11,"0,2":10,"0,3":6,"0,4":3,"0,5":1,"1,0":11,"1,1":4,"2,0":5,"3,0":1},
+  "moments_k1_to_k8":[12,20,36,68,132,260,516,1028],
+  "all_k_moment_formula":"4*2^k+4",
+  "receiver_class_counts":[1,1,1,1,2],
+  "cross_relabelings":40320,
+  "cross_membership_checks":161280,
+  "cross_matches":0,
+  "rank_bound_checks":512,
+  "monotonicity_candidate_pairs":131072,
+  "monotonicity_inclusion_premises":13122,
+  "submodularity_pairs":131072,
+  "expected_failures":0
+}
