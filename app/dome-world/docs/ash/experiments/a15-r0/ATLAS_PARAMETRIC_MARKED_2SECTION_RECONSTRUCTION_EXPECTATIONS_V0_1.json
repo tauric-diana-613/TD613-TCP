@@ -1,0 +1,12 @@
+{
+  "schema":"td613.dome-world.atlas-parametric-marked-2section-reconstruction.expectations/v0.1",
+  "parent_receipt":"e1db7374df71de4df459cda939b63a282a0831ea",
+  "assays":{
+    "k2":{"ground_size":5,"max_blocks":4,"candidate_families":385,"admitted_families":385,"by_blocks":{"1":10,"2":45,"3":120,"4":210},"marked_families":145},
+    "k3":{"ground_size":7,"max_blocks":4,"candidate_families":59535,"admitted_families":4305,"by_blocks":{"1":35,"2":385,"3":1575,"4":2310},"marked_families":945},
+    "k4":{"ground_size":10,"max_blocks":3,"candidate_families":1543675,"admitted_families":113785,"by_blocks":{"1":210,"2":9975,"3":103600},"marked_families":2800}
+  },
+  "totals":{"candidate_families":1603595,"admitted_families":118475,"marked_families":3890,"roundtrip_successes":118475,"roundtrip_failures":0},
+  "proof_obligations":{"edge_unique_under_linearity":true,"marked_edge_disjointness":true,"uncovered_edges_are_degree_two":true,"private_remainder_is_k_minus_shared":true,"union_grounded_excludes_degree_zero":true},
+  "negative_controls":{"nonlinear_roundtrip_equal":false,"nonuniform_rejected":true,"isolated_ground_recoverable":false}
+}
