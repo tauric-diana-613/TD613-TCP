@@ -1,0 +1,22 @@
+{
+  "schema": "emstd613-registry-index/v1",
+  "fixture": "EMSTD613",
+  "status": "PRE_INTAKE",
+  "source_root": "02-ORIGINALS/emstd613lineage",
+  "registries": {
+    "source_files": "01-MANIFESTS/source-files.jsonl",
+    "works": "01-MANIFESTS/work-index.jsonl",
+    "claims": "01-MANIFESTS/claim-atoms.jsonl",
+    "concepts": "01-MANIFESTS/concept-index.jsonl",
+    "motifs": "01-MANIFESTS/motif-index.jsonl",
+    "mechanisms": "01-MANIFESTS/mechanism-candidates.jsonl",
+    "relations": "01-MANIFESTS/relation-ledger.jsonl",
+    "integrity": "01-MANIFESTS/integrity-ledger.jsonl"
+  },
+  "derivative_root": "03-DERIVATIVES",
+  "receipt_root": "04-RECEIPTS",
+  "operation_root": "05-OPERATIONS",
+  "instrument_root": "06-INSTRUMENTS",
+  "external_corpora_root": "08-EXTERNAL-CORPORA",
+  "notes": "Registry paths become authoritative only after their files are generated and receipted. PRE_INTAKE absence is not a missing-object claim."
+}
