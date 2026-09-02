@@ -103,4 +103,6 @@ assert.equal(expectations.required_state.empirical_exteriority_information_gain_
 assert.equal(expectations.required_state.empirical_credit_from_synthetic_probe,0);
 assert.equal(expectations.required_state.golden_egg_earned,false);
 
+await import('./ash-a15-r0-mve-x1-present-resource-feasibility.test.mjs');
+
 console.log('A15-R0 conditional exteriority information-gain admissibility tests passed.');
