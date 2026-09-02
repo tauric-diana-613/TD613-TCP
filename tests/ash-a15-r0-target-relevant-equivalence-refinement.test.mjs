@@ -62,4 +62,6 @@ assert.throws(()=>evaluateTargetRelevantAcquisition({candidate:malformed}),/VALI
 
 assert.throws(()=>evaluateTargetRelevantAcquisition({target_id:'',candidate:TARGET_REFINEMENT_FIXTURE.candidates.PARTIAL_SPLITTER}),/DECLARED_TARGET_REQUIRED/);
 
+await import('./ash-a15-r0-minimal-target-separating-acquisition-cover.test.mjs');
+
 console.log('Target-relevant equivalence refinement tests passed.');
