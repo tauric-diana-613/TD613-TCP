@@ -58,4 +58,6 @@ const outOfUniverse=structuredClone(ACQUISITION_COVER_FIXTURE);
 outOfUniverse.candidates[0].resolves.push(['THETA_A','THETA_D']);
 assert.throws(()=>runMinimalTargetSeparatingAcquisitionCover(outOfUniverse),/CANDIDATE_MAY_ONLY_RESOLVE_DECLARED_TARGET_PAIR/);
 
+await import('./ash-a15-r0-preregistered-adaptive-target-repair-policy.test.mjs');
+
 console.log('Minimal target-separating acquisition-cover tests passed.');
