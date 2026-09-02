@@ -60,14 +60,17 @@ The implementation must encode, without widening any source claim:
    - remains a synthetic finite research chamber;
    - empirical joint-realization count remains zero.
 
-3. `A15_OBSERVED_RUNTIME_TRANSITION_TRACE`
-   - browser execution records route/workspace transition events with `status: OBSERVED` inside a bounded observation horizon;
-   - it does not natively provide the three original Golden Egg metric tables or a matched control/protected return pair.
+3. `ASH_HUSH_DEPLOYED_BOUNDARY_OBSERVED`
+   - exact-main receipt records `VALIDATION_GATED / DEPLOYED_BOUNDARY_OBSERVED` evidence, repeated matched Reader trials, a benign control, and a held-out trial;
+   - the trial schema records validation/reconstruction components and custody matching but does not natively provide the original Golden Egg observer-leakage, topology-distance, and joining-synergy quantities as one episode;
+   - it cannot borrow synthetic Golden Egg metrics merely because its runtime evidence class is observed.
 
 4. `SUEZ_2021_PROPAGATION_CASE`
    - public empirical case establishes obstruction/recovery persistence and proposes a stronger matched-voyage design;
    - the matched voyage/control comparison is explicitly future work in the retained case study;
    - it cannot be promoted into a Golden Egg episode.
+
+Preimplementation evidence amendment: the earlier draft inventory named the A15 transition-trace instrument as item 3. Before any implementation, the stronger exact-main Hush deployed-boundary observation receipt replaced it. Candidate count and expected joint-realization counts remain unchanged. This is not a CI RED scar.
 
 No source above may borrow fields from another source while retaining its own `episode_id`.
 
@@ -95,7 +98,7 @@ Threshold success may be evaluated only after co-observation admissibility. Pass
 
 ## 5. Return extension
 
-#986 supplies a lawful finite geometry reopening but not empirical return evidence. `C(e)` requires a matched control/protected return pair from the same data-generating episode with a declared comparison rule. A mere recovery tail, runtime transition trace, reverse algebraic restoration, or synthetic holonomy control does not satisfy `C(e)`.
+#986 supplies a lawful finite geometry reopening but not empirical return evidence. `C(e)` requires a matched control/protected return pair from the same data-generating episode with a declared comparison rule. A mere recovery tail, observed validation trial, reverse algebraic restoration, or synthetic holonomy control does not satisfy `C(e)`.
 
 ## 6. Expected bounded result
 
@@ -113,7 +116,7 @@ The zero is a measured admissibility result over the frozen inventory, not a uni
 
 `MARGINAL_EMPIRICAL_SUPPORT != JOINT_REALIZATION`
 `SURFACE_UNION != SAME_EPISODE_INTERSECTION`
-`OBSERVED_RUNTIME_TRACE != GOLDEN_EGG_METRIC_EPISODE`
+`OBSERVED_VALIDATION_CIRCUIT != GOLDEN_EGG_METRIC_EPISODE`
 `RECOVERY_TAIL != MATCHED_COUNTERFACTUAL_RETURN`
 `SYNTHETIC_GEOMETRY != EMPIRICAL_RETURN_WITNESS`
 `CROSS_EPISODE_JOIN != COOBSERVATION`
