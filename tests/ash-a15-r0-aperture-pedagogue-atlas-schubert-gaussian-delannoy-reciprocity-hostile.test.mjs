@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { atlasSchubertGaussianDelannoyClosedPolynomial } from '../app/dome-world/previews/a15-r0/atlas-schubert-gaussian-delannoy.js';
 
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-function words(a,b){const out=[];const rec=(z,o,p)=>{if(!z&&!o){out.push(p);return;}if(z)rec(z-1,o,[...p,0]);if(o)rec(z,o,[...p,1]);};rec(a,b,[]);return out;}
+function words(a,b){const out=[];const rec=(z,o,p)=>{if(!z&&!o){out.push(p);return;}if(z)rec(z-1,o,[...p,0]);if(o)rec(z,o-1,[...p,1]);};rec(a,b,[]);return out;}
 function desc(w){const out=[];for(let i=0;i+1<w.length;i++)if(w[i]===1&&w[i+1]===0)out.push(i);return out;}
 function subsets(xs){const out=[[]];for(const x of xs){const n=out.length;for(let i=0;i<n;i++)out.push([...out[i],x]);}return out;}
 function swap(w,marks){const x=[...w];for(const p of marks){x[p]=0;x[p+1]=1;}return x;}
@@ -30,13 +30,10 @@ assert.equal(fixed,190);
 assert.equal(failures,0);
 assert.equal(sliceFailures,0);
 
-// Hostile v0.1: reverse+complement swaps zero/one multiplicities in an asymmetric cell.
 const v01=[1,0,0];const badV01=[...v01].reverse().map(b=>1-b);
 assert.notEqual(badV01.filter(x=>x===0).length,v01.filter(x=>x===0).length);
-// Hostile endpoint-role failure: reverse(lower) is not the correct lower partner for a marked interval.
 const lower=[1,0],marks=[0],upper=swap(lower,marks),badLower=[...lower].reverse(),goodLower=[...upper].reverse();
 assert.notDeepEqual(badLower,goodLower);
-// Hostile mark offset n-1-p misses the transported descent.
 const w=[1,0,1,0],m=[0,2],u=swap(w,m),lp=[...u].reverse(),bad=m.map(p=>w.length-1-p);
 assert.equal(bad.some(p=>!desc(lp).includes(p)),true);
 
