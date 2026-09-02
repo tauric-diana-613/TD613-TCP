@@ -4,6 +4,7 @@
 
 **Status:** RESEARCH-ONLY CANDIDATE / PRE-A16 / HUMAN-WITNESS-ABSENT  
 **Exact scientific parent:** `a3bcd4f30780bcefee77a906bc854d8d40876662` — A16 Operator-Witness Exteriority Corollary 𝄐  
+**Preserved RED witness:** `9322d93707da22477691d24eaaa86744e32d5ba3` — exact-head run `2539 / 33696665869`, Step 19 RED  
 **Scope:** witness-shape preregistration, machine-verifiable custody dimensions, and record-origin non-identifiability only
 
 ## Question
@@ -29,6 +30,34 @@ AWAITING_HUMAN_OPERATOR_OBSERVATION
 ```
 
 It cannot open the A16 gate.
+
+## Preserved RED correction — zero defects are still an observation
+
+The first exact-head candidate used one generic presence predicate for every review field. That predicate treated every empty array as absent.
+
+The hostile twin record deliberately encoded:
+
+```text
+visual_control_or_authority_defects = []
+```
+
+This means the operator examined that category and observed zero defects. It does not mean the category was unobserved.
+
+On the RED tree, the generic predicate therefore inserted `visual_control_or_authority_defects` into `missing_required_fields`, made both twin records shape-incomplete, and caused Step 19 to reject the chamber.
+
+The descendant repair narrows only this field's presence semantics:
+
+```text
+[]   = explicit observation of zero defects
+null = missing observation
+absent key = missing observation
+```
+
+Hostile controls now require both `null` and a deleted defect-observation field to remain shape-incomplete.
+
+`EMPTY DEFECT LIST != MISSING DEFECT OBSERVATION`
+
+The candidate theorem and all authority membranes remain unchanged.
 
 ## Hostile twin-record test
 
@@ -59,6 +88,8 @@ Therefore a complete record, a provenance label, or a cryptographic digest canno
 ## Separation law
 
 The repository may build the socket for reality. It cannot fill reality's chair on its own.
+
+`EMPTY DEFECT LIST != MISSING DEFECT OBSERVATION`
 
 `WITNESS SOCKET != WITNESS`
 
