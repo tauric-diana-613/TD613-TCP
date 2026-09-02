@@ -4,6 +4,7 @@ import fs from 'node:fs';
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./western-horizon-main-accession-constitution.test.mjs');
+await import('./western-horizon-executable-accession.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
@@ -60,7 +61,7 @@ const adapter = await createAshKernelAdapter(fixture);
 assert.equal('state' in adapter, false, 'Adapter state must not remain on the public governance surface.');
 assert.equal('sequence' in adapter, false, 'Adapter receipt sequence must not remain on the public governance surface.');
 assert.equal(adapter.state, undefined, 'Adapter state reads must not expose mutable governance state.');
-assert.equal(adapter.sequence, undefined, 'Adapter sequence reads must not expose receipt identity state.');
+assert.equal(adapter.sequence, undefined, 'Adapter receipt identity state must not remain on the public governance surface.');
 assert.throws(() => { adapter.state = { taskState:'RETURN' }; }, /private governance state/i);
 assert.throws(() => { adapter.sequence = 0; }, /private governance state/i);
 for (const internal of ['sealReceipt','restoreMutationCheckpoint','mutationCheckpoint','transition','hold','enqueueMutation','stateSummary','caseMapInput','options','assertAvailable']) {
