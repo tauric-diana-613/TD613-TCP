@@ -22,6 +22,7 @@ await import('./ash-a15-r0-ttp-detect-receiver-indexed-provenance-observability.
 await import('./ash-a15-r0-receiver-swap-causal-admissibility.test.mjs');
 await import('./ash-a15-r0-conditional-exteriority-information-gain.test.mjs');
 await import('./ash-a15-r0-live-principal-route-burden-wiring-null.test.mjs');
+await import('./ash-a15-r0-a16-single-splice-instrument-fidelity-preflight.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
