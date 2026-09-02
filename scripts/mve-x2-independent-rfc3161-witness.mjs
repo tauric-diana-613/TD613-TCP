@@ -11,8 +11,9 @@ export const FREETSA={
   endpoint:'https://freetsa.org/tsr',
   ca_url:'https://freetsa.org/files/cacert.pem',
   tsa_cert_url:'https://freetsa.org/files/tsa.crt',
-  ca_cert_sha256_der:'2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438',
-  tsa_cert_sha256_der:'8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467'
+  certificate_pin_representation:'DOWNLOADED_FILE_BYTES',
+  ca_cert_file_sha256:'2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438',
+  tsa_cert_file_sha256:'8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467'
 };
 
 const sha256=input=>crypto.createHash('sha256').update(input).digest('hex');
@@ -28,11 +29,6 @@ async function openssl(args,options={}){
   return execFileP('openssl',args,{maxBuffer:8*1024*1024,...options});
 }
 
-async function certificateDerSha256(pemPath){
-  const {stdout}=await openssl(['x509','-in',pemPath,'-outform','DER'],{encoding:null});
-  return sha256(stdout);
-}
-
 async function prepareTrustMaterial(dir){
   const caPath=path.join(dir,'freetsa-ca.pem');
   const tsaPath=path.join(dir,'freetsa-tsa.crt');
@@ -40,19 +36,23 @@ async function prepareTrustMaterial(dir){
     fetchBytes(FREETSA.ca_url),
     fetchBytes(FREETSA.tsa_cert_url)
   ]);
+  const caFileSha256=sha256(caBytes);
+  const tsaFileSha256=sha256(tsaBytes);
+  if(caFileSha256!==FREETSA.ca_cert_file_sha256)throw new Error(`FreeTSA CA published file hash mismatch: ${caFileSha256}`);
+  if(tsaFileSha256!==FREETSA.tsa_cert_file_sha256)throw new Error(`FreeTSA TSA published file hash mismatch: ${tsaFileSha256}`);
   await Promise.all([fs.writeFile(caPath,caBytes),fs.writeFile(tsaPath,tsaBytes)]);
-  const [caDerSha256,tsaDerSha256]=await Promise.all([
-    certificateDerSha256(caPath),
-    certificateDerSha256(tsaPath)
+  await Promise.all([
+    openssl(['x509','-in',caPath,'-noout','-subject']),
+    openssl(['x509','-in',tsaPath,'-noout','-subject'])
   ]);
-  if(caDerSha256!==FREETSA.ca_cert_sha256_der)throw new Error(`FreeTSA CA fingerprint mismatch: ${caDerSha256}`);
-  if(tsaDerSha256!==FREETSA.tsa_cert_sha256_der)throw new Error(`FreeTSA TSA fingerprint mismatch: ${tsaDerSha256}`);
   return Object.freeze({
     caPath,
     tsaPath,
-    caDerSha256,
-    tsaDerSha256,
-    pinned_certificate_fingerprints_verified:true
+    certificate_pin_representation:'DOWNLOADED_FILE_BYTES',
+    caFileSha256,
+    tsaFileSha256,
+    pinned_certificate_files_verified:true,
+    x509_parse_verified:true
   });
 }
 
@@ -216,8 +216,10 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
           provider:'FreeTSA',
           protocol:'RFC3161',
           endpoint:FREETSA.endpoint,
-          ca_certificate_sha256_der:trust.caDerSha256,
-          tsa_signer_certificate_sha256_der:trust.tsaDerSha256
+          certificate_pin_representation:trust.certificate_pin_representation,
+          ca_certificate_file_sha256:trust.caFileSha256,
+          tsa_signer_certificate_file_sha256:trust.tsaFileSha256,
+          x509_parse_verified:trust.x509_parse_verified
         },
         privacy:{
           raw_artifact_included:false,
@@ -252,7 +254,9 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
       a_plus_x_origin_accuracy,
       bounded_conditional_origin_information_bits,
       actual_externally_signed_rfc3161_receipts_observed:witnessRows.length===pairs&&witnessRows.every(row=>row.x_valid_external_tsa_receipt),
-      pinned_external_tsa_certificate_fingerprints_verified:true,
+      certificate_pin_representation:trust.certificate_pin_representation,
+      pinned_external_tsa_certificate_files_verified:trust.pinned_certificate_files_verified,
+      x509_parse_verified:trust.x509_parse_verified,
       same_run_signed_receipt_custody_required:custodyPath!==null,
       signed_receipts_preserved_in_same_run_custody:custodyPath!==null&&custody_record_written&&witnessEvidence.length===pairs,
       custody_record_written,
