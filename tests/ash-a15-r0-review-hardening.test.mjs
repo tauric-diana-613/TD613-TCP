@@ -5,6 +5,7 @@ await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./western-horizon-main-accession-constitution.test.mjs');
 await import('./western-horizon-executable-accession.test.mjs');
+await import('./ash-a16-current-estate-readmission-audit.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');

@@ -1,0 +1,209 @@
+{
+  "schema": "td613.ash.a16-current-estate-readmission-audit/v0.1",
+  "namespace": "U+10D613",
+  "date": "2026-09-02",
+  "status": "AUDIT_CANDIDATE_ENTRY_HELD",
+  "new_science": false,
+  "a16_implementation": false,
+  "installation_root": "d652c5e151471be7e40ff6a08936ba26c0cef1ad",
+  "accession_parent": {
+    "pr": 995,
+    "head": "5acce3d1729eb3087bc997e87288fbd91b2a2a5c",
+    "run_number": 2476,
+    "run_id": 33617850209,
+    "conclusion": "success"
+  },
+  "governing_sources": {
+    "a16_handoff": {
+      "path": "app/dome-world/docs/ash/closure/ASH_KEEP_A16_A19_ENTRY_HANDOFF_V0_1.md",
+      "blob": "40a5e79abe87fa3b0ede4e9319b40353c04a7b96"
+    },
+    "a15_release_relock": {
+      "path": "app/dome-world/docs/ash/closure/ASH_KEEP_A15_PRODUCTION_RELEASE_RELOCK_RECEIPT_V0_1.md",
+      "blob": "8095255c1a5ba6895713feb36434dc275912445d"
+    },
+    "a12_a15_dossier": {
+      "path": "app/dome-world/docs/ash/closure/ASH_KEEP_A12_A15_PRODUCTION_CLOSURE_DOSSIER_V0_1.md",
+      "blob": "29336809c14c08d7f3c5b6da1cc770524812d8ff"
+    },
+    "a15_r0_rest": {
+      "path": "app/dome-world/docs/ash/experiments/a15-r0/ASH_KEEP_A15_R0_OPEN_RESEARCH_FIELD_RECEIPT_V0_4.md",
+      "blob": "bf02a8ff157d9f275536d7b161fa93b223ba2d55"
+    }
+  },
+  "current_estate_diagnostics": {
+    "whole_instrument_presentation_owner": {
+      "path": "app/dome-world/ash-whole-instrument-pedagogy.js",
+      "blob": "cfc741d3ca06795de44c895c86a534d6ef2267fb"
+    },
+    "demo_registry": {
+      "path": "app/dome-world/ash-demo-registry-core.js",
+      "blob": "09c19ec5da52b2bb41b804ea4b9579c53b047dfe"
+    },
+    "a15_profile_journeys": {
+      "path": "app/dome-world/ash-a15-empirical-profile-journeys.js",
+      "blob": "cf5282b11af2bf2ef6d901e416bb17235334a993"
+    },
+    "flowcore_promotion_config": {
+      "path": "app/dome-world/data/flowcore-promotion-config-v01.js",
+      "blob": "539bf40b59066e65572f55547b7091740b4f8e96"
+    },
+    "live_loom": {
+      "path": "app/dome-world/index.html",
+      "blob": "695d22ec77339bc54512fe6a6a7c0203240ff135"
+    }
+  },
+  "entry_gates": [
+    {
+      "id": "A12_A15_DOSSIER_MERGED",
+      "required": true,
+      "satisfied": true,
+      "disposition": "SATISFIED_HISTORICALLY"
+    },
+    {
+      "id": "A16_A19_HANDOFF_MERGED",
+      "required": true,
+      "satisfied": true,
+      "disposition": "SATISFIED_HISTORICALLY"
+    },
+    {
+      "id": "OPERATOR_VISUAL_REVIEW_RECORDED_OR_WAIVED",
+      "required": true,
+      "satisfied": false,
+      "disposition": "STILL_REQUIRES_HUMAN_OBSERVATION_OR_EXPLICIT_WAIVER"
+    },
+    {
+      "id": "A15_VISUAL_ERRATA_REPAIRED_OR_HELD",
+      "required": true,
+      "satisfied": false,
+      "disposition": "BLOCKED_BY_UNRECORDED_OPERATOR_VISUAL_REVIEW"
+    },
+    {
+      "id": "A16_0_SCOPE_ACCEPTED",
+      "required": true,
+      "satisfied": false,
+      "disposition": "REQUIRES_CURRENT_ESTATE_AMENDMENT_AND_OPERATOR_ADMISSION"
+    },
+    {
+      "id": "SINGLE_ACTIVE_A16_BRANCH_CANDIDATE",
+      "required": true,
+      "satisfied": false,
+      "disposition": "NOT_SELECTED_BEFORE_READMISSION"
+    },
+    {
+      "id": "CI_CONFIRMATION_ARCHITECTURE_ADOPTED",
+      "required": true,
+      "satisfied": true,
+      "disposition": "SATISFIED_BY_LATER_EVIDENCE"
+    },
+    {
+      "id": "GOLDEN_EGG_REMAINS_OUTSIDE_A16_A19",
+      "required": true,
+      "satisfied": true,
+      "disposition": "PRESERVED_AND_HARDENED_BY_PHASE_FREE_WESTERN_ACCESSION"
+    }
+  ],
+  "carried_debts": [
+    {
+      "id": 1,
+      "name": "CANONICAL_COMPILER_OWNERSHIP",
+      "disposition": "PRESERVED_OPEN",
+      "evidence": "whole-instrument presentation still defines compileAshWorkspaceScene independently of canonical compilePedagogicalScene"
+    },
+    {
+      "id": 2,
+      "name": "GENUINE_WORKSPACE_ANISOTROPY",
+      "disposition": "PRESERVED_OPEN",
+      "evidence": "workspace topology is declared in presentation data but current A16 falsification has not proved distinct rendered geometry"
+    },
+    {
+      "id": 3,
+      "name": "SINGLE_AIA_INVARIANT_SOURCE",
+      "disposition": "PRESERVED_OPEN",
+      "evidence": "whole-instrument presentation retains local claim-ceiling and transition-invariant declarations"
+    },
+    {
+      "id": 4,
+      "name": "LIVE_ROUTE_BURDEN_COMPILATION",
+      "disposition": "PRESERVED_OPEN",
+      "evidence": "route-burden engine exists but A16 live-principal-journey compilation has not been admitted or witnessed"
+    },
+    {
+      "id": 5,
+      "name": "A15_ORIENTATION_NOT_HUMAN_EMPIRICISM",
+      "disposition": "PRESERVED_AS_NON_EQUIVALENCE",
+      "evidence": "browser and synthetic profile journeys remain distinct from adult-first human evidence"
+    },
+    {
+      "id": 6,
+      "name": "EXPERIENTIAL_EXPERIMENTAL_TERMINOLOGY",
+      "disposition": "PRESERVED_OPEN_DRIFT_EVIDENCED",
+      "evidence": "whole-instrument route surface uses EXPERIENTIAL while A15 profile/registry machine routes still use experimental aliases"
+    },
+    {
+      "id": 7,
+      "name": "ADULT_FIRST_STUDY",
+      "disposition": "STILL_REQUIRES_HUMAN_OBSERVATION",
+      "evidence": "no adult-first human study is promoted by the current receipts"
+    },
+    {
+      "id": 8,
+      "name": "OPERATOR_VISUAL_REVIEW",
+      "disposition": "STILL_REQUIRES_HUMAN_OBSERVATION_OR_WAIVER",
+      "evidence": "A15 release/relock receipt records operator visual review OPEN"
+    }
+  ],
+  "sequence_reconciliation": {
+    "a20_ge0_after_a19_as_sequence_authority": "SUPERSEDED",
+    "golden_egg_outside_a16_product_authority": "PRESERVED",
+    "phase_free_western_scientific_reopening": "PRESERVED",
+    "a19_required_before_western_science": false,
+    "a19_required_before_a16_product_closure": true
+  },
+  "proposed_a16_0r_scope": {
+    "status": "PROPOSED_NOT_ACCEPTED",
+    "pillars": [
+      "CANONICAL_COMPILER_OWNERSHIP_AND_PRESENTATION_LABELING",
+      "SINGLE_AIA_INVARIANT_SOURCE",
+      "RENDERED_WORKSPACE_ANISOTROPY",
+      "LIVE_ROUTE_BURDEN_COMPILATION",
+      "TERMINOLOGY_CONCORDANCE",
+      "CURRENT_ESTATE_CUSTODY_CONCORDANCE"
+    ],
+    "current_estate_addenda": [
+      "WESTERN_INSTALLATION_CUSTODY_NOT_SCIENTIFIC_ANCESTRY",
+      "SRC_CURRENT_MAIN_CUSTODY_PRESERVED",
+      "LIVE_LOOM_SOURCE_CUSTODY_PRESERVED",
+      "FLOWCORE_PROMOTION_GATE_INDEPENDENT",
+      "GOLDEN_EGG_EMPIRICISM_SEPARATE_FROM_A16_HUMAN_EMPIRICISM"
+    ],
+    "self_accepting": false
+  },
+  "decision": {
+    "a16_readmission": "HELD",
+    "a16_mutation_authority": false,
+    "a16_implementation_started": false,
+    "human_gate_count_unsatisfied": 2,
+    "governance_gate_count_unsatisfied": 2,
+    "machine_repair_can_satisfy_all_remaining_gates": false
+  },
+  "authority": {
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "vercel_authority": false,
+    "public_route_promotion_authority": false,
+    "a16_mutation_authority": false,
+    "live_loom_mutation_authority": false,
+    "golden_egg_empirical_credit": false
+  },
+  "membranes": {
+    "audit_not_readmission": true,
+    "readmission_not_implementation": true,
+    "historical_sequence_not_present_authority": true,
+    "golden_egg_boundary_not_numbered_sequence": true,
+    "a16_human_empiricism_not_golden_egg_empiricism": true,
+    "a19_closure_not_flowcore_public_promotion": true,
+    "machine_green_not_human_review": true
+  }
+}
