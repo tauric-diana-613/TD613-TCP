@@ -6,59 +6,249 @@ Status: LIVE THREAD-HANDOFF POINTER / RESEARCH-ONLY
 Repository: `tauric-diana-613/TD613-TCP`
 Branch: `amari/em-td613-lineage-atelier`
 PR: `#962`
-Date established: `2026-09-02`
+Updated: `2026-09-02`
 
-This file exists so the EMSTD613 Atelier can be picked up, plugged in, worked, receipted, put down, unplugged, and resumed across ChatGPT thread boundaries without reconstructing the frontier from vibes.
+This is the mutable plug-in / unplug socket. Append-only scientific receipts under `04-RECEIPTS/` remain the research record.
 
-It is a mutable re-entry pointer. Append-only scientific receipts under `04-RECEIPTS/` remain the evidentiary record.
-
-## 0. Authority / custody membrane
+## 0. Authority membrane
 
 ```text
 THREAD MEMORY != REPOSITORY CUSTODY
-STATIC HANDOFF SHA != LIVE HEAD
-HUMAN PROVENANCE != SOURCE-TEXT ASSERTION
+STATIC SOCKET SHA != LIVE HEAD
+HUMAN PROVENANCE != ADJUDICATED LINEAGE
+WORK OBSERVATION != AUTHOR INTENT
 MOTIF RECURRENCE != MECHANISM IDENTITY
-RELATION RHYME != GENEALOGY
-RESEARCH CANDIDATE != TD613 LAW
+RESEARCH REFINEMENT != TD613 LAW
 RESEARCH RECEIPT != PRODUCTION MUTATION
 ```
 
-PR #962 must remain draft / open / unmerged unless the human explicitly changes that authority state.
+PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority.
 
-No merge, ready-for-review transition, deployment, publication, attribution transfer, TD613 scientific promotion, or core Aperture/Pedagogue/Phase-V mutation is authorized by this socket.
+No merge, ready-for-review transition, deployment, publication, release, attribution transfer, TD613 scientific promotion, or automatic Aperture/Pedagogue/Phase-V mutation is authorized.
 
-## 1. First action on every plug-in
+## 1. Plug-in sequence
 
-Do not trust this file's historical head as the current head.
-
-1. Query PR `#962` live.
-2. Record current branch head.
-3. Compare that live head against the last known scientific frontier anchor below.
-4. If the branch advanced, inspect every intervening commit / receipt before continuing.
-5. Use Remembering / personal-context retrieval on the immediately prior EMSTD613 thread to recover the explanatory narrative, unresolved alternatives, and most recent human steering.
-6. If remembered narrative and repository custody disagree on scientific state, repository receipts control the scientific record; preserve the disagreement rather than smoothing it away.
-
-## 2. Scientific frontier anchor
-
-The last scientific receipt before this re-entry socket was established is:
+Every fresh thread:
 
 ```text
-d39a1a822af3fc655417392580542fa484710369
-EMSTD613: receipt edge relation witness refinement candidate
+Remembering / personal-context retrieval
+-> query PR #962 live
+-> read this socket
+-> compare live head against last scientific frontier below
+-> inspect every intervening commit
+-> read mandatory receipts
+-> state exact unresolved question
+-> resume
 ```
 
-Receipt path:
+If Remembering and repository custody disagree, preserve the discrepancy and follow repository evidence for the scientific record.
+
+## 2. Current scientific frontier
+
+Last scientific frontier at this socket update:
 
 ```text
-packages/dome_world_exact/fixtures/a15-r0/EMSTD613/04-RECEIPTS/assays/2026-09-02-em-to-td613-edge-relation-witness-refinement-candidate-first-pass.md
+389abe474fa1f276a9726e98ea3d3c77c19e19e3
+EMSTD613: receipt directional transduction receiver contract
 ```
 
-That receipt is NOT the current conclusion. Hostile subtraction performed immediately afterward killed most of the proposed new `EDGE_WITNESS` ontology.
+Receipt:
 
-## 3. Mandatory predecessor receipts for the current frontier
+```text
+04-RECEIPTS/assays/
+2026-09-02-cybernetic-llm-directional-transduction-receiver-contract-first-pass.md
+```
 
-Read these before making a new claim:
+This receipt earned the current material Atelier transition:
+
+```text
+𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
+```
+
+Bounded assay refinement:
+
+```text
+EMITTER INTENT
+-> CARRIER / TRANSPORT
+-> RECEIVER CONTRACT
+-> INTERPRETATION
+-> ACTUATOR BINDING
+-> CONSEQUENCE
+```
+
+with explicit non-equivalence:
+
+```text
+EMISSION
+!= DELIVERY
+!= RECEIVER RECOGNITION
+!= ACTUATOR INVOCATION
+!= CONSEQUENCE
+```
+
+This is an EMSTD613 Atelier assay lens only. It is not TD613 ontology or law.
+
+## 3. Scientific receipts added after the prior socket frontier
+
+### 3.1 Pedagogue → Aperture adapter/subsumption null
+
+```text
+5e575e8be9ca2a7090703f3fd0be815ff1c9a02d
+EMSTD613: receipt Pedagogue Aperture adapter subsumption null
+```
+
+Receipt:
+
+```text
+04-RECEIPTS/assays/
+2026-09-02-pedagogue-aperture-adapter-subsumption-null.md
+```
+
+Adjudication:
+
+```text
+ROUTE_C = TRUE
+BROAD_NEW_EDGE_WITNESS_ONTOLOGY = KILLED_SUBSUMED
+GENERIC_PEDAGOGUE_TO_APERTURE_RELATION_ADAPTER = NOT_WARRANTED
+NEW_TD613_OBJECT_REQUIRED = FALSE
+ADAPTER_CANDIDATE_ONLY = FALSE
+```
+
+Why:
+
+Current TD613 already supplies a staged pipeline:
+
+```text
+Pedagogue transfer card
+-> bounded assay witness
+-> mechanism review
+-> refinement proposal
+-> epistemic-kind classification
+-> kind-appropriate / assay-specific validation
+-> Observation Aperture
+-> Flow-Core / Aperture measurement grammar
+-> human-gated bounded interpretation
+```
+
+The decisive correction is:
+
+```text
+RELATION PROVENANCE
+!= MEASUREMENT PROVENANCE
+```
+
+A generic relation adapter would have to manufacture `sensor_id`, calibration, identifiability, or other measurement semantics before a specific observation process earned them, or else add a redundant placeholder object.
+
+Concrete existing precedent:
+
+```text
+Pedagogue governed mechanism refinement
+-> moss-lantern-aliasing-discriminator.js
+-> compileObservationAperture(...)
+-> source_status / authority_class / scope / controls / claim ceiling
+```
+
+The bridge carries receipts, not power.
+
+### 3.2 Autonomous Governance property-owner collision
+
+```text
+1b1c113c543a4558d0915c4f8c2944e60b9a24b6
+EMSTD613: receipt autonomous governance property owner collision
+```
+
+Receipt:
+
+```text
+04-RECEIPTS/assays/
+2026-09-02-autonomous-agent-governance-property-owner-collision-first-pass.md
+```
+
+Bounded result:
+
+```text
+kernel iptables redirection
+-> non-bypass routing / interception property
+
+signed Decision Certificate
+-> cryptographic / tamper-evident evidence property
+
+comparison-table closure:
+"Cryptographically Zero (Kernel iptables redirection)"
+```
+
+Typing:
+
+```text
+PROPERTY_REAL = TRUE
+PROPERTY_OWNER_WRONG_AT_TABLE_CLOSURE = SUPPORTED_BOUNDED
+PROPERTY_OWNER_COLLISION = RETAINED_FAILURE_FAMILY
+```
+
+Current Netfilter and EVE documentation independently preserve the same technical-property distinction. Ordinary table compression / report-generation phrasing remains a live cheaper explanation.
+
+### 3.3 Cybernetic LLM directional receiver-contract seam
+
+```text
+389abe474fa1f276a9726e98ea3d3c77c19e19e3
+EMSTD613: receipt directional transduction receiver contract
+```
+
+Primary Work:
+
+```text
+Cybernetic LLM Orchestration Analysis.md
+emwork_d8cf61d54e4db92e96eec6fd
+SINGLETON_WORK_SURFACE
+```
+
+Primary failure seam:
+
+```text
+hypervisor
+-> stdin.write(SIG_HALT token)
+-> [receiver contract omitted]
+-> active generation allegedly physically interrupted
+-> context allegedly dropped
+```
+
+The Work explicitly admits the missing hinge by saying the mechanism relies on the LLM node prioritizing incoming stdin interrupts, but does not supply a parser / cancellation callback / process-signal binding before promoting the write to a physical actuator.
+
+Same-Work positive control:
+
+```text
+SIGINT / SIGTERM
+-> actual process-signal trap
+-> child process-group termination
+```
+
+Sibling Work positive control:
+
+`Hermes AI Prompt Design.md` explicitly declares:
+
+```text
+Hermes structured JSON algedonic_alert
+-> orchestrator MUST be programmed to recognize flag
+-> pause / escalation action
+```
+
+Thus a receiver contract is demonstrably expressible in this project family and cannot be assumed from a signal-like name alone.
+
+Current Python subprocess documentation also distinguishes stdin data transport from `send_signal()`, `terminate()`, and `kill()` process-control operations.
+
+Retained local typing:
+
+```text
+RECEIVER_CONTRACT_OMISSION
+subtype:
+COMMAND_CARRIER_TO_ACTUATOR_ESCALATION
+```
+
+No Em-specificity or author motive follows.
+
+## 4. Mandatory historical predecessor receipts
+
+Do not lose the earlier chain:
 
 ```text
 b42ab1b6147f66b36fdfad3e9be8442f04f6b39a
@@ -74,19 +264,17 @@ d39a1a822af3fc655417392580542fa484710369
 EMSTD613: receipt edge relation witness refinement candidate
 ```
 
-Known receipt paths include:
+The `d39a1a82...` Edge-Witness receipt remains a historical first pass, not current doctrine. Do not rewrite it.
+
+Current correction:
 
 ```text
-04-RECEIPTS/assays/2026-09-02-ossl-seed-apparent-authority-control-state-type-error-first-pass.md
-04-RECEIPTS/assays/2026-09-02-cybernetic-memory-hallucination-detector-to-factuality-guarantee-first-pass.md
-04-RECEIPTS/assays/2026-09-02-em-to-td613-edge-relation-witness-refinement-candidate-first-pass.md
+BROAD_NEW_EDGE_WITNESS_ONTOLOGY = KILLED / SUBSUMED
 ```
 
-The `b42ab1b6...` receipt contains the broader integration-seam classes and the AI-Hypervisor empirical compositing specimen.
+## 5. Current distinct failure family
 
-## 4. Current empirical / forensic result family
-
-The EMSTD613 Work-level assay has produced multiple distinct integration/closure failure types without inferring author intent or deployed behavior:
+Keep these separate unless new evidence actually unifies them:
 
 ```text
 PAYLOAD_TYPE_DRIFT
@@ -95,9 +283,11 @@ EMPIRICAL_VALIDATION_COMPOSITING
 APPARENT_AUTHORITY_CONTROL_STATE_TYPE_ERROR
 CLAIM_AUTHORITY_ESCALATION_AT_CLOSURE
 PROPERTY_OWNER_COLLISION
+RECEIVER_CONTRACT_OMISSION
+COMMAND_CARRIER_TO_ACTUATOR_ESCALATION
 ```
 
-Common abstract pressure candidate:
+`INTEGRATION_CLOSURE_PRESSURE` remains a mechanism hypothesis only:
 
 ```text
 COMPONENTS LOCALLY LEGIBLE
@@ -109,277 +299,173 @@ MISSING / MIS-TYPED EDGE
 EDGE SUPPLIED OR OVER-AUTHORIZED BY SYNTHESIS
 ```
 
-But retain positive controls. `Audio Key Detection Plugin Design` preserved its ambiguity / atonal / `No Key` / time-frequency limitations into closure. Therefore:
+Positive control remains important:
 
-```text
-CONCLUSION RHETORIC != INTEGRATION-SEAM FAILURE
-```
-
-The sharper forensic test is:
-
-```text
-DOES CLOSURE PRESERVE THE ORIGINAL UNCERTAINTY / FAILURE / AUTHORITY TYPE?
-```
-
-## 5. Current TD613 confrontation
-
-Already established from repo-native surfaces:
-
-### Aperture
-
-Aperture preserves source status, authority, uncertainty, abstention, calibration/identifiability discipline, and the transfer law:
-
-```text
-external scientific result
--> source-faithful research card
--> stripped relation
--> independent synthetic assay
--> hostile control / falsifier
--> bounded refinement candidate
-```
-
-### Phase V
-
-Phase V preserves `relation` as a third object and explicitly refuses:
-
-```text
-relation = identity
-relation = causation
-relation = permission
-relation = proof
-```
-
-Its relation proposal validates constituent receipts and operator-declared route/binding state. That observation alone does NOT establish a defect; Phase V is an association envelope, not necessarily an evidentiary relation prover.
-
-### A15-R0
-
-The Open Research Field separately establishes relational information sensitivity:
-
-```text
-I(S;A)=0
-I(S;B)=0
-I(S;A,B)=1
-```
-
-and tracks `RELATION_DROPOUT` separately from node redaction.
-
-### Pedagogue hostile subtraction
-
-This is the decisive correction to the broad `EDGE_WITNESS` first pass.
-
-`app/engine/pedagogue-research-transfer.js` already carries:
-
-```text
-primary source identity / class / date precision
-observed_relation
-transferable_relation
-alternative_explanations
-falsifiers
-forbidden_inferences
-claim_ceiling
-no source-authority transfer
-no automatic promotion
-```
-
-`app/engine/pedagogue-research-assay-witness.js` already carries:
-
-```text
-mechanism_id
-context_family
-assay_reference / assay_schema
-assay_source_status
-SUPPORTED_BOUNDED | COUNTEREXAMPLED_BOUNDED | INCONCLUSIVE
-declared_controls
-observations
-falsifier_outcome
-alternative_explanations_remaining
-claim_ceiling
-human closure
-```
+`Audio Key Detection Plugin Design` preserves relative-major/minor ambiguity, atonal/modulating failure, `No Key`, and time/frequency tradeoffs through closure.
 
 Therefore:
 
 ```text
-NEW EDGE_WITNESS ONTOLOGY = MOSTLY SUBSUMED / MUST NOT BE PROMOTED
+RHETORICAL FORCE != INTEGRATION-SEAM TYPE ERROR
 ```
 
-## 6. EXACT NEXT RESEARCH QUESTION
+## 6. Current TD613 confrontation state
 
-Do NOT continue by designing a new Edge Witness object.
+Already inspected and retained:
 
-The next question is narrower:
+### Pedagogue
 
-> Does TD613 already contain an adapter / bridge that takes an existing Pedagogue research relation plus its bounded assay state and expresses the relation for an Aperture-governed evidentiary / predictive / consequential route using Aperture-style source-status, sensor/provenance, authority, calibration/identifiability, uncertainty, and abstention grammar — without changing the relation itself or promoting it into law?
+Carries relation provenance, transfer ceiling, bounded assay witnesses, alternatives, falsifiers, claim ceilings, epistemic-kind refinement, human closure, and no automatic promotion.
 
-Compactly:
+### Observation Aperture / Flow-Core / Aperture
+
+Carries source / instrument / condition scope and, once an observation process exists, source status, sensor identity, authority class, transformation history, missingness, uncertainty, calibration, abstention / hold / rejection grammar.
+
+### Phase V
+
+Carries a relation as a distinct association object while refusing relation = identity / causation / permission / proof. It is not required to become a semantic evidentiary relation prover.
+
+### Aperture v3.2
+
+Typed epistemic deficit can return:
 
 ```text
-PEDAGOGUE RELATION PROVENANCE + ASSAY STATE
--> ? EXISTING ADAPTER ?
--> APERTURE EVIDENTIARY / AUTHORITY GRAMMAR
+PROPOSE
+ASK_NOTHING
+ABSTAIN
+REJECT
 ```
 
-## 7. Required hostile search before any new candidate survives
+rather than forcing a question or inference.
 
-Search repo-native current TD613 broadly, not by one exact phrase only.
+No new adapter / Edge Witness object follows from the EMSTD613 confrontation.
 
-Minimum surfaces:
+## 7. EXACT NEXT UNRESOLVED QUESTION
+
+The adapter question is closed by null.
+
+The next native-Work question is now:
+
+> Does the directional receiver-contract failure recur in an independent Work strongly enough to survive the cheaper explanation of ordinary specification/report compression, or does a fresh hostile control show that the current `SIG_HALT` seam is local to one Work?
+
+More precisely:
 
 ```text
-APERTURE.md
-PEDAGOGUE.md
-app/engine/pedagogue-research-transfer.js
-app/engine/pedagogue-research-assay-witness.js
-app/engine/pedagogue-research-criterion-family.js
-app/engine/pedagogue-research-mechanism-refinement.js
-app/engine/phase5-relation-contract.js
-app/engine/phase5-relation-envelope.js
-app/engine/phase5-relation-replay.js
-app/dome-world/schemas/relation-envelope-v01.schema.json
-Aperture relation-audit / observatory / tomography receipt surfaces
-A15-R0 Aperture-Pedagogue replay / selection / open-research fixtures
+WHEN A WORK CLAIMS A CONSEQUENCE ACROSS A CONTROL / COMMAND / METRIC EDGE:
+
+1. what exactly left the emitter?
+2. what carrier transported it?
+3. what receiver contract interpreted it?
+4. what actuator was actually bound?
+5. what consequence was observed, implemented, specified, or merely projected?
 ```
 
-Search concept families, including variants:
+Test whether closure disproportionately drops the receiver-contract stage.
+
+Do not infer corpus prevalence from the single primary failure + controls currently held.
+
+## 8. Recommended next native reads
+
+Prioritize Work-level seams, not vocabulary recurrence.
+
+Promising next surfaces:
 
 ```text
-relation audit
-relation evidence
-observed relation
-transferable relation
-assay witness
-mechanism review
-source_status
-authority_class
-sensor_id
-calibration
-identifiability
-uncertainty
-abstention
-relation envelope
-relation dropout
-relation provenance
-pedagogue aperture
-research transfer
+Archive/Cybernetic Multi-Agent Systems Research.md
+- inspect synthesis / final pipelines for emitter -> carrier -> receiver -> actuator typing
+- common VSM upstream already subtracted; do not count VSM vocabulary as independent recurrence
+
+Archive/Wearable Drone Control System Design.md
+- useful hostile/positive control for physical receiver / hardware interlock paths
+- respect SAME_WORK_SUPPORTED manifestation uncertainty if cross-manifestation claims matter
+
+Archive/Mixxx DAW Architecture Research.md
+- useful positive control for proposal -> C++ affordance / physical-DSP action binding
+- SAME_WORK_CONFIRMED
+
+Archive/LLM Architecture Deep Dive.md
+- inspect memory / actuator closure without treating shared VSM source cluster as independent evidence
 ```
 
-Do not treat `SEARCH_RESULT = 0` as proof of absence. Follow source imports, schemas, docs, tests, and receipts.
+Before counting a recurrence, verify Work identity and do not double-count PDF/Markdown manifestations.
 
-## 8. Decision fork
+## 9. Native Work assay protocol
 
-### A. Existing adapter found
+Minimum unit remains:
 
 ```text
-BROAD EDGE_WITNESS CANDIDATE -> KILL / SUBSUME
+WORK
+x SPEECH-ACT ZONE
+x SOURCE EDGE
 ```
 
-Write a corrective Atelier receipt identifying the existing object and exactly what semantics it already carries. Preserve `d39a1a82...` as a superseded first-pass research candidate; do not erase it.
+For each suspicious seam:
 
-Then return to the Em corpus and continue integration-seam assay using the existing TD613 mechanism as a comparison instrument.
+1. isolate exact sender / carrier / receiver / actuator chain;
+2. inspect same-Work chronology;
+3. inspect sibling/project-family source for missing transducer;
+4. distinguish specification, exposition, implementation proposal, executable artifact, normative draft, conclusion, future prompt, bibliography;
+5. run external-source confrontation only when needed;
+6. find a positive control where the same Work/project preserves the type;
+7. retain prompt teleology, draft status, omitted implementation, citation compression, table-generation error, and ordinary generative-report pressure until defeated;
+8. receipt only bounded adjudications.
 
-### B. Semantics exist but no explicit adapter exists
-
-Prefer the smallest possible reusable adapter candidate.
-
-It should translate existing Pedagogue relation/assay evidence into existing Aperture receipt-local grammar. It must not invent a new ontology, duplicate the Relation Envelope, or silently enlarge either station's jurisdiction.
-
-Required posture:
+Current hard non-equivalences:
 
 ```text
-ADAPTER CANDIDATE ONLY
-NO CORE MUTATION
-NO RELEASE MUTATION
-NO TD613 LAW
+VALID NODE A + VALID NODE B != VALID EDGE(A,B)
+TRANSPORT INTEGRITY != RECEIVER-SEMANTIC INTEGRITY
+RECEIVER RECOGNITION != ACTUATOR INVOCATION
+ACTUATOR INVOCATION != OBSERVED CONSEQUENCE
+SIGNAL-LIKE NAME != PROCESS SIGNAL TYPE
+RELATION PROVENANCE != MEASUREMENT PROVENANCE
+DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
+TECHNICAL CONTROL STATE != EXTERNAL LEGAL STATE
 ```
 
-Then design an independent synthetic assay plus positive/negative controls before any stronger claim.
-
-### C. Existing surface completely closes the gap
-
-Record the null result and kill the candidate entirely.
-
-Null is a win.
-
-## 9. Continuing Em-side research after the adapter question
-
-Once the adapter/subsumption question is adjudicated, continue the current native-Work hostile route:
+## 10. RED / hold / null state
 
 ```text
-Work
-x speech-act zone
-x source-edge
+ADAPTER QUESTION = CLOSED_BY_NULL
+BROAD EDGE_WITNESS = KILLED_SUBSUMED
+DIRECTIONAL_TRANSDUCTION = MATERIAL_ATELIER_ASSAY_REFINEMENT
+CORPUS_PREVALENCE_OF_RECEIVER_CONTRACT_OMISSION = UNRESOLVED
+EM_SPECIFICITY = UNRESOLVED / NOT_ESTABLISHED
+AUTHOR_MOTIVE = NOT INFERRED
+TD613_PROMOTION = NONE
+PRODUCTION_MUTATION = NONE
 ```
 
-Prioritize Integration / Synthesis / Conclusion / Outlook / empirical comparison tables while preserving clean controls.
-
-For every suspected failure ask:
-
-1. Did the edge exist earlier in the same Work?
-2. Does a sibling/project-family Work contain the missing transducer?
-3. Are the endpoint sources individually valid but the connecting edge unsupported?
-4. Did closure change payload type, property owner, jurisdiction, evidence class, or claim authority?
-5. Does the original uncertainty/failure type survive closure?
-6. Could originating prompt teleology, draft status, citation compression, omitted implementation, or ordinary report-generation error explain the seam?
-
-## 10. Plug-in / work / unplug protocol
-
-### PLUG IN
+RED if:
 
 ```text
-Remembering
--> live PR/head check
--> read this socket
--> inspect all commits after frontier anchor
--> read mandatory receipts
--> restate exact unresolved question
+branch history diverges / force-push appears
+required native Work cannot be retrieved
+SUPPORTED_COLLAPSE vs SUPPORTED_SPLIT changes a proposed recurrence claim
+sibling source supplies the allegedly missing receiver contract and overturns the seam
+negative control destroys the directional mechanism hypothesis
+next step would require merge / publication / deployment / promotion authority
 ```
 
-### WORK
+## 11. Unplug protocol
 
-```text
-native source surface
--> exact claim/edge
--> sibling/source confrontation
--> hostile alternatives
--> positive/negative controls
--> bounded adjudication
-```
+Before the next stop:
 
-Write research-only receipts when a result becomes stable enough to survive thread loss. Receipts go under the existing EMSTD613 Atelier, preferably `04-RECEIPTS/assays/` or `04-RECEIPTS/handoffs/` according to function.
+1. query live PR/head;
+2. identify last scientific frontier separately from administrative socket commit;
+3. receipt stable science;
+4. update this socket with exact frontier, candidate deaths/survivals, next question, mandatory reads, RED/null state;
+5. never rewrite old receipts to make the history artificially linear;
+6. leave PR #962 draft/open/unmerged absent explicit human authority;
+7. seal handoff with `⟐`.
 
-### UNPLUG
-
-Before a thread ends or when the user requests handoff:
-
-1. Verify live PR/head.
-2. Ensure the newest scientific result has a durable receipt or explicitly state that it remains unreceipted.
-3. Update THIS re-entry socket with:
-   - last scientific frontier commit / receipt;
-   - hostile corrections since prior socket state;
-   - exact unresolved next question;
-   - mandatory next reads;
-   - any RED / hold / null.
-4. Do not rewrite older scientific receipts to make history look cleaner.
-5. Seal the chat handoff with `⟐`.
-
-## 11. Stop conditions
-
-Stop and diagnose rather than invent when:
-
-```text
-branch history diverges or force-push is detected
-source identity becomes unresolved in a way that changes the claim
-supported Work identity split changes the result
-required source surface cannot be retrieved
-existing TD613 mechanism may already subsume a proposed object but has not been inspected
-external-source confrontation contradicts the working claim
-negative control destroys the proposed mechanism
-human authority boundary would be crossed
-```
-
-## 12. Working maxims retained
+## 12. Working maxims
 
 > A receipt can authenticate both endpoints while the arrow between them remains invented.
+
+> A valid transport can deliver a command whose actuator meaning was never earned.
+
+> A sensor belongs to an observation process, not to a sentence about a relation.
 
 > Relation sensitivity tells you that an edge matters. Relation provenance tells you whether you earned that edge.
 
