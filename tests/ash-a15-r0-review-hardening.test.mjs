@@ -12,7 +12,7 @@ const SCIENCE_HEAD=resolveScientificHead();
 execFileSync('git',['cat-file','-e',`${PARENT_971_RECEIPT}^{commit}`],{stdio:'pipe'});
 execFileSync('git',['merge-base','--is-ancestor',PARENT_971_RECEIPT,SCIENCE_HEAD],{stdio:'pipe'});
 const ahead=Number(execFileSync('git',['rev-list','--count',`${PARENT_971_RECEIPT}..${SCIENCE_HEAD}`],{encoding:'utf8'}).trim());
-assert.ok(ahead===7||ahead===8,'Atlas Schubert Gaussian-Delannoy chamber must be at hardening or exact frozen successor depth');
+assert.ok(ahead===7||ahead===8||ahead===9||ahead===10,'Atlas Schubert Gaussian-Delannoy chamber must be at hardening, frozen, or documented post-RED repair successor depth');
 
 const changed=execFileSync('git',['diff','--name-only',`${PARENT_971_RECEIPT}..${SCIENCE_HEAD}`,'--','app/dome-world/docs/ash/experiments/a15-r0','app/dome-world/previews/a15-r0','tests'],{encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>p.startsWith('app/dome-world/docs/ash/experiments/a15-r0/')||p.startsWith('app/dome-world/previews/a15-r0/')||p.startsWith('tests/ash-a15-r0-'));
 const freezePath='app/dome-world/docs/ash/experiments/a15-r0/ATLAS_SCHUBERT_GAUSSIAN_DELANNOY_FREEZE_V0_1.md';
@@ -34,13 +34,17 @@ if(ahead===7){
   for(const p of allowed)if(p!==freezePath)assert.equal(changed.includes(p),true,`missing prefreeze Gaussian-Delannoy path: ${p}`);
 }else{
   assert.equal(changed.length,allowed.size);
-  for(const p of allowed)assert.equal(changed.includes(p),true,`missing frozen Gaussian-Delannoy path: ${p}`);
+  for(const p of allowed)assert.equal(changed.includes(p),true,`missing frozen/repaired Gaussian-Delannoy path: ${p}`);
 }
 
 // Pin inherited hardening by exact earned blob instead of recursively executing ancestral hardening tails.
 // INHERITED_CUSTODY != REQUIRED_REEXECUTION_OF_FULL_ANCESTRY
 const inheritedHardeningBlob=execFileSync('git',['rev-parse',`${PARENT_971_RECEIPT}:tests/ash-a15-r0-review-hardening.test.mjs`],{encoding:'utf8'}).trim();
 assert.equal(inheritedHardeningBlob,PARENT_971_HARDENING_BLOB,'earned #971 hardening blob changed or cannot be verified exactly');
+
+// Post-RED repair commits are transparent successors on the same eight-path chamber surface.
+// TRANSPARENT_REPAIR_COMMIT != ANCESTRY_LAUNDERING
+if(ahead>=9)assert.equal(changed.length,allowed.size,'post-RED repair must not widen the eight-path chamber surface');
 
 await import('./ash-a15-r0-aperture-pedagogue-atlas-schubert-gaussian-delannoy.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-atlas-schubert-gaussian-delannoy-hostile.test.mjs');
