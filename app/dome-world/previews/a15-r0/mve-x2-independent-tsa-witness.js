@@ -2,6 +2,14 @@ import { MVE_X1_PRESENT_RESOURCE_DESIGN_CERTIFICATE as X1_PARENT } from './mve-x
 
 export const MVE_X2_INDEPENDENT_TSA_WITNESS_SCHEMA='td613.dome-world.mve-x2-independent-tsa-witness/v0.1';
 export const MVE_X2_INDEPENDENT_TSA_WITNESS_PARENT='a339d5a5bbaac1a63b4d1f88e6dc8668b611b345';
+export const MVE_X2_RED1=Object.freeze({
+  failed_head:'b13e05b35f48235734c3e0fcc858f59c406fd456',
+  failed_tree:'4045bb86e216a80c1ac96b2e4e3e71f2fd091d85',
+  validation_run_number:2520,
+  validation_run_id:33658647835,
+  diagnosis:'PUBLISHED_CERTIFICATE_FILE_SHA256_WAS_MISLABELED_AND_COMPARED_AS_DER_SHA256',
+  scientific_hypothesis_weakened:false
+});
 const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
 
 export const MVE_X2_CONTRACT=freeze({
@@ -16,9 +24,10 @@ export const MVE_X2_CONTRACT=freeze({
   external_witness_receives_origin_label:false,
   external_witness_receives_raw_artifact:false,
   external_witness_receives_message_imprint_only:true,
-  tsa_ca_certificate_sha256_der:'2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438',
-  tsa_signer_certificate_sha256_der:'8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467',
-  certificate_fingerprints_preregistered:true,
+  certificate_pin_representation:'DOWNLOADED_FILE_BYTES',
+  tsa_ca_certificate_file_sha256:'2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438',
+  tsa_signer_certificate_file_sha256:'8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467',
+  certificate_file_hashes_preregistered:true,
   maximum_external_timestamp_requests:2,
   same_run_signed_receipt_custody_required:true,
   custody_path:'artifacts/pedagogue-observation-custody/mve-x2-rfc3161-observation.json',
@@ -44,9 +53,10 @@ function validateContract(contract){
   if(contract?.external_witness_receives_origin_label!==false)errors.push('ORIGIN_LABEL_DISCLOSURE_FORBIDDEN');
   if(contract?.external_witness_receives_raw_artifact!==false)errors.push('RAW_ARTIFACT_DISCLOSURE_FORBIDDEN');
   if(contract?.external_witness_receives_message_imprint_only!==true)errors.push('MESSAGE_IMPRINT_ONLY_REQUIRED');
-  if(contract?.tsa_ca_certificate_sha256_der!=='2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438')errors.push('PINNED_TSA_CA_FINGERPRINT_REQUIRED');
-  if(contract?.tsa_signer_certificate_sha256_der!=='8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467')errors.push('PINNED_TSA_SIGNER_FINGERPRINT_REQUIRED');
-  if(contract?.certificate_fingerprints_preregistered!==true)errors.push('CERTIFICATE_PREREGISTRATION_REQUIRED');
+  if(contract?.certificate_pin_representation!=='DOWNLOADED_FILE_BYTES')errors.push('PUBLISHED_FILE_HASH_REPRESENTATION_REQUIRED');
+  if(contract?.tsa_ca_certificate_file_sha256!=='2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438')errors.push('PINNED_TSA_CA_FILE_HASH_REQUIRED');
+  if(contract?.tsa_signer_certificate_file_sha256!=='8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467')errors.push('PINNED_TSA_SIGNER_FILE_HASH_REQUIRED');
+  if(contract?.certificate_file_hashes_preregistered!==true)errors.push('CERTIFICATE_FILE_HASH_PREREGISTRATION_REQUIRED');
   if(contract?.maximum_external_timestamp_requests!==2)errors.push('TWO_REQUEST_CEILING_REQUIRED');
   if(contract?.same_run_signed_receipt_custody_required!==true)errors.push('SAME_RUN_SIGNED_RECEIPT_CUSTODY_REQUIRED');
   if(contract?.custody_path!=='artifacts/pedagogue-observation-custody/mve-x2-rfc3161-observation.json')errors.push('CANONICAL_CUSTODY_PATH_REQUIRED');
@@ -71,9 +81,11 @@ export function evaluateMveX2Design(contract=MVE_X2_CONTRACT){
   return freeze({
     schema:MVE_X2_INDEPENDENT_TSA_WITNESS_SCHEMA,
     exact_parent:MVE_X2_INDEPENDENT_TSA_WITNESS_PARENT,
+    red1:MVE_X2_RED1,
     status:passed?'MVE_X2_INDEPENDENT_TSA_DESIGN_ADMISSIBLE':'INADMISSIBLE',
     errors,
     design_admissible:passed,
+    certificate_pin_representation:'DOWNLOADED_FILE_BYTES',
     actual_external_tsa_pilot_required:passed,
     exact_external_request_ceiling:2,
     paid_specialized_service_required:false,
@@ -99,7 +111,8 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
   if(pilot?.pairs!==2||pilot?.external_requests_issued!==2)errors.push('EXACT_TWO_EXTERNAL_REQUESTS_REQUIRED');
   if(pilot?.artifact_pair_byte_identity!==true)errors.push('PAIRED_ARTIFACT_IDENTITY_REQUIRED');
   if(pilot?.actual_externally_signed_rfc3161_receipts_observed!==true)errors.push('SIGNED_RFC3161_RECEIPTS_REQUIRED');
-  if(pilot?.pinned_external_tsa_certificate_fingerprints_verified!==true)errors.push('PINNED_EXTERNAL_CERTIFICATES_REQUIRED');
+  if(pilot?.certificate_pin_representation!=='DOWNLOADED_FILE_BYTES')errors.push('FILE_BYTE_PIN_REPRESENTATION_REQUIRED');
+  if(pilot?.pinned_external_tsa_certificate_files_verified!==true)errors.push('PINNED_EXTERNAL_CERTIFICATE_FILES_REQUIRED');
   if(pilot?.same_run_signed_receipt_custody_required!==true)errors.push('SIGNED_RECEIPT_CUSTODY_REQUIREMENT_REQUIRED');
   if(pilot?.signed_receipts_preserved_in_same_run_custody!==true)errors.push('SIGNED_RECEIPTS_MUST_BE_PRESERVED');
   if(pilot?.custody_record_written!==true)errors.push('CUSTODY_RECORD_REQUIRED');
@@ -127,6 +140,7 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
   return freeze({
     schema:MVE_X2_INDEPENDENT_TSA_WITNESS_SCHEMA,
     exact_parent:MVE_X2_INDEPENDENT_TSA_WITNESS_PARENT,
+    red1:MVE_X2_RED1,
     status:passed?'MVE_X2_INDEPENDENT_RFC3161_WITNESS_EARNED':'INADMISSIBLE',
     errors,
     rest_symbol:passed?'𝄐':null,
@@ -158,6 +172,7 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
     deployment_authority:false,
     publication_authority:false,
     laws:freeze({
+      published_file_hash_not_der_fingerprint:true,
       external_signed_witness_not_artifact_origin_proof:true,
       distinct_trust_anchor_not_universal_independence_theorem:true,
       zero_paid_service_fee_not_zero_total_infrastructure_cost:true,
