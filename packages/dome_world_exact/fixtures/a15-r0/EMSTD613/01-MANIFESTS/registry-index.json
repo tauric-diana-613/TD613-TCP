@@ -6,7 +6,14 @@
   "work_identity_state": {
     "work_identity_pass": "COMPLETED",
     "WORK_IDENTITY_FULLY_RESOLVED": false,
-    "work_count": 32,
+    "operational_work_entity_count": 32,
+    "work_count_legacy_alias_semantics": "OPERATIONAL_WORK_ENTITY_COUNT",
+    "confirmed_or_singleton_base_work_count": 24,
+    "supported_identity_group_count": 8,
+    "independent_work_count_lower_bound": 32,
+    "independent_work_count_upper_bound": 40,
+    "independent_work_count_exact": "UNRESOLVED",
+    "identity_sensitivity_required_downstream": true,
     "confirmed_multi_manifestation_works": 13,
     "supported_multi_manifestation_works": 8,
     "candidate_identity_groups": 0,
@@ -14,6 +21,28 @@
     "singleton_works": 11,
     "state_firewall": "PASS_COMPLETED != ALL_IDENTITIES_CONFIRMED",
     "resolution_note": "Eight SAME_WORK_SUPPORTED mappings remain human-gated rather than confirmed."
+  },
+  "downstream_identity_sensitivity_rule": {
+    "confirmed_manifestation_duplicates": "COLLAPSE_TO_ONE_WORK_VOTE",
+    "singleton_works": "ONE_WORK_VOTE",
+    "supported_identity_groups": "SENSITIVITY_BEARING_UNTIL_HUMAN_ADJUDICATION",
+    "required_methods": [
+      "RUN_SUPPORTED_COLLAPSE_AND_SUPPORTED_SPLIT_HYPOTHESES",
+      "REPORT_LOWER_AND_UPPER_SENSITIVITY_INTERVAL",
+      "DEMONSTRATE_RESULT_INVARIANCE_UNDER_SUPPORTED_GROUP_SPLITTING"
+    ],
+    "identity_robust_result_requirement": "Result stability under SUPPORTED_COLLAPSE versus SUPPORTED_SPLIT unless relevant supported identities have been human-resolved.",
+    "silent_strengthening_prohibited": true
+  },
+  "future_claim_atom_preparation_rule": {
+    "claim_extraction_performed": false,
+    "source_file_id_preservation_required": true,
+    "supported_manifestation_claim_equivalence_automatic": false,
+    "work_level_aggregation_states": [
+      "CROSS_MANIFESTATION_SHARED_CLAIM",
+      "VERSION_OR_MANIFESTATION_SPECIFIC_CLAIM",
+      "MANIFESTATION_PRESENCE_UNRESOLVED"
+    ]
   },
   "registries": {
     "source_files": "01-MANIFESTS/source-files.jsonl",
@@ -27,6 +56,7 @@
     "works": "01-MANIFESTS/work-index.jsonl",
     "work_manifestations": "01-MANIFESTS/work-manifestations.jsonl",
     "work_identity_receipt": "04-RECEIPTS/work-identity/2026-09-01-emstd613-work-identity.json",
+    "work_identity_uncertainty_hardening_receipt": "04-RECEIPTS/work-identity/2026-09-01-emstd613-work-identity-uncertainty-hardening.json",
     "claims": "01-MANIFESTS/claim-atoms.jsonl",
     "concepts": "01-MANIFESTS/concept-index.jsonl",
     "motifs": "01-MANIFESTS/motif-index.jsonl",
@@ -46,6 +76,7 @@
     "works": "POPULATED",
     "work_manifestations": "POPULATED",
     "work_identity_receipt": "POPULATED_APPEND_ONLY",
+    "work_identity_uncertainty_hardening_receipt": "POPULATED_APPEND_ONLY",
     "claims": "NOT_GENERATED",
     "concepts": "NOT_GENERATED",
     "motifs": "NOT_GENERATED",
@@ -58,5 +89,5 @@
   "operation_root": "05-OPERATIONS",
   "instrument_root": "06-INSTRUMENTS",
   "external_corpora_root": "08-EXTERNAL-CORPORA",
-  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. The bounded incoming-corpus Work/manifestation identity pass is complete; it does not adjudicate lineage, motif, mechanism, causation, archaeological-control interpretation, TD613 comparison, or TD613 scientific promotion. Claim-frequency, motif-frequency, mechanism-frequency, citation-frequency, and convergence statistics must default to Work-level counting unless an assay explicitly declares manifestation-level counting. The push-transport receipt records a local hook event and its successful remote validation witness; it does not convert a local hook bypass into a validation bypass, source mutation, or PR contamination."
+  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. The bounded incoming-corpus Work/manifestation identity pass is complete; it does not adjudicate lineage, motif, mechanism, causation, archaeological-control interpretation, TD613 comparison, or TD613 scientific promotion. Confirmed duplicate manifestations collapse to one Work vote and singleton Works contribute one vote. SAME_WORK_SUPPORTED groups remain sensitivity-bearing: downstream independent-Work quantities must run collapse/split hypotheses, report an interval, or demonstrate invariance. ClaimAtom.source_file_id must remain preserved, and a claim in one supported manifestation is not automatically present in the other. The push-transport receipt records a local hook event and its successful remote validation witness; it does not convert a local hook bypass into a validation bypass, source mutation, or PR contamination."
 }
