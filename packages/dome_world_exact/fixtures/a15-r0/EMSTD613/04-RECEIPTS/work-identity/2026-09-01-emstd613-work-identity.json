@@ -1,0 +1,279 @@
+{
+  "schema": "emstd613-work-identity-receipt/v1",
+  "receipt_date": "2026-09-01",
+  "recorded_at": "2026-09-02T00:53:27.211Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "amari/em-td613-lineage-atelier",
+  "input_head": "7a81135d2127be370409d65311e67fd6b9bdb7cc",
+  "input_artifacts": {
+    "source_manifest_path": "01-MANIFESTS/source-files.jsonl",
+    "source_manifest_sha256": "8af1515beab4451976c403ffaba869b93a175efef2c6fb184567e29444eba659",
+    "derivative_index_path": "03-DERIVATIVES/derivative-index.jsonl",
+    "derivative_index_sha256": "0b7601a365f2bf8f862112ee40faf9c2606bec8b71dde01c51a829656515d647",
+    "title_relation_candidates_path": "01-MANIFESTS/title-relation-candidates.json",
+    "structural_inventory_path": "01-MANIFESTS/structural-inventory.jsonl",
+    "intake_integrity_path": "07-ARCHIVE-LEDGER/2026-09-01-intake-integrity.json"
+  },
+  "output_artifacts": {
+    "work_index_path": "01-MANIFESTS/work-index.jsonl",
+    "work_index_sha256": "e7d008b710eb8ff12ed7d63aeacf9a9d64af38587817e38dc940a85d33c7d678",
+    "manifestation_map_path": "01-MANIFESTS/work-manifestations.jsonl",
+    "manifestation_map_sha256": "6fa6dbaefb2a352b1728461e9adc7a3f5f00ec63c1cb4ad03799e3b60691853b"
+  },
+  "counts": {
+    "analyzable_source_files": 53,
+    "markdown_documents": 33,
+    "pdf_documents": 20,
+    "work_entities": 32,
+    "confirmed_multi_manifestation_works": 13,
+    "supported_multi_manifestation_works": 8,
+    "candidate_identity_groups": 0,
+    "unresolved_identity_groups": 0,
+    "singleton_work_surfaces": 11,
+    "pdf_markdown_confirmed_pairs": 12,
+    "pdf_markdown_supported_pairs": 8,
+    "pdf_markdown_unresolved_pairs": 0
+  },
+  "work_identity_fully_resolved": false,
+  "work_identity_resolution_note": "The pass is completed and contains no candidate or unresolved groups, but eight SAME_WORK_SUPPORTED version/representation mappings remain human-gated rather than confirmed. PASS_COMPLETED != ALL_IDENTITIES_CONFIRMED.",
+  "identity_evidence_ladder": [
+    "EXACT_BYTE_IDENTITY",
+    "FORMAT_INDEPENDENT_EXTRACTED_TEXT_IDENTITY",
+    "DISTINCTIVE_STRUCTURE_SEQUENCE_IDENTITY",
+    "STRONG_WHOLE_DOCUMENT_TEXTUAL_EQUIVALENCE",
+    "TITLE_AND_STRUCTURE_CORRESPONDENCE",
+    "TITLE_SIMILARITY_ONLY"
+  ],
+  "fingerprint_method": {
+    "id": "nfkc-lowercase-alphanumeric-token-7gram/v1",
+    "permitted_noise": [
+      "Unicode NFKC representation normalization",
+      "case",
+      "whitespace",
+      "line wrapping",
+      "Markdown punctuation",
+      "page-flow whitespace"
+    ],
+    "preserved_against_normalization": [
+      "substantive wording",
+      "equations as extracted tokens",
+      "citations as extracted tokens",
+      "section order",
+      "examples",
+      "qualifications",
+      "conclusions"
+    ],
+    "decision_note": "Title equality never established identity without independent byte or ordered-text evidence."
+  },
+  "pdf_markdown_mappings": [
+    {
+      "work_id": "emwork_074ccf9ad783c9c9047d73a8",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_f9d7bff007dd9547d42db2c1",
+      "pdf_source_file_id": "emsrc_a3675ad3117d3d35cb099ceb",
+      "evidence_id": "emwfp_262cc61fd49fb75a6f0e8038"
+    },
+    {
+      "work_id": "emwork_085223e721130117f5510975",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_b7e4e42924d33bdaf666a4f8",
+      "pdf_source_file_id": "emsrc_ae5d4155056773c8a50db1b9",
+      "evidence_id": "emwfp_ba4b3336af34e8c827b241d7"
+    },
+    {
+      "work_id": "emwork_0885af7e4851a2e81618b37a",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_57021f0d10d938f524b738c5",
+      "pdf_source_file_id": "emsrc_a6aca36fd835bdb7157a6551",
+      "evidence_id": "emwfp_d4906a1bc9993e464777f08a"
+    },
+    {
+      "work_id": "emwork_4e3f81f01a95e4a7a5e69d1c",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_63897276d473f6147166ca90",
+      "pdf_source_file_id": "emsrc_cb7da53c98ed3a010af186a1",
+      "evidence_id": "emwfp_2fc99202489011a3c64ea5f8"
+    },
+    {
+      "work_id": "emwork_5b76a62b0dd1c587aee49b10",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_8846b63345a07422139815fb",
+      "pdf_source_file_id": "emsrc_96d522b0d573766dfb0f3c0e",
+      "evidence_id": "emwfp_c1865c34b1005fdd2bff9b34"
+    },
+    {
+      "work_id": "emwork_6377a9e4c9fd59e427517771",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_d7c7ed8ff483a72d2bf48bda",
+      "pdf_source_file_id": "emsrc_5f9ca473b3a0f7694bca742c",
+      "evidence_id": "emwfp_85e634502a56bdd6035c484b"
+    },
+    {
+      "work_id": "emwork_80ef3cd291f5f4fe6fdbcdbb",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_1a5f7e8bd71f3b1914d9dfc0",
+      "pdf_source_file_id": "emsrc_c2a22c120e32b746513447b5",
+      "evidence_id": "emwfp_399c7fa1879a7dc9d4087e90"
+    },
+    {
+      "work_id": "emwork_834ed287303df08a7a955877",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_24e3ec262e064fe98ed974b8",
+      "pdf_source_file_id": "emsrc_a1aa372da945a7db22e73f4c",
+      "evidence_id": "emwfp_7184d5e7dbff0bcf4c10cf4c"
+    },
+    {
+      "work_id": "emwork_85db62061b1e1bd0a4f6038e",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_9fcc229e5404e76d30c5726f",
+      "pdf_source_file_id": "emsrc_9fecefb1208f278c7ba0d4d5",
+      "evidence_id": "emwfp_d131ff3775356e08113a2005"
+    },
+    {
+      "work_id": "emwork_9373eb730b45f7f5afe6b7ae",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_265f3181ee73ce04b8240885",
+      "pdf_source_file_id": "emsrc_67937de5ebf818d8bc7c4e68",
+      "evidence_id": "emwfp_7ae7b82d2f64f218c10b9d78"
+    },
+    {
+      "work_id": "emwork_98c122a6f1451221afc1cc5c",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_fc1c117130df363bba90b5c1",
+      "pdf_source_file_id": "emsrc_7b3a68bdf0d263ae74751b99",
+      "evidence_id": "emwfp_f7a311679195114daca65036"
+    },
+    {
+      "work_id": "emwork_a7490990aa7cfc48afe40dc0",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_4753469dce968cf7c48bd1fe",
+      "pdf_source_file_id": "emsrc_536415ee2a02f2530392c78e",
+      "evidence_id": "emwfp_a71cdbd973b87aecd494fc37"
+    },
+    {
+      "work_id": "emwork_b5f602e223e39e15b6437a0c",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_fb1c9ba084467b28d6106148",
+      "pdf_source_file_id": "emsrc_f336eedac7c12acb372b7929",
+      "evidence_id": "emwfp_e4a06202b02feee7b3e257f4"
+    },
+    {
+      "work_id": "emwork_d536dc230d89ac9fef9fa13a",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_8925ddeda663016b041255dc",
+      "pdf_source_file_id": "emsrc_199220ad2cfb300f96ed3ab6",
+      "evidence_id": "emwfp_42752f7be9f6fff3fe56a313"
+    },
+    {
+      "work_id": "emwork_d9462f54ea32585c5d4f05ac",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_2adcca73b83fb64e8cf22fd9",
+      "pdf_source_file_id": "emsrc_0769dac7cdd95a5ca0577963",
+      "evidence_id": "emwfp_104fa45808c9bb6be1f38045"
+    },
+    {
+      "work_id": "emwork_dd9a66eba0e2dde8e29f00f6",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_8e672cb8123058c8fa47d8d9",
+      "pdf_source_file_id": "emsrc_1b44cb39e440056ed325b372",
+      "evidence_id": "emwfp_63777a01fa27268b860e7de0"
+    },
+    {
+      "work_id": "emwork_de337e6b46b378a834fb3c00",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_d785210930150a03fed14930",
+      "pdf_source_file_id": "emsrc_66bc27767a635cd4b2ce3e21",
+      "evidence_id": "emwfp_8d72e66ae39f6211a27d13c4"
+    },
+    {
+      "work_id": "emwork_e026dfda7f98393d8c020067",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_cf77e65eeefe19ca69b44064",
+      "pdf_source_file_id": "emsrc_ba63df8a7bab4ca14b1d21e0",
+      "evidence_id": "emwfp_7ef66ea7791b3e2d16cbeea3"
+    },
+    {
+      "work_id": "emwork_f0154bf9da11f273a2d6cb18",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "markdown_source_file_id": "emsrc_a87fa4366209a707705beb16",
+      "pdf_source_file_id": "emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+      "evidence_id": "emwfp_3dc2a7bb3739ba18f17ca85d"
+    },
+    {
+      "work_id": "emwork_f2c89864337f162e88991e28",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "markdown_source_file_id": "emsrc_58fa977424385e8b9892de77",
+      "pdf_source_file_id": "emsrc_a794c13e8e0b9bd6d7be3ca6",
+      "evidence_id": "emwfp_2b0d81d3200328ba3c127dee"
+    }
+  ],
+  "exact_byte_duplicate_treatment": [
+    {
+      "work_id": "emwork_c79701febd7d0a53501e7b97",
+      "source_file_ids": [
+        "emsrc_b20ff4bfe278f8cf39d805f6",
+        "emsrc_6205df11a1e35b1a7828c7e7"
+      ],
+      "manifestation_paths": [
+        "Archive/AI Hypervisor Control Mathematics.md",
+        "Archive/Deep Research on AI Hypervisor Control Mathematics.md"
+      ],
+      "byte_sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "treatment": "SAME_WORK_CONFIRMED; both SourceFile custody records retained"
+    }
+  ],
+  "non_work_sourcefile_treatment": {
+    "appledouble_metadata_objects": {
+      "count": 33,
+      "relation": "METADATA_COMPANION",
+      "work_ids_assigned": false
+    },
+    "zip_containers": {
+      "count": 1,
+      "relation": "CONTAINER",
+      "work_ids_assigned": false,
+      "zip_member_relationship_count": 68
+    }
+  },
+  "blindness_firewall_observed": [
+    "NO_TD613_CONCEPTUAL_SIMILARITY",
+    "NO_SRC_SIMILARITY",
+    "NO_EM_TIC_BRIDGE_USE",
+    "NO_REMEMBERED_EM_HISTORY",
+    "NO_HUMAN_LINEAGE_ASSERTION_USE",
+    "NO_PLATFORM_OR_SIGNALRUPTURE_HISTORY_USE",
+    "NO_EXTERNAL_LITERATURE_USE",
+    "NO_MOTIF_OR_MECHANISM_RESEMBLANCE_USE"
+  ],
+  "identity_firewall": [
+    "SourceFile != Manifestation != Work",
+    "SOURCE_SURFACE_COUNT != INDEPENDENT_WORK_COUNT",
+    "duplicate manifestation != independent convergence",
+    "format duplication != motif recurrence",
+    "same work appearing twice != two evidentiary witnesses",
+    "UNRESOLVED != DISTINCT",
+    "CANDIDATE != CONFIRMED"
+  ],
+  "downstream_assay_counting_default": {
+    "default_level": "WORK",
+    "applies_to": [
+      "claim-frequency",
+      "motif-frequency",
+      "mechanism-frequency",
+      "citation-frequency",
+      "convergence statistics"
+    ],
+    "manifestation_level_requires_explicit_declaration": true,
+    "work_level_counting_default_recorded": true
+  },
+  "custody_state": {
+    "originals_mutated": false,
+    "derivatives_mutated": false,
+    "archaeological_control_sources_mutated": false,
+    "lineage_analysis_performed": false,
+    "motif_analysis_performed": false,
+    "mechanism_analysis_performed": false,
+    "td613_comparison_performed": false,
+    "causation_adjudicated": false
+  }
+}
