@@ -57,8 +57,9 @@ function handoffContractPresent(){
   ].every(x=>text.includes(x));
 }
 
-function fieldPresent(v){
+function fieldPresent(key,v){
   if(v===null||v===undefined)return false;
+  if(key==='visual_control_or_authority_defects')return Array.isArray(v);
   if(typeof v==='string')return v.trim().length>0;
   if(Array.isArray(v))return v.length>0;
   if(typeof v==='object')return Object.keys(v).length>0;
@@ -68,9 +69,9 @@ function fieldPresent(v){
 export function inspectA16OperatorWitnessRecord(record=A16_OPERATOR_WITNESS_SOCKET_TEMPLATE){
   const schemaValid=record?.schema==='td613.dome-world.human-operator-production-observation-record/v0.1';
   const evidenceClassValid=record?.evidence_class==='HUMAN_OPERATOR_PRODUCTION_OBSERVATION_RECORD';
-  const missingFields=REQUIRED_OPERATOR_REVIEW_FIELDS.filter(k=>!fieldPresent(record?.[k]));
-  const observationIdPresent=fieldPresent(record?.observation_id);
-  const findingPresent=fieldPresent(record?.operator_finding);
+  const missingFields=REQUIRED_OPERATOR_REVIEW_FIELDS.filter(k=>!fieldPresent(k,record?.[k]));
+  const observationIdPresent=fieldPresent('observation_id',record?.observation_id);
+  const findingPresent=fieldPresent('operator_finding',record?.operator_finding);
   const provenanceClaimPresent=record?.provenance_claim?.claimed_source==='HUMAN_OPERATOR_PRODUCTION_OBSERVATION';
   const recordShapeComplete=Boolean(schemaValid&&evidenceClassValid&&missingFields.length===0&&observationIdPresent&&findingPresent&&provenanceClaimPresent);
   const canonicalRecordDigest=digest(record);
@@ -84,6 +85,7 @@ export function inspectA16OperatorWitnessRecord(record=A16_OPERATOR_WITNESS_SOCK
     missing_required_fields:missingFields,
     record_shape_complete:recordShapeComplete,
     provenance_claim_present:provenanceClaimPresent,
+    zero_defects_is_explicit_observation:Array.isArray(record?.visual_control_or_authority_defects)&&record.visual_control_or_authority_defects.length===0,
     record_digest:canonicalRecordDigest,
     machine_verifiable_dimensions:freeze(['SCHEMA','FIELD_COMPLETENESS','INTERNAL_CONSISTENCY','DIGEST','CLAIM_CEILING']),
     human_origin_verifiable_from_record_alone:false,
@@ -91,6 +93,7 @@ export function inspectA16OperatorWitnessRecord(record=A16_OPERATOR_WITNESS_SOCK
     a16_gate_open:false,
     a16_implementation_authority:false,
     laws:freeze({
+      empty_defect_list_not_missing_defect_observation:true,
       complete_record_shape_not_verified_human_origin:true,
       provenance_claim_not_independent_origin_witness:true,
       digest_integrity_not_human_observation:true,
@@ -125,6 +128,7 @@ export function constructOperatorWitnessOriginTwinWorld(){
   const observationallyIdentical=worldHuman.admitted_bytes===worldFabricated.admitted_bytes;
   return freeze({
     observationally_identical:observationallyIdentical,
+    admitted_record:{...admittedRecord},
     admitted_record_digest:digest(admittedRecord),
     human_world_record_inspection:inspectA16OperatorWitnessRecord(admittedRecord),
     fabricated_world_record_inspection:inspectA16OperatorWitnessRecord(admittedRecord),
@@ -145,6 +149,7 @@ export function runA16OperatorWitnessSocket(){
     twins.record_only_verifier_can_discriminate_origin===false&&
     twins.human_world_record_inspection.record_shape_complete===true&&
     twins.fabricated_world_record_inspection.record_shape_complete===true&&
+    twins.human_world_record_inspection.zero_defects_is_explicit_observation===true&&
     twins.human_world_record_inspection.operator_review_admitted===false
   );
 
@@ -187,6 +192,7 @@ export function runA16OperatorWitnessSocket(){
     deployment_authority:false,
     publication_authority:false,
     laws:freeze({
+      empty_defect_list_not_missing_defect_observation:true,
       witness_socket_not_witness:true,
       complete_record_not_verified_human_origin:true,
       provenance_claim_not_independent_origin_witness:true,
