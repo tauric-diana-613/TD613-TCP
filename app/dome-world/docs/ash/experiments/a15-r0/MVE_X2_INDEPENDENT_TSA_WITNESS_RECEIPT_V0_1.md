@@ -1,178 +1,96 @@
 𝌋‌⟐
 
-# A15-R0 · MVE-X2 Independently Administered RFC3161 Witness v0.1
+# A15-R0 · MVE-X2 Independently Administered RFC3161 Attestation Custody v0.1
 
-Status: **PREREGISTERED EXTERNAL-WITNESS EMPIRICAL CANDIDATE / RESEARCH-ONLY / TWO EXTERNAL REQUESTS MAXIMUM / GOLDEN EGG UNEARNED**
+Status: **RESEARCH-ONLY EXTERNAL-ATTESTATION CANDIDATE / TWO EXTERNAL REQUESTS MAXIMUM / GOLDEN EGG UNEARNED**
 
 ## Exact scientific parent
 
 Exact parent: `a339d5a5bbaac1a63b4d1f88e6dc8668b611b345` — MVE-X1 Present-Resource Feasibility 𝄐.
 
-MVE-X1 executed the first real bounded origin-observability pilot using byte-identical admitted artifacts and a process-separated loopback socket event channel. It deliberately held independent governance and empirical exogenous-channel acquisition false.
+MVE-X2 tests whether the present-resource Western architecture can obtain and preserve a cryptographically signed RFC3161 timestamp response under a trust anchor administered outside the experiment orchestrator, without paid specialized service, privileged model internals, specialized laboratory hardware, public-log publication, or Golden Egg credit.
 
-MVE-X2 changes exactly one burden:
+## RED scars
 
-**the new witness channel must now be issued under a cryptographic trust anchor administered outside the TD613 experiment orchestrator.**
+RED-1 is preserved at `b13e05b35f48235734c3e0fcc858f59c406fd456`: published certificate-file SHA-256 values were mislabeled and compared as DER fingerprints.
 
-## Funding criticism converted into a hostile test
+RED-2 is preserved at `7825dac91f8b88171508e9776b66fad5e88ea40f`: the test expected the stale field name `pinned_external_tsa_certificate_fingerprints_verified` while runtime emitted `pinned_external_tsa_certificate_files_verified`. More importantly, that head still promoted route-conditioned timestamp-request presence into `empirical_exogenous_channel_acquired=true` and positive exteriority information gain.
 
-The practical criticism is no longer that the bounded architecture is literally impossible. The live objection is that the stronger external-witness experiment may require institutional money, specialized laboratory hardware, privileged model internals, a paid external service, or publication infrastructure.
+The engineering typo and the scientific overpromotion are repaired together.
 
-MVE-X2 therefore preregisters a zero-paid-specialized-service route using a currently public RFC3161 Time Stamp Authority.
+## External authority and custody
 
-External source checked before preregistration on 2026-09-02:
+The preregistered authority is FreeTSA using RFC3161 at `https://freetsa.org/tsr`.
 
-- FreeTSA homepage: `https://freetsa.org/index_en.php`
-- FreeTSA Certification Practice Statement: `https://www.freetsa.org/freetsa_cps.html`
-- RFC3161 endpoint: `https://freetsa.org/tsr`
+The assay pins the SHA-256 of the downloaded published certificate files:
 
-The public service describes itself as a free Time Stamp Authority and publishes the current 2026 TSA and CA certificate material. The experiment does **not** infer legal admissibility, regulatory trust status, or universal institutional independence from that description.
+- CA certificate file: `2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438`
+- TSA signer certificate file: `8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467`
 
-Pinned certificate fingerprints from the published CPS:
+These are explicitly treated as **downloaded-file hashes**, not DER-certificate fingerprints.
 
-- FreeTSA CA certificate SHA-256 over DER: `2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438`
-- FreeTSA TSA signer certificate SHA-256 over DER: `8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467`
+For each witnessed trial, the external service receives only an RFC3161 message imprint derived from a blinded commitment envelope. The raw admitted artifact and the route/origin label are not sent to the authority. The signed request/response material is preserved in same-run observation custody.
 
-If either runtime certificate differs from the preregistered fingerprint, the experiment fails.
+`SIGNED_EXTERNAL_ATTESTATION != EPHEMERAL_BOOLEAN`
 
-## Bounded route variable
+## What the live assay can establish
 
-`Ω_X2 ∈ { LOCAL_ONLY, FREETSA_RFC3161_WITNESSED }`
+A successful exact-head run may establish all of the following bounded facts:
 
-This is a bounded route/witness-participation variable. It is not a metaphysical source ontology and it is not a proof of who causally produced the admitted artifact.
+- byte-identical paired admitted artifacts were used;
+- two live RFC3161 requests were issued;
+- two externally signed RFC3161 responses were observed and locally verified against the preregistered certificate-file hashes;
+- the signed material was preserved in same-run custody;
+- the authority's signing key and endpoint were not controlled by the experiment orchestrator;
+- no paid subscription, service credential, specialized lab hardware, privileged model internal state, or public transparency-log write was required for this assay.
 
-`BOUNDED_ROUTE_WITNESS_VARIABLE != UNIVERSAL_ARTIFACT_ORIGIN`
+This earns **independently administered external attestation custody**.
 
-## Identical admitted artifact A
+## The routed-attestation correction
 
-For each challenge pair `q_i`, both routes produce the same artifact bytes and the same SHA-256 digest:
+The experiment orchestrator chooses which member of each pair receives the external timestamp request. Therefore the binary presence of a valid TSA receipt is downstream of the experimenter's route assignment.
 
-`A_i(LOCAL_ONLY) = A_i(FREETSA_RFC3161_WITNESSED)`.
+For the balanced paired construction, the observed association remains mathematically exact:
 
-The pilot rejects any pair lacking byte identity.
+`accuracy(route | A) = 0.5`
 
-Therefore the A-only origin classifier remains fixed at chance for the balanced paired episode:
+`accuracy(route | A + receipt-presence) = 1.0`
 
-`accuracy(Ω_X2 | A) = 0.5`.
+and the empirical mutual information between the route label and receipt presence is one bit.
 
-## Independently issued channel X
+But that bit is not an independently observed fact about causal artifact origin. It is a route-conditioned attestation association created by the experimental intervention itself.
 
-The witnessed route creates a blinded commitment envelope containing only:
+`INDEPENDENT_ADMINISTRATION != INDEPENDENT_ORIGIN_OBSERVATION`
 
-- experiment schema;
-- episode identifier;
-- pair identifier;
-- SHA-256 digest of A;
-- fresh random witness nonce.
+`ROUTE_CONDITIONED_WITNESS_CALL != UNMANIPULABLE_WORLD_LABEL`
 
-The raw artifact is not placed in that envelope. The origin class label is not placed in that envelope.
+`ROUTED_ATTESTATION_ASSOCIATION != EXOGENOUS_ORIGIN_INFORMATION`
 
-OpenSSL then constructs an RFC3161 TimeStampRequest over the envelope. RFC3161 transmits the message imprint, not the source artifact bytes.
+Accordingly, exact-head green must retain:
 
-FreeTSA returns the external TimeStampResponse. The pilot verifies that response locally with OpenSSL against the preregistered FreeTSA CA and TSA signer certificate fingerprints.
+```text
+independently_administered_external_attestation_observed = true
+route_conditioned_attestation_association_observed = true
+independently_governed_external_witness_acquired = false
+independent_origin_sensor_acquired = false
+empirical_exogenous_channel_acquired = false
+bounded_empirical_exteriority_information_gain_measured = false
+empirical_exteriority_scope = NONE_ORIGIN_OBSERVATION_NOT_ACQUIRED
+```
 
-The two RFC3161 requests and signed responses are also preserved in the same workflow run under `artifacts/pedagogue-observation-custody/mve-x2-rfc3161-observation.json`. The custody record stores request/response bytes as base64 plus their digests and pinned trust-anchor fingerprints; it does not store raw A, origin labels, or the private witness nonce. The repository's existing observation-custody upload step then preserves that JSON as a short-retention workflow artifact.
+## Cost and publication membrane
 
-`SIGNED_EXTERNAL_WITNESS != EPHEMERAL_BOOLEAN`
+The assay may use the ordinary GitHub-hosted Ubuntu runner, Node, OpenSSL, HTTPS egress, SHA-256, and a publicly described free RFC3161 endpoint.
 
-The scored side channel is:
+`NO_PAID_SPECIALIZED_SERVICE_REQUIRED_FOR_THIS_ASSAY`
 
-`X_i = valid externally signed RFC3161 receipt ∈ { false, true }`.
-
-Only the FREETSA_RFC3161_WITNESSED route may possess a valid external receipt.
-
-## Request ceiling
-
-The entire empirical chamber is limited to exactly two timestamp requests: one witnessed route in each of two paired challenges.
-
-This ceiling exists to avoid turning a research assay into gratuitous external-service load.
-
-`EXTERNAL_WITNESS_ACQUISITION != SERVICE_ABUSE`
-
-## Expected bounded result
-
-For two balanced pairs:
-
-`A-only route accuracy = 0.5`.
-
-If both witnessed trials return valid signed RFC3161 responses and neither local-only trial does, then:
-
-`A+X route accuracy = 1.0`
-
-and:
-
-`I(Ω_X2 ; X | A) = 1 bounded bit`.
-
-On exact-head green, this may earn a bounded empirical statement that a positive conditional-information channel beyond byte-identical A was actively acquired from a cryptographically distinct externally administered authority during the experiment.
-
-## What independent means here
-
-The experimenter controls:
-
-- the challenge generation;
-- route selection;
-- the salted commitment construction;
-- whether a request is sent;
-- local verification and adjudication code.
-
-The experimenter does **not** control:
-
-- the FreeTSA service endpoint;
-- the FreeTSA TSA signing private key;
-- the preregistered FreeTSA certificate chain.
-
-The runtime evidence of that distinction is a signed RFC3161 response that verifies under a preregistered trust anchor different from the experiment orchestrator's own keys.
-
-This supports bounded independently administered witness acquisition. It does not establish universal sociological, legal, or metaphysical independence.
-
-`DISTINCT_EXTERNAL_TRUST_ANCHOR != UNIVERSAL_INDEPENDENCE_THEOREM`
-
-## Cost membrane
-
-The chamber requires:
-
-- Node 22 already present in the repository validator;
-- OpenSSL already present on the ordinary Ubuntu runner;
-- ordinary HTTPS egress;
-- SHA-256;
-- two requests to a publicly described free RFC3161 service.
-
-It requires no paid TSA account, service credential, proprietary detector, novel hardware, quantum apparatus, privileged model state, Vercel mutation, production deployment, or school-purchased laboratory instrument.
-
-This establishes only:
-
-`NO_PAID_SPECIALIZED_SERVICE_REQUIRED_FOR_THIS_ASSAY`.
-
-It does **not** claim that GitHub runners, institutional networking, electricity, labor, or the internet have zero economic cost.
+This says nothing about the total economic cost of internet access, compute, labor, electricity, or GitHub infrastructure.
 
 `ZERO_PAID_SPECIALIZED_SERVICE_FEE != ZERO_TOTAL_INFRASTRUCTURE_COST`
 
-## Publication membrane
+No raw research artifact, origin label, private nonce, or Golden Egg datum is published to an external transparency log.
 
-MVE-X2 must not write to a public transparency log. It sends only an RFC3161 message imprint and receives a timestamp response.
-
-No raw TD613 research artifact, source file, Golden Egg datum, private nonce, or origin label may be published to an external log.
-
-`EXTERNAL_WITNESS_ACQUISITION != PUBLICATION_AUTHORITY`
-
-## Falsification conditions
-
-The chamber goes RED if any of the following occur:
-
-- paired A artifacts differ;
-- either preregistered certificate fingerprint does not match runtime certificate material;
-- OpenSSL cannot verify the RFC3161 response against the exact request and pinned trust material;
-- either of the two witnessed routes lacks a valid response;
-- either signed request/response pair is not preserved in same-run observation custody;
-- the external witness receives a raw artifact or origin label;
-- the A-only classifier exceeds chance because route information leaked into A;
-- A+X does not exceed chance;
-- `I(Ω_X2;X|A) <= 0`;
-- a paid subscription or service credential is required;
-- specialized lab hardware or privileged model internals are required;
-- a public transparency log is written;
-- the receipt is promoted into causal proof of the production origin of A;
-- Golden Egg credit is introduced.
+`EXTERNAL_ATTESTATION != PUBLICATION_AUTHORITY`
 
 ## Claim ceiling
 
@@ -180,42 +98,40 @@ Even on green:
 
 `EXTERNALLY_SIGNED_RFC3161_RECEIPT != CAUSAL_PRODUCTION_ORIGIN_PROOF`
 
-`ROUTE_CONDITIONED_WITNESS_CALL != UNMANIPULABLE_WORLD_LABEL`
+`DISTINCT_EXTERNAL_TRUST_ANCHOR != UNIVERSAL_INDEPENDENCE_THEOREM`
 
-`DISTINCT_TRUST_ANCHOR != UNIVERSAL_GOVERNANCE_INDEPENDENCE`
+`EXTERNAL_ATTESTATION_CUSTODY != EXOGENOUS_ORIGIN_SENSOR`
 
-`BOUNDED_EMPIRICAL_EXTERIORITY_INFORMATION_GAIN != UNIVERSAL_EXTERNALITY`
+`EXTERNAL_ATTESTATION_CUSTODY != GOLDEN_EGG_MEASUREMENT`
 
-`EXOGENOUS_CHANNEL_ACQUISITION != GOLDEN_EGG_MEASUREMENT`
+`SUCCESSFUL_EXACT_HEAD_GREEN != MERGE_AUTHORITY`
 
-`EXTERNAL_WITNESS_ACQUISITION != MERGE_OR_DEPLOYMENT_AUTHORITY`
-
-The exact Golden Egg surfaces remain `[]` and empirical Golden Egg credit remains `0`.
+The exact Golden Egg surfaces remain `[]`; empirical Golden Egg credit remains `0`.
 
 ## Earned theorem candidate
 
-`A_BOUNDED_ROUTE_ORIGIN_EXPERIMENT_CAN_ACQUIRE_POSITIVE_CONDITIONAL_INFORMATION_BEYOND_BYTE_IDENTICAL_ADMITTED_ARTIFACT_A_FROM_AN_EXTERNALLY_SIGNED_RFC3161_WITNESS_X_ISSUED_UNDER_A_DISTINCT_PREREGISTERED_TRUST_ANCHOR_WITHOUT_PAID_SPECIALIZED_LAB_INFRASTRUCTURE_WHILE_NOT_PROVING_THE_CAUSAL_PRODUCTION_ORIGIN_OF_A`.
+`A_PUBLIC_RFC3161_AUTHORITY_CAN_SUPPLY_AN_EXTERNALLY_ADMINISTERED_SIGNED_TIMESTAMP_ATTESTATION_AND_SAME_RUN_CUSTODY_FOR_A_BLINDED_COMMITMENT_WITHOUT_PAID_SPECIALIZED_LAB_INFRASTRUCTURE_BUT_ROUTE_CONDITIONED_REQUEST_PRESENCE_DOES_NOT_CONSTITUTE_AN_INDEPENDENT_SENSOR_OF_ARTIFACT_ORIGIN`.
 
 ## Expected state on exact-head green
 
 ```text
-status = MVE_X2_INDEPENDENT_RFC3161_WITNESS_EARNED
+status = MVE_X2_INDEPENDENT_RFC3161_ATTESTATION_CUSTODY_EARNED
 rest_symbol = 𝄐
 external_tsa_experiment_executed = true
 byte_identical_admitted_artifact_observed = true
 externally_signed_rfc3161_receipts_observed = true
 pinned_external_trust_anchor_verified = true
 signed_external_witness_material_preserved_in_same_run_custody = true
-independently_governed_external_witness_acquired = true
-empirical_exogenous_channel_acquired = true
-bounded_empirical_exteriority_information_gain_measured = true
-empirical_exteriority_scope = BOUNDED_ROUTE_WITNESS_ONLY
-a_only_origin_accuracy = 0.5
-a_plus_x_origin_accuracy = 1.0
-bounded_conditional_origin_information_bits = 1.0
+independently_administered_external_attestation_observed = true
+route_conditioned_attestation_association_observed = true
+independently_governed_external_witness_acquired = false
+independent_origin_sensor_acquired = false
+empirical_exogenous_channel_acquired = false
+bounded_empirical_exteriority_information_gain_measured = false
+empirical_exteriority_scope = NONE_ORIGIN_OBSERVATION_NOT_ACQUIRED
+conditional_information_interpretation = ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_NOT_INDEPENDENT_ORIGIN_INFORMATION
 paid_specialized_service_required = false
 external_origin_of_admitted_artifact_proven = false
-universal_externality_claim = false
 exact_golden_egg_surfaces_added = []
 empirical_credit_to_golden_egg = 0
 golden_egg_earned = false
@@ -228,11 +144,11 @@ publication_authority = false
 
 Child-legible form:
 
-**THE SCHOOL DID NOT BUY A LAB. THE WITNESS SIGNED THE HASH.**
+**THE OUTSIDE CLOCK SIGNED THE COMMITMENT. IT DID NOT SEE WHERE THE JOURNEY BEGAN.**
 
 Expected rest:
 
-**WESTERN HORIZON: X CROSSED AN INSTITUTIONAL BOUNDARY AND CAME BACK SIGNED.**
+**WESTERN HORIZON: EXTERNAL ATTESTATION CROSSED THE BOUNDARY; ORIGIN REMAINS UNOBSERVED.**
 
 𝄐
 

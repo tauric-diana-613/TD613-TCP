@@ -198,6 +198,7 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
     ).length;
     const a_plus_x_origin_accuracy=correctWithX/rows.length;
     const bounded_conditional_origin_information_bits=artifact_pair_byte_identity?empiricalBinaryMutualInformation(rows):NaN;
+    const route_conditioned_attestation_association_observed=artifact_pair_byte_identity&&a_plus_x_origin_accuracy>0.5&&bounded_conditional_origin_information_bits>0;
     const witnessRows=rows.filter(row=>row.origin==='FREETSA_RFC3161_WITNESSED');
     let custody_record_written=false;
     if(custodyPath){
@@ -227,6 +228,15 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
           private_witness_nonce_included:false,
           message_imprint_only:true
         },
+        interpretation:{
+          independently_administered_external_attestation_observed:true,
+          route_conditioned_attestation_association_observed,
+          independently_governed_external_witness_acquired:false,
+          independent_origin_sensor_acquired:false,
+          empirical_exogenous_channel_acquired:false,
+          bounded_empirical_exteriority_information_gain_measured:false,
+          conditional_information_interpretation:'ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_NOT_INDEPENDENT_ORIGIN_INFORMATION'
+        },
         result:{
           pairs,
           trials:rows.length,
@@ -253,6 +263,8 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
       a_only_origin_accuracy,
       a_plus_x_origin_accuracy,
       bounded_conditional_origin_information_bits,
+      route_conditioned_attestation_association_observed,
+      conditional_information_interpretation:'ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_NOT_INDEPENDENT_ORIGIN_INFORMATION',
       actual_externally_signed_rfc3161_receipts_observed:witnessRows.length===pairs&&witnessRows.every(row=>row.x_valid_external_tsa_receipt),
       certificate_pin_representation:trust.certificate_pin_representation,
       pinned_external_tsa_certificate_files_verified:trust.pinned_certificate_files_verified,
@@ -272,9 +284,11 @@ export async function runMveX2Pilot({pairs=2,custodyPath=null}={}){
       public_transparency_log_written:false,
       specialized_lab_hardware_used:false,
       privileged_model_internal_state_used:false,
-      independently_governed_external_witness_acquired:true,
-      empirical_exogenous_channel_acquired:true,
-      bounded_empirical_exteriority_information_gain_measured:true,
+      independently_administered_external_attestation_observed:true,
+      independently_governed_external_witness_acquired:false,
+      independent_origin_sensor_acquired:false,
+      empirical_exogenous_channel_acquired:false,
+      bounded_empirical_exteriority_information_gain_measured:false,
       external_origin_of_admitted_artifact_proven:false,
       universal_externality_claim:false,
       exact_golden_egg_surfaces_added:Object.freeze([]),

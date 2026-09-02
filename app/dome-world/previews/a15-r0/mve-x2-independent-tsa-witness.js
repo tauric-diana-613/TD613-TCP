@@ -10,6 +10,13 @@ export const MVE_X2_RED1=Object.freeze({
   diagnosis:'PUBLISHED_CERTIFICATE_FILE_SHA256_WAS_MISLABELED_AND_COMPARED_AS_DER_SHA256',
   scientific_hypothesis_weakened:false
 });
+export const MVE_X2_RED2=Object.freeze({
+  failed_head:'7825dac91f8b88171508e9776b66fad5e88ea40f',
+  validation_run_number:2519,
+  validation_run_id:33660146492,
+  diagnosis:'TEST_EXPECTED_STALE_CERTIFICATE_FIELD_NAME_AND_RUNTIME_STILL_OVERPROMOTED_ROUTE_CONDITIONED_ATTESTATION_AS_EXOGENOUS_ORIGIN_INFORMATION',
+  scientific_hypothesis_weakened:true
+});
 const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
 
 export const MVE_X2_CONTRACT=freeze({
@@ -82,6 +89,7 @@ export function evaluateMveX2Design(contract=MVE_X2_CONTRACT){
     schema:MVE_X2_INDEPENDENT_TSA_WITNESS_SCHEMA,
     exact_parent:MVE_X2_INDEPENDENT_TSA_WITNESS_PARENT,
     red1:MVE_X2_RED1,
+    red2:MVE_X2_RED2,
     status:passed?'MVE_X2_INDEPENDENT_TSA_DESIGN_ADMISSIBLE':'INADMISSIBLE',
     errors,
     design_admissible:passed,
@@ -91,6 +99,10 @@ export function evaluateMveX2Design(contract=MVE_X2_CONTRACT){
     paid_specialized_service_required:false,
     privileged_resource_required:false,
     independent_external_receipt_acquired:false,
+    independently_administered_external_attestation_observed:false,
+    independently_governed_external_witness_acquired:false,
+    independent_origin_sensor_acquired:false,
+    empirical_exogenous_channel_acquired:false,
     bounded_empirical_exteriority_information_gain_measured:false,
     exact_golden_egg_surfaces_added:freeze([]),
     empirical_credit_to_golden_egg:0,
@@ -121,7 +133,7 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
   if(pilot?.external_witness_received_origin_labels!==false)errors.push('EXTERNAL_WITNESS_LABEL_BLINDNESS_REQUIRED');
   if(pilot?.external_witness_received_raw_artifact!==false)errors.push('RAW_ARTIFACT_DISCLOSURE_FORBIDDEN');
   if(pilot?.external_witness_received_message_imprint_only!==true)errors.push('MESSAGE_IMPRINT_ONLY_REQUIRED');
-  if(pilot?.external_authority_under_experiment_orchestrator_control!==false)errors.push('INDEPENDENT_EXTERNAL_AUTHORITY_REQUIRED');
+  if(pilot?.external_authority_under_experiment_orchestrator_control!==false)errors.push('EXTERNAL_AUTHORITY_CONTROL_FORBIDDEN');
   if(pilot?.external_authority_distinct_trust_anchor_observed!==true)errors.push('DISTINCT_EXTERNAL_TRUST_ANCHOR_REQUIRED');
   if(pilot?.paid_subscription_used!==false)errors.push('PAID_SUBSCRIPTION_FORBIDDEN');
   if(pilot?.service_credentials_used!==false)errors.push('SERVICE_CREDENTIALS_FORBIDDEN');
@@ -129,11 +141,14 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
   if(pilot?.specialized_lab_hardware_used!==false)errors.push('SPECIALIZED_LAB_HARDWARE_FORBIDDEN');
   if(pilot?.privileged_model_internal_state_used!==false)errors.push('PRIVILEGED_MODEL_INTERNALS_FORBIDDEN');
   if(pilot?.a_only_origin_accuracy!==0.5)errors.push('A_ONLY_MUST_REMAIN_AT_CHANCE');
-  if(!(pilot?.a_plus_x_origin_accuracy>0.5))errors.push('A_PLUS_X_MUST_EXCEED_CHANCE');
-  if(!(pilot?.bounded_conditional_origin_information_bits>0))errors.push('POSITIVE_CONDITIONAL_INFORMATION_REQUIRED');
-  if(pilot?.independently_governed_external_witness_acquired!==true)errors.push('INDEPENDENT_EXTERNAL_WITNESS_REQUIRED');
-  if(pilot?.empirical_exogenous_channel_acquired!==true)errors.push('EMPIRICAL_EXOGENOUS_CHANNEL_REQUIRED');
-  if(pilot?.bounded_empirical_exteriority_information_gain_measured!==true)errors.push('BOUNDED_EXTERIORITY_INFORMATION_GAIN_REQUIRED');
+  if(!(pilot?.a_plus_x_origin_accuracy>0.5))errors.push('ROUTE_CONDITIONED_RECEIPT_ASSOCIATION_MUST_BE_OBSERVED');
+  if(!(pilot?.bounded_conditional_origin_information_bits>0))errors.push('ROUTE_CONDITIONED_ASSOCIATION_INFORMATION_REQUIRED');
+  if(pilot?.route_conditioned_attestation_association_observed!==true)errors.push('ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_REQUIRED');
+  if(pilot?.independently_administered_external_attestation_observed!==true)errors.push('INDEPENDENTLY_ADMINISTERED_EXTERNAL_ATTESTATION_REQUIRED');
+  if(pilot?.independently_governed_external_witness_acquired!==false)errors.push('INDEPENDENT_GOVERNANCE_OVERCLAIM_FORBIDDEN');
+  if(pilot?.independent_origin_sensor_acquired!==false)errors.push('INDEPENDENT_ORIGIN_SENSOR_OVERCLAIM_FORBIDDEN');
+  if(pilot?.empirical_exogenous_channel_acquired!==false)errors.push('EXOGENOUS_ORIGIN_CHANNEL_OVERCLAIM_FORBIDDEN');
+  if(pilot?.bounded_empirical_exteriority_information_gain_measured!==false)errors.push('EXTERIORITY_INFORMATION_GAIN_OVERCLAIM_FORBIDDEN');
   if(pilot?.external_origin_of_admitted_artifact_proven!==false)errors.push('ARTIFACT_ORIGIN_PROOF_OVERCLAIM_FORBIDDEN');
   if(pilot?.golden_egg_earned!==false||pilot?.empirical_credit_to_golden_egg!==0)errors.push('GOLDEN_EGG_CREDIT_FORBIDDEN');
   const passed=errors.length===0;
@@ -141,7 +156,8 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
     schema:MVE_X2_INDEPENDENT_TSA_WITNESS_SCHEMA,
     exact_parent:MVE_X2_INDEPENDENT_TSA_WITNESS_PARENT,
     red1:MVE_X2_RED1,
-    status:passed?'MVE_X2_INDEPENDENT_RFC3161_WITNESS_EARNED':'INADMISSIBLE',
+    red2:MVE_X2_RED2,
+    status:passed?'MVE_X2_INDEPENDENT_RFC3161_ATTESTATION_CUSTODY_EARNED':'INADMISSIBLE',
     errors,
     rest_symbol:passed?'𝄐':null,
     external_tsa_experiment_executed:passed,
@@ -149,13 +165,16 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
     externally_signed_rfc3161_receipts_observed:passed,
     pinned_external_trust_anchor_verified:passed,
     signed_external_witness_material_preserved_in_same_run_custody:passed,
-    independently_governed_external_witness_acquired:passed,
-    empirical_exogenous_channel_acquired:passed,
-    bounded_empirical_exteriority_information_gain_measured:passed,
-    empirical_exteriority_scope:passed?'BOUNDED_ROUTE_WITNESS_ONLY':null,
+    independently_administered_external_attestation_observed:passed,
+    independently_governed_external_witness_acquired:false,
+    independent_origin_sensor_acquired:false,
+    empirical_exogenous_channel_acquired:false,
+    bounded_empirical_exteriority_information_gain_measured:false,
+    empirical_exteriority_scope:passed?'NONE_ORIGIN_OBSERVATION_NOT_ACQUIRED':null,
     a_only_origin_accuracy:pilot?.a_only_origin_accuracy??null,
     a_plus_x_origin_accuracy:pilot?.a_plus_x_origin_accuracy??null,
     bounded_conditional_origin_information_bits:pilot?.bounded_conditional_origin_information_bits??null,
+    conditional_information_interpretation:'ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_NOT_INDEPENDENT_ORIGIN_INFORMATION',
     paid_specialized_service_required:false,
     service_credentials_required:false,
     specialized_lab_hardware_required:false,
@@ -173,15 +192,18 @@ export function adjudicateMveX2Pilot(pilot,contract=MVE_X2_CONTRACT){
     publication_authority:false,
     laws:freeze({
       published_file_hash_not_der_fingerprint:true,
+      independent_administration_not_independent_origin_observation:true,
+      route_conditioned_witness_call_not_unmanipulable_world_label:true,
+      routed_attestation_association_not_exogenous_origin_information:true,
       external_signed_witness_not_artifact_origin_proof:true,
       distinct_trust_anchor_not_universal_independence_theorem:true,
       zero_paid_service_fee_not_zero_total_infrastructure_cost:true,
-      bounded_route_exteriority_not_golden_egg_measurement:true,
       rfc3161_receipt_not_causal_production_proof:true,
+      external_attestation_custody_not_golden_egg_measurement:true,
       external_witness_acquisition_not_publication_authority:true
     }),
-    candidate_theorem:passed?'A_BOUNDED_ROUTE_ORIGIN_EXPERIMENT_CAN_ACQUIRE_POSITIVE_CONDITIONAL_INFORMATION_BEYOND_BYTE_IDENTICAL_ADMITTED_ARTIFACT_A_FROM_AN_EXTERNALLY_SIGNED_RFC3161_WITNESS_X_ISSUED_UNDER_A_DISTINCT_PREREGISTERED_TRUST_ANCHOR_WITHOUT_PAID_SPECIALIZED_LAB_INFRASTRUCTURE_WHILE_NOT_PROVING_THE_CAUSAL_PRODUCTION_ORIGIN_OF_A':'NOT_EARNED',
-    child_message:passed?'THE SCHOOL DID NOT BUY A LAB. THE WITNESS SIGNED THE HASH.':'THE OUTSIDE WITNESS HAS NOT SIGNED THE HASH.'
+    candidate_theorem:passed?'A_PUBLIC_RFC3161_AUTHORITY_CAN_SUPPLY_AN_EXTERNALLY_ADMINISTERED_SIGNED_TIMESTAMP_ATTESTATION_AND_SAME_RUN_CUSTODY_FOR_A_BLINDED_COMMITMENT_WITHOUT_PAID_SPECIALIZED_LAB_INFRASTRUCTURE_BUT_ROUTE_CONDITIONED_REQUEST_PRESENCE_DOES_NOT_CONSTITUTE_AN_INDEPENDENT_SENSOR_OF_ARTIFACT_ORIGIN':'NOT_EARNED',
+    child_message:passed?'THE OUTSIDE CLOCK SIGNED THE COMMITMENT. IT DID NOT SEE WHERE THE JOURNEY BEGAN.':'THE OUTSIDE ATTESTATION HAS NOT BEEN ADMITTED.'
   });
 }
 

@@ -4,13 +4,15 @@
   "red1": {
     "failed_head": "b13e05b35f48235734c3e0fcc858f59c406fd456",
     "failed_tree": "4045bb86e216a80c1ac96b2e4e3e71f2fd091d85",
-    "validation_run_number": 2520,
     "validation_run_id": 33658647835,
-    "failed_step": "Validate Ash A15 empirical profile journeys and A15-R0 research field",
-    "diagnosis": "PUBLISHED_CERTIFICATE_FILE_SHA256_WAS_MISLABELED_AND_COMPARED_AS_DER_SHA256",
-    "scientific_hypothesis_weakened": false
+    "diagnosis": "PUBLISHED_CERTIFICATE_FILE_SHA256_WAS_MISLABELED_AND_COMPARED_AS_DER_SHA256"
   },
-  "expected_status_on_exact_head_green": "MVE_X2_INDEPENDENT_RFC3161_WITNESS_EARNED",
+  "red2": {
+    "failed_head": "7825dac91f8b88171508e9776b66fad5e88ea40f",
+    "validation_run_id": 33660146492,
+    "diagnosis": "STALE_CERTIFICATE_FIELD_NAME_PLUS_ROUTE_CONDITIONED_ATTESTATION_OVERPROMOTED_AS_EXOGENOUS_ORIGIN_INFORMATION"
+  },
+  "expected_status_on_exact_head_green": "MVE_X2_INDEPENDENT_RFC3161_ATTESTATION_CUSTODY_EARNED",
   "rest_symbol": "𝄐",
   "preregistered_external_authority": {
     "provider": "FreeTSA",
@@ -26,29 +28,24 @@
     "same_run_signed_receipt_custody_required": true,
     "custody_path": "artifacts/pedagogue-observation-custody/mve-x2-rfc3161-observation.json"
   },
-  "actual_pilot": {
-    "origin_classes": [
-      "LOCAL_ONLY",
-      "FREETSA_RFC3161_WITNESSED"
-    ],
+  "expected_empirical_observation": {
     "paired_artifact_byte_identity": true,
-    "external_witness_receives_origin_label": false,
-    "external_witness_receives_raw_artifact": false,
-    "external_witness_receives_message_imprint_only": true,
     "pinned_external_tsa_certificate_files_verified": true,
     "externally_signed_rfc3161_receipts_observed": true,
+    "signed_receipts_preserved_in_same_run_custody": true,
     "a_only_origin_accuracy": 0.5,
     "a_plus_x_origin_accuracy": 1.0,
     "bounded_conditional_origin_information_bits": 1.0,
-    "signed_receipts_preserved_in_same_run_custody": true,
-    "custody_record_contains_raw_artifact": false,
-    "custody_record_contains_origin_labels": false
+    "conditional_information_interpretation": "ROUTE_CONDITIONED_ATTESTATION_ASSOCIATION_NOT_INDEPENDENT_ORIGIN_INFORMATION"
   },
   "earned_bounded_state": {
-    "independently_governed_external_witness_acquired": true,
-    "empirical_exogenous_channel_acquired": true,
-    "bounded_empirical_exteriority_information_gain_measured": true,
-    "empirical_exteriority_scope": "BOUNDED_ROUTE_WITNESS_ONLY"
+    "independently_administered_external_attestation_observed": true,
+    "route_conditioned_attestation_association_observed": true,
+    "independently_governed_external_witness_acquired": false,
+    "independent_origin_sensor_acquired": false,
+    "empirical_exogenous_channel_acquired": false,
+    "bounded_empirical_exteriority_information_gain_measured": false,
+    "empirical_exteriority_scope": "NONE_ORIGIN_OBSERVATION_NOT_ACQUIRED"
   },
   "claim_ceiling": {
     "external_origin_of_admitted_artifact_proven": false,
@@ -60,5 +57,12 @@
     "production_authority": false,
     "deployment_authority": false,
     "publication_authority": false
-  }
+  },
+  "laws": [
+    "INDEPENDENT_ADMINISTRATION != INDEPENDENT_ORIGIN_OBSERVATION",
+    "ROUTE_CONDITIONED_WITNESS_CALL != UNMANIPULABLE_WORLD_LABEL",
+    "ROUTED_ATTESTATION_ASSOCIATION != EXOGENOUS_ORIGIN_INFORMATION",
+    "EXTERNALLY_SIGNED_RFC3161_RECEIPT != CAUSAL_PRODUCTION_ORIGIN_PROOF",
+    "EXTERNAL_ATTESTATION_CUSTODY != GOLDEN_EGG_MEASUREMENT"
+  ]
 }
