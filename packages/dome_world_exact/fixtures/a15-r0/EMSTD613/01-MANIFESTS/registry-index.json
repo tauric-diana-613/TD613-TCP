@@ -3,6 +3,18 @@
   "fixture": "EMSTD613",
   "status": "SOURCE_CUSTODY_ESTABLISHED",
   "source_root": "02-ORIGINALS/emstd613lineage",
+  "work_identity_state": {
+    "work_identity_pass": "COMPLETED",
+    "WORK_IDENTITY_FULLY_RESOLVED": false,
+    "work_count": 32,
+    "confirmed_multi_manifestation_works": 13,
+    "supported_multi_manifestation_works": 8,
+    "candidate_identity_groups": 0,
+    "unresolved_identity_groups": 0,
+    "singleton_works": 11,
+    "state_firewall": "PASS_COMPLETED != ALL_IDENTITIES_CONFIRMED",
+    "resolution_note": "Eight SAME_WORK_SUPPORTED mappings remain human-gated rather than confirmed."
+  },
   "registries": {
     "source_files": "01-MANIFESTS/source-files.jsonl",
     "archaeological_control": "01-MANIFESTS/em-tic-archaeological-control.jsonl",
@@ -13,6 +25,8 @@
     "intake_receipt": "04-RECEIPTS/intake/2026-09-01-emstd613-source-intake.json",
     "push_transport_receipt": "04-RECEIPTS/transport/2026-09-01-emstd613-push-transport.json",
     "works": "01-MANIFESTS/work-index.jsonl",
+    "work_manifestations": "01-MANIFESTS/work-manifestations.jsonl",
+    "work_identity_receipt": "04-RECEIPTS/work-identity/2026-09-01-emstd613-work-identity.json",
     "claims": "01-MANIFESTS/claim-atoms.jsonl",
     "concepts": "01-MANIFESTS/concept-index.jsonl",
     "motifs": "01-MANIFESTS/motif-index.jsonl",
@@ -29,7 +43,9 @@
     "intake_integrity_report": "POPULATED",
     "intake_receipt": "POPULATED_APPEND_ONLY",
     "push_transport_receipt": "POPULATED_APPEND_ONLY",
-    "works": "NOT_GENERATED",
+    "works": "POPULATED",
+    "work_manifestations": "POPULATED",
+    "work_identity_receipt": "POPULATED_APPEND_ONLY",
     "claims": "NOT_GENERATED",
     "concepts": "NOT_GENERATED",
     "motifs": "NOT_GENERATED",
@@ -42,5 +58,5 @@
   "operation_root": "05-OPERATIONS",
   "instrument_root": "06-INSTRUMENTS",
   "external_corpora_root": "08-EXTERNAL-CORPORA",
-  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. Source custody and archaeological-control inventory do not adjudicate work identity, lineage, mechanism, causation, or TD613 scientific promotion. The push-transport receipt records a local hook event and its successful remote validation witness; it does not convert a local hook bypass into a validation bypass, source mutation, or PR contamination."
+  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. The bounded incoming-corpus Work/manifestation identity pass is complete; it does not adjudicate lineage, motif, mechanism, causation, archaeological-control interpretation, TD613 comparison, or TD613 scientific promotion. Claim-frequency, motif-frequency, mechanism-frequency, citation-frequency, and convergence statistics must default to Work-level counting unless an assay explicitly declares manifestation-level counting. The push-transport receipt records a local hook event and its successful remote validation witness; it does not convert a local hook bypass into a validation bypass, source mutation, or PR contamination."
 }
