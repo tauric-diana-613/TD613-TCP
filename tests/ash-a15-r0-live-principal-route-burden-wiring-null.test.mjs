@@ -16,20 +16,33 @@ assert.deepEqual(C.canonical_live_chain_functions, [
   'compileAshLiveRenderReceipt'
 ]);
 assert.equal(C.principal_surface_ledger_present, true);
-assert.equal(C.separate_route_burden_observatory_has_full_chain, true);
 assert.deepEqual(C.route_burden_function_set, [
   'compileRouteGraph',
   'computeDeclaredBurden',
   'compareBurdenModels',
   'compileBurdenReceipt'
 ]);
+assert.deepEqual(C.observatory_expected_direct_function_set, [
+  'compileRouteGraph',
+  'compareBurdenModels',
+  'compileBurdenReceipt'
+]);
+assert.equal(C.separate_route_burden_observatory_has_expected_direct_surface, true);
+assert.equal(C.canonical_route_burden_module_has_full_chain, true);
 assert.deepEqual(C.live_aia_route_burden_function_references, []);
-assert.deepEqual(C.observatory_route_burden_function_references, [
+assert.deepEqual(C.observatory_direct_route_burden_function_references, [
+  'compileRouteGraph',
+  'compareBurdenModels',
+  'compileBurdenReceipt'
+]);
+assert.deepEqual(C.canonical_route_burden_module_function_references, [
   'compileRouteGraph',
   'computeDeclaredBurden',
   'compareBurdenModels',
   'compileBurdenReceipt'
 ]);
+assert.equal(C.observatory_direct_compute_declared_burden_reference, false);
+assert.equal(C.canonical_compare_burden_models_delegates_to_compute_declared_burden, true);
 assert.equal(C.direct_live_route_burden_wiring_observed, false);
 assert.equal(C.direct_live_observatory_coupling_observed, false);
 assert.equal(C.a16_handoff_live_route_burden_debt_preserved, true);
@@ -62,7 +75,8 @@ const receipt = fs.readFileSync(
   'utf8'
 );
 assert.match(receipt, /SYNTHETIC CONCORDANCE != LIVE WIRING/);
-assert.match(receipt, /SEPARATE OBSERVATORY != PRINCIPAL JOURNEY COMPILATION/);
+assert.match(receipt, /OBSERVATORY ENTRY SURFACE != CANONICAL MODULE INTERNAL CALL GRAPH/);
+assert.match(receipt, /SEPARATE OBSERVATORY PATH != PRINCIPAL JOURNEY COMPILATION/);
 assert.match(receipt, /WIRING NULL LOCALIZATION != A16 REPAIR/);
 assert.match(receipt, /OPERATOR REVIEW GATE != STATIC AUDIT/);
 assert.match(receipt, /CROWN ELIGIBILITY != CROWN AUTHORITY/);
