@@ -1,0 +1,33 @@
+{
+  "schema": "td613.dome-world.conditional-exteriority-information-gain-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "fb3501cec8a96e7918ed5ac88c7096577eb88056",
+  "required_state": {
+    "status": "CONDITIONAL_EXTERIORITY_INFORMATION_GAIN_CRITERION_EARNED",
+    "rest_symbol": "𝄐",
+    "conditional_information_gain_criterion_earned": true,
+    "admitted_record_origin_information_bits": 0,
+    "derived_channel_conditional_information_bits": 0,
+    "synthetic_exogenous_probe_conditional_information_positive": true,
+    "derived_channel_rejected_as_new_exteriority_information": true,
+    "non_derivative_channel_topology_required": true,
+    "source_independence_required": true,
+    "likelihood_separation_required": true,
+    "empirical_exogenous_channel_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "empirical_credit_from_synthetic_probe": 0,
+    "sequence_authority": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  },
+  "claim_ceiling": [
+    "conditional_information_gain_criterion_not_empirical_exteriority_measurement",
+    "synthetic_likelihood_probe_not_external_witness",
+    "positive_model_cmi_not_real_world_origin_proof",
+    "derived_channel_not_independent_channel",
+    "multiple_endpoints_not_multiple_independent_sources",
+    "channel_independence_not_statistical_independence_assumption",
+    "origin_hypothesis_variable_not_externality_ontology",
+    "conditional_exteriority_information_gain_not_golden_egg_measurement"
+  ]
+}
