@@ -15,6 +15,7 @@ await import('./ash-a15-r0-blinded-adjudication-latch.test.mjs');
 await import('./ash-a15-r0-blinded-adjudication-latch-hostile.test.mjs');
 await import('./ash-a15-r0-golden-egg-exteriority-convergence.test.mjs');
 await import('./ash-a15-r0-golden-egg-exteriority-convergence-hostile.test.mjs');
+await import('./ash-a15-r0-western-horizon-empirical-shore-rest.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
