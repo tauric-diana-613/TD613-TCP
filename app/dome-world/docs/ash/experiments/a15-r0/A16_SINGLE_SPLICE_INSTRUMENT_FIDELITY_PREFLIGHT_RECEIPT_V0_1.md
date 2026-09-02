@@ -4,6 +4,7 @@
 
 **Status:** RESEARCH-ONLY CANDIDATE / PRE-A16 / PRODUCT-MUTATION-HELD  
 **Exact scientific parent:** `8cbd1c30b30afef0402783a8a610780287b921b1` — Live Principal Route-Burden Wiring Null 𝄐  
+**Preserved RED witness:** `10e3e85f84d8cf7539f5338699637537ad96e9b7` — exact-head Step 19 rejected a test-instrument digest-type assumption  
 **Scope:** architectural sufficiency, exact integration-edge bound, instrument fidelity, and authority conservation only
 
 ## Question
@@ -76,6 +77,22 @@ package serialization after burden compilation
 
 Thus the candidate boundary feed requires no package mutation in the preflight assay.
 
+## Preserved RED correction — digest profile
+
+The first exact-head preflight candidate reached Step 19 with the scientific splice unchanged but asserted the wrong digest representation in its test instrument.
+
+TD613 canonical digests are typed strings:
+
+```text
+sha256:<64 lowercase hex characters>
+```
+
+The test had incorrectly required bare 64-hex strings for the Ash package digest, Flow-Core route-graph digest, and burden-receipt digest. The descendant repair changes only those three assertions to the canonical `sha256:` profile. The local preflight bookkeeping digest, produced independently with Node `crypto.createHash('sha256').digest('hex')`, remains bare 64-hex.
+
+`CANONICAL DIGEST != BARE HEX DIGEST`
+
+This RED changes the instrument contract, not the candidate splice theorem.
+
 ## Authority conservation
 
 Across package, graph, model comparison, and burden receipt:
@@ -113,6 +130,8 @@ Accordingly this chamber performs no product splice. It proves architectural suf
 `PACKAGE NONMUTATION != OPERATOR REVIEW`
 
 `AUTHORITY CONSERVATION != AUTHORITY GRANT`
+
+`CANONICAL DIGEST != BARE HEX DIGEST`
 
 `BURDEN COMPILATION != INTERACTION EVIDENCE`
 
