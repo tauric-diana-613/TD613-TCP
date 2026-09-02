@@ -1,0 +1,63 @@
+{
+  "schema": "td613.dome-world.active-reopening-nonexclusivity-expectations/v0.1",
+  "exact_parent": "fd3a18439267504ad80ca4084377d7350b47e9d7",
+  "external_witnesses": [
+    {
+      "title": "Relaxing Faithfulness with Intervention-Only Causal Discovery",
+      "venue": "UAI 2026 / PMLR 337",
+      "publication_url": "https://proceedings.mlr.press/v337/mazaheri26b.html",
+      "code_repository": "honeybijan/Intervention-Only-Causal-Discovery",
+      "code_head": "624e21b2207d10eb6eb13d908bc4271e636cdf1e"
+    },
+    {
+      "title": "Causal Discovery in Action: Learning Chain-Reaction Mechanisms from Interventions",
+      "venue": "CLeaR 2026 / PMLR 323",
+      "publication_url": "https://proceedings.mlr.press/v323/panayiotou26a.html"
+    },
+    {
+      "title": "The relative value of interventional and observational samples in Bayesian Causal Linear Gaussian Models",
+      "venue": "UAI 2026 / PMLR 337",
+      "publication_url": "https://proceedings.mlr.press/v337/lungu26a.html"
+    }
+  ],
+  "analytic_counterexample": {
+    "model_1": "X~N(0,1); Y=X+epsilon, epsilon~N(0,1)",
+    "model_2": "Y~N(0,2); X=0.5Y+eta, eta~N(0,0.5)",
+    "shared_observational_covariance": [[1,1],[1,2]],
+    "passive_observational_equivalence_required": true,
+    "randomized_verifier_output_equivalence_required": true,
+    "intervention": "do(X=1)",
+    "expected_post_intervention_y_means": {"X_TO_Y": 1, "Y_TO_X": 0},
+    "intervention_separation_required": true
+  },
+  "expected_status_on_exact_head_green": "ACTIVE_REOPENING_NONEXCLUSIVITY_EARNED",
+  "rest_symbol": "𝄐",
+  "expected_bounded_state": {
+    "passive_closed_record_stopping_rule_preserved": true,
+    "active_experiment_reopening_operator_admitted": true,
+    "exogenous_witness_admission_unique_reopening_operator": false,
+    "new_interventional_distribution_not_transformation_of_fixed_A": true,
+    "external_empirical_exteriority_witness_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "external_origin_of_artifact_proven": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "CLOSED_RECORD_NONIDENTIFIABILITY != ACTIVE_EXPERIMENT_NONIDENTIFIABILITY",
+    "EXOGENOUS_WITNESS_ADMISSION != UNIQUE_REOPENING_OPERATOR",
+    "INTERVENTION_GENERATED_DATA != ADMISSIBLE_TRANSFORMATION_OF_FIXED_A",
+    "ACTIVE_IDENTIFICATION != EMPIRICAL_EXTERIORITY",
+    "CAUSAL_DIRECTION_IDENTIFICATION != ARTIFACT_ORIGIN_PROOF",
+    "EXTERNAL_CAUSAL_DISCOVERY_WITNESS != SAME_EPISODE_WESTERN_MEASUREMENT",
+    "RANDOMIZED_VERIFIER != INFORMATION_CREATION_FROM_A",
+    "INTERVENTION_SCOPE_LIMITS_IDENTIFIABILITY",
+    "ACTIVE_REOPENING != GOLDEN_EGG_EARNED"
+  ]
+}
