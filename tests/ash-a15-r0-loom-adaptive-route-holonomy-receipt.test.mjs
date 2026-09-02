@@ -75,4 +75,6 @@ assert.match(receipt,/LOOM COMPATIBILITY != A19 CLOSURE/);
 const rerun=runLoomAdaptiveRouteHolonomyReceipt();
 assert.equal(rerun.status,'LOOM_ADAPTIVE_ROUTE_HOLONOMY_COMPATIBILITY_EARNED');
 
+await import('./ash-a15-r0-loom-crown-eligibility-concordance.test.mjs');
+
 console.log('Loom adaptive route-holonomy receipt tests passed.');

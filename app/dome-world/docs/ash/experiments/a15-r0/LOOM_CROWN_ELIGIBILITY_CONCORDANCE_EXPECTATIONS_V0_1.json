@@ -1,0 +1,63 @@
+{
+  "schema": "td613.dome-world.loom-crown-eligibility-concordance-expectations/v0.1",
+  "exact_parent": "b472513a244b0389d23eec496f980f787f9546d1",
+  "source_fixture_class": "CANONICAL_ASH_DERIVED_SYNTHETIC_LIFECYCLE_FIXTURE",
+  "required_compilation": {
+    "ash_lifecycle_state": "CASE_BOUND",
+    "canonical_ash_scene": true,
+    "canonical_flowcore_route_graph": true,
+    "all_declared_burden_models": [
+      "FIELD_COUNT_BASELINE",
+      "DEPENDENCY_COUNT",
+      "AIA_TRANSPORT_SURROGATE",
+      "HETEROSTRATIGRAPHIC_EXTENSION"
+    ],
+    "burden_model_disagreement_preserved": true,
+    "crowned_model": null,
+    "crowned_score": null,
+    "interaction_evidence_still_required": true,
+    "loom_route_memory_reference_bound": true
+  },
+  "expected_status_on_exact_head_green": "LOOM_CUSTODIAL_CROWN_ELIGIBILITY_CONCORDANCE_EARNED",
+  "rest_symbol": "𝄐",
+  "required_claim_ceiling": {
+    "research_custodial_crown_eligibility": true,
+    "crown_scope": "ROUTE_MEMORY_CUSTODY_COMPATIBILITY_ONLY",
+    "crown_authority": false,
+    "live_loom_crowned": false,
+    "loom_became_flowcore_burden_engine": false,
+    "loom_context_is_measurement": false,
+    "empirical_interaction_evidence_acquired": false,
+    "a16_live_principal_journey_observed": false,
+    "a16_live_route_burden_compilation_earned": false,
+    "a16_readmission_earned": false,
+    "a16_implementation_authority": false,
+    "a19_whole_program_closure_earned": false,
+    "a19_mutation_authority": false,
+    "live_loom_mutated": false,
+    "loom_rename_authority": false,
+    "flowcore_public_promotion_authority": false,
+    "empirical_supplemental_probe_repair_earned": false,
+    "external_empirical_exteriority_witness_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "CROWN_ELIGIBILITY != CROWN_AUTHORITY",
+    "CUSTODIAL_ROUTE_MEMORY != FLOWCORE_BURDEN_ENGINE",
+    "BURDEN_MODEL_DISAGREEMENT != MODEL_CROWN",
+    "CANONICAL_FIXTURE_COMPILATION != LIVE_PRINCIPAL_JOURNEY",
+    "ROUTE_BURDEN_COMPILATION != INTERACTION_EVIDENCE",
+    "LOOM_COMPATIBILITY != A16_READMISSION",
+    "LOOM_COMPATIBILITY != A19_CLOSURE",
+    "LOOM_ROUTE_MEMORY != EMPIRICAL_MEASUREMENT",
+    "CROWN_ELIGIBILITY_CONCORDANCE != GOLDEN_EGG_EARNED"
+  ]
+}
