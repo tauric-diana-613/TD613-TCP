@@ -1,0 +1,67 @@
+{
+  "schema": "td613-western-horizon-receiving-manifest-v0.1",
+  "authorship_custody": "Tauric Diana / TD613",
+  "continuity_only": true,
+  "scientific_parent": {
+    "pr": 963,
+    "title": "A15-R0: Atlas Schubert graded cell decomposition",
+    "exact_earned_head": "d19d4f8d48c10df624f9c0574aeee9c687cfb4af",
+    "parent_pr": 960,
+    "parent_head": "0372405b055bcdff990f715cc65eed9354b2a4a0",
+    "validation": {
+      "run_number": 2437,
+      "run_id": 33571045042,
+      "classifier_job": 100064850563,
+      "static_job": 100064908695,
+      "a15_r0_step_19": "SUCCESS",
+      "aggregate": "SUCCESS"
+    },
+    "terminal_state": {
+      "science_pr_closed": true,
+      "science_pr_merged": false,
+      "witness_pr": 964,
+      "witness_pr_closed": true,
+      "witness_pr_merged": false
+    }
+  },
+  "permanent_red_scar": {
+    "superseded_head": "5ae5d3faa1bff0e92273bf4fd3f569b37f0e979e",
+    "run_number": 2436,
+    "run_id": 33567853315,
+    "failure_stage": "A15-R0 step 19",
+    "diagnosis": "Gaussian-polynomial memo cache returned BigInt[] on cache hit while public representation contract required decimal String[]",
+    "theorem_failure": false
+  },
+  "receipt_spine": [946, 948, 950, 952, 954, 956, 958, 960, 963],
+  "next_startup": {
+    "working_title": "A15-R0: Atlas Schubert closure-poset correspondence",
+    "mode": "preregistration-only",
+    "must_branch_from": "d19d4f8d48c10df624f9c0574aeee9c687cfb4af",
+    "primary_question": "Under the fixed ordered Atlas support coordinates and standard reverse-RREF flag inherited from #960/#963, derive whether closure inclusion among the earned Schubert cells is exactly represented by a finite order on the weak-composition exponent labels.",
+    "first_obligation": "derive and mechanically verify the exact reverse-RREF Bruhat-order orientation before implementation",
+    "implementation_authorized": false,
+    "witness_authorized": false
+  },
+  "membranes": [
+    "HANDOFF_BRANCH != THEOREM_PARENT",
+    "CONTINUITY_DOCUMENT != SCIENTIFIC_ANCESTRY",
+    "CELL_DECOMPOSITION != BRUHAT_CLOSURE_ORDER",
+    "CELL_DIMENSION_EQUALITY != BRUHAT_COMPARABILITY",
+    "CELL_DIMENSION_INEQUALITY != BRUHAT_COMPARABILITY",
+    "BRUHAT_COMPARABILITY != COVER_RELATION",
+    "FIXED_FLAG_CLOSURE_POSET != BASIS_FREE_CANONICAL_GEOMETRY",
+    "FINITE_SCHUBERT_POSET != PHYSICAL_CAUSAL_ORDER",
+    "SUCCESSFUL_EXACT_HEAD_GREEN != MERGE_AUTHORITY"
+  ],
+  "authority": {
+    "merge": false,
+    "deploy": false,
+    "release": false,
+    "publication": false,
+    "production": false,
+    "vercel": false,
+    "live_runtime": false
+  },
+  "handoff_ready_for_new_thread": true,
+  "seal": "⟐"
+}
