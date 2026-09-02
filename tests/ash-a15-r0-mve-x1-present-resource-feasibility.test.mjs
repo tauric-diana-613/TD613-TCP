@@ -62,3 +62,5 @@ const noGain={...pilot,a_plus_x_origin_accuracy:0.5,bounded_conditional_origin_i
 assert.equal(adjudicateMveX1Pilot(noGain).status,'INADMISSIBLE');
 
 console.log('MVE-X1 present-resource feasibility and bounded process-origin observability tests passed.');
+
+await import('./ash-a15-r0-mve-x2-independent-tsa-witness.test.mjs');

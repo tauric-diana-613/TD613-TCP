@@ -1,0 +1,54 @@
+{
+  "schema": "td613.dome-world.mve-x2-independent-tsa-witness-expectations/v0.1",
+  "exact_parent": "a339d5a5bbaac1a63b4d1f88e6dc8668b611b345",
+  "expected_status_on_exact_head_green": "MVE_X2_INDEPENDENT_RFC3161_WITNESS_EARNED",
+  "rest_symbol": "𝄐",
+  "preregistered_external_authority": {
+    "provider": "FreeTSA",
+    "protocol": "RFC3161",
+    "endpoint": "https://freetsa.org/tsr",
+    "ca_certificate_sha256_der": "2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438",
+    "tsa_signer_certificate_sha256_der": "8bfb0305bb64e2571ca507552ef3245cb1c2fee8728e0ff8689225081ea13467",
+    "maximum_timestamp_requests": 2,
+    "paid_subscription_required": false,
+    "service_credentials_required": false,
+    "public_transparency_log_required": false,
+    "same_run_signed_receipt_custody_required": true,
+    "custody_path": "artifacts/pedagogue-observation-custody/mve-x2-rfc3161-observation.json"
+  },
+  "actual_pilot": {
+    "origin_classes": [
+      "LOCAL_ONLY",
+      "FREETSA_RFC3161_WITNESSED"
+    ],
+    "paired_artifact_byte_identity": true,
+    "external_witness_receives_origin_label": false,
+    "external_witness_receives_raw_artifact": false,
+    "external_witness_receives_message_imprint_only": true,
+    "pinned_external_tsa_certificates_verified": true,
+    "externally_signed_rfc3161_receipts_observed": true,
+    "a_only_origin_accuracy": 0.5,
+    "a_plus_x_origin_accuracy": 1.0,
+    "bounded_conditional_origin_information_bits": 1.0,
+    "signed_receipts_preserved_in_same_run_custody": true,
+    "custody_record_contains_raw_artifact": false,
+    "custody_record_contains_origin_labels": false
+  },
+  "earned_bounded_state": {
+    "independently_governed_external_witness_acquired": true,
+    "empirical_exogenous_channel_acquired": true,
+    "bounded_empirical_exteriority_information_gain_measured": true,
+    "empirical_exteriority_scope": "BOUNDED_ROUTE_WITNESS_ONLY"
+  },
+  "claim_ceiling": {
+    "external_origin_of_admitted_artifact_proven": false,
+    "universal_externality_claim": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0,
+    "sequence_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  }
+}
