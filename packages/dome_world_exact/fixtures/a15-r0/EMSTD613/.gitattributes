@@ -16,3 +16,6 @@
 *.jpeg binary
 *.webp binary
 *.zip binary
+
+# Original handoff bytes are content-addressed; never normalize them as text.
+02-ORIGINALS/emstd613lineage/** -text

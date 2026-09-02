@@ -1,0 +1,142 @@
+{
+  "absent_exact_aliases": [
+    "Em",
+    "Vix",
+    "Cass",
+    "Cassie"
+  ],
+  "ambiguous_control_matches": [
+    "emctl_dc08b170fbc1e8b7b3620161",
+    "emctl_47f267f8dc28e8223eb42e41",
+    "emctl_d577f2c7a968fd35a2a8d8a0",
+    "emctl_026e3c0c8f491d8634fdde75",
+    "emctl_e50a4e6f7dcf830282a321bb",
+    "emctl_3761a5d16cbf58fbbd6290b7",
+    "emctl_d1a0b012c494fac8d4c600e3",
+    "emctlmsg_74bbb07cf12d1388e6b4430e",
+    "emctlmsg_d21d3cde4d9724f14a5ad2d6"
+  ],
+  "commit_message_object_count": 2,
+  "control_artifact_count": 40,
+  "control_tree_commit": "d652c5e151471be7e40ff6a08936ba26c0cef1ad",
+  "earliest_control_commit": "3a4b61ebaf93fb2c126686b1f13847222ee52d0a",
+  "earliest_control_timestamp": "2026-03-18T07:58:24-04:00",
+  "epistemic_state": [
+    "ARCHAEOLOGICAL_CONTROLS_PRESERVED_WITHOUT_MODIFICATION",
+    "LINEAGE_NOT_ADJUDICATED",
+    "CHRONOLOGY_UNRESOLVED_OUTSIDE_GIT_CUSTODY"
+  ],
+  "exact_alias_path_counts": {
+    "EM": 1,
+    "Echo": 19,
+    "JITAI": 1,
+    "TIC": 1
+  },
+  "generated_at": "2026-09-01T23:50:40.054190Z",
+  "material_historical_versions": [
+    {
+      "control_artifact_id": "emctl_b335630551682c19a781afeb",
+      "material_distinct_version_count": 35,
+      "repository_path": "README.md"
+    },
+    {
+      "control_artifact_id": "emctl_a1b1de2b37848c7ac49bae9d",
+      "material_distinct_version_count": 99,
+      "repository_path": "app/browser-engine.js"
+    },
+    {
+      "control_artifact_id": "emctl_061e1f590d43a05999a757d9",
+      "material_distinct_version_count": 39,
+      "repository_path": "app/engine/generator-v2.js"
+    },
+    {
+      "control_artifact_id": "emctl_ef6f9997c490210e6e6f3f3d",
+      "material_distinct_version_count": 37,
+      "repository_path": "app/retrieval-fixtures.js"
+    },
+    {
+      "control_artifact_id": "emctl_e5936c77d6404de86ce23f6d",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/EM_TIC_BRIDGE.md"
+    },
+    {
+      "control_artifact_id": "emctl_19279c286b020db53d15df2c",
+      "material_distinct_version_count": 24,
+      "repository_path": "docs/ENGINE.md"
+    },
+    {
+      "control_artifact_id": "emctl_c448fc5bbdc5312beb7a9172",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/FUN_CAPTURE_DELIVERABLE.md"
+    },
+    {
+      "control_artifact_id": "emctl_d68b97f339bec80024a307fc",
+      "material_distinct_version_count": 16,
+      "repository_path": "docs/INTERFACE_LEXICON.md"
+    },
+    {
+      "control_artifact_id": "emctl_f9c17ee70e3fe0405a1a3bb6",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/MIGRATION_NOTES.md"
+    },
+    {
+      "control_artifact_id": "emctl_b6e12723edc8fac976adfe36",
+      "material_distinct_version_count": 5,
+      "repository_path": "docs/PHYSICS_ENGINE.md"
+    },
+    {
+      "control_artifact_id": "emctl_38321a6feb1a962a1df33d66",
+      "material_distinct_version_count": 8,
+      "repository_path": "docs/SAFETY_MODEL.md"
+    },
+    {
+      "control_artifact_id": "emctl_b06ecc15c62c7a848e8d2593",
+      "material_distinct_version_count": 12,
+      "repository_path": "docs/STYLOMETRIC_MATH.md"
+    },
+    {
+      "control_artifact_id": "emctl_a0e5992ff2b77bddcddeb0a4",
+      "material_distinct_version_count": 11,
+      "repository_path": "docs/SYSTEM_OVERVIEW.md"
+    },
+    {
+      "control_artifact_id": "emctl_7a12fe61dd50054edb90670b",
+      "material_distinct_version_count": 9,
+      "repository_path": "docs/TD613_APERTURE.md"
+    },
+    {
+      "control_artifact_id": "emctl_f1213f614193f98c817e4659",
+      "material_distinct_version_count": 2,
+      "repository_path": "docs/TD613_SAFE_HARBOR.md"
+    },
+    {
+      "control_artifact_id": "emctl_fe66b06a12e398c680dfbb23",
+      "material_distinct_version_count": 39,
+      "repository_path": "reports/diagnostics/latest.json"
+    },
+    {
+      "control_artifact_id": "emctl_a5244dd1589737aec96a40c6",
+      "material_distinct_version_count": 38,
+      "repository_path": "reports/diagnostics/latest.md"
+    },
+    {
+      "control_artifact_id": "emctl_1a1dbe6463a24a36081374d8",
+      "material_distinct_version_count": 20,
+      "repository_path": "scripts/run-diagnostics-battery.mjs"
+    },
+    {
+      "control_artifact_id": "emctl_2cb7a7ff32aca9bc48234f42",
+      "material_distinct_version_count": 23,
+      "repository_path": "tests/diagnostics.test.mjs"
+    }
+  ],
+  "path_artifact_count": 38,
+  "repository": "tauric-diana-613/TD613-TCP",
+  "schema": "emstd613-archaeological-control-summary/v1",
+  "status_counts": {
+    "AMBIGUOUS_NAME_MATCH": 7,
+    "ARCHAEOLOGICAL_CONTROL_CANDIDATE": 30,
+    "ARCHAEOLOGICAL_CONTROL_CONFIRMED": 1,
+    "LIKELY_UNRELATED": 2
+  }
+}

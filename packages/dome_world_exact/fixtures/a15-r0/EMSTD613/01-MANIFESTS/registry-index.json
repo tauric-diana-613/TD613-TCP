@@ -1,10 +1,15 @@
 {
   "schema": "emstd613-registry-index/v1",
   "fixture": "EMSTD613",
-  "status": "PRE_INTAKE",
+  "status": "SOURCE_CUSTODY_ESTABLISHED",
   "source_root": "02-ORIGINALS/emstd613lineage",
   "registries": {
     "source_files": "01-MANIFESTS/source-files.jsonl",
+    "archaeological_control": "01-MANIFESTS/em-tic-archaeological-control.jsonl",
+    "structural_inventory": "01-MANIFESTS/structural-inventory.jsonl",
+    "title_relation_candidates": "01-MANIFESTS/title-relation-candidates.json",
+    "derivatives": "03-DERIVATIVES/derivative-index.jsonl",
+    "intake_integrity_report": "07-ARCHIVE-LEDGER/2026-09-01-intake-integrity.json",
     "works": "01-MANIFESTS/work-index.jsonl",
     "claims": "01-MANIFESTS/claim-atoms.jsonl",
     "concepts": "01-MANIFESTS/concept-index.jsonl",
@@ -13,10 +18,25 @@
     "relations": "01-MANIFESTS/relation-ledger.jsonl",
     "integrity": "01-MANIFESTS/integrity-ledger.jsonl"
   },
+  "registry_states": {
+    "source_files": "POPULATED",
+    "archaeological_control": "POPULATED",
+    "structural_inventory": "POPULATED_CANDIDATE_OBSERVATIONS_ONLY",
+    "title_relation_candidates": "POPULATED_CANDIDATE_OBSERVATIONS_ONLY",
+    "derivatives": "POPULATED",
+    "intake_integrity_report": "POPULATED",
+    "works": "NOT_GENERATED",
+    "claims": "NOT_GENERATED",
+    "concepts": "NOT_GENERATED",
+    "motifs": "NOT_GENERATED",
+    "mechanisms": "NOT_GENERATED",
+    "relations": "NOT_GENERATED",
+    "integrity": "NOT_GENERATED"
+  },
   "derivative_root": "03-DERIVATIVES",
   "receipt_root": "04-RECEIPTS",
   "operation_root": "05-OPERATIONS",
   "instrument_root": "06-INSTRUMENTS",
   "external_corpora_root": "08-EXTERNAL-CORPORA",
-  "notes": "Registry paths become authoritative only after their files are generated and receipted. PRE_INTAKE absence is not a missing-object claim."
+  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. Source custody and archaeological-control inventory do not adjudicate work identity, lineage, mechanism, causation, or TD613 scientific promotion."
 }

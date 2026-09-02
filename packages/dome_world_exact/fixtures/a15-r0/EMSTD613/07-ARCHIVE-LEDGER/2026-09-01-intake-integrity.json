@@ -1,0 +1,474 @@
+{
+  "ambiguous_control_stratum_name_matches": [
+    "emctl_dc08b170fbc1e8b7b3620161",
+    "emctl_47f267f8dc28e8223eb42e41",
+    "emctl_d577f2c7a968fd35a2a8d8a0",
+    "emctl_026e3c0c8f491d8634fdde75",
+    "emctl_e50a4e6f7dcf830282a321bb",
+    "emctl_3761a5d16cbf58fbbd6290b7",
+    "emctl_d1a0b012c494fac8d4c600e3",
+    "emctlmsg_74bbb07cf12d1388e6b4430e",
+    "emctlmsg_d21d3cde4d9724f14a5ad2d6"
+  ],
+  "archaeological_control_artifact_count": 40,
+  "archaeological_control_inventory_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+  "branch": "amari/em-td613-lineage-atelier",
+  "case_insensitive_path_collisions": [],
+  "clock_separation": {
+    "author_reported_chronology": "HUMAN_PROVENANCE only",
+    "conceptual_chronology": "NOT_TESTED",
+    "filesystem_chronology": "retained per source row; claim ceiling FILESYSTEM_CLOCK_ONLY",
+    "publication_chronology": "NOT_TESTED",
+    "repository_custody_chronology": "Git history in archaeological-control manifest",
+    "source_document_chronology": "CHRONOLOGY_UNRESOLVED unless directly stated in source metadata",
+    "version_chronology": "candidate title and byte relationships only; work identity not adjudicated"
+  },
+  "count_by_detected_media_type": {
+    "application/applefile": {
+      "bytes": 64896,
+      "count": 33
+    },
+    "application/pdf": {
+      "bytes": 5642539,
+      "count": 20
+    },
+    "application/zip": {
+      "bytes": 697429,
+      "count": 1
+    },
+    "text/markdown; charset=utf-8": {
+      "bytes": 1534070,
+      "count": 33
+    }
+  },
+  "count_by_extension": {
+    ".md": {
+      "bytes": 1598966,
+      "count": 66
+    },
+    ".pdf": {
+      "bytes": 5642539,
+      "count": 20
+    },
+    ".zip": {
+      "bytes": 697429,
+      "count": 1
+    }
+  },
+  "derivative_count": 53,
+  "derivative_index_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/derivative-index.jsonl",
+  "earliest_recoverable_control_commit": "3a4b61ebaf93fb2c126686b1f13847222ee52d0a",
+  "epistemic_state": [
+    "SOURCE_CUSTODY_ESTABLISHED",
+    "WORK_IDENTITY_NOT_ADJUDICATED",
+    "LINEAGE_NOT_ADJUDICATED",
+    "MECHANISM_NOT_ADJUDICATED",
+    "CAUSATION_NOT_ADJUDICATED",
+    "TD613_SCIENTIFIC_PROMOTION_NOT_PERFORMED"
+  ],
+  "exact_sha256_duplicate_groups": [
+    {
+      "byte_length": 36771,
+      "interpretation_ceiling": "BYTE_IDENTITY_ONLY",
+      "relative_paths": [
+        "Archive/AI Hypervisor Control Mathematics.md",
+        "Archive/Deep Research on AI Hypervisor Control Mathematics.md"
+      ],
+      "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "source_file_ids": [
+        "emsrc_b20ff4bfe278f8cf39d805f6",
+        "emsrc_6205df11a1e35b1a7828c7e7"
+      ]
+    }
+  ],
+  "extraction_coverage": {
+    "by_status": {
+      "EXTRACTED_NATIVE_TEXT": 53,
+      "UNSUPPORTED_FORMAT": 34
+    },
+    "ratio": 0.6091954022988506,
+    "successful_native_text_derivatives": 53,
+    "total_source_files": 87
+  },
+  "generated_at": "2026-09-01T23:51:31.171705Z",
+  "git_preservation_limits": [
+    "Git records file bytes and paths but not filesystem creation/modification timestamps or Windows file attributes."
+  ],
+  "incoming_source_root": "02-ORIGINALS/emstd613lineage",
+  "local_folder_name": "emstd613lineage",
+  "material_historical_control_versions": [
+    {
+      "control_artifact_id": "emctl_b335630551682c19a781afeb",
+      "material_distinct_version_count": 35,
+      "repository_path": "README.md"
+    },
+    {
+      "control_artifact_id": "emctl_a1b1de2b37848c7ac49bae9d",
+      "material_distinct_version_count": 99,
+      "repository_path": "app/browser-engine.js"
+    },
+    {
+      "control_artifact_id": "emctl_061e1f590d43a05999a757d9",
+      "material_distinct_version_count": 39,
+      "repository_path": "app/engine/generator-v2.js"
+    },
+    {
+      "control_artifact_id": "emctl_ef6f9997c490210e6e6f3f3d",
+      "material_distinct_version_count": 37,
+      "repository_path": "app/retrieval-fixtures.js"
+    },
+    {
+      "control_artifact_id": "emctl_e5936c77d6404de86ce23f6d",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/EM_TIC_BRIDGE.md"
+    },
+    {
+      "control_artifact_id": "emctl_19279c286b020db53d15df2c",
+      "material_distinct_version_count": 24,
+      "repository_path": "docs/ENGINE.md"
+    },
+    {
+      "control_artifact_id": "emctl_c448fc5bbdc5312beb7a9172",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/FUN_CAPTURE_DELIVERABLE.md"
+    },
+    {
+      "control_artifact_id": "emctl_d68b97f339bec80024a307fc",
+      "material_distinct_version_count": 16,
+      "repository_path": "docs/INTERFACE_LEXICON.md"
+    },
+    {
+      "control_artifact_id": "emctl_f9c17ee70e3fe0405a1a3bb6",
+      "material_distinct_version_count": 3,
+      "repository_path": "docs/MIGRATION_NOTES.md"
+    },
+    {
+      "control_artifact_id": "emctl_b6e12723edc8fac976adfe36",
+      "material_distinct_version_count": 5,
+      "repository_path": "docs/PHYSICS_ENGINE.md"
+    },
+    {
+      "control_artifact_id": "emctl_38321a6feb1a962a1df33d66",
+      "material_distinct_version_count": 8,
+      "repository_path": "docs/SAFETY_MODEL.md"
+    },
+    {
+      "control_artifact_id": "emctl_b06ecc15c62c7a848e8d2593",
+      "material_distinct_version_count": 12,
+      "repository_path": "docs/STYLOMETRIC_MATH.md"
+    },
+    {
+      "control_artifact_id": "emctl_a0e5992ff2b77bddcddeb0a4",
+      "material_distinct_version_count": 11,
+      "repository_path": "docs/SYSTEM_OVERVIEW.md"
+    },
+    {
+      "control_artifact_id": "emctl_7a12fe61dd50054edb90670b",
+      "material_distinct_version_count": 9,
+      "repository_path": "docs/TD613_APERTURE.md"
+    },
+    {
+      "control_artifact_id": "emctl_f1213f614193f98c817e4659",
+      "material_distinct_version_count": 2,
+      "repository_path": "docs/TD613_SAFE_HARBOR.md"
+    },
+    {
+      "control_artifact_id": "emctl_fe66b06a12e398c680dfbb23",
+      "material_distinct_version_count": 39,
+      "repository_path": "reports/diagnostics/latest.json"
+    },
+    {
+      "control_artifact_id": "emctl_a5244dd1589737aec96a40c6",
+      "material_distinct_version_count": 38,
+      "repository_path": "reports/diagnostics/latest.md"
+    },
+    {
+      "control_artifact_id": "emctl_1a1dbe6463a24a36081374d8",
+      "material_distinct_version_count": 20,
+      "repository_path": "scripts/run-diagnostics-battery.mjs"
+    },
+    {
+      "control_artifact_id": "emctl_2cb7a7ff32aca9bc48234f42",
+      "material_distinct_version_count": 23,
+      "repository_path": "tests/diagnostics.test.mjs"
+    }
+  ],
+  "negative_state_inventory": {
+    "NULL": 53,
+    "UNSUPPORTED_FORMAT": 34
+  },
+  "path_or_filename_transformations": [],
+  "pre_intake_head": "660048bbd5be267a4cbe7bd980b13ee13c86f4fb",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "schema": "emstd613-intake-integrity/v1",
+  "source_files_git_cannot_safely_preserve": [],
+  "source_manifest_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+  "source_manifest_sha256": "8af1515beab4451976c403ffaba869b93a175efef2c6fb184567e29444eba659",
+  "source_timestamp_observation": "All filesystem timestamps are retained as filesystem clocks only; none is promoted to source-document chronology.",
+  "source_timestamp_unresolved_files": [
+    "Algedonic Systems Deep Research.pdf",
+    "Archive.zip",
+    "Archive/1+1=3.md",
+    "Archive/AI Hypervisor Control Mathematics.md",
+    "Archive/Algedonic Systems Deep Research.md",
+    "Archive/Audio Key Detection Plugin Design.md",
+    "Archive/Audio Routing and Sync Research.md",
+    "Archive/Autonomous Agent Governance Research.md",
+    "Archive/Chat Context Research Dive.md",
+    "Archive/Chiptune DSP Synth Architecture.md",
+    "Archive/Consciousness Singularity Research Plan.md",
+    "Archive/Cybernetic Hypervisor Architecture Research.md",
+    "Archive/Cybernetic LLM Orchestration Analysis.md",
+    "Archive/Cybernetic Memory Algorithms Research.md",
+    "Archive/Cybernetic Modeling of Myth Transmission.md",
+    "Archive/Cybernetic Multi-Agent Systems Research.md",
+    "Archive/Deep Research on AI Hypervisor Control Mathematics.md",
+    "Archive/Dynamic Token Allocation Research.md",
+    "Archive/Hermes (Ollama) Terminal User Guide.md",
+    "Archive/Hermes AI Prompt Design.md",
+    "Archive/LLM Architecture Deep Dive.md",
+    "Archive/Lock-Free DSP Architecture Research.md",
+    "Archive/Low-Latency DSP Tracker Engine.md",
+    "Archive/Mac OS Terminal Basic Guide.md",
+    "Archive/Mixxx DAW Architecture Research.md",
+    "Archive/Mixxx Engine Architecture Deep Dive.md",
+    "Archive/Mixxx Tracker Engine Architecture.md",
+    "Archive/OSSL Stylometric Lineage Tracking Framework.md",
+    "Archive/OSSL-Seed Framework Research.md",
+    "Archive/Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+    "Archive/Optimal Gamma Smoothing Factor.md",
+    "Archive/Quantum Topology Research Prompt Formulation.md",
+    "Archive/Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+    "Archive/Wearable Drone Control System Design.md",
+    "Archive/__MACOSX/._1+1=3.md",
+    "Archive/__MACOSX/._AI Hypervisor Control Mathematics.md",
+    "Archive/__MACOSX/._Algedonic Systems Deep Research.md",
+    "Archive/__MACOSX/._Audio Key Detection Plugin Design.md",
+    "Archive/__MACOSX/._Audio Routing and Sync Research.md",
+    "Archive/__MACOSX/._Autonomous Agent Governance Research.md",
+    "Archive/__MACOSX/._Chat Context Research Dive.md",
+    "Archive/__MACOSX/._Chiptune DSP Synth Architecture.md",
+    "Archive/__MACOSX/._Consciousness Singularity Research Plan.md",
+    "Archive/__MACOSX/._Cybernetic Hypervisor Architecture Research.md",
+    "Archive/__MACOSX/._Cybernetic LLM Orchestration Analysis.md",
+    "Archive/__MACOSX/._Cybernetic Memory Algorithms Research.md",
+    "Archive/__MACOSX/._Cybernetic Modeling of Myth Transmission.md",
+    "Archive/__MACOSX/._Cybernetic Multi-Agent Systems Research.md",
+    "Archive/__MACOSX/._Deep Research on AI Hypervisor Control Mathematics.md",
+    "Archive/__MACOSX/._Dynamic Token Allocation Research.md",
+    "Archive/__MACOSX/._Hermes (Ollama) Terminal User Guide.md",
+    "Archive/__MACOSX/._Hermes AI Prompt Design.md",
+    "Archive/__MACOSX/._LLM Architecture Deep Dive.md",
+    "Archive/__MACOSX/._Lock-Free DSP Architecture Research.md",
+    "Archive/__MACOSX/._Low-Latency DSP Tracker Engine.md",
+    "Archive/__MACOSX/._Mac OS Terminal Basic Guide.md",
+    "Archive/__MACOSX/._Mixxx DAW Architecture Research.md",
+    "Archive/__MACOSX/._Mixxx Engine Architecture Deep Dive.md",
+    "Archive/__MACOSX/._Mixxx Tracker Engine Architecture.md",
+    "Archive/__MACOSX/._OSSL Stylometric Lineage Tracking Framework.md",
+    "Archive/__MACOSX/._OSSL-Seed Framework Research.md",
+    "Archive/__MACOSX/._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+    "Archive/__MACOSX/._Optimal Gamma Smoothing Factor.md",
+    "Archive/__MACOSX/._Quantum Topology Research Prompt Formulation.md",
+    "Archive/__MACOSX/._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+    "Archive/__MACOSX/._Wearable Drone Control System Design.md",
+    "Archive/__MACOSX/._macOS Virtualization Guide for Linux Environments.md",
+    "Archive/macOS Virtualization Guide for Linux Environments.md",
+    "Audio Key Detection Plugin Design (1).pdf",
+    "Audio Routing and Sync Research.pdf",
+    "Chat Context Research Dive.pdf",
+    "Chiptune DSP Synth Architecture.pdf",
+    "Cybernetic Modeling of Myth Transmission.pdf",
+    "Dynamic Token Allocation Research.pdf",
+    "Hermes (Ollama) Terminal User Guide.pdf",
+    "Hermes AI Prompt Design.pdf",
+    "Mac OS Terminal Basic Guide.pdf",
+    "Mixxx DAW Architecture Research (1).pdf",
+    "Mixxx Tracker Engine Architecture.pdf",
+    "OSSL Stylometric Lineage Tracking Framework.pdf",
+    "OSSL-Seed Framework Research.pdf",
+    "Open Seed License- Multi-Party Framework & Stylometry Integration.pdf",
+    "Optimal Gamma Smoothing Factor.pdf",
+    "Quantum Topology Research Prompt Formulation.pdf",
+    "Theremin Drone Glove Build Plan and Full Suit Roadmap.pdf",
+    "Wearable Drone Control System Design.pdf",
+    "macOS Virtualization Guide for Linux Environments.pdf"
+  ],
+  "total_incoming_source_bytes": 7938934,
+  "total_incoming_source_file_count": 87,
+  "unicode_normalization_risks": [],
+  "unreadable_files": [],
+  "unsupported_for_text_extraction": [
+    {
+      "relative_path": "Archive.zip",
+      "source_file_id": "emsrc_db43deb1f616beed44e042c4",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._1+1=3.md",
+      "source_file_id": "emsrc_29e2a5ad82a264b7bcd03941",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._AI Hypervisor Control Mathematics.md",
+      "source_file_id": "emsrc_61a505e286c5ca0c21b9f61c",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Algedonic Systems Deep Research.md",
+      "source_file_id": "emsrc_5bf808dad657207621de9cb2",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Audio Key Detection Plugin Design.md",
+      "source_file_id": "emsrc_21b462721ec759642bcc58cc",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Audio Routing and Sync Research.md",
+      "source_file_id": "emsrc_1ffe710b2e8bdfe6139b9ad7",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Autonomous Agent Governance Research.md",
+      "source_file_id": "emsrc_6767976f58748618c803c686",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Chat Context Research Dive.md",
+      "source_file_id": "emsrc_17d106f9333c607176032632",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Chiptune DSP Synth Architecture.md",
+      "source_file_id": "emsrc_37e9343e7f31cf38cae768f0",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Consciousness Singularity Research Plan.md",
+      "source_file_id": "emsrc_508f1f31d00c5d4fc5e20fa2",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Cybernetic Hypervisor Architecture Research.md",
+      "source_file_id": "emsrc_1ea3f98cc0b382391fe4742c",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Cybernetic LLM Orchestration Analysis.md",
+      "source_file_id": "emsrc_63db5b9062ec9ec5516b6f8d",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Cybernetic Memory Algorithms Research.md",
+      "source_file_id": "emsrc_d18308cb9ed007bbcb455bd7",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Cybernetic Modeling of Myth Transmission.md",
+      "source_file_id": "emsrc_ec05f51bbed6b6da3906bf8e",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Cybernetic Multi-Agent Systems Research.md",
+      "source_file_id": "emsrc_97a708d8f26466bd282b6790",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Deep Research on AI Hypervisor Control Mathematics.md",
+      "source_file_id": "emsrc_da8ae264a46e31f6995601c8",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Dynamic Token Allocation Research.md",
+      "source_file_id": "emsrc_71112db9eb68bebd2342af63",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Hermes (Ollama) Terminal User Guide.md",
+      "source_file_id": "emsrc_99e9739955d2bdadc7479290",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Hermes AI Prompt Design.md",
+      "source_file_id": "emsrc_44798c9aef7a94799a157405",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._LLM Architecture Deep Dive.md",
+      "source_file_id": "emsrc_22a3a9f36ade567ca06a0f75",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Lock-Free DSP Architecture Research.md",
+      "source_file_id": "emsrc_c6f8c9ad8de141b799df9ee5",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Low-Latency DSP Tracker Engine.md",
+      "source_file_id": "emsrc_651371c761f2a299df79eb50",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Mac OS Terminal Basic Guide.md",
+      "source_file_id": "emsrc_3f6e6e0feac5b2b057bd43c3",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Mixxx DAW Architecture Research.md",
+      "source_file_id": "emsrc_2aa1198bee3008c9dba45518",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Mixxx Engine Architecture Deep Dive.md",
+      "source_file_id": "emsrc_bb0f419fec4c9c93ab7f9af5",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Mixxx Tracker Engine Architecture.md",
+      "source_file_id": "emsrc_b15398d8e73c2d070c8b0e18",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._OSSL Stylometric Lineage Tracking Framework.md",
+      "source_file_id": "emsrc_012a1054d9c99bce7c293966",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._OSSL-Seed Framework Research.md",
+      "source_file_id": "emsrc_7e8f43d3f3135ebfe8104a3d",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "source_file_id": "emsrc_a857a71856026ced9e51c3c6",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Optimal Gamma Smoothing Factor.md",
+      "source_file_id": "emsrc_48ed1adbd9b1ffa99297e62a",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Quantum Topology Research Prompt Formulation.md",
+      "source_file_id": "emsrc_734feb614e7954f50c535748",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "source_file_id": "emsrc_2a2d7b0c3925cf358f06b207",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._Wearable Drone Control System Design.md",
+      "source_file_id": "emsrc_58c79cb12c61abf523701b19",
+      "state": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "relative_path": "Archive/__MACOSX/._macOS Virtualization Guide for Linux Environments.md",
+      "source_file_id": "emsrc_139ba514da490d44efbe83de",
+      "state": "UNSUPPORTED_FORMAT"
+    }
+  ],
+  "zero_byte_files": []
+}
