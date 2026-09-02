@@ -1,0 +1,57 @@
+{
+  "schema": "td613.dome-world.same-episode-measurement-custody-ledger-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "a425d0f27ce36de84b45917b6a84261ac1e7251c",
+  "identity_fields": [
+    "measurement_id",
+    "source_id",
+    "artifact_episode_id",
+    "artifact_custody_id",
+    "evidence_class",
+    "measurement"
+  ],
+  "digest": "SHA-256 over canonical source-bound envelope",
+  "temporal_law": "freeze < measured_at <= recorded_at < seal",
+  "append_only": {
+    "prior_entries_exact_prefix": true,
+    "predecessor_root_required": true,
+    "seal_time_advances": true,
+    "new_recorded_at_after_prior_seal": true
+  },
+  "canonical": {
+    "partial_entry_count": 2,
+    "complete_entry_count": 5,
+    "complete_predecessor_is_partial_root": true,
+    "verification": "VERIFIED",
+    "parent_acquisition_status": "CANDIDATE",
+    "ledger_empirical_credit": 0,
+    "golden_egg_earned": false
+  },
+  "hostiles": [
+    "equal_value_source_substitution",
+    "measurement_id_replacement",
+    "value_mutation",
+    "geometry_metadata_mutation",
+    "matched_return_metadata_mutation",
+    "measurement_deletion",
+    "ledger_root_or_seal_mutation",
+    "duplicate_measurement_id",
+    "recorded_before_measured",
+    "seal_before_recording_complete",
+    "retroactive_insertion_after_prior_seal",
+    "prior_prefix_replacement"
+  ],
+  "candidate_theorem": "A_PREREGISTERED_ROUTE_PAIR_CAN_ACCEPT_APPEND_ONLY_SOURCE_BOUND_DIGESTED_MEASUREMENTS_WHOSE_SEALED_CUSTODY_MUST_VERIFY_EXACTLY_BEFORE_ACQUISITION_ADJUDICATION_AND_POST_SEAL_REPLACEMENT_CONFERS_NO_VALID_STATUS",
+  "forbidden_promotions": [
+    "merge",
+    "deploy",
+    "release",
+    "publication",
+    "production",
+    "vercel",
+    "live_loom_mutation",
+    "empirical_acquisition",
+    "golden_egg_completion",
+    "a16_authority"
+  ]
+}
