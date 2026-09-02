@@ -47,9 +47,9 @@ assert.equal(C.merge_authority, false);
 assert.equal(C.production_authority, false);
 assert.equal(C.deployment_authority, false);
 assert.equal(C.publication_authority, false);
-assert.match(C.package_digest, /^[0-9a-f]{64}$/);
-assert.match(C.route_graph_digest, /^[0-9a-f]{64}$/);
-assert.match(C.burden_receipt_digest, /^[0-9a-f]{64}$/);
+assert.match(C.package_digest, /^sha256:[0-9a-f]{64}$/);
+assert.match(C.route_graph_digest, /^sha256:[0-9a-f]{64}$/);
+assert.match(C.burden_receipt_digest, /^sha256:[0-9a-f]{64}$/);
 assert.match(C.preflight_digest, /^[0-9a-f]{64}$/);
 
 const receipt = fs.readFileSync(
@@ -61,6 +61,7 @@ assert.match(receipt, /ONE CROSS-SUBSYSTEM EDGE != ONE TOTAL FUNCTION CALL/);
 assert.match(receipt, /SINGLE-SPLICE SUFFICIENCY != A16 IMPLEMENTATION/);
 assert.match(receipt, /PACKAGE NONMUTATION != OPERATOR REVIEW/);
 assert.match(receipt, /AUTHORITY CONSERVATION != AUTHORITY GRANT/);
+assert.match(receipt, /CANONICAL DIGEST != BARE HEX DIGEST/);
 
 const rerun = await runA16SingleSpliceInstrumentFidelityPreflight();
 assert.equal(rerun.status, C.status);
