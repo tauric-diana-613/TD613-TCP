@@ -56,8 +56,8 @@ assert.equal(cert.formal_profiles.d3k2.covers,6);
 assert.equal(cert.formal_profiles.d3k3.labels,10);
 assert.equal(cert.formal_profiles.d3k3.relations,50);
 assert.equal(cert.formal_profiles.d3k3.covers,12);
-assert.equal(cert.exhaustive_profiles.p2d4k3.points,155);
-assert.equal(cert.exhaustive_profiles.p2d4k3.closure_checks,3100);
+assert.equal(cert.exhaustive_profiles.p2d4k3.points,1395);
+assert.equal(cert.exhaustive_profiles.p2d4k3.closure_checks,27900);
 
 assert.equal(cert.hostile_controls.orientation_reversal_rejected,true);
 assert.equal(cert.hostile_controls.equal_dimension_incomparable,true);
