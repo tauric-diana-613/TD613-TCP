@@ -1,0 +1,50 @@
+{
+  "schema": "td613.dome-world.loom-route-context-noncredit-adapter-expectations/v0.1",
+  "research_only": true,
+  "scientific_parent": "22c49c9b4f4e322924aa660984674d47fc9a0fb9",
+  "installation_parent": "5acce3d1729eb3087bc997e87288fbd91b2a2a5c",
+  "live_loom_source_custody": {
+    "commit": "d652c5e151471be7e40ff6a08936ba26c0cef1ad",
+    "blob": "695d22ec77339bc54512fe6a6a7c0203240ff135",
+    "path": "app/dome-world/index.html",
+    "claim_ceiling": "route-deformation-record-not-truth-proof"
+  },
+  "canonical": {
+    "held_plus_motif_return": "HELD",
+    "held_plus_cloth_map": "HELD",
+    "candidate_plus_route_deformation": "CANDIDATE",
+    "empirical_credit": 0,
+    "empirical_surfaces_added": 0,
+    "golden_egg_earned": false,
+    "live_loom_mutated": false
+  },
+  "hostiles": [
+    "cross_episode",
+    "cross_custody",
+    "cross_departure",
+    "unknown_route",
+    "source_custody_drift",
+    "claim_ceiling_drift",
+    "empirical_evidence_class",
+    "nonzero_empirical_credit",
+    "measurement_laundering",
+    "operational_surface_laundering",
+    "authorship_inflation",
+    "causal_inflation",
+    "duplicate_record_id",
+    "unrecognized_record_type"
+  ],
+  "candidate_theorem": "LOOM_ROUTE_CONTEXT_CAN_BIND_TO_A_SHARED_ACQUISITION_EPISODE_WITH_ZERO_EMPIRICAL_CREDIT_AND_WITHOUT_CHANGING_PARENT_ACQUISITION_STATUS_OR_EXACT_OPERATIONAL_SURFACES",
+  "forbidden_promotions": [
+    "merge",
+    "deploy",
+    "release",
+    "publication",
+    "production",
+    "vercel",
+    "live_loom_mutation",
+    "loom_rename",
+    "empirical_acquisition",
+    "golden_egg_completion"
+  ]
+}
