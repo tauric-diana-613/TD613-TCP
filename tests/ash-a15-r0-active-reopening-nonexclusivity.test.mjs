@@ -54,4 +54,6 @@ for(const forbidden of [
   assert.notEqual(earned[field],value,`${field} must remain below the active-reopening claim ceiling.`);
 }
 
+await import('./ash-a15-r0-target-relevant-equivalence-refinement.test.mjs');
+
 console.log('Active reopening non-exclusivity tests passed.');
