@@ -86,11 +86,32 @@
       "EXTRACTED_NATIVE_TEXT": 53,
       "UNSUPPORTED_FORMAT": 34
     },
+    "custody_object_extraction_coverage": {
+      "denominator_definition": "All preserved custody objects, including metadata objects and containers.",
+      "display": "53/87 = 60.92%",
+      "extracted_count": 53,
+      "ratio": 0.6091954022988506,
+      "total_count": 87
+    },
+    "analyzable_document_extraction_coverage": {
+      "analyzable_document_count": 53,
+      "denominator_definition": "Ordinary analyzable research documents with native text surfaces: 33 Markdown sources plus 20 PDFs. AppleDouble metadata objects and the preserved ZIP container are excluded from this denominator.",
+      "display": "53/53 = 100%",
+      "extracted_count": 53,
+      "ratio": 1.0
+    },
+    "non_analyzable_preserved_objects": {
+      "appledouble_metadata_objects": 33,
+      "container_objects": 1,
+      "interpretation": "PRESERVED_CUSTODY_OBJECTS_NOT_FAILED_RESEARCH_DOCUMENT_EXTRACTIONS",
+      "total_count": 34
+    },
     "ratio": 0.6091954022988506,
     "successful_native_text_derivatives": 53,
     "total_source_files": 87
   },
   "generated_at": "2026-09-01T23:51:31.171705Z",
+  "post_intake_custody_hardening_recorded_at": "2026-09-02T00:20:59Z",
   "git_preservation_limits": [
     "Git records file bytes and paths but not filesystem creation/modification timestamps or Windows file attributes."
   ],

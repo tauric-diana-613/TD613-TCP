@@ -18,14 +18,37 @@
   ],
   "commit_message_object_count": 2,
   "control_artifact_count": 40,
+  "control_status_distribution": {
+    "AMBIGUOUS_NAME_MATCH": 7,
+    "ARCHAEOLOGICAL_CONTROL_CANDIDATE": 30,
+    "ARCHAEOLOGICAL_CONTROL_CONFIRMED": 1,
+    "LIKELY_UNRELATED": 2,
+    "TOTAL": 40
+  },
   "control_tree_commit": "d652c5e151471be7e40ff6a08936ba26c0cef1ad",
   "earliest_control_commit": "3a4b61ebaf93fb2c126686b1f13847222ee52d0a",
   "earliest_control_timestamp": "2026-03-18T07:58:24-04:00",
   "epistemic_state": [
     "ARCHAEOLOGICAL_CONTROLS_PRESERVED_WITHOUT_MODIFICATION",
+    "PERSON_IDENTITY_UNRESOLVED",
     "LINEAGE_NOT_ADJUDICATED",
     "CHRONOLOGY_UNRESOLVED_OUTSIDE_GIT_CUSTODY"
   ],
+  "exact_alias_observation": {
+    "absent_exact_aliases": [
+      "Em",
+      "Vix",
+      "Cass",
+      "Cassie"
+    ],
+    "claim_ceiling": "TOKEN_OBSERVATION_ONLY",
+    "observed_exact_token_path_counts": {
+      "EM": 1,
+      "Echo": 19,
+      "JITAI": 1,
+      "TIC": 1
+    }
+  },
   "exact_alias_path_counts": {
     "EM": 1,
     "Echo": 19,
@@ -33,6 +56,27 @@
     "TIC": 1
   },
   "generated_at": "2026-09-01T23:50:40.054190Z",
+  "post_intake_custody_hardening_recorded_at": "2026-09-02T00:20:59Z",
+  "person_identity_firewall": [
+    "ARCHAEOLOGICAL_CONTROL_CONFIRMED != PERSON_IDENTITY_CONFIRMED",
+    "\"EM\" token != person Em / Vix / Cass / Cassie unless independently identity-resolved",
+    "\"Echo\" token != Em's AI system Echo unless independently contextually resolved",
+    "bridge adjacency != personal attribution",
+    "repository custody != intellectual authorship"
+  ],
+  "confirmed_control_identity_state": {
+    "archaeological_control_status": "CONFIRMED",
+    "em_person_identity_resolution": "UNRESOLVED",
+    "human_provenance_sufficient_for_identity_promotion": false,
+    "repository_path": "docs/EM_TIC_BRIDGE.md"
+  },
+  "future_positive_lineage_graph_default_inclusion_policy": {
+    "AMBIGUOUS_NAME_MATCH": "EXCLUDED_FROM_POSITIVE_LINEAGE_GRAPH",
+    "ARCHAEOLOGICAL_CONTROL_CANDIDATE": "EXCLUDED_BY_DEFAULT; explicit evidence-bearing expansion required",
+    "ARCHAEOLOGICAL_CONTROL_CONFIRMED": "ELIGIBLE_FOR_INITIAL_ARCHAEOLOGICAL_COMPARISON",
+    "LIKELY_UNRELATED": "NEGATIVE_OR_CONTROL_STATE_ONLY",
+    "analysis_executed": false
+  },
   "material_historical_versions": [
     {
       "control_artifact_id": "emctl_b335630551682c19a781afeb",

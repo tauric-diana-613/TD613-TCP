@@ -11,6 +11,7 @@
     "derivatives": "03-DERIVATIVES/derivative-index.jsonl",
     "intake_integrity_report": "07-ARCHIVE-LEDGER/2026-09-01-intake-integrity.json",
     "intake_receipt": "04-RECEIPTS/intake/2026-09-01-emstd613-source-intake.json",
+    "push_transport_receipt": "04-RECEIPTS/transport/2026-09-01-emstd613-push-transport.json",
     "works": "01-MANIFESTS/work-index.jsonl",
     "claims": "01-MANIFESTS/claim-atoms.jsonl",
     "concepts": "01-MANIFESTS/concept-index.jsonl",
@@ -27,6 +28,7 @@
     "derivatives": "POPULATED",
     "intake_integrity_report": "POPULATED",
     "intake_receipt": "POPULATED_APPEND_ONLY",
+    "push_transport_receipt": "POPULATED_APPEND_ONLY",
     "works": "NOT_GENERATED",
     "claims": "NOT_GENERATED",
     "concepts": "NOT_GENERATED",
@@ -40,5 +42,5 @@
   "operation_root": "05-OPERATIONS",
   "instrument_root": "06-INSTRUMENTS",
   "external_corpora_root": "08-EXTERNAL-CORPORA",
-  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. Source custody and archaeological-control inventory do not adjudicate work identity, lineage, mechanism, causation, or TD613 scientific promotion."
+  "notes": "Only registries marked POPULATED exist. NOT_GENERATED is distinct from EMPTY_CORPUS, ABSENT, NOT_EXTRACTED, NOT_TESTED, and UNRESOLVED. Source custody and archaeological-control inventory do not adjudicate work identity, lineage, mechanism, causation, or TD613 scientific promotion. The push-transport receipt records a local hook event and its successful remote validation witness; it does not convert a local hook bypass into a validation bypass, source mutation, or PR contamination."
 }
