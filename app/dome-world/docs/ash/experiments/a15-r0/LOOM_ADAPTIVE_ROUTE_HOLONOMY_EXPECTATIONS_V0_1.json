@@ -1,0 +1,57 @@
+{
+  "schema": "td613.dome-world.loom-adaptive-route-holonomy-receipt-expectations/v0.1",
+  "exact_parent": "cd5098a340cfe73958685c66bcf71d659ed8af8d",
+  "live_loom_source_blob": "695d22ec77339bc54512fe6a6a7c0203240ff135",
+  "loom_room_contract": {
+    "display": "Loom Room",
+    "operators": ["米", "𝄐", "cadence/provenance"],
+    "preserves": ["holonomy", "pattern-flow", "anti-equivalence-edge"],
+    "emits": ["motif", "cloth-map", "route-deformation"],
+    "blocks": ["authorship-proof-claim", "identity-proof-claim"]
+  },
+  "required_pair": {
+    "same_declared_target": true,
+    "same_preregistered_policy": true,
+    "same_terminal_state": true,
+    "distinct_realized_route_history": true,
+    "terminal_unresolved_target_pairs": 0,
+    "realized_total_cost_each": 2
+  },
+  "expected_status_on_exact_head_green": "LOOM_ADAPTIVE_ROUTE_HOLONOMY_COMPATIBILITY_EARNED",
+  "rest_symbol": "𝄐",
+  "required_claim_ceiling": {
+    "loom_context_is_measurement": false,
+    "route_memory_is_truth_proof": false,
+    "flowcore_route_burden_model_invoked": false,
+    "flowcore_canonical_route_graph_compiled": false,
+    "a16_live_route_burden_compilation_earned": false,
+    "a16_readmission_earned": false,
+    "a16_implementation_authority": false,
+    "a19_whole_program_closure_earned": false,
+    "a19_mutation_authority": false,
+    "live_loom_mutated": false,
+    "loom_rename_authority": false,
+    "flowcore_public_promotion_authority": false,
+    "empirical_supplemental_probe_repair_earned": false,
+    "external_empirical_exteriority_witness_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "SAME_TERMINAL_STATE != SAME_ROUTE_HISTORY",
+    "ADAPTIVE_ROUTE_HOLONOMY_MEMORY != FLOWCORE_ROUTE_BURDEN_MODEL",
+    "LOOM_ROUTE_MEMORY != EMPIRICAL_MEASUREMENT",
+    "LOOM_COMPATIBILITY != LOOM_MUTATION",
+    "LOOM_COMPATIBILITY != A16_READMISSION",
+    "LOOM_COMPATIBILITY != A19_CLOSURE",
+    "ROUTE_DEFORMATION_RECORD != TRUTH_PROOF",
+    "SYNTHETIC_ADAPTIVE_ROUTE_MEMORY != EMPIRICAL_REPAIR"
+  ]
+}

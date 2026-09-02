@@ -92,4 +92,6 @@ const missingOutcome=structuredClone(ADAPTIVE_REPAIR_POLICY);
 delete missingOutcome.branch_map.C_SEPARATED;
 assert.equal(runPreregisteredAdaptiveTargetRepairPolicy(missingOutcome).status,'INADMISSIBLE');
 
+await import('./ash-a15-r0-loom-adaptive-route-holonomy-receipt.test.mjs');
+
 console.log('Preregistered adaptive target-repair policy tests passed.');
