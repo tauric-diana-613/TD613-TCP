@@ -11,6 +11,8 @@ await import('./ash-a15-r0-loom-route-pair-preregistration.test.mjs');
 await import('./ash-a15-r0-loom-route-pair-preregistration-hostile.test.mjs');
 await import('./ash-a15-r0-measurement-custody-ledger.test.mjs');
 await import('./ash-a15-r0-measurement-custody-ledger-hostile.test.mjs');
+await import('./ash-a15-r0-blinded-adjudication-latch.test.mjs');
+await import('./ash-a15-r0-blinded-adjudication-latch-hostile.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');

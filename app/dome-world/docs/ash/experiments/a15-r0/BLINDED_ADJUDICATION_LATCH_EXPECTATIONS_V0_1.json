@@ -1,0 +1,64 @@
+{
+  "schema": "td613.dome-world.blinded-acquisition-adjudication-latch-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "78443279853b95ab0bf54eed1decd1b5eeadf78c",
+  "nonce_requirement": "private unique high-entropy 256-bit hex",
+  "public_receipt_allowed": [
+    "schema",
+    "exact_parent",
+    "status",
+    "errors",
+    "phase",
+    "entry_count",
+    "commitment",
+    "outcome_blinded",
+    "empirical_credit",
+    "golden_egg_earned",
+    "live_loom_mutated",
+    "merge_authority",
+    "production_authority"
+  ],
+  "public_receipt_forbidden": [
+    "ledger_root",
+    "nonce",
+    "source_id",
+    "measurement_id",
+    "measured_at",
+    "recorded_at",
+    "thresholds_pass",
+    "parent_acquisition_status",
+    "envelope",
+    "digest",
+    "value"
+  ],
+  "partial_opening": {
+    "status": "HELD",
+    "outcome_revealed": false,
+    "adjudication_invoked": false,
+    "acquisition_status": null,
+    "thresholds_pass": null
+  },
+  "complete_opening": {
+    "all_five_required": true,
+    "commitment_match_required": true,
+    "ledger_verification_required": true,
+    "valid_opening_can_reveal_parent_status": true,
+    "empirical_credit_from_latch": 0,
+    "golden_egg_earned": false
+  },
+  "hostiles": [
+    "invalid_nonce",
+    "commit_before_ledger_seal",
+    "public_payload_leak",
+    "wrong_nonce_opening",
+    "opening_before_commit_boundary",
+    "partial_core_pass_opening",
+    "partial_core_fail_opening",
+    "cross_ledger_opening_capsule"
+  ],
+  "candidate_theorem": "A_NONCE_BLINDED_COMMIT_REVEAL_LATCH_CAN_WITHHOLD_LEDGER_ROOT_SOURCE_MEASUREMENT_VALUE_THRESHOLD_AND_PARENT_STATUS_FROM_PUBLIC_PROGRESS_AND_REFUSE_EARLY_ADJUDICATION_UNTIL_COMPLETE_FIVE_SURFACE_CUSTODY_IS_SEALED_VERIFIED_AND_VALIDLY_OPENED_WITHOUT_ADDING_EMPIRICAL_CREDIT_OR_EARNING_THE_GOLDEN_EGG",
+  "assumptions": [
+    "commitment_hiding_requires_private_unique_high_entropy_nonce",
+    "public_receipt_security_does_not_hide_data_from_private_custodian"
+  ]
+}
