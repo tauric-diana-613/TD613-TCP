@@ -1,0 +1,32 @@
+{
+  "schema": "td613.dome-world.mve-x1-present-resource-feasibility-expectations/v0.1",
+  "exact_parent": "e14e212e351ce1f1c9da5d238828334c68931280",
+  "expected_status_on_exact_head_green": "MVE_X1_PRESENT_RESOURCE_FEASIBILITY_EARNED",
+  "rest_symbol": "𝄐",
+  "actual_pilot": {
+    "origin_classes": ["IN_PROCESS", "SOCKET_SERVICE"],
+    "paired_artifact_byte_identity": true,
+    "actual_os_process_boundary": true,
+    "actual_tcp_socket_event_channel": true,
+    "observer_received_origin_labels": false,
+    "observer_feature_uses_payload": false,
+    "a_only_origin_accuracy": 0.5,
+    "a_plus_x_origin_accuracy": 1.0,
+    "bounded_conditional_origin_information_bits": 1.0
+  },
+  "present_resource_constraints": {
+    "standard_resources_only": true,
+    "required_resources": ["NODE_RUNTIME", "LOOPBACK_TCP", "OS_PROCESS_BOUNDARY", "SHA256"],
+    "unavailable_or_speculative_resources_required": false,
+    "privileged_model_internal_state_required": false,
+    "exotic_hardware_required": false
+  },
+  "claim_ceiling": {
+    "universal_externality_claim": false,
+    "independently_governed_external_witness_acquired": false,
+    "empirical_exogenous_channel_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  }
+}

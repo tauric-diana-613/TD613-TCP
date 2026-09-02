@@ -3,6 +3,28 @@ import fs from 'node:fs';
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
+await import('./western-horizon-main-accession-constitution.test.mjs');
+await import('./western-horizon-executable-accession.test.mjs');
+await import('./ash-a15-r0-loom-route-context-noncredit-adapter.test.mjs');
+await import('./ash-a15-r0-loom-route-context-noncredit-adapter-hostile.test.mjs');
+await import('./ash-a15-r0-loom-route-pair-preregistration.test.mjs');
+await import('./ash-a15-r0-loom-route-pair-preregistration-hostile.test.mjs');
+await import('./ash-a15-r0-measurement-custody-ledger.test.mjs');
+await import('./ash-a15-r0-measurement-custody-ledger-hostile.test.mjs');
+await import('./ash-a15-r0-blinded-adjudication-latch.test.mjs');
+await import('./ash-a15-r0-blinded-adjudication-latch-hostile.test.mjs');
+await import('./ash-a15-r0-golden-egg-exteriority-convergence.test.mjs');
+await import('./ash-a15-r0-golden-egg-exteriority-convergence-hostile.test.mjs');
+await import('./ash-a15-r0-western-horizon-empirical-shore-rest.test.mjs');
+await import('./ash-a15-r0-entrobench-exogenous-witness-admission.test.mjs');
+await import('./ash-a15-r0-agentmark-heterostratigraphic-provenance-carrier-separation.test.mjs');
+await import('./ash-a15-r0-ttp-detect-receiver-indexed-provenance-observability.test.mjs');
+await import('./ash-a15-r0-receiver-swap-causal-admissibility.test.mjs');
+await import('./ash-a15-r0-conditional-exteriority-information-gain.test.mjs');
+await import('./ash-a15-r0-live-principal-route-burden-wiring-null.test.mjs');
+await import('./ash-a15-r0-a16-single-splice-instrument-fidelity-preflight.test.mjs');
+await import('./ash-a15-r0-a16-operator-witness-exteriority.test.mjs');
+await import('./ash-a15-r0-a16-operator-witness-socket.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
@@ -59,7 +81,7 @@ const adapter = await createAshKernelAdapter(fixture);
 assert.equal('state' in adapter, false, 'Adapter state must not remain on the public governance surface.');
 assert.equal('sequence' in adapter, false, 'Adapter receipt sequence must not remain on the public governance surface.');
 assert.equal(adapter.state, undefined, 'Adapter state reads must not expose mutable governance state.');
-assert.equal(adapter.sequence, undefined, 'Adapter sequence reads must not expose receipt identity state.');
+assert.equal(adapter.sequence, undefined, 'Adapter receipt identity state must not remain on the public governance surface.');
 assert.throws(() => { adapter.state = { taskState:'RETURN' }; }, /private governance state/i);
 assert.throws(() => { adapter.sequence = 0; }, /private governance state/i);
 for (const internal of ['sealReceipt','restoreMutationCheckpoint','mutationCheckpoint','transition','hold','enqueueMutation','stateSummary','caseMapInput','options','assertAvailable']) {

@@ -1,0 +1,35 @@
+{
+  "schema": "td613.dome-world.entrobench-exogenous-witness-admission-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "22d8596c846322804c11fd94992f719d1f9cd9bd",
+  "required_external_witness": {
+    "title": "EntroBench: Evaluating LLM Watermarking Under Multi-Entropy Scenarios and Practical User Operations",
+    "anthology_id": "2026.findings-acl.2089",
+    "doi": "10.18653/v1/2026.findings-acl.2089",
+    "publication_month": "2026-07",
+    "publication_host": "ACL Anthology",
+    "code_repository": "py-qin/EntroBench",
+    "code_head": "375d40601826e775b4bd7d790a19563b477bc5b6"
+  },
+  "required_state": {
+    "status": "REOPENED_EXOGENOUS_WITNESS_ADMITTED",
+    "exogenous_witness_acquired": true,
+    "exogenous_witness_admitted": true,
+    "materially_new_evidentiary_substrate_present": true,
+    "western_research_field_reopened": true,
+    "sequence_authority": false,
+    "numbered_stage_authority": false,
+    "externality_reproved_by_internal_ci": false,
+    "external_origin_claim_from_record_alone": false,
+    "golden_egg_matched_return_acquired": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  },
+  "claim_ceiling": [
+    "live_external_retrieval_event_not_internal_self_attestation",
+    "recorded_external_witness_not_external_origin_proof_from_record_alone",
+    "external_provenance_deformation_witness_not_golden_egg_measurement",
+    "exogenous_witness_admission_not_five_surface_acquisition",
+    "internal_ci_validates_custody_not_external_origin"
+  ]
+}
