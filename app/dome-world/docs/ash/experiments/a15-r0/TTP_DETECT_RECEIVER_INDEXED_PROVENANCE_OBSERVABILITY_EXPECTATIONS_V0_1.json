@@ -1,0 +1,55 @@
+{
+  "schema": "td613.dome-world.ttp-detect-receiver-indexed-provenance-observability-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "32cd280fa0de84ff830cae3c768e53da2cc482aa",
+  "required_external_witness": {
+    "title": "Rethinking LLM Watermark Detection in Black-Box Settings: A Non-Intrusive Third-Party Framework",
+    "anthology_id": "2026.findings-acl.990",
+    "doi": "10.18653/v1/2026.findings-acl.990",
+    "publication_month": "2026-07",
+    "publication_host": "ACL Anthology",
+    "receiver_role": "TRUSTED_THIRD_PARTY_AUDITOR"
+  },
+  "required_receiver_access": {
+    "watermark_secret_key": false,
+    "watermark_mechanism": false,
+    "provider_internal_model_states": false,
+    "provider_scheme_specific_detector": false,
+    "observable_output_behavior": true
+  },
+  "required_empirical_witness": {
+    "watermark_family_count": 7,
+    "unigram_min_reported_auc": 0.999,
+    "symmark_reported_f1": 1.0,
+    "symmark_reported_auc": 1.0,
+    "sweet_average_auc_drop_vs_kgw_percent": 0.38,
+    "kgw_average_auc_under_reported_attacks": 0.98
+  },
+  "required_state": {
+    "status": "RECEIVER_INDEXED_PROVENANCE_OBSERVABILITY_EARNED",
+    "rest_symbol": "𝄐",
+    "route_axis_antecedent_admitted": true,
+    "carrier_axis_antecedent_admitted": true,
+    "receiver_axis_admitted": true,
+    "injection_authority_decoupled_from_detection_observability": true,
+    "keyless_black_box_third_party_detection_observed": true,
+    "same_artifact_multi_receiver_direct_causal_contrast_observed": false,
+    "tri_axial_route_carrier_receiver_support": "BOUNDED_CROSS_STUDY_COMPARATIVE",
+    "tri_axial_same_episode_coobservation": false,
+    "tri_axial_factorized_independence_earned": false,
+    "sequence_authority": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  },
+  "claim_ceiling": [
+    "ttp_detector_not_td613_receiver_index_r",
+    "black_box_detectability_not_origin_truth_proof",
+    "third_party_verification_not_custody_authority",
+    "independent_auditor_role_not_universal_public_identifiability",
+    "proxy_model_signal_not_source_model_internal_state",
+    "receiver_side_detection_not_same_artifact_receiver_causal_ablation",
+    "entrobench_agentmark_ttp_cross_study_braid_not_same_episode_coobservation",
+    "route_carrier_receiver_comparative_support_not_factorized_independence",
+    "external_empirical_receiver_witness_not_golden_egg_measurement"
+  ]
+}
