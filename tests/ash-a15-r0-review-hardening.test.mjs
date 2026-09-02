@@ -19,6 +19,7 @@ await import('./ash-a15-r0-western-horizon-empirical-shore-rest.test.mjs');
 await import('./ash-a15-r0-entrobench-exogenous-witness-admission.test.mjs');
 await import('./ash-a15-r0-agentmark-heterostratigraphic-provenance-carrier-separation.test.mjs');
 await import('./ash-a15-r0-ttp-detect-receiver-indexed-provenance-observability.test.mjs');
+await import('./ash-a15-r0-receiver-swap-causal-admissibility.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
