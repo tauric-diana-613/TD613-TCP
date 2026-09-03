@@ -100,6 +100,18 @@ assert.match(empiricalSource, /schema, version, \.\.\.publicPayload/, 'Leak scan
 assert.match(empiricalSource, /profile\.replaceAll\('_', ' '\)/, 'Profile chip comparison must use the UI display normalization.');
 assert.match(empiricalSource, /visible\.visible_text !== answer\.message/, 'Visible world-answer text must equal the emitted message.');
 assert.match(empiricalSource, /assertClosedWorldAnswer/, 'World-answer authority must be validated before certification.');
+assert.match(empiricalSource, /__td613A15RouteWitness/, 'The front-loaded A15 witness must retain route-settlement failure custody.');
+assert.match(empiricalSource, /ROUTE_CONTROL_BEFORE_CLICK/, 'The front-loaded A15 witness must record route-control ownership before the gesture.');
+assert.match(empiricalSource, /ROUTE_CLICK_CAPTURE/, 'The front-loaded A15 witness must observe click capture when delivery reaches the document.');
+assert.match(empiricalSource, /ROUTE_CLICK_BUBBLE/, 'The front-loaded A15 witness must observe click bubble when delivery completes the DOM path.');
+assert.match(empiricalSource, /AFTER_ROUTE_CLICK_DISPATCH/, 'The front-loaded A15 witness must distinguish Playwright dispatch return from route settlement.');
+assert.match(empiricalSource, /POINTER_DELIVERY_UNREGISTERED/, 'The inherited witness must preserve the existing pointer-delivery hold vocabulary.');
+assert.match(empiricalSource, /LIVE_ROUTE_OWNER_NOT_SETTLED/, 'The inherited witness must distinguish canonical route-owner non-settlement.');
+assert.match(empiricalSource, /A15_ROUTE_PROJECTION_NOT_SETTLED/, 'The inherited witness must distinguish A15 projection non-settlement.');
+assert.match(empiricalSource, /A15_ROUTE_SETTLEMENT_TIMEOUT_UNCLASSIFIED/, 'Unresolved route failures must remain explicitly unclassified rather than guessed.');
+assert.match(empiricalSource, /route_settlement:error\.td613RouteDiagnostic \|\| null/, 'Route-settlement diagnostics must survive into the failure artifact.');
+assert.match(empiricalSource, /\{ route, controlValue \}, \{ timeout:60_000 \}/, 'Diagnostic hardening must preserve the existing 60-second route-settlement budget.');
+assert.doesNotMatch(empiricalSource, /__td613AshLiveAIA\.setRoute\s*\(/, 'Diagnostics may not bypass the visible canonical route control with a private route API.');
 
 const transitionSource = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
 assert.match(transitionSource, /automatic_ash_action === false/, 'Transition hydration must require closed automatic-action authority.');
