@@ -25,6 +25,7 @@ await import('./ash-a15-r0-live-principal-route-burden-wiring-null.test.mjs');
 await import('./ash-a15-r0-a16-single-splice-instrument-fidelity-preflight.test.mjs');
 await import('./ash-a15-r0-a16-operator-witness-exteriority.test.mjs');
 await import('./ash-a15-r0-a16-operator-witness-socket.test.mjs');
+await import('./ash-a15-r0-a16-review-waiver-contradiction.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
