@@ -96,4 +96,6 @@ const rerun=runA16ReviewWaiverContradiction();
 assert.equal(rerun.status,C.status);
 assert.equal(rerun.separation_digest,C.separation_digest);
 
+await import('./ash-a15-r0-a16-residual-gate-persistence.test.mjs');
+
 console.log('A16 waiver-epistemic separation tests passed.');
