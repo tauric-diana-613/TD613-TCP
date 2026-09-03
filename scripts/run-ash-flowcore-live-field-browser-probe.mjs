@@ -16,6 +16,20 @@ const listenerTarget = String.raw`await page.addInitScript(() => {
 
 const listenerReplacement = String.raw`await page.addInitScript(() => {
   window.__ashFlowcorePhaseTrace = [];
+  window.__ashFlowcoreExplanationTrace = [];
+  window.__ashFlowcoreRecoveredPlayTrace = [];
+  addEventListener('td613:ash:explanation-frame', event => {
+    const item = event.detail || {};
+    window.__ashFlowcoreExplanationTrace.push({
+      step:item.step,
+      trace:Array.isArray(item.trace) ? [...item.trace] : [],
+      performance_ms:Number(performance.now().toFixed(3))
+    });
+  });
+  addEventListener('td613:ash:flowcore-recovered-play-motion', event => {
+    const item = event.detail || {};
+    window.__ashFlowcoreRecoveredPlayTrace.push({ ...item, performance_ms:Number(performance.now().toFixed(3)) });
+  });
   addEventListener('td613:ash:flowcore-field-phase', event => {
     const item = event.detail || {};
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
@@ -41,6 +55,7 @@ const listenerReplacement = String.raw`await page.addInitScript(() => {
       phase_label:field?.querySelector('[data-flowcore-phase-label]')?.textContent || '',
       canvas_visible:rendered(canvas),
       rail_visible:rendered(rail),
+      performance_ms:Number(performance.now().toFixed(3)),
       motion:window.__td613AshPostIngressMotionRestoration?.current?.() || {}
     });
   });
@@ -113,12 +128,99 @@ const motionReplacement = String.raw`  const atomicNameReceipt = item => item.ph
     && /NAME/.test(item.phase_label)
     && item.canvas_visible === true
     && item.rail_visible === true;
-  await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
-    && item.dom_phase === 'NAME'
-    && item.playing === true
-    && /NAME/.test(item.phase_label)
-    && item.canvas_visible === true
-    && item.rail_visible === true));
+  try {
+    await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
+      && item.dom_phase === 'NAME'
+      && item.playing === true
+      && /NAME/.test(item.phase_label)
+      && item.canvas_visible === true
+      && item.rail_visible === true));
+  } catch (error) {
+    const diagnostic = await page.evaluate(() => {
+      const field = document.querySelector('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
+      const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+      const canvas = field?.querySelector('.ash-flowcore-field__canvas');
+      const play = field?.querySelector('[data-aia-play]');
+      const rendered = node => {
+        if (!node) return false;
+        const style = getComputedStyle(node);
+        const rect = node.getBoundingClientRect();
+        return style.display !== 'none'
+          && style.visibility !== 'hidden'
+          && Number(style.opacity) > 0
+          && rect.width > 0
+          && rect.height > 0;
+      };
+      const ui = window.__td613AshUiUxRescue?.current?.() || null;
+      let explanationTrace = [];
+      try { explanationTrace = JSON.parse(ui?.explanation_trace || document.documentElement.dataset.ashExplanationTrace || '[]'); } catch {}
+      const phaseTrace = structuredClone(window.__ashFlowcorePhaseTrace || []);
+      const explanationEvents = structuredClone(window.__ashFlowcoreExplanationTrace || []);
+      const recoveredPlayEvents = structuredClone(window.__ashFlowcoreRecoveredPlayTrace || []);
+      const remountPlay = window.__td613AshFlowcoreWorkspaceRemount?.currentPlay?.() || null;
+      const nameFrameEmitted = explanationEvents.some(item => Number(item.step) === 3) || explanationTrace.includes(3);
+      const namePhaseEmitted = phaseTrace.some(item => item.phase_name === 'NAME');
+      const atomicNameObserved = phaseTrace.some(item => item.phase_name === 'NAME'
+        && item.dom_phase === 'NAME'
+        && item.playing === true
+        && /NAME/.test(item.phase_label || '')
+        && item.canvas_visible === true
+        && item.rail_visible === true);
+      const motionStarted = ['PLAYING','COMPLETE','STATIC_COMPLETE'].includes(ui?.explanation_motion)
+        || explanationTrace.length > 0
+        || explanationEvents.length > 0
+        || remountPlay?.motion_started === true;
+      return {
+        play:play ? {
+          connected:play.isConnected,
+          visible:rendered(play),
+          owner:play.dataset.aiaPlayOwner || null,
+          recovery:play.dataset.aiaPlayRecovery || null,
+          direct_onclick:typeof play.onclick === 'function',
+          text:play.textContent?.trim() || ''
+        } : null,
+        remount_play:remountPlay,
+        ui_motion:ui,
+        motion_started:motionStarted,
+        explanation_trace:explanationTrace,
+        explanation_events:explanationEvents,
+        recovered_play_events:recoveredPlayEvents,
+        phase_trace:phaseTrace,
+        name_frame_emitted:nameFrameEmitted,
+        name_phase_emitted:namePhaseEmitted,
+        atomic_name_observed:atomicNameObserved,
+        field:field ? {
+          phase_name:field.dataset.flowcorePhaseName || null,
+          playing:field.dataset.flowcorePlaying === 'true',
+          phase_label:field.querySelector('[data-flowcore-phase-label]')?.textContent || '',
+          canvas_visible:rendered(canvas),
+          rail_visible:rendered(rail)
+        } : null,
+        document_state:{
+          flowcore_phase:document.documentElement.dataset.ashFlowcorePhase || null,
+          explanation_motion:document.documentElement.dataset.ashExplanationMotion || null,
+          explanation_frame:document.documentElement.dataset.ashExplanationFrame || null,
+          explanation_trace:document.documentElement.dataset.ashExplanationTrace || null,
+          consequence_motion_posture:document.documentElement.dataset.ashConsequenceMotionPosture || null
+        }
+      };
+    });
+    let classification = 'LIVE_FIELD_NAME_SETTLEMENT_TIMEOUT_UNCLASSIFIED';
+    if (diagnostic.play?.recovery === 'LIVE_AIA_REPLAY_DELEGATE' && diagnostic.remount_play?.motion_started !== true) {
+      classification = 'RECOVERED_DUAL_OWNER_NOT_INVOKED';
+    } else if (diagnostic.motion_started !== true) {
+      classification = 'MOTION_OWNER_NOT_STARTED';
+    } else if (diagnostic.name_frame_emitted !== true) {
+      classification = 'MOTION_STARTED_NAME_FRAME_NOT_EMITTED';
+    } else if (diagnostic.name_phase_emitted !== true) {
+      classification = 'NAME_FRAME_EMITTED_FLOWCORE_NAME_EVENT_MISSING';
+    } else if (diagnostic.atomic_name_observed !== true) {
+      classification = 'FLOWCORE_NAME_EVENT_ATOMIC_DOM_CONJUNCT_MISMATCH';
+    }
+    const held = new Error('Flow-Core atomic NAME settlement held [' + classification + ']: ' + JSON.stringify(diagnostic), { cause:error });
+    held.td613FlowcoreLiveFieldDiagnostic = { classification, diagnostic };
+    throw held;
+  }
   const activeMotion = await page.evaluate(() => {
     const item = [...window.__ashFlowcorePhaseTrace].reverse().find(entry => entry.phase_name === 'NAME'
       && entry.dom_phase === 'NAME'
@@ -175,9 +277,15 @@ runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadi
 runtime = runtime
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.16-a15-registry-owned-dom-readiness');
+  .replace('v0.7-atomic-name-receipt', 'v0.17-live-field-name-settlement-diagnostics');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
+if (!runtime.includes('window.__ashFlowcoreExplanationTrace = []')) throw new Error('Flow-Core explanation-frame diagnostic trace was not materialized.');
+if (!runtime.includes('window.__ashFlowcoreRecoveredPlayTrace = []')) throw new Error('Flow-Core recovered-play diagnostic trace was not materialized.');
+if (!runtime.includes('RECOVERED_DUAL_OWNER_NOT_INVOKED')) throw new Error('Flow-Core recovered dual-owner hold classification was not materialized.');
+if (!runtime.includes('MOTION_STARTED_NAME_FRAME_NOT_EMITTED')) throw new Error('Flow-Core NAME-frame hold classification was not materialized.');
+if (!runtime.includes('NAME_FRAME_EMITTED_FLOWCORE_NAME_EVENT_MISSING')) throw new Error('Flow-Core NAME-event hold classification was not materialized.');
+if (!runtime.includes('FLOWCORE_NAME_EVENT_ATOMIC_DOM_CONJUNCT_MISMATCH')) throw new Error('Flow-Core atomic DOM-conjunct hold classification was not materialized.');
 if (!runtime.includes('Canonical ownership and visible Play settle first; portal and spacing are asserted directly below.')) throw new Error('Flow-Core registry-owned DOM readiness was not materialized.');
 if (!runtime.includes("window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'")) throw new Error('Flow-Core A15 registry version gate was not materialized.');
 if (!runtime.includes('registry?.empirical_matrix_cells === 120')) throw new Error('Flow-Core A15 empirical matrix gate was not materialized.');
