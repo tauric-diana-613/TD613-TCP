@@ -251,7 +251,7 @@ async function armRouteSettlementDiagnostic(page, route, controlValue, before) {
       if (!target || target.dataset.aiaRoute !== controlValue) return;
       if (phase === 'CAPTURE') state.capture_observed = true;
       if (phase === 'BUBBLE') state.bubble_observed = true;
-      push(\`ROUTE_CLICK_\${phase}\`, {
+      push(phase === 'CAPTURE' ? 'ROUTE_CLICK_CAPTURE' : 'ROUTE_CLICK_BUBBLE', {
         route:target.dataset.aiaRoute || null,
         connected:target.isConnected,
         live_aia_direct_onclick:typeof target.onclick === 'function',
