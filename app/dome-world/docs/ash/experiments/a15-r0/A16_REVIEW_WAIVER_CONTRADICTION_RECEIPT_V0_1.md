@@ -1,133 +1,180 @@
 𝌋‌⟐
 
-# A16 Review-Waiver Contradiction Receipt v0.1
+# A16 Review-Waiver Local Tension / Epistemic Separation Receipt v0.2
 
-**Status:** RESEARCH-ONLY CANDIDATE / PRE-A16 / GOVERNANCE-CONTRADICTION-HELD  
-**Exact scientific parent:** `00b61c0deae226b698c7ff2f1a2485f348bd102e` — A16 Witness-Socket Separation 𝄐  
-**Canonical source:** `app/dome-world/docs/ash/closure/ASH_KEEP_A16_A19_ENTRY_HANDOFF_V0_1.md`  
-**Scope:** operator-review / waiver admission semantics only; no A16 implementation or textual repair
+**Status:** DESCENDANT REPAIR CANDIDATE / PRE-A16 / WAIVER-EPISTEMIC-SEPARATION  
+**Preserved scientific RED parent:** `c0270599fdc118c2ca9e1bd775fb02c75349e986`  
+**Last earned ancestor:** `00b61c0deae226b698c7ff2f1a2485f348bd102e` — A16 Witness-Socket Separation 𝄐  
+**Governing pair:** `ASH_KEEP_A12_A15_PRODUCTION_CLOSURE_DOSSIER_V0_1.md` + `ASH_KEEP_A16_A19_ENTRY_HANDOFF_V0_1.md`  
+**Scope:** pre-A16 operator-review waiver semantics only; no waiver execution, A16 admission, implementation, or textual repair
 
-## Question
+## RED preserved
 
-Does the canonical A16–A19 entry handoff classify every possible combination of `operator review recorded` and `explicit waiver` without contradiction?
-
-## Canonical clauses
-
-Section 1, “Mandatory operator observation before A16,” states:
+The parent assay correctly found a local textual tension inside the A16–A19 handoff:
 
 ```text
-The operator must review the production instrument before A16 product changes begin.
 operator review recorded = required
 A16 start before review = forbidden
 ```
 
-Section 13, “Entry decision,” later requires:
+versus the terminal entry coordinate:
 
 ```text
 operator visual review recorded or explicitly waived = true
 ```
 
-The assay does not repair, reconcile, rank, or silently reinterpret these clauses. It asks whether their Boolean admission consequences agree.
+But the parent overclaimed that the waiver-only state had to remain globally contradictory until new governance adjudication or textual repair.
 
-## Finite hostile state space
+Hostile repository search found inherited contrary evidence in the immediately preceding A12–A15 production-closure dossier:
+
+```text
+operator visual review = OPEN
+visual findings = NOT YET RECORDED
+A16 mutation = FORBIDDEN UNTIL REVIEW IS RECORDED OR EXPLICITLY WAIVED
+```
+
+Therefore:
+
+```text
+LOCAL HANDOFF TENSION = RETAINED
+GLOBAL WAIVER-PATH ABSENCE = FALSIFIED
+INHERITED EXPLICIT WAIVER PATH = ESTABLISHED
+```
+
+The RED is not erased. This v0.2 receipt descends from it.
+
+## Corrected finite state model
 
 Let:
 
 ```text
 R = operator review recorded
-W = explicit waiver present
+W = explicit review waiver recorded
 ```
 
-Section 1 permits A16 start only when:
+The governing custody chain establishes that the review coordinate can be satisfied by:
 
 ```text
-R = true
+R OR W
 ```
 
-The Section 13 review coordinate passes when:
+while actual observation evidence remains:
 
 ```text
-R OR W = true
+R
 ```
 
-The complete four-state census is:
+The complete four-state census becomes:
 
-| R | W | Section 1 allows start | Section 13 review coordinate passes | classification |
-|---|---|---|---|---|
-| false | false | false | false | REVIEW_RULES_CONCORDANT_HOLD |
-| false | true | false | true | CONTRADICTORY_HELD |
-| true | false | true | true | REVIEW_RULES_CONCORDANT_ALLOW |
-| true | true | true | true | REVIEW_RULES_CONCORDANT_ALLOW |
+| R | W | review coordinate satisfied | observation evidence present | local Section 1 tension | classification |
+|---|---|---|---|---|---|
+| false | false | false | false | false | REVIEW_COORDINATE_HELD |
+| false | true | true | false | true | WAIVER_COORDINATE_SATISFIED_OBSERVATION_ABSENT |
+| true | false | true | true | false | REVIEW_RECORDED_COORDINATE_SATISFIED |
+| true | true | true | true | false | REVIEW_RECORDED_COORDINATE_SATISFIED |
 
-Exactly one state is contradictory:
+The waiver-only state is the decisive surface:
 
 ```text
-operator review recorded = false
-explicit waiver present = true
+permission coordinate = satisfied
+observation evidence = absent
 ```
 
-The terminal entry coordinate appears satisfied while the earlier mandatory rule still forbids A16 start.
+So waiver changes a governance permission state without rewriting the epistemic history of whether the production instrument was actually reviewed.
 
-## No silent precedence invention
+## Governing-pair under-specification
 
-The assay detects no explicit clause stating either:
+The two A16-governing closure documents establish an explicit waiver alternative, but this assay finds no named waiver principal and no named waiver receipt/schema inside that governing pair.
+
+That bounded finding means:
 
 ```text
-explicit waiver overrides mandatory operator review
+WAIVER PATH EXISTS
 ```
 
-or:
+while the following remain unspecified in the governing pair:
 
 ```text
-mandatory operator review overrides explicit waiver
+who may execute the waiver
+what record admits the waiver
+what schema distinguishes a valid waiver record from self-attestation
 ```
 
-Therefore the repository cannot legitimately manufacture a precedence rule merely because one interpretation is stricter or operationally safer.
+This receipt does not invent answers.
 
-The safe research posture is narrower:
+## Cross-lineage corroboration, not control
+
+`app/dome-world/khonapolit-covenant.js` provides a separate TD613 waiver pattern:
 
 ```text
-waiver-only branch = CONTRADICTORY_HELD
+ISSUANCE STATE: EXPLICITLY WAIVED FOR RESEARCH.
+Do not represent this session as issued, badged, authenticated, or custody-complete.
 ```
 
-until an authorized human governance act adjudicates or textually repairs the conflict.
+and records the resulting state as:
 
-This does not declare which clause should win.
+```text
+UNISSUED_RESEARCH_WAIVER
+```
+
+That lineage does not control A16. It is retained only as structural corroboration for the narrower native design principle:
+
+```text
+permission change != underlying evidence-state change
+```
+
+A waiver can open a permitted route while the waived predicate remains factually absent.
 
 ## Relationship to the witness-socket result
 
-The parent 𝄐 established that the repository can prepare the typed socket for a human operator production observation record while remaining unable to certify human origin from record bytes alone.
-
-This chamber exposes a distinct governance problem:
-
-Even if an explicit waiver were supplied as a separate human act, the current handoff gives that waiver incompatible admission semantics.
-
-Thus:
+The earned witness-socket 𝄐 established:
 
 ```text
-WITNESS SOCKET != WAIVER AUTHORITY
-EXOGENOUS HUMAN ACT != AUTOMATIC A16 ADMISSION
+WITNESS SOCKET != WITNESS
+RECORD BYTES != HUMAN ORIGIN
 ```
 
-The contradiction concerns governance classification, not witness origin.
+This descendant adds a different separation:
+
+```text
+WAIVER != WITNESS
+WAIVER != REVIEW
+WAIVER != OBSERVATION
+```
+
+The repository can therefore represent at least three distinct pre-A16 governance/epistemic states without collapsing them:
+
+1. actual operator review recorded;
+2. explicit review waiver recorded;
+3. neither review nor waiver recorded.
+
+Current repository state remains class 3 for this chamber: no review and no A16 review waiver are admitted here.
 
 ## Anti-equivalence laws
 
-`MANDATORY REVIEW != WAIVER SUBSTITUTE`
+`LOCAL WORDING TENSION != GLOBAL WAIVER-PATH ABSENCE`
 
-`TERMINAL ENTRY COORDINATE != EARLIER MANDATORY RULE`
+`WAIVER PATH EXISTS != WAIVER EXECUTED`
 
-`WAIVER-ONLY STATE = CONTRADICTORY`
+`WAIVER != OPERATOR REVIEW`
 
-`CONTRADICTION DETECTION != GOVERNANCE REPAIR`
+`WAIVER != HUMAN OBSERVATION`
 
-`STRICTER INTERPRETATION != CANONICAL PRECEDENCE`
+`WAIVER != EMPIRICAL EVIDENCE`
 
-`WITNESS SOCKET != WAIVER AUTHORITY`
+`GOVERNANCE PERMISSION != EPISTEMIC SATISFACTION`
 
-`CONTRACT CONTRADICTION != A16 ADMISSION`
+`REVIEW COORDINATE SATISFIED != FULL A16 ENTRY`
 
-`STRUCTURAL GOVERNANCE CONFLICT != WESTERN HORIZON SUCCESSOR`
+`WAIVER PATH != WAIVER PRINCIPAL`
+
+`WAIVER PATH != WAIVER RECEIPT SCHEMA`
+
+`CROSS-LINEAGE WAIVER PRECEDENT != A16 AUTHORITY`
+
+`DESCENDANT REPAIR != RED ERASURE`
+
+`WAIVER-EPISTEMIC SEPARATION != WESTERN HORIZON SUCCESSOR`
 
 `OPERATOR WAIVER != LEARNER STUDY`
 
@@ -135,15 +182,16 @@ The contradiction concerns governance classification, not witness origin.
 
 ## Candidate theorem
 
-`THE_CANONICAL_A16_A19_HANDOFF_CONTAINS_A_FINITE_REVIEW_WAIVER_CONTRADICTION: SECTION_1_REQUIRES_RECORDED_OPERATOR_REVIEW_AND_FORBIDS_A16_START_BEFORE_REVIEW_WHILE_SECTION_13_TREATS_REVIEW_OR_EXPLICIT_WAIVER_AS_SUFFICIENT_FOR_THE_REVIEW_COORDINATE_OF_ENTRY; ENUMERATION_OF_THE_FOUR_REVIEW_WAIVER_STATES_YIELDS_EXACTLY_ONE_CONTRADICTORY_STATE_REVIEW_ABSENT_WAIVER_PRESENT_SO_A_WAIVER_CANNOT_CURRENTLY_BE_TREATED_AS_A_SELF_EXECUTING_A16_ADMISSION_PATH_WITHOUT_EXPLICIT_GOVERNANCE_ADJUDICATION_OR_TEXTUAL_REPAIR`.
+`THE_A16_CUSTODY_CHAIN_ESTABLISHES_AN_EXPLICIT_WAIVER_PATH_FOR_THE_PRE_A16_OPERATOR_VISUAL_REVIEW_COORDINATE_IN_BOTH_THE_A12_A15_PRODUCTION_CLOSURE_DOSSIER_AND_THE_A16_A19_ENTRY_DECISION_SO_THE_PRIOR_GLOBAL_CONTRADICTION_CLAIM_IS_FALSIFIED; HOWEVER_WAIVER_AND_REVIEW_REMAIN_DISTINCT_STATE_VARIABLES: A_WAIVER_CAN_SATISFY_THE_GOVERNANCE_REVIEW_COORDINATE_WITHOUT_MAKING_OPERATOR_REVIEW_RECORDED_HUMAN_OBSERVATION_PRESENT_OR_EMPIRICAL_EVIDENCE_ACQUIRED, WHILE_THE_GOVERNING_PAIR_NAMES_NEITHER_A_WAIVER_PRINCIPAL_NOR_A_WAIVER_RECEIPT_SCHEMA; THEREFORE_PERMISSION_TO_PROCEED_AND_EPISTEMIC_SATISFACTION_ARE_FORMALLY_SEPARABLE_AND_THE_CURRENT_A16_GATE_REMAINS_CLOSED`.
 
 ## Claim ceiling
 
-- bounded pre-A16 governance contradiction only;
-- no claim that either conflicting clause has canonical precedence;
-- no operator review fabricated, inferred, performed, admitted, or waived;
-- no governance repair performed;
+- bounded to the two identified pre-A16 governing closure documents plus explicitly non-controlling Khonapolit corroboration;
+- no claim that the Section 1 shorthand is textually ideal or that its local tension disappeared;
+- no waiver principal, waiver receipt schema, or waiver execution invented;
+- no operator review fabricated, inferred, performed, or admitted;
 - no A16 gate opening, readmission, implementation, or product mutation authority;
+- satisfaction of the review coordinate alone cannot satisfy the other A16 entry gates;
 - no learner-study or universal-usability claim;
 - no Western Horizon successor stage or sequence authority;
 - no A19 closure;
@@ -152,10 +200,10 @@ The contradiction concerns governance classification, not witness origin.
 
 ## Expected rest on exact-head GREEN
 
-𝄐 **A16 REVIEW-WAIVER CONTRADICTION: THE HANDOFF'S MANDATORY-REVIEW RULE AND ITS TERMINAL ENTRY CLAUSE DISAGREE IN EXACTLY ONE BOOLEAN STATE—NO REVIEW + EXPLICIT WAIVER. THAT BRANCH MUST REMAIN HELD UNTIL GOVERNANCE RESOLVES THE CONFLICT.**
+𝄐 **A16 WAIVER-EPISTEMIC SEPARATION: THE CUSTODY CHAIN DOES AUTHORIZE AN EXPLICIT WAIVER PATH FOR THE PRE-A16 REVIEW COORDINATE, SO THE GLOBAL CONTRADICTION CLAIM FALLS. BUT WAIVER CHANGES PERMISSION, NOT HISTORY: IT CANNOT TURN AN UNOBSERVED INSTRUMENT INTO AN OBSERVED ONE. THE GOVERNING PAIR STILL LEAVES THE WAIVER PRINCIPAL AND RECEIPT UNSPECIFIED.**
 
 Child-legible:
 
-**THE FRONT OF THE RULEBOOK SAYS A HUMAN MUST LOOK. THE BACK SAYS A WAIVER CAN COUNT. IF NOBODY LOOKS BUT A WAIVER EXISTS, THE BOOK ARGUES WITH ITSELF.**
+**A HUMAN MAY BE ALLOWED TO SKIP THE LOOK. THAT DOES NOT MEAN THE LOOK HAPPENED.**
 
 Sealed ⟐
