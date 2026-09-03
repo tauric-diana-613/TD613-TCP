@@ -63,6 +63,16 @@ const REQUIRED_A15_STATIC_MARKERS = Object.freeze([
   'ashDemoEntryReady',
   'ashDemoEntryHydrating',
   'ashDemoEntryHold',
+  '__td613A15RouteWitness',
+  'ROUTE_CONTROL_BEFORE_CLICK',
+  'ROUTE_CLICK_CAPTURE',
+  'ROUTE_CLICK_BUBBLE',
+  'AFTER_ROUTE_CLICK_DISPATCH',
+  'POINTER_DELIVERY_UNREGISTERED',
+  'LIVE_ROUTE_OWNER_NOT_SETTLED',
+  'A15_ROUTE_PROJECTION_NOT_SETTLED',
+  'A15_ROUTE_SETTLEMENT_TIMEOUT_UNCLASSIFIED',
+  'route_settlement:error.td613RouteDiagnostic || null',
   'A15_PROFILE_BEGIN',
   'A15_PROFILE_PASS',
   'const browser = await browserType.launch({ headless:true });',
@@ -188,6 +198,163 @@ source = replaceExactly(
 
 source = replaceExactly(
   source,
+  `async function selectRoute(page, route) {
+  const controlValue = ROUTE_CONTROLS[route];
+  const control = page.locator(\`#ashAiaMembrane [data-aia-route="\${controlValue}"]:visible\`).first();
+  if (!(await control.count())) throw new Error(\`A15 visible \${route} route control unavailable.\`);
+  await control.click();
+  await page.waitForFunction(({ route, controlValue }) => {
+    const current = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
+    return (current === controlValue || current === route.toUpperCase()) && document.querySelector('[data-a15-route]')?.textContent?.trim() === route;
+  }, { route, controlValue }, { timeout:60_000 });
+}`,
+  `function classifyRouteSettlementDiagnostic(diagnostic, route, controlValue) {
+  const expected = new Set([String(controlValue || '').toUpperCase(), String(route || '').toUpperCase()]);
+  const ownerSettled = expected.has(String(diagnostic?.live_route || '').toUpperCase());
+  const projectionSettled = diagnostic?.route_chip === route;
+  if (diagnostic?.control?.connected === true
+      && diagnostic?.control?.live_aia_direct_onclick === true
+      && diagnostic?.after_dispatch === true
+      && diagnostic?.capture_observed === false
+      && diagnostic?.bubble_observed === false) return 'POINTER_DELIVERY_UNREGISTERED';
+  if (diagnostic?.capture_observed === true && diagnostic?.bubble_observed === true && !ownerSettled) return 'LIVE_ROUTE_OWNER_NOT_SETTLED';
+  if (ownerSettled && !projectionSettled) return 'A15_ROUTE_PROJECTION_NOT_SETTLED';
+  return 'A15_ROUTE_SETTLEMENT_TIMEOUT_UNCLASSIFIED';
+}
+
+async function armRouteSettlementDiagnostic(page, route, controlValue, before) {
+  await page.evaluate(({ route, controlValue, before }) => {
+    window.__td613A15RouteWitness?.cleanup?.();
+    const state = {
+      requested_route:route,
+      control_value:controlValue,
+      before,
+      capture_observed:false,
+      bubble_observed:false,
+      after_dispatch:false,
+      records:[],
+      cleanup:null
+    };
+    const read = () => ({
+      live_route:String(window.__td613AshLiveAIA?.current?.()?.route || ''),
+      route_chip:document.querySelector('[data-a15-route]')?.textContent?.trim() || null,
+      route_dataset:document.documentElement.dataset.ashAiaHumanRoute || null
+    });
+    const push = (kind, detail = null) => state.records.push({
+      kind,
+      performance_ms:Number(performance.now().toFixed(3)),
+      ...read(),
+      detail
+    });
+    const phaseHandler = phase => event => {
+      const target = event.target?.closest?.('#ashAiaMembrane [data-aia-route]');
+      if (!target || target.dataset.aiaRoute !== controlValue) return;
+      if (phase === 'CAPTURE') state.capture_observed = true;
+      if (phase === 'BUBBLE') state.bubble_observed = true;
+      push(\`ROUTE_CLICK_\${phase}\`, {
+        route:target.dataset.aiaRoute || null,
+        connected:target.isConnected,
+        live_aia_direct_onclick:typeof target.onclick === 'function',
+        aria_pressed:target.getAttribute('aria-pressed')
+      });
+    };
+    const capture = phaseHandler('CAPTURE');
+    const bubble = phaseHandler('BUBBLE');
+    document.addEventListener('click', capture, true);
+    document.addEventListener('click', bubble, false);
+    state.cleanup = () => {
+      document.removeEventListener('click', capture, true);
+      document.removeEventListener('click', bubble, false);
+    };
+    window.__td613A15RouteWitness = state;
+    push('ROUTE_CONTROL_BEFORE_CLICK', before);
+  }, { route, controlValue, before });
+}
+
+async function markRouteDispatchComplete(page) {
+  await page.evaluate(() => {
+    const state = window.__td613A15RouteWitness;
+    if (!state) return;
+    state.after_dispatch = true;
+    const liveRoute = String(window.__td613AshLiveAIA?.current?.()?.route || '');
+    const routeChip = document.querySelector('[data-a15-route]')?.textContent?.trim() || null;
+    state.records.push({
+      kind:'AFTER_ROUTE_CLICK_DISPATCH',
+      performance_ms:Number(performance.now().toFixed(3)),
+      live_route:liveRoute,
+      route_chip:routeChip,
+      route_dataset:document.documentElement.dataset.ashAiaHumanRoute || null,
+      detail:null
+    });
+  });
+}
+
+async function readRouteSettlementDiagnostic(page, route, controlValue) {
+  return page.evaluate(({ route, controlValue }) => {
+    const state = window.__td613A15RouteWitness || null;
+    const control = document.querySelector(\`#ashAiaMembrane [data-aia-route="\${controlValue}"]\`);
+    return {
+      requested_route:route,
+      control_value:controlValue,
+      capture_observed:state?.capture_observed === true,
+      bubble_observed:state?.bubble_observed === true,
+      after_dispatch:state?.after_dispatch === true,
+      before:state?.before || null,
+      live_route:String(window.__td613AshLiveAIA?.current?.()?.route || ''),
+      route_chip:document.querySelector('[data-a15-route]')?.textContent?.trim() || null,
+      route_dataset:document.documentElement.dataset.ashAiaHumanRoute || null,
+      control:control ? {
+        connected:control.isConnected,
+        live_aia_direct_onclick:typeof control.onclick === 'function',
+        aria_pressed:control.getAttribute('aria-pressed'),
+        visible:Boolean(control.getClientRects().length)
+      } : null,
+      records:state?.records ? structuredClone(state.records) : []
+    };
+  }, { route, controlValue });
+}
+
+async function clearRouteSettlementDiagnostic(page) {
+  await page.evaluate(() => {
+    window.__td613A15RouteWitness?.cleanup?.();
+    delete window.__td613A15RouteWitness;
+  }).catch(() => {});
+}
+
+async function selectRoute(page, route) {
+  const controlValue = ROUTE_CONTROLS[route];
+  const control = page.locator(\`#ashAiaMembrane [data-aia-route="\${controlValue}"]:visible\`).first();
+  if (!(await control.count())) throw new Error(\`A15 visible \${route} route control unavailable.\`);
+  const before = await control.evaluate(node => ({
+    route:node.dataset.aiaRoute || null,
+    connected:node.isConnected,
+    live_aia_direct_onclick:typeof node.onclick === 'function',
+    aria_pressed:node.getAttribute('aria-pressed'),
+    visible:Boolean(node.getClientRects().length)
+  }));
+  await armRouteSettlementDiagnostic(page, route, controlValue, before);
+  try {
+    await control.click();
+    await markRouteDispatchComplete(page);
+    await page.waitForFunction(({ route, controlValue }) => {
+      const current = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
+      return (current === controlValue || current === route.toUpperCase()) && document.querySelector('[data-a15-route]')?.textContent?.trim() === route;
+    }, { route, controlValue }, { timeout:60_000 });
+    await clearRouteSettlementDiagnostic(page);
+  } catch (error) {
+    const diagnostic = await readRouteSettlementDiagnostic(page, route, controlValue).catch(() => null);
+    await clearRouteSettlementDiagnostic(page);
+    const classification = classifyRouteSettlementDiagnostic(diagnostic, route, controlValue);
+    const held = new Error(\`A15 route settlement held [\${classification}] for \${route}: \${JSON.stringify(diagnostic)}\`, { cause:error });
+    held.td613RouteDiagnostic = { classification, diagnostic };
+    throw held;
+  }
+}`,
+  'A15 front-loaded route settlement diagnostics'
+);
+
+source = replaceExactly(
+  source,
   `async function inspectProfile(options, profile, mode) {`,
   `function assertClosedWorldAnswer(answer, witness) {
   const authority = answer?.authority;
@@ -225,6 +392,25 @@ source = replaceExactly(
 );
 source = replaceExactly(
   source,
+  `    error.td613Diagnostic = {
+      witness,
+      hydration_receipt:hydrationReceipt,
+      hydration_activation:error.td613HydrationDiagnostic || null,
+      screenshot,
+      browser_process_isolated_for_profile:true
+    };`,
+  `    error.td613Diagnostic = {
+      witness,
+      hydration_receipt:hydrationReceipt,
+      hydration_activation:error.td613HydrationDiagnostic || null,
+      route_settlement:error.td613RouteDiagnostic || null,
+      screenshot,
+      browser_process_isolated_for_profile:true
+    };`,
+  'A15 route settlement failure custody'
+);
+source = replaceExactly(
+  source,
   `function forbiddenPublicLeak(answer) {
   const text = JSON.stringify(answer).toLowerCase();
   return FORBIDDEN.some(token => text.includes(token));
@@ -252,6 +438,13 @@ if (!source.includes('profile_entry_convergence_gated:true')
     || !source.includes('ashDemoEntryHydrating')
     || !source.includes('ashDemoEntryHold')) {
   throw new Error('A15 canonical convergence hardening did not compile into the generated probe.');
+}
+if (!source.includes('classifyRouteSettlementDiagnostic')
+    || !source.includes('ROUTE_CLICK_CAPTURE')
+    || !source.includes('ROUTE_CLICK_BUBBLE')
+    || !source.includes('AFTER_ROUTE_CLICK_DISPATCH')
+    || !source.includes('route_settlement:error.td613RouteDiagnostic || null')) {
+  throw new Error('A15 front-loaded route diagnostic hardening did not compile into the generated probe.');
 }
 
 await fs.writeFile(tempPath, source, 'utf8');

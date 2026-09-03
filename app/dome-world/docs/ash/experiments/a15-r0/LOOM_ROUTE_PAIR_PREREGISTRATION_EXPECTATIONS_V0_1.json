@@ -1,0 +1,53 @@
+{
+  "schema": "td613.dome-world.loom-route-pair-preregistration-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "33e65722681eef3b13a64942c082ef73f0ad3f68",
+  "premeasurement_requirement": {
+    "exact_operational_measurements_at_freeze": 0,
+    "preregistration_empirical_credit": 0,
+    "context_recorded_no_later_than_freeze": true
+  },
+  "frozen_tuple_fields": [
+    "episode_id",
+    "departure_id",
+    "custody_id",
+    "comparison_frame_id",
+    "control_route_id",
+    "protected_route_id",
+    "control_return_id",
+    "protected_return_id"
+  ],
+  "later_measurement_requirement": {
+    "measurement_time_strictly_after_freeze": true,
+    "frozen_tuple_preserved": true
+  },
+  "positive_result": {
+    "preregistration_status": "FROZEN",
+    "later_parent_status": "CANDIDATE",
+    "golden_egg_earned": false,
+    "live_loom_mutated": false
+  },
+  "hostiles": [
+    "posthoc_preregistration_after_measurement",
+    "context_after_freeze",
+    "route_pair_swap_after_freeze",
+    "comparison_frame_drift",
+    "measurement_before_freeze",
+    "missing_measurement_time",
+    "invalid_freeze_time"
+  ],
+  "candidate_theorem": "LOOM_CONTEXT_MAY_PREREGISTER_ROUTE_PAIR_IDENTITY_BEFORE_REQUIRED_EMPIRICAL_MEASUREMENT_BUT_POST_MEASUREMENT_RESELECTION_OR_IDENTITY_DRIFT_IS_INADMISSIBLE_AND_PREREGISTRATION_CONFERS_ZERO_EMPIRICAL_CREDIT",
+  "forbidden_promotions": [
+    "merge",
+    "deploy",
+    "release",
+    "publication",
+    "production",
+    "vercel",
+    "live_loom_mutation",
+    "loom_rename",
+    "empirical_acquisition",
+    "golden_egg_completion",
+    "a16_authority"
+  ]
+}
