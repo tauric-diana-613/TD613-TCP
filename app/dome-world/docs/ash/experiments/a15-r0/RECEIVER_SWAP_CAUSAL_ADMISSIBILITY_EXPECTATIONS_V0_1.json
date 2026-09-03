@@ -1,0 +1,41 @@
+{
+  "schema": "td613.dome-world.receiver-swap-causal-admissibility-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "066965424365eb0d76b6cbf2fe0f940cb744b498",
+  "required_parent_state": "RECEIVER_INDEXED_PROVENANCE_OBSERVABILITY_EARNED",
+  "required_design": {
+    "shared_artifact_digest": true,
+    "shared_route_digest": true,
+    "shared_carrier_id": true,
+    "shared_provenance_state": true,
+    "shared_source_custody": true,
+    "shared_observation_window": true,
+    "distinct_receiver_apparatus": true,
+    "receiver_apparatus_only_allowed_difference": true,
+    "measurement_values_present_at_freeze": false
+  },
+  "required_state": {
+    "status": "RECEIVER_SWAP_CAUSAL_ADMISSIBILITY_CRITERION_EARNED",
+    "rest_symbol": "𝄐",
+    "receiver_swap_design_admissible": true,
+    "single_allowed_difference_receiver_apparatus": true,
+    "receiver_effect_observed": false,
+    "receiver_effect_empirically_estimated": false,
+    "same_artifact_receiver_causal_ablation_acquired": false,
+    "formal_contrast_ready_for_empirical_acquisition": true,
+    "sequence_authority": false,
+    "numbered_stage_authority": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  },
+  "claim_ceiling": [
+    "receiver_swap_design_not_receiver_effect_observed",
+    "formal_admissibility_not_empirical_causality",
+    "synthetic_design_not_external_measurement",
+    "same_artifact_not_same_receiver",
+    "different_receiver_not_different_route",
+    "receiver_score_difference_not_origin_truth_proof",
+    "ttp_receiver_axis_not_direct_receiver_ablation",
+    "receiver_swap_contract_not_golden_egg_measurement"
+  ]
+}
