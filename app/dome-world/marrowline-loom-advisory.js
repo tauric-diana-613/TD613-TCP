@@ -1,61 +1,28 @@
-export const MARROWLINE_LOOM_ADVISORY_VERSION = 'td613.dome-world.marrowline-loom-advisory/v0.1';
+import {
+  HOLONOMY_LOOM_ADVISORY_RULES,
+  HOLONOMY_LOOM_ADVISORY_ROUTE_MODES,
+  HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
+  canonicalLoomAdvisoryFinding,
+  describeLoomAdvisoryRule
+} from './holonomy-loom-advisory-policy.js';
+
+export const MARROWLINE_LOOM_ADVISORY_VERSION = 'td613.dome-world.marrowline-loom-advisory/v0.2-canonical-tokens';
 export const MARROWLINE_LOOM_ADVISORY_ENDPOINT = '/api/khonapolit?operation=loom-advisory';
 export const MARROWLINE_LOOM_ADVISORY_REQUEST_SCHEMA = 'td613.holonomy-loom.khonapolit-advisory-request/v0.1';
-export const MARROWLINE_LOOM_PROVIDER_SCHEMA = 'td613.holonomy-loom.provider-advisory-request/v0.1';
-
-const ALLOWED_ACTIONS = Object.freeze(['KEEP', 'CHANGE', 'REMOVE']);
-const ALLOWED_EVIDENCE = Object.freeze([
-  'DETERMINISTIC_PATTERN_MATCH',
-  'USER_DECLARED_EXACT_RULE',
-  'USER_DECLARED_CUSTODY_CONTEXT'
-]);
-const ALLOWED_ROUTES = Object.freeze([
-  'TD613_HOSTED',
-  'CHATGPT_THREAD_COMPANION',
-  'LOCAL_POCKET'
-]);
+export const MARROWLINE_LOOM_PROVIDER_SCHEMA = HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA;
 
 const safe = (value = '') => String(value ?? '').trim();
 
-function bounded(value, label, max = 240) {
-  const text = safe(value);
-  if (!text) throw new TypeError(`${label} is required`);
-  if (text.length > max) throw new TypeError(`${label} exceeds ${max} characters`);
-  return text;
-}
-
 export function buildMarrowlineLoomAdvisoryRequest({
   ruleId,
-  evidenceClass,
-  actionClass,
-  findingCategory,
-  whyClass,
   routeMode,
   shi = '',
   waiveIssuance = false
 } = {}) {
-  const action = bounded(actionClass, 'actionClass', 16).toUpperCase();
-  const evidence = bounded(evidenceClass, 'evidenceClass', 80).toUpperCase();
-  const route = bounded(routeMode, 'routeMode', 80).toUpperCase();
-  if (!ALLOWED_ACTIONS.includes(action)) throw new TypeError('unsupported actionClass');
-  if (!ALLOWED_EVIDENCE.includes(evidence)) throw new TypeError('unsupported evidenceClass');
-  if (!ALLOWED_ROUTES.includes(route)) throw new TypeError('unsupported routeMode');
-
+  const advisory = canonicalLoomAdvisoryFinding(ruleId, routeMode);
   return Object.freeze({
     schema: MARROWLINE_LOOM_ADVISORY_REQUEST_SCHEMA,
-    advisory: Object.freeze({
-      schema: MARROWLINE_LOOM_PROVIDER_SCHEMA,
-      action: 'EXPLAIN_FINDING',
-      rule_id: bounded(ruleId, 'ruleId', 160),
-      evidence_class: evidence,
-      action_class: action,
-      minimized_context: Object.freeze({
-        finding_category: bounded(findingCategory, 'findingCategory', 240),
-        why_class: bounded(whyClass, 'whyClass', 240),
-        route_mode: route
-      }),
-      claim_ceiling: 'Kʰonapolit may explain the finding class and suggest bounded mitigation. Deterministic Loom policy alone controls Loom release.'
-    }),
+    advisory,
     issuance: Object.freeze({
       shi: safe(shi),
       waiveIssuance: waiveIssuance === true
@@ -75,7 +42,9 @@ function ensureStyles(doc) {
     .loom-advisory-copy{margin:0;line-height:1.45}
     .loom-advisory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .loom-advisory-grid label{display:grid;gap:5px;font-size:.84rem}
-    .loom-advisory-grid input,.loom-advisory-grid select{min-width:0;width:100%;box-sizing:border-box;border:1px solid #45534f;border-radius:10px;background:#08100f;color:inherit;padding:9px;font:inherit}
+    .loom-advisory-grid select{min-width:0;width:100%;box-sizing:border-box;border:1px solid #45534f;border-radius:10px;background:#08100f;color:inherit;padding:9px;font:inherit}
+    .loom-derived-card{border:1px solid #334943;border-radius:12px;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;font-size:.83rem}
+    .loom-derived-card div{display:grid;gap:2px}.loom-derived-card small{opacity:.72}.loom-derived-card strong{overflow-wrap:anywhere}
     .loom-provider-disclosure{border:1px solid #6d6a3e;border-radius:12px;padding:11px;background:#16150d;line-height:1.45}
     .loom-provider-disclosure strong{display:block;margin-bottom:5px}
     .loom-advisory-actions{display:flex;flex-wrap:wrap;gap:8px}
@@ -83,7 +52,7 @@ function ensureStyles(doc) {
     .loom-advisory-output{white-space:pre-wrap;border-radius:12px;padding:11px;background:#07100d;min-height:44px}
     .loom-advisory-output[data-state="error"]{border:1px solid #7d3030}
     .loom-advisory-output[data-state="ready"]{border:1px solid #305c49}
-    @media(max-width:620px){.loom-advisory-grid{grid-template-columns:1fr}}
+    @media(max-width:620px){.loom-advisory-grid,.loom-derived-card{grid-template-columns:1fr}}
   `;
   doc.head.append(style);
 }
@@ -103,20 +72,21 @@ function field(doc, labelText, control) {
   return label;
 }
 
-function input(doc, id, placeholder) {
-  const node = doc.createElement('input');
-  node.id = id;
-  node.autocomplete = 'off';
-  node.spellcheck = false;
-  node.placeholder = placeholder;
-  return node;
-}
-
 function select(doc, id, values) {
   const node = doc.createElement('select');
   node.id = id;
   values.forEach(([value, label]) => node.append(option(doc, value, label)));
   return node;
+}
+
+function derivedCell(doc, label, id) {
+  const wrap = doc.createElement('div');
+  const small = doc.createElement('small');
+  small.textContent = label;
+  const strong = doc.createElement('strong');
+  strong.id = id;
+  wrap.append(small, strong);
+  return wrap;
 }
 
 function relayText(payload = {}) {
@@ -130,8 +100,8 @@ function relayText(payload = {}) {
 
 function disclosureText() {
   return [
-    'This will send: rule ID, evidence class, action class, finding category, why-class, and route mode.',
-    'This will not send: your raw draft, matched text, selected text, source spans, or prior Marrowline/ChatGPT conversation history.',
+    'This will send: one canonical rule ID, its fixed evidence/action/category/why tokens, and the room/route you select.',
+    'This will not send: your raw draft, matched text, selected text, source spans, free-text finding descriptions, or prior Marrowline/ChatGPT conversation history.',
     'Gemini carries the model request. Kʰonapolit may explain or suggest. The deterministic Loom still controls its own release rule.'
   ];
 }
@@ -152,32 +122,38 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
   body.className = 'loom-advisory-body';
   const intro = doc.createElement('p');
   intro.className = 'loom-advisory-copy';
-  intro.textContent = 'Kʰonapolit can explain a warning from its finding classes without receiving the whole message.';
+  intro.textContent = 'Choose the kind of warning. Marrowline derives the provider packet from fixed Loom policy tokens; there is nowhere in this drawer to paste the original message.';
 
-  const grid = doc.createElement('div');
-  grid.className = 'loom-advisory-grid';
-  const ruleId = input(doc, 'loomRuleId', 'COMMON_API_KEY_BLOCK');
-  const category = input(doc, 'loomFindingCategory', 'credential-like token');
-  const why = input(doc, 'loomWhyClass', 'credential_access_risk');
-  const evidence = select(doc, 'loomEvidenceClass', [
-    ['DETERMINISTIC_PATTERN_MATCH', 'deterministic pattern match'],
-    ['USER_DECLARED_EXACT_RULE', 'user-declared exact rule'],
-    ['USER_DECLARED_CUSTODY_CONTEXT', 'user-declared custody context']
-  ]);
-  const action = select(doc, 'loomActionClass', [['REMOVE', 'REMOVE'], ['CHANGE', 'CHANGE'], ['KEEP', 'KEEP']]);
+  const rule = select(doc, 'loomRuleId', Object.values(HOLONOMY_LOOM_ADVISORY_RULES).map((item) => [item.rule_id, item.label]));
+  rule.value = 'COMMON_API_KEY_BLOCK';
   const route = select(doc, 'loomRouteMode', [
     ['TD613_HOSTED', 'TD613.com hosted'],
     ['CHATGPT_THREAD_COMPANION', 'private ChatGPT-thread companion'],
     ['LOCAL_POCKET', 'local pocket / preflight']
-  ]);
-  grid.append(
-    field(doc, 'Rule ID', ruleId),
-    field(doc, 'Finding category', category),
-    field(doc, 'Why-class', why),
-    field(doc, 'Evidence class', evidence),
-    field(doc, 'Loom action', action),
-    field(doc, 'Room / route', route)
+  ].filter(([value]) => HOLONOMY_LOOM_ADVISORY_ROUTE_MODES.includes(value)));
+  const grid = doc.createElement('div');
+  grid.className = 'loom-advisory-grid';
+  grid.append(field(doc, 'What kind of warning?', rule), field(doc, 'Room / route', route));
+
+  const derived = doc.createElement('div');
+  derived.className = 'loom-derived-card';
+  derived.setAttribute('aria-label', 'Canonical advisory tokens');
+  derived.append(
+    derivedCell(doc, 'Loom action', 'loomDerivedAction'),
+    derivedCell(doc, 'Evidence class', 'loomDerivedEvidence'),
+    derivedCell(doc, 'Finding category', 'loomDerivedCategory'),
+    derivedCell(doc, 'Why-class', 'loomDerivedWhy')
   );
+  const refreshDerived = () => {
+    const item = describeLoomAdvisoryRule(rule.value);
+    if (!item) return;
+    doc.getElementById('loomDerivedAction').textContent = item.action_class;
+    doc.getElementById('loomDerivedEvidence').textContent = item.evidence_class;
+    doc.getElementById('loomDerivedCategory').textContent = item.finding_category;
+    doc.getElementById('loomDerivedWhy').textContent = item.why_class;
+  };
+  rule.addEventListener('change', refreshDerived);
+  refreshDerived();
 
   const disclosure = doc.createElement('div');
   disclosure.className = 'loom-provider-disclosure';
@@ -206,7 +182,7 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
   output.className = 'loom-advisory-output';
   output.dataset.state = 'idle';
   output.textContent = 'No advisory request sent.';
-  body.append(intro, grid, disclosure, actions, output);
+  body.append(intro, grid, derived, disclosure, actions, output);
   panel.append(summary, body);
   form.before(panel);
 
@@ -214,7 +190,9 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
     version: MARROWLINE_LOOM_ADVISORY_VERSION,
     endpoint: MARROWLINE_LOOM_ADVISORY_ENDPOINT,
     providerDisclosureRequired: true,
+    canonicalTokenOnly: true,
     rawDraftAccepted: false,
+    freeTextFindingAccepted: false,
     historyForwarded: false,
     lastReceipt: null,
     lastSource: null
@@ -231,24 +209,14 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
     const waiveIssuance = Boolean(doc.getElementById('khonapolitWaive')?.checked);
     ask.disabled = true;
     output.dataset.state = 'working';
-    output.textContent = 'Sending only the disclosed finding classes to Kʰonapolit…';
+    output.textContent = 'Sending only canonical Loom tokens to Kʰonapolit…';
     try {
-      const request = buildMarrowlineLoomAdvisoryRequest({
-        ruleId: ruleId.value,
-        evidenceClass: evidence.value,
-        actionClass: action.value,
-        findingCategory: category.value,
-        whyClass: why.value,
-        routeMode: route.value,
-        shi,
-        waiveIssuance
-      });
-      const serialized = JSON.stringify(request);
+      const request = buildMarrowlineLoomAdvisoryRequest({ ruleId: rule.value, routeMode: route.value, shi, waiveIssuance });
       const response = await root.fetch(MARROWLINE_LOOM_ADVISORY_ENDPOINT, {
         method: 'POST',
         headers: { 'content-type': 'application/json', Accept: 'application/json' },
         cache: 'no-store',
-        body: serialized
+        body: JSON.stringify(request)
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) throw new Error(payload.detail || payload.error || `HTTP ${response.status}`);
@@ -257,9 +225,7 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
       state.lastSource = observed.source;
       output.dataset.state = 'ready';
       output.textContent = `${observed.source}\n\n${observed.text}\n\nAdvisory only · Loom release authority unchanged.`;
-      root.dispatchEvent?.(new CustomEvent('td613:marrowline:loom-advisory-return', {
-        detail: { source: observed.source, receipt: state.lastReceipt }
-      }));
+      root.dispatchEvent?.(new CustomEvent('td613:marrowline:loom-advisory-return', { detail: { source: observed.source, receipt: state.lastReceipt } }));
     } catch (error) {
       output.dataset.state = 'error';
       output.textContent = `ADVISORY HELD · ${safe(error?.message || error)}\nNothing was promoted into Loom release authority.`;
@@ -272,8 +238,11 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
     version: MARROWLINE_LOOM_ADVISORY_VERSION,
     endpoint: MARROWLINE_LOOM_ADVISORY_ENDPOINT,
     disclosure: Object.freeze(disclosureText()),
-    acceptedInput: Object.freeze(['rule_id', 'evidence_class', 'action_class', 'finding_category', 'why_class', 'route_mode']),
+    acceptedOperatorInput: Object.freeze(['rule_id', 'route_mode', 'existing_issuance_posture']),
+    canonicalDerivedFields: Object.freeze(['evidence_class', 'action_class', 'finding_category', 'why_class', 'claim_ceiling']),
+    canonicalTokenOnly: true,
     rawDraftAccepted: false,
+    freeTextFindingAccepted: false,
     selectedTextAccepted: false,
     conversationHistoryAccepted: false,
     providerResultHasReleaseAuthority: false,
