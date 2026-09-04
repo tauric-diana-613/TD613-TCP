@@ -1,0 +1,85 @@
+name: Holonomy Loom Local Pocket
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'app/dome-world/previews/a16-r0/holonomy-loom-local-pocket.html'
+      - 'scripts/holonomy-loom-local-pocket-browser-probe.mjs'
+      - 'tests/ash-a16-r0-holonomy-loom-local-pocket.test.mjs'
+      - 'tests/ash-a15-r0-a16-human-operator-launch-readiness.test.mjs'
+      - 'app/dome-world/docs/ash/experiments/a16-r0/HOLONOMY_LOOM_LOCAL_POCKET_RECEIPT_V0_1.md'
+      - '.github/workflows/holonomy-loom-local-pocket.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: holonomy-loom-local-pocket-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  PLAYWRIGHT_VERSION: '1.53.2'
+
+jobs:
+  static:
+    name: Local-pocket static contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate local-pocket source contract
+        run: node tests/ash-a16-r0-holonomy-loom-local-pocket.test.mjs
+
+  browser:
+    name: Local-pocket exact-head browser · ${{ matrix.browser }}
+    needs: static
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install one browser engine
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps "${{ matrix.browser }}"
+      - name: Exercise the pocket with the network denied
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_ARTIFACT_DIR: artifacts/holonomy-loom-local-pocket/${{ matrix.browser }}
+        run: node scripts/holonomy-loom-local-pocket-browser-probe.mjs
+      - name: Preserve local-pocket witness
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: holonomy-loom-local-pocket-${{ matrix.browser }}
+          path: artifacts/holonomy-loom-local-pocket/${{ matrix.browser }}/holonomy-loom-local-pocket.json
+          if-no-files-found: error
+          retention-days: 7
+
+  converge:
+    name: Local-pocket three-engine convergence
+    needs: [static, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record exact-head convergence
+        run: |
+          printf 'Holonomy Loom local-pocket exact-head convergence GREEN\n'
+          printf 'head=%s\n' "${{ github.event.pull_request.head.sha || github.sha }}"
+          printf 'local-first=1 network-required=0 remote-model-required=0\n'
