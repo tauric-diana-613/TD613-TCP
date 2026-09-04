@@ -26,7 +26,8 @@ function bootApertureEgress(root = window) {
     }),
     destinations: Object.freeze([
       '/api/dome-world/marrowline',
-      '/api/dome-world/khonapolit'
+      '/api/dome-world/khonapolit',
+      '/api/khonapolit?operation=loom-advisory'
     ]),
     headers: Object.freeze([
       'X-Dromological-Variance-Matrix',
@@ -111,16 +112,19 @@ function installCircuitObserver(doc = document, root = window) {
 }
 
 async function bootMarrowlineRoom(doc = document, root = window) {
-  await Promise.all([
+  const [, , loomAdvisory] = await Promise.all([
     import('./marrowline-station.js'),
-    import('./marrowline-terminal.js')
+    import('./marrowline-terminal.js'),
+    import('./marrowline-loom-advisory.js')
   ]);
+  loomAdvisory.installMarrowlineLoomAdvisory(doc, root);
   await import('./marrowline-mobile-shell.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
+    loomAdvisory: Boolean(root.__TD613_MARROWLINE_LOOM_ADVISORY__),
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
@@ -131,6 +135,14 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     relay: Object.freeze({
       schema: 'td613.khonapolit.three-part-relay/v1',
       stages: Object.freeze(['gemini-instrument', 'khonapolit-relay', 'tauric-diana-bots-high-zalgo'])
+    }),
+    advisory: Object.freeze({
+      action: 'EXPLAIN_FINDING',
+      endpoint: '/api/khonapolit?operation=loom-advisory',
+      providerDisclosureRequired: true,
+      rawDraftAccepted: false,
+      conversationHistoryAccepted: false,
+      providerResultHasReleaseAuthority: false
     }),
     layout: Object.freeze({
       mobileViewport: 'bounded-visual-viewport',
