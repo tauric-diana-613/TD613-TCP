@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
+import { runHolonomyLoomBrowserEgressWitness } from './holonomy-loom-browser-egress-witness.mjs';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const previewPath = process.env.TD613_A15_R0_PATH || '/app/dome-world/previews/a15-r0/index.html';
@@ -28,6 +29,7 @@ const report = {
   external_requests: [],
   mutation_requests: [],
   screenshots: [],
+  holonomy_loom_egress_witness: null,
   production_mutation: false,
   deployment_authorized: false,
   human_selection_required: true,
@@ -205,6 +207,14 @@ try {
   const mobileShot = path.join(artifactDir, `a15-r0-${browserName}-mobile-reduced.png`);
   await page.screenshot({ path: mobileShot, fullPage: true });
   report.screenshots.push(mobileShot);
+
+  const loomWitness = await runHolonomyLoomBrowserEgressWitness({ page, base, browserName });
+  report.holonomy_loom_egress_witness = loomWitness;
+  check('Holonomy Loom child-legible browser egress witness', loomWitness.status === 'PASS', {
+    status: loomWitness.status,
+    failed_checks: loomWitness.failed_checks,
+    request_summary: loomWitness.request_summary
+  });
 
   check('no console errors', report.console_errors.length === 0, report.console_errors);
   check('no page errors', report.page_errors.length === 0, report.page_errors);
