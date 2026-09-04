@@ -48,4 +48,15 @@ assert.match(source, /The Loom can control what it lets leave its own door\. It 
 assert.match(source, /Gemini can be offered later as an explicit, optional helper/, 'Gemini must remain an optional later layer, not a hidden Layer-0 dependency.');
 assert.match(source, /The Loom will not guess provenance from resemblance\./, 'Holonomy route-memory UI must refuse resemblance-to-provenance promotion.');
 
+const forbiddenWorkflow = '.github/workflows/holonomy-loom-local-pocket.yml';
+assert.equal(fs.existsSync(forbiddenWorkflow), false, 'Local-pocket evidence may not create a fifth durable workflow.');
+const wrapper = fs.readFileSync('scripts/ash-a15-r0-preview-probe.mjs', 'utf8');
+const inheritedCore = fs.readFileSync('scripts/ash-a15-r0-preview-probe-core.mjs', 'utf8');
+const consolidated = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
+assert.match(wrapper, /await import\('\.\/ash-a15-r0-preview-probe-core\.mjs'\)/, 'Lawful wrapper must run the inherited A15-R0 preview witness first.');
+assert.match(wrapper, /await import\('\.\/holonomy-loom-local-pocket-browser-probe\.mjs'\)/, 'Lawful wrapper must run the pocket probe inside the inherited per-engine calibration path.');
+assert.match(wrapper, /holonomy-loom-local-pocket/, 'Pocket artifact must be nested beneath the existing calibration artifact root.');
+assert.match(inheritedCore, /td613\.ash\.a15-r0\.browser-preview-evidence\/v0\.3-semantic-action-settlement/, 'Inherited A15-R0 browser witness must remain materialized as a separate byte-preserving core.');
+assert.match(consolidated, /TD613_ARTIFACT_DIR="artifacts\/\$browser\/calibration\/a15-r0"[\s\S]*node scripts\/ash-a15-r0-preview-probe\.mjs/, 'Existing consolidated three-engine calibration must remain the pocket witness carrier.');
+
 console.log('A16-R0 Holonomy Loom local-pocket hostile contract passed.');
