@@ -7,7 +7,8 @@ Status: **DESCENDANT CANDIDATE / PRESERVED RED ANCESTRY / NO PRODUCTION AUTHORIT
 Exact scientific parent: PR #1026 / `8f0df787080955efc059d83596a776f0dd6f0d91` / run `2558 / 33821370245` SUCCESS  
 Preserved workflow-estate RED head: `10f641b3afc1467ecda14b7b8c32d8a009d4895c`  
 Preserved RED tree: `377adcd89f0908a661769953612bf803e84d44b3`  
-Preserved RED authority run: `2564 / 33831817301`
+Preserved RED authority run: `2564 / 33831817301`  
+Non-authoritative historical runtime run on the same RED tree: `Holonomy Loom Local Pocket` run `1 / 33831817356`
 
 ## RED falsifier
 
@@ -25,14 +26,21 @@ The failure occurred before Step 19 and before consolidated front-line browser a
 
 This is a witness-plumbing falsifier. It does not establish that the local pocket runtime failed.
 
-Historical bounded observations on the same RED tree:
+## Historical runtime observation on the RED tree
+
+The unauthorized fifth workflow nevertheless completed as a bounded historical observation of the same immutable RED tree:
 
 - local-pocket static contract = SUCCESS;
 - Chromium local-pocket browser probe = SUCCESS;
+- Firefox local-pocket browser probe = SUCCESS;
 - WebKit local-pocket browser probe = SUCCESS;
-- Firefox remained in browser installation before the lawful descendant superseded the branch; no Firefox runtime credit is borrowed from that episode.
+- local-pocket three-engine convergence = SUCCESS.
+
+These runtime observations show that the authored pocket executed under all three engines on that tree. They do **not** crown the tree, because the constitutional witness carrier was itself forbidden.
 
 Core laws:
+
+`THREE-ENGINE RUNTIME GREEN != CONSTITUTIONAL EXACT-HEAD GREEN`
 
 `THREE-ENGINE TEST INTENT != WORKFLOW AUTHORITY`
 
@@ -40,7 +48,7 @@ Core laws:
 
 `RED WITNESS PLUMBING != LOCAL-RUNTIME FALSIFICATION`
 
-`TWO ENGINE GREEN != THREE ENGINE GREEN`
+`NON-AUTHORITATIVE RUNTIME OBSERVATION != EARNED 𝄐`
 
 ## Descendant repair
 
@@ -65,7 +73,7 @@ using the exact pre-repair blob:
 
 `596d483afaf8f3749a92a61bbea04003436f9c9b`
 
-The wrapper then nests the pocket artifact beneath the existing per-engine A15-R0 calibration artifact directory and executes the same pocket browser probe under the already-selected Chromium / Firefox / WebKit engine.
+The wrapper nests the pocket artifact beneath the existing per-engine A15-R0 calibration artifact directory and executes the same pocket browser probe under the already-selected Chromium / Firefox / WebKit engine.
 
 No new workflow, timeout widening, engine substitution, product route, server dependency, Gemini dependency, Vercel surface, or production release path is introduced.
 
@@ -90,7 +98,7 @@ This repair grants no local-pocket coronation before exact-head hostility closes
 
 Child-legible:
 
-**THE LITTLE LOOM DID NOT NEED A NEW BUILDING JUST TO TAKE A TEST. WE MOVED ITS TEST DESK INTO THE LAB WE ALREADY OWN. NOW FIREFOX GETS A REAL TURN TOO.**
+**THE LITTLE LOOM WORKED IN THREE BROWSERS, BUT WE BUILT ITS TEST IN THE WRONG BUILDING. THAT RESULT STAYS A SCAR, NOT A CROWN. THE TEST DESK IS NOW INSIDE THE LAB WE ALREADY OWN.**
 
 𝄐 pending exact-head witness.
 
