@@ -83,3 +83,4 @@ await import('./ash-a15-r0-aperture-pedagogue-replay-envelope-consequence.test.m
 await import('./ash-a15-r0-aperture-pedagogue-consequence-conditioned-selection.test.mjs');
 await import('./ash-a15-r0-aperture-pedagogue-decision-loss-replay-map.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
+await import('./ash-a15-r0-holonomy-loom-child-legible-preflight.test.mjs');
