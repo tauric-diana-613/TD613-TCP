@@ -16,6 +16,15 @@
     "provider_result_has_release_authority": false,
     "provider_result_can_override_deterministic_rule": false
   },
+  "repository_integration_hazard": {
+    "observed_source_path": "server/khonapolit-quality.js",
+    "observed_conversational_builder_fields": [
+      "packet.history",
+      "packet.message"
+    ],
+    "direct_conversational_payload_reuse_for_explain_finding": false,
+    "required_future_boundary": "An action-specific server-side validator/projector must accept only the minimized advisory schema before any Gemini request is built. Existing conversational history/message assembly receives no automatic Loom authority."
+  },
   "explain_finding_projection": {
     "action": "EXPLAIN_FINDING",
     "allowed_payload_fields": [
