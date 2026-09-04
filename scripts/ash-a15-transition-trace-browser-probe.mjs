@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
+const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -94,3 +95,8 @@ try {
 } finally {
   await fs.unlink(tempPath).catch(() => {});
 }
+
+// Descendant observation only: after the inherited A15 transition witness closes,
+// run the independent Marrowline Loom advisory browser witness in the same engine.
+// A failure in either observer leaves the enclosing calibration command nonzero.
+await import(`${pathToFileURL(marrowlineLoomWitnessPath).href}?td613_marrowline_loom_advisory=${Date.now()}`);
