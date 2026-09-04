@@ -1,0 +1,23 @@
+{
+  "schema": "td613.dome-world.human-operator-production-observation-record/v0.1",
+  "evidence_class": "HUMAN_OPERATOR_PRODUCTION_OBSERVATION_RECORD",
+  "observation_id": null,
+  "production_url_and_observation_date": null,
+  "desktop_and_mobile_device_browser_posture": null,
+  "profile_and_journey_entered": null,
+  "principal_workspace_material_distinction": null,
+  "flowcore_field_and_play_visibility": null,
+  "child_legible_relation_before_technical_terminology": null,
+  "hold_missingness_and_recovery_legibility": null,
+  "profile_and_aia_route_meaningful_difference": null,
+  "visual_control_or_authority_defects": null,
+  "rest_return_and_exit_without_penalty": null,
+  "operator_finding": null,
+  "bounded_a15_visual_repair_erratum_required": null,
+  "provenance_claim": {
+    "claimed_source": "HUMAN_OPERATOR_PRODUCTION_OBSERVATION",
+    "observer_identity_disclosed_to_repository": null,
+    "observation_recorded_at": null
+  },
+  "claim_ceiling": "OPERATOR_REVIEW_FINDING_NOT_LEARNER_STUDY_NOT_UNIVERSAL_USABILITY_NOT_GOLDEN_EGG_MEASUREMENT"
+}
