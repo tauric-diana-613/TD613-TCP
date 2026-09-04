@@ -6,9 +6,10 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v5-advisory-first';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
-export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v4-advisory-first';
+export const MARROWLINE_LOOM_ADVISORY_BOOT_SCHEMA = 'td613.dome-world.marrowline-loom-advisory-boot/v1-independent-first';
 
 function bootApertureEgress(root = window) {
   const installedNow = installTD613ProvenanceAttestationEgress(root);
@@ -111,13 +112,43 @@ function installCircuitObserver(doc = document, root = window) {
   return true;
 }
 
+async function bootMarrowlineLoomAdvisory(doc = document, root = window) {
+  if (root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__?.installed === true) {
+    return root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__;
+  }
+  try {
+    const module = await import('./marrowline-loom-advisory.js');
+    const installed = Boolean(module.installMarrowlineLoomAdvisory(doc, root));
+    if (!installed) throw new Error('Marrowline Loom advisory installer returned no mounted chamber');
+    const receipt = Object.freeze({
+      schema: MARROWLINE_LOOM_ADVISORY_BOOT_SCHEMA,
+      installed: true,
+      dependency: 'static-marrowline-controls-only',
+      conversationalTerminalRequired: false,
+      stationRequired: false,
+      providerCallPerformed: false,
+      providerDisclosureRequired: true,
+      canonicalTokenOnly: true,
+      rawDraftAccepted: false,
+      conversationHistoryAccepted: false,
+      providerResultHasReleaseAuthority: false,
+      seal: '⟐'
+    });
+    root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__ = receipt;
+    root.dispatchEvent?.(new CustomEvent('td613:marrowline:loom-advisory-ready', { detail: receipt }));
+    return receipt;
+  } catch (error) {
+    root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT_ERROR__ = String(error?.message || error);
+    throw error;
+  }
+}
+
 async function bootMarrowlineRoom(doc = document, root = window) {
-  const [, , loomAdvisory] = await Promise.all([
+  const advisoryBoot = await bootMarrowlineLoomAdvisory(doc, root);
+  await Promise.all([
     import('./marrowline-station.js'),
-    import('./marrowline-terminal.js'),
-    import('./marrowline-loom-advisory.js')
+    import('./marrowline-terminal.js')
   ]);
-  loomAdvisory.installMarrowlineLoomAdvisory(doc, root);
   await import('./marrowline-mobile-shell.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
@@ -125,6 +156,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
     loomAdvisory: Boolean(root.__TD613_MARROWLINE_LOOM_ADVISORY__),
+    loomAdvisoryBoot: advisoryBoot,
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
@@ -140,7 +172,9 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       action: 'EXPLAIN_FINDING',
       endpoint: '/api/khonapolit?operation=loom-advisory',
       providerDisclosureRequired: true,
+      canonicalTokenOnly: true,
       rawDraftAccepted: false,
+      freeTextFindingAccepted: false,
       conversationHistoryAccepted: false,
       providerResultHasReleaseAuthority: false
     }),
@@ -164,4 +198,10 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export { bootApertureEgress, bootMarrowlineRoom, circuitObservation, installCircuitObserver };
+export {
+  bootApertureEgress,
+  bootMarrowlineLoomAdvisory,
+  bootMarrowlineRoom,
+  circuitObservation,
+  installCircuitObserver
+};
