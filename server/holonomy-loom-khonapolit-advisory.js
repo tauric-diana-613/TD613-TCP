@@ -1,7 +1,13 @@
+import {
+  HOLONOMY_LOOM_ADVISORY_ACTION,
+  HOLONOMY_LOOM_ADVISORY_CLAIM_CEILING,
+  HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
+  canonicalLoomAdvisoryFinding
+} from '../app/dome-world/holonomy-loom-advisory-policy.js';
 import khonapolitHandler from './khonapolit-quality.js';
 
 export const HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA = 'td613.holonomy-loom.khonapolit-advisory-request/v0.1';
-export const HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA = 'td613.holonomy-loom.provider-advisory-request/v0.1';
+export { HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA };
 
 const ALLOWED_ADVISORY_KEYS = Object.freeze([
   'schema',
@@ -64,11 +70,8 @@ function rejectForbiddenKeysDeep(value, path = 'request') {
   }
 }
 
-function boundedToken(value, label, max = 160) {
-  const text = safe(value);
-  if (!text) throw new TypeError(`${label} is required`);
-  if (text.length > max) throw new TypeError(`${label} exceeds ${max} characters`);
-  return text;
+function requireExact(actual, expected, label) {
+  if (safe(actual) !== expected) throw new TypeError(`${label} must equal canonical policy value`);
 }
 
 export function validateLoomAdvisoryPacket(advisory = {}) {
@@ -79,26 +82,17 @@ export function validateLoomAdvisoryPacket(advisory = {}) {
   rejectUnknownKeys(advisory, ALLOWED_ADVISORY_KEYS, 'advisory');
   rejectUnknownKeys(advisory.minimized_context, ALLOWED_CONTEXT_KEYS, 'advisory.minimized_context');
 
-  if (advisory.schema !== HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA) {
-    throw new TypeError('unsupported advisory schema');
-  }
-  if (advisory.action !== 'EXPLAIN_FINDING') {
-    throw new TypeError('only EXPLAIN_FINDING is admitted on this route');
-  }
+  if (advisory.schema !== HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA) throw new TypeError('unsupported advisory schema');
+  if (advisory.action !== HOLONOMY_LOOM_ADVISORY_ACTION) throw new TypeError('only EXPLAIN_FINDING is admitted on this route');
 
-  return Object.freeze({
-    schema: HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
-    action: 'EXPLAIN_FINDING',
-    rule_id: boundedToken(advisory.rule_id, 'rule_id'),
-    evidence_class: boundedToken(advisory.evidence_class, 'evidence_class'),
-    action_class: boundedToken(advisory.action_class, 'action_class'),
-    minimized_context: Object.freeze({
-      finding_category: boundedToken(advisory.minimized_context?.finding_category, 'minimized_context.finding_category', 240),
-      why_class: boundedToken(advisory.minimized_context?.why_class, 'minimized_context.why_class', 240),
-      route_mode: boundedToken(advisory.minimized_context?.route_mode, 'minimized_context.route_mode', 80)
-    }),
-    claim_ceiling: boundedToken(advisory.claim_ceiling, 'claim_ceiling', 600)
-  });
+  const canonical = canonicalLoomAdvisoryFinding(advisory.rule_id, advisory.minimized_context?.route_mode);
+  requireExact(advisory.evidence_class, canonical.evidence_class, 'evidence_class');
+  requireExact(advisory.action_class, canonical.action_class, 'action_class');
+  requireExact(advisory.minimized_context?.finding_category, canonical.minimized_context.finding_category, 'minimized_context.finding_category');
+  requireExact(advisory.minimized_context?.why_class, canonical.minimized_context.why_class, 'minimized_context.why_class');
+  requireExact(advisory.minimized_context?.route_mode, canonical.minimized_context.route_mode, 'minimized_context.route_mode');
+  requireExact(advisory.claim_ceiling, HOLONOMY_LOOM_ADVISORY_CLAIM_CEILING, 'claim_ceiling');
+  return canonical;
 }
 
 export function buildKhonapolitLoomAdvisoryBody({ advisory, issuance = {} } = {}) {
@@ -154,7 +148,8 @@ export default async function holonomyLoomKhonapolitAdvisoryHandler(req, res) {
       route: '/api/khonapolit?operation=loom-advisory',
       schema: HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA,
       advisorySchema: HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
-      action: 'EXPLAIN_FINDING',
+      action: HOLONOMY_LOOM_ADVISORY_ACTION,
+      policyPosture: 'canonical-token-only',
       historyForwarded: false,
       rawDraftAccepted: false,
       provider: 'Gemini via Kʰonapolit',
@@ -172,18 +167,14 @@ export default async function holonomyLoomKhonapolitAdvisoryHandler(req, res) {
   try {
     const body = parseBody(req);
     rejectUnknownKeys(body, ['schema', 'advisory', 'issuance'], 'request');
-    if (body.schema !== HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA) {
-      throw new TypeError('unsupported Loom Kʰonapolit advisory request schema');
-    }
+    if (body.schema !== HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA) throw new TypeError('unsupported Loom Kʰonapolit advisory request schema');
     rejectForbiddenKeysDeep(body, 'request');
-    const delegatedBody = buildKhonapolitLoomAdvisoryBody({
-      advisory: body.advisory,
-      issuance: body.issuance || {}
-    });
+    const delegatedBody = buildKhonapolitLoomAdvisoryBody({ advisory: body.advisory, issuance: body.issuance || {} });
 
     req.body = delegatedBody;
     res.setHeader('X-TD613-Holonomy-Loom-Advisory', 'minimized-khonapolit/v0.1');
     res.setHeader('X-TD613-Holonomy-Loom-History', 'none');
+    res.setHeader('X-TD613-Holonomy-Loom-Policy', 'canonical-token-only');
     return khonapolitHandler(req, res);
   } catch (error) {
     return send(res, 400, {
