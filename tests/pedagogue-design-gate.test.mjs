@@ -7,3 +7,4 @@ import './pedagogue-institutional-time.test.mjs';
 import './pedagogue-provenance-time-integration.test.mjs';
 import './pedagogue-recurrence-counterpoints.test.mjs';
 import './holonomy-loom-use-mode-boundary.test.mjs';
+import './holonomy-loom-gemini-minimized-advisory.test.mjs';
