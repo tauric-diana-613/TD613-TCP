@@ -6,6 +6,8 @@ import {
 } from '../app/dome-world/previews/a15-r0/a16-human-operator-launch-readiness.js';
 import { inspectA16OperatorWitnessRecord } from '../app/dome-world/previews/a15-r0/a16-operator-witness-socket.js';
 
+await import('./ash-a16-r0-holonomy-loom-local-pocket.test.mjs');
+
 assert.equal(cert.status, 'A16_HUMAN_OPERATOR_REVIEW_LAUNCH_READY');
 assert.equal(cert.exact_parent, '951807bc76ee2ba5f72fa7bd643fa8e53521ccf8');
 assert.equal(cert.parent_exact_head_green_witness.pr, 1025);
