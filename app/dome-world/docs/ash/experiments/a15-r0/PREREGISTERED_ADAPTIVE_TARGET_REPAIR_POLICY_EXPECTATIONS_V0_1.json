@@ -1,0 +1,56 @@
+{
+  "schema": "td613.dome-world.preregistered-adaptive-target-repair-policy-expectations/v0.1",
+  "exact_parent": "99a3dc13638ddb74b5b65336fb3d306b50f59dff",
+  "declared_target": "THETA",
+  "policy_digest": "daf12e7188e768680db65caba450c7de98b008a1666c058d6ebdae4b01a8fa24",
+  "policy_frozen_before_outcomes": true,
+  "start_acquisition": "Z_BRANCH",
+  "branch_rules": {
+    "A_SEPARATED": "Z_BC",
+    "C_SEPARATED": "Z_AB"
+  },
+  "stop_rule": "STOP_WHEN_UNRESOLVED_TARGET_PAIR_COUNT_IS_ZERO",
+  "objective": "MIN_EXPECTED_TOTAL_COST",
+  "predicted_ledger": {
+    "expected_unresolved_pairs_after_first_acquisition": 1,
+    "expected_pairs_resolved_after_first_acquisition": 2,
+    "expected_total_policy_cost": 2,
+    "must_not_contain_realized_outcome": true
+  },
+  "realized_branch_requirements": {
+    "A_SEPARATED": {"next": "Z_BC", "final_unresolved_pairs": 0, "realized_total_cost": 2},
+    "C_SEPARATED": {"next": "Z_AB", "final_unresolved_pairs": 0, "realized_total_cost": 2}
+  },
+  "nonadaptive_guaranteed_total_cost": 3,
+  "expected_status_on_exact_head_green": "PREREGISTERED_ADAPTIVE_TARGET_REPAIR_POLICY_EARNED",
+  "rest_symbol": "𝄐",
+  "claim_ceiling": {
+    "empirical_target_outcome_acquired": false,
+    "synthetic_outcome_fixture": true,
+    "stochastic_probe_failure_model_earned": false,
+    "variable_realized_cost_model_earned": false,
+    "empirical_supplemental_probe_repair_earned": false,
+    "external_empirical_exteriority_witness_acquired": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "external_origin_of_artifact_proven": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "numbered_stage_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "EXPECTED_TARGET_REFINEMENT != REALIZED_TARGET_REFINEMENT",
+    "STATIC_COMPLETE_COVER != ADAPTIVE_EMPIRICAL_REPAIR",
+    "PREREGISTERED_ADAPTATION != POSTHOC_RESELECTION",
+    "POLICY_BRANCHING != UNBOUNDED_RESELECTION",
+    "PREDICTED_COVERAGE != REALIZED_COVERAGE",
+    "SYNTHETIC_OUTCOME_POLICY_ASSAY != EMPIRICAL_SUPPLEMENTAL_PROBE_REPAIR",
+    "ADAPTIVE_TARGET_REPAIR != EMPIRICAL_EXTERIORITY",
+    "ADAPTIVE_TARGET_REPAIR != GOLDEN_EGG_MEASUREMENT"
+  ]
+}
