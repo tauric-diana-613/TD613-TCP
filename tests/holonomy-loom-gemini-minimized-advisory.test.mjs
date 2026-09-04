@@ -21,6 +21,24 @@ assert.equal(provider.explicit_human_action_required, true);
 assert.equal(provider.provider_result_has_release_authority, false);
 assert.equal(provider.provider_result_can_override_deterministic_rule, false);
 
+const hazard = fixture.repository_integration_hazard;
+assert.equal(hazard.observed_source_path, 'server/khonapolit-quality.js');
+assert.deepEqual(hazard.observed_conversational_builder_fields, ['packet.history', 'packet.message']);
+assert.equal(hazard.direct_conversational_payload_reuse_for_explain_finding, false);
+const khonapolitSource = fs.readFileSync(hazard.observed_source_path, 'utf8');
+assert(
+  khonapolitSource.includes('packet.history.map'),
+  'repository-observed Kʰonapolit history assembly moved; re-adjudicate Loom integration hazard'
+);
+assert(
+  khonapolitSource.includes("parts: [{ text: packet.message }]") ||
+    khonapolitSource.includes("parts: [{ text: packet.message }]"),
+  'repository-observed Kʰonapolit message assembly moved; re-adjudicate Loom integration hazard'
+);
+assert(
+  hazard.required_future_boundary.includes('action-specific server-side validator/projector')
+);
+
 const projection = fixture.explain_finding_projection;
 assert.equal(projection.action, 'EXPLAIN_FINDING');
 assert.equal(projection.raw_draft_sent, false);
