@@ -144,6 +144,15 @@ assert.equal(capsule.iv_bytes, 12);
 assert.equal(capsule.salt_bytes, 16);
 assert.equal(capsule.recipient_transport, 'DEFERRED');
 assert.equal(Object.hasOwn(capsule, 'passphrase'), false);
+
+const publicRepositoryEnvelopeViolations = ['case_id', 'created_at']
+  .filter(field => Object.hasOwn(capsule, field));
+assert.deepEqual(
+  publicRepositoryEnvelopeViolations,
+  [],
+  `PUBLIC_REPOSITORY_CARRIER_METADATA_LEAK:${publicRepositoryEnvelopeViolations.join(',')}`
+);
+
 const opened = await decryptAshCapsule(capsule, 'correct horse battery staple', options);
 assert.equal(opened.case_id, 'case_glasshouse');
 assert.equal(opened.save_point.save_point_digest, savePoint.save_point_digest);
