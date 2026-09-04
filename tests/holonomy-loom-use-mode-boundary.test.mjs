@@ -86,7 +86,7 @@ assert(future);
 assert.equal(future.admitted_now, false);
 assert.equal(future.host_platform_has_received_raw_draft_before_check, null);
 assert.equal(future.pre_ingress_protection_authority_for_next_remote_destination, false);
-assert(future.required_future_witnesses.includes('execution before network ingress'));
+assert(future.required_future_witnesses.includes('execution_before_network_ingress'));
 assert(future.forbidden_claims.includes('embedded implies pre-ingress'));
 assert(future.forbidden_claims.includes('pre-send UI proves pre-send execution'));
 
