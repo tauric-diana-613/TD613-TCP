@@ -94,7 +94,7 @@
           "step_id": "loom_answer",
           "label": "See KEEP, CHANGE, or REMOVE",
           "phase": "WORLD_ANSWERS",
-          "required_fields": ["deterministic rule finding", "plain-language why", "UNKNOWN or ABSTAIN where origin is not identifiable"],
+          "required_fields": ["deterministic rule finding", "plain-language why", "UNKNOWN or ABSTAIN where origin is not identifiable", "Show me why remains an optional explanatory affordance after consequence"],
           "dependencies": ["loom_check"],
           "legibility_millipoints": 980,
           "affordance_millipoints": 980,
@@ -104,29 +104,16 @@
           "operator_action_required": false
         },
         {
-          "step_id": "loom_name",
-          "label": "Show me why",
-          "phase": "NAME",
-          "required_fields": ["exact rule that fired", "bounded claim ceiling", "route-memory basis when available", "optional provider route clearly separated"],
-          "dependencies": ["loom_answer"],
-          "legibility_millipoints": 950,
-          "affordance_millipoints": 950,
-          "gluing_obstruction_millipoints": 0,
-          "projection_crossings": 1,
-          "route_memory_edges": 3,
-          "operator_action_required": false
-        },
-        {
           "step_id": "loom_rest",
           "label": "Keep it, make a safer copy, ask for deeper help, or leave",
           "phase": "REST",
           "required_fields": ["draft remains under operator control", "hard-blocked Loom-controlled release remains blocked", "provider call requires separate human choice", "exit without penalty"],
-          "dependencies": ["loom_name"],
+          "dependencies": ["loom_answer"],
           "legibility_millipoints": 990,
           "affordance_millipoints": 990,
           "gluing_obstruction_millipoints": 0,
           "projection_crossings": 1,
-          "route_memory_edges": 4,
+          "route_memory_edges": 3,
           "operator_action_required": true
         }
       ]
