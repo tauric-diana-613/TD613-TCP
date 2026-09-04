@@ -1,0 +1,51 @@
+{
+  "schema": "td613.dome-world.minimal-target-separating-acquisition-cover-expectations/v0.1",
+  "exact_parent": "74462660f3a3287d4d91e739c7cba664554d0a47",
+  "declared_target": "THETA",
+  "unresolved_target_pairs": [["THETA_A","THETA_B"],["THETA_A","THETA_C"],["THETA_B","THETA_C"]],
+  "candidate_costs": {
+    "Z_A_SPLITTER": 1,
+    "Z_B_SPLITTER": 1,
+    "Z_C_SPLITTER": 1,
+    "Z_ONE_SHOT_FULL": 3,
+    "Z_NOVEL_NO_TARGET_VALUE": 0.25
+  },
+  "expected_minimum_cardinality_complete_plan": {
+    "cardinality": 1,
+    "total_cost": 3,
+    "candidate_ids": ["Z_ONE_SHOT_FULL"]
+  },
+  "expected_minimum_cost_complete_plan": {
+    "cardinality": 2,
+    "total_cost": 2
+  },
+  "expected_status_on_exact_head_green": "MINIMAL_TARGET_SEPARATING_ACQUISITION_COVER_EARNED",
+  "rest_symbol": "𝄐",
+  "claim_ceiling": {
+    "adaptive_outcome_contingent_policy_earned": false,
+    "stochastic_acquisition_cost_model_earned": false,
+    "empirical_resource_cost_measured": false,
+    "empirical_exteriority_information_gain_measured": false,
+    "external_origin_of_artifact_proven": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "numbered_stage_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "COMPLETE_TARGET_IDENTIFICATION_REQUIRES_COVERING_EVERY_SURVIVING_TARGET_PAIR",
+    "MINIMUM_CARDINALITY != MINIMUM_RESOURCE_COST",
+    "OPTIMALITY_REQUIRES_DECLARED_OBJECTIVE",
+    "CHEAPEST_ACQUISITION != CHEAPEST_COMPLETE_PLAN",
+    "ONE_SHOT_FULL_IDENTIFICATION != NECESSARILY_MINIMUM_COST",
+    "PARTIAL_REFINEMENT_CAN_COMPOSE_TO_COMPLETE_IDENTIFICATION",
+    "NOVEL_EVIDENCE_WITHOUT_TARGET_PAIR_COVERAGE = ZERO_IDENTIFYING_VALUE",
+    "FORMAL_COST_FIXTURE != EMPIRICAL_BUDGET_MEASUREMENT",
+    "TARGET_SEPARATING_COVER != GOLDEN_EGG_MEASUREMENT"
+  ]
+}

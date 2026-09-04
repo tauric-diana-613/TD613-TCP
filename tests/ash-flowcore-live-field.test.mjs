@@ -104,8 +104,12 @@ assert.doesNotMatch(spacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
   'td613.ash.demo-registry/v0.3-a15','empirical_matrix_cells === 120',
-  'td613.ash.a15-empirical-profile-journeys/v0.1','v0.16-a15-registry-owned-dom-readiness',
-  'Flow-Core A15 registry version gate was not materialized'
+  'td613.ash.a15-empirical-profile-journeys/v0.1','v0.17-live-field-name-settlement-diagnostics',
+  'Flow-Core A15 registry version gate was not materialized',
+  'window.__ashFlowcoreExplanationTrace = []','window.__ashFlowcoreRecoveredPlayTrace = []',
+  'RECOVERED_DUAL_OWNER_NOT_INVOKED','MOTION_OWNER_NOT_STARTED',
+  'MOTION_STARTED_NAME_FRAME_NOT_EMITTED','NAME_FRAME_EMITTED_FLOWCORE_NAME_EVENT_MISSING',
+  'FLOWCORE_NAME_EVENT_ATOMIC_DOM_CONJUNCT_MISMATCH','throw held;'
 ]) assert.ok(runner.includes(marker), `A15 Flow-Core runner omitted ${marker}`);
 assert.match(runner, /for \(const retired of \['td613\.ash\.demo-registry\/v0\.1-a13','td613\.ash\.demo-registry\/v0\.2-a14'\]\)/);
 
@@ -115,4 +119,4 @@ for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flo
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with portal field reacquisition and explicit delegated motion playback');
+console.log('ash-flowcore-live-field.test.mjs passed with portal field reacquisition, explicit delegated motion playback, and bounded NAME-settlement diagnostics');

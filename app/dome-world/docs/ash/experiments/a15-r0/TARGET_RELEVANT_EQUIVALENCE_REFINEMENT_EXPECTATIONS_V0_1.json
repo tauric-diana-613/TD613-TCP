@@ -1,0 +1,39 @@
+{
+  "schema": "td613.dome-world.target-relevant-equivalence-refinement-expectations/v0.1",
+  "exact_parent": "ae1c795fbbd194b5eaba9ecbb699e9287ca8c706",
+  "declared_target": "THETA",
+  "frozen_target_partition": [["THETA_A","THETA_B","THETA_C"],["THETA_D"]],
+  "base_unresolved_target_pairs": 3,
+  "required_cases": {
+    "NOVEL_BUT_USELESS": {"expected_status":"NO_TARGET_REFINEMENT","expected_unresolved_pairs":3,"expected_credit":0},
+    "ALREADY_SEPARATED_ONLY": {"expected_status":"NO_TARGET_REFINEMENT","expected_unresolved_pairs":3,"expected_credit":0},
+    "PARTIAL_SPLITTER": {"expected_status":"TARGET_RELEVANT_EQUIVALENCE_REFINEMENT_EARNED","expected_unresolved_pairs":1,"expected_pairs_resolved":2,"partial_identification":true,"complete_identification":false},
+    "FULL_SPLITTER": {"expected_status":"TARGET_RELEVANT_EQUIVALENCE_REFINEMENT_EARNED","expected_unresolved_pairs":0,"expected_pairs_resolved":3,"partial_identification":false,"complete_identification":true}
+  },
+  "expected_status_on_exact_head_green": "TARGET_RELEVANT_EQUIVALENCE_REFINEMENT_CRITERION_EARNED",
+  "rest_symbol": "𝄐",
+  "claim_ceiling": {
+    "empirical_exteriority_information_gain_measured": false,
+    "external_origin_of_artifact_proven": false,
+    "exact_golden_egg_surfaces_added": [],
+    "empirical_credit_to_golden_egg": 0,
+    "golden_egg_earned": false,
+    "sequence_authority": false,
+    "numbered_stage_authority": false,
+    "merge_authority": false,
+    "production_authority": false,
+    "deployment_authority": false,
+    "publication_authority": false
+  },
+  "laws": [
+    "NEW_EVIDENCE != IDENTIFYING_EVIDENCE",
+    "EXTERNAL_EVIDENCE != IDENTIFYING_EVIDENCE",
+    "INTERVENTIONAL_EVIDENCE != IDENTIFYING_EVIDENCE",
+    "TARGET_RELEVANT_REFINEMENT != FULL_IDENTIFICATION",
+    "IDENTIFYING_PROGRESS REQUIRES SURVIVING_AMBIGUITY_REDUCTION",
+    "IDENTIFIABILITY_IS_TARGET_RELATIVE",
+    "EVIDENCE_CLASS_BOUNDARY_IS_TARGET_RELATIVE",
+    "GLOBAL_NOVELTY != TARGET_SYMMETRY_BREAKING",
+    "TARGET_REFINEMENT != GOLDEN_EGG_MEASUREMENT"
+  ]
+}
