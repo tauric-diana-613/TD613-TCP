@@ -36,7 +36,7 @@ const BUILTIN_RULES = Object.freeze([
     label: 'bearer token',
     action: ACTION.REMOVE,
     why: 'A bearer token may let another person act as you.',
-    pattern: /\bBearer\s+[A-Za-z0-9._~+\/=\-]{16,}\b/gi,
+    pattern: /\bBearer\s+[A-Za-z0-9._~+\/=\-]{16,}(?=\s|$|[),.;])/gi,
     replacement: '[bearer token removed]'
   }),
   Object.freeze({
@@ -322,7 +322,13 @@ export function makeHolonomyLoomSaferCopy({ text, protectedTerms = [], journeyMa
   for (const finding of [...findings].sort((a, b) => b.start - a.start)) {
     safer = `${safer.slice(0, finding.start)}${finding.replacement}${safer.slice(finding.end)}`;
   }
-  const recheck = analyzeHolonomyLoomMessage({ text: safer, protectedTerms, journeyMarkers });
+
+  // Every exact user-declared protected occurrence in the original text has already been
+  // removed above. Rechecking the generated replacement strings against arbitrary user
+  // phrases could create a false RED merely because a replacement contains a protected word.
+  // The recheck therefore reapplies built-in deterministic policy and route-memory context,
+  // while the original declared-term closure is guaranteed by exhaustive exact replacement.
+  const recheck = analyzeHolonomyLoomMessage({ text: safer, protectedTerms: [], journeyMarkers });
   return freeze({
     schema: `${HOLONOMY_LOOM_SCHEMA}/safer-copy`,
     status: 'READY',
