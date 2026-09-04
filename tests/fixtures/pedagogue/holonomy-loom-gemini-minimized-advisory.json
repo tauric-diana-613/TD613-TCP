@@ -1,0 +1,115 @@
+{
+  "schema": "td613.holonomy-loom.gemini-minimized-advisory/v0.1",
+  "issue": 1038,
+  "parent_pr": 1040,
+  "parent_exact_head": "259e21085a744bc8f9c8e23cc65d0a77d881d8a1",
+  "status": "DESIGN_GATE_ONLY",
+  "question": "Can EXPLAIN_FINDING be projected from bounded Loom finding classes without sending the raw draft or raw matched value to Gemini?",
+  "provider_boundary": {
+    "provider": "GEMINI",
+    "key_reference": "process.env.GEMINI_API_KEY",
+    "real_key_committed_in_repository": false,
+    "client_receives_key": false,
+    "default_deterministic_check_invokes_provider": false,
+    "provider_disclosure_before_transmission": true,
+    "explicit_human_action_required": true,
+    "provider_result_has_release_authority": false,
+    "provider_result_can_override_deterministic_rule": false
+  },
+  "explain_finding_projection": {
+    "action": "EXPLAIN_FINDING",
+    "allowed_payload_fields": [
+      "schema",
+      "action",
+      "rule_id",
+      "evidence_class",
+      "action_class",
+      "minimized_context",
+      "claim_ceiling"
+    ],
+    "forbidden_payload_fields": [
+      "raw_draft",
+      "raw_message",
+      "raw_match",
+      "matched_value",
+      "selected_text",
+      "conversation_history",
+      "raw_conversation",
+      "raw_thread",
+      "prompt_transcript",
+      "span_start",
+      "span_end"
+    ],
+    "minimized_context_allowed_fields": [
+      "finding_category",
+      "why_class",
+      "route_mode"
+    ],
+    "raw_draft_sent": false,
+    "raw_match_sent": false,
+    "conversation_history_sent": false,
+    "selected_text_sent": false,
+    "span_coordinates_sent": false,
+    "request_purpose": "Explain why the already-classified finding matters and describe bounded mitigation options without reconstructing or requesting the source text.",
+    "provider_must_not": [
+      "request the raw draft as a prerequisite to explain the finding class",
+      "reconstruct the omitted matched value",
+      "upgrade an advisory explanation into deterministic release authority",
+      "infer provenance from resemblance",
+      "claim that GREEN means zero privacy risk"
+    ]
+  },
+  "other_provider_actions": {
+    "REWRITE_SELECTED_TEXT": {
+      "admitted_in_this_chamber": false,
+      "requires_explicit_human_action": true,
+      "requires_pre_transmission_disclosure": true,
+      "may_include_only_user_selected_or_already_minimized_text": true,
+      "raw_thread_history_default": false
+    },
+    "SEMANTIC_SECOND_LOOK": {
+      "admitted_in_this_chamber": false,
+      "requires_explicit_human_action": true,
+      "requires_pre_transmission_disclosure": true,
+      "raw_thread_history_default": false,
+      "deterministic_release_authority": false
+    }
+  },
+  "chatgpt_thread_companion_boundary": {
+    "mode": "CHATGPT_THREAD_COMPANION",
+    "host_platform_has_received_already_sent_thread_content": true,
+    "pre_ingress_secrecy_claim_allowed": false,
+    "onward_release_control": true,
+    "external_provider_call_must_be_disclosed": true,
+    "raw_prior_thread_content_portable_by_default": false,
+    "portable_policy_profile_may_travel_without_raw_thread": true,
+    "allowed_claim": "The companion may use minimized finding classes to prepare a safer later action while remaining post-ingress for content already sent into ChatGPT."
+  },
+  "portable_policy_profile": {
+    "raw_conversation_content_included_by_default": false,
+    "default_fields": [
+      "rule_ids",
+      "policy_severity",
+      "declared_route_labels",
+      "receipt_schema_version",
+      "claim_ceiling",
+      "optional_local_commitment"
+    ]
+  },
+  "hostile_projection_canary": {
+    "raw_draft_canary": "RAW_DRAFT_CANARY_MUST_NOT_TRAVEL_613",
+    "raw_match_canary": "RAW_MATCH_CANARY_MUST_NOT_TRAVEL_613",
+    "expected_in_projected_payload": false
+  },
+  "claim_ceiling": [
+    "design-gate projection only",
+    "no Gemini network call performed",
+    "no Gemini endpoint implemented",
+    "no secret retrieved or changed",
+    "no ChatGPT app or plugin implemented",
+    "no production Loom implementation",
+    "no portability proof",
+    "no pre-ingress ChatGPT secrecy claim",
+    "no merge deployment Vercel publication or Golden Egg authority"
+  ]
+}
