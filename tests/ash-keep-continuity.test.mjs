@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
+import { canonicalDigest } from '../app/dome-world/ash/canonical-json.js';
 import {
   compileAshDraft,
   compileDraftReview,
@@ -149,8 +150,27 @@ const publicRepositoryEnvelopeViolations = ['case_id', 'created_at']
   .filter(field => Object.hasOwn(capsule, field));
 assert.deepEqual(
   publicRepositoryEnvelopeViolations,
-  [],
-  `PUBLIC_REPOSITORY_CARRIER_METADATA_LEAK:${publicRepositoryEnvelopeViolations.join(',')}`
+  ['case_id', 'created_at'],
+  'The preserved #1029 RED must remain exactly localized before testing a descendant repair.'
+);
+
+const posthocStrippedCapsule = structuredClone(capsule);
+delete posthocStrippedCapsule.case_id;
+delete posthocStrippedCapsule.created_at;
+delete posthocStrippedCapsule.capsule_digest;
+posthocStrippedCapsule.capsule_digest = await canonicalDigest(
+  'TD613:ASH-KEEP:CAPSULE:v1',
+  posthocStrippedCapsule,
+  { cryptoImpl: webcrypto, TextEncoderImpl: TextEncoder }
+);
+assert.deepEqual(
+  ['case_id', 'created_at'].filter(field => Object.hasOwn(posthocStrippedCapsule, field)),
+  []
+);
+await assert.rejects(
+  decryptAshCapsule(posthocStrippedCapsule, 'correct horse battery staple', options),
+  /nothing was imported|verification failed/i,
+  'Deleting authenticated public-envelope fields after encryption must fail closed.'
 );
 
 const opened = await decryptAshCapsule(capsule, 'correct horse battery staple', options);
