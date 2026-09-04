@@ -1,0 +1,39 @@
+{
+  "schema": "td613.dome-world.agentmark-heterostratigraphic-provenance-carrier-separation-expectations/v0.1",
+  "research_only": true,
+  "exact_parent": "b7b72dc96b3225a94a92af69e78b08a664f9c65e",
+  "required_external_witness": {
+    "title": "AgentMark: Utility-Preserving Behavioral Watermarking for Agents",
+    "anthology_id": "2026.acl-long.573",
+    "doi": "10.18653/v1/2026.acl-long.573",
+    "publication_month": "2026-07",
+    "publication_host": "ACL Anthology",
+    "code_repository": "Tooooa/AgentMark",
+    "code_head": "070daa1cb57aa3c053d89ff5b3a788f6585824ea",
+    "code_tree": "aa78b3daa59feea7c31140877ec7e877f9cc159b"
+  },
+  "required_empirical_witness": {
+    "dual_channel_behavior_decode_percent": 100.0,
+    "dual_channel_content_detection_percent": 96.6,
+    "semantic_rewrite_behavior_match_percent": 49.45,
+    "semantic_rewrite_avg_kl": 3.227,
+    "semantic_rewrite_bit_recovery_percent": 16.84,
+    "toolbench_agentmark_success_percent": 59.7,
+    "toolbench_baseline_success_percent": 59.9,
+    "toolbench_capacity_bits_per_step": 0.49,
+    "toolbench_capacity_bits_per_task": 4.93
+  },
+  "required_state": {
+    "status": "HETEROSTRATIGRAPHIC_PROVENANCE_CARRIER_SEPARATION_EARNED",
+    "rest_symbol": "𝄐",
+    "provenance_observability_heterostratigraphic": true,
+    "planning_behavior_carrier_admitted": true,
+    "action_content_carrier_admitted": true,
+    "same_study_dual_channel_composability_observed": true,
+    "cross_study_entrobench_agentmark_same_episode": false,
+    "output_content_observability_scalar_proxy_for_process_provenance": false,
+    "sequence_authority": false,
+    "golden_egg_earned": false,
+    "empirical_credit_to_golden_egg": 0
+  }
+}

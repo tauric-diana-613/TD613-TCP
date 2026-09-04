@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holonomy Loom · Child-Legible Preflight Preview</title>
+  <style>
+    :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; background: #0d0f12; color: #f4f5f7; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 18px 56px; }
+    h1 { margin-bottom: 6px; font-size: clamp(2rem, 8vw, 3.5rem); line-height: .96; }
+    h2 { margin-top: 30px; font-size: 1.15rem; }
+    p, li { line-height: 1.55; }
+    .lede { font-size: 1.08rem; color: #d6d9df; }
+    .tiny { font-size: .86rem; color: #aab0b9; }
+    .panel { border: 1px solid #30343b; border-radius: 18px; padding: 18px; margin-top: 18px; background: #15181d; }
+    label { display: block; font-weight: 700; margin-bottom: 8px; }
+    textarea { width: 100%; min-height: 170px; box-sizing: border-box; border: 1px solid #4a4f58; border-radius: 14px; background: #090b0e; color: #fff; padding: 14px; font: inherit; resize: vertical; }
+    textarea.small { min-height: 88px; }
+    button { border: 0; border-radius: 999px; padding: 13px 18px; font: inherit; font-weight: 800; cursor: pointer; margin-top: 12px; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    details { margin-top: 16px; }
+    summary { cursor: pointer; font-weight: 800; }
+    .light { display: inline-block; border-radius: 999px; padding: 7px 11px; font-size: .82rem; font-weight: 900; letter-spacing: .08em; }
+    .green { background: #173d2d; }
+    .yellow { background: #51440c; }
+    .red { background: #591d24; }
+    .held { background: #343840; }
+    .result { display: none; }
+    .result.show { display: block; }
+    .finding { border-top: 1px solid #30343b; padding: 12px 0; }
+    .finding:first-child { border-top: 0; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #090b0e; border-radius: 12px; padding: 12px; overflow: auto; }
+    .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .three div { border: 1px solid #30343b; border-radius: 12px; padding: 10px; }
+    @media (max-width: 620px) { .three { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="tiny">U+10D613 · LOCAL PREVIEW · NOTHING HERE IS A PRODUCTION RELEASE</p>
+  <h1>Holonomy Loom</h1>
+  <p class="lede">Before you send it, check what this message carries.</p>
+
+  <section class="panel" aria-labelledby="messageTitle">
+    <label id="messageTitle" for="message">Paste your message here</label>
+    <textarea id="message" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
+
+    <details>
+      <summary>Protection rules</summary>
+      <p class="tiny">These stay in this browser preview. One item per line.</p>
+      <label for="protected">Things that must never leave</label>
+      <textarea class="small" id="protected" autocomplete="off" placeholder="private project nickname&#10;real donor ID&#10;family name"></textarea>
+
+      <label for="journeys" style="margin-top:14px">Markers from another journey</label>
+      <textarea class="small" id="journeys" autocomplete="off" placeholder="phrase from another thread&#10;source label&#10;archive marker"></textarea>
+      <p class="tiny">The Loom will only call something “another journey” when you explicitly give it a marker. Resemblance alone does not count.</p>
+    </details>
+
+    <button id="check" type="button">CHECK THIS MESSAGE</button>
+    <p class="tiny">The Loom checks what your message contains, what may identify you or your source, and what matches another journey marker you declared.</p>
+  </section>
+
+  <section id="result" class="panel result" aria-live="polite">
+    <div id="statusLight" class="light held">HELD</div>
+    <p id="summary" class="lede"></p>
+
+    <h2>1. What are you sending on purpose?</h2>
+    <p>You are checking the message you pasted above. The Loom will not guess your intent beyond that.</p>
+
+    <h2>2. What else is riding along?</h2>
+    <div id="findings"></div>
+
+    <h2>3. Did something come from another journey?</h2>
+    <div id="journeyResult"></div>
+
+    <h2>4. What should I do before I send it?</h2>
+    <div class="three" aria-label="Loom action meanings">
+      <div><strong>KEEP</strong><br><span class="tiny">You meant to send this.</span></div>
+      <div><strong>CHANGE</strong><br><span class="tiny">Generalize or rewrite this.</span></div>
+      <div><strong>REMOVE</strong><br><span class="tiny">Your hard protection rules say this must not leave.</span></div>
+    </div>
+    <div id="actions"></div>
+
+    <button id="makeSafer" type="button" disabled>MAKE A SAFER COPY</button>
+    <button id="copyChecked" type="button" disabled>COPY CHECKED MESSAGE</button>
+    <p id="copyStatus" class="tiny"></p>
+
+    <details>
+      <summary>What does the Loom actually promise?</summary>
+      <p><strong>The Loom can control what it lets leave its own door. It cannot control every room the message enters afterward.</strong></p>
+      <p class="tiny">GREEN means only that no enabled Loom rule fired. This preview makes no claim that ChatGPT or another downstream platform cannot infer additional information.</p>
+    </details>
+
+    <details>
+      <summary>Show me why</summary>
+      <pre id="receipt"></pre>
+    </details>
+  </section>
+</main>
+
+<script type="module">
+  import {
+    analyzeHolonomyLoomMessage,
+    makeHolonomyLoomSaferCopy
+  } from './holonomy-loom-child-legible-preflight.js';
+
+  const $ = selector => document.querySelector(selector);
+  const lines = value => value.split(/\r?\n/).map(item => item.trim()).filter(Boolean);
+  const terms = values => lines(values).map((value, index) => ({ value, label: `protected item ${index + 1}` }));
+  const markers = values => lines(values).map((value, index) => ({ value, label: `journey marker ${index + 1}` }));
+
+  let releaseCandidate = '';
+  let releaseAllowed = false;
+
+  function render() {
+    const text = $('#message').value;
+    const protectedTerms = terms($('#protected').value);
+    const journeyMarkers = markers($('#journeys').value);
+    const analysis = analyzeHolonomyLoomMessage({ text, protectedTerms, journeyMarkers });
+
+    const result = $('#result');
+    result.classList.add('show');
+    const light = $('#statusLight');
+    light.textContent = analysis.status;
+    light.className = `light ${analysis.status.toLowerCase()}`;
+    $('#summary').textContent = analysis.summary;
+
+    $('#findings').replaceChildren();
+    if (!analysis.findings.length) {
+      const p = document.createElement('p');
+      p.textContent = analysis.status === 'HELD' ? 'Nothing checked yet.' : 'No enabled Loom rule matched this message.';
+      $('#findings').append(p);
+    } else {
+      for (const finding of analysis.findings) {
+        const row = document.createElement('div');
+        row.className = 'finding';
+        const strong = document.createElement('strong');
+        strong.textContent = `${finding.action} · ${finding.label}`;
+        const why = document.createElement('p');
+        why.textContent = finding.why;
+        row.append(strong, why);
+        $('#findings').append(row);
+      }
+    }
+
+    $('#journeyResult').replaceChildren();
+    if (!analysis.journey_relations.length) {
+      const p = document.createElement('p');
+      p.textContent = 'No declared journey marker matched. The Loom will not infer provenance from resemblance alone.';
+      $('#journeyResult').append(p);
+    } else {
+      for (const relation of analysis.journey_relations) {
+        const row = document.createElement('div');
+        row.className = 'finding';
+        const strong = document.createElement('strong');
+        strong.textContent = relation.statement;
+        const detail = document.createElement('p');
+        detail.textContent = relation.child_legible_detail;
+        const ceiling = document.createElement('p');
+        ceiling.className = 'tiny';
+        ceiling.textContent = relation.claim_ceiling;
+        row.append(strong, detail, ceiling);
+        $('#journeyResult').append(row);
+      }
+    }
+
+    $('#actions').replaceChildren();
+    if (!analysis.actions.length) {
+      const p = document.createElement('p');
+      p.textContent = analysis.status === 'GREEN' ? 'KEEP — no enabled rule asked you to change this message.' : 'Paste a message to begin.';
+      $('#actions').append(p);
+    } else {
+      for (const action of analysis.actions) {
+        const p = document.createElement('p');
+        p.textContent = action.child_legible;
+        $('#actions').append(p);
+      }
+    }
+
+    $('#receipt').textContent = JSON.stringify(analysis.receipt, null, 2);
+    $('#copyStatus').textContent = '';
+    releaseCandidate = analysis.status === 'GREEN' ? text : '';
+    releaseAllowed = analysis.status === 'GREEN';
+    $('#copyChecked').disabled = !releaseAllowed;
+    $('#makeSafer').disabled = analysis.status === 'GREEN' || analysis.status === 'HELD';
+  }
+
+  $('#check').addEventListener('click', render);
+
+  $('#makeSafer').addEventListener('click', () => {
+    const safer = makeHolonomyLoomSaferCopy({
+      text: $('#message').value,
+      protectedTerms: terms($('#protected').value),
+      journeyMarkers: markers($('#journeys').value)
+    });
+    releaseCandidate = safer.text;
+    releaseAllowed = safer.release_allowed;
+    $('#copyChecked').disabled = !releaseAllowed;
+    $('#copyStatus').textContent = safer.child_legible || '';
+  });
+
+  $('#copyChecked').addEventListener('click', async () => {
+    if (!releaseAllowed || !releaseCandidate) return;
+    try {
+      await navigator.clipboard.writeText(releaseCandidate);
+      $('#copyStatus').textContent = 'Copied the checked release candidate. The Loom does not control what happens after you paste it somewhere else.';
+    } catch {
+      $('#copyStatus').textContent = 'Your browser did not allow clipboard access. The Loom did not bypass that browser boundary.';
+    }
+  });
+</script>
+</body>
+</html>
