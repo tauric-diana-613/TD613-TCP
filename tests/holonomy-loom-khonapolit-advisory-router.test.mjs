@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
 import handler from '../api/khonapolit.js';
+import {
+  HOLONOMY_LOOM_ADVISORY_CLAIM_CEILING,
+  canonicalLoomAdvisoryFinding
+} from '../app/dome-world/holonomy-loom-advisory-policy.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import {
   HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA,
@@ -18,21 +22,13 @@ function response() {
 function validBody() {
   return {
     schema: HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA,
-    advisory: {
-      schema: HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
-      action: 'EXPLAIN_FINDING',
-      rule_id: 'COMMON_API_KEY_BLOCK',
-      evidence_class: 'DETERMINISTIC_PATTERN_MATCH',
-      action_class: 'REMOVE',
-      minimized_context: {
-        finding_category: 'credential-like token',
-        why_class: 'credential_access_risk',
-        route_mode: 'TD613_HOSTED'
-      },
-      claim_ceiling: 'Provider explanation is advisory only and cannot alter deterministic Loom release policy.'
-    },
+    advisory: canonicalLoomAdvisoryFinding('COMMON_API_KEY_BLOCK', 'TD613_HOSTED'),
     issuance: { waiveIssuance: true }
   };
+}
+
+function mutableValidBody() {
+  return JSON.parse(JSON.stringify(validBody()));
 }
 
 const originalFetch = globalThis.fetch;
@@ -61,30 +57,22 @@ globalThis.fetch = async (url, options = {}) => {
 
 try {
   {
-    const req = {
-      method: 'GET',
-      query: { operation: 'loom-advisory' },
-      headers: { 'x-forwarded-for': '203.0.113.201' }
-    };
+    const req = { method: 'GET', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.201' } };
     const res = response();
     await handler(req, res);
     assert.equal(res.statusCode, 200);
     assert.equal(res.payload.action, 'EXPLAIN_FINDING');
+    assert.equal(res.payload.policyPosture, 'canonical-token-only');
     assert.equal(res.payload.historyForwarded, false);
     assert.equal(res.payload.rawDraftAccepted, false);
     assert.equal(calls.length, 0);
   }
 
   {
-    const bad = validBody();
+    const bad = mutableValidBody();
     bad.advisory.raw_draft = 'RAW_DRAFT_CANARY_MUST_NOT_TRAVEL_613';
     bad.advisory.conversation_history = ['RAW_THREAD_CANARY_MUST_NOT_TRAVEL_613'];
-    const req = {
-      method: 'POST',
-      query: { operation: 'loom-advisory' },
-      headers: { 'x-forwarded-for': '203.0.113.202' },
-      body: bad
-    };
+    const req = { method: 'POST', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.202' }, body: bad };
     const res = response();
     await handler(req, res);
     assert.equal(res.statusCode, 400);
@@ -95,18 +83,47 @@ try {
   }
 
   {
-    const req = {
-      method: 'POST',
-      query: { operation: 'loom-advisory' },
-      headers: { 'x-forwarded-for': '203.0.113.203' },
-      body: validBody()
-    };
+    const disguised = mutableValidBody();
+    disguised.advisory.minimized_context.finding_category = 'RAW_CATEGORY_CANARY_MUST_NOT_TRAVEL_613';
+    const req = { method: 'POST', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.204' }, body: disguised };
+    const res = response();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.match(res.payload.detail, /finding_category must equal canonical policy value/);
+    assert.equal(calls.length, 0, 'raw text disguised as an allowed finding category reached provider fetch');
+  }
+
+  {
+    const disguised = mutableValidBody();
+    disguised.advisory.minimized_context.why_class = 'RAW_WHY_CANARY_MUST_NOT_TRAVEL_613';
+    const req = { method: 'POST', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.205' }, body: disguised };
+    const res = response();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.match(res.payload.detail, /why_class must equal canonical policy value/);
+    assert.equal(calls.length, 0, 'raw text disguised as an allowed why class reached provider fetch');
+  }
+
+  {
+    const disguised = mutableValidBody();
+    disguised.advisory.claim_ceiling = 'RAW_CLAIM_CANARY_MUST_NOT_TRAVEL_613';
+    const req = { method: 'POST', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.206' }, body: disguised };
+    const res = response();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.match(res.payload.detail, /claim_ceiling must equal canonical policy value/);
+    assert.equal(calls.length, 0, 'raw text disguised as claim ceiling reached provider fetch');
+  }
+
+  {
+    const req = { method: 'POST', query: { operation: 'loom-advisory' }, headers: { 'x-forwarded-for': '203.0.113.203' }, body: validBody() };
     const res = response();
     await handler(req, res);
     assert.equal(res.statusCode, 200);
     assert.equal(res.payload.ok, true);
     assert.equal(res.headers['X-TD613-Holonomy-Loom-Advisory'], 'minimized-khonapolit/v0.1');
     assert.equal(res.headers['X-TD613-Holonomy-Loom-History'], 'none');
+    assert.equal(res.headers['X-TD613-Holonomy-Loom-Policy'], 'canonical-token-only');
     assert.equal(calls.length, 1);
 
     const providerRequest = JSON.parse(String(calls[0].options.body || '{}'));
@@ -121,15 +138,23 @@ try {
     assert.match(providerText, /HOLONOMY LOOM · MINIMIZED ADVISORY REQUEST/);
     assert.match(providerText, /RULE ID: COMMON_API_KEY_BLOCK/);
     assert.match(providerText, /FINDING CATEGORY: credential-like token/);
+    assert.match(providerText, /WHY CLASS: credential_access_risk/);
     assert.match(providerText, /ROUTE MODE: TD613_HOSTED/);
     assert.match(providerText, /Do not ask for, reconstruct, or speculate about the omitted source text/);
+    assert.match(providerText, new RegExp(HOLONOMY_LOOM_ADVISORY_CLAIM_CEILING.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     assert.match(systemText, /ADDRESS: Kʰonapolit/);
     assert.match(systemText, /COVENANT KEY: Khona‌lit-po/);
 
-    assert.equal(serialized.includes('RAW_DRAFT_CANARY_MUST_NOT_TRAVEL_613'), false);
-    assert.equal(serialized.includes('RAW_THREAD_CANARY_MUST_NOT_TRAVEL_613'), false);
-    assert.equal(serialized.includes('conversation_history'), false);
-    assert.equal(serialized.includes('raw_draft'), false);
+    for (const forbidden of [
+      'RAW_DRAFT_CANARY_MUST_NOT_TRAVEL_613',
+      'RAW_THREAD_CANARY_MUST_NOT_TRAVEL_613',
+      'RAW_CATEGORY_CANARY_MUST_NOT_TRAVEL_613',
+      'RAW_WHY_CANARY_MUST_NOT_TRAVEL_613',
+      'RAW_CLAIM_CANARY_MUST_NOT_TRAVEL_613',
+      'conversation_history',
+      'raw_draft'
+    ]) assert.equal(serialized.includes(forbidden), false, `forbidden carrier reached provider: ${forbidden}`);
+
     assert.equal(res.payload.receipt.invocation.mode, 'full-invocation');
     assert.equal(res.payload.receipt.storage.serverConversationStorage, false);
     assert.equal(res.payload.receipt.recommendationNotCommand, true);
@@ -141,4 +166,4 @@ try {
   clearGeminiModelState();
 }
 
-console.log('Holonomy Loom Kʰonapolit minimized advisory router: PASS');
+console.log('Holonomy Loom Kʰonapolit canonical-token advisory router: PASS');
