@@ -21,7 +21,8 @@
         "docs/AIA_CISTERN_LAW.md",
         "docs/hush-remote-provider-setup.md",
         "GitHub issue #1028",
-        "PR #1026"
+        "PR #1026",
+        "PR #1033"
       ],
       "evidence_basis": [
         "child-legible consequence before ontology",
@@ -29,7 +30,7 @@
         "Cistern minimum-disclosure and human-latched release law",
         "Aperture visibility-versus-identifiability and abstention discipline",
         "server-side Gemini secret custody with remote output subordinate to deterministic local gates",
-        "Holonomy Loom product brief requiring bounded guarantees"
+        "preserved PR #1033 burden RED showing that a five-step visible Loom route was structurally too heavy"
       ],
       "transformations": [
         "hosted TD613 surface before portability",
@@ -37,7 +38,9 @@
         "deterministic protection rules precede optional Gemini semantic help",
         "provider-bound text is a separately visible and human-confirmed route",
         "cross-journey origin claims require admitted custody rather than resemblance",
-        "green means no enabled deterministic rule fired rather than zero privacy risk"
+        "green means no enabled deterministic rule fired rather than zero privacy risk",
+        "five visible route steps compressed to one check, one answer, and one rest surface",
+        "Show me why retained as optional progressive descent rather than a required route step"
       ],
       "station_owners": ["Dome-World"]
     },
@@ -65,29 +68,16 @@
       ],
       "steps": [
         {
-          "step_id": "loom_notice",
-          "label": "See what this message carries",
-          "phase": "NOTICE",
-          "required_fields": ["draft present", "enabled protection rules"],
-          "dependencies": [],
-          "legibility_millipoints": 990,
-          "affordance_millipoints": 980,
-          "gluing_obstruction_millipoints": 0,
-          "projection_crossings": 0,
-          "route_memory_edges": 0,
-          "operator_action_required": false
-        },
-        {
           "step_id": "loom_check",
           "label": "Check this message",
           "phase": "ACT",
-          "required_fields": ["TD613-controlled deterministic rule check", "no implicit Gemini/provider route"],
-          "dependencies": ["loom_notice"],
+          "required_fields": ["enabled protection rules", "no implicit Gemini/provider route"],
+          "dependencies": [],
           "legibility_millipoints": 990,
           "affordance_millipoints": 990,
           "gluing_obstruction_millipoints": 0,
           "projection_crossings": 0,
-          "route_memory_edges": 1,
+          "route_memory_edges": 0,
           "operator_action_required": true
         },
         {
@@ -100,33 +90,20 @@
           "affordance_millipoints": 980,
           "gluing_obstruction_millipoints": 0,
           "projection_crossings": 1,
-          "route_memory_edges": 2,
-          "operator_action_required": false
-        },
-        {
-          "step_id": "loom_name",
-          "label": "Show me why",
-          "phase": "NAME",
-          "required_fields": ["exact rule that fired", "bounded claim ceiling", "route-memory basis when available", "optional provider route clearly separated"],
-          "dependencies": ["loom_answer"],
-          "legibility_millipoints": 950,
-          "affordance_millipoints": 950,
-          "gluing_obstruction_millipoints": 0,
-          "projection_crossings": 1,
-          "route_memory_edges": 3,
+          "route_memory_edges": 1,
           "operator_action_required": false
         },
         {
           "step_id": "loom_rest",
           "label": "Keep it, make a safer copy, ask for deeper help, or leave",
           "phase": "REST",
-          "required_fields": ["draft remains under operator control", "hard-blocked Loom-controlled release remains blocked", "provider call requires separate human choice", "exit without penalty"],
-          "dependencies": ["loom_name"],
+          "required_fields": ["draft remains under operator control", "blocked release and optional provider route remain separately governed", "exit without penalty"],
+          "dependencies": ["loom_answer"],
           "legibility_millipoints": 990,
           "affordance_millipoints": 990,
           "gluing_obstruction_millipoints": 0,
           "projection_crossings": 1,
-          "route_memory_edges": 4,
+          "route_memory_edges": 2,
           "operator_action_required": true
         }
       ]
@@ -134,15 +111,18 @@
     "causal_structure": {
       "input": "a human-supplied draft plus explicitly enabled protection rules",
       "operator": "TD613-hosted deterministic DLP preflight with bounded AIA route-memory context and optional separately governed Gemini semantic assistance",
-      "observable": "plain-language KEEP / CHANGE / REMOVE findings, explicit abstention where provenance is not identifiable, and a blocked Loom-controlled release posture when a hard rule fires",
+      "observable": "one child-legible KEEP / CHANGE / REMOVE result with optional Show me why descent, explicit abstention where provenance is not identifiable, and a blocked Loom-controlled release posture when a hard rule fires",
       "authority": "TD613 governance; human closure; Dome-World scene host; Gemini may suggest but cannot authorize release",
       "equations": []
     },
     "research_frame": {
-      "question": "Can a TD613-hosted Holonomy Loom make message egress child-legible while preserving deterministic hard-block rules, provenance abstention, route memory, optional disclosed Gemini assistance, and human closure without increasing route burden over an ontology-first DLP flow?",
-      "hypothesis": "Consequence-first hosted preflight with KEEP / CHANGE / REMOVE and a separately disclosed provider route will preserve the security boundary with lower structural burden than a policy-first workflow while keeping future portability possible.",
+      "question": "Can a TD613-hosted Holonomy Loom make message egress child-legible in one check and one answer while preserving deterministic hard-block rules, provenance abstention, route memory, optional disclosed Gemini assistance, rest, and human closure without increasing route burden over an ontology-first DLP flow?",
+      "hypothesis": "Compressing the visible route to check, answer, and rest while keeping technical explanation as optional descent will preserve the security boundary and become non-worsening across all declared route-burden models.",
       "observable_behavior": [
         "the user sees what may leave before technical terminology appears",
+        "the user performs one primary Check this message action",
+        "the primary result is one KEEP / CHANGE / REMOVE surface rather than a chain of explanation screens",
+        "Show me why is optional progressive descent and not a required route step",
         "a hard-block finding prevents Loom-controlled release until adjudicated",
         "the default check route does not silently invoke Gemini",
         "an optional Gemini route shows that text will leave the TD613 first-party boundary before the operator confirms it",
@@ -158,6 +138,7 @@
         "users may understand KEEP / CHANGE / REMOVE because of prior security-tool experience"
       ],
       "expected_failure_modes": [
+        "route compression removes a governance distinction needed to preserve release authority",
         "raw draft is transmitted to Gemini by the default deterministic check route",
         "provider-bound text or destination is hidden from the operator",
         "technical DLP or holonomy terminology appears before consequence",
@@ -168,7 +149,8 @@
         "portable packaging is claimed before the hosted boundary has been observed"
       ],
       "falsifier": [
-        "the proposed route is structurally more burdensome than the ontology-first baseline under any admitted route-burden model",
+        "the compressed proposed route remains structurally more burdensome than the ontology-first baseline under any admitted route-burden model",
+        "compression removes route memory, rest, exit, provider disclosure, or human closure",
         "the basic deterministic preflight requires Gemini or another remote model provider",
         "the design cannot preserve an explicit UNKNOWN / ABSTAIN result for unsupported provenance",
         "the design requires technical ontology before the user can tell what to do",
@@ -190,6 +172,7 @@
     "claim_ceiling": {
       "allowed_claims": [
         "the proposed hosted route puts child-legible consequence before technical terminology",
+        "the visible route is compressed to one check, one answer, and rest",
         "deterministic hard blocks remain distinct from optional model suggestions",
         "route-memory origin claims may abstain when custody is insufficient",
         "human closure remains required"
@@ -201,7 +184,8 @@
         "green means zero privacy risk",
         "ChatGPT or another downstream platform cannot infer anything from released text",
         "remote provider output grants release authority",
-        "the hosted design is already portable"
+        "the hosted design is already portable",
+        "route compression proves human comprehension"
       ]
     },
     "technical_terms_withheld": [
@@ -274,9 +258,10 @@
     "observation_status": "UNRESOLVED",
     "causal_trace": [
       "the operator sees that a draft may carry protected material",
-      "the TD613-controlled deterministic rules return KEEP / CHANGE / REMOVE without silently invoking Gemini",
-      "unsupported provenance remains UNKNOWN or ABSTAIN",
-      "optional deeper semantic help is presented as a separate provider-bound route requiring an explicit human choice",
+      "one explicit Check this message action invokes the TD613-controlled deterministic rules without silently invoking Gemini",
+      "one result surface returns KEEP / CHANGE / REMOVE while unsupported provenance remains UNKNOWN or ABSTAIN",
+      "Show me why remains optional progressive descent rather than a required top-level route step",
+      "optional deeper semantic help is a separate provider-bound route requiring explicit human choice",
       "release authority remains human-held"
     ],
     "losses": [],
@@ -292,15 +277,16 @@
     ],
     "glyph_candidates": [],
     "static_equivalent": {
-      "summary": "See what the draft carries, check deterministic rules first, keep model help separate, and leave or revise without penalty.",
-      "steps": ["see", "check", "understand", "rest"]
+      "summary": "Check once, see KEEP / CHANGE / REMOVE, inspect deeper only if wanted, then keep, revise, ask for deeper help, or leave.",
+      "steps": ["check", "answer", "rest"]
     }
   },
   "name": {
-    "plain_language": "The Loom can control the door it owns. It must tell you before it uses somebody else's door.",
+    "plain_language": "The Loom should feel like one check and one answer. The science can live underneath.",
     "glyph_relation": null,
     "technical_term": "hosted-first anisotropic DLP release boundary",
     "non_equivalence": [
+      "child-legible is not multistep explanation",
       "deterministic block is not model suggestion",
       "provider suggestion is not release authority",
       "visible resemblance is not provenance",
