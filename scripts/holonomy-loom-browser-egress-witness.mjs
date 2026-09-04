@@ -48,10 +48,17 @@ export async function runHolonomyLoomBrowserEgressWitness({ page, base, browserN
   try {
     await page.goto(`${String(base).replace(/\/+$/, '')}${LOOM_PATH}`, { waitUntil: 'networkidle', timeout: 60_000 });
 
+    const protectionSummary = page.getByText('Protection rules', { exact: true });
+    const protectionDetails = protectionSummary.locator('..');
+    const whyDetails = page.getByText('Show me why', { exact: true }).locator('..');
+
     check('child-legible title visible', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
     check('child-legible first sentence visible', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
     check('check control visible', await page.locator('#check').isVisible());
-    check('Show me why closed before interaction', !(await isDetailsOpen(page.getByText('Show me why', { exact: true }).locator('..'))));
+    check('Show me why closed before interaction', !(await isDetailsOpen(whyDetails)));
+
+    await protectionSummary.click();
+    check('protection rules open by explicit user action', await isDetailsOpen(protectionDetails));
 
     interactionStarted = true;
     await page.locator('#message').fill(`kiki ${canary} ${protectedMarker} ${journeyMarker}`);
@@ -64,7 +71,7 @@ export async function runHolonomyLoomBrowserEgressWitness({ page, base, browserN
     check('raw copy blocked on RED', await page.locator('#copyChecked').isDisabled());
     check('safer copy offered on RED', await page.locator('#makeSafer').isEnabled());
     check('declared journey relation visible', (await page.locator('#journeyResult').innerText()).includes('another journey'));
-    check('Show me why remains optional after consequence', !(await isDetailsOpen(page.getByText('Show me why', { exact: true }).locator('..'))));
+    check('Show me why remains optional after consequence', !(await isDetailsOpen(whyDetails)));
 
     await page.locator('#makeSafer').click();
     check('safer-copy action settles', (await page.locator('#copyStatus').innerText()).trim().length > 0);
