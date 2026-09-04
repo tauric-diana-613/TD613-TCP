@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Holonomy Loom · Local Pocket</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:light dark}
+body{max-width:760px;margin:0 auto;padding:24px;line-height:1.45}
+main{display:grid;gap:18px}
+h1{margin-bottom:0}.lede{font-size:1.12rem}.quiet{opacity:.75}.card{border:1px solid currentColor;border-radius:14px;padding:16px}
+textarea,input{width:100%;box-sizing:border-box;font:inherit;padding:12px;border-radius:10px;border:1px solid currentColor;background:transparent}
+textarea{min-height:150px;resize:vertical}.small{min-height:86px}
+button{font:inherit;font-weight:700;padding:11px 14px;border-radius:10px;border:1px solid currentColor;cursor:pointer}button[disabled]{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:10px}.traffic{font-size:1.35rem;font-weight:800}.finding{padding:10px 0;border-top:1px solid color-mix(in srgb,currentColor 25%,transparent)}
+.finding:first-child{border-top:0}.pill{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:2px 8px;font-size:.8rem;font-weight:700}
+label{font-weight:700;display:block;margin-bottom:6px}.checkline{display:flex;gap:10px;align-items:flex-start}.checkline input{width:auto;margin-top:.3rem}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}details{border-top:1px solid color-mix(in srgb,currentColor 25%,transparent);padding-top:12px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Holonomy Loom</h1>
+<p class="lede">Before you send it, check what this message carries.</p>
+<p class="quiet"><strong>Local pocket:</strong> this page works without a server or AI model. It does not save your draft.</p>
+</header>
+
+<section class="card">
+<label for="draft">Paste the message you are thinking about sending</label>
+<textarea id="draft" autocomplete="off" spellcheck="false" placeholder="Paste a draft here. Nothing leaves this page during the local check."></textarea>
+</section>
+
+<section class="card">
+<label for="protected">Anything that must stay private?</label>
+<p class="quiet">Put one exact word, name, code, or phrase on each line. The Loom will treat a match as a hard stop.</p>
+<textarea id="protected" class="small" autocomplete="off" spellcheck="false" placeholder="private project name&#10;case number&#10;family nickname"></textarea>
+</section>
+
+<section class="card">
+<div class="checkline">
+<input id="anotherJourney" type="checkbox">
+<div><label for="anotherJourney">Some of this came from another journey</label><div class="quiet">Use this only when <em>you already know</em> you pasted from another thread, note, file, or source. The Loom will not guess provenance from resemblance.</div></div>
+</div>
+<label for="journeyLabel" style="margin-top:12px">Optional label for that journey</label>
+<input id="journeyLabel" autocomplete="off" placeholder="e.g. earlier ChatGPT thread, field note, client memo">
+</section>
+
+<div class="actions">
+<button id="check">CHECK THIS MESSAGE</button>
+<button id="safer" disabled>MAKE A SAFER COPY</button>
+<button id="copy" disabled>COPY FOR CHAT</button>
+</div>
+
+<section id="result" class="card" aria-live="polite">
+<div class="traffic">NOT CHECKED YET</div>
+<p>Run the local check before using the Loom-controlled copy door.</p>
+</section>
+
+<section class="card">
+<strong>What green means</strong>
+<p>Green means: <strong>none of the protection rules currently turned on matched this draft.</strong> It does not mean zero privacy risk.</p>
+<p><strong>The Loom can control what it lets leave its own door. It cannot control every room the message enters afterward.</strong></p>
+<details>
+<summary>Where Gemini fits later</summary>
+<p>Gemini can be offered later as an explicit, optional helper for explanation or rewriting. This local check does not call Gemini, does not need an API key, and does not depend on any remote model to decide whether its own copy door is blocked.</p>
+</details>
+</section>
+</main>
+<script>
+(() => {
+'use strict';
+
+const networkAudit = { attempts: 0 };
+function blockedNetwork(){ networkAudit.attempts += 1; throw new Error('HOLONOMY_LOOM_LOCAL_NETWORK_BLOCK'); }
+try { window.fetch = blockedNetwork; } catch {}
+try { XMLHttpRequest.prototype.open = blockedNetwork; } catch {}
+try { window.WebSocket = function(){ return blockedNetwork(); }; } catch {}
+try { window.EventSource = function(){ return blockedNetwork(); }; } catch {}
+try { navigator.sendBeacon = blockedNetwork; } catch {}
+
+const draftEl = document.querySelector('#draft');
+const protectedEl = document.querySelector('#protected');
+const anotherJourneyEl = document.querySelector('#anotherJourney');
+const journeyLabelEl = document.querySelector('#journeyLabel');
+const resultEl = document.querySelector('#result');
+const saferButton = document.querySelector('#safer');
+const copyButton = document.querySelector('#copy');
+
+let lastCheckedText = '';
+let lastFindings = [];
+let currentReleaseAllowed = false;
+
+const RULES = Object.freeze([
+  { id:'PRIVATE_KEY', severity:'RED', re:/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g, why:'This looks like a private key. A private key can unlock something.' },
+  { id:'GOOGLE_API_KEY', severity:'RED', re:/\bAIza[0-9A-Za-z_-]{30,}\b/g, why:'This looks like a Google API key. An API key can give another system access.' },
+  { id:'GITHUB_TOKEN', severity:'RED', re:/\bgh(?:p|o|u|s|r)_[A-Za-z0-9_]{20,}\b/g, why:'This looks like a GitHub token. A token can act like a key.' },
+  { id:'BEARER_TOKEN', severity:'RED', re:/\bBearer\s+[A-Za-z0-9._~+\/-]{16,}={0,2}\b/gi, why:'This looks like a bearer token. Whoever has it may be able to use it.' },
+  { id:'JWT', severity:'RED', re:/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g, why:'This looks like a signed session token.' },
+  { id:'EMAIL', severity:'YELLOW', re:/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, why:'This message contains an email address. That can point back to a person or organization.' },
+  { id:'PHONE', severity:'YELLOW', re:/(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/g, why:'This message contains something shaped like a phone number.' }
+]);
+
+function protectedStrings(){
+  return protectedEl.value.split(/\r?\n/).map(v => v.trim()).filter(Boolean);
+}
+
+function collectFindings(text){
+  const findings = [];
+  for (const rule of RULES){
+    rule.re.lastIndex = 0;
+    for (const match of text.matchAll(rule.re)){
+      findings.push({ rule:rule.id, severity:rule.severity, match:match[0], start:match.index, end:match.index + match[0].length, why:rule.why });
+    }
+  }
+  for (const exact of protectedStrings()){
+    let cursor = 0;
+    while (exact && (cursor = text.indexOf(exact, cursor)) !== -1){
+      findings.push({ rule:'USER_PROTECTED_EXACT', severity:'RED', match:exact, start:cursor, end:cursor + exact.length, why:'You told the Loom this exact text must stay private.' });
+      cursor += exact.length;
+    }
+  }
+  if (anotherJourneyEl.checked){
+    findings.push({ rule:'MANUAL_ROUTE_CONTEXT', severity:'YELLOW', match:journeyLabelEl.value.trim() || 'another journey', start:null, end:null, why:'You told the Loom some of this came from another journey. The Loom is showing that connection; it is not claiming the connection proves truth.' });
+  }
+  return findings.sort((a,b) => (a.start ?? Number.MAX_SAFE_INTEGER) - (b.start ?? Number.MAX_SAFE_INTEGER));
+}
+
+function statusFor(findings){
+  if (findings.some(f => f.severity === 'RED')) return 'RED';
+  if (findings.some(f => f.severity === 'YELLOW')) return 'YELLOW';
+  return 'GREEN';
+}
+
+function esc(value){ return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+
+function render(findings){
+  const status = statusFor(findings);
+  const message = status === 'GREEN'
+    ? 'Nothing matched the protection rules you turned on.'
+    : status === 'YELLOW'
+      ? 'This message carries something you may not mean to send.'
+      : 'Stop. This message contains something your protection rules say must not leave.';
+  const body = findings.length
+    ? findings.map(f => `<div class="finding"><span class="pill">${esc(f.severity)}</span> <strong>${esc(f.rule)}</strong><br>${esc(f.why)}${f.rule !== 'MANUAL_ROUTE_CONTEXT' ? `<br><code>${esc(f.match)}</code>` : ''}</div>`).join('')
+    : '<p>No enabled rule fired.</p>';
+  resultEl.innerHTML = `<div class="traffic">${status}</div><p>${esc(message)}</p>${body}<p class="quiet">Local network attempts during this check: ${networkAudit.attempts}</p>`;
+  currentReleaseAllowed = !findings.some(f => f.severity === 'RED');
+  copyButton.disabled = !currentReleaseAllowed;
+  saferButton.disabled = findings.length === 0;
+}
+
+function runCheck(){
+  lastCheckedText = draftEl.value;
+  lastFindings = collectFindings(lastCheckedText);
+  render(lastFindings);
+}
+
+function makeSaferCopy(){
+  if (!lastCheckedText && draftEl.value) runCheck();
+  let safer = lastCheckedText;
+  const replaceable = lastFindings
+    .filter(f => Number.isInteger(f.start) && Number.isInteger(f.end))
+    .sort((a,b) => b.start - a.start);
+  for (const finding of replaceable){
+    const tag = finding.severity === 'RED' ? '[PROTECTED]' : '[GENERALIZED]';
+    safer = safer.slice(0, finding.start) + tag + safer.slice(finding.end);
+  }
+  draftEl.value = safer;
+  runCheck();
+}
+
+async function copyForChat(){
+  if (draftEl.value !== lastCheckedText) runCheck();
+  if (!currentReleaseAllowed){
+    resultEl.insertAdjacentHTML('beforeend','<p><strong>Copy blocked:</strong> a hard protection rule still fires.</p>');
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(draftEl.value);
+    resultEl.insertAdjacentHTML('beforeend','<p><strong>Copied.</strong> Only the checked text went through the Loom-controlled copy door.</p>');
+  } catch {
+    resultEl.insertAdjacentHTML('beforeend','<p><strong>Clipboard unavailable here.</strong> The Loom did not send the draft anywhere.</p>');
+  }
+}
+
+document.querySelector('#check').addEventListener('click', runCheck);
+saferButton.addEventListener('click', makeSaferCopy);
+copyButton.addEventListener('click', copyForChat);
+draftEl.addEventListener('input', () => { currentReleaseAllowed = false; copyButton.disabled = true; });
+protectedEl.addEventListener('input', () => { currentReleaseAllowed = false; copyButton.disabled = true; });
+anotherJourneyEl.addEventListener('change', () => { currentReleaseAllowed = false; copyButton.disabled = true; });
+journeyLabelEl.addEventListener('input', () => { currentReleaseAllowed = false; copyButton.disabled = true; });
+
+window.__TD613_HOLONOMY_LOOM_LOCAL_POCKET__ = Object.freeze({
+  schema:'td613.holonomy-loom.local-pocket/v0.1',
+  local_first:true,
+  network_required:false,
+  remote_model_required:false,
+  automatic_persistence:false,
+  hard_release_gate:true,
+  route_context_source:'human-declared-only',
+  networkAudit
+});
+})();
+</script>
+</body>
+</html>
