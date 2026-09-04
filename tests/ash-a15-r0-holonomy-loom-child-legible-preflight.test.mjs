@@ -52,6 +52,16 @@ assert.equal(hard.findings[0].action, 'REMOVE');
 assert.equal(hard.release_boundary.raw_release_allowed, false);
 assert.match(hard.summary, /must not leave/i);
 
+const bearer = analyzeHolonomyLoomMessage({ text: 'Authorization: Bearer abcdefghijklmnopqrstu==.' });
+assert.equal(bearer.status, 'RED');
+assert.equal(bearer.findings[0].rule_id, 'BEARER_TOKEN_BLOCK');
+
+const privateKey = analyzeHolonomyLoomMessage({
+  text: '-----BEGIN OPENSSH PRIVATE KEY-----\nnot-a-real-key-fixture\n-----END OPENSSH PRIVATE KEY-----'
+});
+assert.equal(privateKey.status, 'RED');
+assert.equal(privateKey.findings[0].rule_id, 'PRIVATE_KEY_BLOCK');
+
 const declared = analyzeHolonomyLoomMessage({
   text: 'The project codename is Moon Porch.',
   protectedTerms: [{ value: 'Moon Porch', label: 'project codename' }]
@@ -67,6 +77,13 @@ const saferDeclared = makeHolonomyLoomSaferCopy({
 assert.equal(saferDeclared.release_allowed, true);
 assert.equal(saferDeclared.text.includes('Moon Porch'), false);
 assert.match(saferDeclared.text, /\[protected thing removed\]/);
+
+const replacementCollision = makeHolonomyLoomSaferCopy({
+  text: 'Do not send the word protected.',
+  protectedTerms: [{ value: 'protected', label: 'declared protected word' }]
+});
+assert.equal(replacementCollision.release_allowed, true, 'Generated replacement wording may not create a false RED against the original exact-term rule.');
+assert.equal(replacementCollision.text.includes('Do not send the word protected.'), false);
 
 const journey = analyzeHolonomyLoomMessage({
   text: 'Bring the red lantern note into this answer.',
