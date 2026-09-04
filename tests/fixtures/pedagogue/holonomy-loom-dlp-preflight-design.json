@@ -4,7 +4,7 @@
   "surface_reference": "Holonomy Loom / Hosted-First Child-Legible DLP Preflight",
   "governance_context": "TD613",
   "determinism": {
-    "frozenClock": "2026-09-03T23:24:00-04:00",
+    "frozenClock": "2026-09-04T03:24:00Z",
     "idSeed": "holonomy-loom-hosted-first-dlp-preflight-v1",
     "idScope": "Holonomy Loom / Hosted-First Child-Legible DLP Preflight"
   },
