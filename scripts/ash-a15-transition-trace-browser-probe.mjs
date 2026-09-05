@@ -13,6 +13,7 @@ const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-
 const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
 const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'marrowline-cartesian-finding-decision-separability-browser-witness.mjs');
 const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marrowline-cross-binding-rejection-nonpoisoning-browser-witness.mjs');
+const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-finding-order-permutation-stability-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -148,3 +149,8 @@ await import(`${pathToFileURL(cartesianFindingDecisionSeparabilityWitnessPath).h
 // rejection is insufficient if it mutates either binding, either envelope, the Carry Case,
 // or any later lawful sibling result. All such poisoning vetoes calibration.
 await import(`${pathToFileURL(crossBindingRejectionNonpoisoningWitnessPath).href}?td613_marrowline_cross_binding_rejection_nonpoisoning=${Date.now()}`);
+
+// The finding-order successor reverses the same two canonical findings inside a fresh
+// Carry Case while preserving their rule-bound return identities. Container order must
+// remain visible; per-rule Hosted projections, decisions, and bindings must not become slot-bound.
+await import(`${pathToFileURL(findingOrderPermutationStabilityWitnessPath).href}?td613_marrowline_finding_order_permutation_stability=${Date.now()}`);
