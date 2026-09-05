@@ -24,6 +24,15 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+function isFirefoxBrowserChromeFaviconCspDiagnostic(message) {
+  if (browserName !== 'firefox' || message.type() !== 'error') return false;
+  const text = String(message.text() || '');
+  const location = String(message.location()?.url || '');
+  return text.includes('Content-Security-Policy')
+    && text.includes('/favicon.ico')
+    && (location.includes('resource:///modules/FaviconLoader.sys.mjs') || text.includes('FaviconLoader.sys.mjs'));
+}
+
 await fs.mkdir(artifactDir, { recursive: true });
 await fs.writeFile(artifactPath, html, 'utf8');
 
@@ -74,7 +83,8 @@ const report = {
   storage: {},
   errors: {
     console: [],
-    page: []
+    page: [],
+    browser_chrome: []
   },
   authority: {
     release_authority: false,
@@ -100,7 +110,12 @@ try {
   const requests = [];
   page.on('request', request => requests.push(request.url()));
   page.on('console', message => {
-    if (message.type() === 'error') report.errors.console.push(message.text());
+    if (message.type() !== 'error') return;
+    if (isFirefoxBrowserChromeFaviconCspDiagnostic(message)) {
+      report.errors.browser_chrome.push({ text: message.text(), location: message.location()?.url || null });
+      return;
+    }
+    report.errors.console.push(message.text());
   });
   page.on('pageerror', error => report.errors.page.push(error.message));
 
@@ -291,6 +306,8 @@ try {
   assert(report.network.initial_document_requests === 1, `Expected exactly one document request, observed ${report.network.initial_document_requests}.`);
   assert(report.network.unexpected_requests.length === 0, `Unexpected browser requests: ${JSON.stringify(report.network.unexpected_requests)}`);
   assert(serverHits.length === 1 && serverHits[0].url === `/${artifactName}`, `Unexpected local witness server hits: ${JSON.stringify(serverHits)}`);
+  assert(report.errors.browser_chrome.length <= 1, `Unexpected browser-chrome diagnostic count: ${report.errors.browser_chrome.length}.`);
+  if (browserName !== 'firefox') assert(report.errors.browser_chrome.length === 0, `Non-Firefox browser produced classified browser-chrome diagnostics: ${JSON.stringify(report.errors.browser_chrome)}`);
   assert(report.errors.console.length === 0, `Console errors: ${JSON.stringify(report.errors.console)}`);
   assert(report.errors.page.length === 0, `Page errors: ${JSON.stringify(report.errors.page)}`);
 
