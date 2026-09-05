@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'">
+<title>TD613 · Mallow’s Local Pocket</title>
+<style>
+:root{font-family:ui-rounded,"SF Pro Rounded",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#342842;background:#fff9ff;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 5%,#ffdff1,transparent 28rem),radial-gradient(circle at 88% 8%,#dff3ff,transparent 26rem),linear-gradient(180deg,#fff9ff,#f8fbff 58%,#fff9ef)}
+button,textarea{font:inherit}.pocket{width:min(54rem,calc(100% - 1rem));margin:auto;padding:clamp(.65rem,3vw,2rem) 0 2rem}.card{border:2px solid rgba(73,56,91,.16);border-radius:1.45rem;background:rgba(255,255,255,.9);box-shadow:0 12px 28px rgba(76,55,95,.09);padding:clamp(1rem,3vw,1.45rem);margin-top:.8rem}.hero{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}.eyebrow{margin:0 0 .35rem;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#74568e}h1,h2,h3,p{margin-top:0}h1{margin-bottom:.4rem;font-size:clamp(2rem,8vw,4.2rem);line-height:.95;letter-spacing:-.045em}.lede{margin:0;max-width:38rem;font-size:1.08rem;line-height:1.5}.mallow{width:6.2rem;height:6.2rem;border-radius:48% 52% 46% 54%/52% 44% 56% 48%;background:linear-gradient(145deg,#fff2b9,#ffd9ef 57%,#dbe8ff);border:3px solid rgba(59,43,72,.25);position:relative;box-shadow:inset 0 -.5rem 0 rgba(79,53,97,.06)}.eye{position:absolute;top:2.15rem;width:.55rem;height:.72rem;border-radius:50%;background:#392e45}.eye.a{left:1.7rem}.eye.b{right:1.7rem}.smile{position:absolute;left:50%;top:3.35rem;width:1.25rem;height:.65rem;transform:translateX(-50%);border-bottom:3px solid #392e45;border-radius:0 0 1rem 1rem}.step{display:flex;gap:.7rem;align-items:flex-start}.num{display:grid;place-items:center;flex:0 0 auto;width:2.25rem;height:2.25rem;border-radius:999px;background:#49385b;color:white;font-weight:900}.step h2{margin-bottom:.2rem}.quiet{color:#685e70;line-height:1.45}.field{display:grid;gap:.45rem;margin-top:.85rem}label{font-weight:900}textarea{width:100%;min-height:10rem;resize:vertical;border:2px solid rgba(73,56,91,.18);border-radius:1rem;padding:.9rem;background:#fffdfd;color:inherit}textarea.small{min-height:6rem}.actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.8rem}button{appearance:none;border:2px solid rgba(73,56,91,.18);border-radius:999px;padding:.72rem .9rem;background:#fff;color:inherit;font-weight:850;cursor:pointer}button.primary{background:#49385b;color:white}button[disabled]{opacity:.42;cursor:not-allowed}button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:4px solid rgba(117,83,147,.3);outline-offset:3px}.answer{background:linear-gradient(135deg,#342844,#58436e 65%,#4a668b);color:white}.status{font-size:clamp(1.45rem,5vw,2.2rem);font-weight:950;letter-spacing:-.025em;margin-bottom:.3rem}.answer p:last-child{margin-bottom:0}.findings{display:grid;gap:.55rem;margin-top:.8rem}.finding{padding:.8rem;border-radius:1rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}.finding strong{display:block;margin-bottom:.2rem}.pill{display:inline-block;padding:.15rem .5rem;border-radius:999px;background:rgba(255,255,255,.16);font-size:.72rem;font-weight:900;letter-spacing:.05em}.doors{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.door{border:2px solid rgba(73,56,91,.15);border-radius:1.2rem;padding:1rem;background:linear-gradient(145deg,#fff5c7,#ffe5f2 58%,#e8f1ff)}.door h3{margin-bottom:.35rem}.door p{min-height:3.9rem;margin-bottom:.7rem;line-height:1.42}.door button{width:100%;text-align:center}.drawer{margin-top:.8rem;padding-top:.7rem;border-top:2px dashed rgba(73,56,91,.15)}summary{cursor:pointer;font-weight:900}.card-preview{white-space:pre-wrap;overflow-wrap:anywhere;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;padding:.8rem;border-radius:.9rem;background:#f6f2fa;max-height:18rem;overflow:auto}.bottom{display:flex;flex-wrap:wrap;gap:.55rem}.fine{font-size:.76rem;text-align:center;color:#6b6172;margin:.8rem 0 0}.hidden{display:none!important}[data-resting="true"] .work-zone{opacity:.58;filter:saturate(.7)}
+@media(max-width:650px){.hero{grid-template-columns:1fr}.mallow{width:5.5rem;height:5.5rem}.eye{top:1.85rem}.eye.a{left:1.45rem}.eye.b{right:1.45rem}.smile{top:3rem}.doors{grid-template-columns:1fr}.door p{min-height:0}.bottom{display:grid;grid-template-columns:1fr}.bottom button{width:100%}}
+@media(max-width:390px){.pocket{width:calc(100% - .55rem)}.card{border-radius:1.1rem;padding:.85rem}h1{font-size:2.35rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="pocket" data-local-pocket aria-busy="true">
+<section class="card hero">
+<div><p class="eyebrow">U+10D613 · Local Pocket</p><h1>Mallow checks the door.</h1><p class="lede">Before you send a message somewhere else, let the Pocket look for a few things you may want to keep, change, or remove.</p></div>
+<div class="mallow" aria-hidden="true"><span class="eye a"></span><span class="eye b"></span><span class="smile"></span></div>
+</section>
+
+<div class="work-zone">
+<section class="card">
+<div class="step"><span class="num">1</span><div><h2>SEE · Put the message in your pocket</h2><p class="quiet">This check runs inside this page. The Pocket does not need a server or model.</p></div></div>
+<div class="field"><label for="draft">Message</label><textarea id="draft" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste the message you are thinking about sending."></textarea></div>
+<div class="field"><label for="protected">Anything Mallow must never carry out?</label><p class="quiet">One exact word, name, code, or phrase per line. Exact matches become a hard REMOVE rule locally.</p><textarea id="protected" class="small" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="private project name&#10;family nickname"></textarea></div>
+</section>
+
+<section class="card">
+<div class="step"><span class="num">2</span><div><h2>CHECK · Ask the Pocket</h2><p class="quiet">Seven outward rule names, one local route, zero provider calls.</p></div></div>
+<div class="actions"><button type="button" class="primary" id="check">CHECK THIS MESSAGE</button><button type="button" id="safer" disabled>MAKE A SAFER COPY</button></div>
+</section>
+
+<section class="card answer" aria-live="polite">
+<div class="step"><span class="num">3</span><div><h2>UNDERSTAND · The world answers</h2></div></div>
+<div class="status" id="status">Pocket not checked yet.</div>
+<p id="explain">The copy doors stay shut until this exact local state is checked.</p>
+<div class="findings" id="findings"></div>
+</section>
+
+<section class="card">
+<h2>Two doors, two different jobs</h2>
+<div class="doors">
+<article class="door"><h3>Message door</h3><p>Your human-approved text. This is content, not a canonical governance packet.</p><button type="button" id="copyMessage" disabled>COPY SAFER MESSAGE</button></article>
+<article class="door"><h3>Pocket-card door</h3><p>Only fixed governance tokens and canonical finding classes. No draft, match text, protected term, span, or local digest.</p><button type="button" id="copyCard" disabled>COPY POCKET CARD</button></article>
+</div>
+<details class="drawer"><summary>Open the grown-up drawer</summary><p class="quiet">This preview is the exact governance card Door B will copy. A clear check uses an empty finding list; it does not invent a fake Loom rule.</p><pre class="card-preview" id="cardPreview">No card until CHECK.</pre></details>
+</section>
+</div>
+
+<section class="card">
+<div class="step"><span class="num">4</span><div><h2>REST · You keep the key</h2><p class="quiet" id="restText">Rest does not create evidence, points, streaks, or release authority.</p></div></div>
+<div class="bottom"><button type="button" id="rest">𝄐 NAP NOOK</button><button type="button" id="return" disabled>COME BACK</button><button type="button" id="clear">CLEAR POCKET</button></div>
+</section>
+<p class="fine">Rule-bounded local preflight only · no provider · no persistence · no universal safety claim · human closure required · ⟐</p>
+</main>
+
+<script id="td613-pocket-policy" type="application/json">
+{
+  "policy_schema_token":"td613.holonomy-loom.provider-advisory-request/v0.1",
+  "route_boundary":{"execution_posture":"LOCAL_PREFLIGHT","source_ingress_position":"BEFORE_OPTIONAL_REMOTE_INGRESS","advisory_transition":"EXPLICIT_REMOTE_TRANSITION_REQUIRED"},
+  "claim_ceiling_token":"RULE_BOUNDED_LOCAL_PREFLIGHT_ONLY",
+  "rules":{
+    "PRIVATE_KEY_BLOCK":{"rule_id":"PRIVATE_KEY_BLOCK","label":"private key material","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"REMOVE"},
+    "BEARER_TOKEN_BLOCK":{"rule_id":"BEARER_TOKEN_BLOCK","label":"bearer token","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"REMOVE"},
+    "COMMON_API_KEY_BLOCK":{"rule_id":"COMMON_API_KEY_BLOCK","label":"credential-like token","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"REMOVE"},
+    "EMAIL_IDENTIFIER":{"rule_id":"EMAIL_IDENTIFIER","label":"email address","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"CHANGE"},
+    "PHONE_IDENTIFIER":{"rule_id":"PHONE_IDENTIFIER","label":"phone number","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"CHANGE"},
+    "EXACT_TIMESTAMP":{"rule_id":"EXACT_TIMESTAMP","label":"exact timestamp","evidence_class":"DETERMINISTIC_PATTERN_MATCH","action_class":"CHANGE"},
+    "USER_DECLARED_PROTECTED_TERM":{"rule_id":"USER_DECLARED_PROTECTED_TERM","label":"user-declared protected term","evidence_class":"USER_DECLARED_EXACT_RULE","action_class":"REMOVE"}
+  }
+}
+</script>
+<script>
+(() => {
+'use strict';
+const root=document.querySelector('[data-local-pocket]');
+const draft=document.querySelector('#draft');
+const protectedBox=document.querySelector('#protected');
+const checkButton=document.querySelector('#check');
+const saferButton=document.querySelector('#safer');
+const copyMessage=document.querySelector('#copyMessage');
+const copyCard=document.querySelector('#copyCard');
+const statusEl=document.querySelector('#status');
+const explainEl=document.querySelector('#explain');
+const findingsEl=document.querySelector('#findings');
+const previewEl=document.querySelector('#cardPreview');
+const restButton=document.querySelector('#rest');
+const returnButton=document.querySelector('#return');
+const clearButton=document.querySelector('#clear');
+const policy=Object.freeze(JSON.parse(document.querySelector('#td613-pocket-policy').textContent));
+const CARD_SCHEMA='td613.local-pocket.card/v0.2-born-minimized';
+const STATUS_TOKENS=Object.freeze(['CLEAR_UNDER_ENABLED_DETERMINISTIC_RULES','CHANGE_SUGGESTED','HOLD_REMOVE_REQUIRED']);
+const networkAudit={attempts:0};
+function blockedNetwork(){networkAudit.attempts+=1;throw new Error('TD613_LOCAL_POCKET_NETWORK_BLOCK');}
+try{window.fetch=blockedNetwork}catch{}
+try{XMLHttpRequest.prototype.open=blockedNetwork}catch{}
+try{window.WebSocket=function(){return blockedNetwork()}}catch{}
+try{window.EventSource=function(){return blockedNetwork()}}catch{}
+try{navigator.sendBeacon=blockedNetwork}catch{}
+try{if(navigator.serviceWorker&&navigator.serviceWorker.register)navigator.serviceWorker.register=blockedNetwork}catch{}
+
+const DETECTORS=Object.freeze([
+  Object.freeze({rule_id:'PRIVATE_KEY_BLOCK',patterns:[/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----[\s\S]*?-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g]}),
+  Object.freeze({rule_id:'BEARER_TOKEN_BLOCK',patterns:[/\bBearer\s+[A-Za-z0-9._~+\/-]{16,}={0,2}\b/gi,/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/g]}),
+  Object.freeze({rule_id:'COMMON_API_KEY_BLOCK',patterns:[/\bAIza[0-9A-Za-z_-]{30,}\b/g,/\bgh(?:p|o|u|s|r)_[A-Za-z0-9_]{20,}\b/g,/\bAKIA[0-9A-Z]{16}\b/g,/\bsk-[A-Za-z0-9_-]{20,}\b/g]}),
+  Object.freeze({rule_id:'EMAIL_IDENTIFIER',patterns:[/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi]}),
+  Object.freeze({rule_id:'PHONE_IDENTIFIER',patterns:[/(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/g]}),
+  Object.freeze({rule_id:'EXACT_TIMESTAMP',patterns:[/\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,6})?)?(?:Z|[+-]\d{2}:\d{2})\b/g]})
+]);
+const RULE_ORDER=Object.freeze(['PRIVATE_KEY_BLOCK','BEARER_TOKEN_BLOCK','COMMON_API_KEY_BLOCK','USER_DECLARED_PROTECTED_TERM','EMAIL_IDENTIFIER','PHONE_IDENTIFIER','EXACT_TIMESTAMP']);
+let policyDigest=null;
+let lastCheck=null;
+let resting=false;
+
+function protectedTerms(){return protectedBox.value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean)}
+function bytesToHex(buffer){return [...new Uint8Array(buffer)].map(v=>v.toString(16).padStart(2,'0')).join('')}
+async function sha256(value){if(!globalThis.crypto?.subtle)throw new Error('WEBCRYPTO_REQUIRED');const data=new TextEncoder().encode(String(value));return `sha256:${bytesToHex(await crypto.subtle.digest('SHA-256',data))}`}
+function stateMaterial(){return JSON.stringify({draft:draft.value,protected_terms:protectedTerms()})}
+async function currentStateDigest(){return sha256(stateMaterial())}
+function rule(id){const found=policy.rules[id];if(!found)throw new Error(`UNKNOWN_CANONICAL_RULE:${id}`);return found}
+function addMatches(text,detector,into){for(const pattern of detector.patterns){pattern.lastIndex=0;for(const match of text.matchAll(pattern)){into.push({rule_id:detector.rule_id,start:match.index,end:match.index+match[0].length})}}}
+function collectFindings(text){
+  const found=[];
+  for(const detector of DETECTORS)addMatches(text,detector,found);
+  for(const exact of protectedTerms()){
+    let cursor=0;
+    while(exact&&(cursor=text.indexOf(exact,cursor))!==-1){found.push({rule_id:'USER_DECLARED_PROTECTED_TERM',start:cursor,end:cursor+exact.length});cursor+=exact.length}
+  }
+  return found.sort((a,b)=>a.start-b.start||(b.end-b.start)-(a.end-a.start)||RULE_ORDER.indexOf(a.rule_id)-RULE_ORDER.indexOf(b.rule_id)||a.rule_id.localeCompare(b.rule_id));
+}
+function nonOverlapping(findings){const chosen=[];let occupiedUntil=-1;for(const finding of findings){if(finding.start>=occupiedUntil){chosen.push(finding);occupiedUntil=finding.end}}return chosen}
+function statusToken(findings){if(findings.some(f=>rule(f.rule_id).action_class==='REMOVE'))return 'HOLD_REMOVE_REQUIRED';if(findings.some(f=>rule(f.rule_id).action_class==='CHANGE'))return 'CHANGE_SUGGESTED';return 'CLEAR_UNDER_ENABLED_DETERMINISTIC_RULES'}
+function canonicalFindingRecords(findings){const seen=new Set();const records=[];for(const finding of findings){const r=rule(finding.rule_id);const key=`${r.rule_id}|${r.evidence_class}|${r.action_class}`;if(seen.has(key))continue;seen.add(key);records.push(Object.freeze({rule_id:r.rule_id,evidence_class:r.evidence_class,action_class:r.action_class}))}return records.sort((a,b)=>RULE_ORDER.indexOf(a.rule_id)-RULE_ORDER.indexOf(b.rule_id))}
+function buildCard(findings){const token=statusToken(findings);if(!STATUS_TOKENS.includes(token))throw new Error('UNSUPPORTED_STATUS_TOKEN');return Object.freeze({schema:CARD_SCHEMA,route_boundary:policy.route_boundary,status_token:token,findings:Object.freeze(canonicalFindingRecords(findings)),release_authority:false,human_closure_required:true,claim_ceiling_token:policy.claim_ceiling_token})}
+function invalidate(message='This local state changed. Check again before either copy door opens.'){
+  lastCheck=null;copyMessage.disabled=true;copyCard.disabled=true;saferButton.disabled=true;previewEl.textContent='No card until CHECK.';statusEl.textContent='Pocket needs a fresh check.';explainEl.textContent=message;findingsEl.replaceChildren()
+}
+function renderFinding(finding){const r=rule(finding.rule_id);const box=document.createElement('div');box.className='finding';const pill=document.createElement('span');pill.className='pill';pill.textContent=r.action_class;const strong=document.createElement('strong');strong.textContent=r.label;const text=document.createElement('span');text.textContent=r.action_class==='REMOVE'?' Mallow found a class that should stay inside. The exact match stays off the Pocket card.':' Mallow found something you may want to generalize before sharing.';box.append(pill,strong,text);return box}
+function renderCheck(findings,card){
+  const token=card.status_token;findingsEl.replaceChildren(...canonicalFindingRecords(findings).map(record=>renderFinding({rule_id:record.rule_id})));
+  if(token==='HOLD_REMOVE_REQUIRED'){statusEl.textContent='Door held. Something must come out first.';explainEl.textContent='The message door stays shut. You can make a safer local copy, then CHECK again. The Pocket-card door may still copy only the canonical finding classes.'}
+  else if(token==='CHANGE_SUGGESTED'){statusEl.textContent='Door open, with a yellow ribbon.';explainEl.textContent='No hard REMOVE rule fired, but Mallow found identifiers or exact time you may want to generalize. Green is not being claimed.'}
+  else{statusEl.textContent='Clear under the rules turned on here.';explainEl.textContent='No enabled deterministic rule matched this exact checked state. That is a bounded result, not zero privacy risk.'}
+  previewEl.textContent=JSON.stringify(card,null,2);
+}
+async function runCheck(){
+  try{
+    const findings=collectFindings(draft.value);
+    const sourceStateDigest=await currentStateDigest();
+    const card=buildCard(findings);
+    lastCheck=Object.freeze({source_state_digest:sourceStateDigest,policy_digest:policyDigest,findings:Object.freeze(findings.map(f=>Object.freeze({...f}))),card});
+    const hardHold=findings.some(f=>rule(f.rule_id).action_class==='REMOVE');
+    copyMessage.disabled=hardHold;copyCard.disabled=false;saferButton.disabled=findings.length===0;renderCheck(findings,card);
+  }catch(error){lastCheck=null;copyMessage.disabled=true;copyCard.disabled=true;saferButton.disabled=true;statusEl.textContent='Pocket held instead of guessing.';explainEl.textContent=String(error?.message||error)}
+}
+async function exactCheckStillCurrent(){if(!lastCheck)return false;const now=await currentStateDigest();return now===lastCheck.source_state_digest&&policyDigest===lastCheck.policy_digest}
+function makeSaferCopy(){
+  if(!lastCheck)return;
+  let next=draft.value;
+  const selected=nonOverlapping(lastCheck.findings).sort((a,b)=>b.start-a.start||(b.end-b.start)-(a.end-a.start));
+  for(const finding of selected){const action=rule(finding.rule_id).action_class;const replacement=action==='REMOVE'?'[PROTECTED]':'[GENERALIZED]';next=next.slice(0,finding.start)+replacement+next.slice(finding.end)}
+  draft.value=next;invalidate('Mallow changed the copy locally. CHECK the new exact state before either door opens again.');
+}
+async function writeClipboard(text,kind){
+  if(!navigator.clipboard?.writeText){explainEl.textContent='Clipboard is unavailable in this room. Nothing was sent anywhere.';return false}
+  await navigator.clipboard.writeText(text);explainEl.textContent=kind==='card'?'Pocket card copied. It carries governance tokens only.':'Checked message copied. What happens after you paste it belongs to the next room.';return true
+}
+async function copyMessageNow(){
+  try{if(!(await exactCheckStillCurrent())){invalidate('The checked state and current state no longer match. CHECK again.');return}if(lastCheck.findings.some(f=>rule(f.rule_id).action_class==='REMOVE')){copyMessage.disabled=true;explainEl.textContent='Message copy blocked: a hard REMOVE finding still belongs inside.';return}await writeClipboard(draft.value,'message')}catch(error){explainEl.textContent=`Copy held: ${String(error?.message||error)}`}
+}
+async function copyCardNow(){
+  try{if(!(await exactCheckStillCurrent())){invalidate('The checked state and current state no longer match. CHECK again.');return}await writeClipboard(JSON.stringify(lastCheck.card),'card')}catch(error){explainEl.textContent=`Card copy held: ${String(error?.message||error)}`}
+}
+function clearPocket(){draft.value='';protectedBox.value='';resting=false;root.dataset.resting='false';restButton.disabled=false;returnButton.disabled=true;invalidate('Pocket cleared. Nothing was saved by this runtime.');statusEl.textContent='Pocket is empty.'}
+function setRest(value){resting=value;root.dataset.resting=String(value);restButton.disabled=value;returnButton.disabled=!value;document.querySelector('#restText').textContent=value?'Nap nook is holding the interface still. Your local text remains only in the current page memory until you clear or close it.':'Rest does not create evidence, points, streaks, or release authority.'}
+
+draft.addEventListener('input',()=>invalidate());protectedBox.addEventListener('input',()=>invalidate());checkButton.addEventListener('click',runCheck);saferButton.addEventListener('click',makeSaferCopy);copyMessage.addEventListener('click',copyMessageNow);copyCard.addEventListener('click',copyCardNow);restButton.addEventListener('click',()=>setRest(true));returnButton.addEventListener('click',()=>setRest(false));clearButton.addEventListener('click',clearPocket);
+
+(async()=>{
+  try{
+    policyDigest=await sha256(JSON.stringify(policy));
+    root.removeAttribute('aria-busy');root.dataset.ready='true';root.dataset.resting='false';
+    window.__TD613_LOCAL_POCKET_V02__=Object.freeze({schema:'td613.local-pocket.runtime/v0.2-born-minimized',ready:true,route_posture:'LOCAL_PREFLIGHT',network_required:false,remote_model_required:false,provider_call_performed:false,persistence_performed:false,release_authority:false,human_closure_required:true,networkAudit,get status(){return lastCheck?.card?.status_token||'NOT_CHECKED'},get pocketCard(){return lastCheck?.card||null},get localBindingPresent(){return Boolean(lastCheck?.source_state_digest&&lastCheck?.policy_digest)}});
+  }catch(error){root.removeAttribute('aria-busy');root.dataset.ready='false';root.dataset.held='true';statusEl.textContent='Pocket held during boot.';explainEl.textContent=String(error?.message||error)}
+})();
+})();
+</script>
+</body>
+</html>
