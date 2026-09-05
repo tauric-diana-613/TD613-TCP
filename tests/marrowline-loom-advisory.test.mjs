@@ -82,6 +82,14 @@ assert.match(source, /one canonical rule ID, its fixed evidence\/action\/categor
 assert.match(source, /free-text finding descriptions/);
 assert.match(source, /there is nowhere in this drawer to paste the original message/);
 assert.doesNotMatch(source, /createElement\('input'\)/, 'advisory drawer must not create free-text payload inputs');
+assert.match(source, /derived\.querySelector\('#loomDerivedAction'\)\.textContent = item\.action_class/);
+assert.match(source, /derived\.querySelector\('#loomDerivedEvidence'\)\.textContent = item\.evidence_class/);
+assert.match(source, /derived\.querySelector\('#loomDerivedCategory'\)\.textContent = item\.finding_category/);
+assert.match(source, /derived\.querySelector\('#loomDerivedWhy'\)\.textContent = item\.why_class/);
+assert.doesNotMatch(source, /doc\.getElementById\('loomDerived(?:Action|Evidence|Category|Why)'\)/,
+  'detached canonical-token preview must not query the document before mount');
+assert.match(source, /rule\.addEventListener\('change', refreshDerived\);\s*refreshDerived\(\);[\s\S]*form\.before\(panel\);/,
+  'canonical preview must be safe while the advisory fragment is still detached');
 assert.match(source, /canonicalTokenOnly: true/);
 assert.match(source, /freeTextFindingAccepted: false/);
 assert.match(source, /providerResultHasReleaseAuthority: false/);
@@ -106,4 +114,4 @@ assert.match(boot, /rawDraftAccepted: false/);
 assert.match(boot, /conversationHistoryAccepted: false/);
 assert.match(boot, /providerResultHasReleaseAuthority: false/);
 
-console.log('Marrowline Loom advisory: canonical-token Kʰonapolit surface and advisory-first boot independence ok');
+console.log('Marrowline Loom advisory: canonical-token Kʰonapolit surface, detached preview safety, and advisory-first boot independence ok');
