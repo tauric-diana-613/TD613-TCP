@@ -6,6 +6,7 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
 const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-exact-source-witness.mjs');
+const localPocketWitnessPath = path.join(scriptsDir, 'local-pocket-v0-2-exact-source-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -96,8 +97,8 @@ try {
   await fs.unlink(tempPath).catch(() => {});
 }
 
-// Descendant observation only: after the inherited A15 transition witness closes,
-// prove the checked-out PR tree is byte-identical to the raw event head tree before
-// running the independent Marrowline Loom advisory browser assay in the same engine.
-// A custody mismatch or browser failure leaves the enclosing calibration command nonzero.
+// Descendant observations only. After the inherited A15 transition witness closes,
+// independently prove whole-tree parity before the Marrowline and Local Pocket assays.
+// Either custody mismatch or either browser failure leaves calibration nonzero.
 await import(`${pathToFileURL(marrowlineLoomWitnessPath).href}?td613_marrowline_loom_exact_source=${Date.now()}`);
+await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_exact_source=${Date.now()}`);
