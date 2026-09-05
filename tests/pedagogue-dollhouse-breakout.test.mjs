@@ -49,7 +49,11 @@ assert.ok(html.indexOf('The world answered') < html.indexOf('Pick a room'));
 assert.match(html, /No room is chosen for you/);
 assert.match(js, /route:\s*null/);
 assert.match(js, /Open the grown-up drawer/);
-assert.ok(js.indexOf("beat('NOW'") < js.indexOf('grownup-drawer'));
+const nowBeatIndex = js.indexOf("beats.append(beat('NOW'");
+const drawerRenderIndex = js.indexOf("const details = el('details', 'grownup-drawer')");
+assert.ok(nowBeatIndex >= 0, 'NOW beat render statement must remain present.');
+assert.ok(drawerRenderIndex >= 0, 'Grown-up drawer render statement must remain present.');
+assert.ok(nowBeatIndex < drawerRenderIndex, 'NOW beat must render before technical drawer construction.');
 
 // Rest, return, replay, and exit remain obvious and unpenalized.
 assert.match(html, /data-rest/);
