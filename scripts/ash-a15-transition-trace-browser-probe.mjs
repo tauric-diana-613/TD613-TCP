@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
+const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-exact-source-witness.mjs');
+const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket-v0-2-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -94,3 +96,15 @@ try {
 } finally {
   await fs.unlink(tempPath).catch(() => {});
 }
+
+// Descendant observation only: after the inherited A15 transition witness closes,
+// prove the checked-out PR tree is byte-identical to the raw event head tree before
+// running the independent Marrowline Loom advisory browser assay in the same engine.
+// A custody mismatch or browser failure leaves the enclosing calibration command nonzero.
+await import(`${pathToFileURL(marrowlineLoomWitnessPath).href}?td613_marrowline_loom_exact_source=${Date.now()}`);
+
+// The exact-source custody wrapper above has already proven whole-tree byte equivalence
+// for this checked-out PR tree. Run the generated single-file Local Pocket from that same
+// checked-out source tree and the same browser-engine shard. Pocket does not inherit any
+// Marrowline/Gemini/provider authority; a Pocket failure simply vetoes this calibration.
+await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_v0_2=${Date.now()}`);
