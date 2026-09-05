@@ -70,7 +70,9 @@ assert.match(source, /HOLD_REMOVE_REQUIRED/);
 assert.match(source, /findings:Object\.freeze\(canonicalFindingRecords\(findings\)\)/, 'Door B must carry canonical records rather than raw findings.');
 assert.match(source, /release_authority:false,human_closure_required:true/);
 assert.match(source, /claim_ceiling_token:policy\.claim_ceiling_token/);
-assert.doesNotMatch(source, /buildCard\([^)]*\)[\s\S]{0,600}(?:source_state_digest|policy_digest|start:|end:)/i, 'Born-minimized card construction may not include local binding or span fields.');
+const buildCardMatch = source.match(/function buildCard\(findings\)\{([\s\S]*?)\}\nfunction invalidate/);
+assert.ok(buildCardMatch, 'Pocket card constructor must remain statically inspectable.');
+assert.doesNotMatch(buildCardMatch[1], /source_state_digest|policy_digest|\bstart\s*:|\bend\s*:/i, 'Born-minimized card construction may not include local binding or span fields.');
 
 // Exact-state binding and stale-check relock.
 assert.match(source, /crypto\.subtle\.digest\('SHA-256',data\)/);
