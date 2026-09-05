@@ -3,12 +3,19 @@ import {
   HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA
 } from '../app/dome-world/holonomy-loom-advisory-policy.js';
 import {
+  LOCAL_POCKET_ARTIFACT_SCHEMA,
+  LOCAL_POCKET_CANONICAL_ROUTE_MODE,
+  LOCAL_POCKET_EXPORT_SCHEMA
+} from '../app/dome-world/holonomy-loom-local-pocket-policy.js';
+import {
   auditPortablePayloadVocabulary,
   compilePortableAiaProjection
 } from '../app/dome-world/portable-aia-three-route-invariance.js';
 
-export const LOCAL_POCKET_ARTIFACT_SCHEMA = 'td613.holonomy-loom.local-pocket-artifact/v0.2';
-export const LOCAL_POCKET_EXPORT_SCHEMA = 'td613.holonomy-loom.local-pocket-export/v0.2-born-minimized';
+export {
+  LOCAL_POCKET_ARTIFACT_SCHEMA,
+  LOCAL_POCKET_EXPORT_SCHEMA
+};
 
 const DETECTORS = Object.freeze([
   Object.freeze({ rule_id: 'PRIVATE_KEY_BLOCK', source: '-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----', flags: 'g' }),
@@ -29,17 +36,17 @@ export function buildLocalPocketManifest() {
   const rules = {};
   const payloadTemplates = {};
   for (const [ruleId, rule] of Object.entries(HOLONOMY_LOOM_ADVISORY_RULES)) {
-    const projection = compilePortableAiaProjection({ ruleId, routeMode: 'LOCAL_POCKET' });
+    const projection = compilePortableAiaProjection({ ruleId, routeMode: LOCAL_POCKET_CANONICAL_ROUTE_MODE });
     const audit = auditPortablePayloadVocabulary(projection);
     if (!audit.ok) throw new Error(`portable payload vocabulary failed for ${ruleId}`);
     rules[ruleId] = clone(rule);
     payloadTemplates[ruleId] = clone(projection.portable_payload);
   }
-  const boundaryProjection = compilePortableAiaProjection({ ruleId: 'EMAIL_IDENTIFIER', routeMode: 'LOCAL_POCKET' });
+  const boundaryProjection = compilePortableAiaProjection({ ruleId: 'EMAIL_IDENTIFIER', routeMode: LOCAL_POCKET_CANONICAL_ROUTE_MODE });
   return Object.freeze({
     schema: LOCAL_POCKET_ARTIFACT_SCHEMA,
     canonical_policy_schema: HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
-    route_mode: 'LOCAL_POCKET',
+    route_mode: LOCAL_POCKET_CANONICAL_ROUTE_MODE,
     route_boundary: clone(boundaryProjection.portable_payload.route_boundary),
     rules: Object.freeze(rules),
     payload_templates: Object.freeze(payloadTemplates),
