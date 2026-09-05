@@ -99,3 +99,7 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(schedule|step
   'Schedule or prior-packet state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline interleaved packet non-interference hostile contract: PASS');
+
+// The successor multiplexed-finding assay runs from the already-authoritative interleaving gate.
+// Any failure vetoes the enclosing A15 static contract without widening product authority.
+await import('./marrowline-multiplexed-finding-isolation.test.mjs');
