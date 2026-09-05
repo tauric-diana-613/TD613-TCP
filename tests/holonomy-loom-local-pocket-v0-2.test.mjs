@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 
 import {
   HOLONOMY_LOOM_ADVISORY_RULES
@@ -16,6 +17,8 @@ import {
 
 const manifest = buildLocalPocketManifest();
 const html = renderLocalPocketHtml();
+const calibrationWrapper = await readFile(new URL('../scripts/ash-a15-transition-trace-browser-probe.mjs', import.meta.url), 'utf8');
+const browserWitness = await readFile(new URL('../scripts/holonomy-loom-local-pocket-v0-2-browser-witness.mjs', import.meta.url), 'utf8');
 
 assert.equal(manifest.schema, LOCAL_POCKET_ARTIFACT_SCHEMA);
 assert.equal(manifest.route_mode, 'LOCAL_POCKET');
@@ -97,5 +100,27 @@ for (const forbidden of [
   'span_start', 'span_end', 'receipt', 'sha256:', 'conversation_history', 'prompt_transcript'
 ]) assert.equal(serializedTemplates.includes(forbidden), false, `portable template contains forbidden carrier: ${forbidden}`);
 assert.equal(serializedTemplates.includes('LOCAL_POCKET'), false, 'route label must not appear inside portable payload templates');
+
+// Browser observation must remain downstream of inherited A15 + exact-source Marrowline custody in the existing calibration path.
+assert.match(calibrationWrapper, /marrowline-loom-advisory-exact-source-witness\.mjs/);
+assert.match(calibrationWrapper, /holonomy-loom-local-pocket-v0-2-browser-witness\.mjs/);
+const marrowlineImport = calibrationWrapper.indexOf('td613_marrowline_loom_exact_source');
+const pocketImport = calibrationWrapper.indexOf('td613_local_pocket_v0_2');
+assert.ok(marrowlineImport >= 0 && pocketImport > marrowlineImport, 'Pocket witness must run after exact-source Marrowline custody.');
+assert.doesNotMatch(calibrationWrapper, /merge_pull_request|vercel|deploy|GEMINI_API_KEY/i);
+
+// The browser witness observes the generated artifact directly and freezes the preregistered falsifiers.
+for (const marker of [
+  'renderLocalPocketHtml',
+  "TD613_BROWSER || 'chromium'",
+  'unexpected_requests',
+  'COMMON_API_KEY_BLOCK',
+  'USER_DECLARED_PROTECTED_TERM',
+  '390x844',
+  'release_authority: false',
+  'provider_call_performed: false',
+  'production_mutation: false'
+]) assert.ok(browserWitness.includes(marker), `Pocket browser witness lost required marker: ${marker}`);
+assert.doesNotMatch(browserWitness, /GEMINI_API_KEY|generativelanguage\.googleapis\.com|\/api\/khonapolit/i);
 
 console.log('Holonomy Loom Local Pocket v0.2 hostile contract: PASS');
