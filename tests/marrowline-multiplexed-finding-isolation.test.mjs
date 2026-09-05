@@ -94,3 +94,7 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(sibling|prior
   'Sibling decision state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline multiplexed finding isolation hostile contract: PASS');
+
+// Successor hostile contract: the inherited two-finding Carry Case must cover the full
+// four-corner current-decision square without whole-case status or cross-finding authority.
+await import('./marrowline-cartesian-finding-decision-separability.test.mjs');
