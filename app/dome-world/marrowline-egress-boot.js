@@ -6,9 +6,9 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v5-advisory-first';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
-export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v4-advisory-first';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody';
 export const MARROWLINE_LOOM_ADVISORY_BOOT_SCHEMA = 'td613.dome-world.marrowline-loom-advisory-boot/v1-independent-first';
 
 function bootApertureEgress(root = window) {
@@ -20,11 +20,7 @@ function bootApertureEgress(root = window) {
     active,
     installedNow,
     scope: 'marrowline-room-browser-runtime',
-    aperture: Object.freeze({
-      version: APERTURE_V3_VERSION,
-      firmwareSchema: APERTURE_V3_SCHEMA,
-      taskIntent
-    }),
+    aperture: Object.freeze({ version: APERTURE_V3_VERSION, firmwareSchema: APERTURE_V3_SCHEMA, taskIntent }),
     destinations: Object.freeze([
       '/api/dome-world/marrowline',
       '/api/dome-world/khonapolit',
@@ -54,9 +50,7 @@ function circuitObservation(receipt = {}) {
   const canonical = receipt?.canonicalPayload || receipt || {};
   const egress = canonical?.aperture_egress || receipt?.aperture_egress || null;
   if (!egress || !egress.status) return null;
-  const activeSteps = Array.isArray(canonical?.reflex_spine?.active_steps)
-    ? canonical.reflex_spine.active_steps
-    : [1, 2];
+  const activeSteps = Array.isArray(canonical?.reflex_spine?.active_steps) ? canonical.reflex_spine.active_steps : [1, 2];
   return Object.freeze({
     schema: MARROWLINE_CIRCUIT_RECEIPT_SCHEMA,
     status: egress.status === 'exact' ? 'CIRCUIT_EXACT' : 'CIRCUIT_REVIEW',
@@ -83,7 +77,6 @@ function installCircuitObserver(doc = document, root = window) {
   if (!receiptNode || !statusNode) return false;
   if (receiptNode.dataset.apertureCircuitObserver === MARROWLINE_CIRCUIT_RECEIPT_SCHEMA) return true;
   receiptNode.dataset.apertureCircuitObserver = MARROWLINE_CIRCUIT_RECEIPT_SCHEMA;
-
   let lastText = '';
   const inspect = () => {
     const text = String(receiptNode.textContent || '').trim();
@@ -101,7 +94,6 @@ function installCircuitObserver(doc = document, root = window) {
     root.dispatchEvent?.(new CustomEvent('td613:marrowline:circuit-observed', { detail: observation }));
     return observation;
   };
-
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(inspect);
@@ -113,9 +105,7 @@ function installCircuitObserver(doc = document, root = window) {
 }
 
 async function bootMarrowlineLoomAdvisory(doc = document, root = window) {
-  if (root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__?.installed === true) {
-    return root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__;
-  }
+  if (root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__?.installed === true) return root.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__;
   try {
     const module = await import('./marrowline-loom-advisory.js');
     const installed = Boolean(module.installMarrowlineLoomAdvisory(doc, root));
@@ -198,10 +188,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export {
-  bootApertureEgress,
-  bootMarrowlineLoomAdvisory,
-  bootMarrowlineRoom,
-  circuitObservation,
-  installCircuitObserver
-};
+export { bootApertureEgress, bootMarrowlineLoomAdvisory, bootMarrowlineRoom, circuitObservation, installCircuitObserver };
