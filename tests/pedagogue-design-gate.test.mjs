@@ -9,3 +9,4 @@ import './pedagogue-recurrence-counterpoints.test.mjs';
 import './holonomy-loom-use-mode-boundary.test.mjs';
 import './holonomy-loom-gemini-minimized-advisory.test.mjs';
 import './holonomy-loom-khonapolit-advisory-router.test.mjs';
+import './portable-aia-three-route-invariance.test.mjs';
