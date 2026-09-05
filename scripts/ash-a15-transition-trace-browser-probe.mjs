@@ -7,6 +7,7 @@ const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-c
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
 const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-exact-source-witness.mjs');
 const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket-v0-2-browser-witness.mjs');
+const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-carry-case-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -108,3 +109,9 @@ await import(`${pathToFileURL(marrowlineLoomWitnessPath).href}?td613_marrowline_
 // checked-out source tree and the same browser-engine shard. Pocket does not inherit any
 // Marrowline/Gemini/provider authority; a Pocket failure simply vetoes this calibration.
 await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_v0_2=${Date.now()}`);
+
+// Carry Case is a strict descendant of the earned Pocket observation. It may only run
+// after the canonical Pocket witness closes GREEN in this shard, preserving the route:
+// LOCAL_POCKET → MARROWLINE → TD613_HOSTED → RETURN → POCKET REVALIDATION.
+// This browser assay carries no merge, deployment, provider, or production authority.
+await import(`${pathToFileURL(carryCaseWitnessPath).href}?td613_marrowline_pocket_hosted_carry_case=${Date.now()}`);
