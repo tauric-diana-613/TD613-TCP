@@ -1,0 +1,157 @@
+{
+  "schema": "td613.holonomy-loom.use-mode-boundary/v0.1",
+  "issue": 1038,
+  "scientific_lineage": {
+    "child_legible_preview_pr": 1034,
+    "browser_egress_witness_pr": 1036,
+    "optional_name_burden_pr": 1037,
+    "git_ancestry_required": false
+  },
+  "cross_mode_invariants": {
+    "mandatory_route": ["SEE", "CHECK", "UNDERSTAND", "REST"],
+    "name_explanation_optional": true,
+    "deterministic_policy_owns_loom_release": true,
+    "remote_model_advisory_only": true,
+    "green_means_zero_privacy_risk": false,
+    "resemblance_proves_provenance": false,
+    "portable_shell_implies_portable_guarantee": false,
+    "same_policy_implies_same_trust_boundary": false
+  },
+  "gemini_advisory_boundary": {
+    "key_reference": "process.env.GEMINI_API_KEY",
+    "real_key_committed_in_repository": false,
+    "client_receives_key": false,
+    "default_deterministic_check_invokes_provider": false,
+    "provider_disclosure_before_transmission": true,
+    "raw_draft_sent_by_default": false,
+    "explain_finding_payload": ["rule_id", "evidence_class", "action_class", "minimized_context"],
+    "rewrite_selected_text_requires_explicit_human_action": true,
+    "semantic_second_look_requires_explicit_human_action": true,
+    "provider_result_has_release_authority": false
+  },
+  "modes": [
+    {
+      "id": "LOCAL_POCKET",
+      "label": "Local pocket / offline preflight",
+      "admitted_now": "PREVIEW_ONLY",
+      "raw_draft_default_location": "LOCAL_CLIENT",
+      "host_platform_has_received_raw_draft_before_check": false,
+      "remote_network_required_for_default_check": false,
+      "remote_model_required_for_default_check": false,
+      "pre_ingress_protection_authority_for_next_remote_destination": true,
+      "onward_release_control": true,
+      "provider_call_default": false,
+      "raw_conversation_content_portable_by_default": false,
+      "allowed_claims": [
+        "deterministic local rules may run before a later remote send",
+        "Loom-controlled release may remain blocked on deterministic RED"
+      ],
+      "forbidden_claims": [
+        "universal privacy",
+        "zero downstream inference",
+        "production network silence"
+      ]
+    },
+    {
+      "id": "TD613_HOSTED",
+      "label": "TD613.com hosted Loom",
+      "admitted_now": "DESIGN_PLUS_PREVIEW_EVIDENCE_ONLY",
+      "raw_draft_default_location": "BROWSER_LOCAL_LAYER0",
+      "host_platform_has_received_raw_draft_before_check": false,
+      "remote_network_required_for_default_check": false,
+      "remote_model_required_for_default_check": false,
+      "pre_ingress_protection_authority_for_next_remote_destination": true,
+      "onward_release_control": true,
+      "provider_call_default": false,
+      "raw_conversation_content_portable_by_default": false,
+      "allowed_claims": [
+        "Layer 0 may remain deterministic and local-first",
+        "Gemini may be offered as a separately disclosed advisory route"
+      ],
+      "forbidden_claims": [
+        "TD613 server receives raw draft by default",
+        "Gemini owns release authority",
+        "preview egress silence equals production guarantee"
+      ]
+    },
+    {
+      "id": "CHATGPT_THREAD_COMPANION",
+      "label": "Private ChatGPT-thread companion",
+      "admitted_now": "BOUNDARY_DESIGN_ONLY",
+      "raw_draft_default_location": "CHATGPT_CONVERSATION_AFTER_SEND",
+      "host_platform_has_received_raw_draft_before_check": true,
+      "remote_network_required_for_default_check": true,
+      "remote_model_required_for_default_check": true,
+      "pre_ingress_protection_authority_for_next_remote_destination": false,
+      "onward_release_control": true,
+      "provider_call_default": false,
+      "raw_conversation_content_portable_by_default": false,
+      "allowed_claims": [
+        "post-ingress inspection may prepare a safer later message",
+        "AIA-controlled export may apply deterministic release rules",
+        "portable policy profile may travel without raw prior-thread content"
+      ],
+      "forbidden_claims": [
+        "the AIA prevented ChatGPT from receiving a message already sent into the thread",
+        "private thread equals offline custody",
+        "in-thread control equals platform-wide privacy"
+      ]
+    },
+    {
+      "id": "PORTABLE_POLICY_PROFILE",
+      "label": "Portable policy profile",
+      "admitted_now": "DESIGN_ONLY",
+      "raw_draft_default_location": "NOT_INCLUDED",
+      "host_platform_has_received_raw_draft_before_check": false,
+      "remote_network_required_for_default_check": false,
+      "remote_model_required_for_default_check": false,
+      "pre_ingress_protection_authority_for_next_remote_destination": false,
+      "onward_release_control": false,
+      "provider_call_default": false,
+      "raw_conversation_content_portable_by_default": false,
+      "portable_default_fields": [
+        "rule_ids",
+        "policy_severity",
+        "declared_route_labels",
+        "receipt_schema_version",
+        "claim_ceiling",
+        "optional_local_commitment"
+      ],
+      "allowed_claims": [
+        "policy may travel without raw conversation content by default"
+      ],
+      "forbidden_claims": [
+        "policy portability proves content portability",
+        "public repository equals private custody",
+        "current Ash Capsule public envelope is admitted for real kiki storage"
+      ]
+    },
+    {
+      "id": "FUTURE_PRE_SEND_HOOK",
+      "label": "Future host-platform pre-send hook",
+      "admitted_now": false,
+      "raw_draft_default_location": "UNSPECIFIED_UNTIL_PLATFORM_WITNESS",
+      "host_platform_has_received_raw_draft_before_check": null,
+      "remote_network_required_for_default_check": null,
+      "remote_model_required_for_default_check": false,
+      "pre_ingress_protection_authority_for_next_remote_destination": false,
+      "onward_release_control": false,
+      "provider_call_default": false,
+      "raw_conversation_content_portable_by_default": false,
+      "required_future_witnesses": [
+        "execution_before_network_ingress",
+        "local deterministic rule evaluation",
+        "raw_draft egress posture",
+        "deterministic release blocking",
+        "provider disclosure",
+        "policy custody",
+        "platform-specific failure behavior"
+      ],
+      "allowed_claims": [],
+      "forbidden_claims": [
+        "embedded implies pre-ingress",
+        "pre-send UI proves pre-send execution"
+      ]
+    }
+  ]
+}
