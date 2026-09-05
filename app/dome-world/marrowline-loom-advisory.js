@@ -147,10 +147,10 @@ export function installMarrowlineLoomAdvisory(doc = document, root = window) {
   const refreshDerived = () => {
     const item = describeLoomAdvisoryRule(rule.value);
     if (!item) return;
-    doc.getElementById('loomDerivedAction').textContent = item.action_class;
-    doc.getElementById('loomDerivedEvidence').textContent = item.evidence_class;
-    doc.getElementById('loomDerivedCategory').textContent = item.finding_category;
-    doc.getElementById('loomDerivedWhy').textContent = item.why_class;
+    derived.querySelector('#loomDerivedAction').textContent = item.action_class;
+    derived.querySelector('#loomDerivedEvidence').textContent = item.evidence_class;
+    derived.querySelector('#loomDerivedCategory').textContent = item.finding_category;
+    derived.querySelector('#loomDerivedWhy').textContent = item.why_class;
   };
   rule.addEventListener('change', refreshDerived);
   refreshDerived();
