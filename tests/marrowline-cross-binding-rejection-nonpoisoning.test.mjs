@@ -88,3 +88,8 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(failure|attac
   'Failure or sibling state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline cross-binding rejection non-poisoning hostile contract: PASS');
+
+// Successor hostile contract: preserve rule-bound finding identity while the exact same
+// two canonical portable findings exchange array positions. Container order must remain
+// observable while per-rule Hosted projections, return envelopes, and decisions stay stable.
+await import('./marrowline-finding-order-permutation-stability.test.mjs');
