@@ -10,6 +10,7 @@ const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket
 const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-carry-case-browser-witness.mjs');
 const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
 const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
+const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -129,3 +130,8 @@ await import(`${pathToFileURL(roundTripMemorylessnessWitnessPath).href}?td613_ma
 // instrumentation only; repository and served source bytes stay unchanged. Any packet
 // bleed, persistence, authority widening, or inherited regression vetoes calibration.
 await import(`${pathToFileURL(interleavedNoninterferenceWitnessPath).href}?td613_marrowline_interleaved_noninterference=${Date.now()}`);
+
+// The multiplexed-finding successor moves the falsifier inside one shared Carry Case.
+// Its local-only generated assay surface must show opposed A/B decisions without sibling
+// status bleed, binding interchange, persistence, network egress, or authority widening.
+await import(`${pathToFileURL(multiplexedFindingIsolationWitnessPath).href}?td613_marrowline_multiplexed_finding_isolation=${Date.now()}`);
