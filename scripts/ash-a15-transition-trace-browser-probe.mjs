@@ -113,5 +113,5 @@ await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_v
 // Carry Case is a strict descendant of the earned Pocket observation. It may only run
 // after the canonical Pocket witness closes GREEN in this shard, preserving the route:
 // LOCAL_POCKET → MARROWLINE → TD613_HOSTED → RETURN → POCKET REVALIDATION.
-// This browser assay carries no merge, deployment, provider, or production authority.
+// This browser assay carries observation only; merge, provider, and production authority stay closed.
 await import(`${pathToFileURL(carryCaseWitnessPath).href}?td613_marrowline_pocket_hosted_carry_case=${Date.now()}`);
