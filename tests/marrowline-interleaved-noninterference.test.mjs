@@ -99,3 +99,5 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(schedule|step
   'Schedule or prior-packet state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline interleaved packet non-interference hostile contract: PASS');
+
+await import('./marrowline-three-packet-permutation.test.mjs');
