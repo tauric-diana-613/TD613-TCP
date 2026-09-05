@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f9e8ff">
+  <title>Pedagogue’s Playhouse · TD613</title>
+  <link rel="stylesheet" href="./pedagogue.css">
+</head>
+<body>
+  <main class="playhouse" data-pedagogue-playhouse aria-busy="true">
+    <header class="playhouse__masthead">
+      <div class="playhouse__brand">
+        <p class="playhouse__eyebrow">U+10D613 · Dollhouse breakout</p>
+        <h1>Pedagogue’s Playhouse</h1>
+        <p class="playhouse__lede">Pick a tiny quest. See what happened first. Then choose the room that helps you understand it.</p>
+      </div>
+
+      <section class="practice-puff" aria-label="Practice inhabitant">
+        <div class="practice-puff__face" aria-hidden="true">
+          <span class="practice-puff__eye practice-puff__eye--left"></span>
+          <span class="practice-puff__eye practice-puff__eye--right"></span>
+          <span class="practice-puff__smile"></span>
+        </div>
+        <div>
+          <p class="practice-puff__name">Mallow · practice inhabitant</p>
+          <p class="practice-puff__speech" data-guide-speech aria-live="polite">I’m fictional on purpose. Nothing I do creates evidence or unlocks authority.</p>
+        </div>
+      </section>
+    </header>
+
+    <section class="playhouse__quest-board" aria-labelledby="quest-heading">
+      <div class="playhouse__section-heading">
+        <span class="playhouse__step">1</span>
+        <div>
+          <h2 id="quest-heading">Choose a tiny quest</h2>
+          <p>These are the real governed Pedagogue proving scenes with friendlier labels.</p>
+        </div>
+      </div>
+      <nav class="quest-grid" data-quest-nav aria-label="Practice quests"></nav>
+    </section>
+
+    <section class="world-answer" aria-labelledby="answer-heading">
+      <p class="world-answer__label">The world answered</p>
+      <h2 id="answer-heading" data-quest-title>Loading the playhouse…</h2>
+      <p class="world-answer__text" data-world-answer>Compiling a deterministic practice scene.</p>
+      <p class="world-answer__nonclaim" data-required-nonclaim></p>
+    </section>
+
+    <section class="playhouse__rooms" aria-labelledby="rooms-heading">
+      <div class="playhouse__section-heading">
+        <span class="playhouse__step">2</span>
+        <div>
+          <h2 id="rooms-heading">Pick a room</h2>
+          <p>No room is chosen for you. Each room tells the same governed scene from a different angle.</p>
+        </div>
+      </div>
+      <nav class="room-grid" data-room-nav aria-label="Pedagogue rooms"></nav>
+      <p class="route-memory" data-route-memory>You have not entered a room yet.</p>
+    </section>
+
+    <section class="room-stage" data-room-stage aria-live="polite">
+      <div class="room-stage__empty">
+        <span aria-hidden="true">✦</span>
+        <h2>Front porch</h2>
+        <p>See the consequence first. Then choose a room when you want another view.</p>
+      </div>
+    </section>
+
+    <footer class="playhouse__controls" aria-label="Playhouse controls">
+      <button type="button" class="playhouse__control" data-rest>𝄐 Nap nook</button>
+      <button type="button" class="playhouse__control" data-return>Come back</button>
+      <button type="button" class="playhouse__control" data-replay>Try this quest again</button>
+      <a class="playhouse__control playhouse__control--exit" href="../dome-world/index.html">Front door · Exit</a>
+    </footer>
+
+    <p class="playhouse__fineprint">Practice only · no score · no streak · no automatic redesign · no release authority · human closure stays required.</p>
+  </main>
+
+  <script type="module" src="./pedagogue.js"></script>
+</body>
+</html>
