@@ -64,6 +64,10 @@ assert.match(html, /window\.WebSocket=function/);
 assert.match(html, /window\.EventSource=function/);
 assert.match(html, /navigator\.sendBeacon=blockedNetwork/);
 
+// Receipt-state booleans stay canonical; pristine unchecked must never collapse to null/undefined.
+assert.match(html, /function stillChecked\(\)\{return Boolean\(checkedSnapshot&&checkedSnapshot\.draft===draftEl\.value&&checkedSnapshot\.protected===protectedEl\.value\)\}/);
+assert.match(html, /checked:stillChecked\(\)/);
+
 // Pedagogue order stays consequence-first and optional technical detail stays behind a drawer.
 for (const token of ['SEE', 'CHECK', 'UNDERSTAND', '𝄐 REST']) assert.match(html, new RegExp(token));
 assert.ok(html.indexOf('Before you send it, check what this message carries.') < html.indexOf('Open the grown-up drawer'));
