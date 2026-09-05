@@ -14,6 +14,7 @@ const executable = String(process.env.TD613_BROWSER_EXECUTABLE || '').trim();
 const engines = { chromium, firefox, webkit };
 
 const surfaces = Object.freeze([
+  { id: 'pedagogue-playhouse', file: '../pedagogue/index.html', root: '[data-pedagogue-playhouse]', nav: '[data-room-nav] [data-route]', expected: 'Pedagogue’s Playhouse' },
   { id: 'information-dome', file: 'information-dome-pedagogue.html', root: '[data-flowcore-pedagogue]', nav: '[data-route-nav] [data-route]', expected: 'Information Dome' },
   { id: 'route-burden', file: 'route-burden-observatory.html', root: '[data-route-burden]', nav: '[data-model-nav] button', expected: 'Route-Burden' },
   { id: 'ash-custody', file: 'ash-custody-pedagogue.html', root: '[data-ash-pedagogue]', nav: '[data-route-nav] [data-route]', expected: 'Ash Custody Root' },
