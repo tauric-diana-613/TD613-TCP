@@ -43,6 +43,16 @@ assert.match(browser, /reduced motion observed/);
 assert.match(browser, /zero persistence attempts observed/);
 assert.match(browser, /provider_live_call_performed: false/);
 assert.match(browser, /deployment_authorized: false/);
+
+// The Pocket intentionally forbids unsafe-eval. The observer must not require
+// Playwright's page.waitForFunction implementation, which evaluates a polling
+// predicate inside the governed page and is rejected by the strict CSP.
+assert.doesNotMatch(browser, /page\.waitForFunction\(/, 'Pocket observer may not require unsafe-eval-compatible page polling.');
+assert.match(browser, /async function pollFromNode/);
+assert.match(browser, /page\.locator\('\[data-local-pocket\]\[data-ready="true"\]'\)\.waitFor/);
+assert.match(browser, /const waitRuntimeStatus = expected => pollFromNode/);
+assert.match(browser, /const waitClipboardCount = expected => pollFromNode/);
+
 assert.doesNotMatch(browser, /page\.route\(/, 'Local Pocket witness may not create a fake remote provider or server route.');
 assert.doesNotMatch(browser, /TD613_BASE_URL/, 'Local Pocket browser witness must not require the TD613 HTTP runtime.');
 
