@@ -247,3 +247,7 @@ for (const forbidden of [
 }
 
 console.log('Marrowline Pocket → TD613 Hosted carry-case hostile contract: PASS');
+
+// Descendant scientific composition test. This does not change Carry Case semantics;
+// failure only vetoes the inherited authority-bearing static gate.
+await import('./marrowline-round-trip-memorylessness.test.mjs');
