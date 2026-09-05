@@ -74,10 +74,15 @@ assert.doesNotMatch(
 
 assert.match(inheritedRouteProbe, /#ashAiaMembrane \[data-aia-route=/,
   'Inherited semantic route witness must target the canonical visible AIA route control.');
-assert.match(inheritedRouteProbe, /await button\.focus\(\)/);
-assert.match(inheritedRouteProbe, /await button\.evaluate\(\(control, expected\) => \{/);
-assert.match(inheritedRouteProbe, /await button\.press\('Enter'\)/,
-  'Inherited semantic route witness must dispatch native Enter through the canonical locator-owned control.');
+assert.match(inheritedRouteProbe, /const maxRouteActivationAttempts = 4/,
+  'Replaceable route controls must use a bounded reacquisition budget.');
+assert.match(inheritedRouteProbe, /await canonicalButton\.waitFor\(\{ state:'visible', timeout:20_000 \}\)/);
+assert.match(inheritedRouteProbe, /const handle = await canonicalButton\.elementHandle\(\)/,
+  'One concrete control instance must own focus, trace binding, and native activation per attempt.');
+assert.match(inheritedRouteProbe, /await handle\.focus\(\)/);
+assert.match(inheritedRouteProbe, /await handle\.evaluate\(\(control, payload\) => \{/);
+assert.match(inheritedRouteProbe, /await handle\.press\('Enter'\)/,
+  'Inherited semantic route witness must dispatch native Enter through the exact traced canonical control instance.');
 assert.doesNotMatch(
   inheritedRouteProbe,
   /await page\.keyboard\.press\('Enter'\)/,
@@ -88,6 +93,14 @@ assert.match(inheritedRouteProbe, /!control\.isConnected/);
 assert.match(inheritedRouteProbe, /control === document\.activeElement/);
 assert.match(inheritedRouteProbe, /typeof control\.onclick === 'function'/);
 assert.match(inheritedRouteProbe, /__td613A2A5SemanticRouteTrace/);
+assert.match(inheritedRouteProbe, /__td613A2A5SemanticRouteControl/);
+assert.match(inheritedRouteProbe, /canonical_control_same_instance_after/,
+  'The witness must record whether the traced node survived as the canonical visible route control.');
+assert.match(inheritedRouteProbe, /traced_control_connected_after/);
+assert.match(inheritedRouteProbe, /replacement_retry_observed:routeActivationAttempts\.length > 1/);
+assert.match(inheritedRouteProbe, /attempt_count:routeActivationAttempts\.length/);
+assert.match(inheritedRouteProbe, /native_enter_required:true/);
+assert.match(inheritedRouteProbe, /direct_route_api_bypass:false/);
 assert.match(inheritedRouteProbe, /'KEYDOWN_CAPTURE'/);
 assert.match(inheritedRouteProbe, /'KEYDOWN_BUBBLE'/);
 assert.match(inheritedRouteProbe, /'KEYUP_CAPTURE'/);
@@ -97,13 +110,15 @@ assert.match(inheritedRouteProbe, /'CLICK_BUBBLE'/);
 assert.match(inheritedRouteProbe, /after_dispatch_route/);
 assert.match(inheritedRouteProbe, /window\.__td613AshLiveAIA\?\.current\?\.\(\)\?\.route === expected/,
   'Inherited semantic route witness must still verify canonical Live-AIA settlement after native activation.');
-assert.match(inheritedRouteProbe, /report\.observations\.semantic_route_activation\[route\] = activationAfterDispatch/);
+assert.match(inheritedRouteProbe, /report\.observations\.semantic_route_activation\[route\] = \{/);
 assert.match(
   inheritedRouteProbe,
   /if \(source\.includes\('__td613AshLiveAIA\.setRoute\('\)\) \{/,
   'Inherited semantic route witness must actively reject private Live-AIA route API shortcuts.'
 );
 assert.match(inheritedRouteProbe, /route witness may not bypass the native route control owner/);
+assert.match(inheritedRouteProbe, /bounded native route activation failed after replaceable-control retries/,
+  'Exhausting the bounded canonical-control retry budget must fail closed.');
 
 const runtimeMarker = '- name: Start isolated core extended and Flow-Core runtimes';
 const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering for this engine';
