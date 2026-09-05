@@ -87,3 +87,8 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(sibling|prior
   'Sibling or vector state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline Cartesian finding decision separability hostile contract: PASS');
+
+// Successor hostile contract: rejection of a wrong sibling binding must leave the shared
+// Carry Case, both retained bindings, both canonical envelopes, and all later lawful
+// per-finding decisions unchanged. Rejection without non-poisoning is insufficient.
+await import('./marrowline-cross-binding-rejection-nonpoisoning.test.mjs');
