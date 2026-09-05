@@ -74,3 +74,7 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*cycle/i,
   'Cycle index may not enter the return-envelope compiler input.');
 
 console.log('Marrowline bounded round-trip memorylessness hostile contract: PASS');
+
+// The successor interleaving assay runs from the already-authoritative memorylessness gate.
+// Any failure vetoes the enclosing A15 static contract without widening product authority.
+await import('./marrowline-interleaved-noninterference.test.mjs');
