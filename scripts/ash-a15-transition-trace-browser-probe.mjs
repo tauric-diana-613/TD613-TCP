@@ -11,6 +11,7 @@ const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-car
 const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
 const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
 const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
+const returnPermutationIsolationWitnessPath = path.join(scriptsDir, 'marrowline-return-permutation-isolation-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -135,3 +136,8 @@ await import(`${pathToFileURL(interleavedNoninterferenceWitnessPath).href}?td613
 // Its local-only generated assay surface must show opposed A/B decisions without sibling
 // status bleed, binding interchange, persistence, network egress, or authority widening.
 await import(`${pathToFileURL(multiplexedFindingIsolationWitnessPath).href}?td613_marrowline_multiplexed_finding_isolation=${Date.now()}`);
+
+// The return-permutation successor varies order, omission, repetition, and interposed HOLD
+// on the same two-finding Carry Case. Repeated deterministic observation carries no replay
+// claim; any sibling authority transfer, persistence, or inherited regression vetoes calibration.
+await import(`${pathToFileURL(returnPermutationIsolationWitnessPath).href}?td613_marrowline_return_permutation_isolation=${Date.now()}`);
