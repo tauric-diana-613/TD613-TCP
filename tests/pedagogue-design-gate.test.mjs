@@ -12,3 +12,4 @@ import './holonomy-loom-khonapolit-advisory-router.test.mjs';
 import './portable-aia-three-route-invariance.test.mjs';
 import './pedagogue-dollhouse-breakout.test.mjs';
 import './local-pocket-v0-2.test.mjs';
+import './local-pocket-v0-2-witness-contract.test.mjs';
