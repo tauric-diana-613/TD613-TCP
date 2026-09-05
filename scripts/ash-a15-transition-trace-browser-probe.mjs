@@ -12,6 +12,7 @@ const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-rou
 const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
 const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
 const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'marrowline-cartesian-finding-decision-separability-browser-witness.mjs');
+const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marrowline-cross-binding-rejection-nonpoisoning-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -141,3 +142,9 @@ await import(`${pathToFileURL(multiplexedFindingIsolationWitnessPath).href}?td61
 // current-decision corner and a reverse-order replay. Missing corners, sibling coupling,
 // order drift, persistence, network egress, or widened authority veto calibration.
 await import(`${pathToFileURL(cartesianFindingDecisionSeparabilityWitnessPath).href}?td613_marrowline_cartesian_finding_decision_separability=${Date.now()}`);
+
+// The cross-binding successor attacks each retained local binding with its sibling's
+// canonical envelope relation, then immediately replays lawful A/B revalidation. A clean
+// rejection is insufficient if it mutates either binding, either envelope, the Carry Case,
+// or any later lawful sibling result. All such poisoning vetoes calibration.
+await import(`${pathToFileURL(crossBindingRejectionNonpoisoningWitnessPath).href}?td613_marrowline_cross_binding_rejection_nonpoisoning=${Date.now()}`);
