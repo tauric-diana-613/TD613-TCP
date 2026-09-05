@@ -10,6 +10,7 @@ const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket
 const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-carry-case-browser-witness.mjs');
 const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
 const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
+const threePacketPermutationWitnessPath = path.join(scriptsDir, 'marrowline-three-packet-permutation-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -129,3 +130,9 @@ await import(`${pathToFileURL(roundTripMemorylessnessWitnessPath).href}?td613_ma
 // instrumentation only; repository and served source bytes stay unchanged. Any packet
 // bleed, persistence, authority widening, or inherited regression vetoes calibration.
 await import(`${pathToFileURL(interleavedNoninterferenceWitnessPath).href}?td613_marrowline_interleaved_noninterference=${Date.now()}`);
+
+// The permutation successor keeps the same exact Carry Case shell and executes every
+// ordering of three canonical packets in one browser context. B and C use page-local
+// single-use manifest substitution only. Position drift, shared-action identity collapse,
+// persistence, or inherited regression leaves calibration nonzero.
+await import(`${pathToFileURL(threePacketPermutationWitnessPath).href}?td613_marrowline_three_packet_permutation=${Date.now()}`);
