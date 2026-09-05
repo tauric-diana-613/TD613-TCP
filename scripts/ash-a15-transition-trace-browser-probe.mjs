@@ -11,6 +11,7 @@ const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-car
 const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
 const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
 const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
+const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'marrowline-cartesian-finding-decision-separability-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -135,3 +136,8 @@ await import(`${pathToFileURL(interleavedNoninterferenceWitnessPath).href}?td613
 // Its local-only generated assay surface must show opposed A/B decisions without sibling
 // status bleed, binding interchange, persistence, network egress, or authority widening.
 await import(`${pathToFileURL(multiplexedFindingIsolationWitnessPath).href}?td613_marrowline_multiplexed_finding_isolation=${Date.now()}`);
+
+// The Cartesian successor forces the same shared Carry Case through every two-finding
+// current-decision corner and a reverse-order replay. Missing corners, sibling coupling,
+// order drift, persistence, network egress, or widened authority veto calibration.
+await import(`${pathToFileURL(cartesianFindingDecisionSeparabilityWitnessPath).href}?td613_marrowline_cartesian_finding_decision_separability=${Date.now()}`);
