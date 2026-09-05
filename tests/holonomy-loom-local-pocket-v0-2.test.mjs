@@ -127,4 +127,17 @@ for (const marker of [
 ]) assert.ok(browserWitness.includes(marker), `Pocket browser witness lost required marker: ${marker}`);
 assert.doesNotMatch(browserWitness, /GEMINI_API_KEY|generativelanguage\.googleapis\.com|\/api\/khonapolit/i);
 
+// Firefox browser-chrome favicon diagnostics are distinct from document errors, while real network requests remain a hard RED.
+for (const marker of [
+  'isFirefoxBrowserChromeFaviconCspDiagnostic',
+  'FaviconLoader.sys.mjs',
+  '/favicon.ico',
+  'browser_chrome',
+  'report.network.unexpected_requests.length === 0',
+  'serverHits.length === 1',
+  'stateNetworkAudit.attempts === 0'
+]) assert.ok(browserWitness.includes(marker), `Pocket favicon/network classification lost required marker: ${marker}`);
+assert.match(browserWitness, /browserName !== 'firefox'\) assert\(report\.errors\.browser_chrome\.length === 0/);
+assert.match(browserWitness, /report\.errors\.browser_chrome\.length <= 1/);
+
 console.log('Holonomy Loom Local Pocket v0.2 hostile contract: PASS');
