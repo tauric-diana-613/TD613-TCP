@@ -77,6 +77,8 @@ assert.throws(() => buildMarrowlineLoomAdvisoryRequest({ ruleId: 'COMMON_API_KEY
 const source = fs.readFileSync('app/dome-world/marrowline-loom-advisory.js', 'utf8');
 const server = fs.readFileSync('server/holonomy-loom-khonapolit-advisory.js', 'utf8');
 const boot = fs.readFileSync('app/dome-world/marrowline-egress-boot.js', 'utf8');
+const custody = fs.readFileSync('scripts/marrowline-loom-advisory-exact-source-witness.mjs', 'utf8');
+const transition = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
 assert.match(source, /ASK KʰONAPOLIT FOR HELP/);
 assert.match(source, /one canonical rule ID, its fixed evidence\/action\/category\/why tokens/);
 assert.match(source, /free-text finding descriptions/);
@@ -114,4 +116,16 @@ assert.match(boot, /rawDraftAccepted: false/);
 assert.match(boot, /conversationHistoryAccepted: false/);
 assert.match(boot, /providerResultHasReleaseAuthority: false/);
 
-console.log('Marrowline Loom advisory: canonical-token Kʰonapolit surface, detached preview safety, and advisory-first boot independence ok');
+assert.match(custody, /pull-request-whole-tree-parity/);
+assert.match(custody, /git\('fetch', '--no-tags', '--depth=1', 'origin', eventHead\)/);
+assert.match(custody, /checkoutTree === headTree/);
+assert.match(custody, /source_bytes_equivalent_to_raw_head: treeEqual/);
+assert.match(custody, /commit_identity_equivalence_claimed: false/);
+assert.match(custody, /tree_byte_equivalence_claimed: treeEqual/);
+assert.match(custody, /if \(!treeEqual\)[\s\S]*Marrowline Loom browser witness custody held/,
+  'browser assay must fail closed when merge-ref tree differs from raw event-head tree');
+assert.match(transition, /marrowline-loom-advisory-exact-source-witness\.mjs/);
+assert.doesNotMatch(transition, /const marrowlineLoomWitnessPath = path\.join\(scriptsDir, 'marrowline-loom-advisory-browser-witness\.mjs'\)/,
+  'A15 transition wrapper must route through source custody before the browser assay');
+
+console.log('Marrowline Loom advisory: canonical-token surface, detached preview safety, advisory-first boot, and raw-head whole-tree custody ok');
