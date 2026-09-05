@@ -90,11 +90,20 @@ assert.match(source, /rawDraftAccepted: false/);
 assert.match(server, /canonicalLoomAdvisoryFinding/);
 assert.match(server, /must equal canonical policy value/);
 assert.match(server, /X-TD613-Holonomy-Loom-Policy/);
-assert.match(boot, /marrowline-loom-advisory\.js/);
+assert.match(boot, /async function bootMarrowlineLoomAdvisory/);
+assert.match(boot, /dependency: 'static-marrowline-controls-only'/);
+assert.match(boot, /conversationalTerminalRequired: false/);
+assert.match(boot, /stationRequired: false/);
+assert.match(boot, /providerCallPerformed: false/);
+assert.match(boot, /const advisoryBoot = await bootMarrowlineLoomAdvisory\(doc, root\);[\s\S]*await Promise\.all\(\[[\s\S]*marrowline-station\.js[\s\S]*marrowline-terminal\.js/,
+  'privacy disclosure organ must mount before conversational station/terminal bundle');
+assert.match(boot, /__TD613_MARROWLINE_LOOM_ADVISORY_BOOT_ERROR__/);
 assert.match(boot, /loomAdvisory: Boolean\(root\.__TD613_MARROWLINE_LOOM_ADVISORY__\)/);
 assert.match(boot, /providerDisclosureRequired: true/);
+assert.match(boot, /canonicalTokenOnly: true/);
+assert.match(boot, /freeTextFindingAccepted: false/);
 assert.match(boot, /rawDraftAccepted: false/);
 assert.match(boot, /conversationHistoryAccepted: false/);
 assert.match(boot, /providerResultHasReleaseAuthority: false/);
 
-console.log('Marrowline Loom advisory: canonical-token Kʰonapolit surface closes free-text carrier route');
+console.log('Marrowline Loom advisory: canonical-token Kʰonapolit surface and advisory-first boot independence ok');
