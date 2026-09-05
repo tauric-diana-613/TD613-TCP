@@ -94,3 +94,7 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(sibling|prior
   'Sibling decision state may not enter the return-envelope compiler input.');
 
 console.log('Marrowline multiplexed finding isolation hostile contract: PASS');
+
+// Successor observation only: return order, omission, and repetition must remain sibling-local.
+// A failure vetoes the enclosing A15 static contract without widening product authority.
+await import('./marrowline-return-permutation-isolation.test.mjs');
