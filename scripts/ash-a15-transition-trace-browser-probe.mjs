@@ -8,6 +8,7 @@ const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${pro
 const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-exact-source-witness.mjs');
 const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket-v0-2-browser-witness.mjs');
 const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-carry-case-browser-witness.mjs');
+const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -115,3 +116,9 @@ await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_v
 // LOCAL_POCKET → MARROWLINE → TD613_HOSTED → RETURN → POCKET REVALIDATION.
 // This browser assay carries observation only; merge, provider, and production authority stay closed.
 await import(`${pathToFileURL(carryCaseWitnessPath).href}?td613_marrowline_pocket_hosted_carry_case=${Date.now()}`);
+
+// The round-trip assay observes the exact earned Carry Case again without changing it.
+// Three fresh document traversals share one browser context so hidden persistence has a
+// chance to surface. Cycle numbering belongs only to the local witness report; route
+// authority and portable transport remain cycle-blind.
+await import(`${pathToFileURL(roundTripMemorylessnessWitnessPath).href}?td613_marrowline_round_trip_memorylessness=${Date.now()}`);
