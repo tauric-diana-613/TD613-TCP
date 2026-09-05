@@ -70,6 +70,21 @@ function containsForbiddenCardMaterial(text) {
   return forbidden.filter(value => text.includes(value));
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function pollFromNode(label, reader, predicate, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let lastValue;
+  while (Date.now() < deadline) {
+    lastValue = await reader();
+    if (predicate(lastValue)) return lastValue;
+    await delay(40);
+  }
+  throw new Error(`Local Pocket Node-side poll timed out: ${label} · last=${JSON.stringify(lastValue)}`);
+}
+
 const browser = await browserType.launch({ headless: true });
 try {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'no-preference' });
@@ -124,12 +139,17 @@ try {
   });
 
   await page.goto(pocketUrl, { waitUntil: 'load' });
-  await page.waitForFunction(() => document.querySelector('[data-local-pocket]')?.dataset?.ready === 'true');
+  await page.locator('[data-local-pocket][data-ready="true"]').waitFor({ state: 'attached' });
 
   check('local file route observed', page.url().startsWith('file:'), page.url());
   check('Pocket ready without server', await page.locator('[data-local-pocket]').getAttribute('aria-busy') !== 'true');
   check('zero external requests after local load', report.external_requests.length === 0, report.external_requests);
   check('no external resource elements', await page.locator('script[src],link[href],img[src^="http"],iframe[src],object[data]').count() === 0);
+
+  const readRuntimeStatus = () => page.evaluate(() => window.__TD613_LOCAL_POCKET_V02__?.status || null);
+  const readClipboardCount = () => page.evaluate(() => window.__TD613_CLIPBOARD_WRITES__?.length ?? 0);
+  const waitRuntimeStatus = expected => pollFromNode(`runtime status ${expected}`, readRuntimeStatus, value => value === expected);
+  const waitClipboardCount = expected => pollFromNode(`clipboard count ${expected}`, readClipboardCount, value => value === expected);
 
   report.runtime_receipt = await page.evaluate(() => {
     const receipt = window.__TD613_LOCAL_POCKET_V02__;
@@ -157,7 +177,7 @@ try {
   await page.locator('#draft').fill(hostileDraft);
   await page.locator('#protected').fill(`${rawDraftCanary}\n${protectedCanary}`);
   await page.locator('#check').click();
-  await page.waitForFunction(() => window.__TD613_LOCAL_POCKET_V02__?.status === 'HOLD_REMOVE_REQUIRED');
+  await waitRuntimeStatus('HOLD_REMOVE_REQUIRED');
 
   check('hard REMOVE holds message door', await page.locator('#copyMessage').isDisabled());
   check('Pocket card remains available under hold', !(await page.locator('#copyCard').isDisabled()));
@@ -174,7 +194,7 @@ try {
   check('Pocket card authority stays false', hostileCard.release_authority === false && hostileCard.human_closure_required === true, hostileCard);
 
   await page.locator('#copyCard').click();
-  await page.waitForFunction(() => window.__TD613_CLIPBOARD_WRITES__.length === 1);
+  await waitClipboardCount(1);
   let writes = await page.evaluate(() => [...window.__TD613_CLIPBOARD_WRITES__]);
   check('Door B copied exact born-minimized card', writes[0] === JSON.stringify(hostileCard));
   check('Door B clipboard excludes raw canaries', containsForbiddenCardMaterial(writes[0]).length === 0, containsForbiddenCardMaterial(writes[0]));
@@ -188,7 +208,7 @@ try {
   // Restore hostile state, mitigate locally, and require a fresh exact-state recheck.
   await page.locator('#draft').fill(hostileDraft);
   await page.locator('#check').click();
-  await page.waitForFunction(() => window.__TD613_LOCAL_POCKET_V02__?.status === 'HOLD_REMOVE_REQUIRED');
+  await waitRuntimeStatus('HOLD_REMOVE_REQUIRED');
   await page.locator('#safer').click();
   check('mitigation immediately relocks message door', await page.locator('#copyMessage').isDisabled());
   check('mitigation immediately relocks card door', await page.locator('#copyCard').isDisabled());
@@ -197,13 +217,13 @@ try {
   check('mitigation removes structural secret canaries', !mitigated.includes('BEGIN PRIVATE KEY') && !mitigated.includes(bearerCanary) && !mitigated.includes(apiCanary), mitigated);
   check('mitigation generalizes identifier/time canaries', !mitigated.includes(emailCanary) && !mitigated.includes(phoneCanary) && !mitigated.includes(timestampCanary), mitigated);
   await page.locator('#check').click();
-  await page.waitForFunction(() => window.__TD613_LOCAL_POCKET_V02__?.status === 'CLEAR_UNDER_ENABLED_DETERMINISTIC_RULES');
+  await waitRuntimeStatus('CLEAR_UNDER_ENABLED_DETERMINISTIC_RULES');
   check('fresh mitigated recheck opens message door', !(await page.locator('#copyMessage').isDisabled()));
   check('fresh mitigated recheck opens card door', !(await page.locator('#copyCard').isDisabled()));
   const clearCard = JSON.parse(await page.locator('#cardPreview').textContent());
   check('clean state uses empty findings rather than fake Loom rule', clearCard.status_token === 'CLEAR_UNDER_ENABLED_DETERMINISTIC_RULES' && clearCard.findings.length === 0, clearCard);
   await page.locator('#copyMessage').click();
-  await page.waitForFunction(() => window.__TD613_CLIPBOARD_WRITES__.length === 2);
+  await waitClipboardCount(2);
   writes = await page.evaluate(() => [...window.__TD613_CLIPBOARD_WRITES__]);
   check('Door A copied exact rechecked mitigated message', writes[1] === mitigated);
   check('Door A rechecked message excludes hostile canaries', !containsForbiddenCardMaterial(writes[1]).length, containsForbiddenCardMaterial(writes[1]));
@@ -212,7 +232,7 @@ try {
   await page.locator('#draft').fill([emailCanary, phoneCanary, timestampCanary].join(' '));
   await page.locator('#protected').fill('');
   await page.locator('#check').click();
-  await page.waitForFunction(() => window.__TD613_LOCAL_POCKET_V02__?.status === 'CHANGE_SUGGESTED');
+  await waitRuntimeStatus('CHANGE_SUGGESTED');
   check('CHANGE-only journey leaves message door available', !(await page.locator('#copyMessage').isDisabled()));
   check('CHANGE-only journey does not display clear claim', !(await page.locator('#status').textContent()).toLowerCase().includes('clear under'));
 
