@@ -206,3 +206,8 @@ const a15Index = inheritedChamber.indexOf('node scripts/ash-a15-empirical-profil
 assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in the independent per-engine calibration chamber.');
 assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in the independent per-engine calibration chamber.');
 assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present in the front-loaded expensive lane.');
+
+// Descendant Holonomy Loom contracts execute from this already-authoritative static gate.
+// Their placement cannot widen A15 authority; any failure simply vetoes the enclosing contract job.
+await import('./holonomy-loom-local-pocket-policy-binding.test.mjs');
+await import('./marrowline-pocket-hosted-carry-case.test.mjs');
