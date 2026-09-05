@@ -4,7 +4,7 @@ import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
-const url = `${base}/app/dome-world/marrowline.html`;
+const url = `${base}/dome-world/marrowline.html`;
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/marrowline-loom-advisory';
 const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase();
 const browserTypes = { chromium, firefox, webkit };
@@ -15,7 +15,7 @@ await fs.mkdir(artifactDir, { recursive: true });
 const rawDraftCanary = `RAW_DRAFT_${browserName.toUpperCase()}_613_MUST_NOT_TRAVEL`;
 const priorThreadCanary = `PRIOR_THREAD_${browserName.toUpperCase()}_613_MUST_NOT_TRAVEL`;
 const report = {
-  schema: 'td613.marrowline.loom-advisory-browser-witness/v0.1',
+  schema: 'td613.marrowline.loom-advisory-browser-witness/v0.2-public-route-boot-diagnostics',
   source_status: 'OBSERVED',
   sensor_id: 'playwright-browser-runtime',
   authority_class: 'A1_OBSERVATIONAL',
@@ -25,6 +25,8 @@ const report = {
   status: 'OPEN',
   checks: [],
   advisory_requests: [],
+  boot_state: null,
+  module_responses: [],
   console_errors: [],
   page_errors: [],
   screenshots: [],
@@ -52,10 +54,7 @@ function readinessPayload() {
     modelPolicy: { callableModels: ['gemini-browser-witness-stub'] },
     aperture: {
       version: 'v3.0-alpha',
-      taskIntent: {
-        primary_route: 'OPEN_FIELD_SPECULATIVE_SYNTHESIS',
-        runtime_materiality: 'BACKGROUND'
-      }
+      taskIntent: { primary_route: 'OPEN_FIELD_SPECULATIVE_SYNTHESIS', runtime_materiality: 'BACKGROUND' }
     },
     relaySchema: 'td613.khonapolit.three-part-relay/v1'
   };
@@ -96,6 +95,12 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, colorScheme: 'dark' });
   page.on('console', message => { if (message.type() === 'error') report.console_errors.push(message.text()); });
   page.on('pageerror', error => report.page_errors.push(error.message));
+  page.on('response', response => {
+    const responseUrl = response.url();
+    if (/marrowline-(?:egress-boot|loom-advisory)|holonomy-loom-advisory-policy/.test(responseUrl)) {
+      report.module_responses.push({ url: responseUrl, status: response.status(), ok: response.ok() });
+    }
+  });
 
   await page.addInitScript(({ priorThreadCanary }) => {
     sessionStorage.setItem('TD613_KHONAPOLIT_TERMINAL_SESSION_V2', JSON.stringify({
@@ -106,11 +111,7 @@ try {
 
   await page.route('**/api/dome-world/khonapolit', async route => {
     if (route.request().method() !== 'GET') return route.continue();
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify(readinessPayload())
-    });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(readinessPayload()) });
   });
 
   await page.route('**/api/khonapolit?operation=loom-advisory', async route => {
@@ -138,7 +139,25 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
-  await page.locator('#marrowlineLoomAdvisory').waitFor({ state: 'attached', timeout: 30_000 });
+  await page.waitForFunction(() => Boolean(
+    document.getElementById('marrowlineLoomAdvisory')
+    || window.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT_ERROR__
+    || window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__
+  ), null, { timeout: 15_000 });
+  report.boot_state = await page.evaluate(() => ({
+    drawerMounted: Boolean(document.getElementById('marrowlineLoomAdvisory')),
+    advisoryBoot: window.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT__ || null,
+    advisoryBootError: window.__TD613_MARROWLINE_LOOM_ADVISORY_BOOT_ERROR__ || null,
+    roomBoot: window.__TD613_MARROWLINE_ROOM_BOOT__ || null,
+    roomBootError: window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__ || null,
+    terminalInstalled: Boolean(window.TD613_KHONAPOLIT_TERMINAL),
+    stationInstalled: Boolean(window.TD613_MARROWLINE)
+  }));
+  if (!report.boot_state.drawerMounted) {
+    throw new Error(`Marrowline Loom advisory did not mount: ${JSON.stringify(report.boot_state)}`);
+  }
+  check('public Marrowline route observed', new URL(page.url()).pathname === '/dome-world/marrowline.html', page.url());
+  check('advisory-first boot observed', report.boot_state.advisoryBoot?.installed === true, report.boot_state);
 
   await page.locator('#khonapolitPrompt').fill(rawDraftCanary);
   await page.locator('#marrowlineLoomAdvisory > summary').click();
@@ -159,7 +178,6 @@ try {
   await page.locator('#loomRouteMode').selectOption('CHATGPT_THREAD_COMPANION');
   const waiver = page.locator('#khonapolitWaive');
   if (await waiver.count()) await waiver.check({ force: true });
-
   const beforeClickCount = report.advisory_requests.length;
   await page.locator('#askKhonapolitLoomWhy').click();
   await page.locator('#marrowlineLoomAdvisoryOutput[data-state="ready"]').waitFor({ timeout: 30_000 });
@@ -193,7 +211,6 @@ try {
   const desktopShot = path.join(artifactDir, `marrowline-loom-${browserName}-desktop.png`);
   await page.screenshot({ path: desktopShot, fullPage: true });
   report.screenshots.push(desktopShot);
-
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.locator('#marrowlineLoomAdvisory').scrollIntoViewIfNeeded();
@@ -205,6 +222,7 @@ try {
   await page.screenshot({ path: mobileShot, fullPage: true });
   report.screenshots.push(mobileShot);
 
+  check('advisory modules served successfully', report.module_responses.length >= 3 && report.module_responses.every(item => item.ok), report.module_responses);
   check('no console errors', report.console_errors.length === 0, report.console_errors);
   check('no page errors', report.page_errors.length === 0, report.page_errors);
 } catch (error) {
@@ -224,6 +242,8 @@ console.log(JSON.stringify({
   browser: browserName,
   checks: report.checks.length,
   failed: report.failed_checks,
+  boot_state: report.boot_state,
+  module_responses: report.module_responses,
   artifact: artifactPath
 }, null, 2));
 if (report.status !== 'PASS') process.exitCode = 1;
