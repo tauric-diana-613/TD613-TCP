@@ -88,3 +88,8 @@ assert.doesNotMatch(assaySource, /buildMarrowlinePocketHostedCarryCase\([^\n]*(c
   'Collision/history state may not enter Carry Case compiler input.');
 
 console.log('Marrowline duplicate-rule collision rejection hostile contract: PASS');
+
+// Successor hostile contract: a valid inspected prefix must never escape as a partial
+// Carry Case when a late duplicate rule rejects the mixed packet. Rejection must also
+// leave the next lawful two-rule pair byte-identical to the earned parent surface.
+await import('./marrowline-mixed-packet-collision-all-or-nothing.test.mjs');
