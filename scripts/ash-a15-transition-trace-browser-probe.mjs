@@ -16,6 +16,7 @@ const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marr
 const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-finding-order-permutation-stability-browser-witness.mjs');
 const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-packet-population-stability-browser-witness.mjs');
 const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-rule-collision-rejection-browser-witness.mjs');
+const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marrowline-mixed-packet-collision-all-or-nothing-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -166,3 +167,8 @@ await import(`${pathToFileURL(packetPopulationStabilityWitnessPath).href}?td613_
 // Each collision must fail before Carry Case construction, then the next lawful
 // singleton/pair recovery must match #1059 exactly with no hidden collision state.
 await import(`${pathToFileURL(duplicateRuleCollisionRejectionWitnessPath).href}?td613_marrowline_duplicate_rule_collision_rejection=${Date.now()}`);
+
+// The mixed-packet successor moves the duplicate to the tail after two valid identities
+// have already been inspected. No validated prefix may escape as a partial Carry Case;
+// the next lawful pair must remain byte-identical and browser-persistence free.
+await import(`${pathToFileURL(mixedPacketCollisionAllOrNothingWitnessPath).href}?td613_marrowline_mixed_packet_collision_all_or_nothing=${Date.now()}`);
