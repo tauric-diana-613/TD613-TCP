@@ -93,3 +93,8 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(population|si
   'Population/history state may not enter return-envelope compiler input.');
 
 console.log('Marrowline packet-population stability hostile contract: PASS');
+
+// Successor hostile contract: repeat an already-present rule identity and require the
+// collision to fail before Carry Case construction. Rejection must not mutate the next
+// lawful singleton or pair packet, envelope, decision, or portable authority surface.
+await import('./marrowline-duplicate-rule-collision-rejection.test.mjs');
