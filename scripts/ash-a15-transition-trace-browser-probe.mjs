@@ -14,6 +14,7 @@ const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline
 const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'marrowline-cartesian-finding-decision-separability-browser-witness.mjs');
 const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marrowline-cross-binding-rejection-nonpoisoning-browser-witness.mjs');
 const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-finding-order-permutation-stability-browser-witness.mjs');
+const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-packet-population-stability-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -154,3 +155,8 @@ await import(`${pathToFileURL(crossBindingRejectionNonpoisoningWitnessPath).href
 // Carry Case while preserving their rule-bound return identities. Container order must
 // remain visible; per-rule Hosted projections, decisions, and bindings must not become slot-bound.
 await import(`${pathToFileURL(findingOrderPermutationStabilityWitnessPath).href}?td613_marrowline_finding_order_permutation_stability=${Date.now()}`);
+
+// The packet-population successor keeps A/B rule identity fixed while changing whether
+// the sibling is present in the packet. Singleton↔pair transitions must not drift
+// surviving Hosted/envelope/decision surfaces; absent siblings must reject without poisoning.
+await import(`${pathToFileURL(packetPopulationStabilityWitnessPath).href}?td613_marrowline_packet_population_stability=${Date.now()}`);
