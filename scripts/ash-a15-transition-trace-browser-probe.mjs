@@ -15,6 +15,7 @@ const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'm
 const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marrowline-cross-binding-rejection-nonpoisoning-browser-witness.mjs');
 const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-finding-order-permutation-stability-browser-witness.mjs');
 const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-packet-population-stability-browser-witness.mjs');
+const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-rule-collision-rejection-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -160,3 +161,8 @@ await import(`${pathToFileURL(findingOrderPermutationStabilityWitnessPath).href}
 // the sibling is present in the packet. Singleton↔pair transitions must not drift
 // surviving Hosted/envelope/decision surfaces; absent siblings must reject without poisoning.
 await import(`${pathToFileURL(packetPopulationStabilityWitnessPath).href}?td613_marrowline_packet_population_stability=${Date.now()}`);
+
+// The duplicate-rule successor attacks packet admission with repeated rule identity.
+// Each collision must fail before Carry Case construction, then the next lawful
+// singleton/pair recovery must match #1059 exactly with no hidden collision state.
+await import(`${pathToFileURL(duplicateRuleCollisionRejectionWitnessPath).href}?td613_marrowline_duplicate_rule_collision_rejection=${Date.now()}`);
