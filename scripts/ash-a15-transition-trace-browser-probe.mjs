@@ -17,6 +17,7 @@ const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marro
 const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-packet-population-stability-browser-witness.mjs');
 const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-rule-collision-rejection-browser-witness.mjs');
 const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marrowline-mixed-packet-collision-all-or-nothing-browser-witness.mjs');
+const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-position-permutation-closure-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -172,3 +173,8 @@ await import(`${pathToFileURL(duplicateRuleCollisionRejectionWitnessPath).href}?
 // have already been inspected. No validated prefix may escape as a partial Carry Case;
 // the next lawful pair must remain byte-identical and browser-persistence free.
 await import(`${pathToFileURL(mixedPacketCollisionAllOrNothingWitnessPath).href}?td613_marrowline_mixed_packet_collision_all_or_nothing=${Date.now()}`);
+
+// The duplicate-position successor closes the exact three-finding A/B permutation family.
+// Every duplicate position must reject before Carry Case construction, with no partial
+// transport and no poisoning of the immediately following lawful pair in forward/reverse replay.
+await import(`${pathToFileURL(duplicatePositionPermutationClosureWitnessPath).href}?td613_marrowline_duplicate_position_permutation_closure=${Date.now()}`);
