@@ -18,6 +18,7 @@ const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-p
 const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-rule-collision-rejection-browser-witness.mjs');
 const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marrowline-mixed-packet-collision-all-or-nothing-browser-witness.mjs');
 const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-position-permutation-closure-browser-witness.mjs');
+const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline-finite-return-schedule-closure-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -178,3 +179,8 @@ await import(`${pathToFileURL(mixedPacketCollisionAllOrNothingWitnessPath).href}
 // Every duplicate position must reject before Carry Case construction, with no partial
 // transport and no poisoning of the immediately following lawful pair in forward/reverse replay.
 await import(`${pathToFileURL(duplicatePositionPermutationClosureWitnessPath).href}?td613_marrowline_duplicate_position_permutation_closure=${Date.now()}`);
+
+// The finite return-schedule successor changes coordinates from packet admission to return.
+// Eight declared schedules plus one deterministic family replay must preserve rule-bound
+// finding identity, sibling-local decisions, closed authority, and empty portable schedule memory.
+await import(`${pathToFileURL(finiteReturnScheduleClosureWitnessPath).href}?td613_marrowline_finite_return_schedule_closure=${Date.now()}`);
