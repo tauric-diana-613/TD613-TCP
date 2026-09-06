@@ -55,3 +55,8 @@ assert.match(compilerSource,/if \(seen\.has\(ruleId\)\) throw new TypeError\(`du
 assert.match(compilerSource,/const validated = validatePocketPacket\(packet\);\n  const receipt = buildTransportReceipt\(validated\);/);
 assert.doesNotMatch(assaySource,/\.filter\([^\n]*portable_findings|new Set\([^\n]*portable_findings/,'Hostile mixed packet may not be deduplicated before admission.');
 console.log('Marrowline mixed-packet collision all-or-nothing hostile contract: PASS');
+
+// Successor hostile contract: duplicate-rule rejection must remain construction-stage
+// all-or-nothing at every position in the exact three-finding A/B permutation family.
+// Every rejected permutation must leave the next lawful pair byte-stable.
+await import('./marrowline-duplicate-position-permutation-closure.test.mjs');
