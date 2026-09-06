@@ -76,3 +76,8 @@ assert.doesNotMatch(source, /buildMarrowlineReturnEnvelope\([^\n]*(slot|index|pe
   'Position or permutation state may not enter return-envelope compiler input.');
 
 console.log('Marrowline finding-order permutation stability hostile contract: PASS');
+
+// Successor hostile contract: vary packet population while keeping surviving finding
+// identity rule-bound. Singleton↔pair transitions must not drift present-finding
+// Hosted/envelope/decision surfaces, and absent-sibling rejection must not poison recovery.
+await import('./marrowline-packet-population-stability.test.mjs');
