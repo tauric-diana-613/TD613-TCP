@@ -74,3 +74,8 @@ assert.doesNotMatch(assaySource,/\.filter\([^\n]*portable_findings|new Set\([^\n
   'Hostile permutation may not be deduplicated before compiler admission.');
 
 console.log('Marrowline duplicate-position permutation closure hostile contract: PASS');
+
+// Successor hostile contract: once the construction-position family is closed, change
+// scientific coordinates to the exact finite return schedules. Return order, omission,
+// repetition, and local HOLD may not transfer sibling authority or create portable memory.
+await import('./marrowline-finite-return-schedule-closure.test.mjs');
