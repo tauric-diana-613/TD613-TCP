@@ -5,6 +5,19 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
+const marrowlineLoomWitnessPath = path.join(scriptsDir, 'marrowline-loom-advisory-exact-source-witness.mjs');
+const localPocketWitnessPath = path.join(scriptsDir, 'holonomy-loom-local-pocket-v0-2-browser-witness.mjs');
+const carryCaseWitnessPath = path.join(scriptsDir, 'marrowline-pocket-hosted-carry-case-browser-witness.mjs');
+const roundTripMemorylessnessWitnessPath = path.join(scriptsDir, 'marrowline-round-trip-memorylessness-browser-witness.mjs');
+const interleavedNoninterferenceWitnessPath = path.join(scriptsDir, 'marrowline-interleaved-noninterference-browser-witness.mjs');
+const multiplexedFindingIsolationWitnessPath = path.join(scriptsDir, 'marrowline-multiplexed-finding-isolation-browser-witness.mjs');
+const cartesianFindingDecisionSeparabilityWitnessPath = path.join(scriptsDir, 'marrowline-cartesian-finding-decision-separability-browser-witness.mjs');
+const crossBindingRejectionNonpoisoningWitnessPath = path.join(scriptsDir, 'marrowline-cross-binding-rejection-nonpoisoning-browser-witness.mjs');
+const findingOrderPermutationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-finding-order-permutation-stability-browser-witness.mjs');
+const packetPopulationStabilityWitnessPath = path.join(scriptsDir, 'marrowline-packet-population-stability-browser-witness.mjs');
+const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-rule-collision-rejection-browser-witness.mjs');
+const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marrowline-mixed-packet-collision-all-or-nothing-browser-witness.mjs');
+const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-position-permutation-closure-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -94,3 +107,74 @@ try {
 } finally {
   await fs.unlink(tempPath).catch(() => {});
 }
+
+// Descendant observation only: after the inherited A15 transition witness closes,
+// prove the checked-out PR tree is byte-identical to the raw event head tree before
+// running the independent Marrowline Loom advisory browser assay in the same engine.
+// A custody mismatch or browser failure leaves the enclosing calibration command nonzero.
+await import(`${pathToFileURL(marrowlineLoomWitnessPath).href}?td613_marrowline_loom_exact_source=${Date.now()}`);
+
+// The exact-source custody wrapper above has already proven whole-tree byte equivalence
+// for this checked-out PR tree. Run the generated single-file Local Pocket from that same
+// checked-out source tree and the same browser-engine shard. Pocket does not inherit any
+// Marrowline/Gemini/provider authority; a Pocket failure simply vetoes this calibration.
+await import(`${pathToFileURL(localPocketWitnessPath).href}?td613_local_pocket_v0_2=${Date.now()}`);
+
+// Carry Case is a strict descendant of the earned Pocket observation. It may only run
+// after the canonical Pocket witness closes GREEN in this shard, preserving the route:
+// LOCAL_POCKET → MARROWLINE → TD613_HOSTED → RETURN → POCKET REVALIDATION.
+// This browser assay carries observation only; merge, provider, and production authority stay closed.
+await import(`${pathToFileURL(carryCaseWitnessPath).href}?td613_marrowline_pocket_hosted_carry_case=${Date.now()}`);
+
+// The round-trip assay observes the exact earned Carry Case again without changing it.
+// Three fresh document traversals share one browser context so hidden persistence has a
+// chance to surface. Cycle numbering belongs only to the local witness report; route
+// authority and portable transport remain cycle-blind.
+await import(`${pathToFileURL(roundTripMemorylessnessWitnessPath).href}?td613_marrowline_round_trip_memorylessness=${Date.now()}`);
+
+// The interleaving successor keeps the same served Carry Case bytes and alternates two
+// canonical packets in one browser context. B uses page-local single-use parse
+// instrumentation only; repository and served source bytes stay unchanged. Any packet
+// bleed, persistence, authority widening, or inherited regression vetoes calibration.
+await import(`${pathToFileURL(interleavedNoninterferenceWitnessPath).href}?td613_marrowline_interleaved_noninterference=${Date.now()}`);
+
+// The multiplexed-finding successor moves the falsifier inside one shared Carry Case.
+// Its local-only generated assay surface must show opposed A/B decisions without sibling
+// status bleed, binding interchange, persistence, network egress, or authority widening.
+await import(`${pathToFileURL(multiplexedFindingIsolationWitnessPath).href}?td613_marrowline_multiplexed_finding_isolation=${Date.now()}`);
+
+// The Cartesian successor forces the same shared Carry Case through every two-finding
+// current-decision corner and a reverse-order replay. Missing corners, sibling coupling,
+// order drift, persistence, network egress, or widened authority veto calibration.
+await import(`${pathToFileURL(cartesianFindingDecisionSeparabilityWitnessPath).href}?td613_marrowline_cartesian_finding_decision_separability=${Date.now()}`);
+
+// The cross-binding successor attacks each retained local binding with its sibling's
+// canonical envelope relation, then immediately replays lawful A/B revalidation. A clean
+// rejection is insufficient if it mutates either binding, either envelope, the Carry Case,
+// or any later lawful sibling result. All such poisoning vetoes calibration.
+await import(`${pathToFileURL(crossBindingRejectionNonpoisoningWitnessPath).href}?td613_marrowline_cross_binding_rejection_nonpoisoning=${Date.now()}`);
+
+// The finding-order successor reverses the same two canonical findings inside a fresh
+// Carry Case while preserving their rule-bound return identities. Container order must
+// remain visible; per-rule Hosted projections, decisions, and bindings must not become slot-bound.
+await import(`${pathToFileURL(findingOrderPermutationStabilityWitnessPath).href}?td613_marrowline_finding_order_permutation_stability=${Date.now()}`);
+
+// The packet-population successor keeps A/B rule identity fixed while changing whether
+// the sibling is present in the packet. Singleton↔pair transitions must not drift
+// surviving Hosted/envelope/decision surfaces; absent siblings must reject without poisoning.
+await import(`${pathToFileURL(packetPopulationStabilityWitnessPath).href}?td613_marrowline_packet_population_stability=${Date.now()}`);
+
+// The duplicate-rule successor attacks packet admission with repeated rule identity.
+// Each collision must fail before Carry Case construction, then the next lawful
+// singleton/pair recovery must match #1059 exactly with no hidden collision state.
+await import(`${pathToFileURL(duplicateRuleCollisionRejectionWitnessPath).href}?td613_marrowline_duplicate_rule_collision_rejection=${Date.now()}`);
+
+// The mixed-packet successor moves the duplicate to the tail after two valid identities
+// have already been inspected. No validated prefix may escape as a partial Carry Case;
+// the next lawful pair must remain byte-identical and browser-persistence free.
+await import(`${pathToFileURL(mixedPacketCollisionAllOrNothingWitnessPath).href}?td613_marrowline_mixed_packet_collision_all_or_nothing=${Date.now()}`);
+
+// The duplicate-position successor closes the exact three-finding A/B permutation family.
+// Every duplicate position must reject before Carry Case construction, with no partial
+// transport and no poisoning of the immediately following lawful pair in forward/reverse replay.
+await import(`${pathToFileURL(duplicatePositionPermutationClosureWitnessPath).href}?td613_marrowline_duplicate_position_permutation_closure=${Date.now()}`);
