@@ -19,15 +19,15 @@
     <a class="return" id="ashKeepReturn" href="/dome-world/ash-keep.html">Return to Ash Keep</a>
   </header>
 
-  <main>
-    <section class="hero">
+  <main data-flowcore-pedagogue="holonomy-loom" data-held="false" aria-busy="false">
+    <section class="hero" data-flowcore-phase="NOTICE">
       <p class="mark">SEE → CHECK → UNDERSTAND → REST</p>
       <h1>Holonomy Loom</h1>
       <p>Before you send it, check what this message carries.</p>
       <p class="ceiling">This repository-integrated hosted surface has no production-release authority. It checks the rules it can prove and keeps downstream-platform claims outside its control.</p>
     </section>
 
-    <section class="panel" aria-labelledby="messageTitle">
+    <section class="panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
       <label id="messageTitle" for="message">Paste your message here</label>
       <textarea id="message" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
 
@@ -45,7 +45,7 @@
       <p class="ceiling">The default deterministic check does not ask a model for help.</p>
     </section>
 
-    <section id="result" class="panel result" aria-live="polite">
+    <section id="result" class="panel result" aria-live="polite" data-flowcore-phase="WORLD_ANSWERS">
       <div id="statusLight" class="light held">HELD</div>
       <p id="summary"></p>
 
@@ -82,14 +82,14 @@
         <p class="ceiling">GREEN means only that no enabled Loom rule fired.</p>
       </details>
 
-      <details id="whyDetails">
+      <details id="whyDetails" data-flowcore-phase="NAME">
         <summary>Show me why</summary>
         <pre id="receipt"></pre>
       </details>
 
-      <div class="rest-row" aria-label="Rest Return Exit">
-        <button id="rest" type="button">REST</button>
-        <a href="#messageTitle" id="returnToCheck">RETURN</a>
+      <div class="rest-row" aria-label="Rest Return Exit" data-flowcore-phase="REST">
+        <button id="rest" type="button" data-rest>REST</button>
+        <a href="#messageTitle" id="returnToCheck" data-return>RETURN</a>
         <a href="/dome-world/ash-keep.html" id="exitLoom">EXIT</a>
       </div>
       <p id="restStatus" class="ceiling"></p>
