@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
+import { HOLONOMY_LOOM_CLAIM_CEILING } from '../app/dome-world/holonomy-loom/engine.js';
 
 export const REVIEW_SCHEMA = 'td613.holonomy-loom.release-candidate-product-review/v0.1';
 export const REVIEW_EVIDENCE_CLASS = 'MACHINE_RELEASE_CANDIDATE_PRODUCT_REVIEW';
@@ -64,6 +65,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   const redCopy = 'Stop. This message contains something your protection rules say must not leave.';
   const provenanceResemblanceCeiling = 'resemblance alone does not establish provenance';
   const provenanceCustodyCeiling = 'route-memory claims require explicit declared custody/context';
+  const semanticClaimCeiling = new Set(HOLONOMY_LOOM_CLAIM_CEILING);
 
   const universalPromisePatterns = [
     /guaranteed safe/i,
@@ -114,8 +116,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R1.1', 'RED copy is exact and bounded', engine.includes(redCopy)),
       reviewCheck('R1.2', 'GREEN copy is exact and bounded', engine.includes(visibleGreen)),
       reviewCheck('R1.3', 'universal safety promises absent', universalPromiseFound === false),
-      reviewCheck('R1.4a', 'resemblance alone does not establish provenance', engine.includes(provenanceResemblanceCeiling), { expected: provenanceResemblanceCeiling }),
-      reviewCheck('R1.4b', 'route-memory provenance requires declared custody context', engine.includes(provenanceCustodyCeiling), { expected: provenanceCustodyCeiling })
+      reviewCheck('R1.4a', 'resemblance alone does not establish provenance', semanticClaimCeiling.has(provenanceResemblanceCeiling), { expected: provenanceResemblanceCeiling, observation_layer: 'HOLONOMY_LOOM_CLAIM_CEILING' }),
+      reviewCheck('R1.4b', 'route-memory provenance requires declared custody context', semanticClaimCeiling.has(provenanceCustodyCeiling), { expected: provenanceCustodyCeiling, observation_layer: 'HOLONOMY_LOOM_CLAIM_CEILING' })
     ]),
     section(null, 'R2', 'Action and safer-copy boundary', [
       reviewCheck('R2.1', 'KEEP CHANGE REMOVE action classes declared', hasAll(html, ['<strong>KEEP</strong>', '<strong>CHANGE</strong>', '<strong>REMOVE</strong>'])),
@@ -201,7 +203,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
     ],
     preserved_red_lineage: [
       'legacy v0.1 closed-details false negative: GREEN promise remains bounded',
-      'Ready run 2792 v0.2 temporal-order RED: technical promise summary remains visible while body is closed'
+      'Ready run 2792 v0.2 temporal-order RED: technical promise summary remains visible while body is closed',
+      'Draft run 2803 R1.4a false negative: raw-source string observer replaced by exported claim-ceiling semantic binding'
     ],
     next_dependency_if_pass: 'EXPLICIT_OPERATOR_PRODUCTION_RELEASE_AUTHORIZATION_UNDER_STRATEGIC_VERCEL_DEPLOYMENT_LAW'
   };
