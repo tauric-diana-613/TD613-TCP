@@ -22,6 +22,7 @@ const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline
 const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-validation-layer-precedence-browser-witness.mjs');
 const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-replacement-triggered-native-reacquisition-browser-witness.mjs');
 const pretraceReplacementReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-pretrace-replacement-reacquisition-browser-witness.mjs');
+const preactivationRetryClassDiscriminationWitnessPath = path.join(scriptsDir, 'ash-a2-a5-preactivation-retry-class-discrimination-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -205,3 +206,9 @@ await import(`${pathToFileURL(replacementTriggeredReacquisitionWitnessPath).href
 // class; connected semantic or native-owner drift remains fail-closed. The sole replacement
 // must be reacquired on attempt 2 and settle through native Enter with no timeout/attempt widening.
 await import(`${pathToFileURL(pretraceReplacementReacquisitionWitnessPath).href}?td613_a2_a5_pretrace_replacement_reacquisition=${Date.now()}`);
+
+// #1071 closes classifier specificity rather than extending timing. The already-earned
+// disconnected-owner positive witness above must remain GREEN first; then two isolated
+// connected invalid-owner controls must hard-reject before focus/trace/native activation.
+// Exact classifier errors are negative evidence, never retry success or product authority.
+await import(`${pathToFileURL(preactivationRetryClassDiscriminationWitnessPath).href}?td613_a2_a5_preactivation_retry_class_discrimination=${Date.now()}`);
