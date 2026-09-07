@@ -115,3 +115,8 @@ assert.match(preregistration, /NO 𝄐 YET/);
 assert.match(preregistration, /Western Horizon remains at official empirical-shore research rest/);
 
 console.log('A2-A5 pre-trace replacement reacquisition hostile contract: PASS');
+
+// #1072 changes scientific coordinate from browser control ownership to the already-earned
+// Portable-AIA Atlas receiver relations. Its static contract must run strictly after #1067
+// while leaving the existing receiver implementation byte-untouched.
+await import('./portable-aia-atlas-crosscutting-receiver-lattice.test.mjs');
