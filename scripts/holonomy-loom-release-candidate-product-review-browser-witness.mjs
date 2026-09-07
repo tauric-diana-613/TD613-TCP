@@ -36,6 +36,33 @@ async function resolveReviewHead() {
   return Object.freeze({ reviewHead, executionSha, source: process.env.TD613_EXACT_HEAD ? 'TD613_EXACT_HEAD' : executionSha ? 'GITHUB_SHA' : 'LOCAL_UNBOUND' });
 }
 
+async function gitCommitAvailable(head) {
+  try {
+    await execFileAsync('git', ['cat-file', '-e', `${head}^{commit}`], {
+      encoding: 'utf8',
+      maxBuffer: 1024 * 1024
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureExactHeadAvailable(head) {
+  if (head === 'LOCAL_UNBOUND') return false;
+  if (await gitCommitAvailable(head)) return false;
+
+  await execFileAsync('git', ['fetch', '--no-tags', '--depth=1', 'origin', head], {
+    encoding: 'utf8',
+    maxBuffer: 16 * 1024 * 1024
+  });
+
+  if (!(await gitCommitAvailable(head))) {
+    throw new Error(`Exact-head review fetched ${head} but the commit object remains unavailable.`);
+  }
+  return true;
+}
+
 async function gitShowText(head, repoPath) {
   const { stdout } = await execFileAsync('git', ['show', `${head}:${repoPath}`], {
     encoding: 'utf8',
@@ -45,13 +72,19 @@ async function gitShowText(head, repoPath) {
 }
 
 async function loadExactHeadReviewInputs(custody) {
-  if (custody.reviewHead === 'LOCAL_UNBOUND') return loadReleaseCandidateInputs();
+  if (custody.reviewHead === 'LOCAL_UNBOUND') {
+    return { inputs: await loadReleaseCandidateInputs(), exactHeadFetchPerformed: false };
+  }
+  const exactHeadFetchPerformed = await ensureExactHeadAvailable(custody.reviewHead);
   const [html, engine, fixtureText] = await Promise.all([
     gitShowText(custody.reviewHead, PRODUCT_HTML_PATH),
     gitShowText(custody.reviewHead, ENGINE_PATH),
     gitShowText(custody.reviewHead, PEDAGOGUE_FIXTURE_PATH)
   ]);
-  return { html, engine, fixture: JSON.parse(fixtureText) };
+  return {
+    inputs: { html, engine, fixture: JSON.parse(fixtureText) },
+    exactHeadFetchPerformed
+  };
 }
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
@@ -67,9 +100,9 @@ const engineUrl = `${base}${engineRoute}`;
 await fs.mkdir(artifactDir, { recursive: true });
 
 const custody = await resolveReviewHead();
-const exactInputs = await loadExactHeadReviewInputs(custody);
+const exactHead = await loadExactHeadReviewInputs(custody);
 const review = await compileHolonomyLoomReleaseCandidateReview({
-  ...exactInputs,
+  ...exactHead.inputs,
   repositoryHead: custody.reviewHead
 });
 const markdown = renderHolonomyLoomReleaseCandidateReviewMarkdown(review);
@@ -85,6 +118,7 @@ const report = {
   reviewed_repository_head: review.reviewed_repository_head,
   review_head_source: custody.source,
   execution_repository_sha: custody.executionSha,
+  exact_head_fetch_performed: exactHead.exactHeadFetchPerformed,
   reviewed_candidate: review.reviewed_candidate,
   served_candidate: null,
   markdown_sha256: markdownSha256,
@@ -112,7 +146,8 @@ check('review packet binds to resolved exact repository head', review.reviewed_r
   reviewed_repository_head: review.reviewed_repository_head,
   resolved_exact_head: custody.reviewHead,
   source: custody.source,
-  execution_repository_sha: custody.executionSha
+  execution_repository_sha: custody.executionSha,
+  exact_head_fetch_performed: exactHead.exactHeadFetchPerformed
 });
 check('pull-request review head comes from event head rather than execution merge SHA', process.env.GITHUB_EVENT_NAME !== 'pull_request' || custody.source === 'GITHUB_EVENT.pull_request.head.sha', {
   source: custody.source,
@@ -235,5 +270,5 @@ const markdownPath = path.join(artifactDir, 'holonomy-loom-release-candidate-pro
 await fs.writeFile(receiptPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 await fs.writeFile(markdownPath, markdown, 'utf8');
 console.log(`Holonomy Loom release-candidate product review browser witness (${browserName}): ${report.status}`);
-console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, receipt: receiptPath, markdown: markdownPath, markdown_sha256: markdownSha256, reviewed_repository_head: review.reviewed_repository_head, execution_repository_sha: custody.executionSha }, null, 2));
+console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, receipt: receiptPath, markdown: markdownPath, markdown_sha256: markdownSha256, reviewed_repository_head: review.reviewed_repository_head, execution_repository_sha: custody.executionSha, exact_head_fetch_performed: exactHead.exactHeadFetchPerformed }, null, 2));
 if (report.status !== 'PASS') process.exitCode = 1;
