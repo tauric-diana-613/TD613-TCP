@@ -20,6 +20,7 @@ const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marro
 const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-position-permutation-closure-browser-witness.mjs');
 const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline-finite-return-schedule-closure-browser-witness.mjs');
 const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-validation-layer-precedence-browser-witness.mjs');
+const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-replacement-triggered-native-reacquisition-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -191,3 +192,9 @@ await import(`${pathToFileURL(finiteReturnScheduleClosureWitnessPath).href}?td61
 // duplicate scan must produce the preregistered finite masking/preemption matrix without
 // portable validation-history state, product mutation, or authority widening.
 await import(`${pathToFileURL(validationLayerPrecedenceWitnessPath).href}?td613_marrowline_validation_layer_precedence=${Date.now()}`);
+
+// #1066 leaves Marrowline at rest and exercises the distinct #1046 route-observer recovery
+// mechanism. One witness-only CUSTODIAL DOM replacement must make attempt 1 stale, remain
+// visible in the attempt ledger, then recover on attempt 2 through a newly reacquired
+// canonical ElementHandle and native Enter. Product/runtime bytes and private route APIs stay closed.
+await import(`${pathToFileURL(replacementTriggeredReacquisitionWitnessPath).href}?td613_a2_a5_replacement_triggered_native_reacquisition=${Date.now()}`);
