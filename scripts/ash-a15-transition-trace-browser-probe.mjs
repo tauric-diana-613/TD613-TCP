@@ -21,6 +21,7 @@ const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'ma
 const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline-finite-return-schedule-closure-browser-witness.mjs');
 const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-validation-layer-precedence-browser-witness.mjs');
 const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-replacement-triggered-native-reacquisition-browser-witness.mjs');
+const pretraceReplacementReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-pretrace-replacement-reacquisition-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -198,3 +199,9 @@ await import(`${pathToFileURL(validationLayerPrecedenceWitnessPath).href}?td613_
 // visible in the attempt ledger, then recover on attempt 2 through a newly reacquired
 // canonical ElementHandle and native Enter. Product/runtime bytes and private route APIs stay closed.
 await import(`${pathToFileURL(replacementTriggeredReacquisitionWitnessPath).href}?td613_a2_a5_replacement_triggered_native_reacquisition=${Date.now()}`);
+
+// #1067 moves the hostile replacement earlier: after ElementHandle acquisition but before
+// focus/trace binding. Only a disconnected acquired owner may enter the preactivation retry
+// class; connected semantic or native-owner drift remains fail-closed. The sole replacement
+// must be reacquired on attempt 2 and settle through native Enter with no timeout/attempt widening.
+await import(`${pathToFileURL(pretraceReplacementReacquisitionWitnessPath).href}?td613_a2_a5_pretrace_replacement_reacquisition=${Date.now()}`);
