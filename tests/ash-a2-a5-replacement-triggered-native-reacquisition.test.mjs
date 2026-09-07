@@ -83,3 +83,7 @@ assert.match(preregistration, /NO 𝄐 YET/);
 assert.match(preregistration, /Western Horizon remains at official empirical-shore research rest/);
 
 console.log('A2-A5 replacement-triggered native reacquisition hostile contract: PASS');
+
+// #1067 changes the temporal failure class without widening attempt count. Its Static
+// contract remains append-only behind the earned #1066 post-trace replacement episode.
+await import('./ash-a2-a5-pretrace-replacement-reacquisition.test.mjs');
