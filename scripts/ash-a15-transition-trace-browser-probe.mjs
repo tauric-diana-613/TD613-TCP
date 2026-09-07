@@ -22,6 +22,7 @@ const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline
 const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-validation-layer-precedence-browser-witness.mjs');
 const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-replacement-triggered-native-reacquisition-browser-witness.mjs');
 const pretraceReplacementReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-pretrace-replacement-reacquisition-browser-witness.mjs');
+const portableAiaReceiverLatticeWitnessPath = path.join(scriptsDir, 'portable-aia-atlas-crosscutting-receiver-lattice-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -205,3 +206,9 @@ await import(`${pathToFileURL(replacementTriggeredReacquisitionWitnessPath).href
 // class; connected semantic or native-owner drift remains fail-closed. The sole replacement
 // must be reacquired on attempt 2 and settle through native Enter with no timeout/attempt widening.
 await import(`${pathToFileURL(pretraceReplacementReacquisitionWitnessPath).href}?td613_a2_a5_pretrace_replacement_reacquisition=${Date.now()}`);
+
+// #1072 changes coordinate families entirely. The existing Portable-AIA POLICY_ONLY and
+// BOUNDARY_AWARE receivers are observed across the exact 7×3 canonical grid. Their actual
+// intersection structure must produce a discrete meet while their relation closure produces
+// the universal join; no receiver/product mutation or synthetic combined receiver is allowed.
+await import(`${pathToFileURL(portableAiaReceiverLatticeWitnessPath).href}?td613_portable_aia_crosscutting_receiver_lattice=${Date.now()}`);
