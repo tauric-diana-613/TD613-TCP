@@ -11,6 +11,12 @@ const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/a2
 const baseObservationPath = path.join(artifactDir, 'ash-a2-a6-browser-observation.json');
 const successorReceiptPath = path.join(artifactDir, 'a2-a5-replacement-triggered-native-reacquisition-receipt.json');
 const FORCED_ROUTE = 'CUSTODIAL';
+const FORBIDDEN_SETTER_LITERAL = '__td613AshLiveAIA.setRoute(';
+const INHERITED_FAIL_CLOSED_GUARD = [
+  "if (source.includes('__td613AshLiveAIA.setRoute(')) {",
+  "  throw new Error('A15 A2-A6 route witness may not bypass the native route control owner.');",
+  '}'
+].join('\n');
 
 function sha256Utf8(value) {
   return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
@@ -32,8 +38,11 @@ if (!baseAdapterSource.includes('const maxRouteActivationAttempts = 4')
     || !baseAdapterSource.includes('canonical_control_same_instance_after')) {
   throw new Error('Inherited #1046 replaceable-native-route observer law unavailable.');
 }
-if (baseAdapterSource.includes('__td613AshLiveAIA.setRoute(')) {
-  throw new Error('Inherited A2–A5 observer contains a forbidden direct Live-AIA route setter.');
+const baseForbiddenSetterOccurrences = baseAdapterSource.split(FORBIDDEN_SETTER_LITERAL).length - 1;
+if (!baseAdapterSource.includes('__td613AshLiveAIA.setRoute(')
+    || baseForbiddenSetterOccurrences !== 1
+    || !baseAdapterSource.includes(INHERITED_FAIL_CLOSED_GUARD)) {
+  throw new Error(`Inherited A2–A5 observer direct-setter guard drifted or a bypass appeared; observed ${baseForbiddenSetterOccurrences} setter-shaped literals.`);
 }
 
 const injection = [
@@ -85,8 +94,11 @@ hostileAdapterSource = replaceExactly(
   'forced-replacement receipt attachment'
 );
 
-if (hostileAdapterSource.includes('__td613AshLiveAIA.setRoute(')) {
-  throw new Error('Hostile witness attempted to introduce a direct Live-AIA route setter.');
+const hostileForbiddenSetterOccurrences = hostileAdapterSource.split(FORBIDDEN_SETTER_LITERAL).length - 1;
+if (!hostileAdapterSource.includes('__td613AshLiveAIA.setRoute(')
+    || hostileForbiddenSetterOccurrences !== 1
+    || !hostileAdapterSource.includes(INHERITED_FAIL_CLOSED_GUARD)) {
+  throw new Error(`Hostile witness direct-setter guard drifted or a bypass appeared; observed ${hostileForbiddenSetterOccurrences} setter-shaped literals.`);
 }
 
 await fs.mkdir(artifactDir, { recursive:true });
