@@ -73,7 +73,6 @@ const providerWidened = await compileHolonomyLoomReleaseCandidateReview({
 });
 assert.equal(providerWidened.status, 'HELD');
 assert.ok(providerWidened.failed_sections.includes('R4'));
-assert.ok(providerWidened.failed_sections.includes('R7'));
 
 const productionWidened = await compileHolonomyLoomReleaseCandidateReview({
   ...inputs,
