@@ -19,6 +19,7 @@ const duplicateRuleCollisionRejectionWitnessPath = path.join(scriptsDir, 'marrow
 const mixedPacketCollisionAllOrNothingWitnessPath = path.join(scriptsDir, 'marrowline-mixed-packet-collision-all-or-nothing-browser-witness.mjs');
 const duplicatePositionPermutationClosureWitnessPath = path.join(scriptsDir, 'marrowline-duplicate-position-permutation-closure-browser-witness.mjs');
 const finiteReturnScheduleClosureWitnessPath = path.join(scriptsDir, 'marrowline-finite-return-schedule-closure-browser-witness.mjs');
+const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-validation-layer-precedence-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -184,3 +185,9 @@ await import(`${pathToFileURL(duplicatePositionPermutationClosureWitnessPath).hr
 // Eight declared schedules plus one deterministic family replay must preserve rule-bound
 // finding identity, sibling-local decisions, closed authority, and empty portable schedule memory.
 await import(`${pathToFileURL(finiteReturnScheduleClosureWitnessPath).href}?td613_marrowline_finite_return_schedule_closure=${Date.now()}`);
+
+// #1065 changes coordinates again: lexical array position is compared with actual
+// validation-layer precedence. Packet-wide carrier audit and the later sequential
+// duplicate scan must produce the preregistered finite masking/preemption matrix without
+// portable validation-history state, product mutation, or authority widening.
+await import(`${pathToFileURL(validationLayerPrecedenceWitnessPath).href}?td613_marrowline_validation_layer_precedence=${Date.now()}`);
