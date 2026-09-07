@@ -94,7 +94,7 @@ const classifierInjection = [
   "            } else if (payload.case_id === 'CONNECTED_NATIVE_OWNER_LOSS') {",
   '              oldControl.onclick = null;',
   '            } else {',
-  "              throw new Error(`Unsupported A2–A5 retry-class hostile case: ${payload.case_id}`);",
+  "              throw new Error('Unsupported A2–A5 retry-class hostile case: ' + payload.case_id);",
   '            }',
   '            oldControl.hidden = true;',
   "            const afterVisible = [...document.querySelectorAll('#ashAiaMembrane [data-aia-route]')]",
