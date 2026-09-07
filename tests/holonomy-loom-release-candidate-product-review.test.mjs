@@ -66,6 +66,11 @@ await expectHeld('MANDATORY_TECHNICAL_PROMISE', async value => ({
   html: value.html.replace('<details id="promiseDisclosure">', '<details id="promiseDisclosure" open>')
 }), 'R3');
 
+await expectHeld('MANDATORY_NAME_DETAILS', async value => ({
+  ...value,
+  html: value.html.replace(/<details id="whyDetails"([^>]*)>/, '<details id="whyDetails"$1 open>')
+}), 'R3');
+
 const providerWidened = await compileHolonomyLoomReleaseCandidateReview({
   ...inputs,
   repositoryHead: 'HOSTILE_PROVIDER_AUTHORITY',
