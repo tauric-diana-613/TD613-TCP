@@ -6,6 +6,7 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
 const hostedLoomWitnessPath = path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness-v02.mjs');
+const hostedLoomReviewWitnessPath = path.join(scriptsDir, 'holonomy-loom-release-candidate-product-review-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -97,3 +98,4 @@ try {
 }
 
 await import(`${pathToFileURL(hostedLoomWitnessPath).href}?td613_holonomy_loom_hosted_product_integration_v02=${Date.now()}`);
+await import(`${pathToFileURL(hostedLoomReviewWitnessPath).href}?td613_holonomy_loom_release_candidate_product_review=${Date.now()}`);
