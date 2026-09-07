@@ -62,6 +62,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   const visibleInstruction = 'Before you send it, check what this message carries.';
   const visibleGreen = 'Nothing matched the protection rules you turned on.';
   const redCopy = 'Stop. This message contains something your protection rules say must not leave.';
+  const provenanceResemblanceCeiling = 'resemblance alone does not establish provenance';
+  const provenanceCustodyCeiling = 'route-memory claims require explicit declared custody/context';
 
   const universalPromisePatterns = [
     /guaranteed safe/i,
@@ -112,7 +114,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R1.1', 'RED copy is exact and bounded', engine.includes(redCopy)),
       reviewCheck('R1.2', 'GREEN copy is exact and bounded', engine.includes(visibleGreen)),
       reviewCheck('R1.3', 'universal safety promises absent', universalPromiseFound === false),
-      reviewCheck('R1.4', 'resemblance provenance abstention preserved', hasAll(engine, ['resemblance alone does not establish provenance', 'route-memory claims require explicit declared custody/context']))
+      reviewCheck('R1.4a', 'resemblance alone does not establish provenance', engine.includes(provenanceResemblanceCeiling), { expected: provenanceResemblanceCeiling }),
+      reviewCheck('R1.4b', 'route-memory provenance requires declared custody context', engine.includes(provenanceCustodyCeiling), { expected: provenanceCustodyCeiling })
     ]),
     section(null, 'R2', 'Action and safer-copy boundary', [
       reviewCheck('R2.1', 'KEEP CHANGE REMOVE action classes declared', hasAll(html, ['<strong>KEEP</strong>', '<strong>CHANGE</strong>', '<strong>REMOVE</strong>'])),
@@ -144,7 +147,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R6.3', 'Pedagogue AIA invariants preserved', pedagogue.design_gate?.aia_invariants_preserved === true),
       reviewCheck('R6.4', 'Pedagogue route history explicit', pedagogue.design_gate?.route_history_explicit === true),
       reviewCheck('R6.5', 'Pedagogue burden non-worsening', pedagogue.design_gate?.route_burden_non_worsening === true),
-      reviewCheck('R6.6', 'Pedagogue automatic release forbidden', pedagogue.scene?.authority?.automatic_release !== true && pedagogue.transfer?.authority?.automatic_release !== true),
+      reviewCheck('R6.6', 'Pedagogue authority transfer remains false', pedagogue.aia_surface_family_report?.authority_transferred === false),
       reviewCheck('R6.7', 'AIA authority does not cross', pedagogue.aia_surface_binding?.authority?.authority_may_cross === false)
     ]),
     section(null, 'R7', 'Evidence and authority ceiling', [
@@ -217,9 +220,9 @@ export function renderHolonomyLoomReleaseCandidateReviewMarkdown(review) {
     '',
     '## Checklist'
   ];
-  for (const section of review.sections) {
-    lines.push('', `### ${section.id} · ${section.label} — ${section.status}`);
-    for (const check of section.checks) lines.push(`- [${check.status === 'PASS' ? 'x' : ' '}] ${check.id} · ${check.label}`);
+  for (const item of review.sections) {
+    lines.push('', `### ${item.id} · ${item.label} — ${item.status}`);
+    for (const check of item.checks) lines.push(`- [${check.status === 'PASS' ? 'x' : ' '}] ${check.id} · ${check.label}`);
   }
   lines.push(
     '',
