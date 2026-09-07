@@ -101,7 +101,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   ];
   const universalPromiseFound = universalPromisePatterns.some(pattern => pattern.test(html) || pattern.test(engine));
   const promiseDetailsClosedByDefault = /<details id="promiseDisclosure">/.test(html) && !/<details id="promiseDisclosure"[^>]*\sopen(?:\s|>)/.test(html);
-  const whyDetailsClosedByDefault = /<details id="whyDetails">/.test(html) && !/<details id="whyDetails"[^>]*\sopen(?:\s|>)/.test(html);
+  const whyDetailsClosedByDefault = /<details id="whyDetails"[^>]*>/.test(html) && !/<details id="whyDetails"[^>]*\sopen(?:\s|>)/.test(html);
   const providerDetailsClosedByDefault = /<details id="providerDisclosure">/.test(html) && !/<details id="providerDisclosure"[^>]*\sopen(?:\s|>)/.test(html);
 
   const firstResultIndex = html.indexOf('<section id="result"');
@@ -229,7 +229,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
     preserved_red_lineage: [
       'legacy v0.1 closed-details false negative: GREEN promise remains bounded',
       'Ready run 2792 v0.2 temporal-order RED: technical promise summary remains visible while body is closed',
-      'Draft run 2803 R1.4a false negative: raw-source string observer replaced by exported claim-ceiling semantic binding'
+      'Draft run 2803 R1.4a false negative: raw-source string observer replaced by exported claim-ceiling semantic binding',
+      'Draft runs 2815–2818 R3 false negative: Flow-Core NAME metadata exposed exact-tag observer brittleness; closed-details parsing widened without changing closure semantics'
     ],
     next_dependency_if_pass: 'EXPLICIT_OPERATOR_PRODUCTION_RELEASE_AUTHORIZATION_UNDER_STRATEGIC_VERCEL_DEPLOYMENT_LAW'
   };
