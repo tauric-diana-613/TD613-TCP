@@ -24,6 +24,7 @@ const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-
 const pretraceReplacementReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-pretrace-replacement-reacquisition-browser-witness.mjs');
 const portableAiaReceiverLatticeWitnessPath = path.join(scriptsDir, 'portable-aia-atlas-crosscutting-receiver-lattice-browser-witness.mjs');
 const portableAiaReceiverCouplingWitnessPath = path.join(scriptsDir, 'portable-aia-receiver-marginal-coupling-separation-browser-witness.mjs');
+const portableAiaCrossModeGuaranteeWitnessPath = path.join(scriptsDir, 'portable-aia-cross-mode-guarantee-validity-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -218,3 +219,9 @@ await import(`${pathToFileURL(portableAiaReceiverLatticeWitnessPath).href}?td613
 // measures with identical policy and boundary marginals. Exact integer arithmetic must show
 // μ0 factorized, μ1 non-factorized on four cells, and paired-receiver joint separation at TV 1/42.
 await import(`${pathToFileURL(portableAiaReceiverCouplingWitnessPath).href}?td613_portable_aia_receiver_marginal_coupling_separation=${Date.now()}`);
+
+// #1074 answers #1038's remaining cross-mode guarantee question without inventing a new
+// receiver or route. Four governance predicates must survive all 21 current projections;
+// three source-ingress predicates must remain exact seven-point host-bound supports, and
+// universalizing any one of them must expose exactly 14 wrong-room claims.
+await import(`${pathToFileURL(portableAiaCrossModeGuaranteeWitnessPath).href}?td613_portable_aia_cross_mode_guarantee_validity=${Date.now()}`);
