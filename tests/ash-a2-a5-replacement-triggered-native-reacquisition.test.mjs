@@ -20,7 +20,12 @@ for (const marker of [
   'native_enter_required:true',
   'direct_route_api_bypass:false'
 ]) assert.match(inherited, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-assert.doesNotMatch(inherited, /__td613AshLiveAIA\.setRoute\(/);
+const inheritedForbiddenSetterOccurrences = inherited.match(/__td613AshLiveAIA\.setRoute\(/g) || [];
+assert.equal(inheritedForbiddenSetterOccurrences.length, 1);
+assert.match(
+  inherited,
+  /if \(source\.includes\('__td613AshLiveAIA\.setRoute\('\)\) \{\n  throw new Error\('A15 A2-A6 route witness may not bypass the native route control owner\.'\);\n\}/
+);
 
 // Hostile injection is temporary-observer-only and frozen to one CUSTODIAL replacement.
 assert.match(witness, /const FORCED_ROUTE = 'CUSTODIAL'/);
