@@ -8,7 +8,10 @@ import {
 
 const inputs = await loadReleaseCandidateInputs();
 const baseline = await compileHolonomyLoomReleaseCandidateReview({ ...inputs, repositoryHead: 'STATIC_TEST_HEAD' });
-assert.equal(baseline.status, 'PASS', `baseline release-candidate review must pass: ${JSON.stringify(baseline.failed_sections)}`);
+const baselineFailures = baseline.sections
+  .filter(section => section.status !== 'PASS')
+  .map(section => ({ id: section.id, failed_checks: section.failed_checks }));
+assert.equal(baseline.status, 'PASS', `baseline release-candidate review must pass: ${JSON.stringify(baselineFailures)}`);
 assert.deepEqual(baseline.failed_sections, []);
 assert.equal(baseline.sections.length, 8);
 assert.equal(baseline.sections.every(section => section.status === 'PASS'), true);
