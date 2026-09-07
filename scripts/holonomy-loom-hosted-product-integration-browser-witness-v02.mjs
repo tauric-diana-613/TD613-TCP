@@ -49,7 +49,7 @@ const report = {
   },
   aperture_counterpoint: {
     visibility_not_identifiability: true,
-    observation_surface_correction: 'VISIBLE_SUMMARY_PLUS_DECLARED_CLOSED_DISCLOSURE_STATE',
+    observation_surface_correction: 'DECLARED_UNRENDERED_RESULT_THEN_VISIBLE_SUMMARY_PLUS_DECLARED_CLOSED_DISCLOSURE_STATE',
     widening_or_release_authority: false
   },
   production_release_authority: false,
@@ -86,16 +86,18 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+  const result = page.locator('#result');
   const promise = page.locator('#promiseDisclosure');
   const promiseSummary = promise.locator('summary');
   const technicalCeiling = promise.locator('p.ceiling');
 
   check('hosted route loaded for observer repair', new URL(page.url()).pathname === route, page.url());
   check('technical promise remains closed before explicit action', !(await detailsOpen(promise)));
-  check('technical promise summary remains visible while body is closed', await promiseSummary.isVisible());
-  check('technical promise body is not rendered in child-visible projection while closed', !(await technicalCeiling.isVisible()));
+  check('result projection is intentionally unrendered before CHECK', !(await result.isVisible()));
+  check('technical promise summary is not falsely treated as rendered before CHECK', !(await promiseSummary.isVisible()));
+  check('technical promise body is not rendered before CHECK', !(await technicalCeiling.isVisible()));
   const declaredTechnicalText = (await technicalCeiling.textContent() || '').trim();
-  check('bounded technical ceiling remains declared in DOM while closed', declaredTechnicalText.includes('GREEN means only that no enabled Loom rule fired'), declaredTechnicalText);
+  check('bounded technical ceiling remains declared in DOM while result is unrendered', declaredTechnicalText.includes('GREEN means only that no enabled Loom rule fired'), declaredTechnicalText);
 
   await page.locator('#message').fill('ordinary bounded message');
   await page.locator('#check').click();
@@ -105,6 +107,8 @@ try {
   check('GREEN result observed on repaired projection', (await page.locator('#statusLight').innerText()).trim() === 'GREEN');
   check('bounded child GREEN consequence is visibly rendered', await visibleSummary.isVisible());
   check('visible GREEN consequence is exact and bounded', (await visibleSummary.innerText()).trim() === 'Nothing matched the protection rules you turned on.', (await visibleSummary.innerText()).trim());
+  check('technical promise summary becomes visible with the result while drawer remains closed', await promiseSummary.isVisible());
+  check('technical promise body remains hidden after CHECK while drawer is closed', !(await technicalCeiling.isVisible()));
   check('checked-copy door opens only after GREEN', await page.locator('#copyChecked').isEnabled());
   check('technical promise remains optional after visible consequence', !(await detailsOpen(promise)));
   check('Rest remains visible without opening technical promise', await page.locator('#rest').isVisible());
