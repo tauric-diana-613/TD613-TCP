@@ -106,4 +106,8 @@ assert.match(prereg, /NO 𝄐 YET/);
 assert.match(portableSource, /PORTABLE_AIA_ATLAS_RECEIVERS/);
 assert.doesNotMatch(assaySource, /PORTABLE_AIA_ATLAS_RECEIVERS\.push|COMBINED_RECEIVER|PROBABILITY_RECEIVER/);
 
+// #1074 is a strict claim-validity descendant. Static admission for #1073 now also
+// executes the frozen cross-mode support matrix; failure vetoes the enclosing chain.
+await import('./portable-aia-cross-mode-guarantee-validity.test.mjs');
+
 console.log('Portable AIA receiver-marginal coupling separation hostile contract: PASS');
