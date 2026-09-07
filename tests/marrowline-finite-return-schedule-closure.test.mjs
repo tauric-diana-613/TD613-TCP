@@ -120,3 +120,8 @@ assert.doesNotMatch(assaySource, /writeFileSync|writeFile\(|localStorage\.setIte
   'Finite return-schedule assay may not persist schedule state.');
 
 console.log('Marrowline finite return-schedule closure hostile contract: PASS');
+
+// #1065 changes coordinates from finite return scheduling to validation-layer precedence.
+// The descendant must distinguish packet-wide preaudit from the later sequential finding
+// scan without mutating the compiler or extending the closed #1064 schedule family.
+await import('./marrowline-validation-layer-precedence.test.mjs');
