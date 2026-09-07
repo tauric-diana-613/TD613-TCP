@@ -1,11 +1,58 @@
+import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { promisify } from 'node:util';
 import { chromium, firefox, webkit } from 'playwright';
 import {
-  compileDefaultHolonomyLoomReleaseCandidateReview,
+  compileHolonomyLoomReleaseCandidateReview,
+  loadReleaseCandidateInputs,
   renderHolonomyLoomReleaseCandidateReviewMarkdown
 } from './holonomy-loom-release-candidate-product-review.mjs';
+
+const execFileAsync = promisify(execFile);
+const PRODUCT_HTML_PATH = 'app/dome-world/holonomy-loom.html';
+const ENGINE_PATH = 'app/dome-world/holonomy-loom/engine.js';
+const PEDAGOGUE_FIXTURE_PATH = 'tests/fixtures/pedagogue/holonomy-loom-hosted-observer-geometry-design.json';
+
+function sha256(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+async function resolveReviewHead() {
+  const eventName = String(process.env.GITHUB_EVENT_NAME || '');
+  const executionSha = process.env.GITHUB_SHA || null;
+  if (eventName === 'pull_request') {
+    const eventPath = process.env.GITHUB_EVENT_PATH;
+    if (!eventPath) throw new Error('Exact-head review requires GITHUB_EVENT_PATH on pull_request runs.');
+    const event = JSON.parse(await fs.readFile(eventPath, 'utf8'));
+    const reviewHead = String(event?.pull_request?.head?.sha || '').toLowerCase();
+    if (!/^[a-f0-9]{40}$/.test(reviewHead)) {
+      throw new Error(`Exact-head review could not resolve pull_request.head.sha: ${reviewHead || 'MISSING'}`);
+    }
+    return Object.freeze({ reviewHead, executionSha, source: 'GITHUB_EVENT.pull_request.head.sha' });
+  }
+  const reviewHead = String(process.env.TD613_EXACT_HEAD || executionSha || 'LOCAL_UNBOUND');
+  return Object.freeze({ reviewHead, executionSha, source: process.env.TD613_EXACT_HEAD ? 'TD613_EXACT_HEAD' : executionSha ? 'GITHUB_SHA' : 'LOCAL_UNBOUND' });
+}
+
+async function gitShowText(head, repoPath) {
+  const { stdout } = await execFileAsync('git', ['show', `${head}:${repoPath}`], {
+    encoding: 'utf8',
+    maxBuffer: 16 * 1024 * 1024
+  });
+  return stdout;
+}
+
+async function loadExactHeadReviewInputs(custody) {
+  if (custody.reviewHead === 'LOCAL_UNBOUND') return loadReleaseCandidateInputs();
+  const [html, engine, fixtureText] = await Promise.all([
+    gitShowText(custody.reviewHead, PRODUCT_HTML_PATH),
+    gitShowText(custody.reviewHead, ENGINE_PATH),
+    gitShowText(custody.reviewHead, PEDAGOGUE_FIXTURE_PATH)
+  ]);
+  return { html, engine, fixture: JSON.parse(fixtureText) };
+}
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase();
@@ -14,14 +61,19 @@ const browserType = browserTypes[browserName];
 if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/holonomy-loom-release-candidate-review';
 const route = '/dome-world/holonomy-loom.html';
+const engineRoute = '/dome-world/holonomy-loom/engine.js';
 const url = `${base}${route}`;
+const engineUrl = `${base}${engineRoute}`;
 await fs.mkdir(artifactDir, { recursive: true });
 
-const review = await compileDefaultHolonomyLoomReleaseCandidateReview({
-  repositoryHead: process.env.GITHUB_SHA || 'LOCAL_UNBOUND'
+const custody = await resolveReviewHead();
+const exactInputs = await loadExactHeadReviewInputs(custody);
+const review = await compileHolonomyLoomReleaseCandidateReview({
+  ...exactInputs,
+  repositoryHead: custody.reviewHead
 });
 const markdown = renderHolonomyLoomReleaseCandidateReviewMarkdown(review);
-const markdownSha256 = createHash('sha256').update(markdown, 'utf8').digest('hex');
+const markdownSha256 = sha256(markdown);
 
 const report = {
   schema: 'td613.holonomy-loom.release-candidate-product-review-browser-witness/v0.1',
@@ -31,7 +83,10 @@ const report = {
   review_status: review.status,
   review_evidence_class: review.evidence.review_evidence_class,
   reviewed_repository_head: review.reviewed_repository_head,
+  review_head_source: custody.source,
+  execution_repository_sha: custody.executionSha,
   reviewed_candidate: review.reviewed_candidate,
+  served_candidate: null,
   markdown_sha256: markdownSha256,
   product_bytes_mutated_by_review: false,
   human_comprehension_observed: false,
@@ -53,6 +108,17 @@ const report = {
 const check = (name, pass, detail = null) => report.checks.push({ name, status: pass ? 'PASS' : 'FAIL', detail });
 const detailsOpen = locator => locator.evaluate(node => Boolean(node.open)).catch(() => false);
 
+check('review packet binds to resolved exact repository head', review.reviewed_repository_head === custody.reviewHead, {
+  reviewed_repository_head: review.reviewed_repository_head,
+  resolved_exact_head: custody.reviewHead,
+  source: custody.source,
+  execution_repository_sha: custody.executionSha
+});
+check('pull-request review head comes from event head rather than execution merge SHA', process.env.GITHUB_EVENT_NAME !== 'pull_request' || custody.source === 'GITHUB_EVENT.pull_request.head.sha', {
+  source: custody.source,
+  review_head: custody.reviewHead,
+  execution_repository_sha: custody.executionSha
+});
 check('static release-candidate review packet passes before browser projection', review.status === 'PASS', review.failed_sections);
 check('human-readable review packet contains all R0-R7 PASS sections', ['R0','R1','R2','R3','R4','R5','R6','R7'].every(id => markdown.includes(`### ${id} `) && markdown.includes(' — PASS')));
 check('human-readable review packet preserves human-evidence disclaimer', /not evidence that a human understood the product/i.test(markdown) && /not a production observation/i.test(markdown));
@@ -76,6 +142,32 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+
+  const [servedHtmlResponse, servedEngineResponse] = await Promise.all([
+    fetch(url),
+    fetch(engineUrl)
+  ]);
+  const servedHtmlBytes = Buffer.from(await servedHtmlResponse.arrayBuffer());
+  const servedEngineBytes = Buffer.from(await servedEngineResponse.arrayBuffer());
+  const servedHtmlSha256 = sha256(servedHtmlBytes);
+  const servedEngineSha256 = sha256(servedEngineBytes);
+  report.served_candidate = {
+    html_status: servedHtmlResponse.status,
+    html_sha256: servedHtmlSha256,
+    engine_status: servedEngineResponse.status,
+    engine_sha256: servedEngineSha256
+  };
+  check('browser-served HTML bytes equal exact-head reviewed candidate', servedHtmlResponse.ok && servedHtmlSha256 === review.reviewed_candidate.html_sha256, {
+    expected: review.reviewed_candidate.html_sha256,
+    observed: servedHtmlSha256,
+    status: servedHtmlResponse.status
+  });
+  check('browser-served engine bytes equal exact-head reviewed candidate', servedEngineResponse.ok && servedEngineSha256 === review.reviewed_candidate.engine_sha256, {
+    expected: review.reviewed_candidate.engine_sha256,
+    observed: servedEngineSha256,
+    status: servedEngineResponse.status
+  });
+
   check('hosted review route loaded', new URL(page.url()).pathname === route, page.url());
   check('Holonomy Loom title visibly renders', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
   check('ordinary-language task instruction visibly renders', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
@@ -143,5 +235,5 @@ const markdownPath = path.join(artifactDir, 'holonomy-loom-release-candidate-pro
 await fs.writeFile(receiptPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 await fs.writeFile(markdownPath, markdown, 'utf8');
 console.log(`Holonomy Loom release-candidate product review browser witness (${browserName}): ${report.status}`);
-console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, receipt: receiptPath, markdown: markdownPath, markdown_sha256: markdownSha256 }, null, 2));
+console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, receipt: receiptPath, markdown: markdownPath, markdown_sha256: markdownSha256, reviewed_repository_head: review.reviewed_repository_head, execution_repository_sha: custody.executionSha }, null, 2));
 if (report.status !== 'PASS') process.exitCode = 1;
