@@ -138,3 +138,7 @@ assert.match(correction, /DISCRETE_MEET_REQUIRES_EXACT_INTERSECTION_STRUCTURE/);
 assert.match(correction, /Counterexample intersection matrix/);
 
 console.log('Portable AIA × Atlas cross-cutting receiver partition lattice hostile contract: PASS');
+
+// #1073 adds a synthetic measure on the already-earned 21 semantic cells. Equal
+// one-receiver marginals must not be promoted to joint equality or independence.
+await import('./portable-aia-receiver-marginal-coupling-separation.test.mjs');
