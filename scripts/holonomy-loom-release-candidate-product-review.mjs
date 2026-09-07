@@ -1,7 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
-import { HOLONOMY_LOOM_CLAIM_CEILING } from '../app/dome-world/holonomy-loom/engine.js';
 
 export const REVIEW_SCHEMA = 'td613.holonomy-loom.release-candidate-product-review/v0.1';
 export const REVIEW_EVIDENCE_CLASS = 'MACHINE_RELEASE_CANDIDATE_PRODUCT_REVIEW';
@@ -16,6 +15,32 @@ function sha256(text) {
 
 function hasAll(text, needles) {
   return needles.every(needle => text.includes(needle));
+}
+
+function parseCandidateClaimCeiling(engine) {
+  const declarationStartPattern = /export\s+const\s+HOLONOMY_LOOM_CLAIM_CEILING\b/g;
+  const declarationStarts = [...engine.matchAll(declarationStartPattern)];
+  if (declarationStarts.length !== 1) {
+    throw new Error('R1.4 candidate engine must define exactly one HOLONOMY_LOOM_CLAIM_CEILING export');
+  }
+
+  const declarationPattern = /export\s+const\s+HOLONOMY_LOOM_CLAIM_CEILING\s*=\s*Object\.freeze\(\s*\[\s*((?:'[^'\\]*'\s*,?\s*)+)\]\s*\)\s*;/;
+  const match = engine.match(declarationPattern);
+  if (!match) {
+    throw new Error('R1.4 HOLONOMY_LOOM_CLAIM_CEILING must be a literal Object.freeze array of unescaped single-quoted strings');
+  }
+
+  const body = match[1];
+  const residue = body.replace(/'[^'\\]*'/g, '').replace(/[\s,]/g, '');
+  if (residue.length !== 0) {
+    throw new Error('R1.4 HOLONOMY_LOOM_CLAIM_CEILING contains non-literal syntax');
+  }
+
+  const values = [...body.matchAll(/'([^'\\]*)'/g)].map(item => item[1]);
+  if (values.length === 0) {
+    throw new Error('R1.4 HOLONOMY_LOOM_CLAIM_CEILING must not be empty');
+  }
+  return Object.freeze(values);
 }
 
 function reviewCheck(id, label, pass, detail = null) {
@@ -65,7 +90,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   const redCopy = 'Stop. This message contains something your protection rules say must not leave.';
   const provenanceResemblanceCeiling = 'resemblance alone does not establish provenance';
   const provenanceCustodyCeiling = 'route-memory claims require explicit declared custody/context';
-  const semanticClaimCeiling = new Set(HOLONOMY_LOOM_CLAIM_CEILING);
+  const semanticClaimCeiling = new Set(parseCandidateClaimCeiling(engine));
 
   const universalPromisePatterns = [
     /guaranteed safe/i,
