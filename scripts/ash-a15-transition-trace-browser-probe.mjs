@@ -23,6 +23,7 @@ const validationLayerPrecedenceWitnessPath = path.join(scriptsDir, 'marrowline-v
 const replacementTriggeredReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-replacement-triggered-native-reacquisition-browser-witness.mjs');
 const pretraceReplacementReacquisitionWitnessPath = path.join(scriptsDir, 'ash-a2-a5-pretrace-replacement-reacquisition-browser-witness.mjs');
 const portableAiaReceiverLatticeWitnessPath = path.join(scriptsDir, 'portable-aia-atlas-crosscutting-receiver-lattice-browser-witness.mjs');
+const portableAiaReceiverCouplingWitnessPath = path.join(scriptsDir, 'portable-aia-receiver-marginal-coupling-separation-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -212,3 +213,8 @@ await import(`${pathToFileURL(pretraceReplacementReacquisitionWitnessPath).href}
 // intersection structure must produce a discrete meet while their relation closure produces
 // the universal join; no receiver/product mutation or synthetic combined receiver is allowed.
 await import(`${pathToFileURL(portableAiaReceiverLatticeWitnessPath).href}?td613_portable_aia_crosscutting_receiver_lattice=${Date.now()}`);
+
+// #1073 keeps #1072's exact measure-free B2 fixed and overlays two synthetic full-support
+// measures with identical policy and boundary marginals. Exact integer arithmetic must show
+// μ0 factorized, μ1 non-factorized on four cells, and paired-receiver joint separation at TV 1/42.
+await import(`${pathToFileURL(portableAiaReceiverCouplingWitnessPath).href}?td613_portable_aia_receiver_marginal_coupling_separation=${Date.now()}`);
