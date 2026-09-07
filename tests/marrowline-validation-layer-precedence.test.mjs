@@ -138,3 +138,7 @@ assert.doesNotMatch(
 );
 
 console.log('Marrowline validation-layer precedence hostile contract: PASS');
+
+// #1066 changes mechanism rather than extending Marrowline combinatorics. Its Static
+// contract freezes the one-replacement/two-attempt A2–A5 native reacquisition falsifier.
+await import('./ash-a2-a5-replacement-triggered-native-reacquisition.test.mjs');
