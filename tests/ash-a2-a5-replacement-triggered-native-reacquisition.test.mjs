@@ -34,7 +34,11 @@ assert.match(witness, /canonical_visible_count:canonicalVisible\.length/);
 assert.match(witness, /canonical_is_replacement:canonicalVisible\.length === 1 && canonicalVisible\[0\] === replacement/);
 assert.match(witness, /same_dom_instance:false/);
 assert.match(witness, /direct_route_api_bypass:false/);
-assert.doesNotMatch(witness, /__td613AshLiveAIA\.setRoute\(/);
+// The literal forbidden setter appears only inside fail-closed source guards here. The
+// inherited observer above must contain no executable setter, while the successor witness
+// must reject either the inherited or temporary adapter if one ever appears.
+assert.match(witness, /baseAdapterSource\.includes\('__td613AshLiveAIA\.setRoute\('\)/);
+assert.match(witness, /hostileAdapterSource\.includes\('__td613AshLiveAIA\.setRoute\('\)/);
 
 // Attempt 1 must remain visible as the stale owner; attempt 2 alone may earn recovery.
 assert.match(witness, /activation\.attempt_count !== 2/);
