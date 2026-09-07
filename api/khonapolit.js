@@ -1,5 +1,6 @@
 // Canonical Kʰonapolit boundary. Implementation lives outside /api so one route consumes one Vercel function.
 import geminiReadinessHandler from '../server/gemini-readiness.js';
+import holonomyLoomKhonapolitAdvisoryHandler from '../server/holonomy-loom-khonapolit-advisory.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
 
 function requestedOperation(req) {
@@ -13,10 +14,15 @@ function requestedOperation(req) {
 }
 
 export default function handler(req, res) {
-  if (requestedOperation(req) === 'gemini-readiness') {
+  const operation = requestedOperation(req);
+  if (operation === 'gemini-readiness') {
     return geminiReadinessHandler(req, res);
+  }
+  if (operation === 'loom-advisory') {
+    return holonomyLoomKhonapolitAdvisoryHandler(req, res);
   }
   return khonapolitHandler(req, res);
 }
 
 export * from '../server/khonapolit-quality.js';
+export * from '../server/holonomy-loom-khonapolit-advisory.js';
