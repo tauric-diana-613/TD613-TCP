@@ -38,6 +38,14 @@ assert.match(hosted, /SEE → CHECK → UNDERSTAND → REST/);
 assert.match(hosted, /data-route-mode="TD613_HOSTED"/);
 assert.match(hosted, /data-provider-release-authority="false"/);
 assert.match(hosted, /data-production-release="false"/);
+assert.match(hosted, /data-flowcore-pedagogue="holonomy-loom"/);
+assert.match(hosted, /data-held="false"/);
+assert.match(hosted, /aria-busy="false"/);
+for (const phase of ['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME', 'REST']) {
+  assert.match(hosted, new RegExp(`data-flowcore-phase="${phase}"`), `Hosted Loom must preserve Flow-Core Pedagogue ${phase} binding.`);
+}
+assert.match(hosted, /id="rest" type="button" data-rest/);
+assert.match(hosted, /id="returnToCheck" data-return/);
 assert.match(hosted, /CHECK THIS MESSAGE/);
 assert.match(hosted, /KEEP/);
 assert.match(hosted, /CHANGE/);
@@ -136,15 +144,26 @@ assert.match(repairedWitness, /visible GREEN consequence is exact and bounded/);
 assert.match(repairedWitness, /technical promise remains optional after visible consequence/);
 assert.match(repairedWitness, /same_claim_family_not_same_encounter_route: true/);
 assert.match(repairedWitness, /product_bytes_mutated_by_repair: false/);
+assert.match(repairedWitness, /flowcore_runtime_binding_product_mutation: true/);
+assert.match(repairedWitness, /td613\.flowcore\.pedagogue-spine\/v0\.1/);
+assert.match(repairedWitness, /adapter_scope: 'PRODUCT_SPECIFIC_RUNTIME_BINDING'/);
+assert.match(repairedWitness, /generic_flowcore_taxonomy_mutated: false/);
+assert.match(repairedWitness, /Flow-Core WORLD ANSWERS phase becomes visible only after ACT/);
+assert.match(repairedWitness, /Flow-Core REST suspends demand without hiding return/);
+assert.match(repairedWitness, /Flow-Core RETURN remains reversible and returns to the message anchor/);
+assert.match(repairedWitness, /Flow-Core runtime metadata does not leak technical jargon into the child route/);
 assert.match(transitionWrapper, /holonomy-loom-hosted-product-integration-browser-witness-v02\.mjs/);
 assert.ok(!transitionWrapper.includes("path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness.mjs')"), 'Step 8 must invoke the repaired observer wrapper rather than bypassing it for the legacy witness.');
 
 console.log(JSON.stringify({
-  schema: 'td613.holonomy-loom.hosted-product-integration-static/v0.2-pedagogue-observer-geometry',
+  schema: 'td613.holonomy-loom.hosted-product-integration-static/v0.3-flowcore-pedagogue-runtime-binding',
   status: 'PASS',
   donor_engine_blob: '3686d8caa958c53caa485b2ef810cca13534ce10',
   pedagogue_design_id: pedagogueReview.design_id,
   pedagogue_burden_delta_millipoints: pedagogueReview.burden_comparison.delta_millipoints,
+  flowcore_pedagogue_runtime_binding: 'REQUIRED',
+  generic_flowcore_taxonomy_mutated: false,
+  visible_child_route_jargon_added: false,
   legacy_false_negative_preserved: true,
   repaired_observer_bound_to_step8: true,
   product_bytes_mutated_by_observer_repair: false,
