@@ -1,32 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const diagnosticDir = 'artifacts/holonomy-loom-step19-diagnostics';
-fs.mkdirSync(diagnosticDir, { recursive: true });
-
-async function importWithDiagnostic(label, specifier) {
-  try {
-    await import(specifier);
-    fs.appendFileSync(`${diagnosticDir}/import-ledger.log`, `${label}: PASS\n`);
-  } catch (error) {
-    const payload = {
-      label,
-      specifier,
-      name: error?.name ?? null,
-      message: error?.message ?? String(error),
-      stack: error?.stack ?? null
-    };
-    fs.writeFileSync(`${diagnosticDir}/failure.json`, `${JSON.stringify(payload, null, 2)}\n`);
-    throw error;
-  }
-}
-
-await importWithDiagnostic('ASH_A15_R0_REVIEW_HARDENING_SHARDED', './ash-a15-r0-review-hardening-sharded.test.mjs');
-await importWithDiagnostic('ASH_A15_R0_WEDDING_IDENTIFIABILITY', './ash-a15-r0-wedding-identifiability.test.mjs');
-await importWithDiagnostic('HOLONOMY_LOOM_HOSTED_PRODUCT_INTEGRATION', './holonomy-loom-hosted-product-integration.test.mjs');
-await importWithDiagnostic('HOLONOMY_LOOM_RELEASE_CANDIDATE_PRODUCT_REVIEW', './holonomy-loom-release-candidate-product-review.test.mjs');
-
-fs.writeFileSync(`${diagnosticDir}/imports-complete.marker`, 'all hoisted imports passed\n');
+await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
+await import('./ash-a15-r0-wedding-identifiability.test.mjs');
+await import('./holonomy-loom-hosted-product-integration.test.mjs');
+await import('./holonomy-loom-release-candidate-product-review.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
@@ -110,5 +88,4 @@ const a12Source = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
 assert.match(a12Source, /case_closed:document\.body\.dataset\.ashCaseClosed === 'true'/, 'A12 must observe whether the reusable Investigation case is already closed.');
 assert.match(a12Source, /existing\.case_closed === true/, 'A12 must reactivate a matching but closed Investigation case.');
 
-fs.writeFileSync(`${diagnosticDir}/ash-hardening-complete.marker`, 'Ash A15-R0 hardening body passed\n');
 console.log('Ash A15-R0 release-boundary hardening tests passed.');
