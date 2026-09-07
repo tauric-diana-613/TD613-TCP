@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-transition-trace-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${process.pid}.mjs`);
-const hostedLoomWitnessPath = path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness.mjs');
+const hostedLoomWitnessPath = path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness-v02.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -96,4 +96,4 @@ try {
   await fs.unlink(tempPath).catch(() => {});
 }
 
-await import(`${pathToFileURL(hostedLoomWitnessPath).href}?td613_holonomy_loom_hosted_product_integration=${Date.now()}`);
+await import(`${pathToFileURL(hostedLoomWitnessPath).href}?td613_holonomy_loom_hosted_product_integration_v02=${Date.now()}`);
