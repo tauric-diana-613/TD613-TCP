@@ -6,9 +6,9 @@ const probe = fs.readFileSync('scripts/aperture-v32-identity-singularity-browser
 const wrapper = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
 const prereg = fs.readFileSync('docs/aperture/v3.2-alpha/APERTURE_V32_IDENTITY_SINGULARITY_WITNESS_V0_1_PREREGISTRATION_20260907.md', 'utf8');
 
-assert.match(tool, /<meta[^>]+name=["']aperture-version["'][^>]+content=["']v3\.2-alpha["']/i);
-assert.match(tool, /<body[^>]+data-aperture-version=["']v3\.2-alpha["']/i);
-assert.match(tool, /id=["']mFirmwareVer["'][^>]*>v3\.2-alpha</i);
+assert.match(tool, /<meta(?=[^>]*\bname=["']aperture-version["'])(?=[^>]*\bcontent=["']v3\.2-alpha["'])[^>]*>/i);
+assert.match(tool, /<body(?=[^>]*\bdata-aperture-version=["']v3\.2-alpha["'])[^>]*>/i);
+assert.match(tool, /id=["']mFirmwareVer["'][^>]*>\s*v3\.2-alpha\s*</i);
 assert.match(tool, /apertureV31AdmissibilityTomographyContract/);
 assert.match(tool, /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.1/);
 
