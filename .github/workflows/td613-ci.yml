@@ -19,12 +19,13 @@ on:
           - full-repository
           - calibration
           - gemini-observation
+          - gemini-quality-pilot
 
 permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.mode == 'gemini-quality-pilot' && github.run_id || inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
   cancel-in-progress: true
 
 env:
@@ -35,7 +36,7 @@ env:
 jobs:
   scope:
     name: Classify exact-head browser witness scope
-    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation'
+    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
@@ -126,6 +127,7 @@ jobs:
           node tests/hush-phase34-expressive-generation.test.mjs
           node tests/gemini-model-discovery.test.mjs
           node tests/gemini-observation-dispatch.test.mjs
+          node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
       - name: Validate Giving and Campaign Deputy import contracts
@@ -779,6 +781,36 @@ jobs:
         with:
           name: calibration-output
           path: calibration-output.txt
+          retention-days: 7
+
+  gemini_quality_pilot:
+    name: Explicit synthetic Hush custody pilot
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-quality-pilot' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: gemini-quality-pilot
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Run fixed synthetic pilot without retries
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_GEMINI_QUALITY_PILOT: 'true'
+        run: node scripts/run-gemini-quality-pilot.mjs > gemini-quality-pilot.json
+      - name: Preserve sanitized pilot receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-quality-pilot-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gemini-quality-pilot.json
+          if-no-files-found: error
           retention-days: 7
 
   gemini_observation:

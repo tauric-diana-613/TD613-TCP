@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+const workflow = readFileSync('.github/workflows/td613-ci.yml', 'utf8');
+const job = workflow.split('\n  gemini_quality_pilot:\n')[1].split('\n  gemini_observation:\n')[0];
+assert.match(job, /if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-quality-pilot' && github.ref == 'refs\/heads\/main'/);
+assert.match(job, /environment: gemini-quality-pilot/);
+assert.match(job, /permissions:\n      contents: read/);
+assert.match(job, /persist-credentials: false/);
+assert.equal((job.match(/GEMINI_API_KEY/g) || []).length, 2);
+assert.deepEqual([...job.matchAll(/^        run: (.*)$/gm)].map(m => m[1]), ['node scripts/run-gemini-quality-pilot.mjs > gemini-quality-pilot.json']);
+assert.match(workflow, /inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'/);
+const baseEnv = { PATH: process.env.PATH, TD613_GEMINI_QUALITY_PILOT: 'true', GEMINI_API_KEY: 'synthetic-pilot-secret',
+  GITHUB_EVENT_NAME: 'workflow_dispatch', GITHUB_REF: 'refs/heads/main', GITHUB_SHA: 'a'.repeat(40), GITHUB_RUN_ID: '123', GITHUB_RUN_ATTEMPT: '1' };
+const execute = (env = {}, mode = 'valid') => {
+  const preload = `let calls = 0; globalThis.fetch = async (url, options = {}) => {
+    const path = new URL(url).pathname;
+    if (String(url).includes('synthetic-pilot-secret')) throw Error('key-in-url');
+    if (path === '/v1beta/models') return { ok:true,status:200,json:async()=>({models:${mode === 'absent' ? '[]' : "['gemini-3.5-flash','gemini-3.8-flash','gemini-3.7-flash','gemini-3.6-flash','gemini-3.5-flash-lite'].map(id=>({name:'models/'+id,supportedGenerationMethods:['generateContent']}))"}}) };
+    if (!path.endsWith(':generateContent') || options.method !== 'POST' || ++calls > 15) throw Error('unexpected-call');
+    const body = JSON.parse(options.body);
+    if (body.generationConfig.maxOutputTokens !== 1536) throw Error('token-cap');
+    const source = body.contents[0].parts[0].text.split('MESSAGE TO TRANSFORM:\\n')[1];
+    return {ok:true,status:200,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify({candidates:[{text:${mode === 'echo' ? "'synthetic-pilot-secret'" : 'source'}}]})}]}}],usageMetadata:{totalTokenCount:30}})};
+  };`;
+  return spawnSync(process.execPath, ['--import', `data:text/javascript,${encodeURIComponent(preload)}`, 'scripts/run-gemini-quality-pilot.mjs'], { env: { ...baseEnv, ...env }, encoding: 'utf8' });
+};
+const valid = execute();
+assert.equal(valid.status, 0, valid.stderr);
+const r = JSON.parse(valid.stdout);
+assert.equal(r.generationCalls, 15);
+assert.equal(r.rows.length, 15);
+assert.equal(new Set(r.rows.map(row => row.model + '/' + row.fixture)).size, 15);
+assert.equal(r.custody.sourceSha, baseEnv.GITHUB_SHA);
+assert.equal(r.custody.environment, 'gemini-quality-pilot');
+assert.equal(r.automaticRankingPromotion, false);
+assert.equal(r.humanSemanticReview, 'REQUIRED');
+assert.equal(valid.stdout.includes(baseEnv.GEMINI_API_KEY), false);
+assert.equal(valid.stderr, '');
+const absent = JSON.parse(execute({}, 'absent').stdout);
+assert.equal(absent.generationCalls, 0);
+assert.ok(absent.rows.every(row => row.state === 'HELD'));
+for (const env of [{ GITHUB_EVENT_NAME: 'pull_request' }, { GITHUB_REF: 'refs/heads/other' }, { GITHUB_SHA: 'bad' }, { GITHUB_RUN_ID: '0' }, { GEMINI_API_KEY: '' }]) assert.equal(execute(env).status, 1);
+const echo = execute({}, 'echo');
+assert.equal(echo.status, 1);
+assert.equal(JSON.parse(echo.stdout).error, 'credential-echo-rejected');
+assert.equal(echo.stdout.includes(baseEnv.GEMINI_API_KEY), false);
+console.log('gemini-quality-pilot.test.mjs passed');
