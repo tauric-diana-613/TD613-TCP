@@ -233,8 +233,12 @@ assert.doesNotMatch(probe, /await page\.waitForTimeout\((?:350|650|1200)\)/,
 assert.doesNotMatch(probe, /page\.(?:click|fill|type|press|selectOption)\(/);
 assert.doesNotMatch(probe, /fetch\([^)]*method\s*:\s*["'](?:POST|PUT|PATCH|DELETE)/i);
 
-assert.match(wrapper, /await import\(['"]\.\/aperture-v32-identity-singularity-browser-witness\.mjs['"]\)/,
-  'Three-engine transition wrapper must execute the delayed Aperture identity witness.');
+assert.match(wrapper, /const apertureIdentityWitnessPath = path\.join\(scriptsDir, ['"]aperture-v32-identity-singularity-browser-witness\.mjs['"]\)/,
+  'Three-engine transition wrapper must resolve the delayed Aperture identity witness explicitly.');
+assert.match(wrapper, /execFileSync\(process\.execPath, \[apertureIdentityWitnessPath\], \{[\s\S]*env: process\.env,[\s\S]*stdio: ['"]inherit['"][\s\S]*\}\)/,
+  'Aperture identity witness must execute in a fresh Node process while preserving the exact engine and custody environment.');
+assert.doesNotMatch(wrapper, /await import\(['"]\.\/aperture-v32-identity-singularity-browser-witness\.mjs['"]\)/,
+  'Aperture identity witness must not regress to the shared in-process browser-observer chain.');
 
 assert.match(prereg, /ATTACHMENT_DIVERGENCE != REPOSITORY_REGRESSION/);
 assert.match(prereg, /DOM_READY_GREEN != DELAYED_IDENTITY_CONVERGENCE/);
