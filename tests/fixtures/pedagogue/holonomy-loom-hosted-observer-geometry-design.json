@@ -1,0 +1,153 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "holonomy-loom-hosted-observer-geometry-v01",
+  "surface_reference": "Dome-World/Holonomy Loom hosted GREEN consequence",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-07T18:02:06Z",
+    "idSeed": "holonomy-loom-hosted-observer-geometry-v01",
+    "idScope": "Dome-World/Holonomy-Loom"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "holonomy_loom_hosted_observer_geometry_run_2790",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/holonomy-loom.html",
+        "scripts/holonomy-loom-hosted-product-integration-browser-witness.mjs",
+        "GitHub Actions run 2790 / 34149277445"
+      ],
+      "evidence_basis": [
+        "Chromium, Firefox, and WebKit each reached the hosted Loom witness",
+        "all three engines held only the legacy GREEN promise innerText check",
+        "the bounded GREEN sentence remains present in the declared optional technical disclosure"
+      ],
+      "transformations": [
+        "separate visible child consequence from optional technical disclosure observation",
+        "preserve the technical disclosure as closed until explicit operator action",
+        "retain the original failed observer as historical falsifier"
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "When the Loom returns GREEN, the visible result says only that no enabled protection rule matched; deeper technical limits remain optional.",
+      "surface_reference": "Dome-World/Holonomy Loom hosted GREEN consequence"
+    },
+    "available_affordances": [{
+      "action_id": "check_message",
+      "purpose": "Run the deterministic hosted Loom check and show the bounded consequence before optional technical explanation.",
+      "authorized_by_station": "Human",
+      "reversible": true
+    }],
+    "route_topology": {
+      "entry": "Visible Loom check",
+      "exit": "Rest, Return, or Exit to Ash Keep",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {"step_id":"visible_condition","label":"See the bounded consequence rule","phase":"NOTICE","required_fields":["visible GREEN consequence","optional technical explanation"],"dependencies":[],"legibility_millipoints":960,"affordance_millipoints":940,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+        {"step_id":"explicit_check","label":"Check the message","phase":"ACT","required_fields":["explicit check gesture"],"dependencies":["visible_condition"],"legibility_millipoints":950,"affordance_millipoints":970,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"green_answer","label":"Read the visible GREEN answer","phase":"WORLD_ANSWERS","required_fields":["no enabled rule matched","checked-copy door only"],"dependencies":["explicit_check"],"legibility_millipoints":970,"affordance_millipoints":950,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"optional_promise","label":"Open the technical promise only if wanted","phase":"TRANSFER","required_fields":["downstream limit","enabled-rule ceiling"],"dependencies":["green_answer"],"legibility_millipoints":930,"affordance_millipoints":920,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true}
+      ]
+    },
+    "causal_structure": {
+      "input": "operator message and explicit CHECK gesture",
+      "operator": "deterministic Holonomy Loom rule engine",
+      "observable": "a visible GREEN summary appears while the technical promise drawer remains optional and closed",
+      "authority": "human action; Dome-World hosted surface; provider and production release authority remain closed",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can the hosted Loom expose the bounded GREEN consequence in the child-legible route while preserving the stronger technical explanation as an optional projection?",
+      "hypothesis": "Separating the visible consequence from the optional technical drawer preserves consequence-before-ontology and prevents a closed disclosure from being misclassified as missing product truth.",
+      "observable_behavior": [
+        "GREEN summary is visible without opening technical details",
+        "technical promise body remains hidden until explicit operator action",
+        "opening the technical drawer reveals the stronger ceiling without changing the GREEN result",
+        "Rest, Return, and Exit remain available"
+      ],
+      "alternative_explanations": [
+        "a browser-specific details implementation could expose hidden innerText differently",
+        "the bounded sentence could exist in source while the visible consequence remains misleading"
+      ],
+      "expected_failure_modes": [
+        "observer treats hidden technical text as required rendered text",
+        "GREEN is presented as a universal safety guarantee",
+        "technical explanation becomes mandatory before consequence",
+        "opening the drawer mutates release authority"
+      ],
+      "falsifier": [
+        "the visible GREEN summary claims more than the enabled-rule result",
+        "the technical promise drawer opens automatically",
+        "the technical ceiling disappears from the DOM or differs after explicit opening",
+        "any provider or production authority becomes true"
+      ],
+      "abstention_conditions": [
+        "the hosted Loom route changes its GREEN copy",
+        "the technical promise ceases to be optional",
+        "the donor rule engine changes"
+      ]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "GREEN means the enabled deterministic Loom rules did not fire",
+        "the stronger technical ceiling may remain inside an optional disclosure",
+        "a closed disclosure can remain present without being rendered in the child-visible route"
+      ],
+      "forbidden_claims": [
+        "GREEN proves the message is universally safe",
+        "hidden DOM text is equivalent to visible child-legible copy",
+        "Pedagogue or Aperture authorizes product mutation or production release"
+      ]
+    },
+    "technical_terms_withheld": ["DOM","innerText","textContent","render tree","projection-specific observability"]
+  },
+  "baseline_route_steps": [
+    {"step_id":"baseline_hidden_promise","label":"Inspect the closed technical drawer first","phase":"NOTICE","required_fields":["hidden technical sentence","details rendering semantics"],"dependencies":[],"legibility_millipoints":430,"affordance_millipoints":390,"gluing_obstruction_millipoints":220,"projection_crossings":1,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"baseline_infer_green","label":"Infer GREEN meaning from hidden text","phase":"ACT","required_fields":["rendered innerText","source text","visibility state"],"dependencies":["baseline_hidden_promise"],"legibility_millipoints":410,"affordance_millipoints":430,"gluing_obstruction_millipoints":240,"projection_crossings":2,"route_memory_edges":2,"operator_action_required":true},
+    {"step_id":"baseline_check","label":"Run the message check after parsing mechanism","phase":"WORLD_ANSWERS","required_fields":["status","summary","release boundary"],"dependencies":["baseline_infer_green"],"legibility_millipoints":520,"affordance_millipoints":590,"gluing_obstruction_millipoints":160,"projection_crossings":1,"route_memory_edges":2,"operator_action_required":true},
+    {"step_id":"baseline_reconcile","label":"Reconcile visible summary with hidden promise","phase":"TRANSFER","required_fields":["visible summary","hidden technical ceiling","browser details behavior"],"dependencies":["baseline_check"],"legibility_millipoints":460,"affordance_millipoints":470,"gluing_obstruction_millipoints":220,"projection_crossings":2,"route_memory_edges":3,"operator_action_required":true}
+  ],
+  "action": {"action_id":"check_message"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "the operator explicitly checks a message",
+      "the deterministic engine returns GREEN when no enabled rule fires",
+      "the visible summary states that bounded consequence",
+      "the technical promise remains closed until an explicit operator gesture"
+    ],
+    "losses": [],
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "unresolved_relations": ["browser rendering APIs expose closed-details text through different observation surfaces"],
+    "glyph_candidates": [],
+    "static_equivalent": {"summary":"GREEN means only that the enabled Loom rules did not fire; deeper technical limits remain optional.","steps":["check","read consequence","open technical promise if wanted","rest or exit"]}
+  },
+  "name": {
+    "plain_language": "The visible GREEN consequence and the optional technical promise are different encounter routes to the same bounded claim family.",
+    "glyph_relation": null,
+    "technical_term": "projection-specific observability",
+    "non_equivalence": [
+      "closed technical disclosure is not missing bounded claim",
+      "DOM presence is not rendered visibility",
+      "same claim family is not same encounter route"
+    ]
+  },
+  "transfer_context": {
+    "context": {"surface":"Dome-World hosted Holonomy Loom observer repair"},
+    "shared_relation_candidate": "the same bounded claim may require different observation methods across child-visible and optional technical projections",
+    "observable_correspondence": [
+      "the visible summary can be read without opening details",
+      "the technical ceiling can be read after an explicit details-open gesture"
+    ],
+    "alternative_explanations": ["browser implementation differences may affect details visibility without changing product semantics"],
+    "abstention_conditions": ["the visible summary or technical ceiling changes"]
+  }
+}
