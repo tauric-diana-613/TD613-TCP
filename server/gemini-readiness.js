@@ -36,9 +36,9 @@ export default async function handler(req, res) {
     return send(res, 405, { ok: false, error: 'method-not-allowed', allowed: ['GET', 'OPTIONS'] });
   }
 
-  const hush = resolveGeminiModelPlan({ task: 'hush-transform', maxModels: 8 });
-  const khonapolit = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const listing = await listGeminiGenerateContentModels(process.env.GEMINI_API_KEY);
+  const hush = resolveGeminiModelPlan({ task: 'hush-transform', maxModels: 8, providerListing: listing });
+  const khonapolit = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8, providerListing: listing });
   const discovered = listing.models || [];
 
   return send(res, 200, {

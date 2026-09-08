@@ -24,7 +24,8 @@ import {
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,
-  resolveGeminiModelPlan
+  resolveGeminiModelPlan,
+  resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
@@ -196,7 +197,7 @@ async function callGemini(model, packet, apertureReceipt) {
 
 export default async function handler(req, res) {
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
-  const plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   setBaseHeaders(res, apertureEgress);
 
   if (req.method === 'OPTIONS') {
@@ -237,6 +238,8 @@ export default async function handler(req, res) {
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
+  const startedAt = Date.now();
+  plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
     invocationMode: packet.mode,
@@ -244,10 +247,9 @@ export default async function handler(req, res) {
     apertureEgress,
     modelPlan: plan
   });
-  const startedAt = Date.now();
   const attempts = [];
   const models = plan.callableModels.slice(0, 4);
-  if (!models.length) return send(res, 503, { ok: false, error: 'all-configured-models-cooling-down', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+  if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
   for (const model of models) {
     if (Date.now() - startedAt > WALL_TIMEOUT_MS - REQUEST_TIMEOUT_MS - 500) break;
