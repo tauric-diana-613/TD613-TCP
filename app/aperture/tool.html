@@ -20588,8 +20588,8 @@ Hard stops:
     } catch (_) {}
     try {
       if (typeof FIRMWARE !== 'undefined') {
-        FIRMWARE.VERSION = APERTURE_VERSION;
-        FIRMWARE.SCHEMA_VERSION = APERTURE_SCHEMA;
+        FIRMWARE.VERSION = 'v3.2-alpha';
+        FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';
         window.FIRMWARE = FIRMWARE;
       } else if (window.FIRMWARE) {
         window.FIRMWARE.VERSION = 'v3.2-alpha';
