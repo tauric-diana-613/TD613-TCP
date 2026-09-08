@@ -1,12 +1,17 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
 
+const PRODUCT_PATH = 'app/aperture/tool.html';
+const WITNESS_PATH = 'scripts/aperture-v32-identity-singularity-browser-witness.mjs';
+const WRAPPER_PATH = 'scripts/ash-a15-transition-trace-browser-probe.mjs';
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const browserName = String(process.env.TD613_BROWSER || 'chromium').trim();
 const engine = { chromium, firefox, webkit }[browserName];
 const route = `${base}/aperture/tool.html`;
-const sourceHead = String(process.env.TD613_SOURCE_PACKET_COMMIT || process.env.GITHUB_HEAD_SHA || process.env.GITHUB_SHA || '').trim() || null;
 const parentArtifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/aperture-v32-identity-${browserName}`);
 const artifactDir = path.join(parentArtifactDir, 'aperture-v32-identity-singularity');
 const expectedVersion = 'v3.2-alpha';
@@ -15,6 +20,96 @@ const expectedTitle = 'TD613 Aperture v3.2-alpha';
 
 function assert(value, message) {
   if (!value) throw new Error(message);
+}
+
+function gitBlobSha1(value) {
+  const body = Buffer.isBuffer(value) ? value : Buffer.from(value);
+  return createHash('sha1').update(`blob ${body.length}\0`).update(body).digest('hex');
+}
+
+function sha256(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function gitCommitAvailable(head) {
+  try {
+    execFileSync('git', ['cat-file', '-e', `${head}^{commit}`], { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function exactBlobAt(head, filePath) {
+  return execFileSync('git', ['rev-parse', `${head}:${filePath}`], { encoding: 'utf8' }).trim();
+}
+
+function workspaceBlob(filePath) {
+  return execFileSync('git', ['hash-object', filePath], { encoding: 'utf8' }).trim();
+}
+
+function resolveCustody() {
+  const eventName = String(process.env.GITHUB_EVENT_NAME || '');
+  const executionSha = String(process.env.GITHUB_SHA || '').trim() || null;
+  if (eventName !== 'pull_request') {
+    const repositoryHead = String(process.env.TD613_SOURCE_PACKET_COMMIT || process.env.GITHUB_HEAD_SHA || executionSha || '').trim() || null;
+    return {
+      repositoryHead,
+      headSource: process.env.TD613_SOURCE_PACKET_COMMIT
+        ? 'TD613_SOURCE_PACKET_COMMIT'
+        : process.env.GITHUB_HEAD_SHA
+          ? 'GITHUB_HEAD_SHA'
+          : executionSha
+            ? 'GITHUB_SHA'
+            : 'LOCAL_UNBOUND',
+      executionSha,
+      exactHeadFetchPerformed: false,
+      exactProductBytes: null,
+      exactProductBlob: null,
+      workspaceProductBlob: workspaceBlob(PRODUCT_PATH),
+    };
+  }
+
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+  assert(eventPath, 'Exact-head Aperture browser witness requires GITHUB_EVENT_PATH on pull_request runs.');
+  const event = JSON.parse(readFileSync(eventPath, 'utf8'));
+  const repositoryHead = String(event?.pull_request?.head?.sha || '').toLowerCase();
+  assert(/^[a-f0-9]{40}$/.test(repositoryHead), 'Exact-head Aperture browser witness requires pull_request.head.sha.');
+
+  let exactHeadFetchPerformed = false;
+  if (!gitCommitAvailable(repositoryHead)) {
+    execFileSync('git', ['fetch', '--no-tags', '--depth=1', 'origin', repositoryHead], {
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024,
+    });
+    exactHeadFetchPerformed = true;
+  }
+  assert(gitCommitAvailable(repositoryHead), `Exact PR head ${repositoryHead} must be available after bounded fetch.`);
+
+  for (const filePath of [WITNESS_PATH, WRAPPER_PATH]) {
+    const exact = exactBlobAt(repositoryHead, filePath);
+    const workspace = workspaceBlob(filePath);
+    assert(workspace === exact, `Executed ${filePath} bytes must equal exact PR-head bytes.`);
+  }
+
+  const exactProductBlob = exactBlobAt(repositoryHead, PRODUCT_PATH);
+  const workspaceProductBlob = workspaceBlob(PRODUCT_PATH);
+  const exactProductBytes = execFileSync('git', ['show', `${repositoryHead}:${PRODUCT_PATH}`], {
+    encoding: null,
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  assert(gitBlobSha1(exactProductBytes) === exactProductBlob, 'Exact-head Aperture product bytes must hash to their Git blob.');
+  assert(workspaceProductBlob === exactProductBlob, 'Workspace Aperture product bytes must equal exact PR-head product bytes before browser observation.');
+
+  return {
+    repositoryHead,
+    headSource: 'GITHUB_EVENT.pull_request.head.sha',
+    executionSha,
+    exactHeadFetchPerformed,
+    exactProductBytes,
+    exactProductBlob,
+    workspaceProductBlob,
+  };
 }
 
 function identityFailures(sample) {
@@ -72,14 +167,38 @@ async function sampleIdentity(page, label, elapsedMs) {
 }
 
 assert(engine, `Unsupported browser engine: ${browserName}`);
+const custody = resolveCustody();
 await fs.mkdir(artifactDir, { recursive: true });
 
+const routeResponse = await fetch(route);
+const servedBytes = Buffer.from(await routeResponse.arrayBuffer());
+const servedGitBlob = gitBlobSha1(servedBytes);
+const servedSha256 = sha256(servedBytes);
+assert(routeResponse.status === 200, `Aperture route custody fetch returned HTTP ${routeResponse.status}.`);
+if (custody.exactProductBytes) {
+  assert(servedGitBlob === custody.exactProductBlob, 'Browser-served Aperture bytes must equal the exact PR-head Git blob.');
+  assert(servedSha256 === sha256(custody.exactProductBytes), 'Browser-served Aperture SHA-256 must equal exact PR-head bytes.');
+}
+
 const report = {
-  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.1',
+  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.2-exact-head',
   status: 'RUNNING',
   browser: browserName,
-  source_head: sourceHead,
+  source_head: custody.repositoryHead,
+  source_head_source: custody.headSource,
+  execution_repository_sha: custody.executionSha,
+  exact_head_fetch_performed: custody.exactHeadFetchPerformed,
   route,
+  reviewed_candidate: {
+    path: PRODUCT_PATH,
+    git_blob_sha1: custody.exactProductBlob || custody.workspaceProductBlob,
+    sha256: custody.exactProductBytes ? sha256(custody.exactProductBytes) : null,
+  },
+  served_candidate: {
+    status: routeResponse.status,
+    git_blob_sha1: servedGitBlob,
+    sha256: servedSha256,
+  },
   exact_current_identity: {
     version: expectedVersion,
     schema: expectedSchema,
@@ -160,8 +279,13 @@ try {
     schema: report.schema,
     status: report.status,
     browser: browserName,
-    source_head: sourceHead,
+    source_head: report.source_head,
+    source_head_source: report.source_head_source,
+    execution_repository_sha: report.execution_repository_sha,
+    exact_head_fetch_performed: report.exact_head_fetch_performed,
     route,
+    reviewed_candidate: report.reviewed_candidate,
+    served_candidate: report.served_candidate,
     samples: report.samples.map(sample => ({ label: sample.label, status: sample.status, failures: sample.failures })),
     receipt: outPath,
     authority: report.authority
