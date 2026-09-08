@@ -7,6 +7,7 @@ import {
 } from '../scripts/lib/aperture-v32-identity-witness-clock.mjs';
 
 const probe = fs.readFileSync('scripts/aperture-v32-identity-singularity-browser-witness.mjs', 'utf8');
+const tool = fs.readFileSync('app/aperture/tool.html', 'utf8');
 
 for (const token of [
   "page.on('close'",
@@ -77,5 +78,14 @@ assert.doesNotMatch(probe, /newPage\(\)[\s\S]{0,240}(?:catch|closed|crash)[\s\S]
   'Lifecycle diagnostics must not reopen a replacement page after a close/crash path.');
 assert.doesNotMatch(probe, /T3_2200MS[\s\S]{0,300}(?:optional|skip|waive|retry)/i,
   'Lifecycle diagnostics must not weaken, skip, waive, or retry the T3 identity sample.');
+
+assert.match(tool, /const mainIntervalMs = 1000 \/ Math\.max\(settings\.mainHz, 1\);[\s\S]{0,360}rt\.mainAccumulatorMs \+= frameMs;[\s\S]{0,360}drawMain\(\);/,
+  'Aperture master rendering must honor the existing mainHz runtime governor instead of drawing unconditionally on every RAF.');
+assert.match(tool, /var reducedMotionQuery = window\.matchMedia \? window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\) : null;/,
+  'The independent v2.9.4 field animation must bind the browser reduced-motion signal used by the lifecycle witness.');
+assert.match(tool, /if \(reducedMotionQuery && reducedMotionQuery\.matches\) \{\s*drawField\(cachedOps, now\);\s*return;\s*\}/,
+  'Reduced-motion field rendering must perform a bounded draw and stop the recurring field RAF.');
+assert.match(tool, /if \(fieldAnimationFrame && \(document\.hidden \|\| !fieldAnimationVisible \|\| \(reducedMotionQuery && reducedMotionQuery\.matches\)\)\) \{\s*cancelAnimationFrame\(fieldAnimationFrame\);/,
+  'The field scheduler must cancel recurring animation when hidden, offscreen, or reduced-motion governed.');
 
 console.log('aperture-v32-identity-lifecycle-diagnostics.test.mjs passed');
