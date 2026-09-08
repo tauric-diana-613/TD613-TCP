@@ -242,6 +242,7 @@ const report = {
     measurement_overhead_compounds_deadlines: false,
   },
   samples: [],
+  post_boot_health: null,
   console_errors: [],
   page_errors: [],
   http_errors: [],
@@ -490,6 +491,34 @@ try {
   assert(report.samples.length === APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE.length, 'All four preregistered identity samples are mandatory.');
   assert(report.samples.every(sample => sample.actual_elapsed_ms >= sample.target_elapsed_ms), 'Identity samples must occur at or after their absolute post-DOMContentLoaded deadlines.');
   assert(report.samples.every(sample => sample.status === 'PASS'), `v3.2 identity convergence failed: ${JSON.stringify(report.samples.filter(sample => sample.status === 'FAIL'))}`);
+
+  // A fast identity sample can precede boot reveal. Keep observing until the
+  // revealed reduced-motion UI has survived its formerly re-enabled CSS motion.
+  await waitUntilAbsoluteDeadline(page, 5000);
+  let healthTimeout;
+  try {
+    report.post_boot_health = await Promise.race([
+      page.evaluate(() => ({
+        label: 'POST_BOOT_REDUCED_MOTION_HEALTH',
+        boot_ready: document.documentElement.classList.contains('aperture-ready'),
+        reduced_motion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        body_opacity: Number(getComputedStyle(document.body).opacity),
+        active_css_animations: document.getAnimations().filter(animation =>
+          animation.playState === 'running' || animation.pending).length,
+      })),
+      new Promise((_, reject) => {
+        healthTimeout = setTimeout(() => reject(new Error('Post-boot reduced-motion UI did not respond within 12 seconds.')), 12_000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(healthTimeout);
+  }
+  assert(report.post_boot_health.boot_ready, 'Post-boot health requires the revealed UI.');
+  assert(report.post_boot_health.reduced_motion, 'Post-boot health must exercise reduced-motion preferences.');
+  assert(report.post_boot_health.body_opacity === 1, 'Post-boot UI must remain visible.');
+  assert(report.post_boot_health.active_css_animations === 0, 'Boot reveal must not restart CSS motion under reduced-motion preferences.');
+  assert(!report.lifecycle.page_crashed, 'Aperture page crashed during post-boot health observation.');
+  recordLifecycle('POST_BOOT_REDUCED_MOTION_HEALTH_COMPLETE');
   assert(!page.isClosed(), 'Aperture page closed before bounded identity observation completed.');
   assert(!contextClosed, 'Aperture context closed before bounded identity observation completed.');
   assert(browser.isConnected(), 'Aperture browser disconnected before bounded identity observation completed.');
@@ -531,6 +560,7 @@ try {
       status: sample.status,
       failures: sample.failures,
     })),
+    post_boot_health: report.post_boot_health,
     lifecycle: report.lifecycle,
     receipt: outPath,
     authority: report.authority

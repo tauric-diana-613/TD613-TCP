@@ -6688,6 +6688,17 @@ TD613 APERTURE v3.2-alpha SOURCE DECLARATION
     scroll-behavior: auto !important;
   }
 
+  /* Boot reveal must not restart decorative motion for reduced-motion users. */
+  @media (prefers-reduced-motion: reduce) {
+    html *,
+    html *::before,
+    html *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   html.aperture-booting body {
     opacity: 0 !important;
     pointer-events: none !important;
