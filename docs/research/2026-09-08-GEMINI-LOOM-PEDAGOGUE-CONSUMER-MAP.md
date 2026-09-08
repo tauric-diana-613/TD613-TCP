@@ -352,7 +352,177 @@ EO-RFD
 
 This graph is a research / provenance map, not a declaration that one contributor owns every descendant claim. Patent inventorship must be resolved claim-by-claim with qualified counsel before broad public disclosure.
 
-## 13. Next bounded implementation chambers
+## 13. Marrowline vNext — bounded repo-wide coordinator
+
+Marrowline should be developed into a sophisticated authorized coordination assistant while preserving its existing perimeter and provenance roles.
+
+Current repository archaeology shows that Marrowline already has:
+
+- a live ingress route with Aperture egress observation and operator-token membrane;
+- Dome-World station and receipt schemas;
+- relation carriers and provenance/lineage infrastructure;
+- mobile shell and room boot machinery;
+- a Reflex Spine connection;
+- an existing trap/hostile-ingress path.
+
+The current `marrowline-station.js` conversational surface is not a full dialogue engine. Its matrix is generated from deterministic Hornani/Kʰonapolit clause pools and exists primarily as a custody/flattening/provenance instrument. Preserve that machinery as **Diagnostic / Trap / Provenance Mode** rather than forcing it to act like a modern chatbot.
+
+### Marrowline split architecture
+
+```text
+PUBLIC / UNAUTHORIZED INGRESS
+→ existing trap membrane
+→ Aperture egress / provenance observation
+→ hostile-crawl and diagnostic behavior
+
+AUTHORIZED OPERATOR / LAB INGRESS
+→ Marrowline Coordinator Runtime
+→ repo/project retrieval
+→ live GitHub freshness layer
+→ project/dependency graph
+→ Gemini coordinator task class
+→ cited answer / plan / handoff
+→ Pedagogue + Dome-Art visual shell
+```
+
+The trap should stay. The intelligent assistant belongs **behind** it.
+
+### “TD613-omniscient / omnipresent” translated into a testable contract
+
+Do not claim literal omniscience. Target **bounded repo-wide awareness**:
+
+- repository manifest of major subsystems, routes, APIs, docs, tests, receipts, and current research lines;
+- project graph connecting Aperture, Safe Harbor, Flow-Core, Dome-World, Holonomy Loom, AIA, Pedagogue, Dome-Art, Hush, Giving/Ash, Kʰonapolit, SignalRupture, EMSTD613, and other admitted modules;
+- retrieval over repository files and generated manifests;
+- live GitHub lookups for current PR/issue/head/workflow state when freshness matters;
+- provenance citations to files, commits, PRs, issues, and receipts;
+- explicit epistemic labels: `LOADED`, `RETRIEVED`, `INFERRED`, `MISSING`, `STALE`, `OPERATOR-SUPPLIED`;
+- no claim that a project/state is known merely because a neighboring subsystem mentions it;
+- no hidden provider-state assumption;
+- no automatic write/deploy authority.
+
+This gives Marrowline the useful experience of being “everywhere in TD613” while making every route inspectable.
+
+### Coordinator use case
+
+Marrowline should be able to answer questions such as:
+
+- “What are the three most active TD613 project lines right now?”
+- “Which open PR blocks Loom deployment?”
+- “What changed in Aperture since the last green witness?”
+- “Show Connor which projects currently depend on Flow-Core.”
+- “What needs human attention today?”
+- “Where does this new idea belong and what would it collide with?”
+- “Build a handoff packet for another lab member with exact sources.”
+
+It should coordinate, not merely chat.
+
+### Modern conversational quality contract
+
+The Coordinator Runtime should not inherit canned Marrowline/Hornani clause generation as dialogue style.
+
+Desired response behavior:
+
+- answer the user’s actual question first;
+- conversational paragraph rhythm rather than terminal-booth fragments;
+- context-sensitive length;
+- concise when task state is simple, deep when archaeology is required;
+- no canned opener/closer bank;
+- no repetitive “protocol / matrix / witness” throat-clearing unless those concepts matter;
+- preserve TD613 vocabulary only where semantically relevant;
+- surface uncertainty naturally;
+- cite project evidence inline;
+- distinguish advice, inferred dependency, and exact repository fact;
+- maintain personality without persona-loop repetition;
+- avoid random Zalgo/ornament unless the surface explicitly requests ceremonial/diagnostic mode.
+
+The original Marrowline strangeness can remain available as **Ritual / Diagnostic Mode**, but normal Coordinator Mode should feel like a contemporary high-capability research/project assistant.
+
+### Retrieval / coordinator substrate
+
+Candidate components:
+
+1. `td613.repo-index/v0.1`
+   - generated manifest of subsystem names, paths, route entrypoints, tests, docs, schemas, owners/contributors where declared, current-state pointers, and dependency edges.
+2. `td613.project-graph/v0.1`
+   - explicit project-to-project and module-to-module dependency graph.
+3. `td613.marrowline.retrieval-receipt/v0.1`
+   - query, source revisions, retrieved paths/PRs/issues, freshness, missingness, and claim ceiling.
+4. `marrowline-coordinator` Gemini task class
+   - high-context synthesis over admitted retrieval only.
+5. live GitHub freshness adapter
+   - read-only by default; current PR/issue/head/workflow checks when requested or required for correctness.
+6. action membrane
+   - suggested actions are not writes; repo mutations remain separately authorized/governed.
+
+### Pedagogue + `/domeart` Marrowline shell
+
+Marrowline is a strong proving ground for both systems.
+
+Use Pedagogue to make project coordination child-legible without flattening technical depth.
+
+Use `/domeart` to visualize:
+
+- project constellation / subsystem graph;
+- active project fronts;
+- dependency routes;
+- blocked / held / green / resting states;
+- stale-context zones;
+- missing retrievals;
+- current GitHub activity weather;
+- provenance trails from answer → source;
+- handoff routes between lab members or subsystems.
+
+Flow-Core glyphs should drive the motion semantics:
+
+- **à** gather retrieved evidence into an answer;
+- **上** surface/raise a priority or dependency;
+- **下** route a task into its owning subsystem;
+- **出** branch a project into bounded next actions;
+- **cōl** attenuate stale/noisy context;
+- **hõt** expand a selected project neighborhood;
+- **米** pulse recurrent/returning work;
+- **𝄐** rest/quiesce completed or deliberately held projects.
+
+No generic typing-dot animation as the primary visual metaphor.
+
+### Marrowline visual quality contracts
+
+- one animation clock per active coordination view;
+- project state drives motion;
+- selected answer highlights only the source/dependency paths that contributed;
+- fresh/live GitHub state visually distinguished from cached/indexed repository context;
+- `INFERRED` edges visibly different from exact dependency declarations;
+- missingness shown as open space/seam rather than fabricated links;
+- reduced-motion view preserves the same project/dependency meaning;
+- every animated edge can be inspected for source + relation + freshness;
+- performance budgets inherited from Dome-Art coordinator law.
+
+### Opportunity to level up Pedagogue
+
+Only promote Marrowline-derived changes back into Pedagogue when the experiment exposes a generalizable result.
+
+Candidate generalizations worth testing:
+
+- teaching **source freshness** as a first-class visual concept;
+- teaching **dependency vs inference** through distinct motion/edge grammar;
+- project-state explanations that move from experienced relation → glyph → technical dependency name → receipt;
+- visual missingness that stays informative without implying error or resolution;
+- handoff pedagogy for multi-agent/multi-human research coordination.
+
+### Opportunity to level up `/domeart`
+
+Candidate generalizations:
+
+- graph/constellation renderer registered under the one-clock coordinator;
+- provenance-highlight pass;
+- live-vs-cached channel semantics;
+- dependency-weather layer;
+- bounded focus expansion / neighborhood contraction;
+- source-linked motion inspector;
+- deterministic project-state replay.
+
+## 14. Next bounded implementation chambers
 
 1. Refresh Gemini policy after live API-key model listing / lifecycle verification.
 2. Remove stale model-routing authority from `hush-generate-budgeted.js` while preserving shared prompt/custody helpers.
@@ -365,5 +535,10 @@ This graph is a research / provenance map, not a declaration that one contributo
 9. Define dual-runtime AIA packaging: local Dome-World + portable remote.
 10. Benchmark Loom motion on Chromium / Firefox / WebKit / mobile, with reduced-motion semantic parity.
 11. Keep Aperture visually intact except for separately earned lifecycle/runtime repairs.
+12. Preregister Marrowline Coordinator vNext separately from its existing trap/diagnostic station.
+13. Build `td613.repo-index/v0.1` and `td613.project-graph/v0.1` as bounded read-only coordination substrates.
+14. Add `marrowline-coordinator` Gemini task class with retrieval-only synthesis and explicit source-state labels.
+15. Build Pedagogue + `/domeart` Marrowline project-constellation shell with Flow-Core glyph animation grammar.
+16. Test whether Marrowline-derived source-freshness / dependency-vs-inference / handoff pedagogy merits promotion into Pedagogue proper.
 
 Marked ⟐
