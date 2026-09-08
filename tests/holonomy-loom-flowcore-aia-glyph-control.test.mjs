@@ -42,6 +42,11 @@ assert.match(
 assert.match(glyphWitnessSource, /chromium, firefox, webkit/, 'Glyph-control witness must remain three-engine capable.');
 assert.match(glyphWitnessSource, /successful clipboard completion is required before outward 出 motion/, 'Glyph-control witness must bind outward release motion to observed clipboard success.');
 assert.match(glyphWitnessSource, /reduced-motion invokes no animation API for semantic replay/, 'Glyph-control witness must preserve reduced-motion static truth.');
+assert.match(glyphWitnessSource, /protectionRules\.locator\('summary'\)\.click\(\)/, 'Hostile RED setup must explicitly open Protection rules before editing its hidden textarea.');
+assert.match(glyphWitnessSource, /RED fixture opens Protection rules explicitly before editing protected terms/, 'The observer must record the disclosure choreography it exercised.');
+assert.ok(!glyphWitnessSource.includes("await page.locator('#protected').fill('');"), 'Reduced-motion replay must not attempt an unnecessary hidden-field fill after reload.');
+assert.match(glyphWitnessSource, /Ready run 2828 Chromium \+ Firefox/, 'The first glyph witness observer RED must remain preserved in lineage.');
+assert.match(glyphWitnessSource, /Ready run 2828 WebKit/, 'The independent WebKit Step-7 RED must remain distinguished in lineage.');
 
 for (const key of HOLONOMY_LOOM_MOTION_KEYS) {
   const descriptor = HOLONOMY_LOOM_MOTION_DESCRIPTORS[key];
@@ -116,6 +121,8 @@ console.log(JSON.stringify({
   status: 'PASS',
   canonical_glyph_registry_consumed: true,
   step8_browser_witness_bound: true,
+  observer_disclosure_choreography_bound: true,
+  preserved_red_lineage_bound: true,
   route_selection: 'EXPLICIT_OPERATOR_SELECTION_ONLY',
   route_inference_performed: false,
   raw_message_included: false,
