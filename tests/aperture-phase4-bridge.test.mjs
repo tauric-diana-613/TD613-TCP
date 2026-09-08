@@ -128,4 +128,6 @@ const shim = fs.readFileSync('app/aperture/index.html', 'utf8');
 assert.match(shim, /aperture-v3-reciprocal-bridge\.js/);
 assert.match(shim, /td613:phase4-reciprocal-bridge-ready/);
 
+await import('./aperture-v32-identity-singularity.test.mjs');
+
 console.log('aperture-phase4-bridge.test.mjs passed');
