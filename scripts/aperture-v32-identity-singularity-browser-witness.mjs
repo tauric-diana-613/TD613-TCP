@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
 
@@ -180,8 +180,10 @@ if (custody.exactProductBytes) {
   assert(servedSha256 === sha256(custody.exactProductBytes), 'Browser-served Aperture SHA-256 must equal exact PR-head bytes.');
 }
 
+const outPath = path.join(artifactDir, `${browserName}-identity-singularity.json`);
+const lifecyclePath = path.join(artifactDir, `${browserName}-lifecycle-events.jsonl`);
 const report = {
-  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.2-exact-head',
+  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.3-lifecycle-diagnostics',
   status: 'RUNNING',
   browser: browserName,
   source_head: custody.repositoryHead,
@@ -210,6 +212,16 @@ const report = {
   http_errors: [],
   external_requests: [],
   non_read_requests: [],
+  lifecycle: {
+    observation_epoch_ms: null,
+    page_closed: false,
+    page_crashed: false,
+    context_closed: false,
+    browser_disconnected: false,
+    events: [],
+    checkpoints: [],
+    sidecar: lifecyclePath,
+  },
   authority: {
     counts_as_human_evidence: false,
     production_observation: false,
@@ -223,14 +235,73 @@ const report = {
   }
 };
 
+function persistReportSync() {
+  writeFileSync(outPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+}
+
+function elapsedFromObservationEpoch() {
+  return report.lifecycle.observation_epoch_ms === null
+    ? null
+    : Date.now() - report.lifecycle.observation_epoch_ms;
+}
+
+function recordLifecycle(type, details = {}) {
+  const event = {
+    type,
+    observed_at: new Date().toISOString(),
+    elapsed_ms: elapsedFromObservationEpoch(),
+    ...details,
+  };
+  report.lifecycle.events.push(event);
+  appendFileSync(lifecyclePath, `${JSON.stringify(event)}\n`, 'utf8');
+  persistReportSync();
+}
+
+function recordCheckpoint(label, page, browser, contextClosed) {
+  const checkpoint = {
+    label,
+    observed_at: new Date().toISOString(),
+    elapsed_ms: elapsedFromObservationEpoch(),
+    page_closed: page.isClosed(),
+    context_closed: contextClosed,
+    browser_connected: browser.isConnected(),
+  };
+  report.lifecycle.checkpoints.push(checkpoint);
+  persistReportSync();
+  return checkpoint;
+}
+
 let terminalError = null;
 let browser = null;
 try {
   browser = await engine.launch({ headless: true });
+  browser.on('disconnected', () => {
+    report.lifecycle.browser_disconnected = true;
+    recordLifecycle('BROWSER_DISCONNECTED');
+  });
+
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  let contextClosed = false;
+  context.on('close', () => {
+    contextClosed = true;
+    report.lifecycle.context_closed = true;
+    recordLifecycle('CONTEXT_CLOSED');
+  });
+
   const page = await context.newPage();
   page.setDefaultTimeout(60_000);
 
+  page.on('close', () => {
+    report.lifecycle.page_closed = true;
+    recordLifecycle('PAGE_CLOSED', { url: page.url() });
+  });
+  page.on('crash', () => {
+    report.lifecycle.page_crashed = true;
+    recordLifecycle('PAGE_CRASHED', { url: page.url() });
+  });
+  page.on('framenavigated', frame => {
+    if (frame === page.mainFrame()) recordLifecycle('MAIN_FRAME_NAVIGATED', { url: frame.url() });
+  });
   page.on('console', message => {
     if (message.type() === 'error') report.console_errors.push(message.text());
   });
@@ -249,14 +320,33 @@ try {
     }
   });
 
+  recordLifecycle('BROWSER_PAGE_CREATED', { url: page.url() });
   await page.goto(route, { waitUntil: 'domcontentloaded' });
+  report.lifecycle.observation_epoch_ms = Date.now();
+  recordLifecycle('DOM_CONTENT_LOADED', { url: page.url() });
+
+  recordCheckpoint('BEFORE_T0_DOM_READY', page, browser, contextClosed);
+  assert(!page.isClosed(), 'Aperture page closed before T0_DOM_READY.');
   report.samples.push(await sampleIdentity(page, 'T0_DOM_READY', 0));
+  recordCheckpoint('AFTER_T0_DOM_READY', page, browser, contextClosed);
+
   await page.waitForTimeout(350);
+  recordCheckpoint('BEFORE_T1_350MS', page, browser, contextClosed);
+  assert(!page.isClosed(), 'Aperture page closed before T1_350MS.');
   report.samples.push(await sampleIdentity(page, 'T1_350MS', 350));
+  recordCheckpoint('AFTER_T1_350MS', page, browser, contextClosed);
+
   await page.waitForTimeout(650);
+  recordCheckpoint('BEFORE_T2_1000MS', page, browser, contextClosed);
+  assert(!page.isClosed(), 'Aperture page closed before T2_1000MS.');
   report.samples.push(await sampleIdentity(page, 'T2_1000MS', 1000));
+  recordCheckpoint('AFTER_T2_1000MS', page, browser, contextClosed);
+
   await page.waitForTimeout(1200);
+  recordCheckpoint('BEFORE_T3_2200MS', page, browser, contextClosed);
+  assert(!page.isClosed(), 'Aperture page closed before T3_2200MS.');
   report.samples.push(await sampleIdentity(page, 'T3_2200MS', 2200));
+  recordCheckpoint('AFTER_T3_2200MS', page, browser, contextClosed);
 
   assert(report.samples.every(sample => sample.status === 'PASS'), `v3.2 identity convergence failed: ${JSON.stringify(report.samples.filter(sample => sample.status === 'FAIL'))}`);
   assert(report.console_errors.length === 0, `Console errors: ${JSON.stringify(report.console_errors)}`);
@@ -265,16 +355,17 @@ try {
   assert(report.non_read_requests.length === 0, `Non-read requests: ${JSON.stringify(report.non_read_requests)}`);
 
   report.status = 'PASS';
+  persistReportSync();
   await context.close();
 } catch (error) {
   terminalError = error;
   report.status = 'FAIL';
   report.error = String(error?.stack || error?.message || error);
+  recordLifecycle('TERMINAL_ERROR', { error: report.error });
   process.exitCode = 1;
 } finally {
   if (browser) await browser.close().catch(() => {});
-  const outPath = path.join(artifactDir, `${browserName}-identity-singularity.json`);
-  await fs.writeFile(outPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+  persistReportSync();
   console.log(JSON.stringify({
     schema: report.schema,
     status: report.status,
@@ -287,6 +378,7 @@ try {
     reviewed_candidate: report.reviewed_candidate,
     served_candidate: report.served_candidate,
     samples: report.samples.map(sample => ({ label: sample.label, status: sample.status, failures: sample.failures })),
+    lifecycle: report.lifecycle,
     receipt: outPath,
     authority: report.authority
   }, null, 2));
