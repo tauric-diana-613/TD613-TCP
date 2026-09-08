@@ -99,6 +99,8 @@ assert.match(tool, /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.
 
 const checks = [
   ['STALE_CURRENT_TITLE_V31', /(?:document\.title\s*=|\.textContent\s*=)\s*["']TD613 Aperture v3\.1-alpha["']/],
+  ['STALE_TITLE_GUARD_T_V31', /\bt\.textContent\s*!==\s*["']TD613 Aperture v3\.1-alpha["']/],
+  ['STALE_TITLE_GUARD_TITLES0_V31', /titles\[0\]\.textContent\s*!==\s*["']TD613 Aperture v3\.1-alpha["']/],
   ['STALE_BODY_VERSION_V31_V30', /document\.body(?:\?\.)?\.setAttribute\(\s*["']data-aperture-version["']\s*,\s*["']v3\.[01]-alpha["']\s*\)/],
   ['STALE_ROOT_VERSION_V31_V30', /document\.documentElement(?:\?\.)?(?:\.setAttribute\(\s*["']data-aperture-version["']\s*,\s*["']v3\.[01]-alpha["']\s*\)|\.dataset\.apertureVersion\s*=\s*["']v3\.[01]-alpha["'])/],
   ['STALE_VISIBLE_FIRMWARE_V31_V30', /(?:setText\(\s*["']mFirmwareVer["']\s*,\s*["']v3\.[01]-alpha["']|(?:mFirmwareVer|firmwareEl|firmwareVer|fw)\.textContent\s*=\s*["']v3\.[01]-alpha["'])/],
