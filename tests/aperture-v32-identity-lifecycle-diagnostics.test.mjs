@@ -93,5 +93,9 @@ assert.match(tool, /if \(!reducedMotionActive && typeof window\.__TD613_V295_DRO
   'Dromology frame-sync work must pause under reduced motion while remaining available for normal animated runtime.');
 assert.match(tool, /if \(!reducedMotionActive && typeof window\.__TD613_V3_ANTI_EPI_FRAME_SYNC === "function"\)/,
   'Anti-epistemicide frame-sync work must pause under reduced motion while preserving event-driven updates.');
+assert.match(tool, /if \(!reducedMotionActive\) requestAnimationFrame\(tick\);/,
+  'The master Aperture RAF must quiesce after its bounded initial render under reduced motion instead of perpetually rescheduling.');
+assert.doesNotMatch(tool, /\n\s*requestAnimationFrame\(tick\);\s*\n\}/,
+  'The master tick may not unconditionally reschedule itself after reduced-motion state has been resolved.');
 
 console.log('aperture-v32-identity-lifecycle-diagnostics.test.mjs passed');
