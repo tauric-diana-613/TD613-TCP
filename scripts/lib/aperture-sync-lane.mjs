@@ -210,6 +210,7 @@ export function normalizeApertureForRepo(html, metadata) {
     if (!activeIdentityWriter) return line;
     let normalizedLine = line
       .replace(/v3\.0-alpha-anti-epistemicide-research-runtime/g, featureVersion)
+      .replace(/v3\.1-alpha/g, version)
       .replace(/v3\.0-alpha/g, version)
       .replace(/td613-aperture\/v3\.0-alpha/g, schema)
       .replace(/dataset\.apertureVersion\s*=\s*(?:VERSION|V\d+\.VERSION|CANONICAL\.apertureVersion)/g, `dataset.apertureVersion='${version}'`)
