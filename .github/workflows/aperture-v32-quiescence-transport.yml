@@ -1,0 +1,42 @@
+name: Aperture v3.2 Quiescence Transport
+
+on:
+  push:
+    branches:
+      - aperture/v32-identity-singularity-witness-v0-1-20260907
+
+permissions:
+  contents: write
+
+jobs:
+  apply-exact-patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: aperture/v32-identity-singularity-witness-v0-1-20260907
+          fetch-depth: 1
+      - name: Apply exact reduced-motion master RAF quiescence patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE='3600f1edba194a5288b19bb94b97c01309be8720'
+          TARGET='cd1cf677c23d0f47167f720c8ecf374d42da6085'
+          CURRENT="$(git hash-object app/aperture/tool.html)"
+          echo "current_blob=$CURRENT"
+          if [[ "$CURRENT" == "$TARGET" ]]; then
+            echo 'Target blob already present; transport is idempotently complete.'
+            exit 0
+          fi
+          test "$CURRENT" = "$SOURCE"
+          git apply --check docs/aperture/v3.2-alpha/APERTURE_V32_REDUCED_MOTION_MASTER_RAF_QUIESCENCE.patch
+          git apply docs/aperture/v3.2-alpha/APERTURE_V32_REDUCED_MOTION_MASTER_RAF_QUIESCENCE.patch
+          AFTER="$(git hash-object app/aperture/tool.html)"
+          echo "after_blob=$AFTER"
+          test "$AFTER" = "$TARGET"
+          test "$(git diff --name-only | tr -d '\r')" = 'app/aperture/tool.html'
+          git config user.name 'td613-transport'
+          git config user.email 'td613-transport@users.noreply.github.com'
+          git add app/aperture/tool.html
+          git commit -m 'fix(aperture): quiesce master RAF under reduced motion'
+          git push origin HEAD:aperture/v32-identity-singularity-witness-v0-1-20260907
