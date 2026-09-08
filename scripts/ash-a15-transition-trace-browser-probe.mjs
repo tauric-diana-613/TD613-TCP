@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -8,6 +9,7 @@ const tempPath = path.join(scriptsDir, `.ash-a15-transition-trace-hardened-${pro
 const hostedLoomWitnessPath = path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness-v02.mjs');
 const hostedLoomGlyphWitnessPath = path.join(scriptsDir, 'holonomy-loom-flowcore-aia-glyph-control-browser-witness.mjs');
 const hostedLoomReviewWitnessPath = path.join(scriptsDir, 'holonomy-loom-release-candidate-product-review-browser-witness.mjs');
+const apertureIdentityWitnessPath = path.join(scriptsDir, 'aperture-v32-identity-singularity-browser-witness.mjs');
 
 const REQUIRED_TRANSITION_STATIC_MARKERS = Object.freeze([
   'observation_window_is_quiescence_proof:false',
@@ -102,4 +104,7 @@ await import(`${pathToFileURL(hostedLoomWitnessPath).href}?td613_holonomy_loom_h
 await import(`${pathToFileURL(hostedLoomGlyphWitnessPath).href}?td613_holonomy_loom_flowcore_aia_glyph_control=${Date.now()}`);
 await import(`${pathToFileURL(hostedLoomReviewWitnessPath).href}?td613_holonomy_loom_release_candidate_product_review=${Date.now()}`);
 
-await import('./aperture-v32-identity-singularity-browser-witness.mjs');
+execFileSync(process.execPath, [apertureIdentityWitnessPath], {
+  env: process.env,
+  stdio: 'inherit',
+});
