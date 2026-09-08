@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   analyzeHolonomyLoomMessage
 } from '../app/dome-world/holonomy-loom/engine.js';
@@ -30,6 +31,17 @@ assert.deepEqual(
 assert.equal(FLOWCORE_GLYPH_REGISTRY.schema, 'td613.flowcore.glyph-semantics/v0.1');
 assert.equal(Object.isFrozen(FLOWCORE_GLYPH_REGISTRY), true);
 assert.equal(Object.isFrozen(FLOWCORE_GLYPH_REGISTRY.entries.release), true);
+
+const transitionWrapper = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
+const glyphWitnessSource = fs.readFileSync('scripts/holonomy-loom-flowcore-aia-glyph-control-browser-witness.mjs', 'utf8');
+assert.match(
+  transitionWrapper,
+  /holonomy-loom-flowcore-aia-glyph-control-browser-witness\.mjs/,
+  'Step 8 must invoke the dedicated glyph-control browser witness.'
+);
+assert.match(glyphWitnessSource, /chromium, firefox, webkit/, 'Glyph-control witness must remain three-engine capable.');
+assert.match(glyphWitnessSource, /successful clipboard completion is required before outward 出 motion/, 'Glyph-control witness must bind outward release motion to observed clipboard success.');
+assert.match(glyphWitnessSource, /reduced-motion invokes no animation API for semantic replay/, 'Glyph-control witness must preserve reduced-motion static truth.');
 
 for (const key of HOLONOMY_LOOM_MOTION_KEYS) {
   const descriptor = HOLONOMY_LOOM_MOTION_DESCRIPTORS[key];
@@ -103,6 +115,7 @@ console.log(JSON.stringify({
   schema: 'td613.holonomy-loom.flowcore-aia-glyph-control-static/v0.1',
   status: 'PASS',
   canonical_glyph_registry_consumed: true,
+  step8_browser_witness_bound: true,
   route_selection: 'EXPLICIT_OPERATOR_SELECTION_ONLY',
   route_inference_performed: false,
   raw_message_included: false,
