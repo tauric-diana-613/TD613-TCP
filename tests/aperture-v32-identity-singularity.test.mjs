@@ -172,6 +172,13 @@ for (const token of [
   'window_APERTURE_SCHEMA_VERSION',
   'window_FIRMWARE_VERSION',
   'window_FIRMWARE_SCHEMA_VERSION',
+  'GITHUB_EVENT_PATH',
+  'GITHUB_EVENT.pull_request.head.sha',
+  'execution_repository_sha',
+  'exact_head_fetch_performed',
+  'reviewed_candidate',
+  'served_candidate',
+  'Browser-served Aperture bytes must equal the exact PR-head Git blob.',
   'counts_as_human_evidence: false',
   'production_observation: false',
   'release_authority: false',
@@ -183,6 +190,12 @@ for (const token of [
   'golden_egg_credit: 0',
 ]) assert.ok(probe.includes(token), `Identity witness omitted ${token}`);
 
+assert.match(probe, /event\?\.pull_request\?\.head\?\.sha/,
+  'Browser witness must resolve exact pull-request head from the GitHub event payload.');
+assert.match(probe, /workspaceProductBlob === exactProductBlob/,
+  'Browser witness must bind workspace product bytes to the exact PR-head product blob.');
+assert.match(probe, /servedGitBlob === custody\.exactProductBlob/,
+  'Browser witness must bind browser-served product bytes to the exact PR-head product blob.');
 assert.match(probe, /\/aperture\/tool\.html/);
 assert.match(probe, /chromium, firefox, webkit/);
 assert.match(probe, /waitForTimeout\(350\)/);
