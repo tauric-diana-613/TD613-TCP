@@ -94,3 +94,5 @@ try {
 } finally {
   await fs.unlink(tempPath).catch(() => {});
 }
+
+await import('./aperture-v32-identity-singularity-browser-witness.mjs');
