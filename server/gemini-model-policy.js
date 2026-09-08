@@ -26,8 +26,6 @@ const TASK_DEFAULTS = Object.freeze({
 });
 
 const MODEL_STATE = new Map();
-const LIST_CACHE = { value: null, expiresAt: 0 };
-const LIST_CACHE_MS = 10 * 60 * 1000;
 
 const safe = (value = '') => String(value ?? '').trim();
 const normModel = (value = '') => safe(value).replace(/^models\//, '');
@@ -155,26 +153,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   });
 }
 
-export async function listGeminiGenerateContentModels(apiKey, { force = false, fetchImpl = fetch, at = Date.now() } = {}) {
-  if (!force && LIST_CACHE.value && LIST_CACHE.expiresAt > at) return Object.freeze({ ...LIST_CACHE.value, cached: true });
-  if (!safe(apiKey)) return Object.freeze({ ok: false, models: Object.freeze([]), error: 'missing-gemini-api-key', cached: false });
-  try {
-    const response = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000&key=${encodeURIComponent(apiKey)}`);
-    const payload = await response.json().catch(() => ({}));
-    const models = (Array.isArray(payload.models) ? payload.models : [])
-      .filter((model) => Array.isArray(model.supportedGenerationMethods) && model.supportedGenerationMethods.includes('generateContent'))
-      .map((model) => normModel(model.name))
-      .filter(Boolean);
-    const result = Object.freeze({ ok: response.ok, status: response.status, models: Object.freeze(uniq(models)), cached: false, error: response.ok ? null : safe(payload?.error?.message || 'model-list-failed') });
-    if (response.ok) {
-      LIST_CACHE.value = result;
-      LIST_CACHE.expiresAt = at + LIST_CACHE_MS;
-    }
-    return result;
-  } catch (error) {
-    return Object.freeze({ ok: false, status: 599, models: Object.freeze([]), cached: false, error: safe(error?.message || error) });
-  }
-}
+export { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
 export function geminiModelCatalog() {
   return MODEL_CATALOG;
