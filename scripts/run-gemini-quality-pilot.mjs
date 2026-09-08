@@ -76,7 +76,7 @@ async function main() {
           elapsedMs: Date.now() - start, state: hardGatesPassed ? 'HARD_GATES_PASSED' : 'HELD',
           hardGatesPassed, candidates: audited, rawText: text.slice(0, 18000),
           totalTokenCount: Number.isFinite(tokens) && tokens >= 0 ? tokens : null,
-          humanSemanticReview: 'REQUIRED' });
+          semanticReview: 'PENDING', humanComprehension: 'UNMEASURED' });
       } catch {
         rows.push({ model, fixture: test.id, generationCalled: true, state: 'HELD', error: 'provider-transport-or-body-failure', elapsedMs: Date.now() - start });
       } finally { clearTimeout(timer); }
@@ -87,6 +87,6 @@ async function main() {
     limits: { maxGenerationCalls: 15, maxOutputTokensPerCall: maxOutputTokens, timeoutMsPerCall: timeoutMs, retries: 0 },
     generationCalls, providerListing: listing, rows,
     claimCeiling: 'fixed-synthetic-hush-custody-pilot-not-general-quality-ranking-or-release-authority',
-    humanSemanticReview: 'REQUIRED', automaticRankingPromotion: false });
+    semanticReview: 'PENDING', humanComprehension: 'UNMEASURED', automaticRankingPromotion: false });
 }
 main().catch(() => fail('pilot-runner-failure'));

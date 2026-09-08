@@ -13,7 +13,7 @@ The existing TD613 workflow gains manual mode `gemini-quality-pilot`. Its job
 checks out the dispatch's exact SHA, retains contents:read, installs no project
 dependencies and runs the fixed script. PR events cannot execute it. Independent
 run concurrency protects validation and acquisition receipts from cancellation.
-Normal CI stays excluded from both provider modes. There is no deployment.
+Normal CI stays excluded from both provider modes. GitHub may record Environment deployment metadata; no application deployment occurs.
 
 Five exact models: existing baseline `gemini-3.5-flash`, plus candidates
 `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-3.6-flash`, and
@@ -34,7 +34,7 @@ may apply. A token ceiling is not a dollar-cost guarantee.
 
 Cells are identified by model and fixture. Each records invocation, bounded
 transport status, latency, returned text, hard-gate results, token usage when
-reported, and mandatory human semantic review. A visible model held by admission
+reported, and pending semantic review. A visible model held by admission
 gets an explicit uncalled cell. Provider/body failures get HELD cells; they do not
 trigger a retry. A completed workflow means the matrix was recorded, not that all
 cells passed or any model won. Failed cells remain part of the matrix.
@@ -63,7 +63,7 @@ same-head Ready three-engine convergence before guarded merge. Then confirm the
 new Environment setup and manually dispatch once on fresh main. This connector
 currently needs an operator's manual dispatch action.
 
-Human semantic review remains required after acquisition. A fresh pilot or a
+Semantic review remains pending after acquisition; human comprehension remains unmeasured. A fresh pilot or a
 changed token/model/fixture configuration requires an explicitly bounded successor
 protocol; this script never retries or changes its own budget.
 
