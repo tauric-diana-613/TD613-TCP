@@ -6688,6 +6688,17 @@ TD613 APERTURE v3.2-alpha SOURCE DECLARATION
     scroll-behavior: auto !important;
   }
 
+  /* Boot reveal must not restart decorative motion for reduced-motion users. */
+  @media (prefers-reduced-motion: reduce) {
+    html *,
+    html *::before,
+    html *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   html.aperture-booting body {
     opacity: 0 !important;
     pointer-events: none !important;
@@ -11544,25 +11555,32 @@ function tick(now = performance.now()) {
     if (rt.needsSync || !rt.snapshot) synchronizeFieldState({ appendTraces: false });
   }
 
-  drawMain();
+  const settings = getRuntimeSettings();
+  const mainIntervalMs = 1000 / Math.max(settings.mainHz, 1);
+  rt.mainAccumulatorMs += frameMs;
+  if (state.frameCount < 2 || rt.mainAccumulatorMs >= mainIntervalMs || rt.forceUIRefresh || rt.forceHeavyUIRefresh) {
+    rt.mainAccumulatorMs = mainIntervalMs > 0 ? rt.mainAccumulatorMs % mainIntervalMs : 0;
+    drawMain();
+  }
 
   /*
     v2.9.5 dromology uses the existing Aperture frame clock.
     One lean refresh approximately every 125 ms; no extra RAF, interval,
     mouse handler, scroll governor, or visibility observer.
   */
+  const reducedMotionActive = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   rt.dromoAccumulatorMs = (rt.dromoAccumulatorMs || 0) + frameMs;
   if (rt.dromoAccumulatorMs >= 250) {
     rt.dromoAccumulatorMs %= 250;
     try {
-      if (typeof window.__TD613_V295_DROMO_FRAME_SYNC === "function") {
+      if (!reducedMotionActive && typeof window.__TD613_V295_DROMO_FRAME_SYNC === "function") {
         window.__TD613_V295_DROMO_FRAME_SYNC({
           snapshot: rt.snapshot,
           frameMs,
           running: state.running
         });
       }
-      if (typeof window.__TD613_V3_ANTI_EPI_FRAME_SYNC === "function") {
+      if (!reducedMotionActive && typeof window.__TD613_V3_ANTI_EPI_FRAME_SYNC === "function") {
         window.__TD613_V3_ANTI_EPI_FRAME_SYNC({
           snapshot: rt.snapshot,
           frameMs,
@@ -11576,7 +11594,6 @@ function tick(now = performance.now()) {
     }
   }
 
-  const settings = getRuntimeSettings();
   const auxIntervalMs = 1000 / Math.max(settings.auxHz, 1);
   const uiIntervalMs = 1000 / Math.max(settings.uiHz, 1);
   rt.auxAccumulatorMs += frameMs;
@@ -11600,7 +11617,7 @@ function tick(now = performance.now()) {
     }
   }
 
-  requestAnimationFrame(tick);
+  if (!reducedMotionActive) requestAnimationFrame(tick);
 }
 
 // ── Controls ──────────────────────────────────────────────────
@@ -13408,7 +13425,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     renderAuditGrid(document.getElementById('ethicsAuditTable'), ['Θ_open','Θ_std','Θ_res'], ethics.rows.map(r => r.term), ethics.rows.map(r => [r.open, r.standard, r.restricted]), (raw) => Number(raw).toFixed(2), (raw) => { const value = Number(raw) || 0; return value >= 0.72 ? 'cool' : value >= 0.42 ? 'warm' : 'hot'; });
     const packet = window.state.tcpHandoffPacket || window.state.lastExportedPacket || null;
     document.getElementById('schemaSummary').textContent = 'shared forensic schema active · governed exposure logged as S / S\' / Y / O / O*';
-    document.getElementById('schemaVersionReadout').textContent = 'td613-aperture/v3.1-alpha';
+    document.getElementById('schemaVersionReadout').textContent = 'td613-aperture/v3.2-alpha';
     document.getElementById('schemaExposureReadout').textContent = `S ${schema.governedExposure.S} · S' ${schema.governedExposure.projected} · Y ${schema.governedExposure.registered}`;
     document.getElementById('schemaLedgerReadout').textContent = `${schema.metricClasses.length} metric classes · ${packet ? 'packet extended' : 'packet pending'}`;
     document.getElementById('schemaAuthorityReadout').textContent = schema.authorityCeiling;
@@ -13430,7 +13447,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     const subtitle = document.getElementById('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const mFirmwareVer = document.getElementById('mFirmwareVer');
-    if (mFirmwareVer) mFirmwareVer.textContent = 'v3.1-alpha';
+    if (mFirmwareVer) mFirmwareVer.textContent = 'v3.2-alpha';
     if (window.FIRMWARE) {
       window.FIRMWARE.VERSION = 'v3.2-alpha';
       window.FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';
@@ -13538,7 +13555,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
       window.FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';
     }
     const firmwareEl = document.getElementById('mFirmwareVer');
-    if (firmwareEl) firmwareEl.textContent = 'v3.0-alpha';
+    if (firmwareEl) firmwareEl.textContent = 'v3.2-alpha';
     const schemaEl = document.getElementById('schemaVersionReadout');
     if (schemaEl) schemaEl.textContent = SCHEMA;
   }
@@ -13754,7 +13771,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     document.documentElement.setAttribute('data-tool-version', VERSION);
     document.documentElement.setAttribute('data-tool-schema', SCHEMA);
     const firmwareEl = document.getElementById('mFirmwareVer');
-    if (firmwareEl) firmwareEl.textContent = 'v3.0-alpha';
+    if (firmwareEl) firmwareEl.textContent = 'v3.2-alpha';
     const schemaEl = document.getElementById('schemaVersionReadout');
     if (schemaEl) schemaEl.textContent = SCHEMA;
     if (window.FIRMWARE) {
@@ -14868,8 +14885,8 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     document.title = 'TD613 Aperture v3.2-alpha';
     const subtitle = document.getElementById('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
-    const fw = document.getElementById('mFirmwareVer'); if (fw) fw.textContent = 'v3.1-alpha';
-    const schemaRead = document.getElementById('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.1-alpha';
+    const fw = document.getElementById('mFirmwareVer'); if (fw) fw.textContent = 'v3.2-alpha';
+    const schemaRead = document.getElementById('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.2-alpha';
   }
   function bootV22(){
     injectStyle();
@@ -15670,8 +15687,8 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
     document.title = 'TD613 Aperture v3.2-alpha';
     const subtitle = byId('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
-    const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v3.1-alpha';
-    const schemaRead = byId('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.1-alpha';
+    const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v3.2-alpha';
+    const schemaRead = byId('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.2-alpha';
   }
   function wrapPacketExport(){
     if (window.__APERTURE_V23_PACKET_WRAPPED__) return;
@@ -15856,9 +15873,9 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
     const subtitle = byId('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const fw = byId('mFirmwareVer');
-    if (fw) fw.textContent = 'v3.0-alpha';
+    if (fw) fw.textContent = 'v3.2-alpha';
     const schemaRead = byId('schemaVersionReadout');
-    if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.0-alpha';
+    if (schemaRead) schemaRead.textContent = 'td613-aperture/v3.2-alpha';
     window.APERTURE_LINEAGE = window.APERTURE_LINEAGE || {};
     window.APERTURE_LINEAGE.quickSpine = { version: V24.VERSION, schema: V24.SCHEMA };
     if (window.FIRMWARE) {
@@ -16409,7 +16426,7 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
       const subtitle = byId('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
-      if (fw) fw.textContent = 'v3.0-alpha';
+      if (fw) fw.textContent = 'v3.2-alpha';
       const schema = byId('mSchemaVer') || byId('schemaVersion');
       if (schema) schema.textContent = V25.SCHEMA;
       if (window.APERTURE_FIRMWARE && typeof window.APERTURE_FIRMWARE === 'object') {
@@ -17054,7 +17071,7 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
       const subtitle = byId('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
-      if (fw) fw.textContent = 'v3.0-alpha';
+      if (fw) fw.textContent = 'v3.2-alpha';
       const schema = byId('mSchemaVer') || byId('schemaVersion');
       if (schema) schema.textContent = 'td613-aperture/v3.0-alpha';
       if (window.APERTURE_FIRMWARE && typeof window.APERTURE_FIRMWARE === 'object') {
@@ -17872,7 +17889,7 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
     try {
       document.title = 'TD613 Aperture v3.2-alpha';
       document.documentElement.dataset.apertureSchema='td613-aperture/v3.2-alpha';
-      document.documentElement.dataset.apertureVersion = 'v3.1-alpha';
+      document.documentElement.dataset.apertureVersion = 'v3.2-alpha';
       document.body?.setAttribute('data-aperture-version', 'v3.2-alpha');
       document.body?.classList.add('aperture-v27-zfp-certification');
       ensureMeta('aperture-version', 'v3.2-alpha');
@@ -18435,8 +18452,8 @@ Hard stops:
     document.title = 'TD613 Aperture v3.2-alpha';
     const meta = document.querySelector('meta[name="aperture-version"]'); if (meta) meta.setAttribute('content','v3.0-alpha');
     const hccMeta = document.querySelector('meta[name="human-coordinate-coupling"]'); if (hccMeta) hccMeta.setAttribute('content','true');
-    const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v3.1-alpha';
-    const schema = byId('schemaVersionReadout'); if (schema) schema.textContent = 'td613-aperture/v3.1-alpha';
+    const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v3.2-alpha';
+    const schema = byId('schemaVersionReadout'); if (schema) schema.textContent = 'td613-aperture/v3.2-alpha';
     const subtitle = byId('subtitle');
     if (subtitle && !subtitle.textContent.includes('HCC')) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     if (window.FIRMWARE) {
@@ -20588,8 +20605,8 @@ Hard stops:
     } catch (_) {}
     try {
       if (typeof FIRMWARE !== 'undefined') {
-        FIRMWARE.VERSION = APERTURE_VERSION;
-        FIRMWARE.SCHEMA_VERSION = APERTURE_SCHEMA;
+        FIRMWARE.VERSION = 'v3.2-alpha';
+        FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';
         window.FIRMWARE = FIRMWARE;
       } else if (window.FIRMWARE) {
         window.FIRMWARE.VERSION = 'v3.2-alpha';
@@ -20988,7 +21005,7 @@ Hard stops:
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const firmwareValue = document.getElementById('firmwareValue') || document.getElementById('firmwareReadout');
     if (firmwareValue) firmwareValue.textContent = 'v3.0-alpha';
-    document.body.setAttribute('data-aperture-version', 'v3.1-alpha');
+    document.body.setAttribute('data-aperture-version', 'v3.2-alpha');
     document.body.setAttribute('data-acedit-review-status', 'static-reviewed-not-loaded');
     document.body.setAttribute('data-acedit-authority-boundary', 'signal-source-only');
   } catch (_) {}
@@ -21271,15 +21288,15 @@ Hard stops:
 
   function updateReadouts() {
     try {
-      document.body.setAttribute('data-aperture-version', 'v3.1-alpha');
+      document.body.setAttribute('data-aperture-version', 'v3.2-alpha');
       document.body.setAttribute('data-spine-forward-ui', 'true');
       document.body.setAttribute('data-recency-governance', 'true');
       const subtitle = document.getElementById('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const firmwareVer = document.getElementById('mFirmwareVer');
-      if (firmwareVer) firmwareVer.textContent = 'v3.0-alpha';
+      if (firmwareVer) firmwareVer.textContent = 'v3.2-alpha';
       const title = document.querySelector('title');
-      if (title) title.textContent = 'TD613 Aperture v3.1-alpha';
+      if (title) title.textContent = 'TD613 Aperture v3.2-alpha';
     } catch (_) {}
   }
 
@@ -21600,12 +21617,12 @@ Hard stops:
 
   function updateUI(){
     try {
-      document.body.setAttribute('data-aperture-version', 'v3.1-alpha');
+      document.body.setAttribute('data-aperture-version', 'v3.2-alpha');
       document.body.setAttribute('data-vector-residual-witness', 'true');
       const subtitle = document.getElementById('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const title = document.querySelector('title');
-      if (title) title.textContent = 'TD613 Aperture v3.1-alpha';
+      if (title) title.textContent = 'TD613 Aperture v3.2-alpha';
     } catch (_) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateUI, { once: true });
@@ -21653,7 +21670,7 @@ Hard stops:
   }
   function setTitle(value){
     try { if (document.title !== value) document.title = 'TD613 Aperture v3.2-alpha'; } catch (_) {}
-    try { const t = document.querySelector('title'); if (t && t.textContent !== 'TD613 Aperture v3.1-alpha') t.textContent = 'TD613 Aperture v3.1-alpha'; } catch (_) {}
+    try { const t = document.querySelector('title'); if (t && t.textContent !== 'TD613 Aperture v3.1-alpha') t.textContent = 'TD613 Aperture v3.2-alpha'; } catch (_) {}
   }
   function hideVisibleSpine(){
     try {
@@ -21866,8 +21883,8 @@ Hard stops:
 (function(){
   'use strict';
   const VERSION = 'v2.9.4';
-  const APERTURE_VERSION = 'v3.1-alpha';
-  const TITLE = 'TD613 Aperture v3.1-alpha';
+  const APERTURE_VERSION = 'v3.2-alpha';
+  const TITLE = 'TD613 Aperture v3.2-alpha';
   const HIDDEN_SCHEMA = 'td613.aperture.hidden-governance-spine-skeleton/v2.9.4-expanded';
   const laneRecords = Object.freeze([
     Object.freeze({
@@ -22032,7 +22049,7 @@ Hard stops:
     try {
       document.body?.setAttribute('data-aperture-version', 'v3.2-alpha');
       document.body?.setAttribute('data-governance-spine-mode', 'hidden-machine-facing-expanded');
-      document.documentElement?.setAttribute('data-aperture-version', 'v3.1-alpha');
+      document.documentElement?.setAttribute('data-aperture-version', 'v3.2-alpha');
       if (window.FIRMWARE) {
         window.FIRMWARE.VERSION = 'v3.2-alpha';
         window.FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';
@@ -22144,7 +22161,7 @@ Hard stops:
     if (!getCanonicalGovernanceStack()) issues.push('canonical governance stack missing');
     if (!window.APERTURE_GOVERNANCE_SPINE_SKELETON) issues.push('hidden governance skeleton missing');
     if (window.APERTURE_GOVERNANCE_SPINE_SKELETON && window.APERTURE_GOVERNANCE_SPINE_SKELETON.lanes.length < 11) issues.push('governance lane list incomplete');
-    if (document.title !== 'TD613 Aperture v3.1-alpha') issues.push('document title drift');
+    if (document.title !== 'TD613 Aperture v3.2-alpha') issues.push('document title drift');
     return Object.freeze({
       schema: 'td613.aperture.hidden-expanded-governance-spine-self-test/v1',
       status: issues.length ? 'warn' : 'pass',
@@ -22422,12 +22439,12 @@ Hard stops:
   }
 
   function canonicalize(){
-    try { if (document.title !== 'TD613 Aperture v3.1-alpha') document.title = 'TD613 Aperture v3.2-alpha'; } catch (_) {}
+    try { if (document.title !== 'TD613 Aperture v3.2-alpha') document.title = 'TD613 Aperture v3.2-alpha'; } catch (_) {}
     try {
       var titles = document.getElementsByTagName('title');
-      if (titles && titles[0] && titles[0].textContent !== 'TD613 Aperture v3.1-alpha') titles[0].textContent = 'TD613 Aperture v3.1-alpha';
+      if (titles && titles[0] && titles[0].textContent !== 'TD613 Aperture v3.1-alpha') titles[0].textContent = 'TD613 Aperture v3.2-alpha';
     } catch (_) {}
-    try { document.body && document.body.setAttribute('data-aperture-version', 'v3.1-alpha'); } catch (_) {}
+    try { document.body && document.body.setAttribute('data-aperture-version', 'v3.2-alpha'); } catch (_) {}
     try {
       var subtitle = document.getElementById('subtitle');
       if (subtitle && subtitle.textContent !== 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit') subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
@@ -22528,8 +22545,8 @@ Hard stops:
 (function(){
   'use strict';
   const VERSION = 'v2.9.4';
-  const APERTURE_VERSION = 'v3.1-alpha';
-  const TITLE = 'TD613 Aperture v3.1-alpha';
+  const APERTURE_VERSION = 'v3.2-alpha';
+  const TITLE = 'TD613 Aperture v3.2-alpha';
   const SUBTITLE = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
   function byId(id){ return document.getElementById(id); }
   function parseJson(id){
@@ -22543,7 +22560,7 @@ Hard stops:
     try { document.title = TITLE; } catch(_){ }
     try { const t = document.querySelector('title'); if(t) t.textContent = TITLE; } catch(_){ }
     try { const sub = byId('subtitle'); if(sub) sub.textContent = SUBTITLE; } catch(_){ }
-    try { const fw = byId('mFirmwareVer'); if(fw) fw.textContent = 'v3.1-alpha'; } catch(_){ }
+    try { const fw = byId('mFirmwareVer'); if(fw) fw.textContent = 'v3.2-alpha'; } catch(_){ }
     setMeta('aperture-version', 'v3.2-alpha');
     setMeta('aperture-roots-version', 'v3.2-alpha');
     setMeta('aperture-compat-version', 'v3.2-alpha');
@@ -22552,7 +22569,7 @@ Hard stops:
     setMeta('phason-seam-status', 'v2.9.4-boundary-detector');
     setMeta('triple-overlay-status', 'D3-sqrt3-periodic|phi-quasiperiodic|heterostratigraphic-incommensurability');
     setMeta('dome-flowcore-bridge', 'reciprocal-receipt-bridge-no-reciprocal-authority');
-    try { document.body?.setAttribute('data-aperture-version', 'v3.2-alpha'); document.documentElement?.setAttribute('data-aperture-version', 'v3.1-alpha'); } catch(_){ }
+    try { document.body?.setAttribute('data-aperture-version', 'v3.2-alpha'); document.documentElement?.setAttribute('data-aperture-version', 'v3.2-alpha'); } catch(_){ }
     try { if (window.FIRMWARE) { window.FIRMWARE.VERSION = 'v3.2-alpha'; window.FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha'; } } catch(_){ }
     try { window.APERTURE_VERSION = 'v3.2-alpha'; window.APERTURE_SCHEMA_VERSION = 'td613-aperture/v3.2-alpha'; } catch(_){ }
   }
@@ -22610,9 +22627,9 @@ Hard stops:
 <script id="apertureV294LateIdentityLock">
 (function(){
   'use strict';
-  const TITLE = 'TD613 Aperture v3.1-alpha';
+  const TITLE = 'TD613 Aperture v3.2-alpha';
   const VERSION = 'v2.9.4';
-  const APERTURE_VERSION = 'v3.1-alpha';
+  const APERTURE_VERSION = 'v3.2-alpha';
   const SUBTITLE = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
   function setMeta(name, value){
     try {
@@ -22629,9 +22646,9 @@ Hard stops:
     try { document.title = TITLE; } catch(_) {}
     try { const t = document.querySelector('title'); if (t) t.textContent = TITLE; } catch(_) {}
     try { document.body?.setAttribute('data-aperture-version', 'v3.2-alpha'); } catch(_) {}
-    try { document.documentElement?.setAttribute('data-aperture-version', 'v3.1-alpha'); } catch(_) {}
+    try { document.documentElement?.setAttribute('data-aperture-version', 'v3.2-alpha'); } catch(_) {}
     try { const sub = document.getElementById('subtitle'); if (sub) sub.textContent = SUBTITLE; } catch(_) {}
-    try { const fw = document.getElementById('mFirmwareVer') || document.getElementById('firmwareSpineVersion'); if (fw) fw.textContent = 'v3.1-alpha'; } catch(_) {}
+    try { const fw = document.getElementById('mFirmwareVer') || document.getElementById('firmwareSpineVersion'); if (fw) fw.textContent = 'v3.2-alpha'; } catch(_) {}
     setMeta('aperture-version', 'v3.2-alpha');
     setMeta('aperture-roots-version', 'v3.2-alpha');
     setMeta('aperture-compat-version', 'v3.2-alpha');
@@ -23542,6 +23559,7 @@ Hard stops:
   var fieldAnimationStarted = false;
   var fieldAnimationFrame = 0;
   var fieldAnimationVisible = false;
+  var reducedMotionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
   var cachedOps = { propagation:0.5, compression:0.38, coupling:0.44, transition:0.36, stabilization:0.6 };
   var fieldBox = { w:0, h:0, dpr:1, ctx:null, lastMeasure:0, visible:false };
 
@@ -23641,6 +23659,10 @@ Hard stops:
     function frame(now){
       fieldAnimationFrame = 0;
       if (document.hidden || !fieldAnimationVisible) return;
+      if (reducedMotionQuery && reducedMotionQuery.matches) {
+        drawField(cachedOps, now);
+        return;
+      }
       var targetMs = 24;
       if (!lastFrame || now - lastFrame >= targetMs) {
         lastFrame = now;
@@ -23649,9 +23671,16 @@ Hard stops:
       fieldAnimationFrame = requestAnimationFrame(frame);
     }
     function schedule(){
-      if (!document.hidden && fieldAnimationVisible && !fieldAnimationFrame) {
-        fieldAnimationFrame = requestAnimationFrame(frame);
+      if (fieldAnimationFrame && (document.hidden || !fieldAnimationVisible || (reducedMotionQuery && reducedMotionQuery.matches))) {
+        cancelAnimationFrame(fieldAnimationFrame);
+        fieldAnimationFrame = 0;
       }
+      if (document.hidden || !fieldAnimationVisible) return;
+      if (reducedMotionQuery && reducedMotionQuery.matches) {
+        drawField(cachedOps, performance.now());
+        return;
+      }
+      if (!fieldAnimationFrame) fieldAnimationFrame = requestAnimationFrame(frame);
     }
     var canvas = $('v294FieldCanvas');
     if (canvas) {
@@ -23680,6 +23709,9 @@ Hard stops:
       }, { passive:true });
     }
     document.addEventListener('visibilitychange', schedule, { passive:true });
+    if (reducedMotionQuery && typeof reducedMotionQuery.addEventListener === 'function') {
+      reducedMotionQuery.addEventListener('change', schedule);
+    }
   }
 
   function relocateResidueFallback(){
@@ -23689,7 +23721,7 @@ Hard stops:
   }
 
   function setVersion(){
-    document.body.dataset.apertureVersion = 'v3.1-alpha';
+    document.body.dataset.apertureVersion = 'v3.2-alpha';
     setText('mFirmwareVer', 'v3.2-alpha');
     setText('schemaVersionReadout', 'td613-aperture/v3.2-alpha');
     var title = document.querySelector('title');
@@ -23907,7 +23939,7 @@ Hard stops:
   */
 
   const VERSION='v2.9.5';
-  const TITLE='TD613 Aperture v3.1-alpha';
+  const TITLE='TD613 Aperture v3.2-alpha';
   const TRACE_LIMIT=54;
   const HIGH_PI_MS=6*60*60*1000;
   const trace=[];
@@ -24637,7 +24669,7 @@ Hard stops:
   window.__TD613_V3_ANTI_EPI_RUNTIME__=true;
 
   const VERSION='v3.0-alpha';
-  const TITLE='TD613 Aperture v3.1-alpha';
+  const TITLE='TD613 Aperture v3.2-alpha';
   const RESEARCH_POSTURE='experimental anti-epistemicide research runtime carrying source classes, observations, alternatives, and open questions';
   const $=id=>document.getElementById(id);
   const clamp=(v,a=0,b=1)=>{const n=Number(v);return Math.max(a,Math.min(b,Number.isFinite(n)?n:a));};
@@ -24876,13 +24908,13 @@ Hard stops:
 
   function installIdentity(){
     document.title=TITLE;
-    if(document.body){document.body.dataset.apertureVersion='v3.1-alpha';document.body.dataset.v295Dromology='preserved';}
+    if(document.body){document.body.dataset.apertureVersion='v3.2-alpha';document.body.dataset.v295Dromology='preserved';}
     setMeta('aperture-version', 'v3.2-alpha');
     setMeta('aperture-feature-version','v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime');
     setMeta('aperture-roots-version', 'v3.2-alpha');
     setMeta('anti-epistemicide-status','active-experimental-research-runtime');
     setMeta('v295-dromological-soul-preserved','true');
-    const fw=$('mFirmwareVer');if(fw)fw.textContent='v3.1-alpha';
+    const fw=$('mFirmwareVer');if(fw)fw.textContent='v3.2-alpha';
     window.APERTURE_VERSION = 'v3.2-alpha';
     if(window.FIRMWARE){window.FIRMWARE.VERSION = 'v3.2-alpha';window.FIRMWARE.SCHEMA_VERSION='td613-aperture/v3.2-alpha';window.FIRMWARE.DROMOLOGY_VERSION='v2.9.5';}
   }
@@ -25193,8 +25225,8 @@ Hard stops:
 <style id="apertureV3IdentityDrawerAndBridgePolish">
   /* Current instrument identity is independent from inherited module lineage. */
   :root {
-    --aperture-current-version: "v3.1-alpha";
-    --aperture-current-schema: "td613-aperture/v3.1-alpha";
+    --aperture-current-version: "v3.2-alpha";
+    --aperture-current-schema: "td613-aperture/v3.2-alpha";
   }
 
   /* Grade Gate / Witness Lab discoverability controls. */
