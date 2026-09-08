@@ -23,11 +23,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object app/aperture/tool.html)" = "ba3c416d6f72350f5d04b5cb6b796d45cf353ebf"
+          source_blob="$(git hash-object app/aperture/tool.html)"
+          echo "source_blob=$source_blob"
+          test "$source_blob" = "ba3c416d6f72350f5d04b5cb6b796d45cf353ebf"
           git apply --check docs/aperture/v3.2-alpha/APERTURE_V32_WEBKIT_FRAME_SYNC_REDUCED_MOTION.patch
           git apply docs/aperture/v3.2-alpha/APERTURE_V32_WEBKIT_FRAME_SYNC_REDUCED_MOTION.patch
-          test "$(git hash-object app/aperture/tool.html)" = "3600f1edba194a5288b19bb94b97c01309be8720"
-          test "$(git diff --name-only | tr -d '\r')" = "app/aperture/tool.html"
+          target_blob="$(git hash-object app/aperture/tool.html)"
+          echo "target_blob=$target_blob"
+          test "$target_blob" = "3600f1edba194a5288b19bb94b97c01309be8720"
+          changed="$(git diff --name-only | tr -d '\r')"
+          printf 'changed_paths<<EOF\n%s\nEOF\n' "$changed"
+          test "$changed" = "app/aperture/tool.html"
           git diff --check
           git config user.name "td613-actions-transport"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
