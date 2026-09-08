@@ -113,6 +113,8 @@ jobs:
           node tests/vercel-operator-release-gate.test.mjs
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
+          node tests/gemini-model-policy.test.mjs
+          node tests/gemini-model-discovery.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
       - name: Validate Giving and Campaign Deputy import contracts

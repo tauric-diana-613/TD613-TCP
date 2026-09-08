@@ -50,6 +50,9 @@ export default async function handler(req, res) {
       ok: listing.ok,
       status: listing.status || null,
       cached: Boolean(listing.cached),
+      complete: Boolean(listing.complete),
+      observedAt: listing.observedAt,
+      expiresAt: listing.expiresAt,
       generateContentModelCount: discovered.length,
       models: discovered,
       error: listing.error || null
