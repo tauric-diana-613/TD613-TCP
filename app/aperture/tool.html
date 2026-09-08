@@ -11606,7 +11606,7 @@ function tick(now = performance.now()) {
     }
   }
 
-  requestAnimationFrame(tick);
+  if (!reducedMotionActive) requestAnimationFrame(tick);
 }
 
 // ── Controls ──────────────────────────────────────────────────
