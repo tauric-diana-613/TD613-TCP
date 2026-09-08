@@ -87,5 +87,11 @@ assert.match(tool, /if \(reducedMotionQuery && reducedMotionQuery\.matches\) \{\
   'Reduced-motion field rendering must perform a bounded draw and stop the recurring field RAF.');
 assert.match(tool, /if \(fieldAnimationFrame && \(document\.hidden \|\| !fieldAnimationVisible \|\| \(reducedMotionQuery && reducedMotionQuery\.matches\)\)\) \{\s*cancelAnimationFrame\(fieldAnimationFrame\);/,
   'The field scheduler must cancel recurring animation when hidden, offscreen, or reduced-motion governed.');
+assert.match(tool, /const reducedMotionActive = window\.matchMedia && window\.matchMedia\("\(prefers-reduced-motion: reduce\)"\)\.matches;/,
+  'The master frame loop must bind the same reduced-motion signal before optional module frame-sync work.');
+assert.match(tool, /if \(!reducedMotionActive && typeof window\.__TD613_V295_DROMO_FRAME_SYNC === "function"\)/,
+  'Dromology frame-sync work must pause under reduced motion while remaining available for normal animated runtime.');
+assert.match(tool, /if \(!reducedMotionActive && typeof window\.__TD613_V3_ANTI_EPI_FRAME_SYNC === "function"\)/,
+  'Anti-epistemicide frame-sync work must pause under reduced motion while preserving event-driven updates.');
 
 console.log('aperture-v32-identity-lifecycle-diagnostics.test.mjs passed');
