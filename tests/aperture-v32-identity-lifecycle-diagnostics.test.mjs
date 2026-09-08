@@ -69,7 +69,7 @@ assert.doesNotMatch(probe, /await page\.waitForTimeout\((?:350|650|1200)\)/,
   'Identity witness must not compound its own measurement overhead through legacy cumulative fixed waits.');
 assert.match(probe, /waitUntilAbsoluteDeadline\(page, targetElapsedMs\)/,
   'Every delayed identity sample must be scheduled against its absolute post-DOMContentLoaded deadline.');
-assert.match(probe, /assert\(!page\.isClosed\(\), `Aperture page closed before \$\{label\}\.\)`/,
+assert.match(probe, /assert\(!page\.isClosed\(\), `Aperture page closed before \$\{label\}\.`\)/,
   'Every mandatory sample must fail closed when the original page disappears.');
 assert.match(probe, /All four preregistered identity samples are mandatory\./,
   'T3 must remain mandatory after absolute-clock repair.');
