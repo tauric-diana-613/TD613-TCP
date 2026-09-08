@@ -1,6 +1,6 @@
 {
   "schema": "td613.openai-delegation-gate/v2",
-  "status": "OPEN",
+  "status": "CLOSED",
   "status_applies_to": "DETACHED_DELEGATED_OPENAI_ACTIVITY_ONLY",
   "authority_issue": 691,
   "operator_authorization_required": true,
@@ -21,7 +21,7 @@
     "authority_ends_at": "TASK_OR_INTERACTIVE_SESSION_BOUNDARY"
   },
   "detached_delegation": {
-    "status": "OPEN",
+    "status": "CLOSED",
     "covered_action_classes": [
       "AUTONOMOUS_GITHUB_REVIEW",
       "BACKGROUND_CLOUD_TASK",
@@ -32,11 +32,11 @@
       "OTHER_DETACHED_OPENAI_AGENT"
     ],
     "issue_691_ledger_required": true,
-    "authorized_action": "BACKGROUND_CLOUD_TASK",
-    "pr_number": 1077,
-    "head_sha": "58c1c8fbc2c1b98fe4b3febbf59c1ca9929cf11a",
-    "action_count_ceiling": 1,
-    "expires_at": "2026-09-08T18:15:00Z"
+    "authorized_action": null,
+    "pr_number": null,
+    "head_sha": null,
+    "action_count_ceiling": 0,
+    "expires_at": null
   },
   "product_side_defaults": {
     "codex_code_review": "DISABLED",
@@ -47,14 +47,12 @@
   "connector_adjacency_grants_authority": false,
   "vercel_release_grants_detached_authority": false,
   "notes": [
-    "Top-level OPEN is a one-shot detached-delegation record for the exact human-authorized action; it does not alter interactive or Amari connector authority.",
-    "The detached authorization is limited to PR #1077 and the authorized code head recorded under detached_delegation.head_sha.",
-    "The gate-bearing commit may differ from that authorized code head only by this gate record; task-specific product bytes remain bound to the authorized code head until the detached action applies the documented repair.",
+    "Top-level CLOSED applies to detached delegated OpenAI activity, not to a human operator presently steering an active interactive coding session.",
     "A direct contemporaneous instruction inside the active interactive coding session authorizes only that explicitly bounded interactive task and requires no second issue-691 ledger gesture.",
     "Explicitly requested local-file export or copy work, including a named Downloads destination, belongs to the bounded interactive task when the active environment can perform it.",
     "No GitHub-event, mention-triggered, scheduled, queued, background, review, or cloud process may self-classify as interactive.",
-    "Amari work explicitly requested by the human operator through ChatGPT remains a distinct authority class and does not arm detached delegated OpenAI agents without a matching human authorization record.",
+    "Amari work explicitly requested by the human operator through ChatGPT remains a distinct authority class and does not arm detached delegated OpenAI agents.",
     "A detached delegated action requires a fresh human gesture recorded against issue 691 and an exact target receipt before invocation.",
-    "Do not place an executable Codex mention token in repository metadata unless detached delegation is OPEN and the exact matching human authorization has been recorded."
+    "Do not place an executable Codex mention token in repository metadata while detached delegation is CLOSED."
   ]
 }
