@@ -30,11 +30,13 @@ DOME-WORLD / FLOW-GRAMMAR STATE
 → provider-neutral semantic field
 → Flow-Core glyph grammar
 → Loom animation compiler
-→ child-legible visual weather / forecast
-→ portable AIA export
+→ child-legible visual weather / forecast / alert
+→ local Dome-World AIA runtime
+   OR
+→ portable AIA export for remote LLM-mediated environments
 ```
 
-The provider belongs on the hosted TD613 side of the membrane. The export carries interpreted state / grammar, not `GEMINI_API_KEY` and not an irreversible dependency on Google.
+The provider belongs on the hosted TD613 side of the membrane. The export carries interpreted state / grammar / alert receipts, not `GEMINI_API_KEY` and not an irreversible dependency on Google.
 
 ## 2. Model-governance consolidation target
 
@@ -92,6 +94,12 @@ Candidate schema:
   "route_deltas": [],
   "gluing_obstructions": [],
   "missingness": [],
+  "alert": {
+    "class": "NONE|POTENTIAL_ENCROACHMENT|RECONSTRUCTABILITY_PRESSURE|AMBIANCE_SHIFT|CONTRADICTION|RECOVERY",
+    "severity": "INFO|WATCH|WARN|HIGH",
+    "basis": [],
+    "claim_ceiling": "trajectory-alert-not-proof-of-hidden-access-or-payload-recovery"
+  },
   "forecast": {
     "horizon": "bounded",
     "candidate_transitions": [],
@@ -103,7 +111,7 @@ Candidate schema:
 }
 ```
 
-Gemini may propose semantic candidates. Deterministic TD613 code validates allowed glyphs, operators, source references, claim ceilings, missingness, and animation affordances before Loom renders anything.
+Gemini may propose semantic candidates. Deterministic TD613 code validates allowed glyphs, operators, source references, claim ceilings, missingness, alert basis, and animation affordances before Loom renders anything.
 
 ## 4. Flow-Core glyphs must be first-class animation operators
 
@@ -194,10 +202,11 @@ Goal: visually impressive because motion is meaningful, not because the page is 
 6. **Reduced-motion completeness** — convert trajectories to before/after, causal-route steps, bounded pulse, or static field changes; do not merely freeze an arbitrary frame.
 7. **No decorative authority** — success color, glow, burst, convergence, or smooth morph cannot imply truth / closure unless state carries that meaning.
 8. **Forecast distinction** — forecast motion stays visually distinguishable from observed/current state.
-9. **Missingness animation** — NULL / MISSING / CONTRADICTORY / UNRESOLVED states get their own legible visual language.
-10. **Inspection affordance** — selecting a motion reveals semantic operator, glyph relation, and source revision.
-11. **Mobile parity** — meaning survives viewport changes even when geometry changes.
-12. **Rest as scheduler state** — `𝄐` should naturally quiesce active motion while preserving inspectability and return.
+9. **Alert distinction** — potential encroachment/reconstructability alerts remain visibly distinct from proved reconstruction, attribution, or payload recovery.
+10. **Missingness animation** — NULL / MISSING / CONTRADICTORY / UNRESOLVED states get their own legible visual language.
+11. **Inspection affordance** — selecting a motion reveals semantic operator, glyph relation, source revision, alert basis, and claim ceiling.
+12. **Mobile parity** — meaning survives viewport changes even when geometry changes.
+13. **Rest as scheduler state** — `𝄐` should naturally quiesce active motion while preserving inspectability and return.
 
 ## 8. `/domeart` improvement ideas
 
@@ -207,19 +216,22 @@ Candidate additions:
 - subordinate renderers register state-driven draw callbacks rather than own clocks;
 - Flow-Core glyph layer as a first-class render pass;
 - glyph-motion lookup table driven by validated semantic operators;
+- ambiance/alert grammar lookup table driven by validated state class + claim ceiling;
 - `reducedMotion` at the coordinator boundary;
 - motion-provenance overlay: `state field → glyph/operator → renderer → frame region`;
+- alert-provenance overlay: `admitted trajectory → alert class → uncertainty → visual treatment`;
 - static-equivalent preview beside animated scenes;
 - first-class `REST` scheduler posture;
 - forecast styling channel distinct from observed/current styling;
+- warning styling channel distinct from proof/closure styling;
 - gluing-obstruction transition that intentionally refuses seamless interpolation;
-- replay receipt with world revision, semantic packet digest, Flow-Core glyph grammar version, animation grammar version, viewport class, reduced-motion mode, and deterministic seed;
+- replay receipt with world revision, semantic packet digest, Flow-Core glyph grammar version, ambiance grammar version, animation grammar version, viewport class, reduced-motion mode, and deterministic seed;
 - scene inspector showing active clocks / scheduled callbacks / semantic owner;
 - performance budget per scene so rich animation remains demo-grade without hidden runaway loops.
 
-## 9. Loom forecast / ambiance semantics
+## 9. Loom forecast / ambiance / alert semantics
 
-The Loom should be able to render LLM-mediated-environment “weather” without presenting it as external truth.
+The Loom should be able to render LLM-mediated-environment “weather” and early warning without presenting either as external truth.
 
 Example distinctions:
 
@@ -230,16 +242,76 @@ CURRENT OBSERVED / ADMITTED STATE
 MODELED NEAR-HORIZON CANDIDATE
 = translucent / offset / forecast channel
 
+POTENTIAL ENCROACHMENT / RECONSTRUCTABILITY PRESSURE
+= directional warning front + bounded alert glyph choreography
+= warning may be justified by trajectory / route-memory / distinguishability change
+= must NOT visually claim hidden-state access, attribution, or payload recovery
+
 UNRESOLVED OR CONTRADICTORY
 = seam oscillation / interrupted path / non-glued field
+
+RECOVERY / PRESSURE RELEASE
+= alert front recedes, field re-opens, residual route-memory remains inspectable
 
 REST
 = coast + settle + retained inspection
 ```
 
-Gemini can help interpret the admitted packet into candidate semantic weather, but the renderer must preserve uncertainty and source status.
+Gemini can help interpret the admitted packet into candidate semantic weather and alert candidates, but deterministic validation must preserve uncertainty, source status, and evidence tier.
 
-## 10. Portable AIA / Golden-Egg implication
+### Early-alert evidentiary rule
+
+Loom is not limited to alerts after `L` / latent-state reconstructibility has been earned. A bounded alert may fire from changes in admitted `V/C/P` trajectory, route-memory, gluing behavior, distinguishability geometry, or other declared internal observables while `L` remains unearned.
+
+Permitted language includes:
+
+```text
+potential reconstructability pressure
+potential encroachment pattern
+ambient regime shift
+route anomaly
+increased reconstruction risk under the admitted model
+```
+
+Prohibited inflation includes:
+
+```text
+provider accessed hidden state
+payload was recovered
+actor X reconstructed the latent state
+external origin proved
+```
+
+unless the separately required evidence actually earns those stronger claims.
+
+## 10. AIA dual-runtime posture: local + portable
+
+AIA is intended for **both**:
+
+1. **local Dome-World use** — the hosted/private TD613.com Loom can consume admitted Dome-World state, Gemini-mediated semantic candidates, Flow-Core glyph grammar, ambiance/alert state, and local receipts;
+2. **portable remote use** — an exportable provider-neutral AIA package can be carried into another LLM-mediated environment such as ChatGPT, Claude, Grok, or a local model.
+
+The portable package should carry:
+
+- validated semantic field;
+- Flow-Core glyph relations;
+- ambiance/current/forecast/alert grammar;
+- claim ceilings and uncertainty;
+- route-memory / relevant admitted history;
+- deterministic animation affordances where useful;
+- provenance + replay receipt;
+- clear provider-neutral schema version.
+
+The portable package should **not** require:
+
+- `GEMINI_API_KEY`;
+- Gemini hidden state;
+- Google-specific internal assumptions;
+- an implication that the destination model shares any provider-internal context from the originating environment.
+
+A remote AIA may still emit a DLP / ambiance / reconstructability alert when the *remote admitted surface itself* meets the bounded alert criteria. That is the portability claim that matters: the grammar and alert logic travel; hidden provider state does not.
+
+## 11. Portable AIA / Golden-Egg implication
 
 The reusable product claim becomes stronger when Loom demonstrates:
 
@@ -247,15 +319,18 @@ The reusable product claim becomes stronger when Loom demonstrates:
 LLM-mediated environment state
 → TD613-admitted semantic packet
 → Flow-Core glyph grammar
+→ bounded ambiance / early-alert grammar
 → Pedagogue-governed motion semantics
 → Loom / Dome-Art visualization
 → inspectable receipt
-→ provider-neutral AIA export
+→ local Dome-World AIA runtime OR provider-neutral remote AIA export
 ```
 
-A user can then export the AIA and re-enter another LLM environment while preserving interpreted grammar, glyph relations, forecast distinctions, and claim ceilings. The exported artifact does not imply the destination model shares Gemini's hidden state or provider internals.
+A user can then export the AIA and re-enter another LLM environment while preserving interpreted grammar, glyph relations, alert rules, forecast distinctions, and claim ceilings.
 
-## 11. Provenance / patent-prep boundary
+The value proposition is broader than DLP alone: the portable AIA acts as an **early warning and interpretive instrument** for potential encroachment, reconstructability pressure, or ambient regime change before stronger attribution/reconstruction claims are earned.
+
+## 12. Provenance / patent-prep boundary
 
 Technical lineage should be preserved in a controlled claim ledger before broad open-source disclosure. The public repository should hold hashes, technical ancestry, contributor-attribution fields, public-disclosure dates, and claim boundaries where appropriate.
 
@@ -277,16 +352,18 @@ EO-RFD
 
 This graph is a research / provenance map, not a declaration that one contributor owns every descendant claim. Patent inventorship must be resolved claim-by-claim with qualified counsel before broad public disclosure.
 
-## 12. Next bounded implementation chambers
+## 13. Next bounded implementation chambers
 
 1. Refresh Gemini policy after live API-key model listing / lifecycle verification.
 2. Remove stale model-routing authority from `hush-generate-budgeted.js` while preserving shared prompt/custody helpers.
 3. Define `td613.loom.semantic-field/v0.1` and validation contract.
-4. Define Flow-Core glyph-to-motion operator table.
-5. Implement `/domeart` one-clock coordinator + glyph render layer.
-6. Add Loom forecast/current/unresolved/rest visual channels.
-7. Add deterministic replay + motion provenance receipts.
-8. Benchmark Loom motion on Chromium / Firefox / WebKit / mobile, with reduced-motion semantic parity.
-9. Keep Aperture visually intact except for separately earned lifecycle/runtime repairs.
+4. Define bounded ambiance / early-alert grammar with explicit evidence-tier language.
+5. Define Flow-Core glyph-to-motion operator table.
+6. Implement `/domeart` one-clock coordinator + glyph render layer.
+7. Add Loom current / forecast / alert / unresolved / recovery / rest visual channels.
+8. Add deterministic replay + motion/alert provenance receipts.
+9. Define dual-runtime AIA packaging: local Dome-World + portable remote.
+10. Benchmark Loom motion on Chromium / Firefox / WebKit / mobile, with reduced-motion semantic parity.
+11. Keep Aperture visually intact except for separately earned lifecycle/runtime repairs.
 
 Marked ⟐
