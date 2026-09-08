@@ -32,6 +32,10 @@ const report = {
     canonical_glyph_sequence: ['à', '米', 'hõt', '出', 'cōl', '𝄐'],
     static_equivalent_required: true
   },
+  preserved_red_lineage: [
+    'Ready run 2828 Chromium + Firefox: witness attempted to fill hidden #protected before explicitly opening Protection rules; product bytes unchanged',
+    'Ready run 2828 WebKit: independent A15 mobile-reduced political_campaign custodial route timeout occurred in Step 7 before glyph witness execution'
+  ],
   request_summary: {
     total_request_count: 0,
     external_request_count: 0,
@@ -140,6 +144,11 @@ try {
 
   const protectedToken = 'PRIVATE_GLYPH_CONTROL_613';
   await page.locator('#message').fill(`ordinary ${protectedToken}`);
+  const protectionRules = page.locator('#protectionRules');
+  if (!(await protectionRules.evaluate(node => Boolean(node.open)))) {
+    await protectionRules.locator('summary').click();
+  }
+  check('RED fixture opens Protection rules explicitly before editing protected terms', await protectionRules.evaluate(node => Boolean(node.open)));
   await page.locator('#protected').fill(protectedToken);
   await page.locator('#check').click();
   check('new CHECK hides prior glyph path again', await glyphPath.isHidden());
@@ -189,7 +198,6 @@ try {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'networkidle' });
   await page.locator('#message').fill('ordinary reduced motion message');
-  await page.locator('#protected').fill('');
   await page.locator('#check').click();
   await page.locator('#showPath').click();
   const reducedStates = await page.locator('[data-motion-key]').evaluateAll(nodes => Object.fromEntries(nodes.map(node => [node.dataset.motionKey, node.dataset.motionState])));
