@@ -312,6 +312,8 @@ async function waitUntilAbsoluteDeadline(page, targetElapsedMs) {
 
 let terminalError = null;
 let browser = null;
+let webkitT3Resolve = null;
+const webkitT3Sample = new Promise(resolve => { webkitT3Resolve = resolve; });
 try {
   browser = await engine.launch({ headless: true });
   browser.on('disconnected', () => {
@@ -329,6 +331,49 @@ try {
 
   const page = await context.newPage();
   page.setDefaultTimeout(60_000);
+
+  if (browserName === 'webkit') {
+    await page.exposeFunction('__TD613_APERTURE_T3_EMIT', payload => {
+      if (webkitT3Resolve) {
+        const resolve = webkitT3Resolve;
+        webkitT3Resolve = null;
+        resolve(payload);
+      }
+    });
+    await page.addInitScript(() => {
+      const armT3 = () => {
+        const epoch = performance.now();
+        setTimeout(() => {
+          try {
+            const firmware = document.getElementById('mFirmwareVer')
+              || document.getElementById('firmwareSpineVersion')
+              || document.querySelector('[data-firmware-spine-version]');
+            const schema = document.getElementById('schemaVersionReadout')
+              || document.getElementById('mSchemaVer')
+              || document.getElementById('schemaVersion');
+            window.__TD613_APERTURE_T3_EMIT({
+              actual_elapsed_ms: Number((performance.now() - epoch).toFixed(3)),
+              document_title: document.title,
+              title_text: document.querySelector('title')?.textContent || null,
+              html_data_aperture_version: document.documentElement?.getAttribute('data-aperture-version') || null,
+              body_data_aperture_version: document.body?.getAttribute('data-aperture-version') || null,
+              meta_aperture_version: document.querySelector('meta[name=\"aperture-version\"]')?.getAttribute('content') || null,
+              visible_firmware_readout: firmware?.textContent?.trim() || null,
+              visible_schema_readout: schema?.textContent?.trim() || null,
+              window_APERTURE_VERSION: window.APERTURE_VERSION || null,
+              window_APERTURE_SCHEMA_VERSION: window.APERTURE_SCHEMA_VERSION || null,
+              window_FIRMWARE_VERSION: window.FIRMWARE?.VERSION || null,
+              window_FIRMWARE_SCHEMA_VERSION: window.FIRMWARE?.SCHEMA_VERSION || null
+            });
+          } catch (error) {
+            window.__TD613_APERTURE_T3_EMIT({ __error: String(error?.stack || error?.message || error) });
+          }
+        }, 2200);
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', armT3, { once: true });
+      else armT3();
+    });
+  }
 
   page.on('close', () => {
     report.lifecycle.page_closed = true;
@@ -372,7 +417,29 @@ try {
     assert(!contextClosed, `Aperture context closed before ${label}.`);
     assert(browser.isConnected(), `Aperture browser disconnected before ${label}.`);
     assert(actualBeforeSample >= targetElapsedMs, `${label} began before its preregistered absolute deadline.`);
-    report.samples.push(await sampleIdentity(page, label, targetElapsedMs, Number(actualBeforeSample.toFixed(3))));
+    let sample;
+    if (browserName === 'webkit' && label === 'T3') {
+      const payload = await Promise.race([
+        webkitT3Sample,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('WebKit T3 page-side identity bridge did not emit within 10 seconds.')), 10_000)),
+      ]);
+      assert(!payload.__error, `WebKit T3 page-side identity bridge failed: ${payload.__error}`);
+      const timing = sampleTiming(targetElapsedMs, payload.actual_elapsed_ms);
+      sample = {
+        ...payload,
+        label,
+        elapsed_ms: timing.actual_elapsed_ms,
+        target_elapsed_ms: timing.target_elapsed_ms,
+        actual_elapsed_ms: timing.actual_elapsed_ms,
+        drift_ms: timing.drift_ms,
+      };
+      sample.failures = identityFailures(sample);
+      sample.status = sample.failures.length === 0 ? 'PASS' : 'FAIL';
+      recordLifecycle('WEBKIT_T3_PAGE_SIDE_SAMPLE_RECEIVED', { actual_elapsed_ms: sample.actual_elapsed_ms, drift_ms: sample.drift_ms });
+    } else {
+      sample = await sampleIdentity(page, label, targetElapsedMs, Number(actualBeforeSample.toFixed(3)));
+    }
+    report.samples.push(sample);
     recordCheckpoint(`AFTER_${label}`, page, browser, contextClosed, targetElapsedMs);
   }
 
