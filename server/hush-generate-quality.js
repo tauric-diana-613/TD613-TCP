@@ -3,7 +3,7 @@ import {
   buildPrompt,
   providerBoundContract,
   quarantineCandidateRows
-} from './hush-generate-budgeted.js';
+} from './hush-provider-contract.js';
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,

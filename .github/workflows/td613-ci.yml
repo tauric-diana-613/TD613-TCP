@@ -116,6 +116,11 @@ jobs:
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/gemini-model-policy.test.mjs
+          node tests/hush-routing-authority.test.mjs
+          node tests/hush-speech-act-custody.test.mjs
+          node tests/hush-strict-provider-integrity.test.mjs
+          node tests/hush-backend-prompt-detox.test.mjs
+          node tests/hush-phase34-expressive-generation.test.mjs
           node tests/gemini-model-discovery.test.mjs
           node tests/gemini-observation-dispatch.test.mjs
           node tests/product-architecture/shell.test.mjs
