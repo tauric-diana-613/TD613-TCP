@@ -1,7 +1,85 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
+import {
+  extractApertureMetadata,
+  normalizeApertureForRepo,
+} from '../scripts/lib/aperture-sync-lane.mjs';
 
-const tool = fs.readFileSync('app/aperture/tool.html', 'utf8');
+const PRODUCT_PATH = 'app/aperture/tool.html';
+const NORMALIZER_PATH = 'scripts/lib/aperture-sync-lane.mjs';
+const artifactDir = 'artifacts/aperture-v32-identity-singularity-candidate';
+
+function gitBlobSha1(text) {
+  const body = Buffer.from(text, 'utf8');
+  return createHash('sha1').update(`blob ${body.length}\0`).update(body).digest('hex');
+}
+
+function sha256(text) {
+  return createHash('sha256').update(text).digest('hex');
+}
+
+function gitCommitAvailable(head) {
+  try {
+    execFileSync('git', ['cat-file', '-e', `${head}^{commit}`], { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function resolveExactHeadTool() {
+  const eventName = String(process.env.GITHUB_EVENT_NAME || '');
+  const executionSha = process.env.GITHUB_SHA || null;
+  if (eventName !== 'pull_request') {
+    return {
+      text: fs.readFileSync(PRODUCT_PATH, 'utf8'),
+      repositoryHead: process.env.TD613_EXACT_HEAD || executionSha || 'LOCAL_UNBOUND',
+      headSource: process.env.TD613_EXACT_HEAD ? 'TD613_EXACT_HEAD' : executionSha ? 'GITHUB_SHA' : 'LOCAL_WORKSPACE',
+      executionSha,
+      exactHeadFetchPerformed: false,
+    };
+  }
+
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+  assert.ok(eventPath, 'Exact-head Aperture identity review requires GITHUB_EVENT_PATH on pull_request runs.');
+  const event = JSON.parse(fs.readFileSync(eventPath, 'utf8'));
+  const repositoryHead = String(event?.pull_request?.head?.sha || '').toLowerCase();
+  assert.match(repositoryHead, /^[a-f0-9]{40}$/, 'Exact-head Aperture identity review requires pull_request.head.sha.');
+
+  let exactHeadFetchPerformed = false;
+  if (!gitCommitAvailable(repositoryHead)) {
+    execFileSync('git', ['fetch', '--no-tags', '--depth=1', 'origin', repositoryHead], {
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024,
+    });
+    exactHeadFetchPerformed = true;
+  }
+  assert.equal(gitCommitAvailable(repositoryHead), true, `Exact PR head ${repositoryHead} must be available after bounded fetch.`);
+
+  const exactNormalizerBlob = execFileSync('git', ['rev-parse', `${repositoryHead}:${NORMALIZER_PATH}`], { encoding: 'utf8' }).trim();
+  const workspaceNormalizerBlob = execFileSync('git', ['hash-object', NORMALIZER_PATH], { encoding: 'utf8' }).trim();
+  assert.equal(
+    workspaceNormalizerBlob,
+    exactNormalizerBlob,
+    'Executed Aperture normalizer bytes must equal the exact PR-head normalizer blob.',
+  );
+
+  return {
+    text: execFileSync('git', ['show', `${repositoryHead}:${PRODUCT_PATH}`], {
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024,
+    }),
+    repositoryHead,
+    headSource: 'GITHUB_EVENT.pull_request.head.sha',
+    executionSha,
+    exactHeadFetchPerformed,
+  };
+}
+
+const exact = resolveExactHeadTool();
+const tool = exact.text;
 const probe = fs.readFileSync('scripts/aperture-v32-identity-singularity-browser-witness.mjs', 'utf8');
 const wrapper = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
 const prereg = fs.readFileSync('docs/aperture/v3.2-alpha/APERTURE_V32_IDENTITY_SINGULARITY_WITNESS_V0_1_PREREGISTRATION_20260907.md', 'utf8');
@@ -12,7 +90,6 @@ assert.match(tool, /id=["']mFirmwareVer["'][^>]*>\s*v3\.2-alpha\s*</i);
 assert.match(tool, /apertureV31AdmissibilityTomographyContract/);
 assert.match(tool, /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.1/);
 
-const hostile = [];
 const checks = [
   ['STALE_CURRENT_TITLE_V31', /(?:document\.title\s*=|\.textContent\s*=)\s*["']TD613 Aperture v3\.1-alpha["']/],
   ['STALE_BODY_VERSION_V31_V30', /document\.body(?:\?\.)?\.setAttribute\(\s*["']data-aperture-version["']\s*,\s*["']v3\.[01]-alpha["']\s*\)/],
@@ -23,11 +100,62 @@ const checks = [
   ['STALE_WINDOW_APERTURE_VERSION_V31_V30', /window\.APERTURE_VERSION\s*=\s*["']v3\.[01]-alpha["']/],
   ['STALE_WINDOW_APERTURE_SCHEMA_V31_V30', /window\.APERTURE_SCHEMA_VERSION\s*=\s*["']td613-aperture\/v3\.[01]-alpha["']/],
   ['STALE_FIRMWARE_CURRENT_VERSION_V31_V30', /window\.FIRMWARE\.VERSION\s*=\s*["']v3\.[01]-alpha["']/],
-  ['STALE_FIRMWARE_CURRENT_SCHEMA_V31_V30', /window\.FIRMWARE\.SCHEMA_VERSION\s*=\s*["']td613-aperture\/v3\.[01]-alpha["']/]
+  ['STALE_FIRMWARE_CURRENT_SCHEMA_V31_V30', /window\.FIRMWARE\.SCHEMA_VERSION\s*=\s*["']td613-aperture\/v3\.[01]-alpha["']/],
 ];
-for (const [id, pattern] of checks) if (pattern.test(tool)) hostile.push(id);
 
-assert.deepEqual(hostile, [], `Current v3.2 identity writer hostility detected: ${hostile.join(', ')}`);
+function hostileClasses(text) {
+  return checks.filter(([, pattern]) => pattern.test(text)).map(([id]) => id);
+}
+
+const sourceHostile = hostileClasses(tool);
+const metadata = extractApertureMetadata(tool, PRODUCT_PATH);
+const normalizedCandidate = normalizeApertureForRepo(tool, metadata);
+const candidateHostile = hostileClasses(normalizedCandidate);
+
+assert.match(normalizedCandidate, /apertureV31AdmissibilityTomographyContract/,
+  'Identity normalization must preserve the v3.1 tomography lineage contract.');
+assert.match(normalizedCandidate, /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.1/,
+  'Identity normalization must preserve historical v3.1 contract schema text.');
+assert.ok(normalizedCandidate.includes('v3.0-alpha'),
+  'Identity normalization must preserve historical v3.0 lineage/receipt text outside current-identity writers.');
+
+fs.mkdirSync(artifactDir, { recursive: true });
+fs.writeFileSync(`${artifactDir}/tool.normalized.html`, normalizedCandidate, 'utf8');
+fs.writeFileSync(`${artifactDir}/candidate-receipt.json`, `${JSON.stringify({
+  schema: 'td613.aperture.v32-identity-singularity-repair-candidate/v0.1',
+  status: candidateHostile.length ? 'HELD' : 'CANDIDATE',
+  review_evidence_class: 'MACHINE_GENERATED_APERTURE_REPAIR_CANDIDATE',
+  source_repository_head: exact.repositoryHead,
+  source_head_source: exact.headSource,
+  execution_repository_sha: exact.executionSha,
+  exact_head_fetch_performed: exact.exactHeadFetchPerformed,
+  source_tool_git_blob_sha1: gitBlobSha1(tool),
+  source_tool_sha256: sha256(tool),
+  candidate_tool_git_blob_sha1: gitBlobSha1(normalizedCandidate),
+  candidate_tool_sha256: sha256(normalizedCandidate),
+  source_hostile_classes: sourceHostile,
+  candidate_hostile_classes: candidateHostile,
+  historical_v31_contract_preserved: normalizedCandidate.includes('td613.aperture.v31-admissibility-tomography-contract/v0.1'),
+  historical_v30_lineage_preserved: normalizedCandidate.includes('v3.0-alpha'),
+  canonical_product_mutated: false,
+  counts_as_human_evidence: false,
+  production_observation: false,
+  release_authority: false,
+  merge_authority: false,
+  vercel_authority: false,
+  provider_call_performed: false,
+  human_closure_required: true,
+  exogenous_witness_credit: 0,
+  golden_egg_credit: 0,
+}, null, 2)}\n`, 'utf8');
+
+assert.deepEqual(
+  candidateHostile,
+  [],
+  `Normalized Aperture repair candidate still contains stale current-identity writers: ${candidateHostile.join(', ')}`,
+);
+
+assert.deepEqual(sourceHostile, [], `Current v3.2 identity writer hostility detected: ${sourceHostile.join(', ')}`);
 
 for (const token of [
   'T0_DOM_READY',
@@ -52,7 +180,7 @@ for (const token of [
   'provider_call_performed: false',
   'human_closure_required: true',
   'exogenous_witness_credit: 0',
-  'golden_egg_credit: 0'
+  'golden_egg_credit: 0',
 ]) assert.ok(probe.includes(token), `Identity witness omitted ${token}`);
 
 assert.match(probe, /\/aperture\/tool\.html/);
