@@ -18,12 +18,13 @@ on:
           - full-browser
           - full-repository
           - calibration
+          - gemini-observation
 
 permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
   cancel-in-progress: true
 
 env:
@@ -34,6 +35,7 @@ env:
 jobs:
   scope:
     name: Classify exact-head browser witness scope
+    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation'
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
@@ -115,6 +117,7 @@ jobs:
           node tests/release-plumbing.test.mjs
           node tests/gemini-model-policy.test.mjs
           node tests/gemini-model-discovery.test.mjs
+          node tests/gemini-observation-dispatch.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
       - name: Validate Giving and Campaign Deputy import contracts
@@ -768,4 +771,34 @@ jobs:
         with:
           name: calibration-output
           path: calibration-output.txt
+          retention-days: 7
+
+  gemini_observation:
+    name: Explicit credential-scoped Gemini model observation
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    permissions:
+      contents: read
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Observe models.list only
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_GEMINI_OBSERVATION_ACTIONS: 'true'
+        run: node scripts/observe-gemini-models.mjs > gemini-observation.json
+      - name: Preserve sanitized observation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-observation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gemini-observation.json
+          if-no-files-found: error
           retention-days: 7
