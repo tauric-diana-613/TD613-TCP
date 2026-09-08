@@ -6,9 +6,14 @@ import {
   extractApertureMetadata,
   normalizeApertureForRepo,
 } from '../scripts/lib/aperture-sync-lane.mjs';
+import {
+  APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE,
+  remainingWaitMs,
+} from '../scripts/lib/aperture-v32-identity-witness-clock.mjs';
 
 const PRODUCT_PATH = 'app/aperture/tool.html';
 const NORMALIZER_PATH = 'scripts/lib/aperture-sync-lane.mjs';
+const CLOCK_PATH = 'scripts/lib/aperture-v32-identity-witness-clock.mjs';
 const artifactDir = 'artifacts/aperture-v32-identity-singularity-candidate';
 
 function gitBlobSha1(text) {
@@ -58,13 +63,15 @@ function resolveExactHeadTool() {
   }
   assert.equal(gitCommitAvailable(repositoryHead), true, `Exact PR head ${repositoryHead} must be available after bounded fetch.`);
 
-  const exactNormalizerBlob = execFileSync('git', ['rev-parse', `${repositoryHead}:${NORMALIZER_PATH}`], { encoding: 'utf8' }).trim();
-  const workspaceNormalizerBlob = execFileSync('git', ['hash-object', NORMALIZER_PATH], { encoding: 'utf8' }).trim();
-  assert.equal(
-    workspaceNormalizerBlob,
-    exactNormalizerBlob,
-    'Executed Aperture normalizer bytes must equal the exact PR-head normalizer blob.',
-  );
+  for (const filePath of [NORMALIZER_PATH, CLOCK_PATH]) {
+    const exactBlob = execFileSync('git', ['rev-parse', `${repositoryHead}:${filePath}`], { encoding: 'utf8' }).trim();
+    const workspaceBlob = execFileSync('git', ['hash-object', filePath], { encoding: 'utf8' }).trim();
+    assert.equal(
+      workspaceBlob,
+      exactBlob,
+      `Executed ${filePath} bytes must equal the exact PR-head blob.`,
+    );
+  }
 
   return {
     text: execFileSync('git', ['show', `${repositoryHead}:${PRODUCT_PATH}`], {
@@ -157,11 +164,24 @@ assert.deepEqual(
 
 assert.deepEqual(sourceHostile, [], `Current v3.2 identity writer hostility detected: ${sourceHostile.join(', ')}`);
 
+assert.deepEqual(
+  APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE.map(({ label, targetElapsedMs }) => [label, targetElapsedMs]),
+  [
+    ['T0_DOM_READY', 0],
+    ['T1_350MS', 350],
+    ['T2_1000MS', 1000],
+    ['T3_2200MS', 2200],
+  ],
+  'Executable identity schedule must preserve the preregistered T0/T1/T2/T3 absolute deadlines.',
+);
+assert.equal(remainingWaitMs(350, 510), 0,
+  'Measurement overhead may not compound the 350 ms deadline.');
+assert.equal(remainingWaitMs(1000, 512), 488,
+  'T2 must wait only the remaining interval to 1000 ms.');
+assert.equal(remainingWaitMs(2200, 1517), 683,
+  'T3 must wait only the remaining interval to 2200 ms.');
+
 for (const token of [
-  'T0_DOM_READY',
-  'T1_350MS',
-  'T2_1000MS',
-  'T3_2200MS',
   'document_title',
   'html_data_aperture_version',
   'body_data_aperture_version',
@@ -179,6 +199,12 @@ for (const token of [
   'reviewed_candidate',
   'served_candidate',
   'Browser-served Aperture bytes must equal the exact PR-head Git blob.',
+  'ABSOLUTE_POST_DOMCONTENTLOADED_DEADLINES',
+  'waitUntilAbsoluteDeadline',
+  'target_elapsed_ms',
+  'actual_elapsed_ms',
+  'drift_ms',
+  'All four preregistered identity samples are mandatory.',
   'counts_as_human_evidence: false',
   'production_observation: false',
   'release_authority: false',
@@ -196,11 +222,14 @@ assert.match(probe, /workspaceProductBlob === exactProductBlob/,
   'Browser witness must bind workspace product bytes to the exact PR-head product blob.');
 assert.match(probe, /servedGitBlob === custody\.exactProductBlob/,
   'Browser witness must bind browser-served product bytes to the exact PR-head product blob.');
+assert.match(probe, /CLOCK_PATH/,
+  'Browser witness must bind its executable absolute-clock module to exact-head custody.');
 assert.match(probe, /\/aperture\/tool\.html/);
 assert.match(probe, /chromium, firefox, webkit/);
-assert.match(probe, /waitForTimeout\(350\)/);
-assert.match(probe, /waitForTimeout\(650\)/);
-assert.match(probe, /waitForTimeout\(1200\)/);
+assert.match(probe, /waitUntilAbsoluteDeadline\(page, targetElapsedMs\)/,
+  'Browser witness must schedule samples against absolute post-DOMContentLoaded deadlines.');
+assert.doesNotMatch(probe, /await page\.waitForTimeout\((?:350|650|1200)\)/,
+  'Browser witness must not compound measurement overhead through the retired fixed-delay sequence.');
 assert.doesNotMatch(probe, /page\.(?:click|fill|type|press|selectOption)\(/);
 assert.doesNotMatch(probe, /fetch\([^)]*method\s*:\s*["'](?:POST|PUT|PATCH|DELETE)/i);
 
