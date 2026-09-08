@@ -198,6 +198,10 @@ export function normalizeApertureForRepo(html, metadata) {
   next = next.replace(/TD613 Aperture v3\.0-alpha/g, `TD613 Aperture ${version}`);
   next = next.replace(/<title>TD613 Aperture[^<]*<\/title>/i, `<title>TD613 Aperture ${version}</title>`);
   next = next.replace(
+    /((?:document\.title|(?:title|t|titles\[0\])\.textContent|document\.getElementsByTagName\(['"]title['"]\)\[0\]\.textContent)\s*=\s*['"]TD613 Aperture )v3\.1-alpha(['"])/g,
+    `$1${version}$2`
+  );
+  next = next.replace(
     /(const\s+FIRMWARE\s*=\s*\{[\s\S]{0,180}?\bVERSION:\s*)["'][^"']+["']([\s\S]{0,120}?\bSCHEMA_VERSION:\s*)["'][^"']+["']/,
     `$1"${version}"$2"${schema}"`
   );
@@ -206,7 +210,7 @@ export function normalizeApertureForRepo(html, metadata) {
     `$1"${version}"$2"${schema}"`
   );
   next = next.split(/(\r?\n)/).map((line) => {
-    const activeIdentityWriter = /(document\.title|mFirmwareVer|firmwareSpineVersion|schemaVersionReadout|dataset\.aperture(?:Version|Schema)|data-aperture-version|APERTURE_VERSION|APERTURE_SCHEMA_VERSION|FIRMWARE\.VERSION|FIRMWARE\.SCHEMA_VERSION|const\s+TITLE\s*=|--aperture-current-(?:version|schema)|(?:setMeta|ensureMeta)\(['"]aperture-(?:version|roots-version|compat-version|feature-version))/.test(line);
+    const activeIdentityWriter = /(document\.title|mFirmwareVer|firmwareSpineVersion|(?:firmwareEl|firmwareVer|fw)\.textContent|schemaVersionReadout|(?:schemaEl|schemaRead)\.textContent|dataset\.aperture(?:Version|Schema)|data-aperture-version|APERTURE_VERSION|APERTURE_SCHEMA_VERSION|FIRMWARE\.VERSION|FIRMWARE\.SCHEMA_VERSION|const\s+TITLE\s*=|--aperture-current-(?:version|schema)|(?:setMeta|ensureMeta)\(['"]aperture-(?:version|roots-version|compat-version|feature-version))/.test(line);
     if (!activeIdentityWriter) return line;
     let normalizedLine = line
       .replace(/v3\.0-alpha-anti-epistemicide-research-runtime/g, featureVersion)
