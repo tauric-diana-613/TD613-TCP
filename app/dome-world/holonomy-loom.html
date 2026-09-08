@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" data-td613-hosted-integration="v0.1" data-route-mode="TD613_HOSTED" data-provider-release-authority="false" data-production-release="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#04130f">
+  <meta name="td613-holonomy-loom" content="hosted-integration-v0.1">
+  <title>Holonomy Loom · TD613 Hosted</title>
+  <style>
+    :root{--ink:#020806;--deep:#04130f;--panel:#071a15;--line:rgba(118,234,212,.24);--line2:rgba(228,198,108,.34);--mint:#76ead4;--gold:#e4c66c;--paper:#fff8da;--muted:#9ab4aa;--rose:#ff8b9d;--sans:Inter,system-ui,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;--serif:Georgia,"Times New Roman",serif}
+    *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans);background-image:linear-gradient(rgba(118,234,212,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(118,234,212,.035) 1px,transparent 1px);background-size:32px 32px}button,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}.wrap{width:min(860px,calc(100% - 28px));margin:0 auto;padding:20px 0 54px}.mast{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:11px 0 18px;border-bottom:1px solid var(--line)}.mark{color:var(--mint);font:700 .65rem var(--mono);text-transform:uppercase;letter-spacing:.08em}.return{color:var(--paper);font:700 .68rem var(--mono);text-decoration:none;border:1px solid var(--line);padding:9px 11px}.hero{padding:34px 0 10px}.hero h1{margin:8px 0;font:500 clamp(2.7rem,9vw,5.6rem)/.9 var(--serif);letter-spacing:-.045em}.hero p{max-width:650px;color:#d8e4dc;font-size:1.08rem;line-height:1.6}.ceiling{color:var(--muted);font:600 .69rem/1.55 var(--mono)}.panel{margin-top:18px;padding:18px;border:1px solid var(--line);background:rgba(7,26,21,.86);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}label{display:block;margin:0 0 7px;font-weight:750}textarea{width:100%;min-height:160px;padding:13px;border:1px solid var(--line);background:#010806;resize:vertical;line-height:1.5}textarea.small{min-height:82px}button{min-height:44px;margin-top:11px;padding:9px 14px;border:1px solid var(--line);background:#0a241c;font-weight:800;cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid currentColor;outline-offset:3px}details{margin-top:14px;border-top:1px solid rgba(118,234,212,.12);padding-top:11px}summary{cursor:pointer;font-weight:800}.result{display:none}.result.show{display:block}.light{display:inline-block;padding:7px 10px;font:900 .78rem var(--mono);letter-spacing:.08em}.green{background:#173d2d}.yellow{background:#51440c}.red{background:#591d24}.held{background:#343840}.finding{padding:11px 0;border-top:1px solid rgba(118,234,212,.14)}.finding:first-child{border-top:0}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.three div{padding:11px;border:1px solid var(--line)}pre{white-space:pre-wrap;overflow:auto;background:#010806;padding:12px;font:600 .68rem/1.5 var(--mono)}.rest-row{display:flex;gap:8px;flex-wrap:wrap}.rest-row a{display:inline-grid;place-items:center;min-height:44px;padding:8px 12px;border:1px solid var(--line2);color:var(--gold);text-decoration:none;font:800 .68rem var(--mono)}
+    .path-intro{margin-top:18px;padding-top:14px;border-top:1px solid rgba(228,198,108,.22)}.path-intro p{max-width:670px}.glyph-path{margin-top:14px;padding:15px;border:1px solid var(--line2);background:#010806}.glyph-path[hidden]{display:none}.glyph-path-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.glyph-path-head h3{margin:0;font:600 1.3rem var(--serif)}.glyph-path-head p{margin:4px 0 0}.glyph-rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}.glyph-node{min-height:118px;margin:0;padding:10px 7px;display:grid;align-content:center;gap:5px;text-align:center;border-color:var(--line2);background:#071a15}.glyph-node .glyph{font:700 1.45rem/1 var(--serif);color:var(--gold)}.glyph-node .glyph-label{font:800 .68rem/1.2 var(--mono);text-transform:uppercase;letter-spacing:.04em}.glyph-node .glyph-state{font:700 .61rem/1.2 var(--mono);color:var(--muted)}.glyph-node[data-motion-state="BLOCKED"]{border-style:dashed}.glyph-node[data-motion-state="RELEASED"],.glyph-node[data-motion-state="READY"]{border-width:2px}.glyph-node[data-motion-state="SETTLED"]{opacity:.86}.motion-status{min-height:1.2em;margin:11px 0 0}.motion-static-note{margin:7px 0 0}.motion-static-note strong{color:var(--gold)}
+    @media(max-width:720px){.glyph-rail{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.wrap{width:min(100% - 20px,860px)}.mast{align-items:flex-start;flex-direction:column}.three{grid-template-columns:1fr}.hero{padding-top:24px}.panel{padding:15px}.glyph-rail{grid-template-columns:repeat(2,1fr)}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.glyph-node{transform:none!important}}
+    @media(forced-colors:active){.panel,.glyph-path,.glyph-node,.rest-row a,button{border:1px solid CanvasText}.glyph-node .glyph,.return,.rest-row a{color:LinkText}.glyph-node:disabled{color:GrayText}.light{border:2px solid CanvasText}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="mark">U+10D613 · TD613 HOSTED · PRE-RELEASE INTEGRATION</div>
+    <a class="return" id="ashKeepReturn" href="/dome-world/ash-keep.html">Return to Ash Keep</a>
+  </header>
+
+  <main data-flowcore-pedagogue="holonomy-loom" data-held="false" aria-busy="false" data-aia-route-inference="false" data-authority-cross="false">
+    <section class="hero" data-flowcore-phase="NOTICE">
+      <p class="mark">SEE → CHECK → UNDERSTAND → REST</p>
+      <h1>Holonomy Loom</h1>
+      <p>Before you send it, check what this message carries.</p>
+      <p class="ceiling">This repository-integrated hosted surface has no production-release authority. It checks the rules it can prove and keeps downstream-platform claims outside its control.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
+      <label id="messageTitle" for="message">Paste your message here</label>
+      <textarea id="message" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
+
+      <details id="protectionRules">
+        <summary>Protection rules</summary>
+        <p class="ceiling">One item per line. These fields belong to this hosted check and are not a provider prompt.</p>
+        <label for="protected">Things that must never leave</label>
+        <textarea class="small" id="protected" autocomplete="off"></textarea>
+        <label for="journeys" style="margin-top:14px">Markers from another journey</label>
+        <textarea class="small" id="journeys" autocomplete="off"></textarea>
+        <p class="ceiling">The Loom calls something “another journey” only when an exact marker you declared matches. Resemblance alone does not establish provenance.</p>
+      </details>
+
+      <button id="check" type="button">CHECK THIS MESSAGE</button>
+      <p class="ceiling">The default deterministic check does not ask a model for help.</p>
+    </section>
+
+    <section id="result" class="panel result" aria-live="polite" data-flowcore-phase="WORLD_ANSWERS">
+      <div id="statusLight" class="light held">HELD</div>
+      <p id="summary"></p>
+
+      <h2>1. What are you sending on purpose?</h2>
+      <p>You are checking the message you pasted above. The Loom will not guess your intent beyond that.</p>
+
+      <h2>2. What else is riding along?</h2>
+      <div id="findings"></div>
+
+      <h2>3. Did something come from another journey?</h2>
+      <div id="journeyResult"></div>
+
+      <h2>4. What should I do before I send it?</h2>
+      <div class="three" aria-label="Loom action meanings">
+        <div><strong>KEEP</strong><br><span class="ceiling">You meant to send this.</span></div>
+        <div><strong>CHANGE</strong><br><span class="ceiling">Generalize or rewrite this.</span></div>
+        <div><strong>REMOVE</strong><br><span class="ceiling">Your hard protection rules say this must not leave.</span></div>
+      </div>
+      <div id="actions"></div>
+
+      <button id="makeSafer" type="button" disabled>MAKE A SAFER COPY</button>
+      <button id="copyChecked" type="button" disabled>COPY CHECKED MESSAGE</button>
+      <p id="copyStatus" class="ceiling"></p>
+
+      <div class="path-intro">
+        <button id="showPath" type="button">SHOW THE PATH</button>
+        <p class="ceiling">Optional: after you have seen the result, show the same path as a small control map. The map does not add release authority.</p>
+      </div>
+
+      <section id="glyphPath" class="glyph-path" hidden aria-labelledby="glyphPathTitle" data-aia-route-selection="UNSELECTED" data-route-inference="false" data-reduced-motion="unknown">
+        <div class="glyph-path-head">
+          <div>
+            <h3 id="glyphPathTitle">Your check, as a path</h3>
+            <p class="ceiling">Words stay beside every mark. The path follows the check you already saw.</p>
+          </div>
+          <span id="pathRouteStatus" class="ceiling">Path not selected</span>
+        </div>
+        <div class="glyph-rail" id="glyphRail" aria-label="Optional Loom control path">
+          <button class="glyph-node" type="button" data-motion-key="gathering" data-motion-state="HELD"><span class="glyph" aria-hidden="true">à</span><span class="glyph-label">Gathered</span><span class="glyph-state">HELD</span></button>
+          <button class="glyph-node" type="button" data-motion-key="recurrence" data-motion-state="HELD"><span class="glyph" aria-hidden="true">米</span><span class="glyph-label">Compared</span><span class="glyph-state">HELD</span></button>
+          <button class="glyph-node" type="button" data-motion-key="bounded_emergence" data-motion-state="HELD"><span class="glyph" aria-hidden="true">hõt</span><span class="glyph-label">Safer copy</span><span class="glyph-state">HELD</span></button>
+          <button class="glyph-node" type="button" data-motion-key="release" data-motion-state="HELD" disabled><span class="glyph" aria-hidden="true">出</span><span class="glyph-label">Copy checked</span><span class="glyph-state">HELD</span></button>
+          <button class="glyph-node" type="button" data-motion-key="protected_continuity" data-motion-state="HELD"><span class="glyph" aria-hidden="true">cōl</span><span class="glyph-label">Return</span><span class="glyph-state">HELD</span></button>
+          <button class="glyph-node" type="button" data-motion-key="structural_rest" data-motion-state="HELD"><span class="glyph" aria-hidden="true">𝄐</span><span class="glyph-label">Rest</span><span class="glyph-state">HELD</span></button>
+        </div>
+        <p id="motionStatus" class="ceiling motion-status" aria-live="polite"></p>
+        <p class="ceiling motion-static-note"><strong>Static meaning:</strong> the words and state under each mark carry the same control information when motion is reduced or unavailable.</p>
+      </section>
+
+      <details id="providerDisclosure">
+        <summary>Ask for model help (optional)</summary>
+        <p><strong>No model is called by this pre-release integration.</strong></p>
+        <p class="ceiling">Any later provider door must show what will leave before transmission. Provider advice remains advisory and receives no Loom release authority.</p>
+      </details>
+
+      <details id="promiseDisclosure">
+        <summary>What does the Loom actually promise?</summary>
+        <p><strong>The Loom can control what it lets leave its own door. It cannot control every room the message enters afterward.</strong></p>
+        <p class="ceiling">GREEN means only that no enabled Loom rule fired.</p>
+      </details>
+
+      <details id="whyDetails" data-flowcore-phase="NAME">
+        <summary>Show me why</summary>
+        <pre id="receipt"></pre>
+      </details>
+
+      <div class="rest-row" aria-label="Rest Return Exit" data-flowcore-phase="REST">
+        <button id="rest" type="button" data-rest>REST</button>
+        <a href="#messageTitle" id="returnToCheck" data-return>RETURN</a>
+        <a href="/dome-world/ash-keep.html" id="exitLoom">EXIT</a>
+      </div>
+      <p id="restStatus" class="ceiling"></p>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+  import { analyzeHolonomyLoomMessage, makeHolonomyLoomSaferCopy } from './holonomy-loom/engine.js';
+  import { compileHolonomyLoomAiaMotionProjection } from './holonomy-loom/flowcore-aia-motion.js';
+  const $ = selector => document.querySelector(selector);
+  const lines = value => value.split(/\r?\n/).map(item => item.trim()).filter(Boolean);
+  const terms = value => lines(value).map((item,index)=>({value:item,label:`protected item ${index+1}`}));
+  const markers = value => lines(value).map((item,index)=>({value:item,label:`journey marker ${index+1}`}));
+  const flowcoreRoot = $('[data-flowcore-pedagogue="holonomy-loom"]');
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const activeAnimations = new Set();
+  let releaseCandidate = '';
+  let releaseAllowed = false;
+  let currentAnalysis = null;
+  let currentMotionAnalysis = null;
+  let currentMotionProjection = null;
+  let structuralResting = false;
+
+  function reducedMotion(){return reduceMotionQuery.matches;}
+  function motionNode(key){return document.querySelector(`[data-motion-key="${key}"]`);}
+  function setMotionState(key,state){
+    const node=motionNode(key);if(!node)return;
+    node.dataset.motionState=state;
+    const label=node.querySelector('.glyph-state');if(label)label.textContent=state.replaceAll('_',' ');
+  }
+  function cancelMotion(){for(const animation of activeAnimations){try{animation.cancel();}catch{}}activeAnimations.clear();}
+  function runMotion(key){
+    const node=motionNode(key);
+    const descriptor=currentMotionProjection?.descriptors?.[key];
+    if(!node||!descriptor||reducedMotion()||(structuralResting&&key!=='structural_rest'))return null;
+    const animation=node.animate(descriptor.motion_recipe.keyframes,{duration:descriptor.motion_recipe.duration_ms,easing:'ease-out',iterations:1,fill:'none'});
+    activeAnimations.add(animation);
+    animation.finished.catch(()=>null).finally(()=>activeAnimations.delete(animation));
+    return animation;
+  }
+  function applyProjectionStates(){
+    if(!currentMotionProjection)return;
+    const items=currentMotionProjection.projection.surface.glyph_path;
+    for(const item of items)setMotionState(item.key,item.state);
+    const safer=motionNode('bounded_emergence');
+    const release=motionNode('release');
+    safer.disabled=!items.some(item=>item.key==='bounded_emergence'&&item.state==='AVAILABLE');
+    release.disabled=!releaseAllowed;
+    if(!releaseAllowed)setMotionState('release','BLOCKED');
+    else if(release.dataset.motionState!=='RELEASED')setMotionState('release','AVAILABLE');
+  }
+  function compilePath(analysis){
+    currentMotionProjection=compileHolonomyLoomAiaMotionProjection(analysis,{routeSelection:'EXPERIENTIAL'});
+    flowcoreRoot.dataset.aiaRouteSelection='EXPERIENTIAL';
+    flowcoreRoot.dataset.aiaRouteInference='false';
+    $('#glyphPath').dataset.aiaRouteSelection='EXPERIENTIAL';
+    $('#glyphPath').dataset.routeInference='false';
+    $('#glyphPath').dataset.reducedMotion=String(reducedMotion());
+    $('#pathRouteStatus').textContent='Path selected by you · motion follows the checked state';
+    applyProjectionStates();
+  }
+  function resetPath(){
+    cancelMotion();structuralResting=false;currentMotionProjection=null;
+    $('#glyphPath').hidden=true;
+    $('#glyphPath').dataset.aiaRouteSelection='UNSELECTED';
+    $('#glyphPath').dataset.routeInference='false';
+    $('#glyphPath').dataset.reducedMotion=String(reducedMotion());
+    delete flowcoreRoot.dataset.aiaRouteSelection;
+    flowcoreRoot.dataset.aiaRouteInference='false';
+    $('#pathRouteStatus').textContent='Path not selected';
+    $('#motionStatus').textContent='';
+    for(const key of ['gathering','recurrence','bounded_emergence','release','protected_continuity','structural_rest'])setMotionState(key,'HELD');
+    motionNode('release').disabled=true;
+    motionNode('bounded_emergence').disabled=true;
+  }
+
+  function render(){
+    const text=$('#message').value;
+    const analysis=analyzeHolonomyLoomMessage({text,protectedTerms:terms($('#protected').value),journeyMarkers:markers($('#journeys').value)});
+    currentAnalysis=analysis;currentMotionAnalysis=analysis;resetPath();
+    $('#result').classList.add('show');
+    $('#statusLight').textContent=analysis.status;
+    $('#statusLight').className=`light ${analysis.status.toLowerCase()}`;
+    $('#summary').textContent=analysis.summary;
+    $('#findings').replaceChildren();
+    if(!analysis.findings.length){const p=document.createElement('p');p.textContent=analysis.status==='HELD'?'Nothing checked yet.':'No enabled Loom rule matched this message.';$('#findings').append(p);}else for(const finding of analysis.findings){const row=document.createElement('div');row.className='finding';const strong=document.createElement('strong');strong.textContent=`${finding.action} · ${finding.label}`;const why=document.createElement('p');why.textContent=finding.why;row.append(strong,why);$('#findings').append(row);}
+    $('#journeyResult').replaceChildren();
+    if(!analysis.journey_relations.length){const p=document.createElement('p');p.textContent='No declared journey marker matched. The Loom will not infer provenance from resemblance alone.';$('#journeyResult').append(p);}else for(const relation of analysis.journey_relations){const row=document.createElement('div');row.className='finding';const strong=document.createElement('strong');strong.textContent=relation.statement;const detail=document.createElement('p');detail.textContent=relation.child_legible_detail;const ceiling=document.createElement('p');ceiling.className='ceiling';ceiling.textContent=relation.claim_ceiling;row.append(strong,detail,ceiling);$('#journeyResult').append(row);}
+    $('#actions').replaceChildren();
+    if(!analysis.actions.length){const p=document.createElement('p');p.textContent=analysis.status==='GREEN'?'KEEP — no enabled rule asked you to change this message.':'Paste a message to begin.';$('#actions').append(p);}else for(const action of analysis.actions){const p=document.createElement('p');p.textContent=action.child_legible;$('#actions').append(p);}
+    $('#receipt').textContent=JSON.stringify(analysis.receipt,null,2);
+    releaseCandidate=analysis.status==='GREEN'?text:'';
+    releaseAllowed=analysis.status==='GREEN';
+    $('#copyChecked').disabled=!releaseAllowed;
+    $('#makeSafer').disabled=analysis.status==='GREEN'||analysis.status==='HELD';
+    $('#copyStatus').textContent='';
+    $('#restStatus').textContent='';
+  }
+
+  function makeSaferCopy(){
+    if(!currentAnalysis)return null;
+    const safer=makeHolonomyLoomSaferCopy({text:$('#message').value,protectedTerms:terms($('#protected').value),journeyMarkers:markers($('#journeys').value)});
+    releaseCandidate=safer.text;releaseAllowed=safer.release_allowed;$('#copyChecked').disabled=!releaseAllowed;$('#copyStatus').textContent=safer.child_legible||'';
+    if(safer.release_allowed){
+      currentMotionAnalysis=analyzeHolonomyLoomMessage({text:safer.text,protectedTerms:[],journeyMarkers:markers($('#journeys').value)});
+      if(!$('#glyphPath').hidden){compilePath(currentMotionAnalysis);setMotionState('bounded_emergence','READY');runMotion('bounded_emergence');$('#motionStatus').textContent='A safer copy emerged from the same deterministic rules. The original result above has not been rewritten.';}
+    }
+    return safer;
+  }
+
+  async function copyCheckedMessage(){
+    if(!releaseAllowed||!releaseCandidate)return false;
+    try{
+      await navigator.clipboard.writeText(releaseCandidate);
+      $('#copyStatus').textContent='Copied the checked release candidate. The Loom does not control what happens after you paste it somewhere else.';
+      if(!$('#glyphPath').hidden){setMotionState('release','RELEASED');runMotion('release');$('#motionStatus').textContent='Copy completed in this browser. The outward mark records that local copy event only.';}
+      return true;
+    }catch{
+      $('#copyStatus').textContent='Your browser did not allow clipboard access. The Loom did not bypass that browser boundary.';
+      if(!$('#glyphPath').hidden){setMotionState('release','COPY_BLOCKED');$('#motionStatus').textContent='The browser blocked copying. No release motion was shown.';}
+      return false;
+    }
+  }
+
+  function showPath(){
+    if(!currentMotionAnalysis)return;
+    compilePath(currentMotionAnalysis);
+    $('#glyphPath').hidden=false;
+    $('#motionStatus').textContent=reducedMotion()?'Path shown without animation because reduced motion is active.':'Path shown. Choose a mark to replay or act on that bounded step.';
+  }
+
+  function returnThroughPath(){
+    if(!$('#glyphPath').hidden){setMotionState('protected_continuity','RETURNING');runMotion('protected_continuity');$('#motionStatus').textContent='Your checked state stays here while you return to the message.';}
+    location.hash='messageTitle';$('#message').focus({preventScroll:false});
+  }
+
+  function enterStructuralRest(){
+    cancelMotion();structuralResting=false;
+    if(!$('#glyphPath').hidden){setMotionState('structural_rest','SETTLING');runMotion('structural_rest');setMotionState('structural_rest','SETTLED');$('#motionStatus').textContent='Rest. New path motion is stopped; this final state remains here to inspect.';}
+    structuralResting=true;
+    $('#restStatus').textContent='Rest. Nothing else is required. Return or exit whenever you choose.';
+  }
+
+  $('#check').addEventListener('click',render);
+  $('#makeSafer').addEventListener('click',makeSaferCopy);
+  $('#copyChecked').addEventListener('click',copyCheckedMessage);
+  $('#showPath').addEventListener('click',showPath);
+  $('#rest').addEventListener('click',enterStructuralRest);
+  $('#returnToCheck').addEventListener('click',event=>{event.preventDefault();returnThroughPath();});
+
+  $('#glyphRail').addEventListener('click',async event=>{
+    const node=event.target.closest('[data-motion-key]');if(!node||node.disabled)return;
+    const key=node.dataset.motionKey;
+    if(key==='bounded_emergence'){makeSaferCopy();return;}
+    if(key==='release'){await copyCheckedMessage();return;}
+    if(key==='protected_continuity'){returnThroughPath();return;}
+    if(key==='structural_rest'){enterStructuralRest();return;}
+    runMotion(key);$('#motionStatus').textContent=key==='gathering'?'This mark replays what the local check gathered.':'This mark replays the deterministic comparison. Divergence remains visible in the findings above.';
+  });
+
+  reduceMotionQuery.addEventListener?.('change',()=>{$('#glyphPath').dataset.reducedMotion=String(reducedMotion());if(reducedMotion())cancelMotion();});
+  resetPath();
+</script>
+</body>
+</html>

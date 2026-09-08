@@ -3,6 +3,9 @@ import fs from 'node:fs';
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
+await import('./holonomy-loom-hosted-product-integration.test.mjs');
+await import('./holonomy-loom-flowcore-aia-glyph-control.test.mjs');
+await import('./holonomy-loom-release-candidate-product-review.test.mjs');
 
 const { validateGovernedTaskFixture } = await import('../app/dome-world/previews/a15-r0/a15-r0-contracts.js');
 const { createObservableEventRecorder } = await import('../app/dome-world/previews/a15-r0/observable-event-recorder.js');
