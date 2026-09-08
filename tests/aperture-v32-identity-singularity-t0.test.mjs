@@ -105,7 +105,44 @@ const changedLines = [];
 for (let index = 0; index < sourceLines.length; index += 1) {
   if (sourceLines[index] !== candidateLines[index]) changedLines.push(index + 1);
 }
-assert.equal(changedLines.length, 2, `Bounded T0 repair must change exactly two lines; changed ${changedLines.length}.`);
+assert.equal(changedLines.length, 0,
+  `Installed clean T0 product must make the bounded repair idempotent; changed ${changedLines.length} lines.`);
+assert.equal(candidate, source, 'Installed clean T0 product must remain byte-identical after bounded repair.');
+
+const cleanEorfdOwnership = [
+  "        FIRMWARE.VERSION = 'v3.2-alpha';",
+  "        FIRMWARE.SCHEMA_VERSION = 'td613-aperture/v3.2-alpha';",
+  '        window.FIRMWARE = FIRMWARE;',
+].join('\n');
+const hostileEorfdOwnership = [
+  '        FIRMWARE.VERSION = APERTURE_VERSION;',
+  '        FIRMWARE.SCHEMA_VERSION = APERTURE_SCHEMA;',
+  '        window.FIRMWARE = FIRMWARE;',
+].join('\n');
+assert.ok(source.includes(cleanEorfdOwnership), 'Clean product must retain the expected EORFD current-firmware assignment seam.');
+const hostileControl = source.replace(cleanEorfdOwnership, hostileEorfdOwnership);
+assert.deepEqual(
+  inspectEorfdT0CurrentFirmwareOwnership(hostileControl).hostile_classes,
+  ['EORFD_T0_CURRENT_FIRMWARE_OWNERSHIP'],
+  'Synthetic hostile control must reproduce the preregistered T0 ownership failure class.',
+);
+const repairedControl = repairEorfdT0CurrentFirmwareOwnership(hostileControl, {
+  version: metadata.version,
+  schema: metadata.schema,
+});
+assert.deepEqual(
+  inspectEorfdT0CurrentFirmwareOwnership(repairedControl).hostile_classes,
+  [],
+  'Bounded repair must clear the synthetic T0 ownership falsifier.',
+);
+const hostileLines = hostileControl.split('\n');
+const repairedControlLines = repairedControl.split('\n');
+let repairedControlChangedLineCount = 0;
+for (let index = 0; index < hostileLines.length; index += 1) {
+  if (hostileLines[index] !== repairedControlLines[index]) repairedControlChangedLineCount += 1;
+}
+assert.equal(repairedControlChangedLineCount, 2,
+  `Synthetic hostile control must still require exactly two bounded repair lines; changed ${repairedControlChangedLineCount}.`);
 
 fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
 fs.writeFileSync(`${ARTIFACT_DIR}/tool.normalized.html`, candidate, 'utf8');
@@ -126,6 +163,7 @@ fs.writeFileSync(`${ARTIFACT_DIR}/candidate-receipt.json`, `${JSON.stringify({
   source_hostile_classes: sourceInspection.hostile_classes,
   candidate_hostile_classes: candidateInspection.hostile_classes,
   changed_line_count: changedLines.length,
+  hostile_control_changed_line_count: repairedControlChangedLineCount,
   historical_eorfd_version_preserved: candidate.includes("const APERTURE_VERSION = 'v2.9.4-eorfd-deep-static-audit';"),
   historical_eorfd_schema_preserved: candidate.includes("const APERTURE_SCHEMA = 'td613-aperture/v3.0-alpha';"),
   current_firmware_target_version: metadata.version,
