@@ -177,6 +177,23 @@ async function sampleIdentity(page, label, targetElapsedMs, actualElapsedMs) {
   return sample;
 }
 
+function finalizePageResidentSample(payload, label, targetElapsedMs) {
+  assert(payload && payload.label === label, `WebKit page-side identity bridge emitted unexpected label for ${label}.`);
+  assert(!payload.__error, `WebKit ${label} page-side identity bridge failed: ${payload.__error}`);
+  const timing = sampleTiming(targetElapsedMs, payload.actual_elapsed_ms);
+  const sample = {
+    ...payload,
+    label,
+    elapsed_ms: timing.actual_elapsed_ms,
+    target_elapsed_ms: timing.target_elapsed_ms,
+    actual_elapsed_ms: timing.actual_elapsed_ms,
+    drift_ms: timing.drift_ms,
+  };
+  sample.failures = identityFailures(sample);
+  sample.status = sample.failures.length === 0 ? 'PASS' : 'FAIL';
+  return sample;
+}
+
 assert(engine, `Unsupported browser engine: ${browserName}`);
 const custody = resolveCustody();
 await fs.mkdir(artifactDir, { recursive: true });
@@ -194,7 +211,7 @@ if (custody.exactProductBytes) {
 const outPath = path.join(artifactDir, `${browserName}-identity-singularity.json`);
 const lifecyclePath = path.join(artifactDir, `${browserName}-lifecycle-events.jsonl`);
 const report = {
-  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.4-absolute-deadline-lifecycle',
+  schema: 'td613.aperture.v32-identity-singularity-browser-evidence/v0.5-page-resident-webkit-sampling',
   status: 'RUNNING',
   browser: browserName,
   source_head: custody.repositoryHead,
@@ -218,7 +235,9 @@ const report = {
     title: expectedTitle
   },
   scheduling: {
-    strategy: 'ABSOLUTE_POST_DOMCONTENTLOADED_DEADLINES',
+    strategy: browserName === 'webkit'
+      ? 'PAGE_RESIDENT_ABSOLUTE_POST_DOMCONTENTLOADED_DEADLINES'
+      : 'ABSOLUTE_POST_DOMCONTENTLOADED_DEADLINES',
     targets_ms: APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE.map(({ targetElapsedMs }) => targetElapsedMs),
     measurement_overhead_compounds_deadlines: false,
   },
@@ -312,8 +331,13 @@ async function waitUntilAbsoluteDeadline(page, targetElapsedMs) {
 
 let terminalError = null;
 let browser = null;
-let webkitT3Resolve = null;
-const webkitT3Sample = new Promise(resolve => { webkitT3Resolve = resolve; });
+const webkitSampleSlots = new Map();
+for (const { label } of APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE) {
+  let resolve;
+  const promise = new Promise(res => { resolve = res; });
+  webkitSampleSlots.set(label, { promise, resolve });
+}
+
 try {
   browser = await engine.launch({ headless: true });
   browser.on('disconnected', () => {
@@ -333,45 +357,66 @@ try {
   page.setDefaultTimeout(60_000);
 
   if (browserName === 'webkit') {
-    await page.exposeFunction('__TD613_APERTURE_T3_EMIT', payload => {
-      if (webkitT3Resolve) {
-        const resolve = webkitT3Resolve;
-        webkitT3Resolve = null;
-        resolve(payload);
-      }
+    await page.exposeFunction('__TD613_APERTURE_IDENTITY_EMIT', payload => {
+      const slot = webkitSampleSlots.get(payload?.label);
+      if (!slot || !slot.resolve) return;
+      const resolve = slot.resolve;
+      slot.resolve = null;
+      resolve(payload);
     });
     await page.addInitScript(() => {
-      const armT3 = () => {
-        const epoch = performance.now();
-        setTimeout(() => {
-          try {
-            const firmware = document.getElementById('mFirmwareVer')
-              || document.getElementById('firmwareSpineVersion')
-              || document.querySelector('[data-firmware-spine-version]');
-            const schema = document.getElementById('schemaVersionReadout')
-              || document.getElementById('mSchemaVer')
-              || document.getElementById('schemaVersion');
-            window.__TD613_APERTURE_T3_EMIT({
-              actual_elapsed_ms: Number((performance.now() - epoch).toFixed(3)),
-              document_title: document.title,
-              title_text: document.querySelector('title')?.textContent || null,
-              html_data_aperture_version: document.documentElement?.getAttribute('data-aperture-version') || null,
-              body_data_aperture_version: document.body?.getAttribute('data-aperture-version') || null,
-              meta_aperture_version: document.querySelector('meta[name=\"aperture-version\"]')?.getAttribute('content') || null,
-              visible_firmware_readout: firmware?.textContent?.trim() || null,
-              visible_schema_readout: schema?.textContent?.trim() || null,
-              window_APERTURE_VERSION: window.APERTURE_VERSION || null,
-              window_APERTURE_SCHEMA_VERSION: window.APERTURE_SCHEMA_VERSION || null,
-              window_FIRMWARE_VERSION: window.FIRMWARE?.VERSION || null,
-              window_FIRMWARE_SCHEMA_VERSION: window.FIRMWARE?.SCHEMA_VERSION || null
-            });
-          } catch (error) {
-            window.__TD613_APERTURE_T3_EMIT({ __error: String(error?.stack || error?.message || error) });
-          }
-        }, 2200);
+      const schedule = [
+        { label: 'T0_DOM_READY', targetElapsedMs: 0 },
+        { label: 'T1_350MS', targetElapsedMs: 350 },
+        { label: 'T2_1000MS', targetElapsedMs: 1000 },
+        { label: 'T3_2200MS', targetElapsedMs: 2200 },
+      ];
+
+      const readIdentity = (label, epoch) => {
+        try {
+          const firmware = document.getElementById('mFirmwareVer')
+            || document.getElementById('firmwareSpineVersion')
+            || document.querySelector('[data-firmware-spine-version]');
+          const schema = document.getElementById('schemaVersionReadout')
+            || document.getElementById('mSchemaVer')
+            || document.getElementById('schemaVersion');
+          window.__TD613_APERTURE_IDENTITY_EMIT({
+            label,
+            actual_elapsed_ms: Number((performance.now() - epoch).toFixed(3)),
+            document_title: document.title,
+            title_text: document.querySelector('title')?.textContent || null,
+            html_data_aperture_version: document.documentElement?.getAttribute('data-aperture-version') || null,
+            body_data_aperture_version: document.body?.getAttribute('data-aperture-version') || null,
+            meta_aperture_version: document.querySelector('meta[name="aperture-version"]')?.getAttribute('content') || null,
+            visible_firmware_readout: firmware?.textContent?.trim() || null,
+            visible_schema_readout: schema?.textContent?.trim() || null,
+            window_APERTURE_VERSION: window.APERTURE_VERSION || null,
+            window_APERTURE_SCHEMA_VERSION: window.APERTURE_SCHEMA_VERSION || null,
+            window_FIRMWARE_VERSION: window.FIRMWARE?.VERSION || null,
+            window_FIRMWARE_SCHEMA_VERSION: window.FIRMWARE?.SCHEMA_VERSION || null
+          });
+        } catch (error) {
+          window.__TD613_APERTURE_IDENTITY_EMIT({
+            label,
+            __error: String(error?.stack || error?.message || error),
+            actual_elapsed_ms: Number((performance.now() - epoch).toFixed(3)),
+          });
+        }
       };
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', armT3, { once: true });
-      else armT3();
+
+      const armSamples = () => {
+        const epoch = performance.now();
+        for (const { label, targetElapsedMs } of schedule) {
+          if (targetElapsedMs === 0) {
+            queueMicrotask(() => readIdentity(label, epoch));
+          } else {
+            setTimeout(() => readIdentity(label, epoch), targetElapsedMs);
+          }
+        }
+      };
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', armSamples, { once: true });
+      else armSamples();
     });
   }
 
@@ -411,34 +456,33 @@ try {
   recordLifecycle('DOM_CONTENT_LOADED', { url: page.url() });
 
   for (const { label, targetElapsedMs } of APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE) {
+    let sample;
+    if (browserName === 'webkit') {
+      const slot = webkitSampleSlots.get(label);
+      assert(slot, `WebKit page-side identity slot missing for ${label}.`);
+      const payload = await Promise.race([
+        slot.promise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error(`WebKit ${label} page-side identity bridge did not emit within 12 seconds.`)), 12_000)),
+      ]);
+      sample = finalizePageResidentSample(payload, label, targetElapsedMs);
+      report.samples.push(sample);
+      recordLifecycle('WEBKIT_PAGE_SIDE_SAMPLE_RECEIVED', {
+        label,
+        target_elapsed_ms: sample.target_elapsed_ms,
+        actual_elapsed_ms: sample.actual_elapsed_ms,
+        drift_ms: sample.drift_ms,
+      });
+      recordCheckpoint(`AFTER_${label}`, page, browser, contextClosed, targetElapsedMs);
+      continue;
+    }
+
     const actualBeforeSample = await waitUntilAbsoluteDeadline(page, targetElapsedMs);
     recordCheckpoint(`BEFORE_${label}`, page, browser, contextClosed, targetElapsedMs);
     assert(!page.isClosed(), `Aperture page closed before ${label}.`);
     assert(!contextClosed, `Aperture context closed before ${label}.`);
     assert(browser.isConnected(), `Aperture browser disconnected before ${label}.`);
     assert(actualBeforeSample >= targetElapsedMs, `${label} began before its preregistered absolute deadline.`);
-    let sample;
-    if (browserName === 'webkit' && label === 'T3') {
-      const payload = await Promise.race([
-        webkitT3Sample,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('WebKit T3 page-side identity bridge did not emit within 10 seconds.')), 10_000)),
-      ]);
-      assert(!payload.__error, `WebKit T3 page-side identity bridge failed: ${payload.__error}`);
-      const timing = sampleTiming(targetElapsedMs, payload.actual_elapsed_ms);
-      sample = {
-        ...payload,
-        label,
-        elapsed_ms: timing.actual_elapsed_ms,
-        target_elapsed_ms: timing.target_elapsed_ms,
-        actual_elapsed_ms: timing.actual_elapsed_ms,
-        drift_ms: timing.drift_ms,
-      };
-      sample.failures = identityFailures(sample);
-      sample.status = sample.failures.length === 0 ? 'PASS' : 'FAIL';
-      recordLifecycle('WEBKIT_T3_PAGE_SIDE_SAMPLE_RECEIVED', { actual_elapsed_ms: sample.actual_elapsed_ms, drift_ms: sample.drift_ms });
-    } else {
-      sample = await sampleIdentity(page, label, targetElapsedMs, Number(actualBeforeSample.toFixed(3)));
-    }
+    sample = await sampleIdentity(page, label, targetElapsedMs, Number(actualBeforeSample.toFixed(3)));
     report.samples.push(sample);
     recordCheckpoint(`AFTER_${label}`, page, browser, contextClosed, targetElapsedMs);
   }
