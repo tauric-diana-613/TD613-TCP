@@ -48,7 +48,7 @@ for (const phase of ['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME', 'REST']) {
 }
 assert.match(hosted, /id="rest" type="button" data-rest/);
 assert.match(hosted, /id="returnToCheck" data-return/);
-assert.match(hosted, /id="check" type="button">CHECK<\/button>/);
+assert.match(hosted, /CHECK THIS MESSAGE/);
 assert.match(theater, /id="ltPhaseGlyph" class="lt-glyph" x="160" y="227" text-anchor="middle" dominant-baseline="middle">à<\/text>/, 'The live theater glyph must stay centered and fit the node.');
 assert.match(hosted, /KEEP/);
 assert.match(hosted, /CHANGE/);
