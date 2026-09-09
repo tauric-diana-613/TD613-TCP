@@ -141,6 +141,8 @@ try {
   check('technical promise body remains hidden after CHECK while drawer is closed', !(await technicalCeiling.isVisible()));
   check('Flow-Core NAME projection remains optional after consequence', !(await detailsOpen(page.locator('#whyDetails'))));
   check('checked-copy door opens only after GREEN', await page.locator('#copyChecked').isEnabled());
+  check('safer-copy control stays held on bounded GREEN', await page.locator('#makeSafer').isDisabled() && await page.locator('#makeSafer').getAttribute('data-safer-copy-state') === 'HELD');
+  check('GREEN explains why safer copy is held', (await page.locator('#copyStatus').innerText()).includes('not needed for this result'));
   check('technical promise remains optional after visible consequence', !(await detailsOpen(promise)));
   check('Rest remains visible without opening technical promise', await page.locator('#rest').isVisible());
   check('Return remains visible without opening technical promise', await page.locator('#returnToCheck').isVisible());
@@ -160,6 +162,14 @@ try {
   await page.locator('[data-return]').click();
   check('Flow-Core RETURN remains reversible and returns to the message anchor', new URL(page.url()).hash === '#messageTitle', page.url());
   check('message control remains visible after Flow-Core RETURN', await page.locator('#message').isVisible());
+  await page.locator('#protected').fill('HOSTED_SAFE_COPY_FIX');
+  await page.locator('#message').fill('ordinary HOSTED_SAFE_COPY_FIX');
+  await page.locator('#check').click();
+  await page.locator('#result.show').waitFor({ timeout: 10_000 });
+  check('RED opens the safer-copy control', (await page.locator('#statusLight').innerText()).trim() === 'RED' && await page.locator('#makeSafer').isEnabled());
+  check('RED safer-copy state is explicit', await page.locator('#makeSafer').getAttribute('data-safer-copy-state') === 'AVAILABLE');
+  await page.locator('#makeSafer').click();
+  check('safer-copy action opens the checked-copy door', await page.locator('#copyChecked').isEnabled() && (await page.locator('#copyStatus').innerText()).length > 0);
   report.flowcore_pedagogue_runtime.rest_return_exercised = true;
 
   await page.locator('body').click({ position: { x: 2, y: 2 } });
