@@ -56,8 +56,8 @@ test('realistic fictional handoff hydrates complex exact phrases without hidden-
   assert.equal(analysis.status, 'RED');
   assert.equal(analysis.release_boundary.safer_copy_available, true);
   assert.equal(analysis.journey_relations.length, 2);
-  assert.equal(analysis.receipt.external_retrieval, false);
-  assert.equal(analysis.receipt.provider_call, false);
+  assert.equal(analysis.receipt.raw_match_values_retained, false);
+  assert.equal(analysis.receipt.downstream_platform_governed, false);
 });
 
 test('quiet, change and release block are the real enabled Loom policy outcomes', () => {
