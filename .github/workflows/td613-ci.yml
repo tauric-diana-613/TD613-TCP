@@ -166,6 +166,16 @@ jobs:
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
+      - name: Validate Holonomy Loom causal theater
+        if: needs.scope.outputs.validation_scope != 'giving'
+        run: |
+          node --check app/dome-world/holonomy-loom/animation-coordinator.js
+          node --check app/dome-world/holonomy-loom/semantic-field.js
+          node --check app/dome-world/holonomy-loom/theater-geometry.js
+          node --check app/dome-world/holonomy-loom/theater.js
+          node --test tests/holonomy-loom-animation-coordinator.test.mjs
+          node --test tests/holonomy-loom-semantic-field.test.mjs
+          node --test tests/holonomy-loom-theater-dom.test.mjs
       - name: Validate Phase IV static surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
