@@ -52,7 +52,7 @@ assert.match(hosted, /CHANGE/);
 assert.match(hosted, /REMOVE/);
 assert.match(hosted, /MAKE A SAFER COPY/);
 assert.match(hosted, /data-safer-copy-state="HELD"/, 'Safer-copy control must expose its initial held state.');
-assert.match(hosted, /function setSaferCopyState\(state,message=' '\)/.source.replace("message=' '","message=''"));
+assert.match(hosted, /function setSaferCopyState\(state,message=''\)/);
 assert.match(hosted, /No enabled rule matched this message, so a safer copy is not needed for this result\./);
 assert.match(hosted, /Scene loaded locally\. Press CHECK THIS MESSAGE/);
 assert.match(hosted, /COPY CHECKED MESSAGE/);
