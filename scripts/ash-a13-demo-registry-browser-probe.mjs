@@ -32,6 +32,32 @@ async function activateInvestigation(page) {
   });
 }
 
+async function captureConvergenceState(page, checkpoint) {
+  return page.evaluate(label => {
+    const root = document.documentElement;
+    const button = document.getElementById('startDemo');
+    const select = document.getElementById('newProfile');
+    const current = window.__td613AshKeep?.current?.() || null;
+    let registry = null;
+    try { registry = window.__td613AshDemoRegistry?.snapshot?.() || null; } catch {}
+    return {
+      checkpoint:label,
+      observed_at:new Date().toISOString(),
+      url:location.pathname + location.search,
+      title:document.title,
+      active_case:current?.case_id || null,
+      selected_profile:root.dataset.ashDemoRegistryProfile || null,
+      premium_workspace:root.dataset.ashPremiumWorkspace || null,
+      registry_state:root.dataset.ashDemoRegistryState || null,
+      registry_owner:root.dataset.ashDemoControlOwner || null,
+      select_value:select?.value || null,
+      start_demo_state:button?.dataset.ashMethodDemoState || null,
+      start_demo_disabled:button?.disabled ?? null,
+      registry
+    };
+  }, checkpoint);
+}
+
 async function inspect(page, label) {
   await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
@@ -60,10 +86,35 @@ async function inspect(page, label) {
     }, profile, { timeout:60_000 });
   }
 
+  const convergence = {
+    schema:'td613.ash.a13-post-click-convergence-diagnostic/v0.1',
+    expected:{
+      active_case:true,
+      selected_profile:'investigation',
+      premium_workspace:'home'
+    },
+    checkpoints:[]
+  };
+  convergence.checkpoints.push(await captureConvergenceState(page, 'BEFORE_INVESTIGATION_ACTIVATION'));
   await activateInvestigation(page);
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.()?.case_id)
-    && document.documentElement.dataset.ashDemoRegistryProfile === 'investigation'
-    && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
+  convergence.checkpoints.push(await captureConvergenceState(page, 'IMMEDIATELY_AFTER_INVESTIGATION_ACTIVATION'));
+  try {
+    await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.()?.case_id)
+      && document.documentElement.dataset.ashDemoRegistryProfile === 'investigation'
+      && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
+  } catch (error) {
+    try {
+      convergence.checkpoints.push(await captureConvergenceState(page, 'POST_CLICK_CONVERGENCE_TIMEOUT'));
+    } catch (snapshotError) {
+      convergence.snapshot_error = String(snapshotError?.stack || snapshotError);
+    }
+    const diagnosticPath = path.join(artifactDir, `${browserName}-${label}-a13-convergence-diagnostic.json`);
+    await fs.writeFile(diagnosticPath, JSON.stringify(convergence, null, 2));
+    try { await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}-a13-convergence-timeout.png`), fullPage:true }); } catch {}
+    error.td613A13Convergence = convergence;
+    throw error;
+  }
+  convergence.checkpoints.push(await captureConvergenceState(page, 'POST_CLICK_CONVERGENCE_PASS'));
 
   const result = await page.evaluate(() => ({
     registry:window.__td613AshDemoRegistry.snapshot(),
@@ -84,7 +135,7 @@ async function inspect(page, label) {
   if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`Registry presentation drift: ${JSON.stringify(result)}`);
 
   await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}.png`), fullPage:true });
-  return result;
+  return { ...result, convergence };
 }
 
 const receipts = [];
@@ -114,7 +165,11 @@ try {
     human_closure_required:true
   }, null, 2));
 } catch (error) {
-  await fs.writeFile(path.join(artifactDir, `${browserName}-a13-registry-failure.json`), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
+  await fs.writeFile(path.join(artifactDir, `${browserName}-a13-registry-failure.json`), JSON.stringify({
+    error:String(error?.stack || error),
+    completed_receipts:receipts,
+    convergence:error?.td613A13Convergence || null
+  }, null, 2));
   throw error;
 } finally {
   await browser.close();

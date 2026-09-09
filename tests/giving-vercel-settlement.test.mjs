@@ -34,4 +34,17 @@ const exactContentIndex = givingReadiness.indexOf('exactContentObservation = awa
 const receiptLoopIndex = givingReadiness.indexOf('for (let attempt = 1; attempt <= boundedAttempts; attempt += 1)');
 assert.ok(exactContentIndex >= 0 && receiptLoopIndex > exactContentIndex, 'Giving exact-source closure must precede readiness receipt/HTML observation');
 
-console.log('giving-vercel-settlement.test.mjs passed: exact Vercel release SHA settlement retries bounded transport/status failures before source and practice observation');
+assert.match(givingReadiness, /process\.env\.TD613_PRODUCTION_OBSERVATION === 'true'[\s\S]*process\.env\.TD613_PRACTICE_OBSERVATION === 'true'/,
+  'Ash A13 diagnostic may ignite only inside the existing production-practice confirmation membrane');
+assert.match(givingReadiness, /process\.on\('beforeExit'/,
+  'Ash A13 diagnostic must run only after the Giving witness has torn down');
+assert.match(givingReadiness, /spawnSync\(process\.execPath, \['scripts\/ash-a13-demo-registry-browser-probe\.mjs'\]/,
+  'zero-deploy confirmation must reuse the canonical A13 observer rather than inventing a weaker substitute');
+assert.match(givingReadiness, /TD613_ARTIFACT_DIR: diagnosticArtifactDir/,
+  'A13 diagnostic evidence must remain inside the existing zero-deploy artifact packet');
+assert.doesNotMatch(givingReadiness, /process\.exitCode\s*=/,
+  'diagnostic-only A13 observation must not rewrite the existing Giving confirmation pass\/fail contract');
+assert.doesNotMatch(givingReadiness, /vercel@latest deploy|deploymentEnabled\s*=\s*true|git push/,
+  'readiness helper may not gain deployment, unlock, or repository-write authority');
+
+console.log('giving-vercel-settlement.test.mjs passed: exact Vercel release SHA settlement retries bounded transport/status failures before source and practice observation; zero-deploy A13 diagnostics remain read-only and non-authoritative');

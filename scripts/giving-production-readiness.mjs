@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { waitForGivingReleaseContent } from './giving-release-content-probe.mjs';
 
 const REQUIRED_GIVING_MARKERS = Object.freeze([
@@ -10,6 +11,38 @@ const REQUIRED_GIVING_MARKERS = Object.freeze([
 
 const RELEASE_RECEIPT_POLICIES = Object.freeze(['match-source', 'observe-existing']);
 const RELEASE_RECEIPT_SCHEMA = 'td613.giving.release-source/v1';
+const ZERO_DEPLOY_ASH_A13_DIAGNOSTIC =
+  process.env.TD613_PRODUCTION_OBSERVATION === 'true' &&
+  process.env.TD613_PRACTICE_OBSERVATION === 'true';
+let zeroDeployAshA13DiagnosticRan = false;
+
+// The existing /td613-vercel-confirm lane is the sole caller that sets both
+// production + practice observation flags. Piggyback one read-only Ash A13
+// witness after Giving has completely torn down its browser. This does not alter
+// the confirmation's pass/fail semantics: the child witness is diagnostic only,
+// its artifact is uploaded by the existing confirmation lane, and it cannot
+// deploy, unlock Vercel Git integration, or mutate application state.
+if (ZERO_DEPLOY_ASH_A13_DIAGNOSTIC) {
+  process.on('beforeExit', () => {
+    if (zeroDeployAshA13DiagnosticRan) return;
+    zeroDeployAshA13DiagnosticRan = true;
+    const parentArtifactDir = String(process.env.TD613_ARTIFACT_DIR || 'artifacts/practice-production-confirmation/browser');
+    const diagnosticArtifactDir = path.join(parentArtifactDir, 'ash-a13-zero-deploy');
+    const result = spawnSync(process.execPath, ['scripts/ash-a13-demo-registry-browser-probe.mjs'], {
+      cwd: process.cwd(),
+      env: {
+        ...process.env,
+        TD613_ARTIFACT_DIR: diagnosticArtifactDir
+      },
+      stdio: 'inherit',
+      timeout: 300_000,
+      killSignal: 'SIGINT'
+    });
+    const status = result.error ? 'SPAWN_ERROR' : String(result.status ?? 'UNKNOWN');
+    console.log(`[td613-zero-deploy-ash-a13] diagnostic_status=${status} artifact_dir=${diagnosticArtifactDir}`);
+    if (result.error) console.error(`[td613-zero-deploy-ash-a13] ${result.error.message || String(result.error)}`);
+  });
+}
 
 function positiveInteger(value, fallback) {
   const parsed = Number.parseInt(String(value ?? ''), 10);
