@@ -1,14 +1,7 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v1-quality-first';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v2-lifecycle-admission';
 
-const MODEL_CATALOG = Object.freeze({
-  'gemini-3.5-flash': Object.freeze({ tier: 'frontier', stability: 'stable', quality: 100, role: 'primary-quality' }),
-  'gemini-3-flash-preview': Object.freeze({ tier: 'frontier', stability: 'preview', quality: 92, role: 'secondary-quality' }),
-  'gemini-2.5-flash': Object.freeze({ tier: 'reasoning', stability: 'stable', quality: 84, role: 'stable-fallback' }),
-  'gemini-3.1-flash-lite': Object.freeze({ tier: 'economy', stability: 'stable', quality: 70, role: 'high-volume-fallback' }),
-  'gemini-2.5-flash-lite': Object.freeze({ tier: 'economy', stability: 'stable', quality: 58, role: 'last-resort-fallback' }),
-  'gemini-3.1-pro-preview': Object.freeze({ tier: 'frontier-pro', stability: 'preview', quality: 105, role: 'explicit-opt-in-only' }),
-  'gemini-2.5-pro': Object.freeze({ tier: 'pro', stability: 'stable', quality: 90, role: 'explicit-opt-in-only' })
-});
+import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
+import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
 const QUALITY_ORDER = Object.freeze([
   'gemini-3.5-flash',
@@ -111,7 +104,7 @@ export function readGeminiModelState(model, at = Date.now()) {
   return Object.freeze({ ...state, mayCall: true, retryAfterSeconds: 0 });
 }
 
-export function resolveGeminiModelPlan({ task = 'general-text', env = process.env, at = Date.now(), maxModels = 8 } = {}) {
+export function resolveGeminiModelPlan({ task = 'general-text', env = process.env, at = Date.now(), maxModels = 8, providerListing } = {}) {
   const defaults = TASK_DEFAULTS[task] || TASK_DEFAULTS['general-text'];
   const disabled = disabledModels(env);
   const routeSpecific = routeSpecificModels(task, env);
@@ -125,11 +118,14 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const rows = requested.map((model, index) => {
     const state = readGeminiModelState(model, at);
     const metadata = MODEL_CATALOG[model] || Object.freeze({ tier: 'operator-supplied', stability: 'unknown', quality: 0, role: 'operator-supplied' });
-    return Object.freeze({ model, index, explicit: explicit.includes(model), routeSpecific: routeSpecific.includes(model), legacyGlobal: legacyGlobal.includes(model), metadata, state });
+    const eligibility = assessGeminiEligibility(model, { explicit: explicit.includes(model), listing: providerListing, at });
+    return Object.freeze({ eligibility, model, index, explicit: explicit.includes(model), routeSpecific: routeSpecific.includes(model), legacyGlobal: legacyGlobal.includes(model), metadata, state });
   });
   const available = rows.filter((row) => row.state.mayCall);
+  const eligible = available.filter((row) => row.eligibility.eligible);
   const cooling = rows.filter((row) => !row.state.mayCall);
-  const ordered = [...available, ...cooling].slice(0, Math.max(1, maxModels));
+  const held = available.filter((row) => !row.eligibility.eligible);
+  const ordered = [...eligible, ...held, ...cooling].slice(0, Math.max(1, maxModels));
   const warnings = [];
   if (requested.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
@@ -140,7 +136,8 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     task,
     mode,
     models: Object.freeze(ordered.map((row) => row.model)),
-    callableModels: Object.freeze(available.map((row) => row.model)),
+    callableModels: Object.freeze(eligible.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
+    excludedModels: Object.freeze(rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons }))),
     rows: Object.freeze(ordered),
     explicitModels: Object.freeze(explicit),
     routeSpecificModels: Object.freeze(routeSpecific),
@@ -153,7 +150,14 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   });
 }
 
-export { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
+export { listGeminiGenerateContentModels };
+
+// Only this acquisition path supplies runtime listing evidence; archived receipts are never imported.
+export async function resolveGeminiProviderPlan(options = {}) {
+  const env = options.env || process.env;
+  const listing = await listGeminiGenerateContentModels(env.GEMINI_API_KEY);
+  return resolveGeminiModelPlan({ ...options, env, at: Date.now(), providerListing: listing });
+}
 
 export function geminiModelCatalog() {
   return MODEL_CATALOG;

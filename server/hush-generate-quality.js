@@ -7,7 +7,8 @@ import {
 import {
   GEMINI_MODEL_POLICY_VERSION,
   recordGeminiModelOutcome,
-  resolveGeminiModelPlan
+  resolveGeminiModelPlan,
+  resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
 import { canonicalJson } from '../app/dome-world/ash/canonical-json.js';
 
@@ -285,7 +286,7 @@ function heldPayload({ contract, attempts, startedAt, plan, reason = 'quality_ro
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
-  const plan = resolveGeminiModelPlan({ task: 'hush-transform', maxModels: 8 });
+  let plan = resolveGeminiModelPlan({ task: 'hush-transform', maxModels: 8 });
   if (req.method === 'GET') return send(res, 200, {
     ok: true,
     route: 'hush-generate-quality',
@@ -315,6 +316,7 @@ export default async function handler(req, res) {
   const sourceText = sourceTextOf(contract);
   if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText', version: VERSION, modelPolicy: plan });
 
+  plan = await resolveGeminiProviderPlan({ task: 'hush-transform', maxModels: 8 });
   const prompt = ashKeep.active ? buildAshKeepPrompt(ashKeep.packet, contract) : buildPrompt(contract);
   const skipped = new Set(arr(contract.skipModels || contract.avoidModels || contract.strictReviewRetrySkipModels).map(safe));
   const callable = plan.callableModels.filter((model) => !skipped.has(model));
@@ -326,7 +328,7 @@ export default async function handler(req, res) {
   const attempts = [];
   const rejected = { catchphrase: 0, integrity: 0, academic: 0, compression: 0 };
 
-  if (!models.length) return send(res, 503, heldPayload({ contract, attempts, startedAt, plan, reason: 'all_configured_models_cooling_down' }));
+  if (!models.length) return send(res, 503, heldPayload({ contract, attempts, startedAt, plan, reason: 'no_eligible_callable_models' }));
 
   for (const model of models) {
     if (Date.now() - startedAt > wallMs - timeoutMs - 350) break;

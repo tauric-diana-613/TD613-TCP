@@ -23,6 +23,7 @@ const calls = [];
 clearGeminiModelState();
 process.env.GEMINI_API_KEY = 'test-key';
 globalThis.fetch = async (url) => {
+  if (String(url).includes('/models?')) return { ok: true, status: 200, async json() { return { models: ['gemini-3.5-flash', 'gemini-3-flash-preview'].map(id => ({ name: `models/${id}`, supportedGenerationMethods: ['generateContent'] })) }; } };
   calls.push(String(url));
   if (calls.length === 1) {
     return {
