@@ -13,6 +13,15 @@ const QUIET_TEXT = 'Our fictional garden group meets tomorrow.';
 const PROTECTED_TEXT = 'The glass seed stays in our practice box.';
 const PROTECTED_RULE = { value: 'glass seed', label: 'fictional protected phrase' };
 const JOURNEY_RULE = { value: 'amber path', label: 'declared fictional garden route' };
+const CLIENT_HANDOFF_TEXT = 'Hi Mara — quick handoff for tomorrow\'s fictional archive review. The public summary can travel, but keep this inside the room: the phrase ORCHID-ROUTE / client-side only is a staging label, not a recipient instruction. I left the 09:30 review slot in the note so the team has a concrete handoff. The arrival was amber handoff and the return was amber handoff; the review lane stays with the same case. Before this goes to the open review list, remove the protected staging phrase and generalize the time. — Jules';
+const CLIENT_HANDOFF_PROTECTED = freeze([
+  { value: 'ORCHID-ROUTE / client-side only', label: 'fictional staging phrase' },
+  { value: 'keep this inside the room', label: 'fictional custody instruction' }
+]);
+const CLIENT_HANDOFF_MARKERS = freeze([
+  { value: 'amber handoff', label: 'declared arrival/return route' },
+  { value: 'review lane', label: 'declared project lane' }
+]);
 
 function freeze(value) {
   if (value && typeof value === 'object') {
@@ -122,6 +131,15 @@ function checkedRevision(revision) {
 }
 
 /** Loading these fictional inputs performs no analysis, receipt creation, or I/O. */
+/** A longer, stylometrically ordinary fictional handoff for deliberate checker hydration. */
+export function getLoomClientHandoffInput() {
+  return freeze({
+    text: CLIENT_HANDOFF_TEXT,
+    protectedTerms: CLIENT_HANDOFF_PROTECTED.map(term => ({ ...term })),
+    journeyMarkers: CLIENT_HANDOFF_MARKERS.map(marker => ({ ...marker }))
+  });
+}
+
 export function getLoomDemoInput(index) {
   const definition = definitionAt(index);
   return freeze({
