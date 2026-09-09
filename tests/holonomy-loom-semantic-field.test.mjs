@@ -11,6 +11,12 @@ import {
 } from '../app/dome-world/holonomy-loom/semantic-field.js';
 import { analyzeHolonomyLoomMessage, makeHolonomyLoomSaferCopy } from '../app/dome-world/holonomy-loom/engine.js';
 import { HOLONOMY_LOOM_MOTION_KEYS } from '../app/dome-world/holonomy-loom/flowcore-aia-motion.js';
+import {
+  createPortableFlowcoreControl,
+  loomComparedSurfacesToFadt,
+  runAtlasAgent,
+  runFadtAgent
+} from '../app/engine/dollhouse-atlas-fadt.js';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 const SOURCE = 'aa027ff5192f2bdea62334dbf57fc09634bffd06';
@@ -107,6 +113,19 @@ test('contradiction preserves both actual analyses and explicit missingness with
   assert.equal(packet.geometry.missingness.length, 1);
 });
 
+test('FADT turns the preserved Loom contradiction surfaces into an explicit finite descent HOLD', () => {
+  const packet = compileLoomDemoScene(5, { sourceRevision: SOURCE });
+  const result = runFadtAgent(loomComparedSurfacesToFadt(packet));
+  assert.equal(result.agent, 'FADT');
+  assert.equal(result.all_fibres_exact, false);
+  assert.equal(result.fibres.length, 1);
+  assert.equal(result.fibres[0].verdict, 'HOLD');
+  assert.deepEqual(result.fibres[0].union, ['GREEN', 'RED']);
+  assert.deepEqual(result.fibres[0].intersection, []);
+  assert.deepEqual(result.fibres[0].irreducible_gap, ['GREEN', 'RED']);
+  assert.equal(result.fibres[0].gap_size, 2);
+});
+
 test('recovery is real safer-copy transformation followed by a real recheck; rest is explicit', () => {
   const packet = compileLoomDemoScene(6);
   const safer = makeHolonomyLoomSaferCopy(getLoomDemoInput(6));
@@ -133,6 +152,30 @@ test('portable projection preserves exact local semantic and evidence authority 
     assert.equal(portable.authority.automatic_release, false);
     assert.ok(Object.isFrozen(portable.semantic_field.receipt));
   }
+});
+
+test('Atlas gives child and auditor different presentations over one Flow-Core control grammar', () => {
+  const packet = compileLoomDemoScene(3, { sourceRevision: SOURCE });
+  const control = createPortableFlowcoreControl(packet);
+  assert.equal(control.raw_source_included, false);
+  assert.equal(control.return_requires_loom_revalidation, true);
+  assert.equal(control.candidate_return_trusted_by_arrival, false);
+  assert.ok(control.flow_core.glyph_trace.length > 0);
+  assert.equal(control.flow_core.legend.length, packet.flow_core.glyph_relations.length);
+  for (const item of control.flow_core.legend) {
+    assert.ok(item.glyph);
+    assert.ok(item.semantic_relation);
+  }
+
+  const result = runAtlasAgent(packet);
+  assert.equal(result.agent, 'ATLAS');
+  assert.equal(result.audit.verdict, 'PASS');
+  assert.equal(result.audit.control_plane_equal, true);
+  assert.equal(result.audit.presentations_intentionally_non_equivalent, true);
+  assert.equal(result.portable_return_contract.candidate_trusted, false);
+  assert.equal(result.portable_return_contract.return_requires_loom_revalidation, true);
+  assert.equal(result.projections[0].control, result.projections[1].control);
+  assert.notDeepEqual(result.projections[0].presentation, result.projections[1].presentation);
 });
 
 test('deterministic admission rejects authority escalation, arbitrary renderer fields and altered evidence', () => {
