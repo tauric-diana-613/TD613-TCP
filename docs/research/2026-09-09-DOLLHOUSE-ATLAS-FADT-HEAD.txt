@@ -1,0 +1,4 @@
+Candidate content parent before this marker: 09ede02c6bda9860797140054bbca3875806d7d6
+Purpose: stable exact-head reference for the Dollhouse Atlas/FADT operational candidate.
+No merge, deployment, release, provider, publication, Golden Egg, Western Horizon, or Vercel authority.
+Sealed ⟐
