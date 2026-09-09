@@ -11,6 +11,17 @@ import {
 } from '../app/dome-world/holonomy-loom/semantic-field.js';
 import { analyzeHolonomyLoomMessage, makeHolonomyLoomSaferCopy } from '../app/dome-world/holonomy-loom/engine.js';
 import { HOLONOMY_LOOM_MOTION_KEYS } from '../app/dome-world/holonomy-loom/flowcore-aia-motion.js';
+import {
+  createPortableFlowcoreControl,
+  loomComparedSurfacesToFadt,
+  runAtlasAgent,
+  runFadtAgent
+} from '../app/engine/dollhouse-atlas-fadt.js';
+import {
+  compileDollhousePortableProjection,
+  operateDollhousePortableProjection,
+  revalidateDollhousePortableReturn
+} from '../app/engine/dollhouse-portable-aia-roundtrip.js';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 const SOURCE = 'aa027ff5192f2bdea62334dbf57fc09634bffd06';
@@ -107,6 +118,19 @@ test('contradiction preserves both actual analyses and explicit missingness with
   assert.equal(packet.geometry.missingness.length, 1);
 });
 
+test('FADT turns the preserved Loom contradiction surfaces into an explicit finite descent HOLD', () => {
+  const packet = compileLoomDemoScene(5, { sourceRevision: SOURCE });
+  const result = runFadtAgent(loomComparedSurfacesToFadt(packet));
+  assert.equal(result.agent, 'FADT');
+  assert.equal(result.all_fibres_exact, false);
+  assert.equal(result.fibres.length, 1);
+  assert.equal(result.fibres[0].verdict, 'HOLD');
+  assert.deepEqual(result.fibres[0].union, ['GREEN', 'RED']);
+  assert.deepEqual(result.fibres[0].intersection, []);
+  assert.deepEqual(result.fibres[0].irreducible_gap, ['GREEN', 'RED']);
+  assert.equal(result.fibres[0].gap_size, 2);
+});
+
 test('recovery is real safer-copy transformation followed by a real recheck; rest is explicit', () => {
   const packet = compileLoomDemoScene(6);
   const safer = makeHolonomyLoomSaferCopy(getLoomDemoInput(6));
@@ -133,6 +157,82 @@ test('portable projection preserves exact local semantic and evidence authority 
     assert.equal(portable.authority.automatic_release, false);
     assert.ok(Object.isFrozen(portable.semantic_field.receipt));
   }
+});
+
+test('Atlas gives child and auditor different presentations over one Flow-Core control grammar', () => {
+  const packet = compileLoomDemoScene(3, { sourceRevision: SOURCE });
+  const control = createPortableFlowcoreControl(packet);
+  assert.equal(control.raw_source_included, false);
+  assert.equal(control.return_requires_loom_revalidation, true);
+  assert.equal(control.candidate_return_trusted_by_arrival, false);
+  assert.ok(control.flow_core.glyph_trace.length > 0);
+  assert.equal(control.flow_core.legend.length, packet.flow_core.glyph_relations.length);
+  for (const item of control.flow_core.legend) {
+    assert.ok(item.glyph);
+    assert.ok(item.semantic_relation);
+  }
+
+  const result = runAtlasAgent(packet);
+  assert.equal(result.agent, 'ATLAS');
+  assert.equal(result.audit.verdict, 'PASS');
+  assert.equal(result.audit.control_plane_equal, true);
+  assert.equal(result.audit.presentations_intentionally_non_equivalent, true);
+  assert.equal(result.portable_return_contract.candidate_trusted, false);
+  assert.equal(result.portable_return_contract.return_requires_loom_revalidation, true);
+  assert.equal(result.projections[0].control, result.projections[1].control);
+  assert.notDeepEqual(result.projections[0].presentation, result.projections[1].presentation);
+});
+
+test('Portable AIA companion operation returns structured Flow-Core control for Loom revalidation', () => {
+  const packet = compileLoomDemoScene(3, { sourceRevision: SOURCE });
+  const projection = compileDollhousePortableProjection(packet, { receiver: 'companion' });
+  assert.equal(projection.presentation.mode, 'FLOWCORE_GUIDED_COMPANION');
+  assert.equal(projection.raw_source_included, false);
+  assert.equal(projection.packetization_claim, 'carrier-only');
+  assert.equal(projection.authority.td613_release_transferred, false);
+  assert.ok(projection.presentation.flow_core_legend.every(item => item.glyph && item.semantic_relation));
+
+  const returned = operateDollhousePortableProjection(projection, {
+    operation: 'PROPOSE_ACTION',
+    proposedAction: 'REST'
+  });
+  const check = revalidateDollhousePortableReturn(packet, returned);
+  assert.equal(check.status, 'PRESENT_TO_HUMAN');
+  assert.equal(check.atlas.control_plane_equal, true);
+  assert.equal(check.fadt.all_fibres_exact, true);
+  assert.equal(check.action.proposed_action_admissible, true);
+  assert.equal(check.candidate_trusted, false);
+  assert.equal(check.release_authority, false);
+  assert.equal(check.human_closure_required, true);
+});
+
+test('Portable AIA return holds authority widening and keeps host missingness advisory', () => {
+  const packet = compileLoomDemoScene(2, { sourceRevision: SOURCE });
+  const projection = compileDollhousePortableProjection(packet, { receiver: 'companion' });
+  const unauthorized = operateDollhousePortableProjection(projection, {
+    operation: 'PROPOSE_ACTION',
+    proposedAction: 'COPY_CHECKED_MESSAGE'
+  });
+  const unauthorizedCheck = revalidateDollhousePortableReturn(packet, unauthorized);
+  assert.equal(unauthorizedCheck.status, 'HOLD');
+  assert.ok(unauthorizedCheck.reason_codes.includes('PROPOSED_ACTION_OUTSIDE_ORIGIN_SUPPORT'));
+
+  const widened = clone(operateDollhousePortableProjection(projection, { operation: 'EXPLAIN_STATE' }));
+  widened.returned_control.governance.raw_release_allowed = true;
+  const widenedCheck = revalidateDollhousePortableReturn(packet, widened);
+  assert.equal(widenedCheck.status, 'HOLD');
+  assert.equal(widenedCheck.atlas.control_plane_equal, false);
+  assert.equal(widenedCheck.fadt.all_fibres_exact, false);
+  assert.ok(widenedCheck.reason_codes.includes('CONTROL_PLANE_DRIFT'));
+  assert.ok(widenedCheck.reason_codes.includes('FADT_ADMISSIBILITY_GAP'));
+
+  const reported = operateDollhousePortableProjection(projection, {
+    operation: 'REPORT_MISSINGNESS',
+    reportedMissingness: ['Receiving host cannot independently verify pre-ingress custody.']
+  });
+  const reportedCheck = revalidateDollhousePortableReturn(packet, reported);
+  assert.equal(reportedCheck.host_reported_missingness.length, 1);
+  assert.equal(reportedCheck.host_reported_missingness_promoted_to_origin_fact, false);
 });
 
 test('deterministic admission rejects authority escalation, arbitrary renderer fields and altered evidence', () => {
