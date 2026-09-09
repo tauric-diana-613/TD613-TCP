@@ -46,7 +46,7 @@ for (const phase of ['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME', 'REST']) {
 }
 assert.match(hosted, /id="rest" type="button" data-rest/);
 assert.match(hosted, /id="returnToCheck" data-return/);
-assert.match(hosted, /CHECK THIS MESSAGE/);
+assert.match(hosted, /id="check" type="button">CHECK<\/button>/);
 assert.match(hosted, /KEEP/);
 assert.match(hosted, /CHANGE/);
 assert.match(hosted, /REMOVE/);
