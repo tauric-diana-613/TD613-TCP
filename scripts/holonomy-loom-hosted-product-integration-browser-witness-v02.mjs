@@ -162,6 +162,9 @@ try {
   await page.locator('[data-return]').click();
   check('Flow-Core RETURN remains reversible and returns to the message anchor', new URL(page.url()).hash === '#messageTitle', page.url());
   check('message control remains visible after Flow-Core RETURN', await page.locator('#message').isVisible());
+  const protectionRules = page.locator('#protectionRules');
+  if (!(await detailsOpen(protectionRules))) await protectionRules.locator('summary').click();
+  check('RED observer opens Rules & journey markers explicitly before editing protected terms', await detailsOpen(protectionRules));
   await page.locator('#protected').fill('HOSTED_SAFE_COPY_FIX');
   await page.locator('#message').fill('ordinary HOSTED_SAFE_COPY_FIX');
   await page.locator('#check').click();
