@@ -33,17 +33,15 @@
       <a class="loom-practice-door" href="#loomTheater">See it happen <span>8 fictional scenes · about 2 minutes ↗</span></a>
     </section>
 
-    <section id="loomTheater" class="loom-theater" aria-label="Loom fictional practice theater" data-flowcore-phase="NOTICE">
-      <p class="ceiling">A fictional practice case uses the same local rule engine. Loading this page checks nothing and sends nothing.</p>
-      <p>Loading the optional theater… The message checker below remains available.</p>
-    </section>
-
-    <section class="panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
-      <label id="messageTitle" for="message">Paste your message here</label>
-      <textarea id="message" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
+    <section class="panel checker-panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
+      <div class="checker-head">
+        <div><p class="mark">LOCAL CHECK</p><h2 id="messageTitle">What are you about to send?</h2></div>
+        <button id="check" type="button">CHECK</button>
+      </div>
+      <textarea id="message" aria-label="Message to check" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
 
       <details id="protectionRules">
-        <summary>Protection rules</summary>
+        <summary>Rules & journey markers</summary>
         <p class="ceiling">One item per line. These fields belong to this hosted check and are not a provider prompt.</p>
         <label for="protected">Things that must never leave</label>
         <textarea class="small" id="protected" autocomplete="off"></textarea>
@@ -52,8 +50,13 @@
         <p class="ceiling">The Loom calls something “another journey” only when an exact marker you declared matches. Resemblance alone does not establish provenance.</p>
       </details>
 
-      <button id="check" type="button">CHECK THIS MESSAGE</button>
-      <p class="ceiling">The default deterministic check does not ask a model for help.</p>
+      <p class="ceiling checker-note">Local rules only · no model call · nothing leaves this page.</p>
+    </section>
+
+
+    <section id="loomTheater" class="loom-theater" aria-label="Loom fictional practice theater" data-flowcore-phase="NOTICE">
+      <p class="ceiling">A fictional practice case uses the same local rule engine. Loading this page checks nothing and sends nothing.</p>
+      <p>Loading the optional theater… The message checker below remains available.</p>
     </section>
 
     <section id="result" class="panel result" aria-live="polite" data-flowcore-phase="WORLD_ANSWERS">
