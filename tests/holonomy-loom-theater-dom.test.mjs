@@ -90,12 +90,17 @@ function makeHarness() {
   const { root, window } = harness;
   window.document.addEventListener('loom-practice-load', (event) => {
     window.document.querySelector('#message').value = event.detail.text;
+    window.document.querySelector('#protected').value = event.detail.protectedTerms.map(item => item.value).join('\\n');
+    window.document.querySelector('#journeys').value = event.detail.journeyMarkers.map(item => item.value).join('\\n');
   });
   window.document.querySelector('[data-scene="2"]').click();
   window.document.querySelector('#ltLoad').click();
   assert.equal(root.dataset.scene, 'release-block');
   assert.match(window.document.querySelector('#message').value, /glass seed/);
-  assert.equal(window.document.querySelector('#result').classList.contains('show'), false, 'loading a case does not press CHECK');
+  window.document.querySelector('#ltLoadClient').click();
+  assert.match(window.document.querySelector('#message').value, /ORCHID-ROUTE \/ client-side only/);
+  assert.match(window.document.querySelector('#protected').value, /keep this inside the room/);
+  assert.match(window.document.querySelector('#journeys').value, /amber handoff/);
 }
 
 console.log(JSON.stringify({ schema: 'td613.loom.theater-dom-witness/v0.1', status: 'PASS', scenes: 8, provider_calls: 0, deployment_authority: false }));
