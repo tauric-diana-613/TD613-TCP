@@ -55,11 +55,11 @@ PEDAGOGUE != APERTURE != ATLAS != FADT
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
 
-## Portable AIA target
+## Portable AIA operational roundtrip candidate
 
 Packetization remains the carrier. Operational portability remains the phenomenon.
 
-A receiving companion should obtain a versioned control grammar rather than a loose prompt template:
+The current successor candidate gives a receiving companion a versioned control grammar rather than a loose prompt template:
 
 ```text
 Flow-Core relation key
@@ -68,34 +68,44 @@ Flow-Core relation key
 -> motion/static/inspection grammar
 -> governed state
 -> claim ceiling
--> allowed return shape
+-> allowed operation
+-> structured return shape
 ```
 
-The host may change presentation and reason interactively over that admitted state. A bare glyph string is insufficient for return. The return candidate must carry enough structured control state to be revalidated by Loom / TD613.
+The host may change presentation and reason interactively over that admitted state. A bare glyph string is insufficient for return. The return candidate must carry the versioned control envelope and Flow-Core trace back to Loom / TD613 revalidation.
 
-A future two-thread realization may separate:
+Current bounded operations:
+
+```text
+EXPLAIN_STATE
+TRACE_FLOWCORE
+PROPOSE_ACTION
+REPORT_MISSINGNESS
+```
+
+A two-thread realization may therefore separate:
 
 1. an operational AIA thread; and
 2. an audit-only thread that receives the compact Flow-Core control receipt and checks return invariants.
 
-That target remains stronger than packet equality and weaker than authority transfer.
+The present code establishes the synthetic machine contract for that realization. It does not claim a live ChatGPT integration, pre-ingress secrecy, or transferred host authority.
 
-## Loom battery direction
+## Loom roundtrip battery candidate
 
-The next battery should test the full cycle:
+The current successor battery tests the full cycle:
 
 ```text
 receiver change
--> projected operation
+-> Flow-Core-guided projected operation
 -> bounded interaction
--> return candidate
--> revalidation
--> compare conserved control state
--> compare changed presentation/state
--> preserve missingness and contradictions
+-> structured return candidate
+-> Atlas control-plane comparison
+-> FADT action-support comparison
+-> proposed-action admission
+-> PRESENT_TO_HUMAN or HOLD
 ```
 
-The battery should explicitly reject:
+The battery explicitly rejects:
 
 - equal packet bytes as sufficient proof of operational portability;
 - glyph-only return without legend/governance binding;
@@ -104,7 +114,22 @@ The battery should explicitly reject:
 - return that bypasses Loom revalidation;
 - FADT gap suppression;
 - Atlas presentation equality as a requirement;
+- an action proposed outside origin support;
 - any claim that phasonic supermoiré tomography, route memory, or formal holonomy establishes physical geometry or empirical exteriority.
+
+Host-reported missingness remains separately visible and advisory; it is not promoted into origin fact merely because the receiving host returned it.
+
+## Phasonic supermoiré comparison seam
+
+The roundtrip revalidation receipt separates:
+
+```text
+presentation may change
+control changed?
+admissibility changed?
+```
+
+That finite separation can feed later phasonic supermoiré projection-comparison assays without treating the comparison as physical or continuum tomography.
 
 ## Research spine
 
