@@ -29,7 +29,7 @@ export function mountLoomTheater(root, environment = window) {
       <path id="ltSeam" class="lt-seam" d="M378,170 L369,185 L383,200 L373,215 L385,230 L375,245" hidden/>
       <circle class="lt-node" cx="160" cy="227" r="18"/><circle class="lt-node" cx="610" cy="227" r="18"/>
       <circle id="ltTraveller" class="lt-pulse" cx="160" cy="227" r="4" hidden/>
-      <text id="ltPhaseGlyph" class="lt-glyph" x="146" y="232">à</text><text x="128" y="277">LOCAL INPUT</text><text x="557" y="277">CHECKED DOOR</text>
+      <text id="ltPhaseGlyph" class="lt-glyph" x="160" y="227" text-anchor="middle" dominant-baseline="middle">à</text><text x="128" y="277">LOCAL INPUT</text><text x="557" y="277">CHECKED DOOR</text>
       <text id="ltGeometryNote" class="lt-field-label" x="160" y="319">Choose a scene to admit fictional state.</text>
     </svg></div>
     <div class="lt-caption"><span id="ltRelation">Geometry is an explanation, not a measurement.</span><span>No hidden-state access · L unearned</span></div>
