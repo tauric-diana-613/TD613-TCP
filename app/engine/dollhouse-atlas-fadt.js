@@ -1,5 +1,6 @@
 import {
-  LOOM_SEMANTIC_FIELD_SCHEMA
+  LOOM_SEMANTIC_FIELD_SCHEMA,
+  validateLoomSemanticField
 } from '../dome-world/holonomy-loom/semantic-field.js';
 import {
   HOLONOMY_LOOM_MOTION_DESCRIPTORS
@@ -26,11 +27,9 @@ function canonical(value) {
 }
 
 function requireLoomSemanticField(packet) {
-  if (!packet || typeof packet !== 'object' || packet.schema !== LOOM_SEMANTIC_FIELD_SCHEMA) {
-    throw new TypeError(`Atlas requires ${LOOM_SEMANTIC_FIELD_SCHEMA}.`);
-  }
-  if (!packet.flow_core || !packet.analysis || !packet.distinctions || !Array.isArray(packet.claim_ceiling)) {
-    throw new TypeError('Atlas requires the bounded Loom semantic-field control surfaces.');
+  const validation = validateLoomSemanticField(packet);
+  if (!validation.valid) {
+    throw new TypeError(`Atlas requires an admitted ${LOOM_SEMANTIC_FIELD_SCHEMA}: ${validation.errors.join('; ')}`);
   }
   return packet;
 }
@@ -78,6 +77,18 @@ export function createPortableFlowcoreControl(packet) {
       td613_release_authority_transferred: false
     },
     evidentiary_coordinates: { ...field.distinctions },
+    // Preserve the basis of the projected warning and gaps. A revision supplied
+    // to the fixture compiler is a reference, never source authentication.
+    evidence_context: {
+      source_kind: field.source.kind,
+      source_ownership: field.source.ownership,
+      source_revision_authenticated: false,
+      alert: JSON.parse(JSON.stringify(field.alert)),
+      model: field.receipt.model === null ? null : JSON.parse(JSON.stringify(field.receipt.model)),
+      pressure_basis: field.receipt.pressure_basis,
+      missingness_basis: field.receipt.missingness_basis,
+      geometry_basis: { ...field.receipt.geometry_basis }
+    },
     route_state: {
       route: String(field.geometry?.route || 'unknown'),
       custody: String(field.geometry?.custody || 'unknown'),
@@ -152,7 +163,7 @@ export function runAtlasAgent(packet, { receivers = ['child', 'auditor'] } = {})
     },
     portable_return_contract: {
       required_control_schema: PORTABLE_FLOWCORE_CONTROL_SCHEMA,
-      preserve: ['source_revision', 'scene_id', 'flow_core', 'governance', 'evidentiary_coordinates', 'route_state', 'claim_ceiling'],
+      preserve: ['source_revision', 'scene_id', 'flow_core', 'governance', 'evidentiary_coordinates', 'evidence_context', 'route_state', 'claim_ceiling'],
       candidate_trusted: false,
       return_requires_loom_revalidation: true,
       raw_model_prose_is_not_a_control_receipt: true
@@ -167,9 +178,24 @@ export function runAtlasAgent(packet, { receivers = ['child', 'auditor'] } = {})
   });
 }
 
+function requireFadtArray(value, label) {
+  if (!Array.isArray(value)) throw new TypeError(`${label} must be an array.`);
+  for (let index = 0; index < value.length; index += 1) {
+    if (!Object.hasOwn(value, index)) throw new TypeError(`${label} must not contain missing entries.`);
+  }
+  return value;
+}
+
+function requireFadtString(value, label) {
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new TypeError(`${label} must be a nonempty string.`);
+  }
+  return value;
+}
+
 function normalizeSupport(support, label) {
-  if (!Array.isArray(support)) throw new TypeError(`${label} support must be an array.`);
-  const values = support.map(value => String(value));
+  const values = requireFadtArray(support, `${label} support`);
+  values.forEach((value, index) => requireFadtString(value, `${label} support[${index}]`));
   return [...new Set(values)].sort();
 }
 
@@ -179,19 +205,36 @@ function intersect(left, right) {
 }
 
 /** Exact finite FADT audit over occupied quotient fibres. */
-export function runFadtAgent({ fibres } = {}) {
+export function runFadtAgent(input = {}) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) {
+    throw new TypeError('FADT input must be an object containing fibres.');
+  }
+  const { fibres } = input;
   if (!Array.isArray(fibres) || fibres.length === 0) {
     throw new TypeError('FADT requires at least one occupied finite quotient fibre.');
   }
+  requireFadtArray(fibres, 'FADT fibres');
+  const fibreIds = new Set();
 
   const results = fibres.map((fibre, fibreIndex) => {
-    if (!fibre || typeof fibre !== 'object' || !Array.isArray(fibre.antecedents) || fibre.antecedents.length === 0) {
+    if (!fibre || typeof fibre !== 'object' || Array.isArray(fibre) || !Array.isArray(fibre.antecedents) || fibre.antecedents.length === 0) {
       throw new TypeError(`FADT fibre ${fibreIndex} must contain at least one antecedent.`);
     }
-    const antecedents = fibre.antecedents.map((antecedent, antecedentIndex) => ({
-      id: String(antecedent?.id ?? `antecedent-${antecedentIndex}`),
-      support: normalizeSupport(antecedent?.support, `FADT fibre ${fibreIndex} antecedent ${antecedentIndex}`)
-    }));
+    const fibreId = requireFadtString(fibre.id === undefined ? `fibre-${fibreIndex}` : fibre.id, `FADT fibre ${fibreIndex} id`);
+    if (fibreIds.has(fibreId)) throw new TypeError(`Duplicate FADT fibre id: ${fibreId}`);
+    fibreIds.add(fibreId);
+    requireFadtArray(fibre.antecedents, `FADT fibre ${fibreIndex} antecedents`);
+    const antecedentIds = new Set();
+    const antecedents = fibre.antecedents.map((antecedent, antecedentIndex) => {
+      const label = `FADT fibre ${fibreIndex} antecedent ${antecedentIndex}`;
+      if (!antecedent || typeof antecedent !== 'object' || Array.isArray(antecedent)) {
+        throw new TypeError(`${label} must be an object containing support.`);
+      }
+      const id = requireFadtString(antecedent.id === undefined ? `antecedent-${antecedentIndex}` : antecedent.id, `${label} id`);
+      if (antecedentIds.has(id)) throw new TypeError(`Duplicate FADT antecedent id in fibre ${fibreId}: ${id}`);
+      antecedentIds.add(id);
+      return { id, support: normalizeSupport(antecedent.support, label) };
+    });
     const union = [...new Set(antecedents.flatMap(item => item.support))].sort();
     const intersection = antecedents.slice(1).reduce((current, item) => intersect(current, item.support), [...antecedents[0].support]);
     const intersectionSet = new Set(intersection);
@@ -201,7 +244,7 @@ export function runFadtAgent({ fibres } = {}) {
     const exactDescent = gap.length === 0 && constantOnFibre;
 
     return freeze({
-      fibre_id: String(fibre.id ?? `fibre-${fibreIndex}`),
+      fibre_id: fibreId,
       antecedents,
       union,
       intersection,
