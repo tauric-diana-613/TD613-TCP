@@ -13,9 +13,10 @@ export function mountLoomTheater(root, environment = window) {
   const doc = root.ownerDocument;
   // Static authored markup only; packet/provider/user values use textContent.
   root.innerHTML = `
-    <header class="lt-top"><div><p class="lt-eyebrow">The Loom / a practice theater</p><p>Fictional inputs. Real local rules. Nothing sent.</p></div>
+    <header class="lt-top"><div><p class="lt-eyebrow">The Loom / governed routes</p><p>Fictional inputs. Real local rules. Nothing sent.</p></div>
       <div class="lt-view" role="group" aria-label="Receiver view"><button type="button" data-view="child" aria-pressed="true">CHILD VIEW</button><button type="button" data-view="auditor" aria-pressed="false">AUDITOR VIEW</button></div></header>
-<div class="lt-client-case"><p class="lt-eyebrow">FICTIONAL CLIENT PRACTICE</p><p>Hydrate the checker with a longer fictional client handoff: exact protected phrases, two declared route markers, and an ordinary note that still needs a human CHECK.</p><div class="lt-client-lenses"><p><strong>Pedagogue:</strong> consequence first, then the optional explanation.</p><p><strong>Aperture:</strong> inspect identifiability and stability without collapsing them into one score.</p><p><strong>Atlas (research instrument):</strong> the child and auditor views project the same admitted state through different receivers.</p><p><strong>FADT membrane:</strong> a matching visible note does not carry admissibility authority across a changed rule set.</p></div><button type="button" id="ltLoadClient">LOAD CLIENT HANDOFF</button></div>
+    <section class="lp-workbench lt-details" id="ltPortableWorkbench" aria-label="Portable AIA roundtrip practice"></section>
+<div class="lt-client-case"><p class="lt-eyebrow">FICTIONAL CLIENT PRACTICE</p><p>Hydrate the separate checker with a longer fictional client handoff: exact protected phrases, two declared route markers, and an ordinary note that still needs a human CHECK.</p><div class="lt-client-lenses"><p><strong>Pedagogue:</strong> consequence first, then the optional explanation.</p><p><strong>Aperture:</strong> inspect identifiability and stability without collapsing them into one score.</p><p><strong>Atlas (research instrument):</strong> the child and auditor views project the same admitted state through different receivers.</p><p><strong>FADT membrane:</strong> a matching visible note does not carry admissibility authority across a changed rule set.</p></div><button type="button" id="ltLoadClient">LOAD CLIENT HANDOFF</button></div>
     <div class="lt-story" aria-live="polite" aria-atomic="true"><span class="lt-tag" id="ltTag">Practice waiting · nothing checked</span><h2 id="ltTitle">A message. A thread. A boundary.</h2><p id="ltConsequence">See what may travel with a note, what must stay, and what we still cannot know.</p></div>
     <div class="lt-stage"><svg viewBox="0 0 800 380" role="img" aria-labelledby="ltGraphicTitle ltGraphicDescription">
       <title id="ltGraphicTitle">The Loom’s bounded information field</title><desc id="ltGraphicDescription">Practice is waiting. Play to run the first fictional note through the local checker.</desc>
@@ -40,10 +41,9 @@ export function mountLoomTheater(root, environment = window) {
     <div class="lt-scrub"><label for="ltTime">Replay time</label><input id="ltTime" type="range" min="0" max="3600" step="100" value="0" disabled><output id="ltTimeLabel" for="ltTime">0.0 / 3.6 s</output></div>
     <nav class="lt-scenes" aria-label="Practice scenes"></nav>
     <div class="lt-settings"><label><input id="ltReduced" type="checkbox">Reduced motion</label><label><input id="ltPortable" type="checkbox">Portable receiver</label><span class="lt-runtime" id="ltRuntime" role="status">Clock idle · 0 pending frames</span></div>
-    <section class="lp-workbench lt-details" id="ltPortableWorkbench" aria-label="Portable AIA roundtrip practice"></section>
     <details class="lt-details" id="ltWhy"><summary>WHY DID THAT MOVE?</summary><p id="ltWhyText">Nothing has moved yet. A scene will name its exact cause here.</p><ul id="ltMotionCauses"></ul></details>
     <section class="lt-details" id="ltAudit" aria-label="Auditor projection" hidden><p class="lt-eyebrow">Same state / exact limits</p><dl class="lt-facts" id="ltFacts"></dl><p class="lt-warning">V ≠ C ≠ P ≠ L. A supplied marker is not recovered custody; a modeled warning is not evidence of hidden-state reconstruction.</p><p id="ltCeilings"></p></section>
-    <details class="lt-details" id="ltReceipt"><summary>SHOW RECEIPT</summary><p id="ltReceiptScope">No scene has been checked. Receipts describe local fictional analysis, not a provider observation or a release.</p><pre id="ltReceiptJson">No receipt yet.</pre><div class="lt-evidence"><button type="button" id="ltDownload" disabled>DOWNLOAD REPLAY PACKET</button><button type="button" id="ltLoad" disabled>LOAD CASE INTO CHECKER</button></div><p class="ceiling">Loading fills the real checker above; it does not press CHECK, copy a message, or send anything.</p></details>
+    <details class="lt-details" id="ltReceipt"><summary>SHOW RECEIPT</summary><p id="ltReceiptScope">No scene has been checked. Receipts describe local fictional analysis, not a provider observation or a release.</p><pre id="ltReceiptJson">No receipt yet.</pre><div class="lt-evidence"><button type="button" id="ltDownload" disabled>DOWNLOAD REPLAY PACKET</button><button type="button" id="ltLoad" disabled>LOAD CASE INTO CHECKER</button></div><p class="ceiling">Loading fills the real checker below; it does not press CHECK, copy a message, or send anything.</p></details>
     <p class="lt-ceiling"><strong>The horizon does not open.</strong> GREEN only means no enabled rule fired. Modeled weather is dashed; unknown links stay broken. This theater cannot earn origin, attribution, provider access, deployment authority, or human comprehension.</p>`;
 
   const $ = selector => root.querySelector(selector);
@@ -104,7 +104,7 @@ export function mountLoomTheater(root, environment = window) {
     root.dataset.alertClass=snapshot.packet.alert.alert_class;root.dataset.snapshotSeed=String(snapshot.seed);
   });
 
-  const portableWorkbench = mountPortableWorkbench($('#ltPortableWorkbench'), { pause: () => { stopTour(); coordinator.pause(); } });
+  const portableWorkbench = mountPortableWorkbench($('#ltPortableWorkbench'), { pause: () => { stopTour(); coordinator.pause(); }, activate: () => { loadScene(0); coordinator.pause(); } });
 
   function receiptEnvelope(){return {
     schema:'td613.loom.theater-replay/v0.1', receiver,
@@ -201,7 +201,7 @@ export function mountLoomTheater(root, environment = window) {
 if(typeof document!=='undefined'){
   const root=document.querySelector('#loomTheater');
   if(root)try{mountLoomTheater(root);}catch(error){
-    root.replaceChildren();const notice=document.createElement('p');notice.className='lt-theater-error';notice.textContent='Practice theater HELD: it could not initialize. The message checker above is still available. No practice receipt was earned.';root.append(notice);
+    root.replaceChildren();const notice=document.createElement('p');notice.className='lt-theater-error';notice.textContent='Practice theater HELD: it could not initialize. The message checker below is still available. No practice receipt was earned.';root.append(notice);
     console.error('Loom theater initialization held',error);
   }
 }

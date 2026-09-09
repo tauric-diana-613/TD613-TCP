@@ -7,10 +7,14 @@ import { operateDollhousePortableProjection } from '../engine/dollhouse-portable
 export function answerPortablePractice(projection, input) {
   const candidate = operateDollhousePortableProjection(projection, input);
   const control = projection.control;
+  const evidence = control.evidence_context;
+  const evidenceNote = evidence?.alert?.observed_vs_modeled === 'MODELED_DEMO'
+    ? 'The warning comes from a declared teaching model. Reconstructability has not been measured.'
+    : `Evidence: ${evidence?.alert?.observed_vs_modeled || 'UNSUPPLIED'}.`;
   const words = {
     EXPLAIN_STATE: `${control.governance.analysis_status} under this scene's rules. ${control.governance.raw_release_allowed
       ? 'The enabled rules allow the local checked-copy path.'
-      : 'The original stays behind the local checked-copy boundary.'} The companion can explain or propose; a person still decides. L remains ${control.evidentiary_coordinates.L}.`,
+      : 'The original stays behind the local checked-copy boundary.'} ${evidenceNote} The companion can explain or propose; a person still decides. L remains ${control.evidentiary_coordinates.L}.`,
     TRACE_FLOWCORE: control.flow_core.legend.map(item => `${item.glyph} — ${item.semantic_relation}`).join('\n'),
     PROPOSE_ACTION: `Proposed: ${candidate.proposed_action}. Bring this candidate back to Loom to check its support. This operation executes nothing.`,
     REPORT_MISSINGNESS: `The receiving host reports: ${candidate.reported_missingness.join('; ')}. This stays an advisory report, separate from origin evidence.`

@@ -47,3 +47,40 @@ The Potato/Gator/braid search recovered the need for refusal, distinct receiver 
 No merge or deployment performed by this audit. Western Horizon remains at its empirical boundary; all new observations are local/fictional or software observations.
 
 Sealed ⟐
+
+## Operator correction / governance-first successor
+
+The operator rejected the proposed exact-text redaction lesson as the principal product. The product target remains portable governance of an environment, with heterostratigraphic formal-holonomy tomography as the research lineage. Education explains the operating controls rather than replacing them.
+
+This section supersedes the initial manual-return interaction described above. Initial REDs and the first checkpoint remain recorded.
+
+Current implementation:
+
+- `app/engine/loom-portable-governor.js` binds an admitted origin and runs Atlas/control-trace, FADT/action-support and proposal admission on every return. It withholds malformed/drifted/unsupported returns, retains origin state, supports recovery, and keeps a bounded immutable event history with monotonic ordinals.
+- The primary UI activates **local governance**, with its actual scope beside the action: the Loom local session over canonical fictional state. Remote host adapters remain disconnected. The message checker is a secondary tool.
+- The local receiver's result passes through the governor automatically. Presentation, control and action-support layers have separate visible paths; rejected control and rejected support terminate at their respective boundary. Trace-only drift blocks the control lane while leaving exact action support distinct.
+- An explicit APPLY ADMITTED REST HERE gesture freshly revalidates the current candidate, pauses the theater, and puts intake at REST. Direct rest/exit remain available. No arbitrary action executor, model call or provider transport was added.
+- Receiver changes preserve actual HELD/REST posture. New scene/origin selection closes the old session. Pasted returns are receiver-bound, bounded JSON and untrusted; malformed returns clear stale action affordances.
+- Every meaningful field change derives from a recorded software comparison. This field owns no clock; the existing theater retains its one animation coordinator. The JSON receipt preserves exact software events. No physical or empirical tomography measurement is claimed.
+- The optional `privacy-lesson.js` experiment is preserved but **not mounted**. It must not become the product's principal path by default.
+
+Pedagogue subsequently reviewed the actual production Protect screenshot, rather than only the source/design fixture. Its finding: the old animation showed an unexplained stopping point with no visible protected subject or governed operation. The newer governance task additionally required separating changed presentation from changed permission. The active-session Aperture follow-up found and reproduced two misleading visual states (receiver change erasing HELD/REST; trace rejection leaving the control lane open). Both were repaired and are guarded by `tests/loom-governance-hostile-ui.test.mjs`.
+
+Validation after the correction:
+
+- 73 focused existing/admission/governor/workbench/hosted/theater tests PASS; four additional hostile UI regressions PASS (77 distinct cases across those invocations).
+- Pedagogue Design Gate PASS on the updated route. Its structural field-count delta is a declared fixture comparison, not measured human comprehension or a usability effect.
+- Browser witness implemented at `scripts/holonomy-loom-portable-browser-witness.mjs`, integrated into the existing consolidated workflow's three browser shards. It covers desktop, mobile/reduced motion, auto-admission, changed receiver, held return, private checker exclusion, local rest/resume, stale return and overflow.
+- Candidate browser execution remains HELD: the cloud browser blocked localhost; the local Playwright Chromium launch failed at the environment's socket boundary. No bypass was attempted. Actual candidate screenshots and three-engine passage are still outstanding. The live production screenshots belong to the baseline only.
+
+### Exact continuation
+
+PR: #1093, branch `td613/dollhouse-loom-audit-20260909`; starting main remains `8da9705285c90366ff5d67a12472e0ca05d76e79`. Initial checkpoint head was `11b7a0b1c80fda433ddbbe456aba19fd55f31c45`. The PR body records the successor commit containing this document and the implementation; re-fetch that exact head before validation.
+
+Next falsifier: an actual browser run must demonstrate that a returned trace/control/support change is visibly withheld, a receiver change preserves REST/HELD, and an explicit admitted REST really stops the view without any provider request. Use the existing consolidated Draft Static → same-head Ready → three-engine/convergence sequence. Do not weaken the witness to bypass observer failures. Inspect the resulting screenshots for child-legible consequence and mobile readability before claiming the visual work is complete.
+
+Highest-value subsequent architecture: bind non-fictional admitted state through an explicit source contract and implement one real host adapter whose action entry points all pass through this governor. Demonstrate a refused bypass and an allowed bounded action end-to-end before presenting that remote environment as protected. Exported JSON alone remains a carrier; it cannot establish host enforcement, secrecy or pre-ingress protection.
+
+Current state: local machine/DOM GREEN; browser/exact-head convergence HELD pending execution; Draft/unmerged/undeployed. Production and the Vercel lock remain untouched by this audit.
+
+Sealed ⟐
