@@ -130,3 +130,28 @@ test('final closure introduces no temporary workflow or authority mutation', () 
   assert.match(ledger, /automatic promotion: false/);
   assert.match(ledger, /automatic closure: false/);
 });
+
+test('Flow-Core promotion hold cannot become Safe Harbor packet authority', async () => {
+  const { FLOWCORE_PROMOTION_CONFIG } = await import('../app/dome-world/data/flowcore-promotion-config-v01.js');
+  const safeHarborMain = read('app/safe-harbor/app/main.js');
+  const safeHarborPipeline = read('app/safe-harbor/app/safe-harbor-packet-pipeline.js');
+  const safeHarborSchema = JSON.parse(read('app/safe-harbor/schemas/td613-safe-harbor.packet.schema.json'));
+  const flowCoreDoc = read('docs/DOME_WORLD_FLOW_CORE.md');
+
+  assert.equal(FLOWCORE_PROMOTION_CONFIG.feature_gate.default_enabled, false);
+  assert.equal(FLOWCORE_PROMOTION_CONFIG.feature_gate.presentation_layer_only, true);
+  assert.equal(FLOWCORE_PROMOTION_CONFIG.feature_gate.governed_state_mutation_allowed, false);
+  assert.equal(FLOWCORE_PROMOTION_CONFIG.feature_gate.route_promotion_authorized, false);
+
+  assert.equal(safeHarborSchema.required.includes('aperture_audit'), true);
+  assert.equal(safeHarborSchema.required.some(key => /flow[-_]?core|flowcore/i.test(key)), false);
+
+  assert.match(safeHarborMain, /async function mintStagedPacket/);
+  assert.match(safeHarborMain, /await rebuild\('packet-staged'\)/);
+  assert.doesNotMatch(safeHarborMain, /flow[-_]?core[-_\/]?context|FLOWCORE_CONTEXT/i);
+  assert.doesNotMatch(safeHarborPipeline, /flow[-_]?core[-_\/]?context|FLOWCORE_CONTEXT/i);
+
+  assert.match(flowCoreDoc, /CONTEXT_READY/);
+  assert.match(flowCoreDoc, /ABSTAIN_INSUFFICIENT_CONTEXT/);
+  assert.match(flowCoreDoc, /context ≠ custody/);
+});
