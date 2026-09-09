@@ -1,5 +1,5 @@
 import { AnimationCoordinator } from './animation-coordinator.js';
-import { LOOM_DEMO_SCENES, compileLoomDemoScene, getLoomDemoInput, validateLoomSemanticField, createLoomPortablePacket } from './semantic-field.js';
+import { LOOM_DEMO_SCENES, compileLoomDemoScene, getLoomDemoInput, getLoomClientHandoffInput, validateLoomSemanticField, createLoomPortablePacket } from './semantic-field.js';
 import { HOLONOMY_LOOM_MOTION_DESCRIPTORS } from './flowcore-aia-motion.js';
 import { projectLoomGeometry } from './theater-geometry.js';
 
@@ -40,7 +40,7 @@ export function mountLoomTheater(root, environment = window) {
     <div class="lt-settings"><label><input id="ltReduced" type="checkbox">Reduced motion</label><label><input id="ltPortable" type="checkbox">Portable receiver</label><span class="lt-runtime" id="ltRuntime" role="status">Clock idle · 0 pending frames</span></div>
     <details class="lt-details" id="ltWhy"><summary>WHY DID THAT MOVE?</summary><p id="ltWhyText">Nothing has moved yet. A scene will name its exact cause here.</p><ul id="ltMotionCauses"></ul></details>
     <section class="lt-details" id="ltAudit" aria-label="Auditor projection" hidden><p class="lt-eyebrow">Same state / exact limits</p><dl class="lt-facts" id="ltFacts"></dl><p class="lt-warning">V ≠ C ≠ P ≠ L. A supplied marker is not recovered custody; a modeled warning is not evidence of hidden-state reconstruction.</p><p id="ltCeilings"></p></section>
-    <details class="lt-details" id="ltReceipt"><summary>SHOW RECEIPT</summary><p id="ltReceiptScope">No scene has been checked. Receipts describe local fictional analysis, not a provider observation or a release.</p><pre id="ltReceiptJson">No receipt yet.</pre><div class="lt-evidence"><button type="button" id="ltDownload" disabled>DOWNLOAD REPLAY PACKET</button><button type="button" id="ltLoad" disabled>LOAD CASE INTO CHECKER</button></div><p class="ceiling">Loading fills the real checker below; it does not press CHECK, copy a message, or send anything.</p></details>
+    <details class="lt-details" id="ltReceipt"><summary>SHOW RECEIPT</summary><p id="ltReceiptScope">No scene has been checked. Receipts describe local fictional analysis, not a provider observation or a release.</p><pre id="ltReceiptJson">No receipt yet.</pre><div class="lt-evidence"><button type="button" id="ltDownload" disabled>DOWNLOAD REPLAY PACKET</button><button type="button" id="ltLoad" disabled>LOAD CASE INTO CHECKER</button></div><div class="lt-client-case"><p class="lt-eyebrow">REALISTIC SYNTHETIC CASE</p><p>Hydrate the checker with a longer fictional client handoff: exact protected phrases, two declared route markers, and an ordinary note that still needs a human CHECK.</p><button type="button" id="ltLoadClient">LOAD CLIENT HANDOFF</button></div><p class="ceiling">Loading fills the real checker below; it does not press CHECK, copy a message, or send anything.</p></details>
     <p class="lt-ceiling"><strong>The horizon does not open.</strong> GREEN only means no enabled rule fired. Modeled weather is dashed; unknown links stay broken. This theater cannot earn origin, attribution, provider access, deployment authority, or human comprehension.</p>`;
 
   const $ = selector => root.querySelector(selector);
@@ -172,6 +172,7 @@ export function mountLoomTheater(root, environment = window) {
   root.querySelectorAll('[data-view]').forEach(button=>listen(button,'click',()=>{view=button.dataset.view;root.querySelectorAll('[data-view]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.view===view)));$('#ltAudit').hidden=view!=='auditor';}));
   listen($('#ltReceipt'),'toggle',()=>{if($('#ltReceipt').open)updateReceipt();});
   listen($('#ltLoad'),'click',()=>{stopTour();coordinator.pause();doc.dispatchEvent(new environment.CustomEvent('loom-practice-load',{detail:getLoomDemoInput(index)}));});
+  listen($('#ltLoadClient'),'click',()=>{stopTour();coordinator.pause();doc.dispatchEvent(new environment.CustomEvent('loom-practice-load',{detail:getLoomClientHandoffInput()}));});
   listen($('#ltDownload'),'click',()=>{
     if(!packet)return;updateReceipt();
     const blob=new environment.Blob([pretty(receiptEnvelope())+'\n'],{type:'application/json'}),url=environment.URL.createObjectURL(blob);
