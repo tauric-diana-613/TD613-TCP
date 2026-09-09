@@ -9,12 +9,14 @@ import {
 } from '../app/dome-world/holonomy-loom/engine.js';
 
 const hostedPath = 'app/dome-world/holonomy-loom.html';
+const theaterPath = 'app/dome-world/holonomy-loom/theater.js';
 const enginePath = 'app/dome-world/holonomy-loom/engine.js';
 const legacyWitnessPath = 'scripts/holonomy-loom-hosted-product-integration-browser-witness.mjs';
 const repairedWitnessPath = 'scripts/holonomy-loom-hosted-product-integration-browser-witness-v02.mjs';
 const transitionWrapperPath = 'scripts/ash-a15-transition-trace-browser-probe.mjs';
 const pedagogueFixturePath = 'tests/fixtures/pedagogue/holonomy-loom-hosted-observer-geometry-design.json';
 const hosted = fs.readFileSync(hostedPath, 'utf8');
+const theater = fs.readFileSync(theaterPath, 'utf8');
 const engine = fs.readFileSync(enginePath);
 const legacyWitness = fs.readFileSync(legacyWitnessPath, 'utf8');
 const repairedWitness = fs.readFileSync(repairedWitnessPath, 'utf8');
@@ -47,10 +49,15 @@ for (const phase of ['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME', 'REST']) {
 assert.match(hosted, /id="rest" type="button" data-rest/);
 assert.match(hosted, /id="returnToCheck" data-return/);
 assert.match(hosted, /CHECK THIS MESSAGE/);
+assert.match(theater, /id="ltPhaseGlyph" class="lt-glyph" x="160" y="227" text-anchor="middle" dominant-baseline="middle">à<\/text>/, 'The live theater glyph must stay centered and fit the node.');
 assert.match(hosted, /KEEP/);
 assert.match(hosted, /CHANGE/);
 assert.match(hosted, /REMOVE/);
 assert.match(hosted, /MAKE A SAFER COPY/);
+assert.match(hosted, /data-safer-copy-state="HELD"/, 'Safer-copy control must expose its initial held state.');
+assert.match(hosted, /function setSaferCopyState\(state,message=''\)/);
+assert.match(hosted, /No enabled rule matched this message, so a safer copy is not needed for this result\./);
+assert.match(hosted, /Scene loaded locally\. Press CHECK THIS MESSAGE/);
 assert.match(hosted, /COPY CHECKED MESSAGE/);
 assert.match(hosted, /Show me why/);
 assert.match(hosted, /Ask for model help \(optional\)/);

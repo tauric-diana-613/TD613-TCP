@@ -6,6 +6,7 @@ import {
   compileLoomDemoScene,
   validateLoomSemanticField,
   getLoomDemoInput,
+  getLoomClientHandoffInput,
   createLoomPortablePacket
 } from '../app/dome-world/holonomy-loom/semantic-field.js';
 import { analyzeHolonomyLoomMessage, makeHolonomyLoomSaferCopy } from '../app/dome-world/holonomy-loom/engine.js';
@@ -44,6 +45,19 @@ test('loading fictional input does not compile an analysis or fabricate a receip
   assert.deepEqual(Object.keys(input), ['text', 'protectedTerms', 'journeyMarkers']);
   assert.equal(input.protectedTerms[0].value, 'glass seed');
   assert.ok(Object.isFrozen(input.protectedTerms[0]));
+});
+
+test('realistic fictional handoff hydrates complex exact phrases without hidden-state claims', () => {
+  const input = getLoomClientHandoffInput();
+  assert.match(input.text, /ORCHID-ROUTE \/ client-side only/);
+  assert.equal(input.protectedTerms.length, 2);
+  assert.equal(input.journeyMarkers.length, 2);
+  const analysis = analyzeHolonomyLoomMessage(input);
+  assert.equal(analysis.status, 'RED');
+  assert.equal(analysis.release_boundary.safer_copy_available, true);
+  assert.equal(analysis.journey_relations.length, 2);
+  assert.equal(analysis.receipt.raw_match_values_retained, false);
+  assert.equal(analysis.receipt.downstream_platform_governed, false);
 });
 
 test('quiet, change and release block are the real enabled Loom policy outcomes', () => {

@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="./holonomy-loom/theater.css">
   <style>
     :root{--ink:#020806;--deep:#04130f;--panel:#071a15;--line:rgba(118,234,212,.24);--line2:rgba(228,198,108,.34);--mint:#76ead4;--gold:#e4c66c;--paper:#fff8da;--muted:#9ab4aa;--rose:#ff8b9d;--sans:Inter,system-ui,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;--serif:Georgia,"Times New Roman",serif}
-    *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans);background-image:linear-gradient(rgba(118,234,212,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(118,234,212,.035) 1px,transparent 1px);background-size:32px 32px}button,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}.wrap{width:min(860px,calc(100% - 28px));margin:0 auto;padding:20px 0 54px}.mast{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:11px 0 18px;border-bottom:1px solid var(--line)}.mark{color:var(--mint);font:700 .65rem var(--mono);text-transform:uppercase;letter-spacing:.08em}.return{color:var(--paper);font:700 .68rem var(--mono);text-decoration:none;border:1px solid var(--line);padding:9px 11px}.hero{padding:34px 0 10px}.hero h1{margin:8px 0;font:500 clamp(2.7rem,9vw,5.6rem)/.9 var(--serif);letter-spacing:-.045em}.hero p{max-width:650px;color:#d8e4dc;font-size:1.08rem;line-height:1.6}.ceiling{color:var(--muted);font:600 .69rem/1.55 var(--mono)}.panel{margin-top:18px;padding:18px;border:1px solid var(--line);background:rgba(7,26,21,.86);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}label{display:block;margin:0 0 7px;font-weight:750}textarea{width:100%;min-height:160px;padding:13px;border:1px solid var(--line);background:#010806;resize:vertical;line-height:1.5}textarea.small{min-height:82px}button{min-height:44px;margin-top:11px;padding:9px 14px;border:1px solid var(--line);background:#0a241c;font-weight:800;cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid currentColor;outline-offset:3px}details{margin-top:14px;border-top:1px solid rgba(118,234,212,.12);padding-top:11px}summary{cursor:pointer;font-weight:800}.result{display:none}.result.show{display:block}.light{display:inline-block;padding:7px 10px;font:900 .78rem var(--mono);letter-spacing:.08em}.green{background:#173d2d}.yellow{background:#51440c}.red{background:#591d24}.held{background:#343840}.finding{padding:11px 0;border-top:1px solid rgba(118,234,212,.14)}.finding:first-child{border-top:0}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.three div{padding:11px;border:1px solid var(--line)}pre{white-space:pre-wrap;overflow:auto;background:#010806;padding:12px;font:600 .68rem/1.5 var(--mono)}.rest-row{display:flex;gap:8px;flex-wrap:wrap}.rest-row a{display:inline-grid;place-items:center;min-height:44px;padding:8px 12px;border:1px solid var(--line2);color:var(--gold);text-decoration:none;font:800 .68rem var(--mono)}
+    *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans);background-image:linear-gradient(rgba(118,234,212,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(118,234,212,.035) 1px,transparent 1px);background-size:32px 32px}button,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}.wrap{width:min(860px,calc(100% - 28px));margin:0 auto;padding:20px 0 54px}.mast{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:11px 0 18px;border-bottom:1px solid var(--line)}.mark{color:var(--mint);font:700 .65rem var(--mono);text-transform:uppercase;letter-spacing:.08em}.return{color:var(--paper);font:700 .68rem var(--mono);text-decoration:none;border:1px solid var(--line);padding:9px 11px}.hero{padding:34px 0 10px}.hero h1{margin:8px 0;font:500 clamp(2.7rem,9vw,5.6rem)/.9 var(--serif);letter-spacing:-.045em}.hero p{max-width:650px;color:#d8e4dc;font-size:1.08rem;line-height:1.6}.ceiling{color:var(--muted);font:600 .69rem/1.55 var(--mono)}.panel{margin-top:18px;padding:18px;border:1px solid var(--line);background:rgba(7,26,21,.86);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}.checker-panel{margin-top:16px;padding:16px 18px;border-top:2px solid var(--gold);clip-path:none;background:linear-gradient(135deg,rgba(12,37,29,.96),rgba(4,17,13,.96))}.checker-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:10px}.checker-head .mark{margin:0 0 5px}.checker-head h2{margin:0;font:500 clamp(1.25rem,3vw,1.75rem)/1.05 var(--serif);letter-spacing:-.02em}.checker-head button{margin:0;min-width:112px;border-color:var(--gold);color:var(--gold)}.checker-panel textarea#message{min-height:104px;padding:16px 18px;border:1px solid rgba(228,198,108,.5);border-left:3px solid var(--gold);background:linear-gradient(115deg,rgba(1,8,6,.98),rgba(7,26,21,.8));box-shadow:inset 0 0 0 1px rgba(118,234,212,.06),0 10px 26px rgba(0,0,0,.18);font:500 1rem/1.65 var(--serif);letter-spacing:.008em;caret-color:var(--gold)}.checker-panel textarea#message::placeholder{color:#77978b;font:500 .98rem/1.65 var(--serif);opacity:.86}.checker-panel details{margin-top:11px;padding-top:9px}.checker-panel .checker-note{margin:10px 0 0}.checker-panel #protectionRules label{font-size:.78rem;color:#bfd4c7}textarea{width:100%;min-height:160px;padding:13px;border:1px solid var(--line);background:#010806;resize:vertical;line-height:1.5}textarea.small{min-height:82px}button{min-height:44px;margin-top:11px;padding:9px 14px;border:1px solid var(--line);background:#0a241c;font-weight:800;cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button[data-safer-copy-state="AVAILABLE"]{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 1px rgba(228,198,108,.18)}button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid currentColor;outline-offset:3px}details{margin-top:14px;border-top:1px solid rgba(118,234,212,.12);padding-top:11px}summary{cursor:pointer;font-weight:800}.result{display:none}.result.show{display:block}.light{display:inline-block;padding:7px 10px;font:900 .78rem var(--mono);letter-spacing:.08em}.green{background:#173d2d}.yellow{background:#51440c}.red{background:#591d24}.held{background:#343840}.finding{padding:11px 0;border-top:1px solid rgba(118,234,212,.14)}.finding:first-child{border-top:0}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.three div{padding:11px;border:1px solid var(--line)}pre{white-space:pre-wrap;overflow:auto;background:#010806;padding:12px;font:600 .68rem/1.5 var(--mono)}.rest-row{display:flex;gap:8px;flex-wrap:wrap}.rest-row a{display:inline-grid;place-items:center;min-height:44px;padding:8px 12px;border:1px solid var(--line2);color:var(--gold);text-decoration:none;font:800 .68rem var(--mono)}
     .path-intro{margin-top:18px;padding-top:14px;border-top:1px solid rgba(228,198,108,.22)}.path-intro p{max-width:670px}.glyph-path{margin-top:14px;padding:15px;border:1px solid var(--line2);background:#010806}.glyph-path[hidden]{display:none}.glyph-path-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.glyph-path-head h3{margin:0;font:600 1.3rem var(--serif)}.glyph-path-head p{margin:4px 0 0}.glyph-rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}.glyph-node{min-height:118px;margin:0;padding:10px 7px;display:grid;align-content:center;gap:5px;text-align:center;border-color:var(--line2);background:#071a15}.glyph-node .glyph{font:700 1.45rem/1 var(--serif);color:var(--gold)}.glyph-node .glyph-label{font:800 .68rem/1.2 var(--mono);text-transform:uppercase;letter-spacing:.04em}.glyph-node .glyph-state{font:700 .61rem/1.2 var(--mono);color:var(--muted)}.glyph-node[data-motion-state="BLOCKED"]{border-style:dashed}.glyph-node[data-motion-state="RELEASED"],.glyph-node[data-motion-state="READY"]{border-width:2px}.glyph-node[data-motion-state="SETTLED"]{opacity:.86}.motion-status{min-height:1.2em;margin:11px 0 0}.motion-static-note{margin:7px 0 0}.motion-static-note strong{color:var(--gold)}
-    @media(max-width:720px){.glyph-rail{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.wrap{width:min(100% - 20px,860px)}.mast{align-items:flex-start;flex-direction:column}.three{grid-template-columns:1fr}.hero{padding-top:24px}.panel{padding:15px}.glyph-rail{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:720px){.glyph-rail{grid-template-columns:repeat(3,1fr)}}@media(max-width:620px){.wrap{width:min(100% - 20px,860px)}.mast{align-items:flex-start;flex-direction:column}.three{grid-template-columns:1fr}.hero{padding-top:24px}.panel{padding:15px}.checker-panel{padding:14px}.checker-head{align-items:flex-start;flex-direction:column;gap:9px}.checker-head button{width:100%}.glyph-rail{grid-template-columns:repeat(2,1fr)}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.glyph-node{transform:none!important}}
     @media(forced-colors:active){.panel,.glyph-path,.glyph-node,.rest-row a,button{border:1px solid CanvasText}.glyph-node .glyph,.return,.rest-row a{color:LinkText}.glyph-node:disabled{color:GrayText}.light{border:2px solid CanvasText}}
   </style>
@@ -33,17 +33,15 @@
       <a class="loom-practice-door" href="#loomTheater">See it happen <span>8 fictional scenes · about 2 minutes ↗</span></a>
     </section>
 
-    <section id="loomTheater" class="loom-theater" aria-label="Loom fictional practice theater" data-flowcore-phase="NOTICE">
-      <p class="ceiling">A fictional practice case uses the same local rule engine. Loading this page checks nothing and sends nothing.</p>
-      <p>Loading the optional theater… The message checker below remains available.</p>
-    </section>
-
-    <section class="panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
-      <label id="messageTitle" for="message">Paste your message here</label>
-      <textarea id="message" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
+    <section class="panel checker-panel" aria-labelledby="messageTitle" data-flowcore-phase="ACT">
+      <div class="checker-head">
+        <div><p class="mark">LOCAL CHECK</p><h2 id="messageTitle">What are you about to send?</h2></div>
+        <button id="check" type="button">CHECK THIS MESSAGE</button>
+      </div>
+      <textarea id="message" aria-label="Message to check" autocomplete="off" spellcheck="true" placeholder="Paste the message you are thinking about sending…"></textarea>
 
       <details id="protectionRules">
-        <summary>Protection rules</summary>
+        <summary>Rules & journey markers</summary>
         <p class="ceiling">One item per line. These fields belong to this hosted check and are not a provider prompt.</p>
         <label for="protected">Things that must never leave</label>
         <textarea class="small" id="protected" autocomplete="off"></textarea>
@@ -52,8 +50,13 @@
         <p class="ceiling">The Loom calls something “another journey” only when an exact marker you declared matches. Resemblance alone does not establish provenance.</p>
       </details>
 
-      <button id="check" type="button">CHECK THIS MESSAGE</button>
-      <p class="ceiling">The default deterministic check does not ask a model for help.</p>
+      <p class="ceiling checker-note">Local rules only · no model call · nothing leaves this page.</p>
+    </section>
+
+
+    <section id="loomTheater" class="loom-theater" aria-label="Loom fictional practice theater" data-flowcore-phase="NOTICE">
+      <p class="ceiling">A fictional practice case uses the same local rule engine. Loading this page checks nothing and sends nothing.</p>
+      <p>Loading the optional theater… The message checker below remains available.</p>
     </section>
 
     <section id="result" class="panel result" aria-live="polite" data-flowcore-phase="WORLD_ANSWERS">
@@ -77,7 +80,7 @@
       </div>
       <div id="actions"></div>
 
-      <button id="makeSafer" type="button" disabled>MAKE A SAFER COPY</button>
+      <button id="makeSafer" type="button" disabled data-safer-copy-state="HELD" aria-describedby="copyStatus">MAKE A SAFER COPY</button>
       <button id="copyChecked" type="button" disabled>COPY CHECKED MESSAGE</button>
       <p id="copyStatus" class="ceiling"></p>
 
@@ -203,6 +206,16 @@
     motionNode('bounded_emergence').disabled=true;
   }
 
+  function setSaferCopyState(state,message=''){
+    const button=$('#makeSafer');
+    const available=state==='AVAILABLE';
+    button.disabled=!available;
+    button.dataset.saferCopyState=state;
+    button.setAttribute('aria-disabled',String(!available));
+    button.title=available?'A finding needs a safer copy. Activate to remove or generalize it, then re-check.':state==='GREEN'?'No enabled rule matched this message, so a safer copy is not needed for this result.':'Check a message first; the safer-copy path stays held until a result exists.';
+    if(message)$('#copyStatus').textContent=message;
+  }
+
   function render(){
     const text=$('#message').value;
     const analysis=analyzeHolonomyLoomMessage({text,protectedTerms:terms($('#protected').value),journeyMarkers:markers($('#journeys').value)});
@@ -221,15 +234,14 @@
     releaseCandidate=analysis.status==='GREEN'?text:'';
     releaseAllowed=analysis.status==='GREEN';
     $('#copyChecked').disabled=!releaseAllowed;
-    $('#makeSafer').disabled=analysis.status==='GREEN'||analysis.status==='HELD';
-    $('#copyStatus').textContent='';
+    setSaferCopyState(analysis.release_boundary?.safer_copy_available===true?'AVAILABLE':'HELD',analysis.release_boundary?.safer_copy_available===true?'A finding needs a safer copy. Activate the control to remove or generalize it, then re-check.':analysis.status==='GREEN'?'No enabled rule matched this message, so a safer copy is not needed for this result.':'Check a message first; the safer-copy path stays held until a result exists.');
     $('#restStatus').textContent='';
   }
 
   function makeSaferCopy(){
     if(!currentAnalysis)return null;
     const safer=makeHolonomyLoomSaferCopy({text:$('#message').value,protectedTerms:terms($('#protected').value),journeyMarkers:markers($('#journeys').value)});
-    releaseCandidate=safer.text;releaseAllowed=safer.release_allowed;$('#copyChecked').disabled=!releaseAllowed;$('#copyStatus').textContent=safer.child_legible||'';
+    releaseCandidate=safer.text;releaseAllowed=safer.release_allowed;$('#copyChecked').disabled=!releaseAllowed;setSaferCopyState('AVAILABLE',safer.child_legible||'The safer copy is ready to re-check.');
     if(safer.release_allowed){
       currentMotionAnalysis=analyzeHolonomyLoomMessage({text:safer.text,protectedTerms:[],journeyMarkers:markers($('#journeys').value)});
       if(!$('#glyphPath').hidden){compilePath(currentMotionAnalysis);setMotionState('bounded_emergence','READY');runMotion('bounded_emergence');$('#motionStatus').textContent='A safer copy emerged from the same deterministic rules. The original result above has not been rewritten.';}
@@ -281,7 +293,7 @@
     // Loading fictional inputs is not a check, receipt, clipboard write, or release.
     currentAnalysis=null;currentMotionAnalysis=null;releaseCandidate='';releaseAllowed=false;
     resetPath();$('#result').classList.remove('show');
-    $('#copyChecked').disabled=true;$('#makeSafer').disabled=true;
+    $('#copyChecked').disabled=true;setSaferCopyState('HELD','Scene loaded locally. Press CHECK THIS MESSAGE to run the rules; the safer-copy path opens only when a finding requires change or removal.');
     $('#message').focus();
   });
   $('#makeSafer').addEventListener('click',makeSaferCopy);
@@ -302,6 +314,7 @@
 
   reduceMotionQuery.addEventListener?.('change',()=>{$('#glyphPath').dataset.reducedMotion=String(reducedMotion());if(reducedMotion())cancelMotion();});
   resetPath();
+  setSaferCopyState('HELD','Check a message to see whether a safer copy is needed.');
 </script>
 <script type="module" src="./holonomy-loom/theater.js"></script>
 </body>
