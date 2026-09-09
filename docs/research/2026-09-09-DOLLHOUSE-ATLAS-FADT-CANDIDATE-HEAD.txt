@@ -1,0 +1,4 @@
+Candidate content parent before this marker: 09ede02c6bda9860797140054bbca3875806d7d6
+Purpose: route CI against a stable branch without mutating product files.
+No theorem, merge, deployment, release, provider, or Vercel authority.
+Sealed ⟐
