@@ -17,6 +17,11 @@ import {
   runAtlasAgent,
   runFadtAgent
 } from '../app/engine/dollhouse-atlas-fadt.js';
+import {
+  compileDollhousePortableProjection,
+  operateDollhousePortableProjection,
+  revalidateDollhousePortableReturn
+} from '../app/engine/dollhouse-portable-aia-roundtrip.js';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 const SOURCE = 'aa027ff5192f2bdea62334dbf57fc09634bffd06';
@@ -176,6 +181,58 @@ test('Atlas gives child and auditor different presentations over one Flow-Core c
   assert.equal(result.portable_return_contract.return_requires_loom_revalidation, true);
   assert.equal(result.projections[0].control, result.projections[1].control);
   assert.notDeepEqual(result.projections[0].presentation, result.projections[1].presentation);
+});
+
+test('Portable AIA companion operation returns structured Flow-Core control for Loom revalidation', () => {
+  const packet = compileLoomDemoScene(3, { sourceRevision: SOURCE });
+  const projection = compileDollhousePortableProjection(packet, { receiver: 'companion' });
+  assert.equal(projection.presentation.mode, 'FLOWCORE_GUIDED_COMPANION');
+  assert.equal(projection.raw_source_included, false);
+  assert.equal(projection.packetization_claim, 'carrier-only');
+  assert.equal(projection.authority.td613_release_transferred, false);
+  assert.ok(projection.presentation.flow_core_legend.every(item => item.glyph && item.semantic_relation));
+
+  const returned = operateDollhousePortableProjection(projection, {
+    operation: 'PROPOSE_ACTION',
+    proposedAction: 'REST'
+  });
+  const check = revalidateDollhousePortableReturn(packet, returned);
+  assert.equal(check.status, 'PRESENT_TO_HUMAN');
+  assert.equal(check.atlas.control_plane_equal, true);
+  assert.equal(check.fadt.all_fibres_exact, true);
+  assert.equal(check.action.proposed_action_admissible, true);
+  assert.equal(check.candidate_trusted, false);
+  assert.equal(check.release_authority, false);
+  assert.equal(check.human_closure_required, true);
+});
+
+test('Portable AIA return holds authority widening and keeps host missingness advisory', () => {
+  const packet = compileLoomDemoScene(2, { sourceRevision: SOURCE });
+  const projection = compileDollhousePortableProjection(packet, { receiver: 'companion' });
+  const unauthorized = operateDollhousePortableProjection(projection, {
+    operation: 'PROPOSE_ACTION',
+    proposedAction: 'COPY_CHECKED_MESSAGE'
+  });
+  const unauthorizedCheck = revalidateDollhousePortableReturn(packet, unauthorized);
+  assert.equal(unauthorizedCheck.status, 'HOLD');
+  assert.ok(unauthorizedCheck.reason_codes.includes('PROPOSED_ACTION_OUTSIDE_ORIGIN_SUPPORT'));
+
+  const widened = clone(operateDollhousePortableProjection(projection, { operation: 'EXPLAIN_STATE' }));
+  widened.returned_control.governance.raw_release_allowed = true;
+  const widenedCheck = revalidateDollhousePortableReturn(packet, widened);
+  assert.equal(widenedCheck.status, 'HOLD');
+  assert.equal(widenedCheck.atlas.control_plane_equal, false);
+  assert.equal(widenedCheck.fadt.all_fibres_exact, false);
+  assert.ok(widenedCheck.reason_codes.includes('CONTROL_PLANE_DRIFT'));
+  assert.ok(widenedCheck.reason_codes.includes('FADT_ADMISSIBILITY_GAP'));
+
+  const reported = operateDollhousePortableProjection(projection, {
+    operation: 'REPORT_MISSINGNESS',
+    reportedMissingness: ['Receiving host cannot independently verify pre-ingress custody.']
+  });
+  const reportedCheck = revalidateDollhousePortableReturn(packet, reported);
+  assert.equal(reportedCheck.host_reported_missingness.length, 1);
+  assert.equal(reportedCheck.host_reported_missingness_promoted_to_origin_fact, false);
 });
 
 test('deterministic admission rejects authority escalation, arbitrary renderer fields and altered evidence', () => {
