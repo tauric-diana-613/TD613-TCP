@@ -62,6 +62,7 @@ try {
   await fs.rm(tempPath, { force:true });
 }
 
+await import('./ash-a13-production-diagnostic-contract.test.mjs');
 await import('./pedagogue-research-hydration.test.mjs');
 await import('./pedagogue-research-hydration-temporal.test.mjs');
 await import('./pedagogue-research-hydration-observability.test.mjs');
