@@ -30,17 +30,33 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
+// Preserve the empirically witnessed completion/fallback timing contract. The
+// token and reasoning repair is independent of transport timeout behavior.
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 44500;
 const RESPONSE_RESERVE_MS = 500;
-const MAX_OUTPUT_TOKENS = 4096;
+const LEGACY_OUTPUT_TOKENS = 4096;
+// Current text-capable Gemini Flash models used by the live quality route expose
+// 65,536 output tokens. The larger envelope is bound only to the pinned quality
+// family; unknown/synthetic models retain the conservative legacy contract.
+export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
+const QUALITY_ENVELOPE_MODELS = new Set([
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3-flash-preview',
+  'gemini-2.5-flash'
+]);
 const WINDOW_MS = 10 * 60 * 1000;
 const REQUESTS_PER_WINDOW = 12;
 const buckets = new Map();
 
 const safe = (value = '') => String(value ?? '').trim();
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
+const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
+const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
 
 function headerValue(headers = {}, key = '') {
   const target = key.toLowerCase();
@@ -106,7 +122,8 @@ function geminiContents(packet = {}) {
   return [...history, { role: 'user', parts: [{ text: packet.message }] }];
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}) {
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '') {
+  const frontier = qualityEnvelope(model);
   return {
     systemInstruction: {
       parts: [{ text: `${packet.systemInstruction}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
@@ -116,7 +133,8 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}) {
       temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
       topP: 0.9,
       topK: 40,
-      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      maxOutputTokens: outputBudget(model),
+      ...(frontier ? { thinkingConfig: { thinkingLevel: 'high' } } : {}),
       responseMimeType: 'application/json',
       responseSchema: KHONAPOLIT_RELAY_RESPONSE_SCHEMA
     }
@@ -131,7 +149,7 @@ export function extractGeminiText(payload = {}) {
     .trim();
 }
 
-export function observeGeminiOutput(payload = {}) {
+export function observeGeminiOutput(payload = {}, model = '') {
   const usage = {};
   for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
     const value = payload?.usageMetadata?.[key];
@@ -142,7 +160,8 @@ export function observeGeminiOutput(payload = {}) {
   return Object.freeze({
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
-    maxOutputTokens: MAX_OUTPUT_TOKENS,
+    maxOutputTokens: outputBudget(model),
+    thinkingLevel: qualityEnvelope(model) ? 'high' : 'provider-default',
     usage: Object.freeze(usage)
   });
 }
@@ -195,7 +214,7 @@ async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_RE
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt)),
+      body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model)),
       signal: controller.signal
     });
     const payload = await response.json().catch(() => ({}));
@@ -276,7 +295,7 @@ export default async function handler(req, res) {
     const timeoutMs = Math.min(attempts.length === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS, remainingMs);
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs);
-    const providerOutput = observeGeminiOutput(result.payload);
+    const providerOutput = observeGeminiOutput(result.payload, model);
     const error = result.response.ok ? null : providerError(result.payload);
     const outcome = recordGeminiModelOutcome(model, {
       ok: Boolean(result.response.ok),
@@ -345,7 +364,8 @@ export default async function handler(req, res) {
           'aperture-v3-task-intent-active',
           'three-part-relay-envelope-active',
           'high-zalgo-rendered-after-provider-return',
-          'quality-first-model-routing',
+          'frontier-quality-floor-active',
+          'frontier-model-high-thinking-active',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
           ...plan.warnings
