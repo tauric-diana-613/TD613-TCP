@@ -43,12 +43,49 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.7-post-refresh-title-ownership',
+  schema:'td613.ash.reviewability-browser/v0.8-a6-work-arrival-diagnostics',
   browser:browserName,
   status:'RUNNING',
   errors,
   http_errors:httpErrors,
   observations:{}
+};
+
+const a6ArrivalSnapshot = () => page.evaluate(() => {
+  const panel = document.getElementById('workspace-work');
+  const target = document.getElementById('ashA6LocalDocumentSurface');
+  const style = panel ? getComputedStyle(panel) : null;
+  const rect = target?.getBoundingClientRect();
+  const receipt = window.__td613AshA6Affordances?.current?.()?.last_navigation_receipt || null;
+  const panelActive = Boolean(panel?.classList.contains('active'));
+  const panelVisible = Boolean(panel && style?.display !== 'none' && style?.visibility !== 'hidden' && Number(style?.opacity ?? 1) > 0);
+  const targetVisible = Boolean(rect?.height > 0);
+  const focusSettled = document.activeElement?.id === 'ashA6ChooseLocalDocument';
+  const receiptSettled = receipt?.destination_anchor === 'ashA6LocalDocumentSurface';
+  return {
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    panel_active:panelActive,
+    panel_visible:panelVisible,
+    panel_display:style?.display || null,
+    panel_visibility:style?.visibility || null,
+    panel_opacity:Number(style?.opacity ?? 1),
+    target_height:Math.round(rect?.height || 0),
+    target_visible:targetVisible,
+    focused:document.activeElement?.id || null,
+    focus_settled:focusSettled,
+    receipt,
+    receipt_settled:receiptSettled,
+    settled:panelActive && panelVisible && targetVisible && focusSettled && receiptSettled
+  };
+});
+
+const classifyA6ArrivalHold = snapshot => {
+  if (!snapshot?.panel_active) return 'A6_WORKSPACE_NOT_ACTIVE';
+  if (!snapshot?.panel_visible) return 'A6_WORKSPACE_NOT_VISIBLE';
+  if (!snapshot?.target_visible) return 'A6_LOCAL_DOCUMENT_SURFACE_NOT_VISIBLE';
+  if (!snapshot?.focus_settled) return 'A6_LOCAL_DOCUMENT_FOCUS_NOT_SETTLED';
+  if (!snapshot?.receipt_settled) return 'A6_NAVIGATION_RECEIPT_NOT_SETTLED';
+  return 'A6_WORK_ARRIVAL_TIMEOUT_UNCLASSIFIED';
 };
 
 try {
@@ -123,7 +160,7 @@ try {
     };
   });
   assert(activeCase.work_visible, `Post-ingress setup/work card was not visible: ${JSON.stringify(activeCase)}.`);
-  assert(activeCase.receipt.panel_posture === 'CASE_ACTIVE', `Active case retained setup posture: ${JSON.stringify(activeCase)}.`);
+  assert(activeCase.receipt.panel_posture === 'CASE_ACTIVE', `Active case retained setup posture: ${JSON.stringify(activeCase.receipt)}.`);
   assert(!/^Set up\b/i.test(activeCase.receipt.panel_title || ''), `Active case retained stale setup title: ${JSON.stringify(activeCase.receipt)}.`);
   assert(activeCase.receipt.panel_button_actionable, `Active case action button remained dead: ${JSON.stringify(activeCase.receipt)}.`);
   assert(!activeCase.note_present, `Setup-only note leaked into active case: ${JSON.stringify(activeCase)}.`);
@@ -160,20 +197,29 @@ try {
     assert(title.padding_bottom > 0, `${name} lacks descender clearance: ${JSON.stringify(title)}.`);
   }
 
+  const a6ArrivalBefore = await a6ArrivalSnapshot();
   await page.locator('[data-aia-primary-task]').click();
-  await page.waitForFunction(() => {
-    const panel = document.getElementById('workspace-work');
-    const target = document.getElementById('ashA6LocalDocumentSurface');
-    const style = panel ? getComputedStyle(panel) : null;
-    const rect = target?.getBoundingClientRect();
-    return panel?.classList.contains('active')
-      && style?.display !== 'none'
-      && style?.visibility !== 'hidden'
-      && Number(style?.opacity ?? 1) > 0
-      && rect?.height > 0
-      && document.activeElement?.id === 'ashA6ChooseLocalDocument'
-      && window.__td613AshA6Affordances?.current?.()?.last_navigation_receipt?.destination_anchor === 'ashA6LocalDocumentSurface';
-  });
+  try {
+    await page.waitForFunction(() => {
+      const panel = document.getElementById('workspace-work');
+      const target = document.getElementById('ashA6LocalDocumentSurface');
+      const style = panel ? getComputedStyle(panel) : null;
+      const rect = target?.getBoundingClientRect();
+      return panel?.classList.contains('active')
+        && style?.display !== 'none'
+        && style?.visibility !== 'hidden'
+        && Number(style?.opacity ?? 1) > 0
+        && rect?.height > 0
+        && document.activeElement?.id === 'ashA6ChooseLocalDocument'
+        && window.__td613AshA6Affordances?.current?.()?.last_navigation_receipt?.destination_anchor === 'ashA6LocalDocumentSurface';
+    });
+  } catch (error) {
+    const a6ArrivalHold = await a6ArrivalSnapshot().catch(() => null);
+    report.observations.a6_arrival_before = a6ArrivalBefore;
+    report.observations.a6_arrival_hold = a6ArrivalHold;
+    report.a6_arrival_hold_classification = classifyA6ArrivalHold(a6ArrivalHold);
+    throw error;
+  }
   const a6WorkArrival = await page.evaluate(() => ({
     workspace:document.documentElement.dataset.ashPremiumWorkspace,
     focused:document.activeElement?.id || null,
@@ -227,7 +273,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { ingress, active_case:activeCase, authored_titles:authoredTitles, a6_work_arrival:a6WorkArrival, deep, sustained };
+  report.observations = { ingress, active_case:activeCase, authored_titles:authoredTitles, a6_arrival_before:a6ArrivalBefore, a6_work_arrival:a6WorkArrival, deep, sustained };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
