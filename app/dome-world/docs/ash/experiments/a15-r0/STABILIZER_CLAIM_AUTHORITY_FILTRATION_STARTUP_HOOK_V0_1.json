@@ -1,0 +1,62 @@
+{
+  "schema": "td613.dome-world.stabilizer-claim-authority-filtration-startup-hook/v0.1",
+  "status": "PREREGISTRATION_ONLY_THEOREM_UNEARNED",
+  "exact_scientific_parent": {
+    "pr": 839,
+    "receipt": "4c524665fd5a3d59b0ebcd8ec44144466b15ad31",
+    "validation_run": 2354,
+    "validation_run_id": 33124753659,
+    "conclusion": "SUCCESS"
+  },
+  "witness_routing_parent": false,
+  "candidate": {
+    "setwise_stabilizer": 576,
+    "induced_matching_preserving_actions": 8,
+    "complete_repair_map_kernel": 72,
+    "selected_label_action_stabilizer": 2,
+    "selected_label_receiver_preimage": 144,
+    "claim_authority_filtration": [576, 144, 72]
+  },
+  "required_fadt_signatures": {
+    "full_setwise_selected_label_union_size": 4,
+    "full_setwise_selected_label_intersection_empty": true,
+    "full_setwise_selected_label_gamma_size": 4,
+    "selected_label_preimage_gamma_size_for_selected_label": 0,
+    "pointwise_kernel_gamma_size_for_every_label": 0
+  },
+  "required_executed_checks": {
+    "setwise_label_action": 6912,
+    "selected_label_stabilizer": 1728,
+    "full_map_kernel": 864,
+    "induced_action_composition": 192,
+    "s4_matching_permutations": 24,
+    "bounded_downstream_state_control": 750
+  },
+  "required_hostiles": [
+    "translation_79_full_repair_overclaim",
+    "selected_label_relative_not_global",
+    "outside_selected_label_preimage_moves_selected_label",
+    "outside_kernel_moves_some_label",
+    "matching_destroying_s4_permutation_excluded",
+    "malformed_action_composition",
+    "cardinality_only_authority_rejected",
+    "claim_level_collapse_rejected",
+    "fadt_gap_spectrum_overclaim_rejected",
+    "source_state_mutation_rejected",
+    "schedule_completion_rejected",
+    "authority_widening_rejected"
+  ],
+  "boundaries": {
+    "matching_preservation_is_individual_label_preservation": false,
+    "one_label_stabilizer_is_complete_map_stabilizer": false,
+    "action_kernel_is_physical_gauge_kernel": false,
+    "action_quotient_is_operational_group_quotient": false,
+    "finite_permutation_group_is_physical_symmetry_group": false,
+    "witness_erasure_is_source_state_erasure": false,
+    "repair_label_preservation_is_complete_schedule_reconstruction": false,
+    "merge_authority": false,
+    "deployment_authority": false,
+    "release_authority": false
+  },
+  "theorem_earned": false
+}
