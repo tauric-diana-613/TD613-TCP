@@ -202,6 +202,13 @@ try {
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'networkidle' });
+  // Fragment navigation can reopen ancestor details in some engines; WebKit may keep it closed.
+  // Restore the declared laboratory route with a normal disclosure gesture before filling its field.
+  const reducedLaboratory = page.locator('#loomLegacy');
+  const reopenedByFragment = await reducedLaboratory.evaluate(node => Boolean(node.open));
+  if (!reopenedByFragment) await reducedLaboratory.locator(':scope > summary').click();
+  check('reduced-motion laboratory is open before replay after reload',
+    await reducedLaboratory.evaluate(node => Boolean(node.open)), { reopened_by_fragment: reopenedByFragment });
   await page.locator('#message').fill('ordinary reduced motion message');
   await page.locator('#check').click();
   await page.locator('#showPath').click();
@@ -232,5 +239,11 @@ report.status = report.failed_checks.length === 0 ? 'PASS' : 'HELD';
 const artifactPath = path.join(artifactDir, `holonomy-loom-flowcore-aia-glyph-control-${browserName}.json`);
 await fs.writeFile(artifactPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 console.log(`Holonomy Loom Flow-Core AIA glyph-control browser witness (${browserName}): ${report.status}`);
-console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, artifact: artifactPath, request_summary: report.request_summary }, null, 2));
+const failureDetails = report.checks.filter(item => item.status === 'FAIL').slice(0, 8).map(item => {
+  const detail = typeof item.detail === 'string' ? item.detail : '';
+  return { check: item.name,
+    summary: detail.split('\n')[0].replaceAll(canary, '[CANARY]').replaceAll('PRIVATE_GLYPH_CONTROL_613', '[PROTECTED_FIXTURE]').slice(0, 320),
+    locator_observation: ['element is not visible', 'element is not enabled', 'Target page, context or browser has been closed'].find(observation => detail.includes(observation)) || null };
+});
+console.log(JSON.stringify({ status: report.status, browser: browserName, failed: report.failed_checks, failure_details: failureDetails, artifact: artifactPath, request_summary: report.request_summary }, null, 2));
 if (report.status !== 'PASS') process.exitCode = 1;
