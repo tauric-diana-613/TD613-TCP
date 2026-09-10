@@ -53,6 +53,10 @@ for (const token of [
   '__td613AshLiveAIA?.version',
   "__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'",
   '__td613AshAia3Composition?.current?.()',
+  "__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'",
+  "dataset.ashDemoRegistryOwners === 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE'",
+  'Boolean(document.documentElement.dataset.ashDemoRegistryEmpirical)',
+  'demo_registry_owner_imports_settled:',
   "aia3?.session_open === false",
   "aia3?.membrane_ready === false",
   "aia3?.hold === 'WAITING_INGRESS_PROFILE'",
@@ -101,7 +105,13 @@ const settlementRuntime = JSON.parse(settlementLiteral.trim().replace(/,$/, ''))
 const settlementPredicate = settlementRuntime.match(/await page\.waitForFunction\((\(\) => \{[\s\S]*?\n  \}), null, \{ timeout: 60_000 \}\)/)?.[1];
 assert.ok(settlementPredicate, 'Settlement must retain its bounded 60-second timeout.');
 const a11Version = 'td613.ash.a11-capsule-recompilation/v0.1';
-function readyIngress(a11 = {version:a11Version}, requested = true) {
+const registryVersion = 'td613.ash.demo-registry/v0.3-a15';
+const registryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE';
+const registryEmpirical = 'td613.ash.a15-empirical-profile-journeys/v0.1';
+function readyIngress(a11 = {version:a11Version}, requested = true, registry = {version:registryVersion, owners:registryOwners, empirical:registryEmpirical}) {
+  const dataset = {ashCachePreflight:'complete', ashModuleGraph:'ready', ashAiaReady:'true'};
+  if (registry?.owners) dataset.ashDemoRegistryOwners = registry.owners;
+  if (registry?.empirical) dataset.ashDemoRegistryEmpirical = registry.empirical;
   return {
     window:{
       __td613AshLiveAIA:{version:'td613.ash.live-aia-browser/v0.2-task-continuity'},
@@ -112,25 +122,41 @@ function readyIngress(a11 = {version:a11Version}, requested = true) {
       __td613AshFlowcoreIngressPortal:{current:() => ({visible:true, duplicate_visible_fields:1})},
       __td613AshFlowcoreIngressPortalLoader:{eligible:true, portal_version:'fixture'},
       __td613AshA11ModulePromise:requested ? Promise.resolve() : null,
-      __td613AshA11Capsule:a11
+      __td613AshA11Capsule:a11,
+      __td613AshDemoRegistry:registry?.version ? {version:registry.version} : null
     },
     document:{
-      documentElement:{dataset:{ashCachePreflight:'complete', ashModuleGraph:'ready', ashAiaReady:'true'}},
+      documentElement:{dataset},
       body:{dataset:{}},
       getElementById:() => ({querySelectorAll:() => ({length:4})})
     }
   };
 }
 const admits = context => vm.runInNewContext(`(${settlementPredicate})()`, context);
-assert.equal(admits(readyIngress()), true, 'Naturally completed exact A11 import admits specialist navigation.');
+assert.equal(admits(readyIngress()), true, 'Naturally completed exact A11 and demo-registry owner imports admit specialist navigation.');
 assert.equal(admits(readyIngress(null)), false, 'Pending or missing A11 must hold navigation.');
 assert.equal(admits(readyIngress({version:'wrong'})), false, 'Wrong A11 version must hold navigation.');
 assert.equal(admits(readyIngress({version:a11Version}, false)), false, 'A11 global without its scheduled import must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, null)), false, 'Missing demo registry must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, {version:'wrong', owners:registryOwners, empirical:registryEmpirical})), false, 'Wrong demo-registry version must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, {version:registryVersion, owners:null, empirical:registryEmpirical})), false, 'Unsettled demo-registry owner imports must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, {version:registryVersion, owners:'APEQ_PAIA,RESEARCH,LEGAL', empirical:registryEmpirical})), false, 'Incomplete demo-registry owner settlement must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, {version:registryVersion, owners:registryOwners, empirical:null})), false, 'Missing empirical-owner disposition must hold navigation.');
+assert.equal(admits(readyIngress(undefined, true, {version:registryVersion, owners:registryOwners, empirical:'HELD_SUBORDINATE'})), true, 'A held subordinate empirical owner remains a settled disposition after the required public owner imports complete.');
 assert.match(settlementRuntime, /a11_module_requested:Boolean\(window\.__td613AshA11ModulePromise\)/);
 assert.match(settlementRuntime, /a11_capsule_version:window\.__td613AshA11Capsule\?\.version \|\| null/);
-assert.doesNotMatch(settlementRuntime, /await import\(|loadA11Module\(/, 'Observer must wait for the application-owned import, never force it.');
-assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/dome-world\/ash-a11-capsule-recompilation\.js'/, 'A11 aborts must remain unexpected request failures.');
-assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
+assert.match(settlementRuntime, /demo_registry_version:window\.__td613AshDemoRegistry\?\.version \|\| null/);
+assert.match(settlementRuntime, /demo_registry_owners:document\.documentElement\.dataset\.ashDemoRegistryOwners \|\| null/);
+assert.match(settlementRuntime, /demo_registry_empirical:document\.documentElement\.dataset\.ashDemoRegistryEmpirical \|\| null/);
+assert.doesNotMatch(settlementRuntime, /await import\(|loadA11Module\(|loadOwners\(/, 'Observer must wait for application-owned imports, never force them.');
+const transitionAbortClassifierStart = lifecycleCompiler.indexOf('function isExpectedTransitionAbort(item, activeStylesheetHrefs = new Set()) {');
+const transitionAbortClassifierReturn = 'return cacheEvictionTransition || supersededAia3Navigation || supersededGuidedStylesheet;';
+const transitionAbortClassifierEnd = lifecycleCompiler.indexOf(transitionAbortClassifierReturn, transitionAbortClassifierStart);
+assert.ok(transitionAbortClassifierStart >= 0 && transitionAbortClassifierEnd > transitionAbortClassifierStart, 'Expected transition-abort classifier must remain inspectable.');
+const transitionAbortClassifier = lifecycleCompiler.slice(transitionAbortClassifierStart, transitionAbortClassifierEnd + transitionAbortClassifierReturn.length);
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/dome-world\/ash-a11-capsule-recompilation\.js'/, 'A11 aborts must remain unexpected request failures.');
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/dome-world\/ash-research-demo-hydration\.js'/, 'Research-owner aborts must remain unexpected request failures.');
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
 assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
@@ -200,4 +226,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, direct A15 convergence registry identity, bounded multi-engine lifecycle adapter, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, demo-registry owner settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, direct A15 convergence registry identity, bounded multi-engine lifecycle adapter, and URL-specific failure diagnostics');
