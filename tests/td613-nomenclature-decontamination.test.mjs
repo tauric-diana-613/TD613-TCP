@@ -104,15 +104,25 @@ for (const entry of ledger.entries) {
     assert.ok(sourceFamilies.size >= 2);
     assert.ok(entry.near_miss_or_falsification_target);
   }
-
-  if (entry.term_provenance.includes('COINAGE')) {
-    assert.notEqual(
-      entry.construct_status,
-      'KNOWN_COMPONENT',
-      `${entry.id}: a coined label cannot itself establish construct novelty or standardness`
-    );
-  }
 }
+
+// Term provenance and construct status are orthogonal. The fixture must contain at
+// least one coined TD613 label that is nevertheless classified toward a known-pattern
+// mapping, proving that coinage cannot bootstrap novelty.
+assert.ok(
+  ledger.entries.some(entry =>
+    entry.term_provenance === 'TD613_COINAGE' &&
+    entry.construct_status === 'LIKELY_KNOWN_PATTERN_HELD_FOR_EXACT_MAPPING'
+  ),
+  'fixture must demonstrate coined-label / likely-known-pattern independence'
+);
+assert.ok(
+  ledger.entries.some(entry =>
+    entry.term_provenance === 'ANALOGICAL_BORROWING' &&
+    entry.construct_status === 'NO_NOVELTY_CLAIM_FROM_VOCABULARY'
+  ),
+  'fixture must demonstrate that borrowed vocabulary grants no novelty credit'
+);
 
 // Chamber 0 is deliberately hostile to novelty inflation. It begins with zero promoted
 // residual-novelty claims; literature comparison must earn any later promotion.
