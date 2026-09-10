@@ -38,7 +38,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   t.after(()=>{dispose();window.close();if(beforeRaf===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=beforeRaf;if(beforeCancel===undefined)delete globalThis.cancelAnimationFrame;else globalThis.cancelAnimationFrame=beforeCancel;});
   const $=selector=>root.querySelector(selector);
   const change=(selector,value)=>{const element=$(selector);element.value=value;element.dispatchEvent(new window.Event('input',{bubbles:true}));};
-  const load=(index=0)=>$(`[data-project="${LOOM_AI_PROJECTS[index].id}"]`).click();
+  const load=(index=0)=>{if($("#aiProjectChoices").hidden)$("#aiDemoInvitation").click();$(`[data-project="${LOOM_AI_PROJECTS[index].id}"]`).click();};
   const upload=file=>{const input=$('#aiUpload');Object.defineProperty(input,'files',{configurable:true,value:[file]});Object.defineProperty(input,'value',{configurable:true,writable:true,value:'fixture-file-selected'});input.dispatchEvent(new window.Event('change',{bubbles:true}));};
   const settled=()=>until(()=>root.getAttribute('aria-busy')!=='true',`request completion: ${$('#aiStatus').textContent}`);
   const submitted=()=>until(()=>calls.length>0||root.getAttribute('aria-busy')!=='true','request dispatch');
@@ -47,6 +47,12 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
 
 test('loading each real practice project sends nothing; a click submits one selected packet',async t=>{
   const h=harness(t);
+  assert.equal(h.$('#aiProjectChoices').hidden,true);
+  assert.equal(h.$('#aiDemoInvitation').getAttribute('aria-expanded'),'false');
+  h.$('#aiDemoInvitation').click();
+  assert.equal(h.$('#aiProjectChoices').hidden,false);
+  assert.equal(h.calls.length,0);
+  assert.deepEqual(Array.from(h.root.querySelectorAll('.ai-demo-number'), n=>n.textContent),['Demo 1','Demo 2','Demo 3']);
   for(let i=0;i<LOOM_AI_PROJECTS.length;i++){h.load(i);assert.equal(h.calls.length,0);assert.equal(h.$('#aiTask').value,LOOM_AI_PROJECTS[i].task);}
   h.load(0);const project=LOOM_AI_PROJECTS[0];h.$('#aiRun').click();await h.settled();
   assert.equal(h.calls.length,1);const call=h.calls[0];

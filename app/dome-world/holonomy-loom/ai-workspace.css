@@ -9,3 +9,38 @@
 #loomAiWorkspace .ai-answer{white-space:normal;max-height:none;overflow:visible}#loomAiWorkspace .ai-result-lead{font:400 1.12rem/1.75 var(--serif);max-width:82ch}#loomAiWorkspace .ai-result-full p{margin:15px 0;line-height:1.8;max-width:90ch}#loomAiWorkspace .ai-result-next{margin:20px 0;padding:16px 18px;border-left:2px solid var(--gold);background:#e4c66c08}#loomAiWorkspace .ai-result-unknowns li{margin:12px 0}
 
 #loomAiWorkspace table{border-collapse:collapse;width:100%;font-size:.8rem}#loomAiWorkspace th,#loomAiWorkspace td{text-align:left;padding:10px 7px;border-bottom:1px solid #8aac9440}
+
+/* Living Loom: one canvas clock behind calm, legible reading plates. */
+:root{--ink:#08070e;--deep:#100c18;--panel:#17111f;--line:rgba(197,162,230,.24);--line2:rgba(238,182,119,.38);--mint:#cbb0f0;--gold:#edbe85;--paper:#f4ece4;--muted:#b6aabd}
+html,body{background:#08070e}body{background-image:none}
+#loomLivingGeometry{position:fixed;inset:0;z-index:0}
+body>.wrap{position:relative;z-index:1}
+.mast{border-bottom-color:#cfb3ed30}.return{background:#110d18dc}
+.hero{padding:38px 0 30px}.hero h1{text-shadow:0 3px 36px #08070e;font-size:clamp(3.2rem,7vw,6.1rem)}
+.hero p{color:#e3d6e5;max-width:650px;text-shadow:0 2px 8px #08070e}.hero .mark{color:var(--gold)}
+#loomAiWorkspace{--soft:#bcb0c6;color:#f4ece8}
+#loomAiWorkspace button{background:#251a32;border-color:#c8a3e33b}
+#loomAiWorkspace .ai-primary{background:#e9be8d;color:#251321;border-color:#f6cea5}
+#loomAiWorkspace .ai-composer,#loomAiWorkspace .ai-observer,#loomAiWorkspace .ai-result{background:rgba(18,13,26,.95);border-color:#d2a9ed38;box-shadow:0 20px 70px #03020666;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#loomAiWorkspace .ai-composer{border-top-color:#edbe85}
+#loomAiWorkspace .ai-observer{background:rgba(22,15,32,.95)}
+#loomAiWorkspace textarea{color:#f1e7f2;border-left-color:#c299e480}
+#loomAiWorkspace textarea::placeholder{color:#ab9bb4}
+.ai-upload{border-color:#bc9ad7}.ai-documents li{border-color:#bd94da35}.ai-documents input{accent-color:#d2adf1}
+.ai-facts div{border-top-color:#c8a1e437}.ai-field text{fill:#c6b6d0}.ai-phase .ai-dot{background:#d4a7f5;box-shadow:0 0 12px #d4a7f540}
+.ai-demo-welcome{margin:0 0 20px;max-width:770px}
+#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{--invitation-focus:0;display:flex;align-items:center;gap:18px;width:100%;text-align:left;padding:20px 24px;border:1px solid #e5b8ee85;border-radius:16px;color:#faeadd;background:linear-gradient(120deg,#382040ee,#191020f5 62%,#372136eb);box-shadow:0 0 calc(12px + var(--invitation-focus)*35px) rgba(201,127,230,calc(.08 + var(--invitation-focus)*.23)),inset 0 1px #ffdfba25;transform:translateY(calc(var(--invitation-focus)*-3px));list-style:none}
+#loomAiWorkspace .ai-demo-invitation:hover,.loom-legacy>.loom-laboratory-invitation:hover{border-color:#f6d0a6;background:linear-gradient(120deg,#43274e,#25182f 70%,#382443)}
+.ai-demo-invitation strong,.loom-laboratory-invitation strong{display:block;font:500 clamp(1.15rem,2vw,1.6rem)/1.25 var(--serif);letter-spacing:-.015em}
+#loomAiWorkspace .ai-demo-invitation small,.loom-laboratory-invitation small{display:block;margin-top:5px;font:400 .78rem/1.5 var(--sans);color:#d0bdd9}
+.ai-invitation-orbit{display:grid;place-items:center;flex:0 0 48px;height:48px;border:1px solid #ebbc8a88;border-radius:50%;color:#f6c895;background:#e4ac7610;font:400 1.6rem var(--sans)}
+.ai-invitation-arrow{margin-left:auto;color:#f2c397;font:400 1.5rem var(--sans)}
+#loomAiWorkspace .ai-projects[hidden]{display:none}
+#loomAiWorkspace .ai-projects button{background:linear-gradient(140deg,#25162fef,#100c18f5);border-color:#c699e155;min-height:130px}
+#loomAiWorkspace .ai-projects button[aria-pressed=true]{background:linear-gradient(140deg,#39233f,#191023);border-color:#f0c38f}
+#loomAiWorkspace .ai-projects .ai-demo-number{color:#e8ba88;font:700 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.loom-legacy{border:0;margin-top:30px;padding-top:0}.loom-legacy>.loom-laboratory-invitation{padding:24px;background:linear-gradient(120deg,#25132fed,#17101fec 62%,#30202eef)}
+.loom-laboratory-invitation::-webkit-details-marker{display:none}.loom-legacy[open]>.loom-laboratory-invitation{margin-bottom:22px}.loom-legacy[open]>.loom-laboratory-invitation .ai-invitation-arrow{transform:rotate(45deg)}
+@media(max-width:760px){.hero{padding:28px 0 22px}.ai-projects{grid-template-columns:1fr}#loomAiWorkspace .ai-projects button{min-height:0;padding:15px 18px}.ai-projects strong{font-size:1rem}#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{padding:17px 15px;gap:12px}.ai-invitation-orbit{flex-basis:39px;height:39px}.hero h1{font-size:clamp(3.2rem,13vw,5rem)}}
+@media(prefers-reduced-motion:reduce){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{transform:none!important;box-shadow:0 0 22px #c97fe626,inset 0 1px #ffdfba25}}
+@media(forced-colors:active){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{background:Canvas;color:ButtonText;border:2px solid ButtonText}.ai-invitation-orbit{border-color:ButtonText;color:ButtonText}}

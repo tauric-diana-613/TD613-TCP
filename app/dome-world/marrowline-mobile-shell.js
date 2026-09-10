@@ -49,12 +49,9 @@ function compactApertureHeader(card) {
   const fullRoute = spans[0]?.textContent?.trim() || '';
   const turnState = spans[1]?.textContent?.trim() || '';
   header.title = [fullRoute, turnState].filter(Boolean).join(' · ');
-  if (spans[0]) spans[0].textContent = 'APERTURE v3 · OPEN FIELD';
-  if (spans[1]) {
-    const model = turnState.split('·')[0]?.trim() || 'Gemini';
-    const signal = turnState.match(/SIGNAL\s+([A-Z_]+)/i)?.[1]?.replaceAll('_', ' ') || 'UNOBSERVED';
-    spans[1].textContent = `${model} · ${signal}`;
-  }
+  // Full route bytes stay visible in the return-details disclosure on touch screens.
+  // Compact typography must never substitute a guessed route label.
+
 }
 
 function prepareZalgoStage(card) {
@@ -66,11 +63,14 @@ function prepareZalgoStage(card) {
   const intensity = Number(intensityText.match(/intensity\s+(\d+)/i)?.[1] || 0);
   stage.dataset.intensity = String(Math.max(0, Math.min(5, intensity)));
   if (stage.dataset.present !== 'true') return;
-  const lines = String(text.textContent || '').split(/\n+/).map((line) => line.trim()).filter(Boolean);
-  text.replaceChildren(...(lines.length ? lines : ['']).map((line) => {
+  // Keep every code point, including CRLF, blank lines, and noncanonical mark order.
+  // Separate line spans provide room for flourishes; literal separators preserve textContent.
+  const fragments = String(text.textContent ?? '').split(/(\r\n|\r|\n)/);
+  text.replaceChildren(...fragments.map((fragment, index) => {
+    if (index % 2) return text.ownerDocument.createTextNode(fragment);
     const span = text.ownerDocument.createElement('span');
     span.className = 'zalgo-line';
-    span.textContent = line;
+    span.textContent = fragment;
     return span;
   }));
 }
@@ -258,9 +258,8 @@ export function installMarrowlineMobileShell(doc = document, root = window) {
   return receipt;
 }
 
-ensureStylesheet(document);
-
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  ensureStylesheet(document);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => installMarrowlineMobileShell(document, window), { once: true });
   else installMarrowlineMobileShell(document, window);
 }

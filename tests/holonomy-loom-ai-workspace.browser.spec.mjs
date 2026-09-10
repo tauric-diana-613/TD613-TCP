@@ -80,6 +80,15 @@ try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#aiProjectChoices').isVisible(), false, 'demo projects wait for the invitation gesture');
+      assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas borrows the workspace clock');
+      assert.equal(await page.locator('#aiDemoInvitation').isVisible(), true);
+      await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames === '0', null, { timeout: 6000 });
+      assert.equal(requests.length, 0, 'finite invitation settles without making a request');
+      assert.equal(await page.locator('#loomLegacy > summary').isVisible(), true);
+      await page.screenshot({ path: path.join(dir, `${posture}-welcome-settled.png`), fullPage: true });
+      await page.locator('#aiDemoInvitation').click();
+      assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
       assert.equal(requests.length, 0, 'choosing a project only loads its fictional work');
       assert.equal(await page.locator('#aiTask').inputValue(), fixture.task);

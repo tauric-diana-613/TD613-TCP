@@ -1,0 +1,31 @@
+/* Dome-Art owns the canvas; the host view owns positioning and its one clock. */
+.living-geometry {
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  background: #08070e;
+  contain: paint;
+}
+.living-geometry-canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* Optional common reading plate; no independent CSS animation owner. */
+.living-geometry-plate {
+  background: rgba(15, 12, 23, .93);
+  border: 1px solid rgba(209, 180, 238, .18);
+  box-shadow: 0 16px 60px rgba(0, 0, 0, .20), inset 0 1px rgba(255, 234, 210, .035);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .living-geometry-plate { background: #100d18; backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (forced-colors: active) {
+  .living-geometry-canvas { display: none; }
+  .living-geometry-plate { background: Canvas; border-color: CanvasText; }
+}

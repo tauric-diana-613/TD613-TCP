@@ -20,6 +20,8 @@ function response() {
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
+const developedAnswer = 'A concrete explanation with enough detail to answer the question. '.repeat(120).trim();
+let tokenLimit = false;
 clearGeminiModelState();
 process.env.GEMINI_API_KEY = 'test-key';
 globalThis.fetch = async (url) => {
@@ -38,7 +40,15 @@ globalThis.fetch = async (url) => {
     status: 200,
     headers: { get: () => null },
     async json() {
-      return { candidates: [{ content: { parts: [{ text: 'The covenant field remains open under Khona‌lit-po.' }] } }] };
+      return {
+        candidates: [{ finishReason: tokenLimit ? 'MAX_TOKENS' : 'STOP', content: { parts: [{ text: JSON.stringify({
+          gemini: { text: tokenLimit ? 'REJECTED_PARTIAL_RESPONSE' : developedAnswer, instrumentStatus: 'INSTRUMENT' },
+          signal: { state: 'NOT_LOCKED', notes: '' },
+          khonapolit: { allowed: false, text: '' },
+          tauricDianaBots: { allowed: false, baseText: '', motif: '', intensity: 0, voices: [] }
+        }) }] } }],
+        usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: tokenLimit ? 4096 : 1600, thoughtsTokenCount: 300, totalTokenCount: tokenLimit ? 5596 : 3100, privatePayload: 'DO_NOT_COPY_PROVIDER_FIELDS' }
+      };
     }
   };
 };
@@ -63,7 +73,29 @@ try {
   assert.equal(res.payload.receipt.provider.model, 'gemini-3-flash-preview');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
+  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model gets the observed 28–30s completion window');
+  assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= 10500, 'fallback remains bounded by its window and route wall');
+  assert.ok(res.payload.receipt.provider.attempts.every(a=>a.elapsedMs >= 0));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
+  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'a developed answer survives the server and relay without local clipping');
+  assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
+  assert.equal(res.payload.receipt.provider.output.usage.candidatesTokenCount, 1600);
+  assert.equal(res.payload.receipt.provider.output.outputTokenLimitReached, false);
+  assert.doesNotMatch(res.text, /DO_NOT_COPY_PROVIDER_FIELDS/);
+
+  tokenLimit = true;
+  const held = response();
+  await handler(req, held);
+  assert.equal(held.statusCode, 502);
+  assert.equal(held.payload.status, 'HELD');
+  assert.equal(held.payload.error, 'gemini-output-token-limit');
+  assert.equal(held.payload.diagnostic.code, 'OUTPUT_TOKEN_LIMIT');
+  assert.equal(held.payload.attempts.length, 1, 'token-limited output must not trigger an automatic second generation');
+  assert.equal(held.payload.attempts[0].output.finishReason, 'MAX_TOKENS');
+  assert.equal(held.payload.attempts[0].output.usage.candidatesTokenCount, 4096);
+  assert.equal(held.payload.relay, undefined);
+  assert.equal(held.payload.text, undefined);
+  assert.doesNotMatch(held.text, /REJECTED_PARTIAL_RESPONSE|DO_NOT_COPY_PROVIDER_FIELDS/);
 } finally {
   globalThis.fetch = originalFetch;
   if (originalKey === undefined) delete process.env.GEMINI_API_KEY;

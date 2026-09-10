@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#04130f">
+  <meta name="theme-color" content="#08070e">
   <meta name="td613-holonomy-loom" content="hosted-integration-v0.1">
   <title>Holonomy Loom · TD613 Hosted</title>
   <link rel="stylesheet" href="./holonomy-loom/theater.css">
@@ -16,9 +16,11 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.glyph-node{transform:none!important}}
     @media(forced-colors:active){.panel,.glyph-path,.glyph-node,.rest-row a,button{border:1px solid CanvasText}.glyph-node .glyph,.return,.rest-row a{color:LinkText}.glyph-node:disabled{color:GrayText}.light{border:2px solid CanvasText}}
   </style>
+  <link rel="stylesheet" href="./holonomy-loom/living-geometry.css">
   <link rel="stylesheet" href="./holonomy-loom/ai-workspace.css">
 </head>
 <body>
+<div id="loomLivingGeometry" aria-hidden="true"></div>
 <div class="wrap">
   <header class="mast">
     <div class="mark">U+10D613 · DOME-WORLD / FLOW-CORE LAB</div>
@@ -33,7 +35,7 @@
     </section>
 
     <section id="loomAiWorkspace" aria-label="Loom AI workspace"><p>Opening your AI workspace…</p></section>
-    <details id="loomLegacy" class="loom-legacy"><summary>Explore the local rule laboratory</summary>
+    <details id="loomLegacy" class="loom-legacy"><summary class="loom-laboratory-invitation"><span class="ai-invitation-orbit" aria-hidden="true">↗</span><span><strong>Enter the Loom laboratory</strong><small>Try the rules. Follow a route. Leave whenever you like.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></summary>
     <section id="loomTheater" class="loom-theater" aria-label="Loom fictional practice theater" data-flowcore-phase="NOTICE">
       <p class="ceiling">A fictional practice case uses the same local rule engine. Loading this page checks nothing and sends nothing.</p>
       <p>Loading the optional theater… The separate message checker below remains available.</p>
