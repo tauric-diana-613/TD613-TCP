@@ -9,3 +9,4 @@ import './pedagogue-recurrence-counterpoints.test.mjs';
 import './td613-nomenclature-decontamination.test.mjs';
 import './td613-analogy-fidelity-preflight.test.mjs';
 import './td613-phason-namespace-fidelity.test.mjs';
+import './td613-moire-moire-convergence-assay-a.test.mjs';
