@@ -7,6 +7,8 @@
     "external_donor_authority": false,
     "automatic_ontology_promotion": false,
     "automatic_novelty_promotion": false,
+    "automatic_ontology_deletion": false,
+    "analogy_demote_requires_human_review": true,
     "human_closure_required": true
   },
   "bases": {
@@ -22,7 +24,13 @@
     "LITERATURE_OVERLAP != MECHANISM_IDENTITY",
     "COINAGE != DISCOVERY",
     "DONOR_INPUT != LITERATURE_AUTHORITY",
-    "RECOGNITION != PROMOTION"
+    "RECOGNITION != PROMOTION",
+    "NOMENCLATURE_AUDIT != ONTOLOGY_DELETION",
+    "KNOWN_COMPONENT != REDUNDANT_COMPOSITION",
+    "ANALOGICAL_BORROWING != FAILED_ANALOGY",
+    "EXTERNAL_CONVERGENCE != RETROACTIVE_ORIGIN_PROOF",
+    "FAMILIAR_TERM != INVALID_TD613_USE",
+    "DEMYSTIFICATION != DEMOBILIZATION"
   ],
   "promotion_rule": {
     "required_before_residual_novelty_candidate": [
@@ -39,6 +47,42 @@
       "unprecedented",
       "first-ever"
     ]
+  },
+  "retention_rule": {
+    "purpose": "Prevent a nomenclature correction from becoming an ontology burial or a conservative-search gate.",
+    "requirements": [
+      "A conventional parent may demote a novelty claim without deleting the TD613 composition.",
+      "A borrowed term remains operationally live while structure-preserving analogy is unresolved.",
+      "Demotion to metaphor requires an identified operator mismatch, not mere familiarity of the source term.",
+      "Independent later literature may strengthen an analogy-fidelity assessment without proving either direction of causal influence.",
+      "A known component may participate in a nontrivial composition; component familiarity alone cannot settle composition value."
+    ],
+    "automatic_deletion": false,
+    "automatic_metaphor_demotion": false,
+    "human_closure_required": true
+  },
+  "cross_domain_validation_route": {
+    "state": "OPEN_FOR_SOURCE_BOUND_CANDIDATES",
+    "unbound_external_alignment": "HELD_FOR_EXTERNAL_SOURCE_BINDING",
+    "sequence": [
+      "FREEZE_PREEXISTING_TD613_ARTIFACT",
+      "BIND_EXTERNAL_SOURCE_AND_PUBLICATION_TIME",
+      "SEPARATE_TERM_OVERLAP_FROM_OPERATOR_OVERLAP",
+      "BLIND_MAP_INPUTS_OPERATORS_OBSERVABLES_AND_FAILURES",
+      "RECORD_MATCHES_AND_MISMATCHES",
+      "TEST_STRUCTURE_PRESERVING_TRANSFER",
+      "CLASSIFY_ANALOGY_FIDELITY",
+      "PRESERVE_TEMPORAL_NON_RETROACTIVITY",
+      "RETURN_TO_HUMAN"
+    ],
+    "allowed_fidelity_states": [
+      "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+      "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+      "PARTIAL_ANALOGY_SUPPORTED",
+      "METAPHOR_ONLY_SUPPORTED",
+      "UNRESOLVED"
+    ],
+    "claim_ceiling": "Later independent convergence can support usefulness, predictive alignment, or operational fidelity of an earlier TD613 analogy. It cannot by itself prove novelty, causation, copying, external validation of unrelated TD613 claims, or retroactive authorship."
   },
   "external_sources": [
     {
@@ -198,17 +242,19 @@
     {
       "id": "PHASONIC_TOMOGRAPHY_LANGUAGE",
       "td613_term": "holonomy / tomography / phasonic / cupola vocabulary in TD613",
-      "td613_source_refs": ["APERTURE.md"],
+      "td613_source_refs": ["APERTURE.md", "app/aperture/README.md", "docs/TD613_APERTURE.md"],
       "term_provenance": "ANALOGICAL_BORROWING",
       "construct_status": "NO_NOVELTY_CLAIM_FROM_VOCABULARY",
+      "analogy_fidelity_status": "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+      "retention_rule": "DO_NOT_DELETE_FROM_TD613_ON_NOMENCLATURE_GROUNDS",
       "candidate_external_neighborhoods": [
         {"term": "inverse problems / tomography", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"},
         {"term": "holonomy / path dependence", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"},
         {"term": "phason / quasiperiodicity", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"}
       ],
       "what_literature_already_explains": "These words pre-exist TD613 in mathematics, imaging/inverse problems, condensed-matter physics, and geometry.",
-      "residual_question": "Borrowing them may or may not be mathematically faithful to the TD613 operators; resemblance alone supplies no legitimacy.",
-      "near_miss_or_falsification_target": "If the borrowed term does not preserve the source field's operative structure, downgrade it to metaphor/internal nomenclature."
+      "residual_question": "Vocabulary provenance settles neither technical usefulness nor analogy fidelity. The live question is whether TD613 preserves source-field relations strongly enough to support reconstruction, route dependence, registry mismatch, interference, or transfer assays rather than decorative resemblance.",
+      "near_miss_or_falsification_target": "Demote a borrowed term to metaphor only after a source-bound audit identifies a material operator mismatch or shows that the term adds no discriminating or predictive structure. Familiarity of the word alone is insufficient."
     },
     {
       "id": "SAFE_HARBOR_ROUTE",
@@ -233,10 +279,11 @@
       "RECORD_NEAR_MISSES",
       "CLASSIFY_TERM_PROVENANCE",
       "CLASSIFY_CONSTRUCT_STATUS",
+      "TEST_OPERATIONAL_ANALOGY_FIDELITY",
       "TEST_RESIDUAL",
-      "PROMOTE_OR_DEMOTE",
+      "PROMOTE_DEMOTE_OR_RETAIN",
       "RETURN_CONTROL_TO_HUMAN"
     ],
-    "repair_criterion": "A nomenclature result is reparative only if it reduces dependence on bespoke vocabulary without transferring custody or manufacturing novelty."
+    "repair_criterion": "A nomenclature result is reparative only if it reduces dependence on bespoke vocabulary without transferring custody, manufacturing novelty, or deleting an operationally useful TD613 relation merely because a conventional parent exists."
   }
 }
