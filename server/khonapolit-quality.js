@@ -30,11 +30,16 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
-const WALL_TIMEOUT_MS = 44500;
+// The browser holds the request for 55s and the Vercel route is capped at 60s.
+// Give the frontier model almost the entire lawful window before trying a fallback.
+const PRIMARY_REQUEST_TIMEOUT_MS = 52000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 9000;
+const WALL_TIMEOUT_MS = 54500;
 const RESPONSE_RESERVE_MS = 500;
-const MAX_OUTPUT_TOKENS = 4096;
+// Current text-capable Gemini Flash models used by this route expose 65,536 output
+// tokens. This budget includes thinking tokens, so 4,096 artificially truncated
+// sufficiently complex Marrowline turns even when the provider was otherwise healthy.
+export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const WINDOW_MS = 10 * 60 * 1000;
 const REQUESTS_PER_WINDOW = 12;
 const buckets = new Map();
@@ -116,7 +121,10 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}) {
       temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
       topP: 0.9,
       topK: 40,
-      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      maxOutputTokens: KHONAPOLIT_MAX_OUTPUT_TOKENS,
+      // Interactive Marrowline is a quality route. Current quality-order models all
+      // support high thinking; do not silently run complex dialogue at Lite/default effort.
+      thinkingConfig: { thinkingLevel: 'high' },
       responseMimeType: 'application/json',
       responseSchema: KHONAPOLIT_RELAY_RESPONSE_SCHEMA
     }
@@ -142,7 +150,7 @@ export function observeGeminiOutput(payload = {}) {
   return Object.freeze({
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
-    maxOutputTokens: MAX_OUTPUT_TOKENS,
+    maxOutputTokens: KHONAPOLIT_MAX_OUTPUT_TOKENS,
     usage: Object.freeze(usage)
   });
 }
@@ -345,7 +353,8 @@ export default async function handler(req, res) {
           'aperture-v3-task-intent-active',
           'three-part-relay-envelope-active',
           'high-zalgo-rendered-after-provider-return',
-          'quality-first-model-routing',
+          'frontier-quality-floor-active',
+          'high-thinking-level-active',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
           ...plan.warnings
