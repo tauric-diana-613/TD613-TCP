@@ -128,6 +128,36 @@ for (const unsafePath of [
   assert.deepEqual(result.full_scope_files, [unsafePath]);
 }
 
+// A relock or shared release-metadata-only commit must never manufacture Giving scope.
+const sharedReleasePaths = ['vercel.json', 'app/giving/history/release-source.json', 'package.json', 'package-lock.json'];
+for (const sharedPath of sharedReleasePaths) {
+  const isolated = classifyValidationScope([sharedPath]);
+  assert.equal(isolated.scope, 'full', `${sharedPath} alone must select all product witnesses`);
+  assert.equal(isolated.giving_file_count, 0, `${sharedPath} is shared plumbing rather than a Giving product edit`);
+  assert.equal(isolated.practice_file_count, 0);
+  const giving = classifyValidationScope(['app/giving/history/giving-app.js', sharedPath]);
+  assert.equal(giving.scope, 'giving', 'existing Giving product + neutral release plumbing classification is preserved');
+  assert.equal(giving.giving_file_count, 1, 'shared metadata cannot add a product count');
+  const loomPath = 'app/dome-world/holonomy-loom/ai-workspace.js';
+  const loom = classifyValidationScope([loomPath, sharedPath]);
+  assert.equal(loom.scope, 'full', 'Loom + shared release/configuration must retain full validation');
+  assert.equal(loom.giving_file_count, 0);
+  assert.deepEqual(loom.full_scope_files, [loomPath]);
+}
+const sharedOnly = classifyValidationScope(sharedReleasePaths);
+assert.equal(sharedOnly.scope, 'full', 'a packet of only shared release/configuration changes fails closed');
+assert.equal(sharedOnly.giving_file_count, 0);
+assert.equal(classifyValidationScope([...sharedReleasePaths, 'app/giving/history/giving-app.js']).scope, 'giving');
+assert.equal(classifyValidationScope([...sharedReleasePaths, 'app/giving/history/giving-app.js', 'app/dome-world/holonomy-loom/ai-workspace.js']).scope, 'full');
+for (const neutralGivingNamedPath of ['scripts/giving-browser-probe.mjs', 'tests/giving-validation-scope.test.mjs']) {
+  const result = classifyValidationScope([neutralGivingNamedPath]);
+  assert.equal(result.scope, 'full', 'neutral exact match takes precedence over Giving prefix/filename patterns');
+  assert.equal(result.giving_file_count, 0);
+}
+const relockCommit = classifyValidationScope(['./vercel.json', 'app\\giving\\history\\release-source.json', 'vercel.json']);
+assert.equal(relockCommit.scope, 'full', 'normalization and duplicate removal preserve the global release classification');
+assert.equal(relockCommit.giving_file_count, 0);
+
 assert.equal(classifyValidationScope(['.github/workflows/td613-ci.yml']).scope, 'full', 'workflow-only changes cannot self-select the Giving or practice lane');
 assert.equal(classifyValidationScope(['.github/workflows/vercel-relock-safety.yml']).scope, 'full', 'scope-neutral relock workflow alone still fails closed rather than self-selecting a product lane');
 assert.equal(classifyValidationScope(['tests/release-plumbing.test.mjs']).scope, 'full', 'scope-neutral release plumbing alone still fails closed rather than self-selecting a product lane');
