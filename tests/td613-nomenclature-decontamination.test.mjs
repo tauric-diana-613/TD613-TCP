@@ -10,6 +10,8 @@ assert.equal(ledger.authority.donor_corpus_admitted, false);
 assert.equal(ledger.authority.external_donor_authority, false);
 assert.equal(ledger.authority.automatic_ontology_promotion, false);
 assert.equal(ledger.authority.automatic_novelty_promotion, false);
+assert.equal(ledger.authority.automatic_ontology_deletion, false);
+assert.equal(ledger.authority.analogy_demote_requires_human_review, true);
 assert.equal(ledger.authority.human_closure_required, true);
 
 assert.equal(
@@ -33,7 +35,13 @@ for (const required of [
   'LITERATURE_OVERLAP != MECHANISM_IDENTITY',
   'COINAGE != DISCOVERY',
   'DONOR_INPUT != LITERATURE_AUTHORITY',
-  'RECOGNITION != PROMOTION'
+  'RECOGNITION != PROMOTION',
+  'NOMENCLATURE_AUDIT != ONTOLOGY_DELETION',
+  'KNOWN_COMPONENT != REDUNDANT_COMPOSITION',
+  'ANALOGICAL_BORROWING != FAILED_ANALOGY',
+  'EXTERNAL_CONVERGENCE != RETROACTIVE_ORIGIN_PROOF',
+  'FAMILIAR_TERM != INVALID_TD613_USE',
+  'DEMYSTIFICATION != DEMOBILIZATION'
 ]) assert.ok(laws.has(required), `missing nomenclature law: ${required}`);
 
 assert.ok(Array.isArray(ledger.external_sources) && ledger.external_sources.length >= 8);
@@ -116,16 +124,40 @@ assert.ok(
   ),
   'fixture must demonstrate coined-label / likely-known-pattern independence'
 );
-assert.ok(
-  ledger.entries.some(entry =>
-    entry.term_provenance === 'ANALOGICAL_BORROWING' &&
-    entry.construct_status === 'NO_NOVELTY_CLAIM_FROM_VOCABULARY'
-  ),
-  'fixture must demonstrate that borrowed vocabulary grants no novelty credit'
-);
 
-// Chamber 0 is deliberately hostile to novelty inflation. It begins with zero promoted
-// residual-novelty claims; literature comparison must earn any later promotion.
+// The inverse error is forbidden too: recognizing a borrowed word cannot bury an
+// operationally unresolved TD613 relation. Analogy fidelity is a third coordinate.
+const borrowed = ledger.entries.find(entry => entry.id === 'PHASONIC_TOMOGRAPHY_LANGUAGE');
+assert.ok(borrowed, 'borrowed-language audit entry required');
+assert.equal(borrowed.term_provenance, 'ANALOGICAL_BORROWING');
+assert.equal(borrowed.construct_status, 'NO_NOVELTY_CLAIM_FROM_VOCABULARY');
+assert.equal(borrowed.analogy_fidelity_status, 'HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT');
+assert.equal(borrowed.retention_rule, 'DO_NOT_DELETE_FROM_TD613_ON_NOMENCLATURE_GROUNDS');
+assert.match(borrowed.near_miss_or_falsification_target, /operator mismatch|discriminating|predictive/i);
+
+assert.equal(ledger.retention_rule.automatic_deletion, false);
+assert.equal(ledger.retention_rule.automatic_metaphor_demotion, false);
+assert.equal(ledger.retention_rule.human_closure_required, true);
+assert.ok(Array.isArray(ledger.retention_rule.requirements) && ledger.retention_rule.requirements.length >= 5);
+
+const validationRoute = ledger.cross_domain_validation_route;
+assert.equal(validationRoute.state, 'OPEN_FOR_SOURCE_BOUND_CANDIDATES');
+assert.equal(validationRoute.unbound_external_alignment, 'HELD_FOR_EXTERNAL_SOURCE_BINDING');
+assert.deepEqual(validationRoute.sequence, [
+  'FREEZE_PREEXISTING_TD613_ARTIFACT',
+  'BIND_EXTERNAL_SOURCE_AND_PUBLICATION_TIME',
+  'SEPARATE_TERM_OVERLAP_FROM_OPERATOR_OVERLAP',
+  'BLIND_MAP_INPUTS_OPERATORS_OBSERVABLES_AND_FAILURES',
+  'RECORD_MATCHES_AND_MISMATCHES',
+  'TEST_STRUCTURE_PRESERVING_TRANSFER',
+  'CLASSIFY_ANALOGY_FIDELITY',
+  'PRESERVE_TEMPORAL_NON_RETROACTIVITY',
+  'RETURN_TO_HUMAN'
+]);
+assert.match(validationRoute.claim_ceiling, /cannot by itself prove novelty, causation, copying/i);
+
+// Chamber 0 is hostile to novelty inflation, not to exploration. It begins with zero
+// promoted residual-novelty claims while keeping unresolved operational analogies live.
 assert.equal(residualNoveltyCount, 0);
 
 const serialized = JSON.stringify(ledger);
@@ -142,14 +174,19 @@ assert.deepEqual(
     'RECORD_NEAR_MISSES',
     'CLASSIFY_TERM_PROVENANCE',
     'CLASSIFY_CONSTRUCT_STATUS',
+    'TEST_OPERATIONAL_ANALOGY_FIDELITY',
     'TEST_RESIDUAL',
-    'PROMOTE_OR_DEMOTE',
+    'PROMOTE_DEMOTE_OR_RETAIN',
     'RETURN_CONTROL_TO_HUMAN'
   ]
 );
 assert.match(
   ledger.route_through_recognition.repair_criterion,
   /reduces dependence on bespoke vocabulary/
+);
+assert.match(
+  ledger.route_through_recognition.repair_criterion,
+  /without .*deleting an operationally useful TD613 relation/i
 );
 
 console.log('TD613 nomenclature decontamination Chamber 0 passed.');
