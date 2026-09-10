@@ -18,6 +18,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
+  interaction_scope: 'EXPLICIT_LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   witness_instrumentation: {
@@ -95,6 +96,10 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+  const laboratory = page.locator('#loomLegacy');
+  check('local laboratory starts optional and closed', !(await laboratory.evaluate(node => Boolean(node.open))));
+  await laboratory.locator(':scope > summary').click();
+  check('local laboratory opened explicitly before glyph-control traversal', await laboratory.evaluate(node => Boolean(node.open)));
   const glyphPath = page.locator('#glyphPath');
   const showPath = page.locator('#showPath');
   const releaseNode = page.locator('[data-motion-key="release"]');

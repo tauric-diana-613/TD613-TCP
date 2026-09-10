@@ -113,6 +113,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
+  interaction_scope: 'PRIMARY_AI_ENTRY_AND_EXPLICIT_LOCAL_LABORATORY',
   review_status: review.status,
   review_evidence_class: review.evidence.review_evidence_class,
   reviewed_repository_head: review.reviewed_repository_head,
@@ -205,6 +206,15 @@ try {
 
   check('hosted review route loaded', new URL(page.url()).pathname === route, page.url());
   check('Holonomy Loom title visibly renders', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
+  // This review exercises the local checker after entering its optional laboratory.
+  // The primary AI workspace has its own provider-transport witness; merely arriving calls nothing.
+  await page.locator('#aiTask').waitFor({ state: 'visible', timeout: 10_000 });
+  check('primary AI task workspace visibly renders at arrival', await page.locator('#loomAiWorkspace').isVisible() && await page.locator('#aiTask').isVisible());
+  check('primary AI Run control visibly renders without automatic invocation', await page.locator('#aiRun').isVisible());
+  const laboratory = page.locator('#loomLegacy');
+  check('local laboratory remains optional and closed at arrival', !(await detailsOpen(laboratory)));
+  await laboratory.locator(':scope > summary').click();
+  check('local laboratory opens by explicit operator action', await detailsOpen(laboratory));
   check('ordinary-language task instruction visibly renders', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('child-legible operational route visibly renders', await page.getByText('SEE → CHECK → UNDERSTAND → REST', { exact: true }).isVisible());
   check('CHECK THIS MESSAGE is a visible operator control', await page.getByRole('button', { name: 'CHECK THIS MESSAGE', exact: true }).isVisible());
