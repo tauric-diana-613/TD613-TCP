@@ -8,14 +8,17 @@ const models = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-3.8-flash', 'gem
 const listing = { ok: true, complete: true, observedAt: at - 1000, expiresAt: at + 599000, models };
 clearGeminiModelState();
 const plan = (providerListing, env = {}) => resolveGeminiModelPlan({ task: 'hush-transform', env, at, providerListing });
-assert.deepEqual(plan(listing).callableModels, ['gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.deepEqual(plan(listing).callableModels, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3.7-flash' && row.reasons.includes('provider-absent')));
+assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3.6-flash' && row.reasons.includes('provider-absent')));
 assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3-flash-preview' && row.reasons.includes('provider-absent')));
 for (const bad of [undefined, { ...listing, ok: false }, { ...listing, complete: false }, { ...listing, observedAt: at + 1 }, { ...listing, expiresAt: at }, { ...listing, observedAt: NaN }, { ...listing, expiresAt: at + 600001 }]) {
   assert.deepEqual(plan(bad).callableModels, []);
 }
 assert.deepEqual(plan({ ...listing, models: [] }).callableModels, []);
-assert.equal(MODEL_CATALOG['gemini-3.8-flash'].quality, null);
-assert.equal(assessGeminiEligibility('gemini-3.8-flash', { listing, at }).eligible, false);
+assert.equal(MODEL_CATALOG['gemini-3.8-flash'].quality, 130);
+assert.equal(MODEL_CATALOG['gemini-3.8-flash'].role, 'primary-quality');
+assert.equal(assessGeminiEligibility('gemini-3.8-flash', { listing, at }).eligible, true);
 assert.equal(assessGeminiEligibility('gemini-3.8-flash', { explicit: true, listing, at }).eligible, true);
 for (const [id, reason] of [['gemini-3.1-flash-lite-preview', 'documented-shutdown'], ['gemini-3.1-flash-image', 'specialized-route-required']]) {
   const p = plan(listing, { HUSH_GEMINI_MODEL: id });
@@ -23,12 +26,16 @@ for (const [id, reason] of [['gemini-3.1-flash-lite-preview', 'documented-shutdo
   assert.ok(!p.callableModels.includes(id));
   assert.ok(p.excludedModels.find(row => row.model === id).reasons.includes(reason));
 }
-for (const id of ['gemini-flash-latest', 'operator-future-model']) assert.equal(plan(listing, { HUSH_GEMINI_MODEL: id }).callableModels[0], id);
-assert.ok(!plan(listing, { GEMINI_DISABLED_MODELS: 'gemini-3.5-flash' }).callableModels.includes('gemini-3.5-flash'));
+for (const id of ['gemini-flash-latest', 'operator-future-model']) {
+  const p = plan(listing, { HUSH_GEMINI_MODEL: id });
+  assert.ok(p.callableModels.includes(id));
+  assert.equal(p.callableModels[0], 'gemini-3.8-flash', 'quality-first must not let an explicit legacy/unknown route outrank the pinned frontier');
+}
+assert.ok(!plan(listing, { GEMINI_DISABLED_MODELS: 'gemini-3.8-flash' }).callableModels.includes('gemini-3.8-flash'));
 assert.equal(resolveGeminiModelPlan({ env: {}, at, providerListing: listing, maxModels: 1 }).callableModels.length, 1);
 
-recordGeminiModelOutcome('gemini-3.5-flash', { ok: false, status: 429 }, at);
-assert.deepEqual(plan(listing).callableModels, ['gemini-2.5-flash']);
+recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429 }, at);
+assert.deepEqual(plan(listing).callableModels, ['gemini-3.5-flash', 'gemini-2.5-flash']);
 clearGeminiModelState();
 const scheduledAt = Date.parse('2027-05-07');
 assert.ok(assessGeminiEligibility('gemini-3.1-flash-lite', { explicit: true, at: scheduledAt, listing: { ...listing, models: ['gemini-3.1-flash-lite'], observedAt: scheduledAt, expiresAt: scheduledAt + 1000 } }).reasons.includes('lifecycle-review-required'));
