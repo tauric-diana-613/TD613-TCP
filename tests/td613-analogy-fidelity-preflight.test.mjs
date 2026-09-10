@@ -22,7 +22,8 @@ for (const law of [
   'ANALOGICAL_BORROWING != FAILED_ANALOGY',
   'EXTERNAL_CONVERGENCE != RETROACTIVE_ORIGIN_PROOF',
   'FAMILIAR_TERM != INVALID_TD613_USE',
-  'DEMYSTIFICATION != DEMOBILIZATION'
+  'DEMYSTIFICATION != DEMOBILIZATION',
+  'SAME_TOKEN != SAME_OPERATOR'
 ]) assert.ok(laws.has(law), `missing analogy-fidelity law: ${law}`);
 
 const allowed = new Set(ledger.allowed_fidelity_states);
@@ -77,13 +78,16 @@ for (const gained of [
 ]) assert.ok(discreteHolonomy.operative_structure_present.includes(gained));
 assert.match(discreteHolonomy.forbidden_upgrade, /GEOMETRIC_OR_PHYSICAL_HOLONOMY/);
 
-for (const heldId of ['PHASON', 'CUPOLA']) {
-  assert.equal(
-    byId.get(heldId).fidelity_state,
-    'HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT',
-    `${heldId} must remain held until its dedicated source-domain audit`
-  );
-}
+const phason = byId.get('PHASON');
+assert.equal(phason.fidelity_state, 'UNRESOLVED');
+assert.ok(phason.operative_structure_present.includes('multiple phason-labelled operators with non-uniform source-domain fidelity'));
+assert.match(phason.forbidden_upgrade, /SAME_PHASON_TOKEN/);
+
+const cupola = byId.get('CUPOLA');
+assert.equal(cupola.fidelity_state, 'METAPHOR_ONLY_SUPPORTED');
+assert.ok(cupola.operative_structure_present.includes('bounded multi-stratum organizational container'));
+assert.ok(cupola.missing_for_stronger_domain_claim.includes('geometric cupola embedding'));
+assert.match(cupola.forbidden_upgrade, /GEOMETRIC_CUPOLA_EMBEDDING/);
 
 assert.equal(ledger.external_convergence_candidate.status, 'HELD_FOR_EXTERNAL_SOURCE_BINDING');
 assert.equal(ledger.external_convergence_candidate.source_bound, false);
