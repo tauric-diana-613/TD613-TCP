@@ -1,0 +1,10 @@
+{
+  "handoff": {
+    "digest": "2dc63d6528d325a15d65494ec506a647649a10bbdbb2ebbc6226d23b73e1a579",
+    "issued_at": 1789013557698,
+    "consumed_at": 1789013559035,
+    "source": "/dome-world/holonomy-loom.html",
+    "destination": "/dome-world/marrowline.html"
+  },
+  "provider": "not requested"
+}

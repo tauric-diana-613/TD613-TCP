@@ -172,3 +172,30 @@ test('imported workspace owns layout only during its lifetime and receipt remain
   assert.equal(scene.dom.window.document.documentElement.hasAttribute('data-loom-task-import'), false);
   scene.dom.window.close();
 });
+test('Marrowline presents structured assessment, source references and exact original with hidden idle Stop', async () => {
+  const text = '## Diligence\n\nUse **documented** costs.\n\n- Separate migration overages.\n- Resolve retention conflict.';
+  const scene = ui(input => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: input.request_id, status: 'completed', answer: text, missing_information: ['Signed amendment'], used_document_ids: ['budget-1'], suggested_next_step: 'Request the amendment.', observations: { provider_calls: 1 } }));
+  await scene.workspace.ready;
+  const stop = scene.root.querySelector('#loomImportedStop');
+  assert.equal(stop.hidden, true); assert.equal(scene.dom.window.getComputedStyle(stop).display, 'none');
+  scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
+  assert.equal(stop.hidden, true); assert.equal(scene.dom.window.getComputedStyle(stop).display, 'none');
+  assert.match(scene.root.querySelector('.ai-result-lead').textContent, /Use documented costs/);
+  assert.equal(scene.root.querySelector('.ai-result-lead strong').textContent, 'documented');
+  assert.equal(scene.root.querySelector('.ai-result-original pre').textContent, text);
+  assert.match(scene.root.querySelector('.ai-result-sources').textContent, /Shared budget.txt/);
+  assert.match(scene.root.querySelector('.ai-result-unknowns').textContent, /Signed amendment/);
+  scene.workspace.destroy(); scene.dom.window.close();
+});
+test('Marrowline held receipt keeps safe failure facts while rejected content remains unavailable', async () => {
+  const scene = ui(input => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: input.request_id, status: 'held', error: 'provider-response-not-admitted', answer: 'REJECTED_PAYLOAD_613', diagnostic: { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' }, observations: { model: 'gemini-3.5-flash', elapsed_ms: 17300, provider_calls: 1, http_status: 200, usage: { candidatesTokenCount: 8192 }, raw: 'REJECTED_PAYLOAD_613' } }));
+  await scene.workspace.ready; scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
+  const receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+  assert.equal(receipt.provider_failure.diagnostic.code, 'OUTPUT_TOKEN_LIMIT');
+  assert.equal(receipt.provider_failure.observations.elapsed_ms, 17300); assert.equal(receipt.provider_failure.observations.provider_calls, 1);
+  assert.equal(scene.root.textContent.includes('REJECTED_PAYLOAD_613'), false);
+  assert.equal(scene.root.querySelector('#loomImportedAnswer').textContent, '');
+  assert.match(scene.root.querySelector('[role=status]').textContent, /output limit/);
+  assert.equal(scene.dom.window.getComputedStyle(scene.root.querySelector('#loomImportedStop')).display, 'none');
+  scene.workspace.destroy(); scene.dom.window.close();
+});

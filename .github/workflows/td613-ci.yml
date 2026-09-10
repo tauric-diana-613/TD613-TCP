@@ -176,7 +176,7 @@ jobs:
           node --test tests/holonomy-loom-animation-coordinator.test.mjs
           node --test tests/holonomy-loom-semantic-field.test.mjs
           node --test tests/holonomy-loom-theater-dom.test.mjs
-          node --test tests/loom-task.test.mjs tests/loom-ai-intake.test.mjs tests/loom-ai-handoff.test.mjs tests/holonomy-loom-ai-projects.test.mjs tests/loom-ai-workspace-dom.test.mjs tests/holonomy-loom-ai-request-field.test.mjs tests/loom-ai-project-checks.test.mjs
+          node --test tests/loom-task.test.mjs tests/loom-ai-intake.test.mjs tests/loom-ai-handoff.test.mjs tests/holonomy-loom-ai-projects.test.mjs tests/loom-ai-workspace-dom.test.mjs tests/holonomy-loom-ai-request-field.test.mjs tests/loom-ai-project-checks.test.mjs tests/holonomy-loom-ai-result-view.test.mjs tests/loom-ai-failure.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-live-ai-design.json
           node --test tests/dollhouse-aperture-hostile-audit.test.mjs tests/dollhouse-atlas-hostile-audit.test.mjs tests/dollhouse-fadt-hostile-audit.test.mjs tests/loom-portable-governor.test.mjs tests/loom-governance-hostile-ui.test.mjs tests/holonomy-loom-portable-workbench.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-portable-roundtrip-design.json

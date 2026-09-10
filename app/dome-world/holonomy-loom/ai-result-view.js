@@ -3,6 +3,29 @@
  * This module neither validates a provider response nor converts model prose into
  * certified findings. Text, headings and source names never enter innerHTML.
  */
+// Deliberately small presentation grammar. Unrecognized Markdown, links and HTML
+// remain literal text. The exact provider answer is separately retained below.
+function answerBlocks(answer) {
+  const blocks = [];
+  const lines = answer.replace(/\r\n?/g, '\n').split('\n');
+  let paragraph = [];
+  const flush = () => { if (paragraph.length) blocks.push({ type: 'paragraph', text: paragraph.join('\n') }); paragraph = []; };
+  for (const line of lines) {
+    if (!line.trim()) { flush(); continue; }
+    const heading = /^ {0,3}#{1,6}[ \t]+(\S.*)$/.exec(line);
+    const item = /^( *)(?:([-+*])|([0-9]{1,6})[.)])[ \t]+(\S.*)$/.exec(line);
+    if (heading) { flush(); blocks.push({ type: 'heading', text: heading[1] }); }
+    else if (item) {
+      flush();
+      const entry = { indent: item[1].length, ordered: Boolean(item[3]), value: item[3] ? Number(item[3]) : null, text: item[4] };
+      if (blocks.at(-1)?.type !== 'list') blocks.push({ type: 'list', items: [] });
+      blocks.at(-1).items.push(entry);
+    } else paragraph.push(line);
+  }
+  flush();
+  return blocks;
+}
+
 export function renderLoomAiResult(container, response, { documentNames = {} } = {}) {
   if (!container?.ownerDocument) throw new TypeError('A result container is required.');
   if (!response || typeof response.answer !== 'string' ||
@@ -20,15 +43,56 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
   };
   const heading = text => el('h3', text);
   const paragraphs = response.answer.split(/\r?\n[\t ]*\r?\n/).map(value => value.trim()).filter(Boolean);
+  const blocks = answerBlocks(response.answer);
+  const inline = (node, text) => {
+    // Bold and inline-code delimiters become safe text-bearing elements only.
+    const tokens = /\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
+    let start = 0;
+    for (const match of text.matchAll(tokens)) {
+      node.append(doc.createTextNode(text.slice(start, match.index)));
+      node.append(el(match[1] === undefined ? 'code' : 'strong', match[1] ?? match[2]));
+      start = match.index + match[0].length;
+    }
+    node.append(doc.createTextNode(text.slice(start)));
+    return node;
+  };
+  const renderBlock = block => {
+    if (block.type !== 'list') return inline(el(block.type === 'heading' ? 'h4' : 'p'), block.text);
+    const wrapper = el('div', undefined, 'ai-result-list');
+    const stack = [];
+    for (const item of block.items) {
+      while (stack.length && item.indent < stack.at(-1).indent) stack.pop();
+      if (stack.length && item.indent === stack.at(-1).indent && item.ordered !== stack.at(-1).ordered) stack.pop();
+      if (!stack.length || item.indent > stack.at(-1).indent) {
+        const list = el(item.ordered ? 'ol' : 'ul');
+        if (item.ordered) list.start = item.value;
+        const parent = stack.at(-1)?.lastItem ?? wrapper;
+        parent.append(list);
+        stack.push({ list, indent: item.indent, ordered: item.ordered, lastItem: null });
+      }
+      const li = inline(el('li'), item.text);
+      if (item.ordered) li.value = item.value;
+      stack.at(-1).list.append(li);
+      stack.at(-1).lastItem = li;
+    }
+    return wrapper;
+  };
   const fragment = doc.createDocumentFragment();
   const analysis = el('section', undefined, 'ai-result-analysis');
   analysis.setAttribute('aria-label', 'AI analysis');
   analysis.append(heading('The AI’s assessment'));
-  if (paragraphs.length) analysis.append(el('p', paragraphs[0], 'ai-result-lead'));
-  if (paragraphs.length > 1) {
+  // A provider may lead with one or several standalone headings. Keep going
+  // until actual prose or a list appears; headings alone cannot be the preview.
+  const firstSubstantive = blocks.findIndex(block => block.type !== 'heading');
+  const previewCount = firstSubstantive < 0 ? blocks.length : firstSubstantive + 1;
+  const lead = el('div', undefined, 'ai-result-lead');
+  for (const block of blocks.slice(0, previewCount)) lead.append(renderBlock(block));
+  if (firstSubstantive < 0) lead.append(el('p', 'The AI returned headings without a substantive assessment.'));
+  analysis.append(lead);
+  if (previewCount < blocks.length) {
     const full = el('details', undefined, 'ai-result-full');
-    full.append(el('summary', `Read the full analysis · ${paragraphs.length - 1} more ${paragraphs.length === 2 ? 'paragraph' : 'paragraphs'}`));
-    for (const paragraph of paragraphs.slice(1)) full.append(el('p', paragraph));
+    full.append(el('summary', 'Read the rest of the analysis'));
+    for (const block of blocks.slice(previewCount)) full.append(renderBlock(block));
     analysis.append(full);
   }
   fragment.append(analysis);
@@ -65,10 +129,13 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
     }
     sources.append(list);
   } else sources.append(el('p', 'The AI supplied no document references.'));
+  const original = el('details', undefined, 'ai-result-original');
+  original.append(el('summary', 'Original answer · exact text'), el('pre', response.answer));
+  sources.append(original);
   fragment.append(sources);
   container.replaceChildren(fragment);
   return {
     setView(auditor) { sources.open = Boolean(auditor); },
-    inspect() { return { paragraphCount: paragraphs.length, missingCount: count, sourceCount: response.used_document_ids.length }; }
+    inspect() { return { paragraphCount: paragraphs.length, blockCount: blocks.length, missingCount: count, sourceCount: response.used_document_ids.length }; }
   };
 }

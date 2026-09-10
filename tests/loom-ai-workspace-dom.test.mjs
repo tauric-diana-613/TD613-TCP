@@ -90,6 +90,18 @@ test('malformed response text gets a bounded error without parser excerpts',asyn
   assert.equal(h.$('#aiStatus').textContent.includes('SECRET_FROM_INVALID_JSON_33'),false);
   assert.match(h.$('#aiStatus').textContent,/unreadable/);assert.equal(h.$('#aiResult').hidden,true);
 });
+test('a bound held response preserves safe provider observations without retaining rejected content',async t=>{
+  const secret='REJECTED_MODEL_CONTENT_219';
+  const h=harness(t,request=>response({schema:'td613.loom.ai-task-result/v0.1',status:'held',request_id:request.request_id,error:'provider-response-not-admitted',answer:secret,
+    diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'output-admission',code:'OUTPUT_TOKEN_LIMIT',raw:secret},
+    observations:{provider_calls:1,http_status:200,elapsed_ms:17300,usage:{candidatesTokenCount:8192},raw:secret}},502));
+  h.load();h.$('#aiRun').click();await h.settled();
+  const event=h.ui.inspect().events.find(event=>event.provider_failure);
+  assert.equal(event.provider_failure.diagnostic.code,'OUTPUT_TOKEN_LIMIT');
+  assert.equal(event.observations.http_status,200);assert.equal(event.observations.provider_calls,1);
+  assert.equal(JSON.stringify(h.ui.inspect()).includes(secret),false);assert.equal(h.root.textContent.includes(secret),false);
+  assert.match(h.$('#aiStatus').textContent,/output limit/);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiExport').disabled,true);
+});
 test('a slow local upload cannot land in a subsequently selected project',async t=>{
   const h=harness(t),read=deferred();h.load(0);
   const file={name:'old-project.txt',type:'text/plain',size:8,arrayBuffer:()=>read.promise};h.upload(file);h.load(1);
