@@ -1,0 +1,114 @@
+{
+  "schema": "td613.dome-world.admissibility-horizon-refinement-recompression-rupture-startup-hook/v0.1",
+  "status": "PREREGISTERED_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 850,
+    "receipt": "2fefe16e5883f6c4fe36d75e9e4c41331f317911",
+    "validation_run": 2360,
+    "validation_run_id": 33135672980,
+    "conclusion": "SUCCESS"
+  },
+  "inherited_jurisdiction": {
+    "fadt_pr": 752,
+    "bitemporal_pr": 847,
+    "prospective_replay_pr": 850,
+    "witness_routes_are_ancestry": false
+  },
+  "stages": [
+    "q0_NULL_REGISTERED_TRACE",
+    "q1_PREFIX_ONE",
+    "q2_PREFIX_TWO",
+    "q3_PREFIX_THREE"
+  ],
+  "claims": [
+    "FIRST_STRATUM",
+    "SCHEDULE",
+    "X1",
+    "X2",
+    "X3",
+    "FULL_STATE",
+    "REPLAY_REQUIRED_FOR_EXACT_STATE"
+  ],
+  "finite_domain": {
+    "schedules": 6,
+    "states": 125,
+    "antecedents": 750,
+    "claim_families": 7,
+    "stages": 4,
+    "schedule_claim_chains": 42,
+    "jurisdiction_cells": 168
+  },
+  "expected_stage_ledger": {
+    "authorized": [0, 14, 24, 30],
+    "held": [42, 28, 18, 12],
+    "total_authorized": 68,
+    "total_held": 100,
+    "eventually_authorized_earlier_held": 52,
+    "never_authorized_cells": 48
+  },
+  "expected_null_wounds": {
+    "FIRST_STRATUM": 3,
+    "SCHEDULE": 6,
+    "X1": 5,
+    "X2": 5,
+    "X3": 5,
+    "FULL_STATE": 125,
+    "REPLAY_REQUIRED_FOR_EXACT_STATE": 2
+  },
+  "expected_refinement_census": {
+    "target_indexed_checks": 15750,
+    "strict_gamma_contractions": 6800,
+    "equal_gamma_transitions": 8950,
+    "violations": 0
+  },
+  "expected_recompression_census": {
+    "fine_authorized_ordered_transitions": 152,
+    "reopened": 100,
+    "preserved": 52,
+    "reopened_state_indexed_checks": 12500,
+    "preserved_state_indexed_checks": 6500,
+    "total_state_indexed_checks": 19000,
+    "reopened_by_claim": {
+      "FIRST_STRATUM": 18,
+      "SCHEDULE": 24,
+      "X1": 6,
+      "X2": 14,
+      "X3": 14,
+      "FULL_STATE": 6,
+      "REPLAY_REQUIRED_FOR_EXACT_STATE": 18
+    },
+    "preserved_by_claim": {
+      "FIRST_STRATUM": 18,
+      "SCHEDULE": 6,
+      "X1": 6,
+      "X2": 2,
+      "X3": 2,
+      "FULL_STATE": 0,
+      "REPLAY_REQUIRED_FOR_EXACT_STATE": 18
+    }
+  },
+  "claim_ceiling": {
+    "generic_finite_set_monotonicity_novelty": false,
+    "universal_ai_memory_theorem": false,
+    "database_theorem": false,
+    "entropy_or_shannon_theorem": false,
+    "asymptotic_claim": false,
+    "physical_claim": false,
+    "source_state_mutation": false,
+    "merge": false,
+    "deploy": false,
+    "publish": false,
+    "release": false,
+    "vercel": false
+  },
+  "mandatory_scars": [
+    "REFINEMENT_PERSISTENCE != RECOMPRESSION_PERSISTENCE",
+    "EVER_KNOWN != STILL_AUTHORIZED_AFTER_RECOMPRESSION",
+    "RECOMPRESSION_CAN_REOPEN_AUTHORITY != RECOMPRESSION_MUST_REOPEN_AUTHORITY",
+    "RECOMPRESSION != SOURCE_STATE_DELETION",
+    "PRESENT_REPRESENTATION_AUTHORITY != HISTORICAL_AUTHORITY_EVENT",
+    "NULL_REGISTERED_TRACE != ABSENT_SOURCE_STATE",
+    "GAP_CONTRACTION != ENTROPY_MONOTONICITY",
+    "FINITE_FOUR_STAGE_ATLAS != UNIVERSAL_AI_MEMORY_THEOREM"
+  ]
+}

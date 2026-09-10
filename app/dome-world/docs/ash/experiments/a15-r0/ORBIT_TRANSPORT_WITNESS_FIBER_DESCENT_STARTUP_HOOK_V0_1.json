@@ -1,0 +1,56 @@
+{
+  "schema": "td613.dome-world.orbit-transport-witness-fiber-descent-startup/v0.1",
+  "status": "PREREGISTRATION_ONLY_THEOREM_UNEARNED",
+  "scientific_parent": {
+    "pr": 837,
+    "receipt": "17475d670e339d7b562194a4429fa979584da65a",
+    "validation_run": "2353/33123194213"
+  },
+  "question": "Does repair/replay/tomography authority descend exactly through the 72-element labelled pointwise witness fibre for every successful H/I/X target while failing under the coarser 576-element unlabeled set stabilizer?",
+  "declared_group_size": 10321920,
+  "orbit_types": ["H", "I", "X"],
+  "labelled_targets_per_orbit": 143360,
+  "labelled_pointwise_stabilizer_size": 72,
+  "unlabelled_set_stabilizer_size": 576,
+  "induced_codepoint_action_count": 8,
+  "represented_witness_incidences_per_orbit": 10321920,
+  "represented_witness_incidences_total": 30965760,
+  "required_stabilizer_receiver_checks": 31968,
+  "preregistered_setwise_counterexample": {
+    "translation_integer": 79,
+    "coordinate_permutation": [0, 1, 2, 3, 4, 5, 6, 7],
+    "induced_codepoint_action": [1, 0, 3, 2],
+    "repair_mask_order": [[0,0],[0,1],[1,0],[1,1]],
+    "meaning": "preserves unlabeled code set while changing labelled repair identity"
+  },
+  "candidate_fadt_condition": {
+    "safe_fibre": "labelled pointwise stabilizer coset",
+    "required_union_equals_intersection": true,
+    "required_gamma_empty": true,
+    "unsafe_coarsening_requires_nonempty_gap_witness": true
+  },
+  "claim_ceiling": {
+    "universal_ai_architecture_theorem": false,
+    "universal_coding_theorem": false,
+    "shannon_capacity": false,
+    "physical_symmetry": false,
+    "physical_gauge": false,
+    "physical_holonomy": false,
+    "continuum_tomography": false,
+    "operational_inverse": false,
+    "operational_path_groupoid": false,
+    "complete_schedule_reconstruction": false,
+    "source_state_mutation": false,
+    "production": false,
+    "release": false,
+    "vercel": false
+  },
+  "mandatory_scars": [
+    "WITNESS_IDENTITY != SOURCE_IDENTITY",
+    "LABELLED_POINTWISE_STABILIZER_72 != UNLABELLED_SET_STABILIZER_576",
+    "SETWISE_STABILIZATION != LABELLED_ADMISSIBILITY_EQUIVALENCE",
+    "STABILIZER_QUOTIENT != GAUGE_QUOTIENT",
+    "ZERO_WITNESS_FIBER_GAP != ZERO_INFORMATION_LOSS_GLOBALLY",
+    "REPRESENTED_30965760_WITNESS_INCIDENCES != EXECUTED_30965760_WITNESS_INCIDENCES"
+  ]
+}
