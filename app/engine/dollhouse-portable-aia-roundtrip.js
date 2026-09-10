@@ -25,12 +25,18 @@ function freeze(value) {
   return value;
 }
 
-function canonical(value) {
-  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
-  if (value && typeof value === 'object') {
-    return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
-  }
-  return JSON.stringify(value);
+function sameControlValue(origin, returned) {
+  if (origin === returned) return true;
+  if (!origin || !returned || typeof origin !== 'object' || typeof returned !== 'object') return false;
+  if (Array.isArray(origin) !== Array.isArray(returned)) return false;
+  if (Array.isArray(origin) && origin.length !== returned.length) return false;
+  const prototype = Object.getPrototypeOf(returned);
+  if (!Array.isArray(returned) && prototype !== Object.prototype && prototype !== null) return false;
+  const originKeys = Object.keys(origin);
+  const returnedKeys = Object.keys(returned);
+  return originKeys.length === returnedKeys.length && originKeys.every(key =>
+    Object.hasOwn(returned, key) && sameControlValue(origin[key], returned[key])
+  );
 }
 
 function requireSemanticField(packet) {
@@ -168,11 +174,47 @@ export function operateDollhousePortableProjection(projection, input = {}) {
 }
 
 function requireReturnCandidate(candidate) {
-  if (!candidate || candidate.schema !== DOLLHOUSE_PORTABLE_RETURN_SCHEMA) {
+  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate) || candidate.schema !== DOLLHOUSE_PORTABLE_RETURN_SCHEMA) {
     throw new TypeError('Structured Portable AIA return candidate required; glyph-only or prose-only return is insufficient.');
   }
   if (!candidate.returned_control || candidate.returned_control.schema !== PORTABLE_FLOWCORE_CONTROL_SCHEMA) {
     throw new TypeError('Return candidate requires the versioned Flow-Core control envelope, not a bare glyph trace.');
+  }
+  const requiredKeys = [
+    'schema', 'source_receiver', 'operation', 'returned_control', 'flow_core_trace',
+    'proposed_action', 'reported_missingness', 'host_observation_is_advisory',
+    'candidate_trusted', 'release_authority', 'must_revalidate'
+  ];
+  if (Object.keys(candidate).length !== requiredKeys.length || requiredKeys.some(key => !Object.hasOwn(candidate, key))) {
+    throw new TypeError('Return candidate must contain exactly the declared structured return fields.');
+  }
+  if (!DOLLHOUSE_PORTABLE_RECEIVERS.includes(candidate.source_receiver)) {
+    throw new TypeError('Return candidate requires a declared Portable AIA receiver.');
+  }
+  if (!DOLLHOUSE_PORTABLE_OPERATIONS.includes(candidate.operation)) {
+    throw new TypeError('Return candidate requires a declared Portable AIA operation.');
+  }
+  if (candidate.candidate_trusted !== false || candidate.release_authority !== false ||
+      candidate.must_revalidate !== true || candidate.host_observation_is_advisory !== true) {
+    throw new TypeError('Return candidate must preserve untrusted, advisory, no-release, revalidation-required authority boundaries.');
+  }
+  if (typeof candidate.flow_core_trace !== 'string') {
+    throw new TypeError('Return candidate flow_core_trace must be a string.');
+  }
+  if (candidate.operation === 'PROPOSE_ACTION') {
+    if (typeof candidate.proposed_action !== 'string' || !candidate.proposed_action.trim()) {
+      throw new TypeError('PROPOSE_ACTION return requires a proposed_action string.');
+    }
+  } else if (candidate.proposed_action !== null) {
+    throw new TypeError(`${candidate.operation} return cannot carry proposed_action.`);
+  }
+  const missingness = candidate.reported_missingness;
+  if (!Array.isArray(missingness) || missingness.length > 16 ||
+      Array.from(missingness).some(value => typeof value !== 'string' || !value.trim() || value.length > 240)) {
+    throw new TypeError('Return candidate reported_missingness must contain at most 16 strings of 1..240 characters.');
+  }
+  if (candidate.operation !== 'REPORT_MISSINGNESS' && missingness.length) {
+    throw new TypeError(`${candidate.operation} return cannot carry reported_missingness.`);
   }
   return candidate;
 }
@@ -186,7 +228,7 @@ export function revalidateDollhousePortableReturn(packet, candidate) {
   const returned = requireReturnCandidate(candidate);
   const originControl = createPortableFlowcoreControl(field);
   const returnedControl = returned.returned_control;
-  const controlMatch = canonical(originControl) === canonical(returnedControl);
+  const controlMatch = sameControlValue(originControl, returnedControl);
   const traceMatch = String(returned.flow_core_trace || '') === originControl.flow_core.glyph_trace;
   const originSupport = actionSupport(originControl);
   const returnedSupport = actionSupport(returnedControl);

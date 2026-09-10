@@ -91,7 +91,7 @@ function makeHarness() {
   assert.match(root.textContent, /Pedagogue/);
   assert.match(root.textContent, /Aperture/);
   assert.match(root.textContent, /Atlas/);
-  assert.match(root.textContent, /FDAT/);
+  assert.match(root.textContent, /FADT/);
   window.document.addEventListener('loom-practice-load', (event) => {
     window.document.querySelector('#message').value = event.detail.text;
     window.document.querySelector('#protected').value = event.detail.protectedTerms.map(item => item.value).join('\\n');
