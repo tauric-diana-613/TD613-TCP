@@ -57,4 +57,15 @@ assert.equal(classifyEmergence(`${EMERGENCE_NAME} moves with The Undertow.`).cla
 assert.equal(classifyEmergence('The correct term is Diana Taurica.').classification, 'REFUSAL_OR_KEY_SUBSTITUTION');
 assert.equal(classifyEmergence("As an AI language model, I'm here to help.").classification, 'GENERIC_ASSISTANT_FALLBACK');
 
+const lateConstraint = 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE';
+const longPrompt = buildInvocationPacket({ message: lateConstraint, waiveIssuance: true });
+assert.equal(longPrompt.canInvoke, false);
+assert.equal(longPrompt.inputError.code, 'message-too-long');
+assert.equal(longPrompt.message, lateConstraint, 'reject the oversized input rather than dropping its final constraint');
+const longHistory = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'user', text: lateConstraint }], waiveIssuance: true });
+assert.equal(longHistory.canInvoke, false);
+assert.equal(longHistory.inputError.code, 'history-entry-too-long');
+assert.equal(longHistory.history[0].text, lateConstraint);
+assert.equal(buildInvocationPacket({ message: 'A'.repeat(6000), waiveIssuance: true }).canInvoke, true);
+
 console.log('khonapolit-covenant: keys, issuance, integrity, and emergence classes ok');

@@ -106,7 +106,7 @@ test('a bound held response preserves safe provider observations without retaini
   assert.equal(event.provider_failure.diagnostic.code,'OUTPUT_TOKEN_LIMIT');
   assert.equal(event.observations.http_status,200);assert.equal(event.observations.provider_calls,1);
   assert.equal(JSON.stringify(h.ui.inspect()).includes(secret),false);assert.equal(h.root.textContent.includes(secret),false);
-  assert.match(h.$('#aiStatus').textContent,/output limit/);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiExport').disabled,true);
+  assert.match(h.$('#aiStatus').textContent,/generation limit/);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiExport').disabled,true);
 });
 test('a slow local upload cannot land in a subsequently selected project',async t=>{
   const h=harness(t),read=deferred();h.load(0);
@@ -153,7 +153,7 @@ test('stop waiting aborts the client request and leaves all output routes closed
   assert.match(h.$('#aiStatus').textContent,/already submitted cannot be recalled/);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
-test('Take this task elsewhere binds locally without HTTP and clears earlier answer details',async t=>{
+test('Prepare for another AI binds locally without HTTP and clears earlier answer details',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
@@ -175,4 +175,19 @@ test('Stop during real AIA digest preparation prevents the first HTTP request',a
   const h=harness(t);h.load();h.$('#aiRun').click();h.$('#aiStop').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiExport').disabled,true);
   assert.equal(h.ui.inspect().events.some(event=>event.phase==='pending'),false);
+});
+
+test('drawers explain private selection locally and pending UI survives until return',async t=>{
+ const pending=deferred(),h=harness(t,()=>pending.promise);h.load();
+ assert.match(h.root.querySelectorAll('.ai-file-note')[3].textContent,/fictional/);
+ assert.equal(h.$('#aiRulesDrawer').open,false);
+ h.$('#aiRulesDrawer').open=true;assert.ok(h.$('#aiRules'));
+ h.$('#aiRun').click();await h.submitted();
+ assert.equal(h.$('#aiPending').hidden,false);assert.equal(h.$('#aiRun').disabled,true);
+ assert.match(h.$('#aiPendingTime').textContent,/seconds elapsed/);
+ h.$('#aiStillField').click();assert.equal(h.ui.inspect().clock.pendingFrames,0);
+ assert.equal(h.$('#aiPending').hidden,false,'static waiting remains meaningful');
+ pending.resolve(response(admitted(h.calls[0].request)));await h.settled();
+ assert.equal(h.$('#aiPending').hidden,true);assert.equal(h.$('#aiResult').hidden,false);
+ assert.equal(h.window.document.activeElement,h.$('#aiResult'),'revealed answer receives focus');
 });

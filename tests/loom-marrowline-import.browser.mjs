@@ -60,6 +60,7 @@ try {
       const localChoice = page.getByRole('checkbox', { name: 'Share handoff-local.txt with Gemini', exact: true });
       await localChoice.waitFor({ state: 'visible' }); assert.equal(await localChoice.isChecked(), false);
       assert.equal(calls.length, 0);
+      await page.locator('#aiPortableDrawer > summary').click();
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiMarrowline')?.disabled === false);
       assert.equal(calls.length, 0, 'preparing portable task makes zero provider requests');

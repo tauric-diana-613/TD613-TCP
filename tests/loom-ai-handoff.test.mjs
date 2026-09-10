@@ -69,18 +69,18 @@ test('portable JSON and host prompt conserve selected constraints and identify d
 
 const { JSDOM } = await import('jsdom');
 const { mountMarrowlineLoomTask } = await import('../app/dome-world/marrowline-loom-import.js');
-function ui(reply = input => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: input.request_id, status: 'completed', answer: '<img src=x onerror=alert(1)> Budget discrepancy: 9.', missing_information: ['Approval date'], used_document_ids: ['budget-1'], suggested_next_step: 'Review the underlying receipts.', observations: { provider_calls: 1 } })) {
+function ui(reply = input => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: input.request_id, status: 'completed', answer: '<img src=x onerror=alert(1)> Budget discrepancy: 9.', missing_information: ['Approval date'], used_document_ids: ['budget-1'], suggested_next_step: 'Review the underlying receipts.', observations: { provider_calls: 1 } }), selected = fixture()) {
   const dom = new JSDOM('<main><section id="task"></section></main>', { url: 'https://td613.com/dome-world/marrowline.html' });
   const calls = [];
   const environment = { crypto: webcrypto, fetch: async (url, options) => { const input = JSON.parse(options.body); calls.push({ url, options, input }); return { ok: true, json: async () => reply(input) }; } };
   const root = dom.window.document.querySelector('#task');
-  const workspace = mountMarrowlineLoomTask(root, { ...fixture(), handoff_receipt: { digest: 'example' } }, environment);
-  return { dom, calls, root, workspace };
+  const workspace = mountMarrowlineLoomTask(root, { ...selected, handoff_receipt: { digest: 'example' } }, environment);
+  return { dom, calls, root, workspace, environment };
 }
 async function settled(scene) { for (let i = 0; i < 100 && scene.root.querySelector('#loomImportedRun').disabled; i++) await new Promise(resolve => setTimeout(resolve, 5)); }
 test('Marrowline arrival sends zero requests; button carries only exact selected wire packet', async () => {
   const scene = ui(); assert.equal(scene.calls.length, 0);
-  assert.match(scene.root.textContent, /Your AI workspace is ready/);
+  assert.match(scene.root.textContent, /Continue your Loom task/);
   scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
   assert.equal(scene.calls.length, 1); const call = scene.calls[0];
   assert.equal(call.url, '/api/khonapolit?operation=loom-task'); assert.equal(call.options.method, 'POST');
@@ -167,7 +167,7 @@ test('imported workspace owns layout only during its lifetime and receipt remain
   assert.equal(scene.root.hasAttribute('data-loom-import-workspace'), true);
   assert.equal(scene.root.querySelector('#loomImportedReceiptDetails').open, false);
   assert.ok(scene.root.querySelector('#loomImportedReceiptDetails #loomImportedReceipt'));
-  assert.equal(scene.root.querySelector('a[href="/dome-world/marrowline.html"]').textContent, 'Open Marrowline relay');
+  assert.equal(scene.root.querySelector('a[href="/dome-world/marrowline.html"]').textContent, 'Start a separate Marrowline chat');
   scene.workspace.destroy();
   assert.equal(scene.dom.window.document.documentElement.hasAttribute('data-loom-task-import'), false);
   scene.dom.window.close();
@@ -195,7 +195,7 @@ test('Marrowline held receipt keeps safe failure facts while rejected content re
   assert.equal(receipt.provider_failure.observations.elapsed_ms, 17300); assert.equal(receipt.provider_failure.observations.provider_calls, 1);
   assert.equal(scene.root.textContent.includes('REJECTED_PAYLOAD_613'), false);
   assert.equal(scene.root.querySelector('#loomImportedAnswer').textContent, '');
-  assert.match(scene.root.querySelector('[role=status]').textContent, /output limit/);
+  assert.match(scene.root.querySelector('[role=status]').textContent, /generation limit/);
   assert.equal(scene.dom.window.getComputedStyle(scene.root.querySelector('#loomImportedStop')).display, 'none');
   scene.workspace.destroy(); scene.dom.window.close();
 });
@@ -220,4 +220,77 @@ test('REST control stays beside Run, records current governance and preserves pr
   receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
   assert.equal(receipt.session_event.kind, 'RESUME'); assert.equal(receipt.governance.state, 'ACTIVE');
   scene.workspace.destroy(); scene.dom.window.close();
+});
+
+
+test('receiver task expansion and disclosures preserve combining marks and exact selected request', async () => {
+  const selected = fixture();
+  const flourish = 'Kʰonapolit A' + '\u0301\u0308\u0342\u0323'.repeat(16) + '\n\nKhona\u200clit-po';
+  selected.task = flourish;
+  selected.documents[0].text = flourish;
+  selected.rules[0] = 'Preserve ' + flourish;
+  selected.governance = await createLoomAiGovernance(selected, { withheldDocumentCount: 2 });
+  const scene = ui(undefined, selected); await scene.workspace.ready;
+  const task = scene.root.querySelector('#loomImportedTask');
+  const expand = scene.root.querySelector('#loomImportedExpand');
+  assert.equal(task.value, flourish); assert.equal(task.rows, 4);
+  assert.match(scene.root.querySelector('#loomImportedBoundary').textContent, /2 local-only documents stayed out/);
+  assert.match(scene.root.textContent, /Google Gemini/);
+  for (const id of ['loomImportedDocuments', 'loomImportedRules', 'loomImportedReceiptDetails']) {
+    const drawer = scene.root.querySelector('#' + id); assert.equal(drawer.open, false); drawer.open = true;
+  }
+  assert.equal(scene.root.querySelector('#loomImportedDocuments pre').textContent, flourish);
+  expand.click(); assert.equal(task.rows, 12); assert.equal(expand.getAttribute('aria-expanded'), 'true');
+  assert.equal(task.value, flourish); assert.equal(scene.calls.length, 0);
+  expand.click(); assert.equal(task.rows, 4); assert.equal(task.value, flourish);
+  scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
+  assert.equal(scene.calls[0].input.task, flourish);
+  assert.deepEqual(scene.calls[0].input.documents, selected.documents);
+  assert.deepEqual(scene.calls[0].input.rules, selected.rules);
+  scene.workspace.destroy(); scene.dom.window.close();
+});
+
+test('pending receiver request gives visible progress until admitted answer replaces it', async () => {
+  let finish;
+  const reply = new Promise(resolve => { finish = resolve; });
+  const scene = ui(() => reply); await scene.workspace.ready;
+  scene.root.querySelector('#loomImportedRun').click();
+  for (let i = 0; i < 100 && scene.calls.length === 0; i++) await new Promise(resolve => setTimeout(resolve, 2));
+  assert.equal(scene.calls.length, 1);
+  assert.equal(scene.root.querySelector('.loom-import-progress').hidden, false);
+  assert.equal(scene.root.querySelector('#loomImportedAnswer').getAttribute('aria-busy'), 'true');
+  assert.match(scene.root.querySelector('#loomImportedRun').textContent, /Working/);
+  assert.equal(scene.root.querySelector('#loomImportedStop').hidden, false);
+  assert.equal(scene.root.querySelector('h3').hidden, true);
+  finish({ schema: 'td613.loom.ai-task-result/v0.1', request_id: scene.calls[0].input.request_id, status: 'completed', answer: 'A complete answer.', missing_information: [], used_document_ids: ['budget-1'], suggested_next_step: '' });
+  await settled(scene);
+  assert.equal(scene.root.querySelector('.loom-import-progress').hidden, true);
+  assert.equal(scene.root.querySelector('#loomImportedAnswer').getAttribute('aria-busy'), 'false');
+  assert.equal(scene.root.querySelector('h3').hidden, false);
+  assert.equal(scene.root.querySelector('#loomImportedRun').textContent, 'Run with Flow-Core AI');
+  scene.workspace.destroy(); scene.dom.window.close();
+});
+
+
+test('receiver deadline and operator cancellation remain distinguishable and release pending controls', async () => {
+  for (const deadlineReached of [true, false]) {
+    const scene = ui(); await scene.workspace.ready;
+    let expire; let timerCleared = false; let fetchStarted = false;
+    scene.environment.setTimeout = (callback, delay) => { assert.equal(delay, 55000); expire = callback; return 613; };
+    scene.environment.clearTimeout = id => { assert.equal(id, 613); timerCleared = true; };
+    scene.environment.fetch = async (_url, options) => { fetchStarted = true; return new Promise((_resolve, reject) => options.signal.addEventListener('abort', () => reject(new Error('Aborted')), { once: true })); };
+    scene.root.querySelector('#loomImportedRun').click();
+    for (let i = 0; i < 100 && !fetchStarted; i++) await new Promise(resolve => setTimeout(resolve, 2));
+    assert.equal(fetchStarted, true);
+    if (deadlineReached) expire(); else scene.root.querySelector('#loomImportedStop').click();
+    await settled(scene);
+    assert.equal(timerCleared, true);
+    const receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+    assert.equal(receipt.state, deadlineReached ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED');
+    assert.equal(receipt.client_fetch_invoked, true);
+    assert.match(scene.root.querySelector('[role=status]').textContent, deadlineReached ? /exceeded 55 seconds/ : /Stopped waiting/);
+    assert.equal(scene.root.querySelector('.loom-import-progress').hidden, true);
+    assert.equal(scene.root.querySelector('#loomImportedRun').disabled, false);
+    scene.workspace.destroy(); scene.dom.window.close();
+  }
 });

@@ -13,6 +13,13 @@ export function readLoomAiFailure(payload, requestId) {
   const observations = payload.observations;
   if (object(observations)) {
     for (const name of ['elapsed_ms', 'provider_calls', 'document_count', 'rule_count', 'input_characters']) if (count(observations[name])) failure.observations[name] = observations[name];
+    if (count(observations.deadline_ms) && observations.deadline_ms > 0 && observations.deadline_ms <= 60000) failure.observations.deadline_ms = observations.deadline_ms;
+    if (count(observations.output_token_budget) && observations.output_token_budget > 0 && observations.output_token_budget <= 65536) failure.observations.output_token_budget = observations.output_token_budget;
+    if (object(observations.stage_elapsed_ms)) {
+      const timings = {};
+      for (const stage of STAGES) if (count(observations.stage_elapsed_ms[stage])) timings[stage] = observations.stage_elapsed_ms[stage];
+      if (Object.keys(timings).length) failure.observations.stage_elapsed_ms = timings;
+    }
     if (observations.model === null || (typeof observations.model === 'string' && /^[A-Za-z0-9._-]{1,120}$/.test(observations.model))) failure.observations.model = observations.model;
     if (typeof observations.model_policy === 'string' && /^[A-Za-z0-9._/-]{1,160}$/.test(observations.model_policy)) failure.observations.model_policy = observations.model_policy;
     if (Number.isInteger(observations.http_status) && observations.http_status >= 100 && observations.http_status <= 599) failure.observations.http_status = observations.http_status;
@@ -27,7 +34,13 @@ export function readLoomAiFailure(payload, requestId) {
 }
 
 export function describeLoomAiFailure(failure, httpStatus) {
-  if (failure?.diagnostic?.code === 'OUTPUT_TOKEN_LIMIT') return 'Gemini reached its output limit before completing a valid answer. Try a shorter task or fewer documents.';
+  if (failure?.diagnostic?.code === 'DEADLINE_EXCEEDED') {
+    const milliseconds = failure.observations?.deadline_ms;
+    const limit = count(milliseconds) && milliseconds > 0 && milliseconds <= 60000 ? `${milliseconds / 1000}-second ` : '';
+    return `The AI request reached its ${limit}time limit before returning a complete answer. Your task remains available; the receipt records where the wait ended.`;
+  }
+  if (failure?.diagnostic?.code === 'REQUEST_CANCELLED') return 'The AI request was cancelled before a complete answer returned. Your task remains available.';
+  if (failure?.diagnostic?.code === 'OUTPUT_TOKEN_LIMIT') return 'The AI reached its generation limit before completing a valid answer. Your task remains available; the receipt records the token usage.';
   if (failure?.diagnostic?.code === 'SOURCE_ID_NOT_SELECTED') return 'Gemini cited a document outside the selected set. The response was held for review.';
   if (failure?.diagnostic?.code === 'PROMPT_BLOCKED') return 'Gemini declined the submitted task. Its response remains held.';
   const labels = {

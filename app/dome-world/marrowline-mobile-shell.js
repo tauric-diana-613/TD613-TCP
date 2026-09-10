@@ -125,7 +125,7 @@ function installTranscriptCustody(doc = document, root = window) {
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(() => {
-      const shouldFollow = atBottom(messages, 160) || messages.dataset.forceFollow === 'true';
+      const shouldFollow = messages.dataset.forceFollow === 'true';
       decorateTranscript(doc);
       syncComposerHeight();
       root.requestAnimationFrame?.(() => {
@@ -146,7 +146,7 @@ function installTranscriptCustody(doc = document, root = window) {
 
   decorateTranscript(doc);
   syncComposerHeight();
-  root.requestAnimationFrame?.(() => goLatest('auto'));
+  root.requestAnimationFrame?.(() => { if (messages.querySelector('.grove-welcome')) messages.scrollTop = 0; refreshJump(); });
   return Object.freeze({ goLatest, refreshJump, syncComposerHeight });
 }
 
@@ -180,7 +180,15 @@ function installChamberRouter(doc = document, root = window, transcript = null) 
     const targetId = Object.entries(VIEW_MAP).find(([, value]) => value === canonical)?.[0];
     openTarget(doc, targetId);
     if (canonical === 'speak') {
-      root.requestAnimationFrame?.(() => transcript?.goLatest('auto'));
+      const messages = byId(doc, 'khonapolitMessages');
+      const welcomeOnly = Boolean(messages?.querySelector('.grove-welcome'))
+        && !messages?.querySelector('.message[data-role="user"], .relay-message');
+      root.requestAnimationFrame?.(() => {
+        if (welcomeOnly && messages) {
+          messages.scrollTop = 0;
+          transcript?.refreshJump();
+        } else transcript?.goLatest('auto');
+      });
       if (focusPrompt) byId(doc, 'khonapolitPrompt')?.focus({ preventScroll: true });
     }
     root.dispatchEvent?.(new CustomEvent('td613:marrowline:mobile-view', { detail: { view: canonical } }));

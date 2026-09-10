@@ -83,6 +83,20 @@ try {
   assert.equal(res.payload.receipt.provider.output.outputTokenLimitReached, false);
   assert.doesNotMatch(res.text, /DO_NOT_COPY_PROVIDER_FIELDS/);
 
+  const beforeOversize = calls.length;
+  for (const body of [
+    { ...req.body, message: 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE' },
+    { ...req.body, history: [{ role: 'user', text: 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE' }] }
+  ]) {
+    const invalid = response();
+    await handler({ ...req, body }, invalid);
+    assert.equal(invalid.statusCode, 400);
+    assert.match(invalid.payload.error, /^(message-too-long|history-entry-too-long)$/);
+    assert.equal(invalid.payload.validation.limit, 6000);
+    assert.equal(calls.length, beforeOversize, 'oversized current or history text must not reach generation');
+    assert.equal(invalid.payload.relay, undefined);
+  }
+
   tokenLimit = true;
   const held = response();
   await handler(req, held);

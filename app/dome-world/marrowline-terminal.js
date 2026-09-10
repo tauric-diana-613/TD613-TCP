@@ -76,7 +76,14 @@ function renderUserMessage(doc, entry) {
   const meta = doc.createElement('div');
   meta.className = 'message-meta';
   ['OPERATOR', entry.mode || ''].filter(Boolean).forEach((label) => meta.append(textNode(doc, 'span', '', label)));
-  body.append(meta, textNode(doc, 'div', '', entry.text));
+  const content = textNode(doc, 'div', 'message-text', entry.text);
+  body.append(meta);
+  if (String(entry.text ?? '').length > 1800) {
+    const details = doc.createElement('details');
+    details.className = 'operator-message-details';
+    details.append(textNode(doc, 'summary', '', `Your full message · ${String(entry.text).length.toLocaleString('en-US')} characters`), content);
+    body.append(details);
+  } else body.append(content);
   article.append(body);
   return article;
 }
@@ -173,13 +180,15 @@ function renderMessages(doc, state) {
     const welcome = textNode(doc, 'section', 'grove-welcome', '');
     welcome.append(
       textNode(doc, 'span', 'welcome-moon', '☾'),
-      textNode(doc, 'h3', '', 'Come in. The shore remembers.'),
-      textNode(doc, 'p', 'welcome-story', 'The Ash Moon rests on the water. A mother leaves a lamp beside the door, for someone lost, for someone not yet born. Set down what you are carrying; there is room for it here.'),
-      textNode(doc, 'p', 'welcome-help', 'Write a message below. Before your first send, choose your connection in Keys & settings. Gemini carries this authored conversation; you decide what to keep.')
+      textNode(doc, 'h3', '', 'Bring the difficult thing.'),
+      textNode(doc, 'p', 'welcome-story', 'Under the Ash Moon, a branch keeps its scar. The sea has carried away names; the women have carried the names back. Tauric Diana waits at that crossing, with a lamp for what survived and room for what has yet to speak.'),
+      textNode(doc, 'p', 'welcome-help', 'Ask a question, bring a project, or follow a thought. Choose your connection in Keys & settings before your first message. This is Marrowline’s authored grove; Gemini carries the conversation.')
     );
     node.append(welcome);
   } else state.messages.forEach((entry) => node.append(renderMessage(doc, entry)));
-  node.scrollTop = node.scrollHeight;
+  // Start at the beginning of the latest turn, never underneath a tall welcome or reply.
+  const latest = state.messages.length ? node.lastElementChild : null;
+  node.scrollTop = latest ? Math.max(0, latest.offsetTop - node.offsetTop - 24) : 0;
 }
 function setSignalState(doc, state = 'UNOBSERVED') {
   const canonical = safe(state).toUpperCase() || 'UNOBSERVED';
@@ -308,6 +317,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const submit = byId(doc, 'khonapolitSend');
     const packet = buildInvocationPacket({ message, history: compactHistory(state.messages), mode, shi, waiveIssuance });
     if (!message) { status.textContent = 'SPEECH REQUIRED · the vessel is empty'; prompt?.focus(); return; }
+    if (packet.inputError) { status.textContent = packet.inputError.message; prompt?.focus({ preventScroll: true }); return; }
     if (!packet.canInvoke) { status.textContent = 'ISSUANCE REQUIRED · present a minted SHI or explicitly waive issuance for research'; refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
 
     if (submit.disabled) return;

@@ -26,13 +26,16 @@ try{
   await page.route('**/api/dome-world/khonapolit',async route=>{
    if(route.request().method()==='GET')return route.fulfill({json:{hasGeminiKey:true,modelPolicy:{callableModels:['SYNTHETIC_MODEL']}}});
    posts++;
-   await route.fulfill({json:{ok:true,text,relay:{apertureHeader:'SYNTHETIC ROUTE · TECHNICAL_RUNTIME_REVIEW',signal:{state:'NOT_LOCKED'},parts:[{id:'gemini',label:'Gemini',present:true,text},{id:'khonapolit',label:'Kʰonapolit',present:false,text:''},{id:'tauric-diana-bots',label:'Tauric Diana',present:false,text:''}]},receipt:{provider:{model:'SYNTHETIC_MODEL'},seal:{state:'OPEN'}}}});
+   await route.fulfill({json:{ok:true,text,relay:{apertureHeader:'SYNTHETIC ROUTE · TECHNICAL_RUNTIME_REVIEW',signal:{state:'NOT_LOCKED'},parts:[{id:'gemini',label:'Gemini',present:true,text},{id:'khonapolit',label:'Kʰonapolit',present:true,text:'SYNTHETIC COVENANT VOICE'},{id:'tauric-diana-bots',label:'Tauric Diana',present:true,text:text.repeat(5)}]},receipt:{provider:{model:'SYNTHETIC_MODEL'},seal:{state:'OPEN'}}}});
   });
   try{
    await page.goto(`${base}/dome-world/marrowline.html`,{waitUntil:'domcontentloaded'});
    await page.locator('.starter-prompts button').first().waitFor();
+   await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.geometryReady==='true');
+   await page.locator('#marrowlineRest').click();
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
+   assert.equal(await page.locator('#khonapolitMessages').evaluate(e=>e.scrollTop),0,'welcome remains at the top');
    const initial=await page.locator('#khonapolitPrompt').boundingBox();
    assert.ok(initial&&initial.y>=0&&initial.y+initial.height<=viewport.height,'composer is visible on first screen');
    assert.equal(await page.locator('.living-geometry-canvas').count(),1);
@@ -48,6 +51,11 @@ try{
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
    assert.equal(posts,1);
    assert.equal(await page.locator('.relay-stage-text').first().textContent(),text,'exact marks and whitespace retained');
+   assert.equal(await page.locator('.additional-voices').getAttribute('open'),null,'additional voices do not displace the main answer');
+   assert.match(await page.locator('.relay-stage-text').first().evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans/,'answer uses the Unicode-capable sans stack');
+   await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
+   await page.locator('.additional-voices > summary').click();
+   assert.equal(await page.locator('.relay-bots .relay-stage-text').textContent(),text.repeat(5),'expanded flourishes preserve exact text');
    await page.locator('.return-details > summary').click();
    assert.match(await page.locator('.relay-aperture-header').last().textContent(),/TECHNICAL_RUNTIME_REVIEW/);
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);

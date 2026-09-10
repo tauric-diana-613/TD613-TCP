@@ -8,7 +8,7 @@ test('failure retains request-bound finite diagnostics and numeric observations,
   assert.equal(failure.observations.elapsed_ms, 17300); assert.equal(failure.observations.http_status, 200);
   assert.deepEqual(failure.observations.usage, { promptTokenCount: 2100, candidatesTokenCount: 8192 });
   assert.equal(JSON.stringify(failure).includes('REJECTED_PRIVATE_PAYLOAD'), false);
-  assert.match(describeLoomAiFailure(failure), /output limit/);
+  assert.match(describeLoomAiFailure(failure), /generation limit/);
 });
 test('stale, unrecognized or nonfailure envelopes cannot create matched failure receipts', () => {
   for (const changed of [{ request_id: 'other' }, { schema: 'other' }, { status: 'completed' }, { error: 'unrecognized-response' }]) assert.equal(readLoomAiFailure({ ...payload(), ...changed }, 'request-1'), null);
@@ -23,4 +23,43 @@ test('invalid diagnostics and unbounded or nonnumeric observations are omitted',
 test('older finite server failures remain useful without manufacturing a provider diagnosis', () => {
   const failure = readLoomAiFailure({ schema: 'td613.loom.ai-task-result/v0.1', request_id: 'request-1', status: 'held', error: 'task-rate-limit', observations: { model: null, elapsed_ms: 1, provider_calls: 0 } }, 'request-1');
   assert.equal(failure.diagnostic, undefined); assert.equal(failure.observations.provider_calls, 0); assert.match(describeLoomAiFailure(failure), /request limit/);
+});
+
+test('deadline receipts retain allowlisted stage timings and separate timeout from cancellation', () => {
+  const input = payload();
+  input.error = 'task-aborted-or-timed-out';
+  input.diagnostic = { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: 'provider-transport', code: 'DEADLINE_EXCEEDED' };
+  input.observations = { elapsed_ms: 50001, deadline_ms: 50000, stage_elapsed_ms: {
+    'provider-plan': 183, 'provider-transport': 49818, raw: 'REJECTED_PRIVATE_PAYLOAD', 'output-admission': -1, 'provider-json': Infinity
+  } };
+  const failure = readLoomAiFailure(input, 'request-1');
+  assert.deepEqual(failure.observations, { elapsed_ms: 50001, deadline_ms: 50000, stage_elapsed_ms: { 'provider-plan': 183, 'provider-transport': 49818 } });
+  assert.match(describeLoomAiFailure(failure), /50-second time limit/);
+  assert.doesNotMatch(JSON.stringify(failure), /REJECTED_PRIVATE_PAYLOAD/);
+  input.diagnostic.code = 'REQUEST_CANCELLED';
+  const cancelled = describeLoomAiFailure(readLoomAiFailure(input, 'request-1'));
+  assert.match(cancelled, /cancelled/);
+  assert.doesNotMatch(cancelled, /time limit/);
+});
+
+test('untrusted duration fields cannot inject prose or manufacture a timeout duration', () => {
+  for (const deadline of ['PRIVATE', -10, 0, Infinity, 60001]) {
+    const input = payload();
+    input.diagnostic.code = 'DEADLINE_EXCEEDED';
+    input.observations = { deadline_ms: deadline, stage_elapsed_ms: { 'provider-plan': 'PRIVATE', 'provider-transport': -1 } };
+    const failure = readLoomAiFailure(input, 'request-1');
+    assert.deepEqual(failure.observations, {});
+    assert.match(describeLoomAiFailure(failure), /reached its time limit/);
+    assert.doesNotMatch(describeLoomAiFailure(failure), /PRIVATE|second/);
+  }
+});
+
+test('generation budget is numeric and bounded independently of rejected output', () => {
+  const input = payload();
+  input.observations.output_token_budget = 16384;
+  assert.equal(readLoomAiFailure(input, 'request-1').observations.output_token_budget, 16384);
+  for (const invalid of ['PRIVATE', -1, 0, 65537, Infinity]) {
+    input.observations.output_token_budget = invalid;
+    assert.equal(Object.hasOwn(readLoomAiFailure(input, 'request-1').observations, 'output_token_budget'), false);
+  }
 });

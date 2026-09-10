@@ -19,7 +19,11 @@
         "app/dome-world/marrowline.html",
         "app/dome-world/marrowline-living-chat.js",
         "app/dome-world/marrowline-mobile-shell.js",
-        "DOLLHOUSE.md"
+        "DOLLHOUSE.md",
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/marrowline-loom-import.js",
+        "tests/marrowline-design-preservation.test.mjs",
+        "tests/loom-ai-handoff.test.mjs"
       ],
       "evidence_basis": [
         "Existing explicit issuance-or-waiver and operator seal controls",
@@ -140,7 +144,10 @@
       "observable_behavior": [
         "Composer remains reachable on narrow and wide layouts",
         "Every original control remains reachable",
-        "Returned code points and full route remain unchanged after disclosure"
+        "Returned code points and full route remain unchanged after disclosure",
+        "The main answer opens at its beginning; supplementary covenant voices and long pasted messages remain explicitly expandable.",
+        "Portable rules and document contents have full-row disclosure affordances; fictional private files explain their initial selection state.",
+        "The imported task identifies what travels, what stays local, and the next explicit run action; import alone makes no model request."
       ],
       "alternative_explanations": [
         "Typography alone may improve readability",
@@ -150,12 +157,18 @@
         "Setup becomes unreachable when send is blocked",
         "A mobile disclosure hides controls permanently",
         "Decorative geometry is mistaken for a measured signal",
-        "Combining marks or route labels are clipped or rewritten"
+        "Combining marks or route labels are clipped or rewritten",
+        "A restored conversation scrolls to the final decorative voice and conceals the main answer.",
+        "A disclosure preserves bytes but becomes undiscoverable or inaccessible.",
+        "A result appears beneath the viewport without focus or visible navigation."
       ],
       "falsifier": [
         "A required control is inaccessible at a supported viewport",
         "A returned Unicode sequence differs after decoration",
-        "The simplified route auto-waives issuance or seals a response"
+        "The simplified route auto-waives issuance or seals a response",
+        "Any supported request/transfer path silently submits an unchecked document or runs on import.",
+        "A long operator packet or admitted covenant voice cannot be reopened with exact text intact.",
+        "A first-load welcome is scrolled below its heading before operator action."
       ],
       "abstention_conditions": [
         "No human comprehension evidence is available",
@@ -312,13 +325,16 @@
     },
     "shared_relation_candidate": "Progressive presentation preserves explicit governed controls and exact return records.",
     "observable_correspondence": [
-      "Imported Loom mode retains its own request/rest/governance controls"
+      "Imported Loom mode retains its own request/rest/governance controls",
+      "Loom request, local preparation and Marrowline import remain distinct gestures with visible consequences.",
+      "Right-edge disclosure indicators reveal preserved content; they do not change task admission or provider selection."
     ],
     "alternative_explanations": [
       "The imported task and ordinary relay remain different operation contracts"
     ],
     "abstention_conditions": [
-      "Control parity or return-byte preservation fails"
+      "Control parity or return-byte preservation fails",
+      "Visual appearance and declared burden scores alone cannot establish successful human comprehension."
     ]
   }
 }

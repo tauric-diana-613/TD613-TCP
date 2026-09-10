@@ -280,3 +280,36 @@ test('bad timing, viewport, and mutable/non-JSON packets are rejected', () => {
   assert.throws(() => coordinator.setVisible(1), /boolean/);
   assert.throws(() => coordinator.setPacket(packet(), { animate: 'yes' }), /boolean/);
 });
+
+
+test('explicit continuous motion shares one bounded owner while semantic progress stays finite', () => {
+  const { coordinator, queued, advance } = rig({ durationMs: 100, maxFps: 25 });
+  const snapshots = [];
+  coordinator.registerPass('ambient', snapshot => snapshots.push(snapshot));
+  coordinator.setContinuous(true);
+  coordinator.setPacket(packet());
+  advance(100);
+  assert.equal(snapshots.at(-1).progress, 1);
+  assert.equal(queued.size, 1);
+  const count = snapshots.length;
+  advance(10);
+  assert.equal(snapshots.length, count, 'finite progress must not bypass the frame budget');
+  advance(40);
+  assert.equal(snapshots.at(-1).motionTimeMs, 150);
+  coordinator.setVisible(false);
+  advance(9000);
+  assert.equal(queued.size, 0);
+  coordinator.setVisible(true);
+  advance(50);
+  assert.equal(snapshots.at(-1).motionTimeMs, 200, 'hidden time never becomes animation debt');
+  assert.equal(snapshots.at(-1).progress, 1, 'visibility resume never resets semantic progress');
+  coordinator.setContinuous(false);
+  assert.equal(queued.size, 0);
+  coordinator.setContinuous(true);
+  assert.equal(queued.size, 1);
+  coordinator.setPacket(packet('rest', true));
+  assert.equal(queued.size, 0);
+  coordinator.setPacket(packet());
+  coordinator.setReducedMotion(true);
+  assert.equal(queued.size, 0);
+});
