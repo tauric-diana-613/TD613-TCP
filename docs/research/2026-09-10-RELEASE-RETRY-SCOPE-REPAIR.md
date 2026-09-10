@@ -1,4 +1,4 @@
-# 𝌋 Release retry scope repair
+# 𝌋 Release retry scope and pre-navigation readiness repair
 
 ## Observed defect
 
@@ -17,3 +17,7 @@ Focused classifier and chained contracts:49 PASS,1 existing gated skip. The same
 Current relock base:b8b8af809730f71816829939841ef11a29df70ab. Git auto-deploy remains disabled. No fifth workflow, provider call, provider-routing change or deployment-gate relaxation is introduced. The operator’s continuing active-session authority covers this necessary repair/release; neither the failed nor narrower successful run manufactures closure.
 
 Actual source captures are retained in the accompanying release-retry-scope-observation.json and release1080 lifecycle receipt. ⟐
+
+## Stronger pre-navigation observation
+
+A11 is unconditionally queued after the canonical module graph event by ash-a7-a11-recompiler-core. The cleared-arrival observer must therefore wait for `__td613AshA11ModulePromise` to exist and `__td613AshA11Capsule.version` to equal `td613.ash.a11-capsule-recompilation/v0.1` before its existing navigation to Keep. Record those two observed facts in the settlement receipt. The original60-second timeout and all network-abort assertions remain. This strengthens required-module observation and prevents advancing while that import remains pending; it does not retrospectively prove the cause of1080. No application load behavior or optional feature is forced.
