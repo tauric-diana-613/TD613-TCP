@@ -1,0 +1,220 @@
+{
+  "schema": "td613.analogy-fidelity-preflight/v0.1",
+  "date": "2026-09-10",
+  "state": "BOUNDED_INTERNAL_PREFLIGHT",
+  "authority": {
+    "external_convergence_promoted": false,
+    "donor_corpus_admitted": false,
+    "automatic_ontology_deletion": false,
+    "automatic_analogy_promotion": false,
+    "physical_realization_authority": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "TERM_PROVENANCE != CONSTRUCT_NOVELTY",
+    "CONSTRUCT_NOVELTY != ANALOGY_FIDELITY",
+    "NOMENCLATURE_AUDIT != ONTOLOGY_DELETION",
+    "KNOWN_COMPONENT != REDUNDANT_COMPOSITION",
+    "ANALOGICAL_BORROWING != FAILED_ANALOGY",
+    "EXTERNAL_CONVERGENCE != RETROACTIVE_ORIGIN_PROOF",
+    "FAMILIAR_TERM != INVALID_TD613_USE",
+    "DEMYSTIFICATION != DEMOBILIZATION"
+  ],
+  "allowed_fidelity_states": [
+    "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+    "PARTIAL_ANALOGY_SUPPORTED",
+    "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+    "METAPHOR_ONLY_SUPPORTED",
+    "UNRESOLVED"
+  ],
+  "entries": [
+    {
+      "id": "MOIRE_STRATIGRAPHY_PAIRWISE_CHOIR",
+      "term": "Moiré / Moiré Stratigraphy",
+      "source_refs": [
+        "app/engine/ash-keep-moire.js",
+        "PR #281"
+      ],
+      "fidelity_state": "PARTIAL_ANALOGY_SUPPORTED",
+      "operative_structure_present": [
+        "baseline observation",
+        "singleton-i observation",
+        "singleton-j observation",
+        "pair i+j observation",
+        "pair-emergent residue after removing baseline and singleton recoveries",
+        "canonical pair ordering",
+        "explicit unresolved missingness"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "wave field",
+        "phase field",
+        "spatial frequency",
+        "orientation mismatch",
+        "reciprocal lattice",
+        "physical interference intensity"
+      ],
+      "bounded_claim": "The Choir/Moiré Rebuild operator implements a genuine pair-emergent interaction-residue assay, which supports a partial moiré analogy at the information-structure level.",
+      "forbidden_upgrade": "PAIRWISE_INFORMATIONAL_RESIDUE != PHYSICAL_MOIRE_FIELD"
+    },
+    {
+      "id": "TOMOGRAPHY_PR800",
+      "term": "tomography",
+      "source_refs": [
+        "PR #800",
+        "40dfba93d2577bceba0f66022ac5f42934cdbd06",
+        "TD613 Consolidated Validation run 2323 / 33034304873"
+      ],
+      "fidelity_state": "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+      "operative_structure_present": [
+        "declared latent state",
+        "declared forward observation map",
+        "multiple measurements",
+        "observation matrix",
+        "exact inverse in identifiable schedule",
+        "singular hostile schedule",
+        "explicit collision under nonidentifiability",
+        "finite-domain exhaustive reconstruction check"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "continuum inverse theorem",
+        "physical imaging apparatus",
+        "optical tomography",
+        "electronic tomography",
+        "quantum tomography"
+      ],
+      "bounded_claim": "PR #800 supports tomography as a structure-preserving analogy in a finite linear inverse-problem sense.",
+      "forbidden_upgrade": "FINITE_LINEAR_TOMOGRAPHIC_STRUCTURE != CONTINUUM_OR_PHYSICAL_TOMOGRAPHY"
+    },
+    {
+      "id": "HOLONOMY_ORDER_DEFECT_PR800",
+      "term": "holonomy — order-defect stage",
+      "source_refs": [
+        "PR #800",
+        "40dfba93d2577bceba0f66022ac5f42934cdbd06"
+      ],
+      "fidelity_state": "PARTIAL_ANALOGY_SUPPORTED",
+      "operative_structure_present": [
+        "same declared operators",
+        "different temporal order",
+        "different ordered composite products"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "declared base loop",
+        "declared fiber",
+        "invertible edge transport assignment",
+        "same-basepoint return",
+        "induced nonidentity fiber automorphism"
+      ],
+      "bounded_claim": "The PR #800 ordered-product result establishes order sensitivity but not yet the full transport-loop structure required for stronger formal discrete holonomy.",
+      "forbidden_upgrade": "ORDER_SENSITIVE_PRODUCT != EARNED_DISCRETE_HOLONOMY"
+    },
+    {
+      "id": "HOLONOMY_DISCRETE_TRANSPORT_PR906",
+      "term": "formal discrete holonomy",
+      "source_refs": [
+        "PR #906",
+        "6df04aebd040fd16c8f67188a61dd6380956c46e",
+        "TD613 Consolidated Validation run 2405 / 33346331130",
+        "PR #908 successor witness record"
+      ],
+      "fidelity_state": "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+      "operative_structure_present": [
+        "declared base cycle",
+        "fiber Xi = F2^2",
+        "invertible edge transports",
+        "based commutator loop",
+        "return to same basepoint",
+        "nonidentity induced fiber automorphism",
+        "identity backtrack controls",
+        "commuting control"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "Levi-Civita connection",
+        "gauge connection",
+        "Berry phase",
+        "physical curvature",
+        "geometric holonomy",
+        "physical holonomy"
+      ],
+      "bounded_claim": "The later Moss Lantern chamber earns a structure-preserving formal discrete holonomy analogy inside the declared finite synthetic transport fixture.",
+      "forbidden_upgrade": "FORMAL_DISCRETE_HOLONOMY != GEOMETRIC_OR_PHYSICAL_HOLONOMY"
+    },
+    {
+      "id": "PHASON",
+      "term": "phason",
+      "source_refs": [
+        "PR #800",
+        "APERTURE.md"
+      ],
+      "fidelity_state": "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+      "operative_structure_present": [
+        "declared phason-labeled coordinate/operator"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "complete cut-and-project quasicrystal realization",
+        "physical phason degree of freedom",
+        "source-domain comparison"
+      ],
+      "bounded_claim": "The phason label remains held pending a dedicated source-domain fidelity audit.",
+      "forbidden_upgrade": "PHASON_LABEL != PHYSICAL_QUASICRYSTAL_PHASON"
+    },
+    {
+      "id": "CUPOLA",
+      "term": "cupola",
+      "source_refs": [
+        "PR #800",
+        "APERTURE.md"
+      ],
+      "fidelity_state": "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+      "operative_structure_present": [
+        "bounded multi-stratum organizational metaphor"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "geometric cupola embedding",
+        "source-domain geometric operator"
+      ],
+      "bounded_claim": "Cupola remains useful internal architecture language but receives no geometric-fidelity promotion here.",
+      "forbidden_upgrade": "CUPOLA_LABEL != GEOMETRIC_CUPOLA_EMBEDDING"
+    }
+  ],
+  "external_convergence_candidate": {
+    "id": "REPORTED_2026_PAIRWISE_MOIRE_LATTICE_WORK",
+    "status": "HELD_FOR_EXTERNAL_SOURCE_BINDING",
+    "source_bound": false,
+    "publication_time_bound": false,
+    "permitted_future_outcomes": [
+      "STRENGTHENS_ANALOGY",
+      "NARROWS_ANALOGY",
+      "CORRECTS_ANALOGY",
+      "FALSIFIES_ANALOGY",
+      "PRODUCTIVE_ANACHRONISTIC_CONVERGENCE"
+    ],
+    "forbidden_inferences": [
+      "prediction",
+      "causal influence",
+      "priority over external work",
+      "external validation of Eclipse-Omega"
+    ]
+  },
+  "chronology_invariant": {
+    "sequence": [
+      "EARLY_PARTIAL_ANALOGY",
+      "MISSING_STRUCTURE_IDENTIFIED",
+      "NEW_FINITE_TRANSPORT_CHAMBER",
+      "STRONGER_ANALOGY_EARNED"
+    ],
+    "retroactive_upgrade_forbidden": true,
+    "retroactive_demotion_from_later_nomenclature_forbidden": true
+  },
+  "repair_route": [
+    "RECOGNIZE_TERM",
+    "BIND_NATIVE_OPERATOR",
+    "NAME_CONVENTIONAL_NEIGHBOR",
+    "TEST_OPERATOR_FIDELITY",
+    "RECORD_MISSING_STRUCTURE",
+    "RETAIN_REFINE_RENAME_OR_DISCARD",
+    "BIND_EXTERNAL_CONVERGENCE_IF_AVAILABLE",
+    "PRESERVE_CHRONOLOGY",
+    "RETURN_CONTROL_TO_HUMAN"
+  ]
+}
