@@ -16,7 +16,7 @@ const report = { schema: 'td613.loom.portable-browser-witness/v0.1', engine,
   source_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   working_tree_dirty: execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim().length > 0,
   observed_at: new Date().toISOString(), status: 'HELD', checks: [], failures: [],
-  context: 'LOCAL_SYNTHETIC_BROWSER_WITNESS', provider_calls: 0, external_host_observed: false,
+  context: 'LOCAL_SYNTHETIC_BROWSER_WITNESS', interaction_scope: 'LOCAL_RULE_LABORATORY', provider_calls: 0, external_host_observed: false,
   human_comprehension_measured: false, release_authority: false };
 let instance;
 try {
@@ -32,6 +32,10 @@ try {
     });
     try {
       await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
+      const laboratory = page.locator('#loomLegacy');
+      assert.equal(await laboratory.evaluate(node => node.open), false, 'legacy laboratory starts optional and closed');
+      await laboratory.locator(':scope > summary').click();
+      assert.equal(await laboratory.evaluate(node => node.open), true, 'explicitly open local laboratory before its witness');
       assert.equal(await page.locator('#ltLoadClient').isVisible(), true, 'client fixture outside closed receipts');
       await page.locator('#message').fill('PRIVATE_CHECKER_CANARY_613');
       await page.getByRole('button', { name: 'Scene 5: A warning is not a discovery', exact: true }).click();
