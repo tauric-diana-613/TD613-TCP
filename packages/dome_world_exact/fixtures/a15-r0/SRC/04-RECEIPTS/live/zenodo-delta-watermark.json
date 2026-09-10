@@ -1,0 +1,14 @@
+{
+  "atelier_branch": "amari/src-projective-routing-grammar",
+  "captured_record_count_before": 479,
+  "creator_orcid": "0009-0009-9348-3534",
+  "creator_records_observed": 475,
+  "delta_method": "SET_DIFFERENCE_AGAINST_METADATA_CUSTODY",
+  "last_observed_created_utc": "2026-08-27T14:42:24.902892+00:00",
+  "last_observed_record_id": "22129683",
+  "last_operator_sync": "2026-08-28T02:18:28.617126Z",
+  "last_run_id": "33135443102",
+  "new_records_captured": 0,
+  "note": "Timestamp and record number are observations, not sole exclusion criteria.",
+  "schema": "src-zenodo-delta-watermark/v1"
+}

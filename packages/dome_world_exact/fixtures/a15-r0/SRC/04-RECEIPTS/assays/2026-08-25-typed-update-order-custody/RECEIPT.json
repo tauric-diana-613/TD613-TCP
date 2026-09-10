@@ -1,0 +1,47 @@
+{
+  "bounded_result": [
+    "SAME_ACTIVE_ENDPOINT_WITNESSED_IN_FIXTURE",
+    "DIFFERENT_TYPED_CUSTODY_HISTORY_WITNESSED_IN_FIXTURE",
+    "UPDATE_ORDER_VISIBLE_IN_CUSTODY_NOT_CURRENT_PROJECTION_WITNESSED_IN_FIXTURE"
+  ],
+  "current_endpoint": {
+    "active_evidence": [],
+    "authority": {
+      "empirical": false,
+      "genealogical": true
+    }
+  },
+  "current_endpoint_equal": true,
+  "custody_equal": false,
+  "nonclaims": [
+    "not an SR runtime simulation",
+    "not empirical proof that a specific legacy source was previously used then withdrawn",
+    "not a category theorem",
+    "not holonomy",
+    "not proof all G/O pairs behave this way"
+  ],
+  "operators": {
+    "G_L": "TD613-authored Legacy authority retyping fixture preserving genealogy and deactivating source-dependent active empirical evidence",
+    "O_h": "TD613-authored empirical-observation acquisition candidate conditioned on current empirical authority"
+  },
+  "routes": {
+    "G_L_o_O_h": {
+      "active_evidence": [],
+      "authority": {"empirical": false, "genealogical": true},
+      "custody": [
+        {"active_after": true, "event": "OBSERVATION_ACQUIRED", "observation": "h_legacy_source_claim"},
+        {"deactivated_active_evidence": ["h_legacy_source_claim"], "empirical_authority_after": false, "event": "SOURCE_RECLASSIFIED_LEGACY", "genealogical_after": true, "prior_empirical_authority": true}
+      ]
+    },
+    "O_h_o_G_L": {
+      "active_evidence": [],
+      "authority": {"empirical": false, "genealogical": true},
+      "custody": [
+        {"deactivated_active_evidence": [], "empirical_authority_after": false, "event": "SOURCE_RECLASSIFIED_LEGACY", "genealogical_after": true, "prior_empirical_authority": true},
+        {"active_after": false, "event": "OBSERVATION_HELD_AUTHORITY_INSUFFICIENT", "observation": "h_legacy_source_claim"}
+      ]
+    }
+  },
+  "schema": "td613.typed-update-order-custody-assay/v0.1",
+  "source_rule_basis": "SR Legacy Papers Classification: genealogy retained; empirical/canonical/field-defining authority withdrawn; source preserved"
+}

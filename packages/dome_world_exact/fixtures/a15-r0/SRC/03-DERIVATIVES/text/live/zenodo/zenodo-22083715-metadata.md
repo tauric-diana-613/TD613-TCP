@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22083715"
+source_title: "NORMAL ACCIDENTS OR RESTORATION LOSS? Testing SignalRupture Against Perrow's Normal Accident Theory"
+metadata_blob_sha256: 44c51c1610d447d2df5103b3deffce61e7608941dfb7cffc72c10791f8de67ad
+metadata_blob_path: 02-ORIGINALS/live/blobs/44/44c51c1610d447d2df5103b3deffce61e7608941dfb7cffc72c10791f8de67ad.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22083714",
+  "conceptrecid": "22083714",
+  "created": "2026-08-24T15:44:45.775911+00:00",
+  "doi": "10.5281/zenodo.22083715",
+  "doi_url": "https://doi.org/10.5281/zenodo.22083715",
+  "files": [
+    {
+      "checksum": "md5:8ee1a51cd7c3b1bfa202a0e5639cb084",
+      "id": "fa825b78-3624-488a-b028-3d0aded62153",
+      "key": "NORMAL ACCIDENTS OR RESTORATION LOSS? .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22083715/files/NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/content"
+      },
+      "size": 182609
+    }
+  ],
+  "id": 22083715,
+  "links": {
+    "access": "https://zenodo.org/api/records/22083715/access",
+    "access_grants": "https://zenodo.org/api/records/22083715/access/grants",
+    "access_links": "https://zenodo.org/api/records/22083715/access/links",
+    "access_request": "https://zenodo.org/api/records/22083715/access/request",
+    "access_users": "https://zenodo.org/api/records/22083715/access/users",
+    "archive": "https://zenodo.org/api/records/22083715/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22083715/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22083715/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22083715/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22083715",
+    "draft": "https://zenodo.org/api/records/22083715/draft",
+    "file_modification": "https://zenodo.org/api/records/22083715/file-modification",
+    "files": "https://zenodo.org/api/records/22083715/files",
+    "latest": "https://zenodo.org/api/records/22083715/versions/latest",
+    "latest_html": "https://zenodo.org/records/22083715/latest",
+    "media_files": "https://zenodo.org/api/records/22083715/media-files",
+    "parent": "https://zenodo.org/api/records/22083714",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22083714",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083714",
+    "parent_html": "https://zenodo.org/records/22083714",
+    "preview_html": "https://zenodo.org/records/22083715?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22083715/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22083715/request-deletion",
+    "requests": "https://zenodo.org/api/records/22083715/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22083715/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22083715",
+    "self_doi": "https://doi.org/10.5281/zenodo.22083715",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22083715",
+    "self_html": "https://zenodo.org/records/22083715",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22083715/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22083715/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22083715:NORMAL%20ACCIDENTS%20OR%20RESTORATION%20LOSS%3F%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22083715/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>NORMAL ACCIDENTS OR RESTORATION LOSS? &mdash; Perrow vs SignalRupture</strong></h1>\n<p>This manuscript is the <strong>adversarial comparative test</strong> that forces SignalRupture (SR) to confront one of the strongest existing theories of systemic failure: <strong>Charles Perrow&rsquo;s Normal Accident Theory (NAT)</strong>. It evaluates whether SR&rsquo;s claims about propagation, cascade, coupling, and hidden deterioration are genuinely novel or whether they collapse into NAT&rsquo;s established architecture of <strong>interactive complexity</strong> and <strong>tight coupling</strong>. The paper&rsquo;s purpose is not to harmonize SR with NAT but to <strong>break SR</strong> &mdash; to identify which SR constructs survive when confronted with a mature, domain‑defining theory of accidents.</p>\n<p>The manuscript contributes by demonstrating that <strong>SR cannot claim novelty for cascades, coupling, or complexity</strong>. NAT already explains how tightly coupled, interactively complex systems transform local disturbances into systemic accidents, how safeguards can introduce new failure pathways, and how limited slack accelerates propagation. SR&rsquo;s language about cross‑layer propagation, cascade acceleration, visibility lag, and hyperscale dependence overlaps heavily with NAT and must be treated as derivative unless SR can show <strong>incremental predictive value</strong>. This adversarial test removes SR&rsquo;s ability to present cascading failure as a unique discovery.</p>\n<p>The manuscript&rsquo;s strongest contribution is identifying the <strong>SR remainder</strong> &mdash; the part of SR that NAT does not absorb. NAT&rsquo;s dependent variable is <strong>accident propensity</strong>: discrete system accidents arising from architectural conditions. SR&rsquo;s emerging dependent variable is different: <strong>restoration loss under continued operation</strong>. SR asks whether systems can maintain visible function while accumulating restoration deficits, losing slack, and eroding durable capacity <strong>without any discrete accident occurring</strong>. Hospitals can remain open, households can continue functioning, and electricity grids can continue delivering power while restoration requirements outgrow durable capacity. This chronic, cumulative, non‑catastrophic deterioration is <strong>not NAT&rsquo;s canonical target</strong>, and the manuscript identifies it as SR&rsquo;s surviving empirical object.</p>\n<p>The manuscript contributes by exposing the vulnerability of SR&rsquo;s <strong>&phi; propagation operator</strong>. NAT shows that SR&rsquo;s qualitative cascade story is not novel, but NAT does not provide a formal propagation metric. The paper therefore positions &phi; as the next decisive test: SR must outperform network science &mdash; dependency graphs, percolation thresholds, branching processes, load redistribution, contagion models, interdependent‑network cascades &mdash; or &phi; must be removed or redefined. This adversarial framing prevents SR from claiming propagation expertise without formal, measurable, cross‑domain value.</p>\n<p>The manuscript also contributes by clarifying what SR must <strong>subtract</strong>: novelty claims for cascades, coupling, unexpected interactions, slack depletion, and the paradox of protective complexity. These belong to NAT, resilience engineering, and network science. SR&rsquo;s scientific identity must therefore shift downstream: <strong>SR studies restoration capacity before, during, and after propagation</strong>, not propagation itself. This reframing is essential for SR&rsquo;s metatheoretical discipline.</p>\n<p>Finally, the manuscript contributes by defining <strong>falsification conditions</strong> for SR in the presence of NAT. If NAT plus network metrics predict cascade outcomes as well as SR variables, SR loses its propagation claim. If restoration deficit variables fail to predict recovery after controlling for accident severity and viability margin, SR loses its restoration claim. If &phi; cannot outperform established propagation measures, &phi; must be removed. These conditions make SR scientifically vulnerable rather than rhetorically expansive.</p>\n<p>In unified form, the manuscript establishes that NAT absorbs SR&rsquo;s cascade narrative but does not eliminate SR&rsquo;s emerging core: <strong>continued function + accumulating restoration deficit + declining restoration margin</strong>. It positions SR&rsquo;s future around restoration dynamics rather than cascade novelty and sets up the next adversarial test &mdash; direct confrontation with network science &mdash; which will determine whether SR retains a propagation construct at all. It is one of the most important narrowing and strengthening documents in the SR canon.</p>",
+    "doi": "10.5281/zenodo.22083715",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22083714"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "NORMAL ACCIDENTS OR RESTORATION LOSS? Testing SignalRupture Against Perrow's Normal Accident Theory",
+    "version": "1.0"
+  },
+  "modified": "2026-08-24T15:44:46.365244+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22083715",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 2,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "NORMAL ACCIDENTS OR RESTORATION LOSS? Testing SignalRupture Against Perrow's Normal Accident Theory",
+  "updated": "2026-08-24T15:44:46.365244+00:00"
+}
+```
