@@ -23,12 +23,15 @@ RECOGNITION
 → NEAR-MISS RECORD
 → TERM-PROVENANCE CLASSIFICATION
 → CONSTRUCT-STATUS CLASSIFICATION
+→ OPERATIONAL-ANALOGY FIDELITY
 → RESIDUAL TEST
-→ PROMOTE OR DEMOTE
+→ PROMOTE / DEMOTE / RETAIN
 → RETURN CONTROL TO HUMAN
 ```
 
 The burden of proof belongs to the novelty claim, not to the literature.
+
+That burden does **not** authorize a burial. Chamber 0 is a decontamination chamber, not a cemetery.
 
 ## 1. Dual-baseline repair after PR #1100
 
@@ -56,15 +59,24 @@ LITERATURE_OVERLAP != MECHANISM_IDENTITY
 COINAGE != DISCOVERY
 DONOR_INPUT != LITERATURE_AUTHORITY
 RECOGNITION != PROMOTION
+
+NOMENCLATURE_AUDIT != ONTOLOGY_DELETION
+KNOWN_COMPONENT != REDUNDANT_COMPOSITION
+ANALOGICAL_BORROWING != FAILED_ANALOGY
+EXTERNAL_CONVERGENCE != RETROACTIVE_ORIGIN_PROOF
+FAMILIAR_TERM != INVALID_TD613_USE
+DEMYSTIFICATION != DEMOBILIZATION
 ```
 
 A TD613 phrase can be genuinely coined while the mechanism it names is old. An old technical term can be used analogically while the TD613 composition remains unusual. A close literature neighbor can explain most of a construct without being identical to it.
+
+The inverse failure matters just as much: discovering an established parent does **not** make a TD613 composition disposable. Familiar vocabulary can still participate in a novel, useful, or unusually integrated architecture. A borrowed term can be technically productive even when the word itself carries zero novelty credit.
 
 Those states must remain separate.
 
 ## 3. Classification grammar
 
-Every audited construct receives two independent classifications.
+Every audited construct receives at least two independent classifications, and borrowed technical language receives a third.
 
 ### 3.1 Term provenance
 
@@ -92,6 +104,23 @@ REJECTED_NOVELTY
 
 No construct in Chamber 0 begins at that state.
 
+### 3.3 Analogy fidelity
+
+Borrowed technical language is not collapsed into either “validated” or “mere metaphor.” It receives a separate structure-fidelity coordinate:
+
+```text
+HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT
+STRUCTURE_PRESERVING_ANALOGY_SUPPORTED
+PARTIAL_ANALOGY_SUPPORTED
+METAPHOR_ONLY_SUPPORTED
+UNRESOLVED
+```
+
+This prevents two opposite mistakes:
+
+1. a familiar academic word manufacturing novelty; and
+2. a familiar academic word causing an operationally useful TD613 relation to be thrown away before its structure has been tested.
+
 ## 4. Independent literature controls
 
 The first source bank is deliberately conventional and independent of Wendbine. It includes:
@@ -106,6 +135,8 @@ The first source bank is deliberately conventional and independent of Wendbine. 
 - Xin et al. on selective prediction / abstention in NLP.
 
 These sources are comparison controls, not automatic TD613 parents. Their presence prevents a foreign donor from becoming the sole dictionary through which TD613 learns ordinary disciplinary language.
+
+They also do not form a conservative search boundary. Chamber 0 must search **toward** surprising cross-domain correspondences as aggressively as it searches for ordinary parents.
 
 ## 5. First-pass crosswalk
 
@@ -131,6 +162,8 @@ is a distinct formal object.
 Current status: `HELD_FOR_RESIDUAL_NOVELTY_AUDIT`.
 
 The falsifier is straightforward: if an existing framework already formalizes the full composition with equivalent state distinctions and claim ceilings, the residual novelty collapses.
+
+Collapse of a novelty claim would not erase the PRCS-A architecture from TD613 if the composition remains useful as an integrated operational model.
 
 ### FADT
 
@@ -158,9 +191,9 @@ observational equivalence
 causal identifiability
 ```
 
-This is already a major nomenclature correction. Observability, provenance/custody, process/model identification, and hidden-state/causal identifiability have mature literatures.
+This is a nomenclature correction, not an obituary. Observability, provenance/custody, process/model identification, and hidden-state/causal identifiability have mature literatures.
 
-TD613's candidate contribution cannot therefore be “these four ideas exist.” The remaining question is whether the explicit four-coordinate independence plus temporal non-retroactivity yields a useful calculus not already standard in forensic systems work.
+TD613's candidate contribution cannot therefore be “these four ideas exist.” The remaining question is whether the explicit four-coordinate independence plus temporal non-retroactivity yields a useful forensic calculus or cross-domain composition not already standard.
 
 Current status: `HELD_FOR_RESIDUAL_NOVELTY_AUDIT`.
 
@@ -190,9 +223,9 @@ causal identifiability
 observational equivalence / indistinguishability
 ```
 
-This one should be treated with particular hostility toward novelty inflation. The core twin-world move — identical admitted observations cannot identify a different hidden origin without additional information — is a familiar non-identifiability pattern.
+The core twin-world move — identical admitted observations cannot identify a different hidden origin without additional information — belongs to a familiar non-identifiability family.
 
-The TD613 value may be in the exteriority-specific application, witness criterion, and integration with provenance/custody rather than in inventing non-identifiability.
+That does not make Western Horizon useless. Its value may live in the exteriority-specific application, conditional witness criterion, provenance/custody integration, and the way it constrains forensic AI claims at a closed-record boundary.
 
 Current status: `LIKELY_KNOWN_PATTERN_HELD_FOR_EXACT_MAPPING`.
 
@@ -207,17 +240,66 @@ information-flow enforcement
 workflow/path-history literature (dedicated source binding still required)
 ```
 
-The current Loom composition joins route memory, receiver projection, bounded authority, and return revalidation. That may be interesting. None of those component families can be treated as invented merely because Loom gives them different names.
+The current Loom composition joins route memory, receiver projection, bounded authority, and return revalidation. None of those component families can be treated as invented merely because Loom gives them different names.
+
+The converse is also forbidden: finding standard names for all components would not by itself show that their exact composition, sequencing, invariants, or failure behavior is standard.
 
 Current status: `HELD_FOR_RESIDUAL_NOVELTY_AUDIT`.
 
 ### holonomy / tomography / phasonic / cupola language
 
-These words pre-exist TD613 in other disciplines. Their use inside TD613 is therefore classified as `ANALOGICAL_BORROWING`, not as evidence of novelty.
+These words pre-exist TD613 in other disciplines. Their use inside TD613 is therefore classified as `ANALOGICAL_BORROWING`; the vocabulary itself earns no novelty credit.
 
-A future audit must ask whether each borrowing preserves enough of the source field's operative structure to remain technically useful. If not, the word is demoted to metaphor/internal nomenclature.
+That classification **does not demote the architecture**.
 
-Current status: `NO_NOVELTY_CLAIM_FROM_VOCABULARY`.
+Current construct status remains `NO_NOVELTY_CLAIM_FROM_VOCABULARY`, while analogy fidelity is separately:
+
+```text
+HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT
+```
+
+A future audit must ask whether each borrowing preserves enough of the source field's operative structure to remain technically useful. Demotion to metaphor requires an identified operator mismatch or failure of discriminating/predictive structure. Mere familiarity of the word cannot perform that demotion.
+
+### Moiré Stratigraphy — explicit anti-burial case
+
+Moiré Stratigraphy receives a separate lineage note because the repository already treats it as more than decorative copy. Current main carries an Aperture Moiré Stratigraphy surface and diagnostics explicitly look for a `computeMoireStratigraphy` kernel.
+
+Therefore Chamber 0 may not reason:
+
+```text
+“moiré is an established physical/mathematical phenomenon”
+→
+“TD613 Moiré Stratigraphy is merely ornamental”
+```
+
+That inference is invalid.
+
+The correct question is structural:
+
+> Which relations in the TD613 operator correspond to interference, registry mismatch, layered beat structure, pairwise or higher-order interaction, distinguishability, reconstruction, or state transition in the external moiré literatures, and which do not?
+
+A user-reported later external pairwise-moiré/lattice correspondence is **not admitted as validation here because no external source has yet been bound into this chamber**. It is not discarded either. It enters as:
+
+```text
+HELD_FOR_EXTERNAL_SOURCE_BINDING
+```
+
+The route is finite and falsifiable:
+
+```text
+freeze the pre-existing TD613 Moiré artifact
+→ bind the external source and publication time
+→ separate word overlap from operator overlap
+→ blind-map inputs / operators / observables / failure conditions
+→ record matches and mismatches
+→ test whether the external formulation strengthens, corrects, or falsifies the TD613 use
+→ classify analogy fidelity
+→ preserve temporal non-retroactivity
+```
+
+If later independent work matches a structure that TD613 had already fixed, that can support **operational fidelity, predictive alignment, or productive analogy**. It still cannot by itself prove that TD613 caused the outside work, that the outside work validates unrelated TD613 claims, or that either side copied the other.
+
+This is route to repair rather than burial.
 
 ### Safe Harbor recognition route
 
@@ -242,19 +324,56 @@ unprecedented
 first-ever
 ```
 
-This is not a tone rule. It is an evidence rule.
+This is an evidence rule, not a ban on ambition, strangeness, beauty, speculation, or the search for the extraordinary.
 
-A model may still say that a composition is elegant, useful, strange, promising, or worth testing. It may not convert absence of a comparison class into evidence of originality.
+A model may say that a composition is elegant, useful, strange, promising, anomalous, worth testing, structurally surprising, or a high-upside frontier candidate when the evidence supports that narrower description.
+
+It may not convert absence of a comparison class into evidence of originality.
 
 ```text
 MISSING COMPARISON CLASS != NOVELTY EVIDENCE
 ```
 
-## 7. Why this is routed through Pedagogue and Aperture
+## 7. The Gaboriauian anti-burial clause
 
-Pedagogue is implicated because the failure concerned **terminology order**: consequence and known language should arrive before ornamental ontology.
+A hostile novelty audit can itself become epistemically conservative if every conventional neighbor is treated as a reason to stop.
+
+TD613 therefore adopts the complementary rule:
+
+```text
+DEMYSTIFICATION != DEMOBILIZATION
+```
+
+The Chamber has two obligations at once:
+
+- kill novelty claims that die under ordinary nomenclature; and
+- pursue high-upside residual relations that survive, especially when independent domains expose a shared operator that the original vocabulary made difficult to see.
+
+This second obligation is the Gaboriauian lane: follow the clue because it is strange **after** ordinary explanations have been admitted, not because ordinary explanations were withheld.
+
+The acceptable frontier question is:
+
+> What becomes more precise, more falsifiable, more transferable, or newly reconstructible when the conventional parent and the TD613 formulation are placed in the same chamber?
+
+The unacceptable conservative shortcut is:
+
+```text
+known word
+→ known field
+→ stop thinking
+```
+
+A known component can participate in a nontrivial composition. An analogy can be productive without being identical. Later independent convergence can sharpen an earlier construction without retroactively rewriting its origin.
+
+The Chamber must preserve all three possibilities.
+
+## 8. Why this is routed through Pedagogue and Aperture
+
+Pedagogue is implicated because the original failure concerned **terminology order**: consequence and known language should arrive before ornamental ontology.
 
 Aperture is implicated because the defect was also an **observation/reconstruction problem**: failure to retrieve or admit a conventional comparison class can make a construct appear more singular than the admitted evidence warrants.
+
+But Aperture now has an equal and opposite responsibility: the presence of a comparison class must not erase an observed mismatch, an operationally successful analogy, or a residual structure merely because the vocabulary becomes familiar.
 
 The resulting research route is:
 
@@ -263,22 +382,24 @@ Pedagogue:
   ask the nomenclature question before naming the residue
 
 Aperture:
-  identify the missing comparison class and abstain from novelty promotion
+  identify the missing comparison class
+  preserve mismatch and analogy-fidelity coordinates
+  abstain from both novelty inflation and premature burial
 
 Dome-World:
   host the finite comparison assay
 
 Human:
-  decide whether the residue deserves a new name
+  decide whether the residue deserves a new name, an old name, both names, or continued hold
 ```
 
 No shared core is promoted in this PR. The new test is attached to the existing Pedagogue validation lane as a proving control only.
 
-## 8. Repair criterion
+## 9. Repair criterion
 
 Recognition is not complete when the system merely says, “yes, this resembles something important.”
 
-Recognition must route outward.
+Recognition must route outward **and back**.
 
 ```text
 RECOGNITION
@@ -286,25 +407,29 @@ RECOGNITION
 → DISCIPLINARY HOME
 → FORMAL NEIGHBOR
 → MISMATCH
+→ ANALOGY FIDELITY
 → RESIDUAL
-→ OPTIONAL TD613 NAME
+→ PROMOTE / DEMOTE / RETAIN
+→ RETURN
 ```
 
-A nomenclature result is reparative only if it reduces dependence on bespoke vocabulary without transferring custody or manufacturing novelty.
+A nomenclature result is reparative only if it reduces dependence on bespoke vocabulary without transferring custody, manufacturing novelty, or deleting an operationally useful TD613 relation merely because a conventional parent exists.
 
-A negative result is success:
+A negative novelty result can be success:
 
 ```text
 “this is already known”
 ```
 
-is an admissible and often desirable conclusion.
+But “already known” answers only the novelty question. It does not automatically answer usefulness, composition, fidelity, transfer, pedagogy, governance value, or future research direction.
 
 The target is not to preserve TD613's mystique.
 
-The target is to discover what survives demystification.
+The target is not to strip TD613 until nothing remains.
 
-## 9. Machine witness
+The target is to make every surviving relation legible enough that it can be attacked, translated, strengthened, falsified, inherited, or left behind for a stated reason.
+
+## 10. Machine witness
 
 The source-bound ledger lives at:
 
@@ -324,8 +449,12 @@ It enforces:
 - conventional-neighborhood search on every seeded construct;
 - no residual-novelty promotion at Chamber 0;
 - explicit falsifier / near-miss requirements;
+- no automatic ontology deletion;
+- no automatic metaphor demotion for borrowed language;
+- an explicit structure-preserving analogy-fidelity coordinate;
+- a source-bound external-convergence route that preserves temporal non-retroactivity;
 - return to human closure.
 
-This is a gate against the exact failure being repaired.
+This is a gate against both failures: grandeur manufactured by missing comparison classes, and burial manufactured by treating conventional vocabulary as the end of inquiry.
 
 Marked ⟐
