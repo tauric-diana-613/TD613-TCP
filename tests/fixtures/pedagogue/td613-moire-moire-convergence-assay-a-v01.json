@@ -1,0 +1,157 @@
+{
+  "schema": "td613.moire-moire-convergence-assay-a/v0.1",
+  "date": "2026-09-10",
+  "state": "SOURCE_BOUND_CHRONOLOGY_BOUND_PARTIAL_OPERATOR_CONVERGENCE",
+  "authority": {
+    "donor_corpus_admitted": false,
+    "physical_moire_claim": false,
+    "prediction_claim": false,
+    "publication_priority_claim": false,
+    "knowledge_transfer_claim": false,
+    "runtime_mutation_authorized": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "EXTERNAL_LITERATURE_SOURCE != DONOR_CORPUS",
+    "LATER_PUBLICATION != RETROACTIVE_TD613_ORIGIN",
+    "EARLIER_TD613_LABEL != PREDICTION_OF_LATER_PAPER",
+    "STRUCTURAL_OVERLAP != MECHANISM_IDENTITY",
+    "POST_PUBLICATION_TD613_OPERATOR != PREPUBLICATION_EVIDENCE",
+    "VISUAL_BEAT_FIELD != RELAXATION_MEDIATED_MOIRE_MOIRE_RECONSTRUCTION",
+    "DIRECT_OVERLAY != MEDIATED_COUPLING"
+  ],
+  "external_source": {
+    "source_id": "SOURCE_A_ARXIV_2607_02822",
+    "title": "Twist-configured moiré–moiré reconstruction governs diverse commensurate double-moiré phases in twisted bilayer graphene on h-BN",
+    "authors_short": "Yuta Seo et al.",
+    "identifier": "arXiv:2607.02822",
+    "first_public_submission_utc": "2026-07-02T23:22:45Z",
+    "public_url": "https://arxiv.org/abs/2607.02822",
+    "local_snapshot_name": "Twist-configured moiré–moiré reconstruction governs diverse commensurate double-moiré phases in twisted bilayer graphene.pdf",
+    "local_snapshot_sha256": "dc5ad38fab41015d0f30b3c3805f4fc104a59bcf2067467ce5816d4cfcd65607",
+    "snapshot_equals_arxiv_v1_bytes_claimed": false,
+    "bounded_source_claims": [
+      "two distinct moiré structures coexist",
+      "collective moiré–moiré reconstruction occurs across multiple length scales",
+      "shared graphene layer mediates coupling through rotational relaxation",
+      "global twist configuration selects local stacking registry",
+      "registry twist angle and strain govern commensurate double-moiré domains",
+      "strain can modify symmetry while preserving selected registry",
+      "larger-scale domain boundaries exhibit collective sliding dynamics"
+    ]
+  },
+  "prepublication_td613": [
+    {
+      "id": "A0_GATEWAY_LABEL",
+      "commit_sha": "75a533076638b0e76ed00abc187bc8933a8f0e17",
+      "commit_time_utc": "2026-06-11T02:40:40Z",
+      "source_ref": "app/index.html",
+      "present": [
+        "Moiré stratigraphy / entrainment cartography label",
+        "detuned interference fields framing",
+        "explicit speculative-not-evidentiary ceiling"
+      ],
+      "absent_or_unestablished": [
+        "pairwise reconstruction operator",
+        "shared mediator",
+        "global configuration to local registry operator",
+        "physical lattice relaxation"
+      ]
+    },
+    {
+      "id": "A1_GATEWAY_RENDERER",
+      "commit_sha": "3997627eba409426d7d5f9b1933676de6e397e33",
+      "commit_time_utc": "2026-06-16T00:09:38Z",
+      "source_ref": "app/gateway-aperture-moire-panel.js",
+      "present": [
+        "two layered lattice-like fields",
+        "nonidentical spacing or detuning",
+        "relative phase and shear perturbation",
+        "pair-visible beat or interference rendering"
+      ],
+      "absent_or_unestablished": [
+        "mechanical reconstruction",
+        "shared mediator layer",
+        "commensurate domain selection",
+        "physical strain response"
+      ]
+    }
+  ],
+  "postpublication_nonretroactivity": {
+    "source_ref": "PR #281",
+    "merge_sha": "1a01181cea77590ad3067ebd27da4518511dac5f",
+    "merge_time_utc": "2026-07-14T19:37:48Z",
+    "later_structure": "baseline singleton-i singleton-j pair i+j interaction residue",
+    "may_support_present_comparison": true,
+    "may_support_prepublication_precedence": false
+  },
+  "comparison_axes": [
+    {
+      "axis": "multiple structured patterns coexist",
+      "td613_prepublication": "two separately parameterized lattice-like fields",
+      "source_a": "two physically distinct moiré lattices coexist",
+      "verdict": "BROAD_STRUCTURAL_MATCH",
+      "scar": "RENDERED_LAYER_COEXISTENCE != PHYSICAL_MULTI_MOIRE_HETEROSTRUCTURE"
+    },
+    {
+      "axis": "detuning or mismatch matters",
+      "td613_prepublication": "different spacing plus phase/shear perturbation",
+      "source_a": "twist configuration angle and strain govern organization",
+      "verdict": "PARTIAL_STRUCTURAL_MATCH",
+      "scar": "CANVAS_STEP_PHASE_SHEAR != TWIST_ANGLE_STRAIN_OR_LATTICE_RELAXATION"
+    },
+    {
+      "axis": "pair-level structure exceeds isolated layers",
+      "td613_prepublication": "pair-visible beat/interference rendering",
+      "source_a": "collective reconstruction into double-moiré phases",
+      "verdict": "PARTIAL_STRUCTURAL_MATCH",
+      "scar": "VISUAL_BEAT_FIELD != RELAXATION_MEDIATED_MOIRE_MOIRE_RECONSTRUCTION"
+    },
+    {
+      "axis": "global configuration selects local registry",
+      "td613_prepublication": "not identified",
+      "source_a": "helical or alternate twist configuration selects local registry",
+      "verdict": "SOURCE_A_ONLY"
+    },
+    {
+      "axis": "shared mediator couples layers",
+      "td613_prepublication": "not identified",
+      "source_a": "shared graphene layer mediates through rotational relaxation",
+      "verdict": "SOURCE_A_ONLY",
+      "scar": "DIRECT_OVERLAY != MEDIATED_COUPLING"
+    },
+    {
+      "axis": "perturbation changes morphology while relation persists",
+      "td613_prepublication": "not identified",
+      "source_a": "strain modifies symmetry while selected registry remains",
+      "verdict": "SOURCE_A_ONLY"
+    },
+    {
+      "axis": "dynamic boundaries or sliding",
+      "td613_prepublication": "not identified",
+      "source_a": "collective sliding domain boundaries",
+      "verdict": "SOURCE_A_ONLY"
+    }
+  ],
+  "result": {
+    "classification": "CHRONOLOGY_BOUND_PARTIAL_OPERATOR_CONVERGENCE_SUPPORTED",
+    "productive_anachronistic_convergence": "HELD_FOR_REFINEMENT",
+    "reason": "The prepublication TD613 record contains nontrivial two-layer detuned interference structure, while Source A contains later physical multi-moiré collective reconstruction; several mechanism-defining structures are absent from the prepublication TD613 record."
+  },
+  "next_repair_assay": {
+    "question": "Can TD613 distinguish direct pair overlay from mediator-dependent pair reconstruction and test a global-to-local relation selection under perturbation?",
+    "conditions": [
+      "C0_SINGLETON_NO_PAIR_INTERACTION",
+      "C1_DIRECT_PAIR_OVERLAY_NO_MEDIATOR",
+      "C2_PAIR_WITH_DECLARED_MEDIATOR"
+    ],
+    "required_tests": [
+      "reconstruction observable must distinguish C2 from C1",
+      "declared global configuration must reproducibly select a local relation class if that claim is made",
+      "perturbation assay must separate morphology change from relation-class persistence",
+      "ablation of mediator must remove any mediator-attributed effect",
+      "existing Choir pair residue remains a comparator not automatic proof"
+    ],
+    "discard_rule": "If mediator and registry structure add no explanatory reconstructive or falsifying power beyond existing Choir, discard the imported analogy extension."
+  }
+}
