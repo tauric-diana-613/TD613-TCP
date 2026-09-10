@@ -95,3 +95,57 @@ test('deadline bounds stalled listing and generation; abort prevents late succes
   const preaborted = harness(); const p = await preaborted.run(task(), { aborted: true }); assert.equal(p.status, 504);
   assert.equal(preaborted.calls.some(row => row.kind === 'generate'), false);
 });
+
+test('bounded diagnostics distinguish provider stages without promoting a guessed cause', async () => {
+  const cases = [
+    { overrides: { resolvePlan: async () => { throw new Error('server-secret-test-key plan details'); } }, stage: 'provider-plan', code: 'PROVIDER_PLAN_FAILED', calls: 0, http: undefined },
+    { overrides: { fetchImpl: async () => { throw Object.assign(new Error('private transport details'), { code: 'SOURCE_ID_NOT_SELECTED' }); } }, stage: 'provider-transport', code: 'PROVIDER_TRANSPORT_FAILED', calls: 1, http: undefined },
+    { overrides: { fetchImpl: async () => ({ ok: false, status: 503 }) }, stage: 'provider-transport', code: 'PROVIDER_HTTP_ERROR', calls: 1, http: 503 },
+    { overrides: { fetchImpl: async () => ({ ok: true, status: 200, json: async () => { throw new SyntaxError('PRIVATE_UNPARSED_PROVIDER_BODY'); } }) }, stage: 'provider-json', code: 'PROVIDER_JSON_INVALID', calls: 1, http: 200 },
+    { overrides: { fetchImpl: async () => ({ ok: true, status: 200, json: async () => payload({ ...answer(), used_document_ids: ['PRIVATE_UNSELECTED_ID'] }) }) }, stage: 'output-admission', code: 'SOURCE_ID_NOT_SELECTED', calls: 1, http: 200 }
+  ];
+  for (const item of cases) {
+    const result = await harness(item.overrides).run();
+    assert.equal(result.status, 502); assert.equal(result.body.status, 'held'); assert.equal(result.body.answer, '');
+    assert.deepEqual(result.body.diagnostic, { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: item.stage, code: item.code });
+    assert.equal(result.body.observations.provider_calls, item.calls);
+    assert.equal(result.body.observations.http_status, item.http);
+    if (item.calls) assert.equal(result.body.observations.model, 'gemini-test');
+    assert.doesNotMatch(JSON.stringify(result), /server-secret-test-key|private transport|PRIVATE_UNPARSED|PRIVATE_UNSELECTED/);
+  }
+});
+
+test('strict output failures retain safe usage and expose field-specific codes without rejected content', async () => {
+  const cases = [
+    [payload(answer(), 'MAX_TOKENS'), 'OUTPUT_TOKEN_LIMIT'],
+    [payload(answer(), 'SAFETY'), 'FINISH_REASON_NOT_STOP'],
+    [{ ...payload(), promptFeedback: { blockReason: 'PRIVATE_PROVIDER_DESCRIPTION' } }, 'PROMPT_BLOCKED'],
+    [{ ...payload(), candidates: [{ finishReason: 'STOP', content: { parts: [] } }] }, 'RESPONSE_PARTS_INVALID'],
+    [{ ...payload(), candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'x'.repeat(40001) }] } }] }, 'RESPONSE_TEXT_TOO_LARGE'],
+    [{ ...payload(), candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'PRIVATE_UNPARSEABLE_OUTPUT' }] } }] }, 'OUTPUT_JSON_INVALID'],
+    [payload({ ...answer(), extra: 'PRIVATE_EXTRA_CONTENT' }), 'OUTPUT_FIELDS_INVALID'],
+    [payload({ ...answer(), answer: '' }), 'ANSWER_INVALID'],
+    [payload({ ...answer(), answer: 'server-secret-test-key' }), 'CREDENTIAL_OUTPUT_REJECTED'],
+    [payload({ ...answer(), suggested_next_step: 8 }), 'NEXT_STEP_INVALID'],
+    [payload({ ...answer(), missing_information: [4] }), 'MISSING_INFORMATION_INVALID'],
+    [payload({ ...answer(), used_document_ids: [4] }), 'SOURCE_IDS_INVALID'],
+    [payload({ ...answer(), used_document_ids: ['budget', 'budget'] }), 'SOURCE_ID_DUPLICATE']
+  ];
+  for (const [body, code] of cases) {
+    const result = await harness({ fetchImpl: async () => ({ ok: true, status: 200, json: async () => body }) }).run();
+    assert.equal(result.body.diagnostic.stage, 'output-admission'); assert.equal(result.body.diagnostic.code, code);
+    assert.equal(result.body.status, 'held'); assert.equal(result.body.answer, '');
+    assert.equal(result.body.observations.http_status, 200);
+    assert.deepEqual(result.body.observations.usage, { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180 });
+    assert.doesNotMatch(JSON.stringify(result), /PRIVATE_PROVIDER_DESCRIPTION|PRIVATE_UNPARSEABLE_OUTPUT|PRIVATE_EXTRA_CONTENT|server-secret-test-key/);
+  }
+});
+
+test('timeout and cancellation diagnostics retain the exact interrupted stage', async () => {
+  const late = await harness({ timeoutMs: 5, fetchImpl: async () => ({ ok: true, status: 200, json: () => new Promise(() => {}) }) }).run();
+  assert.equal(late.body.diagnostic.stage, 'provider-json'); assert.equal(late.body.diagnostic.code, 'DEADLINE_EXCEEDED');
+  assert.equal(late.body.observations.http_status, 200); assert.equal(Object.hasOwn(late.body.observations, 'usage'), false);
+  const cancelled = await harness().run(task(), { aborted: true });
+  assert.equal(cancelled.body.diagnostic.code, 'REQUEST_CANCELLED'); assert.equal(cancelled.body.diagnostic.stage, 'provider-plan');
+  assert.equal(cancelled.body.observations.provider_calls, 0);
+});

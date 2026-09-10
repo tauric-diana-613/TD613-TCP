@@ -3,6 +3,11 @@ import { consumeRateSlot } from './khonapolit-quality.js';
 
 export const LOOM_TASK_SCHEMA = 'td613.loom.ai-task/v0.1';
 export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
+export const LOOM_TASK_DIAGNOSTIC_SCHEMA = 'td613.loom.ai-task-diagnostic/v0.1';
+class OutputAdmissionError extends TypeError {
+  constructor(code) { super('Provider output was not admitted'); this.code = code; }
+}
+const rejectOutput = code => { throw new OutputAdmissionError(code); };
 const MAX_BODY_BYTES = 240000;
 const ownKeys = (object, expected) => object && typeof object === 'object' && !Array.isArray(object)
   && Object.keys(object).length === expected.length && expected.every(key => Object.hasOwn(object, key));
@@ -46,19 +51,23 @@ export function buildLoomTaskProviderRequest(input) {
 
 function admittedOutput(payload, input, key) {
   const candidate = payload?.candidates?.[0];
-  if (candidate?.finishReason !== 'STOP' || payload?.promptFeedback?.blockReason) throw new TypeError('incomplete-response');
+  if (payload?.promptFeedback?.blockReason) rejectOutput('PROMPT_BLOCKED');
+  if (candidate?.finishReason === 'MAX_TOKENS') rejectOutput('OUTPUT_TOKEN_LIMIT');
+  if (candidate?.finishReason !== 'STOP') rejectOutput('FINISH_REASON_NOT_STOP');
   const parts = candidate?.content?.parts;
-  if (!dense(parts, 32) || !parts.length) throw new TypeError('invalid-response');
+  if (!dense(parts, 32) || !parts.length) rejectOutput('RESPONSE_PARTS_INVALID');
   const raw = parts.filter(part => part?.thought !== true).map(part => typeof part?.text === 'string' ? part.text : '').join('');
-  if (raw.length > 40000 || (key && raw.includes(key))) throw new TypeError('invalid-response');
-  const result = JSON.parse(raw);
-  if (!ownKeys(result, ['answer', 'missing_information', 'used_document_ids', 'suggested_next_step'])
-    || !text(result.answer, 24000) || !text(result.suggested_next_step, 2000, true)
-    || !dense(result.missing_information, 32) || !result.missing_information.every(value => text(value, 1000))
-    || !dense(result.used_document_ids, 8) || new Set(result.used_document_ids).size !== result.used_document_ids.length
-    || !result.used_document_ids.every(id => typeof id === 'string' && input.documents.some(document => document.id === id))) {
-    throw new TypeError('invalid-response');
-  }
+  if (raw.length > 40000) rejectOutput('RESPONSE_TEXT_TOO_LARGE');
+  if (key && raw.includes(key)) rejectOutput('CREDENTIAL_OUTPUT_REJECTED');
+  let result;
+  try { result = JSON.parse(raw); } catch { rejectOutput('OUTPUT_JSON_INVALID'); }
+  if (!ownKeys(result, ['answer', 'missing_information', 'used_document_ids', 'suggested_next_step'])) rejectOutput('OUTPUT_FIELDS_INVALID');
+  if (!text(result.answer, 24000)) rejectOutput('ANSWER_INVALID');
+  if (!text(result.suggested_next_step, 2000, true)) rejectOutput('NEXT_STEP_INVALID');
+  if (!dense(result.missing_information, 32) || !result.missing_information.every(value => text(value, 1000))) rejectOutput('MISSING_INFORMATION_INVALID');
+  if (!dense(result.used_document_ids, 8) || !result.used_document_ids.every(id => typeof id === 'string')) rejectOutput('SOURCE_IDS_INVALID');
+  if (new Set(result.used_document_ids).size !== result.used_document_ids.length) rejectOutput('SOURCE_ID_DUPLICATE');
+  if (!result.used_document_ids.every(id => input.documents.some(document => document.id === id))) rejectOutput('SOURCE_ID_NOT_SELECTED');
   return result;
 }
 const header = (req, name) => {
@@ -90,7 +99,12 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     let input = null;
     let model = null;
     let providerCalls = 0;
-    const observations = () => ({ model, elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
+    let providerHttpStatus = null;
+    let providerUsage = null;
+    let stage = 'provider-plan';
+    const diagnostic = code => ({ schema: LOOM_TASK_DIAGNOSTIC_SCHEMA, stage, code });
+    const observations = () => ({ model, ...(providerHttpStatus === null ? {} : { http_status: providerHttpStatus }),
+      ...(providerUsage === null ? {} : { usage: providerUsage }), elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
       document_count: input?.documents.length || 0, rule_count: input?.rules.length || 0,
       input_characters: input ? input.task.length + input.documents.reduce((sum, doc) => sum + doc.text.length, 0) + input.rules.reduce((sum, rule) => sum + rule.length, 0) : 0,
       model_policy: GEMINI_MODEL_POLICY_VERSION, source_claims: 'model-reported-unverified' });
@@ -118,10 +132,11 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     const controller = new AbortController();
     const abort = () => controller.abort();
     let timer;
+    let deadlineExceeded = false;
     const deadline = new Promise((_, reject) => {
       const rejectAbort = () => reject(new Error('request-aborted'));
       controller.signal.addEventListener('abort', rejectAbort, { once: true });
-      timer = setTimeout(abort, Math.max(1, Math.min(timeoutMs, 40000)));
+      timer = setTimeout(() => { deadlineExceeded = true; abort(); }, Math.max(1, Math.min(timeoutMs, 40000)));
     });
     req.once?.('aborted', abort);
     if (req.aborted || req.signal?.aborted) abort();
@@ -130,25 +145,34 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const plan = await Promise.race([resolvePlan({ task: 'general-text', env, maxModels: 8 }), deadline]);
       if (controller.signal.aborted) throw new Error('request-aborted');
       model = plan.callableModels?.[0] || null;
-      if (typeof model !== 'string' || !/^[a-zA-Z0-9._-]{1,120}$/.test(model)) { model = null; return send(503, { error: 'no-eligible-provider-model' }); }
+      if (typeof model !== 'string' || !/^[a-zA-Z0-9._-]{1,120}$/.test(model)) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
+      stage = 'provider-transport';
       providerCalls = 1;
       const response = await Promise.race([fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
         method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
         body: JSON.stringify(buildLoomTaskProviderRequest(input)), signal: controller.signal
       }), deadline]);
+      if (Number.isInteger(response.status) && response.status >= 100 && response.status <= 599) providerHttpStatus = response.status;
       recordOutcome(model, { ok: response.ok, status: response.status, reason: response.ok ? '' : 'loom-provider-response-failed' });
-      if (!response.ok) return send(502, { error: 'provider-request-failed', observations: { ...observations(), http_status: response.status } });
+      if (!response.ok) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
       // Parse only bounded provider text. Never publish raw provider error bodies, headers, or credentials.
+      stage = 'provider-json';
       const payload = await Promise.race([response.json(), deadline]);
+      providerUsage = usageCounts(payload?.usageMetadata);
+      stage = 'output-admission';
       const output = admittedOutput(payload, input, env.GEMINI_API_KEY);
-      return send(200, { status: 'completed', ...output, observations: { ...observations(), http_status: response.status,
-        usage: usageCounts(payload.usageMetadata), completed_at: new Date(now()).toISOString() } });
-    } catch {
+      return send(200, { status: 'completed', ...output, observations: { ...observations(), completed_at: new Date(now()).toISOString() } });
+    } catch (error) {
       if (controller.signal.aborted) {
         if (model) recordOutcome(model, { ok: false, status: 408, timedOut: true, reason: 'loom-task-aborted' });
-        return send(504, { error: 'task-aborted-or-timed-out' });
+        return send(504, { error: 'task-aborted-or-timed-out', diagnostic: diagnostic(deadlineExceeded ? 'DEADLINE_EXCEEDED' : 'REQUEST_CANCELLED') });
       }
-      return send(502, { error: 'provider-response-not-admitted' });
+      // Codes are locally authored constants. Never serialize exception messages or provider text.
+      const code = error instanceof OutputAdmissionError ? error.code : {
+        'provider-plan': 'PROVIDER_PLAN_FAILED', 'provider-transport': 'PROVIDER_TRANSPORT_FAILED',
+        'provider-json': 'PROVIDER_JSON_INVALID', 'output-admission': 'OUTPUT_FIELDS_INVALID'
+      }[stage];
+      return send(502, { error: 'provider-response-not-admitted', diagnostic: diagnostic(code) });
     } finally {
       clearTimeout(timer);
       req.removeListener?.('aborted', abort);

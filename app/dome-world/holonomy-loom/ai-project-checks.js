@@ -3,7 +3,7 @@ import { LOOM_AI_PROJECTS } from './ai-projects.js';
 // A deliberately narrow arithmetic witness for the fictional vendor task.
 // It never gates output, authorizes an action, or grades an arbitrary AI task.
 const money = value => Number(value.toFixed(2));
-const numeral = '(\\d[\\d,]*(?:\\.\\d{1,2})?)';
+const numeral = '((?:\\d{1,3}(?:,\\d{3})+|\\d+)(?:\\.\\d{1,2})?)';
 const numeric = value => Number(value.replaceAll(',', ''));
 const finiteMatch = (text, pattern, index = 1) => {
   const match = pattern.exec(text);
@@ -37,6 +37,14 @@ function vendorOracle() {
 }
 function reportedTotals(answer) {
   const candidates = { vendor_a: [], vendor_b: [] };
+  // Observed provider form: '* **Total Vendor-A Cost**: 137,591.52 credits.'
+  // Require the entire leading total label, a monetary value and currency. This
+  // does not promote bare numeric presence or an unrelated quoted amount.
+  const labelledTotal = new RegExp(`^[ \t]*(?:[-*+][ \t]+)?(?:\\*\\*|__)?Total[ \t]+Vendor[- ]([AB])[ \t]+Cost(?:\\*\\*|__)?[ \t]*[:=][ \t]*${numeral}[ \t]+credits[ \t]*(?:[.;]|$)`, 'gmi');
+  for (const match of answer.matchAll(labelledTotal)) {
+    const key = match[1].toUpperCase() === 'A' ? 'vendor_a' : 'vendor_b';
+    candidates[key].push(numeric(match[2]));
+  }
   // Keep each candidate attached to its explicit vendor-labelled passage. Never
   // infer a total merely because an expected number occurs elsewhere in prose.
   for (const segment of answer.matchAll(/\bVendor[- ]([AB])\b([\s\S]*?)(?=\bVendor[- ][AB]\b|$)/gi)) {
