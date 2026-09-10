@@ -14,7 +14,9 @@ if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) throw new Type
 const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-marrowline-import/${engine}`;
 await fs.mkdir(dir, { recursive: true });
 const report = { schema: 'td613.loom.marrowline-import-browser-witness/v0.1', engine, status: 'HELD',
-  source_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  source_sha: process.env.TD613_SOURCE_HEAD || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  checkout_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  workflow_run_id: process.env.GITHUB_RUN_ID || null, run_attempt: process.env.GITHUB_RUN_ATTEMPT || null,
   working_tree_dirty: Boolean(execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim()),
   observed_at: new Date().toISOString(), context: 'REAL_LOCAL_UI_NAVIGATION_WITH_MOCK_PROVIDER_RESPONSE',
   live_provider_calls: 0, intercepted_task_requests: 0, external_host_observed: false, human_comprehension_measured: false,
@@ -74,6 +76,9 @@ try {
       assert.equal(await page.locator('#loomImportedTask').inputValue(), project.task);
       assert.equal(await page.locator('#loomImportedTask').getAttribute('readonly'), '', 'governed task stays bound at receiver');
       assert.equal(calls.length, 0, 'arrival makes zero provider requests');
+      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'active');
+      assert.equal(await page.locator('.terminal-layout').isVisible(), false, 'imported task owns its workspace without relay composer overlap');
+      assert.equal(await page.locator('.mobile-dock').isVisible(), false, 'relay dock cannot cover the imported task');
       const destinationText = await page.locator('#loomImportedWorkspace').textContent();
       assert.equal(destinationText.includes(uploadCanary), false);
       for (const term of project.protectedTerms) assert.equal(destinationText.includes(term), false, 'private term omitted from destination');
@@ -89,7 +94,9 @@ try {
       for (const term of project.protectedTerms) assert.equal(wire.includes(term), false);
       assert.equal(wire.includes(uploadCanary), false); assert.equal(Object.hasOwn(calls[0], 'governance'), false, 'local control stays outside strict provider input');
       assert.equal(await page.locator('#loomImportedAnswer img').count(), 0, 'model markup remains inert text');
-      const receipt = JSON.parse(await page.locator('#loomImportedWorkspace > details').last().locator('pre').innerText());
+      await page.locator('#loomImportedReceiptDetails > summary').click();
+      assert.equal(await page.locator('#loomImportedReceipt').isVisible(), true, 'open the actual receipt disclosure before inspection');
+      const receipt = JSON.parse(await page.locator('#loomImportedReceipt').innerText());
       assert.deepEqual(receipt.governance.control, exported.governance, 'same governed state survives destination change');
       assert.equal(receipt.governance.last_admission.fadt.all_fibres_exact, true);
       assert.equal(receipt.governance.latest.allowed, true);

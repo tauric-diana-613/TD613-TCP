@@ -18,7 +18,9 @@ const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-ai-workspace/${eng
 await fs.mkdir(dir, { recursive: true });
 const report = {
   schema: 'td613.loom.ai-workspace-browser-witness/v0.1', status: 'HELD', engine,
-  source_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  source_sha: process.env.TD613_SOURCE_HEAD || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  checkout_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  workflow_run_id: process.env.GITHUB_RUN_ID || null, run_attempt: process.env.GITHUB_RUN_ATTEMPT || null,
   working_tree_dirty: Boolean(execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim()),
   observed_at: new Date().toISOString(), context: 'REAL_LOCAL_UI_WITH_MOCK_PROVIDER_RESPONSE',
   live_provider_calls: 0, intercepted_task_requests: 0, human_comprehension_measured: false,

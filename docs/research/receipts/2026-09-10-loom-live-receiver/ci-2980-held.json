@@ -1,0 +1,234 @@
+{
+  "schema": "td613.loom.browser-repair-archaeology/v0.1",
+  "run_id": 34430848282,
+  "run_number": 2980,
+  "pr_head": "58b727fc967edaf59e1cb4a1343e0b52d6fa4f94",
+  "status": "HELD",
+  "findings": [
+    "All three engines passed new workspace desktop and reduced-motion mobile transport tests.",
+    "Marrowline desktop observer attempted innerText on closed receipt details.",
+    "Marrowline mobile imported task collided with existing fixed/grid terminal shell; ordinary click intercepted."
+  ],
+  "repair": "Explicit receipt disclosure gesture plus scoped imported-task layout; do not use forced clicks.",
+  "reports": [
+    {
+      "schema": "td613.loom.ai-workspace-browser-witness/v0.1",
+      "status": "PASS",
+      "engine": "chromium",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:49:14.591Z",
+      "context": "REAL_LOCAL_UI_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 4,
+      "human_comprehension_measured": false,
+      "checks": [
+        {
+          "posture": "desktop",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "no-preference",
+          "runtime_errors": 0
+        },
+        {
+          "posture": "mobile-reduced",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "reduce",
+          "runtime_errors": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "schema": "td613.loom.marrowline-import-browser-witness/v0.1",
+      "engine": "chromium",
+      "status": "HELD",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:49:18.678Z",
+      "context": "REAL_LOCAL_UI_NAVIGATION_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 1,
+      "external_host_observed": false,
+      "human_comprehension_measured": false,
+      "checks": [],
+      "failures": [
+        {
+          "posture": "desktop",
+          "error": "SyntaxError: Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:92:28"
+        },
+        {
+          "posture": "mobile-reduced",
+          "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('#loomImportedRun')\n    - locator resolved to <button type=\"button\" id=\"loomImportedRun\">Run this task with Gemini</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    23 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at /home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:82:46"
+        }
+      ]
+    },
+    {
+      "schema": "td613.loom.ai-workspace-browser-witness/v0.1",
+      "status": "PASS",
+      "engine": "firefox",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:49:25.776Z",
+      "context": "REAL_LOCAL_UI_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 4,
+      "human_comprehension_measured": false,
+      "checks": [
+        {
+          "posture": "desktop",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "no-preference",
+          "runtime_errors": 0
+        },
+        {
+          "posture": "mobile-reduced",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "reduce",
+          "runtime_errors": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "schema": "td613.loom.marrowline-import-browser-witness/v0.1",
+      "engine": "firefox",
+      "status": "HELD",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:49:30.309Z",
+      "context": "REAL_LOCAL_UI_NAVIGATION_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 1,
+      "external_host_observed": false,
+      "human_comprehension_measured": false,
+      "checks": [],
+      "failures": [
+        {
+          "posture": "desktop",
+          "error": "SyntaxError: Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:92:28"
+        },
+        {
+          "posture": "mobile-reduced",
+          "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('#loomImportedRun')\n    - locator resolved to <button type=\"button\" id=\"loomImportedRun\">Run this task with Gemini</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    23 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <form class=\"vessel-form\" id=\"khonapolitForm\">…</form> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at /home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:82:46"
+        }
+      ]
+    },
+    {
+      "schema": "td613.loom.ai-workspace-browser-witness/v0.1",
+      "status": "PASS",
+      "engine": "webkit",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:50:30.830Z",
+      "context": "REAL_LOCAL_UI_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 4,
+      "human_comprehension_measured": false,
+      "checks": [
+        {
+          "posture": "desktop",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "no-preference",
+          "runtime_errors": 0
+        },
+        {
+          "posture": "mobile-reduced",
+          "status": "PASS",
+          "intercepted_requests": 2,
+          "project_selection_has_no_egress": true,
+          "local_source_excluded": true,
+          "one_click_one_post": true,
+          "duplicate_click_disabled": true,
+          "completed_answer_visible": true,
+          "export_checked": true,
+          "uploaded_document_local_by_default": true,
+          "marrowline_control_enabled": true,
+          "provider_failure_held": true,
+          "no_horizontal_overflow": true,
+          "reduced_motion": "reduce",
+          "runtime_errors": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "schema": "td613.loom.marrowline-import-browser-witness/v0.1",
+      "engine": "webkit",
+      "status": "HELD",
+      "source_sha": "ad3a6b658039effbd6cf93e2afe114ab3724fe3a",
+      "working_tree_dirty": true,
+      "observed_at": "2026-09-10T02:50:36.045Z",
+      "context": "REAL_LOCAL_UI_NAVIGATION_WITH_MOCK_PROVIDER_RESPONSE",
+      "live_provider_calls": 0,
+      "intercepted_task_requests": 1,
+      "external_host_observed": false,
+      "human_comprehension_measured": false,
+      "checks": [],
+      "failures": [
+        {
+          "posture": "desktop",
+          "error": "SyntaxError: Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:92:28"
+        },
+        {
+          "posture": "mobile-reduced",
+          "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('#loomImportedRun')\n    - locator resolved to <button type=\"button\" id=\"loomImportedRun\">Run this task with Gemini</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"messages\" aria-live=\"polite\" id=\"khonapolitMessages\" aria-label=\"Kʰonapolit terminal conversation\">…</div> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"messages\" aria-live=\"polite\" id=\"khonapolitMessages\" aria-label=\"Kʰonapolit terminal conversation\">…</div> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div class=\"messages\" aria-live=\"polite\" id=\"khonapolitMessages\" aria-label=\"Kʰonapolit terminal conversation\">…</div> from <section class=\"terminal-layout\" aria-label=\"Kʰonapolit conversational chamber\">…</section> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at /home/runner/work/TD613-TCP/TD613-TCP/tests/loom-marrowline-import.browser.mjs:82:46"
+        }
+      ]
+    }
+  ]
+}

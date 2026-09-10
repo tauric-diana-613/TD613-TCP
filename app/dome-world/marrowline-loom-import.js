@@ -5,8 +5,10 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
   const doc = root.ownerDocument;
   root.replaceChildren();
   root.className = 'loom-import-workspace';
+  root.setAttribute('data-loom-import-workspace', '');
+  doc.documentElement.setAttribute('data-loom-task-import', 'active');
   const style = doc.createElement('style');
-  style.textContent = `.loom-import-workspace{margin:24px 0;padding:clamp(20px,4vw,40px);border:1px solid #367969;border-radius:24px;background:linear-gradient(135deg,#0e2828,#071816);color:#e1f8ef;font:16px/1.55 system-ui,sans-serif}.loom-import-workspace h2{font-size:clamp(25px,4vw,38px);margin:6px 0 12px}.loom-import-workspace p{max-width:72ch}.loom-import-workspace textarea{box-sizing:border-box;width:100%;min-height:160px;border:1px solid #498374;border-radius:16px;padding:18px;background:#071d1b;color:#e1f8ef;font:16px/1.6 system-ui,sans-serif;resize:vertical}.loom-import-workspace button,.loom-import-workspace a{display:inline-block;margin:12px 10px 12px 0;padding:12px 18px;border:1px solid #89ddba;border-radius:24px;background:#a2e6c5;color:#05201b;font:600 15px system-ui,sans-serif;text-decoration:none}.loom-import-workspace button:disabled{opacity:.55}.loom-import-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 system-ui,sans-serif}.loom-import-workspace details{margin:12px 0;padding:12px;border:1px solid #306658;border-radius:12px}.loom-import-workspace [role=status]{padding:12px 0;color:#b8e5cb}.loom-import-workspace .loom-import-answer{border-left:3px solid #9adbbb;padding:4px 18px;white-space:pre-wrap;overflow-wrap:anywhere}.loom-import-workspace label{display:block;font-weight:650;margin:20px 0 8px}`;
+  style.textContent = `html[data-loom-task-import=active]{height:auto!important;min-height:100%;overflow:auto!important;overscroll-behavior:auto!important}html[data-loom-task-import=active] body{position:static!important;inset:auto!important;height:auto!important;min-height:100vh;overflow:visible!important;overscroll-behavior:auto!important}html[data-loom-task-import=active] .ritual-shell{display:block!important;height:auto!important;min-height:100vh;overflow:visible!important;padding:12px!important}html[data-loom-task-import=active] .ritual-shell>:not([data-loom-import-workspace]){display:none!important}html[data-loom-task-import=active] .mobile-dock{display:none!important}.loom-import-workspace{margin:24px 0;padding:clamp(20px,4vw,40px);border:1px solid #367969;border-radius:24px;background:linear-gradient(135deg,#0e2828,#071816);color:#e1f8ef;font:16px/1.55 system-ui,sans-serif}.loom-import-workspace h2{font-size:clamp(25px,4vw,38px);margin:6px 0 12px}.loom-import-workspace p{max-width:72ch}.loom-import-workspace textarea{box-sizing:border-box;width:100%;min-height:160px;border:1px solid #498374;border-radius:16px;padding:18px;background:#071d1b;color:#e1f8ef;font:16px/1.6 system-ui,sans-serif;resize:vertical}.loom-import-workspace button,.loom-import-workspace a{display:inline-block;margin:12px 10px 12px 0;padding:12px 18px;border:1px solid #89ddba;border-radius:24px;background:#a2e6c5;color:#05201b;font:600 15px system-ui,sans-serif;text-decoration:none}.loom-import-workspace button:disabled{opacity:.55}.loom-import-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 system-ui,sans-serif}.loom-import-workspace details{margin:12px 0;padding:12px;border:1px solid #306658;border-radius:12px}.loom-import-workspace [role=status]{padding:12px 0;color:#b8e5cb}.loom-import-workspace .loom-import-answer{border-left:3px solid #9adbbb;padding:4px 18px;white-space:pre-wrap;overflow-wrap:anywhere}.loom-import-workspace label{display:block;font-weight:650;margin:20px 0 8px}`;
   root.append(style);
   const add = (tag, text, parent = root) => { const el = doc.createElement(tag); el.textContent = text; parent.append(el); return el; };
   add('small', 'LOOM → MARROWLINE');
@@ -23,9 +25,10 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
   const run = add('button', 'Run this task with Gemini'); run.type = 'button'; run.id = 'loomImportedRun';
   const cancel = add('button', 'Stop waiting'); cancel.type = 'button'; cancel.hidden = true;
   const back = add('a', 'Back to Loom'); back.href = '/dome-world/holonomy-loom.html';
+  const relay = add('a', 'Open Marrowline relay'); relay.href = '/dome-world/marrowline.html';
   const status = add('div', 'Ready. Shared material stays here until you run the task.'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   const answer = add('div', ''); answer.className = 'loom-import-answer'; answer.id = 'loomImportedAnswer';
-  const exact = add('details', ''); add('summary', 'Inspect task and response receipt', exact); const receipt = add('pre', '', exact);
+  const exact = add('details', ''); exact.id = 'loomImportedReceiptDetails'; add('summary', 'Inspect task and response receipt', exact); const receipt = add('pre', '', exact); receipt.id = 'loomImportedReceipt';
   add('p', 'Loom carried only the selected material. Marrowline sends the displayed task, selected documents and rules to Gemini. Document instructions remain untrusted input; any proposed onward action requires its own review.', exact);
   receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, provider: 'not requested' }, null, 2);
   let governor;
@@ -74,7 +77,7 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
       receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent }, null, 2);
     } finally { if (!destroyed) { controller = undefined; run.disabled = false; task.disabled = false; cancel.hidden = true; } }
   });
-  return { ready, inspect: () => governor?.inspect() ?? null, destroy() { destroyed = true; controller?.abort(); governor?.close(); root.replaceChildren(); } };
+  return { ready, inspect: () => governor?.inspect() ?? null, destroy() { destroyed = true; controller?.abort(); governor?.close(); doc.documentElement.removeAttribute('data-loom-task-import'); root.removeAttribute('data-loom-import-workspace'); root.replaceChildren(); } };
 }
 
 export async function bootMarrowlineLoomImport(environment = window) {

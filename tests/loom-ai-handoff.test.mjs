@@ -161,3 +161,14 @@ test('REST issued during asynchronous digest admission remains effective', async
   const pending = governor.authorize(input); governor.rest();
   assert.equal((await pending).allowed, false); assert.equal(governor.inspect().state, 'REST');
 });
+test('imported workspace owns layout only during its lifetime and receipt remains explicitly inspectable', async () => {
+  const scene = ui(); await scene.workspace.ready;
+  assert.equal(scene.dom.window.document.documentElement.getAttribute('data-loom-task-import'), 'active');
+  assert.equal(scene.root.hasAttribute('data-loom-import-workspace'), true);
+  assert.equal(scene.root.querySelector('#loomImportedReceiptDetails').open, false);
+  assert.ok(scene.root.querySelector('#loomImportedReceiptDetails #loomImportedReceipt'));
+  assert.equal(scene.root.querySelector('a[href="/dome-world/marrowline.html"]').textContent, 'Open Marrowline relay');
+  scene.workspace.destroy();
+  assert.equal(scene.dom.window.document.documentElement.hasAttribute('data-loom-task-import'), false);
+  scene.dom.window.close();
+});

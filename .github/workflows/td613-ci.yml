@@ -374,12 +374,14 @@ jobs:
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
           TD613_ARTIFACT_DIR: artifacts/${{ matrix.browser }}/loom-ai-workspace
         run: node tests/holonomy-loom-ai-workspace.browser.spec.mjs
       - name: Witness Loom to Marrowline governed task import
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
           TD613_ARTIFACT_DIR: artifacts/${{ matrix.browser }}/loom-marrowline
         run: node tests/loom-marrowline-import.browser.mjs
       - name: Run core extended and Flow-Core lanes in parallel
