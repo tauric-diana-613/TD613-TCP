@@ -30,11 +30,11 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
-// The browser holds the request for 55s and the Vercel route is capped at 60s.
-// Give the frontier model almost the entire lawful window before trying a fallback.
-const PRIMARY_REQUEST_TIMEOUT_MS = 52000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 9000;
-const WALL_TIMEOUT_MS = 54500;
+// Preserve the empirically witnessed completion/fallback timing contract. The
+// token and reasoning repair is independent of transport timeout behavior.
+const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
+const WALL_TIMEOUT_MS = 44500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
 // Current text-capable Gemini Flash models used by the live quality route expose
