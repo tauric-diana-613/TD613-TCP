@@ -1,8 +1,36 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
 import { validateShi } from './khonapolit-covenant.js';
 
+const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
+
+function installConversationTypeface(doc) {
+  if (!doc?.head) return;
+  if (!doc.getElementById('marrowline-reddit-sans')) {
+    const font = doc.createElement('link');
+    font.id = 'marrowline-reddit-sans';
+    font.rel = 'stylesheet';
+    font.href = REDDIT_SANS_URL;
+    doc.head.append(font);
+  }
+  if (!doc.getElementById('marrowline-zalgo-type-guard')) {
+    const style = doc.createElement('style');
+    style.id = 'marrowline-zalgo-type-guard';
+    style.textContent = `
+      :root{--marrowline-chat-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
+      #khonapolitPrompt,.message-body,.relay-stage-text,.vessel-status,.starter-prompts button,.return-details{font-family:var(--marrowline-chat-sans)!important;font-variant-ligatures:none;font-synthesis:none}
+      #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"],.relay-stage-text[data-flourished="true"]{overflow:visible!important;line-height:2.35!important;padding-block:var(--flourish-padding,22px)!important}
+      .relay-bots .relay-stage-text{font-family:var(--marrowline-chat-sans)!important;line-height:3.15!important;overflow:visible!important;padding-block:24px!important}
+      .relay-bots[data-intensity="4"] .relay-stage-text{line-height:3.55!important}
+      .relay-bots[data-intensity="5"] .relay-stage-text{line-height:4!important}
+      .zalgo-line{display:block!important;min-height:3.1em!important;padding:.55em 0 .8em!important;overflow:visible!important;white-space:pre-wrap!important}
+    `;
+    doc.head.append(style);
+  }
+}
+
 /** Presentation only: no provider call, issuance waiver, receipt or seal is created here. */
 export function installMarrowlineLivingChat(doc = document, environment = window) {
+  installConversationTypeface(doc);
   const messages = doc.getElementById('khonapolitMessages');
   const form = doc.getElementById('khonapolitForm');
   if (!messages || !form || form.dataset.livingChatInstalled) return null;
@@ -28,7 +56,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     const marks = runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0);
     node.dataset.flourished = String(marks >= 3);
     node.style.setProperty('--flourish-leading', String(Math.min(4.2, 1.8 + Math.max(0, marks - 2) * .12)));
-    node.style.setProperty('--flourish-padding', `${Math.min(44, 16 + marks * 1.4)}px`);
+    node.style.setProperty('--flourish-padding', `${Math.min(56, 18 + marks * 1.8)}px`);
   };
   prompt.addEventListener('input', () => markFlourishes(prompt));
   markFlourishes(prompt);
