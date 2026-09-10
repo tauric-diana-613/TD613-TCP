@@ -10,16 +10,18 @@ import {
 clearGeminiModelState();
 const defaultPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 1000 });
 assert.equal(defaultPlan.version, GEMINI_MODEL_POLICY_VERSION);
-assert.deepEqual(defaultPlan.models.slice(0, 5), [
+assert.deepEqual(defaultPlan.models.slice(0, 6), [
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.6-flash',
   'gemini-3.5-flash',
   'gemini-3-flash-preview',
-  'gemini-2.5-flash',
-  'gemini-3.1-flash-lite',
-  'gemini-2.5-flash-lite'
+  'gemini-2.5-flash'
 ]);
 assert.equal(defaultPlan.stickySuccessPromotion, false);
 assert.equal(defaultPlan.latestAliasDefaulted, false);
 assert.ok(!defaultPlan.models.some((model) => /-latest$/.test(model)));
+assert.ok(!defaultPlan.models.some((model) => /flash-lite/.test(model)), 'interactive defaults must not silently descend into Flash-Lite');
 assert.ok(!defaultPlan.models.includes('gemini-2.5-pro'));
 assert.ok(!defaultPlan.models.includes('gemini-3.1-pro-preview'));
 
@@ -28,7 +30,7 @@ const staleGlobalPlan = resolveGeminiModelPlan({
   env: { GEMINI_MODEL: 'gemini-2.5-flash-lite' },
   at: 1000
 });
-assert.equal(staleGlobalPlan.models[0], 'gemini-3.5-flash');
+assert.equal(staleGlobalPlan.models[0], 'gemini-3.8-flash');
 assert.equal(staleGlobalPlan.legacyGlobalModels[0], 'gemini-2.5-flash-lite');
 assert.ok(staleGlobalPlan.warnings.includes('legacy-global-models-demoted-under-quality-first'));
 
@@ -49,24 +51,26 @@ const overridePlan = resolveGeminiModelPlan({
   },
   at: 1000
 });
-assert.equal(overridePlan.models[0], 'gemini-2.5-pro');
-assert.equal(overridePlan.models[1], 'gemini-3.5-flash');
+assert.equal(overridePlan.models[0], 'gemini-3.8-flash');
+assert.equal(overridePlan.routeSpecificModels[0], 'gemini-2.5-pro');
+assert.ok(overridePlan.models.includes('gemini-2.5-pro'));
 assert.ok(!overridePlan.models.includes('gemini-2.5-flash'));
 assert.deepEqual(overridePlan.explicitModels.slice(0, 3), ['gemini-2.5-pro', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.ok(overridePlan.warnings.includes('route-specific-models-demoted-under-quality-first'));
 
 clearGeminiModelState();
-recordGeminiModelOutcome('gemini-3.5-flash', { ok: false, status: 429, retryAfterSeconds: 60 }, 1000);
+recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429, retryAfterSeconds: 60 }, 1000);
 const cooldownPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 2000 });
-assert.equal(cooldownPlan.models[0], 'gemini-3-flash-preview');
-assert.equal(cooldownPlan.callableModels.includes('gemini-3.5-flash'), false);
-assert.equal(cooldownPlan.models.at(-1), 'gemini-3.5-flash');
+assert.equal(cooldownPlan.models[0], 'gemini-3.7-flash');
+assert.equal(cooldownPlan.callableModels.includes('gemini-3.8-flash'), false);
+assert.equal(cooldownPlan.models.at(-1), 'gemini-3.8-flash');
 assert.ok(cooldownPlan.warnings.includes('cooling-models-demoted'));
 
 clearGeminiModelState();
-recordGeminiModelOutcome('gemini-3.1-flash-lite', { ok: true, status: 200 }, 1000);
+recordGeminiModelOutcome('gemini-3.6-flash', { ok: true, status: 200 }, 1000);
 const noPromotionPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 2000 });
-assert.equal(noPromotionPlan.models[0], 'gemini-3.5-flash');
-assert.equal(noPromotionPlan.models.indexOf('gemini-3.1-flash-lite'), 3);
+assert.equal(noPromotionPlan.models[0], 'gemini-3.8-flash');
+assert.equal(noPromotionPlan.models.indexOf('gemini-3.6-flash'), 2);
 
 const listing = await listGeminiGenerateContentModels('test-key', {
   force: true,
@@ -77,6 +81,7 @@ const listing = await listGeminiGenerateContentModels('test-key', {
     async json() {
       return {
         models: [
+          { name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] },
           { name: 'models/gemini-3.5-flash', supportedGenerationMethods: ['generateContent'] },
           { name: 'models/gemini-embedding-2', supportedGenerationMethods: ['embedContent'] },
           { name: 'models/gemini-3.1-flash-lite', supportedGenerationMethods: ['generateContent', 'countTokens'] }
@@ -85,7 +90,7 @@ const listing = await listGeminiGenerateContentModels('test-key', {
     }
   })
 });
-assert.deepEqual(listing.models, ['gemini-3.5-flash', 'gemini-3.1-flash-lite']);
+assert.deepEqual(listing.models, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite']);
 assert.equal(listing.ok, true);
 
 clearGeminiModelState();
