@@ -40,6 +40,17 @@ async function captureConvergenceState(page, checkpoint) {
     const current = window.__td613AshKeep?.current?.() || null;
     let registry = null;
     try { registry = window.__td613AshDemoRegistry?.snapshot?.() || null; } catch {}
+    let canonical = null;
+    try {
+      const state = window.__td613AshProfilePromptCanonical?.current?.();
+      if (state) canonical = {
+        explicit_choice:state.explicit_choice,
+        adopted_precanonical_revision:state.adopted_precanonical_revision,
+        observed_selector_bound:state.observed_selector_bound,
+        observed_start_bound:state.observed_start_bound,
+        observer_scope:state.observer_scope
+      };
+    } catch {}
     return {
       checkpoint:label,
       observed_at:new Date().toISOString(),
@@ -51,8 +62,15 @@ async function captureConvergenceState(page, checkpoint) {
       registry_state:root.dataset.ashDemoRegistryState || null,
       registry_owner:root.dataset.ashDemoControlOwner || null,
       select_value:select?.value || null,
+      select_present:Boolean(select),
+      start_demo_present:Boolean(button),
+      start_demo_owner:button?.dataset.ashDemoRegistryOwner || null,
       start_demo_state:button?.dataset.ashMethodDemoState || null,
       start_demo_disabled:button?.disabled ?? null,
+      start_demo_effectively_disabled:button?.matches(':disabled') ?? null,
+      viewport:{width:innerWidth, height:innerHeight},
+      reduced_motion:matchMedia('(prefers-reduced-motion: reduce)').matches,
+      canonical,
       registry
     };
   }, checkpoint);
@@ -75,15 +93,41 @@ async function inspect(page, label) {
   if (registry.profiles.find(entry => entry.profile === 'archive')?.owner !== 'ARCHIVE') throw new Error('Archive fixture owner drifted.');
   if (registry.empirical_matrix_cells !== 120) throw new Error('A15 empirical matrix metadata unavailable.');
 
+  const readiness = {
+    schema:'td613.ash.a13-profile-readiness-diagnostic/v0.1',
+    mode:label,
+    completed_profiles:[],
+    expected:null,
+    checkpoints:[]
+  };
   for (const profile of promoted) {
-    await selectRegistryProfile(page, profile);
-    await page.waitForFunction(expected => {
-      const button = document.getElementById('startDemo');
-      return document.getElementById('newProfile')?.value === expected
-        && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
-        && button?.dataset.ashMethodDemoState === 'READY'
-        && button.disabled === false;
-    }, profile, { timeout:60_000 });
+    readiness.expected = {
+      select_value:profile,
+      start_demo_owner:'td613.ash.demo-registry/v0.3-a15',
+      start_demo_state:'READY',
+      start_demo_disabled:false
+    };
+    readiness.checkpoints = [];
+    try {
+      await selectRegistryProfile(page, profile);
+      readiness.checkpoints.push(await captureConvergenceState(page, 'AFTER_PROFILE_SELECTION'));
+      await page.waitForFunction(expected => {
+        const button = document.getElementById('startDemo');
+        return document.getElementById('newProfile')?.value === expected
+          && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
+          && button?.dataset.ashMethodDemoState === 'READY'
+          && button.disabled === false;
+      }, profile, { timeout:60_000 });
+      readiness.completed_profiles.push(profile);
+    } catch (error) {
+      try {
+        readiness.checkpoints.push(await captureConvergenceState(page, 'PROFILE_READINESS_FAILED'));
+      } catch { readiness.snapshot_unavailable = true; }
+      await fs.writeFile(path.join(artifactDir, `${browserName}-${label}-a13-readiness-diagnostic.json`), JSON.stringify(readiness, null, 2));
+      try { await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}-a13-readiness-failure.png`), fullPage:true }); } catch {}
+      error.td613A13Readiness = readiness;
+      throw error;
+    }
   }
 
   const convergence = {
@@ -168,6 +212,7 @@ try {
   await fs.writeFile(path.join(artifactDir, `${browserName}-a13-registry-failure.json`), JSON.stringify({
     error:String(error?.stack || error),
     completed_receipts:receipts,
+    readiness:error?.td613A13Readiness || null,
     convergence:error?.td613A13Convergence || null
   }, null, 2));
   throw error;

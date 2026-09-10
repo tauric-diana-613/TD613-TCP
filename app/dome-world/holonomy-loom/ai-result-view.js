@@ -5,24 +5,47 @@
  */
 // Deliberately small presentation grammar. Unrecognized Markdown, links and HTML
 // remain literal text. The exact provider answer is separately retained below.
+function displayAnswerText(answer) {
+  // Some provider strings contain visible \\n paragraph separators after JSON
+  // decoding. Interpret only prose paragraph/list boundaries, never arbitrary
+  // escapes. Backtick code, fenced code and quoted strings remain verbatim.
+  const protectedSpans = /(`{1,}|~{3,})([\s\S]*?)\1|"(?:\\.|[^"\\])*"/g;
+  const normalize = text => text
+    .replace(/(?<!\\)(?:\\r)?\\n(?:(?:\\r)?\\n)+/g, match => '\n'.repeat((match.match(/\\n/g) || []).length))
+    .replace(/(?<!\\)(?:\\r)?\\n(?=[ \t]*(?:#{1,6}[ \t]|[-+*][ \t]|[0-9]{1,6}[.)][ \t]))/g, '\n');
+  let display = '', start = 0;
+  for (const match of answer.matchAll(protectedSpans)) {
+    display += normalize(answer.slice(start, match.index)) + match[0];
+    start = match.index + match[0].length;
+  }
+  return display + normalize(answer.slice(start));
+}
+
 function answerBlocks(answer) {
   const blocks = [];
   const lines = answer.replace(/\r\n?/g, '\n').split('\n');
-  let paragraph = [];
+  let paragraph = [], listBoundary = true;
   const flush = () => { if (paragraph.length) blocks.push({ type: 'paragraph', text: paragraph.join('\n') }); paragraph = []; };
   for (const line of lines) {
-    if (!line.trim()) { flush(); continue; }
+    if (!line.trim()) { flush(); listBoundary = true; continue; }
     const heading = /^ {0,3}#{1,6}[ \t]+(\S.*)$/.exec(line);
     const item = /^( *)(?:([-+*])|([0-9]{1,6})[.)])[ \t]+(\S.*)$/.exec(line);
     if (heading) { flush(); blocks.push({ type: 'heading', text: heading[1] }); }
     else if (item) {
       flush();
       const entry = { indent: item[1].length, ordered: Boolean(item[3]), value: item[3] ? Number(item[3]) : null, text: item[4] };
-      if (blocks.at(-1)?.type !== 'list') blocks.push({ type: 'list', items: [] });
+      if (listBoundary || blocks.at(-1)?.type !== 'list') blocks.push({ type: 'list', items: [] });
+      listBoundary = false;
       blocks.at(-1).items.push(entry);
     } else paragraph.push(line);
   }
   flush();
+  // The observed provider also emits a short uppercase title without Markdown.
+  // Recognize that typography only at the beginning and only with content after
+  // it; retain sentence-like warnings and all original text in the inspector.
+  const first = blocks[0];
+  if (blocks.length > 1 && first.type === 'paragraph' && first.text.length <= 120 &&
+      /^[A-Z][A-Z0-9 &:/()–—-]+$/.test(first.text) && first.text.split(/\s+/).length >= 3) first.type = 'heading';
   return blocks;
 }
 
@@ -42,8 +65,9 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
     return node;
   };
   const heading = text => el('h3', text);
-  const paragraphs = response.answer.split(/\r?\n[\t ]*\r?\n/).map(value => value.trim()).filter(Boolean);
-  const blocks = answerBlocks(response.answer);
+  const displayAnswer = displayAnswerText(response.answer);
+  const paragraphs = displayAnswer.split(/\r?\n[\t ]*\r?\n/).map(value => value.trim()).filter(Boolean);
+  const blocks = answerBlocks(displayAnswer);
   const inline = (node, text) => {
     // Bold and inline-code delimiters become safe text-bearing elements only.
     const tokens = /\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
