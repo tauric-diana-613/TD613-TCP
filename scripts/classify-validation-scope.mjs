@@ -14,11 +14,8 @@ const GIVING_EXACT = new Set([
   'docs/GIVING_HISTORY_ENGINE.md',
   'docs/GIVING_UX_RESILIENCE_ROADMAP.md',
   'docs/CAMPAIGN_DEPUTY_API_KEY_SETUP.md',
-  'package.json',
-  'package-lock.json',
   'tests/aperture-patch-bay.test.mjs',
-  'tests/giving-client-preview-server.mjs',
-  'vercel.json'
+  'tests/giving-client-preview-server.mjs'
 ]);
 
 const PRACTICE_EXACT = new Set([
@@ -37,6 +34,12 @@ const PRACTICE_EXACT = new Set([
 ]);
 
 const SCOPE_NEUTRAL = new Set([
+  // Shared release/configuration records cannot establish a product scope by themselves.
+  // A genuinely scoped Giving or practice change may carry this existing plumbing.
+  'vercel.json',
+  'package.json',
+  'package-lock.json',
+  'app/giving/history/release-source.json',
   '.github/workflows/td613-ci.yml',
   '.github/workflows/vercel-operator-release.yml',
   '.github/workflows/vercel-relock-safety.yml',
@@ -86,6 +89,9 @@ export function classifyValidationScope(inputFiles = []) {
   let practiceFileCount = 0;
   const fullScopeFiles = [];
   for (const file of files) {
+    // Exact neutral exceptions take precedence over product-prefix matches.
+    // In particular, the shared release source lives beneath the Giving directory.
+    if (SCOPE_NEUTRAL.has(file)) continue;
     if (isPracticePath(file)) {
       practiceFileCount += 1;
       continue;
@@ -94,7 +100,6 @@ export function classifyValidationScope(inputFiles = []) {
       givingFileCount += 1;
       continue;
     }
-    if (SCOPE_NEUTRAL.has(file)) continue;
     fullScopeFiles.push(file);
   }
   const scope = fullScopeFiles.length > 0

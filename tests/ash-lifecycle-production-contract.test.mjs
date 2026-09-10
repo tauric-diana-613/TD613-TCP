@@ -1,6 +1,7 @@
 import './contract-failure-receipt.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 const read = path => fs.readFileSync(path, 'utf8');
 const releaseWorkflow = read('.github/workflows/vercel-operator-release.yml');
 const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
@@ -93,6 +94,42 @@ assert.equal((lifecycleCompiler.match(/cleared-arrival neutral-ingress module se
 assert.match(settlementBlock, /WAITING_INGRESS_PROFILE/, 'Cleared-arrival settlement must preserve the explicit human profile-choice hold.');
 assert.match(settlementBlock, /aia3\?\.membrane_ready === false/, 'No-case AIA3 installation readiness must remain distinct from open-case membrane readiness.');
 assert.doesNotMatch(settlementBlock, /aia3\?\.membrane_ready === true|aia3\?\.route_count === 4|aia3\?\.task_count === 4/, 'Module settlement must not require human profile completion or an open-case route graph.');
+// Exercise the actual generated settlement predicate with otherwise-ready neutral ingress.
+const settlementLiteral = lifecycleCompiler.split('\n').find(line => line.startsWith('  "  report.readiness = readiness;\\n\\n  await page.waitForFunction'));
+assert.ok(settlementLiteral, 'The pre-navigation settlement predicate must remain inspectable.');
+const settlementRuntime = JSON.parse(settlementLiteral.trim().replace(/,$/, ''));
+const settlementPredicate = settlementRuntime.match(/await page\.waitForFunction\((\(\) => \{[\s\S]*?\n  \}), null, \{ timeout: 60_000 \}\)/)?.[1];
+assert.ok(settlementPredicate, 'Settlement must retain its bounded 60-second timeout.');
+const a11Version = 'td613.ash.a11-capsule-recompilation/v0.1';
+function readyIngress(a11 = {version:a11Version}, requested = true) {
+  return {
+    window:{
+      __td613AshLiveAIA:{version:'td613.ash.live-aia-browser/v0.2-task-continuity'},
+      __td613AshAia3Composition:{
+        version:'td613.ash.aia3-composition/v0.5-human-profile-choice',
+        current:() => ({session_open:false, case_id:null, membrane_ready:false, hold:'WAITING_INGRESS_PROFILE', route_count:0, task_count:0})
+      },
+      __td613AshFlowcoreIngressPortal:{current:() => ({visible:true, duplicate_visible_fields:1})},
+      __td613AshFlowcoreIngressPortalLoader:{eligible:true, portal_version:'fixture'},
+      __td613AshA11ModulePromise:requested ? Promise.resolve() : null,
+      __td613AshA11Capsule:a11
+    },
+    document:{
+      documentElement:{dataset:{ashCachePreflight:'complete', ashModuleGraph:'ready', ashAiaReady:'true'}},
+      body:{dataset:{}},
+      getElementById:() => ({querySelectorAll:() => ({length:4})})
+    }
+  };
+}
+const admits = context => vm.runInNewContext(`(${settlementPredicate})()`, context);
+assert.equal(admits(readyIngress()), true, 'Naturally completed exact A11 import admits specialist navigation.');
+assert.equal(admits(readyIngress(null)), false, 'Pending or missing A11 must hold navigation.');
+assert.equal(admits(readyIngress({version:'wrong'})), false, 'Wrong A11 version must hold navigation.');
+assert.equal(admits(readyIngress({version:a11Version}, false)), false, 'A11 global without its scheduled import must hold navigation.');
+assert.match(settlementRuntime, /a11_module_requested:Boolean\(window\.__td613AshA11ModulePromise\)/);
+assert.match(settlementRuntime, /a11_capsule_version:window\.__td613AshA11Capsule\?\.version \|\| null/);
+assert.doesNotMatch(settlementRuntime, /await import\(|loadA11Module\(/, 'Observer must wait for the application-owned import, never force it.');
+assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/dome-world\/ash-a11-capsule-recompilation\.js'/, 'A11 aborts must remain unexpected request failures.');
 assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
