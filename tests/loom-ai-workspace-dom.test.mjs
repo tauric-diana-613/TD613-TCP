@@ -135,3 +135,26 @@ test('stop waiting aborts the client request and leaves all output routes closed
   assert.match(h.$('#aiStatus').textContent,/already submitted cannot be recalled/);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
+test('Take this task elsewhere binds locally without HTTP and clears earlier answer details',async t=>{
+  const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
+  assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
+  assert.match(h.$('#aiAnswer').textContent,/no model request/);
+  for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
+  h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
+  assert.match(h.$('.ai-result-unknowns').textContent,/signed retention amendment/);assert.match(h.$('.ai-result-next').textContent,/signed retention schedule/);
+  h.$('#aiPreparePortable').click();await h.settled();
+  assert.equal(h.calls.length,1);assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
+  assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
+  assert.match(h.$('#aiAnswer').textContent,/no model request/);
+});
+test('Stop during portable preparation prevents later transfer activation',async t=>{
+  const h=harness(t);h.load();h.$('#aiPreparePortable').click();h.$('#aiStop').click();await h.settled();
+  assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,true);
+  for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,true);
+  assert.match(h.$('#aiStatus').textContent,/preparation stopped/i);
+});
+test('Stop during real AIA digest preparation prevents the first HTTP request',async t=>{
+  const h=harness(t);h.load();h.$('#aiRun').click();h.$('#aiStop').click();await h.settled();
+  assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiExport').disabled,true);
+  assert.equal(h.ui.inspect().events.some(event=>event.phase==='pending'),false);
+});

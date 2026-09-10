@@ -123,7 +123,7 @@ try {
       await page.locator('#aiRun').click(); await bounded(receivedRequest);
       assert.equal(requests.length, 2, 'second deliberate gesture makes one additional POST');
       releaseResponse();
-      await page.waitForFunction(() => !document.querySelector('#aiRun')?.disabled && /held|failed|unavailable|could not|try again/i.test(document.querySelector('#aiStatus')?.textContent || ''));
+      await page.waitForFunction(() => !document.querySelector('#aiRun')?.disabled && /held|failed|unavailable|could not|try again|No answer was admitted/i.test(document.querySelector('#aiStatus')?.textContent || ''));
       assert.equal((await page.locator('#aiAnswer').textContent()).includes(fixtureAnswer), false, 'failed request clears earlier successful answer');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow');
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');

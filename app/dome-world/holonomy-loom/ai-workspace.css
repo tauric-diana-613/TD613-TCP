@@ -5,3 +5,7 @@
 @media(prefers-reduced-motion:reduce){#loomAiWorkspace *,#loomAiWorkspace *::before,#loomAiWorkspace *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 #loomAiWorkspace #aiRules,#loomAiWorkspace #aiPrivate{min-height:72px;font-size:.85rem}#loomAiWorkspace .ai-documents button{padding:5px 10px;min-height:30px;font-size:.7rem;margin-top:5px}
+
+#loomAiWorkspace .ai-answer{white-space:normal;max-height:none;overflow:visible}#loomAiWorkspace .ai-result-lead{font:400 1.12rem/1.75 var(--serif);max-width:82ch}#loomAiWorkspace .ai-result-full p{margin:15px 0;line-height:1.8;max-width:90ch}#loomAiWorkspace .ai-result-next{margin:20px 0;padding:16px 18px;border-left:2px solid var(--gold);background:#e4c66c08}#loomAiWorkspace .ai-result-unknowns li{margin:12px 0}
+
+#loomAiWorkspace table{border-collapse:collapse;width:100%;font-size:.8rem}#loomAiWorkspace th,#loomAiWorkspace td{text-align:left;padding:10px 7px;border-bottom:1px solid #8aac9440}

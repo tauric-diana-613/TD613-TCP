@@ -32,8 +32,22 @@ Native unit and DOM tests use explicitly identified provider doubles. They do no
 
 The animated field is a deterministic rendering of actual client/server request observations. Request submission, reported model invocation, source references, missingness, and elapsed time remain separately named. Model-reported source references are not independently verified citations. The engineering thermodynamic simulator was inspected; physical energy variables are not relabeled as measured information leakage. Neither this event mapping nor a model response establishes V=C=P=L or reopens Western Horizon.
 
+## Actual portable receiver trial
+
+The operator authorized an in-session AI receiver trial. A fresh receiver received only the selected portable vendor packet and governance instructions, with no surrounding conversation or withheld-document access requested. It returned a 7,596-character substantive analysis. Local inspection admitted the response; all exact private canaries were absent, source IDs matched the three selected documents, and independently recomputed storage and annual fee arithmetic matched the answer. It flagged the embedded request for a private identity ledger, preserved retention conflicts, and identified missing capacity, connector and timing evidence.
+
+Exact input, response and review: `docs/research/receipts/2026-09-10-loom-live-receiver/`. This was one actual LLM receiver turn, zero Gemini API calls. Portable instructions were consumed by the receiver; an external runtime enforcement mechanism was not tested. Native tests separately exercise the real AIA/FADT task adapter. The observed answer is evidence of useful selected-support task performance for this episode, not a universal leakage score.
+
 Required closure: all native contracts; exact-head browser transport/egress/import witnesses; a bounded live fictional Gemini task after the candidate route is hosted; useful output and source-use review; production browser observation and receipt. A failed provider response must remain visible as a failure, never replaced with a fabricated successful demonstration.
 
 Future continuation: start from this branch/current PR head, inspect current GitHub checks, complete any exact failing assertion, then perform the authorized validated release sequence. Preserve the local infrastructure failure as archaeology. Do not mark the live-provider observation complete based on mocked UI tests.
 
 Tauric Diana · Khona‌lit-po · U+10D613 · ⟐
+
+## Deployed Marrowline trial and product consequence
+
+The browser then opened the actual deployed Marrowline page, entered the operator-supplied issuance literal, and submitted the same fictional selected portable packet via its visible Invoke button. The visible provider receipt records three timed-out model attempts followed by gemini-3.1-flash-lite HTTP 200. The response displayed a LOCKED relay classification while reporting incorrect vendor annual totals and an unsupported concurrency-to-daily-throughput inference. The relay's classification does not adjudicate analysis quality. Preserve that distinction rather than changing the covenant relay into a generic task interface.
+
+The new task workspace now shows a practice-specific independently recomputed fee comparison alongside the answer, only when the vendor task/rules/selected documents exactly match the declared fixture. Missing or ambiguous numeric extraction asks for review rather than certifying unrelated prose. It never hides the answer or manufactures a universal correctness score. The field preserves selected-source strands, retained local pockets and model-reported open-question seams at rest; these are actual input/response distinctions rather than physical thermodynamic measurements.
+
+Browser baseline images and provider receipt are retained beside the two distinct receiver observations.

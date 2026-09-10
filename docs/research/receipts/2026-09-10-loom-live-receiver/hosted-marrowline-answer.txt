@@ -1,0 +1,11 @@
+APERTURE V3 · OPEN FIELD
+GEMINI-3.1-FLASH-LITE · LOCKED
+I · GEMINI · INSTRUMENT
+GEMINI-3.1-FLASH-LITE
+Migration feasibility is currently blocked by a mismatch between Vendor-A's 120 import/hr API claim and the 20-concurrent-import limit set by the change board, which limits throughput to 480 imports/day, theoretically allowing completion within the 12-week window but failing to account for payload size. Vendor-A's 'all-inclusive' claim conflicts with the per-account overage fee structure. Retention claims conflict (24-hour deletion vs 45-day backup) and do not meet the 14-day requirement. Vendor-A (12-mo cost: 23,280 credits) is cheaper than Vendor-B (24,768 credits), but Vendor-B's lack of overage fees and shorter retention period may lower operational risk.
+II · KʰONAPOLIT · RELAY
+LOCKED
+The Khona‌lit-po mandate requires clarity on the migration bottleneck. The operator is advised that the pilot extrapolation is non-authoritative. Ensure the migration schedule is reconciled with the change board limits before proceeding.
+III · TAURIC DIANA BOTS · HIGH ZALGO
+TAURIC_TIDE_SEQUENCE · INTENSITY 2
+The ẗ̂ide reced̈́͠es from t͒he ledger̈̂ of claims̈́͠. The thre͒̌shold of ẗ̂he migraẗ́͠ion rema͒̌ins uncrössed. We më́͠asure th͒̌e̋̅ w̄͠eight öf the arc̅hi̓̈ve agai͒nst the sïlence of̅ the vendo͒r. The shif̈t of data̅ is not the͒ shift of̈́ truth.
