@@ -149,9 +149,14 @@ assert.match(settlementRuntime, /demo_registry_version:window\.__td613AshDemoReg
 assert.match(settlementRuntime, /demo_registry_owners:document\.documentElement\.dataset\.ashDemoRegistryOwners \|\| null/);
 assert.match(settlementRuntime, /demo_registry_empirical:document\.documentElement\.dataset\.ashDemoRegistryEmpirical \|\| null/);
 assert.doesNotMatch(settlementRuntime, /await import\(|loadA11Module\(|loadOwners\(/, 'Observer must wait for application-owned imports, never force them.');
-assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/dome-world\/ash-a11-capsule-recompilation\.js'/, 'A11 aborts must remain unexpected request failures.');
-assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/dome-world\/ash-research-demo-hydration\.js'/, 'Research-owner aborts must remain unexpected request failures.');
-assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
+const transitionAbortClassifierStart = lifecycleCompiler.indexOf('function isExpectedTransitionAbort(item, activeStylesheetHrefs = new Set()) {');
+const transitionAbortClassifierReturn = 'return cacheEvictionTransition || supersededAia3Navigation || supersededGuidedStylesheet;';
+const transitionAbortClassifierEnd = lifecycleCompiler.indexOf(transitionAbortClassifierReturn, transitionAbortClassifierStart);
+assert.ok(transitionAbortClassifierStart >= 0 && transitionAbortClassifierEnd > transitionAbortClassifierStart, 'Expected transition-abort classifier must remain inspectable.');
+const transitionAbortClassifier = lifecycleCompiler.slice(transitionAbortClassifierStart, transitionAbortClassifierEnd + transitionAbortClassifierReturn.length);
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/dome-world\/ash-a11-capsule-recompilation\.js'/, 'A11 aborts must remain unexpected request failures.');
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/dome-world\/ash-research-demo-hydration\.js'/, 'Research-owner aborts must remain unexpected request failures.');
+assert.doesNotMatch(transitionAbortClassifier, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
 assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
