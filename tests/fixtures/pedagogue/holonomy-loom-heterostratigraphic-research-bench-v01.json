@@ -1,0 +1,72 @@
+{
+  "schema": "td613.loom.heterostratigraphic-research-bench-fixture/v0.1",
+  "fixture_id": "holonomy-loom.strata-lantern-research-bench/v0.1",
+  "operator_label": "Holonomy Loom · Strata Lantern Research Bench",
+  "manifestly_fictional": true,
+  "research_only": true,
+  "runtime_binding": false,
+  "panel_order": [
+    "ROUTE",
+    "TEMPORAL",
+    "FACE_HOLONOMY",
+    "OBSERVABILITY_ECOLOGY"
+  ],
+  "comparison_expectations": {
+    "edge_count": 12,
+    "partial_bridge_count": 2,
+    "hold_count": 10,
+    "defined_bridge_count": 0,
+    "encoder_required_count": 8,
+    "incommensurable_count": 2
+  },
+  "allowed_controls": [
+    "INSPECT_LOCAL_RESULT",
+    "INSPECT_COMPARISON_HOLD",
+    "REST",
+    "RETURN"
+  ],
+  "forbidden_controls": [
+    "RUN_TOMOGRAPHY_INVERSE",
+    "CREATE_CROSS_STRATUM_ENCODER",
+    "PROMOTE_CLAIM",
+    "MUTATE_CASE_CUSTODY",
+    "WRITE_ROUTE_MEMORY",
+    "AUTHORIZE_RELEASE",
+    "TRANSMIT_SOURCE_CONTENT",
+    "DEPLOY",
+    "PUBLISH"
+  ],
+  "status_tokens": {
+    "PARTIAL_NONINVERTIBLE": "BRIDGE_WITH_LOSS",
+    "ENCODER_REQUIRED": "HOLD_ENCODER_REQUIRED",
+    "INCOMMENSURABLE": "HOLD_INCOMMENSURABLE"
+  },
+  "hold_language": {
+    "ENCODER_REQUIRED": "These two views do not have a declared translator yet.",
+    "INCOMMENSURABLE": "These two views answer different questions and are not being forced into one scale.",
+    "PARTIAL_NONINVERTIBLE": "A declared comparison exists here, but information is lost and the path cannot be reversed."
+  },
+  "rest_contract": {
+    "preserve_scene": true,
+    "preserve_receipt": true,
+    "mutate_custody": false,
+    "write_route_memory": false,
+    "promote_claim": false
+  },
+  "return_contract": {
+    "exit_scene": true,
+    "authorize_release": false,
+    "transmit_source_content": false,
+    "mutate_custody": false,
+    "write_route_memory": false
+  },
+  "authority": {
+    "inverse": false,
+    "encoder": false,
+    "custody_mutation": false,
+    "release": false,
+    "production": false,
+    "physical_claim": false,
+    "continuum_claim": false
+  }
+}
