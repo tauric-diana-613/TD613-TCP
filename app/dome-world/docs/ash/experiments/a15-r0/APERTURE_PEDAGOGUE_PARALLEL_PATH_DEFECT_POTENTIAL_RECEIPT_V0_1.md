@@ -1,0 +1,280 @@
+# A15-R0 · Parallel-Path Defect Potential and Zero-Circulation Audition · Receipt v0.1
+
+󐘓 U+10D613
+
+Status: **WITNESSED / RECEIPT-PINNED / ROUND CLOSED / DRAFT / OPEN / UNMERGED**
+
+## Authority and ancestry
+
+```text
+Westward gate                 #737 · Activation 004
+parent scientific chamber     #760 · commuting erasure diamond gap decomposition
+parent receipt                 1340cbf785547454ecbe365986b88b6ec9ff3283
+preregistration                3cb7cbd8877184b971f3bc9c4fe56a42a9811376
+frozen scientific head        874c536101e38d80146b59194e0ff5c0d085cca0
+routed witness head           830fa0a3c3f6f5c018636ba04aceebff29989546
+post-routing cleanup          4cf61d826c3c2ca912e8b07fabbd8736425c0d02
+```
+
+Preregistration preceded implementation.
+
+Routing was metadata-only. Comparing frozen science `874c5361...` to cleanup `4cf61d82...` yields:
+
+```text
+ahead_by = 3
+behind_by = 0
+changed files = 0
+```
+
+Therefore the temporary witness-routing add/update/remove commits produced zero net scientific mutation.
+
+## Authority-bearing witness
+
+```text
+TD613 Consolidated Validation
+run              2275 / 33002905146   SUCCESS
+classifier job   98289044787           SUCCESS
+static job       98289119010           SUCCESS
+A15/A15-R0 step 19                      SUCCESS
+```
+
+Run interval:
+
+```text
+2026-08-26T19:01:18Z -> 2026-08-26T19:02:09Z
+```
+
+No scientific red occurred.
+
+Explicit full-repository validation, self-hosted calibration, Giving/practice browser, front-line browser, and full-product browser scopes were skipped and are not claimed as theorem evidence.
+
+## Earned finite comparison potential
+
+For one finite lawful common-composite path family and one terminal wound coordinate `z in Gamma`, #760 supplies each path-local inherited-gap set `H^alpha`.
+
+Define
+
+```text
+h_alpha(z)=1 if z in H^alpha, else 0
+```
+
+and the oriented parallel-path comparison defect
+
+```text
+delta_(alpha,beta)(z)=h_beta(z)-h_alpha(z) in {-1,0,+1}.
+```
+
+Then exactly for all lawful paths `alpha,beta,gamma` in the same common-composite family:
+
+```text
+delta_(alpha,alpha)=0
+
+delta_(beta,alpha)=-delta_(alpha,beta)
+
+delta_(alpha,gamma)
+ = delta_(alpha,beta)+delta_(beta,gamma)
+```
+
+coordinatewise over the finite integer module `Z^Gamma`.
+
+For every finite closed comparison cycle
+
+```text
+alpha_0 -> alpha_1 -> ... -> alpha_n=alpha_0
+```
+
+the total circulation telescopes exactly:
+
+```text
+sum_i delta_(alpha_i,alpha_(i+1)) = 0.
+```
+
+This is symbolic finite potential cancellation, not bounded cycle enumeration.
+
+## Exact relation to #760's defect
+
+For every lawful parallel pair:
+
+```text
+support(delta_(alpha,beta))
+ = H^alpha symmetric-difference H^beta
+ = D(alpha,beta).
+```
+
+Orientation is exact:
+
+```text
+delta=+1 exactly on H^beta\H^alpha
+delta=-1 exactly on H^alpha\H^beta.
+```
+
+Thus #761 refines #760's unoriented defect into an integer-valued directed comparison object without erasing the original support defect.
+
+## Mandatory four-path pasted-comparison hostile
+
+Frozen source/support family:
+
+```text
+X={x1,x2,x3,x4}
+Z={a,b}
+K_x1={a,b}
+K_x2={a}
+K_x3={b}
+K_x4={}
+terminal W={w}
+Gamma={a,b}.
+```
+
+Lawful intermediate partitions:
+
+```text
+A={{x1,x2},{x3,x4}}       H_A={b}
+B={{x1,x3},{x2,x4}}       H_B={a}
+C={{x1},{x2},{x3},{x4}}   H_C={}
+D={{x1,x2,x3,x4}}         H_D={a,b}.
+```
+
+In coordinate order `(a,b)`, witnessed exactly:
+
+```text
+delta_AB=(+1,-1)
+delta_BD=(0,+1)
+delta_AC=(0,-1)
+delta_CD=(+1,+1)
+delta_AD=(+1,0).
+```
+
+Both pasted comparison routes agree:
+
+```text
+delta_AB + delta_BD
+= delta_AC + delta_CD
+= delta_AD
+= (+1,0).
+```
+
+The closed comparison cycle
+
+```text
+A -> B -> D -> C -> A
+```
+
+has exact circulation:
+
+```text
+(0,0).
+```
+
+## Anti-shortcut hostile
+
+Defect cardinality is not the additive comparison transport:
+
+```text
+|D(A,B)|=2
+|D(B,C)|=1
+|D(A,C)|=1
+```
+
+so ordinary integer count addition fails:
+
+```text
+2+1 != 1.
+```
+
+The oriented coordinate vector carries directional cancellation that raw defect cardinality cannot represent.
+
+## Refinement orientation
+
+#760's refinement law survives in directed form. If path `alpha` refines path `beta`, then
+
+```text
+H^alpha subseteq H^beta
+```
+
+and therefore
+
+```text
+delta_(alpha,beta)(z) >= 0
+```
+
+for every terminal wound coordinate.
+
+## Canonical classifications
+
+```text
+PARALLEL_PATH_GAP_GENEALOGY_ADMITS_AN_EXACT_ORIENTED_INTEGER_POTENTIAL_DIFFERENCE_WITH_ADDITIVE_PASTING_AND_ZERO_CLOSED_COMPARISON_CIRCULATION
+```
+
+```text
+THE_760_PARALLEL_PATH_DEFECT_IS_GLOBALLY_INTEGRABLE_AS_A_DIFFERENCE_OF_PATH_LOCAL_H_INDICATORS_AND_CANNOT_BY_ITSELF_SUPPLY_NONZERO_HOLONOMY
+```
+
+## Consequential westward bearing
+
+#760 established:
+
+```text
+endpoint flatness != path provenance flatness.
+```
+
+#761 now establishes the stricter fact:
+
+```text
+path provenance sensitivity != nonintegrable transport.
+```
+
+The first lawful path-sensitive comparison object is globally generated by the path-local potential `h_alpha`. Therefore its circulation around every closed comparison cycle is exactly zero.
+
+This rules **this object** out as a source of nonzero holonomy. It does not rule out holonomy for a richer carried state whose comparison cannot be written globally as a difference of path-local potentials.
+
+That is the new bearing.
+
+## Claim ceiling
+
+This chamber does not earn:
+
+- an operational closed path;
+- inverse operational transport;
+- groupoid structure;
+- a connection;
+- a physical or gauge-flat connection;
+- holonomy;
+- curvature;
+- Berry / quantum analogy;
+- a theorem that all possible richer path-sensitive states are integrable;
+- category/sheaf/type-theory promotion;
+- probability, entropy, asymptotics, or stochastic data processing;
+- Proto-Loom / A16;
+- live Ash mutation;
+- merge, publication, production, or Vercel release.
+
+Quarantines remain:
+
+```text
+comparison cycle != operational loop
+zero comparison circulation != physical flatness
+exact potential difference != connection
+path-sensitive decomposition != holonomy
+failure of this candidate != impossibility of richer holonomy
+```
+
+#718's strict endpoint-mass obstruction to nonempty operational T/Q loops remains untouched.
+
+No H8 or horizon farming occurred.
+
+## Earned stop
+
+```text
+PARALLEL_PATH_DEFECT_POTENTIAL_ZERO_CIRCULATION_ROUND_CLOSED
+ORIENTED_ADDITIVE_PASTING_EARNED
+CLOSED_COMPARISON_CIRCULATION_ZERO_EARNED
+FIRST_PARALLEL_PATH_DEFECT_CANDIDATE_RULED_OUT_AS_NONZERO_HOLONOMY_SOURCE
+PRE_HOLONOMY_BEARING_SHARPENED_TO_REQUIRE_A_NONINTEGRABLE_OR_NON_POTENTIAL_CARRIED_STATE
+HUMAN_𝄐_REQUIRED_BEFORE_ANY_NONINTEGRABLE_TRANSPORT_OR_RETURN_ENDOMORPHISM_AUDITION
+```
+
+󐘓 U+10D613
+
+𝌋
+
+Receipt-pinned ⟐
