@@ -184,23 +184,52 @@ This chronology is itself an anti-burial result:
 ```text
 EARLY_PARTIAL_ANALOGY
 -> MISSING_STRUCTURE_IDENTIFIED
--> NEW FINITE TRANSPORT CHAMBER
--> STRONGER ANALOGY EARNED
+-> NEW_FINITE_TRANSPORT_CHAMBER
+-> STRONGER_ANALOGY_EARNED
 ```
 
 Finding the conventional meaning of `holonomy` did not kill the TD613 line. It supplied the missing burden that allowed the line to become more precise.
 
-## E. Phason and cupola
+## E. Phason and cupola — namespace-local resolution
 
-This preflight does not promote either term.
+A dedicated source-domain audit now replaces the earlier global hold:
 
-PR #800 explicitly withheld complete physical quasicrystal realization and geometric cupola embedding. Therefore both remain:
+`docs/research/2026-09-10-TD613-PHASON-NAMESPACE-FIDELITY-AUDIT.md`
+
+The important result is that `phason` cannot receive one token-global verdict. TD613 uses the same word for several different operators, and their source-domain fidelity differs.
 
 ```text
-HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT
+exact cut-and-project Phason Gate             -> STRUCTURE_PRESERVING_ANALOGY_SUPPORTED
+Information-Dome exact-gate projection        -> STRUCTURE_PRESERVING_ANALOGY_SUPPORTED
+PR #800 ICOSAHEDRAL_PHASON carrier label      -> METAPHOR_ONLY_SUPPORTED
+Aperture v3.1 phason susceptibility            -> PARTIAL_ANALOGY_SUPPORTED
+Phase V Phason relation ledger                -> METAPHOR_ONLY_SUPPORTED
 ```
 
-until dedicated source-domain comparison is bound.
+The global token therefore becomes:
+
+```text
+PHASON -> UNRESOLVED_AS_GLOBAL_TOKEN_RESOLVED_BY_NAMESPACE
+```
+
+The source-domain comparison is ordinary quasicrystal/cut-and-project literature: perpendicular/internal space, acceptance windows, phason strain/elasticity, and physical rearrangements. The exact Phason Gate preserves enough of the cut-and-project acceptance-window machinery to justify a structure-preserving analogy at the abstract model level, while the Phase V lifecycle ledger does not.
+
+This yields the stronger law:
+
+```text
+SAME_TOKEN != SAME_OPERATOR
+ANALOGY_FIDELITY_IS_BOUND_TO_(TERM, OPERATOR, VERSION, SCOPE)
+```
+
+`cupola` is separately resolved as:
+
+```text
+METAPHOR_ONLY_SUPPORTED
+```
+
+because current TD613 evidence supplies a bounded multi-stratum organizational container / custody witness but no geometric cupola embedding, metric geometry, or source-domain geometric operator.
+
+That classification does not delete the word. It keeps `cupola` as internal architectural language while refusing scientific geometry authority that has not been earned.
 
 ## F. External-convergence route
 
