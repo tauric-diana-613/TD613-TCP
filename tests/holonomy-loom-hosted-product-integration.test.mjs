@@ -16,6 +16,8 @@ const repairedWitnessPath = 'scripts/holonomy-loom-hosted-product-integration-br
 const transitionWrapperPath = 'scripts/ash-a15-transition-trace-browser-probe.mjs';
 const pedagogueFixturePath = 'tests/fixtures/pedagogue/holonomy-loom-hosted-observer-geometry-design.json';
 const hosted = fs.readFileSync(hostedPath, 'utf8');
+const localCheckerScript = [...hosted.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)].map(match => match[1]).find(source => source.includes('analyzeHolonomyLoomMessage'));
+assert.ok(localCheckerScript, 'Local checker keeps a separately inspectable execution boundary.');
 const theater = fs.readFileSync(theaterPath, 'utf8');
 const engine = fs.readFileSync(enginePath);
 const legacyWitness = fs.readFileSync(legacyWitnessPath, 'utf8');
@@ -61,8 +63,11 @@ assert.match(hosted, /Scene loaded locally\. Press CHECK THIS MESSAGE/);
 assert.match(hosted, /COPY CHECKED MESSAGE/);
 assert.match(hosted, /Show me why/);
 assert.match(hosted, /Ask for model help \(optional\)/);
-assert.match(hosted, /No model is called by this pre-release integration\./);
-assert.match(hosted, /Provider advice remains advisory and receives no Loom release authority\./);
+assert.match(hosted, /No model is called by this local checker\./);
+assert.match(hosted, /<script type="module" src="\.\/holonomy-loom\/ai-workspace\.js"><\/script>/, 'The primary AI task has its own explicit provider-capable workspace.');
+assert.match(hosted, /Its Run button sends only your task, selected documents and portable rules\./);
+assert.match(hosted, /<details id="loomLegacy" class="loom-legacy">/);
+assert.ok(hosted.indexOf('id="loomAiWorkspace"') < hosted.indexOf('id="loomLegacy"'), 'The real AI workspace precedes the optional local laboratory.');
 assert.match(hosted, /GREEN means only that no enabled Loom rule fired\./);
 assert.match(hosted, /Resemblance alone does not establish provenance\./);
 assert.match(hosted, /REST/);
@@ -83,7 +88,8 @@ for (const forbidden of [
   'data-provider-release-authority="true"',
   'data-production-release="true"'
 ]) {
-  assert.ok(!hosted.includes(forbidden), `Hosted default check must not introduce forbidden route/authority surface: ${forbidden}`);
+  const scope = ['GEMINI_API_KEY', 'data-provider-release-authority="true"', 'data-production-release="true"'].includes(forbidden) ? hosted : localCheckerScript;
+  assert.ok(!scope.includes(forbidden), `Inline local checker must not introduce forbidden route/authority surface: ${forbidden}`);
 }
 
 const protectedTerm = 'PRIVATE_TD613_HOSTED_613';
@@ -158,7 +164,7 @@ assert.match(repairedWitness, /generic_flowcore_taxonomy_mutated: false/);
 assert.match(repairedWitness, /Flow-Core WORLD ANSWERS phase becomes visible only after ACT/);
 assert.match(repairedWitness, /Flow-Core REST suspends demand without hiding return/);
 assert.match(repairedWitness, /Flow-Core RETURN remains reversible and returns to the message anchor/);
-assert.match(repairedWitness, /Flow-Core runtime metadata does not leak technical jargon into the child route/);
+assert.match(repairedWitness, /Flow-Core runtime metadata does not leak technical jargon into the local checker child route/);
 assert.match(transitionWrapper, /holonomy-loom-hosted-product-integration-browser-witness-v02\.mjs/);
 assert.ok(!transitionWrapper.includes("path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness.mjs')"), 'Step 8 must invoke the repaired observer wrapper rather than bypassing it for the legacy witness.');
 

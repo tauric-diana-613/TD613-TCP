@@ -130,7 +130,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   };
 
   const sections = [
-    section(null, 'R0', 'Human-findable child-legible entry', [
+    section(null, 'R0', 'Local laboratory child-legible entry', [
       reviewCheck('R0.1', 'Holonomy Loom title declared', html.includes('<h1>Holonomy Loom</h1>')),
       reviewCheck('R0.2', 'ordinary-language first instruction declared', html.includes(visibleInstruction)),
       reviewCheck('R0.3', 'SEE CHECK UNDERSTAND REST route declared', html.includes('SEE → CHECK → UNDERSTAND → REST')),
@@ -158,9 +158,9 @@ export async function compileHolonomyLoomReleaseCandidateReview({
     ]),
     section(null, 'R4', 'Provider membrane', [
       reviewCheck('R4.1', 'provider help remains optional closed details', providerDetailsClosedByDefault),
-      reviewCheck('R4.2', 'candidate declares no provider call', html.includes('No model is called by this pre-release integration.')),
+      reviewCheck('R4.2', 'local checker declares no provider call', html.includes('No model is called by this local checker.')),
       reviewCheck('R4.3', 'provider release authority remains false', releaseBoundary.provider_release_authority === false && html.includes('data-provider-release-authority="false"')),
-      reviewCheck('R4.4', 'later provider route requires visible transmission disclosure', html.includes('Any later provider door must show what will leave before transmission.'))
+      reviewCheck('R4.4', 'separate AI workspace transmission is disclosed', html.includes('Its Run button sends only your task, selected documents and portable rules.') && html.includes('id="loomAiWorkspace"'))
     ]),
     section(null, 'R5', 'Rest Return Exit', [
       reviewCheck('R5.1', 'REST control declared', html.includes('id="rest"') && html.includes('>REST</button>')),
@@ -183,7 +183,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R7.3', 'human comprehension remains unobserved', evidence.human_comprehension_observed === false),
       reviewCheck('R7.4', 'human production observation remains false', evidence.human_operator_production_observation === false),
       reviewCheck('R7.5', 'review does not mutate product bytes', evidence.product_bytes_mutated_by_review === false),
-      reviewCheck('R7.6', 'provider call remains false', evidence.provider_call_performed === false),
+      reviewCheck('R7.6', 'this static review performs no provider call', evidence.provider_call_performed === false),
       reviewCheck('R7.7', 'merge authority remains false', releaseBoundary.merge_authority === false),
       reviewCheck('R7.8', 'Vercel authority remains false', releaseBoundary.vercel_authority === false),
       reviewCheck('R7.9', 'production release authority remains false', releaseBoundary.production_release_authority === false && html.includes('data-production-release="false"')),

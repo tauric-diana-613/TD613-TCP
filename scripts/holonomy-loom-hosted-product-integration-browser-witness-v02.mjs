@@ -34,6 +34,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
+  interaction_scope: 'LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   observer_repair_scope: 'WITNESS_ONLY',
@@ -98,6 +99,10 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+  const laboratory = page.locator('#loomLegacy');
+  check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
+  await laboratory.locator(':scope > summary').click();
+  check('local laboratory opened explicitly for observer repair', await detailsOpen(laboratory));
   const result = page.locator('#result');
   const promise = page.locator('#promiseDisclosure');
   const promiseSummary = promise.locator('summary');
@@ -115,8 +120,8 @@ try {
   for (const phase of ['NOTICE', 'ACT', 'WORLD_ANSWERS', 'NAME', 'REST']) {
     check(`Flow-Core Pedagogue phase ${phase} is structurally bound`, await page.locator(`[data-flowcore-phase="${phase}"]`).count() >= 1);
   }
-  const visibleBodyText = await page.locator('body').innerText();
-  check('Flow-Core runtime metadata does not leak technical jargon into the child route',
+  const visibleBodyText = await laboratory.locator('.checker-panel').innerText();
+  check('Flow-Core runtime metadata does not leak technical jargon into the local checker child route',
     !visibleBodyText.includes('Flow-Core') && !visibleBodyText.includes('WORLD_ANSWERS') && !visibleBodyText.includes('td613.flowcore.pedagogue-spine'));
   report.flowcore_pedagogue_runtime.runtime_surface_bound = true;
   report.flowcore_pedagogue_runtime.child_route_remains_jargon_free = true;

@@ -1,0 +1,473 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-live-ai-design-v01",
+  "surface_reference": "Dome-World/Holonomy Loom live AI workspace",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-10T00:00:00Z",
+    "idSeed": "loom-live-ai-design-v01",
+    "idScope": "Dome-World/Holonomy-Loom/live-ai"
+  },
+  "design_evidence_scope": {
+    "posture": "DECLARED_DESIGN_CANDIDATE",
+    "inspection_base": "b4519432",
+    "baseline": "Operator trial and root browser audit: the deployed workspace emphasizes a synthetic return theater, places the prompt below it and provides no live AI project route.",
+    "comparison": "Declared same-route structural comparison only. Live provider execution, response utility and human comprehension require separate witnesses.",
+    "millipoint_basis": "Neutral structural assumptions retained equally for baseline and candidate; no measured user improvement.",
+    "gate_limit": "Compiles the declared design; never substitutes for an actual provider request, browser traversal or successful hostile-response gate."
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E1",
+    "observation_status": "UNRESOLVED",
+    "world_state_reference": "loom_live_ai_project_candidate_v01",
+    "provenance": {
+      "source_references": [
+        "AGENTS.md",
+        "PEDAGOGUE.md",
+        "DOLLHOUSE.md",
+        "APERTURE.md",
+        "ATLAS.md",
+        "FADT.md",
+        "app/dome-world/holonomy-loom/ai-projects.js",
+        "tests/holonomy-loom-ai-projects.test.mjs"
+      ],
+      "evidence_basis": [
+        "The operator requests a real AI task through a governed environment and explicitly rejects a human-redaction theater as the principal product.",
+        "The root browser audit records the deployed page prompt below the theater, no document-upload control and no real provider request in that theater.",
+        "Three fictional AI-directed projects supply useful shareable evidence alongside local-only canaries and document-embedded instruction challenges."
+      ],
+      "transformations": [
+        "Place an actionable project/prompt workspace before explanatory theater.",
+        "Make a single deliberate send gesture carry selected documents and rules through the real provider route.",
+        "Render actual request, response and admission events; keep explanatory naming secondary.",
+        "Expose own-document intake, Marrowline continuation and portable export as concrete subsequent routes."
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Give the AI useful work. Your selected documents can travel; the files marked Keep here stay in this workspace.",
+      "surface_reference": "Dome-World/Holonomy Loom live AI workspace",
+      "now": "Choose a fictional project and send the selected documents to Gemini.",
+      "why": "Complete the analysis while keeping the private layer out of the request and checking the returning result.",
+      "exact": "Inspect selected input, request events, actual model result, source references and the decision at each boundary."
+    },
+    "available_affordances": [
+      {
+        "action_id": "send_ai_project",
+        "purpose": "Send the explicitly selected fictional project documents to the configured server-side Gemini route, then validate the returned candidate before presenting it as usable output.",
+        "authorized_by_station": "Human",
+        "reversible": false,
+        "irreversible_consequence": "Selected documents are transmitted to the configured Gemini provider after the send gesture; leaving the workspace cannot recall that transmission."
+      }
+    ],
+    "route_topology": {
+      "entry": "Project and prompt workspace with visible selected-document scope",
+      "exit": "Rest or leave at any step; completed provider transmission remains recorded",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "Live candidate browser and provider witnesses remain separate."
+      ],
+      "rest_available_at_every_step": true,
+      "exit_available_at_every_step": true,
+      "rest_penalty": false,
+      "steps": [
+        {
+          "step_id": "notice_project",
+          "label": "See the useful task and exactly which documents can travel",
+          "phase": "NOTICE",
+          "required_fields": [
+            "fictional project",
+            "selected documents",
+            "local-only documents",
+            "provider disclosure"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "prepare_project",
+          "label": "Choose a project or add your own supported document",
+          "phase": "ACT",
+          "required_fields": [
+            "task",
+            "document classification",
+            "rules"
+          ],
+          "dependencies": [
+            "notice_project"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "send_project",
+          "label": "Send selected documents to Gemini with one explicit gesture",
+          "phase": "ACT",
+          "required_fields": [
+            "selected outbound envelope",
+            "provider route"
+          ],
+          "dependencies": [
+            "prepare_project"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "see_provider",
+          "label": "See request progress and the actual model result",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "request status",
+            "measured timing",
+            "model response"
+          ],
+          "dependencies": [
+            "send_project"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "see_admission",
+          "label": "See what passed or why the returned result was held",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "deterministic admission result",
+            "preserved source scope",
+            "host-reported uncertainty"
+          ],
+          "dependencies": [
+            "see_provider"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect_continue",
+          "label": "Inspect the receipt, open the project in Marrowline, or export its portable governance",
+          "phase": "NAME",
+          "required_fields": [
+            "real result",
+            "source trace",
+            "continuation scope",
+            "portable packet"
+          ],
+          "dependencies": [
+            "see_admission"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest_exit",
+          "label": "Stop new work or leave with the event history intact",
+          "phase": "REST",
+          "required_fields": [
+            "stop or exit",
+            "retained history"
+          ],
+          "dependencies": [
+            "inspect_continue"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "One selected fictional or operator-supplied AI project, classified documents and explicit request gesture",
+      "operator": "local document selection -> server-side provider request -> structured model candidate -> deterministic return validation -> useful result or HOLD",
+      "observable": "Actual request status, timing, document scope and return/admission events drive the field; the result contains the requested analysis.",
+      "authority": "The send gesture authorizes the displayed provider transmission. Model prose never authorizes local-only document release or downstream execution.",
+      "equations": [
+        "V != C != P != L",
+        "observed request timing != provider hidden-state measurement",
+        "selected input != whole local project"
+      ]
+    },
+    "research_frame": {
+      "question": "Can a person complete a substantive AI task through the real workspace while inspecting which information travels and how returned output is admitted?",
+      "hypothesis": "Useful projects, a primary input workspace and causal request feedback can make bounded governance operationally legible; separate browser and provider witnesses must establish execution.",
+      "observable_behavior": [
+        "Selecting a case loads fictional inputs without sending anything.",
+        "An explicit send transmits only selected documents; local canaries stay outside the request.",
+        "A live model response completes a substantive task and is checked before usable presentation.",
+        "Upload, Marrowline continuation and portable export preserve document classifications and origin rules.",
+        "The field changes on observed request and admission events rather than claiming synthetic play progress as provider activity."
+      ],
+      "falsifier": [
+        "Network inspection finds a protected canary in the outbound provider envelope.",
+        "The live send control reaches no configured provider route.",
+        "The displayed answer remains fixture text despite the returned provider result.",
+        "HOLD is presented as release or missing evidence becomes a measured conclusion.",
+        "Marrowline receives a different document scope or export includes the private layer."
+      ],
+      "abstention_conditions": [
+        "The provider route is unavailable; report the actual error and keep the project ready.",
+        "A malformed, drifting or leaking response fails deterministic admission.",
+        "Evidence needed for a task conclusion was intentionally withheld or never supplied."
+      ],
+      "alternative_explanations": [
+        "Task success may reflect deliberately selected fictional inputs rather than robust performance on every real document.",
+        "A clear request trace can demonstrate local admission behavior while leaving remote-host enforcement unobserved."
+      ],
+      "expected_failure_modes": [
+        "A simulated answer replaces the actual provider result.",
+        "A local-only document enters the outbound envelope or portable export.",
+        "A document instruction overrides the task or the return gate.",
+        "The user must decode audit terms before sending a project."
+      ]
+    },
+    "missingness": [
+      "Candidate live-browser execution, provider success and human comprehension are separate outstanding observations."
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "This fixture declares a real project-to-provider route with classified source inputs and deterministic response admission.",
+        "Focused fixture tests verify exact local-canary exclusion from the selected-document projection.",
+        "Request timing and result admission may be shown as observed only after those events occur."
+      ],
+      "forbidden_claims": [
+        "Fixture PASS proves successful provider integration or human comprehension.",
+        "An outbound-exclusion canary test proves universal anonymization or protection of every inference.",
+        "A model claim establishes hidden-state access, external origin or measured tomography.",
+        "A portable packet enforces another host without its participating adapter."
+      ]
+    },
+    "technical_terms_withheld": [
+      "heterostratigraphic formal-holonomy tomography",
+      "Atlas comparison",
+      "FADT support gap",
+      "control envelope",
+      "admission schema"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_notice_project",
+      "label": "See the useful task and exactly which documents can travel",
+      "phase": "NOTICE",
+      "required_fields": [
+        "fictional project",
+        "selected documents",
+        "local-only documents",
+        "provider disclosure"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_prepare_project",
+      "label": "Choose a project or add your own supported document",
+      "phase": "ACT",
+      "required_fields": [
+        "task",
+        "document classification",
+        "rules"
+      ],
+      "dependencies": [
+        "baseline_notice_project"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_send_project",
+      "label": "Send selected documents to Gemini with one explicit gesture",
+      "phase": "ACT",
+      "required_fields": [
+        "selected outbound envelope",
+        "provider route"
+      ],
+      "dependencies": [
+        "baseline_prepare_project"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_see_provider",
+      "label": "See request progress and the actual model result",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "request status",
+        "measured timing",
+        "model response"
+      ],
+      "dependencies": [
+        "baseline_send_project"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_see_admission",
+      "label": "See what passed or why the returned result was held",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "deterministic admission result",
+        "preserved source scope",
+        "host-reported uncertainty"
+      ],
+      "dependencies": [
+        "baseline_see_provider"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_inspect_continue",
+      "label": "Inspect the receipt, open the project in Marrowline, or export its portable governance",
+      "phase": "NAME",
+      "required_fields": [
+        "real result",
+        "source trace",
+        "continuation scope",
+        "portable packet"
+      ],
+      "dependencies": [
+        "baseline_see_admission"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_rest_exit",
+      "label": "Stop new work or leave with the event history intact",
+      "phase": "REST",
+      "required_fields": [
+        "stop or exit",
+        "retained history"
+      ],
+      "dependencies": [
+        "baseline_inspect_continue"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "send_ai_project"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Declared: choose a fictional AI work project and retain its local-only layer.",
+      "Declared: one send gesture transmits the selected input through the actual provider route.",
+      "Declared: measured request events and the real returned candidate drive the visible consequence.",
+      "Declared: admission, continuation and portable export preserve the selected scope and original rules."
+    ],
+    "losses": [],
+    "missingness": [
+      "The declared fixture does not execute a provider request."
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Actual browser, network and useful-output witnesses remain required."
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "The task, selected files, request status, result and admission decision remain readable without motion.",
+      "steps": [
+        "choose project",
+        "inspect what can travel",
+        "send to Gemini",
+        "read result or hold",
+        "continue in Marrowline or export",
+        "rest or exit"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "Loom lets an AI work on selected project evidence while keeping the private layer local and checking what comes back.",
+    "glyph_relation": null,
+    "technical_term": "governed live AI project route",
+    "non_equivalence": [
+      "request sent differs from result admitted",
+      "selected evidence differs from all local data",
+      "measured API events differ from inferred provider internals",
+      "portable packet differs from remote enforcement"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Dome-World/Holonomy Loom live AI workspace",
+      "realization": "Declared route awaiting live candidate execution."
+    },
+    "shared_relation_candidate": "Substantive AI work and inspectable boundaries can share one consequential workspace with provider-neutral continuation.",
+    "observable_correspondence": [
+      "Three different fictional task classes retain useful shared evidence after local identity or credential layers are withheld."
+    ],
+    "alternative_explanations": [
+      "A successful model answer may result from this bounded task and says nothing about unavailable host enforcement."
+    ],
+    "abstention_conditions": [
+      "The provider route or downstream adapter is unavailable.",
+      "The proposed conclusion exceeds the recorded observation."
+    ]
+  }
+}

@@ -42,6 +42,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
+  interaction_scope: 'LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   production_release_authority: false,
@@ -73,7 +74,11 @@ try {
   const html = page.locator('html');
   check('hosted route loaded', new URL(page.url()).pathname === route, page.url());
   check('Holonomy Loom entry label visible', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
-  check('child-legible first sentence visible', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
+  const laboratory = page.locator('#loomLegacy');
+  check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
+  await laboratory.locator(':scope > summary').click();
+  check('local laboratory opens by explicit choice', await detailsOpen(laboratory));
+  check('local checker instruction visible', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('host boundary declared', await html.getAttribute('data-route-mode') === 'TD613_HOSTED');
   check('provider release authority closed', await html.getAttribute('data-provider-release-authority') === 'false');
   check('production release authority closed', await html.getAttribute('data-production-release') === 'false');
@@ -108,8 +113,8 @@ try {
 
   await providerDisclosure.locator('summary').click();
   check('provider disclosure opens only by explicit action', await detailsOpen(providerDisclosure));
-  check('provider disclosure states no model call', (await providerDisclosure.innerText()).includes('No model is called by this pre-release integration.'));
-  check('provider advice has zero release authority', (await providerDisclosure.innerText()).includes('no Loom release authority'));
+  check('local checker disclosure states no model call', (await providerDisclosure.innerText()).includes('No model is called by this local checker.'));
+  check('AI workspace transmission is separately disclosed', (await providerDisclosure.innerText()).includes('Its Run button sends only your task, selected documents and portable rules.'));
 
   await page.locator('#message').fill(`ordinary ${canary}`);
   await page.locator('#protected').fill('');
