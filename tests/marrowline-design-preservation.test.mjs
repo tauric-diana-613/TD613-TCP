@@ -23,9 +23,10 @@ async function until(predicate) {
   }
 }
 
-function harness(t, { mobile = false, failure = false } = {}) {
+function harness(t, { mobile = false, failure = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], clipboard = [];
+  Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
   doc.getElementById('marrowlineLivingGeometry')?.remove(); // Geometry has its own bounded-clock tests.
   win.matchMedia = () => ({ matches: mobile, addEventListener() {} });
   win.HTMLElement.prototype.scrollIntoView = function () {};
@@ -61,6 +62,7 @@ function harness(t, { mobile = false, failure = false } = {}) {
       else delete globalThis[key];
     }
   });
+  if (storedMessages.length) win.sessionStorage.setItem(sessionKey, JSON.stringify({ messages: storedMessages }));
   assert.equal(installKhonapolitTerminal(doc, win), true);
   if (mobile) installMarrowlineMobileShell(doc, win);
   living = installMarrowlineLivingChat(doc, win);
@@ -141,4 +143,72 @@ test('provider failure remains visibly unadmitted and retry stays available', as
   assert.equal(h.doc.querySelectorAll('.relay-khonapolit[data-present=true], .relay-bots[data-present=true]').length, 0);
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_RECEIPT__, null);
   assert.equal(h.$('khonapolitSend').disabled, false);
+});
+
+
+test('welcome stays at its beginning and long operator messages remain exactly inspectable', async t => {
+  const h = harness(t, { transcriptHeight: 2600 });
+  assert.equal(h.$('khonapolitMessages').scrollTop, 0, 'a tall welcome must not open underneath its heading');
+  const long = 'SYNTHETIC PORTABLE RULES: ' + highZalgo.repeat(45).replaceAll('\r\n', '\n');
+  h.$('khonapolitWaive').checked = true;
+  h.send(long); await h.settled(); await flush();
+  const disclosure = h.doc.querySelector('.operator-message-details');
+  assert.ok(disclosure, 'a long pasted packet is recoverable in its own disclosure');
+  assert.equal(disclosure.open, false);
+  assert.equal(disclosure.querySelector('.message-text').textContent, long.trim());
+  disclosure.open = true;
+  assert.equal(disclosure.querySelector('.message-text').textContent, long.trim());
+  const voices = h.doc.querySelector('.additional-voices');
+  assert.ok(voices, 'the admitted bot voice remains available beside the main answer');
+  assert.equal(voices.open, false);
+  assert.equal(voices.querySelector('.relay-bots .relay-stage-text').textContent, highZalgo);
+  assert.equal(h.doc.querySelector('.relay-message > .relay-gemini .relay-stage-text').textContent, 'SYNTHETIC RETURN');
+  assert.equal(h.calls.length, 1);
+});
+
+test('mark spacing follows actual combining density without rewriting the composer', async t => {
+  const h = harness(t);
+  const prompt = h.$('khonapolitPrompt');
+  prompt.value = 'A\u0300\u0301\u0302';
+  prompt.dispatchEvent(new h.win.Event('input', { bubbles: true }));
+  const ordinaryFlourish = Number(prompt.style.getPropertyValue('--flourish-leading'));
+  assert.ok(ordinaryFlourish < 2.2, 'three marks must not create four-line spacing');
+  const dense = 'A' + '\u0300'.repeat(24);
+  prompt.value = dense;
+  prompt.dispatchEvent(new h.win.Event('input', { bubbles: true }));
+  assert.ok(Number(prompt.style.getPropertyValue('--flourish-leading')) > ordinaryFlourish);
+  assert.equal(prompt.value, dense);
+  assert.equal(h.calls.length, 0);
+});
+
+
+test('oversized draft stays editable and its late constraint never disappears into a partial send', async t => {
+  const h = harness(t);
+  h.$('khonapolitWaive').checked = true;
+  const draft = 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE';
+  h.send(draft); await flush();
+  assert.equal(h.calls.length, 0);
+  assert.equal(h.$('khonapolitPrompt').value, draft);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /6,000-character limit/);
+  assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 0);
+  h.send('Shorter complete request.'); await h.settled();
+  assert.equal(h.calls.length, 1);
+});
+
+test('oversized retained history requires explicit clear and preserves the waiting draft', async t => {
+  const old = 'B'.repeat(6000) + ' RETAIN THIS FINAL CONSTRAINT';
+  const h = harness(t, { storedMessages: [{ role: 'user', text: old }] });
+  h.$('khonapolitWaive').checked = true;
+  h.send('My new draft.'); await flush();
+  assert.equal(h.calls.length, 0);
+  assert.equal(h.$('khonapolitPrompt').value, 'My new draft.');
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /Clear conversation/);
+  assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).messages[0].text, old);
+  h.$('clearKhonapolitSession').click();
+  assert.equal(h.$('khonapolitPrompt').value, 'My new draft.');
+  h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit', { bubbles: true, cancelable: true }));
+  await h.settled();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].message, 'My new draft.');
+  assert.deepEqual(h.calls[0].history, []);
 });

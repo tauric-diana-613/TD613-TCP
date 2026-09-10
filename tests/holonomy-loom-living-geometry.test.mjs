@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { AnimationCoordinator } from '../app/dome-world/holonomy-loom/animation-coordinator.js';
-import { LIVING_GEOMETRY_CONTRACT, livingGeometryViewport, projectLivingGeometry, drawLivingGeometry, mountLivingGeometry } from '../app/dome-world/holonomy-loom/living-geometry.js';
+import { LIVING_GEOMETRY_CONTRACT, livingGeometryViewport, projectLivingGeometry, drawLivingGeometry, livingGeometryTransform, mountLivingGeometry } from '../app/dome-world/holonomy-loom/living-geometry.js';
 
 function rig() {
   let wall = 0, id = 0;
@@ -15,7 +15,7 @@ function rig() {
       stats.finite &&= values.every(value => typeof value !== 'number' || Number.isFinite(value));
     };
   }, set() { return true; } });
-  const canvas = { width: 0, height: 0, setAttribute() {}, getContext: () => context, remove() {} };
+  const canvas = { style: {}, width: 0, height: 0, setAttribute() {}, getContext: () => context, remove() {} };
   const environment = {
     document: { hidden: false, createElement: () => canvas, addEventListener: (key, value) => documentListeners.set(key, value), removeEventListener: key => documentListeners.delete(key) },
     performance: { now: () => wall }, devicePixelRatio: 3,
@@ -66,14 +66,18 @@ test('viewport and drawing budget stay bounded even for huge or invalid inputs',
   }
 });
 
-test('standalone owner settles idle, cancels hidden/offscreen frames, and avoids unchanged canvas resize', () => {
-  const { host, environment, advance, queue, documentListeners } = rig();
+test('standalone ambient owner caches geometry and cancels hidden/offscreen/rest frames', () => {
+  const { host, environment, advance, queue, documentListeners, stats } = rig();
   const art = mountLivingGeometry(host, { environment, variant: 'marrowline' });
   assert.equal(art.inspect().ownsClock, true);
   assert.equal(queue.size, 1);
   const resizes = art.inspect().resizes;
+  const rasters = art.inspect().draws;
+  const vertices = stats.vertices;
   advance(100);
   assert.equal(art.inspect().resizes, resizes);
+  assert.equal(art.inspect().draws, rasters);
+  assert.equal(stats.vertices, vertices, 'no geometry rebuilt on animation frames');
   environment.intersect([{ isIntersecting: false }]);
   const draws = art.inspect().draws;
   assert.equal(queue.size, 0);
@@ -82,7 +86,8 @@ test('standalone owner settles idle, cancels hidden/offscreen frames, and avoids
   environment.intersect([{ isIntersecting: true }]);
   assert.equal(queue.size, 1);
   advance(2000);
-  assert.equal(queue.size, 0);
+  assert.equal(queue.size, 1, 'ambient request keeps the single owner alive');
+  assert.equal(art.inspect().draws, rasters);
   art.update({ phase: 'pending' });
   environment.document.hidden = true;
   documentListeners.get('visibilitychange')();
@@ -113,4 +118,23 @@ test('borrowed clock registers one projection and never replaces application pac
   assert.equal(coordinator.inspect().destroyed, false);
   coordinator.destroy();
   assert.equal(queue.size, 0);
+});
+
+
+test('cached ambient transform is slow, deterministic and static at rest', () => {
+  const initial = livingGeometryTransform({ motionTimeMs: 0 });
+  const afterSecond = livingGeometryTransform({ motionTimeMs: 1000 });
+  const dx = Number(afterSecond.match(/translate3d\(([-.0-9]+)/)[1]);
+  assert.ok(dx > 0 && dx < .25, 'drift below a quarter CSS pixel per second at entry');
+  assert.equal(afterSecond, livingGeometryTransform({ motionTimeMs: 1000 }));
+  assert.equal(initial, livingGeometryTransform({ motionTimeMs: 60000, rest: true }));
+  assert.equal(initial, livingGeometryTransform({ motionTimeMs: 60000, reducedMotion: true }));
+});
+
+test('a standalone view can explicitly retain a finite entrance', () => {
+  const { host, environment, advance, queue } = rig();
+  const art = mountLivingGeometry(host, { environment, ambient: false });
+  advance(2000);
+  assert.equal(queue.size, 0);
+  art.dispose();
 });

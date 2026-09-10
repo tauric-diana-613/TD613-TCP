@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { createLoomTaskHandler, validateLoomTaskInput, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA } from '../server/loom-task.js';
+import { createLoomTaskHandler, validateLoomTaskInput, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET } from '../server/loom-task.js';
 const task = () => ({ schema: LOOM_TASK_SCHEMA, request_id: 'fixture-1', task: 'Compare budget and dependencies using only the shared packet.', documents: [{ id: 'budget', name: 'Shared budget', text: 'Project Rowan has 12 workstreams and a projected budget of 42000.' }], rules: ['Use project aliases.'] });
 const answer = () => ({ answer: 'Project Rowan has 12 workstreams; dependencies remain unspecified [budget].', missing_information: ['Dependency edges'], used_document_ids: ['budget'], suggested_next_step: 'Supply a dependency map with aliases.' });
 function payload(value = answer(), finishReason = 'STOP') { return { candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }], usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180, hidden: 'omit', thoughtsTokenCount: -1 } }; }
@@ -33,6 +33,8 @@ test('real provider boundary builds structured generation from admitted input, p
   const body = JSON.parse(invocation.options.body);
   assert.deepEqual(JSON.parse(body.contents[0].parts[0].text), { task: task().task, documents: task().documents, rules: task().rules });
   assert.equal(body.generationConfig.responseMimeType, 'application/json');
+  assert.equal(body.generationConfig.maxOutputTokens, 16384);
+  assert.equal(r.body.observations.output_token_budget, LOOM_TASK_OUTPUT_TOKEN_BUDGET);
   assert.equal(JSON.stringify(r).includes('server-secret-test-key'), false);
   assert.equal(r.headers['Cache-Control'], 'no-store, max-age=0');
 });
@@ -74,7 +76,9 @@ test('model citations, renderer authority and incomplete or credential-bearing o
     assert.equal(JSON.stringify(r).includes('server-secret'), false);
   }
   const h = harness({ fetchImpl: async () => ({ ok: true, status: 200, json: async () => payload(answer(), 'MAX_TOKENS') }) });
-  assert.equal((await h.run()).status, 502);
+  const limited = await h.run();
+  assert.equal(limited.status, 502);
+  assert.equal(limited.body.observations.output_token_budget, 16384);
 });
 
 test('provider failures do not emit raw error bodies, exception messages, secrets or fake success', async () => {
@@ -148,4 +152,62 @@ test('timeout and cancellation diagnostics retain the exact interrupted stage', 
   const cancelled = await harness().run(task(), { aborted: true });
   assert.equal(cancelled.body.diagnostic.code, 'REQUEST_CANCELLED'); assert.equal(cancelled.body.diagnostic.stage, 'provider-plan');
   assert.equal(cancelled.body.observations.provider_calls, 0);
+});
+
+test('a single slow generation can complete after the old 32s ceiling, inside the host budget', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 0 });
+  let calls = 0;
+  const h = harness({ fetchImpl: () => {
+    calls += 1;
+    return new Promise(resolve => setTimeout(() => resolve({ ok: true, status: 200, json: async () => payload() }), 40000));
+  } });
+  const pending = h.run();
+  await new Promise(resolve => setImmediate(resolve));
+  t.mock.timers.tick(40000);
+  const result = await pending;
+  assert.equal(result.status, 200);
+  assert.equal(calls, 1);
+  assert.equal(result.body.observations.elapsed_ms, 40000);
+  assert.equal(result.body.observations.deadline_ms, LOOM_TASK_TIMEOUT_MS);
+  assert.equal(result.body.observations.stage_elapsed_ms['provider-transport'], 40000);
+});
+
+test('the 50s total deadline includes planning, aborts transport and never retries', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 0 });
+  let signal;
+  let calls = 0;
+  const h = harness({
+    resolvePlan: () => new Promise(resolve => setTimeout(() => resolve({ callableModels: ['gemini-test', 'unused-fallback'] }), 5000)),
+    fetchImpl: async (_, options) => { calls += 1; signal = options.signal; return new Promise(() => {}); }
+  });
+  const pending = h.run();
+  t.mock.timers.tick(5000);
+  await new Promise(resolve => setImmediate(resolve));
+  t.mock.timers.tick(45000);
+  const result = await pending;
+  assert.equal(result.status, 504);
+  assert.equal(result.body.diagnostic.code, 'DEADLINE_EXCEEDED');
+  assert.equal(result.body.observations.elapsed_ms, 50000);
+  assert.deepEqual(result.body.observations.stage_elapsed_ms, { 'provider-plan': 5000, 'provider-transport': 45000 });
+  assert.equal(result.body.answer, '');
+  assert.equal(signal.aborted, true);
+  assert.equal(calls, 1);
+});
+
+test('timings distinguish listing, response arrival, body read and admission without provider text', async () => {
+  let clock = 100;
+  const result = await harness({
+    now: () => clock,
+    resolvePlan: async () => { clock += 200; return { callableModels: ['gemini-test'] }; },
+    fetchImpl: async () => {
+      clock += 31000;
+      return { ok: true, status: 200, json: async () => { clock += 40; return payload(); } };
+    }
+  }).run();
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body.observations.stage_elapsed_ms, {
+    'provider-plan': 200, 'provider-transport': 31000, 'provider-json': 40, 'output-admission': 0
+  });
+  assert.equal(result.body.observations.elapsed_ms, 31240);
+  assert.doesNotMatch(JSON.stringify(result), /server-secret-test-key/);
 });

@@ -1,7 +1,8 @@
 /**
  * One finite, view-owned clock for Loom's admitted semantic packet.
  * Render passes project a shared immutable snapshot; they own neither clocks
- * nor evidence authority. There is no idle/ambient animation loop.
+ * nor evidence authority. Continuous decorative/request motion is an explicit
+ * opt-in on this same owner; semantic progress remains finite.
  */
 
 function boundedNumber(value, name, minimum, maximum) {
@@ -47,6 +48,9 @@ export class AnimationCoordinator {
   #packet = null;
   #viewport = Object.freeze({ width: 1, height: 1, dpr: 1 });
   #timeMs = 0;
+  #motionTimeMs = 0;
+  #anchorMotionTime = 0;
+  #continuous = false;
   #playing = false;
   #reducedMotion = false;
   #visible = true;
@@ -118,6 +122,7 @@ export class AnimationCoordinator {
     const snapshot = Object.freeze({
       packet: this.#packet,
       timeMs: this.#timeMs,
+      motionTimeMs: this.#motionTimeMs,
       progress: this.#timeMs / this.#durationMs,
       viewport: this.#viewport,
       reducedMotion: this.#reducedMotion,
@@ -158,11 +163,13 @@ export class AnimationCoordinator {
         if (!this.#playing || !this.#visible || this.#isStatic()) return;
         try {
           const wall = this.#readNow();
-          const nextTime = Math.min(this.#durationMs, Math.max(this.#timeMs, this.#anchorTime + Math.max(0, wall - this.#anchorWall)));
-          if (nextTime === this.#durationMs || wall - this.#lastRenderWall >= this.#frameInterval) {
+          const elapsed = Math.max(0, wall - this.#anchorWall);
+          const nextTime = Math.min(this.#durationMs, Math.max(this.#timeMs, this.#anchorTime + elapsed));
+          if ((nextTime === this.#durationMs && this.#timeMs < this.#durationMs) || wall - this.#lastRenderWall >= this.#frameInterval) {
             this.#timeMs = nextTime;
+            this.#motionTimeMs = this.#anchorMotionTime + elapsed;
             this.#lastRenderWall = wall;
-            if (nextTime === this.#durationMs) this.#playing = false;
+            if (nextTime === this.#durationMs && !this.#continuous) this.#playing = false;
             this.#render();
           }
           this.#schedule();
@@ -207,6 +214,7 @@ export class AnimationCoordinator {
     this.#resumeOnVisible = animate && !this.#isStatic() && !this.#visible;
     this.#anchorWall = wall;
     this.#anchorTime = this.#timeMs;
+    this.#anchorMotionTime = this.#motionTimeMs;
     this.#lastRenderWall = wall;
     this.#render();
     this.#schedule();
@@ -217,6 +225,7 @@ export class AnimationCoordinator {
     if (typeof timeMs !== 'number' || !Number.isFinite(timeMs)) throw new TypeError('timeMs must be finite');
     this.#stop();
     this.#timeMs = this.#isStatic() ? this.#durationMs : Math.max(0, Math.min(this.#durationMs, timeMs));
+    this.#motionTimeMs = this.#timeMs;
     this.#render();
   }
 
@@ -229,15 +238,26 @@ export class AnimationCoordinator {
       return;
     }
     const wall = this.#readNow();
-    const replay = this.#timeMs >= this.#durationMs;
+    const replay = this.#timeMs >= this.#durationMs && !this.#continuous;
     if (replay) this.#timeMs = 0;
     this.#anchorTime = this.#timeMs;
+    this.#anchorMotionTime = this.#motionTimeMs;
     this.#anchorWall = wall;
     this.#lastRenderWall = wall;
     this.#playing = true;
     if (replay) this.#render();
     else this.#notify();
     this.#schedule();
+  }
+
+  /** Explicit view-owned motion; never alters packet authority or progress. */
+  setContinuous(continuous) {
+    this.#assertWritable();
+    if (typeof continuous !== 'boolean') throw new TypeError('continuous must be boolean');
+    if (continuous === this.#continuous) return;
+    this.#continuous = continuous;
+    if (!continuous && this.#timeMs >= this.#durationMs) this.pause();
+    else if (continuous) this.play();
   }
 
   pause() {
@@ -297,6 +317,8 @@ export class AnimationCoordinator {
       pendingFrames: this.#pending === null ? 0 : 1,
       timeMs: this.#timeMs,
       durationMs: this.#durationMs,
+      motionTimeMs: this.#motionTimeMs,
+      continuous: this.#continuous,
       playing: this.#playing,
       reducedMotion: this.#reducedMotion,
       visible: this.#visible,

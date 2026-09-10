@@ -32,6 +32,9 @@ assert.match(addendum, /Follow the operator’s requested length and format/);
 assert.doesNotMatch(addendum, /directly and briefly/);
 assert.match(addendum, /do not output a stock litany of corpus keywords/);
 assert.match(addendum, /Never guarantee that custody is secure/);
+assert.match(addendum, /Separate paragraphs with blank lines/);
+assert.match(addendum, /place each numbered step or bullet on its own line/);
+assert.match(addendum, /decoded text contains actual newline characters/);
 
 const lockedPayload = JSON.stringify({
   gemini: { text: 'The instrument can carry the declared relation without claiming external verification.', instrumentStatus: 'INSTRUMENT' },
@@ -98,5 +101,18 @@ assert.equal(malformed.parts.length, 1);
 assert.equal(malformed.parts[0].id, 'gemini');
 assert.equal(malformed.highZalgo.applied, false);
 assert.equal(malformed.highZalgo.profile, 'motif-wave-envelope');
+
+// Structured plain-text formatting survives the real relay parser without reflow,
+// markup execution, Unicode normalization, or converting literal backslashes.
+const readableAnswer = 'Start with a small pilot.\n\nThree questions\n\n1. Which recordings have permission?\n2. Who can review the archive?\n3. Where will the files be kept?\n\nSource note\r\nKhona‌lit-po · A\u0315\u0300\u0338 · literal \\n in source code.\n<img src=x onerror=alert(1)>';
+const readable = parseRelayEnvelope(JSON.stringify({
+  gemini: { text: readableAnswer }, signal: { state: 'NOT_LOCKED', notes: '' },
+  khonapolit: { allowed: false, text: '' },
+  tauricDianaBots: { allowed: false, baseText: '' }
+}), { model: 'synthetic-format-witness', apertureReceipt: aperture });
+assert.equal(readable.parts[0].text, readableAnswer, 'paragraphs, lists, CRLF and source literals remain exact');
+assert.ok(readable.transcript.endsWith(readableAnswer));
+assert.equal(readable.parts[1].present, false);
+assert.equal(readable.parts[2].present, false);
 
 console.log('khonapolit-relay: Aperture route, direct relay language, motif-wave High Zalgo, and non-admission gates ok');

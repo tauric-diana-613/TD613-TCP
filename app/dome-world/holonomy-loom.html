@@ -6,6 +6,8 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#08070e">
   <meta name="td613-holonomy-loom" content="hosted-integration-v0.1">
+  <style>html[data-loom-boot="loading"] .wrap{visibility:hidden}#loomBootVeil{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;background:#0b0916;color:#edbe85;font:400 14px/1.6 system-ui;letter-spacing:.14em}#loomBootVeil span{font-size:24px;text-align:center;margin-bottom:12px}html:not([data-loom-boot="loading"]) #loomBootVeil{display:none}</style>
+  <script>document.documentElement.dataset.loomBoot="loading";setTimeout(()=>{if(document.documentElement.dataset.loomBoot==="loading"){document.documentElement.dataset.loomBoot="fallback";const status=document.querySelector("#loomAiWorkspace>p");if(status)status.textContent="The AI workspace could not finish opening. Reload this page to try again.";}},8000);</script>
   <title>Holonomy Loom · TD613 Hosted</title>
   <link rel="stylesheet" href="./holonomy-loom/theater.css">
   <style>
@@ -20,6 +22,7 @@
   <link rel="stylesheet" href="./holonomy-loom/ai-workspace.css">
 </head>
 <body>
+<div id="loomBootVeil" role="status"><span aria-hidden="true">𝌋</span>Opening Loom…</div>
 <div id="loomLivingGeometry" aria-hidden="true"></div>
 <div class="wrap">
   <header class="mast">

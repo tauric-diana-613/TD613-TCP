@@ -254,6 +254,7 @@ export default async function handler(req, res) {
   const body = parseBody(req);
   const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
+  if (packet.inputError) return send(res, 400, { ok: false, error: packet.inputError.code, validation: packet.inputError });
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
   const startedAt = Date.now();

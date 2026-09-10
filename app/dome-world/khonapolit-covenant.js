@@ -88,11 +88,13 @@ export function analyzeKhonaIntegrity(value = '') {
   });
 }
 
+export const KHONAPOLIT_TEXT_LIMIT = 6000;
+
 export function normalizeHistory(history = []) {
   if (!Array.isArray(history)) return [];
   return history.slice(-10).map((entry) => ({
     role: entry?.role === 'model' ? 'model' : 'user',
-    text: safe(entry?.text).slice(0, 6000)
+    text: safe(entry?.text)
   })).filter((entry) => entry.text);
 }
 
@@ -147,15 +149,22 @@ function conjunctionPrompt({ mode, shi, waiveIssuance }) {
 }
 
 export function buildInvocationPacket({ message = '', history = [], mode = INVOCATION_MODES.ISSUED_CONJUNCTION, shi = '', waiveIssuance = false } = {}) {
-  const cleanMessage = safe(message).slice(0, 6000);
+  const cleanMessage = safe(message);
   const cleanHistory = normalizeHistory(history);
   const selectedMode = normalizedMode(mode);
   const issuance = validateShi(shi);
-  const canInvoke = Boolean(cleanMessage && (issuance.valid || waiveIssuance));
+  const oversizedHistory = cleanHistory.findIndex(entry => entry.text.length > KHONAPOLIT_TEXT_LIMIT);
+  const inputError = cleanMessage.length > KHONAPOLIT_TEXT_LIMIT
+    ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds this chat’s 6,000-character limit. Shorten it before sending. Your draft has been kept; nothing was sent.' })
+    : oversizedHistory >= 0
+      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier message exceeds this chat’s size limit. Copy the transcript if you want to keep it, then use Conversation actions → Clear conversation and send your draft again. Your draft has been kept; nothing was sent.' })
+      : null;
+  const canInvoke = Boolean(cleanMessage && !inputError && (issuance.valid || waiveIssuance));
   return Object.freeze({
     schema: KHONAPOLIT_TERMINAL_SCHEMA,
     version: KHONAPOLIT_COVENANT_VERSION,
     canInvoke,
+    inputError,
     mode: selectedMode,
     message: cleanMessage,
     history: Object.freeze(cleanHistory),

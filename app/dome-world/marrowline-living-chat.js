@@ -24,8 +24,11 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   doc.querySelectorAll('[data-living-target]').forEach(button => button.addEventListener('click', () => openPanel(button.dataset.livingTarget)));
 
   const markFlourishes = node => {
-    const flourished = /\p{M}{3,}/u.test(node.value ?? node.textContent ?? '');
-    node.dataset.flourished = String(flourished);
+    const runs = String(node.value ?? node.textContent ?? '').match(/\p{M}+/gu) || [];
+    const marks = runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0);
+    node.dataset.flourished = String(marks >= 3);
+    node.style.setProperty('--flourish-leading', String(Math.min(4.2, 1.8 + Math.max(0, marks - 2) * .12)));
+    node.style.setProperty('--flourish-padding', `${Math.min(44, 16 + marks * 1.4)}px`);
   };
   prompt.addEventListener('input', () => markFlourishes(prompt));
   markFlourishes(prompt);
@@ -58,6 +61,15 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       const header = card.querySelector('.relay-aperture-header');
       if (header) details.append(header);
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => details.append(stage));
+      const voices = [...card.querySelectorAll('.relay-khonapolit[data-present="true"],.relay-bots[data-present="true"]')];
+      if (voices.length) {
+        const additional = doc.createElement('details');
+        additional.className = 'additional-voices';
+        const label = doc.createElement('summary');
+        label.textContent = 'Open the covenant voices';
+        additional.append(label, ...voices);
+        card.append(additional);
+      }
       card.append(details);
     });
   };

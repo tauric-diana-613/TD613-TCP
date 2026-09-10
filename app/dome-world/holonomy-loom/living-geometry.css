@@ -13,6 +13,11 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+  transform-origin: 76% 46%;
+  backface-visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .living-geometry-canvas { transform: none !important; will-change: auto !important; }
 }
 /* Optional common reading plate; no independent CSS animation owner. */
 .living-geometry-plate {

@@ -125,7 +125,7 @@ function installTranscriptCustody(doc = document, root = window) {
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(() => {
-      const shouldFollow = atBottom(messages, 160) || messages.dataset.forceFollow === 'true';
+      const shouldFollow = messages.dataset.forceFollow === 'true';
       decorateTranscript(doc);
       syncComposerHeight();
       root.requestAnimationFrame?.(() => {
@@ -146,7 +146,7 @@ function installTranscriptCustody(doc = document, root = window) {
 
   decorateTranscript(doc);
   syncComposerHeight();
-  root.requestAnimationFrame?.(() => goLatest('auto'));
+  root.requestAnimationFrame?.(() => { if (messages.querySelector('.grove-welcome')) messages.scrollTop = 0; refreshJump(); });
   return Object.freeze({ goLatest, refreshJump, syncComposerHeight });
 }
 

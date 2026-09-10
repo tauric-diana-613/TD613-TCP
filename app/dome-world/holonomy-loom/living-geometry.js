@@ -8,10 +8,11 @@ import { AnimationCoordinator } from './animation-coordinator.js';
  * thermodynamic quantity, identifiability claim, evidence or authority.
  */
 export const LIVING_GEOMETRY_CONTRACT = Object.freeze({
-  renderer: 'dome-art/living-sections-v1', modeled: true,
+  renderer: 'dome-art/living-sections-v2', modeled: true,
   operators: Object.freeze(['paired-anisotropic-sections', 'phi-rosette', 'folded-route-ribbon']),
   claimCeiling: 'Aesthetic composition from declared view/request/rest only; no measured hidden state or physical inference.',
-  maxDpr: 1.5, maxPixels: 2000000, maxFps: 24, durationMs: 1800,
+  maxDpr: 1.5, maxPixels: 2000000, maxFps: 30, durationMs: 1800,
+  ambientPeriodMs: 180000, maxDriftPx: 6, maxTiltDegrees: .3,
   maxPaths: 180, maxSegments: 16000,
 });
 
@@ -155,7 +156,17 @@ export function drawLivingGeometry(ctx, viewport, field) {
   ctx.fillRect(0, 0, w, h);
 }
 
-export function mountLivingGeometry(host, { coordinator: supplied, environment = globalThis, variant = 'loom', state: initial = {} } = {}) {
+/** A slow deterministic camera drift over cached geometry, not a measurement. */
+export function livingGeometryTransform(snapshot = {}, rest = false) {
+  const staticView = rest || snapshot.rest || snapshot.reducedMotion;
+  const phase = staticView ? 0 : finite(snapshot.motionTimeMs, 0) / LIVING_GEOMETRY_CONTRACT.ambientPeriodMs * TAU;
+  const x = Math.sin(phase) * LIVING_GEOMETRY_CONTRACT.maxDriftPx;
+  const y = (Math.cos(phase * .7) - 1) * LIVING_GEOMETRY_CONTRACT.maxDriftPx * .5;
+  const tilt = Math.sin(phase * .8) * LIVING_GEOMETRY_CONTRACT.maxTiltDegrees;
+  return `translate3d(${x.toFixed(4)}px, ${y.toFixed(4)}px, 0) rotate(${tilt.toFixed(5)}deg) scale(1.04)`;
+}
+
+export function mountLivingGeometry(host, { coordinator: supplied, environment = globalThis, variant = 'loom', state: initial = {}, ambient = true } = {}) {
   if (!host) return null;
   const document = environment.document;
   const canvas = document.createElement('canvas');
@@ -166,7 +177,8 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
   host.dataset.geometryRenderer = LIVING_GEOMETRY_CONTRACT.renderer;
   host.append(canvas);
   const ctx = canvas.getContext('2d', { alpha: false });
-  let disposed = false, inView = true, enabled = true, draws = 0, resizes = 0, lastSnapshot = null;
+  let disposed = false, inView = true, enabled = true, draws = 0, resizes = 0, frames = 0, lastSnapshot = null;
+  let viewport = null, rasterKey = null;
   let state = { ...initial, variant };
   const coordinator = supplied ?? new AnimationCoordinator({
     durationMs: LIVING_GEOMETRY_CONTRACT.durationMs, maxFps: LIVING_GEOMETRY_CONTRACT.maxFps,
@@ -176,18 +188,34 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
   });
   const media = environment.matchMedia?.('(prefers-reduced-motion: reduce)');
   const visible = () => enabled && inView && !document.hidden;
+  const measure = () => {
+    if (!visible()) return;
+    const rect = host.getBoundingClientRect();
+    viewport = rect.width >= 1 && rect.height >= 1 ? livingGeometryViewport(rect.width, rect.height, environment.devicePixelRatio) : null;
+  };
   const draw = snapshot => {
     lastSnapshot = snapshot;
     if (disposed || !ctx || !visible()) return;
-    const rect = host.getBoundingClientRect();
-    if (rect.width < 1 || rect.height < 1) return;
-    const viewport = livingGeometryViewport(rect.width, rect.height, environment.devicePixelRatio);
-    if (canvas.width !== viewport.pixelWidth || canvas.height !== viewport.pixelHeight) {
-      canvas.width = viewport.pixelWidth; canvas.height = viewport.pixelHeight; resizes++;
+    if (!viewport) measure();
+    if (!viewport) return;
+    const reducedMotion = snapshot.reducedMotion || Boolean(media?.matches);
+    // Rasterize at the complete state. Per-frame work is a compositor transform:
+    // no layout read, trigonometric vertex army, canvas clear or new bitmap.
+    const field = projectLivingGeometry(state, { ...snapshot, progress: 1, reducedMotion });
+    const key = JSON.stringify([viewport, field.view, field.phase, field.variant]);
+    if (rasterKey !== key) {
+      if (canvas.width !== viewport.pixelWidth || canvas.height !== viewport.pixelHeight) {
+        canvas.width = viewport.pixelWidth; canvas.height = viewport.pixelHeight; resizes++;
+      }
+      drawLivingGeometry(ctx, viewport, field);
+      rasterKey = key;
+      draws++;
     }
-    drawLivingGeometry(ctx, viewport, projectLivingGeometry(state, { ...snapshot, reducedMotion: snapshot.reducedMotion || media?.matches }));
-    host.dataset.geometryPhase = snapshot.packet?.phase ?? state.phase ?? 'prepared';
-    draws++;
+    canvas.style.transform = livingGeometryTransform({ ...snapshot, reducedMotion }, state.rest === true);
+    canvas.style.willChange = field.rest ? 'auto' : 'transform';
+    host.dataset.geometryPhase = field.phase;
+    host.dataset.geometryReady = 'true';
+    frames++;
   };
   const unregister = coordinator.registerPass(`living-geometry-${++mountOrdinal}`, draw);
   const update = (next = {}) => {
@@ -197,12 +225,15 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
     if (supplied) {
       if (lastSnapshot) draw(lastSnapshot);
       else draw({ progress: 1, rest: state.rest === true, packet: {} });
-    } else coordinator.setPacket({ scene: { id: `living-${state.view ?? variant}` }, phase: state.phase ?? 'prepared', geometry: { rest: state.rest === true } });
+    } else {
+      coordinator.setContinuous(Boolean(ambient) && state.rest !== true);
+      coordinator.setPacket({ scene: { id: `living-${state.view ?? variant}` }, phase: state.phase ?? 'prepared', geometry: { rest: state.rest === true } });
+    }
   };
   const visibility = () => {
     if (disposed) return;
     coordinator.setVisible(visible());
-    if (visible() && lastSnapshot) draw(lastSnapshot);
+    if (visible() && lastSnapshot) { measure(); draw(lastSnapshot); }
   };
   const motion = () => {
     if (disposed) return;
@@ -214,6 +245,7 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
   }) : null;
   intersection?.observe(host);
   const resize = environment.ResizeObserver ? new environment.ResizeObserver(() => {
+    measure();
     if (lastSnapshot) draw(lastSnapshot);
   }) : null;
   resize?.observe(host);
@@ -230,5 +262,5 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
     canvas.remove();
   };
   environment.addEventListener?.('pagehide', dispose, { once: true });
-  return { update, dispose, setVisible(value) { enabled = Boolean(value); visibility(); }, inspect: () => ({ draws, resizes, ownsClock: !supplied, visible: visible(), disposed, clock: coordinator.inspect(), contract: LIVING_GEOMETRY_CONTRACT }) };
+  return { update, dispose, setVisible(value) { enabled = Boolean(value); visibility(); }, inspect: () => ({ draws, frames, resizes, ownsClock: !supplied, visible: visible(), disposed, clock: coordinator.inspect(), contract: LIVING_GEOMETRY_CONTRACT }) };
 }

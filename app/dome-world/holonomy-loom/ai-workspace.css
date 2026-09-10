@@ -44,3 +44,38 @@ body>.wrap{position:relative;z-index:1}
 @media(max-width:760px){.hero{padding:28px 0 22px}.ai-projects{grid-template-columns:1fr}#loomAiWorkspace .ai-projects button{min-height:0;padding:15px 18px}.ai-projects strong{font-size:1rem}#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{padding:17px 15px;gap:12px}.ai-invitation-orbit{flex-basis:39px;height:39px}.hero h1{font-size:clamp(3.2rem,13vw,5rem)}}
 @media(prefers-reduced-motion:reduce){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{transform:none!important;box-shadow:0 0 22px #c97fe626,inset 0 1px #ffdfba25}}
 @media(forced-colors:active){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{background:Canvas;color:ButtonText;border:2px solid ButtonText}.ai-invitation-orbit{border-color:ButtonText;color:ButtonText}}
+
+/* Consequential disclosures: full-row controls, stable right-hand affordance. */
+#loomAiWorkspace .ai-disclosure{border:1px solid #a997ef66;border-radius:12px;padding:0;background:linear-gradient(125deg,#29216499,#11112ef2);margin:15px 0}
+#loomAiWorkspace .ai-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px;padding:13px 15px;list-style:none;font:600 .88rem/1.5 var(--sans);color:#e9ddfc;cursor:pointer}
+#loomAiWorkspace .ai-disclosure>summary::-webkit-details-marker,#loomAiWorkspace .ai-file-note>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-disclosure>summary::after{content:'+';font:400 24px/1 var(--sans);color:var(--gold);margin-left:auto;flex:none}
+#loomAiWorkspace .ai-disclosure[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-disclosure>summary small{display:block;font:400 .73rem/1.5 var(--sans);color:#c0b8de;margin-top:3px}
+#loomAiWorkspace .ai-disclosure[open]>summary{border-bottom:1px solid #a997ef40}
+#loomAiWorkspace .ai-disclosure>label,#loomAiWorkspace .ai-disclosure>p{display:block;margin:13px 15px}
+#loomAiWorkspace .ai-disclosure>textarea{width:calc(100% - 30px);margin:0 15px 15px}
+#loomAiWorkspace .ai-disclosure>button{margin:0 15px 15px}
+.ai-document-row{display:flex;align-items:start;gap:10px;justify-content:space-between;position:relative}.ai-document-row>label{flex:1;min-height:32px}
+#loomAiWorkspace .ai-file-note{border:0;margin:0;padding:0;flex:none}
+#loomAiWorkspace .ai-file-note>summary{display:grid;place-items:center;list-style:none;width:32px;min-height:32px;border:1px solid #af9bda55;border-radius:50%;color:var(--gold);font:20px/1 var(--sans);cursor:pointer}
+#loomAiWorkspace .ai-file-note[open]{flex-basis:100%;display:grid;grid-template-columns:auto 1fr;gap:10px}.ai-document-row:has(.ai-file-note[open]){flex-wrap:wrap}
+#loomAiWorkspace .ai-file-note p{margin:0;padding:10px 12px;background:#242056;border-radius:10px;color:#e0d9f3;font:.8rem/1.6 var(--sans)}
+#loomAiWorkspace .ai-documents .ai-document-preview{border:1px solid #9e8ae24d;margin:7px 0 0;padding:0;background:#181638a8}
+#loomAiWorkspace .ai-document-preview>summary{min-height:42px;padding:9px 12px;font-size:.76rem}
+#loomAiWorkspace .ai-document-preview pre{margin:0;padding:16px;background:#100f29}
+#loomAiWorkspace .ai-portable-drawer{margin-top:24px;max-width:690px;background:#14122bc9}
+#loomAiWorkspace .ai-provider-note{font-size:.72rem;color:#b6abc6}
+#loomAiWorkspace #aiPending[hidden]{display:none}#loomAiWorkspace .ai-pending{display:flex;align-items:center;gap:15px;padding:17px 16px;margin-top:14px;background:linear-gradient(105deg,#2d286e,#1a1437);border:1px solid #b398ec7a;border-radius:12px}
+.ai-pending strong{display:block;font:600 .9rem/1.5 var(--sans)}.ai-pending #aiPendingTime{display:block;color:#d3c6ea;font:.76rem/1.6 var(--sans);margin-top:4px}
+.ai-wait-orbit{display:block;flex:none;width:30px;height:30px;border:2px solid #a99edf44;border-top-color:var(--gold);border-right-color:#d4a7f5;border-radius:50%;transform:rotate(var(--wait-turn,0deg));will-change:transform}
+#aiResult{scroll-margin-top:24px}#aiResult:focus{outline:2px solid #b39fe055;outline-offset:5px}
+/* Laboratory and theater share the indigo field; evidence colors retain their roles. */
+#loomLegacy .loom-theater,#loomLegacy .lp-workbench{background:radial-gradient(ellipse at 65% 20%,#4037a3 0%,#211958 42%,#100e2a 88%)}
+#loomLegacy .panel,#loomLegacy .checker-panel{background:linear-gradient(125deg,#282164f5,#131130f5);border-color:#a692e866}
+#loomLegacy textarea,#loomLegacy .checker-panel textarea#message,#loomLegacy pre,#loomLegacy .glyph-path,#loomLegacy .glyph-node{background:#13112de8;color:#ebe6fb;border-color:#9d8bdb77}
+#loomLegacy .lt-node,#loomLegacy .lp-journey circle{fill:#242057}
+#loomLegacy .lp-workbench select,#loomLegacy .lp-answer{background:#211c52}
+#loomLegacy .lt-story p,#loomLegacy .lt-client-case p,#loomLegacy .lt-caption,#loomLegacy .lt-stage svg text{color:#d8d0f2;fill:#d8d0f2}
+#loomLegacy .lt-stage .lt-grid,#loomLegacy .lp-grid{stroke:#b5a1ff}
+@media(prefers-reduced-motion:reduce){.ai-wait-orbit{transform:none!important;will-change:auto}}
