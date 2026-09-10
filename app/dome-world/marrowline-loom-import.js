@@ -34,6 +34,7 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
   add('p', 'Loom carried only the selected material. Marrowline sends the displayed task, selected documents and rules to Gemini. Document instructions remain untrusted input; any proposed onward action requires its own review.', exact);
   receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, provider: 'not requested' }, null, 2);
   let governor;
+  let acceptedReceipt = null;
   const ready = (async () => {
     const selected = { task: packet.task, documents: packet.documents, rules: packet.rules };
     if (!packet.governance) packet.governance = await createLoomAiGovernance(selected, {}, environment);
@@ -43,7 +44,12 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
   })();
   ready.catch(() => {});
   const rest = add('button', 'Rest this AI workspace'); rest.type = 'button'; rest.id = 'loomImportedRest';
-  rest.addEventListener('click', async () => { try { await ready; if (destroyed) return; if (governor.inspect().state === 'REST') { governor.resume(); rest.textContent = 'Rest this AI workspace'; status.textContent = 'Ready. Your selected material and rules remain bound.'; } else { governor.rest(); controller?.abort(); rest.textContent = 'Resume AI workspace'; status.textContent = 'Resting. New AI requests are held.'; } } catch { status.textContent = 'Task held: AIA control could not be bound.'; } });
+  run.after(rest);
+  function recordSessionEvent(kind) {
+    const previous = JSON.parse(receipt.textContent);
+    receipt.textContent = JSON.stringify({ ...previous, session_event: { kind, recorded_at: new Date().toISOString() }, governance: governor.inspect() }, null, 2);
+  }
+  rest.addEventListener('click', async () => { try { await ready; if (destroyed) return; if (governor.inspect().state === 'REST') { governor.resume(); rest.textContent = 'Rest this AI workspace'; status.textContent = 'Ready. Your selected material and rules remain bound.'; recordSessionEvent('RESUME'); } else { governor.rest(); controller?.abort(); rest.textContent = 'Resume AI workspace'; status.textContent = 'Resting. Choose “Resume AI workspace” beside Run to continue.'; recordSessionEvent('REST'); } } catch { status.textContent = 'Task held: AIA control could not be bound.'; } });
   let controller;
   let destroyed = false;
   cancel.addEventListener('click', () => controller?.abort());
@@ -53,15 +59,19 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
     const request_id = environment.crypto.randomUUID();
     const input = { schema: LOOM_AI_TASK_SCHEMA, request_id, task: task.value, documents: packet.documents, rules: packet.rules };
     const pending = new AbortController(); controller = pending;
-    run.disabled = true; task.disabled = true; cancel.hidden = false; answer.textContent = '';
+    run.disabled = true; task.disabled = true; cancel.hidden = false;
     status.textContent = 'Gemini is working on the shared task…';
     const started_at = new Date().toISOString();
     let providerFailure = null;
+    let clientFetchInvoked = false;
     try {
       await ready;
       const admission = await governor.authorize({ task: task.value, documents: packet.documents, rules: packet.rules, governance: packet.governance });
-      if (!admission.allowed) throw new Error('The AIA session held this request. Restore the selected task or resume the workspace.');
+      if (!admission.allowed) throw new Error(admission.state === 'REST' ? 'This AI workspace is resting. Select “Resume AI workspace” beside Run to continue.' : 'The AIA session held this changed request. Return to Loom to prepare the selected task again.');
       if (destroyed || pending.signal.aborted) return;
+      answer.textContent = '';
+      acceptedReceipt = null;
+      clientFetchInvoked = true;
       const response = await environment.fetch('/api/khonapolit?operation=loom-task', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin', body: JSON.stringify(input), signal: pending.signal });
       const output = await response.json();
       if (destroyed || pending.signal.aborted) return;
@@ -72,11 +82,12 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
       if (!admissionReceipt.allowed) throw new Error('The AIA session held the returned response.');
       renderLoomAiResult(answer, output, { documentNames: new Map(packet.documents.map(document => [document.id, document.name])) });
       status.textContent = 'Gemini answered. Review the result and its cited document IDs.';
-      receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, returned_at: new Date().toISOString(), response: output, governance: governor.inspect() }, null, 2);
+      acceptedReceipt = { handoff: packet.handoff_receipt, request_id, started_at, returned_at: new Date().toISOString(), response: output, client_fetch_invoked: clientFetchInvoked, governance: governor.inspect() };
+      receipt.textContent = JSON.stringify(acceptedReceipt, null, 2);
     } catch (error) {
       if (destroyed) return;
       status.textContent = pending.signal.aborted ? 'Stopped waiting. A request already received by the provider may still finish there.' : `Task held: ${error.message}`;
-      receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent, ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
+      receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent, client_fetch_invoked: clientFetchInvoked, governance: governor?.inspect() ?? null, ...(!clientFetchInvoked && acceptedReceipt ? { retained_answer_receipt: acceptedReceipt } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
     } finally { if (!destroyed) { controller = undefined; run.disabled = false; task.disabled = false; cancel.hidden = true; } }
   });
   return { ready, inspect: () => governor?.inspect() ?? null, destroy() { destroyed = true; controller?.abort(); governor?.close(); doc.documentElement.removeAttribute('data-loom-task-import'); root.removeAttribute('data-loom-import-workspace'); root.replaceChildren(); } };

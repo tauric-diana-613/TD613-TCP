@@ -1,0 +1,319 @@
+{
+  "error": "page.waitForFunction: Timeout 60000ms exceeded.\n    at inspect (/home/runner/work/TD613-TCP/TD613-TCP/scripts/ash-a13-demo-registry-browser-probe.mjs:80:16)\n    at async file:///home/runner/work/TD613-TCP/TD613-TCP/scripts/ash-a13-demo-registry-browser-probe.mjs:150:53",
+  "completed_receipts": [
+    {
+      "mode": "desktop",
+      "registry": {
+        "version": "td613.ash.demo-registry/v0.3-a15",
+        "asset_epoch": "20260726-a15-empirical-v1",
+        "profiles": [
+          {
+            "profile": "investigation",
+            "label": "Investigation",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "APEQ_PAIA",
+            "claim_ceiling": "SYNTHETIC_INVESTIGATION_METHOD_HYDRATION_ONLY__NO_IDENTITY_INTENT_GUILT_AUTHORSHIP_SURVEILLANCE_OR_TRUTH_FINDING"
+          },
+          {
+            "profile": "political_campaign",
+            "label": "Political Campaign",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "APEQ_PAIA",
+            "claim_ceiling": "SYNTHETIC_CAMPAIGN_METHOD_HYDRATION_ONLY__NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION"
+          },
+          {
+            "profile": "fundraiser",
+            "label": "Fundraiser",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "APEQ_PAIA",
+            "claim_ceiling": "SYNTHETIC_FUNDRAISING_METHOD_HYDRATION_ONLY__NO_DONOR_INTENT_PAYMENT_STATUS_OR_CONVERSION_PREDICTION"
+          },
+          {
+            "profile": "research",
+            "label": "Research Project",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "RESEARCH",
+            "claim_ceiling": "SYNTHETIC_METHOD_AND_INTERFACE_HYDRATION_ONLY__NO_EMPIRICAL_RECOVERY_CAUSAL_ATTRIBUTION_OR_ENDPOINT_CLAIM"
+          },
+          {
+            "profile": "legal",
+            "label": "Legal Matter",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "LEGAL",
+            "claim_ceiling": "Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction."
+          },
+          {
+            "profile": "archive",
+            "label": "Archive",
+            "status": "PROMOTED",
+            "promoted": true,
+            "owner": "ARCHIVE",
+            "claim_ceiling": "SYNTHETIC_HARBOR_MEMORY_ARCHIVE_AND_INTERFACE_HYDRATION_ONLY__NO_OWNERSHIP_AUTHENTICITY_ACCESS_GRANT_RELEASE_DECLASSIFICATION_PUBLICATION_OR_TRANSFER_AUTHORITY"
+          }
+        ],
+        "control_owner": "ASH_DEMO_REGISTRY",
+        "empirical_journey_version": "td613.ash.a15-empirical-profile-journeys/v0.1",
+        "empirical_journey_status": "READY",
+        "empirical_matrix_cells": 120,
+        "raw_content_transport": false,
+        "automatic_ash_action": false,
+        "release_authority": false,
+        "human_review_required": true
+      },
+      "owner": "ASH_DEMO_REGISTRY",
+      "selected": "investigation",
+      "state": "PROMOTED",
+      "active_case": "case_d3f0e91aa3a9306287aa",
+      "empirical_version": "td613.ash.a15-empirical-profile-journeys/v0.1",
+      "release_disabled": true,
+      "handoff_is_link": true,
+      "url": "/dome-world/ash-threshold.html",
+      "title": "TD613 Ash",
+      "overflow": 0,
+      "convergence": {
+        "schema": "td613.ash.a13-post-click-convergence-diagnostic/v0.1",
+        "expected": {
+          "active_case": true,
+          "selected_profile": "investigation",
+          "premium_workspace": "home"
+        },
+        "checkpoints": [
+          {
+            "checkpoint": "BEFORE_INVESTIGATION_ACTIVATION",
+            "observed_at": "2026-09-10T04:48:14.377Z",
+            "url": "/dome-world/ash-threshold.html",
+            "title": "TD613 Ash",
+            "active_case": null,
+            "selected_profile": "archive",
+            "premium_workspace": null,
+            "registry_state": "PROMOTED",
+            "registry_owner": "ASH_DEMO_REGISTRY",
+            "select_value": "archive",
+            "start_demo_state": "READY",
+            "start_demo_disabled": false,
+            "registry": {
+              "version": "td613.ash.demo-registry/v0.3-a15",
+              "asset_epoch": "20260726-a15-empirical-v1",
+              "profiles": [
+                {
+                  "profile": "investigation",
+                  "label": "Investigation",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_INVESTIGATION_METHOD_HYDRATION_ONLY__NO_IDENTITY_INTENT_GUILT_AUTHORSHIP_SURVEILLANCE_OR_TRUTH_FINDING"
+                },
+                {
+                  "profile": "political_campaign",
+                  "label": "Political Campaign",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_CAMPAIGN_METHOD_HYDRATION_ONLY__NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION"
+                },
+                {
+                  "profile": "fundraiser",
+                  "label": "Fundraiser",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_FUNDRAISING_METHOD_HYDRATION_ONLY__NO_DONOR_INTENT_PAYMENT_STATUS_OR_CONVERSION_PREDICTION"
+                },
+                {
+                  "profile": "research",
+                  "label": "Research Project",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "RESEARCH",
+                  "claim_ceiling": "SYNTHETIC_METHOD_AND_INTERFACE_HYDRATION_ONLY__NO_EMPIRICAL_RECOVERY_CAUSAL_ATTRIBUTION_OR_ENDPOINT_CLAIM"
+                },
+                {
+                  "profile": "legal",
+                  "label": "Legal Matter",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "LEGAL",
+                  "claim_ceiling": "Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction."
+                },
+                {
+                  "profile": "archive",
+                  "label": "Archive",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "ARCHIVE",
+                  "claim_ceiling": "SYNTHETIC_HARBOR_MEMORY_ARCHIVE_AND_INTERFACE_HYDRATION_ONLY__NO_OWNERSHIP_AUTHENTICITY_ACCESS_GRANT_RELEASE_DECLASSIFICATION_PUBLICATION_OR_TRANSFER_AUTHORITY"
+                }
+              ],
+              "control_owner": "ASH_DEMO_REGISTRY",
+              "empirical_journey_version": "td613.ash.a15-empirical-profile-journeys/v0.1",
+              "empirical_journey_status": "READY",
+              "empirical_matrix_cells": 120,
+              "raw_content_transport": false,
+              "automatic_ash_action": false,
+              "release_authority": false,
+              "human_review_required": true
+            }
+          },
+          {
+            "checkpoint": "IMMEDIATELY_AFTER_INVESTIGATION_ACTIVATION",
+            "observed_at": "2026-09-10T04:48:14.385Z",
+            "url": "/dome-world/ash-threshold.html",
+            "title": "TD613 Ash",
+            "active_case": null,
+            "selected_profile": "investigation",
+            "premium_workspace": null,
+            "registry_state": "PROMOTED",
+            "registry_owner": "ASH_DEMO_REGISTRY",
+            "select_value": "investigation",
+            "start_demo_state": "BUSY",
+            "start_demo_disabled": true,
+            "registry": {
+              "version": "td613.ash.demo-registry/v0.3-a15",
+              "asset_epoch": "20260726-a15-empirical-v1",
+              "profiles": [
+                {
+                  "profile": "investigation",
+                  "label": "Investigation",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_INVESTIGATION_METHOD_HYDRATION_ONLY__NO_IDENTITY_INTENT_GUILT_AUTHORSHIP_SURVEILLANCE_OR_TRUTH_FINDING"
+                },
+                {
+                  "profile": "political_campaign",
+                  "label": "Political Campaign",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_CAMPAIGN_METHOD_HYDRATION_ONLY__NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION"
+                },
+                {
+                  "profile": "fundraiser",
+                  "label": "Fundraiser",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_FUNDRAISING_METHOD_HYDRATION_ONLY__NO_DONOR_INTENT_PAYMENT_STATUS_OR_CONVERSION_PREDICTION"
+                },
+                {
+                  "profile": "research",
+                  "label": "Research Project",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "RESEARCH",
+                  "claim_ceiling": "SYNTHETIC_METHOD_AND_INTERFACE_HYDRATION_ONLY__NO_EMPIRICAL_RECOVERY_CAUSAL_ATTRIBUTION_OR_ENDPOINT_CLAIM"
+                },
+                {
+                  "profile": "legal",
+                  "label": "Legal Matter",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "LEGAL",
+                  "claim_ceiling": "Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction."
+                },
+                {
+                  "profile": "archive",
+                  "label": "Archive",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "ARCHIVE",
+                  "claim_ceiling": "SYNTHETIC_HARBOR_MEMORY_ARCHIVE_AND_INTERFACE_HYDRATION_ONLY__NO_OWNERSHIP_AUTHENTICITY_ACCESS_GRANT_RELEASE_DECLASSIFICATION_PUBLICATION_OR_TRANSFER_AUTHORITY"
+                }
+              ],
+              "control_owner": "ASH_DEMO_REGISTRY",
+              "empirical_journey_version": "td613.ash.a15-empirical-profile-journeys/v0.1",
+              "empirical_journey_status": "READY",
+              "empirical_matrix_cells": 120,
+              "raw_content_transport": false,
+              "automatic_ash_action": false,
+              "release_authority": false,
+              "human_review_required": true
+            }
+          },
+          {
+            "checkpoint": "POST_CLICK_CONVERGENCE_PASS",
+            "observed_at": "2026-09-10T04:48:15.016Z",
+            "url": "/dome-world/ash-threshold.html",
+            "title": "TD613 Ash",
+            "active_case": "case_d3f0e91aa3a9306287aa",
+            "selected_profile": "investigation",
+            "premium_workspace": "home",
+            "registry_state": "PROMOTED",
+            "registry_owner": "ASH_DEMO_REGISTRY",
+            "select_value": "investigation",
+            "start_demo_state": "READY",
+            "start_demo_disabled": false,
+            "registry": {
+              "version": "td613.ash.demo-registry/v0.3-a15",
+              "asset_epoch": "20260726-a15-empirical-v1",
+              "profiles": [
+                {
+                  "profile": "investigation",
+                  "label": "Investigation",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_INVESTIGATION_METHOD_HYDRATION_ONLY__NO_IDENTITY_INTENT_GUILT_AUTHORSHIP_SURVEILLANCE_OR_TRUTH_FINDING"
+                },
+                {
+                  "profile": "political_campaign",
+                  "label": "Political Campaign",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_CAMPAIGN_METHOD_HYDRATION_ONLY__NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION"
+                },
+                {
+                  "profile": "fundraiser",
+                  "label": "Fundraiser",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "APEQ_PAIA",
+                  "claim_ceiling": "SYNTHETIC_FUNDRAISING_METHOD_HYDRATION_ONLY__NO_DONOR_INTENT_PAYMENT_STATUS_OR_CONVERSION_PREDICTION"
+                },
+                {
+                  "profile": "research",
+                  "label": "Research Project",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "RESEARCH",
+                  "claim_ceiling": "SYNTHETIC_METHOD_AND_INTERFACE_HYDRATION_ONLY__NO_EMPIRICAL_RECOVERY_CAUSAL_ATTRIBUTION_OR_ENDPOINT_CLAIM"
+                },
+                {
+                  "profile": "legal",
+                  "label": "Legal Matter",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "LEGAL",
+                  "claim_ceiling": "Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction."
+                },
+                {
+                  "profile": "archive",
+                  "label": "Archive",
+                  "status": "PROMOTED",
+                  "promoted": true,
+                  "owner": "ARCHIVE",
+                  "claim_ceiling": "SYNTHETIC_HARBOR_MEMORY_ARCHIVE_AND_INTERFACE_HYDRATION_ONLY__NO_OWNERSHIP_AUTHENTICITY_ACCESS_GRANT_RELEASE_DECLASSIFICATION_PUBLICATION_OR_TRANSFER_AUTHORITY"
+                }
+              ],
+              "control_owner": "ASH_DEMO_REGISTRY",
+              "empirical_journey_version": "td613.ash.a15-empirical-profile-journeys/v0.1",
+              "empirical_journey_status": "READY",
+              "empirical_matrix_cells": 120,
+              "raw_content_transport": false,
+              "automatic_ash_action": false,
+              "release_authority": false,
+              "human_review_required": true
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "convergence": null
+}

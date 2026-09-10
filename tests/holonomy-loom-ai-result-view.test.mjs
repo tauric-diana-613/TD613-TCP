@@ -65,3 +65,49 @@ test('plain prose remains first, heading-only answers disclose their missing sub
   assert.deepEqual([...numbered.container.querySelectorAll('.ai-result-lead li')].map(li => li.value), [3, 7]);
   assert.equal(numbered.container.querySelector('ol').start, 3);
 });
+
+test('provider-escaped prose boundaries render as paragraphs and lists while original bytes remain exact', () => {
+  const answer = String.raw`### Diligence Brief\n\nSubstantive capacity assessment [requirements].\n\n#### Costs\n* Vendor-A total: **137,591.52 credits**.\n* Vendor-B total: **145,808.64 credits**.\n\nThe remaining evidence is incomplete.`;
+  const { container, view } = render({ ...actualAnswer, answer });
+  assert.match(container.querySelector('.ai-result-lead').textContent, /Substantive capacity assessment/);
+  assert.equal(container.querySelector('.ai-result-lead h4').textContent, 'Diligence Brief');
+  assert.equal(container.querySelectorAll('.ai-result-full li').length, 2);
+  assert.equal(view.inspect().paragraphCount, 4);
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
+  assert.equal(container.querySelector('.ai-result-analysis').textContent.includes(String.raw`\n`), false);
+});
+
+test('display normalization preserves code, quoted strings, Windows paths and double-escaped literals', () => {
+  const answer = 'Assessment.\\n\\nKeep `\\n\\n` and "\\n\\n" as literal values. Windows C:\\new\\notes.txt stays intact; double-escaped \\\\n remains literal.\\n\\n```text\nexample\\n\\nvalue\n```\\n\\nDone.';
+  const { container } = render({ ...actualAnswer, answer });
+  const display = container.querySelector('.ai-result-analysis').textContent;
+  assert.ok(display.includes(String.raw`\n\n`));
+  assert.ok(display.includes(String.raw`"\n\n"`));
+  assert.ok(display.includes(String.raw`C:\new\notes.txt`));
+  assert.ok(display.includes(String.raw`\\n`));
+  assert.ok(display.includes(String.raw`example\n\nvalue`));
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
+});
+
+test('escaped CRLF paragraph boundaries and hostile markup remain display-only', () => {
+  const answer = String.raw`# Report\r\n\r\n<img src=x onerror=attack()>\r\n\r\n- **<script>bad()</script>**`;
+  const { container } = render({ ...actualAnswer, answer });
+  assert.match(container.querySelector('.ai-result-lead p').textContent, /<img/);
+  assert.equal(container.querySelector('img,script'), null);
+  assert.equal(container.querySelectorAll('.ai-result-full li').length, 1);
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
+});
+
+test('actual post-1096 literal-newline response shows useful first section and preserves its exact record', () => {
+  const observed = JSON.parse(fs.readFileSync(new URL('../docs/research/receipts/2026-09-10-loom-live-receiver/hosted-loom-after-1096.json', import.meta.url), 'utf8'));
+  assert.ok(observed.answer.includes(String.raw`\n\n`));
+  const { container } = render({ ...actualAnswer, answer: observed.answer });
+  const lead = container.querySelector('.ai-result-lead');
+  assert.equal(lead.querySelector('h4').textContent, 'DILIGENCE BRIEF: INTEGRATION EVALUATION');
+  assert.match(lead.textContent, /CAPACITY RECONCILIATION/);
+  assert.match(lead.textContent, /10,080 GB/);
+  assert.equal(lead.textContent.includes(String.raw`\n`), false);
+  assert.ok(lead.textContent.length < 1500, 'later numbered sections must not collapse into the first list');
+  assert.match(container.querySelector('.ai-result-full').textContent, /137,591.52/);
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, observed.answer);
+});

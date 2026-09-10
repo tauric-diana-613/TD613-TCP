@@ -199,3 +199,25 @@ test('Marrowline held receipt keeps safe failure facts while rejected content re
   assert.equal(scene.dom.window.getComputedStyle(scene.root.querySelector('#loomImportedStop')).display, 'none');
   scene.workspace.destroy(); scene.dom.window.close();
 });
+test('REST control stays beside Run, records current governance and preserves prior answer on blocked retry', async () => {
+  const scene = ui(); await scene.workspace.ready;
+  const run = scene.root.querySelector('#loomImportedRun'); const rest = scene.root.querySelector('#loomImportedRest');
+  assert.equal(run.nextElementSibling, rest);
+  run.click(); await settled(scene); const priorAnswer = scene.root.querySelector('#loomImportedAnswer').textContent;
+  assert.equal(scene.calls.length, 1);
+  rest.click(); await new Promise(resolve => setTimeout(resolve, 0));
+  let receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+  assert.equal(receipt.session_event.kind, 'REST'); assert.equal(receipt.governance.state, 'REST');
+  assert.equal(rest.textContent, 'Resume AI workspace');
+  run.click(); await settled(scene);
+  receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+  assert.equal(receipt.governance.state, 'REST'); assert.equal(receipt.client_fetch_invoked, false);
+  assert.equal(receipt.provider_failure, undefined); assert.equal(scene.calls.length, 1);
+  assert.equal(receipt.retained_answer_receipt.response.request_id, scene.calls[0].input.request_id);
+  assert.match(scene.root.querySelector('[role=status]').textContent, /Resume AI workspace.*beside Run/);
+  assert.equal(scene.root.querySelector('#loomImportedAnswer').textContent, priorAnswer);
+  rest.click(); await new Promise(resolve => setTimeout(resolve, 0));
+  receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+  assert.equal(receipt.session_event.kind, 'RESUME'); assert.equal(receipt.governance.state, 'ACTIVE');
+  scene.workspace.destroy(); scene.dom.window.close();
+});
