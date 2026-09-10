@@ -1,0 +1,242 @@
+{
+  "schema": "td613.nomenclature-decontamination/v0.1",
+  "date": "2026-09-10",
+  "state": "PREREGISTERED_CHAMBER_0",
+  "authority": {
+    "donor_corpus_admitted": false,
+    "external_donor_authority": false,
+    "automatic_ontology_promotion": false,
+    "automatic_novelty_promotion": false,
+    "human_closure_required": true
+  },
+  "bases": {
+    "historical_pre_donor_lineage_base": "419201a9fbb8e15044139f021c4b93a538a67f5b",
+    "current_execution_base_after_pr1100": "b0e8cdca1447e2643d5f5401de106bcbf668b674",
+    "pr1100_merge_commit": "c74aaa7c989fa52498d4fb0832db764fecc2c948",
+    "note": "The historical lineage freeze remains the provenance cutoff. The execution base advances to current main so Chamber 0 does not silently discard PR #1100 repairs."
+  },
+  "laws": [
+    "NOVEL_TO_THIS_CONVERSATION != NOVEL_TO_SCHOLARSHIP",
+    "TERM_PROVENANCE != CONSTRUCT_NOVELTY",
+    "CONVENTIONAL_NEIGHBOR != EXACT_EQUIVALENT",
+    "LITERATURE_OVERLAP != MECHANISM_IDENTITY",
+    "COINAGE != DISCOVERY",
+    "DONOR_INPUT != LITERATURE_AUTHORITY",
+    "RECOGNITION != PROMOTION"
+  ],
+  "promotion_rule": {
+    "required_before_residual_novelty_candidate": [
+      "at least three external neighbors",
+      "at least two independent source families",
+      "one explicit near-miss or falsification target",
+      "one statement of what the conventional literature already explains",
+      "one statement of the residual relation not yet matched",
+      "human review"
+    ],
+    "forbidden_unqualified_language": [
+      "sui generis",
+      "revolutionary",
+      "unprecedented",
+      "first-ever"
+    ]
+  },
+  "external_sources": [
+    {
+      "id": "NIST_IFC_800_171R3",
+      "source_family": "NIST",
+      "title": "NIST SP 800-171 Rev. 3, 03.01.03 Information Flow Enforcement",
+      "url_or_doi": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/800-171r3/NIST.SP.800-171r3.html",
+      "supports_term": "information-flow enforcement"
+    },
+    {
+      "id": "NIST_REFERENCE_MONITOR",
+      "source_family": "NIST",
+      "title": "NIST CSRC Glossary: reference monitor",
+      "url_or_doi": "https://csrc.nist.gov/glossary/term/reference_monitor",
+      "supports_term": "reference monitor / complete mediation"
+    },
+    {
+      "id": "RUSHBY_1992_NONINTERFERENCE",
+      "source_family": "SRI",
+      "title": "John Rushby, Noninterference, Transitivity, and Channel-Control Security Policies",
+      "url_or_doi": "https://www.csl.sri.com/papers/csl-92-2/",
+      "supports_term": "noninterference / intransitive information-flow policy"
+    },
+    {
+      "id": "COUSOT_1977_ABSTRACT_INTERPRETATION",
+      "source_family": "ACM",
+      "title": "Patrick Cousot and Radhia Cousot, Abstract interpretation: a unified lattice model for static analysis of programs",
+      "url_or_doi": "https://doi.org/10.1145/512950.512973",
+      "supports_term": "abstract interpretation / lattice abstraction"
+    },
+    {
+      "id": "LJUNG_1999_SYSTEM_IDENTIFICATION",
+      "source_family": "PrenticeHall",
+      "title": "Lennart Ljung, System Identification: Theory for the User, 2nd ed.",
+      "url_or_doi": "ISBN 978-0-13-244110-0",
+      "supports_term": "system identification"
+    },
+    {
+      "id": "MILNER_1989_OBSERVATIONAL_CONGRUENCE",
+      "source_family": "Elsevier",
+      "title": "Robin Milner, A Complete Axiomatisation for Observational Congruence of Finite-State Behaviours",
+      "url_or_doi": "https://doi.org/10.1016/0890-5401(89)90070-9",
+      "supports_term": "observational equivalence / weak bisimulation"
+    },
+    {
+      "id": "PEARL_CAUSAL_IDENTIFIABILITY",
+      "source_family": "UCLA",
+      "title": "Probabilistic and Causal Inference: The Works of Judea Pearl — Effect Identifiability",
+      "url_or_doi": "https://ftp.cs.ucla.edu/pub/stat_ser/ACMBook-published-2022.pdf",
+      "supports_term": "causal identifiability"
+    },
+    {
+      "id": "BUNEMAN_2001_PROVENANCE",
+      "source_family": "ICDT",
+      "title": "Peter Buneman, Sanjeev Khanna, and Wang-Chiew Tan, Why and Where: A Characterization of Data Provenance",
+      "url_or_doi": "https://homepages.inf.ed.ac.uk/opb/papers/ICDT2001.pdf",
+      "supports_term": "data provenance / why-provenance / where-provenance"
+    },
+    {
+      "id": "XIN_2021_SELECTIVE_PREDICTION",
+      "source_family": "ACL",
+      "title": "Ji Xin et al., The Art of Abstention: Selective Prediction and Error Regularization for Natural Language Processing",
+      "url_or_doi": "https://doi.org/10.18653/v1/2021.acl-long.84",
+      "supports_term": "selective prediction / abstention"
+    }
+  ],
+  "entries": [
+    {
+      "id": "PRCS_A",
+      "td613_term": "PRCS-A / selective admissibility / controlled reality surface",
+      "td613_source_refs": ["APERTURE.md"],
+      "term_provenance": "TD613_COINAGE",
+      "construct_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "candidate_external_neighborhoods": [
+        {"term": "information-flow enforcement", "source_ids": ["NIST_IFC_800_171R3"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "noninterference", "source_ids": ["RUSHBY_1992_NONINTERFERENCE"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "selective prediction / abstention", "source_ids": ["XIN_2021_SELECTIVE_PREDICTION"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "reference monitor / policy enforcement", "source_ids": ["NIST_REFERENCE_MONITOR"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Policy-mediated flow, enforcement boundaries, and abstention are established research objects.",
+      "residual_question": "Whether the specific capacity→projection→admissibility→naming→registered-event composition adds a distinct formal operator or only composes known mechanisms remains unestablished.",
+      "near_miss_or_falsification_target": "If an existing framework already formalizes the full composition with equivalent state distinctions and claim ceilings, PRCS-A residual novelty collapses."
+    },
+    {
+      "id": "FADT",
+      "td613_term": "Finite Admissibility Descent Theorem",
+      "td613_source_refs": ["FADT.md"],
+      "term_provenance": "TD613_COINAGE",
+      "construct_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "candidate_external_neighborhoods": [
+        {"term": "abstract interpretation / lattice abstraction", "source_ids": ["COUSOT_1977_ABSTRACT_INTERPRETATION"], "relation": "NEAR_NEIGHBOR"},
+        {"term": "observational equivalence / quotienting", "source_ids": ["MILNER_1989_OBSERVATIONAL_CONGRUENCE"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Abstraction, quotient-like identification, approximation, and observational equivalence are established.",
+      "residual_question": "Whether FADT's exact fibre-wise lawful-support constancy criterion and union/intersection irreducible-gap accounting is already a named theorem, a special case, or a useful new composition remains to be checked.",
+      "near_miss_or_falsification_target": "Find an existing theorem yielding the same occupied-fibre exactness criterion and the same minimal unavoidable distortion bound."
+    },
+    {
+      "id": "VCPL",
+      "td613_term": "V/C/P/L four evidentiary coordinates",
+      "td613_source_refs": ["APERTURE.md", "ATLAS.md"],
+      "term_provenance": "TD613_COINAGE",
+      "construct_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "candidate_external_neighborhoods": [
+        {"term": "system identification", "source_ids": ["LJUNG_1999_SYSTEM_IDENTIFICATION"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "data provenance", "source_ids": ["BUNEMAN_2001_PROVENANCE"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "observational equivalence", "source_ids": ["MILNER_1989_OBSERVATIONAL_CONGRUENCE"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "causal identifiability", "source_ids": ["PEARL_CAUSAL_IDENTIFIABILITY"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Observability/behavioral equivalence, provenance, model identification, and causal identifiability are mature but normally separated literatures.",
+      "residual_question": "Whether V≠C≠P≠L contributes a useful independent-coordinate calculus beyond a disciplined crosswalk among those fields remains to be tested.",
+      "near_miss_or_falsification_target": "If existing forensic or systems literature already separates these four coordinates with equivalent non-retroactivity consequences, classify as known composition."
+    },
+    {
+      "id": "AIA",
+      "td613_term": "anisotropic information architecture",
+      "td613_source_refs": ["APERTURE.md", "DOLLHOUSE.md"],
+      "term_provenance": "TD613_COINAGE",
+      "construct_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "candidate_external_neighborhoods": [
+        {"term": "information-flow control", "source_ids": ["NIST_IFC_800_171R3", "RUSHBY_1992_NONINTERFERENCE"], "relation": "NEAR_NEIGHBOR"},
+        {"term": "reference monitor / complete mediation", "source_ids": ["NIST_REFERENCE_MONITOR"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Security architectures routinely separate domains, views, flows, and authorization boundaries.",
+      "residual_question": "The receiver-indexed, intentionally non-equivalent projection family with preserved control/custody invariants may be a composition rather than a new primitive; literature comparison remains open.",
+      "near_miss_or_falsification_target": "Locate a standard multi-view security architecture with equivalent receiver projections, invariant preservation, and explicit authority non-transfer."
+    },
+    {
+      "id": "WESTERN_HORIZON",
+      "td613_term": "Western Horizon closed-record exteriority boundary",
+      "td613_source_refs": ["APERTURE.md"],
+      "term_provenance": "TD613_COINAGE",
+      "construct_status": "LIKELY_KNOWN_PATTERN_HELD_FOR_EXACT_MAPPING",
+      "candidate_external_neighborhoods": [
+        {"term": "causal identifiability", "source_ids": ["PEARL_CAUSAL_IDENTIFIABILITY"], "relation": "NEAR_NEIGHBOR"},
+        {"term": "observational equivalence / indistinguishability", "source_ids": ["MILNER_1989_OBSERVATIONAL_CONGRUENCE"], "relation": "NEAR_NEIGHBOR"}
+      ],
+      "what_literature_already_explains": "Indistinguishable observations cannot identify hidden generating structure without additional assumptions or interventions.",
+      "residual_question": "The TD613 value may lie in its exteriority-specific application and witness criterion, not in inventing non-identifiability itself.",
+      "near_miss_or_falsification_target": "Map the twin-world construction directly onto standard non-identifiability/observational-equivalence results and retain only any domain-specific remainder."
+    },
+    {
+      "id": "LOOM",
+      "td613_term": "Holonomy Loom route-memory / revalidation architecture",
+      "td613_source_refs": ["app/dome-world/holonomy-loom/semantic-field.js", "app/engine/dollhouse-portable-aia-roundtrip.js"],
+      "term_provenance": "TD613_COINAGE_WITH_ANALOGICAL_BORROWING",
+      "construct_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "candidate_external_neighborhoods": [
+        {"term": "reference monitor / complete mediation", "source_ids": ["NIST_REFERENCE_MONITOR"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "data provenance", "source_ids": ["BUNEMAN_2001_PROVENANCE"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "information-flow enforcement", "source_ids": ["NIST_IFC_800_171R3"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Mediated authorization, provenance, and flow constraints are established.",
+      "residual_question": "Route memory plus receiver-specific projection plus FADT/Atlas return revalidation may be an unusual composition; exact literature ancestry remains open.",
+      "near_miss_or_falsification_target": "Find an existing workflow/reference-monitor architecture that preserves path history and revalidates returned candidates against separate authority and support surfaces."
+    },
+    {
+      "id": "PHASONIC_TOMOGRAPHY_LANGUAGE",
+      "td613_term": "holonomy / tomography / phasonic / cupola vocabulary in TD613",
+      "td613_source_refs": ["APERTURE.md"],
+      "term_provenance": "ANALOGICAL_BORROWING",
+      "construct_status": "NO_NOVELTY_CLAIM_FROM_VOCABULARY",
+      "candidate_external_neighborhoods": [
+        {"term": "inverse problems / tomography", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"},
+        {"term": "holonomy / path dependence", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"},
+        {"term": "phason / quasiperiodicity", "source_ids": [], "relation": "DOMAIN_SOURCE_STILL_REQUIRED"}
+      ],
+      "what_literature_already_explains": "These words pre-exist TD613 in mathematics, imaging/inverse problems, condensed-matter physics, and geometry.",
+      "residual_question": "Borrowing them may or may not be mathematically faithful to the TD613 operators; resemblance alone supplies no legitimacy.",
+      "near_miss_or_falsification_target": "If the borrowed term does not preserve the source field's operative structure, downgrade it to metaphor/internal nomenclature."
+    },
+    {
+      "id": "SAFE_HARBOR_ROUTE",
+      "td613_term": "Recognition → Witness → Boundary → Transfer → Independence → Return",
+      "td613_source_refs": ["docs/research/2026-09-10-WENDBINE-LOOM-FOREIGN-DONOR-ASSAY.md"],
+      "term_provenance": "TD613_GOVERNANCE_COMPOSITION",
+      "construct_status": "HELD_FOR_GOVERNANCE_CROSSWALK",
+      "candidate_external_neighborhoods": [
+        {"term": "revocation / bounded authorization", "source_ids": ["NIST_REFERENCE_MONITOR"], "relation": "PARTIAL_OVERLAP"},
+        {"term": "provenance / recoverability", "source_ids": ["BUNEMAN_2001_PROVENANCE"], "relation": "PARTIAL_OVERLAP"}
+      ],
+      "what_literature_already_explains": "Authorization boundaries and provenance/recovery are established components.",
+      "residual_question": "The explicit requirement that a recognized route remain useful after the custodian stops participating is a governance criterion whose nearest research-ethics and security analogues still need a dedicated audit.",
+      "near_miss_or_falsification_target": "Find an established governance or research-ethics framework with an equivalent post-participation independence/return condition."
+    }
+  ],
+  "route_through_recognition": {
+    "sequence": [
+      "RECOGNIZE_EXISTING_CONSTRUCT",
+      "BIND_TD613_SOURCE",
+      "SEARCH_CONVENTIONAL_NEIGHBORS",
+      "RECORD_NEAR_MISSES",
+      "CLASSIFY_TERM_PROVENANCE",
+      "CLASSIFY_CONSTRUCT_STATUS",
+      "TEST_RESIDUAL",
+      "PROMOTE_OR_DEMOTE",
+      "RETURN_CONTROL_TO_HUMAN"
+    ],
+    "repair_criterion": "A nomenclature result is reparative only if it reduces dependence on bespoke vocabulary without transferring custody or manufacturing novelty."
+  }
+}
