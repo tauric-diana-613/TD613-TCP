@@ -52,6 +52,9 @@ try {
     try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
+      assert.equal(await page.locator('#aiProjectChoices').isVisible(), false, 'demo projects wait for the invitation gesture');
+      await page.locator('#aiDemoInvitation').click();
+      assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
       await page.locator('#aiUpload').setInputFiles({ name: 'handoff-local.txt', mimeType: 'text/plain', buffer: Buffer.from(uploadCanary) });
       const localChoice = page.getByRole('checkbox', { name: 'Share handoff-local.txt with Gemini', exact: true });

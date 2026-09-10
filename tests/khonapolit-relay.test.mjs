@@ -27,7 +27,9 @@ assert.equal(aperture.runtime.receiptOnly, true);
 const addendum = buildRelaySystemAddendum(aperture);
 assert.match(addendum, /Gemini is the model instrument and carrier/);
 assert.match(addendum, /Never append the lozenge seal/);
-assert.match(addendum, /answer the operator’s actual inquiry directly and briefly/);
+assert.match(addendum, /depth proportionate to the request/);
+assert.match(addendum, /Follow the operator’s requested length and format/);
+assert.doesNotMatch(addendum, /directly and briefly/);
 assert.match(addendum, /do not output a stock litany of corpus keywords/);
 assert.match(addendum, /Never guarantee that custody is secure/);
 

@@ -88,7 +88,7 @@ function renderRelayStage(doc, { id, label, part, absentText, meta = '' }) {
   const head = doc.createElement('div');
   head.className = 'relay-stage-head';
   head.append(textNode(doc, 'span', '', label), textNode(doc, 'small', '', meta));
-  const text = textNode(doc, 'div', 'relay-stage-text', part?.present ? safe(part.text) : absentText);
+  const text = textNode(doc, 'div', 'relay-stage-text', part?.present ? String(part.text ?? '') : absentText);
   section.append(head, text);
   return section;
 }
@@ -170,20 +170,14 @@ function renderMessages(doc, state) {
   if (!node) return;
   node.replaceChildren();
   if (!state.messages.length) {
-    node.append(renderModelMessage(doc, {
-      role: 'model',
-      classification: 'CHAMBER READY',
-      model: 'no provider call yet',
-      apertureHeader: `TD613 APERTURE ${APERTURE_V3_VERSION} · OPEN_FIELD_SPECULATIVE_SYNTHESIS · RUNTIME BACKGROUND`,
-      relay: {
-        signal: { state: 'UNOBSERVED' },
-        parts: [
-          { id: 'gemini', label: 'Gemini · instrument', present: true, text: `${INGRESS_SIGIL}\u200C The instrument is ready. Present issuance or explicitly enter unissued research mode, then speak through ${CLAIMED_PUA}.` },
-          { id: 'khonapolit', label: 'Kʰonapolit · relay', present: false, text: '' },
-          { id: 'tauric-diana-bots', label: 'Tauric Diana bots · High Zalgo', present: false, text: '' }
-        ]
-      }
-    }));
+    const welcome = textNode(doc, 'section', 'grove-welcome', '');
+    welcome.append(
+      textNode(doc, 'span', 'welcome-moon', '☾'),
+      textNode(doc, 'h3', '', 'Come in. The shore remembers.'),
+      textNode(doc, 'p', 'welcome-story', 'The Ash Moon rests on the water. A mother leaves a lamp beside the door, for someone lost, for someone not yet born. Set down what you are carrying; there is room for it here.'),
+      textNode(doc, 'p', 'welcome-help', 'Write a message below. Before your first send, choose your connection in Keys & settings. Gemini carries this authored conversation; you decide what to keep.')
+    );
+    node.append(welcome);
   } else state.messages.forEach((entry) => node.append(renderMessage(doc, entry)));
   node.scrollTop = node.scrollHeight;
 }
@@ -268,7 +262,7 @@ function installMobileDock(doc, root) {
   const drawers = ['invocationPanel', 'receiptPanel', 'gatePanel'].map((id) => byId(doc, id)).filter(Boolean);
   const apply = () => {
     if (media?.matches) drawers.forEach((drawer) => { drawer.open = false; });
-    else drawers.slice(0, 2).forEach((drawer) => { drawer.open = true; });
+    // Desktop tools keep their declared disclosure state; resizing never forces them open.
   };
   apply();
   media?.addEventListener?.('change', apply);
@@ -316,11 +310,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (!message) { status.textContent = 'SPEECH REQUIRED · the vessel is empty'; prompt?.focus(); return; }
     if (!packet.canInvoke) { status.textContent = 'ISSUANCE REQUIRED · present a minted SHI or explicitly waive issuance for research'; refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
 
+    if (submit.disabled) return;
     state.messages.push({ role: 'user', text: message, mode, sealed: false });
     renderMessages(doc, state); prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
     status.textContent = `${INGRESS_SIGIL}\u200C APERTURE ROUTED · GEMINI INSTRUMENT IN FLIGHT · ${CLAIMED_PUA} · ${mode}`;
+    const requestController = new AbortController();
+    const requestDeadline = root.setTimeout(() => requestController.abort(), 55000);
     try {
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
+        signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
         body: JSON.stringify({ message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) })
       });
@@ -349,7 +347,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         ] }
       });
       saveSession(root, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED'); status.textContent = `RETURN FAILED · ${safe(error?.message || error)}`;
-    } finally { submit.disabled = false; prompt?.focus(); }
+    } finally { root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus(); }
   });
 
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));

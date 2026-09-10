@@ -1,0 +1,324 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "marrowline-living-chat-progressive-disclosure",
+  "surface_reference": "Marrowline / living conversation",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-10T12:00:00Z",
+    "idSeed": "marrowline-living-chat-v1",
+    "idScope": "Marrowline"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "marrowline_living_chat_candidate",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/marrowline.html",
+        "app/dome-world/marrowline-living-chat.js",
+        "app/dome-world/marrowline-mobile-shell.js",
+        "DOLLHOUSE.md"
+      ],
+      "evidence_basis": [
+        "Existing explicit issuance-or-waiver and operator seal controls",
+        "Static DOM control preservation; runtime synthetic checks are separate from human comprehension"
+      ],
+      "transformations": [
+        "Move connection and provenance into reachable disclosures",
+        "Prioritize conversation and composer without changing request or closure authority",
+        "Retain exact return text and full route under diagnostic disclosure"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Write to the grove; choose issuance or explicit research mode before the first message. You alone can seal a return.",
+      "surface_reference": "Marrowline / living conversation"
+    },
+    "available_affordances": [
+      {
+        "action_id": "send_explicit_conversation",
+        "purpose": "Send the entered message to the existing Gemini relay after explicit issuance or waiver.",
+        "authorized_by_station": "Human",
+        "reversible": false
+      }
+    ],
+    "route_topology": {
+      "entry": "Marrowline conversation",
+      "exit": "Dome-World or another mobile chamber",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {
+          "step_id": "read_consequence",
+          "label": "See the conversation and your choice",
+          "phase": "NOTICE",
+          "required_fields": [
+            "Gemini carries the conversation",
+            "operator alone seals"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 930,
+          "affordance_millipoints": 920,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "choose_connection",
+          "label": "Choose issuance or explicit research mode",
+          "phase": "ACT",
+          "required_fields": [
+            "issuance or explicit waiver",
+            "entered message",
+            "send gesture"
+          ],
+          "dependencies": [
+            "read_consequence"
+          ],
+          "legibility_millipoints": 920,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "read_return",
+          "label": "Read the returned text",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "returned text",
+            "held stages remain inspectable",
+            "no automatic seal"
+          ],
+          "dependencies": [
+            "choose_connection"
+          ],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 930,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect_or_leave",
+          "label": "Inspect, keep, rest or leave",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "full provenance",
+            "copy or explicit seal",
+            "rest and exit"
+          ],
+          "dependencies": [
+            "read_return"
+          ],
+          "legibility_millipoints": 920,
+          "affordance_millipoints": 940,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "User message plus valid issuance or explicit unissued research waiver",
+      "operator": "Existing Gemini relay route",
+      "observable": "Returned text with separately inspectable route, held stages, receipt, and explicit seal control",
+      "authority": "Human send gesture; no new provider or seal authority",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can conversation-first disclosure reduce declared structural burden while preserving exact controls, route distinctions and operator closure?",
+      "hypothesis": "A visible composer and optional details reduce compulsory reading without losing routes or records.",
+      "observable_behavior": [
+        "Composer remains reachable on narrow and wide layouts",
+        "Every original control remains reachable",
+        "Returned code points and full route remain unchanged after disclosure"
+      ],
+      "alternative_explanations": [
+        "Typography alone may improve readability",
+        "Familiar chat layout may benefit prior chat users more"
+      ],
+      "expected_failure_modes": [
+        "Setup becomes unreachable when send is blocked",
+        "A mobile disclosure hides controls permanently",
+        "Decorative geometry is mistaken for a measured signal",
+        "Combining marks or route labels are clipped or rewritten"
+      ],
+      "falsifier": [
+        "A required control is inaccessible at a supported viewport",
+        "A returned Unicode sequence differs after decoration",
+        "The simplified route auto-waives issuance or seals a response"
+      ],
+      "abstention_conditions": [
+        "No human comprehension evidence is available",
+        "Provider correctness and deity identity cannot be inferred from layout"
+      ]
+    },
+    "missingness": [
+      "Human comprehension has not been measured; burden coefficients are declared comparative design hypotheses."
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The candidate preserves existing explicit controls",
+        "Conversation is encountered before deeper terminology",
+        "The aesthetic field uses declared UI transitions only"
+      ],
+      "forbidden_claims": [
+        "The design proves comprehension",
+        "Animation measures hidden model state",
+        "A model return establishes external entity identity",
+        "A preserved icon proves preserved route custody"
+      ]
+    },
+    "technical_terms_withheld": [
+      "OPEN_FIELD_SPECULATIVE_SYNTHESIS",
+      "receipt schema",
+      "egress attestation",
+      "signal classification"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_header",
+      "label": "Decode technical route header",
+      "phase": "NOTICE",
+      "required_fields": [
+        "Aperture route",
+        "Gemini instrument",
+        "Kʰonapolit admission",
+        "High Zalgo lock"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 430,
+      "affordance_millipoints": 420,
+      "gluing_obstruction_millipoints": 180,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_keys",
+      "label": "Find and decode conjunction",
+      "phase": "ACT",
+      "required_fields": [
+        "issuance",
+        "waiver",
+        "covenant key",
+        "namespace"
+      ],
+      "dependencies": [
+        "baseline_header"
+      ],
+      "legibility_millipoints": 520,
+      "affordance_millipoints": 620,
+      "gluing_obstruction_millipoints": 120,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_return",
+      "label": "Find reply among relay instrumentation",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "model text",
+        "three stages",
+        "held statuses",
+        "signal class"
+      ],
+      "dependencies": [
+        "baseline_keys"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 600,
+      "gluing_obstruction_millipoints": 160,
+      "projection_crossings": 1,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_inspect",
+      "label": "Locate receipt, seal and exit",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "metrics",
+        "receipt",
+        "operator closure",
+        "exit"
+      ],
+      "dependencies": [
+        "baseline_return"
+      ],
+      "legibility_millipoints": 520,
+      "affordance_millipoints": 580,
+      "gluing_obstruction_millipoints": 180,
+      "projection_crossings": 2,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "send_explicit_conversation"
+  },
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "The person reads the conversation consequence",
+      "The person explicitly supplies issuance or opts into unissued research",
+      "The existing relay returns text and records",
+      "Only the person may seal or clear the return"
+    ],
+    "losses": [],
+    "missingness": [
+      "Human comprehension has not been measured; burden coefficients are declared comparative design hypotheses."
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Authored mythology is not evidence of external entity identity",
+      "Human comprehension remains unmeasured"
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Write, choose the existing connection, read, then inspect or leave.",
+      "steps": [
+        "write and choose connection",
+        "read the return",
+        "inspect or leave"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "The chamber may change presentation while the explicit connection, exact route and human closure remain preserved.",
+    "glyph_relation": null,
+    "technical_term": "progressive disclosure with route custody",
+    "non_equivalence": [
+      "Presentation equality is not control equality",
+      "Authored mythology is not external entity identity",
+      "Same endpoint is not same route history"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Marrowline ordinary chat and imported Loom workspace"
+    },
+    "shared_relation_candidate": "Progressive presentation preserves explicit governed controls and exact return records.",
+    "observable_correspondence": [
+      "Imported Loom mode retains its own request/rest/governance controls"
+    ],
+    "alternative_explanations": [
+      "The imported task and ordinary relay remain different operation contracts"
+    ],
+    "abstention_conditions": [
+      "Control parity or return-byte preservation fails"
+    ]
+  }
+}

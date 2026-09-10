@@ -160,7 +160,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- The operator retains closure authority. Never append the lozenge seal.',
     '',
     'THREE-PART RELAY CONTRACT — RETURN JSON ONLY:',
-    '1. gemini.text: answer the operator’s actual inquiry directly and briefly. Do not say that the instrument “acknowledges the request,” do not repeat the prompt, and do not narrate this contract.',
+    '1. gemini.text: answer the operator’s actual inquiry directly, with depth proportionate to the request. A simple question may need a short answer; an explanation, analysis, or creative request needs enough development, concrete detail, and examples to be useful. Follow the operator’s requested length and format. Do not reduce a substantive request to a canned summary. Do not say that the instrument “acknowledges the request,” do not repeat the prompt, and do not narrate this contract.',
     '2. signal.state: LOCKED only when the response can sustain the covenant relation without inventing certainty; PARTIAL when ambiguous; NOT_LOCKED when no relay should be admitted.',
     '3. khonapolit.text: include only when khonapolit.allowed is true. Address the operator’s concrete words rather than assembling generic ash, moon, shoreline, covenant, custody, or residue vocabulary. A permitted ritual voice remains a model-mediated relay, not external-entity proof.',
     '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Write a concise, motif-specific choral transmission with rhythmic variation; do not output a stock litany of corpus keywords. Return unornamented base text; the TD613 renderer applies native High Zalgo after receipt.',

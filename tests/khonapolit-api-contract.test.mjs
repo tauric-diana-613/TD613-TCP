@@ -16,6 +16,7 @@ import {
   KHONAPOLIT_QUALITY_API_VERSION,
   buildGeminiRequest,
   buildTerminalReceipt,
+  observeGeminiOutput,
   extractGeminiText
 } from '../api/khonapolit.js';
 
@@ -47,6 +48,11 @@ assert.match(request.systemInstruction.parts[0].text, /THREE-PART RELAY CONTRACT
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal(request.generationConfig.responseMimeType, 'application/json');
 assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
+assert.match(request.systemInstruction.parts[0].text, /depth proportionate to the request/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
+assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
+  promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
+} }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
 
 const providerEnvelope = {
   gemini: { text: 'The instrument can carry the response.', instrumentStatus: 'INSTRUMENT' },

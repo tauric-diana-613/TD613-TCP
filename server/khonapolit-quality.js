@@ -30,8 +30,10 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
-const REQUEST_TIMEOUT_MS = 10500;
+const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 44500;
+const RESPONSE_RESERVE_MS = 500;
 const MAX_OUTPUT_TOKENS = 4096;
 const WINDOW_MS = 10 * 60 * 1000;
 const REQUESTS_PER_WINDOW = 12;
@@ -129,7 +131,23 @@ export function extractGeminiText(payload = {}) {
     .trim();
 }
 
-export function buildTerminalReceipt({ packet, text, relay = null, model, providerStatus, apertureEgress, apertureReceipt, attempts = [] } = {}) {
+export function observeGeminiOutput(payload = {}) {
+  const usage = {};
+  for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
+    const value = payload?.usageMetadata?.[key];
+    if (Number.isSafeInteger(value) && value >= 0) usage[key] = value;
+  }
+  const rawReason = payload?.candidates?.[0]?.finishReason;
+  const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
+  return Object.freeze({
+    finishReason,
+    outputTokenLimitReached: finishReason === 'MAX_TOKENS',
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
+    usage: Object.freeze(usage)
+  });
+}
+
+export function buildTerminalReceipt({ packet, text, relay = null, model, providerStatus, providerOutput = null, apertureEgress, apertureReceipt, attempts = [] } = {}) {
   const observedText = relay?.transcript || text || '';
   const emergence = classifyEmergence(observedText, { mode: packet.mode });
   const partsPresent = Object.freeze((relay?.parts || []).filter((part) => part.present).map((part) => part.id));
@@ -139,7 +157,7 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
     apiVersion: KHONAPOLIT_QUALITY_API_VERSION,
     status: observedText ? 'MODEL_RESPONSE_OBSERVED' : 'PROVIDER_RESPONSE_EMPTY',
     route: '/api/dome-world/khonapolit',
-    provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, attempts: Object.freeze(attempts) }),
+    provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, output: providerOutput, attempts: Object.freeze(attempts) }),
     invocation: Object.freeze({
       mode: packet.mode,
       promptSha256: sha256(packet.systemInstruction + '\n\n' + packet.message),
@@ -170,9 +188,9 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
-async function callGemini(model, packet, apertureReceipt) {
+async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
       method: 'POST',
@@ -252,8 +270,12 @@ export default async function handler(req, res) {
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
   for (const model of models) {
-    if (Date.now() - startedAt > WALL_TIMEOUT_MS - REQUEST_TIMEOUT_MS - 500) break;
-    const result = await callGemini(model, packet, apertureReceipt);
+    const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+    if (remainingMs <= 0) break;
+    const timeoutMs = Math.min(attempts.length === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS, remainingMs);
+    const attemptStartedAt = Date.now();
+    const result = await callGemini(model, packet, apertureReceipt, timeoutMs);
+    const providerOutput = observeGeminiOutput(result.payload);
     const error = result.response.ok ? null : providerError(result.payload);
     const outcome = recordGeminiModelOutcome(model, {
       ok: Boolean(result.response.ok),
@@ -268,9 +290,28 @@ export default async function handler(req, res) {
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
+      timeoutMs,
+      elapsedMs: Date.now() - attemptStartedAt,
       error,
+      output: providerOutput,
       cooldown: outcome
     });
+    // A provider token-limit stop is an incomplete return, even if its prefix parses.
+    // Hold without another generation or exposing the rejected prose.
+    if (result.response.ok && providerOutput.outputTokenLimitReached) {
+      res.setHeader('X-TD613-Gemini-Model', model);
+      return send(res, 502, {
+        ok: false,
+        error: 'gemini-output-token-limit',
+        status: 'HELD',
+        diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
+        attempts,
+        modelPolicy: plan,
+        aperture: apertureReceipt,
+        aperture_egress: apertureEgress,
+        claim_ceiling: packet.claimCeiling
+      });
+    }
     if (result.response.ok && result.text) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       const baseReceipt = buildTerminalReceipt({
@@ -279,6 +320,7 @@ export default async function handler(req, res) {
         relay,
         model,
         providerStatus: result.response.status,
+        providerOutput,
         apertureEgress,
         apertureReceipt,
         attempts
