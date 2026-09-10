@@ -120,6 +120,10 @@ try {
       assert.equal(Object.hasOwn(wire, 'protectedTerms'), false);
       assert.equal(serialized.includes(uploadCanary), false, 'uploaded local-only document excluded from wire');
       assert.equal(await page.locator('#aiPending').isVisible(), true);
+      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'pending');
+      assert.match(await page.locator('#aiLivingRoom').textContent(),/YOUR POCKET/);
+      for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiLivingRoom').textContent()).includes(document.name),false);
+      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-pending.png`)});
       releaseResponse();
       await page.waitForFunction(expected => document.querySelector('#aiAnswer')?.textContent.includes(expected), fixtureAnswer);
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
@@ -137,6 +141,14 @@ try {
       for (const term of fixture.protectedTerms) assert.equal(exported.includes(term), false, 'export omits private canaries');
       assert.equal(exported.includes(uploadCanary), false, 'uploaded local-only document excluded from export');
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
+      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-returned.png`)});
+      await page.locator('#aiRoomReplay').click();
+      assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
+      await page.locator('#aiAuditor').click();
+      assert.equal(requests.length,1,'replay and auditor view make no provider request');
+      await page.locator('#aiRoomLive').click();
+      await page.locator('#aiChild').click();
+      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'completed');
       mode = 'failure';
       receivedRequest = new Promise(resolve => { observedRequest = resolve; });
       responseGate = new Promise(resolve => { releaseResponse = resolve; });
@@ -148,6 +160,7 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow');
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
+      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, project_selection_has_no_egress: true,
         local_source_excluded: true, one_click_one_post: true, duplicate_click_disabled: true, completed_answer_visible: true,

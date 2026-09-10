@@ -174,6 +174,8 @@ jobs:
           node --check app/dome-world/holonomy-loom/theater-geometry.js
           node --check app/dome-world/holonomy-loom/theater.js
           node --test tests/holonomy-loom-living-geometry.test.mjs tests/marrowline-design-preservation.test.mjs
+          node --test tests/holonomy-loom-living-room.test.mjs tests/loom-living-room-state.test.mjs tests/loom-living-room-custody.test.mjs
+          node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-living-room-design.json
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/marrowline-living-chat-design.json
           node --test tests/holonomy-loom-animation-coordinator.test.mjs
           node --test tests/holonomy-loom-semantic-field.test.mjs

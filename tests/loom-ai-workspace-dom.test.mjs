@@ -139,10 +139,10 @@ test('editing the accepted task invalidates every receiver transfer action',asyn
 });
 test('reduced motion keeps the same request consequences with zero pending frames',async t=>{
   const pending=deferred(),h=harness(t,()=>pending.promise,true);h.load();h.$('#aiRun').click();await h.submitted();
-  assert.equal(h.ui.inspect().clock.pendingFrames,0);assert.equal(h.$('#aiGlyph').textContent,'à');
+  assert.equal(h.ui.inspect().clock.pendingFrames,0);assert.equal(h.$('#aiLivingRoom').dataset.phase,'pending');
   assert.equal(h.ui.inspect().events.find(e=>e.phase==='pending').provider_call_observed,false);
   pending.resolve(response(admitted(h.calls[0].request)));await h.settled();
-  assert.equal(h.$('#aiResult').hidden,false);assert.equal(h.$('#aiGlyph').textContent,'𝄐');assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  assert.equal(h.$('#aiResult').hidden,false);assert.equal(h.$('#aiLivingRoom').dataset.phase,'completed');assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
 test('stop waiting aborts the client request and leaves all output routes closed',async t=>{
   const h=harness(t,(_request,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new DOMException('aborted','AbortError')),{once:true})));

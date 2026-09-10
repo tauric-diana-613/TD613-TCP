@@ -79,3 +79,10 @@ body>.wrap{position:relative;z-index:1}
 #loomLegacy .lt-story p,#loomLegacy .lt-client-case p,#loomLegacy .lt-caption,#loomLegacy .lt-stage svg text{color:#d8d0f2;fill:#d8d0f2}
 #loomLegacy .lt-stage .lt-grid,#loomLegacy .lp-grid{stroke:#b5a1ff}
 @media(prefers-reduced-motion:reduce){.ai-wait-orbit{transform:none!important;will-change:auto}}
+
+/* The route can be revisited without sending the task again. */
+#loomAiWorkspace .ai-room-replay{border-top:1px solid #bc9de638;padding-top:12px;margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#loomAiWorkspace .ai-room-replay [hidden]{display:none!important}
+#loomAiWorkspace .ai-room-replay label,#loomAiWorkspace .ai-room-replay p{flex-basis:100%;font:12px/1.6 var(--sans)}
+#loomAiWorkspace .ai-room-replay input{width:100%;accent-color:#dbb572}
+#loomAiWorkspace .ai-view-switch{flex-wrap:wrap}
