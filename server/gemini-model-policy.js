@@ -1,21 +1,24 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v2-lifecycle-admission';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v3-frontier-quality-floor';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
+// Interactive generation never defaults to Flash-Lite. Operator-order remains an
+// explicit escape hatch, while quality-first follows the current stable Flash frontier.
 const QUALITY_ORDER = Object.freeze([
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.6-flash',
   'gemini-3.5-flash',
   'gemini-3-flash-preview',
-  'gemini-2.5-flash',
-  'gemini-3.1-flash-lite',
-  'gemini-2.5-flash-lite'
+  'gemini-2.5-flash'
 ]);
 
 const TASK_DEFAULTS = Object.freeze({
   'hush-transform': QUALITY_ORDER,
   'khonapolit-dialogue': QUALITY_ORDER,
   'general-text': QUALITY_ORDER,
-  readiness: Object.freeze(['gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'])
+  readiness: Object.freeze(['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'])
 });
 
 const MODEL_STATE = new Map();
@@ -113,7 +116,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const mode = routingMode(env);
   const requested = uniq(mode === 'operator-order'
     ? [...routeSpecific, ...legacyGlobal, ...defaults]
-    : [...routeSpecific, ...defaults, ...legacyGlobal]
+    : [...defaults, ...routeSpecific, ...legacyGlobal]
   ).filter((model) => !disabled.has(model));
   const rows = requested.map((model, index) => {
     const state = readGeminiModelState(model, at);
@@ -129,6 +132,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const warnings = [];
   if (requested.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
+  if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
   return Object.freeze({
