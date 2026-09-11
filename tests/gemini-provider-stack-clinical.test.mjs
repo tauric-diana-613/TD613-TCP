@@ -7,6 +7,7 @@ import {
   recordGeminiModelOutcome
 } from '../server/gemini-model-policy.js';
 import {
+  buildLoomTaskProviderRequest,
   createLoomTaskHandler,
   LOOM_TASK_SCHEMA
 } from '../server/loom-task.js';
@@ -152,6 +153,21 @@ await check('request-authored HTTP 400 does not poison provider-health routing',
   assert.equal(state.mayCall, true);
   assert.equal(state.state, 'available');
   clearGeminiModelState();
+});
+
+await check('Loom fallbacks bound thinking latency without shrinking output or schema', async () => {
+  const input = loomRequest();
+  const primary = buildLoomTaskProviderRequest(input, 'gemini-3.8-flash');
+  const fallback35 = buildLoomTaskProviderRequest(input, 'gemini-3.5-flash', { fallback: true });
+  const fallback25 = buildLoomTaskProviderRequest(input, 'gemini-2.5-flash', { fallback: true });
+  assert.equal(primary.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.equal(fallback35.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
+  assert.equal(fallback25.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
+  assert.deepEqual(fallback35.generationConfig.responseSchema, primary.generationConfig.responseSchema);
+  assert.deepEqual(fallback25.generationConfig.responseSchema, primary.generationConfig.responseSchema);
 });
 
 await check('Loom transient fallback cannot monopolize the remaining global deadline', async () => {
