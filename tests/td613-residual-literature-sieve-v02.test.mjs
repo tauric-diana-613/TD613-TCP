@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const receiptPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/04-RECEIPTS/assays/2026-09-11-td613-residual-literature-sieve-v02.json';
+const supplementPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/04-RECEIPTS/assays/2026-09-11-residual-sieve-source-supplement-v01.json';
 const sieve = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+const supplement = JSON.parse(fs.readFileSync(supplementPath, 'utf8'));
 
 assert.equal(sieve.schema, 'td613.residual-literature-sieve/v0.2');
 assert.equal(sieve.state, 'SOURCE_BOUND_TAXONOMY_NO_SCIENTIFIC_PROMOTION');
@@ -33,6 +35,23 @@ for (const source of sieve.source_bank) {
   assert.match(source.url, /^https:\/\//, `source ${source.id} must have a public https URL`);
   assert.ok(source.bounded_use.length > 20, `source ${source.id} must state its bounded use`);
 }
+
+assert.equal(supplement.schema, 'td613.residual-literature-sieve-source-supplement/v0.1');
+assert.equal(supplement.state, 'SOURCE_BINDING_CORRECTION');
+assert.equal(supplement.amends, '2026-09-11-td613-residual-literature-sieve-v02.json');
+assert.equal(supplement.authority.changes_verdicts, false);
+assert.equal(supplement.authority.promotes_novelty, false);
+assert.equal(supplement.authority.expands_private_corpus, false);
+assert.equal(supplement.authority.merge, false);
+assert.equal(supplement.authority.deployment, false);
+assert.equal(supplement.authority.human_closure_required, true);
+const supplementalSources = new Map(supplement.sources.map(source => [source.id, source]));
+for (const id of ['I2_STATISTICAL_IDENTIFIABILITY', 'I3_MIT_DATA_PROCESSING', 'C2_SELECTIVE_CLASSIFICATION']) {
+  assert.ok(supplementalSources.has(id), `missing source-binding supplement: ${id}`);
+  assert.match(supplementalSources.get(id).url, /^https:\/\//);
+}
+assert.deepEqual(supplement.applies_to.WESTERN_HORIZON, ['I2_STATISTICAL_IDENTIFIABILITY', 'I3_MIT_DATA_PROCESSING']);
+assert.deepEqual(supplement.applies_to.PRCS_A, ['C2_SELECTIVE_CLASSIFICATION']);
 
 const rows = new Map(sieve.verdicts.map(row => [row.id, row]));
 assert.equal(rows.size, 7);
