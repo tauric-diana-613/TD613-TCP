@@ -56,9 +56,14 @@ function routingMode(env = process.env) {
   return mode === 'operator-order' ? 'operator-order' : 'quality-first';
 }
 
+function requestRejected(status = 0, healthBearing) {
+  if (healthBearing === false) return true;
+  return status >= 400 && status < 500 && ![404, 408, 429].includes(status);
+}
+
 function cooldownFor(status = 0, timedOut = false, retryAfterSeconds = 0, strike = 1) {
   if (status === 429) return Math.max(120, retryAfterSeconds || 0, Math.min(1800, 120 * (2 ** Math.max(0, strike - 1))));
-  if (status === 404 || status === 400) return 60 * 60;
+  if (status === 404) return 60 * 60;
   if (timedOut || status === 408 || status === 504) return Math.min(300, 30 * Math.max(1, strike));
   if (status >= 500 || status === 599) return Math.min(180, 20 * Math.max(1, strike));
   return 0;
@@ -71,7 +76,20 @@ export function clearGeminiModelState() {
 export function recordGeminiModelOutcome(model, outcome = {}, at = Date.now()) {
   const id = normModel(model);
   if (!id) return null;
+  const status = Number(outcome.status || 0);
   const previous = MODEL_STATE.get(id) || {};
+  if (requestRejected(status, outcome.healthBearing)) {
+    // Request-authored 4xx failures describe the submitted instrument, not model health.
+    // Preserve any prior provider-health memory without creating, extending, or clearing cooldown.
+    const state = readGeminiModelState(id, at);
+    return Object.freeze({
+      ...state,
+      lastRequestStatus: status,
+      requestRejected: true,
+      healthBearing: false,
+      reason: safe(outcome.reason || outcome.error || 'request_rejected')
+    });
+  }
   if (outcome.ok === true && Number(outcome.status || 200) < 400) {
     const next = Object.freeze({ model: id, state: 'available', strikeCount: 0, cooldownUntil: 0, lastSuccessAt: at, lastStatus: Number(outcome.status || 200) });
     MODEL_STATE.set(id, next);
@@ -79,7 +97,7 @@ export function recordGeminiModelOutcome(model, outcome = {}, at = Date.now()) {
   }
   const recent = Number(previous.writtenAt || 0) + 10 * 60 * 1000 > at;
   const strikeCount = Math.min(6, (recent ? Number(previous.strikeCount || 0) : 0) + 1);
-  const seconds = cooldownFor(Number(outcome.status || 0), Boolean(outcome.timedOut), Number(outcome.retryAfterSeconds || 0), strikeCount);
+  const seconds = cooldownFor(status, Boolean(outcome.timedOut), Number(outcome.retryAfterSeconds || 0), strikeCount);
   const next = Object.freeze({
     model: id,
     state: seconds ? 'cooling_down' : 'available',
@@ -87,7 +105,7 @@ export function recordGeminiModelOutcome(model, outcome = {}, at = Date.now()) {
     cooldownUntil: seconds ? at + seconds * 1000 : 0,
     retryAfterSeconds: seconds,
     writtenAt: at,
-    lastStatus: Number(outcome.status || 0),
+    lastStatus: status,
     reason: safe(outcome.reason || outcome.error || (outcome.timedOut ? 'provider_timeout' : 'provider_failure'))
   });
   MODEL_STATE.set(id, next);
