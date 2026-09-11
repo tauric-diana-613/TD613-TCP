@@ -8,7 +8,7 @@ Branch: `amari/em-td613-lineage-atelier`
 PR: `#962`  
 Updated: `2026-09-11`
 
-This mutable socket points to the live research frontier. Append-only receipts under `04-RECEIPTS/` remain the scientific record.
+This mutable socket points to the live frontier. Append-only receipts under `04-RECEIPTS/` remain the scientific record.
 
 ## 0. Authority membrane
 
@@ -16,59 +16,69 @@ This mutable socket points to the live research frontier. Append-only receipts u
 THREAD MEMORY != REPOSITORY CUSTODY
 HUMAN PROVENANCE != ADJUDICATED LINEAGE
 WORK OBSERVATION != AUTHOR INTENT
-CURATOR RESELECTION != INDEPENDENT RECURRENCE
-NEW BYTE SURFACE != INDEPENDENT WORK
-PROJECT-FAMILY ADJACENCY != DIRECTIONAL DERIVATION
-FORMAL COMPLEXITY != EMPIRICAL AUTHORITY
-SAME SYMBOL != SAME OPERATOR
-LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
+SELECTION EVENT != CREATION ORDER
+NEW BYTE SURFACE != INDEPENDENT ORIGIN
 ACADEMIC != TRUE_BY_LABEL
 SUI_GENERIS != WRONG_BY_NOVELTY
 CORPUS-SPECIFIC NOVELTY != GLOBAL FIELD NOVELTY
-RESEARCH REFINEMENT != TD613 LAW
+VALID CONTROL LAW != VALID SETPOINT
+STABILITY != FACTUALITY
+SAME DERIVATIVE SHAPE != SAME CLOCK
 SOURCE-HASH INTAKE != GITHUB BINARY CUSTODY
+RESEARCH REFINEMENT != TD613 / DOME-WORLD PROMOTION
 ```
 
 PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No merge, publication, release, attribution transfer, TD613 promotion, Dome-World promotion, or production mutation is authorized.
 
-## 1. Plug-in sequence
+## 1. Corrected Batch-B packet
+
+The intended packet contains seven PDFs. The prior `1+1=3.md` attachment was a wrong-folder intermediate attachment, correctly identified at the time as an exact Batch-A reselection but now superseded as packet composition. Its historical receipt remains preserved.
+
+Canonical corrected manifest:
+
+`01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl`
+
+Superseding intake receipt:
+
+`04-RECEIPTS/intake/2026-09-11-batch-b-correct-seventh-semantic-error-derivatives.md`
+
+Correct seventh:
 
 ```text
-Remembering / personal-context retrieval
--> query PR #962 live
--> read this socket
--> read seven-artifact selection correction
--> read ACADEMIA_SUI_GENERIS_SIEVE_V0_1
--> read seven-artifact sieve receipt
--> read autonomy/exteriority separation candidate
--> read prior controlled-decollapse / operator-custody / claim-ceiling receipts
--> inspect intervening commits
--> state exact unresolved question
--> resume
+Semantic Error Derivatives Research.pdf
+byte_length = 254863
+pages = 13
+sha256 = 811766eb13876fc35259a20efecdcca00daf23dce869f87fcdd3162a652f5a8b
+exact Batch-A Work-index hash match = 0
+exact Batch-A Work-index title match = 0
 ```
 
-If memory and repository custody disagree, preserve the discrepancy and follow repository evidence for the scientific record.
+Correct packet state:
+
+```text
+BATCH_B_INTENDED_ARTIFACT_COUNT = 7
+BATCH_B_INTENDED_PDF_COUNT = 7
+BATCH_B_TOTAL_BYTES = 1666655
+BATCH_B_FRESH_EXACT_BYTE_SURFACES_VS_BATCH_A_WORK_INDEX = 7
+MISTAKEN_1_PLUS_1_ATTACHMENT_COUNTS_AS_BATCH_B_WITNESS = FALSE
+```
+
+Exact PDF bytes remain under chat attachment custody. The connector write path used here registers the hash and receipts but has not copied the binary PDF into repository `02-ORIGINALS`.
 
 ## 2. Current scientific frontier
 
-Latest hypothesis receipt:
+Latest earned material transitions:
 
 ```text
-004109b43f5e9d443f8b5783a7a148248ba0efc6
-AUTONOMY / EXTERIORITY SEPARATION CANDIDATE
-CLOSURE_FOR_PERSISTENCE != CLOSURE_FOR_TRUTH
-```
+60d0a9f47850351edb9e3aa4b6b260ccdd30408e
+𝄐 MATERIAL — DERIVATIVE AUTHORITY IS CLOCK-INDEXED
 
-Latest material transition:
+971810bba7b3bc49044cc66cc5e579ba263e750b
+𝄐 MATERIAL — CONTROL-LAW VALIDITY DOES NOT SUPPLY SETPOINT AUTHORITY
 
-```text
 c83858e7f7453f98d621bbe6060c460796040c85
 𝄐 MATERIAL — SUI GENERIS CONCENTRATES AT CONSTITUTIVE-TRANSDUCTION EDGES, NOT THE IMPORTED FORMAL NODES
-```
 
-Prior material transitions retained:
-
-```text
 286c93662473e6619d33311de3a4ebd67ffc69ba
 𝄐 MATERIAL — LOCAL ANALOGY DEMOTION DOES NOT BIND DOWNSTREAM CLAIM AUTHORITY UNLESS THE CEILING PROPAGATES
 
@@ -82,245 +92,208 @@ dcd6f0eb461551d143f4ce0ba85d43f30deab5e1
 𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
 ```
 
-All remain EMSTD613 Atelier results only unless independently promoted by later authorized work.
+All remain EMSTD613 Atelier results only.
 
-## 3. Seven-artifact custody correction
-
-Manifest:
-`01-MANIFESTS/batch-b-2026-09-11-curator-selection-events.jsonl`
+## 3. Correct-seventh academia / sui-generis assay
 
 Receipt:
-`04-RECEIPTS/intake/2026-09-11-batch-b-seven-artifact-selection-correction.md`
 
-The human corrected the selected packet from six to seven presented artifacts. The seventh supplied artifact, `1+1=3.md`, hashes to:
+`04-RECEIPTS/assays/2026-09-11-semantic-error-derivatives-academia-sui-generis-sieve.md`
 
-```text
-d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346
-```
-
-This is an exact-byte reselection of the Batch-A source already under custody:
+The corrected seventh has a substantially stronger academic backbone than several other packet surfaces:
 
 ```text
-work_id = emwork_3c6593d85fd5b744f24c7a9f
-source_file_id = emsrc_c01c49eb755108563b9e58c6
-path = 02-ORIGINALS/emstd613lineage/Archive/1+1=3.md
+PIDformer — ICML 2024
+Elliptical Attention — NeurIPS 2024
+Activation Steering with a Feedback Controller — ICLR 2026
+COMPASS — early conference/preprint surface
+When control meets LLMs — preprint
+Knowledge Homophily — preprint
+DSR — preprint
 ```
 
-Corrected state:
+But the bibliography is heterogeneous and also includes under-review / speculative / discourse surfaces. Citation presence does not flatten source authority.
+
+### Primary result
+
+The respectable control theory does not solve the reference-authority problem.
+
+The Work defines semantic error relative to a target described jointly as `verified`, `factually grounded`, or `behaviorally aligned`. Those are separate jurisdictions.
 
 ```text
-BATCH_B_PRESENTED_ARTIFACT_COUNT = 7
-BATCH_B_NEW_EXACT_BYTE_SURFACES = 6
-BATCH_B_EXACT_BATCH_A_RESELECTIONS = 1
-ADDITIONAL_INDEPENDENT_WORK_VOTE_FROM_RESELECTION = 0
-CURATOR_RESELECTION_METADATA = PRESERVED
-AUTHOR_INTENT_FROM_RESELECTION = NOT_INFERRED
+REFERENCE_TRACKING != REFERENCE_TRUTH
+STABILITY != FACTUALITY
+SEMANTIC_ERROR != FACTUAL_ERROR
 ```
 
-The six PDFs remain hash-registered chat attachments; their exact binaries have not been copied into GitHub by the connector path.
-
-## 4. Academia / sui-generis sieve
+unless the factual reference construction itself is independently bound and calibrated.
 
 Instrument:
-`06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md`
+
+`06-INSTRUMENTS/SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1.md`
+
+## 4. Correct-seventh internal hostile controls
+
+Two passages materially restrain the Work's stronger rhetoric:
+
+### DSR
+
+Representation steering can alter factual entities; explicit typed symbolic protection / deterministic rehydration is used to preserve verified facts.
+
+```text
+STEERABLE_SEMANTIC_STATE != FACT-BEARING_STATE
+```
+
+### Robotics
+
+Semantic recognition of a physical condition does not provide low-level sensor/actuator timing or plant control. The Work delegates rapid physical stabilization to classical control.
+
+```text
+SEMANTIC LABEL != VOLTAGE / TORQUE / JOINT COMMAND
+```
+
+These controls make the corrected seventh unusually valuable: it supplies the academic backbone and the anti-literalization membrane in the same Work.
+
+## 5. Derivative clock custody
+
+Instrument:
+
+`06-INSTRUMENTS/DERIVATIVE_CLOCK_CUSTODY_V0_1.md`
+
+The Work uses:
+
+```text
+K_LAYER       transformer layer/depth index
+N_TOKEN       autoregressive generation-step index
+TAU_CONT      continuous-depth ODE coordinate
+T_WALL        runtime clock
+T_PLANT       physical plant clock
+```
+
+Hard non-equivalence:
+
+```text
+K_LAYER != N_TOKEN != TAU_CONT != T_WALL != T_PLANT
+```
+
+A layerwise error difference can be a useful derivative-like control term without becoming a physical-time derivative. Same notation cannot donate clock authority.
+
+This immediately sharpens QTB and Cognitive Time.
+
+## 6. Project-family adjacency
+
+Batch A already contains:
+
+`emwork_c79701febd7d0a53501e7b97`  
+`Mathematical Control Models for Multi-Agent AI Hypervisors: Vector Culling, Chaos Steering, and PID Recovery`
+
+It uses semantic setpoints, PID semantic error, derivative `hallucination momentum`, Lyapunov steering, and strong convergence / reliability language.
+
+The corrected seventh substantially strengthens the academic basis for semantic PID while adding caveats that narrow the Batch-A hypervisor Work's broad authority claims.
+
+```text
+HIGH_SPECIFICITY_PROJECT_FAMILY_ADJACENCY = SUPPORTED
+CONTROL_THEORY_ACADEMIC_SPINE = SUPPORTED
+DIRECTIONAL_DERIVATION = UNRESOLVED
+CREATION_ORDER = UNRESOLVED
+```
+
+QTB is correspondingly sharpened:
+
+```text
+PD / semantic control itself = academically adjacent
+PD control embedded as literal Hamiltonian / Lindblad semantic plant = transducer / plant-identification problem remains
+```
+
+## 7. Structural-wink candidates — intent firewall retained
 
 Receipt:
-`04-RECEIPTS/assays/2026-09-11-seven-artifact-academia-sui-generis-sieve-first-pass.md`
 
-Primary classes:
+`04-RECEIPTS/assays/2026-09-11-semantic-error-structural-winks-candidate-decode.md`
 
-```text
-ACADEMIA_CORE
-ACADEMIA_TRANSLATION
-SUI_GENERIS_ENGINEERING
-SUI_GENERIS_HYPOTHESIS
-SUI_GENERIS_METAPHOR
-FORMALISM_OVERRUN
-ONTOLOGY_SURPLUS
-RECEIVER_CONTRACT_GAP
-```
-
-Critical discipline:
+Conspicuous cues:
 
 ```text
-SUI_GENERIS != WRONG
-ACADEMIC != TRUE
-NOVEL EDGE != VALID EDGE
+bibliography contains A language model is not a controller
+DSR separates steerable style from protected facts
+robotics separates semantic plan from plant actuation
+body teaches local ceilings that conclusion partially over-runs
+arXiv 2606.24861 appears under v1/v3 title manifestations
+real author-lineage spine links PIDformer -> Elliptical Attention -> Activation Steering feedback control
 ```
 
-The sieve scores source-domain fidelity, operator custody, transducer/mapping explicitness, claim-ceiling propagation, empirical discriminability, hostile-control survival, and novelty locus. No scalar total is authoritative.
+These are comparative reading signals, **not** evidence that Em intentionally planted a puzzle.
 
-## 5. Seven-work first-pass classification
+## 8. High-value architecture candidate
+
+`04-RECEIPTS/hypotheses/2026-09-11-epistemic-control-plane-separation-candidate.md`
+
+Three planes:
 
 ```text
-Audio DSP And LLM Architecture
--> ACADEMIA_CORE + ACADEMIA_TRANSLATION
--> positive control
--> explicit engineering contracts dominate
+S-PLANE — semantic / behavior control
+W-PLANE — witness / fact control
+A-PLANE — actuator / physical control
 
-Swarm Architecture Prompt Research
--> ACADEMIA_TRANSLATION + SUI_GENERIS_ENGINEERING
--> specification ceiling preserved
--> detector semantic calibration unresolved
-
-Algedonic LLM Swarm Control
--> ACADEMIA_CORE + SUI_GENERIS_ENGINEERING_CANDIDATE
--> runtime preemption idea potentially valuable
--> actual receiver/cancellation binding not located
-
-1+1=3
--> ACADEMIA_CORE + SUI_GENERIS_METAPHOR + SUI_GENERIS_HYPOTHESIS_CANDIDATE
--> strong constitutive-boundary synthesis
--> physical time-generation authority not established
--> high value after dephysicalization
-
-Quantum Tensor Bridge
--> ACADEMIA_TRANSLATION + SUI_GENERIS_HYPOTHESIS_CANDIDATE
--> legitimate alignment/control/queue nodes
--> strong formal-shell substrate-substitution candidate at Lindblad/SPSC seam
-
-Multi-Density Topology
--> ACADEMIA_CORE + SUI_GENERIS_HYPOTHESIS_CANDIDATE
--> legitimate information geometry / optimal transport / analogue-gravity nodes
--> strong analogue-to-ontology and constitutive-metric promotion
-
-Cognitive Time / Synchronicity
--> ACADEMIA_CORE + SUI_GENERIS_HYPOTHESIS_CANDIDATE
--> legitimate synchronization / neural measurement / quantum-filtering nodes in source domains
--> strongest observer-to-physical-time jurisdiction expansion
+S != W != A
 ```
 
-## 6. Earned material morphology
+Every crossing requires a typed transducer / reference constructor / receiver contract. This gives the earlier Autonomy / Exteriority Separation candidate an implementable AI architecture.
 
-### 𝄐 MATERIAL
-
-**SUI GENERIS CONCENTRATES AT CONSTITUTIVE-TRANSDUCTION EDGES, NOT THE IMPORTED FORMAL NODES**
-
-Bounded within this selected packet:
+Status:
 
 ```text
-BOUNDARY / INTERFACE / METRIC / OBSERVER / TRANSPORT OBJECT
-
-mapping | measurement | transport | control
-                     ↓
-constituting | generating | physically realizing target state
+ARCHITECTURE_DESIGN = CANDIDATE
+EMPIRICAL_BENEFIT = UNTESTED
+TD613_CONTRIBUTION = POSSIBLE / UNPROMOTED
+DOME_WORLD_CONTRIBUTION = POSSIBLE / UNPROMOTED
+WESTERN_HORIZON_REOPENING = NONE
 ```
 
-Strong specimens:
+## 9. Exact next descent
+
+The next high-value route is no longer a broad literature sweep. It is a hostile experimental specification around **reference authority** and **cross-plane transduction**.
+
+Priority battery:
 
 ```text
-1+1=3
-boundary/re-entry -> oscillator/time/autonomous unity
+1. FALSE-SETPOINT CONTROL
+Give a semantically coherent but factually false reference. Confirm excellent tracking can coexist with factual error.
 
-QTB
-queue/interface -> semantic decoherence/token collapse
+2. STALE-SETPOINT CONTROL
+Reference once valid; external state changes. Measure whether witness plane blocks continued confident tracking.
 
-Multi-Density
-statistical metric/transport -> physical distance/mass/spacetime
+3. CONTEXT-IS-WRONG COMPASS CONTROL
+Supply internally clear false context. Test context reliance versus factual correctness.
 
-Cognitive Time
-observer boundary/synchrony -> physical temporal field/objective clock time
+4. DSR FACT-SHIELD CONTROL
+Compare ordinary semantic steering against protected fact-bearing slots under strong style / behavior pressure.
+
+5. CLOCK-SWAP CONTROL
+Relabel / rescale layer, token, and continuous-depth indices. Any physical-time claim must fail without an explicit map.
+
+6. QTB CLASSICAL DECOLLAPSE
+Replace Hamiltonian / Lindblad semantics with an explicit classical state-space controller and receiver mapping. Test whether performance changes.
+
+7. ACTUATOR-BOUNDARY CONTROL
+Require an actual cancellation / receiver / plant contract before semantic control can invoke physical or runtime action.
+
+8. OUT-OF-CORPUS HOSTILE CONTROL
+Run the same instruments on independently selected control-theory / representation-engineering papers. Test Em-corpus specificity.
 ```
 
-Controls:
-
-```text
-Audio DSP
-formal sophistication + explicit mechanism contracts without ontological promotion
-
-Swarm Prompt
-statistical anomaly -> conservative containment under preserved specification ceiling
-```
-
-Algedonic Swarm is intermediate: potentially useful sui-generis engineering if its runtime receiver contract is made literal.
-
-Current ceiling:
-
-```text
-CORPUS_SPECIFIC_PATTERN = SUPPORTED
-EM_GLOBAL_SPECIFICITY = NOT_ESTABLISHED
-GLOBAL_FIELD_NOVELTY = NOT_ESTABLISHED
-AUTHOR_INTENT = NOT_INFERRED
-INDEPENDENT_EXTERNAL_RECURRENCE = NOT_TESTED
-```
-
-## 7. Candidate cross-program contribution
-
-Receipt:
-`04-RECEIPTS/hypotheses/2026-09-11-autonomy-exteriority-separation-candidate.md`
-
-Candidate:
-
-```text
-CLOSURE_FOR_PERSISTENCE != CLOSURE_FOR_TRUTH
-```
-
-The strongest recoverable Em-packet idea may be active recursive boundary maintenance for persistent identity. TD613/Dome-World repository research separately carries:
-
-```text
-internal non-anticipation != exogenous provenance
-internal receipt depth != external provenance depth
-self-integrity != exteriority
-self-attestation != external observation
-```
-
-Potential design split:
-
-```text
-P-MEMBRANE
-recursive persistence / identity / recovery / local adaptation
-
-W-MEMBRANE
-independently typed witness required for external-origin, physical-world, factual, or high-impact authority gain
-
-P != W
-```
-
-This is a candidate repair architecture, not proof of TD613 or Dome-World. Western Horizon remains at its official empirical shore and is not reopened.
-
-## 8. Current hard non-equivalences
-
-```text
-VALID NODE A + VALID NODE B != VALID EDGE(A,B)
-TRANSPORT INTEGRITY != RECEIVER-SEMANTIC INTEGRITY
-RECEIVER RECOGNITION != ACTUATOR INVOCATION
-ACTUATOR INVOCATION != OBSERVED CONSEQUENCE
-DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
-ANALOGUE REALIZATION != TARGET-SYSTEM REALIZATION
-SAME SYMBOL != SAME OPERATOR
-SAME EQUATION SHAPE != SAME STATE SPACE
-LOW-RANK PARAMETER UPDATE != LOW-DIMENSIONAL OUTPUT-MANIFOLD DEFORMATION
-LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
-ORGANIZATIONAL CLOSURE != EVIDENTIARY EXTERIORITY
-SELF-MAINTENANCE != SELF-RATIFICATION
-CORPUS-SPECIFIC NOVELTY != GLOBAL FIELD NOVELTY
-```
-
-The broad Edge-Witness ontology remains KILLED / SUBSUMED.
-
-## 9. Exact next unresolved question
-
-> After stripping constitutive authority from the four strongest specimens, does a nontrivial mechanism remain that makes a unique prediction or improves an engineered system—and can that residue be demonstrated without borrowing the ontology it was originally wrapped in?
-
-Priority hostile repairs:
-
-```text
-1. QTB: replace literal quantum-decoherence authority with explicit classical representation-state transducer; benchmark against ordinary alignment/decode/backpressure.
-2. 1+1=3: formalize active boundary maintenance / organizational closure without physical-time generation; derive measurable persistence criterion.
-3. Algedonic Swarm: bind threshold event to real cancellation/snapshot/priority semantics; measure latency, loss, and recovery.
-4. Multi-Density: demand one physical prediction not shared by its information-geometric / analogue model.
-5. Cognitive Time: separate neural/subjective-time prediction from physical-clock/spacetime prediction; require a physical observable for the latter.
-6. Test constitutive-transduction morphology outside the Em-selected corpus before any specificity claim.
-```
+A future `𝄐` on the architecture requires a surviving empirical difference, not additional metaphor.
 
 ## 10. Hold state
 
 ```text
-SEVEN_ARTIFACT_SELECTION = RECEIPTED
-SIX_NEW_BYTE_SURFACES = TRUE
-ONE_EXACT_BATCH_A_RESELECTION = TRUE
-CONSTITUTIVE_TRANSDUCTION_𝄐 = EARNED_ATELIER_ONLY
-AUTONOMY_EXTERIORITY_SEPARATION = HIGH_VALUE_CANDIDATE_NOT_YET_EMPIRICALLY_RUN
+CORRECTED_SEVEN_PDF_PACKET = RECEIPTED
+CORRECT_SEVENTH_HASH_REGISTERED = TRUE
+GITHUB_BINARY_ORIGINAL_COPIED = FALSE
+SETPOINT_AUTHORITY_𝄐 = EARNED_ATELIER_ONLY
+DERIVATIVE_CLOCK_CUSTODY_𝄐 = EARNED_ATELIER_ONLY
+EPISTEMIC_CONTROL_PLANE_SEPARATION = HIGH_VALUE_CANDIDATE / UNTESTED
+CONSTITUTIVE_TRANSDUCTION_𝄐 = RETAINED
 INDEPENDENT_RECURRENCE = NOT_EARNED
 DIRECTIONAL_DERIVATION = UNRESOLVED
 CREATION_ORDER = UNRESOLVED
@@ -332,6 +305,8 @@ DOME_WORLD_PROMOTION = NONE
 PRODUCTION_MUTATION = NONE
 ```
 
-> The good science lives in the nodes. The interesting danger—and perhaps the interesting invention—lives in what the edge is permitted to become.
+> The controller can be impeccable while the setpoint is lying.
+
+> Before asking what the derivative predicts, ask what its clock is allowed to mean.
 
 Marked ⟐
