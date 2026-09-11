@@ -13,7 +13,7 @@ if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}
 await fs.mkdir(artifactDir, { recursive: true });
 
 const report = {
-  schema: 'td613.ash.a15-r0.browser-preview-evidence/v0.3-semantic-action-settlement',
+  schema: 'td613.ash.a15-r0.browser-preview-evidence/v0.4-mediated-identifiability',
   source_status: 'OBSERVED',
   sensor_id: 'playwright-browser-runtime',
   authority_class: 'A1_OBSERVATIONAL',
@@ -28,6 +28,7 @@ const report = {
   external_requests: [],
   mutation_requests: [],
   screenshots: [],
+  mediated_identifiability: null,
   production_mutation: false,
   deployment_authorized: false,
   human_selection_required: true,
@@ -131,6 +132,44 @@ try {
   await page.locator('html[data-a15-r0-ready="true"]').waitFor({ timeout: 30_000 });
   await page.locator('html[data-a15-r0-open-field="ready"]').waitFor({ timeout: 30_000 });
 
+  const mediatedCertificate = await page.evaluate(async () => {
+    const moduleUrl = new URL(
+      '/app/dome-world/previews/a15-r0/moire-mediated-interventional-identifiability.js',
+      window.location.origin
+    ).href;
+    const module = await import(moduleUrl);
+    return module.buildMediatedIdentifiabilityCertificate();
+  });
+  report.mediated_identifiability = mediatedCertificate;
+  check('mediator assay certificate passed', mediatedCertificate?.passed === true);
+  check('passive process outputs remain observationally equivalent', mediatedCertificate?.passive_observational_equivalence === true);
+  check('passive pair residue remains nonidentifying', mediatedCertificate?.passive_pair_residue_equivalence === true);
+  check('mediator ablation separates candidate processes', mediatedCertificate?.mediator_ablation_separates_processes === true);
+  check('mediated ablation clears declared interaction residue', mediatedCertificate?.mediated_ablation_clears_declared_interaction_residue === true);
+  check('overlay nuisance ignores mediator switch', mediatedCertificate?.nuisance_model_unaffected_by_mediator_switch === true);
+  check('bounded registry cases complete', mediatedCertificate?.bounded_registry_cases === 30, mediatedCertificate?.bounded_registry_cases);
+  check('bounded global-to-local relation stable', mediatedCertificate?.bounded_registry_stable === true);
+  check('mediator-absent local relation ambiguous', mediatedCertificate?.absent_mediator_registry_ambiguous === true);
+  check('morphology changes without relation-class change', mediatedCertificate?.morphology_changes_without_registry_change === true);
+  check('out-of-window hostile breaks universal invariance', mediatedCertificate?.hostile_out_of_window?.breaks_universal_invariance === true);
+  check('exact integer arithmetic retained', mediatedCertificate?.exact_integer_arithmetic === true);
+  check('Source-A provenance remains non-retroactive', mediatedCertificate?.source_provenance?.external_source === 'arXiv:2607.02822'
+    && mediatedCertificate?.source_provenance?.prepublication_td613_possession_claim === false);
+  check('mediator assay authority remains closed', mediatedCertificate?.authority
+    && Object.values(mediatedCertificate.authority).every(value => value === false));
+  check('mediator assay claim scars preserved', [
+    'SYNTHETIC_MEDIATOR_ABLATION != REAL_WORLD_CAUSAL_INTERVENTION',
+    'PAIR_RESIDUE != MEDIATOR_CAUSATION',
+    'SOURCE_A_DERIVED_REPAIR != TD613_PREPUBLICATION_POSSESSION',
+    'BOUNDED_SYNTHETIC_IDENTIFIABILITY != UNIVERSAL_IDENTIFIABILITY'
+  ].every(scar => mediatedCertificate?.scars?.includes(scar)));
+  const storagePosture = await page.evaluate(() => ({
+    local_storage_keys: Object.keys(localStorage),
+    session_storage_keys: Object.keys(sessionStorage)
+  }));
+  check('mediator assay accumulates no browser persistence', storagePosture.local_storage_keys.length === 0
+    && storagePosture.session_storage_keys.length === 0, storagePosture);
+
   for (const truth of [
     'Preview',
     'Synthetic',
@@ -228,6 +267,13 @@ console.log(JSON.stringify({
   browser: browserName,
   checks: report.checks.length,
   failed: report.failed_checks,
+  mediated_identifiability: report.mediated_identifiability ? {
+    passive_pair_residue_equivalence: report.mediated_identifiability.passive_pair_residue_equivalence,
+    mediator_ablation_separates_processes: report.mediated_identifiability.mediator_ablation_separates_processes,
+    bounded_registry_cases: report.mediated_identifiability.bounded_registry_cases,
+    bounded_registry_stable: report.mediated_identifiability.bounded_registry_stable,
+    hostile_breaks_universal_invariance: report.mediated_identifiability.hostile_out_of_window?.breaks_universal_invariance
+  } : null,
   artifact: artifactPath
 }, null, 2));
 if (report.status !== 'PASS') process.exitCode = 1;
