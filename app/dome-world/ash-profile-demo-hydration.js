@@ -34,6 +34,10 @@ function receiptPreCanonicalProfileChoice(event) {
   select.dataset.ashPreCanonicalProfileChoice = value || 'NONE';
   select.dataset.ashPreCanonicalProfileChoiceExplicit = String(Boolean(value));
   select.dataset.ashPreCanonicalProfileChoiceRevision = String(preCanonicalChoiceRevision);
+  if (value) {
+    select.dataset.ashProfileInitialized = 'true';
+    select.dataset.ashProfileInitializationSource = 'EXPLICIT_PRECANONICAL_CHOICE';
+  }
   host.__td613AshPreCanonicalProfileChoice = Object.freeze({
     schema:'td613.ash.pre-canonical-profile-choice/v0.1',
     value:value || null,

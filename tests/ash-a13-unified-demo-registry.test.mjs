@@ -10,6 +10,7 @@ const registrySource = fs.readFileSync('app/dome-world/ash-demo-registry.js', 'u
 const archiveSource = fs.readFileSync('app/dome-world/ash-archive-profile-demo.js', 'utf8');
 const empiricalSource = fs.readFileSync('app/dome-world/ash-a15-empirical-profile-journeys.js', 'utf8');
 const wrapperSource = fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js', 'utf8');
+const apeqSource = fs.readFileSync('app/dome-world/ash-apeq-paia-profile-demos.js', 'utf8');
 const promptSource = fs.readFileSync('app/dome-world/ash-profile-prompt-canonical.js', 'utf8');
 const bridgeSource = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const workflowSource = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
@@ -83,10 +84,14 @@ for (const token of [
   'td613.ash.pre-canonical-profile-choice/v0.1',
   'ashPreCanonicalProfileChoiceRevision',
   'host.__td613AshPreCanonicalProfileChoice',
+  "select.dataset.ashProfileInitialized = 'true'",
+  "select.dataset.ashProfileInitializationSource = 'EXPLICIT_PRECANONICAL_CHOICE'",
   'authority_changed:false',
   'source_bytes_moved:false',
   'human_closure_required:true'
 ]) assert.ok(wrapperSource.includes(token), `Registry wrapper omitted pre-canonical receipt token ${token}`);
+assert.match(wrapperSource, /const value = String\(select\.value \|\| ''\);[\s\S]{0,500}if \(value\) \{[\s\S]{0,250}select\.dataset\.ashProfileInitialized = 'true'/);
+assert.match(apeqSource, /!localStorage\.getItem\(POINTER_KEY\) && !select\.dataset\.ashProfileInitialized[\s\S]{0,160}select\.value = ''/);
 assert.doesNotMatch(wrapperSource, /localStorage\.(?:setItem|removeItem|clear)|sessionStorage\.(?:setItem|removeItem|clear)|indexedDB|fetch\s*\(|sendBeacon/);
 
 for (const token of [
