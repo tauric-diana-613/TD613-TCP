@@ -86,12 +86,12 @@ jobs:
           deployment_ceiling = 1
           validation_scope = ${{ steps.scope.outputs.validation_scope }}
           premerge_browser_authority = scope-aligned Chromium + Firefox + WebKit witness
-          production_confirmation = scope-aligned Chromium witness
+          production_confirmation = scope-aligned Chromium witness + one full-scope Loom AI canary
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
           EOF_COMMENT
           )"
 
@@ -134,6 +134,8 @@ jobs:
           node tests/ash-a14-archive-accession.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
           node tests/ash-keep-production-closure-contract.test.mjs
+          node --test tests/loom-task.test.mjs tests/loom-ai-failure.test.mjs
+          node --check scripts/loom-production-canary.mjs
 
       - name: Choose one bounded Vercel release route
         id: mode
@@ -405,6 +407,14 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/lifecycle-production
         run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-lifecycle-production-probe.mjs
 
+      - name: Confirm deployed Loom Demo 1 with one real AI submission
+        if: steps.scope.outputs.validation_scope == 'full'
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/loom-production-canary
+        run: timeout --foreground --signal=INT --kill-after=10s 70s node scripts/loom-production-canary.mjs
+
       - name: Confirm authorized source still owns production after witness
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
@@ -438,6 +448,7 @@ jobs:
             artifacts/a14-production-registry/
             artifacts/a14-production-archive/
             artifacts/lifecycle-production/
+            artifacts/loom-production-canary/
             artifacts/giving-production/
             artifacts/practice-production/
           if-no-files-found: warn
@@ -469,6 +480,7 @@ jobs:
           production_a14_registry_archive = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_loom_demo1_canary = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
