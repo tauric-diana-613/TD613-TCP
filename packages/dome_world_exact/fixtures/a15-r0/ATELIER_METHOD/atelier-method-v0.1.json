@@ -10,6 +10,16 @@
     "identity_adjudication": false,
     "human_closure_required": true
   },
+  "directory_policy": {
+    "physical_homogenization_required": false,
+    "missing_common_directory_requires_profile_exception": true,
+    "profile_exception_field": "directory_exceptions",
+    "allowed_exception_reasons": [
+      "ATELIER_SPECIFIC_LAYOUT",
+      "STAGE_NOT_ACTIVE",
+      "SURFACE_NOT_PRESENT"
+    ]
+  },
   "required_directories": [
     "01-MANIFESTS",
     "02-ORIGINALS",
