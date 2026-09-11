@@ -2,10 +2,10 @@
 
 # AMARI THREAD RE-ENTRY SOCKET — EMSTD613 LINEAGE ATELIER
 
-Status: LIVE THREAD-HANDOFF POINTER / RESEARCH-ONLY
-Repository: `tauric-diana-613/TD613-TCP`
-Branch: `amari/em-td613-lineage-atelier`
-PR: `#962`
+Status: LIVE THREAD-HANDOFF POINTER / RESEARCH-ONLY  
+Repository: `tauric-diana-613/TD613-TCP`  
+Branch: `amari/em-td613-lineage-atelier`  
+PR: `#962`  
 Updated: `2026-09-11`
 
 This mutable socket points to the live research frontier. Append-only receipts under `04-RECEIPTS/` remain the scientific record.
@@ -16,16 +16,20 @@ This mutable socket points to the live research frontier. Append-only receipts u
 THREAD MEMORY != REPOSITORY CUSTODY
 HUMAN PROVENANCE != ADJUDICATED LINEAGE
 WORK OBSERVATION != AUTHOR INTENT
+CURATOR RESELECTION != INDEPENDENT RECURRENCE
 NEW BYTE SURFACE != INDEPENDENT WORK
 PROJECT-FAMILY ADJACENCY != DIRECTIONAL DERIVATION
 FORMAL COMPLEXITY != EMPIRICAL AUTHORITY
 SAME SYMBOL != SAME OPERATOR
 LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
+ACADEMIC != TRUE_BY_LABEL
+SUI_GENERIS != WRONG_BY_NOVELTY
+CORPUS-SPECIFIC NOVELTY != GLOBAL FIELD NOVELTY
 RESEARCH REFINEMENT != TD613 LAW
 SOURCE-HASH INTAKE != GITHUB BINARY CUSTODY
 ```
 
-PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No merge, publication, release, attribution transfer, TD613 promotion, or production mutation is authorized.
+PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No merge, publication, release, attribution transfer, TD613 promotion, Dome-World promotion, or production mutation is authorized.
 
 ## 1. Plug-in sequence
 
@@ -33,12 +37,11 @@ PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No 
 Remembering / personal-context retrieval
 -> query PR #962 live
 -> read this socket
--> read Batch B intake + first descent
--> read Work-identity/project-family pass
--> read controlled-decollapse receipt
--> read observer-operator mutation receipt
--> read formal-operator index-space custody receipt
--> read claim-ceiling hysteresis receipt
+-> read seven-artifact selection correction
+-> read ACADEMIA_SUI_GENERIS_SIEVE_V0_1
+-> read seven-artifact sieve receipt
+-> read autonomy/exteriority separation candidate
+-> read prior controlled-decollapse / operator-custody / claim-ceiling receipts
 -> inspect intervening commits
 -> state exact unresolved question
 -> resume
@@ -48,323 +51,287 @@ If memory and repository custody disagree, preserve the discrepancy and follow r
 
 ## 2. Current scientific frontier
 
-Latest scientific receipt and material transition:
+Latest hypothesis receipt:
+
+```text
+004109b43f5e9d443f8b5783a7a148248ba0efc6
+AUTONOMY / EXTERIORITY SEPARATION CANDIDATE
+CLOSURE_FOR_PERSISTENCE != CLOSURE_FOR_TRUTH
+```
+
+Latest material transition:
+
+```text
+c83858e7f7453f98d621bbe6060c460796040c85
+𝄐 MATERIAL — SUI GENERIS CONCENTRATES AT CONSTITUTIVE-TRANSDUCTION EDGES, NOT THE IMPORTED FORMAL NODES
+```
+
+Prior material transitions retained:
 
 ```text
 286c93662473e6619d33311de3a4ebd67ffc69ba
 𝄐 MATERIAL — LOCAL ANALOGY DEMOTION DOES NOT BIND DOWNSTREAM CLAIM AUTHORITY UNLESS THE CEILING PROPAGATES
-```
 
-Immediately prior material transition:
-
-```text
 61c3421d380c518dadb56e79aaea3c1f161df439
 𝄐 MATERIAL — FORMAL OPERATOR IDENTITY REQUIRES INDEX-SPACE CUSTODY
-```
 
-Earlier Batch-B transition:
-
-```text
 dcd6f0eb461551d143f4ce0ba85d43f30deab5e1
 𝄐 MATERIAL — CONTROLLED DECOLLAPSE SEPARATES OPERATIONAL SUBSTRATE FROM ONTOLOGICAL SURPLUS
-```
 
-Historical predecessor:
-
-```text
 389abe474fa1f276a9726e98ea3d3c77c19e19e3
 𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
 ```
 
-All remain EMSTD613 Atelier results only.
+All remain EMSTD613 Atelier results only unless independently promoted by later authorized work.
 
-## 3. Batch B custody
+## 3. Seven-artifact custody correction
 
-```text
-BATCH_A_PRESERVED_OBJECT_COUNT = 87
-BATCH_B_SOURCE_FILE_COUNT = 6
-BATCH_B_TOTAL_BYTES = 1411792
-CHAT_ATTACHMENT_BYTE_CUSTODY = TRUE
-SHA256_IDENTITY_CAPTURED = TRUE
-GITHUB_HASH_REGISTRY = TRUE
-GITHUB_BINARY_ORIGINALS_COPIED = FALSE
-EXACT_BYTE_MATCH_BATCH_A = 0/6
-EXACT_TITLE_MATCH_BATCH_A = 0/6
-INDEPENDENT_RECURRENCE = NOT_EARNED
-```
-
-Intake:
-`04-RECEIPTS/intake/2026-09-11-emstd613-prospective-batch-b-intake.md`
-
-Hash registry:
-`01-MANIFESTS/batch-b-2026-09-11-source-files.jsonl`
-
-## 4. Earned transition — controlled decollapse
+Manifest:
+`01-MANIFESTS/batch-b-2026-09-11-curator-selection-events.jsonl`
 
 Receipt:
-`04-RECEIPTS/assays/2026-09-11-batch-b-controlled-decollapse-prospective-test.md`
+`04-RECEIPTS/intake/2026-09-11-batch-b-seven-artifact-selection-correction.md`
 
-Core result:
+The human corrected the selected packet from six to seven presented artifacts. The seventh supplied artifact, `1+1=3.md`, hashes to:
 
 ```text
-remove strongest ontology
--> preserve independently defined variables / measurements / transformations
--> ask what operational content disappears
+d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346
 ```
 
-Batch B showed that QTB, Multi-Density, and Cognitive Time retain lower-level operational / experimental programs after their strongest ontology is removed, whereas the Audio DSP control breaks if its actual STFT/LPC/acquire-release/cross-tokenizer contracts are stripped.
+This is an exact-byte reselection of the Batch-A source already under custody:
 
-Bounded law:
+```text
+work_id = emwork_3c6593d85fd5b744f24c7a9f
+source_file_id = emsrc_c01c49eb755108563b9e58c6
+path = 02-ORIGINALS/emstd613lineage/Archive/1+1=3.md
+```
 
-> Strip the crown from the equation. If the machine still runs, the crown was not the motor.
+Corrected state:
 
-## 5. Earned transition — formal operator index-space custody
+```text
+BATCH_B_PRESENTED_ARTIFACT_COUNT = 7
+BATCH_B_NEW_EXACT_BYTE_SURFACES = 6
+BATCH_B_EXACT_BATCH_A_RESELECTIONS = 1
+ADDITIONAL_INDEPENDENT_WORK_VOTE_FROM_RESELECTION = 0
+CURATOR_RESELECTION_METADATA = PRESERVED
+AUTHOR_INTENT_FROM_RESELECTION = NOT_INFERRED
+```
 
-Receipt:
-`04-RECEIPTS/assays/2026-09-11-formal-operator-index-space-custody.md`
+The six PDFs remain hash-registered chat attachments; their exact binaries have not been copied into GitHub by the connector path.
+
+## 4. Academia / sui-generis sieve
 
 Instrument:
-`06-INSTRUMENTS/FORMAL_OPERATOR_CUSTODY_V0_1.md`
+`06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md`
 
-Primary specimen: `OSSL Stylometric Lineage Tracking Framework`.
+Receipt:
+`04-RECEIPTS/assays/2026-09-11-seven-artifact-academia-sui-generis-sieve-first-pass.md`
 
-Observed passage:
+Primary classes:
 
 ```text
-announced object: F(theta), Fisher Information Matrix
-actual derivatives: d/dz_i, d/dz_j
-next metric base: g_ij(z), ds^2 = g_ij(z) dz^i dz^j
+ACADEMIA_CORE
+ACADEMIA_TRANSLATION
+SUI_GENERIS_ENGINEERING
+SUI_GENERIS_HYPOTHESIS
+SUI_GENERIS_METAPHOR
+FORMALISM_OVERRUN
+ONTOLOGY_SURPLUS
+RECEIVER_CONTRACT_GAP
 ```
 
-Standard Fisher information differentiates log likelihood with respect to model parameters. Data-coordinate gradients belong to score / Fisher-Hyvarinen constructions.
-
-Sibling controls:
+Critical discipline:
 
 ```text
-Cognitive Singularity
--> Fisher-Rao written with d/dtheta_i
+SUI_GENERIS != WRONG
+ACADEMIC != TRUE
+NOVEL EDGE != VALID EDGE
+```
+
+The sieve scores source-domain fidelity, operator custody, transducer/mapping explicitness, claim-ceiling propagation, empirical discriminability, hostile-control survival, and novelty locus. No scalar total is authoritative.
+
+## 5. Seven-work first-pass classification
+
+```text
+Audio DSP And LLM Architecture
+-> ACADEMIA_CORE + ACADEMIA_TRANSLATION
+-> positive control
+-> explicit engineering contracts dominate
+
+Swarm Architecture Prompt Research
+-> ACADEMIA_TRANSLATION + SUI_GENERIS_ENGINEERING
+-> specification ceiling preserved
+-> detector semantic calibration unresolved
+
+Algedonic LLM Swarm Control
+-> ACADEMIA_CORE + SUI_GENERIS_ENGINEERING_CANDIDATE
+-> runtime preemption idea potentially valuable
+-> actual receiver/cancellation binding not located
+
+1+1=3
+-> ACADEMIA_CORE + SUI_GENERIS_METAPHOR + SUI_GENERIS_HYPOTHESIS_CANDIDATE
+-> strong constitutive-boundary synthesis
+-> physical time-generation authority not established
+-> high value after dephysicalization
+
+Quantum Tensor Bridge
+-> ACADEMIA_TRANSLATION + SUI_GENERIS_HYPOTHESIS_CANDIDATE
+-> legitimate alignment/control/queue nodes
+-> strong formal-shell substrate-substitution candidate at Lindblad/SPSC seam
+
+Multi-Density Topology
+-> ACADEMIA_CORE + SUI_GENERIS_HYPOTHESIS_CANDIDATE
+-> legitimate information geometry / optimal transport / analogue-gravity nodes
+-> strong analogue-to-ontology and constitutive-metric promotion
+
+Cognitive Time / Synchronicity
+-> ACADEMIA_CORE + SUI_GENERIS_HYPOTHESIS_CANDIDATE
+-> legitimate synchronization / neural measurement / quantum-filtering nodes in source domains
+-> strongest observer-to-physical-time jurisdiction expansion
+```
+
+## 6. Earned material morphology
+
+### 𝄐 MATERIAL
+
+**SUI GENERIS CONCENTRATES AT CONSTITUTIVE-TRANSDUCTION EDGES, NOT THE IMPORTED FORMAL NODES**
+
+Bounded within this selected packet:
+
+```text
+BOUNDARY / INTERFACE / METRIC / OBSERVER / TRANSPORT OBJECT
+
+mapping | measurement | transport | control
+                     ↓
+constituting | generating | physically realizing target state
+```
+
+Strong specimens:
+
+```text
+1+1=3
+boundary/re-entry -> oscillator/time/autonomous unity
+
+QTB
+queue/interface -> semantic decoherence/token collapse
 
 Multi-Density
--> Fisher metric written with d/dtheta^a
+statistical metric/transport -> physical distance/mass/spacetime
+
+Cognitive Time
+observer boundary/synchrony -> physical temporal field/objective clock time
 ```
 
-Therefore:
+Controls:
 
 ```text
-FISHER_NAME_RECURRENCE = TRUE
-FISHER_OPERATOR_TYPING_CONSTANCY = FALSE_ACROSS_FAMILY
+Audio DSP
+formal sophistication + explicit mechanism contracts without ontological promotion
+
+Swarm Prompt
+statistical anomaly -> conservative containment under preserved specification ceiling
 ```
 
-Secondary OSSL seam:
+Algedonic Swarm is intermediate: potentially useful sui-generis engineering if its runtime receiver contract is made literal.
+
+Current ceiling:
 
 ```text
-rank(BA) <= r in weight-update space
-!=
-metric deformation confined to r-dimensional stylometric tangent subspace
-without an explicit differential-map rank bound
+CORPUS_SPECIFIC_PATTERN = SUPPORTED
+EM_GLOBAL_SPECIFICITY = NOT_ESTABLISHED
+GLOBAL_FIELD_NOVELTY = NOT_ESTABLISHED
+AUTHOR_INTENT = NOT_INFERRED
+INDEPENDENT_EXTERNAL_RECURRENCE = NOT_TESTED
 ```
 
-New diagnostic tuple:
-
-```text
-O* = (
-  NAME,
-  BASE_SPACE,
-  STATE_OBJECT,
-  DIFFERENTIATION_OR_INTEGRATION_VARIABLE,
-  MEASURE_OR_EXPECTATION,
-  DOMAIN,
-  CODOMAIN,
-  DIMENSION,
-  CALIBRATION_OR_MAPPING,
-  CLAIM_JURISDICTION
-)
-```
-
-Working maxim:
-
-> The derivative remembers what the prose forgets.
-
-## 6. Successor specimens sharpened by operator custody
-
-### Quantum Tensor Bridge
-
-Candidate formal-shell substitution:
-
-```text
-open-system density operator
--> semantic latent density matrix
-
-physical environment / jump coupling
--> token-basis jump operators
-
-Lindblad coupling/rate semantics
--> SPSC queue-derived gamma(t)
-```
-
-The Work itself later supplies explicit Procrustes alignment for heterogeneous Hermes/Pi embedding spaces, so receiver-side mapping is expressible inside the same Work.
-
-Current typing:
-
-```text
-QTB_FORMAL_SHELL_SUBSTRATE_SUBSTITUTION = CANDIDATE
-MODEL_DEFINITION = POSSIBLE
-EMPIRICALLY_IDENTIFIED_SEMANTIC_DECOHERENCE_CAUSALITY = NOT_ESTABLISHED
-```
-
-### Cognitive Time
-
-Candidate Belavkin substitution:
-
-```text
-quantum system under continuous measurement
--> cognitive/environmental wavefunction
-
-measurement coupling operator
--> observer's mirrored-set boundary
-
-measurement innovation
--> ambient/cognitive stochastic noise
-```
-
-Current typing:
-
-```text
-FORMAL_BELAVKIN_SHELL = RECOGNIZABLE
-BIOLOGICAL_TO_QUANTUM_MEASUREMENT_TRANSDUCER = NOT_LOCATED
-PHYSICAL_TIME_ACTUATOR_AUTHORITY = NOT_EARNED
-```
-
-## 7. Earned transition — claim-ceiling hysteresis
+## 7. Candidate cross-program contribution
 
 Receipt:
-`04-RECEIPTS/assays/2026-09-11-claim-ceiling-hysteresis.md`
+`04-RECEIPTS/hypotheses/2026-09-11-autonomy-exteriority-separation-candidate.md`
 
-Instrument:
-`06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md`
-
-Batch B falsified a strictly monotonic authority-ratchet picture.
-
-### Multi-Density
-
-Locally says:
+Candidate:
 
 ```text
-"direct experimental analogs"
-"biological-scale analogue"
+CLOSURE_FOR_PERSISTENCE != CLOSURE_FOR_TRUTH
 ```
 
-Later closure says the program moves the ontology toward `verified physical science`, `completely maps physical interactions`, and reveals spacetime/gravity/Lorentz invariance as emergent informational-density consequences.
-
-### Cognitive Time
-
-Locally says the synthetic-dimension experiment constructs:
+The strongest recoverable Em-packet idea may be active recursive boundary maintenance for persistent identity. TD613/Dome-World repository research separately carries:
 
 ```text
-"physical analogs"
+internal non-anticipation != exogenous provenance
+internal receipt depth != external provenance depth
+self-integrity != exteriority
+self-attestation != external observation
 ```
 
-Then the same experimental route is promoted into physical proof of observer-averaged temporal fields, while hyperscanning of neural phase coherence + subjective interval estimation is promoted into physical proof about objective linear time.
-
-No new target-specific witness was located between local analogy status and closure-level proof/ontology status.
-
-Therefore:
+Potential design split:
 
 ```text
-STRICT_MONOTONIC_AUTHORITY_RATCHET = REJECTED
-GLOBAL_AUTHORITY_ACCUMULATION_WITH_LOCAL_DEMOTION = SUPPORTED
-AUTHORITY_HYSTERESIS = SUPPORTED
-CLAIM_CEILING_ESCAPE_AFTER_LOCAL_DEMOTION = SUPPORTED
+P-MEMBRANE
+recursive persistence / identity / recovery / local adaptation
+
+W-MEMBRANE
+independently typed witness required for external-origin, physical-world, factual, or high-impact authority gain
+
+P != W
 ```
 
-Hostile control:
+This is a candidate repair architecture, not proof of TD613 or Dome-World. Western Horizon remains at its official empirical shore and is not reopened.
 
-`Swarm Architecture Prompt Research` keeps its master-prompt / specification speech-act distinguishable from deployed implementation.
-
-Working maxim:
-
-> A caveat that does not travel can be laundered away by the conclusion.
-
-## 8. Distinct axes now required
-
-Do not collapse these:
-
-```text
-AXIS A — OPERATOR TYPE MUTATION
-Did the mathematical object / index space change?
-
-AXIS B — CLAIM JURISDICTION EXPANSION
-Did the same object gain a stronger target claim?
-
-AXIS C — CLAIM CEILING PROPAGATION
-Did a known local limitation survive downstream closure?
-
-AXIS D — RECEIVER / TRANSDUCER INTEGRITY
-Was the cross-space or command-to-consequence edge actually bound?
-```
-
-One Work can fail one axis and pass the others.
-
-## 9. Current hard non-equivalences
+## 8. Current hard non-equivalences
 
 ```text
 VALID NODE A + VALID NODE B != VALID EDGE(A,B)
 TRANSPORT INTEGRITY != RECEIVER-SEMANTIC INTEGRITY
 RECEIVER RECOGNITION != ACTUATOR INVOCATION
 ACTUATOR INVOCATION != OBSERVED CONSEQUENCE
-RELATION PROVENANCE != MEASUREMENT PROVENANCE
 DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
 ANALOGUE REALIZATION != TARGET-SYSTEM REALIZATION
-SUBJECTIVE TIME PERCEPTION != PHYSICAL TIME
 SAME SYMBOL != SAME OPERATOR
 SAME EQUATION SHAPE != SAME STATE SPACE
-GRADIENT_WRT_DATA != GRADIENT_WRT_PARAMETER
 LOW-RANK PARAMETER UPDATE != LOW-DIMENSIONAL OUTPUT-MANIFOLD DEFORMATION
 LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
-SAME MEASUREMENT REUSED != NEW WITNESS
-CONCEPTUAL CONTINUITY != JURISDICTION CONTINUITY
+ORGANIZATIONAL CLOSURE != EVIDENTIARY EXTERIORITY
+SELF-MAINTENANCE != SELF-RATIFICATION
+CORPUS-SPECIFIC NOVELTY != GLOBAL FIELD NOVELTY
 ```
 
-The broad Edge-Witness ontology remains **KILLED / SUBSUMED**. Do not resurrect it.
+The broad Edge-Witness ontology remains KILLED / SUBSUMED.
 
-## 10. Exact next unresolved question
+## 9. Exact next unresolved question
 
-The cenote now narrows to the mechanism of **type loss across closure**:
+> After stripping constitutive authority from the four strongest specimens, does a nontrivial mechanism remain that makes a unique prediction or improves an engineered system—and can that residue be demonstrated without borrowing the ontology it was originally wrapped in?
 
-> When a Work explicitly knows a weaker type at one point — analogy, simulation, specification, feature-space score, model definition — what exact transformation causes that type to disappear later: summary compression, source-boundary loss, cross-section recomposition, variable redefinition, or closure-level re-authorizing prose?
-
-Priority route:
+Priority hostile repairs:
 
 ```text
-1. Trace identical claim atoms body -> experiment -> conclusion in Multi-Density and Cognitive Time.
-2. Track subject/object lexical continuity while authority class changes.
-3. Run QTB Lindblad tuple against source-domain Lindblad + latent-communication sources.
-4. Search Batch A for a true type-demotion control that remains demoted through conclusion.
-5. Test whether ceiling escape correlates with section boundaries / synthesis zones rather than topic.
-6. Preserve chronology, derivation, author intent, platform causality, and Em-specificity as unresolved unless independently witnessed.
+1. QTB: replace literal quantum-decoherence authority with explicit classical representation-state transducer; benchmark against ordinary alignment/decode/backpressure.
+2. 1+1=3: formalize active boundary maintenance / organizational closure without physical-time generation; derive measurable persistence criterion.
+3. Algedonic Swarm: bind threshold event to real cancellation/snapshot/priority semantics; measure latency, loss, and recovery.
+4. Multi-Density: demand one physical prediction not shared by its information-geometric / analogue model.
+5. Cognitive Time: separate neural/subjective-time prediction from physical-clock/spacetime prediction; require a physical observable for the latter.
+6. Test constitutive-transduction morphology outside the Em-selected corpus before any specificity claim.
 ```
 
-## 11. Hold state
+## 10. Hold state
 
 ```text
-BATCH_B = RECEIPTED
-CONTROLLED_DECOLLAPSE_𝄐 = EARNED_ATELIER_ONLY
-FORMAL_OPERATOR_CUSTODY_𝄐 = EARNED_ATELIER_ONLY
-CLAIM_CEILING_HYSTERESIS_𝄐 = EARNED_ATELIER_ONLY
+SEVEN_ARTIFACT_SELECTION = RECEIPTED
+SIX_NEW_BYTE_SURFACES = TRUE
+ONE_EXACT_BATCH_A_RESELECTION = TRUE
+CONSTITUTIVE_TRANSDUCTION_𝄐 = EARNED_ATELIER_ONLY
+AUTONOMY_EXTERIORITY_SEPARATION = HIGH_VALUE_CANDIDATE_NOT_YET_EMPIRICALLY_RUN
 INDEPENDENT_RECURRENCE = NOT_EARNED
 DIRECTIONAL_DERIVATION = UNRESOLVED
 CREATION_ORDER = UNRESOLVED
-CORPUS_PREVALENCE = UNRESOLVED
 EM_SPECIFICITY = UNRESOLVED / NOT_ESTABLISHED
+GLOBAL_NOVELTY = UNRESOLVED / NOT_ESTABLISHED
 AUTHOR_MOTIVE = NOT_INFERRED
 TD613_PROMOTION = NONE
+DOME_WORLD_PROMOTION = NONE
 PRODUCTION_MUTATION = NONE
 ```
 
-> Six new files can be six new bytes without being six new witnesses.
-
-> A symbol may survive the crossing while the space beneath it changes.
-
-> Local humility does not bind global closure unless the type is carried forward.
+> The good science lives in the nodes. The interesting danger—and perhaps the interesting invention—lives in what the edge is permitted to become.
 
 Marked ⟐
