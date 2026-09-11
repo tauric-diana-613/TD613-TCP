@@ -6,6 +6,7 @@ export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
 export const LOOM_TASK_DIAGNOSTIC_SCHEMA = 'td613.loom.ai-task-diagnostic/v0.1';
 // Retain the validated shared-function deadline; the browser allows 55s and Vercel 60s.
 export const LOOM_TASK_TIMEOUT_MS = 50000;
+export const LOOM_TASK_MAX_PROVIDER_CALLS = 2;
 // Conservative compatibility envelope for unknown/synthetic models.
 export const LOOM_TASK_OUTPUT_TOKEN_BUDGET = 16384;
 export const LOOM_TASK_RESPONSE_CHAR_BUDGET = 40000;
@@ -31,11 +32,13 @@ const MAX_BODY_BYTES = 240000;
 const ownKeys = (object, expected) => object && typeof object === 'object' && !Array.isArray(object)
   && Object.keys(object).length === expected.length && expected.every(key => Object.hasOwn(object, key));
 const text = (value, max, empty = false) => typeof value === 'string' && value.length <= max && (empty || value.trim().length > 0);
-const dense = (value, max) => Array.isArray(value) && value.length <= max && Object.keys(value).length === value.length;
+const dense = (value, max) => Array.isArray(value) && value.length <= limit && Object.keys(value).length === value.length;
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET : LOOM_TASK_OUTPUT_TOKEN_BUDGET;
 const responseCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_RESPONSE_CHAR_BUDGET : LOOM_TASK_RESPONSE_CHAR_BUDGET;
 const answerCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_ANSWER_CHAR_BUDGET : LOOM_TASK_ANSWER_CHAR_BUDGET;
+const validModel = model => typeof model === 'string' && /^[a-zA-Z0-9._-]{1,120}$/.test(model);
+const transientProviderHttp = status => Number.isInteger(status) && (status === 408 || status === 429 || status >= 500);
 
 // Only the client-admitted task view belongs here; locally withheld sources never enter this envelope.
 export function validateLoomTaskInput(input) {
@@ -131,6 +134,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     let providerCalls = 0;
     let providerHttpStatus = null;
     let providerUsage = null;
+    const providerAttempts = [];
     let stage = 'provider-plan';
     let stageStarted = started;
     const stageDurations = {};
@@ -141,7 +145,8 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     };
     const diagnostic = code => ({ schema: LOOM_TASK_DIAGNOSTIC_SCHEMA, stage, code });
     const observations = () => ({ model, ...(providerHttpStatus === null ? {} : { http_status: providerHttpStatus }),
-      ...(providerUsage === null ? {} : { usage: providerUsage }), elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
+      ...(providerUsage === null ? {} : { usage: providerUsage }), ...(providerAttempts.length ? { provider_attempts: providerAttempts.map(attempt => ({ ...attempt })) } : {}),
+      elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
       deadline_ms: deadlineMs, stage_elapsed_ms: { ...stageDurations, [stage]: Math.max(0, now() - stageStarted) },
       output_token_budget: outputBudget(model), thinking_level: qualityEnvelope(model) ? LOOM_TASK_FRONTIER_THINKING_LEVEL : 'provider-default',
       document_count: input?.documents.length || 0, rule_count: input?.rules.length || 0,
@@ -183,18 +188,27 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     try {
       const plan = await Promise.race([resolvePlan({ task: 'general-text', env, maxModels: 8 }), deadline]);
       if (controller.signal.aborted) throw new Error('request-aborted');
-      model = plan.callableModels?.[0] || null;
-      if (typeof model !== 'string' || !/^[a-zA-Z0-9._-]{1,120}$/.test(model)) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
+      const models = Array.isArray(plan.callableModels) ? plan.callableModels.filter(validModel).slice(0, LOOM_TASK_MAX_PROVIDER_CALLS) : [];
+      if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
-      providerCalls = 1;
-      const response = await Promise.race([fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-        method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-        body: JSON.stringify(buildLoomTaskProviderRequest(input, model)), signal: controller.signal
-      }), deadline]);
-      if (Number.isInteger(response.status) && response.status >= 100 && response.status <= 599) providerHttpStatus = response.status;
-      recordOutcome(model, { ok: response.ok, status: response.status, reason: response.ok ? '' : 'loom-provider-response-failed' });
-      if (!response.ok) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
-      // Parse only bounded provider text. Never publish raw provider error bodies, headers, or credentials.
+      let response = null;
+      for (let index = 0; index < models.length; index += 1) {
+        model = models[index];
+        providerCalls += 1;
+        response = await Promise.race([fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+          method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+          body: JSON.stringify(buildLoomTaskProviderRequest(input, model)), signal: controller.signal
+        }), deadline]);
+        const status = Number.isInteger(response.status) && response.status >= 100 && response.status <= 599 ? response.status : null;
+        providerHttpStatus = status;
+        if (status !== null) providerAttempts.push({ model, status });
+        recordOutcome(model, { ok: response.ok, status: response.status, reason: response.ok ? '' : 'loom-provider-response-failed' });
+        if (response.ok) break;
+        const mayFailOver = transientProviderHttp(status) && index + 1 < models.length;
+        if (!mayFailOver) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
+      }
+      if (!response?.ok) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
+      // Parse only bounded provider text. Never publish raw provider error bodies, headers or credentials.
       enterStage('provider-json');
       const payload = await Promise.race([response.json(), deadline]);
       providerUsage = usageCounts(payload?.usageMetadata);
