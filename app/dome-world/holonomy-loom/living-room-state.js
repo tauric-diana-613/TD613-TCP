@@ -60,10 +60,18 @@ export function projectLivingRoomState(packet, snapshot = {}) {
           ? `The provider request failed${providerFailure.status === null ? '' : ` (HTTP ${providerFailure.status})`} before an AI answer returned.`
           : 'A provider reply returned, but Loom held it before presenting an answer.'
     : null;
+  // The rule gate depicts the outgoing local admission boundary. Once submission is observed,
+  // later provider/return failures must not be drawn back onto that gate.
+  const gateBlocked = held && !outgoingSubmitted;
+  const failureTarget = !held ? null
+    : transportFailure ? 'provider'
+      : responseObserved || (providerFailure && !transportFailure) ? 'return'
+        : gateBlocked ? 'gate' : 'route';
   const control = {
     phase, outgoingSubmitted, routeReturnObserved, responseObserved, held, settled, bindingVerified,
     selectedCount, localCount, rulesCount, reportedSourceCount, missingCount,
     providerFailure: providerFailure ? { ...providerFailure, transportFailure: Boolean(transportFailure) } : null,
+    failureTarget,
     releaseState: held ? 'HELD' : phase === 'completed' ? 'ADMITTED_FOR_HUMAN_REVIEW' : 'UNAVAILABLE',
     providerActivity: 'UNKNOWN', observationBasis: 'CLIENT_ROUTE_EVENTS_AND_MODEL_REPORTED_FIELDS'
   };
@@ -71,9 +79,11 @@ export function projectLivingRoomState(packet, snapshot = {}) {
   const retained = `${localCount} ${localCount === 1 ? 'file stays' : 'files stay'} in this tab`;
   const heldCopy = providerFailure
     ? {
-        now: 'This route stopped.',
+        now: transportFailure ? 'The AI service failed after submission.' : 'This return was held.',
         why: `${providerFailureText} ${retained}.`,
-        next: 'No source-use or missing-information claim is shown unless an AI answer actually returns and passes the local checks.'
+        next: transportFailure
+          ? 'The rule gate already passed this packet; no AI answer returned to inspect.'
+          : 'No source-use or missing-information claim is shown unless an AI answer actually returns and passes the local checks.'
       }
     : {
         now: 'This route stopped.',
@@ -95,7 +105,7 @@ export function projectLivingRoomState(packet, snapshot = {}) {
     now: `${phase.toUpperCase()} · ${control.releaseState}`,
     why: `${outgoingSubmitted ? 'Client submission observed' : 'Client submission unobserved'}; ${returnObservation}; ${bindingVerified ? 'local AIA binding verified' : 'local AIA binding unverified'}.`,
     next: providerFailure
-      ? `${providerFailureText} No model source-use or missingness claim was admitted from this failed attempt.`
+      ? `${providerFailureText} ${transportFailure ? 'The outgoing rule gate is not the failure location.' : ''} No model source-use or missingness claim was admitted from this failed attempt.`
       : `${reportedSourceCount === null ? 'Source use unreported' : `${reportedSourceCount} source references reported by the model`}; ${missingCount === null ? 'missingness unreported' : `${missingCount} missing-information items reported by the model`}. Internal AI activity remains unknown.`
   };
   const glyphs = [{ glyph: 'à', relation: 'gathering', cause: 'The task, selected documents and rules form one outgoing packet.' }];
@@ -109,13 +119,19 @@ export function projectLivingRoomState(packet, snapshot = {}) {
     : responseObserved
       ? { state: 'RESPONSE_OBSERVED', label: reportedSourceCount === null ? 'AI answer returned; source use unreported' : `${reportedSourceCount} source ${reportedSourceCount === 1 ? 'reference' : 'references'} reported by the AI` }
       : { state: 'UNOBSERVED', label: !outgoingSubmitted ? 'Nothing sent to the AI route yet' : held ? 'Waiting stopped; no AI answer observed' : 'Waiting for an AI answer; internal activity unknown' };
+  const gateLabel = gateBlocked
+    ? 'Packet stopped before submission'
+    : outgoingSubmitted && bindingVerified
+      ? transportFailure ? 'Packet binding passed · provider failed later' : 'Packet binding passed before submission'
+      : bindingVerified ? 'Packet binding checked'
+        : phase === 'checking' ? 'Checking packet binding' : 'Waiting for your Run';
   return freeze({
     schema: LOOM_LIVING_ROOM_SCHEMA, phase, outgoingSubmitted, routeReturnObserved, responseObserved, held, settled,
     selectedCount, localCount, rulesCount, documents, reportedSourceCount, missingCount,
-    providerFailure: control.providerFailure,
+    providerFailure: control.providerFailure, failureTarget,
     additionalMissingCount: Math.max(0, (missingCount ?? 0) - 8),
     provider,
-    gate: { bindingVerified, blocked: held, label: held ? 'Route held' : bindingVerified ? 'Packet binding checked' : phase === 'checking' ? 'Checking packet binding' : 'Waiting for your Run' },
+    gate: { bindingVerified, blocked: gateBlocked, label: gateLabel },
     glyphs, copy: { plain, auditor }, control,
     motion: { enabled, courierProgress: outgoingSubmitted ? (enabled && phase === 'pending' ? progress : 1) : 0,
       returnProgress: responseObserved ? (enabled && (phase === 'received' || settlingReveal) ? progress : 1) : 0,
