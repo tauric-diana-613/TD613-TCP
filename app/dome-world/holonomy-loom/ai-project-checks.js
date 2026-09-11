@@ -58,9 +58,17 @@ function reportedTotals(answer) {
     }
     // Explicit comparator: 'Vendor-A (12-mo cost: X credits) ... Vendor-B (Y credits)'.
     // Y inherits the declared cost comparison only within that same sentence.
-    const prefix = answer.slice(Math.max(0, segment.index - 240), segment.index);
+    const prefix = answer.slice(Math.max(0, segment.index - 320), segment.index);
     const directComparison = new RegExp(`^\\s*\\(\\s*${numeral}\\s+credits\\)`, 'i').exec(body);
     if (directComparison && /(?:12[- ](?:mo(?:nth)?s?)|annual)[^\n.]{0,180}(?:cost|total)[^\n.]*$/i.test(prefix)) candidates[key].push(numeric(directComparison[1]));
+    // A compact Markdown/table row such as `Vendor A | **137,591.52 credits**`
+    // is explicit attribution only when its nearby heading/header declares a
+    // twelve-month/annual fee or cost comparison. A nearby vendor label or bare
+    // expected number alone still earns nothing.
+    const scopedContext = `${prefix}\n${body.slice(0,260)}`;
+    const scopedFeeContext = /(?:12[- ](?:mo(?:nth)?s?)|annual|stated[- ]fees?|cost[ \t]+comparison|total[ \t]+cost|fees?[ \t]+comparison)/i.test(scopedContext);
+    const directRow = new RegExp(`^[\\s|:*_–—-]*${numeral}\\s+credits\\b`, 'i').exec(body);
+    if (scopedFeeContext && directRow) candidates[key].push(numeric(directRow[1]));
   }
   return Object.fromEntries(Object.entries(candidates).map(([key, values]) => {
     const distinct = [...new Set(values)];

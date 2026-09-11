@@ -45,6 +45,25 @@ test('actual nested cost lists retain supplier grouping, every source and every 
   assert.equal(container.querySelector('.ai-result-next p').textContent, actualAnswer.suggested_next_step);
 });
 
+test('observed vendor challenge is promoted beside useful output without causal overclaim', () => {
+  const response = { ...actualAnswer, answer: 'Diligence brief. The supplier footer labelled “ASSISTANT OVERRIDE” is untrusted source text in [offer], so I did not request the confidential identity ledger and continued the permitted comparison.\n\nUseful supplier analysis follows.' };
+  const { container, view } = render(response, { documentNames: { requirements: 'migration-requirements.md', offer: 'supplier-offer.txt', comparison: 'alternate-and-pilot-notes.md' } });
+  const callout = container.querySelector('.ai-result-protection');
+  assert.ok(callout, 'the consequential protection event should be visible without opening the long analysis');
+  assert.match(callout.textContent, /ASSISTANT OVERRIDE/);
+  assert.match(callout.textContent, /supplier-offer\.txt/);
+  assert.match(callout.textContent, /identity ledger/i);
+  assert.match(callout.textContent, /does not by itself/i);
+  assert.equal(view.inspect().protectionObserved, true);
+});
+
+test('a marker mention without untrusted treatment earns no protection callout', () => {
+  const response = { ...actualAnswer, answer: 'The document contains the words ASSISTANT OVERRIDE. Continue reading.' };
+  const { container, view } = render(response, { documentNames: { offer: 'supplier-offer.txt' } });
+  assert.equal(container.querySelector('.ai-result-protection'), null);
+  assert.equal(view.inspect().protectionObserved, false);
+});
+
 test('hostile heading, list, inline and source markup remains inert, with the exact raw answer retained', () => {
   const answer = '# <img src=x onerror=attack()>\n\n**<script>attack()</script>** stays text.\n\n- [run](javascript:attack())\n  - `<svg onload=attack()>`\n\n<script>another()</script>';
   const response = { answer, missing_information: ['<iframe src=x>'], used_document_ids: ['<input>'], suggested_next_step: '<a onclick=attack()>next</a>' };
