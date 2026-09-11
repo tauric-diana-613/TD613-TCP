@@ -29,9 +29,23 @@ Canonical shortcut: [`PEDAGOGUE.md`](PEDAGOGUE.md)
 
 ### Aperture
 
-Observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, and replay.
+Observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, replay, and provider-instrument audit when API routing itself becomes part of the observation problem.
 
 Canonical shortcut: [`APERTURE.md`](APERTURE.md)
+
+Current provider-instrument field skill:
+
+```text
+model/method visibility
+!= request-envelope compatibility
+!= compute/output-budget geometry
+!= generation-completion observability
+!= retry/error-class correctness
+!= provider-health memory scope
+!= receiver-identity salience
+```
+
+Aperture may type those deficits and propose the next observation. It cannot call a provider, retry, disable a model, mutate routing, or infer global provider health from a local receipt.
 
 ### Atlas
 
@@ -54,6 +68,48 @@ PEDAGOGUE != APERTURE != ATLAS != FADT
 ```
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
+
+## Field-trip hydration rule
+
+The Dollhouse may teach an installed agent a new bounded skill when live engineering or research work exposes a reusable relation. The hydration sequence mirrors Pedagogue's scientific-transfer discipline:
+
+```text
+observed failure / external contract
+-> source-faithful field receipt
+-> stripped transferable relation
+-> bounded executable audit
+-> hostile synthetic fixtures
+-> canonical shortcut / registry hydration
+-> separate promotion decision
+```
+
+A field trip does not silently promote the standalone instrument, rewrite its release identity, or grant new authority.
+
+The 2026-09-11 provider-stack excursion hydrated Aperture with one such skill. Canonical receipt:
+
+```text
+docs/research/2026-09-11-APERTURE-PROVIDER-STACK-FIELD-TRIP.md
+```
+
+Bounded executable audit:
+
+```text
+app/engine/aperture-v32-provider-instrument-audit.js
+```
+
+Hostile witness:
+
+```text
+node tests/aperture-v32-provider-instrument-audit.test.mjs
+```
+
+The key lesson is not provider-specific:
+
+```text
+MODEL_ID_ALONE != PROVIDER_INSTRUMENT
+```
+
+The effective provider instrument includes the selected model, model-specific request envelope, compute/output ceiling, completion observation, retry semantics, state-memory lifetime, and the receiver identity exposed to the human.
 
 ## Portable AIA operational roundtrip candidate
 
