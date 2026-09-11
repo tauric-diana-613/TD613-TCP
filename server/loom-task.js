@@ -1,4 +1,5 @@
 import { GEMINI_MODEL_POLICY_VERSION, resolveGeminiProviderPlan, recordGeminiModelOutcome } from './gemini-model-policy.js';
+import { geminiGenerateContentUrl, geminiMayFailOver, geminiRequestHeaders } from './gemini-provider-transport.js';
 import { consumeRateSlot } from './khonapolit-quality.js';
 
 export const LOOM_TASK_SCHEMA = 'td613.loom.ai-task/v0.1';
@@ -46,7 +47,6 @@ const outputBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER
 const responseCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_RESPONSE_CHAR_BUDGET : LOOM_TASK_RESPONSE_CHAR_BUDGET;
 const answerCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_ANSWER_CHAR_BUDGET : LOOM_TASK_ANSWER_CHAR_BUDGET;
 const validModel = model => typeof model === 'string' && /^[a-zA-Z0-9._-]{1,120}$/.test(model);
-const transientProviderHttp = status => Number.isInteger(status) && (status === 408 || status === 429 || status >= 500);
 
 export function loomThinkingConfig(model = '') {
   if (!qualityEnvelope(model)) return null;
@@ -168,6 +168,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     let providerHttpStatus = null;
     let providerUsage = null;
     const providerAttempts = [];
+    const providerAttemptTimings = [];
     let stage = 'provider-plan';
     let stageStarted = started;
     const stageDurations = {};
@@ -181,6 +182,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const thinkingConfig = loomThinkingConfig(model);
       return ({ model, ...(providerHttpStatus === null ? {} : { http_status: providerHttpStatus }),
         ...(providerUsage === null ? {} : { usage: providerUsage }), ...(providerAttempts.length ? { provider_attempts: providerAttempts.map(attempt => ({ ...attempt })) } : {}),
+        ...(providerAttemptTimings.length ? { provider_attempt_timings: providerAttemptTimings.map(attempt => ({ ...attempt })) } : {}),
         elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
         deadline_ms: deadlineMs, stage_elapsed_ms: { ...stageDurations, [stage]: Math.max(0, now() - stageStarted) },
         output_token_budget: outputBudget(model),
@@ -233,16 +235,55 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       for (let index = 0; index < models.length; index += 1) {
         model = models[index];
         providerCalls += 1;
-        response = await Promise.race([fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-          method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-          body: JSON.stringify(buildLoomTaskProviderRequest(input, model)), signal: controller.signal
-        }), deadline]);
+        const elapsedBeforeAttempt = Math.max(0, now() - started);
+        const remainingGlobalMs = Math.max(1, deadlineMs - elapsedBeforeAttempt);
+        const remainingAttempts = Math.max(1, models.length - index);
+        // Preserve the validated long primary window. Once fallback begins, divide the
+        // remaining global window so one stalled fallback cannot starve every later model.
+        const attemptTimeoutMs = index === 0 ? remainingGlobalMs : Math.max(1, Math.floor(remainingGlobalMs / remainingAttempts));
+        const attemptStartedAt = now();
+        const attemptController = new AbortController();
+        const relayGlobalAbort = () => attemptController.abort();
+        controller.signal.addEventListener('abort', relayGlobalAbort, { once: true });
+        let attemptTimer;
+        let localTimedOut = false;
+        const attemptDeadline = new Promise((_, reject) => {
+          attemptTimer = setTimeout(() => {
+            localTimedOut = true;
+            attemptController.abort();
+            reject(new Error('provider-attempt-timeout'));
+          }, attemptTimeoutMs);
+        });
+        try {
+          response = await Promise.race([fetchImpl(geminiGenerateContentUrl(model), {
+            method: 'POST', headers: geminiRequestHeaders(env.GEMINI_API_KEY),
+            body: JSON.stringify(buildLoomTaskProviderRequest(input, model)), signal: attemptController.signal
+          }), deadline, attemptDeadline]);
+        } catch (error) {
+          if (controller.signal.aborted) throw error;
+          if (!localTimedOut) throw error;
+          const elapsedMs = Math.max(0, now() - attemptStartedAt);
+          providerHttpStatus = 408;
+          providerAttempts.push({ model, status: 408 });
+          providerAttemptTimings.push({ model, status: 408, elapsed_ms: elapsedMs, timeout_ms: attemptTimeoutMs, timed_out: true });
+          recordOutcome(model, { ok: false, status: 408, timedOut: true, reason: 'loom-provider-attempt-timeout' });
+          const mayFailOver = index + 1 < models.length;
+          if (!mayFailOver) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_TRANSPORT_FAILED') });
+          const backoffMs = LOOM_TASK_TRANSIENT_BACKOFF_MS[Math.min(index, LOOM_TASK_TRANSIENT_BACKOFF_MS.length - 1)];
+          await Promise.race([sleep(backoffMs), deadline]);
+          continue;
+        } finally {
+          clearTimeout(attemptTimer);
+          controller.signal.removeEventListener('abort', relayGlobalAbort);
+        }
         const status = Number.isInteger(response.status) && response.status >= 100 && response.status <= 599 ? response.status : null;
         providerHttpStatus = status;
+        const elapsedMs = Math.max(0, now() - attemptStartedAt);
         if (status !== null) providerAttempts.push({ model, status });
+        providerAttemptTimings.push({ model, ...(status === null ? {} : { status }), elapsed_ms: elapsedMs, timeout_ms: attemptTimeoutMs, timed_out: false });
         recordOutcome(model, { ok: response.ok, status: response.status, reason: response.ok ? '' : 'loom-provider-response-failed' });
         if (response.ok) break;
-        const mayFailOver = transientProviderHttp(status) && index + 1 < models.length;
+        const mayFailOver = geminiMayFailOver(status) && index + 1 < models.length;
         if (!mayFailOver) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
         const backoffMs = LOOM_TASK_TRANSIENT_BACKOFF_MS[Math.min(index, LOOM_TASK_TRANSIENT_BACKOFF_MS.length - 1)];
         await Promise.race([sleep(backoffMs), deadline]);
