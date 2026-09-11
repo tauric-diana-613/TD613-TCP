@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { MODEL_CATALOG, assessGeminiEligibility } from '../server/gemini-model-registry.js';
+import fs from 'node:fs';
+import { GEMINI_LIFECYCLE_VERSION, MODEL_CATALOG, assessGeminiEligibility } from '../server/gemini-model-registry.js';
 import { clearGeminiModelState, recordGeminiModelOutcome, resolveGeminiModelPlan } from '../server/gemini-model-policy.js';
 import handler from '../server/hush-generate-quality.js';
 
@@ -66,4 +67,48 @@ try {
   }
   clearGeminiModelState();
 }
+
+// External-episode reconciliation: visibility, generation outcome, and lifecycle stay distinct.
+const reconciliation = JSON.parse(fs.readFileSync(
+  new URL('./fixtures/gemini/gemini-visibility-availability-non-equivalence-v01.json', import.meta.url),
+  'utf8'
+));
+const pre = reconciliation.observations.pre_failure_listing;
+const failure = reconciliation.observations.generation_failure;
+const post = reconciliation.observations.post_failure_listing;
+assert.equal(reconciliation.model, 'gemini-3.8-flash');
+assert.equal(pre.ok, true);
+assert.equal(pre.complete, true);
+assert.equal(pre.cached, false);
+assert.equal(pre.model_visible, true);
+assert.equal(post.ok, true);
+assert.equal(post.complete, true);
+assert.equal(post.cached, false);
+assert.equal(post.model_visible, true);
+assert.equal(failure.status, 503);
+assert.equal(failure.successful_generation, false);
+assert.equal(failure.model, undefined, 'generation model remains bound by the repository source rather than duplicated fixture prose');
+assert.ok(Date.parse(pre.completed_at) < Date.parse(failure.observed_at));
+assert.ok(Date.parse(failure.observed_at) < Date.parse(post.started_at));
+assert.equal(post.current_main_dispatch, false, 'historical rerun must not masquerade as current-main dispatch closure');
+assert.notEqual(post.source_sha, reconciliation.execution_parent);
+assert.equal(GEMINI_LIFECYCLE_VERSION, reconciliation.lifecycle.registry_version);
+assert.equal(MODEL_CATALOG[reconciliation.model].stability, reconciliation.lifecycle.registry_stability);
+assert.equal(MODEL_CATALOG[reconciliation.model].lifecycle, reconciliation.lifecycle.registry_lifecycle);
+assert.equal(reconciliation.lifecycle.official_status, 'GA_STABLE');
+assert.equal(reconciliation.lifecycle.official_shutdown_announced, false);
+const handoff = fs.readFileSync(new URL('../docs/research/2026-09-10-LOOM-LIVING-ROOM-HANDOFF.md', import.meta.url), 'utf8');
+assert.match(handoff, new RegExp(failure.request_id));
+assert.match(handoff, /returned a provider HTTP 503 after 2,196 ms/);
+assert.match(handoff, /model `gemini-3\.8-flash`/);
+assert.match(handoff, /stage\s+`provider-transport`/);
+for (const claim of Object.values(reconciliation.claim_ceiling)) {
+  assert.equal(claim, false, 'negative authority ceilings must remain false');
+}
+assert.deepEqual(reconciliation.earned_if_valid, [
+  'CREDENTIAL_SCOPED_LIST_VISIBILITY_DOES_NOT_IMPLY_GENERATION_EPISODE_SUCCESS',
+  'DOCUMENTED_CURRENT_LIFECYCLE_DOES_NOT_IMPLY_PER_EPISODE_TRANSPORT_SUCCESS',
+  'THE_2026_09_10_HTTP_503_IS_NOT_EVIDENCE_OF_GLOBAL_GEMINI_3_8_FLASH_RETIREMENT'
+]);
+
 console.log('gemini-lifecycle-admission.test.mjs passed');
