@@ -42,6 +42,7 @@ Reach for Aperture when work materially involves one or more of:
 - abstention, rejection, null results, or unresolved alternatives;
 - source drift, signed residue, held-out validation, replay, or tamper posture;
 - route-memory consequences that depend on what survived the observation aperture;
+- provider/API failures where model visibility, request compatibility, compute budget, completion state, retry class, state-memory scope, or receiver identity may have been collapsed together;
 - a Pedagogue-proposed question that needs a reconstruction/uncertainty audit before it deserves to be asked.
 
 Ordinary copy edits, styling, and non-semantic mechanical repairs do not need Aperture merely because the repository contains telemetry.
@@ -100,16 +101,46 @@ app/engine/aperture-v31-residual-ledger.js
 app/engine/aperture-v31-replay.js
 ```
 
-### v3.2 experiment-design audit
+### v3.2 experiment-design audits
 
 ```text
 app/engine/aperture-v32-typed-epistemic-deficit.js
+app/engine/aperture-v32-provider-instrument-audit.js
 ```
 
-The v3.2 audit types the declared reconstruction deficit and returns
-`PROPOSE`, `ABSTAIN`, `REJECT`, or `ASK_NOTHING`. It does not select or execute
-an observation. Classification replay stability remains
-`HELD_NOT_YET_WITNESSED` pending the separately authorized perturbation assay.
+The typed epistemic-deficit audit classifies declared reconstruction deficits and returns `PROPOSE`, `ABSTAIN`, `REJECT`, or `ASK_NOTHING`. It does not select or execute an observation. Classification replay stability remains `HELD_NOT_YET_WITNESSED` pending the separately authorized perturbation assay.
+
+The provider-instrument audit is a bounded field-hydration candidate learned from the 2026-09-11 Hush / Marrowline / Loom provider-stack excursion. It treats the **request envelope as part of the instrument** and separates:
+
+```text
+M = model/method visibility
+E = request-envelope compatibility
+B = compute/output-budget geometry
+F = generation-completion observability
+R = retry/error-class correctness
+H = provider-health memory scope
+I = receiver-identity salience
+```
+
+with the hard relation:
+
+```text
+M != E != B != F != R != H != I
+```
+
+It may classify a declared provider state, type deficits, and propose the next observation. It cannot call a provider, retry a request, disable a model, mutate routing, infer global provider health, merge, deploy, or release.
+
+Canonical field receipt:
+
+```text
+docs/research/2026-09-11-APERTURE-PROVIDER-STACK-FIELD-TRIP.md
+```
+
+Focused hostile witness:
+
+```text
+node tests/aperture-v32-provider-instrument-audit.test.mjs
+```
 
 ### Full Dome-World laboratory
 
@@ -141,7 +172,7 @@ These are research fixtures until separately installed through the Aperture rele
 
 ## Current research grammar
 
-The active bounded research relation is:
+The active bounded reconstruction relation is:
 
 ```text
 current reconstruction state
@@ -151,7 +182,7 @@ current reconstruction state
 → PROPOSE | ABSTAIN | REJECT | ASK NOTHING
 ```
 
-The currently witnessed deficit classes are:
+The currently witnessed reconstruction-deficit classes are:
 
 ```text
 STRUCTURAL_RANK_DEFICIT
@@ -159,6 +190,31 @@ NUMERICAL_STABILITY_DEFICIT
 NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT
 NOISE_GEOMETRY_INCOMPLETE
 INVALID_NOISE_GEOMETRY
+```
+
+The provider-instrument hydration adds a parallel bounded relation:
+
+```text
+provider observation
+→ separate model visibility from request compatibility
+→ separate compute ceiling from answer completion
+→ classify retry/error semantics
+→ audit provider-health state lifetime
+→ audit selected-receiver visibility
+→ PROPOSE | ABSTAIN | REJECT | ASK NOTHING
+```
+
+Provider-instrument deficit examples include:
+
+```text
+REQUEST_ENVELOPE_INCOMPATIBLE
+REQUEST_CONTROL_GENERATION_MISMATCH
+CLIENT_REQUEST_REJECTION
+TRANSIENT_RESILIENCE_DEFICIT
+COMPLETION_OBSERVABILITY_DEFICIT
+COMPUTE_BUDGET_GEOMETRY_DEFICIT
+PROVIDER_HEALTH_MEMORY_NON_DURABLE
+RECEIVER_IDENTITY_SALIENCE_DEFICIT
 ```
 
 Hard anti-equivalences:
@@ -174,26 +230,36 @@ invalid covariance != approximately valid covariance
 available candidate != needed question
 proposal != execution
 widening != validation
+model listed != request envelope compatible
+quality tier != thinking-control grammar
+max output tokens != answer-token budget
+HTTP 200 != complete generation
+HTTP 400 request rejection != provider-health degradation
+process-local cooldown != durable provider state
+receiver identity recorded != receiver identity salient
+request-envelope incompatibility != model-removal evidence
 ```
 
-No universal scalar utility score may collapse those deficit classes into one crown.
+No universal scalar utility or 'API health' score may collapse those deficit classes into one crown.
 
-## Scientific hydration boundary
+## Scientific and software-contract hydration boundary
 
-Pedagogue's 2026 research-hydration corpus may inform Aperture assay design through stripped transferable relations only. Relevant families include inverse problems, temporal tomography, control/state estimation, moiré/registry dynamics, quasiperiodicity, phasonics, latent-representation transforms, stylometric provenance, holonomy methodology, and inverse design.
+Pedagogue's 2026 research-hydration corpus may inform Aperture assay design through stripped transferable relations only. Relevant scientific families include inverse problems, temporal tomography, control/state estimation, moiré/registry dynamics, quasiperiodicity, phasonics, latent-representation transforms, stylometric provenance, holonomy methodology, and inverse design.
+
+Provider/API field work may also hydrate Aperture through **source-faithful software-contract observations**. A provider manual, API schema, runtime receipt, or request rejection can teach a bounded instrument relation without being converted into a universal provider truth.
 
 The transfer law remains:
 
 ```text
-external scientific result
-→ source-faithful research card
+external scientific result OR provider/API contract observation
+→ source-faithful research card / field receipt
 → stripped relation
 → independent synthetic assay
 → hostile control / falsifier
 → bounded refinement candidate
 ```
 
-Physical ontology does not transfer by resemblance.
+Physical ontology does not transfer by resemblance. Provider documentation does not establish runtime availability, task quality, quota, or future behavior. A route-authored request error does not become evidence against the model merely because the provider returned it.
 
 ## No-crown / authority boundary
 
@@ -203,6 +269,8 @@ It may not by itself:
 
 - take Ash custody;
 - execute a sensor or physical experiment;
+- execute a provider/API call;
+- authorize retry, model disablement, or routing mutation;
 - authorize release/export;
 - mutate a consequential route;
 - promote a research refinement into production;
