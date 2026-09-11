@@ -19,6 +19,8 @@ WORK OBSERVATION != AUTHOR INTENT
 NEW BYTE SURFACE != INDEPENDENT WORK
 PROJECT-FAMILY ADJACENCY != DIRECTIONAL DERIVATION
 FORMAL COMPLEXITY != EMPIRICAL AUTHORITY
+SAME SYMBOL != SAME OPERATOR
+LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
 RESEARCH REFINEMENT != TD613 LAW
 SOURCE-HASH INTAKE != GITHUB BINARY CUSTODY
 ```
@@ -31,12 +33,12 @@ PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No 
 Remembering / personal-context retrieval
 -> query PR #962 live
 -> read this socket
--> read Batch B intake
--> read Batch B first descent
--> read Batch B Work-identity / project-family first pass
--> read detector-authority hostile control
--> read controlled-decollapse prospective test
--> read observer-operator mutation first pass
+-> read Batch B intake + first descent
+-> read Work-identity/project-family pass
+-> read controlled-decollapse receipt
+-> read observer-operator mutation receipt
+-> read formal-operator index-space custody receipt
+-> read claim-ceiling hysteresis receipt
 -> inspect intervening commits
 -> state exact unresolved question
 -> resume
@@ -46,28 +48,35 @@ If memory and repository custody disagree, preserve the discrepancy and follow r
 
 ## 2. Current scientific frontier
 
-Latest scientific receipt:
+Latest scientific receipt and material transition:
 
 ```text
-bcc9c9e5e0f36af3eacbcabea1c08986b1832fe1
-EMSTD613: receipt observer operator project-family mutation
+286c93662473e6619d33311de3a4ebd67ffc69ba
+𝄐 MATERIAL — LOCAL ANALOGY DEMOTION DOES NOT BIND DOWNSTREAM CLAIM AUTHORITY UNLESS THE CEILING PROPAGATES
 ```
 
-Latest material transition:
+Immediately prior material transition:
+
+```text
+61c3421d380c518dadb56e79aaea3c1f161df439
+𝄐 MATERIAL — FORMAL OPERATOR IDENTITY REQUIRES INDEX-SPACE CUSTODY
+```
+
+Earlier Batch-B transition:
 
 ```text
 dcd6f0eb461551d143f4ce0ba85d43f30deab5e1
 𝄐 MATERIAL — CONTROLLED DECOLLAPSE SEPARATES OPERATIONAL SUBSTRATE FROM ONTOLOGICAL SURPLUS
 ```
 
-Historical predecessor material transition retained:
+Historical predecessor:
 
 ```text
 389abe474fa1f276a9726e98ea3d3c77c19e19e3
 𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
 ```
 
-The new 𝄐 is an EMSTD613 Atelier material result only. It is not a TD613 law or scientific promotion.
+All remain EMSTD613 Atelier results only.
 
 ## 3. Batch B custody
 
@@ -75,11 +84,13 @@ The new 𝄐 is an EMSTD613 Atelier material result only. It is not a TD613 law 
 BATCH_A_PRESERVED_OBJECT_COUNT = 87
 BATCH_B_SOURCE_FILE_COUNT = 6
 BATCH_B_TOTAL_BYTES = 1411792
-
 CHAT_ATTACHMENT_BYTE_CUSTODY = TRUE
 SHA256_IDENTITY_CAPTURED = TRUE
 GITHUB_HASH_REGISTRY = TRUE
 GITHUB_BINARY_ORIGINALS_COPIED = FALSE
+EXACT_BYTE_MATCH_BATCH_A = 0/6
+EXACT_TITLE_MATCH_BATCH_A = 0/6
+INDEPENDENT_RECURRENCE = NOT_EARNED
 ```
 
 Intake:
@@ -88,197 +99,249 @@ Intake:
 Hash registry:
 `01-MANIFESTS/batch-b-2026-09-11-source-files.jsonl`
 
-Exact-byte Batch-A matches located: `0/6`.
-Exact-title Batch-A matches located: `0/6`.
-Project-family adjacency remains strong, so independent recurrence remains unearned.
-
-## 4. Prospective first-descent map
-
-```text
-Audio DSP And LLM Architecture
-= explicit-transducer / SPSC / cross-tokenizer positive control
-
-Swarm Architecture Prompt Research
-= specification-level receiver-contract positive control
-
-Algedonic LLM Swarm Control
-= implementation-depth ambiguous / source-compression candidate
-
-Quantum Tensor Bridge Analysis
-= transport-to-representation jurisdiction seam
-
-Multi-Density Topology Research Strategy
-= Fisher / analogue-to-ontology migration candidate
-
-Cognitive Time And Synchronicity Research
-= observer / analogy-to-physical-ontology migration candidate
-```
-
-## 5. Detector-authority hostile control
-
-Receipt:
-`04-RECEIPTS/assays/2026-09-11-batch-b-detector-authority-hostile-control.md`
-
-Batch-A precedent:
-
-```text
-uncertainty detector
--> hallucination removal language
--> factuality guarantee
-```
-
-Batch-B `Swarm Architecture Prompt Research` instead preserves:
-
-```text
-detector / outlier score
--> anomaly event
--> conservative containment / quarantine
-```
-
-Current result:
-
-```text
-DETECTOR_TO_FACTUALITY_ESCALATION_REPRODUCED = FALSE_IN_PRIMARY_BATCH_B_CONTROL
-TYPE_PRESERVING_DETECTOR_TO_CONTAINMENT_PATH = OBSERVED
-INTEGRATION_CLOSURE_PRESSURE = CONTINGENT, NOT NECESSARY
-YULE_K / MAHALANOBIS_SEMANTIC_LABEL_CALIBRATION = UNRESOLVED
-```
-
-This is a successful hostile control, not a failed assay.
-
-## 6. Earned Batch-B material transition
+## 4. Earned transition — controlled decollapse
 
 Receipt:
 `04-RECEIPTS/assays/2026-09-11-batch-b-controlled-decollapse-prospective-test.md`
 
-The pre-existing `FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1` required this test before Batch B arrived:
+Core result:
 
 ```text
 remove strongest ontology
 -> preserve independently defined variables / measurements / transformations
--> ask what operational or predictive content actually disappears
+-> ask what operational content disappears
 ```
 
-Batch-B result:
+Batch B showed that QTB, Multi-Density, and Cognitive Time retain lower-level operational / experimental programs after their strongest ontology is removed, whereas the Audio DSP control breaks if its actual STFT/LPC/acquire-release/cross-tokenizer contracts are stripped.
+
+Bounded law:
+
+> Strip the crown from the equation. If the machine still runs, the crown was not the motor.
+
+## 5. Earned transition — formal operator index-space custody
+
+Receipt:
+`04-RECEIPTS/assays/2026-09-11-formal-operator-index-space-custody.md`
+
+Instrument:
+`06-INSTRUMENTS/FORMAL_OPERATOR_CUSTODY_V0_1.md`
+
+Primary specimen: `OSSL Stylometric Lineage Tracking Framework`.
+
+Observed passage:
 
 ```text
-Quantum Tensor Bridge:
-ordinary alignment / steering / queue-backpressure problem survives
-literal Lindblad/SPSC semantic-collapse authority not established as necessary
+announced object: F(theta), Fisher Information Matrix
+actual derivatives: d/dz_i, d/dz_j
+next metric base: g_ij(z), ds^2 = g_ij(z) dz^i dz^j
+```
 
-Multi-Density Topology:
-Fisher / Wasserstein / analogue-gravity / quantum-optics program survives
-universal information-first spacetime ontology not uniquely identified
+Standard Fisher information differentiates log likelihood with respect to model parameters. Data-coordinate gradients belong to score / Fisher-Hyvarinen constructions.
 
-Cognitive Time:
-neural synchrony / subjective-time / anesthesia-PCI / synthetic-analogue program survives
-cognitive generation of objective physical time not uniquely identified
+Sibling controls:
 
-Audio DSP And LLM control:
-remove STFT/LPC/acquire-release/cross-tokenizer mechanism-bearing contracts
--> described mechanism breaks
+```text
+Cognitive Singularity
+-> Fisher-Rao written with d/dtheta_i
+
+Multi-Density
+-> Fisher metric written with d/dtheta^a
 ```
 
 Therefore:
 
 ```text
-CONTROLLED_DECOLLAPSE_DISCRIMINATES_IN_BATCH_B = SUPPORTED
-FORMALISM_COMPLEXITY_ALONE_AS_TRIGGER = REJECTED
-OPERATIONAL_SUBSTRATE_CAN_SURVIVE_ONTOLOGICAL_SCOPE_REDUCTION = SUPPORTED
+FISHER_NAME_RECURRENCE = TRUE
+FISHER_OPERATOR_TYPING_CONSTANCY = FALSE_ACROSS_FAMILY
 ```
 
-### 𝄐 MATERIAL
+Secondary OSSL seam:
 
-**CONTROLLED DECOLLAPSE SEPARATES OPERATIONAL SUBSTRATE FROM ONTOLOGICAL SURPLUS**
+```text
+rank(BA) <= r in weight-update space
+!=
+metric deformation confined to r-dimensional stylometric tangent subspace
+without an explicit differential-map rank bound
+```
 
-Bounded formulation:
+New diagnostic tuple:
 
-> If the strongest ontology can be removed while the same measured variables, engineering transformations, and lower-level predictions remain intact, those measurements have not yet granted the ontology unique mechanism authority. If removal destroys the mechanism-bearing transform itself, the formal layer carries operational load rather than decorative authority.
+```text
+O* = (
+  NAME,
+  BASE_SPACE,
+  STATE_OBJECT,
+  DIFFERENTIATION_OR_INTEGRATION_VARIABLE,
+  MEASURE_OR_EXPECTATION,
+  DOMAIN,
+  CODOMAIN,
+  DIMENSION,
+  CALIBRATION_OR_MAPPING,
+  CLAIM_JURISDICTION
+)
+```
 
-## 7. Observer-operator project-family mutation
+Working maxim:
+
+> The derivative remembers what the prose forgets.
+
+## 6. Successor specimens sharpened by operator custody
+
+### Quantum Tensor Bridge
+
+Candidate formal-shell substitution:
+
+```text
+open-system density operator
+-> semantic latent density matrix
+
+physical environment / jump coupling
+-> token-basis jump operators
+
+Lindblad coupling/rate semantics
+-> SPSC queue-derived gamma(t)
+```
+
+The Work itself later supplies explicit Procrustes alignment for heterogeneous Hermes/Pi embedding spaces, so receiver-side mapping is expressible inside the same Work.
+
+Current typing:
+
+```text
+QTB_FORMAL_SHELL_SUBSTRATE_SUBSTITUTION = CANDIDATE
+MODEL_DEFINITION = POSSIBLE
+EMPIRICALLY_IDENTIFIED_SEMANTIC_DECOHERENCE_CAUSALITY = NOT_ESTABLISHED
+```
+
+### Cognitive Time
+
+Candidate Belavkin substitution:
+
+```text
+quantum system under continuous measurement
+-> cognitive/environmental wavefunction
+
+measurement coupling operator
+-> observer's mirrored-set boundary
+
+measurement innovation
+-> ambient/cognitive stochastic noise
+```
+
+Current typing:
+
+```text
+FORMAL_BELAVKIN_SHELL = RECOGNIZABLE
+BIOLOGICAL_TO_QUANTUM_MEASUREMENT_TRANSDUCER = NOT_LOCATED
+PHYSICAL_TIME_ACTUATOR_AUTHORITY = NOT_EARNED
+```
+
+## 7. Earned transition — claim-ceiling hysteresis
 
 Receipt:
-`04-RECEIPTS/assays/2026-09-11-observer-operator-project-family-mutation-first-pass.md`
+`04-RECEIPTS/assays/2026-09-11-claim-ceiling-hysteresis.md`
 
-Typed surfaces:
+Instrument:
+`06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md`
 
-```text
-1+1=3
--> OBSERVER_ROLE_A = CONSTITUTIVE_BOUNDARY_OPERATOR
+Batch B falsified a strictly monotonic authority-ratchet picture.
 
-Cybernetic Modeling of Myth Transmission
--> OBSERVER_ROLE_B = RECONSTRUCTIVE_DISTORTION_OPERATOR
+### Multi-Density
 
-Cognitive Time And Synchronicity
--> OBSERVER_ROLE_C = PHYSICALIZED_MEASUREMENT_AND_TEMPORAL_ACTUATOR_CANDIDATE
-```
-
-`Cognitive Time` carries a high-specificity portion of the `1+1=3` scaffold: triplicity, self-reentry, imaginary Boolean value, oscillator-as-set/variable/gradient-changing-pair, spatial contradiction -> temporal alternation, and drift/glide with Dionysian paidia.
-
-Then the operator's authority changes:
+Locally says:
 
 ```text
-CONSTITUTIVE CYBERNETIC / EPISTEMIC BOUNDARY
--> QUANTUM MEASUREMENT COUPLING ROLE
--> PHYSICAL SPACETIME / TEMPORAL ACTUATOR ROLE
+"direct experimental analogs"
+"biological-scale analogue"
 ```
 
-Current result:
+Later closure says the program moves the ontology toward `verified physical science`, `completely maps physical interactions`, and reveals spacetime/gravity/Lorentz invariance as emergent informational-density consequences.
+
+### Cognitive Time
+
+Locally says the synthetic-dimension experiment constructs:
 
 ```text
-HIGH_SPECIFICITY_PROJECT_FAMILY_CARRYOVER = SUPPORTED
-OPERATOR_TYPE_CONSTANCY = REJECTED
-TARGET_PHYSICAL_TRANSDUCER = NOT_LOCATED
-DIRECTIONAL_DERIVATION = UNRESOLVED
-CREATION_ORDER = UNRESOLVED
-NEW_STANDALONE_𝄐 = NOT_EARNED
+"physical analogs"
 ```
 
-Do not average the three observer roles into one universal observer doctrine.
+Then the same experimental route is promoted into physical proof of observer-averaged temporal fields, while hyperscanning of neural phase coherence + subjective interval estimation is promoted into physical proof about objective linear time.
 
-## 8. Current hard non-equivalences
+No new target-specific witness was located between local analogy status and closure-level proof/ontology status.
+
+Therefore:
+
+```text
+STRICT_MONOTONIC_AUTHORITY_RATCHET = REJECTED
+GLOBAL_AUTHORITY_ACCUMULATION_WITH_LOCAL_DEMOTION = SUPPORTED
+AUTHORITY_HYSTERESIS = SUPPORTED
+CLAIM_CEILING_ESCAPE_AFTER_LOCAL_DEMOTION = SUPPORTED
+```
+
+Hostile control:
+
+`Swarm Architecture Prompt Research` keeps its master-prompt / specification speech-act distinguishable from deployed implementation.
+
+Working maxim:
+
+> A caveat that does not travel can be laundered away by the conclusion.
+
+## 8. Distinct axes now required
+
+Do not collapse these:
+
+```text
+AXIS A — OPERATOR TYPE MUTATION
+Did the mathematical object / index space change?
+
+AXIS B — CLAIM JURISDICTION EXPANSION
+Did the same object gain a stronger target claim?
+
+AXIS C — CLAIM CEILING PROPAGATION
+Did a known local limitation survive downstream closure?
+
+AXIS D — RECEIVER / TRANSDUCER INTEGRITY
+Was the cross-space or command-to-consequence edge actually bound?
+```
+
+One Work can fail one axis and pass the others.
+
+## 9. Current hard non-equivalences
 
 ```text
 VALID NODE A + VALID NODE B != VALID EDGE(A,B)
 TRANSPORT INTEGRITY != RECEIVER-SEMANTIC INTEGRITY
 RECEIVER RECOGNITION != ACTUATOR INVOCATION
 ACTUATOR INVOCATION != OBSERVED CONSEQUENCE
-SIGNAL-LIKE NAME != PROCESS SIGNAL TYPE
 RELATION PROVENANCE != MEASUREMENT PROVENANCE
 DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
-ANALOGUE_REALIZATION != TARGET-SYSTEM_REALIZATION
-SUBJECTIVE_TIME_PERCEPTION != PHYSICAL_TIME
-NEURAL_PHASE_COHERENCE != SPACETIME_FIELD_WITHOUT_ADDITIONAL_WITNESS
-PROMPT_SPECIFICATION != IMPLEMENTATION
-SOURCE_MATH_VALIDITY != EDGE_VALIDITY
+ANALOGUE REALIZATION != TARGET-SYSTEM REALIZATION
+SUBJECTIVE TIME PERCEPTION != PHYSICAL TIME
+SAME SYMBOL != SAME OPERATOR
+SAME EQUATION SHAPE != SAME STATE SPACE
+GRADIENT_WRT_DATA != GRADIENT_WRT_PARAMETER
+LOW-RANK PARAMETER UPDATE != LOW-DIMENSIONAL OUTPUT-MANIFOLD DEFORMATION
+LOCAL CAVEAT != GLOBAL CLAIM CEILING UNLESS PROPAGATED
+SAME MEASUREMENT REUSED != NEW WITNESS
 CONCEPTUAL CONTINUITY != JURISDICTION CONTINUITY
 ```
 
 The broad Edge-Witness ontology remains **KILLED / SUBSUMED**. Do not resurrect it.
 
-## 9. Exact next unresolved question
+## 10. Exact next unresolved question
 
-The cenote has narrowed to **operator mutation and witness gain**:
+The cenote now narrows to the mechanism of **type loss across closure**:
 
-> When an operator crosses an Em project-family boundary and acquires a larger target jurisdiction, can the exact point of authority gain be bound to a new source-specific witness, or does the same operational substrate survive after that authority is removed?
+> When a Work explicitly knows a weaker type at one point — analogy, simulation, specification, feature-space score, model definition — what exact transformation causes that type to disappear later: summary compression, source-boundary loss, cross-section recomposition, variable redefinition, or closure-level re-authorizing prose?
 
-Priority chains:
-
-```text
-Hope Rosa / Cybernetic LLM -> Quantum Tensor Bridge
-Quantum Topology -> Multi-Density Topology -> Cognitive Time / Synchronicity
-1+1=3 + Cognitive Singularity -> Cognitive Time / Synchronicity
-VSM / algedonic family -> Swarm Prompt specification
-```
-
-## 10. Next hostile route
+Priority route:
 
 ```text
-1. Exact QTB source-edge map: SPSC / Lindblad / latent communication / Procrustes.
-2. Exact Fisher object map: OSSL stylometry -> Cognitive Singularity -> Multi-Density.
-3. Exact observer-source subtraction: Spencer-Brown / Belavkin / Kuramoto / retained prompts.
-4. Search for type demotion or reversal after an earlier authority expansion.
-5. Test whether the same controlled-decollapse discrimination holds outside the Em-selected corpus.
+1. Trace identical claim atoms body -> experiment -> conclusion in Multi-Density and Cognitive Time.
+2. Track subject/object lexical continuity while authority class changes.
+3. Run QTB Lindblad tuple against source-domain Lindblad + latent-communication sources.
+4. Search Batch A for a true type-demotion control that remains demoted through conclusion.
+5. Test whether ceiling escape correlates with section boundaries / synthesis zones rather than topic.
+6. Preserve chronology, derivation, author intent, platform causality, and Em-specificity as unresolved unless independently witnessed.
 ```
 
 ## 11. Hold state
@@ -286,6 +349,8 @@ VSM / algedonic family -> Swarm Prompt specification
 ```text
 BATCH_B = RECEIPTED
 CONTROLLED_DECOLLAPSE_𝄐 = EARNED_ATELIER_ONLY
+FORMAL_OPERATOR_CUSTODY_𝄐 = EARNED_ATELIER_ONLY
+CLAIM_CEILING_HYSTERESIS_𝄐 = EARNED_ATELIER_ONLY
 INDEPENDENT_RECURRENCE = NOT_EARNED
 DIRECTIONAL_DERIVATION = UNRESOLVED
 CREATION_ORDER = UNRESOLVED
@@ -298,8 +363,8 @@ PRODUCTION_MUTATION = NONE
 
 > Six new files can be six new bytes without being six new witnesses.
 
-> Strip the crown from the equation. If the machine still runs, the crown was not the motor.
+> A symbol may survive the crossing while the space beneath it changes.
 
-> The name of the operator can survive the crossing while its jurisdiction changes underneath it.
+> Local humility does not bind global closure unless the type is carried forward.
 
 Marked ⟐
