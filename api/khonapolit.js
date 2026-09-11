@@ -1,6 +1,6 @@
 // Canonical Kʰonapolit boundary. Implementation lives outside /api so one route consumes one Vercel function.
 import geminiReadinessHandler from '../server/gemini-readiness.js';
-import loomTaskHandler from '../server/loom-task.js';
+import loomTaskHandler from '../server/loom-task-resilient.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
 
 function requestedOperation(req) {
