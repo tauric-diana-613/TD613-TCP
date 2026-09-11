@@ -1,0 +1,256 @@
+{
+  "schema": "td613.residual-literature-sieve/v0.2",
+  "date": "2026-09-11",
+  "state": "SOURCE_BOUND_TAXONOMY_NO_SCIENTIFIC_PROMOTION",
+  "question": "After the Wendbine nomenclature/operator assay, which remaining TD613 claims collapse into established terminology or theorem families, and what narrower residue remains?",
+  "authority": {
+    "legal_prior_art_search": false,
+    "exhaustive_literature_review": false,
+    "automatic_novelty_promotion": false,
+    "automatic_ontology_deletion": false,
+    "private_wendbine_material_admitted": false,
+    "historical_wendbine_expansion": false,
+    "merge": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "FAIL_TO_FIND_PRIOR_ART != NOVELTY",
+    "FIND_PRIOR_ART != USELESSNESS",
+    "KNOWN_THEOREM != KNOWN_APPLICATION",
+    "KNOWN_COMPONENTS != REDUNDANT_COMPOSITION",
+    "DOMAIN_SPECIFIC_REFRAMING != NEW_MATHEMATICS",
+    "STANDARD_TERM_COLLISION_REQUIRES_CORRECTION",
+    "FOUND_PARENT != BURY_COMPOSITION"
+  ],
+  "source_bank": [
+    {
+      "id": "Q1_UVM_QUOTIENT",
+      "family": "mathematics_topology",
+      "title": "Universal property of quotient spaces, Proposition 75",
+      "url": "https://www.uvm.edu/~smillere/Topology-notes.pdf",
+      "bounded_use": "A map constant on equivalence classes factors through the quotient."
+    },
+    {
+      "id": "Q1_MEINERS_QUOTIENT",
+      "family": "mathematics_quotients",
+      "title": "The Universal Property of Quotients",
+      "url": "https://www.jmeiners.com/universal-property-quotients/",
+      "bounded_use": "Set-level quotient factorization for maps constant on equivalence classes."
+    },
+    {
+      "id": "Q2_ROUGH_SETS_REVIEW",
+      "family": "rough_set_theory",
+      "title": "Rough sets: past, present, and future",
+      "url": "https://link.springer.com/article/10.1007/s11047-018-9700-3",
+      "bounded_use": "Lower/upper approximations and boundary region under equivalence classes."
+    },
+    {
+      "id": "I1_STRUCTURAL_IDENTIFIABILITY",
+      "family": "system_identification",
+      "title": "Structural Identifiability of Systems Biology Models: A Critical Comparison of Methods",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3222653/",
+      "bounded_use": "Unique parameter recovery from ideal observable input-output behavior."
+    },
+    {
+      "id": "O1_MIT_OBSERVABILITY",
+      "family": "control_theory",
+      "title": "Feedback Systems — Observability",
+      "url": "https://introcontrol.mit.edu/_static/fall21/extras/Feedback%20Systems%20Murray.pdf",
+      "bounded_use": "Recover/estimate internal state from measured inputs and outputs."
+    },
+    {
+      "id": "S1_NIST_REFERENCE_MONITOR",
+      "family": "computer_security",
+      "title": "NIST CSRC reference monitor",
+      "url": "https://csrc.nist.gov/glossary/term/reference_monitor",
+      "bounded_use": "Complete mediation, tamper resistance, and verifiable access-policy enforcement."
+    },
+    {
+      "id": "S2_SECURE_MULTI_EXECUTION",
+      "family": "information_flow_security",
+      "title": "Noninterference through secure multi-execution",
+      "url": "https://researchportal.vub.be/en/publications/noninterference-through-secure-multi-execution",
+      "bounded_use": "Per-security-level execution and I/O rules enforcing receiver-level noninterference."
+    },
+    {
+      "id": "C1_COARSENED_DATA",
+      "family": "statistics_missing_data",
+      "title": "Improved Doubly Robust Estimation when Data are Monotonely Coarsened",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3061242/",
+      "bounded_use": "Observed data as many-to-one functions of fuller data under coarsening."
+    },
+    {
+      "id": "P1_AWS_EVENT_SOURCING",
+      "family": "software_architecture",
+      "title": "AWS Event sourcing pattern",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/event-sourcing-pattern.html",
+      "bounded_use": "Ordered append-only events support state reconstruction and point-in-time replay."
+    },
+    {
+      "id": "P2_PROOF_CARRYING_AUTH",
+      "family": "authorization_security",
+      "title": "A Proof-Carrying Authorization System",
+      "url": "https://www.cs.princeton.edu/research/techreps/337",
+      "bounded_use": "Distributed authorization justified by mechanically assembled proof against policy."
+    },
+    {
+      "id": "R1_TCPS_WITHDRAWAL",
+      "family": "research_ethics",
+      "title": "TCPS 2 Chapter 3: The Consent Process",
+      "url": "https://ethics.gc.ca/eng/tcps2-eptc2_2022_chapter3-chapitre3.html",
+      "bounded_use": "Voluntary consent and withdrawal, including data-withdrawal limits."
+    },
+    {
+      "id": "R2_DYNAMIC_REVOCABLE_CONSENT",
+      "family": "consent_governance",
+      "title": "Blockchain-Based Dynamic and Revocable Consent for Secondary Health Data Use: Systematic Review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13287375/",
+      "bounded_use": "Consent lifecycle, revocation, auditability, propagation, and distributed enforcement gaps."
+    }
+  ],
+  "verdicts": [
+    {
+      "id": "FADT",
+      "prior_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "new_status": "NEW_THEOREM_CLAIM_REJECTED_RETAIN_AS_AUDIT_LEMMA",
+      "ordinary_terms": [
+        "quotient factorization criterion",
+        "fibrewise meet/join envelope",
+        "rough-set-style boundary analogue"
+      ],
+      "source_ids": ["Q1_UVM_QUOTIENT", "Q1_MEINERS_QUOTIENT", "Q2_ROUGH_SETS_REVIEW"],
+      "killed_claim": "The exact finite support-descent criterion is a new general theorem.",
+      "retained_value": "Application-specific finite quotient admissibility audit, explicit HOLD semantics, and fibrewise uncertainty bookkeeping.",
+      "scar": "FADT != PAWLAK_ROUGH_SET_THEORY"
+    },
+    {
+      "id": "WESTERN_HORIZON",
+      "prior_status": "LIKELY_KNOWN_PATTERN_HELD_FOR_EXACT_MAPPING",
+      "new_status": "NEW_THEOREM_CLAIM_REJECTED_RETAIN_AS_FORENSIC_STOPPING_RULE",
+      "ordinary_terms": [
+        "observational equivalence",
+        "non-identifiability",
+        "information-processing boundary",
+        "target-informative auxiliary witness"
+      ],
+      "source_ids": ["I1_STRUCTURAL_IDENTIFIABILITY"],
+      "killed_claim": "Identical admitted observations failing to identify hidden origin is a new theorem family.",
+      "retained_value": "Exteriority-specific forensic stopping rule and explicit reopening requirement.",
+      "terminology_correction": "Use target-informative auxiliary witness by default; reserve exogenous for separately demonstrated exogeneity."
+    },
+    {
+      "id": "VCPL",
+      "prior_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "new_status": "KNOWN_COMPONENTS_RETAIN_AS_CROSS_DISCIPLINARY_FORENSIC_TAXONOMY",
+      "ordinary_terms": [
+        "trace visibility / measurement availability",
+        "custody or provenance recoverability",
+        "process or model identifiability",
+        "state observability / latent-state reconstructibility"
+      ],
+      "source_ids": ["I1_STRUCTURAL_IDENTIFIABILITY", "O1_MIT_OBSERVABILITY"],
+      "killed_claim": "The component concepts are individually novel.",
+      "retained_value": "Explicit four-coordinate forensic separation plus temporal non-retroactivity as an accounting rule.",
+      "terminology_correction": "TD613 V should not rely on unqualified observability because standard control-theoretic observability aligns more closely with L.",
+      "secondary_status": "STANDARD_TERM_COLLISION_REQUIRES_ALIAS"
+    },
+    {
+      "id": "AIA",
+      "prior_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "new_status": "KNOWN_MULTI_VIEW_IFC_COMPOSITION_WITH_GOVERNANCE_RESIDUAL",
+      "ordinary_terms": [
+        "receiver-indexed policy-governed view architecture",
+        "information-flow control",
+        "noninterference",
+        "reference monitor",
+        "secure multi-execution"
+      ],
+      "source_ids": ["S1_NIST_REFERENCE_MONITOR", "S2_SECURE_MULTI_EXECUTION"],
+      "killed_claim": "Receiver-specific non-equivalent views are themselves novel.",
+      "retained_value": "Receiver indexing combined with shared invariant custody/control, route memory, and authority non-transfer.",
+      "terminology_correction": "Anisotropic remains analogical unless directional structure/permeability is formally defined."
+    },
+    {
+      "id": "PRCS_A",
+      "prior_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "new_status": "KNOWN_COMPONENTS_HELD_COMPOSITION",
+      "ordinary_terms": [
+        "policy-conditioned coarsening",
+        "selective observation",
+        "information-flow enforcement",
+        "abstention / reject option",
+        "registered observation pipeline"
+      ],
+      "source_ids": ["C1_COARSENED_DATA", "S1_NIST_REFERENCE_MONITOR"],
+      "killed_claim": "Capacity/projection/policy/selective-admission components are new primitives.",
+      "retained_value": "Exact ordered composition from capacity/coarsening through policy/admission and naming to registered event remains held for full-composition prior-art audit."
+    },
+    {
+      "id": "HOLONOMY_LOOM",
+      "prior_status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "new_status": "KNOWN_ARCHITECTURAL_COMPOSITION_RETAIN_BOUNDED_USE",
+      "ordinary_terms": [
+        "event sourcing",
+        "history-sensitive authorization",
+        "workflow provenance",
+        "proof-carrying authorization",
+        "revalidation"
+      ],
+      "source_ids": ["P1_AWS_EVENT_SOURCING", "P2_PROOF_CARRYING_AUTH"],
+      "killed_claim": "Route history, authorization proof/revalidation, and replay are novel component concepts.",
+      "retained_value": "TD613 integration of route history, bounded authority, receiver projection and return revalidation; separately earned formal discrete holonomy remains independently scoped.",
+      "terminology_correction": "Reserve holonomy for the formal discrete transport result; describe the broader governance stack conventionally."
+    },
+    {
+      "id": "SAFE_HARBOR_RIGHT_OF_RESIGNATION",
+      "prior_status": "HELD_FOR_GOVERNANCE_CROSSWALK",
+      "new_status": "GOVERNANCE_SYNTHESIS_WITH_PRIOR_NEIGHBORS",
+      "ordinary_terms": [
+        "withdrawal",
+        "revocable consent",
+        "consent lifecycle",
+        "exit-preserving governance",
+        "post-participation portability",
+        "withdrawal-resilient handoff"
+      ],
+      "source_ids": ["R1_TCPS_WITHDRAWAL", "R2_DYNAMIC_REVOCABLE_CONSENT"],
+      "killed_claim": "Withdrawal or revocation as such is a TD613 novelty.",
+      "retained_value": "Reparative-validity criterion requiring useful handoff to remain functional after the custodian ceases participation.",
+      "terminology_correction": "Exit-preserving governance and post-participation portability are candidate explanatory phrases, not claimed standard terms."
+    }
+  ],
+  "counts": {
+    "verdict_rows": 7,
+    "broad_novelty_claims_rejected_or_component_novelty_killed": 7,
+    "new_theorem_claims_rejected": 2,
+    "standard_term_collisions_requiring_correction": 1,
+    "residual_novelty_candidates_promoted": 0
+  },
+  "retained_residue": [
+    "PRCS-A exact integrated composition",
+    "V/C/P/L as an explicit cross-disciplinary forensic taxonomy",
+    "AIA governance composition beyond standard multi-view information-flow control",
+    "Loom exact integration plus separately scoped formal discrete holonomy",
+    "Safe Harbor post-participation-usefulness criterion",
+    "FADT application-specific audit packaging without new-theorem claim",
+    "Western Horizon exteriority stopping discipline without new-theorem claim"
+  ],
+  "next_attacks": [
+    "FADT theorem-specific comparison against order/lattice theory, set-valued quotient maps, rough sets and abstract interpretation",
+    "PRCS-A full-chain comparison against coarsening mechanisms, observation channels, selective classification, policy enforcement and event registration",
+    "V/C/P/L comparison against digital-forensics taxonomies joining evidence availability, provenance, process identification and state reconstruction",
+    "AIA comparison against multilevel security, secure multi-execution, decentralized information-flow control and receiver-specific views",
+    "Safe Harbor comparison against withdrawal, dynamic consent, revocation propagation, data portability and institutional handoff"
+  ],
+  "branch_posture": {
+    "research_branch": "research/wendbine-public-atelier-20260911",
+    "main_observed_at_sieve_start": "103afff8b76ca2977dd50eb6498df639b280d1fa",
+    "research_branch_was_behind_current_main": true,
+    "rebase_performed": false,
+    "merge_performed": false,
+    "deploy_performed": false,
+    "note": "Literature/taxonomy work continues on the frozen research surface; reconciliation with current main is separate engineering work."
+  }
+}
