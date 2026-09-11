@@ -1,0 +1,145 @@
+{
+  "schema": "td613.atelier-method/v0.1",
+  "date": "2026-09-11",
+  "state": "RESEARCH_METHOD_COMMON_KERNEL",
+  "authority": {
+    "scientific_promotion": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "identity_adjudication": false,
+    "human_closure_required": true
+  },
+  "required_directories": [
+    "01-MANIFESTS",
+    "02-ORIGINALS",
+    "03-DERIVATIVES",
+    "04-RECEIPTS",
+    "05-OPERATIONS",
+    "06-INSTRUMENTS",
+    "07-ARCHIVE-LEDGER",
+    "08-EXTERNAL-CORPORA",
+    "99-ADMIN"
+  ],
+  "required_entry_files": [
+    "README.md",
+    "CONNECTOR_ENTRY.md",
+    "ATTRIBUTION.md",
+    "ATELIER_PROFILE.json"
+  ],
+  "evidence_ladder": [
+    "HUMAN_PROVENANCE",
+    "SOURCE_DECLARATION",
+    "CAPTURE_FACT",
+    "ARCHIVE_OBSERVATION",
+    "ARCHIVE_INFERENCE",
+    "RESEARCH_HYPOTHESIS",
+    "EXTERNAL_WITNESS",
+    "EMPIRICAL_SUPPORT",
+    "REPLICATED_RESULT",
+    "TD613_SCIENTIFIC_PROMOTION"
+  ],
+  "stages": [
+    "S0_SCOPE_CUSTODY",
+    "S1_IDENTITY_MANIFESTATION_CONTROL",
+    "S2_BRUTAL_ANATOMY",
+    "S3_TYPED_RELATIONAL_TOPOLOGY",
+    "S4_TEMPORAL_VERSION_AUTHORITY_CONTROL",
+    "S5_CONVERGENCE_DIVERGENCE_LINEAGE",
+    "S6_RECONSTRUCTION_WITHDRAWAL_HELDOUT",
+    "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION",
+    "S8_RED_TEAM_ALTERNATIVE_MODELS",
+    "S9_CLAIM_CEILING_NEXT_TEST_HUMAN_RETURN"
+  ],
+  "aia_routes": [
+    "EXPERIENTIAL",
+    "CUSTODIAL",
+    "AUDIT",
+    "IMPLEMENTATION"
+  ],
+  "invariants": [
+    "SOURCE_OBJECT != WORK != MANIFESTATION != CAPTURE != DERIVATIVE",
+    "HUMAN_PROVENANCE != SOURCE_ASSERTION != ARCHIVE_OBSERVATION != ARCHIVE_INFERENCE",
+    "ARCHIVE_INFERENCE != HYPOTHESIS != EXTERNAL_WITNESS != EMPIRICAL_SUPPORT",
+    "EMPIRICAL_SUPPORT != REPLICATION != TD613_SCIENTIFIC_PROMOTION",
+    "NEWEST != CONTROLLING",
+    "PUBLICATION_ORDER != AUTHORITY_ORDER",
+    "TEMPORAL_ADJACENCY != CAUSAL_EDGE",
+    "SAME_TOKEN != SAME_OPERATOR",
+    "MOTIF_RECURRENCE != MECHANISM_IDENTITY",
+    "SEMANTIC_RESEMBLANCE != LINEAGE",
+    "GRAPH_ADJACENCY != AUTHORITY_TRANSFER",
+    "UNAVAILABLE != SUPPRESSED",
+    "NOT_RETRIEVED != DID_NOT_EXIST",
+    "NEGATIVE_RESULT != FAILED_ATELIER"
+  ],
+  "graph_separation": [
+    "DEPENDENCY",
+    "AUTHORITY",
+    "INFORMATION_FLOW",
+    "IDENTITY",
+    "TEMPORAL",
+    "PROVENANCE",
+    "RECONSTRUCTION",
+    "OBSERVATION"
+  ],
+  "finding_packet_fields": [
+    "finding_id",
+    "atelier_id",
+    "snapshot_or_epoch",
+    "entities",
+    "proposition",
+    "projection_or_graph_family",
+    "source_span_or_source_refs",
+    "evidence_class",
+    "evidence_chain",
+    "time_coordinates",
+    "authority_state",
+    "claim_ceiling",
+    "alternative_models",
+    "disconfirmers",
+    "negative_state_notes",
+    "external_witnesses",
+    "next_highest_information_test",
+    "human_closure_state"
+  ],
+  "divergent_strength_modules": {
+    "SRC": [
+      "SEALED_EPOCH_BINDING",
+      "AUTHORITY_JURISDICTION",
+      "EVIDENCE_INDEPENDENCE_ANCESTRY",
+      "MULTI_PROJECTION_QUERY",
+      "SURFACE_WITHDRAWAL",
+      "COMPILER_CONSERVATION"
+    ],
+    "EMSTD613": [
+      "BLIND_INVENTORY",
+      "WORK_MANIFESTATION_IDENTITY_CONTROL",
+      "IDENTITY_SENSITIVITY",
+      "BRUTAL_ANATOMY",
+      "MOTIF_NULL",
+      "CONVERGENCE_DIVERGENCE",
+      "GENEALOGY",
+      "EMERGENCE_TEST",
+      "EXTERNAL_SCIENCE_CONFRONTATION",
+      "RED_TEAM_ALTERNATIVES"
+    ],
+    "WENDBINE": [
+      "SERIALIZED_PUBLIC_TOPOLOGY",
+      "SOURCE_EXPLICIT_VERSION_CORRECTION",
+      "PUBLIC_PRIVATE_SURFACE_FIREWALL",
+      "TYPED_RELATION_RECONSTRUCTION",
+      "HELD_OUT_ARCHITECTURAL_PLACEMENT",
+      "SHUFFLE_CONTROL",
+      "CONCEPT_LABEL_PERMUTATION",
+      "TYPED_EDGE_ABLATION",
+      "UNRELATED_POST_DECOY"
+    ]
+  },
+  "interchange": {
+    "name": "ATELIER_INTERCHANGE_PACKET",
+    "direct_raw_graph_union_forbidden": true,
+    "cross_atelier_authority_transfer": false,
+    "comparison_requires_evidence_and_authority_state": true
+  }
+}
