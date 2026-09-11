@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   APERTURE_V32_PROVIDER_INSTRUMENT_SCHEMA,
   auditProviderInstrumentState,
@@ -140,6 +141,15 @@ const invalid = auditProviderInstrumentState({
 });
 assert.equal(invalid.disposition, 'REJECT');
 assert.deepEqual(invalid.deficit_classes, ['INVALID_DECLARED_PROVIDER_INSTRUMENT_STATE']);
+
+const fixture = JSON.parse(fs.readFileSync('tests/fixtures/aperture/provider-stack-field-trip.json', 'utf8'));
+assert.equal(fixture.schema, 'td613.aperture.provider-instrument-field-fixture/v0.1');
+const fixtureReceipts = Object.fromEntries(fixture.cases.map(row => [row.id, auditProviderInstrumentState(row.input)]));
+assert.equal(fixtureReceipts['release-1103-gemini25-route-rejection'].disposition, 'REJECT');
+assert.equal(fixtureReceipts['release-1103-gemini25-route-rejection'].model_removal_authority, false);
+assert.equal(fixtureReceipts['hush-http200-completion-blindness'].disposition, 'ABSTAIN');
+assert.equal(fixtureReceipts['marrowline-successful-fallback-receipt-only'].disposition, 'PROPOSE');
+assert.equal(fixtureReceipts['clean-reference-control'].disposition, 'ASK_NOTHING');
 
 assert.equal(selfTestProviderInstrumentAudit().status, 'pass');
 
