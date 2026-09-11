@@ -32,7 +32,7 @@ const MAX_BODY_BYTES = 240000;
 const ownKeys = (object, expected) => object && typeof object === 'object' && !Array.isArray(object)
   && Object.keys(object).length === expected.length && expected.every(key => Object.hasOwn(object, key));
 const text = (value, max, empty = false) => typeof value === 'string' && value.length <= max && (empty || value.trim().length > 0);
-const dense = (value, max) => Array.isArray(value) && value.length <= limit && Object.keys(value).length === value.length;
+const dense = (value, max) => Array.isArray(value) && value.length <= max && Object.keys(value).length === value.length;
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET : LOOM_TASK_OUTPUT_TOKEN_BUDGET;
 const responseCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_RESPONSE_CHAR_BUDGET : LOOM_TASK_RESPONSE_CHAR_BUDGET;
