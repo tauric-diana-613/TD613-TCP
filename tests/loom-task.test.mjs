@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { buildLoomTaskProviderRequest, createLoomTaskHandler, validateLoomTaskInput, selectLoomProviderModels, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET, LOOM_TASK_MAX_PROVIDER_CALLS, LOOM_TASK_TRANSIENT_BACKOFF_MS, LOOM_TASK_GEMINI25_THINKING_BUDGET } from '../server/loom-task.js';
+import { buildLoomTaskProviderRequest, createLoomTaskHandler, validateLoomTaskInput, selectLoomProviderModels, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET, LOOM_TASK_MAX_PROVIDER_CALLS, LOOM_TASK_TRANSIENT_BACKOFF_MS, LOOM_TASK_GEMINI25_THINKING_BUDGET, LOOM_TASK_FALLBACK_THINKING_LEVEL, LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET } from '../server/loom-task.js';
 const task = () => ({ schema: LOOM_TASK_SCHEMA, request_id: 'fixture-1', task: 'Compare budget and dependencies using only the shared packet.', documents: [{ id: 'budget', name: 'Shared budget', text: 'Project Rowan has 12 workstreams and a projected budget of 42000.' }], rules: ['Use project aliases.'] });
 const answer = () => ({ answer: 'Project Rowan has 12 workstreams; dependencies remain unspecified [budget].', missing_information: ['Dependency edges'], used_document_ids: ['budget'], suggested_next_step: 'Supply a dependency map with aliases.' });
 function payload(value = answer(), finishReason = 'STOP') { return { candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }], usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180, hidden: 'omit', thoughtsTokenCount: -1 } }; }
@@ -135,14 +135,14 @@ test('quality-first Loom failover diversifies away from adjacent frontier siblin
   assert.equal(result.status, 200);
   assert.deepEqual(attempted.map(row => row.model), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
   assert.deepEqual(attempted[0].request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
-  assert.deepEqual(attempted[1].request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
-  assert.deepEqual(attempted[2].request.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
+  assert.deepEqual(attempted[1].request.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FALLBACK_THINKING_LEVEL });
+  assert.deepEqual(attempted[2].request.generationConfig.thinkingConfig, { thinkingBudget: LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET });
   assert.equal(Object.hasOwn(attempted[2].request.generationConfig.thinkingConfig, 'thinkingLevel'), false);
   assert.deepEqual(sleeps, [...LOOM_TASK_TRANSIENT_BACKOFF_MS]);
   assert.equal(result.body.observations.provider_calls, 3);
   assert.equal(result.body.observations.model, 'gemini-2.5-flash');
   assert.equal(result.body.observations.thinking_level, 'not-applicable');
-  assert.equal(result.body.observations.thinking_budget, 24576);
+  assert.equal(result.body.observations.thinking_budget, LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET);
   assert.deepEqual(result.body.observations.provider_attempts, [
     { model: 'gemini-3.8-flash', status: 503 },
     { model: 'gemini-3.5-flash', status: 503 },
