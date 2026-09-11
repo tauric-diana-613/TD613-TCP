@@ -51,6 +51,28 @@ test('a blocked attempt preserves whether submission and a return already happen
   assert.match(returned.copy.plain.why, /answer stays held/);
 });
 
+test('provider transport failure receipt does not impersonate an AI answer', () => {
+  const result = projectLivingRoomState(packet('held', {
+    outbound_submitted: true,
+    response_received: true,
+    provider_failure: {
+      error: 'provider-request-failed',
+      diagnostic: { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: 'provider-transport', code: 'PROVIDER_HTTP_ERROR' },
+      observations: { model: 'gemini-3.8-flash', http_status: 503, provider_calls: 1 }
+    }
+  }));
+  assert.equal(result.routeReturnObserved, true);
+  assert.equal(result.responseObserved, false);
+  assert.equal(result.reportedSourceCount, null);
+  assert.equal(result.missingCount, null);
+  assert.equal(result.provider.state, 'PROVIDER_FAILURE_OBSERVED');
+  assert.match(result.provider.label, /HTTP 503/);
+  assert.match(result.copy.plain.why, /failed.*before an AI answer returned/i);
+  assert.match(result.copy.plain.next, /No source-use or missing-information claim/);
+  assert.equal(result.motion.returnProgress, 0);
+  assert.equal(result.documents.every(document => document.sourceReference === 'NOT_REPORTED'), true);
+});
+
 test('received, admitted and unreported missingness remain separate', () => {
   const received = projectLivingRoomState(packet('received'));
   assert.equal(received.control.releaseState, 'UNAVAILABLE'); assert.equal(received.missingCount, null);

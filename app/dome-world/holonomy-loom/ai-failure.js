@@ -23,6 +23,14 @@ export function readLoomAiFailure(payload, requestId) {
     if (observations.model === null || (typeof observations.model === 'string' && /^[A-Za-z0-9._-]{1,120}$/.test(observations.model))) failure.observations.model = observations.model;
     if (typeof observations.model_policy === 'string' && /^[A-Za-z0-9._/-]{1,160}$/.test(observations.model_policy)) failure.observations.model_policy = observations.model_policy;
     if (Number.isInteger(observations.http_status) && observations.http_status >= 100 && observations.http_status <= 599) failure.observations.http_status = observations.http_status;
+    if (Array.isArray(observations.provider_attempts) && observations.provider_attempts.length <= 2 && Object.keys(observations.provider_attempts).length === observations.provider_attempts.length) {
+      const attempts = observations.provider_attempts.filter(attempt => object(attempt)
+        && Object.keys(attempt).length === 2
+        && typeof attempt.model === 'string' && /^[A-Za-z0-9._-]{1,120}$/.test(attempt.model)
+        && Number.isInteger(attempt.status) && attempt.status >= 100 && attempt.status <= 599)
+        .map(attempt => ({ model: attempt.model, status: attempt.status }));
+      if (attempts.length === observations.provider_attempts.length && attempts.length) failure.observations.provider_attempts = attempts;
+    }
     if (observations.source_claims === 'model-reported-unverified') failure.observations.source_claims = observations.source_claims;
     if (object(observations.usage)) {
       const usage = {};

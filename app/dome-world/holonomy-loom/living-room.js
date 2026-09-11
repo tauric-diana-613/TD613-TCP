@@ -104,13 +104,13 @@ export function mountLivingRoom(host) {
       setText('description', `${copy.now} ${copy.why} ${copy.next}`);
       setText('local-count', `${state.localCount} stay in this tab`);
       setText('rule-count', `${state.rulesCount} rules travel with the task`);
-      setText('source-caption', `${state.selectedCount} selected · ${state.localCount} local-only`);
+      setText('source-caption', `${state.selectedCount} selected · ${state.localCount} ${state.localCount === 1 ? 'stays' : 'stay'} here`);
       setText('gate-caption', state.gate.label);
-      setText('receiver-caption', state.responseObserved ? `${state.reportedSourceCount ?? 'Unknown'} source references reported` : state.phase === 'pending' ? 'Waiting for a reply; activity unknown' : 'Your selected task goes here');
+      setText('receiver-caption', state.provider.label);
       setText('now', copy.now); setText('why', `${copy.why} ${copy.next}`);
       setText('audit', `${state.copy.auditor.why} ${state.copy.auditor.next}`);
       setText('route-label', state.held ? 'This route stopped' : state.outgoingSubmitted ? 'Selected packet submitted' : 'Waiting for your click');
-      setText('receiver-label', state.responseObserved ? 'Reply observed' : state.phase==='pending' ? 'Waiting · activity unknown' : 'Nothing received yet');
+      setText('receiver-label', state.providerFailure ? 'Provider failure · no answer' : state.responseObserved ? 'AI answer observed' : state.phase==='pending' ? 'Waiting · activity unknown' : 'Nothing received yet');
       setText('reply-label', state.held ? 'Return held' : state.phase==='received' ? 'Checking the returned work' : state.missingCount ? `${state.missingCount} open questions remain` : 'Ready for your review');
       nodes.papers.replaceChildren();
       const documents = state.documents;

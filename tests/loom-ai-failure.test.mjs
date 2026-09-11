@@ -63,3 +63,26 @@ test('generation budget is numeric and bounded independently of rejected output'
     assert.equal(Object.hasOwn(readLoomAiFailure(input, 'request-1').observations, 'output_token_budget'), false);
   }
 });
+
+test('provider failover receipt keeps at most two finite model and status pairs', () => {
+  const input = payload();
+  input.error = 'provider-request-failed';
+  input.diagnostic = { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: 'provider-transport', code: 'PROVIDER_HTTP_ERROR' };
+  input.observations = {
+    model: 'gemini-3.7-flash', provider_calls: 2, http_status: 503,
+    provider_attempts: [{ model: 'gemini-3.8-flash', status: 503 }, { model: 'gemini-3.7-flash', status: 503 }]
+  };
+  const failure = readLoomAiFailure(input, 'request-1');
+  assert.deepEqual(failure.observations.provider_attempts, [
+    { model: 'gemini-3.8-flash', status: 503 }, { model: 'gemini-3.7-flash', status: 503 }
+  ]);
+  for (const invalid of [
+    [{ model: '<private>', status: 503 }],
+    [{ model: 'gemini-3.8-flash', status: 900 }],
+    [{ model: 'a', status: 503 }, { model: 'b', status: 503 }, { model: 'c', status: 503 }],
+    [{ model: 'a', status: 503, raw: 'PRIVATE' }]
+  ]) {
+    input.observations.provider_attempts = invalid;
+    assert.equal(Object.hasOwn(readLoomAiFailure(input, 'request-1').observations, 'provider_attempts'), false);
+  }
+});
