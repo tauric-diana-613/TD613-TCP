@@ -1,12 +1,32 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import handler from '../server/khonapolit-quality.js';
+import handler, { buildGeminiRequest, observeGeminiOutput } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
 const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 assert.match(source, /resolveGeminiModelPlan\(\{ task: 'khonapolit-dialogue'/);
 assert.match(source, /sticky-success-promotion-disabled/);
 assert.doesNotMatch(source, /gemini-flash-lite-latest/);
+
+const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
+const direct3 = buildGeminiRequest(directPacket, {}, 'gemini-3.8-flash');
+assert.equal(direct3.generationConfig.maxOutputTokens, 65536);
+assert.deepEqual(direct3.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(direct3.generationConfig, key), false);
+const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
+assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
+assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
+assert.equal(direct25.generationConfig.temperature, 0.7);
+assert.equal(direct25.generationConfig.topP, 0.9);
+assert.equal(direct25.generationConfig.topK, 40);
+assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
+  finishReason: null,
+  outputTokenLimitReached: false,
+  maxOutputTokens: 65536,
+  thinkingLevel: 'not-applicable',
+  thinkingBudget: 24576,
+  usage: {}
+});
 
 function response() {
   return {
@@ -20,13 +40,15 @@ function response() {
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
+const requestBodies = [];
 const developedAnswer = 'A concrete explanation with enough detail to answer the question. '.repeat(120).trim();
 let tokenLimit = false;
 clearGeminiModelState();
 process.env.GEMINI_API_KEY = 'test-key';
-globalThis.fetch = async (url) => {
+globalThis.fetch = async (url, options = {}) => {
   if (String(url).includes('/models?')) return { ok: true, status: 200, async json() { return { models: ['gemini-3.5-flash', 'gemini-3-flash-preview'].map(id => ({ name: `models/${id}`, supportedGenerationMethods: ['generateContent'] })) }; } };
   calls.push(String(url));
+  requestBodies.push(JSON.parse(options.body));
   if (calls.length === 1) {
     return {
       ok: false,
@@ -70,12 +92,18 @@ try {
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.5-flash/);
   assert.match(calls[1], /gemini-3-flash-preview/);
+  assert.equal(requestBodies.length, 2);
+  for (const body of requestBodies) {
+    assert.equal(body.generationConfig.maxOutputTokens, 65536);
+    assert.deepEqual(body.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+    for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
+  }
   assert.equal(res.payload.receipt.provider.model, 'gemini-3-flash-preview');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
-  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model gets the observed 28–30s completion window');
+  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model gets the observed completion window');
   assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= 10500, 'fallback remains bounded by its window and route wall');
-  assert.ok(res.payload.receipt.provider.attempts.every(a=>a.elapsedMs >= 0));
+  assert.ok(res.payload.receipt.provider.attempts.every(a => a.elapsedMs >= 0));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'a developed answer survives the server and relay without local clipping');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');

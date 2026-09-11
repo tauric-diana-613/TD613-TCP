@@ -5,6 +5,7 @@ import {
   buildLoomTaskProviderRequest,
   LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET,
   LOOM_TASK_FRONTIER_THINKING_LEVEL,
+  LOOM_TASK_GEMINI25_THINKING_BUDGET,
   LOOM_TASK_OUTPUT_TOKEN_BUDGET
 } from '../server/loom-task.js';
 import { resolveGeminiModelPlan } from '../server/gemini-model-policy.js';
@@ -19,6 +20,7 @@ const frontierMarrowline = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
 assert.equal(frontierMarrowline.generationConfig.maxOutputTokens, KHONAPOLIT_MAX_OUTPUT_TOKENS);
 assert.equal(frontierMarrowline.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(frontierMarrowline.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(frontierMarrowline.generationConfig, key), false);
 assert.deepEqual(observeGeminiOutput({}, 'gemini-3.8-flash'), {
   finishReason: null,
   outputTokenLimitReached: false,
@@ -26,8 +28,28 @@ assert.deepEqual(observeGeminiOutput({}, 'gemini-3.8-flash'), {
   thinkingLevel: 'high',
   usage: {}
 });
+
+const stable25Marrowline = buildGeminiRequest(packet, {}, 'gemini-2.5-flash');
+assert.equal(stable25Marrowline.generationConfig.maxOutputTokens, 65536);
+assert.equal(stable25Marrowline.generationConfig.temperature, 0.7);
+assert.equal(stable25Marrowline.generationConfig.topP, 0.9);
+assert.equal(stable25Marrowline.generationConfig.topK, 40);
+assert.deepEqual(stable25Marrowline.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
+assert.equal(Object.hasOwn(stable25Marrowline.generationConfig.thinkingConfig, 'thinkingLevel'), false);
+assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
+  finishReason: null,
+  outputTokenLimitReached: false,
+  maxOutputTokens: 65536,
+  thinkingLevel: 'not-applicable',
+  thinkingBudget: 24576,
+  usage: {}
+});
+
 const syntheticMarrowline = buildGeminiRequest(packet, {}, 'synthetic-model');
 assert.equal(syntheticMarrowline.generationConfig.maxOutputTokens, 4096);
+assert.equal(syntheticMarrowline.generationConfig.temperature, 0.7);
+assert.equal(syntheticMarrowline.generationConfig.topP, 0.9);
+assert.equal(syntheticMarrowline.generationConfig.topK, 40);
 assert.equal(Object.hasOwn(syntheticMarrowline.generationConfig, 'thinkingConfig'), false);
 
 const loomInput = {
@@ -41,6 +63,9 @@ const frontierLoom = buildLoomTaskProviderRequest(loomInput, 'gemini-3.8-flash')
 assert.equal(frontierLoom.generationConfig.maxOutputTokens, LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET);
 assert.equal(frontierLoom.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(frontierLoom.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FRONTIER_THINKING_LEVEL });
+const stable25Loom = buildLoomTaskProviderRequest(loomInput, 'gemini-2.5-flash');
+assert.deepEqual(stable25Loom.generationConfig.thinkingConfig, { thinkingBudget: LOOM_TASK_GEMINI25_THINKING_BUDGET });
+assert.equal(Object.hasOwn(stable25Loom.generationConfig.thinkingConfig, 'thinkingLevel'), false);
 const syntheticLoom = buildLoomTaskProviderRequest(loomInput, 'synthetic-model');
 assert.equal(syntheticLoom.generationConfig.maxOutputTokens, LOOM_TASK_OUTPUT_TOKEN_BUDGET);
 assert.equal(syntheticLoom.generationConfig.maxOutputTokens, 16384);
@@ -67,4 +92,4 @@ assert.match(livingChat, /Noto Sans/);
 assert.match(livingChat, /relay-bots\[data-intensity=\\"5\\"\][\s\S]*line-height:4!important/);
 assert.match(livingChat, /\.zalgo-line\{display:block!important/);
 
-console.log('marrowline-loom-frontier-envelope: frontier routing, 64K output, high thinking, and Zalgo-safe type guard ok');
+console.log('marrowline-loom-frontier-envelope: generation-aware Gemini routing, 64K output, thinking compatibility, and Zalgo-safe type guard ok');
