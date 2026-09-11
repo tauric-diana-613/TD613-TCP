@@ -27,11 +27,11 @@ test('one submission moves once toward the gate then waits; reply appears only a
  assert.notEqual(departure,arrival);
  room.render(frame(pending,{progress:1,motionTimeMs:15000}));assert.equal(get('courier').getAttribute('transform'),arrival,'waiting never resends the envelope');
  assert.equal(get('reply').getAttribute('visibility'),'hidden');
- assert.match(get('receiver-caption').textContent,/activity unknown/);
+ assert.match(get('receiver-caption').textContent,/internal activity unknown/);
  room.render(frame(packet('received',{used_document_ids:['a'],missing_information:['A signed consent record is missing.']})));
  assert.equal(get('reply').getAttribute('visibility'),'visible');
  assert.equal(get('courier').getAttribute('visibility'),'hidden');
- assert.match(get('receiver-caption').textContent,/1 source references reported/);
+ assert.match(get('receiver-caption').textContent,/1 source reference reported/);
  assert.equal((get('return-path').getAttribute('d').match(/M/g)||[]).length,2,'one missing item cuts the strand into two segments');
 });
 
@@ -43,6 +43,20 @@ test('held after submission preserves departure and return facts while blocking 
  assert.equal(get('reply').getAttribute('visibility'),'visible');
  assert.match(get('reply-label').textContent,/held/);
  assert.equal(get('receiver-glyph').textContent,'𝄐');
+});
+
+test('provider HTTP failure shows a stopped route without inventing a returned answer',t=>{
+ const {room,get}=rig(t);
+ room.render(frame(packet('held',{
+   outbound_submitted:true,response_received:true,
+   provider_failure:{error:'provider-request-failed',diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'provider-transport',code:'PROVIDER_HTTP_ERROR'},observations:{model:'gemini-3.8-flash',http_status:503,provider_calls:1}}
+ })));
+ assert.equal(get('held-mark').getAttribute('visibility'),'visible');
+ assert.equal(get('reply').getAttribute('visibility'),'hidden');
+ assert.match(get('receiver-caption').textContent,/HTTP 503/);
+ assert.match(get('receiver-caption').textContent,/before an AI answer returned/);
+ assert.equal(get('receiver-label').textContent,'Provider failure · no answer');
+ assert.doesNotMatch(get('receiver-caption').textContent,/source reference/i);
 });
 
 test('rest, reduced motion and replay keep an identical static consequence and bounded DOM',t=>{
