@@ -36,7 +36,9 @@ try {
       assert.equal(await laboratory.evaluate(node => node.open), false, 'legacy laboratory starts optional and closed');
       await laboratory.locator(':scope > summary').click();
       assert.equal(await laboratory.evaluate(node => node.open), true, 'explicitly open local laboratory before its witness');
-      assert.equal(await page.locator('#ltLoadClient').isVisible(), true, 'client fixture outside closed receipts');
+      const clientFixture = page.locator('#ltLoadClient');
+      await clientFixture.waitFor({ state: 'visible' });
+      assert.equal(await clientFixture.isVisible(), true, 'client fixture outside closed receipts');
       await page.locator('#message').fill('PRIVATE_CHECKER_CANARY_613');
       await page.getByRole('button', { name: 'Scene 5: A warning is not a discovery', exact: true }).click();
       await page.locator('#lpStart').click();
