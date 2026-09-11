@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
+await import('./wendbine-public-atelier-compiler.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./holonomy-loom-hosted-product-integration.test.mjs');
 await import('./holonomy-loom-flowcore-aia-glyph-control.test.mjs');
