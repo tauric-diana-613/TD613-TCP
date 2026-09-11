@@ -84,3 +84,4 @@ await import('./ash-a15-r0-aperture-pedagogue-consequence-conditioned-selection.
 await import('./ash-a15-r0-aperture-pedagogue-decision-loss-replay-map.test.mjs');
 await import('./giving-pedagogue-independent-order.test.mjs');
 await import('./emstd613-pedagogue-aperture-expedition.test.mjs');
+await import('./emstd613-atelier-profile.test.mjs');
