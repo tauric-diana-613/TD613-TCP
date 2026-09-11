@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { createLoomTaskHandler, validateLoomTaskInput, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET } from '../server/loom-task.js';
+import { createLoomTaskHandler, validateLoomTaskInput, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET, LOOM_TASK_MAX_PROVIDER_CALLS } from '../server/loom-task.js';
 const task = () => ({ schema: LOOM_TASK_SCHEMA, request_id: 'fixture-1', task: 'Compare budget and dependencies using only the shared packet.', documents: [{ id: 'budget', name: 'Shared budget', text: 'Project Rowan has 12 workstreams and a projected budget of 42000.' }], rules: ['Use project aliases.'] });
 const answer = () => ({ answer: 'Project Rowan has 12 workstreams; dependencies remain unspecified [budget].', missing_information: ['Dependency edges'], used_document_ids: ['budget'], suggested_next_step: 'Supply a dependency map with aliases.' });
 function payload(value = answer(), finishReason = 'STOP') { return { candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }], usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180, hidden: 'omit', thoughtsTokenCount: -1 } }; }
@@ -25,6 +25,7 @@ test('real provider boundary builds structured generation from admitted input, p
   const h = harness(); const r = await h.run();
   assert.equal(r.status, 200); assert.equal(r.body.schema, LOOM_TASK_RESULT_SCHEMA); assert.equal(r.body.status, 'completed');
   assert.equal(r.body.request_id, 'fixture-1'); assert.equal(r.body.observations.provider_calls, 1);
+  assert.deepEqual(r.body.observations.provider_attempts, [{ model: 'gemini-test', status: 200 }]);
   assert.deepEqual(r.body.observations.usage, { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180 });
   assert.equal(r.body.observations.source_claims, 'model-reported-unverified');
   const invocation = h.calls.find(row => row.kind === 'generate');
@@ -88,6 +89,49 @@ test('provider failures do not emit raw error bodies, exception messages, secret
   assert.equal(JSON.stringify(await thrown.run()).includes('server-secret'), false);
   const empty = harness({ resolvePlan: async () => ({ callableModels: [] }) });
   const e = await empty.run(); assert.equal(e.status, 503); assert.equal(e.body.observations.provider_calls, 0);
+});
+
+test('one transient HTTP failure may fail over once to the next eligible model', async () => {
+  let calls = 0;
+  const result = await harness({
+    resolvePlan: async () => ({ callableModels: ['gemini-first', 'gemini-second', 'gemini-third'] }),
+    fetchImpl: async () => {
+      calls += 1;
+      return calls === 1 ? { ok: false, status: 503 } : { ok: true, status: 200, json: async () => payload() };
+    }
+  }).run();
+  assert.equal(result.status, 200);
+  assert.equal(calls, LOOM_TASK_MAX_PROVIDER_CALLS);
+  assert.equal(result.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
+  assert.equal(result.body.observations.model, 'gemini-second');
+  assert.equal(result.body.observations.http_status, 200);
+  assert.deepEqual(result.body.observations.provider_attempts, [
+    { model: 'gemini-first', status: 503 }, { model: 'gemini-second', status: 200 }
+  ]);
+});
+
+test('transient failover has a hard two-call ceiling and deterministic output failures never fail over', async () => {
+  let transientCalls = 0;
+  const failed = await harness({
+    resolvePlan: async () => ({ callableModels: ['gemini-first', 'gemini-second', 'gemini-third'] }),
+    fetchImpl: async () => { transientCalls += 1; return { ok: false, status: 503 }; }
+  }).run();
+  assert.equal(failed.status, 502);
+  assert.equal(transientCalls, LOOM_TASK_MAX_PROVIDER_CALLS);
+  assert.equal(failed.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
+  assert.equal(failed.body.observations.model, 'gemini-second');
+  assert.deepEqual(failed.body.observations.provider_attempts, [
+    { model: 'gemini-first', status: 503 }, { model: 'gemini-second', status: 503 }
+  ]);
+  let admissionCalls = 0;
+  const held = await harness({
+    resolvePlan: async () => ({ callableModels: ['gemini-first', 'gemini-second'] }),
+    fetchImpl: async () => { admissionCalls += 1; return { ok: true, status: 200, json: async () => payload({ ...answer(), used_document_ids: ['not-sent'] }) }; }
+  }).run();
+  assert.equal(held.status, 502);
+  assert.equal(held.body.diagnostic.stage, 'output-admission');
+  assert.equal(admissionCalls, 1);
+  assert.equal(held.body.observations.provider_calls, 1);
 });
 
 test('deadline bounds stalled listing and generation; abort prevents late successful admission', async () => {
