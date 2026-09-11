@@ -84,7 +84,7 @@ export function mountLivingRoom(host) {
   <p class="lr-now" data-room="now" aria-live="polite"></p><p class="lr-why" data-room="why"></p>
   <details class="lr-cause"><summary>Why did the room move?<span aria-hidden="true">+</span></summary><p data-room="audit"></p><p class="lr-legend">à gathers selected material · cōl keeps the local pocket intact · 出 marks an actual route crossing · 𝄐 settles the relation.</p></details>`;
   const nodes = Object.fromEntries([...host.querySelectorAll('[data-room]')].map(node => [node.dataset.room, node]));
-  let disposed = false, lastPacket = null, lastAuditor = null;
+  let disposed = false, lastPacket = null, lastAuditor = null, lastPhase = null;
   const setText = (key, value) => { if (nodes[key].textContent !== value) nodes[key].textContent = value; };
   const visible = (key, value) => { attr(key,'visibility',value ? 'visible' : 'hidden'); };
   const attr = (key, name, value) => { const next=String(value); if(nodes[key].getAttribute(name)!==next) nodes[key].setAttribute(name,next); };
@@ -96,7 +96,10 @@ export function mountLivingRoom(host) {
   function renderState(state, snapshot) {
     // The projector owns every authority-bearing predicate; the renderer owns pixels only.
     const packet = snapshot.packet;
+    const previousPhase = lastPhase;
+    lastPhase = state.phase;
     if(host.dataset.phase !== state.phase) host.dataset.phase = state.phase;
+    if(host.dataset.failureTarget !== (state.failureTarget || 'none')) host.dataset.failureTarget = state.failureTarget || 'none';
     if (packet !== lastPacket || lastAuditor !== snapshot.auditor) {
       lastPacket = packet; lastAuditor = snapshot.auditor;
       const copy = snapshot.auditor ? state.copy.auditor : state.copy.plain;
@@ -109,16 +112,16 @@ export function mountLivingRoom(host) {
       setText('receiver-caption', state.provider.label);
       setText('now', copy.now); setText('why', `${copy.why} ${copy.next}`);
       setText('audit', `${state.copy.auditor.why} ${state.copy.auditor.next}`);
-      setText('route-label', state.held ? 'This route stopped' : state.outgoingSubmitted ? 'Selected packet submitted' : 'Waiting for your click');
+      setText('route-label', state.failureTarget === 'provider' ? 'Provider failed after submission' : state.held ? 'This route stopped' : state.outgoingSubmitted ? 'Selected packet submitted' : 'Waiting for your click');
       setText('receiver-label', state.providerFailure ? 'Provider failure · no answer' : state.responseObserved ? 'AI answer observed' : state.phase==='pending' ? 'Waiting · activity unknown' : 'Nothing received yet');
-      setText('reply-label', state.held ? 'Return held' : state.phase==='received' ? 'Checking the returned work' : state.missingCount ? `${state.missingCount} open questions remain` : 'Ready for your review');
+      setText('reply-label', state.failureTarget === 'provider' ? 'No AI answer returned' : state.held ? 'Return held' : state.phase==='received' ? 'Checking the returned work' : state.missingCount ? `${state.missingCount} open questions remain` : 'Ready for your review');
       nodes.papers.replaceChildren();
       const documents = state.documents;
       const count = Math.min(4, documents.length);
       for (let index=0;index<count;index++) {
         const group = host.ownerDocument.createElementNS('http://www.w3.org/2000/svg','g');
         group.setAttribute('transform', `translate(${82+index*20} ${134+Math.abs(index-(count-1)/2)*7}) rotate(${(index-(count-1)/2)*7} 27 42)`);
-        group.innerHTML='<rect width="55" height="78" rx="7" fill="#f5dba0" stroke="#a47789" stroke-width="2"/><path d="M10 14h35M10 22h26M10 30h31" stroke="#ab758c" stroke-width="3"/><circle cx="20" cy="51" r="2" fill="#442645"/><circle cx="35" cy="51" r="2" fill="#442645"/><path d="M23 60q5 4 9 0" fill="none" stroke="#7f4164" stroke-width="2"/>';
+        group.innerHTML='<rect width="55" height="78" rx="7" fill="#f5dba0" stroke="#a47789" stroke-width="2"/><path d="M10 14h35M10 22h26M10 30h31" stroke="#ab758c" stroke-width="3"/><circle cx="20" cy="51" r="2" fill="#332042"/><circle cx="35" cy="51" r="2" fill="#332042"/><path d="M23 60q5 4 9 0" fill="none" stroke="#7f4164" stroke-width="2"/>';
         const title=host.ownerDocument.createElementNS('http://www.w3.org/2000/svg','title'); title.textContent=documents[index].name; group.append(title); nodes.papers.append(group);
       }
       if(!count){ const empty=host.ownerDocument.createElementNS('http://www.w3.org/2000/svg','text'); empty.setAttribute('x','133');empty.setAttribute('y','203');empty.setAttribute('class','lr-small-label');empty.textContent='Your task';nodes.papers.append(empty); }
@@ -130,7 +133,6 @@ export function mountLivingRoom(host) {
       const point=t=>[596*(1-t)**2+2*489*t*(1-t)+299*t*t,329*(1-t)**2+2*390*t*(1-t)+329*t*t];
       const path=intervals.map(([a,b])=>Array.from({length:12},(_,index)=>{const [x,y]=point(a+(b-a)*index/11);return `${index?'L':'M'}${x.toFixed(2)} ${y.toFixed(2)}`;}).join(' ')).join(' ');
       attr('return-path','d',path);
-
     }
     const moving=state.motion.enabled;
     const t=state.motion.courierProgress;
@@ -141,17 +143,23 @@ export function mountLivingRoom(host) {
     attr('answer-tray','transform',`translate(${378+(1-state.motion.returnProgress)*216} ${353-(1-state.motion.returnProgress)*23})`);
     visible('reply',state.responseObserved);
     visible('held-mark',state.held);
-    visible('gate-bars',!(state.outgoingSubmitted && !state.held));
+    const failureTransform = state.failureTarget === 'provider' ? 'translate(620 161)' : state.failureTarget === 'return' ? 'translate(378 353)' : state.failureTarget === 'route' ? 'translate(500 118)' : 'translate(378 170)';
+    attr('held-mark','transform',failureTransform);
+    visible('gate-bars',!state.outgoingSubmitted || state.gate.blocked);
     attr('outgoing','stroke-dasharray',state.outgoingSubmitted?'none':'4 9');
-    attr('outgoing','opacity',state.held?'.25':'.8');
+    attr('outgoing','opacity',state.failureTarget==='provider'?'.72':state.held?'.25':'.8');
     attr('waiting-ring','opacity',(state.phase==='pending')?'.75':'0');
     attr('waiting-ring','transform',`rotate(${state.motion.waitingPhase*360} 620 154)`);
-    attr('lantern-light','opacity',(state.phase==='pending')?(.45+.15*Math.sin(state.motion.waitingPhase*Math.PI*2)).toFixed(3):state.responseObserved?'.75':'.2');
+    attr('lantern-light','opacity',(state.phase==='pending')?(.45+.15*Math.sin(state.motion.waitingPhase*Math.PI*2)).toFixed(3):state.responseObserved?'.75':state.failureTarget==='provider'?'.08':'.2');
     setText('receiver-glyph',state.settled && !moving ? '𝄐' : state.responseObserved ? '出' : '?');
     attr('return-path','stroke-dasharray','1');
     attr('return-path','stroke-dashoffset',(1-state.motion.returnProgress).toFixed(3));
     attr('gather','transform',`translate(193 ${124+(moving&&state.phase==='checking'?Math.sin(snapshot.progress*Math.PI)*-8:0)})`);
+    if (previousPhase === 'checking' && state.phase === 'pending' && snapshot.reducedMotion !== true) {
+      const view = host.ownerDocument.defaultView;
+      if (view?.matchMedia?.('(max-width: 760px)')?.matches) view.requestAnimationFrame?.(() => host.scrollIntoView?.({behavior:'smooth',block:'center'}));
+    }
     if(host.dataset.roomReady !== 'true') host.dataset.roomReady='true';
   }
-  return {render,dispose(){disposed=true;host.replaceChildren();host.classList.remove('loom-living-room');delete host.dataset.roomReady;}};
+  return {render,dispose(){disposed=true;host.replaceChildren();host.classList.remove('loom-living-room');delete host.dataset.roomReady;delete host.dataset.failureTarget;}};
 }
