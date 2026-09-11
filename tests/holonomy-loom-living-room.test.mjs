@@ -35,27 +35,34 @@ test('one submission moves once toward the gate then waits; reply appears only a
  assert.equal((get('return-path').getAttribute('d').match(/M/g)||[]).length,2,'one missing item cuts the strand into two segments');
 });
 
-test('held after submission preserves departure and return facts while blocking review',t=>{
+test('held after a returned response preserves the crossed gate and marks the return boundary',t=>{
  const {room,get}=rig(t);
  room.render(frame(packet('held',{outbound_submitted:true,response_received:true,used_document_ids:['a'],missing_information:[]})));
  assert.equal(get('held-mark').getAttribute('visibility'),'visible');
- assert.equal(get('gate-bars').getAttribute('visibility'),'visible');
+ assert.equal(get('held-mark').getAttribute('transform'),'translate(378 353)');
+ assert.equal(get('gate-bars').getAttribute('visibility'),'hidden');
  assert.equal(get('reply').getAttribute('visibility'),'visible');
  assert.match(get('reply-label').textContent,/held/);
  assert.equal(get('receiver-glyph').textContent,'𝄐');
 });
 
-test('provider HTTP failure shows a stopped route without inventing a returned answer',t=>{
- const {room,get}=rig(t);
+test('provider HTTP failure is drawn at the receiver without inventing a returned answer or gate intervention',t=>{
+ const {host,room,get}=rig(t);
  room.render(frame(packet('held',{
-   outbound_submitted:true,response_received:true,
+   outbound_submitted:true,response_received:true,binding_verified:true,
    provider_failure:{error:'provider-request-failed',diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'provider-transport',code:'PROVIDER_HTTP_ERROR'},observations:{model:'gemini-3.8-flash',http_status:503,provider_calls:1}}
  })));
+ assert.equal(host.dataset.failureTarget,'provider');
  assert.equal(get('held-mark').getAttribute('visibility'),'visible');
+ assert.equal(get('held-mark').getAttribute('transform'),'translate(620 161)');
+ assert.equal(get('gate-bars').getAttribute('visibility'),'hidden');
  assert.equal(get('reply').getAttribute('visibility'),'hidden');
+ assert.match(get('route-label').textContent,/Provider failed after submission/);
+ assert.match(get('gate-caption').textContent,/binding passed.*provider failed later/i);
  assert.match(get('receiver-caption').textContent,/HTTP 503/);
  assert.match(get('receiver-caption').textContent,/before an AI answer returned/);
  assert.equal(get('receiver-label').textContent,'Provider failure · no answer');
+ assert.equal(get('reply-label').textContent,'No AI answer returned');
  assert.doesNotMatch(get('receiver-caption').textContent,/source reference/i);
 });
 
