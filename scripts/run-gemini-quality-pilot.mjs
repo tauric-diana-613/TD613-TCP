@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { listGeminiGenerateContentModels } from '../server/gemini-model-discovery.js';
 import { assessGeminiEligibility } from '../server/gemini-model-registry.js';
 import { buildGeminiGenerationConfig } from '../server/gemini-generation-envelope.js';
+import { geminiGenerateContentUrl, geminiRequestHeaders } from '../server/gemini-provider-transport.js';
 import { buildPrompt, quarantineCandidateRows } from '../server/hush-provider-contract.js';
 import { parseProviderJson } from '../server/hush-generate-quality.js';
 
@@ -59,8 +60,8 @@ async function main() {
       try {
         const result = await Promise.race([
           (async () => {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-              method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key }, signal: controller.signal,
+            const response = await fetch(geminiGenerateContentUrl(model), {
+              method: 'POST', headers: geminiRequestHeaders(key), signal: controller.signal,
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
                 generationConfig: buildGeminiGenerationConfig({
@@ -75,14 +76,17 @@ async function main() {
           })(),
           new Promise((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('bounded-timeout')); }, timeoutMs); })
         ]);
+        const rawFinishReason = result.payload?.candidates?.[0]?.finishReason;
+        const finishReason = typeof rawFinishReason === 'string' && /^[A-Z_]{1,64}$/.test(rawFinishReason) ? rawFinishReason : null;
+        const outputTokenLimitReached = finishReason === 'MAX_TOKENS';
         const text = (result.payload?.candidates?.[0]?.content?.parts || []).filter(part => part.thought !== true).map(part => typeof part.text === 'string' ? part.text : '').join('');
         const parsed = parseProviderJson(text.slice(0, 18000), test.contract);
         const audited = quarantineCandidateRows(parsed.candidates, test.contract);
-        const hardGatesPassed = result.response.ok && audited.length === 1 && audited.every(row => row.passed);
+        const hardGatesPassed = result.response.ok && finishReason === 'STOP' && audited.length === 1 && audited.every(row => row.passed);
         const tokens = result.payload?.usageMetadata?.totalTokenCount;
         rows.push({ model, fixture: test.id, generationCalled: true, status: result.response.status,
           elapsedMs: Date.now() - start, state: hardGatesPassed ? 'HARD_GATES_PASSED' : 'HELD',
-          hardGatesPassed, candidates: audited, rawText: text.slice(0, 18000),
+          hardGatesPassed, finishReason, outputTokenLimitReached, candidates: audited, rawText: text.slice(0, 18000),
           totalTokenCount: Number.isFinite(tokens) && tokens >= 0 ? tokens : null,
           semanticReview: 'PENDING', humanComprehension: 'UNMEASURED' });
       } catch {

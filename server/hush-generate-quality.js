@@ -11,6 +11,11 @@ import {
   resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
 import { buildGeminiGenerationConfig } from './gemini-generation-envelope.js';
+import {
+  classifyGeminiTransport,
+  geminiGenerateContentUrl,
+  geminiRequestHeaders
+} from './gemini-provider-transport.js';
 import { canonicalJson } from '../app/dome-world/ash/canonical-json.js';
 
 const VERSION = 'hush-generate-quality/v1';
@@ -221,6 +226,22 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 
+export function observeHushGeminiOutput(payload = {}) {
+  const usage = {};
+  for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
+    const value = payload?.usageMetadata?.[key];
+    if (Number.isSafeInteger(value) && value >= 0) usage[key] = value;
+  }
+  const rawReason = payload?.candidates?.[0]?.finishReason;
+  const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
+  return Object.freeze({
+    finishReason,
+    outputTokenLimitReached: finishReason === 'MAX_TOKENS',
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
+    usage: Object.freeze(usage)
+  });
+}
+
 export function buildHushGeminiRequest({ model = '', prompt = '', deterministic = true } = {}) {
   return {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -240,9 +261,9 @@ async function callGemini({ model, prompt, timeoutMs, deterministic = true }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
+    const response = await fetch(geminiGenerateContentUrl(model), {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
       body: JSON.stringify(buildHushGeminiRequest({ model, prompt, deterministic })),
       signal: controller.signal
     });
@@ -340,7 +361,11 @@ export default async function handler(req, res) {
 
   for (const model of models) {
     if (Date.now() - startedAt > wallMs - timeoutMs - 350) break;
+    const attemptStartedAt = Date.now();
     const result = await callGemini({ model, prompt, timeoutMs, deterministic });
+    const elapsedMs = Date.now() - attemptStartedAt;
+    const providerOutput = observeHushGeminiOutput(result.payload);
+    const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const parsed = parseProviderJson(result.text, contract);
     const rows = ashKeep.active ? quarantineAshKeepCandidateRows(parsed.candidates) : quarantineCandidateRows(parsed.candidates, contract);
     const usable = rows.filter((row) => row.passed).map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck, catchphrase_quarantine: row.catchphraseQuarantine }));
@@ -348,12 +373,14 @@ export default async function handler(req, res) {
     rejected.integrity += rows.filter((row) => row.catchphraseQuarantine.passed && !row.integrity.passed).length;
     rejected.academic += rows.filter((row) => row.academicDrift).length;
     rejected.compression += rows.filter((row) => row.compressionDrift).length;
+    const error = result.response.ok ? null : providerError(result.payload);
     const outcome = recordGeminiModelOutcome(model, {
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
       retryAfterSeconds: retryAfterSeconds(result.response),
-      reason: result.response.ok ? '' : safe(providerError(result.payload).status || providerError(result.payload).message)
+      healthBearing: transport.healthBearing,
+      reason: result.response.ok ? '' : safe(error?.status || error?.message)
     });
     attempts.push({
       model,
@@ -361,13 +388,23 @@ export default async function handler(req, res) {
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
+      timeoutMs,
+      elapsedMs,
+      transportClass: transport.class,
+      output: providerOutput,
       parsedCandidates: parsed.candidates.length,
       usableCandidates: usable.length,
       warnings: parsed.warnings,
-      error: result.response.ok ? null : providerError(result.payload),
+      error,
       cooldown: outcome,
       textPreview: result.text.slice(0, 180)
     });
+    if (result.response.ok && providerOutput.outputTokenLimitReached) {
+      return send(res, 502, heldPayload({ contract, attempts, startedAt, plan, reason: 'provider_output_token_limit', rejected }));
+    }
+    if (!result.response.ok && !transport.mayFailOver) {
+      return send(res, 502, heldPayload({ contract, attempts, startedAt, plan, reason: 'provider_request_rejected', rejected }));
+    }
     if (result.response.ok && usable.length) {
       return send(res, 200, {
         ok: true,
