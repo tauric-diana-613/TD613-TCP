@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const receiptPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json';
+const correctionPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05-count-correction.json';
 const operationPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md';
 const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+const correction = JSON.parse(fs.readFileSync(correctionPath, 'utf8'));
 const operation = fs.readFileSync(operationPath, 'utf8');
 
 assert.equal(receipt.schema, 'td613.eclipse-omega-foundational-paper-sieve/v0.5');
@@ -11,7 +13,11 @@ assert.equal(receipt.authority.scientific_promotion, false);
 assert.equal(receipt.authority.copying_or_plagiarism_adjudication, false);
 assert.equal(receipt.authority.private_wendbine_material_admitted, false);
 assert.equal(receipt.counts.novelty_promotions, 0);
-assert.equal(receipt.claim_matrix.length, 22);
+assert.equal(receipt.claim_matrix.length, 23);
+assert.equal(correction.schema, 'td613.eclipse-omega-foundational-paper-sieve-count-correction/v0.5.1');
+assert.equal(correction.correction.recorded_value, receipt.counts.claim_rows);
+assert.equal(correction.correction.correct_value, receipt.claim_matrix.length);
+assert.equal(correction.authority.claim_verdict_change, false);
 
 const byId = new Map(receipt.claim_matrix.map(row => [row.id, row]));
 assert.equal(byId.get('NARROWING_CHAIN')?.verdict, 'FORMALLY_INVALID_AS_UNIVERSAL_NESTED_SET_CHAIN');
@@ -106,6 +112,14 @@ for (const law of [
   'CONSTRUCT_NOVELTY != TEXTUAL_PROVENANCE != COPYING'
 ]) {
   assert.ok(receipt.laws.includes(law), `Receipt must preserve anti-overclaim law: ${law}`);
+}
+
+for (const law of [
+  'RECEIPT_ERROR != SCIENTIFIC_RESULT',
+  'CORRECTION_SHOULD_PRESERVE_AUDIT_TRAIL',
+  'FAILED_ASSERTION != CLAIM_FAILURE'
+]) {
+  assert.ok(correction.laws.includes(law), `Correction receipt must preserve audit law: ${law}`);
 }
 
 console.log('TD613 Eclipse–Omega foundational paper sieve v0.5 passed.');
