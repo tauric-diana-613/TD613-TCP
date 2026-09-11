@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap');
-
 /* Human-operator cosmetic layer. Presentation only: no route, packet, provider or custody predicates live here. */
 :root{--loom-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
 body,#loomAiWorkspace{font-family:var(--loom-sans)}
