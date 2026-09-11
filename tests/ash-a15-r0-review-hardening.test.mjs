@@ -6,6 +6,7 @@ await import('./wendbine-public-atelier-compiler.test.mjs');
 await import('./wendbine-td613-bounded-assay-v01.test.mjs');
 await import('./td613-residual-literature-sieve-v02.test.mjs');
 await import('./td613-devastate-repair-sieve-v03.test.mjs');
+await import('./td613-prcsa-ordering-scab-assay-v04.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./holonomy-loom-hosted-product-integration.test.mjs');
 await import('./holonomy-loom-flowcore-aia-glyph-control.test.mjs');
