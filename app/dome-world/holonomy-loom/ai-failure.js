@@ -2,8 +2,11 @@
 const ERRORS = new Set(['method-not-allowed', 'same-origin-required', 'json-required', 'task-too-large', 'invalid-task-envelope', 'provider-not-configured', 'task-rate-limit', 'no-eligible-provider-model', 'provider-request-failed', 'task-aborted-or-timed-out', 'provider-response-not-admitted']);
 const STAGES = new Set(['provider-plan', 'provider-transport', 'provider-json', 'output-admission']);
 const CODES = new Set(['PROVIDER_PLAN_FAILED', 'NO_ELIGIBLE_MODEL', 'PROVIDER_TRANSPORT_FAILED', 'PROVIDER_HTTP_ERROR', 'PROVIDER_JSON_INVALID', 'OUTPUT_JSON_INVALID', 'OUTPUT_FIELDS_INVALID', 'ANSWER_INVALID', 'NEXT_STEP_INVALID', 'MISSING_INFORMATION_INVALID', 'SOURCE_IDS_INVALID', 'SOURCE_ID_DUPLICATE', 'SOURCE_ID_NOT_SELECTED', 'PROMPT_BLOCKED', 'FINISH_REASON_NOT_STOP', 'OUTPUT_TOKEN_LIMIT', 'RESPONSE_PARTS_INVALID', 'RESPONSE_TEXT_TOO_LARGE', 'CREDENTIAL_OUTPUT_REJECTED', 'REQUEST_CANCELLED', 'DEADLINE_EXCEEDED']);
+const FAILOVER_POLICY = 'td613.loom.provider-failover/v0.1';
 const object = value => value && typeof value === 'object' && !Array.isArray(value);
 const count = value => Number.isSafeInteger(value) && value >= 0;
+const safeModel = value => typeof value === 'string' && /^[A-Za-z0-9._-]{1,120}$/.test(value);
+const safeHttp = value => Number.isInteger(value) && value >= 100 && value <= 599;
 
 export function readLoomAiFailure(payload, requestId) {
   if (!object(payload) || payload.schema !== 'td613.loom.ai-task-result/v0.1' || payload.status !== 'held' || typeof requestId !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(requestId) || payload.request_id !== requestId || !ERRORS.has(payload.error)) return null;
@@ -20,10 +23,21 @@ export function readLoomAiFailure(payload, requestId) {
       for (const stage of STAGES) if (count(observations.stage_elapsed_ms[stage])) timings[stage] = observations.stage_elapsed_ms[stage];
       if (Object.keys(timings).length) failure.observations.stage_elapsed_ms = timings;
     }
-    if (observations.model === null || (typeof observations.model === 'string' && /^[A-Za-z0-9._-]{1,120}$/.test(observations.model))) failure.observations.model = observations.model;
+    if (observations.model === null || safeModel(observations.model)) failure.observations.model = observations.model;
     if (typeof observations.model_policy === 'string' && /^[A-Za-z0-9._/-]{1,160}$/.test(observations.model_policy)) failure.observations.model_policy = observations.model_policy;
-    if (Number.isInteger(observations.http_status) && observations.http_status >= 100 && observations.http_status <= 599) failure.observations.http_status = observations.http_status;
+    if (safeHttp(observations.http_status)) failure.observations.http_status = observations.http_status;
     if (observations.source_claims === 'model-reported-unverified') failure.observations.source_claims = observations.source_claims;
+    if (observations.provider_failover === FAILOVER_POLICY) failure.observations.provider_failover = FAILOVER_POLICY;
+    if (Array.isArray(observations.provider_attempts) && observations.provider_attempts.length <= 2 && Object.keys(observations.provider_attempts).length === observations.provider_attempts.length) {
+      const attempts = observations.provider_attempts.map(row => {
+        if (!object(row)) return null;
+        const attempt = {};
+        if (safeModel(row.model)) attempt.model = row.model;
+        if (safeHttp(row.http_status)) attempt.http_status = row.http_status;
+        return Object.keys(attempt).length ? attempt : null;
+      }).filter(Boolean);
+      if (attempts.length) failure.observations.provider_attempts = attempts;
+    }
     if (object(observations.usage)) {
       const usage = {};
       for (const key of ['promptTokenCount', 'candidatesTokenCount', 'totalTokenCount', 'thoughtsTokenCount', 'cachedContentTokenCount']) if (count(observations.usage[key])) usage[key] = observations.usage[key];
@@ -43,6 +57,14 @@ export function describeLoomAiFailure(failure, httpStatus) {
   if (failure?.diagnostic?.code === 'OUTPUT_TOKEN_LIMIT') return 'The AI reached its generation limit before completing a valid answer. Your task remains available; the receipt records the token usage.';
   if (failure?.diagnostic?.code === 'SOURCE_ID_NOT_SELECTED') return 'Gemini cited a document outside the selected set. The response was held for review.';
   if (failure?.diagnostic?.code === 'PROMPT_BLOCKED') return 'Gemini declined the submitted task. Its response remains held.';
+  if (failure?.diagnostic?.code === 'PROVIDER_HTTP_ERROR') {
+    const status = failure.observations?.http_status;
+    const calls = failure.observations?.provider_calls;
+    const bounded = calls === 2 ? ' after the bounded alternate-model attempt' : '';
+    return safeHttp(status)
+      ? `Gemini returned HTTP ${status}${bounded} before a usable answer completed. Your task remains available; no source references were admitted from this attempt.`
+      : `The Gemini provider request failed${bounded} before a usable answer completed. Your task remains available; no source references were admitted from this attempt.`;
+  }
   const labels = {
     'provider-not-configured': 'Gemini is unavailable because this environment has no configured provider key.',
     'no-eligible-provider-model': 'The configured Gemini route has no eligible model available.',
