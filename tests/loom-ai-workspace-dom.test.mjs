@@ -21,6 +21,11 @@ function admitted(request, extra = {}) {
     missing_information:['The signed retention amendment remains missing.'],used_document_ids:request.documents.map(d=>d.id),
     suggested_next_step:'Ask for the signed retention schedule.',observations:{provider_calls:1,elapsed_ms:75,source_claims:'model-reported-unverified'},...extra};
 }
+function provider503(request) {
+  return response({schema:'td613.loom.ai-task-result/v0.1',status:'held',request_id:request.request_id,error:'provider-request-failed',
+    diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'provider-transport',code:'PROVIDER_HTTP_ERROR'},
+    observations:{provider_calls:2,http_status:503,elapsed_ms:13100,model:'gemini-3.7-flash',model_policy:'loom-quality-first/v0.1',provider_attempts:[{model:'gemini-3.8-flash',status:503},{model:'gemini-3.7-flash',status:503}]}},503);
+}
 function response(body, status=200) { return {ok:status>=200&&status<300,status,text:async()=>JSON.stringify(body)}; }
 function harness(t, responder=(request)=>response(admitted(request)), reduced=false) {
   const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html'});
@@ -53,8 +58,10 @@ test('loading each real practice project sends nothing; a click submits one sele
   assert.equal(h.$('#aiProjectChoices').hidden,false);
   assert.equal(h.calls.length,0);
   assert.deepEqual(Array.from(h.root.querySelectorAll('.ai-demo-number'), n=>n.textContent),['Demo 1','Demo 2','Demo 3']);
-  for(let i=0;i<LOOM_AI_PROJECTS.length;i++){h.load(i);assert.equal(h.calls.length,0);assert.equal(h.$('#aiTask').value,LOOM_AI_PROJECTS[i].task);}
-  h.load(0);const project=LOOM_AI_PROJECTS[0];h.$('#aiRun').click();await h.settled();
+  for(let i=0;i<LOOM_AI_PROJECTS.length;i++){h.load(i);assert.equal(h.calls.length,0);assert.equal(h.$('#aiTask').value,LOOM_AI_PROJECTS[i].task);assert.equal(h.$('#aiProjectBrief').hidden,false);assert.equal(h.$('#aiBriefTitle').textContent,LOOM_AI_PROJECTS[i].title);assert.equal(h.$('#aiBriefText').textContent,LOOM_AI_PROJECTS[i].subtitle);}
+  h.load(0);const project=LOOM_AI_PROJECTS[0];
+  assert.match(h.$('#aiBriefRoute').textContent,/3 selected documents traveling/);assert.match(h.$('#aiBriefRoute').textContent,/1 document staying here/);assert.match(h.$('#aiBriefRoute').textContent,/longer task below is the working instruction set/);
+  h.$('#aiRun').click();await h.settled();
   assert.equal(h.calls.length,1);const call=h.calls[0];
   assert.equal(call.url,'/api/khonapolit?operation=loom-task');assert.equal(call.options.method,'POST');
   assert.deepEqual(call.request.documents,project.documents.filter(d=>d.share===true).map(({share,...document})=>document));
@@ -62,6 +69,7 @@ test('loading each real practice project sends nothing; a click submits one sele
   for(const document of project.documents.filter(d=>d.share!==true)){assert.equal(call.options.body.includes(document.text),false);assert.equal(call.request.documents.some(d=>d.id===document.id),false);}
   assert.equal(Object.hasOwn(call.request,'protectedTerms'),false);
   assert.equal(h.$('#aiResult').hidden,false);assert.match(h.$('#aiAnswer').textContent,/SYNTHETIC HTTP FIXTURE/);
+  assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.equal(h.$('#aiMarrowline').disabled,false);assert.equal(h.$('#aiExport').disabled,false);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
   const completion=h.ui.inspect().events.find(event=>event.phase==='completed');
@@ -90,6 +98,15 @@ test('HTTP errors remove prior result and never disclose an untrusted error body
   assert.equal(h.calls.length,2);assert.equal(h.$('#aiAnswer').textContent,'');assert.equal(h.$('#aiResult').hidden,true);
   assert.equal(h.$('#aiStatus').textContent.includes(sensitive),false);assert.match(h.$('#aiStatus').textContent,/503/);
   assert.equal(h.$('#aiMarrowline').disabled,true);
+});
+test('a provider failure preserves the failed episode and opens portable continuity without inventing an answer',async t=>{
+  const h=harness(t,provider503);h.load();h.$('#aiRun').click();await h.settled();
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiPortableDrawer').open,true);
+  assert.match(h.$('#aiPortableLead').textContent,/No AI answer returned here/);assert.match(h.$('#aiPortableLead').textContent,/another receiver/);
+  for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,true);
+  const held=h.ui.inspect().events.find(event=>event.provider_failure);
+  assert.equal(held.provider_failure.diagnostic.stage,'provider-transport');assert.equal(held.provider_failure.observations.http_status,503);
+  assert.deepEqual(held.provider_failure.observations.provider_attempts,[{model:'gemini-3.8-flash',status:503},{model:'gemini-3.7-flash',status:503}]);
 });
 test('malformed response text gets a bounded error without parser excerpts',async t=>{
   const h=harness(t,()=>({ok:true,status:200,text:async()=>'{SECRET_FROM_INVALID_JSON_33'}));h.load();h.$('#aiRun').click();await h.settled();
@@ -153,15 +170,17 @@ test('stop waiting aborts the client request and leaves all output routes closed
   assert.match(h.$('#aiStatus').textContent,/already submitted cannot be recalled/);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
-test('Prepare for another AI binds locally without HTTP and clears earlier answer details',async t=>{
+test('Portable preparation binds locally without HTTP, labels itself truthfully, and clears earlier answer details',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
+  assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Portable continuation');
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
   h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
+  assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.match(h.$('.ai-result-unknowns').textContent,/signed retention amendment/);assert.match(h.$('.ai-result-next').textContent,/signed retention schedule/);
   h.$('#aiPreparePortable').click();await h.settled();
-  assert.equal(h.calls.length,1);assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
   assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
 });
