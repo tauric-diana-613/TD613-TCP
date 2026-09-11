@@ -10,6 +10,7 @@ import {
   resolveGeminiModelPlan,
   resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
+import { buildGeminiGenerationConfig } from './gemini-generation-envelope.js';
 import { canonicalJson } from '../app/dome-world/ash/canonical-json.js';
 
 const VERSION = 'hush-generate-quality/v1';
@@ -220,6 +221,21 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 
+export function buildHushGeminiRequest({ model = '', prompt = '', deterministic = true } = {}) {
+  return {
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: buildGeminiGenerationConfig({
+      model,
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      responseMimeType: 'application/json',
+      sampling: {
+        temperature: deterministic ? 0.22 : 0.56,
+        topP: deterministic ? 0.64 : 0.88
+      }
+    })
+  };
+}
+
 async function callGemini({ model, prompt, timeoutMs, deterministic = true }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -227,15 +243,7 @@ async function callGemini({ model, prompt, timeoutMs, deterministic = true }) {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: deterministic ? 0.22 : 0.56,
-          topP: deterministic ? 0.64 : 0.88,
-          responseMimeType: 'application/json',
-          maxOutputTokens: MAX_OUTPUT_TOKENS
-        }
-      }),
+      body: JSON.stringify(buildHushGeminiRequest({ model, prompt, deterministic })),
       signal: controller.signal
     });
     const payload = await response.json().catch(() => ({}));
