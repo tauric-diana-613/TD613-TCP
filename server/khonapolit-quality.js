@@ -32,6 +32,11 @@ import {
   buildGeminiGenerationConfig,
   geminiThinkingConfig
 } from './gemini-generation-envelope.js';
+import {
+  classifyGeminiTransport,
+  geminiGenerateContentUrl,
+  geminiRequestHeaders
+} from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
@@ -223,9 +228,9 @@ async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_RE
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
+    const response = await fetch(geminiGenerateContentUrl(model), {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
       body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model)),
       signal: controller.signal
     });
@@ -309,11 +314,13 @@ export default async function handler(req, res) {
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs);
     const providerOutput = observeGeminiOutput(result.payload, model);
     const error = result.response.ok ? null : providerError(result.payload);
+    const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const outcome = recordGeminiModelOutcome(model, {
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
       retryAfterSeconds: retryAfterSeconds(result.response),
+      healthBearing: transport.healthBearing,
       reason: error?.status || error?.message || ''
     });
     attempts.push({
@@ -324,6 +331,7 @@ export default async function handler(req, res) {
       timedOut: result.timedOut,
       timeoutMs,
       elapsedMs: Date.now() - attemptStartedAt,
+      transportClass: transport.class,
       error,
       output: providerOutput,
       cooldown: outcome
@@ -337,6 +345,20 @@ export default async function handler(req, res) {
         error: 'gemini-output-token-limit',
         status: 'HELD',
         diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
+        attempts,
+        modelPolicy: plan,
+        aperture: apertureReceipt,
+        aperture_egress: apertureEgress,
+        claim_ceiling: packet.claimCeiling
+      });
+    }
+    if (!result.response.ok && !transport.mayFailOver) {
+      res.setHeader('X-TD613-Gemini-Model', model);
+      return send(res, 502, {
+        ok: false,
+        error: 'gemini-request-rejected',
+        status: 'HELD',
+        diagnostic: { stage: 'provider-transport', code: 'PROVIDER_REQUEST_REJECTED' },
         attempts,
         modelPolicy: plan,
         aperture: apertureReceipt,

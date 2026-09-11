@@ -94,4 +94,6 @@ assert.deepEqual(listing.models, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemin
 assert.equal(listing.ok, true);
 
 clearGeminiModelState();
+await import('./gemini-provider-stack-clinical.test.mjs');
+await import('./gemini-quality-pilot-clinical.test.mjs');
 console.log('gemini-model-policy.test.mjs passed');

@@ -23,7 +23,7 @@ const execute = (env = {}, mode = 'valid') => {
     if (body.generationConfig.responseMimeType !== 'application/json') throw Error('mime-type');
     for (const key of ['temperature','topP','topK']) if (Object.hasOwn(body.generationConfig, key)) throw Error('legacy-sampling-control:' + key);
     const source = body.contents[0].parts[0].text.split('MESSAGE TO TRANSFORM:\\n')[1];
-    return {ok:true,status:200,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify({candidates:[{text:${mode === 'echo' ? "'synthetic-pilot-secret'" : 'source'}}]})}]}}],usageMetadata:{totalTokenCount:30}})};
+    return {ok:true,status:200,json:async()=>({candidates:[{finishReason:'STOP',content:{parts:[{text:JSON.stringify({candidates:[{text:${mode === 'echo' ? "'synthetic-pilot-secret'" : 'source'}}]})}]}}],usageMetadata:{totalTokenCount:30}})};
   };`;
   return spawnSync(process.execPath, ['--import', `data:text/javascript,${encodeURIComponent(preload)}`, 'scripts/run-gemini-quality-pilot.mjs'], { env: { ...baseEnv, ...env }, encoding: 'utf8' });
 };
