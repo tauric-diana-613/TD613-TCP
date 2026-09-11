@@ -1,0 +1,40 @@
+{
+  "authority": {
+    "archive_inference_is_not_author_intent": true,
+    "deployment": false,
+    "human_closure_required": true,
+    "merge": false,
+    "public_topology_is_not_private_state": true,
+    "source_assertion_is_not_archive_inference": true,
+    "td613_scientific_promotion": false
+  },
+  "coverage": {
+    "admitted_source_count": 33,
+    "date_precision": "DAY",
+    "known_unbound_report": "A separately reported public post titled 'Third-Party Dependencies, Data Flow, and Reconstruction' was not assigned a source URL in this pass and remains outside the admitted corpus until URL-bound.",
+    "reason": "Fresh public search bound these posts to 2026-09-10 or 2026-09-11, both inside the requested 48-hour window. Reddit's complete live subreddit listing was not available through the retrieval surface, so absence from this snapshot is not evidence of absence.",
+    "state": "PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS"
+  },
+  "created_at": "2026-09-11T09:27:00Z",
+  "rights": {
+    "full_post_bodies_copied": false,
+    "source_authorship_retained": "Public poster and Reddit source retain their respective rights; TD613 claims no authorship of source posts.",
+    "stored_material": "URLs, dates, technical headers, bounded paraphrases, declared concept tags, typed relation observations"
+  },
+  "schema": "wendbine-public-corpus-snapshot/v0.1",
+  "scope": {
+    "author_real_identity_required": false,
+    "community": "r/Wendbine",
+    "handle_binding_evidence_class": "HUMAN_PROVENANCE",
+    "human_reported_poster_handle": "u/Upset-Ratio502",
+    "private_google_group_admitted": false,
+    "real_person_identity_adjudication": "NOT_PERFORMED",
+    "surface": "public Reddit only"
+  },
+  "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "window": {
+    "end_utc": "2026-09-11T09:27:00Z",
+    "requested_hours": 48,
+    "start_utc": "2026-09-09T09:27:00Z"
+  }
+}

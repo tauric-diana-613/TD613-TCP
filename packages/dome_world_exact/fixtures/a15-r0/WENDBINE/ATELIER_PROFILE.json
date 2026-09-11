@@ -1,0 +1,60 @@
+{
+  "schema": "td613.atelier-profile/v0.1",
+  "atelier_id": "WENDBINE",
+  "method_version": "td613.atelier-method/v0.1",
+  "method_pr": 1118,
+  "research_question": "Can a relational architecture be reconstructed from a bounded serialized public output stream without converting semantic resemblance into private state, hidden memory, motive, lineage, or authority?",
+  "source_unit": "public Reddit post with canonical URL, day-level timestamp, bounded paraphrase, concept tags, and typed source observations",
+  "snapshot_model": "BOUNDED_PUBLIC_STREAM_SNAPSHOT",
+  "profile_state": "DRAFT_UNMERGED_PUBLIC_SURFACE_ATELIER",
+  "active_stages": [
+    "S0_SCOPE_CUSTODY",
+    "S1_IDENTITY_MANIFESTATION_CONTROL",
+    "S2_BRUTAL_ANATOMY",
+    "S3_TYPED_RELATIONAL_TOPOLOGY",
+    "S4_TEMPORAL_VERSION_AUTHORITY_CONTROL",
+    "S6_RECONSTRUCTION_WITHDRAWAL_HELDOUT",
+    "S8_RED_TEAM_ALTERNATIVE_MODELS",
+    "S9_CLAIM_CEILING_NEXT_TEST_HUMAN_RETURN"
+  ],
+  "held_or_conditional_stages": {
+    "S5_CONVERGENCE_DIVERGENCE_LINEAGE": "HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY",
+    "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK"
+  },
+  "aia_routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
+  "distinctive_strengths": [
+    "SERIALIZED_PUBLIC_TOPOLOGY",
+    "SOURCE_EXPLICIT_VERSION_CORRECTION",
+    "PUBLIC_PRIVATE_SURFACE_FIREWALL",
+    "TYPED_RELATION_RECONSTRUCTION",
+    "HELD_OUT_ARCHITECTURAL_PLACEMENT",
+    "SHUFFLE_CONTROL",
+    "CONCEPT_LABEL_PERMUTATION",
+    "TYPED_EDGE_ABLATION",
+    "UNRELATED_POST_DECOY"
+  ],
+  "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
+  "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
+  "negative_states": [
+    "NOT_RETRIEVED",
+    "UNBOUND_TITLE",
+    "SAME_DAY_ORDER_UNRESOLVED",
+    "PRIVATE_SURFACE_NOT_ADMITTED",
+    "AUTHOR_INTENT_UNADJUDICATED"
+  ],
+  "graph_families": [
+    "G_D_DEPENDENCY",
+    "G_A_AUTHORITY_TRUST",
+    "G_F_INFORMATION_FLOW",
+    "G_I_IDENTITY_CONTINUITY",
+    "G_T_TEMPORAL_PROGRAM_VERSION",
+    "G_P_PROVENANCE",
+    "G_R_RECONSTRUCTION_RECOVERY",
+    "G_O_OBSERVATION",
+    "G_X_CROSS_RELATION_SYNTHESIS"
+  ],
+  "private_group_intake": false,
+  "historical_expansion_before_current_snapshot_inspection": false,
+  "human_closure_required": true,
+  "scientific_promotion_authority": false
+}
