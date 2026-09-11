@@ -20,6 +20,8 @@ const execute = (env = {}, mode = 'valid') => {
     if (!path.endsWith(':generateContent') || options.method !== 'POST' || ++calls > 15) throw Error('unexpected-call');
     const body = JSON.parse(options.body);
     if (body.generationConfig.maxOutputTokens !== 1536) throw Error('token-cap');
+    if (body.generationConfig.responseMimeType !== 'application/json') throw Error('mime-type');
+    for (const key of ['temperature','topP','topK']) if (Object.hasOwn(body.generationConfig, key)) throw Error('legacy-sampling-control:' + key);
     const source = body.contents[0].parts[0].text.split('MESSAGE TO TRANSFORM:\\n')[1];
     return {ok:true,status:200,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify({candidates:[{text:${mode === 'echo' ? "'synthetic-pilot-secret'" : 'source'}}]})}]}}],usageMetadata:{totalTokenCount:30}})};
   };`;
