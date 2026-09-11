@@ -20,6 +20,12 @@
   "held_or_conditional_stages": {
     "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "QUESTION_DEPENDENT"
   },
+  "directory_exceptions": {
+    "08-EXTERNAL-CORPORA": {
+      "reason": "STAGE_NOT_ACTIVE",
+      "note": "SRC does not maintain a standing external-corpus surface; S7 is question-dependent and may be materialized only when the research question requires it."
+    }
+  },
   "aia_routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
   "distinctive_strengths": [
     "SEALED_EPOCH_BINDING",
