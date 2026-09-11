@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import {
   APERTURE_V32_PROVIDER_INSTRUMENT_SCHEMA,
   auditProviderInstrumentState,
@@ -142,7 +143,8 @@ const invalid = auditProviderInstrumentState({
 assert.equal(invalid.disposition, 'REJECT');
 assert.deepEqual(invalid.deficit_classes, ['INVALID_DECLARED_PROVIDER_INSTRUMENT_STATE']);
 
-const fixture = JSON.parse(fs.readFileSync('tests/fixtures/aperture/provider-stack-field-trip.json', 'utf8'));
+const fixturePath = 'tests/fixtures/aperture/provider-stack-field-trip.json';
+const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 assert.equal(fixture.schema, 'td613.aperture.provider-instrument-field-fixture/v0.1');
 const fixtureReceipts = Object.fromEntries(fixture.cases.map(row => [row.id, auditProviderInstrumentState(row.input)]));
 assert.equal(fixtureReceipts['release-1103-gemini25-route-rejection'].disposition, 'REJECT');
@@ -150,6 +152,16 @@ assert.equal(fixtureReceipts['release-1103-gemini25-route-rejection'].model_remo
 assert.equal(fixtureReceipts['hush-http200-completion-blindness'].disposition, 'ABSTAIN');
 assert.equal(fixtureReceipts['marrowline-successful-fallback-receipt-only'].disposition, 'PROPOSE');
 assert.equal(fixtureReceipts['clean-reference-control'].disposition, 'ASK_NOTHING');
+
+const runner = JSON.parse(execFileSync(process.execPath, [
+  'scripts/run-aperture-provider-instrument-audit.mjs', fixturePath
+], { encoding: 'utf8' }));
+assert.equal(runner.schema, 'td613.aperture.provider-instrument-run/v0.1');
+assert.equal(runner.provider_calls, 0);
+assert.equal(runner.routing_mutations, 0);
+assert.equal(runner.release_actions, 0);
+assert.equal(runner.cases.length, 4);
+assert.equal(runner.cases[0].receipt.model_removal_authority, false);
 
 assert.equal(selfTestProviderInstrumentAudit().status, 'pass');
 
