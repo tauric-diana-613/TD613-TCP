@@ -12,11 +12,32 @@ assert.equal(method.authority.scientific_promotion, false);
 assert.equal(method.authority.human_closure_required, true);
 assert.equal(method.interchange.direct_raw_graph_union_forbidden, true);
 assert.equal(method.interchange.cross_atelier_authority_transfer, false);
+assert.equal(method.directory_policy.physical_homogenization_required, false);
+assert.equal(method.directory_policy.missing_common_directory_requires_profile_exception, true);
+assert.equal(method.directory_policy.profile_exception_field, 'directory_exceptions');
 
+const directoryExceptions = src[method.directory_policy.profile_exception_field] ?? {};
 for (const dir of method.required_directories) {
-  assert.ok(fs.existsSync(path.join(root, 'SRC', dir)), `SRC missing common Atelier directory: ${dir}`);
+  const dirPath = path.join(root, 'SRC', dir);
+  if (fs.existsSync(dirPath)) continue;
+
+  const exception = directoryExceptions[dir];
+  assert.ok(exception, `SRC is missing required directory ${dir} without a profile exception`);
+  assert.ok(
+    method.directory_policy.allowed_exception_reasons.includes(exception.reason),
+    `SRC directory exception ${dir} uses unknown reason: ${exception.reason}`
+  );
+  assert.equal(typeof exception.note, 'string', `SRC directory exception ${dir} requires a note`);
+  assert.ok(exception.note.trim().length > 0, `SRC directory exception ${dir} requires a non-empty note`);
 }
-for (const file of ['README.md', 'CONNECTOR_ENTRY.md', 'ATTRIBUTION.md', 'ATELIER_PROFILE.json']) {
+
+for (const [dir, exception] of Object.entries(directoryExceptions)) {
+  assert.ok(method.required_directories.includes(dir), `SRC declares an exception for unknown common directory: ${dir}`);
+  assert.equal(fs.existsSync(path.join(root, 'SRC', dir)), false, `SRC declares an unnecessary exception for present directory: ${dir}`);
+  assert.ok(method.directory_policy.allowed_exception_reasons.includes(exception.reason), `SRC directory exception ${dir} uses unknown reason: ${exception.reason}`);
+}
+
+for (const file of method.required_entry_files) {
   assert.ok(fs.existsSync(path.join(root, 'SRC', file)), `SRC missing common Atelier entry file: ${file}`);
 }
 
