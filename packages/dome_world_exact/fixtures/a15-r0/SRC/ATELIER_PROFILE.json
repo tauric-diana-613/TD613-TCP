@@ -1,0 +1,60 @@
+{
+  "schema": "td613.atelier-profile/v0.1",
+  "atelier_id": "SRC",
+  "method_version": "td613.atelier-method/v0.1",
+  "research_question": "How can a sealed multi-platform corpus preserve work identity, evidence lineage, authority jurisdiction, compiler context, and multiple non-equivalent graph projections without collapsing chronology, representation, provenance, or authority?",
+  "source_unit": "cross-platform captured manifestation with work/edition/capture/derivative ancestry",
+  "snapshot_model": "SEALED_EPOCH",
+  "profile_state": "REPOSITORY_RESIDENT_ACTIVE",
+  "active_stages": [
+    "S0_SCOPE_CUSTODY",
+    "S1_IDENTITY_MANIFESTATION_CONTROL",
+    "S2_BRUTAL_ANATOMY",
+    "S3_TYPED_RELATIONAL_TOPOLOGY",
+    "S4_TEMPORAL_VERSION_AUTHORITY_CONTROL",
+    "S5_CONVERGENCE_DIVERGENCE_LINEAGE",
+    "S6_RECONSTRUCTION_WITHDRAWAL_HELDOUT",
+    "S8_RED_TEAM_ALTERNATIVE_MODELS",
+    "S9_CLAIM_CEILING_NEXT_TEST_HUMAN_RETURN"
+  ],
+  "held_or_conditional_stages": {
+    "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "QUESTION_DEPENDENT"
+  },
+  "directory_exceptions": {
+    "08-EXTERNAL-CORPORA": {
+      "reason": "STAGE_NOT_ACTIVE",
+      "note": "SRC does not maintain a standing external-corpus surface; S7 is question-dependent and may be materialized only when the research question requires it."
+    }
+  },
+  "aia_routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
+  "distinctive_strengths": [
+    "SEALED_EPOCH_BINDING",
+    "AUTHORITY_JURISDICTION",
+    "EVIDENCE_INDEPENDENCE_ANCESTRY",
+    "MULTI_PROJECTION_QUERY",
+    "SURFACE_WITHDRAWAL",
+    "COMPILER_CONSERVATION",
+    "TERMINAL_UNRESOLVED_QUERY_STATES"
+  ],
+  "identity_law": "WORK != EDITION != MANIFESTATION != CAPTURE != BLOB != DERIVATIVE",
+  "temporal_authority_law": "NEWEST_MANIFESTATION != CONTROLLING_FORMULATION",
+  "negative_states": [
+    "PLACEHOLDER",
+    "OPEN_UNRESOLVED",
+    "PRIVATE_UNAVAILABLE",
+    "AUTH_REQUIRED",
+    "PARTIAL"
+  ],
+  "graph_families": [
+    "HISTORICAL",
+    "CONCEPTUAL",
+    "NAVIGATIONAL",
+    "OPERATIONAL",
+    "MANIFESTATION",
+    "BIBLIOGRAPHY",
+    "AUTHORITY"
+  ],
+  "required_epoch_binding": true,
+  "human_closure_required": true,
+  "scientific_promotion_authority": false
+}
