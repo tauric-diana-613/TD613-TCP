@@ -1,0 +1,53 @@
+/* Human-operator cosmetic layer. Presentation only: no route, packet, provider or custody predicates live here. */
+:root{--loom-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
+body,#loomAiWorkspace{font-family:var(--loom-sans)}
+.hero h1,.hero p,#loomAiWorkspace h2,#loomAiWorkspace h3,#loomAiWorkspace .ai-composer label[for=aiTask],#loomAiWorkspace .ai-demo-invitation strong,.loom-laboratory-invitation strong,#loomAiWorkspace .ai-result-lead{font-family:var(--loom-sans);font-synthesis:none}
+.hero h1{font-weight:650;letter-spacing:-.055em;line-height:.92}.hero p{font-weight:400;letter-spacing:-.008em}
+#loomAiWorkspace button,#loomAiWorkspace textarea,#loomAiWorkspace summary,#loomAiWorkspace label{font-family:var(--loom-sans)}
+#loomAiWorkspace .ai-composer label[for=aiTask]{font-weight:610;letter-spacing:-.025em}
+#loomAiWorkspace h2{font-weight:620;letter-spacing:-.025em}
+#loomAiWorkspace .ai-demo-invitation strong,.loom-laboratory-invitation strong{font-weight:620;letter-spacing:-.025em}
+
+/* Dossier cards: selected working papers, not stacked plum mattresses. */
+#loomAiWorkspace .ai-documents{gap:7px;margin:12px 0 14px}
+#loomAiWorkspace .ai-documents li{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"row remove" "preview preview";column-gap:10px;row-gap:3px;padding:10px 11px 9px;border:1px solid #d5b6ec30;border-left:3px solid #d7b4ef70;border-radius:12px;background:linear-gradient(110deg,rgba(246,234,251,.055),rgba(74,47,91,.08));box-shadow:0 5px 18px #05030b22;overflow:visible}
+#loomAiWorkspace .ai-documents li:has(input:checked){border-left-color:#e8be8d;background:linear-gradient(110deg,rgba(238,190,141,.075),rgba(91,61,105,.075))}
+#loomAiWorkspace .ai-document-row{grid-area:row;display:flex;align-items:center;gap:9px;min-height:34px;position:relative}
+#loomAiWorkspace .ai-document-row>label{display:flex;align-items:center;gap:10px;flex:1;min-height:34px;font-size:.82rem;font-weight:560;letter-spacing:-.006em}
+#loomAiWorkspace .ai-document-row>label::before{content:'▱';display:grid;place-items:center;width:22px;height:27px;flex:none;border:1px solid #e5d4ee52;border-radius:4px 7px 5px 4px;background:linear-gradient(155deg,#f3e6ee14,#a78bb51a);color:#e9c896;font-size:15px;transform:rotate(-2deg);box-shadow:2px 2px 0 #8f72a322}
+#loomAiWorkspace .ai-documents input[type=checkbox]{width:17px;height:17px;margin:0;order:-1}
+#loomAiWorkspace .ai-document-preview{grid-area:preview!important;margin:1px 0 0!important;border:0!important;border-radius:0!important;background:transparent!important}
+#loomAiWorkspace .ai-document-preview>summary{display:inline-flex!important;width:auto!important;min-height:27px!important;padding:3px 0!important;border:0!important;background:transparent!important;color:#bcaec6!important;font-size:.69rem!important;font-weight:500!important;letter-spacing:.005em}
+#loomAiWorkspace .ai-document-preview>summary::after{content:'  ↘'!important;font-size:.72rem!important;color:#d9b37f!important;margin-left:5px!important}
+#loomAiWorkspace .ai-document-preview[open]>summary{border:0!important;color:#e3d6e6!important}
+#loomAiWorkspace .ai-document-preview pre{margin:6px 0 3px!important;padding:12px 13px!important;max-height:185px;border:1px solid #c5a7da2f;border-radius:9px;background:#0e0b16d9!important;font:400 .77rem/1.6 var(--loom-sans)!important;color:#e8dfe9}
+#loomAiWorkspace .ai-documents li>button{grid-area:remove;align-self:center;min-height:26px!important;margin:0!important;padding:3px 7px!important;border:0!important;background:transparent!important;color:#9f92a7!important;font-size:.65rem!important;font-weight:500!important}
+#loomAiWorkspace .ai-documents li>button:hover{color:#f0c7c7!important;text-decoration:underline}
+
+/* The one meaningful explainer: the last intentionally unselected demo file. */
+#loomAiWorkspace .ai-file-note{display:none!important}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note{display:block!important;position:relative;flex:none;margin-left:auto!important;overflow:visible}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note>summary{display:grid;place-items:center;width:19px!important;min-height:19px!important;height:19px;padding:0!important;border:1px solid #d8b98880!important;border-radius:50%;background:transparent!important;color:#e8c791!important;font:650 11px/1 var(--loom-sans)!important;cursor:help;opacity:.88}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note>summary::after{content:none!important}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note p{display:none;position:absolute;z-index:40;right:-5px;top:25px;width:min(310px,calc(100vw - 72px));margin:0!important;padding:10px 12px!important;border:1px solid #d9bd9560;border-radius:9px;background:#17111ff5!important;box-shadow:0 12px 30px #020105a6;color:transparent!important;font-size:0!important;line-height:1.5!important}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note p::after{content:'Leave this file unselected for the demo. It holds private identity or linkage details the task does not need. The selected working documents contain enough evidence for useful analysis, so keeping this file here demonstrates that those private links can stay out of the AI route.';display:block;color:#eee3ef;font:450 .76rem/1.55 var(--loom-sans)}
+#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note:hover p,#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note:focus-within p,#loomAiWorkspace .ai-documents li:last-child:has(input:not(:checked)) .ai-file-note[open] p{display:block}
+
+/* Let the causal room breathe vertically instead of reading like a compressed strip. */
+.loom-living-room{font-family:var(--loom-sans)}
+.loom-living-room h3,.loom-living-room .lr-world text{font-family:var(--loom-sans)}
+.loom-living-room .lr-world .lr-glyph{font-family:Georgia,"Noto Sans Symbols 2",serif}
+.loom-living-room .lr-world{min-height:clamp(390px,52vw,500px);margin:8px 0 14px}
+.loom-living-room .lr-scene-heading{padding-top:25px}.loom-living-room .lr-station-captions{padding-top:4px;padding-bottom:24px}
+
+@media(max-width:760px){
+  #loomAiWorkspace .ai-documents{gap:6px}
+  #loomAiWorkspace .ai-documents li{padding:9px 10px 8px;border-radius:11px}
+  #loomAiWorkspace .ai-document-row>label{font-size:.8rem}
+  #loomAiWorkspace .ai-document-row>label::before{width:20px;height:25px}
+  #loomAiWorkspace .ai-documents li>button{font-size:.62rem!important}
+  .loom-living-room .lr-world{min-height:420px;margin:10px 0 18px}
+}
+@media(max-width:560px){.loom-living-room .lr-world{min-height:400px}}
+@media(prefers-reduced-motion:reduce){#loomAiWorkspace .ai-document-row>label::before{transform:none}}
+@media(forced-colors:active){#loomAiWorkspace .ai-documents li{border:1px solid CanvasText}#loomAiWorkspace .ai-document-row>label::before{border-color:CanvasText}.ai-file-note p{border-color:CanvasText!important;background:Canvas!important}}

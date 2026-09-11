@@ -20,10 +20,12 @@ test('room projection omits private manifest, arbitrary model content, and paylo
   assert.equal(projectLivingRoomState(p).missingCount,1);
 });
 
-test('held-before-send and held-after-send conserve different histories while closing current release',()=>{
+test('held-before-send and held-after-send conserve route history without retroactively reclosing the gate',()=>{
   const before=projectLivingRoomState(packet({phase:'held'}));
   const after=projectLivingRoomState(packet({phase:'held',outbound_submitted:true}));
-  for(const state of [before,after]){assert.equal(state.gate.blocked,true);assert.equal(state.control.releaseState,'HELD');assert.equal(state.motion.enabled,false);assert.equal(state.responseObserved,false);}
+  assert.equal(before.gate.blocked,true);assert.equal(before.control.failureTarget,'gate');
+  assert.equal(after.gate.blocked,false);assert.equal(after.control.failureTarget,'route');
+  for(const state of [before,after]){assert.equal(state.control.releaseState,'HELD');assert.equal(state.motion.enabled,false);assert.equal(state.responseObserved,false);}
   assert.equal(before.outgoingSubmitted,false);assert.equal(after.outgoingSubmitted,true);
   assert.equal(before.glyphs.some(g=>g.glyph==='出'),false);
   // Historical dispatch remains visible; it never becomes recall or a new release.
@@ -31,10 +33,10 @@ test('held-before-send and held-after-send conserve different histories while cl
   assert.match(after.glyphs.find(g=>g.glyph==='出').cause,/submitted/);
 });
 
-test('a rejected response retains arrival without admitting the returned work',()=>{
+test('a rejected response retains arrival and the crossed gate without admitting the returned work',()=>{
   const state=projectLivingRoomState(packet({phase:'held',outbound_submitted:true,response_received:true}));
   assert.equal(state.responseObserved,true);assert.equal(state.provider.state,'RESPONSE_OBSERVED');
-  assert.equal(state.control.releaseState,'HELD');assert.equal(state.gate.blocked,true);
+  assert.equal(state.control.releaseState,'HELD');assert.equal(state.gate.blocked,false);assert.equal(state.control.failureTarget,'return');
   assert.equal(state.control.providerActivity,'UNKNOWN');assert.equal(state.receipt.measurementOfHiddenState,false);
 });
 

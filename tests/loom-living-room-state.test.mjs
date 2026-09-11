@@ -37,7 +37,7 @@ test('plain, auditor, reduced motion and replay preserve the same route evidence
   assert.ok(Object.isFrozen(first.control));
 });
 
-test('a blocked attempt preserves whether submission and a return already happened', () => {
+test('a blocked attempt preserves failure location instead of retroactively closing the outgoing gate', () => {
   const before = projectLivingRoomState(packet('held'));
   const submitted = projectLivingRoomState(packet('held', { outbound_submitted: true }));
   const returned = projectLivingRoomState(packet('held', { outbound_submitted: true, response_received: true }));
@@ -45,16 +45,19 @@ test('a blocked attempt preserves whether submission and a return already happen
   assert.equal(submitted.responseObserved, false); assert.equal(returned.responseObserved, true);
   for (const result of [before, submitted, returned]) {
     assert.equal(result.control.releaseState, 'HELD'); assert.equal(result.motion.enabled, false);
-    assert.equal(result.gate.blocked, true);
   }
+  assert.equal(before.gate.blocked, true); assert.equal(before.failureTarget, 'gate');
+  assert.equal(submitted.gate.blocked, false); assert.equal(submitted.failureTarget, 'route');
+  assert.equal(returned.gate.blocked, false); assert.equal(returned.failureTarget, 'return');
   assert.match(submitted.copy.plain.why, /cannot pull it back/);
   assert.match(returned.copy.plain.why, /answer stays held/);
 });
 
-test('provider transport failure receipt does not impersonate an AI answer', () => {
+test('provider transport failure receipt does not impersonate an AI answer or a rule-gate intervention', () => {
   const result = projectLivingRoomState(packet('held', {
     outbound_submitted: true,
     response_received: true,
+    binding_verified: true,
     provider_failure: {
       error: 'provider-request-failed',
       diagnostic: { schema: 'td613.loom.ai-task-diagnostic/v0.1', stage: 'provider-transport', code: 'PROVIDER_HTTP_ERROR' },
@@ -66,9 +69,14 @@ test('provider transport failure receipt does not impersonate an AI answer', () 
   assert.equal(result.reportedSourceCount, null);
   assert.equal(result.missingCount, null);
   assert.equal(result.provider.state, 'PROVIDER_FAILURE_OBSERVED');
+  assert.equal(result.failureTarget, 'provider');
+  assert.equal(result.gate.blocked, false);
+  assert.match(result.gate.label, /binding passed.*provider failed later/i);
   assert.match(result.provider.label, /HTTP 503/);
+  assert.match(result.copy.plain.now, /AI service failed after submission/i);
   assert.match(result.copy.plain.why, /failed.*before an AI answer returned/i);
-  assert.match(result.copy.plain.next, /No source-use or missing-information claim/);
+  assert.match(result.copy.plain.next, /rule gate already passed.*no AI answer returned/i);
+  assert.match(result.copy.auditor.next, /outgoing rule gate is not the failure location/i);
   assert.equal(result.motion.returnProgress, 0);
   assert.equal(result.documents.every(document => document.sourceReference === 'NOT_REPORTED'), true);
 });
