@@ -247,7 +247,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         controller.signal.addEventListener('abort', relayGlobalAbort, { once: true });
         let attemptTimer;
         let localTimedOut = false;
-        const attemptDeadline = new Promise((_, reject) => {
+        const attemptDeadline = index === 0 ? null : new Promise((_, reject) => {
           attemptTimer = setTimeout(() => {
             localTimedOut = true;
             attemptController.abort();
@@ -255,10 +255,12 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
           }, attemptTimeoutMs);
         });
         try {
-          response = await Promise.race([fetchImpl(geminiGenerateContentUrl(model), {
+          const races = [fetchImpl(geminiGenerateContentUrl(model), {
             method: 'POST', headers: geminiRequestHeaders(env.GEMINI_API_KEY),
             body: JSON.stringify(buildLoomTaskProviderRequest(input, model)), signal: attemptController.signal
-          }), deadline, attemptDeadline]);
+          }), deadline];
+          if (attemptDeadline) races.push(attemptDeadline);
+          response = await Promise.race(races);
         } catch (error) {
           if (controller.signal.aborted) throw error;
           if (!localTimedOut) throw error;
@@ -273,7 +275,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
           await Promise.race([sleep(backoffMs), deadline]);
           continue;
         } finally {
-          clearTimeout(attemptTimer);
+          if (attemptTimer) clearTimeout(attemptTimer);
           controller.signal.removeEventListener('abort', relayGlobalAbort);
         }
         const status = Number.isInteger(response.status) && response.status >= 100 && response.status <= 599 ? response.status : null;
