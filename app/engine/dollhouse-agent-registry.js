@@ -20,10 +20,16 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
       canonical_name: 'TD613 Aperture',
       kind: 'OPERATIONAL_AGENT',
       status: 'INSTALLED',
-      role: 'observability-identifiability-reconstruction-conditioning-and-replay-audit',
-      invocation: 'APERTURE.md / installed Aperture lane',
-      canonical_sources: freeze(['APERTURE.md', 'app/aperture/release.json']),
-      authority_ceiling: 'experimental-research-instrument-no-external-reality-or-release-authority'
+      role: 'observability-identifiability-reconstruction-conditioning-replay-and-provider-instrument-audit',
+      invocation: 'APERTURE.md / node scripts/run-aperture-provider-instrument-audit.mjs <fixture.json>',
+      canonical_sources: freeze([
+        'APERTURE.md',
+        'app/aperture/release.json',
+        'app/engine/aperture-v32-provider-instrument-audit.js',
+        'scripts/run-aperture-provider-instrument-audit.mjs',
+        'docs/research/2026-09-11-APERTURE-PROVIDER-STACK-FIELD-TRIP.md'
+      ]),
+      authority_ceiling: 'experimental-research-instrument-no-provider-call-routing-mutation-model-disablement-external-reality-or-release-authority'
     }),
     ATLAS: freeze({
       id: 'ATLAS',

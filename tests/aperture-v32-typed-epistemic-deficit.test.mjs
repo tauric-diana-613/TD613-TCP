@@ -84,10 +84,15 @@ assert.equal(regenerated.domeDiagnosticReceiptSchema, 'td613.aperture.diagnostic
 assert.equal(regenerated.roundTripReceiptSchema, 'td613.aperture.round-trip-receipt/v3.0-alpha');
 assert.equal(regenerated.observatory.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.2');
 
+// v3.2 field-trip hydration is deliberately executed through the existing v3.2 lane.
+// This does not promote the standalone release; it guards the bounded provider-instrument skill.
+await import('./aperture-v32-provider-instrument-audit.test.mjs');
+
 console.log(JSON.stringify({
   ok: true,
   schema: receipt.schema,
   states: cases.length,
+  provider_instrument_field_skill: true,
   replay_stability: receipt.classification_replay_stability,
   bridge_receipt_version: release.compatibility.phase4ReceiptSchemaVersion
 }, null, 2));
