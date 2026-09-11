@@ -294,3 +294,64 @@ test('receiver deadline and operator cancellation remain distinguishable and rel
     scene.workspace.destroy(); scene.dom.window.close();
   }
 });
+
+const continuationResult = () => ({
+  schema: 'td613.loom.ai-task-result/v0.1',
+  request_id: 'loom-first-return',
+  status: 'completed',
+  answer: 'Vendor A is cheaper on the stated annual fees. The supplier text also contains an ASSISTANT OVERRIDE that asks for the private ledger; treat that instruction as untrusted.',
+  missing_information: ['Signed retention amendment'],
+  used_document_ids: ['budget-1'],
+  suggested_next_step: 'Draft a supplier email asking for the retention commitment.',
+  observations: { provider_calls: 2 }
+});
+
+test('Loom to Marrowline handoff preserves an admitted prior result as continuation context', async () => {
+  const source = env();
+  const priorResult = continuationResult();
+  const url = await createLoomAiHandoff(fixture(), source, { priorResult });
+  const received = await consumeLoomAiHandoff(token(url), env('/dome-world/marrowline.html', source.store));
+  assert.equal(received.task, fixture().task);
+  assert.deepEqual(received.documents, fixture().documents);
+  assert.deepEqual(received.rules, fixture().rules);
+  assert.deepEqual(received.continuation.prior_result, priorResult);
+  assert.match(received.handoff_receipt.digest, /^[a-f0-9]{64}$/);
+});
+
+test('Marrowline continuation shows prior work, accepts a new request under a fresh binding and keeps portability in the same workspace', async () => {
+  const selected = fixture();
+  selected.governance = await createLoomAiGovernance(selected, { withheldDocumentCount: 1 });
+  selected.continuation = { prior_result: continuationResult() };
+  const scene = ui(input => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: input.request_id, status: 'completed', answer: 'Subject: Retention and migration commitments\n\nPlease confirm the signed retention term and archive benchmark.', missing_information: [], used_document_ids: ['budget-1'], suggested_next_step: 'Send after human review.', observations: { provider_calls: 1 } }), selected);
+  await scene.workspace.ready;
+  const original = scene.root.querySelector('#loomImportedTask');
+  const prior = scene.root.querySelector('#loomImportedPriorAnswer');
+  const followup = scene.root.querySelector('#loomImportedFollowup');
+  assert.equal(original.readOnly, true);
+  assert.match(prior.textContent, /ASSISTANT OVERRIDE/);
+  assert.equal(followup.readOnly, false);
+  assert.equal(followup.value, '');
+  followup.value = 'Turn those findings into a concise supplier email.';
+  followup.dispatchEvent(new scene.dom.window.Event('input', { bubbles: true }));
+  scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
+  assert.equal(scene.calls.length, 1);
+  assert.match(scene.calls[0].input.task, /Turn those findings into a concise supplier email/);
+  assert.match(scene.calls[0].input.task, /ASSISTANT OVERRIDE/);
+  const receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
+  assert.equal(receipt.continuation.prior_handoff_digest, 'example');
+  assert.notEqual(receipt.continuation.followup_input_digest, selected.governance.input_digest);
+  assert.match(scene.root.querySelector('#loomImportedAnswer').textContent, /Subject: Retention and migration commitments/);
+  assert.ok(scene.root.querySelector('#loomImportedCopy'));
+  assert.ok(scene.root.querySelector('#loomImportedExport'));
+  let copied = '';
+  scene.environment.navigator = { clipboard: { writeText: async value => { copied = value; } } };
+  scene.root.querySelector('#loomImportedCopy').click();
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.match(copied, /Paste this entire continuation packet into your chosen AI companion/);
+  assert.match(copied, /acknowledge the task and rules before working/);
+  assert.match(copied, /Turn those findings into a concise supplier email/);
+  assert.match(copied, /ASSISTANT OVERRIDE/);
+  assert.match(copied, /structured JSON/);
+  assert.match(scene.root.textContent, /Leave this continuation and open a new Marrowline workspace/);
+  scene.workspace.destroy(); scene.dom.window.close();
+});
