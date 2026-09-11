@@ -27,6 +27,11 @@ import {
   resolveGeminiModelPlan,
   resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
+import {
+  GEMINI25_HIGH_THINKING_BUDGET,
+  buildGeminiGenerationConfig,
+  geminiThinkingConfig
+} from './gemini-generation-envelope.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
@@ -129,15 +134,18 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       parts: [{ text: `${packet.systemInstruction}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
     },
     contents: geminiContents(packet),
-    generationConfig: {
-      temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
-      topP: 0.9,
-      topK: 40,
+    generationConfig: buildGeminiGenerationConfig({
+      model,
       maxOutputTokens: outputBudget(model),
-      ...(frontier ? { thinkingConfig: { thinkingLevel: 'high' } } : {}),
+      sampling: {
+        temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
+        topP: 0.9,
+        topK: 40
+      },
+      reasoning: frontier ? { level: 'high', budget: GEMINI25_HIGH_THINKING_BUDGET } : null,
       responseMimeType: 'application/json',
       responseSchema: KHONAPOLIT_RELAY_RESPONSE_SCHEMA
-    }
+    })
   };
 }
 
@@ -157,11 +165,15 @@ export function observeGeminiOutput(payload = {}, model = '') {
   }
   const rawReason = payload?.candidates?.[0]?.finishReason;
   const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
+  const thinkingConfig = qualityEnvelope(model)
+    ? geminiThinkingConfig(model, { enabled: true, level: 'high', budget: GEMINI25_HIGH_THINKING_BUDGET })
+    : null;
   return Object.freeze({
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
     maxOutputTokens: outputBudget(model),
-    thinkingLevel: qualityEnvelope(model) ? 'high' : 'provider-default',
+    thinkingLevel: thinkingConfig?.thinkingLevel || (thinkingConfig?.thinkingBudget !== undefined ? 'not-applicable' : 'provider-default'),
+    ...(thinkingConfig?.thinkingBudget !== undefined ? { thinkingBudget: thinkingConfig.thinkingBudget } : {}),
     usage: Object.freeze(usage)
   });
 }
@@ -365,7 +377,7 @@ export default async function handler(req, res) {
           'three-part-relay-envelope-active',
           'high-zalgo-rendered-after-provider-return',
           'frontier-quality-floor-active',
-          'frontier-model-high-thinking-active',
+          'generation-compatible-thinking-active',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
           ...plan.warnings

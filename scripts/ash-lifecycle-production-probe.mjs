@@ -147,6 +147,28 @@ runtime = replaceExactly(
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
   'draft request boundary'
 );
+
+// The cleared-arrival application schedules A9, A10, and A11 from the same
+// canonical module-graph transition.  Navigation must not supersede any one of
+// those application-owned imports merely because a later sibling settled first.
+runtime = replaceExactly(
+  runtime,
+  "      && window.__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'\n      && Boolean(window.__td613AshA11ModulePromise)",
+  "      && window.__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'\n      && Boolean(window.__td613AshA9ModulePromise)\n      && window.__td613AshA9Work?.version === 'td613.ash.a9-work-recompilation/v0.2'\n      && Boolean(window.__td613AshA10ModulePromise)\n      && window.__td613AshA10Choir?.version === 'td613.ash.a10-choir-recompilation/v0.1'\n      && Boolean(window.__td613AshA11ModulePromise)",
+  'A9-A11 stage-import settlement predicate'
+);
+runtime = replaceExactly(
+  runtime,
+  "      aia3_version:window.__td613AshAia3Composition?.version || null,\n      a11_module_requested:Boolean(window.__td613AshA11ModulePromise),",
+  "      aia3_version:window.__td613AshAia3Composition?.version || null,\n      a9_module_requested:Boolean(window.__td613AshA9ModulePromise),\n      a9_work_version:window.__td613AshA9Work?.version || null,\n      a10_module_requested:Boolean(window.__td613AshA10ModulePromise),\n      a10_choir_version:window.__td613AshA10Choir?.version || null,\n      a11_module_requested:Boolean(window.__td613AshA11ModulePromise),",
+  'A9-A11 stage-import settlement receipt'
+);
+runtime = replaceExactly(
+  runtime,
+  "      dependency_imports_settled:true,\n      specialist_navigation_admitted:true",
+  "      stage_imports_settled:true,\n      dependency_imports_settled:true,\n      specialist_navigation_admitted:true",
+  'stage-import settlement receipt flag'
+);
 if (!runtime.includes(syntheticDraft)
   || !runtime.includes("url.searchParams.get('arrival') === 'cleared'")
   || !runtime.includes('ash-keep.html?presentation=legacy')
@@ -181,6 +203,9 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes("url.pathname === '/api/dome-world-shell'")
   || !runtime.includes("url.pathname === '/dome-world/ash-aia3-composition.js'")
   || runtime.includes("url.pathname === '/dome-world/ash-research-demo-hydration.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a9-work-recompilation.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a10-choir-recompilation.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a11-capsule-recompilation.js'")
   || !runtime.includes("item.resource_type === 'stylesheet'")
   || !runtime.includes("url.pathname === '/dome-world/ash-guided-operator-ui.css'")
   || !runtime.includes("url.searchParams.get('v') === '20260718-stable-membrane-v4'")
@@ -192,6 +217,15 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes("dataset.ashAiaReady === 'true'")
   || !runtime.includes('__td613AshLiveAIA?.version')
   || !runtime.includes("__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'")
+  || !runtime.includes('Boolean(window.__td613AshA9ModulePromise)')
+  || !runtime.includes("window.__td613AshA9Work?.version === 'td613.ash.a9-work-recompilation/v0.2'")
+  || !runtime.includes('Boolean(window.__td613AshA10ModulePromise)')
+  || !runtime.includes("window.__td613AshA10Choir?.version === 'td613.ash.a10-choir-recompilation/v0.1'")
+  || !runtime.includes('Boolean(window.__td613AshA11ModulePromise)')
+  || !runtime.includes("window.__td613AshA11Capsule?.version === 'td613.ash.a11-capsule-recompilation/v0.1'")
+  || !runtime.includes('a9_module_requested:')
+  || !runtime.includes('a10_module_requested:')
+  || !runtime.includes('stage_imports_settled:true')
   || !runtime.includes("__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'")
   || !runtime.includes("dataset.ashDemoRegistryOwners === 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE'")
   || !runtime.includes('demo_registry_owner_imports_settled:')

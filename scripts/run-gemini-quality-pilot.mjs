@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { listGeminiGenerateContentModels } from '../server/gemini-model-discovery.js';
 import { assessGeminiEligibility } from '../server/gemini-model-registry.js';
+import { buildGeminiGenerationConfig } from '../server/gemini-generation-envelope.js';
 import { buildPrompt, quarantineCandidateRows } from '../server/hush-provider-contract.js';
 import { parseProviderJson } from '../server/hush-generate-quality.js';
 
@@ -60,8 +61,15 @@ async function main() {
           (async () => {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
               method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key }, signal: controller.signal,
-              body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.22, topP: 0.64, responseMimeType: 'application/json', maxOutputTokens } })
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: buildGeminiGenerationConfig({
+                  model,
+                  maxOutputTokens,
+                  responseMimeType: 'application/json',
+                  sampling: { temperature: 0.22, topP: 0.64 }
+                })
+              })
             });
             return { response, payload: await response.json() };
           })(),
