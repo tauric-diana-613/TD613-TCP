@@ -170,8 +170,9 @@ await check('Loom transient fallback cannot monopolize the remaining global dead
   assert.equal(result.payload.status, 'completed');
   assert.equal(result.payload.observations.provider_calls, 3);
   assert.equal(result.payload.observations.provider_attempts.length, 3);
-  assert.equal(result.payload.observations.provider_attempts[1].timed_out, true);
-  assert.ok(Number.isFinite(result.payload.observations.provider_attempts[1].elapsed_ms));
+  assert.equal(result.payload.observations.provider_attempt_timings.length, 3);
+  assert.equal(result.payload.observations.provider_attempt_timings[1].timed_out, true);
+  assert.ok(Number.isFinite(result.payload.observations.provider_attempt_timings[1].elapsed_ms));
 });
 
 await check('Hush treats HTTP 400 as a terminal request rejection rather than cross-model failover', async () => {
@@ -256,11 +257,13 @@ await check('Hush refuses HTTP-200 MAX_TOKENS output and records completion tele
 });
 
 await check('all live generation routes keep Gemini credentials out of request URLs', async () => {
-  for (const file of ['server/khonapolit-quality.js', 'server/hush-generate-quality.js']) {
+  for (const file of ['server/loom-task.js', 'server/khonapolit-quality.js', 'server/hush-generate-quality.js']) {
     const source = fs.readFileSync(file, 'utf8');
     assert.doesNotMatch(source, /generateContent\?key=/);
-    assert.match(source, /x-goog-api-key/);
   }
+  const transport = fs.readFileSync('server/gemini-provider-transport.js', 'utf8');
+  assert.match(transport, /x-goog-api-key/);
+  assert.doesNotMatch(transport, /\?key=/);
 });
 
 await check('production Loom canary preserves bounded failure-stage diagnostics', async () => {
@@ -268,6 +271,7 @@ await check('production Loom canary preserves bounded failure-stage diagnostics'
   assert.match(source, /diagnostic:/);
   assert.match(source, /stage_elapsed_ms/);
   assert.match(source, /deadline_ms/);
+  assert.match(source, /provider_attempt_timings/);
 });
 
 const failed = results.filter((row) => row.status === 'FAIL');
