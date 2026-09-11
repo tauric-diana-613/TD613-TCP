@@ -6,7 +6,11 @@ export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
 export const LOOM_TASK_DIAGNOSTIC_SCHEMA = 'td613.loom.ai-task-diagnostic/v0.1';
 // Retain the validated shared-function deadline; the browser allows 55s and Vercel 60s.
 export const LOOM_TASK_TIMEOUT_MS = 50000;
-export const LOOM_TASK_MAX_PROVIDER_CALLS = 2;
+// Stateless resilience must survive Vercel cold starts. One Loom submission may make
+// one primary call plus two diversified transient-failure fallbacks within the same deadline.
+export const LOOM_TASK_MAX_PROVIDER_CALLS = 3;
+export const LOOM_TASK_TRANSIENT_BACKOFF_MS = Object.freeze([750, 1500]);
+const LOOM_TASK_STABLE_FALLBACKS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
 // Conservative compatibility envelope for unknown/synthetic models.
 export const LOOM_TASK_OUTPUT_TOKEN_BUDGET = 16384;
 export const LOOM_TASK_RESPONSE_CHAR_BUDGET = 40000;
@@ -39,6 +43,25 @@ const responseCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FR
 const answerCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_ANSWER_CHAR_BUDGET : LOOM_TASK_ANSWER_CHAR_BUDGET;
 const validModel = model => typeof model === 'string' && /^[a-zA-Z0-9._-]{1,120}$/.test(model);
 const transientProviderHttp = status => Number.isInteger(status) && (status === 408 || status === 429 || status >= 500);
+
+export function selectLoomProviderModels(callableModels = []) {
+  if (!Array.isArray(callableModels)) return [];
+  const eligible = [...new Set(callableModels.filter(validModel))];
+  if (!eligible.length) return [];
+  const selected = [eligible[0]];
+  // The newest adjacent frontier siblings have shown correlated 503s in human production
+  // episodes. Prefer already-eligible stable generations as the next two attempts so the
+  // request does not depend on process-local cooldown memory surviving a serverless cold start.
+  for (const fallback of LOOM_TASK_STABLE_FALLBACKS) {
+    if (eligible.includes(fallback) && !selected.includes(fallback)) selected.push(fallback);
+    if (selected.length >= LOOM_TASK_MAX_PROVIDER_CALLS) return selected;
+  }
+  for (const candidate of eligible) {
+    if (!selected.includes(candidate)) selected.push(candidate);
+    if (selected.length >= LOOM_TASK_MAX_PROVIDER_CALLS) break;
+  }
+  return selected;
+}
 
 // Only the client-admitted task view belongs here; locally withheld sources never enter this envelope.
 export function validateLoomTaskInput(input) {
@@ -125,7 +148,7 @@ function usageCounts(usage) {
 
 export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args) => fetch(...args),
   resolvePlan = resolveGeminiProviderPlan, recordOutcome = recordGeminiModelOutcome, rateSlot = consumeRateSlot,
-  now = Date.now, timeoutMs = LOOM_TASK_TIMEOUT_MS } = {}) {
+  now = Date.now, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), timeoutMs = LOOM_TASK_TIMEOUT_MS } = {}) {
   const deadlineMs = Number.isFinite(timeoutMs) ? Math.max(1, Math.min(timeoutMs, LOOM_TASK_TIMEOUT_MS)) : LOOM_TASK_TIMEOUT_MS;
   return async function loomTaskHandler(req, res) {
     const started = now();
@@ -188,7 +211,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     try {
       const plan = await Promise.race([resolvePlan({ task: 'general-text', env, maxModels: 8 }), deadline]);
       if (controller.signal.aborted) throw new Error('request-aborted');
-      const models = Array.isArray(plan.callableModels) ? plan.callableModels.filter(validModel).slice(0, LOOM_TASK_MAX_PROVIDER_CALLS) : [];
+      const models = selectLoomProviderModels(plan.callableModels);
       if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
       let response = null;
@@ -206,6 +229,8 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         if (response.ok) break;
         const mayFailOver = transientProviderHttp(status) && index + 1 < models.length;
         if (!mayFailOver) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
+        const backoffMs = LOOM_TASK_TRANSIENT_BACKOFF_MS[Math.min(index, LOOM_TASK_TRANSIENT_BACKOFF_MS.length - 1)];
+        await Promise.race([sleep(backoffMs), deadline]);
       }
       if (!response?.ok) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
       // Parse only bounded provider text. Never publish raw provider error bodies, headers or credentials.
