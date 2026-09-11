@@ -36,6 +36,14 @@ test('observed deployed Gemini Markdown totals retain explicit vendor attributio
   assert.equal(result.status,'matched');assert.equal(result.reported.vendor_a.value,137591.52);assert.equal(result.reported.vendor_b.value,145808.64);
   assert.equal(result.blocks_output,false);assert.equal(result.release_authority,false);
 });
+test('cost-comparison vendor rows count as explicit attribution without weakening bare-number safeguards',()=>{
+  const answer='### 12-month stated-fee comparison\n\n| Supplier | 12-month fees |\n| --- | ---: |\n| Vendor A | **137,591.52 credits** |\n| Vendor B | **145,808.64 credits** |';
+  const result=assessLoomProjectAnswer('vendor-diligence',{answer});
+  assert.equal(result.status,'matched');
+  assert.equal(result.reported.vendor_a.value,137591.52);
+  assert.equal(result.reported.vendor_b.value,145808.64);
+  assert.ok(result.checks.every(check=>check.status==='matched'));
+});
 test('Markdown totals preserve mismatched, ambiguous and malformed amounts',()=>{
   const a='* **Total Vendor-A Cost**: 137,591.52 credits.';
   const b='* **Total Vendor-B Cost**: 145,808.64 credits.';
