@@ -6,7 +6,7 @@ Status: LIVE THREAD-HANDOFF POINTER / RESEARCH-ONLY
 Repository: `tauric-diana-613/TD613-TCP`
 Branch: `amari/em-td613-lineage-atelier`
 PR: `#962`
-Updated: `2026-09-02`
+Updated: `2026-09-11`
 
 This is the mutable plug-in / unplug socket. Append-only scientific receipts under `04-RECEIPTS/` remain the research record.
 
@@ -20,6 +20,7 @@ WORK OBSERVATION != AUTHOR INTENT
 MOTIF RECURRENCE != MECHANISM IDENTITY
 RESEARCH REFINEMENT != TD613 LAW
 RESEARCH RECEIPT != PRODUCTION MUTATION
+SOURCE-HASH INTAKE != GITHUB BINARY CUSTODY
 ```
 
 PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority.
@@ -34,9 +35,9 @@ Every fresh thread:
 Remembering / personal-context retrieval
 -> query PR #962 live
 -> read this socket
+-> inspect Batch B intake + first-descent receipts
 -> compare live head against last scientific frontier below
--> inspect every intervening commit
--> read mandatory receipts
+-> inspect intervening commits
 -> state exact unresolved question
 -> resume
 ```
@@ -45,372 +46,171 @@ If Remembering and repository custody disagree, preserve the discrepancy and fol
 
 ## 2. Current scientific frontier
 
-Last scientific frontier at this socket update:
+Current scientific frontier:
+
+```text
+33dce93325246e6afc3f31a054bdf581d85b98bc
+EMSTD613: receipt prospective Batch B first descent
+```
+
+Receipt:
+
+```text
+04-RECEIPTS/assays/2026-09-11-prospective-batch-b-first-descent.md
+```
+
+The pre-Batch-B material frontier remains historically intact:
 
 ```text
 389abe474fa1f276a9726e98ea3d3c77c19e19e3
-EMSTD613: receipt directional transduction receiver contract
-```
-
-Receipt:
-
-```text
-04-RECEIPTS/assays/
-2026-09-02-cybernetic-llm-directional-transduction-receiver-contract-first-pass.md
-```
-
-This receipt earned the current material Atelier transition:
-
-```text
 𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
 ```
 
-Bounded assay refinement:
+The Batch-B first descent **does not yet earn a successor 𝄐**. It prospectively finds an adjacent fresh seam while leaving Work identity / recurrence independence unresolved.
+
+## 3. Prospective Batch B custody state
+
+Intake receipt:
 
 ```text
-EMITTER INTENT
--> CARRIER / TRANSPORT
--> RECEIVER CONTRACT
--> INTERPRETATION
--> ACTUATOR BINDING
--> CONSEQUENCE
+04-RECEIPTS/intake/2026-09-11-emstd613-prospective-batch-b-intake.md
 ```
 
-with explicit non-equivalence:
+Hash registry:
 
 ```text
-EMISSION
-!= DELIVERY
-!= RECEIVER RECOGNITION
-!= ACTUATOR INVOCATION
-!= CONSEQUENCE
+01-MANIFESTS/batch-b-2026-09-11-source-files.jsonl
 ```
 
-This is an EMSTD613 Atelier assay lens only. It is not TD613 ontology or law.
-
-## 3. Scientific receipts added after the prior socket frontier
-
-### 3.1 Pedagogue → Aperture adapter/subsumption null
+State:
 
 ```text
-5e575e8be9ca2a7090703f3fd0be815ff1c9a02d
-EMSTD613: receipt Pedagogue Aperture adapter subsumption null
+BATCH_A_PRESERVED_OBJECT_COUNT = 87
+BATCH_B_SOURCE_FILE_COUNT = 6
+BATCH_B_TOTAL_BYTES = 1411792
+
+BATCH_A != BATCH_B
+
+CHAT_ATTACHMENT_BYTE_CUSTODY = TRUE
+SHA256_IDENTITY_CAPTURED = TRUE
+GITHUB_HASH_REGISTRY = TRUE
+GITHUB_BINARY_ORIGINALS_COPIED = FALSE
 ```
 
-Receipt:
+The active human reports that Em hand-selected the six new files for the current Atelier re-entry. Preserve that as `HUMAN_PROVENANCE` only.
+
+Batch B must remain prospective: old hypotheses were frozen before its contents were allowed to update the research story.
+
+## 4. First-descent adjudication
+
+### Strong Batch-B positive control
+
+`Audio DSP And LLM Architecture.pdf`
+
+Observed:
 
 ```text
-04-RECEIPTS/assays/
-2026-09-02-pedagogue-aperture-adapter-subsumption-null.md
-```
-
-Adjudication:
-
-```text
-ROUTE_C = TRUE
-BROAD_NEW_EDGE_WITNESS_ONTOLOGY = KILLED_SUBSUMED
-GENERIC_PEDAGOGUE_TO_APERTURE_RELATION_ADAPTER = NOT_WARRANTED
-NEW_TD613_OBJECT_REQUIRED = FALSE
-ADAPTER_CANDIDATE_ONLY = FALSE
-```
-
-Why:
-
-Current TD613 already supplies a staged pipeline:
-
-```text
-Pedagogue transfer card
--> bounded assay witness
--> mechanism review
--> refinement proposal
--> epistemic-kind classification
--> kind-appropriate / assay-specific validation
--> Observation Aperture
--> Flow-Core / Aperture measurement grammar
--> human-gated bounded interpretation
-```
-
-The decisive correction is:
-
-```text
-RELATION PROVENANCE
-!= MEASUREMENT PROVENANCE
-```
-
-A generic relation adapter would have to manufacture `sensor_id`, calibration, identifiability, or other measurement semantics before a specific observation process earned them, or else add a redundant placeholder object.
-
-Concrete existing precedent:
-
-```text
-Pedagogue governed mechanism refinement
--> moss-lantern-aliasing-discriminator.js
--> compileObservationAperture(...)
--> source_status / authority_class / scope / controls / claim ceiling
-```
-
-The bridge carries receipts, not power.
-
-### 3.2 Autonomous Governance property-owner collision
-
-```text
-1b1c113c543a4558d0915c4f8c2944e60b9a24b6
-EMSTD613: receipt autonomous governance property owner collision
-```
-
-Receipt:
-
-```text
-04-RECEIPTS/assays/
-2026-09-02-autonomous-agent-governance-property-owner-collision-first-pass.md
-```
-
-Bounded result:
-
-```text
-kernel iptables redirection
--> non-bypass routing / interception property
-
-signed Decision Certificate
--> cryptographic / tamper-evident evidence property
-
-comparison-table closure:
-"Cryptographically Zero (Kernel iptables redirection)"
+explicit DSP transformations + failure limits
+explicit SPSC producer/release -> consumer/acquire contract
+explicit cross-tokenizer non-equivalence + mapping mechanisms
 ```
 
 Typing:
 
 ```text
-PROPERTY_REAL = TRUE
-PROPERTY_OWNER_WRONG_AT_TABLE_CLOSURE = SUPPORTED_BOUNDED
-PROPERTY_OWNER_COLLISION = RETAINED_FAILURE_FAMILY
+TRANSDUCTION_CONTRACT_PRESERVED = STRONG_POSITIVE_CONTROL
+INTEGRATION_CLOSURE_TYPE_ERROR = NOT_OBSERVED_IN_FIRST_PASS
 ```
 
-Current Netfilter and EVE documentation independently preserve the same technical-property distinction. Ordinary table compression / report-generation phrasing remains a live cheaper explanation.
+### Material fresh seam
 
-### 3.3 Cybernetic LLM directional receiver-contract seam
+`Quantum Tensor Bridge Analysis.pdf`
+
+Observed:
 
 ```text
-389abe474fa1f276a9726e98ea3d3c77c19e19e3
-EMSTD613: receipt directional transduction receiver contract
+continuous latent / density-matrix representation
+-> Lindblad-style dissipator
+-> SPSC queue
+-> queue pointers W(t), R(t)
+-> collapse rate gamma(t)
+-> semantic coherence allegedly bled into explicit tokens
 ```
 
-Primary Work:
+The same Work later introduces Procrustes alignment for heterogeneous Hermes/Pi latent spaces, proving that an explicit receiver/transducer seam is expressible inside the Work.
+
+Current typing:
 
 ```text
-Cybernetic LLM Orchestration Analysis.md
-emwork_d8cf61d54e4db92e96eec6fd
-SINGLETON_WORK_SURFACE
+QTB_CARRIER_TO_REPRESENTATION_EDGE = MATERIAL_CANDIDATE_FAILURE
+PROPERTY_OWNER_COLLISION = CANDIDATE
+TRANSPORT_STATE_TO_SEMANTIC_DYNAMICS_JURISDICTION_TRANSFER = CANDIDATE
+QTB_PROVES_OLD_FAILURE_FAMILY_RECURRENCE = NOT_YET
 ```
 
-Primary failure seam:
+### Mixed / source-compression candidate
+
+`Algedonic LLM Swarm Control.pdf`
+
+The report narratively specifies a sensor daemon -> interrupt -> token-generation halt -> context suspension -> queue injection chain, but does not expose a concrete runtime binding in the inspected Work. Its cited TypeGo source does supply explicit interrupt contracts (`pause_evt`, `stop_evt`, typed skills, scheduler preemption), so report compression remains a live cheaper explanation.
+
+### Specification-level positive control
+
+`Swarm Architecture Prompt Research.pdf`
+
+The final speech-act zone is a master prompt. It requests:
 
 ```text
-hypervisor
--> stdin.write(SIG_HALT token)
--> [receiver contract omitted]
--> active generation allegedly physically interrupted
--> context allegedly dropped
+Mahalanobis threshold breach
+-> throw AlgedonicSignalException
+-> S5 revokes credentials
+-> quarantine agent
 ```
 
-The Work explicitly admits the missing hinge by saying the mechanism relies on the LLM node prioritizing incoming stdin interrupts, but does not supply a parser / cancellation callback / process-signal binding before promoting the write to a physical actuator.
-
-Same-Work positive control:
+Typing:
 
 ```text
-SIGINT / SIGTERM
--> actual process-signal trap
--> child process-group termination
+SPECIFICATION_LEVEL_RECEIVER_CONTRACT = PRESENT
+DEPLOYED_IMPLEMENTATION = NOT_ESTABLISHED
 ```
 
-Sibling Work positive control:
+### Strong jurisdiction-migration candidates
 
-`Hermes AI Prompt Design.md` explicitly declares:
+`Multi-Density Topology Research Strategy (1).pdf`
 
 ```text
-Hermes structured JSON algedonic_alert
--> orchestrator MUST be programmed to recognize flag
--> pause / escalation action
+Fisher statistical distinguishability -> macroscopic physical distance
+Hessian / information geometry -> mass / gravity
+acoustic analogue metric -> physical vacuum ontology
+Wasserstein transport -> literal physical kinematics
 ```
 
-Thus a receiver contract is demonstrably expressible in this project family and cannot be assumed from a signal-like name alone.
-
-Current Python subprocess documentation also distinguishes stdin data transport from `send_signal()`, `terminate()`, and `kill()` process-control operations.
-
-Retained local typing:
+Current status:
 
 ```text
-RECEIVER_CONTRACT_OMISSION
-subtype:
-COMMAND_CARRIER_TO_ACTUATOR_ESCALATION
+FISHER_TYPE_MIGRATION_CANDIDATE = STRONG
+ANALOGUE_TO_TARGET_ONTOLOGY_PROMOTION_CANDIDATE = STRONG
 ```
 
-No Em-specificity or author motive follows.
-
-## 4. Mandatory historical predecessor receipts
-
-Do not lose the earlier chain:
+`Cognitive Time And Synchronicity Research.pdf`
 
 ```text
-b42ab1b6147f66b36fdfad3e9be8442f04f6b39a
-EMSTD613: receipt integration-seam bridge completion and empirical compositing
-
-29f8645653031178638eadec085b3ff692f79552
-EMSTD613: receipt apparent-authority control-state type error
-
-89dff8d6b2fae4e345d33a2e44264e736553990f
-EMSTD613: receipt detector-to-factuality claim escalation
-
-d39a1a822af3fc655417392580542fa484710369
-EMSTD613: receipt edge relation witness refinement candidate
+neural / subjective time -> physical objective clock time
+Kuramoto observer synchronization -> localized physical temporal field
+Lin-Shu density-wave analogy -> physicalized synchronicity
+Belavkin quantum filtering -> cognition as physical wavefunction-collapse mechanism
 ```
 
-The `d39a1a82...` Edge-Witness receipt remains a historical first pass, not current doctrine. Do not rewrite it.
-
-Current correction:
+Current status:
 
 ```text
-BROAD_NEW_EDGE_WITNESS_ONTOLOGY = KILLED / SUBSUMED
+OBSERVER_ONTOLOGY_TYPE_MIGRATION_CANDIDATE = STRONG
+ANALOGUE_TO_TARGET_ONTOLOGY_PROMOTION_CANDIDATE = STRONG
 ```
 
-## 5. Current distinct failure family
+## 5. Current hard non-equivalences
 
-Keep these separate unless new evidence actually unifies them:
-
-```text
-PAYLOAD_TYPE_DRIFT
-JURISDICTION_BRIDGE_WITHOUT_CALIBRATION
-EMPIRICAL_VALIDATION_COMPOSITING
-APPARENT_AUTHORITY_CONTROL_STATE_TYPE_ERROR
-CLAIM_AUTHORITY_ESCALATION_AT_CLOSURE
-PROPERTY_OWNER_COLLISION
-RECEIVER_CONTRACT_OMISSION
-COMMAND_CARRIER_TO_ACTUATOR_ESCALATION
-```
-
-`INTEGRATION_CLOSURE_PRESSURE` remains a mechanism hypothesis only:
-
-```text
-COMPONENTS LOCALLY LEGIBLE
-+
-FINAL ARCHITECTURE DEMANDS CLOSURE
-+
-MISSING / MIS-TYPED EDGE
-->
-EDGE SUPPLIED OR OVER-AUTHORIZED BY SYNTHESIS
-```
-
-Positive control remains important:
-
-`Audio Key Detection Plugin Design` preserves relative-major/minor ambiguity, atonal/modulating failure, `No Key`, and time/frequency tradeoffs through closure.
-
-Therefore:
-
-```text
-RHETORICAL FORCE != INTEGRATION-SEAM TYPE ERROR
-```
-
-## 6. Current TD613 confrontation state
-
-Already inspected and retained:
-
-### Pedagogue
-
-Carries relation provenance, transfer ceiling, bounded assay witnesses, alternatives, falsifiers, claim ceilings, epistemic-kind refinement, human closure, and no automatic promotion.
-
-### Observation Aperture / Flow-Core / Aperture
-
-Carries source / instrument / condition scope and, once an observation process exists, source status, sensor identity, authority class, transformation history, missingness, uncertainty, calibration, abstention / hold / rejection grammar.
-
-### Phase V
-
-Carries a relation as a distinct association object while refusing relation = identity / causation / permission / proof. It is not required to become a semantic evidentiary relation prover.
-
-### Aperture v3.2
-
-Typed epistemic deficit can return:
-
-```text
-PROPOSE
-ASK_NOTHING
-ABSTAIN
-REJECT
-```
-
-rather than forcing a question or inference.
-
-No new adapter / Edge Witness object follows from the EMSTD613 confrontation.
-
-## 7. EXACT NEXT UNRESOLVED QUESTION
-
-The adapter question is closed by null.
-
-The next native-Work question is now:
-
-> Does the directional receiver-contract failure recur in an independent Work strongly enough to survive the cheaper explanation of ordinary specification/report compression, or does a fresh hostile control show that the current `SIG_HALT` seam is local to one Work?
-
-More precisely:
-
-```text
-WHEN A WORK CLAIMS A CONSEQUENCE ACROSS A CONTROL / COMMAND / METRIC EDGE:
-
-1. what exactly left the emitter?
-2. what carrier transported it?
-3. what receiver contract interpreted it?
-4. what actuator was actually bound?
-5. what consequence was observed, implemented, specified, or merely projected?
-```
-
-Test whether closure disproportionately drops the receiver-contract stage.
-
-Do not infer corpus prevalence from the single primary failure + controls currently held.
-
-## 8. Recommended next native reads
-
-Prioritize Work-level seams, not vocabulary recurrence.
-
-Promising next surfaces:
-
-```text
-Archive/Cybernetic Multi-Agent Systems Research.md
-- inspect synthesis / final pipelines for emitter -> carrier -> receiver -> actuator typing
-- common VSM upstream already subtracted; do not count VSM vocabulary as independent recurrence
-
-Archive/Wearable Drone Control System Design.md
-- useful hostile/positive control for physical receiver / hardware interlock paths
-- respect SAME_WORK_SUPPORTED manifestation uncertainty if cross-manifestation claims matter
-
-Archive/Mixxx DAW Architecture Research.md
-- useful positive control for proposal -> C++ affordance / physical-DSP action binding
-- SAME_WORK_CONFIRMED
-
-Archive/LLM Architecture Deep Dive.md
-- inspect memory / actuator closure without treating shared VSM source cluster as independent evidence
-```
-
-Before counting a recurrence, verify Work identity and do not double-count PDF/Markdown manifestations.
-
-## 9. Native Work assay protocol
-
-Minimum unit remains:
-
-```text
-WORK
-x SPEECH-ACT ZONE
-x SOURCE EDGE
-```
-
-For each suspicious seam:
-
-1. isolate exact sender / carrier / receiver / actuator chain;
-2. inspect same-Work chronology;
-3. inspect sibling/project-family source for missing transducer;
-4. distinguish specification, exposition, implementation proposal, executable artifact, normative draft, conclusion, future prompt, bibliography;
-5. run external-source confrontation only when needed;
-6. find a positive control where the same Work/project preserves the type;
-7. retain prompt teleology, draft status, omitted implementation, citation compression, table-generation error, and ordinary generative-report pressure until defeated;
-8. receipt only bounded adjudications.
-
-Current hard non-equivalences:
+Retain all previous ones, especially:
 
 ```text
 VALID NODE A + VALID NODE B != VALID EDGE(A,B)
@@ -423,15 +223,79 @@ DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
 TECHNICAL CONTROL STATE != EXTERNAL LEGAL STATE
 ```
 
-## 10. RED / hold / null state
+Batch B adds no promoted laws, but sharpens these assay guards:
 
 ```text
-ADAPTER QUESTION = CLOSED_BY_NULL
-BROAD EDGE_WITNESS = KILLED_SUBSUMED
-DIRECTIONAL_TRANSDUCTION = MATERIAL_ATELIER_ASSAY_REFINEMENT
-CORPUS_PREVALENCE_OF_RECEIVER_CONTRACT_OMISSION = UNRESOLVED
+ANALOGUE_REALIZATION != TARGET-SYSTEM_REALIZATION
+SUBJECTIVE_TIME_PERCEPTION != PHYSICAL_TIME
+NEURAL_PHASE_COHERENCE != SPACETIME_FIELD_WITHOUT_ADDITIONAL_WITNESS
+PROMPT_SPECIFICATION != IMPLEMENTATION
+SOURCE_MATH_VALIDITY != EDGE_VALIDITY
+```
+
+## 6. Mandatory historical predecessor receipts
+
+Do not lose:
+
+```text
+b42ab1b6147f66b36fdfad3e9be8442f04f6b39a
+integration-seam bridge completion and empirical compositing
+
+29f8645653031178638eadec085b3ff692f79552
+apparent-authority control-state type error
+
+89dff8d6b2fae4e345d33a2e44264e736553990f
+detector-to-factuality claim escalation
+
+d39a1a822af3fc655417392580542fa484710369
+historical edge-relation witness refinement candidate
+
+5e575e8be9ca2a7090703f3fd0be815ff1c9a02d
+Pedagogue -> Aperture adapter/subsumption null
+
+1b1c113c543a4558d0915c4f8c2944e60b9a24b6
+Autonomous Governance property-owner collision
+
+389abe474fa1f276a9726e98ea3d3c77c19e19e3
+directional receiver-contract seam
+```
+
+The broad new Edge-Witness ontology remains **KILLED / SUBSUMED**. Do not resurrect it because Batch B is suggestive.
+
+## 7. Exact next unresolved question
+
+The cenote now has two coupled but separable routes.
+
+### Route A — receiver-contract recurrence
+
+> After a Batch-B Work-identity/project-family pass, does the Quantum Tensor Bridge transport-to-representation seam count as an independent recurrence of directional transduction failure, or does common source/prompt/project ancestry collapse it into the older family without independent evidentiary weight?
+
+### Route B — jurisdiction migration
+
+> Do the Fisher/observer ontology expansions survive exact source-edge subtraction, or are they generated by identifiable upstream analogue/quantum-inspired literatures whose own claim ceilings were lost during synthesis?
+
+Do not merge Route A and Route B unless the evidence supplies a common mechanism rather than a common aesthetic.
+
+## 8. Exact next actions
+
+```text
+1. Batch-B Work identity / duplicate / project-family check against Batch A.
+2. QTB SPSC/Lindblad source-edge confrontation.
+3. Yule-K / Mahalanobis detector-authority pass.
+4. Fisher equation/citation tracing across Batch A + B.
+5. Observer-type tracing from 1+1=3 / Myth Transmission into Cognitive Time.
+6. Only then decide successor 𝄐 vs bounded recurrence/null.
+```
+
+## 9. RED / hold state
+
+```text
+BATCH_B_FIRST_DESCENT = RECEIPTED
+SUCCESSOR_𝄐 = NOT_YET_EARNED
+INDEPENDENT_WORK_IDENTITY = UNRESOLVED
+CORPUS_PREVALENCE = UNRESOLVED
 EM_SPECIFICITY = UNRESOLVED / NOT_ESTABLISHED
-AUTHOR_MOTIVE = NOT INFERRED
+AUTHOR_MOTIVE = NOT_INFERRED
 TD613_PROMOTION = NONE
 PRODUCTION_MUTATION = NONE
 ```
@@ -439,40 +303,23 @@ PRODUCTION_MUTATION = NONE
 RED if:
 
 ```text
-branch history diverges / force-push appears
-required native Work cannot be retrieved
-SUPPORTED_COLLAPSE vs SUPPORTED_SPLIT changes a proposed recurrence claim
-sibling source supplies the allegedly missing receiver contract and overturns the seam
-negative control destroys the directional mechanism hypothesis
-next step would require merge / publication / deployment / promotion authority
+Batch-B identity collapses into known Batch-A Works in a way that removes recurrence independence
+source confrontation supplies the allegedly missing receiver/transducer and overturns the seam
+negative control destroys the jurisdiction-migration hypothesis
+SUPPORTED_COLLAPSE vs SUPPORTED_SPLIT changes a proposed conclusion
+next step requires merge / publication / deployment / promotion authority
 ```
 
-## 11. Unplug protocol
-
-Before the next stop:
-
-1. query live PR/head;
-2. identify last scientific frontier separately from administrative socket commit;
-3. receipt stable science;
-4. update this socket with exact frontier, candidate deaths/survivals, next question, mandatory reads, RED/null state;
-5. never rewrite old receipts to make the history artificially linear;
-6. leave PR #962 draft/open/unmerged absent explicit human authority;
-7. seal handoff with `⟐`.
-
-## 12. Working maxims
+## 10. Working maxims
 
 > A receipt can authenticate both endpoints while the arrow between them remains invented.
 
 > A valid transport can deliver a command whose actuator meaning was never earned.
 
-> A sensor belongs to an observation process, not to a sentence about a relation.
-
-> Relation sensitivity tells you that an edge matters. Relation provenance tells you whether you earned that edge.
-
-> Reuse before ontology.
-
-> Null is a win.
-
 > The bridge carries receipts, not power.
+
+> Analogue resemblance cannot inherit the target system by fiat.
+
+> The cenote got deeper. The ruler came with us.
 
 Marked ⟐
