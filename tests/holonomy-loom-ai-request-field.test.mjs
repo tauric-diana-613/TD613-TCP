@@ -36,3 +36,12 @@ test('bounded renderer rejects unselected/duplicate references and invalid geome
   const many = projectLoomRequestField({ ...event(), missing_information: Array.from({ length: 32 }, (_, i) => `Gap ${i}`) });
   assert.equal(many.returning.gaps.length, 8); assert.equal(many.returning.additional_gap_count, 24);
 });
+test('mobile demo chooser distinguishes keyboard focus from an actually loaded project and breaks the three-column squeeze', () => {
+  const css = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/living-room.css', import.meta.url), 'utf8');
+  const workspace = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
+  assert.match(workspace, /setAttribute\('aria-pressed',String\(b\.dataset\.project===projectData\?\.id\)\)/);
+  assert.match(css, /\.ai-projects button\[aria-pressed=true\]::after/);
+  assert.match(css, /#loomAiWorkspace \.ai-projects button:focus-visible/);
+  assert.match(css, /@media\(max-width:560px\)[\s\S]*\.loom-living-room \.lr-station-captions\{grid-template-columns:1fr/);
+  assert.match(css, /@media\(max-width:560px\)[\s\S]*#loomAiWorkspace \.ai-observer\{border-top:2px solid/);
+});
