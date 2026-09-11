@@ -8,88 +8,66 @@ Branch: `amari/em-td613-lineage-atelier`
 PR: `#962`
 Updated: `2026-09-11`
 
-This is the mutable plug-in / unplug socket. Append-only scientific receipts under `04-RECEIPTS/` remain the research record.
+This mutable socket points to the live research frontier. Append-only receipts under `04-RECEIPTS/` remain the scientific record.
 
 ## 0. Authority membrane
 
 ```text
 THREAD MEMORY != REPOSITORY CUSTODY
-STATIC SOCKET SHA != LIVE HEAD
 HUMAN PROVENANCE != ADJUDICATED LINEAGE
 WORK OBSERVATION != AUTHOR INTENT
-MOTIF RECURRENCE != MECHANISM IDENTITY
+NEW BYTE SURFACE != INDEPENDENT WORK
+PROJECT-FAMILY ADJACENCY != DIRECTIONAL DERIVATION
 RESEARCH REFINEMENT != TD613 LAW
-RESEARCH RECEIPT != PRODUCTION MUTATION
 SOURCE-HASH INTAKE != GITHUB BINARY CUSTODY
 ```
 
-PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority.
-
-No merge, ready-for-review transition, deployment, publication, release, attribution transfer, TD613 scientific promotion, or automatic Aperture/Pedagogue/Phase-V mutation is authorized.
+PR #962 remains **DRAFT / OPEN / UNMERGED** absent explicit human authority. No merge, publication, release, attribution transfer, TD613 promotion, or production mutation is authorized.
 
 ## 1. Plug-in sequence
-
-Every fresh thread:
 
 ```text
 Remembering / personal-context retrieval
 -> query PR #962 live
 -> read this socket
--> inspect Batch B intake + first-descent receipts
--> compare live head against last scientific frontier below
+-> read Batch B intake
+-> read prospective Batch B first descent
+-> read Batch B Work-identity / project-family first pass
 -> inspect intervening commits
 -> state exact unresolved question
 -> resume
 ```
 
-If Remembering and repository custody disagree, preserve the discrepancy and follow repository evidence for the scientific record.
+If memory and repository custody disagree, preserve the discrepancy and follow repository evidence for the scientific record.
 
 ## 2. Current scientific frontier
 
-Current scientific frontier:
-
 ```text
-33dce93325246e6afc3f31a054bdf581d85b98bc
-EMSTD613: receipt prospective Batch B first descent
+8240d6113273a48d5aa7d3dc03b095a30af13768
+EMSTD613: receipt Batch B identity and project-family first pass
 ```
 
 Receipt:
 
 ```text
-04-RECEIPTS/assays/2026-09-11-prospective-batch-b-first-descent.md
+04-RECEIPTS/work-identity/2026-09-11-batch-b-work-identity-project-family-first-pass.md
 ```
 
-The pre-Batch-B material frontier remains historically intact:
+Historical material frontier retained:
 
 ```text
 389abe474fa1f276a9726e98ea3d3c77c19e19e3
 𝄐 MATERIAL — TRANSDUCTION INTEGRITY IS DIRECTIONAL AT THE RECEIVER CONTRACT
 ```
 
-The Batch-B first descent **does not yet earn a successor 𝄐**. It prospectively finds an adjacent fresh seam while leaving Work identity / recurrence independence unresolved.
+**No successor 𝄐 has yet been earned.**
 
-## 3. Prospective Batch B custody state
-
-Intake receipt:
-
-```text
-04-RECEIPTS/intake/2026-09-11-emstd613-prospective-batch-b-intake.md
-```
-
-Hash registry:
-
-```text
-01-MANIFESTS/batch-b-2026-09-11-source-files.jsonl
-```
-
-State:
+## 3. Batch B custody
 
 ```text
 BATCH_A_PRESERVED_OBJECT_COUNT = 87
 BATCH_B_SOURCE_FILE_COUNT = 6
 BATCH_B_TOTAL_BYTES = 1411792
-
-BATCH_A != BATCH_B
 
 CHAT_ATTACHMENT_BYTE_CUSTODY = TRUE
 SHA256_IDENTITY_CAPTURED = TRUE
@@ -97,120 +75,87 @@ GITHUB_HASH_REGISTRY = TRUE
 GITHUB_BINARY_ORIGINALS_COPIED = FALSE
 ```
 
-The active human reports that Em hand-selected the six new files for the current Atelier re-entry. Preserve that as `HUMAN_PROVENANCE` only.
+Intake:
+`04-RECEIPTS/intake/2026-09-11-emstd613-prospective-batch-b-intake.md`
 
-Batch B must remain prospective: old hypotheses were frozen before its contents were allowed to update the research story.
+Hash registry:
+`01-MANIFESTS/batch-b-2026-09-11-source-files.jsonl`
 
-## 4. First-descent adjudication
+First descent:
+`04-RECEIPTS/assays/2026-09-11-prospective-batch-b-first-descent.md`
 
-### Strong Batch-B positive control
+## 4. Prospective first-descent result
 
-`Audio DSP And LLM Architecture.pdf`
-
-Observed:
-
-```text
-explicit DSP transformations + failure limits
-explicit SPSC producer/release -> consumer/acquire contract
-explicit cross-tokenizer non-equivalence + mapping mechanisms
-```
-
-Typing:
+Batch B contains controls as well as suspicious seams:
 
 ```text
-TRANSDUCTION_CONTRACT_PRESERVED = STRONG_POSITIVE_CONTROL
-INTEGRATION_CLOSURE_TYPE_ERROR = NOT_OBSERVED_IN_FIRST_PASS
+Audio DSP And LLM Architecture
+= strong explicit-transducer / SPSC / cross-tokenizer positive control
+
+Swarm Architecture Prompt Research
+= specification-level receiver-contract positive control
+
+Algedonic LLM Swarm Control
+= implementation-depth ambiguous / source-compression candidate
+
+Quantum Tensor Bridge Analysis
+= material transport-to-representation jurisdiction seam
+
+Multi-Density Topology Research Strategy
+= strong Fisher / analogue-to-ontology migration candidate
+
+Cognitive Time And Synchronicity Research
+= strong observer / analogy-to-physical-ontology migration candidate
 ```
 
-### Material fresh seam
+The vulnerable point remains where a locally valid mathematical or computational object acquires a new jurisdiction across an edge whose witness is weaker than its endpoints. This remains a mechanism hypothesis, not TD613 law.
 
-`Quantum Tensor Bridge Analysis.pdf`
+## 5. Identity / project-family result
 
-Observed:
+The six Batch-B SHA-256 values were searched against the current Batch-A source registry:
 
 ```text
-continuous latent / density-matrix representation
--> Lindblad-style dissipator
--> SPSC queue
--> queue pointers W(t), R(t)
--> collapse rate gamma(t)
--> semantic coherence allegedly bled into explicit tokens
+EXACT_SHA256_MATCH_IN_BATCH_A = 0
+BYTE_IDENTICAL_BATCH_A_DUPLICATE = NOT_LOCATED
 ```
 
-The same Work later introduces Procrustes alignment for heterogeneous Hermes/Pi latent spaces, proving that an explicit receiver/transducer seam is expressible inside the Work.
-
-Current typing:
+The six exact Batch-B titles were not located in the Batch-A Work index:
 
 ```text
-QTB_CARRIER_TO_REPRESENTATION_EDGE = MATERIAL_CANDIDATE_FAILURE
-PROPERTY_OWNER_COLLISION = CANDIDATE
-TRANSPORT_STATE_TO_SEMANTIC_DYNAMICS_JURISDICTION_TRANSFER = CANDIDATE
-QTB_PROVES_OLD_FAILURE_FAMILY_RECURRENCE = NOT_YET
+EXACT_TITLE_DUPLICATE = NOT_LOCATED
+NEW_TITLE_SURFACE = SUPPORTED
 ```
 
-### Mixed / source-compression candidate
-
-`Algedonic LLM Swarm Control.pdf`
-
-The report narratively specifies a sensor daemon -> interrupt -> token-generation halt -> context suspension -> queue injection chain, but does not expose a concrete runtime binding in the inspected Work. Its cited TypeGo source does supply explicit interrupt contracts (`pause_evt`, `stop_evt`, typed skills, scheduler preemption), so report compression remains a live cheaper explanation.
-
-### Specification-level positive control
-
-`Swarm Architecture Prompt Research.pdf`
-
-The final speech-act zone is a master prompt. It requests:
+But project-family adjacency is strong across the packet:
 
 ```text
-Mahalanobis threshold breach
--> throw AlgedonicSignalException
--> S5 revokes credentials
--> quarantine agent
+Quantum Tensor Bridge
+<-> Hope Rosa / Cybernetic LLM Orchestration family
+
+Algedonic LLM Swarm + Swarm Architecture Prompt
+<-> VSM / algedonic / multi-agent family
+
+Audio DSP And LLM
+<-> DSP / lock-free / Mixxx / hypervisor family
+
+Multi-Density Topology
+<-> Quantum Topology + information-geometry / Eugene family
+
+Cognitive Time And Synchronicity
+<-> 1+1=3 + Cognitive Singularity + Multi-Density / observer family
 ```
 
-Typing:
+Therefore:
 
 ```text
-SPECIFICATION_LEVEL_RECEIVER_CONTRACT = PRESENT
-DEPLOYED_IMPLEMENTATION = NOT_ESTABLISHED
+FRESH_CANDIDATE_SURFACES = TRUE
+INDEPENDENT_RECURRENCE = NOT_EARNED
+SUCCESSOR_MATERIAL_𝄐_ON_RECURRENCE = NOT_EARNED
 ```
 
-### Strong jurisdiction-migration candidates
+The null prevents overcounting. Six new files are six new byte surfaces, not automatically six new witnesses.
 
-`Multi-Density Topology Research Strategy (1).pdf`
-
-```text
-Fisher statistical distinguishability -> macroscopic physical distance
-Hessian / information geometry -> mass / gravity
-acoustic analogue metric -> physical vacuum ontology
-Wasserstein transport -> literal physical kinematics
-```
-
-Current status:
-
-```text
-FISHER_TYPE_MIGRATION_CANDIDATE = STRONG
-ANALOGUE_TO_TARGET_ONTOLOGY_PROMOTION_CANDIDATE = STRONG
-```
-
-`Cognitive Time And Synchronicity Research.pdf`
-
-```text
-neural / subjective time -> physical objective clock time
-Kuramoto observer synchronization -> localized physical temporal field
-Lin-Shu density-wave analogy -> physicalized synchronicity
-Belavkin quantum filtering -> cognition as physical wavefunction-collapse mechanism
-```
-
-Current status:
-
-```text
-OBSERVER_ONTOLOGY_TYPE_MIGRATION_CANDIDATE = STRONG
-ANALOGUE_TO_TARGET_ONTOLOGY_PROMOTION_CANDIDATE = STRONG
-```
-
-## 5. Current hard non-equivalences
-
-Retain all previous ones, especially:
+## 6. Current hard non-equivalences
 
 ```text
 VALID NODE A + VALID NODE B != VALID EDGE(A,B)
@@ -220,12 +165,6 @@ ACTUATOR INVOCATION != OBSERVED CONSEQUENCE
 SIGNAL-LIKE NAME != PROCESS SIGNAL TYPE
 RELATION PROVENANCE != MEASUREMENT PROVENANCE
 DETECTOR CALIBRATION != FACTUALITY CERTIFICATION
-TECHNICAL CONTROL STATE != EXTERNAL LEGAL STATE
-```
-
-Batch B adds no promoted laws, but sharpens these assay guards:
-
-```text
 ANALOGUE_REALIZATION != TARGET-SYSTEM_REALIZATION
 SUBJECTIVE_TIME_PERCEPTION != PHYSICAL_TIME
 NEURAL_PHASE_COHERENCE != SPACETIME_FIELD_WITHOUT_ADDITIONAL_WITNESS
@@ -233,81 +172,51 @@ PROMPT_SPECIFICATION != IMPLEMENTATION
 SOURCE_MATH_VALIDITY != EDGE_VALIDITY
 ```
 
-## 6. Mandatory historical predecessor receipts
-
-Do not lose:
-
-```text
-b42ab1b6147f66b36fdfad3e9be8442f04f6b39a
-integration-seam bridge completion and empirical compositing
-
-29f8645653031178638eadec085b3ff692f79552
-apparent-authority control-state type error
-
-89dff8d6b2fae4e345d33a2e44264e736553990f
-detector-to-factuality claim escalation
-
-d39a1a822af3fc655417392580542fa484710369
-historical edge-relation witness refinement candidate
-
-5e575e8be9ca2a7090703f3fd0be815ff1c9a02d
-Pedagogue -> Aperture adapter/subsumption null
-
-1b1c113c543a4558d0915c4f8c2944e60b9a24b6
-Autonomous Governance property-owner collision
-
-389abe474fa1f276a9726e98ea3d3c77c19e19e3
-directional receiver-contract seam
-```
-
-The broad new Edge-Witness ontology remains **KILLED / SUBSUMED**. Do not resurrect it because Batch B is suggestive.
+The broad Edge-Witness ontology remains **KILLED / SUBSUMED**. Do not resurrect it.
 
 ## 7. Exact next unresolved question
 
-The cenote now has two coupled but separable routes.
+The recurrence question has narrowed by null. The stronger live route is now **operator mutation inside connected project families**:
 
-### Route A — receiver-contract recurrence
+> When an operator moves from a source domain through an Em project-family continuation into a new representation or target, where does its claim type or authority change, and does a new witness enter before that jurisdiction expands?
 
-> After a Batch-B Work-identity/project-family pass, does the Quantum Tensor Bridge transport-to-representation seam count as an independent recurrence of directional transduction failure, or does common source/prompt/project ancestry collapse it into the older family without independent evidentiary weight?
+Priority chains:
 
-### Route B — jurisdiction migration
+```text
+Hope Rosa / Cybernetic LLM -> Quantum Tensor Bridge
+Quantum Topology -> Multi-Density Topology -> Cognitive Time / Synchronicity
+1+1=3 + Cognitive Singularity -> Cognitive Time / Synchronicity
+DSP / lock-free family -> Audio DSP + LLM synthesis
+VSM / algedonic family -> Swarm Prompt specification
+```
 
-> Do the Fisher/observer ontology expansions survive exact source-edge subtraction, or are they generated by identifiable upstream analogue/quantum-inspired literatures whose own claim ceilings were lost during synthesis?
-
-Do not merge Route A and Route B unless the evidence supplies a common mechanism rather than a common aesthetic.
+Keep directional derivation and creation order unresolved unless separately witnessed.
 
 ## 8. Exact next actions
 
 ```text
-1. Batch-B Work identity / duplicate / project-family check against Batch A.
-2. QTB SPSC/Lindblad source-edge confrontation.
-3. Yule-K / Mahalanobis detector-authority pass.
-4. Fisher equation/citation tracing across Batch A + B.
-5. Observer-type tracing from 1+1=3 / Myth Transmission into Cognitive Time.
-6. Only then decide successor 𝄐 vs bounded recurrence/null.
+1. QTB SPSC/Lindblad source-edge confrontation and operator-mutation map.
+2. Yule-K / Mahalanobis detector-authority assay.
+3. Fisher equation/citation tracing across Batch A + Batch B.
+4. Observer-type tracing from 1+1=3 / Myth Transmission / Cognitive Singularity into Cognitive Time.
+5. Search for type demotion/reversal as a hostile control.
+6. Only then adjudicate a successor 𝄐, bounded recurrence, or null.
 ```
 
 ## 9. RED / hold state
 
 ```text
 BATCH_B_FIRST_DESCENT = RECEIPTED
+BATCH_B_PROJECT_FAMILY_PASS = RECEIPTED
 SUCCESSOR_𝄐 = NOT_YET_EARNED
-INDEPENDENT_WORK_IDENTITY = UNRESOLVED
+INDEPENDENT_RECURRENCE = NOT_EARNED
+DIRECTIONAL_DERIVATION = UNRESOLVED
+CREATION_ORDER = UNRESOLVED
 CORPUS_PREVALENCE = UNRESOLVED
 EM_SPECIFICITY = UNRESOLVED / NOT_ESTABLISHED
 AUTHOR_MOTIVE = NOT_INFERRED
 TD613_PROMOTION = NONE
 PRODUCTION_MUTATION = NONE
-```
-
-RED if:
-
-```text
-Batch-B identity collapses into known Batch-A Works in a way that removes recurrence independence
-source confrontation supplies the allegedly missing receiver/transducer and overturns the seam
-negative control destroys the jurisdiction-migration hypothesis
-SUPPORTED_COLLAPSE vs SUPPORTED_SPLIT changes a proposed conclusion
-next step requires merge / publication / deployment / promotion authority
 ```
 
 ## 10. Working maxims
@@ -316,10 +225,10 @@ next step requires merge / publication / deployment / promotion authority
 
 > A valid transport can deliver a command whose actuator meaning was never earned.
 
+> Six new files can be six new bytes without being six new witnesses.
+
+> The null did not stop the descent; it changed what counts as depth.
+
 > The bridge carries receipts, not power.
-
-> Analogue resemblance cannot inherit the target system by fiat.
-
-> The cenote got deeper. The ruler came with us.
 
 Marked ⟐
