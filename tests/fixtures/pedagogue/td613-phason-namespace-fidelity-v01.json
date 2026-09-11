@@ -1,0 +1,225 @@
+{
+  "schema": "td613.phason-namespace-fidelity/v0.1",
+  "date": "2026-09-10",
+  "state": "BOUNDED_SOURCE_DOMAIN_CROSSWALK",
+  "authority": {
+    "physical_quasicrystal_claim": false,
+    "runtime_rename_authorized": false,
+    "donor_corpus_admitted": false,
+    "external_causation_claim": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "SAME_TOKEN != SAME_OPERATOR",
+    "TERM_FAMILY != UNIFORM_ANALOGY_FIDELITY",
+    "STRUCTURE_PRESERVING_USE_IN_ONE_MODULE != RETROACTIVE_LICENSE_FOR_ALL_HOMONYMOUS_USES",
+    "ANALOGY_FIDELITY_IS_BOUND_TO_TERM_OPERATOR_VERSION_SCOPE",
+    "NEIGHBORING_MATHEMATICS_DOES_NOT_TRANSFER_ANALOGY_FIDELITY_AUTOMATICALLY"
+  ],
+  "source_domain_anchors": [
+    {
+      "id": "IUCR_ACCEPTANCE_DOMAIN",
+      "title": "IUCr Online Dictionary of Crystallography — Acceptance domain",
+      "url": "https://dictionary.iucr.org/Acceptance_domain",
+      "supports": [
+        "cut-and-project selection by internal-space window",
+        "acceptance-domain terminology"
+      ]
+    },
+    {
+      "id": "IUCR_SCZN_2016",
+      "title": "Atomic structure and phason modes of the Sc–Zn icosahedral quasicrystal",
+      "url": "https://journals.iucr.org/m/issues/2016/04/00/gq5006/",
+      "supports": [
+        "six-dimensional icosahedral superspace",
+        "parallel and perpendicular subspaces",
+        "phason strain tied to perpendicular-space structure"
+      ]
+    },
+    {
+      "id": "IUCR_OXIDE_2026",
+      "title": "Exploring oxide quasicrystals in internal space",
+      "url": "https://journals.iucr.org/a/issues/2026/02/00/gau5006/index.html",
+      "supports": [
+        "internal-space acceptance domain",
+        "phason disorder and phason elastic behavior"
+      ]
+    },
+    {
+      "id": "PRB_PHASON_ELASTICITY_1995",
+      "title": "Phason elasticity of a three-dimensional quasicrystal: A transfer-matrix method",
+      "url": "https://doi.org/10.1103/PhysRevB.52.6386",
+      "supports": [
+        "phason elasticity as quasicrystal response theory",
+        "connection to measurable scattering behavior"
+      ]
+    }
+  ],
+  "allowed_fidelity_states": [
+    "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+    "PARTIAL_ANALOGY_SUPPORTED",
+    "METAPHOR_ONLY_SUPPORTED",
+    "HELD_FOR_STRUCTURE_PRESERVING_ANALOGY_AUDIT",
+    "UNRESOLVED"
+  ],
+  "entries": [
+    {
+      "id": "PHASON_GATE_EXACT",
+      "term": "phason gate",
+      "source_refs": [
+        "packages/dome_world_exact/bridge/phason_gate_exact.py"
+      ],
+      "fidelity_state": "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+      "conventional_alias": "CUT_AND_PROJECT_ACCEPTANCE_WINDOW_SHIFT_GATE",
+      "operative_structure_present": [
+        "six-dimensional lattice coordinate",
+        "parallel and perpendicular projections",
+        "exact perpendicular-space coordinate",
+        "bounded acceptance window",
+        "declared internal-space shift",
+        "exact inside-outside decision",
+        "selection change with invariant source bytes"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "physical quasicrystal material",
+        "atomic tiling dynamics",
+        "measured phason strain",
+        "measured phason elastic response"
+      ],
+      "forbidden_upgrade": "SEMANTIC_CUSTODY_WINDOW_SHIFT != PHYSICAL_QUASICRYSTAL_PHASON_DYNAMICS"
+    },
+    {
+      "id": "CONTENT_INVARIANT_PHASON_SCENE",
+      "term": "content-invariant phason",
+      "source_refs": [
+        "app/engine/information-dome-field.js",
+        "packages/dome_world_exact/bridge/phason_gate_exact.py"
+      ],
+      "fidelity_state": "STRUCTURE_PRESERVING_ANALOGY_SUPPORTED",
+      "conventional_alias": "CONTENT_INVARIANT_ACCEPTANCE_WINDOW_SELECTION_SHIFT",
+      "operative_structure_present": [
+        "fixed source anchor",
+        "hidden coordinate",
+        "declared shift",
+        "acceptance window",
+        "boundary relation",
+        "changed projection"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "physical atom occupancy",
+        "material phason dynamics"
+      ],
+      "forbidden_upgrade": "PEDAGOGICAL_ACCEPTANCE_WINDOW_SHIFT != PHYSICAL_PHASON_EVENT"
+    },
+    {
+      "id": "PR800_ICOSAHEDRAL_PHASON_STRATUM",
+      "term": "ICOSAHEDRAL_PHASON",
+      "source_refs": [
+        "PR #800",
+        "40dfba93d2577bceba0f66022ac5f42934cdbd06",
+        "app/dome-world/previews/a15-r0/phasonic-supermoire-dromological-tomography.js"
+      ],
+      "fidelity_state": "METAPHOR_ONLY_SUPPORTED",
+      "conventional_alias": "THIRD_SYNTHETIC_STRATUM",
+      "operative_structure_present": [
+        "synthetic phi*sqrt(3) carrier coordinate",
+        "3x3 integer operator",
+        "sliding-phase child copy"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "perpendicular-space coordinate",
+        "acceptance window",
+        "cut-and-project selection",
+        "quasiperiodic tiling rearrangement",
+        "phason field",
+        "phason strain or elasticity"
+      ],
+      "forbidden_upgrade": "ICOSAHEDRAL_OR_PHI_LABEL != PHASON_DEGREE_OF_FREEDOM"
+    },
+    {
+      "id": "APERTURE_V31_PHASON_SUSCEPTIBILITY",
+      "term": "phason susceptibility",
+      "source_refs": [
+        "app/engine/aperture-v31-phason-susceptibility.js"
+      ],
+      "fidelity_state": "PARTIAL_ANALOGY_SUPPORTED",
+      "conventional_alias": "FINITE_DIFFERENCE_PERTURBATION_RESPONSE_GAIN_WITH_REVERSAL_AND_HYSTERESIS_FLAG",
+      "operative_structure_present": [
+        "repeated coordinate perturbations",
+        "observation displacement",
+        "absolute response-to-perturbation ratio",
+        "sham response",
+        "reversal check",
+        "hysteresis flag"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "linearity regression or residual",
+        "constitutive phason-response law",
+        "phason field",
+        "wavevector dependence",
+        "elastic tensor",
+        "physical susceptibility calibration"
+      ],
+      "forbidden_upgrade": "PHASON_LINEAR_RESPONSE_LABEL != DEMONSTRATED_LINEAR_RESPONSE",
+      "nomenclature_debt": [
+        "SUSCEPTIBILITY_RATIO != PHASON_ELASTIC_SUSCEPTIBILITY"
+      ]
+    },
+    {
+      "id": "PHASE5_PHASON_RELATION_LEDGER",
+      "term": "Phason relation continuity",
+      "source_refs": [
+        "app/engine/phase5-phason-relation-ledger.js",
+        "PR #280"
+      ],
+      "fidelity_state": "METAPHOR_ONLY_SUPPORTED",
+      "conventional_alias": "HASH_CHAINED_RELATION_LIFECYCLE_EVENT_LEDGER",
+      "operative_structure_present": [
+        "explicit relation lifecycle state machine",
+        "hash-linked predecessor chain",
+        "fork detection",
+        "replay",
+        "lifecycle contradiction hold"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "perpendicular-space coordinate",
+        "acceptance window",
+        "cut-and-project selection",
+        "quasiperiodic rearrangement",
+        "phason strain",
+        "phason field"
+      ],
+      "forbidden_upgrade": "EVENT_SOURCING_FORK != PHASON_DEFECT"
+    },
+    {
+      "id": "CUPOLA_PR800",
+      "term": "cupola",
+      "source_refs": [
+        "PR #800",
+        "PHASONIC_CUPOLA_CUSTODY_WITNESS"
+      ],
+      "fidelity_state": "METAPHOR_ONLY_SUPPORTED",
+      "conventional_alias": "BOUNDED_MULTI_STRATUM_CONTAINER",
+      "operative_structure_present": [
+        "bounded multi-stratum organizational container",
+        "custody witness binding"
+      ],
+      "missing_for_stronger_domain_claim": [
+        "geometric cupola embedding",
+        "metric geometry",
+        "surface or cell complex realizing cupola structure"
+      ],
+      "forbidden_upgrade": "ARCHITECTURAL_CONTAINER_METAPHOR != GEOMETRIC_CUPOLA_EMBEDDING"
+    }
+  ],
+  "umbrella_disposition": {
+    "phason": "UNRESOLVED_AS_GLOBAL_TOKEN_RESOLVED_BY_NAMESPACE",
+    "cupola": "METAPHOR_ONLY_SUPPORTED",
+    "reason": "Analogy fidelity attaches to a scoped operator, not a token family."
+  },
+  "runtime_policy": {
+    "legacy_names_may_remain_for_compatibility": true,
+    "scientific_facing_aliases_required_when_source_domain_structure_is_absent": true,
+    "automatic_api_rename": false
+  }
+}
