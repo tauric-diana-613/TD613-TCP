@@ -20,11 +20,23 @@ const normalizeArchivedBurdenSteps = steps => steps.map(step => ({
   affordance_millipoints: canonicalSupport(step.affordance_millipoints, 1)
 }));
 
+const ARCHIVED_LINEAGE_SIGNAL_MAP = Object.freeze({
+  INTERPRETIVE_LABOR: 'ENVIRONMENT_REQUIRES_EXTRA_COMMAND_FOR_LEGIBLE_ACTION',
+  TEMPORAL_ORDERING: 'TRANSFER_ROUTE_FRAGMENTED',
+  ROUTE_BURDEN: null
+});
+const normalizeArchivedLineageSignals = signals => [...new Set(signals.flatMap(signal => {
+  if (!Object.prototype.hasOwnProperty.call(ARCHIVED_LINEAGE_SIGNAL_MAP, signal)) throw new Error(`Unmapped archived Episode 6 lineage signal: ${signal}`);
+  const canonical = ARCHIVED_LINEAGE_SIGNAL_MAP[signal];
+  return canonical ? [canonical] : [];
+}))];
+
 test('Pedagogue receives Episode 6 as a human-observed baseline rather than a synthetic success', async () => {
   // The archival fixture keeps its human-specific red label, local-offset clock,
-  // and structural-burden millipoints exactly as observed. Normalize only at the
-  // Pedagogue compiler boundary: its route graph consumes legibility/affordance
-  // support coordinates, so archived burden is saturated then inverted here.
+  // structural-burden millipoints, and descriptive lineage labels exactly as
+  // observed/authored. Normalize only at the Pedagogue compiler boundary: its
+  // route graph consumes support coordinates and its second pass consumes typed
+  // system-event signals. ROUTE_BURDEN already enters through burden_comparison.
   // None of these adapters upgrades the human observation or rewrites Episode 6.
   const reviewFixture = {
     ...fixture,
@@ -36,7 +48,8 @@ test('Pedagogue receives Episode 6 as a human-observed baseline rather than a sy
         steps: normalizeArchivedBurdenSteps(fixture.scene_input.route_topology.steps)
       }
     },
-    baseline_route_steps: normalizeArchivedBurdenSteps(fixture.baseline_route_steps)
+    baseline_route_steps: normalizeArchivedBurdenSteps(fixture.baseline_route_steps),
+    lineage_second_pass_signals: normalizeArchivedLineageSignals(fixture.lineage_second_pass_signals)
   };
   const determinism = { ...fixture.determinism, frozenClock: new Date(fixture.determinism.frozenClock).toISOString(), cryptoImpl: webcrypto };
   const review = await compilePedagogueDesignReview(reviewFixture, determinism);
