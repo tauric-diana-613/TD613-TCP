@@ -40,13 +40,11 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
-// Preserve the empirically witnessed completion/fallback timing contract. The
-// token and reasoning repair is independent of transport timeout behavior.
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
-const WALL_TIMEOUT_MS = 44500;
+export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
+const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
 // Current text-capable Gemini Flash models used by the live quality route expose
 // 65,536 output tokens. The larger envelope is bound only to the pinned quality
 // family; unknown/synthetic models retain the conservative legacy contract.
@@ -67,6 +65,32 @@ const safe = (value = '') => String(value ?? '').trim();
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
+
+export function selectKhonapolitProviderModels(callableModels = []) {
+  const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
+    .map((model) => String(model || '').replace(/^models\//, '').trim())
+    .filter(Boolean))];
+  if (!available.length) return [];
+  const selected = [available[0]];
+  for (const stable of STABLE_FALLBACK_MODELS) {
+    if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
+    if (available.includes(stable) && !selected.includes(stable)) selected.push(stable);
+  }
+  for (const model of available) {
+    if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
+    if (!selected.includes(model)) selected.push(model);
+  }
+  return selected;
+}
+
+export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 0 } = {}) {
+  const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
+  const count = Math.max(0, Math.floor(Number(modelCount) || 0));
+  const current = Math.max(0, Math.floor(Number(index) || 0));
+  const attemptsRemaining = Math.max(1, count - current);
+  if (attemptsRemaining <= 1) return remaining;
+  return Math.max(1, Math.floor(remaining * (attemptsRemaining - 1) / attemptsRemaining));
+}
 
 function headerValue(headers = {}, key = '') {
   const target = key.toLowerCase();
@@ -224,7 +248,7 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
-async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS) {
+async function callGemini(model, packet, apertureReceipt, timeoutMs = WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -303,13 +327,14 @@ export default async function handler(req, res) {
     modelPlan: plan
   });
   const attempts = [];
-  const models = plan.callableModels.slice(0, 4);
+  const models = selectKhonapolitProviderModels(plan.callableModels);
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
-  for (const model of models) {
+  for (let index = 0; index < models.length; index += 1) {
+    const model = models[index];
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = Math.min(attempts.length === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS, remainingMs);
+    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs);
     const providerOutput = observeGeminiOutput(result.payload, model);
