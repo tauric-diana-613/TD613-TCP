@@ -13,13 +13,30 @@ const workspaceCss = () => read('app/dome-world/holonomy-loom/ai-workspace.css')
 const marrowBase = () => read('app/dome-world/marrowline-loom-import-base.js');
 const marrowContinuation = () => read('app/dome-world/marrowline-loom-import.js');
 
+const canonicalSupport = (burden, minimum = 0) => Math.max(minimum, 1000 - Math.min(1000, burden));
+const normalizeArchivedBurdenSteps = steps => steps.map(step => ({
+  ...step,
+  legibility_millipoints: canonicalSupport(step.legibility_millipoints),
+  affordance_millipoints: canonicalSupport(step.affordance_millipoints, 1)
+}));
+
 test('Pedagogue receives Episode 6 as a human-observed baseline rather than a synthetic success', async () => {
-  // The archival fixture keeps its human-specific red label and local-offset clock.
-  // Normalize only at the Pedagogue compiler boundary; neither normalization
-  // upgrades the human observation nor rewrites the immutable Episode 6 record.
+  // The archival fixture keeps its human-specific red label, local-offset clock,
+  // and structural-burden millipoints exactly as observed. Normalize only at the
+  // Pedagogue compiler boundary: its route graph consumes legibility/affordance
+  // support coordinates, so archived burden is saturated then inverted here.
+  // None of these adapters upgrades the human observation or rewrites Episode 6.
   const reviewFixture = {
     ...fixture,
-    scene_input: { ...fixture.scene_input, observation_status: 'OBSERVED' }
+    scene_input: {
+      ...fixture.scene_input,
+      observation_status: 'OBSERVED',
+      route_topology: {
+        ...fixture.scene_input.route_topology,
+        steps: normalizeArchivedBurdenSteps(fixture.scene_input.route_topology.steps)
+      }
+    },
+    baseline_route_steps: normalizeArchivedBurdenSteps(fixture.baseline_route_steps)
   };
   const determinism = { ...fixture.determinism, frozenClock: new Date(fixture.determinism.frozenClock).toISOString(), cryptoImpl: webcrypto };
   const review = await compilePedagogueDesignReview(reviewFixture, determinism);
