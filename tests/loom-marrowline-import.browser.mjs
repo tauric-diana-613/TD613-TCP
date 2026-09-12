@@ -57,7 +57,7 @@ try {
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
       await page.locator('#aiUpload').setInputFiles({ name: 'handoff-local.txt', mimeType: 'text/plain', buffer: Buffer.from(uploadCanary) });
-      const localChoice = page.getByRole('checkbox', { name: 'Share handoff-local.txt with Gemini', exact: true });
+      const localChoice = page.getByRole('checkbox', { name: 'Share handoff-local.txt with the AI', exact: true });
       await localChoice.waitFor({ state: 'visible' }); assert.equal(await localChoice.isChecked(), false);
       assert.equal(calls.length, 0);
       await page.locator('#aiPortableDrawer > summary').click();
