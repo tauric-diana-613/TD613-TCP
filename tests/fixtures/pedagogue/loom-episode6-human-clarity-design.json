@@ -1,1 +1,401 @@
-PLACEHOLDER
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-episode6-human-clarity-v01",
+  "surface_reference": "Dome-World/Holonomy Loom -> Marrowline human continuation",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-11T20:42:00-04:00",
+    "idSeed": "loom-episode6-human-clarity-v01",
+    "idScope": "Dome-World/Holonomy-Loom/Episode-6-human-clarity"
+  },
+  "design_evidence_scope": {
+    "posture": "HUMAN_OBSERVED_BASELINE_WITH_DECLARED_REPAIR_CANDIDATE",
+    "inspection_base": "ae35a55b0914ec7f06f537f88acd95f4cc3aaebc",
+    "baseline": "Human mobile Episode 6 reached an admitted AI answer but lost task/answer continuity, nearly missed result disclosures, and abandoned at the Loom-to-Marrowline import membrane before usable Phase 2 interaction.",
+    "comparison": "The proposed route is a declared design candidate derived from the bounded Episode 6 observations. It is not a measured human improvement.",
+    "millipoint_basis": "Route-burden values encode declared structural burden for Pedagogue comparison only; they are not participant scores.",
+    "gate_limit": "Pedagogue may compare route structure and propose questions; only a later human production episode can establish repair effect."
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E1",
+    "observation_status": "OBSERVED_BOUNDED_HUMAN_RED",
+    "world_state_reference": "loom_episode6_mobile_phase1_red",
+    "provenance": {
+      "source_references": [
+        "docs/research/receipts/2026-09-11-loom-human-operator-episode-6-mobile-repaired.md",
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/holonomy-loom/ai-result-view.js",
+        "app/dome-world/holonomy-loom/ai-workspace.css",
+        "app/dome-world/marrowline-loom-import-base.js",
+        "app/dome-world/marrowline-loom-import.js"
+      ],
+      "evidence_basis": [
+        "The human operator nearly passed the task textarea while searching for the input surface because the loaded task read like explanatory prose.",
+        "After a successful AI return the operator had to recover the original task and reported confusion among project/task/answer/result/pocket/packet labels.",
+        "The operator nearly missed hidden primary-analysis content and additional detail drawers.",
+        "The operator selected the prominent Marrowline continuation action, encountered the import membrane, could not find the route into the ordinary living-chat surface, and closed the tab."
+      ],
+      "transformations": [
+        "Keep Project Brief in place but visually subordinate it to an unmistakable task work surface.",
+        "Bind the returned answer visibly back to the exact submitted task and contract the human-facing vocabulary.",
+        "Keep the complete primary answer in one continuous reading path; place optional next action and technical details after it.",
+        "Use explicit plus/minus disclosure affordances for optional details.",
+        "Keep provider provenance in technical records while using provider-neutral human-facing product language.",
+        "Render imported Loom context as a compact dismissible card inside current Marrowline living chat instead of hiding the chat behind a replacement membrane."
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "See the exact task that will be sent, run it, read one clearly bounded AI answer, then continue in the visible Marrowline chat without losing the task or custody facts.",
+      "surface_reference": "Dome-World/Holonomy Loom -> Marrowline human continuation",
+      "now": "A human has already demonstrated that successful provider return can still end in Phase-1 abandonment.",
+      "why": "The next design must reduce interpretive work at the task, answer, disclosure, and continuation boundaries without hiding custody facts.",
+      "exact": "Episode 6 is preserved as the observed baseline; the proposed repair remains a design candidate until a new human episode tests it."
+    },
+    "available_affordances": [
+      {
+        "action_id": "run_and_continue",
+        "purpose": "Run the exact visible task, inspect the admitted answer, and choose an explicit Marrowline continuation gesture.",
+        "authorized_by_station": "Human",
+        "reversible": false,
+        "irreversible_consequence": "Selected documents are transmitted when Run is pressed; later navigation cannot recall that transmission."
+      }
+    ],
+    "route_topology": {
+      "entry": "Compact project context followed immediately by an unmistakable editable task surface",
+      "exit": "Rest, return to Loom, close imported context, or continue in ordinary Marrowline chat",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": ["Repaired human Episode 7 has not yet occurred."],
+      "rest_available_at_every_step": true,
+      "exit_available_at_every_step": true,
+      "rest_penalty": false,
+      "steps": [
+        {
+          "step_id": "see_task_surface",
+          "label": "See compact project context and the exact editable instruction the AI will receive",
+          "phase": "NOTICE",
+          "required_fields": ["project context", "exact task", "editability cue", "selected/local file scope"],
+          "dependencies": [],
+          "legibility_millipoints": 320,
+          "affordance_millipoints": 280,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "run_exact_task",
+          "label": "Run the visible task with one explicit gesture",
+          "phase": "ACT",
+          "required_fields": ["run gesture", "outbound scope", "local-only scope"],
+          "dependencies": ["see_task_surface"],
+          "legibility_millipoints": 300,
+          "affordance_millipoints": 260,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "read_bound_answer",
+          "label": "Read the full primary AI answer beside a compact reminder of what was asked",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": ["submitted task reminder", "primary answer", "admission state"],
+          "dependencies": ["run_exact_task"],
+          "legibility_millipoints": 320,
+          "affordance_millipoints": 240,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect_optional_details",
+          "label": "Optionally open questions, source claims, or the technical receipt with explicit plus/minus controls",
+          "phase": "NAME",
+          "required_fields": ["optional details", "source-claim ceiling", "technical receipt"],
+          "dependencies": ["read_bound_answer"],
+          "legibility_millipoints": 260,
+          "affordance_millipoints": 240,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "continue_in_visible_marrowline",
+          "label": "Arrive in current Marrowline with its composer visible and Loom context as a compact dismissible card",
+          "phase": "NAME",
+          "required_fields": ["Marrowline composer", "imported context card", "close imported context", "return to Loom"],
+          "dependencies": ["read_bound_answer"],
+          "legibility_millipoints": 340,
+          "affordance_millipoints": 300,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest_exit",
+          "label": "Rest, leave, or continue while the prior task remains inspectable",
+          "phase": "REST",
+          "required_fields": ["rest", "exit", "retained prior task"],
+          "dependencies": ["continue_in_visible_marrowline"],
+          "legibility_millipoints": 220,
+          "affordance_millipoints": 220,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "One human-visible task, selected documents, local-only documents, and explicit run gesture",
+      "operator": "task salience -> deliberate send -> admitted answer bound back to task -> optional details -> visible Marrowline continuation",
+      "observable": "The same task remains visible as the answer arrives; the ordinary Marrowline composer remains visible when imported context arrives.",
+      "authority": "Provider output supplies content only; the human owns send, continuation, dismissal, rest, and exit gestures.",
+      "equations": [
+        "provider return != human comprehension",
+        "task transfer != conversational continuation",
+        "provider provenance != human-facing product identity",
+        "optional detail != primary answer"
+      ]
+    },
+    "research_frame": {
+      "question": "Can the repaired route preserve custody while reducing the interpretive labor that caused Episode-6 Phase-1 abandonment?",
+      "hypothesis": "Task-surface salience, lexical contraction, one continuous primary answer, and a non-blocking Marrowline import card should reduce structural route burden without removing custody facts.",
+      "observable_behavior": [
+        "The exact task is visibly recognizable as an editable work surface before Run.",
+        "The returned answer visibly names the submitted task without requiring backward navigation.",
+        "Primary answer text is complete before any optional next-action or technical drawer.",
+        "Result disclosures advertise open/closed state with explicit plus/minus affordances.",
+        "Marrowline’s ordinary composer remains visible while imported Loom context is present."
+      ],
+      "falsifier": [
+        "The task still reads as passive explanatory prose on the narrow viewport.",
+        "A user must navigate backward to discover what the answer responded to.",
+        "Primary answer content remains hidden behind an easily missed disclosure before a next-step block.",
+        "The Marrowline import still replaces or hides the ordinary living-chat workspace.",
+        "Human-facing copy centers a provider brand as the identity of the product route."
+      ],
+      "abstention_conditions": [
+        "No repaired human episode has yet tested the candidate.",
+        "Machine canaries remain machine evidence and cannot establish comprehension."
+      ],
+      "alternative_explanations": [
+        "A later human success could reflect greater familiarity rather than the repair alone.",
+        "A single human mobile episode cannot establish universal newcomer behavior."
+      ],
+      "expected_failure_modes": [
+        "Visual hierarchy still makes context look more important than the action surface.",
+        "Synonymous product nouns reappear around the answer.",
+        "Optional details visually compete with the primary answer.",
+        "Imported context preserves every custody fact by becoming another blocking membrane."
+      ]
+    },
+    "missingness": ["Repaired human Episode 7 remains unobserved."],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "Episode 6 establishes a bounded human abandonment point after successful provider return.",
+        "Pedagogue may compare the declared baseline and candidate route structures.",
+        "A later human episode may measure whether behavior changes after intervention."
+      ],
+      "forbidden_claims": [
+        "Pedagogue PASS proves the UX repair works for humans.",
+        "Machine browser success counts as human replication.",
+        "Engineering closure earns a scientific 𝄐 or the Golden Egg."
+      ]
+    },
+    "technical_terms_withheld": ["provider model family", "admission schema", "route-burden millipoints", "AIA projection internals"]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_read_project_brief",
+      "label": "Read a visually dominant Project Brief",
+      "phase": "NOTICE",
+      "required_fields": ["project context"],
+      "dependencies": [],
+      "legibility_millipoints": 620,
+      "affordance_millipoints": 420,
+      "gluing_obstruction_millipoints": 220,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_discover_task",
+      "label": "Infer that a large prose-like block is the editable task",
+      "phase": "ACT",
+      "required_fields": ["task", "transient scrollbar", "editability inference"],
+      "dependencies": ["baseline_read_project_brief"],
+      "legibility_millipoints": 900,
+      "affordance_millipoints": 850,
+      "gluing_obstruction_millipoints": 480,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_run",
+      "label": "Run the staged task",
+      "phase": "ACT",
+      "required_fields": ["run gesture", "selected packet"],
+      "dependencies": ["baseline_discover_task"],
+      "legibility_millipoints": 460,
+      "affordance_millipoints": 420,
+      "gluing_obstruction_millipoints": 120,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_recover_question",
+      "label": "Navigate backward to remember what the AI was asked",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": ["project", "task", "answer", "result", "pocket", "packet"],
+      "dependencies": ["baseline_run"],
+      "legibility_millipoints": 980,
+      "affordance_millipoints": 760,
+      "gluing_obstruction_millipoints": 520,
+      "projection_crossings": 1,
+      "route_memory_edges": 3,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_parse_hidden_answer",
+      "label": "Distinguish primary answer from hidden analysis, next step, open questions, sources, and receipt",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": ["analysis disclosure", "suggested next step", "open questions", "sources", "exact response"],
+      "dependencies": ["baseline_recover_question"],
+      "legibility_millipoints": 1080,
+      "affordance_millipoints": 940,
+      "gluing_obstruction_millipoints": 760,
+      "projection_crossings": 0,
+      "route_memory_edges": 3,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_choose_marrowline",
+      "label": "Choose the visually dominant Marrowline continuation action",
+      "phase": "NAME",
+      "required_fields": ["continuation action"],
+      "dependencies": ["baseline_parse_hidden_answer"],
+      "legibility_millipoints": 420,
+      "affordance_millipoints": 360,
+      "gluing_obstruction_millipoints": 120,
+      "projection_crossings": 1,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_survive_import_membrane",
+      "label": "Decode a replacement import membrane and discover how to expose ordinary Marrowline chat",
+      "phase": "NAME",
+      "required_fields": ["legacy import workspace", "leave-continuity route", "hidden living chat"],
+      "dependencies": ["baseline_choose_marrowline"],
+      "legibility_millipoints": 1250,
+      "affordance_millipoints": 1120,
+      "gluing_obstruction_millipoints": 960,
+      "projection_crossings": 2,
+      "route_memory_edges": 4,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_exit",
+      "label": "Close the tab after failing to locate the intended continuation",
+      "phase": "REST",
+      "required_fields": ["exit"],
+      "dependencies": ["baseline_survive_import_membrane"],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 620,
+      "gluing_obstruction_millipoints": 400,
+      "projection_crossings": 0,
+      "route_memory_edges": 4,
+      "operator_action_required": true
+    }
+  ],
+  "action": {"action_id": "run_and_continue"},
+  "world_delta": {
+    "observation_status": "DECLARED_REPAIR_CANDIDATE",
+    "causal_trace": [
+      "Observed baseline: provider return succeeded but task memory and answer hierarchy fractured.",
+      "Observed baseline: import membrane caused human abandonment before usable Marrowline interaction.",
+      "Declared candidate: make the task visually unmistakable and bind the answer back to it.",
+      "Declared candidate: keep primary answer continuous and optional details subordinate.",
+      "Declared candidate: preserve current Marrowline living chat while showing Loom context as a compact dismissible card."
+    ],
+    "losses": [],
+    "missingness": ["No post-repair human behavior has yet been observed."],
+    "contradictions": [],
+    "unresolved_relations": ["The amount of behavioral improvement attributable to the candidate remains unknown."],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Task, answer, optional details, continuation context, rest, and exit remain legible without motion.",
+      "steps": ["see exact task", "run", "read full answer", "open optional details", "continue in visible Marrowline", "rest or exit"]
+    }
+  },
+  "name": {
+    "plain_language": "The repair keeps the question and answer together, reduces extra names, and lets Marrowline remain visibly Marrowline during continuation.",
+    "glyph_relation": null,
+    "technical_term": "human-continuity route contraction",
+    "non_equivalence": [
+      "provider return differs from comprehension",
+      "imported context differs from replacement workspace",
+      "technical provenance differs from human-facing product identity",
+      "optional details differ from primary answer"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Dome-World/Holonomy Loom -> Marrowline",
+      "realization": "Episode-6 human baseline observed; repair candidate awaiting implementation and Episode-7 human observation."
+    },
+    "shared_relation_candidate": "Custody can remain inspectable while the human route contracts around one task, one answer, and one visible conversational continuation.",
+    "observable_correspondence": ["The Episode-6 abandonment occurred after provider success, isolating post-return continuity as an independently consequential route segment."],
+    "alternative_explanations": ["A later success could reflect operator familiarity or changed pacing rather than the repair alone."],
+    "abstention_conditions": ["No claim of repaired human comprehension before a new human production episode."]
+  },
+  "interface_specimen": {
+    "schema": "td613.pedagogue-interface-specimen/v0.1",
+    "surface_reference": "Holonomy Loom Episode-6 mobile task/composer field",
+    "specimen_kind": "INTERFACE_FIELD_SYSTEM",
+    "observed": {
+      "shared_control_rule": false,
+      "dedicated_input_typography": false,
+      "mobile_font_size_px": 16,
+      "dedicated_textarea_treatment": false,
+      "dedicated_numeric_typography": true,
+      "native_temporal_control": false,
+      "placeholder_is_primary_visual": false,
+      "status_claim_exceeds_evidence": false,
+      "cross_lane_same_entity": false,
+      "zero_result_scope_bounded": false,
+      "advisory_without_inspection_route": false,
+      "loaded_context_visible_but_search_unbound": false,
+      "responsive_spatial_correspondence_lost": false
+    },
+    "constraints": {
+      "implementation_this_round": true,
+      "preserve_native_accessibility": true
+    },
+    "actions": [
+      {
+        "action_id": "continue_marrowline",
+        "label": "Continue in Marrowline",
+        "context_effect": "REPLACE_ACTIVE_CONTEXT",
+        "destination_reference": "Dome-World/Marrowline living chat"
+      },
+      {
+        "action_id": "open_optional_result_detail",
+        "label": "Open optional result detail",
+        "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+        "destination_reference": null
+      }
+    ]
+  },
+  "lineage_second_pass_signals": ["INTERPRETIVE_LABOR", "TEMPORAL_ORDERING", "ROUTE_BURDEN"]
+}
