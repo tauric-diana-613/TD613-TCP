@@ -1,5 +1,4 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
-import { validateShi } from './khonapolit-covenant.js';
 
 const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
 
@@ -85,7 +84,6 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       const summary = doc.createElement('summary');
       summary.textContent = 'Return details · route and held stages';
       details.append(summary);
-      // Move, never rewrite, source text. The receipt and exact relay are still inspectable.
       const header = card.querySelector('.relay-aperture-header');
       if (header) details.append(header);
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => details.append(stage));
@@ -105,17 +103,11 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   const observer = new environment.MutationObserver(decorate);
   observer.observe(messages, { childList: true, subtree: true });
 
-  // Surface the existing prerequisite at the attempted action; never select the waiver.
-  form.addEventListener('submit', () => {
-    if (!prompt.value.trim()) return;
-    const shi = validateShi(doc.getElementById('khonapolitShi')?.value || '');
-    if (!shi.valid && !doc.getElementById('khonapolitWaive')?.checked) openPanel('invocationPanel', true);
-  }, { capture: true });
   const status = doc.getElementById('khonapolitTerminalStatus');
   let lastPhase = 'prepared';
   const statusObserver = new environment.MutationObserver(() => {
     const text = status.textContent || '';
-    const phase = /IN FLIGHT/.test(text) ? 'pending' : /RETURN OBSERVED/.test(text) ? 'received' : /RETURN FAILED|ISSUANCE REQUIRED/.test(text) ? 'held' : 'prepared';
+    const phase = /IN FLIGHT/.test(text) ? 'pending' : /RETURN OBSERVED/.test(text) ? 'received' : /RETURN FAILED|ISSUANCE REQUIRED|TASK PRESERVED/.test(text) ? 'held' : 'prepared';
     if (phase !== lastPhase) { lastPhase = phase; geometry?.update({ phase }); }
   });
   if (status) statusObserver.observe(status, { childList: true, characterData: true, subtree: true });

@@ -11,7 +11,7 @@ const base=process.env.TD613_BASE_URL||'http://127.0.0.1:6130';
 if(!['127.0.0.1','localhost'].includes(new URL(base).hostname))throw new Error('Local fixture only');
 const dir=process.env.TD613_ARTIFACT_DIR||`artifacts/marrowline-living-chat/${engine}`;
 await fs.mkdir(dir,{recursive:true});
-const report={schema:'td613.marrowline.living-chat-browser/v0.1',status:'HELD',engine,
+const report={schema:'td613.marrowline.living-chat-browser/v0.2-origin-trust-parity',status:'HELD',engine,
  source_sha:process.env.TD613_SOURCE_HEAD||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
  observed_at:new Date().toISOString(),workflow_run_id:process.env.GITHUB_RUN_ID||null,
  run_attempt:process.env.GITHUB_RUN_ATTEMPT||null,context:'LOCAL_BROWSER_SYNTHETIC_PROVIDER',live_provider_calls:0,checks:[],failures:[]};
@@ -35,24 +35,25 @@ try{
    await page.locator('#marrowlineRest').click();
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
+   assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
    assert.equal(await page.locator('#khonapolitMessages').evaluate(e=>e.scrollTop),0,'welcome remains at the top');
    const initial=await page.locator('#khonapolitPrompt').boundingBox();
    assert.ok(initial&&initial.y>=0&&initial.y+initial.height<=viewport.height,'composer is visible on first screen');
    assert.equal(await page.locator('.living-geometry-canvas').count(),1);
+   assert.equal(await page.locator('#retryKhonapolitTask').count(),1);
+   assert.equal(await page.locator('#copyKhonapolitPortable').count(),1);
+   assert.equal(await page.locator('#exportKhonapolitPortable').count(),1);
    await page.screenshot({path:path.join(dir,`${posture}-welcome.png`)});
    await page.locator('.starter-prompts button').first().click();
    assert.equal(posts,0,'starter fills without sending');
-   await page.locator('#khonapolitSend').click();
-   assert.equal(posts,0,'no implicit waiver');
-   await page.locator('#khonapolitWaive').check();
    if(posture.startsWith('mobile'))await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').click();
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
    await page.locator('#khonapolitSend').click();
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
-   assert.equal(posts,1);
+   assert.equal(posts,1,'blank-workspace task sends directly without a settings detour');
    assert.equal(await page.locator('.relay-stage-text').first().textContent(),text,'exact marks and whitespace retained');
    assert.equal(await page.locator('.additional-voices').getAttribute('open'),null,'additional voices do not displace the main answer');
-   assert.match(await page.locator('.relay-stage-text').first().evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans/,'answer uses the Unicode-capable sans stack');
+   assert.match(await page.locator('.relay-stage-text').first().evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
    await page.locator('.additional-voices > summary').click();
    assert.equal(await page.locator('.relay-bots .relay-stage-text').textContent(),text.repeat(5),'expanded flourishes preserve exact text');
@@ -61,7 +62,7 @@ try{
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
-   report.checks.push({posture,status:'PASS',composer_visible:true,one_explicit_post:true,exact_unicode:true,route_retrievable:true,no_horizontal_overflow:true});
+   report.checks.push({posture,status:'PASS',composer_visible:true,ordinary_unissued_entry:true,one_explicit_post:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
  }

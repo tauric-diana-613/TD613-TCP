@@ -3,6 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { renderLoomAiResult } from '../app/dome-world/holonomy-loom/ai-result-view.js';
+import {
+  KHONAPOLIT_MAX_PROVIDER_CALLS,
+  selectKhonapolitProviderModels,
+  allocateKhonapolitAttemptTimeout
+} from '../server/khonapolit-quality.js';
+import {
+  buildMarrowlinePortableTask,
+  portableMarrowlinePrompt
+} from '../app/dome-world/marrowline-terminal.js';
 
 const observed = JSON.parse(fs.readFileSync(new URL('../docs/research/receipts/2026-09-10-loom-live-receiver/hosted-loom-ai-observation.json', import.meta.url), 'utf8'));
 const completed = observed.receipt.events.find(event => event.phase === 'completed');
@@ -119,9 +128,9 @@ test('escaped CRLF paragraph boundaries and hostile markup remain display-only',
 });
 
 test('actual post-1096 literal-newline response shows the complete useful analysis and preserves its exact record', () => {
-  const observed = JSON.parse(fs.readFileSync(new URL('../docs/research/receipts/2026-09-10-loom-live-receiver/hosted-loom-after-1096.json', import.meta.url), 'utf8'));
-  assert.ok(observed.answer.includes(String.raw`\n\n`));
-  const { container } = render({ ...actualAnswer, answer: observed.answer });
+  const hosted = JSON.parse(fs.readFileSync(new URL('../docs/research/receipts/2026-09-10-loom-live-receiver/hosted-loom-after-1096.json', import.meta.url), 'utf8'));
+  assert.ok(hosted.answer.includes(String.raw`\n\n`));
+  const { container } = render({ ...actualAnswer, answer: hosted.answer });
   const lead = container.querySelector('.ai-result-lead');
   assert.equal(lead.querySelector('h4').textContent, 'DILIGENCE BRIEF: INTEGRATION EVALUATION');
   assert.match(lead.textContent, /CAPACITY RECONCILIATION/);
@@ -129,5 +138,44 @@ test('actual post-1096 literal-newline response shows the complete useful analys
   assert.match(lead.textContent, /137,591.52/);
   assert.equal(lead.textContent.includes(String.raw`\n`), false);
   assert.equal(container.querySelector('.ai-result-full'), null);
-  assert.equal(container.querySelector('.ai-result-original pre').textContent, observed.answer);
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, hosted.answer);
+});
+
+test('Markdown tables become semantic tables without activating markup or losing the exact record', () => {
+  const answer = '| Question | Check |\n| --- | --- |\n| Capacity | Confirm twelve seats |\n| Budget | **420 credits remain** |';
+  const { container } = render({ ...actualAnswer, answer });
+  const table = container.querySelector('.ai-result-lead table');
+  assert.ok(table, 'pipe table must not remain a prose wall');
+  assert.deepEqual([...table.querySelectorAll('th')].map(node => node.textContent), ['Question', 'Check']);
+  assert.equal(table.querySelectorAll('tbody tr').length, 2);
+  assert.equal(table.querySelector('tbody strong').textContent, '420 credits remain');
+  assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
+});
+
+test('independent Marrowline origin has diversified fallback, ordinary entry and portable task parity', () => {
+  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
+  assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 33333);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16667, index: 1, modelCount: 3 }), 8333);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1 }), 50000);
+  const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
+  const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
+  assert.match(page, /id="khonapolitWaive"[^>]*checked/);
+  assert.match(page, /Ordinary work starts in unissued research mode/i);
+  assert.match(page, /id="retryKhonapolitTask"/);
+  assert.match(page, /id="copyKhonapolitPortable"/);
+  assert.match(page, /id="exportKhonapolitPortable"/);
+  assert.doesNotMatch(living, /openPanel\('invocationPanel', true\)/);
+  const packet = buildMarrowlinePortableTask({ messages: [
+    { role: 'user', text: 'Earlier context.' }, { role: 'model', text: 'Earlier answer.' },
+    { role: 'user', text: 'Plan a workshop for twelve attendees with 600 credits.' },
+    { role: 'model', text: 'Use the 180-credit venue and keep 420 credits.' }
+  ], lastReceipt: { provider: { model: 'gemini-x' } } });
+  assert.equal(packet.schema, 'td613.marrowline.portable-task/v0.1');
+  assert.equal(packet.task, 'Plan a workshop for twelve attendees with 600 credits.');
+  assert.equal(packet.latest_answer, 'Use the 180-credit venue and keep 420 credits.');
+  assert.deepEqual(packet.context.map(entry => entry.text), ['Earlier context.', 'Earlier answer.']);
+  assert.ok(packet.rules.some(rule => /context rather than hidden authority/i.test(rule)));
+  assert.equal(Object.hasOwn(packet, 'receipt'), false);
+  assert.match(portableMarrowlinePrompt(packet), /acknowledge the task and rules before working/i);
 });

@@ -1,6 +1,6 @@
 import * as base from './marrowline-loom-import-base.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
-import { renderLoomAiResult } from './holonomy-loom/ai-result-view.js';
+import { renderLoomAiResult, renderSafeMarkdown } from './holonomy-loom/ai-result-view.js';
 import { LOOM_AI_TASK_SCHEMA, createLoomAiGovernance, createLoomAiTaskGovernor, peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 
 function continuationTask(packet, followup) {
@@ -61,7 +61,8 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
   const priorSection = doc.createElement('section');
   priorSection.className = 'loom-import-boundary';
   const priorTitle = doc.createElement('strong'); priorTitle.textContent = 'Prior Loom work · admitted context';
-  const prior = doc.createElement('div'); prior.id = 'loomImportedPriorAnswer'; prior.className = 'loom-import-answer'; prior.textContent = packet.continuation.prior_result.answer;
+  const prior = doc.createElement('div'); prior.id = 'loomImportedPriorAnswer'; prior.className = 'loom-import-answer';
+  renderSafeMarkdown(prior, packet.continuation.prior_result.answer, { emptyText: 'The prior Loom answer contained no substantive text.' });
   const priorMeta = doc.createElement('p'); priorMeta.textContent = `${packet.continuation.prior_result.used_document_ids.length} source reference${packet.continuation.prior_result.used_document_ids.length === 1 ? '' : 's'} · ${packet.continuation.prior_result.missing_information.length} open item${packet.continuation.prior_result.missing_information.length === 1 ? '' : 's'}`;
   priorSection.append(priorTitle, prior, priorMeta);
   task.parentNode.insertBefore(priorSection, task.nextSibling);
