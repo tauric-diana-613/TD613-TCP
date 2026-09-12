@@ -14,7 +14,8 @@ const marrowBase = () => read('app/dome-world/marrowline-loom-import-base.js');
 const marrowContinuation = () => read('app/dome-world/marrowline-loom-import.js');
 
 test('Pedagogue receives Episode 6 as a human-observed baseline rather than a synthetic success', async () => {
-  const review = await compilePedagogueDesignReview(fixture, { ...fixture.determinism, cryptoImpl: webcrypto });
+  const determinism = { ...fixture.determinism, frozenClock: new Date(fixture.determinism.frozenClock).toISOString(), cryptoImpl: webcrypto };
+  const review = await compilePedagogueDesignReview(fixture, determinism);
   assert.equal(review.design_gate.human_closure_required, true);
   assert.equal(review.design_gate.route_burden_non_worsening, true);
   assert.equal(review.burden_comparison.all_models_non_worsening, true);
