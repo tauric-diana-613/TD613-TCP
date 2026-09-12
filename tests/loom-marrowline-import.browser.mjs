@@ -81,8 +81,12 @@ try {
       assert.equal(await page.locator('#loomImportedTask').getAttribute('readonly'), '', 'governed task stays bound at receiver');
       assert.equal(calls.length, 0, 'arrival makes zero provider requests');
       assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'active');
-      assert.equal(await page.locator('.terminal-layout').isVisible(), false, 'imported task owns its workspace without relay composer overlap');
-      assert.equal(await page.locator('.mobile-dock').isVisible(), false, 'relay dock cannot cover the imported task');
+      assert.equal(await page.locator('.living-workspace').isVisible(), true, 'imported context lands inside the living Marrowline workspace');
+      if (posture === 'desktop') assert.equal(await page.locator('.terminal-layout').isVisible(), true, 'desktop Marrowline remains available around imported context');
+      if (posture.startsWith('mobile')) assert.equal(await page.locator('.mobile-dock').isVisible(), true, 'mobile Marrowline navigation remains available around imported context');
+      const closeImported = page.getByRole('button', { name: 'Close imported context and keep Marrowline open', exact: true });
+      assert.equal(await closeImported.isVisible(), true, 'imported context exposes an explicit return to ordinary Marrowline');
+      assert.equal(await page.getByRole('link', { name: 'Return to Loom', exact: true }).isVisible(), true, 'Loom return route remains explicit');
       const destinationText = await page.locator('#loomImportedWorkspace').textContent();
       assert.equal(destinationText.includes(uploadCanary), false);
       for (const term of project.protectedTerms) assert.equal(destinationText.includes(term), false, 'private term omitted from destination');
@@ -112,9 +116,15 @@ try {
       assert.equal(calls.length, 1, 'REST prevents another provider request');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'destination fits viewport');
       assert.deepEqual(errors, [], 'no page runtime errors'); assert.deepEqual(unexpected, [], 'no unrelated mutations or direct provider calls');
+      await closeImported.click();
+      assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false, 'operator can dismiss only the imported context');
+      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), null, 'dismissal clears imported-context state');
+      assert.equal(await page.locator('.living-workspace').isVisible(), true, 'ordinary Marrowline survives imported-context dismissal');
+      assert.equal(calls.length, 1, 'closing imported context makes no provider request');
       report.checks.push({ posture, status: 'PASS', actual_ui_handoff: true, document_upload_local_only: true, opaque_url_consumed: true,
         arrival_calls: 0, explicit_run_calls: 1, control_conserved: true, fadt_admission: true, response_inert: true,
-        rest_prevents_request: true, source_bytes_excluded: true, reduced_motion: reducedMotion, no_horizontal_overflow: true });
+        rest_prevents_request: true, source_bytes_excluded: true, living_marrowline_preserved: true, imported_context_dismissible: true,
+        reduced_motion: reducedMotion, no_horizontal_overflow: true });
     } catch (error) {
       report.failures.push({ posture, error: error.stack });
       await page.screenshot({ path: path.join(dir, `${posture}-failure.png`), fullPage: true }).catch(() => {});
