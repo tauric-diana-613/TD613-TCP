@@ -1,0 +1,103 @@
+name: Loom Step-10 Diagnostic Witness
+
+on:
+  push:
+    branches:
+      - fix/loom-episode6-phase1-clarity-20260911
+
+permissions:
+  contents: read
+
+jobs:
+  loom-step10:
+    name: Enumerate Holonomy Loom Step-10 chambers
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Syntax · causal-theater modules
+        id: syntax
+        continue-on-error: true
+        run: |
+          node --check app/dome-world/holonomy-loom/animation-coordinator.js
+          node --check app/dome-world/holonomy-loom/semantic-field.js
+          node --check app/dome-world/holonomy-loom/theater-geometry.js
+          node --check app/dome-world/holonomy-loom/theater.js
+      - name: Contract · living geometry + Marrowline preservation
+        id: geometry
+        continue-on-error: true
+        run: node --test tests/holonomy-loom-living-geometry.test.mjs tests/marrowline-design-preservation.test.mjs
+      - name: Contract · living room state + custody
+        id: living_room
+        continue-on-error: true
+        run: node --test tests/holonomy-loom-living-room.test.mjs tests/loom-living-room-state.test.mjs tests/loom-living-room-custody.test.mjs
+      - name: Design gate · Loom living room
+        id: loom_living_design
+        continue-on-error: true
+        run: node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-living-room-design.json
+      - name: Design gate · Marrowline living chat
+        id: marrowline_design
+        continue-on-error: true
+        run: node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/marrowline-living-chat-design.json
+      - name: Contract · animation coordinator
+        id: animation
+        continue-on-error: true
+        run: node --test tests/holonomy-loom-animation-coordinator.test.mjs
+      - name: Contract · semantic field
+        id: semantic
+        continue-on-error: true
+        run: node --test tests/holonomy-loom-semantic-field.test.mjs
+      - name: Contract · theater DOM
+        id: theater_dom
+        continue-on-error: true
+        run: node --test tests/holonomy-loom-theater-dom.test.mjs
+      - name: Contract · AI workspace + result + handoff
+        id: ai_surface
+        continue-on-error: true
+        run: node --test tests/loom-task.test.mjs tests/loom-ai-intake.test.mjs tests/loom-ai-handoff.test.mjs tests/holonomy-loom-ai-projects.test.mjs tests/loom-ai-workspace-dom.test.mjs tests/holonomy-loom-ai-request-field.test.mjs tests/loom-ai-project-checks.test.mjs tests/holonomy-loom-ai-result-view.test.mjs tests/loom-ai-failure.test.mjs
+      - name: Design gate · live AI
+        id: live_ai_design
+        continue-on-error: true
+        run: node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-live-ai-design.json
+      - name: Contract · portable hostile/governance workbench
+        id: portable
+        continue-on-error: true
+        run: node --test tests/dollhouse-aperture-hostile-audit.test.mjs tests/dollhouse-atlas-hostile-audit.test.mjs tests/dollhouse-fadt-hostile-audit.test.mjs tests/loom-portable-governor.test.mjs tests/loom-governance-hostile-ui.test.mjs tests/holonomy-loom-portable-workbench.test.mjs
+      - name: Design gate · portable roundtrip
+        id: portable_design
+        continue-on-error: true
+        run: node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-portable-roundtrip-design.json
+      - name: Hold if any Step-10 chamber failed
+        if: always()
+        shell: bash
+        run: |
+          printf '%-24s %s\n' syntax '${{ steps.syntax.outcome }}'
+          printf '%-24s %s\n' geometry '${{ steps.geometry.outcome }}'
+          printf '%-24s %s\n' living_room '${{ steps.living_room.outcome }}'
+          printf '%-24s %s\n' loom_living_design '${{ steps.loom_living_design.outcome }}'
+          printf '%-24s %s\n' marrowline_design '${{ steps.marrowline_design.outcome }}'
+          printf '%-24s %s\n' animation '${{ steps.animation.outcome }}'
+          printf '%-24s %s\n' semantic '${{ steps.semantic.outcome }}'
+          printf '%-24s %s\n' theater_dom '${{ steps.theater_dom.outcome }}'
+          printf '%-24s %s\n' ai_surface '${{ steps.ai_surface.outcome }}'
+          printf '%-24s %s\n' live_ai_design '${{ steps.live_ai_design.outcome }}'
+          printf '%-24s %s\n' portable '${{ steps.portable.outcome }}'
+          printf '%-24s %s\n' portable_design '${{ steps.portable_design.outcome }}'
+          test '${{ steps.syntax.outcome }}' = success \
+            -a '${{ steps.geometry.outcome }}' = success \
+            -a '${{ steps.living_room.outcome }}' = success \
+            -a '${{ steps.loom_living_design.outcome }}' = success \
+            -a '${{ steps.marrowline_design.outcome }}' = success \
+            -a '${{ steps.animation.outcome }}' = success \
+            -a '${{ steps.semantic.outcome }}' = success \
+            -a '${{ steps.theater_dom.outcome }}' = success \
+            -a '${{ steps.ai_surface.outcome }}' = success \
+            -a '${{ steps.live_ai_design.outcome }}' = success \
+            -a '${{ steps.portable.outcome }}' = success \
+            -a '${{ steps.portable_design.outcome }}' = success
