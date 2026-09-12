@@ -41,6 +41,10 @@ import {
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
+// Preserve the empirically witnessed primary/fallback timing contract while
+// admitting a third diversified fallback inside one bounded route wall.
+const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
@@ -83,13 +87,12 @@ export function selectKhonapolitProviderModels(callableModels = []) {
   return selected;
 }
 
-export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 0 } = {}) {
+export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0 } = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
-  const count = Math.max(0, Math.floor(Number(modelCount) || 0));
-  const current = Math.max(0, Math.floor(Number(index) || 0));
-  const attemptsRemaining = Math.max(1, count - current);
-  if (attemptsRemaining <= 1) return remaining;
-  return Math.max(1, Math.floor(remaining * (attemptsRemaining - 1) / attemptsRemaining));
+  const cap = Math.max(0, Math.floor(Number(index) || 0)) === 0
+    ? PRIMARY_REQUEST_TIMEOUT_MS
+    : FALLBACK_REQUEST_TIMEOUT_MS;
+  return Math.min(cap, remaining);
 }
 
 function headerValue(headers = {}, key = '') {
@@ -248,7 +251,7 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
-async function callGemini(model, packet, apertureReceipt, timeoutMs = WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS) {
+async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {

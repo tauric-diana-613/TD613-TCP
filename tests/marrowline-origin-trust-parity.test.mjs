@@ -17,12 +17,17 @@ const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8
 
 const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
 
-test('independent Marrowline provider routing preserves diversified fallback runway', () => {
+test('independent Marrowline provider routing preserves inherited completion windows plus diversified fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
   assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 33333);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16667, index: 1, modelCount: 3 }), 8333);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1 }), 50000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 32000,
+    'primary preserves the previously witnessed completion window');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3 }), 10500,
+    'first fallback remains bounded by the inherited fallback window');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 7000, index: 2, modelCount: 3 }), 7000,
+    'third diversified attempt receives the lawful wall remainder');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1 }), 32000,
+    'single-model operation cannot silently expand the primary completion contract');
 });
 
 test('blank Marrowline exposes an ordinary unissued task lane before advanced custody settings', () => {
