@@ -90,7 +90,11 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
     analysis.append(protection);
   }
   const primary = el('div', undefined, 'ai-result-lead');
-  if (blocks.length) for (const block of blocks) primary.append(renderBlock(block)); else primary.append(el('p', 'The AI returned no substantive assessment.'));
+  const hasSubstantiveBlock = blocks.some(block => block.type !== 'heading');
+  if (blocks.length) {
+    for (const block of blocks) primary.append(renderBlock(block));
+    if (!hasSubstantiveBlock) primary.append(el('p', 'The AI returned headings without a substantive assessment.'));
+  } else primary.append(el('p', 'The AI returned no substantive assessment.'));
   analysis.append(primary); fragment.append(analysis);
 
   const next = el('section', undefined, 'ai-result-next'); next.setAttribute('aria-label', 'Possible next action · optional'); next.append(heading('Possible next action · optional'), el('p', response.suggested_next_step || 'The AI supplied no next action.')); fragment.append(next);
