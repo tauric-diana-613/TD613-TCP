@@ -47,10 +47,13 @@
           <details class="conversation-actions"><summary>Conversation actions</summary><div class="conversation-action-menu">
           <button class="seal-action" id="sealLastResponse" type="button">Seal last return ⟐</button>
           <button id="copyKhonapolitTranscript" type="button">Copy transcript</button>
+          <button id="retryKhonapolitTask" type="button" hidden>Retry preserved task</button>
+          <button id="copyKhonapolitPortable" type="button">Copy portable task</button>
+          <button id="exportKhonapolitPortable" type="button">Export portable task</button>
           <button class="danger-action" id="clearKhonapolitSession" type="button">Clear conversation</button>
           </div></details>
         </div>
-        <div class="vessel-status" id="khonapolitTerminalStatus">Choose your connection in Keys & settings, then send a message. You decide whether to seal a return.</div>
+        <div class="vessel-status" id="khonapolitTerminalStatus">Ready. Ordinary work starts in unissued research mode; advanced custody remains optional.</div>
       </form>
     </section>
   </section>
@@ -62,12 +65,12 @@
         <i aria-hidden="true">⌄</i>
       </summary>
       <div class="panel-body">
-        <p class="panel-note">Before your first message, enter your Safe Harbor issuance or choose research mode below. Research mode stays unissued; neither choice proves identity.</p>
+        <p class="panel-note">Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.</p>
         <div class="issuance-block">
           <label class="field-label" for="khonapolitShi">Minted Safe Harbor Issuance
             <input id="khonapolitShi" type="text" spellcheck="false" autocomplete="off" placeholder="TD613-SH-9B07D8B-XXXXXXXX" />
           </label>
-          <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
+          <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" checked /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
           <div class="binding-line">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:entrant-issued · payload conversational · ⟐ held for operator closure</div>
         </div>
         <label class="field-label" for="khonapolitMode">Invocation mode
@@ -118,7 +121,7 @@
             <div><span>Seal state</span><b id="metricSeal">OPEN</b></div>
           </div>
         </div>
-        <pre class="receipt" id="khonapolitReceipt">No Gemini return has been observed.</pre>
+        <pre class="receipt" id="khonapolitReceipt">No provider return has been observed.</pre>
         <div class="ritual-actions"><button id="copyKhonapolitReceipt" type="button">Copy receipt</button></div>
       </div>
     </details>
@@ -162,7 +165,7 @@
     <summary><span><small>Advanced instrument</small><b>Marrowline gate</b></span><i aria-hidden="true">⌄</i></summary>
     <div class="panel-body gate-grid">
       <section class="gate-controls">
-        <p class="panel-note">The original ingress organ remains separate from the Gemini conversation: the gate absorbs ingress, while the terminal stages a model-mediated covenant relay.</p>
+        <p class="panel-note">The original ingress organ remains separate from the AI conversation: the gate absorbs ingress, while the terminal stages a model-mediated covenant relay.</p>
         <form id="marrowlineForm">
           <label class="field-label" for="marrowlineSeed">Local fallback seed
             <input id="marrowlineSeed" value="Kʰonapolit / witness memory / local fallback" spellcheck="false" />
@@ -191,7 +194,7 @@
     </div>
   </details>
     <nav class="threshold-nav" aria-label="Related places"><a href="/safe-harbor/td613-flight.html" target="_blank" rel="noopener noreferrer">Flight ↗</a><a href="/safe-harbor/" target="_blank" rel="noopener noreferrer">Safe Harbor ↗</a><a href="/aperture/" target="_blank" rel="noopener noreferrer">Aperture ↗</a></nav>
-    <p class="tools-boundary">Gemini carries the conversation. Stories belong to this authored world. Only you can seal a return.</p>
+    <p class="tools-boundary">Provider routing carries the conversation. Stories belong to this authored world. Only you can seal a return.</p>
   </aside>
   </div>
 </main>
