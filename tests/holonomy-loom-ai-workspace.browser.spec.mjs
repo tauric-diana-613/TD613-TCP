@@ -102,7 +102,7 @@ try {
       assert.equal(await page.locator('#aiTask').inputValue(), fixture.task);
       assert.equal(await page.locator('#aiDocuments').isVisible(), true);
       await page.locator('#aiUpload').setInputFiles({ name: 'local-upload.txt', mimeType: 'text/plain', buffer: Buffer.from(uploadCanary) });
-      const uploadChoice = page.getByRole('checkbox', { name: 'Share local-upload.txt with Gemini', exact: true });
+      const uploadChoice = page.getByRole('checkbox', { name: 'Share local-upload.txt with the AI', exact: true });
       await uploadChoice.waitFor({ state: 'visible' });
       assert.equal(await uploadChoice.isChecked(), false, 'uploaded document starts local-only');
       assert.equal(await page.locator('#aiRun').isEnabled(), true);

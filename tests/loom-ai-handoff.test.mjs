@@ -233,16 +233,17 @@ test('receiver task expansion and disclosures preserve combining marks and exact
   const scene = ui(undefined, selected); await scene.workspace.ready;
   const task = scene.root.querySelector('#loomImportedTask');
   const expand = scene.root.querySelector('#loomImportedExpand');
-  assert.equal(task.value, flourish); assert.equal(task.rows, 4);
+  assert.equal(task.value, flourish); assert.equal(task.rows, 3);
   assert.match(scene.root.querySelector('#loomImportedBoundary').textContent, /2 local-only documents stayed out/);
-  assert.match(scene.root.textContent, /Google Gemini/);
+  assert.match(scene.root.textContent, /Flow-Core AI runtime/);
+  assert.equal(scene.root.textContent.includes('Google Gemini'), false);
   for (const id of ['loomImportedDocuments', 'loomImportedRules', 'loomImportedReceiptDetails']) {
     const drawer = scene.root.querySelector('#' + id); assert.equal(drawer.open, false); drawer.open = true;
   }
   assert.equal(scene.root.querySelector('#loomImportedDocuments pre').textContent, flourish);
   expand.click(); assert.equal(task.rows, 12); assert.equal(expand.getAttribute('aria-expanded'), 'true');
   assert.equal(task.value, flourish); assert.equal(scene.calls.length, 0);
-  expand.click(); assert.equal(task.rows, 4); assert.equal(task.value, flourish);
+  expand.click(); assert.equal(task.rows, 3); assert.equal(task.value, flourish);
   scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
   assert.equal(scene.calls[0].input.task, flourish);
   assert.deepEqual(scene.calls[0].input.documents, selected.documents);

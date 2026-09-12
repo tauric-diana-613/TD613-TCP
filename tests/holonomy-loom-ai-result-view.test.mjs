@@ -18,24 +18,24 @@ function render(response = actualAnswer, options) {
   return { container, view: renderLoomAiResult(container, response, options) };
 }
 
-test('actual hosted heading-first answer exposes substantive capacity assessment before expansion', () => {
+test('actual hosted heading-first answer exposes the complete substantive capacity assessment without a hidden primary-answer disclosure', () => {
   const { container } = render();
   const lead = container.querySelector('.ai-result-lead');
   assert.match(lead.textContent, /Diligence Brief/);
   assert.match(lead.textContent, /1,080 GB active/);
   assert.match(lead.textContent, /unsupported extrapolation/);
-  assert.equal(lead.querySelectorAll('h4').length, 2);
-  assert.equal(lead.querySelectorAll('li').length, 3);
+  assert.match(lead.textContent, /137,591.52/);
+  assert.ok(lead.querySelectorAll('h4').length >= 2);
+  assert.ok(lead.querySelectorAll('li').length >= 3);
   assert.equal(lead.querySelector('details'), null);
-  assert.equal(container.querySelector('.ai-result-full').open, false);
-  assert.match(container.querySelector('.ai-result-full').textContent, /137,591.52/);
+  assert.equal(container.querySelector('.ai-result-full'), null);
   assert.equal(container.querySelector('.ai-result-original pre').textContent, actualAnswer.answer);
 });
 
 test('actual nested cost lists retain supplier grouping, every source and every open question', () => {
   const { container, view } = render(actualAnswer, { documentNames: { offer: 'supplier-offer.txt' } });
-  assert.ok(container.querySelectorAll('.ai-result-full li > ul').length >= 2);
-  assert.ok(container.querySelectorAll('.ai-result-full strong').length >= 2);
+  assert.ok(container.querySelectorAll('.ai-result-lead li > ul').length >= 2);
+  assert.ok(container.querySelectorAll('.ai-result-lead strong').length >= 2);
   const unknowns = [...container.querySelectorAll('.ai-result-unknowns li')].map(node => node.textContent);
   assert.deepEqual(unknowns, actualAnswer.missing_information);
   const sources = container.querySelector('.ai-result-sources');
@@ -43,6 +43,7 @@ test('actual nested cost lists retain supplier grouping, every source and every 
   assert.match(sources.textContent, /supplier-offer.txt/);
   assert.equal(sources.open, false);view.setView(true);assert.equal(sources.open, true);
   assert.equal(container.querySelector('.ai-result-next p').textContent, actualAnswer.suggested_next_step);
+  assert.equal(container.querySelector('.ai-result-next').getAttribute('aria-label'), 'Possible next action · optional');
 });
 
 test('observed vendor challenge is promoted beside useful output without causal overclaim', () => {
@@ -90,7 +91,7 @@ test('provider-escaped prose boundaries render as paragraphs and lists while ori
   const { container, view } = render({ ...actualAnswer, answer });
   assert.match(container.querySelector('.ai-result-lead').textContent, /Substantive capacity assessment/);
   assert.equal(container.querySelector('.ai-result-lead h4').textContent, 'Diligence Brief');
-  assert.equal(container.querySelectorAll('.ai-result-full li').length, 2);
+  assert.equal(container.querySelectorAll('.ai-result-lead li').length, 2);
   assert.equal(view.inspect().paragraphCount, 4);
   assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
   assert.equal(container.querySelector('.ai-result-analysis').textContent.includes(String.raw`\n`), false);
@@ -113,11 +114,11 @@ test('escaped CRLF paragraph boundaries and hostile markup remain display-only',
   const { container } = render({ ...actualAnswer, answer });
   assert.match(container.querySelector('.ai-result-lead p').textContent, /<img/);
   assert.equal(container.querySelector('img,script'), null);
-  assert.equal(container.querySelectorAll('.ai-result-full li').length, 1);
+  assert.equal(container.querySelectorAll('.ai-result-lead li').length, 1);
   assert.equal(container.querySelector('.ai-result-original pre').textContent, answer);
 });
 
-test('actual post-1096 literal-newline response shows useful first section and preserves its exact record', () => {
+test('actual post-1096 literal-newline response shows the complete useful analysis and preserves its exact record', () => {
   const observed = JSON.parse(fs.readFileSync(new URL('../docs/research/receipts/2026-09-10-loom-live-receiver/hosted-loom-after-1096.json', import.meta.url), 'utf8'));
   assert.ok(observed.answer.includes(String.raw`\n\n`));
   const { container } = render({ ...actualAnswer, answer: observed.answer });
@@ -125,8 +126,8 @@ test('actual post-1096 literal-newline response shows useful first section and p
   assert.equal(lead.querySelector('h4').textContent, 'DILIGENCE BRIEF: INTEGRATION EVALUATION');
   assert.match(lead.textContent, /CAPACITY RECONCILIATION/);
   assert.match(lead.textContent, /10,080 GB/);
+  assert.match(lead.textContent, /137,591.52/);
   assert.equal(lead.textContent.includes(String.raw`\n`), false);
-  assert.ok(lead.textContent.length < 1500, 'later numbered sections must not collapse into the first list');
-  assert.match(container.querySelector('.ai-result-full').textContent, /137,591.52/);
+  assert.equal(container.querySelector('.ai-result-full'), null);
   assert.equal(container.querySelector('.ai-result-original pre').textContent, observed.answer);
 });

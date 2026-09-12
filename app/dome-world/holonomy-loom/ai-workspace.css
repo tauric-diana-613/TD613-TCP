@@ -6,7 +6,7 @@
 
 #loomAiWorkspace #aiRules,#loomAiWorkspace #aiPrivate{min-height:72px;font-size:.85rem}#loomAiWorkspace .ai-documents button{padding:5px 10px;min-height:30px;font-size:.7rem;margin-top:5px}
 
-#loomAiWorkspace .ai-answer{white-space:normal;max-height:none;overflow:visible}#loomAiWorkspace .ai-result-lead{font:400 1.12rem/1.75 var(--serif);max-width:82ch}#loomAiWorkspace .ai-result-full p{margin:15px 0;line-height:1.8;max-width:90ch}#loomAiWorkspace .ai-result-next{margin:20px 0;padding:16px 18px;border-left:2px solid var(--gold);background:#e4c66c08}#loomAiWorkspace .ai-result-unknowns li{margin:12px 0}
+#loomAiWorkspace .ai-answer{white-space:normal;max-height:none;overflow:visible}#loomAiWorkspace .ai-result-lead{font:400 1.12rem/1.75 var(--serif);max-width:82ch}#loomAiWorkspace .ai-result-next{margin:20px 0;padding:16px 18px;border-left:2px solid var(--gold);background:#e4c66c08}#loomAiWorkspace .ai-result-unknowns li{margin:12px 0}
 
 #loomAiWorkspace table{border-collapse:collapse;width:100%;font-size:.8rem}#loomAiWorkspace th,#loomAiWorkspace td{text-align:left;padding:10px 7px;border-bottom:1px solid #8aac9440}
 
@@ -86,3 +86,22 @@ body>.wrap{position:relative;z-index:1}
 #loomAiWorkspace .ai-room-replay label,#loomAiWorkspace .ai-room-replay p{flex-basis:100%;font:12px/1.6 var(--sans)}
 #loomAiWorkspace .ai-room-replay input{width:100%;accent-color:#dbb572}
 #loomAiWorkspace .ai-view-switch{flex-wrap:wrap}
+
+/* Episode 6 repair: make the editable instruction visually and semantically primary. */
+#loomAiWorkspace .ai-project-brief{padding:13px 15px;background:linear-gradient(125deg,#211c4e99,#11112ee6)}
+#loomAiWorkspace .ai-task-surface{margin:18px 0 12px;padding:16px;border:1px solid #e2bd806e;border-radius:14px;background:#0808178f;box-shadow:inset 0 0 0 1px #c59de61f}
+#loomAiWorkspace .ai-task-surface label[for=aiTask]{margin-bottom:4px}
+#loomAiWorkspace .ai-task-surface #aiTaskCue{margin:0 0 10px;color:#d9cae0}
+#loomAiWorkspace textarea#aiTask{box-sizing:border-box;width:100%;min-height:190px;padding:14px 15px;border:1px solid #c6a7e86e;border-left:3px solid var(--gold);border-radius:10px;background:#0c0b1e;color:#f5edf7;font-size:16px;line-height:1.65;resize:vertical;overflow:auto;box-shadow:0 8px 30px #05030c40}
+#loomAiWorkspace textarea#aiTask:focus{border-color:#f0c78e;border-left-color:#f0c78e;outline:2px solid #f0c78e55;outline-offset:2px}
+#loomAiWorkspace .ai-submitted-task{display:grid;gap:6px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d6b77c55;border-radius:12px;background:#e4c66c08}
+#loomAiWorkspace .ai-submitted-task[hidden]{display:none}
+#loomAiWorkspace .ai-submitted-task strong{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+#loomAiWorkspace .ai-submitted-task span{white-space:pre-wrap;font:500 .9rem/1.55 var(--sans);color:#f1e8f3}
+#loomAiWorkspace .ai-result-disclosure{margin:12px 0;padding:0 14px;border:1px solid #9e8ae24d;border-radius:12px;background:#15133190}
+#loomAiWorkspace .ai-result-disclosure>summary{display:flex;align-items:center;gap:12px;min-height:46px;list-style:none;cursor:pointer;font:600 .82rem/1.45 var(--sans);color:#e5dafa}
+#loomAiWorkspace .ai-result-disclosure>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-result-disclosure>summary::after{content:'+';margin-left:auto;color:var(--gold);font:400 24px/1 var(--sans);flex:none}
+#loomAiWorkspace .ai-result-disclosure[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-result-disclosure>pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto}
+@media(max-width:560px){#loomAiWorkspace .ai-project-brief{margin:10px 0;padding:10px 12px}#loomAiWorkspace .ai-project-brief h2{font-size:1.25rem}#loomAiWorkspace .ai-project-brief #aiBriefRoute{display:none}#loomAiWorkspace .ai-task-surface{margin-top:12px;padding:13px 12px}#loomAiWorkspace textarea#aiTask{min-height:220px;font-size:16px;line-height:1.6}#loomAiWorkspace .ai-submitted-task{padding:12px 13px}}
