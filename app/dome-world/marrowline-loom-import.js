@@ -79,7 +79,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
   const answerTitle = answer?.previousElementSibling;
   const receipt = root.querySelector('#loomImportedReceipt');
   const provider = root.querySelector('.loom-import-provider');
-  if (provider) provider.textContent = 'This continuation sends the new request, the admitted prior Loom answer, selected documents and portable rules through Dome-World to Google Gemini. The original binding remains recorded separately.';
+  if (provider) provider.textContent = 'This continuation sends the new request, the admitted prior Loom answer, selected documents and portable rules through Dome-World’s Flow-Core AI runtime. Technical route provenance remains in the receipt; the original binding remains recorded separately.';
   const relay = root.querySelector('a[href="/dome-world/marrowline.html"]');
   if (relay) relay.textContent = 'Leave this continuation and open a new Marrowline workspace';
 
@@ -96,10 +96,8 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
 
   function currentPrompt() { return portablePrompt(packet, followup.value.trim(), latestResult, freshGovernance); }
   copy.addEventListener('click', async () => {
-    try {
-      await environment.navigator?.clipboard?.writeText(currentPrompt());
-      status.textContent = 'Continuation packet copied with activation guidance and structured JSON.';
-    } catch { status.textContent = 'Clipboard access was unavailable. Export the continuation packet instead.'; }
+    try { await environment.navigator?.clipboard?.writeText(currentPrompt()); status.textContent = 'Continuation packet copied with activation guidance and structured JSON.'; }
+    catch { status.textContent = 'Clipboard access was unavailable. Export the continuation packet instead.'; }
   });
   exportButton.addEventListener('click', () => {
     try {
@@ -156,34 +154,15 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
       if (answer) { answer.textContent = ''; renderLoomAiResult(answer, output, { documentNames: new Map(packet.documents.map(document => [document.id, document.name])) }); }
       if (answerTitle) answerTitle.hidden = false;
       status.textContent = 'Your continuation answer has arrived. The prior Loom binding and this fresh follow-up binding remain separately inspectable.';
-      if (receipt) receipt.textContent = JSON.stringify({
-        handoff: packet.handoff_receipt,
-        request_id,
-        started_at,
-        returned_at: new Date().toISOString(),
-        response: output,
-        continuation: {
-          prior_request_id: packet.continuation.prior_result.request_id,
-          prior_handoff_digest: packet.handoff_receipt?.digest ?? null,
-          followup_input_digest: freshGovernance.input_digest,
-          original_input_digest: packet.governance?.input_digest ?? null
-        },
-        governance: freshGovernor.inspect()
-      }, null, 2);
+      if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, returned_at: new Date().toISOString(), response: output, continuation: { prior_request_id: packet.continuation.prior_result.request_id, prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance.input_digest, original_input_digest: packet.governance?.input_digest ?? null }, governance: freshGovernor.inspect() }, null, 2);
     } catch (error) {
       if (pending.signal.aborted) status.textContent = pending.signal.reason === 'deadline' ? 'The continuation exceeded 55 seconds. The prior Loom work and your new request remain here.' : 'Stopped waiting. The continuation remains here.';
       else status.textContent = `Task held: ${error.message}`;
       if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
-    } finally {
-      unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with Flow-Core AI';
-    }
+    } finally { unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with Flow-Core AI'; }
   });
 
-  const facade = baseWorkspace ? {
-    ready: baseWorkspace.ready,
-    inspect: () => freshGovernor?.inspect() ?? baseWorkspace.inspect?.() ?? null,
-    destroy() { controller?.abort('destroy'); freshGovernor?.close(); baseWorkspace.destroy(); }
-  } : null;
+  const facade = baseWorkspace ? { ready: baseWorkspace.ready, inspect: () => freshGovernor?.inspect() ?? baseWorkspace.inspect?.() ?? null, destroy() { controller?.abort('destroy'); freshGovernor?.close(); baseWorkspace.destroy(); } } : null;
   return facade ?? baseWorkspace;
 }
 
