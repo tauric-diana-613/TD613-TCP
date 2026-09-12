@@ -245,22 +245,28 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         const elapsedBeforeAttempt = Math.max(0, now() - started);
         const remainingGlobalMs = Math.max(1, deadlineMs - elapsedBeforeAttempt);
         const remainingAttempts = Math.max(1, models.length - index);
-        // Preserve the validated long primary window. Once fallback begins, divide the
-        // remaining global window so one stalled fallback cannot starve every later model.
-        const attemptTimeoutMs = index === 0 ? remainingGlobalMs : Math.max(1, Math.floor(remainingGlobalMs / remainingAttempts));
+        // A single eligible model retains the whole bounded host runway. With fallbacks,
+        // the primary receives two thirds of the remaining request time and must leave a
+        // request-local reserve for at least one diversified eligible model after a stall.
+        const attemptTimeoutMs = models.length === 1
+          ? remainingGlobalMs
+          : index === 0
+            ? Math.max(1, Math.floor(remainingGlobalMs * 2 / 3))
+            : Math.max(1, Math.floor(remainingGlobalMs / remainingAttempts));
         const attemptStartedAt = now();
         const attemptController = new AbortController();
         const relayGlobalAbort = () => attemptController.abort();
         controller.signal.addEventListener('abort', relayGlobalAbort, { once: true });
         let attemptTimer;
         let localTimedOut = false;
-        const attemptDeadline = index === 0 ? null : new Promise((_, reject) => {
+        const needsLocalDeadline = attemptTimeoutMs < remainingGlobalMs;
+        const attemptDeadline = needsLocalDeadline ? new Promise((_, reject) => {
           attemptTimer = setTimeout(() => {
             localTimedOut = true;
             attemptController.abort();
             reject(new Error('provider-attempt-timeout'));
           }, attemptTimeoutMs);
-        });
+        }) : null;
         try {
           const races = [fetchImpl(geminiGenerateContentUrl(model), {
             method: 'POST', headers: geminiRequestHeaders(env.GEMINI_API_KEY),

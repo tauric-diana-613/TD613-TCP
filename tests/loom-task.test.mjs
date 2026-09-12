@@ -256,26 +256,32 @@ test('a single slow generation can complete after the old 32s ceiling, inside th
   assert.equal(result.body.observations.stage_elapsed_ms['provider-transport'], 40000);
 });
 
-test('the 50s total deadline includes planning, aborts transport and never retries', async t => {
+test('the 50s total deadline reserves request-local time for a diversified fallback when the primary stalls', async t => {
   t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 0 });
-  let signal;
   let calls = 0;
   const h = harness({
-    resolvePlan: () => new Promise(resolve => setTimeout(() => resolve({ callableModels: ['gemini-test', 'unused-fallback'] }), 5000)),
-    fetchImpl: async (_, options) => { calls += 1; signal = options.signal; return new Promise(() => {}); }
+    resolvePlan: () => new Promise(resolve => setTimeout(() => resolve({ callableModels: ['gemini-primary', 'gemini-second', 'gemini-third'] }), 5000)),
+    fetchImpl: async () => {
+      calls += 1;
+      if (calls === 1) return new Promise(() => {});
+      return { ok: true, status: 200, json: async () => payload() };
+    }
   });
   const pending = h.run();
   t.mock.timers.tick(5000);
   await new Promise(resolve => setImmediate(resolve));
-  t.mock.timers.tick(45000);
+  t.mock.timers.tick(30000);
+  await new Promise(resolve => setImmediate(resolve));
+  t.mock.timers.tick(15000);
   const result = await pending;
-  assert.equal(result.status, 504);
-  assert.equal(result.body.diagnostic.code, 'DEADLINE_EXCEEDED');
-  assert.equal(result.body.observations.elapsed_ms, 50000);
-  assert.deepEqual(result.body.observations.stage_elapsed_ms, { 'provider-plan': 5000, 'provider-transport': 45000 });
-  assert.equal(result.body.answer, '');
-  assert.equal(signal.aborted, true);
-  assert.equal(calls, 1);
+  assert.equal(result.status, 200);
+  assert.equal(calls, 2);
+  assert.equal(result.body.observations.provider_calls, 2);
+  assert.equal(result.body.observations.model, 'gemini-second');
+  assert.equal(result.body.observations.provider_attempt_timings[0].timed_out, true);
+  assert.ok(result.body.observations.provider_attempt_timings[0].timeout_ms < 45000);
+  assert.equal(result.body.observations.provider_attempt_timings[1].status, 200);
+  assert.ok(result.body.observations.elapsed_ms < LOOM_TASK_TIMEOUT_MS);
 });
 
 test('timings distinguish listing, response arrival, body read and admission without provider text', async () => {

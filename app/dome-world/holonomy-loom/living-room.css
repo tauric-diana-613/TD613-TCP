@@ -20,3 +20,28 @@
 /* In the single-column layout, keep the action the brief just named within reach. */
 @media(max-width:760px){#loomAiWorkspace .ai-composer .ai-send-row{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:8;margin:14px -6px 4px;padding:9px;border:1px solid #d5b47a66;border-radius:14px;background:rgba(28,18,39,.96);box-shadow:0 10px 28px #05030b80;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}#loomAiWorkspace .ai-composer .ai-send-row .ai-primary{padding:13px 17px}}
 @media(max-width:560px){.loom-living-room .lr-station-captions p{font-size:13px}.loom-living-room .lr-station-captions strong{font-size:13px}.loom-living-room .lr-world .lr-small-label{font-size:19px}.loom-living-room .lr-world .lr-world-label{font-size:19px}}
+
+/* Episode 5: keyboard focus is a pointer; aria-pressed is the loaded demo. */
+#loomAiWorkspace .ai-projects button{position:relative}
+#loomAiWorkspace .ai-projects button:focus-visible{outline:2px dashed #c5a7df;outline-offset:3px}
+#loomAiWorkspace .ai-projects button[aria-pressed=true]{padding-right:50px;box-shadow:inset 0 0 0 1px #edbe8540}
+#loomAiWorkspace .ai-projects button[aria-pressed=true]::after{content:'✓';position:absolute;top:12px;right:12px;width:20px;height:20px;display:grid;place-items:center;border:1px solid #edbe85aa;border-radius:50%;background:#1b1224;color:#edbe85;font:700 11px/1 var(--sans)}
+
+/* Narrow phones need a sequence, not four nearly identical purple plates fighting for one viewport. */
+@media(max-width:560px){
+  #loomAiWorkspace .ai-composer,#loomAiWorkspace .ai-observer,#loomAiWorkspace .ai-result{padding:15px;border-radius:14px}
+  #loomAiWorkspace .ai-composer{border-top:2px solid #edbe85}
+  #loomAiWorkspace .ai-observer{border-top:2px solid #c6a4e8;background:rgba(14,10,23,.97)}
+  #loomAiWorkspace .ai-result{border-top:2px solid #f1d29a;background:rgba(24,16,28,.97)}
+  #loomAiWorkspace .ai-projects button{padding:14px 16px;min-height:0}
+  #loomAiWorkspace .ai-projects button[aria-pressed=true]{padding-right:48px}
+  #loomAiWorkspace textarea{line-height:1.58;min-height:148px}
+  .loom-living-room{border-radius:18px;background:linear-gradient(155deg,#211644f5,#111026f5)}
+  .loom-living-room .lr-scene-heading{padding:16px 15px 0}
+  .loom-living-room .lr-station-captions{grid-template-columns:1fr;gap:4px;padding:0 14px 14px}
+  .loom-living-room .lr-station-captions p{display:grid;grid-template-columns:minmax(92px,.85fr) minmax(0,1.6fr);gap:10px;align-items:start;padding-top:8px;font-size:12px;line-height:1.4}
+  .loom-living-room .lr-station-captions strong{margin:0;font-size:12px}
+  .loom-living-room .lr-now{padding:13px 15px 0;font-size:16px}
+  .loom-living-room .lr-why{padding:7px 15px 14px;font-size:12px;line-height:1.5}
+  .loom-living-room .lr-cause{margin:0 12px 12px}
+}
