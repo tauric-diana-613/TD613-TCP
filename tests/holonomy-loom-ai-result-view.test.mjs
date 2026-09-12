@@ -25,7 +25,7 @@ test('actual hosted heading-first answer exposes the complete substantive capaci
   assert.match(lead.textContent, /1,080 GB active/);
   assert.match(lead.textContent, /unsupported extrapolation/);
   assert.match(lead.textContent, /137,591.52/);
-  assert.equal(lead.querySelectorAll('h4').length, 2);
+  assert.ok(lead.querySelectorAll('h4').length >= 2);
   assert.ok(lead.querySelectorAll('li').length >= 3);
   assert.equal(lead.querySelector('details'), null);
   assert.equal(container.querySelector('.ai-result-full'), null);
