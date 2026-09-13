@@ -61,12 +61,8 @@ test('independent Marrowline fallbacks spend their short rescue windows on low-l
 
 test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {
   const incident = LOOM_AI_PROJECTS.find(project => project.id === 'incident-response');
-  assert.ok(incident?.newcomerTakeaway, 'incident demo needs a local comprehension bridge');
-  assert.deepEqual(Object.keys(incident.newcomerTakeaway), ['question', 'finding', 'privacy']);
-  assert.match(incident.newcomerTakeaway.question, /duplicate work|duplicate reporting/i);
-  assert.match(incident.newcomerTakeaway.finding, /recorded completions|completion signals/i);
-  assert.match(incident.newcomerTakeaway.finding, /uncertain|not yet|cannot tell/i);
-  assert.match(incident.newcomerTakeaway.privacy, /credentials|customer/i);
+  const eventLog = incident.documents.find(document => document.id === 'event-log');
+  assert.equal(eventLog.name, 'sanitized-events.log');
 
   const dom = new JSDOM('<main></main>');
   const container = dom.window.document.querySelector('main');
@@ -75,11 +71,18 @@ test('Demo 3 supplies a bounded newcomer takeaway before the engineering report'
     missing_information: ['Independent effect ledger'],
     used_document_ids: ['event-log'],
     suggested_next_step: 'Run the controlled check.'
-  }, { newcomerTakeaway: incident.newcomerTakeaway });
+  }, { documentNames: { 'event-log': eventLog.name } });
   const takeaway = container.querySelector('.ai-result-takeaway');
   assert.ok(takeaway, 'newcomer payoff must render without asking a follow-up');
   assert.equal(container.firstElementChild, takeaway, 'plain-language payoff must precede technical assessment');
   assert.deepEqual([...takeaway.querySelectorAll('dt')].map(node => node.textContent), ['Question', 'Finding', 'Privacy consequence']);
+  const values = [...takeaway.querySelectorAll('dd')].map(node => node.textContent);
+  assert.match(values[0], /ran twice|reported twice/i);
+  assert.match(values[1], /repeated completion signals/i);
+  assert.match(values[1], /do not yet establish/i);
+  assert.match(values[2], /credentials/i);
+  assert.match(values[2], /customer identifiers/i);
+  assert.match(takeaway.textContent, /exact AI report remains below/i);
 });
 
 test('living geometry exposes a responsive anti-squash floor', () => {
