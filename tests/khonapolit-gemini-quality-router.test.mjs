@@ -13,18 +13,32 @@ const direct3 = buildGeminiRequest(directPacket, {}, 'gemini-3.8-flash');
 assert.equal(direct3.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(direct3.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(direct3.generationConfig, key), false);
+const fallback3 = buildGeminiRequest(directPacket, {}, 'gemini-3.8-flash', { fallback: true });
+assert.equal(fallback3.generationConfig.maxOutputTokens, 65536);
+assert.deepEqual(fallback3.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
+for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback3.generationConfig, key), false);
 const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
 assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
 assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
 assert.equal(direct25.generationConfig.temperature, 0.7);
 assert.equal(direct25.generationConfig.topP, 0.9);
 assert.equal(direct25.generationConfig.topK, 40);
+const fallback25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash', { fallback: true });
+assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
 assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
   finishReason: null,
   outputTokenLimitReached: false,
   maxOutputTokens: 65536,
   thinkingLevel: 'not-applicable',
   thinkingBudget: 24576,
+  usage: {}
+});
+assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash', { fallback: true }), {
+  finishReason: null,
+  outputTokenLimitReached: false,
+  maxOutputTokens: 65536,
+  thinkingLevel: 'not-applicable',
+  thinkingBudget: 1024,
   usage: {}
 });
 
@@ -93,9 +107,11 @@ try {
   assert.match(calls[0], /gemini-3\.5-flash/);
   assert.match(calls[1], /gemini-3-flash-preview/);
   assert.equal(requestBodies.length, 2);
+  assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.equal(requestBodies[1].generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(requestBodies[1].generationConfig.thinkingConfig, { thinkingLevel: 'low' });
   for (const body of requestBodies) {
-    assert.equal(body.generationConfig.maxOutputTokens, 65536);
-    assert.deepEqual(body.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
   }
   assert.equal(res.payload.receipt.provider.model, 'gemini-3-flash-preview');
@@ -103,6 +119,9 @@ try {
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
   assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model gets the observed completion window');
   assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= 10500, 'fallback remains bounded by its window and route wall');
+  assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high', 'primary receipt reports the primary reasoning profile');
+  assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'low', 'fallback receipt reports the rescue reasoning profile');
+  assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'low', 'successful fallback output retains truthful reasoning telemetry');
   assert.ok(res.payload.receipt.provider.attempts.every(a => a.elapsedMs >= 0));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'a developed answer survives the server and relay without local clipping');
