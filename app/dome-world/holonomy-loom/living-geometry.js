@@ -29,6 +29,21 @@ export function livingGeometryViewport(width, height, dpr = 1) {
   return Object.freeze({ width, height, dpr: scale, pixelWidth: Math.max(1, Math.floor(width * scale)), pixelHeight: Math.max(1, Math.floor(height * scale)) });
 }
 
+/**
+ * Responsive shape proportions for the two anisotropic sections and rosette.
+ * The old fixed .62/.66 vertical factors visibly flattened the composition on
+ * ordinary desktop viewports. Keep anisotropy, but bound how far it may collapse.
+ */
+export function livingGeometryShapeScales({ width = 1, height = 1 } = {}) {
+  const w = clamp(finite(width, 1), 1, 4096);
+  const h = clamp(finite(height, 1), 1, 2160);
+  const aspect = w / h;
+  return Object.freeze({
+    sectionY: clamp(aspect * .62, .76, .92),
+    rosetteY: clamp(aspect * .66, .78, 1)
+  });
+}
+
 export function projectLivingGeometry(state = {}, snapshot = {}) {
   const phase = String(snapshot.packet?.phase ?? state.phase ?? 'prepared');
   const view = String(state.view ?? state.variant ?? 'loom').slice(0, 80);
@@ -68,6 +83,7 @@ export function drawLivingGeometry(ctx, viewport, field) {
   const cx = w * (mobile ? .76 : field.variant === 'marrowline' ? .75 : .77);
   const cy = h * (mobile ? .30 : .46);
   const radius = Math.min(w * (mobile ? .91 : .57), h * .91);
+  const shapeScales = livingGeometryShapeScales({ width: w, height: h });
   const halo = ctx.createRadialGradient(cx, cy, radius * .05, cx, cy, radius * 1.3);
   halo.addColorStop(0, '#39225b');
   halo.addColorStop(.38, '#26113b');
@@ -83,6 +99,7 @@ export function drawLivingGeometry(ctx, viewport, field) {
   ctx.rotate(field.orientation);
   const rings = mobile ? 34 : 48;
   for (let layer = 0; layer < 2; layer++) {
+    const sectionY = Math.min(1, shapeScales.sectionY + layer * .045);
     for (let index = 0; index < rings; index++) {
       const q = index / (rings - 1);
       const r = radius * (.12 + q * .88);
@@ -91,7 +108,7 @@ export function drawLivingGeometry(ctx, viewport, field) {
         const a = step / 84 * TAU;
         const fold = 1 + .115 * Math.cos(3 * a + q * PHI + layer * .38);
         const x = Math.cos(a) * r * fold;
-        const y = Math.sin(a) * r * (.62 + layer * .065) * fold;
+        const y = Math.sin(a) * r * sectionY * fold;
         const twist = layer * (.12 + .025 * (1 - field.settle));
         points.push([x * Math.cos(twist) - y * Math.sin(twist), x * Math.sin(twist) + y * Math.cos(twist)]);
       }
@@ -107,7 +124,7 @@ export function drawLivingGeometry(ctx, viewport, field) {
     for (let step = 0; step <= 48; step++) {
       const t = step / 48 * 2 - 1;
       const bend = Math.sin(t * Math.PI * PHI + a) * radius * .115;
-      points.push([Math.cos(a) * t * radius + Math.cos(a + Math.PI / 2) * bend, (Math.sin(a) * t * radius + Math.sin(a + Math.PI / 2) * bend) * .66]);
+      points.push([Math.cos(a) * t * radius + Math.cos(a + Math.PI / 2) * bend, (Math.sin(a) * t * radius + Math.sin(a + Math.PI / 2) * bend) * shapeScales.rosetteY]);
     }
     stroke(ctx, points, index % 3 ? 'rgba(189,142,242,.15)' : 'rgba(254,211,151,.29)', .65);
   }
