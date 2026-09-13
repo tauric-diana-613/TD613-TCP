@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { JSDOM } from 'jsdom';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
+import { renderLoomAiResult } from '../app/dome-world/holonomy-loom/ai-result-view.js';
+import { livingGeometryShapeScales } from '../app/dome-world/holonomy-loom/living-geometry.js';
 
 test('three substantial fictional projects exercise distinct useful AI tasks', () => {
   assert.deepEqual(LOOM_AI_PROJECTS.map(p => p.id), ['vendor-diligence', 'participant-research', 'incident-response']);
@@ -41,6 +44,39 @@ test('each admitted corpus contains a source-instruction challenge and useful in
     assert.match(shared, /\d{2}/);
     assert.ok(project.rules.length >= 3);
   }
+});
+
+test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {
+  const incident = LOOM_AI_PROJECTS.find(project => project.id === 'incident-response');
+  assert.ok(incident?.newcomerTakeaway, 'incident demo needs a local comprehension bridge');
+  assert.deepEqual(Object.keys(incident.newcomerTakeaway), ['question', 'finding', 'privacy']);
+  assert.match(incident.newcomerTakeaway.question, /duplicate work|duplicate reporting/i);
+  assert.match(incident.newcomerTakeaway.finding, /recorded completions|completion signals/i);
+  assert.match(incident.newcomerTakeaway.finding, /uncertain|not yet|cannot tell/i);
+  assert.match(incident.newcomerTakeaway.privacy, /credentials|customer/i);
+
+  const dom = new JSDOM('<main></main>');
+  const container = dom.window.document.querySelector('main');
+  renderLoomAiResult(container, {
+    answer: '09:12:00 — technical timeline begins here.',
+    missing_information: ['Independent effect ledger'],
+    used_document_ids: ['event-log'],
+    suggested_next_step: 'Run the controlled check.'
+  }, { newcomerTakeaway: incident.newcomerTakeaway });
+  const takeaway = container.querySelector('.ai-result-takeaway');
+  assert.ok(takeaway, 'newcomer payoff must render without asking a follow-up');
+  assert.equal(container.firstElementChild, takeaway, 'plain-language payoff must precede technical assessment');
+  assert.deepEqual([...takeaway.querySelectorAll('dt')].map(node => node.textContent), ['Question', 'Finding', 'Privacy consequence']);
+});
+
+test('living geometry exposes a responsive anti-squash floor', () => {
+  const desktop = livingGeometryShapeScales({ width: 1440, height: 900 });
+  const portrait = livingGeometryShapeScales({ width: 390, height: 844 });
+  assert.ok(desktop.sectionY >= 0.8, `desktop section vertical scale ${desktop.sectionY} is still visibly compressed`);
+  assert.ok(desktop.rosetteY >= 0.85, `desktop rosette vertical scale ${desktop.rosetteY} is still visibly compressed`);
+  assert.ok(portrait.sectionY >= 0.76, `portrait section vertical scale ${portrait.sectionY} is still visibly compressed`);
+  assert.ok(portrait.rosetteY >= 0.78, `portrait rosette vertical scale ${portrait.rosetteY} is still visibly compressed`);
+  assert.ok(desktop.sectionY <= 1 && desktop.rosetteY <= 1 && portrait.sectionY <= 1 && portrait.rosetteY <= 1);
 });
 
 test('fixtures cannot silently change sharing posture or canaries after import', () => {
