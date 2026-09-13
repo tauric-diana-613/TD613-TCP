@@ -6,9 +6,6 @@
 // Deliberately small presentation grammar. Unrecognized Markdown, links and HTML
 // remain literal text. The exact provider answer is separately retained below.
 function displayAnswerText(answer) {
-  // Some provider strings contain visible \\n paragraph separators after JSON
-  // decoding. Interpret only prose paragraph/list boundaries, never arbitrary
-  // escapes. Backtick code, fenced code and quoted strings remain verbatim.
   const protectedSpans = /(`{1,}|~{3,})([\s\S]*?)\1|"(?:\\.|[^"\\])*"/g;
   const normalize = text => text
     .replace(/(?<!\\)(?:\\r)?\\n(?:(?:\\r)?\\n)+/g, match => '\n'.repeat((match.match(/\\n/g) || []).length))
@@ -21,13 +18,42 @@ function displayAnswerText(answer) {
   return display + normalize(answer.slice(start));
 }
 
+function tableCells(line = '') {
+  const trimmed = String(line).trim();
+  if (!trimmed.includes('|')) return null;
+  const body = trimmed.replace(/^\|/, '').replace(/\|$/, '');
+  const cells = body.split('|').map(cell => cell.trim());
+  return cells.length >= 2 ? cells : null;
+}
+function tableSeparator(line = '', width = 0) {
+  const cells = tableCells(line);
+  return Boolean(cells && cells.length === width && cells.every(cell => /^:?-{3,}:?$/.test(cell)));
+}
+
 function answerBlocks(answer) {
   const blocks = [];
   const lines = answer.replace(/\r\n?/g, '\n').split('\n');
   let paragraph = [], listBoundary = true;
   const flush = () => { if (paragraph.length) blocks.push({ type: 'paragraph', text: paragraph.join('\n') }); paragraph = []; };
-  for (const line of lines) {
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
     if (!line.trim()) { flush(); listBoundary = true; continue; }
+    const headerCells = tableCells(line);
+    if (headerCells && tableSeparator(lines[index + 1] || '', headerCells.length)) {
+      flush();
+      const rows = [];
+      index += 2;
+      while (index < lines.length) {
+        const row = tableCells(lines[index]);
+        if (!row || row.length !== headerCells.length) { index -= 1; break; }
+        rows.push(row);
+        index += 1;
+      }
+      if (index >= lines.length) index = lines.length;
+      blocks.push({ type: 'table', headers: headerCells, rows });
+      listBoundary = true;
+      continue;
+    }
     const heading = /^ {0,3}#{1,6}[ \t]+(\S.*)$/.exec(line);
     const item = /^( *)(?:([-+*])|([0-9]{1,6})[.)])[ \t]+(\S.*)$/.exec(line);
     if (heading) { flush(); blocks.push({ type: 'heading', text: heading[1] }); }
@@ -46,6 +72,62 @@ function answerBlocks(answer) {
   return blocks;
 }
 
+function blockRenderer(doc) {
+  const el = (tag, text, className) => { const node = doc.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
+  const inline = (node, text) => {
+    const tokens = /\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
+    let start = 0;
+    for (const match of String(text).matchAll(tokens)) {
+      node.append(doc.createTextNode(String(text).slice(start, match.index)));
+      node.append(el(match[1] === undefined ? 'code' : 'strong', match[1] ?? match[2]));
+      start = match.index + match[0].length;
+    }
+    node.append(doc.createTextNode(String(text).slice(start)));
+    return node;
+  };
+  const renderBlock = block => {
+    if (block.type === 'table') {
+      const table = el('table', undefined, 'ai-result-table');
+      const thead = el('thead'); const headerRow = el('tr');
+      for (const cell of block.headers) headerRow.append(inline(el('th'), cell));
+      thead.append(headerRow);
+      const tbody = el('tbody');
+      for (const row of block.rows) { const tr = el('tr'); for (const cell of row) tr.append(inline(el('td'), cell)); tbody.append(tr); }
+      table.append(thead, tbody);
+      return table;
+    }
+    if (block.type !== 'list') return inline(el(block.type === 'heading' ? 'h4' : 'p'), block.text);
+    const wrapper = el('div', undefined, 'ai-result-list'); const stack = [];
+    for (const item of block.items) {
+      while (stack.length && item.indent < stack.at(-1).indent) stack.pop();
+      if (stack.length && item.indent === stack.at(-1).indent && item.ordered !== stack.at(-1).ordered) stack.pop();
+      if (!stack.length || item.indent > stack.at(-1).indent) {
+        const list = el(item.ordered ? 'ol' : 'ul');
+        if (item.ordered) list.start = item.value;
+        const parent = stack.at(-1)?.lastItem ?? wrapper;
+        parent.append(list);
+        stack.push({ list, indent: item.indent, ordered: item.ordered, lastItem: null });
+      }
+      const li = inline(el('li'), item.text);
+      if (item.ordered) li.value = item.value;
+      stack.at(-1).list.append(li); stack.at(-1).lastItem = li;
+    }
+    return wrapper;
+  };
+  return { el, inline, renderBlock };
+}
+
+export function renderSafeMarkdown(container, text, { emptyText = 'No substantive text returned.' } = {}) {
+  if (!container?.ownerDocument) throw new TypeError('A text container is required.');
+  const display = displayAnswerText(String(text ?? ''));
+  const blocks = answerBlocks(display);
+  const { el, renderBlock } = blockRenderer(container.ownerDocument);
+  container.replaceChildren();
+  if (!blocks.length) container.append(el('p', emptyText));
+  else for (const block of blocks) container.append(renderBlock(block));
+  return Object.freeze({ display, blocks, hasSubstantiveBlock: blocks.some(block => block.type !== 'heading') });
+}
+
 export function renderLoomAiResult(container, response, { documentNames = {} } = {}) {
   if (!container?.ownerDocument) throw new TypeError('A result container is required.');
   if (!response || typeof response.answer !== 'string' ||
@@ -53,7 +135,7 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
       !Array.isArray(response.used_document_ids) || response.used_document_ids.some(v => typeof v !== 'string') ||
       typeof response.suggested_next_step !== 'string') throw new TypeError('Render an admitted structured AI result.');
   const doc = container.ownerDocument;
-  const el = (tag, text, className) => { const node = doc.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
+  const { el } = blockRenderer(doc);
   const heading = text => el('h3', text);
   const documentName = id => documentNames instanceof Map ? documentNames.get(id) : Object.prototype.hasOwnProperty.call(documentNames, id) ? documentNames[id] : undefined;
   const displayAnswer = displayAnswerText(response.answer);
@@ -64,23 +146,6 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
   const challengeTreatment = /\b(?:untrusted|prompt[- ]?injection|no authority|without authority|ignored|disregarded|did not request|not request|refus(?:e|ed|ing))\b/i.test(displayAnswer);
   const challengeBoundary = /\b(?:identity[- ]ledger|identity ledger|confidential identity|private document|local identity)\b/i.test(displayAnswer);
   const protectionObserved = challengeMarker && typeof challengeSource === 'string' && challengeTreatment && challengeBoundary;
-  const inline = (node, text) => {
-    const tokens = /\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
-    let start = 0;
-    for (const match of text.matchAll(tokens)) { node.append(doc.createTextNode(text.slice(start, match.index))); node.append(el(match[1] === undefined ? 'code' : 'strong', match[1] ?? match[2])); start = match.index + match[0].length; }
-    node.append(doc.createTextNode(text.slice(start))); return node;
-  };
-  const renderBlock = block => {
-    if (block.type !== 'list') return inline(el(block.type === 'heading' ? 'h4' : 'p'), block.text);
-    const wrapper = el('div', undefined, 'ai-result-list'); const stack = [];
-    for (const item of block.items) {
-      while (stack.length && item.indent < stack.at(-1).indent) stack.pop();
-      if (stack.length && item.indent === stack.at(-1).indent && item.ordered !== stack.at(-1).ordered) stack.pop();
-      if (!stack.length || item.indent > stack.at(-1).indent) { const list = el(item.ordered ? 'ol' : 'ul'); if (item.ordered) list.start = item.value; const parent = stack.at(-1)?.lastItem ?? wrapper; parent.append(list); stack.push({ list, indent: item.indent, ordered: item.ordered, lastItem: null }); }
-      const li = inline(el('li'), item.text); if (item.ordered) li.value = item.value; stack.at(-1).list.append(li); stack.at(-1).lastItem = li;
-    }
-    return wrapper;
-  };
 
   const fragment = doc.createDocumentFragment();
   const analysis = el('section', undefined, 'ai-result-analysis'); analysis.setAttribute('aria-label', 'AI analysis'); analysis.append(heading('The AI’s assessment'));
@@ -90,11 +155,8 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
     analysis.append(protection);
   }
   const primary = el('div', undefined, 'ai-result-lead');
-  const hasSubstantiveBlock = blocks.some(block => block.type !== 'heading');
-  if (blocks.length) {
-    for (const block of blocks) primary.append(renderBlock(block));
-    if (!hasSubstantiveBlock) primary.append(el('p', 'The AI returned headings without a substantive assessment.'));
-  } else primary.append(el('p', 'The AI returned no substantive assessment.'));
+  const rendered = renderSafeMarkdown(primary, response.answer, { emptyText: 'The AI returned no substantive assessment.' });
+  if (rendered.blocks.length && !rendered.hasSubstantiveBlock) primary.append(el('p', 'The AI returned headings without a substantive assessment.'));
   analysis.append(primary); fragment.append(analysis);
 
   const next = el('section', undefined, 'ai-result-next'); next.setAttribute('aria-label', 'Possible next action · optional'); next.append(heading('Possible next action · optional'), el('p', response.suggested_next_step || 'The AI supplied no next action.')); fragment.append(next);
