@@ -46,7 +46,7 @@ try{
    await page.screenshot({path:path.join(dir,`${posture}-welcome.png`)});
    await page.locator('.starter-prompts button').first().click();
    assert.equal(posts,0,'starter fills without sending');
-   if(posture.startsWith('mobile'))await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').click();
+   if(posture.startsWith('mobile'))assert.equal(await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').getAttribute('data-active'),'true','mobile speaking view is already active');
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
    await page.locator('#khonapolitSend').click();
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
