@@ -48,6 +48,7 @@ const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
+const FALLBACK_GEMINI25_THINKING_BUDGET = 1024;
 const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
 // Current text-capable Gemini Flash models used by the live quality route expose
 // 65,536 output tokens. The larger envelope is bound only to the pinned quality
@@ -159,8 +160,15 @@ function geminiContents(packet = {}) {
   return [...history, { role: 'user', parts: [{ text: packet.message }] }];
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '') {
-  const frontier = qualityEnvelope(model);
+function khonapolitReasoning(model = '', { fallback = false } = {}) {
+  if (!qualityEnvelope(model)) return null;
+  return {
+    level: fallback ? 'low' : 'high',
+    budget: fallback ? FALLBACK_GEMINI25_THINKING_BUDGET : GEMINI25_HIGH_THINKING_BUDGET
+  };
+}
+
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false } = {}) {
   return {
     systemInstruction: {
       parts: [{ text: `${packet.systemInstruction}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
@@ -174,7 +182,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
         topP: 0.9,
         topK: 40
       },
-      reasoning: frontier ? { level: 'high', budget: GEMINI25_HIGH_THINKING_BUDGET } : null,
+      reasoning: khonapolitReasoning(model, { fallback }),
       responseMimeType: 'application/json',
       responseSchema: KHONAPOLIT_RELAY_RESPONSE_SCHEMA
     })
@@ -189,7 +197,7 @@ export function extractGeminiText(payload = {}) {
     .trim();
 }
 
-export function observeGeminiOutput(payload = {}, model = '') {
+export function observeGeminiOutput(payload = {}, model = '', { fallback = false } = {}) {
   const usage = {};
   for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
     const value = payload?.usageMetadata?.[key];
@@ -197,8 +205,9 @@ export function observeGeminiOutput(payload = {}, model = '') {
   }
   const rawReason = payload?.candidates?.[0]?.finishReason;
   const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
-  const thinkingConfig = qualityEnvelope(model)
-    ? geminiThinkingConfig(model, { enabled: true, level: 'high', budget: GEMINI25_HIGH_THINKING_BUDGET })
+  const reasoning = khonapolitReasoning(model, { fallback });
+  const thinkingConfig = reasoning
+    ? geminiThinkingConfig(model, { enabled: true, level: reasoning.level, budget: reasoning.budget })
     : null;
   return Object.freeze({
     finishReason,
@@ -251,14 +260,14 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
-async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS) {
+async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(geminiGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
-      body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model)),
+      body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model, { fallback })),
       signal: controller.signal
     });
     const payload = await response.json().catch(() => ({}));
@@ -335,12 +344,13 @@ export default async function handler(req, res) {
 
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
+    const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length });
     const attemptStartedAt = Date.now();
-    const result = await callGemini(model, packet, apertureReceipt, timeoutMs);
-    const providerOutput = observeGeminiOutput(result.payload, model);
+    const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
+    const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const outcome = recordGeminiModelOutcome(model, {
