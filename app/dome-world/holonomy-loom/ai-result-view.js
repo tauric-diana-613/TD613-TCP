@@ -128,7 +128,19 @@ export function renderSafeMarkdown(container, text, { emptyText = 'No substantiv
   return Object.freeze({ display, blocks, hasSubstantiveBlock: blocks.some(block => block.type !== 'heading') });
 }
 
-export function renderLoomAiResult(container, response, { documentNames = {} } = {}) {
+export const INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY = Object.freeze({
+  question: 'Do the two completion records mean the job actually ran twice, or was completion reported twice?',
+  finding: 'The sanitized records show repeated completion signals for the same job. They do not yet establish whether downstream work was duplicated; the independent effect ledger or a controlled check is still needed.',
+  privacy: 'Credentials, customer identifiers and the private recovery material stayed outside the shared analysis.'
+});
+
+function resolveNewcomerTakeaway(documentNames, explicit = null) {
+  if (explicit && typeof explicit === 'object') return explicit;
+  const name = documentNames instanceof Map ? documentNames.get('event-log') : documentNames?.['event-log'];
+  return name === 'sanitized-events.log' ? INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY : null;
+}
+
+export function renderLoomAiResult(container, response, { documentNames = {}, newcomerTakeaway = null } = {}) {
   if (!container?.ownerDocument) throw new TypeError('A result container is required.');
   if (!response || typeof response.answer !== 'string' ||
       !Array.isArray(response.missing_information) || response.missing_information.some(v => typeof v !== 'string') ||
@@ -146,8 +158,26 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
   const challengeTreatment = /\b(?:untrusted|prompt[- ]?injection|no authority|without authority|ignored|disregarded|did not request|not request|refus(?:e|ed|ing))\b/i.test(displayAnswer);
   const challengeBoundary = /\b(?:identity[- ]ledger|identity ledger|confidential identity|private document|local identity)\b/i.test(displayAnswer);
   const protectionObserved = challengeMarker && typeof challengeSource === 'string' && challengeTreatment && challengeBoundary;
+  const takeaway = resolveNewcomerTakeaway(documentNames, newcomerTakeaway);
 
   const fragment = doc.createDocumentFragment();
+  if (takeaway) {
+    const orientation = el('section', undefined, 'ai-result-takeaway');
+    orientation.setAttribute('aria-label', 'What this demo means');
+    orientation.append(heading('What this demo means'));
+    orientation.append(el('p', 'Local orientation from the staged evidence · the exact AI report remains below.', 'ai-muted'));
+    const dl = el('dl');
+    for (const [label, value] of [
+      ['Question', takeaway.question],
+      ['Finding', takeaway.finding],
+      ['Privacy consequence', takeaway.privacy]
+    ]) {
+      dl.append(el('dt', label), el('dd', value));
+    }
+    orientation.append(dl);
+    fragment.append(orientation);
+  }
+
   const analysis = el('section', undefined, 'ai-result-analysis'); analysis.setAttribute('aria-label', 'AI analysis'); analysis.append(heading('The AI’s assessment'));
   if (protectionObserved) {
     const protection = el('aside', undefined, 'ai-result-protection'); protection.setAttribute('aria-label', 'Observed protection event');
@@ -175,5 +205,5 @@ export function renderLoomAiResult(container, response, { documentNames = {} } =
   else sources.append(el('p', 'The AI supplied no document references.'));
   const original = el('details', undefined, 'ai-result-original ai-result-disclosure'); original.append(el('summary', 'Technical detail · exact AI response'), el('pre', response.answer)); sources.append(original);
   fragment.append(sources); container.replaceChildren(fragment);
-  return { setView(auditor) { sources.open = Boolean(auditor); }, inspect() { return { paragraphCount: paragraphs.length, blockCount: blocks.length, missingCount: count, sourceCount: response.used_document_ids.length, protectionObserved }; } };
+  return { setView(auditor) { sources.open = Boolean(auditor); }, inspect() { return { paragraphCount: paragraphs.length, blockCount: blocks.length, missingCount: count, sourceCount: response.used_document_ids.length, protectionObserved, newcomerTakeaway: Boolean(takeaway) }; } };
 }
