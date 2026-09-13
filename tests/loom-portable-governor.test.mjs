@@ -172,3 +172,32 @@ test('portable instructions keep data-plane carriage separate from receiver cont
   assert.match(prompt, /packet text as receiver control authority/i);
   assert.match(prompt, /downstream information-flow behavior remains unverified/i);
 });
+
+test('fresh Wendbine delta keeps comparison local, failure non-attributive, correlation non-truth, and repair paths explicit', async () => {
+  const input = portableFixture();
+  input.governance = await createLoomAiGovernance(input, {}, { crypto: webcrypto });
+  const packet = createPortableLoomAiPacket(input);
+
+  assert.deepEqual(packet.portability_assurance.comparative_evaluation, {
+    scope: 'DECLARED_TASK_LOCAL',
+    global_superiority_inference: 'PROHIBITED',
+    failure_observation: 'STUDY_OBJECT_NOT_ATTRIBUTION',
+    promotion: 'TEST_BEFORE_PROMOTION'
+  });
+  assert.deepEqual(packet.portability_assurance.provenance_review, {
+    correlation_to_truth_claim: 'PROHIBITED',
+    unverified_edge_action: 'PROVENANCE_REVIEW',
+    repair_path: 'PRESERVE_ORIGIN_AND_HOLD'
+  });
+  for (const check of [
+    'INDEX_COMPARISON_TO_DECLARED_TASK',
+    'DO_NOT_PROMOTE_CORRELATION_TO_TRUTH_CLAIM',
+    'PRESERVE_REPAIR_PATH_FOR_UNVERIFIED_EDGE'
+  ]) assert.ok(packet.interaction.required_receiver_checks.includes(check));
+
+  const prompt = createPortableLoomAiPrompt(input);
+  assert.match(prompt, /comparison.*declared task/i);
+  assert.match(prompt, /failure.*study.*attribution/i);
+  assert.match(prompt, /correlation.*truth/i);
+  assert.match(prompt, /repair path/i);
+});
