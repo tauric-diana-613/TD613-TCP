@@ -4,6 +4,7 @@ import { JSDOM } from 'jsdom';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
 import { renderLoomAiResult } from '../app/dome-world/holonomy-loom/ai-result-view.js';
 import { livingGeometryShapeScales } from '../app/dome-world/holonomy-loom/living-geometry.js';
+import { buildGeminiRequest, allocateKhonapolitAttemptTimeout } from '../server/khonapolit-quality.js';
 
 test('three substantial fictional projects exercise distinct useful AI tasks', () => {
   assert.deepEqual(LOOM_AI_PROJECTS.map(p => p.id), ['vendor-diligence', 'participant-research', 'incident-response']);
@@ -44,6 +45,18 @@ test('each admitted corpus contains a source-instruction challenge and useful in
     assert.match(shared, /\d{2}/);
     assert.ok(project.rules.length >= 3);
   }
+});
+
+test('independent Marrowline fallbacks spend their short rescue windows on low-latency reasoning', () => {
+  const packet = { systemInstruction: 'Synthetic system.', history: [], message: 'Plan a small workshop.', mode: 'full-invocation' };
+  const primary = buildGeminiRequest(packet, {}, 'gemini-3.8-flash', { fallback: false });
+  const fallback = buildGeminiRequest(packet, {}, 'gemini-3.8-flash', { fallback: true });
+  const fallback25 = buildGeminiRequest(packet, {}, 'gemini-2.5-flash', { fallback: true });
+  assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.deepEqual(fallback.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
+  assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0 }), 32000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1 }), 10500);
 });
 
 test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {
