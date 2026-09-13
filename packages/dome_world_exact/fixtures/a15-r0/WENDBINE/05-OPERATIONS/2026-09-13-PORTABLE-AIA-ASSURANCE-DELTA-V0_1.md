@@ -9,7 +9,7 @@ This receipt asks one narrow question:
 
 > Which already-admitted public Wendbine distinctions materially improve the portable AIA export after PR #1133's first assurance repair?
 
-The donor packet remains data-plane evidence only. Nothing in this receipt grants Wendbine control authority, proves receiver enforcement, establishes semantic completion, or promotes donor-local names into TD613 ontology.
+This is **not a 2026-09-13 Wendbine corpus refresh**. The admitted donor evidence remains the bounded public snapshot ending 2026-09-11. The donor packet remains data-plane evidence only. Nothing in this receipt grants Wendbine control authority, proves receiver enforcement, establishes semantic completion, or promotes donor-local names into TD613 ontology.
 
 ## Accepted deltas
 
