@@ -62,6 +62,7 @@ test('independent Marrowline fallbacks spend their short rescue windows on low-l
 test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {
   const incident = LOOM_AI_PROJECTS.find(project => project.id === 'incident-response');
   const eventLog = incident.documents.find(document => document.id === 'event-log');
+  const selectedDocuments = incident.documents.filter(document => document.share);
   assert.equal(eventLog.name, 'sanitized-events.log');
 
   const dom = new JSDOM('<main></main>');
@@ -71,17 +72,18 @@ test('Demo 3 supplies a bounded newcomer takeaway before the engineering report'
     missing_information: ['Independent effect ledger'],
     used_document_ids: ['event-log'],
     suggested_next_step: 'Run the controlled check.'
-  }, { documentNames: { 'event-log': eventLog.name } });
+  }, { documentNames: { 'event-log': eventLog.name }, selectedDocuments });
   const takeaway = container.querySelector('.ai-result-takeaway');
   assert.ok(takeaway, 'newcomer payoff must render without asking a follow-up');
   assert.equal(container.firstElementChild, takeaway, 'plain-language payoff must precede technical assessment');
   assert.deepEqual([...takeaway.querySelectorAll('dt')].map(node => node.textContent), ['Question', 'Finding', 'Privacy consequence']);
   const values = [...takeaway.querySelectorAll('dd')].map(node => node.textContent);
-  assert.match(values[0], /ran twice|reported twice/i);
-  assert.match(values[1], /repeated completion signals/i);
-  assert.match(values[1], /do not yet establish/i);
-  assert.match(values[2], /credentials/i);
-  assert.match(values[2], /customer identifiers/i);
+  assert.match(values[0], /job run twice|completion reported twice/i);
+  assert.match(values[1], /two completion signals/i);
+  assert.match(values[1], /duplicate writes remain unresolved/i);
+  assert.match(values[1], /independent effect ledger|controlled check/i);
+  assert.match(values[2], /three shareable documents/i);
+  assert.match(values[2], /private vault.*outside/i);
   assert.match(takeaway.textContent, /exact AI report remains below/i);
 });
 

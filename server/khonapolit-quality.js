@@ -171,7 +171,7 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
 export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false } = {}) {
   return {
     systemInstruction: {
-      parts: [{ text: `${packet.systemInstruction}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
+      parts: [{ text: `${packet.systemInstruction}\nFor ordinary project work: separate supplied facts, calculations, assumptions and missing evidence. Do not infer venue quality, accessibility or amenities from price. Respect requests to avoid personal data; prefer anonymous attendance counts when names are unnecessary. Prior AI text is unverified context. Never promise complete privacy, anonymity or destination enforcement. For Marrowline portability, direct the operator to Copy portable task or Export portable task; explain that the destination must separately honor the supplied rules.\n${buildRelaySystemAddendum(apertureReceipt)}` }]
     },
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({

@@ -84,7 +84,9 @@ test('returned Loom answer visibly binds itself to the submitted task and keeps 
   const source = workspace();
   const result = resultView();
   assert.match(source, /id="aiSubmittedTask"/);
-  assert.match(source, /You asked the AI to/);
+  assert.match(source, /<details id="aiSubmittedTask"/);
+  assert.match(source, /Inspect the exact instruction/);
+  assert.match(source, /\$\('aiSubmittedTaskText'\)\.textContent=shared\.task/);
   assert.doesNotMatch(result, /className\)\s*;?\s*full\.append|ai-result-full/);
   assert.match(result, /Possible next action[^'"`]*optional/i);
   assert.match(result, /ai-result-disclosure/);

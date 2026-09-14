@@ -55,3 +55,45 @@ test('Markdown totals preserve mismatched, ambiguous and malformed amounts',()=>
     const result=assessLoomProjectAnswer('vendor-diligence',{answer:label+'\n'+b});assert.equal(result.status,'needs_review');assert.equal(result.reported.vendor_a.value,null);
   }
 });
+
+
+import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
+import { incidentEvidence, reviewLoomEvidence } from '../app/dome-world/holonomy-loom/ai-evidence-review.js';
+const incidentDocuments = LOOM_AI_PROJECTS.find(p => p.id === 'incident-response').documents.filter(d => d.share).map(({id,name,text})=>({id,name,text}));
+
+test('incident orientation binds all selected source bytes, never names alone',()=>{
+  assert.ok(incidentEvidence(incidentDocuments));
+  assert.ok(incidentEvidence([...incidentDocuments].reverse()));
+  assert.equal(incidentEvidence(incidentDocuments.map(d=>({...d,text:d.text+' changed'}))),null);
+  assert.equal(incidentEvidence(incidentDocuments.slice(0,2)),null);
+  assert.equal(incidentEvidence([...incidentDocuments,{id:'extra',name:'new.txt',text:'new evidence'}]),null);
+  assert.equal(incidentEvidence([incidentDocuments[0],incidentDocuments[0],incidentDocuments[2]]),null);
+});
+test('actual skeptical follow-up and affirmative paraphrases cannot promote missing effects',()=>{
+  for(const answer of [
+    'We conclude a fast retry (2s) triggered duplicate writes during a timeout, bypassing expected idempotency. It remains uncertain if customers are affected.',
+    'The retry caused duplicate downstream work.', // explicit downstream adjective is handled below
+    'Duplicated writes occurred.',
+    'The logs confirmed double execution.'
+  ]){
+    assert.equal(reviewLoomEvidence({answer},incidentDocuments).blocks_reuse,true,answer);
+  }
+});
+test('uncertainty and hypotheses remain available; a clean pattern check earns no truth certificate',()=>{
+  for(const answer of [
+    'We cannot conclude duplicate writes occurred.',
+    'If duplicate writes occurred, compare the effect ledger.',
+    'Hypothesis: the retry caused duplicate writes.',
+    'The two completion records do not establish whether work ran twice.',
+    'The actual effect remains unknown.'
+  ]){
+    const review=reviewLoomEvidence({answer},incidentDocuments);
+    assert.equal(review.blocks_reuse,false,answer);
+    assert.equal(review.semantic_correctness_verified,false);
+  }
+});
+test('privacy overpromises are flagged in answer and next action without inventing a general proof',()=>{
+  assert.equal(reviewLoomEvidence({answer:'Carry this task while maintaining complete privacy.'}).blocks_reuse,true);
+  assert.equal(reviewLoomEvidence({answer:'Answer.',suggested_next_step:'This guarantees your anonymity.'}).blocks_reuse,true);
+  assert.equal(reviewLoomEvidence({answer:'This does not guarantee complete privacy.'}).blocks_reuse,false);
+});

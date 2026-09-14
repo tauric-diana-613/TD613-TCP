@@ -131,3 +131,12 @@ test('oversized retained history requires explicit clear and preserves the waiti
   assert.equal(h.calls.length, 1);
   assert.deepEqual(h.calls[0].history, []);
 });
+test('portable controls become visible beside work without opening an action drawer',async t=>{
+  const h=harness(t);
+  assert.equal(h.$('marrowlinePortableActions').hidden,true);
+  h.send('Plan for twelve attendees without requesting names.'); await h.settled();
+  assert.equal(h.$('marrowlinePortableActions').hidden,false);
+  assert.equal(h.$('copyKhonapolitPortable').closest('details'),null);
+  h.$('copyKhonapolitPortable').click();await flush();
+  assert.match(h.clipboard.at(-1),/without requesting names/);
+});

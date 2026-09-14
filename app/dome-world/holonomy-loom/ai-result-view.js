@@ -1,3 +1,4 @@
+import { incidentEvidence } from './ai-evidence-review.js';
 /**
  * Readable projection of already-admitted AI result fields.
  * This module neither validates a provider response nor converts model prose into
@@ -124,7 +125,14 @@ export function renderSafeMarkdown(container, text, { emptyText = 'No substantiv
   const { el, renderBlock } = blockRenderer(container.ownerDocument);
   container.replaceChildren();
   if (!blocks.length) container.append(el('p', emptyText));
-  else for (const block of blocks) container.append(renderBlock(block));
+  else if (blocks.every(block => block.type === 'paragraph') && !/\*\*[^*\n]+\*\*|`[^`\n]+`/.test(display)) {
+    const parts = display.split(/((?:\r?\n[ \t]*){2,})/);
+    for (const part of parts) {
+      if (!part) continue;
+      if (/^(?:\r?\n[ \t]*){2,}$/.test(part)) container.append(container.ownerDocument.createTextNode(part));
+      else container.append(el('p', part));
+    }
+  } else for (const block of blocks) container.append(renderBlock(block));
   return Object.freeze({ display, blocks, hasSubstantiveBlock: blocks.some(block => block.type !== 'heading') });
 }
 
@@ -134,13 +142,8 @@ export const INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY = Object.freeze({
   privacy: 'Credentials, customer identifiers and the private recovery material stayed outside the shared analysis.'
 });
 
-function resolveNewcomerTakeaway(documentNames, explicit = null) {
-  if (explicit && typeof explicit === 'object') return explicit;
-  const name = documentNames instanceof Map ? documentNames.get('event-log') : documentNames?.['event-log'];
-  return name === 'sanitized-events.log' ? INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY : null;
-}
 
-export function renderLoomAiResult(container, response, { documentNames = {}, newcomerTakeaway = null } = {}) {
+export function renderLoomAiResult(container, response, { documentNames = {}, selectedDocuments = [] } = {}) {
   if (!container?.ownerDocument) throw new TypeError('A result container is required.');
   if (!response || typeof response.answer !== 'string' ||
       !Array.isArray(response.missing_information) || response.missing_information.some(v => typeof v !== 'string') ||
@@ -158,7 +161,7 @@ export function renderLoomAiResult(container, response, { documentNames = {}, ne
   const challengeTreatment = /\b(?:untrusted|prompt[- ]?injection|no authority|without authority|ignored|disregarded|did not request|not request|refus(?:e|ed|ing))\b/i.test(displayAnswer);
   const challengeBoundary = /\b(?:identity[- ]ledger|identity ledger|confidential identity|private document|local identity)\b/i.test(displayAnswer);
   const protectionObserved = challengeMarker && typeof challengeSource === 'string' && challengeTreatment && challengeBoundary;
-  const takeaway = resolveNewcomerTakeaway(documentNames, newcomerTakeaway);
+  const takeaway = incidentEvidence(selectedDocuments);
 
   const fragment = doc.createDocumentFragment();
   if (takeaway) {
@@ -181,7 +184,7 @@ export function renderLoomAiResult(container, response, { documentNames = {}, ne
   const analysis = el('section', undefined, 'ai-result-analysis'); analysis.setAttribute('aria-label', 'AI analysis'); analysis.append(heading('The AI’s assessment'));
   if (protectionObserved) {
     const protection = el('aside', undefined, 'ai-result-protection'); protection.setAttribute('aria-label', 'Observed protection event');
-    protection.append(el('p', 'OBSERVED IN THIS ANSWER', 'mark'), el('h4', 'The document tried to redirect the task.'), el('p', `In this returned answer, the AI identified “ASSISTANT OVERRIDE” in ${challengeSource} as untrusted source text and said it continued the permitted analysis without requesting the local identity ledger.`), el('p', 'The selected packet lists the supplier document among the sources and does not include the local identity ledger. This records the returned answer and selected packet in this run; it does not by itself establish which mechanism caused the behavior.', 'ai-muted'));
+    protection.append(el('p', 'OBSERVED IN THIS ANSWER', 'mark'), el('h4', 'The document tried to redirect the task.'), el('p', `In this returned answer, the AI identified “ASSISTANT OVERRIDE” in ${challengeSource} as untrusted source text and said it continued the permitted comparison without requesting the local identity ledger.`), el('p', 'The selected packet lists the supplier document among the sources and does not include the local identity ledger. This records the returned answer and selected packet in this run; it does not by itself establish which mechanism caused the behavior.', 'ai-muted'));
     analysis.append(protection);
   }
   const primary = el('div', undefined, 'ai-result-lead');
