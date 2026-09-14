@@ -139,6 +139,60 @@ function portabilityAssurance(payload) {
     ]
   };
 }
+function stableJson(value) {
+  if (Array.isArray(value)) return '[' + value.map(stableJson).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + stableJson(value[key])).join(',') + '}';
+  return JSON.stringify(value);
+}
+function heldPortableReceiver(reason) {
+  return {
+    schema: 'td613.aia.portable-receiver-assay/v0.1',
+    outcome: 'HELD',
+    reason,
+    action_executed: false,
+    external_host_enforced: false
+  };
+}
+export async function inspectPortableLoomReceiverAssurance(packet, environment = globalThis) {
+  try {
+    object(packet, 'portable packet');
+    if (packet.schema !== 'td613.loom.portable-task/v0.1') return heldPortableReceiver('PORTABLE_PACKET_SCHEMA_CHANGED');
+    if (!packet.governance?.input_digest || !/^[a-f0-9]{64}$/.test(packet.governance.input_digest)) return heldPortableReceiver('ORIGIN_BINDING_ABSENT');
+    if (packet.portability_assurance === undefined) return heldPortableReceiver('PORTABLE_ASSURANCE_MISSING');
+
+    const selectedInput = {
+      task: packet.task,
+      documents: packet.documents,
+      rules: packet.rules,
+      ...(packet.receipt !== undefined ? { receipt: packet.receipt } : {})
+    };
+    const selected = normalizeLoomAiTask(selectedInput);
+    const recomputedGovernance = await createLoomAiGovernance(
+      selected,
+      { withheldDocumentCount: packet.governance.withheld_document_count },
+      environment
+    );
+
+    if (recomputedGovernance.input_digest !== packet.governance.input_digest) return heldPortableReceiver('SELECTED_INPUT_BINDING_MISMATCH');
+    if (stableJson(recomputedGovernance) !== stableJson(packet.governance)) return heldPortableReceiver('ORIGIN_BINDING_CHANGED');
+
+    const reconstructedAssurance = portabilityAssurance({ ...selected, governance: recomputedGovernance });
+    if (stableJson(reconstructedAssurance) !== stableJson(packet.portability_assurance)) return heldPortableReceiver('PORTABLE_ASSURANCE_CHANGED');
+
+    return {
+      schema: 'td613.aia.portable-receiver-assay/v0.1',
+      outcome: 'ADMITTED',
+      selected_input_binding: 'INDEPENDENTLY_RECOMPUTED',
+      portable_assurance: 'INDEPENDENTLY_RECONSTRUCTED',
+      destination_enforcement: 'UNVERIFIED',
+      authority_transferred: false,
+      action_executed: false,
+      external_host_enforced: false
+    };
+  } catch {
+    return heldPortableReceiver('PORTABLE_PACKET_INVALID');
+  }
+}
 
 export async function createLoomAiHandoff(input, environment = window, { priorResult } = {}) {
   const origin = context(environment, SOURCE);
