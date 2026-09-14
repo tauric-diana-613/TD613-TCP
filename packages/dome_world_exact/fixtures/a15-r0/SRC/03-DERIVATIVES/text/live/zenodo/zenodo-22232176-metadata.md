@@ -1,0 +1,139 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22232176"
+source_title: "PLANETARY SR IX — NETHERLANDS: High Institutional Coordination, Spatial Scarcity, Trade-Network Dependence, and Managed Adaptation"
+metadata_blob_sha256: 3cd174494482f9e371855f11a8836bb69c9e160c8bc1a5c0870c7aca23fabd4a
+metadata_blob_path: 02-ORIGINALS/live/blobs/3c/3cd174494482f9e371855f11a8836bb69c9e160c8bc1a5c0870c7aca23fabd4a.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22232175",
+  "conceptrecid": "22232175",
+  "created": "2026-09-01T13:49:36.143674+00:00",
+  "doi": "10.5281/zenodo.22232176",
+  "doi_url": "https://doi.org/10.5281/zenodo.22232176",
+  "files": [
+    {
+      "checksum": "md5:0895924071e13fb566e5b20c2951bf9c",
+      "id": "9c823df3-9cf9-484a-b712-b543f804924a",
+      "key": "PLANETARY SR IX — NETHERLANDS.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22232176/files/PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/content"
+      },
+      "size": 410041
+    }
+  ],
+  "id": 22232176,
+  "links": {
+    "access": "https://zenodo.org/api/records/22232176/access",
+    "access_grants": "https://zenodo.org/api/records/22232176/access/grants",
+    "access_links": "https://zenodo.org/api/records/22232176/access/links",
+    "access_request": "https://zenodo.org/api/records/22232176/access/request",
+    "access_users": "https://zenodo.org/api/records/22232176/access/users",
+    "archive": "https://zenodo.org/api/records/22232176/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22232176/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22232176/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22232176/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22232176",
+    "draft": "https://zenodo.org/api/records/22232176/draft",
+    "file_modification": "https://zenodo.org/api/records/22232176/file-modification",
+    "files": "https://zenodo.org/api/records/22232176/files",
+    "latest": "https://zenodo.org/api/records/22232176/versions/latest",
+    "latest_html": "https://zenodo.org/records/22232176/latest",
+    "media_files": "https://zenodo.org/api/records/22232176/media-files",
+    "parent": "https://zenodo.org/api/records/22232175",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22232175",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22232175",
+    "parent_html": "https://zenodo.org/records/22232175",
+    "preview_html": "https://zenodo.org/records/22232176?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22232176/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22232176/request-deletion",
+    "requests": "https://zenodo.org/api/records/22232176/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22232176/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22232176",
+    "self_doi": "https://doi.org/10.5281/zenodo.22232176",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22232176",
+    "self_html": "https://zenodo.org/records/22232176",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22232176/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22232176/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22232176:PLANETARY%20SR%20IX%20%E2%80%94%20NETHERLANDS.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22232176/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR IX &mdash; NETHERLANDS</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR IX &mdash; Netherlands</em> analyzes the Netherlands as a <strong>high‑coordination institutional system constrained by spatial scarcity, housing pressure, environmental limits, and deep trade‑network dependence</strong>. The study documents a continuity architecture where strong municipalities, water boards, social insurance, digital infrastructure, and fiscal capacity coexist with land scarcity, grid congestion, nitrogen constraints, and migration‑driven demographic growth. CBS reported <em>&ldquo;18.13 million residents in 2025, with the entire increase attributable to net migration,&rdquo;</em> while renewable energy reached <em>&ldquo;22.7% of gross final energy consumption in 2025&rdquo;</em> (CBS, 2026). Housing scarcity and high prices transfer pressure into younger households, renters, commuting, and delayed household formation despite strong aggregate wealth. Offshore wind, solar, gas infrastructure, and grid congestion form a <strong>coupled transition</strong>, not a single substitution measure. The empirical question is whether Dutch coordination can convert multiple scarcity constraints into stable function without transferring pressure into households, municipalities, or external supply chains.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a dense, trade‑oriented state maintains continuity through <strong>institutional coordination and fiscal strength</strong>, while unresolved pressure propagates into <strong>housing scarcity, land competition, grid congestion, environmental permitting, and migration‑linked service demand</strong>. The Netherlands strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Infrastructural Political Economy</strong>, <strong>Institutional Cognition</strong>, and <strong>Drift Collapse Field</strong> by showing how housing/land scarcity &rarr; labour mobility and construction costs, grid congestion &rarr; industrial/housing electrification, migration &rarr; population/service demand, and environmental constraints &rarr; permitting/investment conversion operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how high institutional coordination can preserve continuity while still leaving conversion gaps, providing a decisive test of <strong>surface&ndash;substrate divergence</strong> and <strong>unequal insulation</strong>. The Dutch mechanism is empirically distinguishable through its blend of <em>&ldquo;high institutional coordination and strong fiscal capacity constrained by land/housing scarcity, environmental limits and deep trade‑logistics dependence,&rdquo;</em> adding a new structural configuration to the planetary series and supplying a critical case for <strong>reorganization vs restoration</strong> and <strong>agency‑conditioned response</strong>.</p>",
+    "doi": "10.5281/zenodo.22232176",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Netherlands"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22232175"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR IX — NETHERLANDS: High Institutional Coordination, Spatial Scarcity, Trade-Network Dependence, and Managed Adaptation",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T13:49:36.451521+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22232176",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR IX — NETHERLANDS: High Institutional Coordination, Spatial Scarcity, Trade-Network Dependence, and Managed Adaptation",
+  "updated": "2026-09-01T13:49:36.451521+00:00"
+}
+```
