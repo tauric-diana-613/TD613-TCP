@@ -62,6 +62,7 @@ test('independent Marrowline fallbacks spend their short rescue windows on low-l
 test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {
   const incident = LOOM_AI_PROJECTS.find(project => project.id === 'incident-response');
   const eventLog = incident.documents.find(document => document.id === 'event-log');
+  const selectedDocuments = incident.documents.filter(document => document.share);
   assert.equal(eventLog.name, 'sanitized-events.log');
 
   const dom = new JSDOM('<main></main>');
@@ -71,7 +72,7 @@ test('Demo 3 supplies a bounded newcomer takeaway before the engineering report'
     missing_information: ['Independent effect ledger'],
     used_document_ids: ['event-log'],
     suggested_next_step: 'Run the controlled check.'
-  }, { documentNames: { 'event-log': eventLog.name } });
+  }, { documentNames: { 'event-log': eventLog.name }, selectedDocuments });
   const takeaway = container.querySelector('.ai-result-takeaway');
   assert.ok(takeaway, 'newcomer payoff must render without asking a follow-up');
   assert.equal(container.firstElementChild, takeaway, 'plain-language payoff must precede technical assessment');
