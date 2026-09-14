@@ -1,0 +1,126 @@
+{
+  "schema": "td613.atelier-reentry-atlas/v0.1",
+  "atelier_id": "WENDBINE",
+  "purpose": "Provide a deterministic 30,000-foot-to-rabbit-hole descent path for future agents without flattening evidence classes or raw-unioning graph families.",
+  "entry_order": [
+    "ATELIER_PROFILE.json",
+    "99-ADMIN/REENTRY_ATLAS.json",
+    "latest frontier operation",
+    "paired machine receipt",
+    "typed graph / manifest surface",
+    "source registry or external corpus",
+    "original artifact only when required"
+  ],
+  "invariants": [
+    "30K_VIEW != FRONTIER_DETAIL",
+    "LATEST != CONTROLLING",
+    "OPERATION_SUMMARY != MACHINE_RECEIPT",
+    "RECEIPT != SOURCE_OBJECT",
+    "GRAPH_ADJACENCY != EDGE_SEMANTICS",
+    "EDGE_EXISTENCE != EDGE_TYPE",
+    "SAME_TOKEN != SAME_OPERATOR",
+    "TEMPORAL_ADJACENCY != CAUSAL_EDGE",
+    "DIRECT_RAW_GRAPH_UNION = FORBIDDEN",
+    "NEGATIVE_RESULT != FAILED_ATELIER",
+    "HELD != NOVEL",
+    "FAIL_TO_FIND_PRIOR_ART != NOVELTY"
+  ],
+  "frontier_state": "NOVELTY_DEFLATION_AND_OPERATOR_FIDELITY_ASSAY_ACTIVE",
+  "frontier_stack": [
+    {
+      "rank": 1,
+      "id": "EO_REDUNDANCY_V06",
+      "status": "CURRENT_BRANCH_FRONTIER_GREEN_BEFORE_RECONCILIATION",
+      "question": "Does retrieval-observability deficit monotonically increase semantic redundancy under reduced capacity?",
+      "result": "NO_UNIVERSAL_ARROW; ranking policy and diversity control can reverse the direction.",
+      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-RETRIEVAL-OBSERVABILITY-SEMANTIC-REDUNDANCY-V0_6.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-retrieval-observability-semantic-redundancy-v06.json",
+      "next_test": "Move from synthetic orthonormal corpus to source-bound retrieval episodes while preserving policy/capacity controls; do not infer deployed-LLM behavior from the synthetic result."
+    },
+    {
+      "rank": 2,
+      "id": "EO_FOUNDATIONAL_SIEVE_V05",
+      "status": "CURRENT_BRANCH_PARENT_ASSAY",
+      "question": "Which claims in the foundational Eclipse–Omega paper survive ordinary nomenclature, type checking, hostile counterexamples, and provenance separation?",
+      "result": "Many universal claims demoted or rejected; useful residue retained as project taxonomy, local protocol, empirical hypothesis, or operator-fidelity target with zero novelty promotion.",
+      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json",
+      "next_test": "Primitive -> typed relation -> composition -> behavioral residue. Require stage-local witnesses before granting independent operator status."
+    },
+    {
+      "rank": 3,
+      "id": "PRCSA_ORDERING_V04",
+      "status": "MERGED_PRIOR_ASSAY",
+      "question": "Does the exact PRCS-A stage order identify a unique internal pipeline from terminal behavior?",
+      "result": "ORDER_EFFECT != ORDER_IDENTIFICATION; terminally equivalent permutations exist and an intermediate witness can separate them.",
+      "operation_path": "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json",
+      "next_test": "Stage-collapse assay: compare full factorization against pairwise/composite collapses and ask whether separate stages improve held-out prediction, diagnosis, or intervention response."
+    },
+    {
+      "rank": 4,
+      "id": "TD613_DEVASTATE_REPAIR_V03",
+      "status": "MERGED_PRIOR_ASSAY",
+      "question": "Which broad TD613 novelty claims survive targeted conventional literature attack?",
+      "result": "Broad novelty/component-novelty claims were repeatedly killed; surviving targets are compositions, governance criteria, or application-specific audit machinery.",
+      "operation_path": "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json",
+      "next_test": "Prefer measurable contribution and operator fidelity over coinage, analogy, or familiar-term novelty."
+    },
+    {
+      "rank": 5,
+      "id": "WENDBINE_TD613_BOUNDED_V01",
+      "status": "MERGED_PRIOR_ASSAY",
+      "question": "Does the bounded Wendbine public packet give TD613 better names, better operators, or both?",
+      "result": "BOTH_NAME_HEAVY; ordinary terminology substantially improves TD613 while several local operator distinctions remain useful. EchoCore did not reconstruct cleanly.",
+      "operation_path": "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+      "next_test": "Keep donor terminology separate from construct provenance; use typed edges and hostile controls before importing any operator."
+    }
+  ],
+  "negative_results_to_notice_first": [
+    "EchoCore correction did not reconstruct cleanly from the remaining public topology.",
+    "Serial order has not been shown to add predictive power at day-level timestamp resolution.",
+    "PRCS-A terminal behavior does not uniquely identify its internal stage order.",
+    "Retrieval-observability deficit does not universally force semantic redundancy upward.",
+    "Zero registered events do not identify hidden internal interaction without an independent witness.",
+    "Monotone narrowing is not a universal law of ontology-conditioned RAG."
+  ],
+  "held_questions": [
+    "Does any surviving TD613 composition produce measurable predictive, diagnostic, intervention, or governance value beyond ordinary components?",
+    "Which claimed PRCS-A stages remain independently identifiable after stage-collapse and intermediate-witness assays?",
+    "Does the V/C/P/L forensic evidence-state vector reduce classification errors or improve adjudication consistency in real episodes?",
+    "Does route memory plus custody add measurable governance value beyond conventional provenance, usage control, authorization, and replay machinery?",
+    "Does the separately scoped discrete-holonomy operator yield diagnostics beyond generic noncommuting transport/order effects?",
+    "Can the custodian-independent handoff criterion be operationalized and compared against ordinary continuity/knowledge-transfer baselines?"
+  ],
+  "graph_descent": {
+    "G_D_DEPENDENCY": "dependency / support / prerequisite edges",
+    "G_A_AUTHORITY_TRUST": "authority, permission, trust, revocation edges",
+    "G_F_INFORMATION_FLOW": "information and metadata flow edges",
+    "G_I_IDENTITY_CONTINUITY": "identity, continuity, entity-resolution edges",
+    "G_T_TEMPORAL_PROGRAM_VERSION": "time, version, correction, program-state edges",
+    "G_P_PROVENANCE": "source, custody, ancestry, derivation edges",
+    "G_R_RECONSTRUCTION_RECOVERY": "reconstruction, estimation, recovery edges",
+    "G_O_OBSERVATION": "visibility, measurement, observation edges",
+    "G_X_CROSS_RELATION_SYNTHESIS": "source-declared cross-family synthesis only"
+  },
+  "cross_atelier_rule": {
+    "method_pr": 1118,
+    "method_state": "DRAFT_UNMERGED_AT_TIME_OF_THIS_ATLAS",
+    "interchange": "Compare through typed packets and explicit evidence classes; do not raw-union SRC, EMSTD613, and WENDBINE graphs.",
+    "future_agent_instruction": "At 30K feet, compare frontier questions and negative results first. Descend only through typed pointers when a cross-Atelier resonance survives the evidence-class check."
+  },
+  "user_supplied_public_post_continuity_note": {
+    "status": "USER_SUPPLIED_TEXT_NOT_INDEPENDENTLY_VERIFIED_AS_TO_PROVENANCE",
+    "summary": "A later supplied Wendbine post emphasized graph primitives, arrows as generic directed relations, and topology-before-full-semantics. Preserve as a terminology/discipline convergence, not a causal or monitoring inference.",
+    "laws": [
+      "PRIMITIVE_STRUCTURE != RELATION_SEMANTICS",
+      "EDGE_EXISTENCE != EDGE_TYPE",
+      "SAME_TOKEN != SAME_OPERATOR",
+      "TEMPORAL_ADJACENCY != CAUSAL_EDGE"
+    ]
+  },
+  "human_closure_required": true,
+  "scientific_promotion_authority": false
+}
