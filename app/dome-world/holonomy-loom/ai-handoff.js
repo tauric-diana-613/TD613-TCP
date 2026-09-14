@@ -1,3 +1,4 @@
+import { requireReusableLoomAnswer } from './ai-evidence-review.js';
 import * as base from './ai-handoff-base.js';
 
 export const LOOM_AI_TASK_SCHEMA = base.LOOM_AI_TASK_SCHEMA;
@@ -50,6 +51,7 @@ function normalizePriorResult(value, documentIds) {
 }
 function priorFor(input, payload, explicit) {
   const candidate = explicit ?? input?.continuation?.prior_result ?? admittedByDigest.get(payload.governance?.input_digest);
+  if (candidate) requireReusableLoomAnswer(candidate, payload.documents);
   return candidate ? normalizePriorResult(candidate, payload.documents.map(document => document.id)) : null;
 }
 function continuationPacket(input, payload, explicit) {
@@ -130,9 +132,13 @@ export function createPortableLoomAiPrompt(input, options = {}) {
 export async function createLoomAiTaskGovernor(input, environment = globalThis) {
   const governor = await base.createLoomAiTaskGovernor(input, environment);
   const inputDigest = input?.governance?.input_digest ?? null;
+  let evidenceHold = null;
   return Object.freeze({
-    authorize(candidate) { return governor.authorize(candidate); },
+    authorize(candidate) { evidenceHold = null; return governor.authorize(candidate); },
     receive(response, requestId) {
+      if (inputDigest) admittedByDigest.delete(inputDigest);
+      try { requireReusableLoomAnswer(response, input.documents); }
+      catch (error) { evidenceHold = error.evidenceReview; throw error; }
       const receipt = governor.receive(response, requestId);
       if (receipt.allowed && inputDigest) admittedByDigest.set(inputDigest, JSON.parse(JSON.stringify(response)));
       return receipt;
@@ -140,6 +146,6 @@ export async function createLoomAiTaskGovernor(input, environment = globalThis) 
     rest() { return governor.rest(); },
     resume() { return governor.resume(); },
     close() { return governor.close(); },
-    inspect() { return governor.inspect(); }
+    inspect() { const current = governor.inspect(); return evidenceHold ? { ...current, state: current.state === 'CLOSED' ? 'CLOSED' : 'HELD', evidence_review: evidenceHold } : current; }
   });
 }

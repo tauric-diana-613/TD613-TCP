@@ -179,3 +179,56 @@ test('independent Marrowline origin has diversified fallback, ordinary entry and
   assert.equal(Object.hasOwn(packet, 'receipt'), false);
   assert.match(portableMarrowlinePrompt(packet), /acknowledge the task and rules before working/i);
 });
+
+import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
+test('document-name spoof cannot activate the stock incident finding',()=>{
+  const names={'event-log':'sanitized-events.log'};
+  assert.equal(render(actualAnswer,{documentNames:names}).container.querySelector('.ai-result-takeaway'),null);
+  const selectedDocuments=LOOM_AI_PROJECTS.find(p=>p.id==='incident-response').documents.filter(d=>d.share);
+  const bound=render(actualAnswer,{documentNames:names,selectedDocuments}).container;
+  assert.ok(bound.querySelector('.ai-result-takeaway'));
+  assert.equal(bound.firstElementChild.className,'ai-result-takeaway');
+  assert.equal(render(actualAnswer,{documentNames:names,selectedDocuments:selectedDocuments.map(d=>({...d,text:'Different evidence'}))}).container.querySelector('.ai-result-takeaway'),null);
+});
+test('ordinary portable task omits an answer with a detected privacy guarantee and preserves the task',()=>{
+  const packet=buildMarrowlinePortableTask({messages:[{role:'user',text:'Plan for 12 attendees. Do not request names.'},{role:'model',text:'This guarantees your anonymity.'}]});
+  assert.equal(packet.latest_answer,'');
+  assert.equal(packet.task,'Plan for 12 attendees. Do not request names.');
+  assert.equal(packet.answer_review.blocks_reuse,true);
+  assert.match(packet.receiver_instructions,/privacy constraints/);
+});
+
+
+import { webcrypto } from 'node:crypto';
+import { mountMarrowlineLoomTask } from '../app/dome-world/marrowline-loom-import.js';
+test('failed follow-up clears the previous answer from subsequent portable continuation',async t=>{
+  const dom=new JSDOM('<main id="root"></main>',{url:'https://td613.com/dome-world/marrowline.html'});
+  const environment=dom.window, root=environment.document.querySelector('main'),copied=[];
+  Object.defineProperty(environment,'crypto',{value:webcrypto});
+  Object.defineProperty(environment.navigator,'clipboard',{value:{writeText:async text=>copied.push(text)}});
+  const project=LOOM_AI_PROJECTS.find(p=>p.id==='incident-response');
+  const result={schema:'td613.loom.ai-task-result/v0.1',status:'completed',request_id:'prior',answer:'Whether actual work was duplicated remains unknown.',missing_information:['Effect ledger'],used_document_ids:['event-log'],suggested_next_step:'Inspect the ledger.'};
+  const packet={task:project.task,rules:project.rules,documents:project.documents.filter(d=>d.share).map(({id,name,text})=>({id,name,text})),continuation:{prior_result:result}};
+  let calls=0;
+  environment.fetch=async (_url,options)=>{
+    calls++;const input=JSON.parse(options.body);
+    if(calls===2)throw new Error('SYNTHETIC_TRANSPORT_FAILURE');
+    return {ok:true,json:async()=>({...result,request_id:input.request_id,answer:'First follow-up answer remains uncertain.'})};
+  };
+  const workspace=mountMarrowlineLoomTask(root,packet,environment);
+  t.after(()=>{workspace.destroy();environment.close();});
+  await workspace.ready;
+  const field=root.querySelector('#loomImportedFollowup'),run=root.querySelector('#loomImportedRun');
+  assert.equal(root.querySelector('#loomImportedPriorAnswer').closest('details').open,false);
+  async function settle(){const end=Date.now()+3000;while(run.disabled){if(Date.now()>end)throw new Error('continuation timeout');await new Promise(r=>setTimeout(r,5));}}
+  field.value='First question';run.click();await settle();
+  root.querySelector('#loomImportedCopy').click();await new Promise(r=>setTimeout(r,0));
+  assert.match(copied.at(-1),/"latest_result"/);
+  field.value='Changed question';run.click();await settle();
+  root.querySelector('#loomImportedCopy').click();await new Promise(r=>setTimeout(r,0));
+  const latest=JSON.parse(copied.at(-1).slice(copied.at(-1).indexOf('\n{')+1));
+  assert.equal(latest.new_request,'Changed question');
+  assert.equal(Object.hasOwn(latest,'latest_result'),false);
+  assert.equal(root.querySelector('#loomImportedAnswer').textContent,'');
+  assert.equal(calls,2);
+});

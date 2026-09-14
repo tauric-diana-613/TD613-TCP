@@ -210,3 +210,17 @@ test('drawers explain private selection locally and pending UI survives until re
  assert.equal(h.$('#aiPending').hidden,true);assert.equal(h.$('#aiResult').hidden,false);
  assert.equal(h.window.document.activeElement,h.$('#aiResult'),'revealed answer receives focus');
 });
+
+
+test('skeptical incident overclaim stays inspectable while answer reuse remains closed',async t=>{
+  const h=harness(t,request=>response(admitted(request,{answer:'We conclude a fast retry triggered duplicate writes.'})));
+  h.load(2);h.$('#aiRun').click();await h.settled();
+  assert.match(h.$('#aiResultEyebrow').textContent,/NEEDS REVIEW/);
+  assert.match(h.$('#aiAnswer').textContent,/fast retry triggered duplicate writes/);
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true);
+  assert.equal(h.$('#aiPortableDrawer').open,true);
+  h.$('#aiPreparePortable').click();await h.settled();
+  assert.equal(h.calls.length,1,'task-only recovery makes no extra model call');
+  assert.equal(h.$('#aiCopy').disabled,false);
+  assert.doesNotMatch(h.$('#aiAnswer').textContent,/triggered duplicate writes/);
+});

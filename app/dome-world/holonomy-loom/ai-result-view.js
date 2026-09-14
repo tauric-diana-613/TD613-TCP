@@ -1,3 +1,4 @@
+import { incidentEvidence } from './ai-evidence-review.js';
 /**
  * Readable projection of already-admitted AI result fields.
  * This module neither validates a provider response nor converts model prose into
@@ -134,13 +135,8 @@ export const INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY = Object.freeze({
   privacy: 'Credentials, customer identifiers and the private recovery material stayed outside the shared analysis.'
 });
 
-function resolveNewcomerTakeaway(documentNames, explicit = null) {
-  if (explicit && typeof explicit === 'object') return explicit;
-  const name = documentNames instanceof Map ? documentNames.get('event-log') : documentNames?.['event-log'];
-  return name === 'sanitized-events.log' ? INCIDENT_RESPONSE_NEWCOMER_TAKEAWAY : null;
-}
 
-export function renderLoomAiResult(container, response, { documentNames = {}, newcomerTakeaway = null } = {}) {
+export function renderLoomAiResult(container, response, { documentNames = {}, selectedDocuments = [] } = {}) {
   if (!container?.ownerDocument) throw new TypeError('A result container is required.');
   if (!response || typeof response.answer !== 'string' ||
       !Array.isArray(response.missing_information) || response.missing_information.some(v => typeof v !== 'string') ||
@@ -158,7 +154,7 @@ export function renderLoomAiResult(container, response, { documentNames = {}, ne
   const challengeTreatment = /\b(?:untrusted|prompt[- ]?injection|no authority|without authority|ignored|disregarded|did not request|not request|refus(?:e|ed|ing))\b/i.test(displayAnswer);
   const challengeBoundary = /\b(?:identity[- ]ledger|identity ledger|confidential identity|private document|local identity)\b/i.test(displayAnswer);
   const protectionObserved = challengeMarker && typeof challengeSource === 'string' && challengeTreatment && challengeBoundary;
-  const takeaway = resolveNewcomerTakeaway(documentNames, newcomerTakeaway);
+  const takeaway = incidentEvidence(selectedDocuments);
 
   const fragment = doc.createDocumentFragment();
   if (takeaway) {

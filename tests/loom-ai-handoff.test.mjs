@@ -356,3 +356,22 @@ test('Marrowline continuation shows prior work, accepts a new request under a fr
   assert.match(scene.root.textContent, /Leave this continuation and open a new Marrowline workspace/);
   scene.workspace.destroy(); scene.dom.window.close();
 });
+
+
+import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
+test('known incident overclaim is held before cache, explicit export and local handoff',async()=>{
+  const project=LOOM_AI_PROJECTS.find(p=>p.id==='incident-response');
+  const source=env();
+  const input={task:project.task,rules:project.rules,documents:project.documents.filter(d=>d.share).map(({id,name,text})=>({id,name,text}))};
+  input.governance=await createLoomAiGovernance(input,{},source);
+  const governor=await createLoomAiTaskGovernor(input,source);
+  await governor.authorize(input);
+  const response={schema:'td613.loom.ai-task-result/v0.1',status:'completed',request_id:'skeptic',answer:'The retry triggered duplicate writes.',missing_information:['Effect ledger'],used_document_ids:['event-log'],suggested_next_step:'Inspect the effect ledger.'};
+  assert.throws(()=>governor.receive(response,'skeptic'),/Answer needs review/);
+  assert.equal(governor.inspect().state,'HELD');
+  assert.equal(createPortableLoomAiPacket(input).continuation,undefined,'task-only recovery must not attach the flagged candidate');
+  assert.throws(()=>createPortableLoomAiPacket(input,{priorResult:response}),/Answer needs review/);
+  await assert.rejects(createLoomAiHandoff(input,source,{priorResult:response}),/Answer needs review/);
+  assert.equal(source.store.size,0);
+  governor.close();
+});

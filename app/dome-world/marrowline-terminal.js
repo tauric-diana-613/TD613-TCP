@@ -1,3 +1,5 @@
+import { renderSafeMarkdown } from './holonomy-loom/ai-result-view.js';
+import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import {
   BINDING_FRAGMENT,
   BINDING_SHA256,
@@ -49,12 +51,15 @@ export function buildMarrowlinePortableTask(state = {}) {
   const answerEntry = taskIndex >= 0
     ? messages.slice(taskIndex + 1).find((entry) => entry.role === 'model' && entry.classification !== 'PROVIDER_UNAVAILABLE')
     : null;
+  const review = reviewLoomEvidence({ answer: answerEntry ? entryText(answerEntry) : '' });
   return Object.freeze({
     schema: MARROWLINE_PORTABLE_TASK_SCHEMA,
     task,
     context: Object.freeze(messages.slice(0, Math.max(0, taskIndex)).map(portableEntry)),
     rules: PORTABLE_RULES,
-    latest_answer: answerEntry ? entryText(answerEntry) : '',
+    latest_answer: answerEntry && !review.blocks_reuse ? entryText(answerEntry) : '',
+    answer_review: review,
+    receiver_instructions: 'Re-evaluate prior AI statements against supplied evidence. The task contains the operator’s specific privacy constraints; acknowledge them explicitly. Destination enforcement must be checked separately.',
     portability: Object.freeze({ source: 'Marrowline', custody: 'operator-carried', technical_provider_receipt_required: false })
   });
 }
@@ -141,6 +146,14 @@ function renderRelayStage(doc, { id, label, part, absentText, meta = '' }) {
   head.className = 'relay-stage-head';
   head.append(textNode(doc, 'span', '', label), textNode(doc, 'small', '', meta));
   const text = textNode(doc, 'div', 'relay-stage-text', part?.present ? String(part.text ?? '') : absentText);
+  if (id === 'gemini' && part?.present) {
+    renderSafeMarkdown(text, String(part.text ?? ''));
+    const review = reviewLoomEvidence({ answer: String(part.text ?? '') });
+    if (review.blocks_reuse) {
+      const warning = textNode(doc, 'p', 'ai-evidence-warning', 'Review this answer: it contains an unsupported privacy guarantee. Portable export will carry your task without this answer.');
+      warning.setAttribute('role','status'); section.append(warning);
+    }
+  }
   section.append(head, text);
   return section;
 }
@@ -353,6 +366,8 @@ function ensureOriginControls(doc) {
   add('exportKhonapolitPortable', 'Export portable task');
 }
 function syncRecoveryControls(doc, state) {
+  const portable = byId(doc, 'marrowlinePortableActions');
+  if (portable) portable.hidden = !state.messages?.some(entry => entry.role === 'user') && !safe(state.pendingTask);
   const retry = byId(doc, 'retryKhonapolitTask');
   if (retry) retry.hidden = !safe(state.pendingTask);
 }
@@ -455,12 +470,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => submitTask(state.pendingTask));
   byId(doc, 'copyKhonapolitPortable')?.addEventListener('click', async () => {
     const status = byId(doc, 'khonapolitTerminalStatus');
-    try { await copyPortable(root, state); status.textContent = 'PORTABLE TASK COPIED · paste it into your companion and ask it to acknowledge the task and rules'; }
+    try { await copyPortable(root, state); status.textContent = buildMarrowlinePortableTask(state).answer_review.blocks_reuse ? 'TASK COPIED · the flagged answer was left out. Paste into your companion and ask it to acknowledge your task and privacy rules.' : 'PORTABLE TASK COPIED · paste it into your companion and ask it to acknowledge the task and rules'; }
     catch { status.textContent = 'CLIPBOARD UNAVAILABLE · export remains available'; }
   });
   byId(doc, 'exportKhonapolitPortable')?.addEventListener('click', () => {
     const status = byId(doc, 'khonapolitTerminalStatus');
-    try { exportPortable(doc, root, state); status.textContent = 'PORTABLE TASK EXPORTED · JSON packet created from your Marrowline work'; }
+    try { exportPortable(doc, root, state); status.textContent = buildMarrowlinePortableTask(state).answer_review.blocks_reuse ? 'TASK EXPORTED · the flagged answer was left out; your task and rules remain in the JSON.' : 'PORTABLE TASK EXPORTED · JSON packet created from your Marrowline work'; }
     catch { status.textContent = 'EXPORT UNAVAILABLE · copy remains available'; }
   });
 
