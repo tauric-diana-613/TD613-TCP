@@ -29,8 +29,18 @@
   "frontier_stack": [
     {
       "rank": 1,
+      "id": "EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07",
+      "status": "CURRENT_BRANCH_FRONTIER_PENDING_EXACT_HEAD_VALIDATION",
+      "question": "Does a compact arrow-chain preserve enough relation semantics to justify distinct operators, or only directed adjacency whose edge types must be independently earned?",
+      "result": "Shared arrow glyph does not identify operator type; exact stage collapse can preserve terminal behavior while stage-local witnesses preserve diagnostic localization.",
+      "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-PRIMITIVE-TYPING-STAGE-COLLAPSE-V0_7.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-primitive-typing-stage-collapse-v07.json",
+      "next_test": "Apply stage-collapse and stage-local witness scoring to source-bound repository episodes. A named stage that never beats its collapsed composite on type safety, intervention, intermediate observability, prediction, localization, or an invariant loses independent operator status."
+    },
+    {
+      "rank": 2,
       "id": "EO_REDUNDANCY_V06",
-      "status": "CURRENT_BRANCH_FRONTIER_GREEN_BEFORE_RECONCILIATION",
+      "status": "GREEN_PRIOR_FRONTIER",
       "question": "Does retrieval-observability deficit monotonically increase semantic redundancy under reduced capacity?",
       "result": "NO_UNIVERSAL_ARROW; ranking policy and diversity control can reverse the direction.",
       "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-RETRIEVAL-OBSERVABILITY-SEMANTIC-REDUNDANCY-V0_6.md",
@@ -38,7 +48,7 @@
       "next_test": "Move from synthetic orthonormal corpus to source-bound retrieval episodes while preserving policy/capacity controls; do not infer deployed-LLM behavior from the synthetic result."
     },
     {
-      "rank": 2,
+      "rank": 3,
       "id": "EO_FOUNDATIONAL_SIEVE_V05",
       "status": "CURRENT_BRANCH_PARENT_ASSAY",
       "question": "Which claims in the foundational Eclipse–Omega paper survive ordinary nomenclature, type checking, hostile counterexamples, and provenance separation?",
@@ -48,7 +58,7 @@
       "next_test": "Primitive -> typed relation -> composition -> behavioral residue. Require stage-local witnesses before granting independent operator status."
     },
     {
-      "rank": 3,
+      "rank": 4,
       "id": "PRCSA_ORDERING_V04",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the exact PRCS-A stage order identify a unique internal pipeline from terminal behavior?",
@@ -58,7 +68,7 @@
       "next_test": "Stage-collapse assay: compare full factorization against pairwise/composite collapses and ask whether separate stages improve held-out prediction, diagnosis, or intervention response."
     },
     {
-      "rank": 4,
+      "rank": 5,
       "id": "TD613_DEVASTATE_REPAIR_V03",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Which broad TD613 novelty claims survive targeted conventional literature attack?",
@@ -68,7 +78,7 @@
       "next_test": "Prefer measurable contribution and operator fidelity over coinage, analogy, or familiar-term novelty."
     },
     {
-      "rank": 5,
+      "rank": 6,
       "id": "WENDBINE_TD613_BOUNDED_V01",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the bounded Wendbine public packet give TD613 better names, better operators, or both?",
@@ -79,6 +89,8 @@
     }
   ],
   "negative_results_to_notice_first": [
+    "A shared arrow glyph identifies directed adjacency but does not identify operator type, causation, or common codomain.",
+    "Exact functional stage collapse can preserve terminal behavior; terminal equivalence does not establish stage identity.",
     "EchoCore correction did not reconstruct cleanly from the remaining public topology.",
     "Serial order has not been shown to add predictive power at day-level timestamp resolution.",
     "PRCS-A terminal behavior does not uniquely identify its internal stage order.",
@@ -88,7 +100,7 @@
   ],
   "held_questions": [
     "Does any surviving TD613 composition produce measurable predictive, diagnostic, intervention, or governance value beyond ordinary components?",
-    "Which claimed PRCS-A stages remain independently identifiable after stage-collapse and intermediate-witness assays?",
+    "Which claimed PRCS-A stages remain independently identifiable after source-bound stage-collapse and intermediate-witness assays?",
     "Does the V/C/P/L forensic evidence-state vector reduce classification errors or improve adjudication consistency in real episodes?",
     "Does route memory plus custody add measurable governance value beyond conventional provenance, usage control, authorization, and replay machinery?",
     "Does the separately scoped discrete-holonomy operator yield diagnostics beyond generic noncommuting transport/order effects?",

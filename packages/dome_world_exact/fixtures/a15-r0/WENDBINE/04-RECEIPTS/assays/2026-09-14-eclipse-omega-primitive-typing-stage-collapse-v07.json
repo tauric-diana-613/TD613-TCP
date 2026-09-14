@@ -1,0 +1,122 @@
+{
+  "schema": "td613.eclipse-omega-primitive-typing-stage-collapse/v0.7",
+  "date": "2026-09-14",
+  "state": "SOURCE_BOUND_SYNTHETIC_DIAGNOSTIC_ASSAY_ZERO_NOVELTY_PROMOTION",
+  "question": "Does a compact arrow-chain preserve enough relation semantics to justify distinct operators, or only directed adjacency whose edge types must be independently earned?",
+  "source_basis": [
+    "2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
+    "2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+    "user-supplied public-post excerpt retained only as terminology/continuity note"
+  ],
+  "typed_chain": [
+    {
+      "from": "D",
+      "to": "C_k",
+      "glyph": "->",
+      "relation_type": "top_k_selection",
+      "domain": "DocumentUniverse",
+      "codomain": "CandidateDocumentSet",
+      "common_carrier_subset_relation_possible": true
+    },
+    {
+      "from": "C_k",
+      "to": "C_kappa",
+      "glyph": "->",
+      "relation_type": "capacity_conditioning",
+      "domain": "CandidateDocumentSet",
+      "codomain": "BudgetedCandidateDocumentSet",
+      "common_carrier_subset_relation_possible": true
+    },
+    {
+      "from": "C_kappa",
+      "to": "C_B",
+      "glyph": "->",
+      "relation_type": "context_projection",
+      "domain": "BudgetedCandidateDocumentSet",
+      "codomain": "ContextAssembly",
+      "common_carrier_subset_relation_possible": false
+    },
+    {
+      "from": "C_B",
+      "to": "Y",
+      "glyph": "->",
+      "relation_type": "conditional_generation",
+      "domain": "ContextAssembly",
+      "codomain": "GeneratedRepresentation",
+      "common_carrier_subset_relation_possible": false
+    },
+    {
+      "from": "Y",
+      "to": "E",
+      "glyph": "->",
+      "relation_type": "registration_release",
+      "domain": "GeneratedRepresentation",
+      "codomain": "RegisteredEvent",
+      "common_carrier_subset_relation_possible": false
+    }
+  ],
+  "counts": {
+    "directed_edges": 5,
+    "distinct_relation_types": 5,
+    "same_glyph_edges": 5,
+    "subset_eligible_edges": 2,
+    "codomain_changing_edges": 3
+  },
+  "stage_collapse_control": {
+    "full": "K -> P -> A -> N -> E",
+    "collapsed_example": "(P o K) -> A -> N -> E",
+    "finite_inputs": [0,1,2,3,4,5],
+    "terminal_behavior_equal": true,
+    "interpretation": "Exact functional composition preserves terminal behavior; terminal equality does not establish independent stage identity."
+  },
+  "terminal_equivalent_failure_worlds": [
+    {
+      "id": "EMPTY_UPSTREAM",
+      "candidate_count_after_selection": 0,
+      "release_decision": "NO_CANDIDATE",
+      "terminal_event": "NO_EVENT"
+    },
+    {
+      "id": "SUPPRESSED_DOWNSTREAM",
+      "candidate_count_after_selection": 1,
+      "release_decision": "REJECT",
+      "terminal_event": "NO_EVENT"
+    }
+  ],
+  "diagnostic_result": {
+    "terminal_only_distinguishes_worlds": false,
+    "stage_local_candidate_count_distinguishes_worlds": true,
+    "bounded_conclusion": "TERMINAL_EQUIVALENCE != DIAGNOSTIC_EQUIVALENCE"
+  },
+  "stage_boundary_retention_criteria": [
+    "TYPE_SAFETY",
+    "INDEPENDENT_INTERVENTION",
+    "INTERMEDIATE_OBSERVABILITY",
+    "HELD_OUT_PREDICTION",
+    "DIAGNOSTIC_LOCALIZATION",
+    "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE"
+  ],
+  "laws": [
+    "PRIMITIVE_GLYPH != OPERATOR_TYPE",
+    "DIRECTED_EDGE != CAUSAL_EDGE",
+    "ARROW_CHAIN != HOMOGENEOUS_RELATION",
+    "COMMON_GLYPH != COMMON_CODOMAIN",
+    "COMPOSITION_EQUIVALENCE != STAGE_IDENTITY",
+    "TERMINAL_EQUIVALENCE != DIAGNOSTIC_EQUIVALENCE",
+    "STAGE_LOCAL_WITNESS_CAN_JUSTIFY_DECOMPOSITION",
+    "DIAGNOSTIC_UTILITY != FIELD_NOVELTY",
+    "USER_SUPPLIED_TEMPORAL_RESONANCE != CAUSAL_LINK"
+  ],
+  "verdict": "RETAIN_TYPED_DECOMPOSITION_ONLY_WHERE_STAGE_BOUNDARY_EARNS_DIAGNOSTIC_OR_FORMAL_VALUE",
+  "next_test": "Apply stage-collapse and stage-local witness scoring to source-bound repository episodes; independently named stages that never outperform their collapsed composite lose independent operator status.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "public_post_provenance_verified": false,
+    "monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}
