@@ -224,3 +224,13 @@ test('skeptical incident overclaim stays inspectable while answer reuse remains 
   assert.equal(h.$('#aiCopy').disabled,false);
   assert.doesNotMatch(h.$('#aiAnswer').textContent,/triggered duplicate writes/);
 });
+
+test('successful incident places evidence before the collapsed exact instruction',async t=>{
+  const h=harness(t,request=>response(admitted(request,{answer:'Actual duplicated effects remain uncertain.'})));
+  h.load(2);h.$('#aiRun').click();await h.settled();
+  const task=h.$('#aiSubmittedTask'),answer=h.$('#aiAnswer');
+  assert.equal(task.tagName,'DETAILS');assert.equal(task.open,false);
+  assert.equal(h.$('#aiSubmittedTaskText').textContent,LOOM_AI_PROJECTS[2].task);
+  assert.ok(answer.querySelector('.ai-result-takeaway'));
+  assert.ok(answer.compareDocumentPosition(task)&4,'orientation and answer precede exact-instruction inspection');
+});

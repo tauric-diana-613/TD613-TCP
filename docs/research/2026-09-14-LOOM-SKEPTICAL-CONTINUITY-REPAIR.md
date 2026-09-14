@@ -41,3 +41,6 @@ PRs #1133/#1135 are concurrent portable-assurance research; this branch starts f
 
 No main merge or deployment performed by this receipt. Vercel lock preserved.
 ⟐
+
+## Preserved first validation failure
+Run 3284 / 34888871354 at 90dec5de840fa71e4def28801f9c8d39577a9e82 failed the Episode 6 source-text assertion requiring “You asked the AI to”. The exact instruction remains retained; its deliberately revised disclosure is now asserted together with its shared-task assignment. A real DOM regression additionally requires the evidence overview before the collapsed exact instruction. No product test has yet passed in this first run.
