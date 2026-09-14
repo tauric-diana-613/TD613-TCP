@@ -1,0 +1,22 @@
+{
+  "a15_r0_scientific_mutation": false,
+  "atelier_branch": "amari/src-projective-routing-grammar",
+  "canon_promotion": false,
+  "captured_at_utc": "2026-08-27T05:12:16.672349Z",
+  "creator_orcid": "0009-0009-9348-3534",
+  "creator_records_observed": 474,
+  "gate_issue": "758",
+  "merge_authority": false,
+  "metadata_only_record_ids": [],
+  "new_record_count": 0,
+  "new_record_ids": [],
+  "partial_body_extraction_record_ids": [],
+  "preexisting_metadata_custody_count": 478,
+  "production_authority": false,
+  "publication_authority": false,
+  "query_scope": "PUBLIC_ZENODO_EXACT_CREATOR_ORCID",
+  "relay_identity": "tauric-diana-613",
+  "run_id": "33041681894",
+  "schema": "src-zenodo-operator-sync/v1",
+  "sealed_phase2_mutation": false
+}

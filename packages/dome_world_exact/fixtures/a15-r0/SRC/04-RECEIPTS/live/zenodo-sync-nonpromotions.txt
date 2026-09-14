@@ -1,0 +1,7 @@
+live sync != sealed Phase-2 authority
+live sync != A15-R0 scientific authority
+new record != canon admission
+new record != claim validation
+sync completion != merge authority
+sync completion != publication authority
+sync completion != production authority

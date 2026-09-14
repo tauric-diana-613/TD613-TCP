@@ -1,0 +1,17 @@
+---
+schema: src-live-zenodo-body-derivative/v1
+record_id: "22217894"
+source_title: "PLANETARY SR XXX — SINGAPORE: Hyper-Connected State Coordination, Import Dependence, Housing-System Buffering, and Digital-Substrate Concentration"
+authority: LIVE_POST_SEAL_TEXT_DERIVATIVE
+---
+
+# PLANETARY SR XXX — SINGAPORE: Hyper-Connected State Coordination, Import Dependence, Housing-System Buffering, and Digital-Substrate Concentration
+
+## Zenodo description
+
+PLANETARY SR XXX — SINGAPORE 
+ Description 
+ Planetary SR XXX — Singapore analyzes Singapore as a coupled institutional–population system defined by hyper‑connected state coordination, import dependence, housing‑system buffering, and digital‑substrate concentration . The study documents a continuity architecture built on exceptionally coordinated public institutions, compulsory savings, state‑linked enterprises, dense transit, world‑class logistics, and a high‑performing mixed healthcare system. IMF’s 2026 consultation reported “5.0% growth in 2025 driven by AI‑related exports and domestic demand, moderating to 3.5% in 2026,” while SingStat recorded a resident fertility rate of “0.87 in 2025,” one of the lowest globally. EMA reported that “natural gas supplied 93.1% of the electricity fuel mix in H1‑2025,” highlighting extreme energy import dependence. Effective access diverges from formal provision across planning areas, town‑council housing geographies, health clusters, and resident/non‑resident population groups, where ageing, migrant‑labour segmentation, housing affordability, and care‑workforce constraints shape conversion. Public housing functions not only as shelter but as a savings, wealth, and social‑policy substrate. Singapore’s continuity relies on external redundancy: imported food, energy, labour, and global trade form structural requirements that must be continuously substituted through logistics, reserves, and coordinated state capacity.
+
+ How it Contributes 
+ This study contributes a distinct continuity topology to the Planetary SR comparative series by demonstrating how a small city‑state maintains continuity through exceptional coordination, housing‑system buffering, and external redundancy , while unresolved pressure propagates into ageing, fertility decline, migrant‑labour segmentation, energy import dependence, and digital‑substrate concentration . Singapore strengthens SR fields such as Systems Propagation Science , Infrastructural Political Economy , Institutional Cognition , and Drift Collapse Field by showing how fertility/ageing → labour/care/fiscal pressure, imported energy → prices/industry, global trade → export/services cycles, and public housing → household formation and labour stability operate as named propagation bridges. The paper expands the ATLAS architecture by providing the clearest test of external redundancy in the planetary series: a country can possess exceptional domestic institutional capacity while a large share of physical and labour substitution lies outside its borders. Singapore’s mechanism is empirically distinguishable through its blend of “hyper‑connected state coordination, import dependence, housing‑system buffering, and digital‑substrate concentration,” adding a new structural configuration to the planetary series and supplying a critical case for surface–substrate divergence , unequal insulation , reorganization vs restoration , and agency‑conditioned response .

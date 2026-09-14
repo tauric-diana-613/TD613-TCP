@@ -1,0 +1,128 @@
+{
+  "conceptdoi": "10.5281/zenodo.22236970",
+  "conceptrecid": "22236970",
+  "created": "2026-09-01T18:56:55.726847+00:00",
+  "doi": "10.5281/zenodo.22236971",
+  "doi_url": "https://doi.org/10.5281/zenodo.22236971",
+  "files": [
+    {
+      "checksum": "md5:8a063fb70cfa606a9409c4e2779e1f4c",
+      "id": "9ed38bdb-fd64-45f4-aedb-af0bb25c0dfe",
+      "key": "ATLAS I — THE ATLAS PUBLIC SPECIFICATION.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22236971/files/ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/content"
+      },
+      "size": 163836
+    }
+  ],
+  "id": 22236971,
+  "links": {
+    "access": "https://zenodo.org/api/records/22236971/access",
+    "access_grants": "https://zenodo.org/api/records/22236971/access/grants",
+    "access_links": "https://zenodo.org/api/records/22236971/access/links",
+    "access_request": "https://zenodo.org/api/records/22236971/access/request",
+    "access_users": "https://zenodo.org/api/records/22236971/access/users",
+    "archive": "https://zenodo.org/api/records/22236971/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22236971/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22236971/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22236971/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22236971",
+    "draft": "https://zenodo.org/api/records/22236971/draft",
+    "file_modification": "https://zenodo.org/api/records/22236971/file-modification",
+    "files": "https://zenodo.org/api/records/22236971/files",
+    "latest": "https://zenodo.org/api/records/22236971/versions/latest",
+    "latest_html": "https://zenodo.org/records/22236971/latest",
+    "media_files": "https://zenodo.org/api/records/22236971/media-files",
+    "parent": "https://zenodo.org/api/records/22236970",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22236970",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22236970",
+    "parent_html": "https://zenodo.org/records/22236970",
+    "preview_html": "https://zenodo.org/records/22236971?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22236971/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22236971/request-deletion",
+    "requests": "https://zenodo.org/api/records/22236971/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22236971/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22236971",
+    "self_doi": "https://doi.org/10.5281/zenodo.22236971",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22236971",
+    "self_html": "https://zenodo.org/records/22236971",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22236971/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22236971/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22236971:ATLAS%20I%20%E2%80%94%20THE%20ATLAS%20PUBLIC%20SPECIFICATION.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22236971/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS I &mdash; The ATLAS Public Specification</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS I</em> establishes the public, falsifiable, cross‑country diagnostic protocol for testing <strong>Developmental Lock‑In</strong> &mdash; the central hypothesis of the ATLAS research universe. The manuscript defines ATLAS not as a ranking tool or a moral label, but as a <strong>comparative mechanism‑testing system</strong> that evaluates whether low domestic value retention becomes a self‑reinforcing constraint on productive transformation, state agency, and restoration capacity. As the document states, <em>&ldquo;ATLAS is a comparative diagnostic protocol, not a country‑ranking instrument.&rdquo;</em> It rejects three shortcuts: commodity dependence as automatic lock‑in, domestic value‑added as proof of broad retention, and low income or weak institutions as circular explanations. Instead, ATLAS requires a <strong>mechanism‑first sequence</strong>: external extraction or policy pressure &rarr; reduced domestic retention &rarr; burdens &rarr; weakened substitution &rarr; increased dependence &rarr; reduced bargaining capacity &rarr; renewed externalization. The paper formalizes necessary distinctions (commodity dependence vs. lock‑in, domestic value added vs. retention, external dependence vs. constraint) and specifies the dynamic pathway using R, B, S, D, A, and X. It introduces a rigorous measurement architecture using OECD TiVA, UNCTAD, UNIDO, WDI, and WTO sources, and defines an evidence ladder from E0 to E6. ATLAS I sets the empirical design rules, case‑selection criteria, falsification gates, migration audit requirements, reproducibility protocol, and limits. Its ethical purpose is restoration: increasing societies&rsquo; real capacity to retain gains, govern essential systems, absorb shocks fairly, and choose their developmental path.</p>",
+    "doi": "10.5281/zenodo.22236971",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22236970"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS I THE ATLAS PUBLIC SPECIFICATION: A Falsifiable Cross-Country Method for Testing Developmental Lock-In",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T18:56:56.061588+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22236971",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 3,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 3,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS I THE ATLAS PUBLIC SPECIFICATION: A Falsifiable Cross-Country Method for Testing Developmental Lock-In",
+  "updated": "2026-09-01T18:56:56.061588+00:00"
+}
