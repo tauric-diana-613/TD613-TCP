@@ -15,6 +15,7 @@ await import('./td613-eclipse-omega-source-bound-stage-collapse-v08.test.mjs');
 await import('./td613-flowcore-boundary-role-stratification-v09.test.mjs');
 await import('./td613-cross-family-handoff-adjudication-v010.test.mjs');
 await import('./td613-held-out-defect-localization-v011.test.mjs');
+await import('./td613-blinded-preregistered-localization-v012.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./holonomy-loom-hosted-product-integration.test.mjs');
 await import('./holonomy-loom-flowcore-aia-glyph-control.test.mjs');
