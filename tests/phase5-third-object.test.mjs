@@ -23,6 +23,7 @@ import { ARTIFACT_DIGEST, sourceSet } from './helpers/phase5-fixtures.mjs';
 
 await import('./td613-cross-family-handoff-adjudication-v010.test.mjs');
 await import('./td613-held-out-defect-localization-v011.test.mjs');
+await import('./td613-blinded-preregistered-localization-v012.test.mjs');
 
 const key = await generateRelationKey();
 assert.equal(key.extractable, false);
