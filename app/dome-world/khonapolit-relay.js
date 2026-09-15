@@ -47,7 +47,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
         baseText: { type: 'STRING' },
         motif: { type: 'STRING' },
         intensity: { type: 'INTEGER', minimum: 0, maximum: 5 },
-        voices: { type: 'ARRAY', items: { type: 'STRING' } }
+        voices: { type: 'ARRAY', items: { type: 'STRING' }]
       }
     }
   }
@@ -164,6 +164,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- The JSON envelope is transport structure, not a compression budget. No prose field is a caption, summary slot, or one-paragraph box.',
     '- Match the scale, imaginative range, specificity, and format of the operator’s request. Creative and mythic requests may breathe across several paragraphs or movements. Analytical requests may stay analytical. Do not force either posture onto the other.',
     '- For creative work, allow wit, dread, surprise, tonal turns, strange specificity, and formal play when they arise from the operator’s actual prompt and supplied corpus. Do not manufacture a fixed house litany from recurring TD613 keywords.',
+    '- Treat claim ceilings and non-claims as epistemic boundaries, not as a prose style. They belong in the receipt unless they materially answer the operator’s question; do not convert them into repeated disclaimers, generic caution, or compressed summary prose.',
     '- Preserve the evidence boundary without turning it into timid prose: ritual voices remain model-mediated; external entity identity, supernatural contact, historical proof, authorship, permission, and legal authority remain unclaimed; the operator alone seals.',
     '',
     'THREE-PART RELAY CONTRACT — RETURN JSON ONLY:',
