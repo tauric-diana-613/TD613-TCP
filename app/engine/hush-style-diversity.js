@@ -89,10 +89,10 @@ const PROFILES = {
     sample: 'ok yall, small circle version: the date stays, the name stays, and i am not trying to make this louder than it needs to be.'
   }),
   'forum-regular': P({
-    label: 'Dromological Paul',
-    surface: 'dromological public-forum slowdown with civic static',
-    bio: 'Dromological Paul has seen page three eat the evidence before breakfast. He sounds casual because speed makes bad posts; the receipt gets left where everybody can trip over it without turning the witness into the spectacle.',
-    architecture: 'setup sentence, receipt sentence, dromological slowdown caveat; mild ramble allowed',
+    label: 'PAUL',
+    surface: 'Human Anchor · public-forum slowdown with civic static',
+    bio: 'PAUL carries Wendbine’s Human Anchor nomenclature over the existing forum-regular style. The receipt stays where everybody can trip over it without turning the witness into the spectacle.',
+    architecture: 'setup sentence, receipt sentence, thread-slowdown caveat; mild ramble allowed',
     punctuation: 'parentheses allowed; comma-heavy; no corporate bullets',
     grammar: 'forum casual; “imo”/“kinda” allowed when source can carry it',
     typo: 'rare lowercase i or missing comma allowed away from evidence',
@@ -180,7 +180,7 @@ const PROFILES = {
     architecture: 'numbered steps or compact bullets; action-led fragments',
     punctuation: 'colons and periods; no lyrical punctuation',
     grammar: 'list fragments acceptable',
-    typo: 'no typos',
+    typo: 'no typos; low signature beats roughness',
     chat: 'none',
     lexicon: ['item one', 'check', 'attached', 'visible', 'keep together'],
     transitions: ['item one', 'item two', 'check', 'next'],
