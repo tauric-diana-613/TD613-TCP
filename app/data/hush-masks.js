@@ -177,20 +177,20 @@ const hushMasks = [
   },
   {
     id: 'forum-regular',
-    label: 'Dromological Paul',
+    label: 'PAUL',
     family: 'forum pseudonym',
-    description: 'Dromological Paul speaks from behind an avatar like the future historian in the comment thread who slows the room down. Candid, intelligent, slightly imperfect, and human enough to make people stop scrolling; the receipt stays in public view without dragging the witness into the post.',
+    description: 'PAUL carries Wendbine’s Human Anchor nomenclature over the existing forum-regular mask. The public-forum behavior remains the same underneath: slow the room down, keep the receipt visible, and do not turn the witness into the spectacle.',
     intendedUse: 'Pseudonymous public explanations that need ordinary legibility, information decompression, and thread-level slowdown without adding facts.',
     riskTell: 'Repeatable quirks can become a pseudonym fingerprint; topic specificity can identify more than style.',
-    sampleSeed: 'Dromological forum pattern: slow the thread, explain the boring hinge, keep the linked pieces together, and do not add facts.',
+    sampleSeed: 'Human Anchor forum pattern: slow the thread, explain the boring hinge, keep the linked pieces together, and do not add facts.',
     samplePolicy: SAMPLE_POLICY,
-    profileTargets: {},
+    profileTargets: { wendbineDisplayRole: 'Human Anchor' },
     transformHints: {
       sentence: 'mid-long',
       ornament: 'low-medium',
       warmth: 'medium',
       custody: 'high',
-      desiredMoves: ['public forum legibility', 'dromological slowdown', 'information decompression without fact expansion', 'repeatable mask-level quirks', 'receipt left in plain view'],
+      desiredMoves: ['public forum legibility', 'thread-level slowdown', 'information decompression without fact expansion', 'repeatable mask-level quirks', 'receipt left in plain view'],
       avoidMoves: ['topic leakage', 'private history leakage', 'threadlord voice', 'generic assistant polish', 'sample phrase reuse']
     },
     pressureWarnings: ['watch topic leakage', 'watch pseudonym fingerprint becoming source leakage', 'do-not-reuse-sample-wording']
