@@ -1,7 +1,7 @@
 {
   "schema": "td613.independent-receiver-replication-receipt/v0.1",
   "date": "2026-09-15",
-  "state": "IMPLEMENTED_AWAITING_EXACT_HEAD_VALIDATION",
+  "state": "SCIENTIFIC_GREEN_AWAITING_RECEIPT_BINDING_VALIDATION",
   "parent_repairability": {
     "pull_request": 1141,
     "receipt_binding_head": "2a7c9ffa2a92227cfca2a25ac6346df0c70e8338",
@@ -19,14 +19,15 @@
     "continuing_custodian_authority_received": false,
     "shared_frozen_artifacts_only": true
   },
-  "expected_result": {
+  "observed_result": {
     "clean_control": "ADMITTED_NO_REPAIR_REQUIRED",
     "fault_cases": 5,
     "fault_outcome": "HELD_REPAIR_PROPOSED",
-    "cross_implementation_agreement_required": "6_OF_6",
+    "cross_implementation_agreement": "6_OF_6",
     "repair_executed": false,
     "authority_transferred": false,
-    "external_host_enforced": false
+    "external_host_enforced": false,
+    "replica_repeat_deterministic": true
   },
   "right_of_resignation": "OPEN",
   "safe_return_recovery": "NON_EQUIVALENT",
@@ -42,12 +43,28 @@
     "GREEN != RIGHT_OF_RESIGNATION",
     "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
   ],
-  "preregistered_red_head": "f6faef5f562b916059801bf7a25f3397a0f225d3",
-  "preregistered_red_run_number": 3377,
-  "preregistered_red_run_id": 34927032170,
-  "scientific_green_head": null,
-  "scientific_green_run_number": null,
-  "scientific_green_run_id": null,
+  "validation_lineage": [
+    {
+      "head": "f6faef5f562b916059801bf7a25f3397a0f225d3",
+      "run_number": 3377,
+      "run_id": 34927032170,
+      "state": "PREREGISTERED_RED",
+      "meaning": "The test was wired through A15-R0 before the separately implemented replica engine, independent fixture engine, receipt, and operation record existed."
+    },
+    {
+      "head": "a4ea1b35afd53dca2fb179680efc91811dcfa3c4",
+      "run_number": 3378,
+      "run_id": 34929252178,
+      "state": "SCIENTIFIC_GREEN",
+      "meaning": "The replica independently classified the six frozen cases with no case identity or expected-answer material, matched the preregistered expectations and frozen parent evaluator 6/6, rejected forbidden custodian inputs, and preserved OPEN/NON_EQUIVALENT residuals."
+    }
+  ],
+  "scientific_green_head": "a4ea1b35afd53dca2fb179680efc91811dcfa3c4",
+  "scientific_green_run_number": 3378,
+  "scientific_green_run_id": 34929252178,
+  "receipt_binding_head": null,
+  "receipt_binding_run_number": null,
+  "receipt_binding_run_id": null,
   "next_stage_if_green": "DOME_WORLD_TOMOGRAPHY_OF_OPEN_RESIDUALS_WITHOUT_RETURN_PROMOTION",
   "human_closure_required": true,
   "merge_authority": false,
