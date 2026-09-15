@@ -1,7 +1,7 @@
 {
   "schema": "wendbine-public-hydration-receipt/v0.1",
   "date": "2026-09-15",
-  "state": "PENDING_EXACT_HEAD_VALIDATION",
+  "state": "GREEN_AT_VALIDATED_PARENT_HEAD",
   "atelier_id": "WENDBINE",
   "base_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
   "delta_snapshot_id": "wendbine-public-reddit-delta-20260913T234421Z-v02",
@@ -25,8 +25,14 @@
     "head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
     "imported": false
   },
-  "exact_head": null,
-  "validation_run": null,
+  "validated_head": "b1a8e42b4af8cb2465933b7a3c39d3fb30435e21",
+  "validation_run": {
+    "workflow": "TD613 Consolidated Validation",
+    "run_number": 3357,
+    "run_id": 34923413468,
+    "conclusion": "success"
+  },
+  "validation_meaning": "The base snapshot, Sept 13 append-only delta, Sept 15 hydration manifest, reversible five-label sticker taxonomy, and display-alias non-promotion membranes passed the repository's consolidated static/A15-R0 contract at the validated parent head.",
   "human_closure_required": true,
   "merge_authority": false,
   "deployment_authority": false,
