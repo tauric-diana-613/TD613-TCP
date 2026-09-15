@@ -1,0 +1,306 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "marrowline-fire-gate-adversarial-legibility-v01",
+  "surface_reference": "Dome-World/Marrowline/Fire-Gate",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-15T19:30:00Z",
+    "idSeed": "marrowline-fire-gate-adversarial-legibility-v01",
+    "idScope": "Dome-World/Marrowline/Fire-Gate"
+  },
+  "design_evidence_scope": {
+    "posture": "DECLARED_DESIGN_CANDIDATE_ON_DEPLOYED_GATE",
+    "inspection_base": "9295541c5ad980cef91bb39d5e81cb122c6ad5e4",
+    "baseline": "The deployed Gate exposed Fire live Marrowline, Build local fallback, a technical receipt, and an optional human-operator token, but did not explain their adversarial relationship before the controls.",
+    "comparison": "Declared consequence-first route and bounded receipt classifications only; human comprehension still requires separate observation.",
+    "millipoint_basis": "Neutral structural assumptions are applied to both routes; no user-level usability score is claimed.",
+    "gate_limit": "The Pedagogue fixture reviews route legibility and authority separation; it does not substitute for live endpoint, browser, provider, or human evidence."
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "marrowline_fire_gate_adversarial_legibility_v01",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/marrowline-station.js",
+        "app/dome-world/marrowline-operator-readiness.js",
+        "app/dome-world/marrowline-gate-assay.js",
+        "api/marrowline.js",
+        "docs/PEDAGOGUE_DESIGN_GATE.md"
+      ],
+      "evidence_basis": [
+        "The local fallback is deterministic and explicitly records networkResponseObserved false.",
+        "The public Fire path calls the dedicated live Marrowline endpoint and returns route, trap, digest, matrix and Aperture-egress evidence when available.",
+        "The same endpoint has a server-side one-fire operator-token bypass that is non-equivalent to public absorption.",
+        "The operator token is cleared locally before the network return and is excluded from the receipt.",
+        "The current Gate exposed the controls before explaining their adversarial comparison."
+      ],
+      "transformations": [
+        "Explain the three test conditions before technical terms.",
+        "State what crosses and what does not before the operator acts.",
+        "Translate the returned receipt into local-control, public-absorption, admitted-operator-control, or rejected-operator-control posture.",
+        "Keep the complete technical receipt available after the plain-language result.",
+        "Keep human choice and closure explicit."
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "Choose what kind of boundary test you mean to run: stay local, challenge the public absorbing route, or compare that route with the human-operator control on the same endpoint.",
+      "surface_reference": "Dome-World/Marrowline/Fire-Gate",
+      "now": "Choose one Gate condition and fire it deliberately.",
+      "why": "The same endpoint can produce materially different route outcomes, so the operator should know the consequence before reading protocol jargon.",
+      "exact": "Compare the local fallback, live public absorption, and server-admitted operator bypass by observed receipt status, route header, network observation and Aperture-egress evidence."
+    },
+    "available_affordances": [
+      {
+        "action_id": "run_marrowline_gate_assay",
+        "purpose": "Run one explicitly selected Marrowline boundary condition and render the observed consequence without converting the receipt into broader authority.",
+        "authorized_by_station": "Human",
+        "reversible": false,
+        "irreversible_consequence": "A live Fire sends one request to the declared Marrowline endpoint; the local fallback sends no network request."
+      }
+    ],
+    "route_topology": {
+      "entry": "plain-language three-condition Gate guide",
+      "exit": "plain-language result plus inspectable technical receipt",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": ["Human comprehension of the new explanation remains unmeasured."],
+      "rest_available_at_every_step": true,
+      "exit_available_at_every_step": true,
+      "rest_penalty": false,
+      "steps": [
+        {
+          "step_id": "see_gate_conditions",
+          "label": "See the three consequences before protocol terms",
+          "phase": "NOTICE",
+          "required_fields": ["local control", "public absorption", "operator control"],
+          "dependencies": [],
+          "legibility_millipoints": 960,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "choose_gate_condition",
+          "label": "Choose whether this fire stays local or crosses the boundary",
+          "phase": "ACT",
+          "required_fields": ["selected condition", "token posture", "depth", "breadth"],
+          "dependencies": ["see_gate_conditions"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "observe_gate_return",
+          "label": "See what actually answered",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": ["network observation", "route result", "Aperture egress when present"],
+          "dependencies": ["choose_gate_condition"],
+          "legibility_millipoints": 955,
+          "affordance_millipoints": 945,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 2,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "name_gate_result",
+          "label": "Name local control, public absorption, operator control, or rejected bypass",
+          "phase": "NAME",
+          "required_fields": ["plain result", "comparison use", "technical receipt"],
+          "dependencies": ["observe_gate_return"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 940,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 2,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "rest_or_compare",
+          "label": "Stop, inspect, or deliberately run the paired condition",
+          "phase": "REST",
+          "required_fields": ["rest", "exit", "optional paired comparison"],
+          "dependencies": ["name_gate_result"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 2,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "human selection of local, public-live, or operator-live Gate posture",
+      "operator": "deterministic local constructor or dedicated Marrowline endpoint with server-side operator-token admission",
+      "observable": "receipt status, network observation, route/trap headers, request digest/matrix where present, and Aperture-egress observation",
+      "authority": "the human chooses the test; the server alone admits the operator bypass; the receipt reports the observed route",
+      "equations": [
+        "LOCAL_FALLBACK != LIVE_PUBLIC_ABSORPTION",
+        "LIVE_PUBLIC_ABSORPTION != OPERATOR_BYPASS_CONTROL",
+        "SAME_ENDPOINT != SAME_ROUTE"
+      ]
+    },
+    "research_frame": {
+      "question": "Can the deployed Fire Gate function as a legible human-operated adversarial boundary assay without collapsing its three non-equivalent test conditions?",
+      "hypothesis": "Consequence-first explanation plus receipt-derived classification will make the adversarial use operationally legible while preserving the technical receipt and server-side authorization boundary.",
+      "observable_behavior": [
+        "The operator can see before firing that local fallback creates no network evidence.",
+        "The operator can see that blank-token Fire exercises public absorption.",
+        "The operator can see that token Fire is an attempted same-endpoint operator control whose admission is decided by the server.",
+        "The post-fire explanation reflects the receipt instead of inferring a more favorable outcome.",
+        "The technical receipt remains inspectable after the plain-language explanation."
+      ],
+      "falsifier": [
+        "A local fallback is described as a network crossing.",
+        "A blank-token public fire is described as operator-authorized.",
+        "A rejected token is presented as an admitted bypass.",
+        "The operator token enters the copied receipt.",
+        "Public absorption and admitted bypass become indistinguishable in route evidence.",
+        "An Aperture-egress status is invented when absent."
+      ],
+      "abstention_conditions": [
+        "No Gate receipt exists yet; show an unobserved posture rather than inventing a result.",
+        "The live route is unavailable; report route unavailability rather than substitute the local control as live evidence.",
+        "The operator control is unavailable because no matching server-side token exists; retain the public control without claiming bypass evidence."
+      ],
+      "alternative_explanations": [
+        "Improved comprehension may result from plainer labels independently of the three-condition adversarial framing.",
+        "A successful same-endpoint distinction demonstrates this endpoint implementation, not a universal network security property."
+      ],
+      "expected_failure_modes": [
+        "Protocol terminology appears before the consequence of firing.",
+        "Receipt detail is hidden so thoroughly that the plain-language summary cannot be audited.",
+        "The client decides operator authorization instead of the server.",
+        "A prior result remains visible as if it belonged to the current fire."
+      ]
+    },
+    "missingness": ["Human comprehension evidence for this new Gate explanation is not yet observed."],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The Gate can run a bounded human-operated adversarial comparison among local control, public absorption and server-admitted operator bypass on the declared Marrowline endpoint.",
+        "A receipt can distinguish network-observed from local-only behavior and can preserve route and Aperture-egress evidence when returned.",
+        "Same endpoint does not imply same route outcome."
+      ],
+      "forbidden_claims": [
+        "The Gate proves external identity or authorship.",
+        "The Gate establishes unrelated network behavior.",
+        "A client-supplied token proves operator identity before server admission.",
+        "A local fallback proves the live endpoint answered."
+      ]
+    },
+    "technical_terms_withheld": ["Aperture egress attestation", "absorbing ingress", "constant-time token comparison", "reflex spine"]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_advanced_label",
+      "label": "Open an advanced instrument with minimal consequence explanation",
+      "phase": "NOTICE",
+      "required_fields": ["ingress organ", "AI terminal distinction"],
+      "dependencies": [],
+      "legibility_millipoints": 470,
+      "affordance_millipoints": 560,
+      "gluing_obstruction_millipoints": 230,
+      "projection_crossings": 1,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_controls",
+      "label": "Infer what Fire and fallback mean from labels",
+      "phase": "ACT",
+      "required_fields": ["Fire live Marrowline", "Build local fallback", "optional token"],
+      "dependencies": ["baseline_advanced_label"],
+      "legibility_millipoints": 520,
+      "affordance_millipoints": 650,
+      "gluing_obstruction_millipoints": 190,
+      "projection_crossings": 2,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_status",
+      "label": "Interpret terse live status",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": ["HTTP", "trap", "digest", "egress"],
+      "dependencies": ["baseline_controls"],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 560,
+      "gluing_obstruction_millipoints": 210,
+      "projection_crossings": 2,
+      "route_memory_edges": 2,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_receipt",
+      "label": "Decode the JSON receipt to determine what actually happened",
+      "phase": "NAME",
+      "required_fields": ["status", "route", "authorization", "matrix"],
+      "dependencies": ["baseline_status"],
+      "legibility_millipoints": 460,
+      "affordance_millipoints": 510,
+      "gluing_obstruction_millipoints": 260,
+      "projection_crossings": 2,
+      "route_memory_edges": 3,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_exit",
+      "label": "Leave or manually infer a comparison",
+      "phase": "REST",
+      "required_fields": ["exit"],
+      "dependencies": ["baseline_receipt"],
+      "legibility_millipoints": 520,
+      "affordance_millipoints": 550,
+      "gluing_obstruction_millipoints": 170,
+      "projection_crossings": 1,
+      "route_memory_edges": 3,
+      "operator_action_required": true
+    }
+  ],
+  "action": {"action_id": "run_marrowline_gate_assay"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "the operator sees the three non-equivalent conditions before acting",
+      "the selected condition runs without changing the other conditions",
+      "the returned receipt is classified from observed fields",
+      "the plain-language consequence appears before optional technical inspection"
+    ],
+    "losses": [],
+    "missingness": ["Human comprehension evidence remains unobserved."],
+    "contradictions": [],
+    "unresolved_relations": ["Future human testing may alter wording without changing the three-condition route law."],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Choose local, public, or operator control; fire once; see what actually answered; inspect the receipt; rest or compare.",
+      "steps": ["see the three conditions", "choose and fire", "see the result", "inspect", "rest"]
+    }
+  },
+  "name": {
+    "plain_language": "The Gate is a controlled boundary challenge: staying local, hitting the public absorber, and using the operator control are different tests even when two use the same endpoint.",
+    "glyph_relation": null,
+    "technical_term": "human-operated adversarial boundary assay",
+    "non_equivalence": [
+      "local construction is not network observation",
+      "same endpoint is not same route outcome",
+      "offered token is not admitted operator control"
+    ]
+  },
+  "transfer_context": {
+    "context": {"surface": "Marrowline Gate"},
+    "shared_relation_candidate": "a human can compare non-equivalent boundary conditions while preserving the evidence that distinguishes them",
+    "observable_correspondence": ["the local, public and admitted-operator conditions produce distinct receipt classifications without transferring authority among them"],
+    "alternative_explanations": ["some legibility gain may come from simpler prose rather than the assay framing itself"],
+    "abstention_conditions": ["no receipt exists or the live endpoint is unavailable"]
+  }
+}
