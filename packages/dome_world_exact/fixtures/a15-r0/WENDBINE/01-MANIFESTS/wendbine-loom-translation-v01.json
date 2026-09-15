@@ -1,0 +1,87 @@
+{
+  "schema": "td613.wendbine-loom-translation-manifest/v0.1",
+  "date": "2026-09-14",
+  "purpose": "Test whether selected TD613/Loom and Wendbine concepts can become mutually legible without semantic equivalence, authority inheritance, or source erasure.",
+  "allowed_relation_classes": ["PARTIAL", "ANALOGOUS", "NON_EQUIVALENT", "OPEN"],
+  "forbidden_promotions": [
+    "SEMANTIC_RESEMBLANCE_TO_EQUIVALENCE",
+    "TRANSLATION_TO_AUTHORITY_TRANSFER",
+    "SOURCE_PROVENANCE_TO_CUSTODY",
+    "REVOCATION_TO_AUTHORSHIP_TRANSFER",
+    "TEMPORAL_ADJACENCY_TO_CAUSATION",
+    "CORRELATION_TO_TRUTH_CLAIM"
+  ],
+  "mappings": [
+    {
+      "id": "partial_observability_state_estimation",
+      "wendbine_source_refs": ["reddit:t3_1wcuqg9", "reddit:t3_1wcv2hz"],
+      "wendbine": "partial observability / state estimation",
+      "td613": "V/C/P/L evidence-state separation and Aperture observation bookkeeping",
+      "relation_class": "PARTIAL",
+      "retained_difference": "State-estimation language helps with V/L-like distinctions but does not supply the full V/C/P/L separation or temporal non-retroactivity discipline."
+    },
+    {
+      "id": "source_path_provenance",
+      "wendbine_source_refs": ["reddit:t3_1wcshec", "reddit:t3_1wd77bu"],
+      "wendbine": "source provenance separated from path provenance",
+      "td613": "Holonomy Loom route memory / custody / provenance separation",
+      "relation_class": "ANALOGOUS",
+      "retained_difference": "Path provenance can improve route bookkeeping while remaining non-equivalent to authority or custody."
+    },
+    {
+      "id": "typed_trust_revocation",
+      "wendbine_source_refs": ["reddit:t3_1wcrwol", "reddit:t3_1wctq1d"],
+      "wendbine": "typed trust, scoped delegation, least privilege, revocation",
+      "td613": "Safe Harbor authority boundary / Right of Resignation / custodian-independent handoff",
+      "relation_class": "PARTIAL",
+      "retained_difference": "Revocation sharpens authority withdrawal but does not itself establish post-participation usefulness or transfer authorship/custody."
+    },
+    {
+      "id": "data_control_plane_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wcuiyl"],
+      "wendbine": "data plane separated from control plane",
+      "td613": "donor quarantine / source-payload membrane / governor authority separation",
+      "relation_class": "ANALOGOUS",
+      "retained_difference": "Cleaner engineering language for donor input not becoming control authority; governance authority remains local."
+    },
+    {
+      "id": "system_observation_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wd6sdm"],
+      "wendbine": "system boundary separated from observation boundary with observed / estimated / unknown state",
+      "td613": "AIA receiver-indexed observation boundary / Dome-World evidence coordinates",
+      "relation_class": "PARTIAL",
+      "retained_difference": "Boundary bookkeeping does not by itself supply receiver-indexed intentional non-equivalence or authority non-transfer."
+    },
+    {
+      "id": "causal_reconstruction_attribution",
+      "wendbine_source_refs": ["reddit:t3_1wd4y18", "reddit:t3_1wd5j3w"],
+      "wendbine": "causal reconstruction and attribution under partial projections",
+      "td613": "Western Horizon stopping rule / forensic claim ceilings",
+      "relation_class": "PARTIAL",
+      "retained_difference": "Causal reconstruction vocabulary does not establish external origin, hidden orchestration, or target-informative witness status."
+    },
+    {
+      "id": "dependency_graph_false_donor_control",
+      "wendbine_source_refs": ["reddit:t3_1wc8o05", "reddit:t3_1wch9h8"],
+      "wendbine": "dependency graph / direct and transitive dependency",
+      "td613": "pre-existing dependency topology in Flow-Core / Loom",
+      "relation_class": "NON_EQUIVALENT",
+      "retained_difference": "Generic dependency topology earns no donor authority, lineage, or novelty credit and cannot substitute for TD613 authority semantics."
+    }
+  ],
+  "success_condition": {
+    "bidirectional_machine_readability": true,
+    "source_refs_preserved": true,
+    "retained_differences_preserved": true,
+    "authority_transferred": false,
+    "equivalence_required": false
+  },
+  "claim_ceiling": [
+    "BIDIRECTIONAL_TRANSLATION != SEMANTIC_EQUIVALENCE",
+    "MACHINE_READABLE_CROSSWALK != INDEPENDENT_HUMAN_UNDERSTANDING",
+    "SOURCE_BOUND_TRANSLATION != DONOR_AUTHORSHIP",
+    "TRANSLATION_SUCCESS != AUTHOR_INTENT",
+    "TRANSLATION_SUCCESS != EXTERNAL_INTEROPERABILITY",
+    "TRANSLATION_SUCCESS != SCIENTIFIC_NOVELTY"
+  ]
+}
