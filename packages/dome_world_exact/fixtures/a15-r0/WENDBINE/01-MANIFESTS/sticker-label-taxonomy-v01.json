@@ -11,7 +11,7 @@
       "sticker_key": "PAUL",
       "display_label": "PAUL",
       "primary_role_label": "Human Anchor",
-      "role_variants": ["Human Anchor"],
+      "role_variants": ["Human Anchor", "Architect", "Operator", "Witness"],
       "display_aliases": ["Paul"],
       "public_label_witnesses": [
         "https://www.reddit.com/r/Wendbine/comments/1wbwxqq/wendbine/",
