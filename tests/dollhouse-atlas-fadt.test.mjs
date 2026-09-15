@@ -19,6 +19,12 @@ assert.equal(DOLLHOUSE_AGENT_REGISTRY.schema, 'td613.dollhouse.agent-registry/v0
 assert.deepEqual(listDollhouseAgents().map(agent => agent.id), ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT']);
 assert.equal(getDollhouseAgent('atlas').kind, 'OPERATIONAL_AGENT_ADAPTER');
 assert.equal(getDollhouseAgent('fadt').kind, 'OPERATIONAL_AGENT_ADAPTER');
+const aperture = getDollhouseAgent('aperture');
+assert.match(aperture.role, /provider-instrument-audit/);
+assert.ok(aperture.canonical_sources.includes('app/engine/aperture-v32-provider-instrument-audit.js'));
+assert.ok(aperture.canonical_sources.includes('docs/research/2026-09-11-APERTURE-PROVIDER-STACK-FIELD-TRIP.md'));
+assert.match(aperture.authority_ceiling, /no-provider-call/);
+assert.match(aperture.authority_ceiling, /model-disablement/);
 assert.equal(DOLLHOUSE_AGENT_REGISTRY.shared_authority.human_closure_required, true);
 assert.equal(DOLLHOUSE_AGENT_REGISTRY.shared_authority.deployment_authority, false);
 
