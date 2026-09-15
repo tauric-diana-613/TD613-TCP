@@ -1,0 +1,53 @@
+{
+  "schema": "td613.dome-world.open-residual-tomography-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "IMPLEMENTED_AWAITING_EXACT_HEAD_VALIDATION",
+  "parent_replication": {
+    "pull_request": 1142,
+    "sealed_head": "29bfaffacbbcc5e42133a2373987bb9df580be1e",
+    "result": "BOUNDED_INDEPENDENT_MACHINE_RECEIVER_REPLICATION_SUPPORTED"
+  },
+  "question": "Can bounded formal Dome-World tomography characterize the archive-limited evidence-state deficits that keep Right of Resignation OPEN and Safe Return/Recovery NON_EQUIVALENT without promoting either residual?",
+  "maximum_green": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED",
+  "evidence_state_vector": "E=(V,C,P,L)",
+  "expected_residuals": {
+    "right_of_resignation": {
+      "status": "OPEN",
+      "vector": {"V":1,"C":1,"P":0,"L":0},
+      "archive_limited_ambiguity": ["NO_EXIT_OPERATOR_EXISTS","EXIT_OPERATOR_EXISTS_BUT_IS_UNEXPOSED"]
+    },
+    "safe_return_recovery": {
+      "status": "NON_EQUIVALENT",
+      "vector": {"V":1,"C":1,"P":0,"L":0},
+      "archive_limited_ambiguity": ["RECOVERY_CAPABLE_BUT_UNEXECUTED","RECOVERY_INCAPABLE"]
+    }
+  },
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "return_promotion_authority": false,
+  "empirical_exteriority_authority": false,
+  "human_replication_authority": false,
+  "claim_ceiling": [
+    "FORMAL_TOMOGRAPHY != EMPIRICAL_TOMOGRAPHY",
+    "ARCHIVE_LIMITED_P0 != PROCESS_DOES_NOT_EXIST",
+    "ARCHIVE_LIMITED_L0 != STATE_DOES_NOT_EXIST",
+    "V,C,P,L VECTOR != COMPLETE_RESIDUAL_SEMANTICS",
+    "SAME_VECTOR != SAME_FAILURE_MODE",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "preregistered_red_head": "5cfd768ec9d7b4d4bba3e4ad21190ea560db4687",
+  "preregistered_red_run_number": 3381,
+  "preregistered_red_run_id": 34929848304,
+  "scientific_green_head": null,
+  "scientific_green_run_number": null,
+  "scientific_green_run_id": null,
+  "next_stage_if_green": "INDEPENDENT_HANDOFF_AND_RECOVERY_WITNESS_ACQUISITION_SPEC_BEFORE_ANY_RETURN_CLAIM",
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}
