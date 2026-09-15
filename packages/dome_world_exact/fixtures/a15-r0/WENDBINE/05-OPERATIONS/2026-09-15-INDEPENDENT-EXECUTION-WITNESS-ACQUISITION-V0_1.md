@@ -42,6 +42,12 @@ That GREEN earns the preregistered maximum only within `EXISTING_SUBSTRATE_EXECU
 
 The fresh receiver establishes object-instance and state separation inside the same local-machine/custodian execution authority. It does not establish `INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY`, independent-human execution, or external-host enforcement.
 
+## Receipt-binding GREEN
+
+Exact receipt-binding head `b3fac085f6612e1121058a77f06f984ecf6d23cb` survived TD613 Consolidated Validation run #3392 / `34963348657` with conclusion `success`.
+
+That run validates the receipt's binding to the already-earned science head while preserving every negative-authority membrane. It adds no Right-of-Resignation, Safe-Return, Return, human-replication, external-host, custodian-independent-return, or empirical-exteriority authority.
+
 ## Claim ceiling
 
 `LOCAL_SESSION_CLOSE != UNIVERSAL_REVOCATION`
@@ -62,13 +68,13 @@ The fresh receiver establishes object-instance and state separation inside the s
 
 ## Current implementation state
 
-The preregistered RED was answered by the bounded execution engine, candidate receipt, and operation record. Exact science head `87be9fced9c4ab5132ddba66ea7db5126949944c` then survived consolidated run #3391 / `34959826944` GREEN.
+The preregistered RED was answered by the bounded execution engine, candidate receipt, and operation record. Exact science head `87be9fced9c4ab5132ddba66ea7db5126949944c` survived consolidated run #3391 / `34959826944` GREEN, and exact receipt-binding head `b3fac085f6612e1121058a77f06f984ecf6d23cb` survived consolidated run #3392 / `34963348657` GREEN.
 
-This record now binds that already-observed scientific GREEN. The receipt-bearing binding head created by this update must independently survive the same consolidated validation before `receipt_binding_green` can be populated. Until then, the science result remains earned at its exact prior head while receipt-binding validation remains pending.
+This update records both already-observed GREENs. Its own exact head is the seal-validation candidate and must survive the same consolidated validation before the chamber may be treated as sealed. No result from that future run is predeclared here.
 
 No merge. No deployment. No Vercel mutation. No mark-ready transition. No product mutation. No human-replication claim. No universal-revocation claim. No Right-of-Resignation promotion. No Safe-Return promotion. No Return promotion. No custodian-independent-return claim. No empirical-exteriority promotion.
 
-## Lawful successor after receipt binding and seal validation
+## Lawful successor after seal validation
 
 `ACQUIRE_INDEPENDENT_HUMAN_OR_EXTERNAL_EXECUTION_WITNESS_BEFORE_ANY_RIGHT_OF_RESIGNATION_SAFE_RETURN_RETURN_OR_EMPIRICAL_EXTERIORITY_PROMOTION`
 

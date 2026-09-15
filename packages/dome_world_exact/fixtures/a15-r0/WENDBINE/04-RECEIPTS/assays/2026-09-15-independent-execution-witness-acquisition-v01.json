@@ -1,6 +1,6 @@
 {
   "schema": "td613.independent-execution-witness-acquisition-receipt/v0.1",
-  "phase": "SCIENTIFIC_GREEN_RECORDED_AWAITING_RECEIPT_BINDING_VALIDATION",
+  "phase": "RECEIPT_BINDING_GREEN_RECORDED_AWAITING_SEAL_VALIDATION",
   "parent_spec": {
     "pr": 1144,
     "sealed_head": "c99ed65fe21350d48f6c3785f048d0b8c788de8a",
@@ -38,6 +38,12 @@
     "conclusion": "success",
     "meaning": "The preregistered bounded local-machine assay executed local session close plus fresh-instance continuation and HELD-to-ADMITTED recovered=true transition, preserved the declared negative authorities, and survived the consolidated A15-R0 hostile path without product-source mutation. Fresh-instance continuation remains instance/state separation rather than custodian-independent, independent-human, or external-host execution."
   },
-  "receipt_binding_green": null,
+  "receipt_binding_green": {
+    "head": "b3fac085f6612e1121058a77f06f984ecf6d23cb",
+    "run_number": 3392,
+    "run_id": 34963348657,
+    "conclusion": "success",
+    "meaning": "The exact receipt-bearing head preserved the bounded local-machine scientific GREEN, explicitly retained the custodian-authority and external-witness membranes, and passed the same consolidated validation without widening Right of Resignation, Safe Return, Return, human replication, external-host enforcement, or empirical exteriority."
+  },
   "next_lawful_move_after_green": "ACQUIRE_INDEPENDENT_HUMAN_OR_EXTERNAL_EXECUTION_WITNESS_BEFORE_ANY_RIGHT_OF_RESIGNATION_SAFE_RETURN_RETURN_OR_EMPIRICAL_EXTERIORITY_PROMOTION"
 }
