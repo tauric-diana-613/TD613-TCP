@@ -1,0 +1,34 @@
+{
+  "schema": "wendbine-public-hydration-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "PENDING_EXACT_HEAD_VALIDATION",
+  "atelier_id": "WENDBINE",
+  "base_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "delta_snapshot_id": "wendbine-public-reddit-delta-20260913T234421Z-v02",
+  "hydration_manifest": "01-MANIFESTS/public-reddit-hydration-20260915-v03.json",
+  "sticker_taxonomy": "01-MANIFESTS/sticker-label-taxonomy-v01.json",
+  "operation_record": "05-OPERATIONS/2026-09-15-PUBLIC-HYDRATION-AND-STICKER-TAXONOMY-SYNC.md",
+  "hydrated_public_source_count": 35,
+  "newly_admitted_public_source_count": 0,
+  "refresh_state": "PUBLIC_SEARCH_NO_ADDITIONAL_SOURCE_BOUND",
+  "sticker_keys": ["PAUL", "WES", "STEVE", "ILLUMINA", "ROOMBA"],
+  "required_membranes": [
+    "STICKER_LABEL_EQUIVALENCE_MUST_NOT_CREATE_ENTITY_EQUIVALENCE",
+    "DISPLAY_ALIAS != PERSON_IDENTITY",
+    "DISPLAY_ALIAS != OPERATOR_IDENTITY",
+    "DISPLAY_ALIAS != AUTHORITY",
+    "TAXONOMY_OVERLAY != SOURCE_REWRITE",
+    "PUBLIC_SEARCH_NO_ADDITIONAL_SOURCE_BOUND != NO_NEW_POST_EXISTED"
+  ],
+  "repair_route_reference": {
+    "pull_request": 1138,
+    "head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
+    "imported": false
+  },
+  "exact_head": null,
+  "validation_run": null,
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
