@@ -1,0 +1,94 @@
+@media(max-width:860px){
+  html.marrowline-mobile-shell body{
+    top:var(--marrowline-vv-top,0px)!important;
+    left:var(--marrowline-vv-left,0px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--marrowline-vv-width,100%)!important;
+    height:var(--marrowline-vh,100dvh)!important;
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"][data-mobile-view="speak"] #speakingPanel{
+    grid-template-rows:auto minmax(72px,1fr) auto!important;
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"][data-mobile-view="speak"] #speakingPanel .vessel-form{
+    height:auto!important;
+    min-height:0!important;
+    max-height:min(48%,270px)!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain;
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"] #marrowlinePortableActions{
+    display:none!important;
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .prompt-label textarea{
+    min-height:58px!important;
+    max-height:96px!important;
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .composer-actions{
+    position:sticky;
+    left:0;
+    right:0;
+    bottom:-1px;
+    z-index:18;
+    margin-top:6px!important;
+    padding:4px 0 2px;
+    background:rgba(1,8,6,.985);
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .composer-actions .primary{
+    min-width:min(52vw,190px)!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
+    height:var(--marrowline-vh,100dvh)!important;
+    min-height:0!important;
+    padding-bottom:0!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel{
+    height:100%!important;
+    max-height:100%!important;
+  }
+
+  html.marrowline-mobile-shell .terminal-hold-card{
+    margin:8px 4px 12px;
+    padding:10px 11px;
+    border:1px solid rgba(239,170,92,.34);
+    border-radius:12px;
+    background:rgba(35,20,6,.58);
+    color:var(--ash);
+    font-family:var(--marrowline-chat-sans,system-ui,sans-serif);
+    font-size:.82rem;
+    line-height:1.45;
+  }
+  html.marrowline-mobile-shell .terminal-hold-card strong{
+    display:block;
+    margin-bottom:4px;
+    color:#f0c58b;
+    font-size:.78rem;
+    letter-spacing:.025em;
+  }
+  html.marrowline-mobile-shell .terminal-hold-card p{margin:.28rem 0 0}
+
+  html.marrowline-mobile-shell .marrowline-operator-field{
+    display:grid;
+    gap:6px;
+    margin:14px 0;
+  }
+  html.marrowline-mobile-shell .marrowline-operator-field input{
+    min-height:44px;
+    font-size:16px;
+  }
+  html.marrowline-mobile-shell .operator-token-help{
+    color:var(--ash-dim);
+    font:500 .64rem/1.45 var(--marrowline-chat-sans,system-ui,sans-serif);
+    letter-spacing:0;
+    text-transform:none;
+  }
+}
