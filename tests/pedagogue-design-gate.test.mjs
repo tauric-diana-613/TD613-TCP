@@ -7,3 +7,4 @@ import './pedagogue-institutional-time.test.mjs';
 import './pedagogue-provenance-time-integration.test.mjs';
 import './pedagogue-recurrence-counterpoints.test.mjs';
 import './loom-episode6-human-clarity.test.mjs';
+import './marrowline-fire-gate-pedagogue.test.mjs';
