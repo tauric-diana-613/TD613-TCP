@@ -34,13 +34,16 @@ function abstainReceipt(id, missingness = 'coherence missing') {
   };
 }
 
+const sharedSnapshotA = 'atsnap_shared_a_v09';
+const sharedSnapshotB = 'atsnap_shared_b_v09';
+
 const historyA = await compileFlowcoreContextSeries({
   experimentId,
   seriesId: 'flowseries_history_a_v09',
   createdAt,
   snapshots: [
-    { snapshot_id: 'atsnap_history_a_open', context_receipt: openReceipt('flowctx_history_a_open') },
-    { snapshot_id: 'atsnap_history_a_abstain', context_receipt: abstainReceipt('flowctx_history_a_abstain') }
+    { snapshot_id: sharedSnapshotA, context_receipt: openReceipt('flowctx_history_a_open') },
+    { snapshot_id: sharedSnapshotB, context_receipt: abstainReceipt('flowctx_history_a_abstain') }
   ]
 });
 
@@ -49,8 +52,8 @@ const historyB = await compileFlowcoreContextSeries({
   seriesId: 'flowseries_history_b_v09',
   createdAt,
   snapshots: [
-    { snapshot_id: 'atsnap_history_b_abstain', context_receipt: abstainReceipt('flowctx_history_b_abstain') },
-    { snapshot_id: 'atsnap_history_b_open', context_receipt: openReceipt('flowctx_history_b_open') }
+    { snapshot_id: sharedSnapshotA, context_receipt: abstainReceipt('flowctx_history_b_abstain') },
+    { snapshot_id: sharedSnapshotB, context_receipt: openReceipt('flowctx_history_b_open') }
   ]
 });
 
@@ -68,13 +71,18 @@ assert.deepEqual(aggregate(historyA), {
   missing_snapshot_count: 1
 });
 assert.deepEqual(aggregate(historyB), aggregate(historyA), 'Distinct histories must collapse to the same declared aggregate terminal posture.');
+assert.deepEqual(
+  historyA.entries.map(entry => entry.snapshot_id),
+  historyB.entries.map(entry => entry.snapshot_id),
+  'Hostile histories must hold snapshot identity and ordering fixed.'
+);
 assert.notDeepEqual(
   historyA.entries.map(entry => entry.status),
   historyB.entries.map(entry => entry.status),
   'Stage-local entry sequence must distinguish terminally equivalent aggregate histories.'
 );
-assert.equal(historyA.entries.find(entry => entry.status === 'ABSTAIN').snapshot_id, 'atsnap_history_a_abstain');
-assert.equal(historyB.entries.find(entry => entry.status === 'ABSTAIN').snapshot_id, 'atsnap_history_b_abstain');
+assert.equal(historyA.entries.find(entry => entry.status === 'ABSTAIN').snapshot_id, sharedSnapshotB);
+assert.equal(historyB.entries.find(entry => entry.status === 'ABSTAIN').snapshot_id, sharedSnapshotA);
 
 // Authority/type-safety boundary: invalid authority and artifact posture are rejected
 // before an admitted series object can be constructed.
