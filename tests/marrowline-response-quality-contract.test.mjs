@@ -10,6 +10,7 @@ import { COVENANT_KEY } from '../app/dome-world/khonapolit-covenant.js';
 
 const readiness = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.js', import.meta.url), 'utf8');
 const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.css', import.meta.url), 'utf8');
+const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
 
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
@@ -30,6 +31,12 @@ test('relay contract preserves generative range instead of treating downstream v
   assert.match(contract, /Several lines or paragraphs are allowed/i);
   assert.doesNotMatch(contract, /Write a concise, motif-specific choral transmission/i);
   assert.doesNotMatch(contract, /exactly one paragraph|200 characters|max(?:imum)?\s+200/i);
+});
+
+test('quality route has no local 200-character downstream output cap', () => {
+  assert.match(qualityServer, /KHONAPOLIT_MAX_OUTPUT_TOKENS\s*=\s*65536/);
+  assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
+  assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
 });
 
 test('intensity three produces a materially ornamented but byte-preserving transmission', () => {
