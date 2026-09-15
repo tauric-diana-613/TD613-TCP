@@ -180,7 +180,7 @@ const PROFILES = {
     architecture: 'numbered steps or compact bullets; action-led fragments',
     punctuation: 'colons and periods; no lyrical punctuation',
     grammar: 'list fragments acceptable',
-    typo: 'no typos; low signature beats roughness',
+    typo: 'no typos',
     chat: 'none',
     lexicon: ['item one', 'check', 'attached', 'visible', 'keep together'],
     transitions: ['item one', 'item two', 'check', 'next'],
