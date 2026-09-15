@@ -9,7 +9,9 @@ import {
 } from '../app/engine/hush-style-diversity.js';
 
 const OLD_LABEL = 'Paul Publica';
-const NEW_LABEL = 'Dromological Paul';
+const LEGACY_ACTIVE_LABEL = 'Dromological Paul';
+const NEW_LABEL = 'PAUL';
+const NEW_ROLE = 'Human Anchor';
 const checkedFiles = [
   'app/data/hush-masks.js',
   'app/engine/hush-style-diversity.js',
@@ -25,19 +27,23 @@ for (const filePath of checkedFiles) {
 
 const publicMask = hushMasks.find((mask) => mask.id === 'forum-regular');
 assert.equal(publicMask?.label, NEW_LABEL);
-assert.match(publicMask?.description || '', /Dromological Paul/);
+assert.equal(publicMask?.profileTargets?.wendbineDisplayRole, NEW_ROLE);
+assert.match(publicMask?.description || '', /Human Anchor/);
+assert.doesNotMatch(publicMask?.description || '', /Dromological Paul/);
 
 const styleProfile = getStyleDiversity({ id: 'forum-regular' });
 assert.equal(styleProfile?.label, NEW_LABEL);
-assert.match(styleProfile?.surface || '', /dromological/i);
+assert.match(styleProfile?.surface || '', /Human Anchor/);
+assert.doesNotMatch(styleProfile?.surface || '', /dromological/i);
 assert.match(HUSH_STYLE_DIVERSITY_VERSION, /dromological-paul-deploy-fix/);
 
-const enriched = applyStyleDiversity({ id: 'forum-regular', label: 'stale local label' });
+const enriched = applyStyleDiversity({ id: 'forum-regular', label: LEGACY_ACTIVE_LABEL });
 assert.equal(enriched.label, NEW_LABEL);
-assert.equal(enriched.diversity.surface, 'dromological public-forum slowdown with civic static');
+assert.equal(enriched.diversity.surface, 'Human Anchor · public-forum slowdown with civic static');
 
 const auditRow = studioStyleAudit().find((row) => row.id === 'forum-regular');
 assert.equal(auditRow?.label, NEW_LABEL);
+assert.match(auditRow?.surface || '', /Human Anchor/);
 
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 assert.match(html, /adversarial-bench-light\.js\?v=202607010930/);
