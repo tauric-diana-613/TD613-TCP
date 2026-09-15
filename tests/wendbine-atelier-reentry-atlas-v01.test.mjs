@@ -71,7 +71,7 @@ assert.match(v12.result,/72\/72 binary correctness/i);
 assert.match(v12.result,/0\/60/i);
 assert.match(v12.result,/60\/60/i);
 assert.match(v12.result,/recipe family, not row count/i);
-assert.match(v12.result,/not external empirical validation/i);
+assert.match(v12.result,/(?:not|rather than) external empirical validation/i);
 assert.equal(v12.preregistration_path,'01-MANIFESTS/2026-09-15-held-out-defect-localization-v012-preregistration.json');
 assert.equal(v12.operation_path,'05-OPERATIONS/2026-09-15-BLINDED-PREREGISTERED-LOCALIZATION-V0_12.md');
 assert.equal(v12.receipt_path,'04-RECEIPTS/assays/2026-09-15-blinded-preregistered-localization-v012.json');
