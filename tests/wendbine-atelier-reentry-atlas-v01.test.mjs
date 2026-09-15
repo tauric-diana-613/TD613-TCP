@@ -19,7 +19,7 @@ assert.equal(atlas.findings_index_path,'99-ADMIN/RESEARCH_FINDINGS_INDEX_V0_12.j
 assert.ok(fs.existsSync(path.join(root,atlas.findings_index_path)),'Single-shot findings index must resolve.');
 assert.equal(findings.schema,'td613.wendbine-research-findings-index/v0.12');
 assert.equal(findings.current_frontier,'BLINDED_PREREGISTERED_LOCALIZATION_V012');
-assert.match(findings.canonical_main_finding,/DIAGNOSTIC_LOCALIZATION_RESOLUTION/);
+assert.match(findings.canonical_main_finding,/DEFECT_LOCALIZATION_RESOLUTION/);
 assert.match(findings.main_finding_plain_language,/same accept\/reject decisions/i);
 assert.match(findings.main_finding_plain_language,/localize which boundary failed/i);
 
