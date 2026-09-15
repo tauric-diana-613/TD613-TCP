@@ -1,0 +1,55 @@
+{
+  "schema": "td613.custodian-independent-repairability-receipt/v0.1",
+  "date": "2026-09-15",
+  "chamber_id": "CUSTODIAN_INDEPENDENT_REPAIRABILITY_ASSAY_V01",
+  "state": "IMPLEMENTED_AWAITING_EXACT_HEAD_VALIDATION",
+  "parent_aperture_audit": {
+    "pull_request": 1140,
+    "head": "92a419b518ed8d61382a9918ac77d283fa2b9ee3",
+    "result": "APERTURE_TRANSLATION_AUDIT_GREEN"
+  },
+  "preregistered_red": {
+    "head": "dacef8e87bba753ddea66f1e65905b32d1073d25",
+    "run_id": 34925062993,
+    "state": "RED",
+    "meaning": "The finite repairability family was wired into A15-R0 before the repairability engine, receipt, and operation record existed; the declared preregistration barrier therefore remained RED."
+  },
+  "implementation": {
+    "engine": "99-ADMIN/custodian-independent-repairability-v01.mjs",
+    "test": "tests/custodian-independent-repairability-v01.test.mjs",
+    "receiver_substrate": "app/dome-world/holonomy-loom/ai-handoff.js#inspectPortableLoomReceiverAssurance",
+    "finite_fault_family": [
+      "CLEAN_CONTROL",
+      "SOURCE_BINDING_DRIFT",
+      "AUTHORITY_PROMOTION",
+      "RELATION_CLASS_INFLATION",
+      "REPAIR_RECOVERY_COLLAPSE",
+      "DESTINATION_ENFORCEMENT_PROMOTION"
+    ],
+    "repair_execution": false,
+    "authority_transfer": false,
+    "custodian_narration_required": false,
+    "private_state_required": false
+  },
+  "maximum_green": "BOUNDED_ARTIFACT_ONLY_REPAIRABILITY_SUPPORTED",
+  "bounded_result": "PENDING_EXACT_HEAD_VALIDATION",
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "claim_ceiling": [
+    "GREEN != INDEPENDENT_HUMAN_REPLICATION",
+    "GREEN != MEASURED_REDUCTION_IN_HUMAN_NARRATION_BURDEN",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EXTERNAL_HOST_ENFORCEMENT",
+    "GREEN != EMPIRICAL_EXTERIORITY",
+    "REPAIR_PROPOSAL != REPAIR_EXECUTION",
+    "REPAIR_PATH != RECOVERY != RETURN"
+  ],
+  "scientific_green": null,
+  "next_stage_if_green": "HUMAN_OR_INDEPENDENT_RECEIVER_REPLICATION_GATE_BEFORE_DOME_WORLD_TOMOGRAPHY",
+  "dome_world_tomography_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}
