@@ -18,7 +18,7 @@ The assay compiles one frozen canonical fictional Loom origin, constructs a firs
 
 It then constructs a second governor directly from the same frozen origin artifact. The second object must be a different governor instance; no state from the first governor is supplied to its constructor. That receiver must admit the same valid structured return while preserving origin control. A hostile replacement factory that reuses the first governor is rejected as `SECOND_RECEIVER_NOT_INDEPENDENT_INSTANCE`.
 
-This earns only a local-machine Right-of-Resignation candidate. Local session closure is not universal revocation, and a fresh process object is not an independent human receiver.
+This earns only a local-machine Right-of-Resignation candidate. Local session closure is not universal revocation, and a fresh process object is not an independent human receiver or evidence of continuation without custodian authority.
 
 ## Executed Lane B — bounded HELD-to-ADMITTED recovery
 
@@ -33,6 +33,14 @@ This earns only a local-machine Recovery candidate. Repairability, local recover
 `BOUNDED_LOCAL_MACHINE_EXECUTION_WITNESSES_ACQUIRED`
 
 The implementation performs no product-source mutation. It uses only `createLoomPortableGovernor`, `compileLoomDemoScene`, `compileDollhousePortableProjection`, and `operateDollhousePortableProjection` from the existing product substrate.
+
+## Scientific GREEN
+
+Exact science head `87be9fced9c4ab5132ddba66ea7db5126949944c` survived TD613 Consolidated Validation run #3391 / `34959826944` with conclusion `success`.
+
+That GREEN earns the preregistered maximum only within `EXISTING_SUBSTRATE_EXECUTION_ONLY`: an executed local `CLOSE / CLOSED` receipt with subsequent same-session refusal, useful continuation by a distinct fresh local governor instance from the same frozen origin, an executed `HELD -> ADMITTED` transition carrying `recovered: true`, and a post-recovery defeat probe returning to `HELD`.
+
+The fresh receiver establishes object-instance and state separation inside the same local-machine/custodian execution authority. It does not establish `INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY`, independent-human execution, or external-host enforcement.
 
 ## Claim ceiling
 
@@ -54,11 +62,13 @@ The implementation performs no product-source mutation. It uses only `createLoom
 
 ## Current implementation state
 
-The preregistered RED has been answered with the bounded execution engine, candidate receipt, and operation record. The candidate now has to survive the consolidated A15-R0 hostile path. Until that run is GREEN, neither this record nor the static receipt claims CI validation.
+The preregistered RED was answered by the bounded execution engine, candidate receipt, and operation record. Exact science head `87be9fced9c4ab5132ddba66ea7db5126949944c` then survived consolidated run #3391 / `34959826944` GREEN.
 
-No merge. No deployment. No Vercel mutation. No mark-ready transition. No product mutation. No human-replication claim. No universal-revocation claim. No Safe-Return promotion. No Return promotion. No empirical-exteriority promotion.
+This record now binds that already-observed scientific GREEN. The receipt-bearing binding head created by this update must independently survive the same consolidated validation before `receipt_binding_green` can be populated. Until then, the science result remains earned at its exact prior head while receipt-binding validation remains pending.
 
-## Lawful successor after genuine GREEN
+No merge. No deployment. No Vercel mutation. No mark-ready transition. No product mutation. No human-replication claim. No universal-revocation claim. No Right-of-Resignation promotion. No Safe-Return promotion. No Return promotion. No custodian-independent-return claim. No empirical-exteriority promotion.
+
+## Lawful successor after receipt binding and seal validation
 
 `ACQUIRE_INDEPENDENT_HUMAN_OR_EXTERNAL_EXECUTION_WITNESS_BEFORE_ANY_RIGHT_OF_RESIGNATION_SAFE_RETURN_RETURN_OR_EMPIRICAL_EXTERIORITY_PROMOTION`
 
