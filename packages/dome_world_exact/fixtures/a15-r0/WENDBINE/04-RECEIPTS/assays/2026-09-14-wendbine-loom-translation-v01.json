@@ -1,0 +1,42 @@
+{
+  "schema": "td613.wendbine-loom-translation-receipt/v0.1",
+  "date": "2026-09-14",
+  "state": "EXECUTABLE_BIDIRECTIONAL_TRANSLATION_PRECURSOR",
+  "question": "Can selected Wendbine and TD613/Loom concepts become mutually machine-legible without semantic equivalence, source erasure, or authority inheritance?",
+  "mapping_count": 7,
+  "directions": ["WENDBINE_TO_TD613", "TD613_TO_WENDBINE"],
+  "allowed_relation_classes": ["PARTIAL", "ANALOGOUS", "NON_EQUIVALENT", "OPEN"],
+  "exact_equivalence_permitted": false,
+  "controls": [
+    "SOURCE_ERASURE_REJECTED",
+    "EXACT_EQUIVALENCE_LAUNDERING_REJECTED",
+    "MISSING_RETAINED_DIFFERENCE_REJECTED",
+    "UNBOUND_SOURCE_REF_REJECTED",
+    "DEPENDENCY_GRAPH_FALSE_DONOR_CONTROL_REMAINS_NON_EQUIVALENT"
+  ],
+  "success_contract": {
+    "bidirectional_machine_readability": true,
+    "source_refs_preserved": true,
+    "retained_differences_preserved": true,
+    "authority_transferred": false,
+    "authorship_transferred": false,
+    "custody_transferred": false,
+    "semantic_equivalence_required": false
+  },
+  "not_verified": [
+    "INDEPENDENT_HUMAN_UNDERSTANDING",
+    "EXTERNAL_INTEROPERABILITY",
+    "AUTHOR_INTENT",
+    "SEMANTIC_IDENTITY",
+    "SCIENTIFIC_NOVELTY"
+  ],
+  "next_if_green": "APERTURE_HOSTILE_TRANSLATION_AUDIT",
+  "authority": {
+    "merge": false,
+    "deployment": false,
+    "vercel": false,
+    "external_host_enforcement": false,
+    "scientific_promotion": false,
+    "human_closure_required": true
+  }
+}
