@@ -7,6 +7,14 @@ import {
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import { COVENANT_KEY } from '../app/dome-world/khonapolit-covenant.js';
+import {
+  buildApertureV3InvocationReceipt,
+  classifyApertureDiscourseMode
+} from '../app/engine/aperture-v3-task-intent.js';
+import {
+  buildGeminiRequest,
+  khonapolitTaskGuidance
+} from '../server/khonapolit-quality.js';
 
 const readiness = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.js', import.meta.url), 'utf8');
 const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.css', import.meta.url), 'utf8');
@@ -39,6 +47,41 @@ test('quality route has no local 200-character downstream output cap', () => {
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
 });
 
+test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
+  const message = 'Tell me a story of the Ash Moon, within the authored mythology of Marrowline.';
+  const discourseMode = classifyApertureDiscourseMode(message);
+  assert.equal(discourseMode, 'CREATIVE');
+
+  const receipt = buildApertureV3InvocationReceipt({
+    message,
+    discourseMode,
+    contentScanned: true
+  });
+  assert.equal(receipt.taskIntent.primary_route, 'OPEN_FIELD_CREATIVE_SYNTHESIS');
+  assert.equal(receipt.taskIntent.content_scanned, true, 'receipt admits that local task-intent routing inspected the submitted text');
+
+  const packet = { systemInstruction: 'Synthetic covenant field.', history: [], message, mode: 'issued-conjunction' };
+  const request = buildGeminiRequest(packet, receipt, 'gemini-3.5-flash');
+  const instruction = request.systemInstruction.parts[0].text;
+  assert.match(instruction, /CREATIVE TURN:/);
+  assert.match(instruction, /requested form, scale, cadence and imaginative range/i);
+  assert.doesNotMatch(instruction, /Do not infer venue quality, accessibility or amenities from price/i);
+  assert.doesNotMatch(instruction, /prefer anonymous attendance counts/i);
+  assert.doesNotMatch(instruction, /For Marrowline portability, direct the operator/i);
+});
+
+test('ordinary project work keeps its factual guidance instead of inheriting creative posture', () => {
+  const message = 'Plan a workshop for twelve attendees with a 600 credit budget.';
+  const discourseMode = classifyApertureDiscourseMode(message);
+  assert.equal(discourseMode, 'GENERAL');
+  const receipt = buildApertureV3InvocationReceipt({ message, discourseMode, contentScanned: true });
+  assert.equal(receipt.taskIntent.primary_route, 'REQUESTED_SYNTHESIS');
+  const guidance = khonapolitTaskGuidance(receipt);
+  assert.match(guidance, /ORDINARY PROJECT WORK:/);
+  assert.match(guidance, /Separate supplied facts, calculations, assumptions and missing evidence/i);
+  assert.doesNotMatch(guidance, /CREATIVE TURN:/);
+});
+
 test('intensity three produces a materially ornamented but byte-preserving transmission', () => {
   const base = `The instrument crosses a difficult chamber, changes cadence, and returns with several voices. ${COVENANT_KEY} remains protected. `.repeat(6).trim();
   const encoded = highZalgoEncode(base, { intensity: 3, motif: 'quality-fixture', seed: 'response-range' });
@@ -50,8 +93,10 @@ test('intensity three produces a materially ornamented but byte-preserving trans
 });
 
 test('structured relay carries long distinct downstream contributions without local truncation', () => {
-  const khona = Array.from({ length: 8 }, (_, index) => `Kʰonapolit movement ${index + 1}: ${'counterpoint '.repeat(24)}`).join('\n\n');
-  const bots = Array.from({ length: 10 }, (_, index) => `Voice ${index + 1}: ${'choral fracture '.repeat(20)}`).join('\n');
+  const counterpoint = Array.from({ length: 24 }, () => 'counterpoint').join(' ');
+  const choralFracture = Array.from({ length: 20 }, () => 'choral fracture').join(' ');
+  const khona = Array.from({ length: 8 }, (_, index) => `Kʰonapolit movement ${index + 1}: ${counterpoint}`).join('\n\n');
+  const bots = Array.from({ length: 10 }, (_, index) => `Voice ${index + 1}: ${choralFracture}`).join('\n');
   assert.ok(khona.length > 1800 && bots.length > 2200, 'fixture must exceed a caption-sized relay');
 
   const raw = JSON.stringify({
