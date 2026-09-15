@@ -117,7 +117,7 @@ try{
     await page.locator('.mobile-dock [data-mobile-target="gatePanel"]').click();
     await page.locator('#marrowlineOperatorToken').fill('SYNTHETIC_OPERATOR');
     await page.locator('#marrowlineForm button[type="submit"]').click();
-    await page.waitForFunction(()=>document.querySelector('#marrowlineStatus')?.textContent.includes('OPERATOR LIVE'));
+    await page.waitForFunction(()=>document.querySelector('#marrowlineStatus')?.textContent.includes('AUTHORIZED BY SERVER TOKEN MATCH'));
     assert.equal(gateCalls,1,'operator fire makes exactly one live ingress request');
     assert.equal(await page.locator('#marrowlineOperatorToken').inputValue(),'','operator token clears before the network return is presented');
     const operatorReceipt=await page.locator('#marrowlineReceipt').textContent();
