@@ -38,13 +38,14 @@ for (const item of atlas.frontier_stack) {
   }
 }
 
-// The atlas is explicitly newest-frontier-first, but NEWEST != CONTROLLING.
-// The v0.7 primitive-typing assay supersedes v0.6 only as the active frontier;
-// it does not erase the prior redundancy counterexample or parent-paper sieve.
-assert.equal(atlas.frontier_stack[0].id,'EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07','Current primitive-typing/stage-collapse assay must be the first reentry frontier.');
-assert.equal(atlas.frontier_stack[0].status,'CURRENT_BRANCH_FRONTIER_PENDING_EXACT_HEAD_VALIDATION');
-assert.equal(atlas.frontier_stack[1].id,'EO_REDUNDANCY_V06','Prior GREEN redundancy control must remain immediately retrievable behind the active frontier.');
-assert.equal(atlas.frontier_stack[2].id,'EO_FOUNDATIONAL_SIEVE_V05');
+// The atlas is newest-frontier-first, but NEWEST != CONTROLLING. v0.8 advances
+// the executable frontier while preserving the v0.7 primitive-typing result,
+// v0.6 redundancy counterexample, and the foundational sieve behind it.
+assert.equal(atlas.frontier_stack[0].id,'EO_SOURCE_BOUND_STAGE_COLLAPSE_V08','Current source-bound stage-collapse assay must be the first reentry frontier.');
+assert.equal(atlas.frontier_stack[0].status,'GREEN_EXACT_HEAD_4567275E6F980F10A5DA118684A264EE9B2B53C9_RUN_3303');
+assert.equal(atlas.frontier_stack[1].id,'EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07','Primitive-typing/stage-collapse result must remain immediately retrievable behind v0.8.');
+assert.equal(atlas.frontier_stack[2].id,'EO_REDUNDANCY_V06','Prior GREEN redundancy control must remain retrievable behind the stage-collapse frontier.');
+assert.equal(atlas.frontier_stack[3].id,'EO_FOUNDATIONAL_SIEVE_V05');
 
 assert.deepEqual(
   Object.keys(atlas.graph_descent).sort(),
@@ -52,9 +53,13 @@ assert.deepEqual(
   '30K reentry graph descent must cover exactly the declared Atelier graph families without inventing or dropping a family.'
 );
 
+assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('audit receipt wrapper')),'Receipt-wrapper demotion must survive thread boundaries.');
+assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('null widening selection')),'Null-selection non-identification result must survive thread boundaries.');
+assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('Question selection')),'Selection/held-out validation separation must survive thread boundaries.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('does not uniquely identify its internal stage order')),'Negative PRCS-A identification result must be high-salience on reentry.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('does not universally force semantic redundancy upward')),'Redundancy counterexample must survive thread boundaries.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('shared arrow glyph') || x.includes('Shared arrow glyph')),'Primitive-glyph/operator-type separation must survive thread boundaries.');
+assert.ok(atlas.held_questions.some(x=>x.includes('second independent repository family') || x.includes('source-bound retrieval episode')),'v0.8 independent-family continuation must remain retrievable.');
 assert.ok(atlas.held_questions.some(x=>x.includes('stage-collapse')),'Source-bound PRCS-A stage-collapse continuation must remain retrievable.');
 assert.equal(atlas.cross_atelier_rule.interchange.includes('do not raw-union'),true,'Cross-Atelier reentry may not launder graph families together.');
 assert.equal(atlas.user_supplied_public_post_continuity_note.status,'USER_SUPPLIED_TEXT_NOT_INDEPENDENTLY_VERIFIED_AS_TO_PROVENANCE');
