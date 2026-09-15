@@ -15,8 +15,6 @@ const assay = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
 const operation = fs.readFileSync(operationPath, 'utf8');
 const source = await sourceSet({ assurance: 'L0_METADATA_ONLY' });
 
-const failingReplay = async () => ({ status: 'ROUND_TRIP_REPLAY_FAILED_HELD_OUT_CONTROL' });
-
 const cases = [];
 
 cases.push({
@@ -69,13 +67,18 @@ cases.push({
   expectedLocalization: 'APERTURE_ROUNDTRIP_SCHEMA'
 });
 
+const apertureReplayTamper = structuredClone(source.roundTrip);
+apertureReplayTamper.context.receipt.missingness = [
+  ...(apertureReplayTamper.context.receipt.missingness || []),
+  'tampered-after-round-trip-digest-v011'
+];
 cases.push({
   id: 'APERTURE_REPLAY_FAILURE',
   ash: source.ash,
   flow: source.flow,
-  roundTrip: source.roundTrip,
+  roundTrip: apertureReplayTamper,
   routeScope: 'v011-aperture-replay',
-  options: { replay: failingReplay },
+  options: {},
   expectedTerminal: 'HOLD',
   expectedLocalization: 'APERTURE_ROUNDTRIP_REPLAY'
 });
