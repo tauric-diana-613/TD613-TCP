@@ -118,6 +118,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
   await import('./marrowline-mobile-shell.js');
   await import('./marrowline-operator-readiness.js');
   await import('./marrowline-gate-pedagogue.js');
+  await import('./marrowline-loom-pocket.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
@@ -126,6 +127,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     operatorReadiness: Boolean(root.__TD613_MARROWLINE_OPERATOR_READINESS__),
     gatePedagogue: Boolean(root.__TD613_MARROWLINE_GATE_PEDAGOGUE__),
+    loomPocketLoaded: true,
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
       version: APERTURE_V3_VERSION,

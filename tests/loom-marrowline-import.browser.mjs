@@ -13,17 +13,19 @@ const base = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
 if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) throw new TypeError('Marrowline import witness requires a local server.');
 const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-marrowline-import/${engine}`;
 await fs.mkdir(dir, { recursive: true });
-const report = { schema: 'td613.loom.marrowline-import-browser-witness/v0.1', engine, status: 'HELD',
+const report = { schema: 'td613.loom.marrowline-import-browser-witness/v0.3-aia-pocket-attachments', engine, status: 'HELD',
   source_sha: process.env.TD613_SOURCE_HEAD || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   checkout_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   workflow_run_id: process.env.GITHUB_RUN_ID || null, run_attempt: process.env.GITHUB_RUN_ATTEMPT || null,
   working_tree_dirty: Boolean(execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim()),
   observed_at: new Date().toISOString(), context: 'REAL_LOCAL_UI_NAVIGATION_WITH_MOCK_PROVIDER_RESPONSE',
-  live_provider_calls: 0, intercepted_task_requests: 0, external_host_observed: false, human_comprehension_measured: false,
+  live_provider_calls: 0, intercepted_task_requests: 0, intercepted_marrowline_requests: 0, external_host_observed: false, human_comprehension_measured: false,
   checks: [], failures: [] };
 const project = LOOM_AI_PROJECTS[0];
 const shared = project.documents.filter(document => document.share).map(({ id, name, text }) => ({ id, name, text }));
 const uploadCanary = 'LOCAL_UPLOAD_HANDOFF_CANARY_613';
+const addedFileCanary = 'MARROWLINE_OPERATOR_FILE_613';
+const tinyPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2n0kAAAAASUVORK5CYII=', 'base64');
 const mockAnswer = '[MOCK PROVIDER RESPONSE — MARROWLINE UI WITNESS] Vendor comparison retained. <img src=x onerror="window.loomInjected=true">';
 let browser;
 try {
@@ -31,11 +33,13 @@ try {
   for (const [posture, viewport, reducedMotion] of [['desktop', { width: 1280, height: 900 }, 'no-preference'], ['mobile-reduced', { width: 390, height: 844 }, 'reduce']]) {
     const page = await browser.newPage({ viewport, reducedMotion, acceptDownloads: true });
     page.setDefaultTimeout(12000);
-    const calls = [], errors = [], unexpected = [];
+    const calls = [], marrowlineCalls = [], errors = [], unexpected = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => {
       const url = new URL(request.url());
-      if (!['GET', 'HEAD'].includes(request.method()) && !(url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task')) unexpected.push({ method: request.method(), url: request.url() });
+      const isLoomTask = url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task';
+      const isMarrowline = url.pathname === '/api/dome-world/khonapolit';
+      if (!['GET', 'HEAD'].includes(request.method()) && !isLoomTask && !isMarrowline) unexpected.push({ method: request.method(), url: request.url() });
       if (url.hostname === 'generativelanguage.googleapis.com') unexpected.push({ direct_provider_request: request.url() });
     });
     await page.route(url => url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task', async route => {
@@ -48,6 +52,17 @@ try {
         suggested_next_step: 'Review the supplied retention clauses before a pilot.',
         observations: { model: 'MOCK_PROVIDER_UI_WITNESS', elapsed_ms: 31, provider_calls: 1, source_claims: 'model-reported-unverified' }
       }) });
+    });
+    await page.route(url => url.pathname === '/api/dome-world/khonapolit', async route => {
+      const request = route.request();
+      if (request.method() === 'GET') return route.fulfill({ status: 200, json: { ok: true, hasGeminiKey: true, modelPolicy: { callableModels: ['MOCK_MARROWLINE'] } } });
+      const input = request.postDataJSON();
+      marrowlineCalls.push(input); report.intercepted_marrowline_requests++;
+      return route.fulfill({ status: 200, json: {
+        ok: true, text: 'Attachments admitted by the synthetic Marrowline witness.',
+        relay: { apertureHeader: 'SYNTHETIC ATTACHMENT ROUTE', signal: { state: 'LOCKED' }, parts: [{ id: 'gemini', label: 'Gemini', present: true, text: 'Attachments admitted by the synthetic Marrowline witness.' }] },
+        receipt: { provider: { model: 'MOCK_MARROWLINE' }, relay: { signal: { state: 'LOCKED' } }, seal: { state: 'OPEN' }, emergence: { classification: 'SYNTHETIC' } }
+      } });
     });
     try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
@@ -73,25 +88,94 @@ try {
       assert.equal(exported.governance.verification.all_invariants_preserved, true);
       assert.equal(exported.governance.projections.length, 4);
       assert.equal(exported.governance.withheld_document_count, project.documents.filter(document => !document.share).length + 1);
+
       await page.locator('#aiMarrowline').click();
       await page.waitForURL(url => url.pathname === '/dome-world/marrowline.html');
-      await page.locator('#loomImportedTask').waitFor({ state: 'visible' });
+      await page.locator('#marrowlineAiaToggle').waitFor({ state: 'visible' });
       assert.equal(new URL(page.url()).hash, '', 'opaque token consumed and removed from destination URL');
-      assert.equal(await page.locator('#loomImportedTask').inputValue(), project.task);
-      assert.equal(await page.locator('#loomImportedTask').getAttribute('readonly'), '', 'governed task stays bound at receiver');
       assert.equal(calls.length, 0, 'arrival makes zero provider requests');
-      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'active');
-      assert.equal(await page.locator('.living-workspace').isVisible(), true, 'imported context lands inside the living Marrowline workspace');
-      if (posture === 'desktop') assert.equal(await page.locator('.terminal-layout').isVisible(), true, 'desktop Marrowline remains available around imported context');
-      if (posture.startsWith('mobile')) assert.equal(await page.locator('.mobile-dock').isVisible(), true, 'mobile Marrowline navigation remains available around imported context');
-      const closeImported = page.getByRole('button', { name: 'Close imported context and keep Marrowline open', exact: true });
-      assert.equal(await closeImported.isVisible(), true, 'imported context exposes an explicit return to ordinary Marrowline');
-      assert.equal(await page.getByRole('link', { name: 'Return to Loom', exact: true }).isVisible(), true, 'Loom return route remains explicit');
+      assert.equal(marrowlineCalls.length, 0, 'arrival makes zero ordinary Marrowline requests');
+      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'staged');
+      assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false, 'Loom context is staged rather than blocking Marrowline on arrival');
+      assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true, 'ordinary Marrowline composer remains immediately usable');
+      assert.equal(await page.locator('.living-workspace').isVisible(), true, 'living Marrowline remains the primary surface');
+      assert.equal(await page.locator('.terminal-layout').isVisible(), true, 'Marrowline terminal remains visible around the staged handoff');
+      if (posture.startsWith('mobile')) assert.equal(await page.locator('.mobile-dock').isVisible(), true, 'mobile Marrowline navigation remains available');
+      assert.match(await page.locator('#marrowlineAiaSummary').textContent(), /selected file/);
+      assert.match(await page.locator('#khonapolitTerminalStatus').textContent(), /LOOM CONTEXT READY/);
+
       const destinationText = await page.locator('#loomImportedWorkspace').textContent();
       assert.equal(destinationText.includes(uploadCanary), false);
       for (const term of project.protectedTerms) assert.equal(destinationText.includes(term), false, 'private term omitted from destination');
       for (const document of shared) assert.equal(destinationText.includes(document.text), true, 'selected documents arrive intact');
-      await page.locator('#loomImportedWorkspace').screenshot({ path: path.join(dir, `${posture}-imported-before-request.png`) });
+
+      await page.locator('#marrowlineAiaToggle').click();
+      assert.equal(await page.locator('#marrowlineAiaMenu').isVisible(), true, 'plus opens a consequence-first Loom context menu');
+      assert.match(await page.locator('#marrowlineAiaMenu').textContent(), /Nothing is sent until you choose an action/);
+      assert.equal(await page.locator('#marrowlineAiaAddFile').isVisible(), true, 'drop-up exposes Add file');
+      assert.equal(await page.locator('#marrowlineAiaAddPhoto').isVisible(), true, 'drop-up exposes Add photo');
+      assert.match(await page.locator('#marrowlineAiaAddFile').textContent(), /next Marrowline message/i);
+      assert.match(await page.locator('#marrowlineAiaAddPhoto').textContent(), /next Marrowline message/i);
+      assert.equal(calls.length, 0, 'opening the AIA pocket makes zero provider requests');
+
+      const fileChooserPromise = page.waitForEvent('filechooser');
+      await page.locator('#marrowlineAiaAddFile').click();
+      const fileChooser = await fileChooserPromise;
+      await fileChooser.setFiles({ name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) });
+      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
+      const photoChooserPromise = page.waitForEvent('filechooser');
+      await page.locator('#marrowlineAiaToggle').click();
+      await page.locator('#marrowlineAiaAddPhoto').click();
+      const photoChooser = await photoChooserPromise;
+      await photoChooser.setFiles({ name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng });
+      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 2);
+      assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-note\.txt/);
+      assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-photo\.png/);
+      assert.equal(marrowlineCalls.length, 0, 'selecting attachments remains local until explicit Marrowline send');
+
+      await page.locator('#khonapolitPrompt').fill('Use both attached items as user-supplied context.');
+      await page.locator('#khonapolitSend').click();
+      await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
+      assert.equal(marrowlineCalls.length, 1, 'one deliberate Marrowline send makes one ordinary request');
+      assert.equal(marrowlineCalls[0].attachments.length, 2, 'both staged attachments cross only on explicit send');
+      assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.kind).sort(), ['file', 'photo']);
+      assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.mime_type).sort(), ['image/png', 'text/plain']);
+      assert.equal(marrowlineCalls[0].attachments.find(item => item.kind === 'file').data_base64, Buffer.from(addedFileCanary).toString('base64'));
+      assert.equal(await page.locator('#marrowlineAttachmentTray [data-attachment-id]').count(), 0, 'successful send clears only the ephemeral attachment tray');
+
+      await page.locator('#marrowlineAiaToggle').click();
+      const pocketDownloadPromise = page.waitForEvent('download');
+      await page.locator('#marrowlineAiaExport').click();
+      const pocketDownload = await pocketDownloadPromise; const pocketStream = await pocketDownload.createReadStream();
+      const pocketChunks = []; for await (const chunk of pocketStream) pocketChunks.push(chunk);
+      const pocketExport = JSON.parse(Buffer.concat(pocketChunks).toString('utf8'));
+      assert.equal(pocketExport.schema, 'td613.loom.portable-task/v0.1');
+      assert.deepEqual(pocketExport.documents, shared);
+      assert.equal(calls.length, 0, 'export from Marrowline pocket makes zero Loom provider requests');
+
+      await page.locator('#marrowlineAiaToggle').click();
+      await page.locator('#marrowlineAiaReview').click();
+      await page.locator('#loomImportedTask').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#loomImportedTask').inputValue(), project.task);
+      assert.equal(await page.locator('#loomImportedTask').getAttribute('readonly'), '', 'governed task stays bound at receiver');
+      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'active');
+      assert.equal(calls.length, 0, 'reviewing staged context makes zero provider requests');
+      assert.equal(await page.locator('#loomImportedDocuments').getAttribute('open'), '', 'review action opens selected documents');
+      assert.equal(await page.locator('#loomImportedRules').getAttribute('open'), '', 'review action opens portable rules');
+      await page.locator('#loomImportedWorkspace').screenshot({ path: path.join(dir, `${posture}-pocket-review-before-request.png`) });
+
+      const closeImported = page.getByRole('button', { name: 'Back to Marrowline chat', exact: true });
+      assert.equal(await closeImported.isVisible(), true, 'staged context exposes an explicit return to ordinary Marrowline');
+      assert.equal(await page.getByRole('link', { name: 'Return to Loom', exact: true }).isVisible(), true, 'Loom return route remains explicit inside the imported workspace');
+      await closeImported.click();
+      assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false, 'operator can dismiss only the imported context');
+      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'staged', 'dismissal returns context to staged pocket state');
+      assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true, 'ordinary Marrowline survives pocket dismissal');
+      assert.equal(calls.length, 0, 'closing imported context makes no Loom provider request');
+
+      await page.locator('#marrowlineAiaToggle').click();
+      await page.locator('#marrowlineAiaContinue').click();
+      await page.locator('#loomImportedTask').waitFor({ state: 'visible' });
       await page.locator('#loomImportedRun').click();
       await page.waitForFunction(expected => document.querySelector('#loomImportedAnswer')?.textContent.includes(expected), mockAnswer);
       assert.equal(calls.length, 1, 'one deliberate imported Run makes one POST');
@@ -116,15 +200,20 @@ try {
       assert.equal(calls.length, 1, 'REST prevents another provider request');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'destination fits viewport');
       assert.deepEqual(errors, [], 'no page runtime errors'); assert.deepEqual(unexpected, [], 'no unrelated mutations or direct provider calls');
+
       await closeImported.click();
-      assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false, 'operator can dismiss only the imported context');
-      assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), null, 'dismissal clears imported-context state');
-      assert.equal(await page.locator('.living-workspace').isVisible(), true, 'ordinary Marrowline survives imported-context dismissal');
-      assert.equal(calls.length, 1, 'closing imported context makes no provider request');
+      assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false);
+      await page.goto(`${base}/dome-world/marrowline.html`, { waitUntil: 'networkidle' });
+      assert.equal(await page.locator('#marrowlineAiaToggle').count(), 0, 'AIA plus stays asleep on a direct Marrowline visit without a consumed Loom handoff');
+      assert.equal(await page.locator('#marrowlineAiaAddFile').count(), 0, 'attachment ingress stays asleep without a consumed Loom handoff');
+      assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true);
+
       report.checks.push({ posture, status: 'PASS', actual_ui_handoff: true, document_upload_local_only: true, opaque_url_consumed: true,
-        arrival_calls: 0, explicit_run_calls: 1, control_conserved: true, fadt_admission: true, response_inert: true,
+        arrival_calls: 0, staged_pocket_on_arrival: true, composer_immediately_available: true, attachment_ingress_present: true,
+        attachment_selection_calls: 0, explicit_attachment_send_calls: 1, pocket_review_calls: 0, pocket_export_calls: 0,
+        explicit_run_calls: 1, control_conserved: true, fadt_admission: true, response_inert: true,
         rest_prevents_request: true, source_bytes_excluded: true, living_marrowline_preserved: true, imported_context_dismissible: true,
-        reduced_motion: reducedMotion, no_horizontal_overflow: true });
+        pocket_asleep_without_handoff: true, reduced_motion: reducedMotion, no_horizontal_overflow: true });
     } catch (error) {
       report.failures.push({ posture, error: error.stack });
       await page.screenshot({ path: path.join(dir, `${posture}-failure.png`), fullPage: true }).catch(() => {});

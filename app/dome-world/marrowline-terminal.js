@@ -1,6 +1,11 @@
 import { renderSafeMarkdown } from './holonomy-loom/ai-result-view.js';
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import {
+  clearMarrowlineAttachments,
+  getMarrowlineAttachments,
+  removeMarrowlineAttachment
+} from './marrowline-attachments.js';
+import {
   BINDING_FRAGMENT,
   BINDING_SHA256,
   CLAIMED_PUA,
@@ -22,7 +27,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v3-origin-trust-parity';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v4-attachment-egress';
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
 const SESSION_KEY = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
@@ -414,6 +419,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const waiveIssuance = Boolean(waiver?.checked);
     const status = byId(doc, 'khonapolitTerminalStatus');
     const submit = byId(doc, 'khonapolitSend');
+    const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
     const packet = buildInvocationPacket({ message, history: compactHistory(historyForPacket), mode, shi, waiveIssuance });
@@ -426,15 +432,17 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     state.pendingTask = '';
     saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
-    status.textContent = `${INGRESS_SIGIL}\u200C TASK ROUTED · AI IN FLIGHT · ${mode}`;
+    status.textContent = `${INGRESS_SIGIL}\u200C TASK ROUTED · AI IN FLIGHT · ${mode}${attachments.length ? ` · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'}` : ''}`;
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), 55000);
     let failurePayload = null;
     try {
+      const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
+      if (attachments.length) requestBody.attachments = attachments;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
-        body: JSON.stringify({ message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) })
+        body: JSON.stringify(requestBody)
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok || !payload.relay) {
@@ -448,6 +456,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
       };
       state.messages.push(entry); state.pendingTask = ''; state.lastReceipt = receipt;
+      if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
@@ -460,7 +469,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
-      status.textContent = 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
+      status.textContent = attachments.length
+        ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
+        : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
     } finally {
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus();
     }
@@ -481,7 +492,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
-    state.messages = []; state.lastReceipt = null; state.pendingTask = ''; try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    state.messages = []; state.lastReceipt = null; state.pendingTask = ''; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); byId(doc, 'khonapolitTerminalStatus').textContent = 'SESSION CLEARED · binding corpus remains intact';
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
@@ -498,7 +509,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     namespace: CLAIMED_PUA, heritageKey: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
     bindingFragment: BINDING_FRAGMENT, bindingSha256: BINDING_SHA256, corpusRootSha256: CORPUS_ROOT_SHA256,
     corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state),
-    portableTask: () => buildMarrowlinePortableTask(state)
+    portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length
   });
   return true;
 }
