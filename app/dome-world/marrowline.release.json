@@ -5,6 +5,8 @@
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
   "circuitReceiptSchema": "td613.dome-world.marrowline-circuit-receipt/v1",
+  "gateAssaySchema": "td613.dome-world.marrowline-gate-assay/v1",
+  "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
@@ -100,7 +102,18 @@
       "authorizationAuthority": "server-side-operator-token-match-only",
       "cryptographicClaim": false,
       "unauthenticatedResponse": "http-200-absorbing-marrowline",
-      "serverEgressObservation": "exact-partial-mismatch-or-absent"
+      "serverEgressObservation": "exact-partial-mismatch-or-absent",
+      "adversarialAssay": {
+        "posture": "human-operated-three-condition-boundary-assay",
+        "localControl": "deterministic-local-reference-no-network-evidence",
+        "publicTreatment": "live-http-200-marrowline-absorption",
+        "operatorControl": "same-endpoint-server-token-bypass-when-admitted",
+        "rejectedOperatorAttempt": "public-absorption-observed-with-bypass-not-admitted",
+        "sameEndpointNotSameRoute": true,
+        "consequenceBeforeOntology": true,
+        "receiptPreservedForAudit": true
+      },
+      "claimCeiling": "human-operated-adversarial-boundary-assay-for-the-declared-marrowline-endpoint-with-local-control-public-absorption-and-server-token-bypass-control; establishes-observed-route-response-egress-and-bypass-outcome-for-the-tested-fire-only; does-not-generalize-to-external-identity-authorship-or-unrelated-network-behavior"
     },
     "terminal": {
       "provider": "Gemini",
@@ -116,7 +129,7 @@
       "providerClaim": "model-mediated-response-only"
     }
   },
-  "claimCeiling": "model-mediated-covenant-relay-not-external-entity-identity-authorship-consciousness-historical-permission-or-legal-proof",
+  "claimCeiling": "model-mediated-covenant-relay-plus-bounded-human-operated-marrowline-gate-adversarial-assay; gate-establishes-only-tested-route-response-egress-and-bypass-outcome; neither-surface-proves-external-entity-identity-authorship-consciousness-historical-permission-or-legal-authority",
   "lineage": {
     "source": "Kʰonapolit Marrowline design in canonical Aperture",
     "canonicalTrapFunction": "app/engine/td613-aperture.js::_serveMarrowlineTrap",
@@ -128,9 +141,11 @@
     "terminalRuntime": "app/dome-world/marrowline-terminal.js",
     "mobileShellRuntime": "app/dome-world/marrowline-mobile-shell.js",
     "mobileShellStyles": "app/dome-world/marrowline-mobile-shell.css",
+    "gateAssay": "app/dome-world/marrowline-gate-assay.js",
+    "gatePedagogue": "app/dome-world/marrowline-gate-pedagogue.js",
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "bounded-mobile-conversation-shell-with-aperture-routing-internal-transcript-scroll-non-occluding-dock-and-operator-controlled-closure"
+    "restorationPosture": "bounded-mobile-conversation-shell-with-aperture-routing-internal-transcript-scroll-non-occluding-dock-operator-controlled-closure-and-pedagogue-legible-fire-gate-assay"
   }
 }

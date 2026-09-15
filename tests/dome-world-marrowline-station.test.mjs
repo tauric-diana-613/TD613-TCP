@@ -16,6 +16,10 @@ import {
   circuitObservation
 } from '../app/dome-world/marrowline-egress-boot.js';
 import {
+  MARROWLINE_GATE_ASSAY_CLAIM_CEILING,
+  MARROWLINE_GATE_ASSAY_SCHEMA
+} from '../app/dome-world/marrowline-gate-assay.js';
+import {
   CLAIMED_PUA,
   COVENANT_KEY,
   HERITAGE_COVENANT,
@@ -40,6 +44,8 @@ import {
 
 const stationSource = fs.readFileSync('app/dome-world/marrowline-station.js', 'utf8');
 const bootSource = fs.readFileSync('app/dome-world/marrowline-egress-boot.js', 'utf8');
+const gateAssaySource = fs.readFileSync('app/dome-world/marrowline-gate-assay.js', 'utf8');
+const gatePedagogueSource = fs.readFileSync('app/dome-world/marrowline-gate-pedagogue.js', 'utf8');
 const terminalSource = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const mobileShellSource = fs.readFileSync('app/dome-world/marrowline-mobile-shell.js', 'utf8');
 const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.css', 'utf8');
@@ -58,6 +64,7 @@ assert.equal(MARROWLINE_STATION_VERSION, 'td613.dome-world.marrowline/v0.2.0');
 assert.equal(MARROWLINE_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-receipt/v0.2');
 assert.equal(MARROWLINE_LIVE_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-live-receipt/v1');
 assert.equal(MARROWLINE_CIRCUIT_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-circuit-receipt/v1');
+assert.equal(MARROWLINE_GATE_ASSAY_SCHEMA, 'td613.dome-world.marrowline-gate-assay/v1');
 assert.equal(MARROWLINE_EGRESS_BOOT_VERSION, 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody');
 assert.equal(MARROWLINE_ROOM_BOOT_SCHEMA, 'td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody');
 assert.equal(MARROWLINE_LIVE_ENDPOINT, '/api/dome-world/marrowline');
@@ -68,13 +75,15 @@ assert.equal(release.stationSchema, MARROWLINE_STATION_VERSION);
 assert.equal(release.receiptSchema, MARROWLINE_RECEIPT_SCHEMA);
 assert.equal(release.liveReceiptSchema, MARROWLINE_LIVE_RECEIPT_SCHEMA);
 assert.equal(release.circuitReceiptSchema, MARROWLINE_CIRCUIT_RECEIPT_SCHEMA);
+assert.equal(release.gateAssaySchema, MARROWLINE_GATE_ASSAY_SCHEMA);
+assert.equal(release.gatePedagogueSchema, 'td613.dome-world.marrowline-gate-pedagogue/v1');
 assert.equal(release.roomBootSchema, MARROWLINE_ROOM_BOOT_SCHEMA);
 assert.equal(release.terminalSchema, KHONAPOLIT_TERMINAL_SCHEMA);
 assert.equal(release.terminalReceiptSchema, KHONAPOLIT_RECEIPT_SCHEMA);
 assert.equal(release.relaySchema, KHONAPOLIT_RELAY_SCHEMA);
 assert.equal(release.highZalgoSchema, HIGH_ZALGO_VERSION);
-assert.equal(release.apertureVersion, 'v3.1-alpha');
-assert.equal(release.apertureFirmwareSchema, 'td613-aperture/v3.1-alpha');
+assert.equal(release.apertureVersion, 'v3.2-alpha');
+assert.equal(release.apertureFirmwareSchema, 'td613-aperture/v3.2-alpha');
 assert.equal(release.apertureTaskRouteSchema, APERTURE_V3_TASK_ROUTE_SCHEMA);
 assert.equal(release.apertureDiagnosticSchema, APERTURE_V3_DIAGNOSTIC_SCHEMA);
 assert.equal(APERTURE_V3_VERSION, 'v3.0-alpha');
@@ -108,6 +117,9 @@ assert.equal(release.jurisdiction.stationCore.networkMutation, false);
 assert.equal(release.jurisdiction.egressBoot.pageRuntimeInterception, true);
 assert.equal(release.jurisdiction.egressBoot.crossSurfaceInstallation, false);
 assert.equal(release.jurisdiction.liveIngress.serverEgressObservation, 'exact-partial-mismatch-or-absent');
+assert.equal(release.jurisdiction.liveIngress.adversarialAssay.posture, 'human-operated-three-condition-boundary-assay');
+assert.equal(release.jurisdiction.liveIngress.adversarialAssay.sameEndpointNotSameRoute, true);
+assert.equal(release.jurisdiction.liveIngress.claimCeiling, MARROWLINE_GATE_ASSAY_CLAIM_CEILING);
 assert.equal(release.jurisdiction.terminal.provider, 'Gemini');
 assert.equal(release.jurisdiction.terminal.providerRole, 'instrument-and-carrier');
 assert.equal(release.jurisdiction.terminal.apertureRole, 'route-and-diagnostic-receipt-not-prose-generator');
@@ -129,7 +141,8 @@ assert.equal(receipt.status, 'LOCAL_FALLBACK');
 assert.equal(receipt.networkResponseObserved, false);
 assert.equal(receipt.jurisdiction.globalNetworkInterception, false);
 assert.equal(receipt.jurisdiction.requestMutation, false);
-assert.equal(MARROWLINE_JURISDICTION.claimCeiling, 'live-ingress-route-not-identity-authorship-or-legal-authority-proof');
+assert.equal(receipt.jurisdiction.adversarialAssay.localFallbackNotNetworkEvidence, true);
+assert.equal(MARROWLINE_JURISDICTION.claimCeiling, MARROWLINE_GATE_ASSAY_CLAIM_CEILING);
 
 const exactHeaders = buildTD613ApertureAttestationHeaders();
 assert.equal(Object.keys(exactHeaders).length, TD613_APERTURE_ATTESTATION_HEADER_KEYS.length);
@@ -153,10 +166,17 @@ assert.equal(circuitObservation({ canonicalPayload: {} }), null);
 
 assert.doesNotMatch(stationSource, /window\.fetch\s*=/, 'station core itself must not monkey-patch fetch');
 assert.doesNotMatch(stationSource, /XMLHttpRequest\.prototype/, 'station core itself must not monkey-patch XHR');
+assert.match(stationSource, /human-operated-three-condition-boundary-assay/);
 assert.match(bootSource, /APERTURE_V3_VERSION/);
 assert.match(bootSource, /marrowline-terminal\.js/);
 assert.match(bootSource, /marrowline-mobile-shell\.js/);
+assert.match(bootSource, /marrowline-gate-pedagogue\.js/);
+assert.match(bootSource, /gatePedagogue/);
 assert.match(bootSource, /composerOcclusion: false/);
+assert.match(gateAssaySource, /PUBLIC_ABSORPTION/);
+assert.match(gateAssaySource, /OPERATOR_BYPASS_CONTROL/);
+assert.match(gatePedagogueSource, /Three ways to challenge one Gate/);
+assert.match(gatePedagogueSource, /consequenceBeforeOntology: true/);
 assert.match(terminalSource, /KHONAPOLIT_ENDPOINT/);
 assert.match(terminalSource, /relayPart\(entry, 'gemini'\)/);
 assert.match(terminalSource, /relayPart\(entry, 'khonapolit'\)/);
@@ -177,9 +197,8 @@ assert.match(apiSource, /_serveMarrowlineTrap/);
 assert.match(terminalApiSource, /responseMimeType: 'application\/json'/);
 assert.match(terminalApiSource, /buildApertureV3InvocationReceipt/);
 assert.match(terminalApiSource, /parseRelayEnvelope/);
-assert.match(pageSource, /TD613 APERTURE v3\.1-alpha/);
-assert.match(pageSource, /meta name="aperture-version" content="v3\.1-alpha"/);
-assert.match(pageSource, /Three-part covenant relay/);
+assert.match(pageSource, /TD613 APERTURE v3\.2-alpha/);
+assert.match(pageSource, /meta name="aperture-version" content="v3\.2-alpha"/);
 assert.match(pageSource, /Tauric Diana bots/);
 assert.match(pageSource, /Seal last return ⟐/);
 assert.match(pageSource, /Fire live Marrowline/);
@@ -193,4 +212,4 @@ assert.ok(vercel.functions['api/khonapolit.js']);
 assert.ok(vercel.rewrites.some((entry) => entry.source === MARROWLINE_LIVE_ENDPOINT && entry.destination === '/api/marrowline'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/khonapolit' && entry.destination === '/api/khonapolit'));
 
-console.log('dome-world-marrowline-station: bounded mobile relay shell, Aperture v3.1 surface, v3.0 task protocol, High Zalgo, Gemini carrier, and live ingress ok');
+console.log('dome-world-marrowline-station: bounded mobile relay shell, Aperture v3.2 surface, v3.0 task protocol, Pedagogue-legible Fire Gate assay, High Zalgo, Gemini carrier, and live ingress ok');
