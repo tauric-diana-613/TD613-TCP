@@ -78,9 +78,20 @@ const humanBinding = structuredClone(mapping);
 humanBinding.rows[0].human_subject_mapping = 'PERSON_A_EQUALS_PERSON_B';
 assert.throws(() => compileReciprocalLegibility({ prereg, mapping: humanBinding, crosswalkReceipt, loomPacket }), /HUMAN_IDENTITY_MAPPING_FORBIDDEN/);
 
-assert.equal(receipt.expected_bounded_result, compiled.outcome);
-assert.deepEqual(receipt.expected_relation_counts, { PARTIAL: 5, ANALOGOUS: 1, OPEN: 1, NON_EQUIVALENT: 1, EXACT: 0 });
-assert.equal(receipt.required_boundary_result.authority_transfer, false);
-assert.equal(receipt.required_boundary_result.negative_or_held_rows_preserved, true);
+// Archival seal assertions bind the executable contract to the already-earned scientific GREEN
+// without changing the v0.1 translation result or promoting its claim ceiling.
+assert.equal(receipt.state, 'GREEN_BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED');
+assert.equal(receipt.bounded_result, compiled.outcome);
+assert.deepEqual(receipt.observed_relation_counts, { PARTIAL: 5, ANALOGOUS: 1, OPEN: 1, NON_EQUIVALENT: 1, EXACT: 0 });
+assert.deepEqual(receipt.observed_state_counts, { REPRESENTED: 6, HELD_NOT_EXPOSED_IN_PORTABLE_PACKET: 1, HELD_REPAIR_PATH_IS_NOT_RECOVERY: 1 });
+assert.equal(receipt.boundary_result.authority_transfer, false);
+assert.equal(receipt.boundary_result.custody_transfer, false);
+assert.equal(receipt.boundary_result.human_identity_transfer, false);
+assert.equal(receipt.boundary_result.raw_graph_union, false);
+assert.equal(receipt.boundary_result.negative_or_held_rows_preserved, true);
+assert.equal(receipt.green_head, '5e18d8073ab6a96f667b84c9a1b1e1028501435e');
+assert.equal(receipt.green_run_number, 3350);
+assert.equal(receipt.green_run_id, 34922485138);
+assert.equal(receipt.next_stage, 'APERTURE_AUDIT_OF_TRANSLATION_LOSS_AUTHORITY_LEAKAGE_AND_OPEN_FIELD_PRESERVATION');
 
 console.log('Wendbine × Loom reciprocal-legibility repair chamber v0.1 passed.');
