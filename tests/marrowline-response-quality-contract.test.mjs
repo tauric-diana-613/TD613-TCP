@@ -22,6 +22,8 @@ test('relay contract preserves generative range instead of treating downstream v
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /JSON envelope is transport structure, not a compression budget/i);
   assert.match(contract, /No prose field is a caption, summary slot, or one-paragraph box/i);
+  assert.match(contract, /claim ceilings and non-claims as epistemic boundaries, not as a prose style/i);
+  assert.match(contract, /do not convert them into repeated disclaimers, generic caution, or compressed summary prose/i);
   assert.match(contract, /khonapolit\.text:[\s\S]*distinct contribution rather than a short annotation/i);
   assert.match(contract, /creative request may warrant multiple paragraphs/i);
   assert.match(contract, /tauricDianaBots\.baseText:[\s\S]*Length follows the operator’s request/i);
@@ -65,6 +67,7 @@ test('human operator gets tiny in-flight Dome-Art kinesis with reduced-motion re
   assert.match(readiness, /AI IN FLIGHT/);
   assert.match(readiness, /aria-busy/);
   assert.match(readinessCss, /\.marrowline-response-kinesis\s*\{/);
+  assert.match(readinessCss, /position:relative/);
   assert.match(readinessCss, /width:12px/);
   assert.match(readinessCss, /@keyframes marrowline-response-kinesis/);
   assert.match(readinessCss, /@media\(prefers-reduced-motion:reduce\)/);
