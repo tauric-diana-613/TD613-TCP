@@ -6,9 +6,32 @@ export const APERTURE_V3_DIAGNOSTIC_SCHEMA = 'td613.aperture.diagnostic-receipt/
 export const APERTURE_RUNTIME_LEVELS = Object.freeze(['NONE', 'BACKGROUND', 'MATERIAL', 'DISPOSITIVE']);
 export const APERTURE_DISCOURSE_MODES = Object.freeze(['GENERAL', 'LEGAL', 'SPECULATIVE', 'CREATIVE', 'TECHNICAL_RUNTIME']);
 
+const CREATIVE_FORM = /\b(story|stories|poem|poetry|scene|fiction|myth|mythology|lullaby|lyrics?|screenplay|script|dialogue|monologue|prose|narrative|fairy\s*tale|fable)\b/i;
+const CREATIVE_ACTION = /\b(tell|write|compose|create|draft|invent|imagine|continue|rewrite|retell|narrate|author|make)\b/i;
+const LEGAL_CUE = /\b(legal|law|lawsuit|statute|regulation|case\s+law|court|contract|attorney|jurisdiction|complaint|motion|brief)\b/i;
+const RUNTIME_CUE = /\b(runtime|stack\s*trace|traceback|http\s+status|api\s+error|deployment|build\s+failure|ci\s+failure|debug|diagnos(?:e|is|tic))\b/i;
+const SPECULATIVE_CUE = /\b(hypothetical|speculat(?:e|ion|ive)|what\s+if|theor(?:y|ize)|possibilit(?:y|ies)|counterfactual)\b/i;
+
 function normalize(value, allowed, fallback) {
   const candidate = String(value || '').trim().toUpperCase();
   return allowed.includes(candidate) ? candidate : fallback;
+}
+
+/**
+ * A deliberately narrow, local task-intent classifier. It is not a semantic
+ * authority and does not upgrade evidence. Its only job is to keep obvious
+ * creative/legal/runtime/speculative requests from inheriting an unrelated
+ * generation posture. Everything else remains ordinary requested synthesis.
+ */
+export function classifyApertureDiscourseMode(message = '') {
+  const text = String(message || '').trim();
+  if (!text) return 'GENERAL';
+  if (CREATIVE_FORM.test(text) && CREATIVE_ACTION.test(text)) return 'CREATIVE';
+  if (/\bcreative\s+(?:writing|piece|response|work)\b/i.test(text)) return 'CREATIVE';
+  if (LEGAL_CUE.test(text)) return 'LEGAL';
+  if (RUNTIME_CUE.test(text)) return 'TECHNICAL_RUNTIME';
+  if (SPECULATIVE_CUE.test(text)) return 'SPECULATIVE';
+  return 'GENERAL';
 }
 
 export function routeApertureTaskIntent(input = {}) {
@@ -38,7 +61,7 @@ export function routeApertureTaskIntent(input = {}) {
     surface_runtime: surfaceRuntime,
     runtime_receipt_only: !surfaceRuntime,
     automatic_redirect: false,
-    content_scanned: false,
+    content_scanned: input.contentScanned === true,
     law: 'requested synthesis governs; runtime surfaces only when material or dispositive'
   });
 }
@@ -48,12 +71,17 @@ export function buildApertureV3InvocationReceipt({
   invocationMode = 'issued-conjunction',
   issuanceState = 'UNRESOLVED',
   apertureEgress = null,
-  modelPlan = null
+  modelPlan = null,
+  discourseMode = 'SPECULATIVE',
+  runtimeMateriality = 'BACKGROUND',
+  runtimeRequested = false,
+  contentScanned = false
 } = {}) {
   const taskIntent = routeApertureTaskIntent({
-    discourseMode: 'SPECULATIVE',
-    runtimeMateriality: 'BACKGROUND',
-    runtimeRequested: false
+    discourseMode,
+    runtimeMateriality,
+    runtimeRequested,
+    contentScanned
   });
 
   return Object.freeze({

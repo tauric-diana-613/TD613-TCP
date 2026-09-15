@@ -1,6 +1,6 @@
 import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
 
-export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v1';
+export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v2-response-kinesis';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
 
 const MOBILE_QUERY = '(max-width: 860px)';
@@ -55,6 +55,61 @@ function installNativeSend(doc = document) {
     if (typeof form.requestSubmit === 'function') form.requestSubmit(submit || undefined);
     else submit?.click();
   });
+  return true;
+}
+
+function installResponseKinesis(doc = document, root = window) {
+  const status = byId(doc, 'khonapolitTerminalStatus');
+  const actions = doc.querySelector('#khonapolitForm .composer-actions');
+  const send = byId(doc, 'khonapolitSend');
+  const form = byId(doc, 'khonapolitForm');
+  if (!status || !actions || !send || !form) return false;
+  let mote = byId(doc, 'marrowlineResponseKinesis');
+  if (!mote) {
+    mote = doc.createElement('span');
+    mote.id = 'marrowlineResponseKinesis';
+    mote.className = 'marrowline-response-kinesis';
+    mote.hidden = true;
+    mote.setAttribute('aria-hidden', 'true');
+    mote.title = 'Response in flight';
+    actions.insertBefore(mote, send);
+  }
+  const sync = () => {
+    const busy = /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
+    mote.hidden = !busy;
+    form.setAttribute('aria-busy', busy ? 'true' : 'false');
+  };
+  const Observer = root.MutationObserver;
+  if (typeof Observer === 'function' && status.dataset.responseKinesisInstalled !== 'true') {
+    status.dataset.responseKinesisInstalled = 'true';
+    const observer = new Observer(sync);
+    observer.observe(status, { childList: true, characterData: true, subtree: true });
+    root.__TD613_MARROWLINE_RESPONSE_KINESIS_OBSERVER__ = observer;
+  }
+  sync();
+  return true;
+}
+
+function installHumanSurfaceVocabulary(doc = document, root = window) {
+  const messages = byId(doc, 'khonapolitMessages');
+  const scrub = () => {
+    doc.querySelectorAll('.route-card strong, .relay-stage-head > span:first-child').forEach((node) => {
+      const before = String(node.textContent || '');
+      const after = before
+        .replace(/Tauric Diana bots\?\s*→\s*High Zalgo\?/gi, 'Tauric Diana bots?')
+        .replace(/High Zalgo\?/gi, 'Tauric Diana bots?')
+        .replace(/\s*·\s*High Zalgo/gi, '');
+      if (after !== before) node.textContent = after;
+    });
+  };
+  scrub();
+  const Observer = root.MutationObserver;
+  if (messages && typeof Observer === 'function' && messages.dataset.humanRelayVocabularyInstalled !== 'true') {
+    messages.dataset.humanRelayVocabularyInstalled = 'true';
+    const observer = new Observer(scrub);
+    observer.observe(messages, { childList: true, subtree: true, characterData: true });
+    root.__TD613_MARROWLINE_HUMAN_VOCABULARY_OBSERVER__ = observer;
+  }
   return true;
 }
 
@@ -234,13 +289,20 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
   const mobile = root.matchMedia?.(MOBILE_QUERY);
   const sync = () => syncVisualViewport(doc, root);
   installNativeSend(doc);
+  installResponseKinesis(doc, root);
+  installHumanSurfaceVocabulary(doc, root);
   installTerminalHoldNotice(doc, root);
   installReadinessTruth(doc, root);
   installOperatorGate(doc, root);
 
   const prompt = byId(doc, 'khonapolitPrompt');
-  prompt?.addEventListener('focus', sync);
-  prompt?.addEventListener('blur', () => root.setTimeout(sync, 80));
+  const settleKeyboardPosture = () => {
+    root.setTimeout(sync, 0);
+    root.setTimeout(sync, 80);
+    root.setTimeout(sync, 220);
+  };
+  prompt?.addEventListener('focus', settleKeyboardPosture);
+  prompt?.addEventListener('blur', settleKeyboardPosture);
   root.visualViewport?.addEventListener?.('resize', sync, { passive: true });
   root.visualViewport?.addEventListener?.('scroll', sync, { passive: true });
   root.addEventListener?.('resize', sync, { passive: true });
@@ -254,6 +316,8 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
     shiftEnterNewline: true,
     visualViewportBound: Boolean(root.visualViewport),
     viewport,
+    responseKinesis: 'tiny-dome-art-inspired-in-flight-indicator',
+    humanSurfaceVocabulary: 'tauric-diana-bots-with-internal-zalgo-nomenclature-hidden',
     failureNotice: 'visible-transport-status-not-covenant-voice',
     gate: Object.freeze({ publicIngress: true, optionalHumanOperatorToken: true, tokenPersistence: 'none', authorization: 'server-side-token-match-only', adversarialAssay: 'same-endpoint-public-vs-operator-control' }),
     claimCeiling: 'human-interface-and-transport-readiness-not-provider-availability-entity-identity-authorship-or-legal-authority-proof',

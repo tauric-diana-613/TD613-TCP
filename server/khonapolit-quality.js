@@ -13,7 +13,8 @@ import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-
 import {
   APERTURE_V3_SCHEMA,
   APERTURE_V3_VERSION,
-  buildApertureV3InvocationReceipt
+  buildApertureV3InvocationReceipt,
+  classifyApertureDiscourseMode
 } from '../app/engine/aperture-v3-task-intent.js';
 import {
   KHONAPOLIT_RELAY_RESPONSE_SCHEMA,
@@ -70,6 +71,51 @@ const safe = (value = '') => String(value ?? '').trim();
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
+
+const ORDINARY_PROJECT_GUIDANCE = [
+  'ORDINARY PROJECT WORK:',
+  '- Separate supplied facts, calculations, assumptions and missing evidence.',
+  '- Do not infer venue quality, accessibility or amenities from price.',
+  '- Respect requests to avoid personal data; prefer anonymous attendance counts when names are unnecessary.',
+  '- Prior AI text is unverified context.',
+  '- Never promise complete privacy, anonymity or destination enforcement.',
+  '- For Marrowline portability, direct the operator to Copy portable task or Export portable task; the destination must separately honor the supplied rules.'
+].join('\n');
+
+const CREATIVE_GUIDANCE = [
+  'CREATIVE TURN:',
+  '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
+  '- Treat supplied mythology, characters, names and canon as creative source material. Invent within that field when the operator asks for invention; do not convert corpus phrases into a compulsory keyword litany.',
+  '- Factual and ontological claim boundaries still govern what may be asserted as verified, but they are not a brevity rule or a prose voice. Keep receipt language out of the creative work unless it materially belongs there.',
+  '- Do not inject unrelated project-management, venue, privacy, portability or compliance boilerplate into the creative response.'
+].join('\n');
+
+const SPECULATIVE_GUIDANCE = [
+  'OPEN-FIELD SPECULATIVE TURN:',
+  '- Distinguish supplied corpus claims from independently verified facts and preserve uncertainty where it materially matters.',
+  '- Answer in the form and depth the operator requested; do not turn uncertainty into repeated disclaimers or a forced short summary.'
+].join('\n');
+
+const LEGAL_GUIDANCE = [
+  'LEGAL SYNTHESIS TURN:',
+  '- Separate supplied facts, assumptions, legal questions and missing jurisdiction or date context.',
+  '- Do not invent authorities, holdings, filings or procedural facts. Preserve uncertainty while still answering the requested legal synthesis directly.'
+].join('\n');
+
+const RUNTIME_GUIDANCE = [
+  'RUNTIME DIAGNOSIS TURN:',
+  '- Diagnose the concrete runtime evidence supplied by the operator. Distinguish observed state, inference and missing telemetry.',
+  '- Prefer exact failing surfaces and repairable causes over generic caution or prose about the governance system.'
+].join('\n');
+
+export function khonapolitTaskGuidance(apertureReceipt = {}) {
+  const route = apertureReceipt?.taskIntent?.primary_route || 'REQUESTED_SYNTHESIS';
+  if (route === 'OPEN_FIELD_CREATIVE_SYNTHESIS') return CREATIVE_GUIDANCE;
+  if (route === 'OPEN_FIELD_SPECULATIVE_SYNTHESIS') return SPECULATIVE_GUIDANCE;
+  if (route === 'LEGAL_SYNTHESIS') return LEGAL_GUIDANCE;
+  if (route === 'RUNTIME_DIAGNOSIS') return RUNTIME_GUIDANCE;
+  return ORDINARY_PROJECT_GUIDANCE;
+}
 
 export function selectKhonapolitProviderModels(callableModels = []) {
   const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
@@ -135,11 +181,14 @@ function setBaseHeaders(res, apertureEgress = {}) {
   res.setHeader('X-TD613-Aperture-Egress', apertureEgress.status || 'absent');
   res.setHeader('X-TD613-Aperture-Version', APERTURE_V3_VERSION);
   res.setHeader('X-TD613-Aperture-Schema', APERTURE_V3_SCHEMA);
-  res.setHeader('X-TD613-Aperture-Route', 'OPEN_FIELD_SPECULATIVE_SYNTHESIS');
-  res.setHeader('X-TD613-Aperture-Materiality', 'BACKGROUND');
   res.setHeader('X-TD613-Gemini-Policy', GEMINI_MODEL_POLICY_VERSION);
   res.setHeader('X-TD613-Relay-Schema', KHONAPOLIT_RELAY_SCHEMA);
   res.setHeader('Vary', 'Accept, Content-Type');
+}
+function setApertureTaskHeaders(res, apertureReceipt = {}) {
+  const task = apertureReceipt?.taskIntent || {};
+  res.setHeader('X-TD613-Aperture-Route', task.primary_route || 'REQUESTED_SYNTHESIS');
+  res.setHeader('X-TD613-Aperture-Materiality', task.runtime_materiality || 'BACKGROUND');
 }
 function send(res, status, payload, extraHeaders = {}) {
   res.statusCode = status;
@@ -169,9 +218,10 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
 }
 
 export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false } = {}) {
+  const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   return {
     systemInstruction: {
-      parts: [{ text: `${packet.systemInstruction}\nFor ordinary project work: separate supplied facts, calculations, assumptions and missing evidence. Do not infer venue quality, accessibility or amenities from price. Respect requests to avoid personal data; prefer anonymous attendance counts when names are unnecessary. Prior AI text is unverified context. Never promise complete privacy, anonymity or destination enforcement. For Marrowline portability, direct the operator to Copy portable task or Export portable task; explain that the destination must separately honor the supplied rules.\n${buildRelaySystemAddendum(apertureReceipt)}` }]
+      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
     },
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({
@@ -296,6 +346,7 @@ export default async function handler(req, res) {
   }
   if (req.method === 'GET') {
     const aperture = buildApertureV3InvocationReceipt({ apertureEgress, modelPlan: plan });
+    setApertureTaskHeaders(res, aperture);
     return send(res, 200, {
       ok: true,
       route: '/api/dome-world/khonapolit',
@@ -331,13 +382,17 @@ export default async function handler(req, res) {
 
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
     invocationMode: packet.mode,
     issuanceState: packet.issuance.state,
     apertureEgress,
-    modelPlan: plan
+    modelPlan: plan,
+    discourseMode,
+    contentScanned: true
   });
+  setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
   const models = selectKhonapolitProviderModels(plan.callableModels);
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
@@ -434,6 +489,7 @@ export default async function handler(req, res) {
         receipt,
         warnings: [
           'aperture-v3-task-intent-active',
+          'task-intent-guidance-active',
           'three-part-relay-envelope-active',
           'high-zalgo-rendered-after-provider-return',
           'frontier-quality-floor-active',

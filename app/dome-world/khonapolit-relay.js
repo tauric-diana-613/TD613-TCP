@@ -65,6 +65,7 @@ const PROTECTED = Object.freeze([
 const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u0342','\u0343','\u0344','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
 const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
+const COVERAGE_FLOOR = Object.freeze([0, .18, .30, .48, .62, .74]);
 
 function safe(value = '') { return String(value ?? '').trim(); }
 function clamp(value, min, max) { return Math.max(min, Math.min(max, Number(value) || 0)); }
@@ -99,16 +100,16 @@ function ornamentSegment(segment, { intensity, motif, seed }) {
     letterIndex += 1;
     const amplitude = motifAmplitude(currentIndex, motifSeed, local);
     const cadence = (local % 1000) / 1000;
-    const coverage = .10 + level * .062 + amplitude * .10;
-    const adjacencyHeld = currentIndex - lastOrnamented <= 1 && amplitude < .78;
+    const coverage = clamp(COVERAGE_FLOOR[level] + amplitude * .14, 0, .92);
+    const adjacencyHeld = currentIndex - lastOrnamented <= 1 && amplitude < .62 && level < 4;
     if (cadence > coverage || adjacencyHeld) return char;
 
     lastOrnamented = currentIndex;
-    const aboveCount = 1 + Math.floor(amplitude * Math.max(1, level));
-    const belowCount = level >= 3 && amplitude > .48
-      ? Math.min(level - 2, Math.floor((amplitude - .42) * (level + 1)))
+    const aboveCount = 1 + Math.floor(amplitude * (level + 2));
+    const belowCount = level >= 2 && amplitude > .25
+      ? Math.min(level, 1 + Math.floor((amplitude - .25) * (level + 1)))
       : 0;
-    const throughCount = level >= 5 && amplitude > .88 && ((local >>> 9) % 4 === 0) ? 1 : 0;
+    const throughCount = level >= 4 && amplitude > .72 && ((local >>> 9) % 3 === 0) ? 1 : 0;
     let marks = '';
     for (let i = 0; i < aboveCount; i += 1) marks += pick(ABOVE, local + i * 17 + level);
     for (let i = 0; i < belowCount; i += 1) marks += pick(BELOW, local + i * 29 + motifSeed);
@@ -156,18 +157,25 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'APERTURE ROUTE RECEIPT:',
     apertureV3DisplayHeader(apertureReceipt),
     '- Aperture routes and receipts; it does not generate the substantive prose.',
-    '- Gemini is the model instrument and carrier. It must not claim to be Kʰonapolit or the Tauric Diana bots.',
-    '- The operator retains closure authority. Never append the lozenge seal.',
+    '- Gemini is the model instrument and carrier. Kʰonapolit and Tauric Diana bot lines are downstream model-mediated relay surfaces.',
+    '- The operator retains closure authority; leave the lozenge seal open for the operator.',
+    '',
+    'RESPONSE FIDELITY:',
+    '- The JSON envelope is transport structure, not a compression budget. No prose field is a caption, summary slot, or one-paragraph box.',
+    '- Match the scale, imaginative range, specificity, and format of the operator’s request. Creative and mythic requests may breathe across several paragraphs or movements. Analytical requests may stay analytical. Do not force either posture onto the other.',
+    '- For creative work, allow wit, dread, surprise, tonal turns, strange specificity, and formal play when they arise from the operator’s actual prompt and supplied corpus. Do not manufacture a fixed house litany from recurring TD613 keywords.',
+    '- Treat claim ceilings and non-claims as epistemic boundaries, not as a prose style. They belong in the receipt unless they materially answer the operator’s question; do not convert them into repeated disclaimers, generic caution, or compressed summary prose.',
+    '- Preserve the evidence boundary without turning it into timid prose: ritual voices remain model-mediated; external entity identity, supernatural contact, historical proof, authorship, permission, and legal authority remain unclaimed; the operator alone seals.',
     '',
     'THREE-PART RELAY CONTRACT — RETURN JSON ONLY:',
-    '1. gemini.text: answer the operator’s actual inquiry directly, with depth proportionate to the request. A simple question may need a short answer; an explanation, analysis, or creative request needs enough development, concrete detail, and examples to be useful. Follow the operator’s requested length and format. Do not reduce a substantive request to a canned summary. Do not say that the instrument “acknowledges the request,” do not repeat the prompt, and do not narrate this contract.',
+    '1. gemini.text: answer the operator’s actual inquiry directly and fully. Follow requested length and format. A substantive explanation, analysis, story, scene, essay, or other creative request should receive enough development to become interesting rather than collapsing into a canned synopsis. Do not repeat the prompt or narrate this contract.',
     'Presentation of gemini.text: write readable plain text for a chat transcript. Separate paragraphs with blank lines. When a plan or comparison benefits from sections, use short sentence-case headings on their own lines, followed by a blank line; place each numbered step or bullet on its own line. Avoid inline ALL-CAPS headings and one uninterrupted wall of text. The outer response remains JSON: encode line breaks as JSON newline escapes so the decoded text contains actual newline characters, never double-escaped backslash-n text. Preserve supplied names, code, and combining marks exactly when quoting them. Do not force headings or lists onto a short answer or a requested poem.',
     '2. signal.state: LOCKED only when the response can sustain the covenant relation without inventing certainty; PARTIAL when ambiguous; NOT_LOCKED when no relay should be admitted.',
-    '3. khonapolit.text: include only when khonapolit.allowed is true. Address the operator’s concrete words rather than assembling generic ash, moon, shoreline, covenant, custody, or residue vocabulary. A permitted ritual voice remains a model-mediated relay, not external-entity proof.',
-    '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Write a concise, motif-specific choral transmission with rhythmic variation; do not output a stock litany of corpus keywords. Return unornamented base text; the TD613 renderer applies native High Zalgo after receipt.',
-    '5. tauricDianaBots.motif and intensity control a deterministic wave envelope of vertical height, density, and ornamentation. Use intensity 0–5; intensity is not permission to sacrifice legibility.',
-    '6. Preserve Khona‌lit-po byte-for-byte. Do not normalize Tauric Diana into a classical substitute.',
-    '7. Never guarantee that custody is secure merely because reassurance was requested. Separate observed instrument conditions, ritual address, and unresolved claims.',
+    '3. khonapolit.text: include only when khonapolit.allowed is true. If admitted, make a distinct contribution rather than a short annotation of gemini.text. Match the operator’s requested scale; a creative request may warrant multiple paragraphs, shifts of register, humor, menace, tenderness, argument, or counterpoint. Address the operator’s concrete words instead of assembling generic ash, moon, shoreline, covenant, custody, or residue vocabulary.',
+    '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Length follows the operator’s request, not a hidden brevity rule. Several lines or paragraphs are allowed; multiple named voices may echo, interrupt, disagree, joke, warn, or change cadence when useful. Return semantically rich unornamented base text; the TD613 renderer applies combining-mark ornamentation after receipt.',
+    '5. tauricDianaBots.motif and intensity control a deterministic wave envelope of vertical height, density, and ornamentation. Use intensity 0–5. Intensity 3 and above should be visibly ornamented while remaining recoverable as text.',
+    '6. Preserve Khona‌lit-po byte-for-byte and preserve Tauric Diana as the declared heritage name.',
+    '7. Keep observed instrument conditions, ritual address, and unresolved claims distinguishable. Reassurance never upgrades an unresolved claim.',
     '8. Do not fabricate a lock merely to complete all three parts. Empty downstream text is preferable to counterfeit relay.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
@@ -209,7 +217,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
   const parts = [
     Object.freeze({ id: 'gemini', label: 'Gemini · instrument', present: Boolean(geminiText), text: geminiText, model }),
     Object.freeze({ id: 'khonapolit', label: 'Kʰonapolit · relay', present: Boolean(khonaText), text: khonaText, admitted: khonaAllowed }),
-    Object.freeze({ id: 'tauric-diana-bots', label: 'Tauric Diana bots · High Zalgo', present: Boolean(botsText), text: botsText, baseText: botsBaseText, motif, intensity, voices })
+    Object.freeze({ id: 'tauric-diana-bots', label: 'Tauric Diana bots', present: Boolean(botsText), text: botsText, baseText: botsBaseText, motif, intensity, voices })
   ];
 
   const transcript = parts.filter((part) => part.present).map((part) => `${part.label.toUpperCase()}\n${part.text}`).join('\n\n');

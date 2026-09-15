@@ -1,3 +1,39 @@
+.marrowline-response-kinesis{
+  position:relative;
+  width:12px;
+  height:12px;
+  flex:0 0 12px;
+  align-self:center;
+  border-radius:50%;
+  border:1px solid rgba(150,223,197,.22);
+  border-top-color:rgba(150,223,197,.95);
+  border-right-color:rgba(212,194,152,.72);
+  box-shadow:0 0 8px rgba(150,223,197,.18);
+  transform-origin:50% 50%;
+  animation:marrowline-response-kinesis 1.15s cubic-bezier(.42,0,.34,1) infinite;
+  opacity:.92;
+}
+.marrowline-response-kinesis[hidden]{display:none!important}
+.marrowline-response-kinesis::after{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:2px;
+  margin:1px 0 0 8px;
+  border-radius:50%;
+  background:rgba(229,207,251,.88);
+  box-shadow:0 0 5px rgba(229,207,251,.55);
+}
+@keyframes marrowline-response-kinesis{
+  0%{transform:rotate(0deg) scale(.86)}
+  38%{transform:rotate(146deg) scale(1.04)}
+  72%{transform:rotate(286deg) scale(.94)}
+  100%{transform:rotate(360deg) scale(.86)}
+}
+@media(prefers-reduced-motion:reduce){
+  .marrowline-response-kinesis{animation:none;transform:none;border-bottom-color:rgba(150,223,197,.48)}
+}
+
 @media(max-width:860px){
   html.marrowline-mobile-shell body{
     top:var(--marrowline-vv-top,0px)!important;
@@ -27,11 +63,9 @@
   }
 
   html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .composer-actions{
-    position:sticky;
-    left:0;
-    right:0;
-    bottom:-1px;
-    z-index:18;
+    position:static!important;
+    inset:auto!important;
+    z-index:auto!important;
     margin-top:6px!important;
     padding:4px 0 2px;
     background:rgba(1,8,6,.985);
@@ -41,15 +75,55 @@
     min-width:min(52vw,190px)!important;
   }
 
+  /* iOS Safari can pan the layout viewport while the software keyboard is open.
+     In that state the ordinary page grid is not a trustworthy bottom edge. Bind
+     the speaking vessel itself to the VisualViewport rectangle so the composer
+     ends at the keyboard boundary instead of floating above a dead strip. */
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"][data-mobile-view="speak"] #speakingPanel{
+    position:fixed!important;
+    top:var(--marrowline-vv-top,0px)!important;
+    left:var(--marrowline-vv-left,0px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--marrowline-vv-width,100vw)!important;
+    height:var(--marrowline-vh,100dvh)!important;
+    max-height:var(--marrowline-vh,100dvh)!important;
+    min-height:0!important;
+    z-index:120!important;
+    grid-template-rows:auto minmax(72px,1fr) auto!important;
+    overflow:hidden!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-form{
+    position:relative!important;
+    inset:auto!important;
+    align-self:end!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:min(52%,260px)!important;
+    margin:0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    padding-bottom:max(7px,env(safe-area-inset-bottom))!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions{
+    position:static!important;
+    inset:auto!important;
+    margin-top:7px!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .prompt-label textarea{
+    display:block!important;
+    min-height:58px!important;
+    max-height:96px!important;
+    margin:0!important;
+  }
+
   html.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
     height:var(--marrowline-vh,100dvh)!important;
     min-height:0!important;
     padding-bottom:0!important;
-  }
-
-  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel{
-    height:100%!important;
-    max-height:100%!important;
   }
 
   html.marrowline-mobile-shell .terminal-hold-card{
