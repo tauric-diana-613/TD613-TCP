@@ -1,0 +1,131 @@
+{
+  "schema": "td613.wendbine-research-findings-index/v0.12",
+  "atelier_id": "WENDBINE",
+  "purpose": "Single-shot retrieval surface for the Eclipse-Omega claim-sieve research line. Findings remain subordinate to their paired operation, machine receipt, executable test, and source evidence.",
+  "current_frontier": "BLINDED_PREREGISTERED_LOCALIZATION_V012",
+  "canonical_main_finding": "ROLE_TYPED_BOUNDARY_RETENTION_ADDS_MEASURABLE_DEFECT_LOCALIZATION_RESOLUTION_WITHOUT_ADDING_BINARY_ACCEPT_REJECT_ACCURACY_IN_THE_BOUNDED_PREREGISTERED_REPOSITORY_ASSAY",
+  "main_finding_plain_language": "The flattened and role-typed paths made the same accept/reject decisions, but the role-typed path retained enough intermediate structure to localize which boundary failed. The demonstrated contribution is diagnostic resolution, not improved terminal classification.",
+  "findings": [
+    {
+      "id": "EO_FOUNDATIONAL_SIEVE_V05",
+      "result": "Several universal Eclipse-Omega claims were demoted or rejected under type checking and hostile alternatives. S != O != E survives as typed forensic accounting; zero registered events do not identify hidden interaction; monotone narrowing is not universal; moire remains analogy absent operator fidelity.",
+      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json",
+      "green_head": "f1210e6a816b8aeb1784b515c656f0854baae5c3",
+      "green_run": 3184
+    },
+    {
+      "id": "EO_REDUNDANCY_V06",
+      "result": "Retrieval-observability deficit does not universally force semantic redundancy upward; ranking policy and diversity control can reverse the direction under the same capacity reduction.",
+      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-RETRIEVAL-OBSERVABILITY-SEMANTIC-REDUNDANCY-V0_6.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-retrieval-observability-semantic-redundancy-v06.json",
+      "green_head": "4e488cc7b57da5c7979ac16a3b9937a85ee61b5a",
+      "green_run": 3187
+    },
+    {
+      "id": "EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07",
+      "result": "A shared arrow glyph does not identify operator type. Exact stage composition can preserve terminal behavior while stage-local witnesses preserve diagnostic localization.",
+      "laws": ["PRIMITIVE_GLYPH != OPERATOR_TYPE", "COMPOSITION_EQUIVALENCE != STAGE_IDENTITY", "TERMINAL_EQUIVALENCE != DIAGNOSTIC_EQUIVALENCE"],
+      "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-PRIMITIVE-TYPING-STAGE-COLLAPSE-V0_7.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-primitive-typing-stage-collapse-v07.json",
+      "green_head_after_contract_repair": "ea608cf401106b410d323c2761a4410ca19d6256",
+      "green_run": 3299
+    },
+    {
+      "id": "EO_SOURCE_BOUND_STAGE_COLLAPSE_V08",
+      "result": "Four implemented A15-R0 boundaries were scored source-bound. Three earned bounded stage value; the typed-deficit classifier to audit wrapper lost independent scientific-operator status while remaining useful receipt scaffolding.",
+      "bounded_scorecard": {"examined": 4, "retained": 3, "scientific_operator_demotions": 1},
+      "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-SOURCE-BOUND-STAGE-COLLAPSE-V0_8.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-source-bound-stage-collapse-v08.json",
+      "green_head": "4567275e6f980f10a5da118684a264ee9b2b53c9",
+      "green_run": 3303
+    },
+    {
+      "id": "FLOWCORE_BOUNDARY_ROLE_STRATIFICATION_V09",
+      "result": "Boundary value must be role-typed. Flow-Core retained governance/type-safety, projection/data-minimization, diagnostic-localization, and integrity/formal-invariant value while promoting zero scientific epistemic operators.",
+      "laws": ["BOUNDARY_RETENTION != SCIENTIFIC_OPERATOR_PROMOTION", "BOUNDARY_VALUE_MUST_BE_ROLE_TYPED", "DIGEST_VERIFIED != EMPIRICALLY_TRUE", "INTEGRITY_WITNESS != EXTERNALITY_WITNESS"],
+      "green_head": "a3880f7284d6ae3cd69decb79a78239b5857a9b2",
+      "green_run": 3310,
+      "operation_path": "05-OPERATIONS/2026-09-15-FLOWCORE-BOUNDARY-ROLE-STRATIFICATION-V0_9.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-flowcore-boundary-role-stratification-v09.json"
+    },
+    {
+      "id": "CROSS_FAMILY_HANDOFF_ADJUDICATION_V010",
+      "result": "Three hostile cross-family worlds collapse to the same terminal HOLD while role-typed boundaries recover three distinct causes: Flow-Core authority breach, Flow-Core-to-Aperture reference mismatch, and Aperture jurisdiction breach. Reference consistency adds adjudication value without establishing truth.",
+      "laws": ["GENERIC_HANDOFF_HOLD != UNIQUE_FAILURE_CAUSE", "CROSS_FAMILY_JOIN != COMPONENT_VALIDITY", "DECISION_EQUIVALENCE != ADJUDICATION_EQUIVALENCE", "REFERENCE_CONSISTENCY != TRUTH"],
+      "green_head": "db849e3f82d3ad7634befee9f7941385fbc60c0e",
+      "green_run": 3317,
+      "operation_path": "05-OPERATIONS/2026-09-15-CROSS-FAMILY-HANDOFF-ADJUDICATION-V0_10.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-cross-family-handoff-adjudication-v010.json"
+    },
+    {
+      "id": "HELD_OUT_DEFECT_LOCALIZATION_V011",
+      "result": "On five defect families excluded from v0.10 plus one valid control, terminal-only and role-typed paths both achieved 1.0 accept/reject accuracy. Defect localization separated 0.0 terminal-only versus 1.0 role-typed. The replay case uses real post-digest receipt tamper rather than a mocked replay failure.",
+      "scores": {"terminal_binary_accuracy": 1.0, "role_typed_binary_accuracy": 1.0, "terminal_localization_accuracy": 0.0, "role_typed_localization_accuracy": 1.0},
+      "laws": ["ACCEPT_REJECT_ACCURACY != DEFECT_LOCALIZATION_ACCURACY", "SAME_BINARY_DECISION != SAME_ADJUDICATION_RESOLUTION", "LOCALIZATION_GAIN != TRUTH_GAIN"],
+      "green_head": "433d484d0133789a58963df9248cb75399b687c3",
+      "green_run": 3323,
+      "atlas_head": "41345941fe9c00fd618103fc1196176e2b2013d1",
+      "atlas_run": 3324,
+      "operation_path": "05-OPERATIONS/2026-09-15-HELD-OUT-DEFECT-LOCALIZATION-V0_11.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-held-out-defect-localization-v011.json"
+    },
+    {
+      "id": "BLINDED_PREREGISTERED_LOCALIZATION_V012",
+      "result": "After freezing the role-typed adjudicator before preregistration and authoring the evaluator only afterward, 72 preregistered authored instances preserved binary parity and localization separation: both paths 72/72 binary correct; terminal-only 0/60 localization; role-typed 60/60 localization. The demonstrated contribution remains diagnostic resolution rather than terminal decision gain.",
+      "sequence": {
+        "classifier_freeze_commit": "81469b0360c7c8b2d1587708a3ed8eba5eca6f65",
+        "classifier_blob_sha": "43467c059a29527bedd9e39ddd5f03bb70d12f56",
+        "preregistration_commit": "f62b62a25e19de7c6646376c8c23f3ccbc31970f",
+        "evaluator_commit_after_preregistration": "9f16586248eb0f7785de53105437df74856c6f02"
+      },
+      "schedule": {"conditions": 6, "replicates_per_condition": 12, "instances": 72, "defect_instances": 60},
+      "scores": {
+        "terminal_binary_accuracy": 1.0,
+        "role_typed_binary_accuracy": 1.0,
+        "terminal_localization_accuracy": 0.0,
+        "role_typed_localization_accuracy": 1.0,
+        "terminal_localization_wilson_95_upper": 0.06017185214208986,
+        "role_typed_localization_wilson_95_lower": 0.93982814785791,
+        "preregistered_wilson_separation_passed": true
+      },
+      "critical_caveat": "The 12 repetitions per condition are deterministic variations of six authored recipe families. Row-level Wilson intervals are descriptive and do not authorize iid population-confidence claims; recipe family is the primary independence unit.",
+      "laws": [
+        "PREREGISTRATION_PRECEDES_EVALUATOR != EXTERNAL_VALIDATION",
+        "BLINDED_ADJUDICATOR_INPUT != BLINDED_RESEARCH_PROGRAM",
+        "REPEATED_MUTATION_ROWS != INDEPENDENT_POPULATION_DRAWS",
+        "ROW_LEVEL_WILSON_INTERVAL != POPULATION_CONFIDENCE_WITH_CLUSTERED_AUTHORED_RECIPES",
+        "BINARY_ACCURACY_PARITY_CAN_COEXIST_WITH_LOCALIZATION_SEPARATION",
+        "LOCALIZATION_ADVANTAGE != TRUTH_GAIN",
+        "LOCALIZATION_ADVANTAGE != SCIENTIFIC_OPERATOR_PROMOTION",
+        "FROZEN_CLASSIFIER != INDEPENDENT_EXTERNAL_CLASSIFIER"
+      ],
+      "green_head": "9ce545eab66b9eee0d5c0ec3bc1742d708b5a2fa",
+      "green_run": 3329,
+      "preregistration_path": "01-MANIFESTS/2026-09-15-held-out-defect-localization-v012-preregistration.json",
+      "operation_path": "05-OPERATIONS/2026-09-15-BLINDED-PREREGISTERED-LOCALIZATION-V0_12.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-blinded-preregistered-localization-v012.json",
+      "next_test": "Use multiple structurally distinct mutation recipes per stage, unseen defect subtypes, and multi-defect collisions; score hierarchical stage localization separately from exact-subtype localization under leave-one-recipe-family-out evaluation, treating recipe family rather than row count as the primary independence unit."
+    }
+  ],
+  "global_claim_ceiling": [
+    "DIAGNOSTIC_LOCALIZATION_VALUE != EMPIRICAL_TRUTH",
+    "DIAGNOSTIC_LOCALIZATION_VALUE != EXTERNALITY_PROOF",
+    "DIAGNOSTIC_LOCALIZATION_VALUE != DEPLOYED_LLM_ARCHITECTURE_INFERENCE",
+    "DIAGNOSTIC_LOCALIZATION_VALUE != FIELD_NOVELTY",
+    "MULTI_RECEIPT_PROVENANCE != MULTI_SOURCE_EMPIRICAL_CONFIRMATION",
+    "SCIENTIFIC_PROMOTION_AUTHORITY = FALSE"
+  ],
+  "recommended_reentry_order": [
+    "99-ADMIN/RESEARCH_FINDINGS_INDEX_V0_12.json",
+    "99-ADMIN/REENTRY_ATLAS.json",
+    "current frontier operation",
+    "current frontier receipt",
+    "current frontier preregistration when applicable",
+    "executable assay",
+    "source objects only as required"
+  ],
+  "human_closure_required": true,
+  "scientific_promotion_authority": false,
+  "seal": "⟐"
+}
