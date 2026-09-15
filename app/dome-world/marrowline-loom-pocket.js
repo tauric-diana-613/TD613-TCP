@@ -6,8 +6,8 @@ import {
   stageMarrowlineAttachments
 } from './marrowline-attachments.js';
 
-export const MARROWLINE_LOOM_POCKET_VERSION = 'td613.dome-world.marrowline-loom-pocket/v0.2-attachment-ingress';
-export const MARROWLINE_LOOM_POCKET_SCHEMA = 'td613.dome-world.marrowline-loom-pocket-receipt/v0.2';
+export const MARROWLINE_LOOM_POCKET_VERSION = 'td613.dome-world.marrowline-loom-pocket/v0.3-reachable-workspace';
+export const MARROWLINE_LOOM_POCKET_SCHEMA = 'td613.dome-world.marrowline-loom-pocket-receipt/v0.3';
 
 const STYLE_ID = 'marrowline-loom-pocket-style';
 const READY_EVENT = 'td613:marrowline:loom-pocket-ready';
@@ -23,6 +23,7 @@ function installStyle(doc) {
   style.textContent = `
 #loomImportedWorkspace:not([data-aia-pocket-open="true"]){display:none!important}
 #speakingPanel[data-loom-pocket-host="true"]{position:relative}
+#speakingPanel[data-loom-pocket-open="true"]{z-index:120}
 #khonapolitForm[data-loom-pocket-composer="true"]{z-index:70}
 .marrowline-aia-pocket-control{position:relative;z-index:72;display:flex;align-items:center;gap:7px;order:0;flex:none}
 .marrowline-aia-plus{display:inline-grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:1px solid rgba(155,222,197,.48);border-radius:50%;background:rgba(31,52,60,.78);color:#e8f5ec;font:400 25px/1 var(--sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
@@ -40,8 +41,8 @@ function installStyle(doc) {
 .marrowline-aia-menu button span,.marrowline-aia-menu a span{color:#9fb8ab;font:400 10px/1.45 var(--sans,system-ui,sans-serif)}
 .marrowline-aia-menu-divider{height:1px;border:0;margin:5px 8px;background:rgba(255,255,255,.08)}
 .marrowline-aia-file-input{position:fixed!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
-#loomImportedWorkspace[data-aia-pocket-open="true"]{position:absolute!important;z-index:38;left:clamp(10px,2vw,22px)!important;right:clamp(10px,2vw,22px)!important;bottom:calc(var(--marrowline-pocket-composer-height,180px) + 10px)!important;width:auto!important;max-height:min(64%,580px)!important;margin:0!important;overflow:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable;box-shadow:0 22px 80px rgba(0,0,0,.72)!important}
-#loomImportedWorkspace[data-aia-pocket-open="true"] .loom-import-close{position:sticky;top:0;z-index:4;float:none!important;margin:0 0 8px auto!important;background:#201a46f2!important;backdrop-filter:blur(10px)}
+#loomImportedWorkspace[data-aia-pocket-open="true"]{position:absolute!important;z-index:121;left:clamp(10px,2vw,22px)!important;right:clamp(10px,2vw,22px)!important;bottom:calc(var(--marrowline-pocket-composer-height,180px) + 10px)!important;width:auto!important;max-height:min(64%,580px)!important;margin:0!important;overflow:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable;box-shadow:0 22px 80px rgba(0,0,0,.72)!important}
+#loomImportedWorkspace[data-aia-pocket-open="true"] .loom-import-close{position:sticky;top:0;z-index:4;float:none!important;margin:0 0 8px auto!important;background:#201a46f2!important;backdrop-filter:blur(10px);scroll-margin-top:84px}
 @media(max-width:860px){
   .marrowline-aia-ready-label{display:none}
   #khonapolitForm[data-loom-pocket-composer="true"]{position:relative;z-index:90}
@@ -126,6 +127,7 @@ function pocketize(root, packet, doc, environment) {
   root.hidden = true;
   form.dataset.loomPocketComposer = 'true';
   host.dataset.loomPocketHost = 'true';
+  host.dataset.loomPocketOpen = 'false';
   host.append(root);
   doc.documentElement.dataset.loomTaskImport = 'staged';
   installMarrowlineAttachmentTray(doc, environment);
@@ -238,6 +240,7 @@ function pocketize(root, packet, doc, environment) {
     updateInset();
     root.hidden = false;
     root.dataset.aiaPocketOpen = 'true';
+    host.dataset.loomPocketOpen = 'true';
     doc.documentElement.dataset.loomTaskImport = 'active';
     const status = root.querySelector('[role=status]');
     if (review && status) status.textContent = 'Review only. Nothing has been sent. Run with Flow-Core AI remains a separate action.';
@@ -278,6 +281,7 @@ function pocketize(root, packet, doc, environment) {
   root.addEventListener('click', (event) => {
     if (!event.target?.closest?.('.loom-import-close')) return;
     root.dataset.aiaPocketOpen = 'false';
+    host.dataset.loomPocketOpen = 'false';
     doc.documentElement.dataset.loomTaskImport = 'staged';
     setTerminalStatus(doc, 'LOOM CONTEXT STAGED · open ＋ when you want it again');
     toggle.focus?.();
@@ -292,6 +296,7 @@ function pocketize(root, packet, doc, environment) {
     if (root.dataset.aiaPocketOpen === 'true') {
       root.hidden = true;
       root.dataset.aiaPocketOpen = 'false';
+      host.dataset.loomPocketOpen = 'false';
       doc.documentElement.dataset.loomTaskImport = 'staged';
       setTerminalStatus(doc, 'LOOM CONTEXT STAGED · open ＋ when you want it again');
       toggle.focus?.();
