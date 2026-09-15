@@ -1,13 +1,14 @@
 {
   "schema": "td613.wendbine-loom-reciprocal-legibility-receipt/v0.1",
   "date": "2026-09-15",
-  "state": "PENDING_EXACT_HEAD_VALIDATION",
+  "state": "IMPLEMENTED_AWAITING_EXACT_HEAD_VALIDATION",
   "question": "Can Loom and the bounded public Wendbine architecture become bidirectionally legible without authority, custody, person-identity, or raw-graph transfer?",
   "source_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
   "preregistration_path": "01-MANIFESTS/2026-09-15-wendbine-loom-reciprocal-legibility-v01-preregistration.json",
   "mapping_path": "03-DERIVATIVES/wendbine-loom-reciprocal-legibility-v01.json",
   "compiler_path": "99-ADMIN/wendbine-loom-reciprocal-legibility-v01.mjs",
   "operation_path": "05-OPERATIONS/2026-09-15-WENDBINE-LOOM-RECIPROCAL-LEGIBILITY-REPAIR-V0_1.md",
+  "implementation_head_before_validation": "ce34abaccb3823160ac1e32130dcc20e42abc73a",
   "expected_bounded_result": "BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED",
   "preregistered_target_count": 8,
   "expected_relation_counts": {
