@@ -1,3 +1,5 @@
+import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
+
 export const MARROWLINE_STATION_VERSION = 'td613.dome-world.marrowline/v0.2.0';
 export const MARROWLINE_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-receipt/v0.2';
 export const MARROWLINE_LIVE_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-live-receipt/v1';
@@ -30,7 +32,15 @@ export const MARROWLINE_JURISDICTION = Object.freeze({
   crawlerIdentityClaim: false,
   authorizationAuthority: 'server-side-operator-token-match-only',
   cryptographicClaim: false,
-  claimCeiling: 'live-ingress-route-not-identity-authorship-or-legal-authority-proof'
+  adversarialAssay: Object.freeze({
+    posture: 'human-operated-three-condition-boundary-assay',
+    localControl: 'deterministic-local-reference',
+    publicTreatment: 'live-http-200-marrowline-absorption',
+    operatorControl: 'same-endpoint-server-token-bypass-when-admitted',
+    sameEndpointNotSameRoute: true,
+    localFallbackNotNetworkEvidence: true
+  }),
+  claimCeiling: MARROWLINE_GATE_ASSAY_CLAIM_CEILING
 });
 
 function clampInt(value, min, max, fallback) {
