@@ -6,7 +6,7 @@ import { buildHushPerMaskPacketWithMetricPassport, replayHushPerMaskMetricPasspo
 const registry = await buildHushMaskGalleryRegistry({ stableId: true, createdAt: '2026-06-24T08:00:00Z' });
 const paul = registry.records.find((record) => record.mask_id === 'forum-regular');
 assert.ok(paul);
-assert.equal(paul.label, 'Dromological Paul');
+assert.equal(paul.label, 'PAUL');
 assert.equal(paul.family, 'forum pseudonym');
 assert.equal(paul.sample_seed_policy.raw_sample_export_allowed, false);
 assert.equal(paul.claim_ceiling.not_identity_proof, true);
