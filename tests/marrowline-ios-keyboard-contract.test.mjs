@@ -20,6 +20,9 @@ test('real iOS keyboard posture binds Marrowline speaking vessel to the VisualVi
   assert.match(readiness, /--marrowline-vv-left/);
   assert.match(readiness, /--marrowline-vv-width/);
   assert.match(readiness, /--marrowline-vh/);
+  assert.match(readiness, /setTimeout\(sync, 0\)/, 'iOS focus transition gets an immediate geometry sample');
+  assert.match(readiness, /setTimeout\(sync, 80\)/, 'iOS focus transition gets a short settle sample');
+  assert.match(readiness, /setTimeout\(sync, 220\)/, 'iOS focus transition gets a post-keyboard settle sample');
 
   const panel = block('html.marrowline-mobile-shell body[data-keyboard-visible="true"][data-mobile-view="speak"] #speakingPanel');
   assert.match(panel, /position:fixed!important/);
