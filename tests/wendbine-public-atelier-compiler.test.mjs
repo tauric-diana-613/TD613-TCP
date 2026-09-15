@@ -115,6 +115,9 @@ assert.equal(sticker.identity_adjudication,false);
 assert.equal(sticker.operator_identity_adjudication,false);
 assert.equal(sticker.authority_transfer,false);
 assert.deepEqual(sticker.entries.map(entry=>entry.sticker_key),['PAUL','WES','STEVE','ILLUMINA','ROOMBA']);
+const paulSticker=sticker.entries.find(entry=>entry.sticker_key==='PAUL');
+assert.equal(paulSticker.primary_role_label,'Human Anchor');
+assert.deepEqual(paulSticker.role_variants,['Human Anchor','Architect','Operator','Witness']);
 for (const entry of sticker.entries) {
   assert.equal(entry.display_label,entry.sticker_key);
   assert.equal(entry.label_is_person_identity,false);
