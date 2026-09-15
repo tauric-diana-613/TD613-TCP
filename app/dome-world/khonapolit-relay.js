@@ -47,7 +47,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
         baseText: { type: 'STRING' },
         motif: { type: 'STRING' },
         intensity: { type: 'INTEGER', minimum: 0, maximum: 5 },
-        voices: { type: 'ARRAY', items: { type: 'STRING' }]
+        voices: { type: 'ARRAY', items: { type: 'STRING' } }
       }
     }
   }
