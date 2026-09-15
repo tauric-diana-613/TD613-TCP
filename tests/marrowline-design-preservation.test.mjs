@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
+import './marrowline-attachment-quality.test.mjs';
 import { installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
