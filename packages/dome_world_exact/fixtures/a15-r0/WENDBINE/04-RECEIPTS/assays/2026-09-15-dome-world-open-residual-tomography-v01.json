@@ -1,7 +1,7 @@
 {
   "schema": "td613.dome-world.open-residual-tomography-receipt/v0.1",
   "date": "2026-09-15",
-  "state": "SCIENTIFIC_GREEN_AWAITING_RECEIPT_BINDING_VALIDATION",
+  "state": "RECEIPT_BINDING_GREEN_RECORDED_AWAITING_SEAL_VALIDATION",
   "parent_replication": {
     "pull_request": 1142,
     "sealed_head": "29bfaffacbbcc5e42133a2373987bb9df580be1e",
@@ -66,6 +66,13 @@
       "run_id": 34930033293,
       "state": "SCIENTIFIC_GREEN",
       "meaning": "Formal tomography preserved both residual claim ceilings, produced the preregistered coarse vectors, retained distinct typed deficits and ambiguity classes, and rejected Return/externality promotion."
+    },
+    {
+      "head": "34a92436cfd2e0d18da6bcba3236432162aa8b87",
+      "run_number": 3383,
+      "run_id": 34930180651,
+      "state": "RECEIPT_BINDING_GREEN",
+      "meaning": "The scientific result was written into this receipt and the exact receipt-bearing head passed the same consolidated contract without widening the claim."
     }
   ],
   "preregistered_red_head": "5cfd768ec9d7b4d4bba3e4ad21190ea560db4687",
@@ -74,9 +81,9 @@
   "scientific_green_head": "1b6f03f8f5575d4736cdd11994b382b2e0813b9f",
   "scientific_green_run_number": 3382,
   "scientific_green_run_id": 34930033293,
-  "receipt_binding_head": null,
-  "receipt_binding_run_number": null,
-  "receipt_binding_run_id": null,
+  "receipt_binding_head": "34a92436cfd2e0d18da6bcba3236432162aa8b87",
+  "receipt_binding_run_number": 3383,
+  "receipt_binding_run_id": 34930180651,
   "next_stage_if_green": "INDEPENDENT_HANDOFF_AND_RECOVERY_WITNESS_ACQUISITION_SPEC_BEFORE_ANY_RETURN_CLAIM",
   "merge_authority": false,
   "deployment_authority": false,
