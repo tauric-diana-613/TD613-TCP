@@ -1,3 +1,5 @@
+import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
+
 export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v1';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
 
@@ -176,10 +178,11 @@ function operatorReceipt({ payload = {}, response, endpoint, requested = true } 
     status: authorized ? 'OPERATOR_AUTHORIZED' : 'OPERATOR_TOKEN_REJECTED',
     route: endpoint,
     sourceStatus: 'SERVER_RESPONSE_OBSERVED',
+    networkResponseObserved: true,
     operator: Object.freeze({ requested, authorized, tokenPersisted: false, authorizationBasis: authorized ? 'server-side-operator-token-match' : 'not-admitted' }),
     http: Object.freeze({ status: Number(response?.status || 0), routeHeader: routeHeader || null, trapHeader: trapHeader || null, liveVersion: response?.headers?.get?.('x-td613-marrowline-live') || null }),
     canonicalPayload: payload,
-    claimCeiling: 'operator-token-match-and-live-route-observation-not-identity-authorship-permission-entity-or-legal-authority-proof',
+    claimCeiling: MARROWLINE_GATE_ASSAY_CLAIM_CEILING,
     seal: '⟐'
   });
 }
@@ -252,7 +255,7 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
     visualViewportBound: Boolean(root.visualViewport),
     viewport,
     failureNotice: 'visible-transport-status-not-covenant-voice',
-    gate: Object.freeze({ publicIngress: true, optionalHumanOperatorToken: true, tokenPersistence: 'none', authorization: 'server-side-token-match-only' }),
+    gate: Object.freeze({ publicIngress: true, optionalHumanOperatorToken: true, tokenPersistence: 'none', authorization: 'server-side-token-match-only', adversarialAssay: 'same-endpoint-public-vs-operator-control' }),
     claimCeiling: 'human-interface-and-transport-readiness-not-provider-availability-entity-identity-authorship-or-legal-authority-proof',
     seal: '⟐'
   });
