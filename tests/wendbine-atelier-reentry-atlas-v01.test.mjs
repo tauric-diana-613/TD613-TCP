@@ -111,7 +111,7 @@ assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('Preregistra
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('frozen classifier')||x.includes('Frozen classifier')),'Frozen/internal classifier caveat must survive thread boundaries.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('generic cross-family HOLD')),'Cross-family terminal non-localization result must survive thread boundaries.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('Boundary retention does not imply scientific epistemic-operator promotion')),'Role-typed boundary-credit result must survive thread boundaries.');
-assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('does not universally force semantic redundancy upward')),'Redundancy counterexample must survive thread boundaries.');
+assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('does not universally force semantic redundancy upward')||x.includes('does not by itself force downstream semantic redundancy upward')),'Redundancy counterexample must survive thread boundaries.');
 assert.ok(atlas.negative_results_to_notice_first.some(x=>x.includes('shared arrow glyph') || x.includes('Shared arrow glyph')),'Primitive/operator-type separation must survive thread boundaries.');
 
 assert.ok(atlas.held_questions.some(x=>/leave-one-recipe-family-out/i.test(x)),'v0.12 next hostile test must remain retrievable.');
