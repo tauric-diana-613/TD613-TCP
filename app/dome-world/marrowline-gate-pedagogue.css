@@ -1,0 +1,92 @@
+.gate-pedagogue{
+  display:grid;
+  gap:14px;
+  margin:0 0 18px;
+  padding:16px;
+  border:1px solid rgba(119,229,210,.26);
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(5,24,20,.74),rgba(10,9,28,.72));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+}
+.gate-pedagogue-head{display:grid;gap:3px}
+.gate-pedagogue-head small,
+.gate-assay-result>small,
+.gate-assay-card-kicker{
+  color:#8fdcca;
+  font:700 .68rem/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.gate-pedagogue-head h3{
+  margin:0;
+  color:var(--ash,#edf2eb);
+  font:700 1.02rem/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.gate-pedagogue-lede,
+.gate-assay-law,
+.gate-assay-result p,
+.gate-assay-details p,
+.gate-assay-details li,
+.gate-assay-card p{
+  margin:0;
+  color:var(--ash-dim,#c1c9c2);
+  font:500 .78rem/1.52 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.gate-assay-cards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.gate-assay-card{
+  display:grid;
+  align-content:start;
+  gap:6px;
+  min-width:0;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;
+  background:rgba(0,0,0,.22);
+}
+.gate-assay-card strong{
+  color:var(--ash,#edf2eb);
+  font:700 .82rem/1.28 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.gate-assay-law{
+  padding:10px 12px;
+  border-left:2px solid rgba(231,198,108,.72);
+  background:rgba(231,198,108,.055);
+}
+.gate-assay-result{
+  display:grid;
+  gap:6px;
+  padding:12px;
+  border:1px solid rgba(119,229,210,.24);
+  border-radius:13px;
+  background:rgba(2,11,9,.58);
+}
+.gate-assay-result-title{
+  color:var(--ash,#edf2eb);
+  font:700 .88rem/1.32 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.gate-assay-result[data-mode="OPERATOR_BYPASS_CONTROL"]{border-color:rgba(118,234,212,.5);box-shadow:inset 0 0 22px rgba(118,234,212,.045)}
+.gate-assay-result[data-mode="PUBLIC_ABSORPTION"]{border-color:rgba(228,198,108,.42)}
+.gate-assay-result[data-mode="OPERATOR_REJECTED_PUBLIC_ABSORPTION"]{border-color:rgba(239,170,92,.5)}
+.gate-assay-details{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:10px;
+}
+.gate-assay-details summary{
+  cursor:pointer;
+  color:var(--ash,#edf2eb);
+  font:650 .78rem/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.gate-assay-details[open]{display:grid;gap:9px}
+.gate-assay-details ul{margin:0;padding-left:1.1rem;display:grid;gap:5px}
+.gate-assay-ceiling{font-size:.68rem!important;opacity:.72;overflow-wrap:anywhere}
+
+@media(max-width:860px){
+  .gate-pedagogue{padding:13px;margin-bottom:14px;border-radius:14px}
+  .gate-assay-cards{grid-template-columns:1fr}
+  .gate-assay-card{padding:10px 11px}
+  .gate-pedagogue-lede,.gate-assay-law,.gate-assay-result p,.gate-assay-details p,.gate-assay-details li,.gate-assay-card p{font-size:.74rem}
+}
