@@ -1,6 +1,6 @@
 {
   "schema": "td613.independent-handoff-recovery-witness-acquisition-spec-receipt/v0.1",
-  "phase": "IMPLEMENTATION_CANDIDATE_AWAITING_GREEN_VALIDATION",
+  "phase": "SCIENTIFIC_GREEN_RECORDED_AWAITING_RECEIPT_BINDING_VALIDATION",
   "parent_tomography": {
     "pr": 1143,
     "sealed_head": "cf6232fe74c2adf319f009ab78942b3aa396f428",
@@ -42,7 +42,13 @@
     "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
     "GREEN != EMPIRICAL_EXTERIORITY"
   ],
-  "scientific_green": null,
+  "scientific_green": {
+    "head": "5a866943b245092beb4376aa21b7e52f851f9831",
+    "run_number": 3387,
+    "run_id": 34935100382,
+    "conclusion": "success",
+    "meaning": "The bounded witness-acquisition specification survived the consolidated A15-R0 hostile path after the parent exteriority-authority field binding was corrected without changing the preregistration or widening any claim."
+  },
   "receipt_binding_green": null,
   "next_lawful_move_after_green": "ACQUIRE_INDEPENDENT_EXECUTION_WITNESSES_UNDER_THIS_SPEC_BEFORE_ANY_RIGHT_OF_RESIGNATION_RECOVERY_OR_RETURN_PROMOTION"
 }
