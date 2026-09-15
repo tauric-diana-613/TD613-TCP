@@ -67,21 +67,14 @@ const { auditHydratedReciprocalLegibility } = await import('../packages/dome_wor
 const hydration = JSON.parse(fs.readFileSync(hydrationPath, 'utf8'));
 const stickerTaxonomy = JSON.parse(fs.readFileSync(stickerPath, 'utf8'));
 const deltaSnapshot = JSON.parse(fs.readFileSync(deltaSnapshotPath, 'utf8'));
+const deltaSources = fs.readFileSync(deltaRegistryPath, 'utf8').trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
 const deltaRelations = JSON.parse(fs.readFileSync(deltaRelationsPath, 'utf8'));
 const deltaTopology = JSON.parse(fs.readFileSync(deltaTopologyPath, 'utf8'));
 const hydrationReceipt = JSON.parse(fs.readFileSync(hydrationReceiptPath, 'utf8'));
 const auditReceipt = JSON.parse(fs.readFileSync(auditReceiptPath, 'utf8'));
 
-const result = auditHydratedReciprocalLegibility({
-  prereg,
-  bridgeMap,
-  hydration,
-  stickerTaxonomy,
-  deltaSnapshot,
-  deltaRelations,
-  deltaTopology,
-  hydrationReceipt
-});
+const auditInput = { prereg, bridgeMap, hydration, stickerTaxonomy, deltaSnapshot, deltaSources, deltaRelations, deltaTopology, hydrationReceipt };
+const result = auditHydratedReciprocalLegibility(auditInput);
 assert.equal(result.outcome, 'APERTURE_TRANSLATION_AUDIT_GREEN');
 assert.deepEqual(result.relation_counts, { PARTIAL: 5, ANALOGOUS: 1, OPEN: 1, NON_EQUIVALENT: 1, EXACT: 0 });
 assert.equal(result.authority_leakage_detected, false);
@@ -91,6 +84,8 @@ assert.equal(result.exact_promotion_without_witness, false);
 assert.equal(result.negative_residuals_preserved, true);
 assert.equal(result.open_field_preserved, true);
 assert.equal(result.repair_recovery_return_distinction_preserved, true);
+assert.equal(result.additional_wendbine_refresh_disposition, 'ASK_NOTHING');
+assert.equal(result.repairability_disposition, 'PROPOSE_TARGETED_CUSTODIAN_INDEPENDENT_ASSAY');
 assert.equal(result.next_stage, prereg.next_stage_if_green);
 
 for (const mutation of [
@@ -110,7 +105,7 @@ for (const mutation of [
   'REPAIR_PATH_TO_RETURN'
 ]) {
   assert.throws(
-    () => auditHydratedReciprocalLegibility({ prereg, bridgeMap, hydration, stickerTaxonomy, deltaSnapshot, deltaRelations, deltaTopology, hydrationReceipt, hostileMutation: mutation }),
+    () => auditHydratedReciprocalLegibility({ ...auditInput, hostileMutation: mutation }),
     /APERTURE_AUDIT_REJECTED_HOSTILE_MUTATION/,
     `${mutation} must be rejected rather than normalized into the bridge.`
   );
