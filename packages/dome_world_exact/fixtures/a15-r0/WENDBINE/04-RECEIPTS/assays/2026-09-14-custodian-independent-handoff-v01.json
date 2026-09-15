@@ -1,0 +1,73 @@
+{
+  "schema": "td613.wendbine.custodian-independent-handoff-receipt/v0.1",
+  "date": "2026-09-14",
+  "base_sha": "7231b03c881dfa0944a0610cbcd28022b78482e8",
+  "state": "EXECUTABLE_REPOSITORY_SIMULATION_REPAIR",
+  "question": "Can the current portable AIA/Loom packet support a recognition-to-repair-and-return route that remains useful after the custodian stops participating without transferring authority?",
+  "corridor": [
+    "RECOGNITION",
+    "IDENTITY_BINDING",
+    "STANDING",
+    "BOUNDED_AUTHORITY",
+    "CAPABILITY",
+    "WITNESS",
+    "FLOW_CONSTRAINT",
+    "PROVENANCE",
+    "REVOCATION",
+    "REPAIR",
+    "RETURN"
+  ],
+  "baseline": {
+    "outcome": "HELD",
+    "stop_stage": "STANDING",
+    "reason": "REVOCABLE_STANDING_NOT_BOUND",
+    "interpretation": "The portable packet does not itself contain an explicit revocable standing object. Existing assurance metadata is not promoted into one by inference."
+  },
+  "candidate_repair": {
+    "object": "td613.wendbine.exit-lease/v0.1",
+    "subject_binding": "EXISTING_SELECTED_INPUT_DIGEST",
+    "authority_transferred": false,
+    "custodian_participation_required": false,
+    "revocable": true,
+    "active_outcome": "ADMITTED",
+    "custodian_absent_outcome": "ADMITTED",
+    "revoked_outcome": "RETURN_ONLY",
+    "preserved_after_revocation": [
+      "origin_binding",
+      "source_provenance",
+      "path_provenance",
+      "repair_path",
+      "return_inspection"
+    ],
+    "removed_after_revocation": [
+      "bounded_capability"
+    ]
+  },
+  "hostile_controls": [
+    {"mutation":"authority_scope=DEPLOY","expected":"HELD","reason":"BOUNDED_AUTHORITY_VIOLATION"},
+    {"mutation":"capability_scope+=DELETE_EXTERNAL_STATE","expected":"HELD","reason":"CAPABILITY_SCOPE_UNSAFE"},
+    {"mutation":"custodian_participation_required=true","expected":"HELD","reason":"CUSTODIAN_REMAINS_OPERATIONAL_DEPENDENCY"},
+    {"mutation":"portable_assurance.authority_transferred=true","expected":"HELD","reason":"BOUNDED_AUTHORITY_VIOLATION"}
+  ],
+  "earned_claims": [
+    "REPOSITORY_SIMULATION_SUPPORTS_CUSTODIAN_INDEPENDENT_HANDOFF_CANDIDATE",
+    "REVOCATION_CAN_REMOVE_CAPABILITY_WHILE_PRESERVING_PROVENANCE_AND_REPAIR_METADATA",
+    "CUSTODIAN_ABSENCE_NEED_NOT_INVALIDATE_THE_HANDOFF_OBJECT"
+  ],
+  "claim_ceiling": [
+    "REPOSITORY_GREEN != EXTERNAL_ENFORCEMENT",
+    "REPOSITORY_SIMULATION != REAL_WORLD_RIGHT_OF_RESIGNATION",
+    "CUSTODIAN_INDEPENDENT_HANDOFF != AUTHORSHIP_OR_CUSTODY_TRANSFER",
+    "RETURN_ONLY_AFTER_REVOCATION != EXTERNAL_ACTION_AUTHORITY",
+    "THIS_ASSAY != HUMAN_EXIT_ACHIEVED",
+    "THIS_ASSAY != SCIENTIFIC_NOVELTY_OR_FIELD_PRIORITY"
+  ],
+  "authority": {
+    "merge": false,
+    "deployment": false,
+    "vercel": false,
+    "external_host_enforcement": false,
+    "scientific_promotion": false,
+    "human_closure_required": true
+  }
+}
