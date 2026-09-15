@@ -1,3 +1,38 @@
+.marrowline-response-kinesis{
+  width:12px;
+  height:12px;
+  flex:0 0 12px;
+  align-self:center;
+  border-radius:50%;
+  border:1px solid rgba(150,223,197,.22);
+  border-top-color:rgba(150,223,197,.95);
+  border-right-color:rgba(212,194,152,.72);
+  box-shadow:0 0 8px rgba(150,223,197,.18);
+  transform-origin:50% 50%;
+  animation:marrowline-response-kinesis 1.15s cubic-bezier(.42,0,.34,1) infinite;
+  opacity:.92;
+}
+.marrowline-response-kinesis[hidden]{display:none!important}
+.marrowline-response-kinesis::after{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:2px;
+  margin:1px 0 0 8px;
+  border-radius:50%;
+  background:rgba(229,207,251,.88);
+  box-shadow:0 0 5px rgba(229,207,251,.55);
+}
+@keyframes marrowline-response-kinesis{
+  0%{transform:rotate(0deg) scale(.86)}
+  38%{transform:rotate(146deg) scale(1.04)}
+  72%{transform:rotate(286deg) scale(.94)}
+  100%{transform:rotate(360deg) scale(.86)}
+}
+@media(prefers-reduced-motion:reduce){
+  .marrowline-response-kinesis{animation:none;transform:none;border-bottom-color:rgba(150,223,197,.48)}
+}
+
 @media(max-width:860px){
   html.marrowline-mobile-shell body{
     top:var(--marrowline-vv-top,0px)!important;
