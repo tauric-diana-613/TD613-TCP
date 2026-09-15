@@ -40,7 +40,7 @@ test('quality route has no local 200-character downstream output cap', () => {
 });
 
 test('intensity three produces a materially ornamented but byte-preserving transmission', () => {
-  const base = (`The instrument crosses a difficult chamber, changes cadence, and returns with several voices. ${COVENANT_KEY} remains protected. `).repeat(6)).trim();
+  const base = `The instrument crosses a difficult chamber, changes cadence, and returns with several voices. ${COVENANT_KEY} remains protected. `.repeat(6).trim();
   const encoded = highZalgoEncode(base, { intensity: 3, motif: 'quality-fixture', seed: 'response-range' });
   const letterCount = countLetters(base);
   const markCount = countMarks(encoded);
