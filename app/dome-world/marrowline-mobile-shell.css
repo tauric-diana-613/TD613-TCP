@@ -116,6 +116,12 @@
     bottom:auto;
     z-index:12;
     flex:0 0 auto;
+    max-height:44%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    scrollbar-gutter:stable;
     padding:8px 9px 9px;
     border-top:1px solid rgba(130,235,223,.2);
     background:rgba(1,8,6,.985);
@@ -348,5 +354,3 @@
 @media(prefers-reduced-motion:reduce){
   html.marrowline-mobile-shell .mobile-dock{transition:none}
 }
-
-/* PR #1150 preregistration witness: product file touched without changing the broken portable-action sizing. */
