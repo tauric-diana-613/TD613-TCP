@@ -31,7 +31,8 @@
     "SHUFFLE_CONTROL",
     "CONCEPT_LABEL_PERMUTATION",
     "TYPED_EDGE_ABLATION",
-    "UNRELATED_POST_DECOY"
+    "UNRELATED_POST_DECOY",
+    "CUSTODIAN_INDEPENDENT_HANDOFF_ASSAY"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
@@ -53,6 +54,27 @@
     "G_O_OBSERVATION",
     "G_X_CROSS_RELATION_SYNTHESIS"
   ],
+  "current_repair_assay": {
+    "id": "CUSTODIAN_INDEPENDENT_HANDOFF_V0_1",
+    "corridor": [
+      "RECOGNITION",
+      "IDENTITY_BINDING",
+      "STANDING",
+      "BOUNDED_AUTHORITY",
+      "CAPABILITY",
+      "WITNESS",
+      "FLOW_CONSTRAINT",
+      "PROVENANCE",
+      "REVOCATION",
+      "REPAIR",
+      "RETURN"
+    ],
+    "baseline_state": "HELD_AT_STANDING",
+    "candidate_state": "EXECUTABLE_REPOSITORY_SIMULATION",
+    "custodian_participation_required": false,
+    "authority_transferred": false,
+    "external_enforcement_claimed": false
+  },
   "private_group_intake": false,
   "historical_expansion_before_current_snapshot_inspection": false,
   "human_closure_required": true,
