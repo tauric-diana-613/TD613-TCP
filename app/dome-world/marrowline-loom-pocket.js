@@ -16,12 +16,13 @@ function installStyle(doc) {
   style.textContent = `
 #loomImportedWorkspace:not([data-aia-pocket-open="true"]){display:none!important}
 #speakingPanel[data-loom-pocket-host="true"]{position:relative}
-.marrowline-aia-pocket-control{position:relative;display:flex;align-items:center;gap:7px;order:0;flex:none}
+#khonapolitForm[data-loom-pocket-composer="true"]{z-index:70}
+.marrowline-aia-pocket-control{position:relative;z-index:72;display:flex;align-items:center;gap:7px;order:0;flex:none}
 .marrowline-aia-plus{display:inline-grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:1px solid rgba(155,222,197,.48);border-radius:50%;background:rgba(31,52,60,.78);color:#e8f5ec;font:400 25px/1 var(--sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
 .marrowline-aia-plus:hover,.marrowline-aia-plus:focus-visible{border-color:#9fe4cc;background:rgba(50,83,83,.9)}
 .marrowline-aia-plus::after{content:'';position:absolute;right:1px;top:1px;width:9px;height:9px;border-radius:50%;background:#9fe4cc;box-shadow:0 0 14px rgba(159,228,204,.8)}
 .marrowline-aia-ready-label{color:#a9cabd;font:600 10px/1.25 var(--sans,system-ui,sans-serif);letter-spacing:.04em;white-space:nowrap}
-.marrowline-aia-menu{position:absolute;left:0;bottom:calc(100% + 10px);z-index:45;display:grid;gap:4px;width:min(330px,calc(100vw - 30px));max-height:min(54dvh,440px);overflow:auto;padding:11px;border:1px solid rgba(150,213,191,.42);border-radius:16px;background:#211a46f7;box-shadow:0 18px 64px rgba(0,0,0,.62);overscroll-behavior:contain}
+.marrowline-aia-menu{position:absolute;left:0;bottom:calc(100% + 10px);z-index:75;display:grid;gap:4px;width:min(330px,calc(100vw - 30px));max-height:min(54dvh,440px);overflow:auto;padding:11px;border:1px solid rgba(150,213,191,.42);border-radius:16px;background:#211a46f7;box-shadow:0 18px 64px rgba(0,0,0,.62);overscroll-behavior:contain}
 .marrowline-aia-menu[hidden]{display:none!important}
 .marrowline-aia-menu-head{display:grid;gap:3px;padding:6px 8px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
 .marrowline-aia-menu-head small{color:#91d8c0;font:700 9px/1.3 var(--sans,system-ui,sans-serif);letter-spacing:.12em;text-transform:uppercase}
@@ -34,7 +35,9 @@ function installStyle(doc) {
 #loomImportedWorkspace[data-aia-pocket-open="true"] .loom-import-close{position:sticky;top:0;z-index:4;float:none!important;margin:0 0 8px auto!important;background:#201a46f2!important;backdrop-filter:blur(10px)}
 @media(max-width:860px){
   .marrowline-aia-ready-label{display:none}
-  .marrowline-aia-menu{position:fixed;left:14px;right:14px;bottom:calc(var(--marrowline-vv-safe-bottom,0px) + 82px);width:auto;max-height:min(52dvh,410px)}
+  #khonapolitForm[data-loom-pocket-composer="true"]{position:relative;z-index:90}
+  .marrowline-aia-pocket-control{z-index:92}
+  .marrowline-aia-menu{z-index:95;left:0;right:auto;width:min(330px,calc(100vw - 30px));max-height:min(52dvh,410px)}
   #loomImportedWorkspace[data-aia-pocket-open="true"]{left:8px!important;right:8px!important;bottom:calc(var(--marrowline-pocket-composer-height,190px) + 8px)!important;max-height:min(55%,440px)!important;border-radius:18px!important}
 }
 `;
@@ -101,6 +104,7 @@ function pocketize(root, packet, doc, environment) {
   root.dataset.aiaPocketReady = 'true';
   root.dataset.aiaPocketOpen = 'false';
   root.hidden = true;
+  form.dataset.loomPocketComposer = 'true';
   host.dataset.loomPocketHost = 'true';
   host.append(root);
   doc.documentElement.dataset.loomTaskImport = 'staged';
