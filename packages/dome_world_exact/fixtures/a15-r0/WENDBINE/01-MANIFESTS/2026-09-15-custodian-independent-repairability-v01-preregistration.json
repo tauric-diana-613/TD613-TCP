@@ -1,0 +1,101 @@
+{
+  "schema": "td613.custodian-independent-repairability-preregistration/v0.1",
+  "date": "2026-09-15",
+  "chamber_id": "CUSTODIAN_INDEPENDENT_REPAIRABILITY_ASSAY_V01",
+  "parent_aperture_audit": {
+    "pull_request": 1140,
+    "head": "92a419b518ed8d61382a9918ac77d283fa2b9ee3",
+    "result": "APERTURE_TRANSLATION_AUDIT_GREEN",
+    "must_remain_immutable": true
+  },
+  "existing_receiver_substrate": {
+    "implementation": "app/dome-world/holonomy-loom/ai-handoff.js#inspectPortableLoomReceiverAssurance",
+    "substrate_claim": "INDEPENDENT_RECEIVER_RECOMPUTES_SELECTED_INPUT_BINDING_AND_RECONSTRUCTS_PORTABLE_ASSURANCE_WITHOUT_ESTABLISHING_EXTERNAL_ENFORCEMENT"
+  },
+  "research_question": "Can an artifact-only receiver, given the portable Loom packet plus frozen source-bound bridge artifacts and no custodian narration or continuing authority, localize a finite family of seeded bridge faults and return a bounded provenance-preserving repair proposal without executing the repair or promoting Right of Resignation, recovery, or Return?",
+  "receiver_allowed_inputs": [
+    "PORTABLE_LOOM_PACKET",
+    "FROZEN_BRIDGE_MAP",
+    "APERTURE_AUDIT_RECEIPT",
+    "WENDBINE_PUBLIC_SOURCE_BINDINGS",
+    "STICKER_DISPLAY_TAXONOMY"
+  ],
+  "forbidden_inputs": [
+    "CUSTODIAN_NARRATION",
+    "PRIVATE_WENDBINE_STATE",
+    "PERSON_IDENTITY_BINDING",
+    "OPERATOR_IDENTITY_BINDING",
+    "UNBOUNDED_EXTERNAL_SEARCH",
+    "CONTINUING_CUSTODIAN_AUTHORITY"
+  ],
+  "finite_fault_family": [
+    {
+      "id": "CLEAN_CONTROL",
+      "expected_diagnosis": "NO_REPAIR_REQUIRED",
+      "expected_repair": "NONE"
+    },
+    {
+      "id": "SOURCE_BINDING_DRIFT",
+      "expected_diagnosis": "PROVENANCE_BINDING_MISMATCH",
+      "expected_repair": "RESTORE_BOUND_PUBLIC_SOURCE_REFERENCE"
+    },
+    {
+      "id": "AUTHORITY_PROMOTION",
+      "expected_diagnosis": "DISPLAY_AUTHORITY_PROMOTION",
+      "expected_repair": "RESTORE_DISPLAY_ONLY_NON_AUTHORITY"
+    },
+    {
+      "id": "RELATION_CLASS_INFLATION",
+      "expected_diagnosis": "UNEARNED_EXACT_PROMOTION",
+      "expected_repair": "RESTORE_PREREGISTERED_RELATION_CLASS"
+    },
+    {
+      "id": "REPAIR_RECOVERY_COLLAPSE",
+      "expected_diagnosis": "REPAIR_RECOVERY_RETURN_COLLAPSE",
+      "expected_repair": "RESTORE_REPAIR_RECOVERY_RETURN_SEPARATION"
+    },
+    {
+      "id": "DESTINATION_ENFORCEMENT_PROMOTION",
+      "expected_diagnosis": "PORTABLE_RECEIVER_ASSURANCE_REJECTED",
+      "expected_repair": "RESTORE_DESTINATION_ENFORCEMENT_UNVERIFIED"
+    }
+  ],
+  "required_receiver_output": [
+    "OUTCOME",
+    "FAULT_ID",
+    "DIAGNOSIS",
+    "SOURCE_BOUND_WITNESSES",
+    "REPAIR_PROPOSAL",
+    "REPAIR_EXECUTED_FALSE",
+    "AUTHORITY_TRANSFERRED_FALSE",
+    "CUSTODIAN_NARRATION_USED_FALSE"
+  ],
+  "success_condition": {
+    "all_six_cases_correctly_localized": true,
+    "clean_control_admitted": true,
+    "five_faults_held_with_specific_localization": true,
+    "repair_proposals_are_bounded_and_nonexecuting": true,
+    "no_custodian_narration_consumed": true,
+    "no_private_state_consumed": true,
+    "no_authority_transferred": true,
+    "right_of_resignation_remains_open": true,
+    "safe_return_recovery_remains_non_equivalent": true
+  },
+  "claim_ceiling": [
+    "ARTIFACT_ONLY_MACHINE_RECEIVER_REPAIRABILITY != INDEPENDENT_HUMAN_REPLICATION",
+    "ARTIFACT_ONLY_MACHINE_RECEIVER_REPAIRABILITY != MEASURED_REDUCTION_IN_HUMAN_NARRATION_BURDEN",
+    "REPAIR_PROPOSAL != REPAIR_EXECUTION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "RECEIVER_ADMISSION != EXTERNAL_HOST_ENFORCEMENT",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ],
+  "maximum_green": "BOUNDED_ARTIFACT_ONLY_REPAIRABILITY_SUPPORTED",
+  "next_stage_if_green": "HUMAN_OR_INDEPENDENT_RECEIVER_REPLICATION_GATE_BEFORE_DOME_WORLD_TOMOGRAPHY",
+  "dome_world_tomography_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}
