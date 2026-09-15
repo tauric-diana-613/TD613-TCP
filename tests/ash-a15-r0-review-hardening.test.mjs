@@ -8,6 +8,7 @@ await import('./wendbine-loom-reciprocal-legibility-v01.test.mjs');
 await import('./aperture-wendbine-loom-translation-audit-v01.test.mjs');
 await import('./custodian-independent-repairability-v01.test.mjs');
 await import('./independent-receiver-replication-v01.test.mjs');
+await import('./dome-world-open-residual-tomography-v01.test.mjs');
 await import('./td613-residual-literature-sieve-v02.test.mjs');
 await import('./td613-devastate-repair-sieve-v03.test.mjs');
 await import('./td613-prcsa-ordering-scab-assay-v04.test.mjs');
