@@ -116,6 +116,12 @@
     bottom:auto;
     z-index:12;
     flex:0 0 auto;
+    max-height:44%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    scrollbar-gutter:stable;
     padding:8px 9px 9px;
     border-top:1px solid rgba(130,235,223,.2);
     background:rgba(1,8,6,.985);
@@ -347,4 +353,56 @@
 
 @media(prefers-reduced-motion:reduce){
   html.marrowline-mobile-shell .mobile-dock{transition:none}
+}
+
+/* Living-chat.css loads after this shell. These deliberately stronger selectors
+   preserve the mobile row contract when portable recovery controls expand. */
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel{
+    grid-template-rows:auto minmax(0,1fr) minmax(0,32%);
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-head{
+    min-height:48px;
+    padding:8px 10px;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .messages{
+    align-self:stretch;
+    height:100%;
+    min-height:0;
+    max-height:none;
+    padding:10px 9px 18px;
+    scroll-padding-block:10px 24px;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-form{
+    min-height:0;
+    height:100%;
+    max-height:none;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:8px 9px 9px;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .prompt-label textarea{
+    min-height:64px;
+    max-height:min(20dvh,150px);
+    padding:10px 11px;
+    line-height:1.42;
+    margin:0;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions{
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions .primary{
+    min-height:38px;
+    padding:.55rem .65rem;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-status{
+    max-height:2.8em;
+    margin-top:6px;
+    overflow:hidden;
+    line-height:1.35;
+  }
 }

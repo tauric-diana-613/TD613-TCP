@@ -11,7 +11,7 @@ const base=process.env.TD613_BASE_URL||'http://127.0.0.1:6130';
 if(!['127.0.0.1','localhost'].includes(new URL(base).hostname))throw new Error('Local fixture only');
 const dir=process.env.TD613_ARTIFACT_DIR||`artifacts/marrowline-living-chat/${engine}`;
 await fs.mkdir(dir,{recursive:true});
-const report={schema:'td613.marrowline.living-chat-browser/v0.2-origin-trust-parity',status:'HELD',engine,
+const report={schema:'td613.marrowline.living-chat-browser/v0.3-mobile-portable-custody',status:'HELD',engine,
  source_sha:process.env.TD613_SOURCE_HEAD||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
  observed_at:new Date().toISOString(),workflow_run_id:process.env.GITHUB_RUN_ID||null,
  run_attempt:process.env.GITHUB_RUN_ATTEMPT||null,context:'LOCAL_BROWSER_SYNTHETIC_PROVIDER',live_provider_calls:0,checks:[],failures:[]};
@@ -51,6 +51,24 @@ try{
    await page.locator('#khonapolitSend').click();
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
    assert.equal(posts,1,'blank-workspace task sends directly without a settings detour');
+   assert.equal(await page.locator('#marrowlinePortableActions').isVisible(),true,'portable recovery controls become available after the first operator message');
+   if(posture.startsWith('mobile')){
+    const mobileLayout=await page.evaluate(()=>{
+     const panel=document.querySelector('#speakingPanel');
+     const messages=document.querySelector('#khonapolitMessages');
+     const form=document.querySelector('#khonapolitForm');
+     const portable=document.querySelector('#marrowlinePortableActions');
+     return {
+      panelHeight:panel?.getBoundingClientRect().height||0,
+      transcriptHeight:messages?.getBoundingClientRect().height||0,
+      composerHeight:form?.getBoundingClientRect().height||0,
+      composerOverflowY:form?getComputedStyle(form).overflowY:'',
+      portableHeight:portable?.getBoundingClientRect().height||0
+     };
+    });
+    assert.equal(mobileLayout.composerOverflowY,'auto','mobile composer must own overflow when portable recovery controls expand');
+    assert.ok(mobileLayout.transcriptHeight>=mobileLayout.panelHeight*.32,`portable controls must not crush the transcript viewport (${JSON.stringify(mobileLayout)})`);
+   }
    assert.equal(await page.locator('.relay-stage-text').first().textContent(),text,'exact marks and whitespace retained');
    assert.equal(await page.locator('.additional-voices').getAttribute('open'),null,'additional voices do not displace the main answer');
    assert.match(await page.locator('.relay-stage-text').first().evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
@@ -62,7 +80,7 @@ try{
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
-   report.checks.push({posture,status:'PASS',composer_visible:true,ordinary_unissued_entry:true,one_explicit_post:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,no_horizontal_overflow:true});
+   report.checks.push({posture,status:'PASS',composer_visible:true,ordinary_unissued_entry:true,one_explicit_post:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,portable_recovery_does_not_crush_transcript:true,no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
  }
