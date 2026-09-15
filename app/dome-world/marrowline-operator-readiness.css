@@ -21,10 +21,6 @@
     overscroll-behavior-y:contain;
   }
 
-  html.marrowline-mobile-shell body[data-composer-active="true"] #marrowlinePortableActions{
-    display:none!important;
-  }
-
   html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .prompt-label textarea{
     min-height:58px!important;
     max-height:96px!important;
