@@ -12,6 +12,7 @@ await import('./td613-eclipse-omega-foundational-paper-sieve-v05.test.mjs');
 await import('./td613-eclipse-omega-retrieval-observability-semantic-redundancy-v06.test.mjs');
 await import('./td613-eclipse-omega-primitive-typing-stage-collapse-v07.test.mjs');
 await import('./td613-eclipse-omega-source-bound-stage-collapse-v08.test.mjs');
+await import('./td613-flowcore-boundary-role-stratification-v09.test.mjs');
 await import('./ash-a15-r0-wedding-identifiability.test.mjs');
 await import('./holonomy-loom-hosted-product-integration.test.mjs');
 await import('./holonomy-loom-flowcore-aia-glyph-control.test.mjs');
