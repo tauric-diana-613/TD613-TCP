@@ -1,12 +1,16 @@
 {
   "schema": "td613.atelier-reentry-atlas/v0.1",
   "atelier_id": "WENDBINE",
-  "purpose": "Provide a deterministic 30,000-foot-to-rabbit-hole descent path for future agents without flattening evidence classes or raw-unioning graph families.",
+  "purpose": "Provide a deterministic 30,000-foot-to-rabbit-hole descent path for future agents without flattening evidence classes, raw-unioning graph families, or losing the highest-information negative results.",
+  "findings_index_path": "99-ADMIN/RESEARCH_FINDINGS_INDEX_V0_12.json",
   "entry_order": [
     "ATELIER_PROFILE.json",
+    "99-ADMIN/RESEARCH_FINDINGS_INDEX_V0_12.json",
     "99-ADMIN/REENTRY_ATLAS.json",
     "latest frontier operation",
     "paired machine receipt",
+    "preregistration when applicable",
+    "executable assay",
     "typed graph / manifest surface",
     "source registry or external corpus",
     "original artifact only when required"
@@ -29,115 +33,137 @@
     "DECISION_EQUIVALENCE != ADJUDICATION_EQUIVALENCE",
     "REFERENCE_CONSISTENCY != TRUTH",
     "ACCEPT_REJECT_ACCURACY != DEFECT_LOCALIZATION_ACCURACY",
-    "HELD_OUT_AUTHORED_MATRIX != EXTERNAL_EMPIRICAL_VALIDATION"
+    "HELD_OUT_AUTHORED_MATRIX != EXTERNAL_EMPIRICAL_VALIDATION",
+    "PREREGISTRATION_PRECEDES_EVALUATOR != EXTERNAL_VALIDATION",
+    "BLINDED_ADJUDICATOR_INPUT != BLINDED_RESEARCH_PROGRAM",
+    "REPEATED_MUTATION_ROWS != INDEPENDENT_POPULATION_DRAWS",
+    "ROW_LEVEL_WILSON_INTERVAL != POPULATION_CONFIDENCE_WITH_CLUSTERED_AUTHORED_RECIPES",
+    "BINARY_ACCURACY_PARITY_CAN_COEXIST_WITH_LOCALIZATION_SEPARATION",
+    "LOCALIZATION_ADVANTAGE != TRUTH_GAIN",
+    "FROZEN_CLASSIFIER != INDEPENDENT_EXTERNAL_CLASSIFIER"
   ],
-  "frontier_state": "HELD_OUT_DEFECT_LOCALIZATION_ASSAY_ACTIVE",
+  "frontier_state": "BLINDED_PREREGISTERED_LOCALIZATION_ASSAY_ACTIVE",
   "frontier_stack": [
     {
       "rank": 1,
-      "id": "HELD_OUT_DEFECT_LOCALIZATION_V011",
-      "status": "GREEN_EXACT_HEAD_433D484D0133789A58963DF9248CB75399B687C3_RUN_3323",
-      "question": "On defect families excluded from v0.10's three-world construction, does role-typed stage-local adjudication improve defect localization beyond a terminal-only classifier without changing binary accept/reject accuracy?",
-      "result": "Across five held-out defect families plus one valid control, terminal-only and role-typed paths both achieved 1.0 accept/reject accuracy. Defect localization separated: terminal-only 0.0 versus role-typed 1.0. The strengthened exact-head control replaces mocked replay failure with an actual post-digest round-trip receipt tamper, and passed native Phase-5 execution through the Phase-IV seam plus independent A15 execution. This remains an authored repository-local diagnostic result, not external empirical validation.",
-      "operation_path": "05-OPERATIONS/2026-09-15-HELD-OUT-DEFECT-LOCALIZATION-V0_11.md",
-      "receipt_path": "04-RECEIPTS/assays/2026-09-15-held-out-defect-localization-v011.json",
-      "next_test": "Blind defect labels before adjudication and generate the held-out mutation schedule from a preregistered matrix independent of the classifier implementation; repeat across mutation instances and estimate localization performance with uncertainty."
+      "id": "BLINDED_PREREGISTERED_LOCALIZATION_V012",
+      "status": "GREEN_EXACT_HEAD_9CE545EAB66B9EEE0D5C0EC3BC1742D708B5A2FA_RUN_3329",
+      "question": "Does the v0.11 localization advantage survive a classifier freeze, preregistration before evaluator implementation, label-blind adjudicator input, repeated mutation instances, and a preregistered uncertainty-separation criterion?",
+      "result": "Across 72 preregistered authored instances (six conditions x twelve deterministic recipe variants; 60 defect rows), terminal-only and role-typed paths both achieved 72/72 binary correctness. Terminal-only defect localization was 0/60 and role-typed localization was 60/60. Descriptive row-level Wilson 95% intervals separated (collapsed upper approximately 0.0602; role-typed lower approximately 0.9398). The primary demonstrated contribution is bounded diagnostic resolution rather than terminal decision gain. Recipe family, not row count, is the defensible independence unit; this remains authored repository evidence rather than external empirical validation.",
+      "findings_index_path": "99-ADMIN/RESEARCH_FINDINGS_INDEX_V0_12.json",
+      "preregistration_path": "01-MANIFESTS/2026-09-15-held-out-defect-localization-v012-preregistration.json",
+      "operation_path": "05-OPERATIONS/2026-09-15-BLINDED-PREREGISTERED-LOCALIZATION-V0_12.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-blinded-preregistered-localization-v012.json",
+      "next_test": "Use multiple structurally distinct mutation recipes per stage, unseen defect subtypes, and multi-defect collisions; score hierarchical stage localization separately from exact-subtype localization under leave-one-recipe-family-out evaluation, treating recipe family rather than row count as the primary independence unit."
     },
     {
       "rank": 2,
+      "id": "HELD_OUT_DEFECT_LOCALIZATION_V011",
+      "status": "GREEN_EXACT_HEAD_433D484D0133789A58963DF9248CB75399B687C3_RUN_3323_ATLAS_HEAD_41345941FE9C00FD618103FC1196176E2B2013D1_RUN_3324",
+      "question": "On defect families excluded from v0.10's three-world construction, does role-typed stage-local adjudication improve defect localization beyond a terminal-only classifier without changing binary accept/reject accuracy?",
+      "result": "Across five held-out defect families plus one valid control, terminal-only and role-typed paths both achieved 1.0 accept/reject accuracy. Defect localization separated: terminal-only 0.0 versus role-typed 1.0. The strengthened control replaced a mocked replay failure with an actual post-digest round-trip receipt tamper.",
+      "operation_path": "05-OPERATIONS/2026-09-15-HELD-OUT-DEFECT-LOCALIZATION-V0_11.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-held-out-defect-localization-v011.json",
+      "next_test": "Freeze the adjudicator, preregister the mutation schedule before evaluator implementation, blind expected labels from adjudicator input, repeat mutations, and estimate uncertainty."
+    },
+    {
+      "rank": 3,
       "id": "CROSS_FAMILY_HANDOFF_ADJUDICATION_V010",
       "status": "GREEN_EXACT_HEAD_DB849E3F82D3AD7634BEFEE9F7941385FBC60C0E_RUN_3317",
       "question": "When Flow-Core context and an Aperture round-trip receipt meet inside Phase-5 relation construction, does preserving their separate typed boundaries add adjudication value beyond one collapsed handoff result?",
-      "result": "Three hostile worlds collapse to the same terminal HOLD while role-typed boundaries recover three distinct causes: Flow-Core authority breach, Flow-Core-to-Aperture reference mismatch, and Aperture round-trip jurisdiction breach. Native Phase-5/Phase-IV and A15 execution passed; no scientific epistemic-operator promotion follows.",
+      "result": "Three hostile worlds collapse to the same terminal HOLD while role-typed boundaries recover Flow-Core authority breach, cross-family reference mismatch, and Aperture jurisdiction breach. Reference consistency adds adjudication value without establishing truth.",
       "operation_path": "05-OPERATIONS/2026-09-15-CROSS-FAMILY-HANDOFF-ADJUDICATION-V0_10.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-15-cross-family-handoff-adjudication-v010.json",
       "next_test": "Compare terminal-only and role-typed adjudication on held-out defects while scoring binary disposition separately from defect localization."
     },
     {
-      "rank": 3,
+      "rank": 4,
       "id": "FLOWCORE_BOUNDARY_ROLE_STRATIFICATION_V09",
-      "status": "GREEN_EXACT_HEAD_A3880F7284D6AE3CD69DECB79A78239B5857A9B2_RUN_3310",
-      "question": "Does the v0.7/v0.8 collapse-retention criterion generalize to a second repository family, and must retained boundaries be typed by the kind of value they actually contribute?",
-      "result": "Flow-Core generalized the collapse discipline but rejected a single operator crown: receipt admissibility earned governance/type-safety value, artifact-blind projection earned governance/data-minimization value, per-snapshot entries earned diagnostic-localization value, and canonical digest verification earned integrity/formal-invariant value; none earned scientific epistemic-operator promotion.",
+      "status": "GREEN_EXACT_HEAD_A3880F7284D6AE3CD69DECB79A78239B5857A9B2_RUN_3310_ATLAS_HEAD_5DE494215472E59D486E44828E7D8F611FF82F75_RUN_3311",
+      "question": "Does collapse-retention generalize to a second repository family, and must retained boundaries be typed by the value they actually contribute?",
+      "result": "Flow-Core generalized the collapse discipline but rejected a single operator crown: governance/type-safety, projection/data-minimization, diagnostic-localization, and integrity/formal-invariant roles were retained; zero scientific epistemic operators were promoted.",
       "operation_path": "05-OPERATIONS/2026-09-15-FLOWCORE-BOUNDARY-ROLE-STRATIFICATION-V0_9.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-15-flowcore-boundary-role-stratification-v09.json",
-      "next_test": "Apply role-typed boundary scoring to a cross-family handoff and test whether preserving both sides adds adjudication value beyond a collapsed handoff object."
-    },
-    {
-      "rank": 4,
-      "id": "EO_SOURCE_BOUND_STAGE_COLLAPSE_V08",
-      "status": "GREEN_EXACT_HEAD_4567275E6F980F10A5DA118684A264EE9B2B53C9_RUN_3303",
-      "question": "Which repository stage boundaries earn independent operator status under source-bound intervention, observability, localization, held-out consequence, or formal-invariant tests, and which collapse to implementation or receipt scaffolding?",
-      "result": "A15-R0 source-bound scoring retained three of four bounded stage boundaries; the typed-deficit classifier-to-audit wrapper lost independent scientific-operator status while remaining useful audit receipt scaffolding.",
-      "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-SOURCE-BOUND-STAGE-COLLAPSE-V0_8.md",
-      "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-source-bound-stage-collapse-v08.json",
-      "next_test": "Repeat the collapse/retention scoring on a second independent repository family or a source-bound retrieval episode."
+      "next_test": "Apply role-typed boundary scoring to a cross-family handoff."
     },
     {
       "rank": 5,
+      "id": "EO_SOURCE_BOUND_STAGE_COLLAPSE_V08",
+      "status": "GREEN_EXACT_HEAD_4567275E6F980F10A5DA118684A264EE9B2B53C9_RUN_3303_ATLAS_HEAD_0FB8811B6425802C0CA2D7938897FD8FECFE5CA9_RUN_3304",
+      "question": "Which repository stage boundaries earn independent value under source-bound intervention, observability, localization, held-out consequence, or formal-invariant tests?",
+      "result": "A15-R0 scoring retained three of four bounded stage boundaries; the typed-deficit classifier-to-audit wrapper lost independent scientific-operator status while remaining useful receipt scaffolding.",
+      "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-SOURCE-BOUND-STAGE-COLLAPSE-V0_8.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-source-bound-stage-collapse-v08.json",
+      "next_test": "Repeat on a second independent repository family."
+    },
+    {
+      "rank": 6,
       "id": "EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07",
-      "status": "GREEN_PRIOR_FRONTIER_AFTER_CONTRACT_REPAIR_RUN_3299",
-      "question": "Does a compact arrow-chain preserve enough relation semantics to justify distinct operators, or only directed adjacency whose edge types must be independently earned?",
+      "status": "GREEN_AFTER_CONTRACT_REPAIR_EA608CF401106B410D323C2761A4410CA19D6256_RUN_3299",
+      "question": "Does a compact arrow-chain preserve enough relation semantics to justify distinct operators?",
       "result": "Shared arrow glyph does not identify operator type; exact stage collapse can preserve terminal behavior while stage-local witnesses preserve diagnostic localization.",
       "operation_path": "05-OPERATIONS/2026-09-14-ECLIPSE-OMEGA-PRIMITIVE-TYPING-STAGE-COLLAPSE-V0_7.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-14-eclipse-omega-primitive-typing-stage-collapse-v07.json",
       "next_test": "Apply stage-collapse and stage-local witness scoring to source-bound repository episodes."
     },
     {
-      "rank": 6,
+      "rank": 7,
       "id": "EO_REDUNDANCY_V06",
-      "status": "GREEN_PRIOR_FRONTIER",
+      "status": "GREEN_EXACT_HEAD_4E488CC7B57DA5C7979AC16A3B9937A85EE61B5A_RUN_3187",
       "question": "Does retrieval-observability deficit monotonically increase semantic redundancy under reduced capacity?",
       "result": "NO_UNIVERSAL_ARROW; ranking policy and diversity control can reverse the direction.",
       "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-RETRIEVAL-OBSERVABILITY-SEMANTIC-REDUNDANCY-V0_6.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-retrieval-observability-semantic-redundancy-v06.json",
-      "next_test": "Move from synthetic orthonormal corpus to source-bound retrieval episodes while preserving policy/capacity controls."
-    },
-    {
-      "rank": 7,
-      "id": "EO_FOUNDATIONAL_SIEVE_V05",
-      "status": "CURRENT_BRANCH_PARENT_ASSAY",
-      "question": "Which claims in the foundational Eclipse–Omega paper survive ordinary nomenclature, type checking, hostile counterexamples, and provenance separation?",
-      "result": "Many universal claims demoted or rejected; useful residue retained as project taxonomy, local protocol, empirical hypothesis, or operator-fidelity target with zero novelty promotion.",
-      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
-      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json",
-      "next_test": "Primitive -> typed relation -> composition -> behavioral residue. Require stage-local witnesses before granting independent operator status."
+      "next_test": "Move from synthetic orthonormal corpus to source-bound retrieval episodes."
     },
     {
       "rank": 8,
+      "id": "EO_FOUNDATIONAL_SIEVE_V05",
+      "status": "GREEN_REPAIRED_HEAD_F1210E6A816B8AEB1784B515C656F0854BAAE5C3_RUN_3184",
+      "question": "Which foundational Eclipse-Omega claims survive ordinary nomenclature, type checking, hostile counterexamples, and provenance separation?",
+      "result": "Many universal claims were demoted or rejected; useful residue remains project taxonomy, local protocol, empirical hypothesis, or operator-fidelity target with zero novelty promotion.",
+      "operation_path": "05-OPERATIONS/2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json",
+      "next_test": "Primitive -> typed relation -> composition -> behavioral residue."
+    },
+    {
+      "rank": 9,
       "id": "PRCSA_ORDERING_V04",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the exact PRCS-A stage order identify a unique internal pipeline from terminal behavior?",
       "result": "ORDER_EFFECT != ORDER_IDENTIFICATION; terminally equivalent permutations exist and an intermediate witness can separate them.",
       "operation_path": "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json",
-      "next_test": "Stage-collapse assay: compare full factorization against pairwise/composite collapses."
+      "next_test": "Stage-collapse assay against pairwise/composite collapses."
     },
     {
-      "rank": 9,
+      "rank": 10,
       "id": "TD613_DEVASTATE_REPAIR_V03",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Which broad TD613 novelty claims survive targeted conventional literature attack?",
       "result": "Broad novelty/component-novelty claims were repeatedly killed; surviving targets are compositions, governance criteria, or application-specific audit machinery.",
       "operation_path": "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json",
-      "next_test": "Prefer measurable contribution and operator fidelity over coinage, analogy, or familiar-term novelty."
+      "next_test": "Prefer measurable contribution and operator fidelity over coinage or analogy."
     },
     {
-      "rank": 10,
+      "rank": 11,
       "id": "WENDBINE_TD613_BOUNDED_V01",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the bounded Wendbine public packet give TD613 better names, better operators, or both?",
       "result": "BOTH_NAME_HEAVY; ordinary terminology substantially improves TD613 while several local operator distinctions remain useful. EchoCore did not reconstruct cleanly.",
       "operation_path": "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md",
       "receipt_path": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
-      "next_test": "Keep donor terminology separate from construct provenance; use typed edges and hostile controls before importing any operator."
+      "next_test": "Keep donor terminology separate from construct provenance."
     }
   ],
   "negative_results_to_notice_first": [
-    "Perfect binary reject accuracy can coexist with zero defect-localization accuracy.",
+    "The v0.12 preregistered result preserves 1.0 binary accuracy for both paths while localization separates 0/60 terminal-only from 60/60 role-typed.",
+    "The twelve repetitions per condition are deterministic variations of six authored recipe families; row-level Wilson intervals are descriptive and do not authorize iid population-confidence claims.",
+    "Preregistration before evaluator implementation strengthens internal falsifiability but is not external validation.",
+    "A frozen classifier is not an independent external classifier.",
+    "Localization advantage is diagnostic value, not truth gain, externality proof, deployed-LLM inference, or scientific epistemic-operator promotion.",
     "The v0.11 held-out matrix is authored and repository-local; held-out-from-v0.10 does not make it external empirical validation.",
-    "Localization gain is diagnostic value, not truth gain, externality proof, or scientific epistemic-operator promotion.",
     "A generic cross-family HOLD does not identify whether Flow-Core authority, the Flow-Core-to-Aperture reference join, or Aperture round-trip jurisdiction failed.",
     "Cross-family reference consistency adds adjudication value but does not establish truth, identity, causation, or external origin.",
     "Multi-receipt provenance is not multi-source empirical confirmation.",
@@ -158,7 +184,8 @@
     "Monotone narrowing is not a universal law of ontology-conditioned RAG."
   ],
   "held_questions": [
-    "Does role-typed localization retain its advantage when defect labels are blinded and mutation schedules are preregistered independently of classifier implementation, with uncertainty estimated across repeated mutation instances?",
+    "Under leave-one-recipe-family-out evaluation, does role-typed localization retain stage-level advantage on structurally distinct unseen defect recipes rather than repeated variants of the same authored recipes?",
+    "How does hierarchical stage localization compare with exact-subtype localization when multi-defect collisions are introduced?",
     "Which claimed PRCS-A stages remain independently identifiable after source-bound stage-collapse and intermediate-witness assays?",
     "Does any surviving TD613 composition produce measurable predictive, diagnostic, intervention, or governance value beyond ordinary components?",
     "Does the V/C/P/L forensic evidence-state vector reduce classification errors or improve adjudication consistency in real episodes?",
@@ -181,7 +208,7 @@
     "method_pr": 1118,
     "method_state": "DRAFT_UNMERGED_AT_TIME_OF_THIS_ATLAS",
     "interchange": "Compare through typed packets and explicit evidence classes; do not raw-union SRC, EMSTD613, and WENDBINE graphs.",
-    "future_agent_instruction": "At 30K feet, compare frontier questions and negative results first. Descend only through typed pointers when a cross-Atelier resonance survives the evidence-class check."
+    "future_agent_instruction": "At 30K feet, open the findings index and compare frontier questions plus negative results first. Descend only through typed pointers when a cross-Atelier resonance survives the evidence-class check."
   },
   "user_supplied_public_post_continuity_note": {
     "status": "USER_SUPPLIED_TEXT_NOT_INDEPENDENTLY_VERIFIED_AS_TO_PROVENANCE",
