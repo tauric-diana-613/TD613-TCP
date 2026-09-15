@@ -25,12 +25,24 @@
     "HELD != NOVEL",
     "FAIL_TO_FIND_PRIOR_ART != NOVELTY",
     "BOUNDARY_RETENTION != SCIENTIFIC_OPERATOR_PROMOTION",
-    "BOUNDARY_VALUE_MUST_BE_ROLE_TYPED"
+    "BOUNDARY_VALUE_MUST_BE_ROLE_TYPED",
+    "DECISION_EQUIVALENCE != ADJUDICATION_EQUIVALENCE",
+    "REFERENCE_CONSISTENCY != TRUTH"
   ],
-  "frontier_state": "ROLE_TYPED_BOUNDARY_FIDELITY_ASSAY_ACTIVE",
+  "frontier_state": "CROSS_FAMILY_ADJUDICATION_ASSAY_ACTIVE",
   "frontier_stack": [
     {
       "rank": 1,
+      "id": "CROSS_FAMILY_HANDOFF_ADJUDICATION_V010",
+      "status": "GREEN_EXACT_HEAD_52AACF5426C4E7A44A27CEDEDFCF6EB775EBE6A5_RUN_3316",
+      "question": "When Flow-Core context and an Aperture round-trip receipt meet inside Phase-5 relation construction, does preserving their separate typed boundaries add adjudication value beyond one collapsed handoff result?",
+      "result": "Three hostile worlds collapse to the same terminal HOLD while role-typed boundaries recover three distinct causes: Flow-Core authority breach, Flow-Core-to-Aperture reference mismatch, and Aperture round-trip jurisdiction breach. The cross-family result passed both native Phase-5 execution through the consolidated Phase-IV seam and independent A15 execution; no scientific epistemic-operator promotion follows.",
+      "operation_path": "05-OPERATIONS/2026-09-15-CROSS-FAMILY-HANDOFF-ADJUDICATION-V0_10.md",
+      "receipt_path": "04-RECEIPTS/assays/2026-09-15-cross-family-handoff-adjudication-v010.json",
+      "next_test": "Compare a collapsed terminal-only classifier with the role-typed stage-local adjudication graph on a held-out defect matrix; score accept/reject accuracy separately from defect-localization accuracy."
+    },
+    {
+      "rank": 2,
       "id": "FLOWCORE_BOUNDARY_ROLE_STRATIFICATION_V09",
       "status": "GREEN_EXACT_HEAD_A3880F7284D6AE3CD69DECB79A78239B5857A9B2_RUN_3310",
       "question": "Does the v0.7/v0.8 collapse-retention criterion generalize to a second repository family, and must retained boundaries be typed by the kind of value they actually contribute?",
@@ -40,7 +52,7 @@
       "next_test": "Apply role-typed boundary scoring to a cross-family handoff such as Flow-Core context receipt/series into Aperture round-trip or Phase-5 relation-envelope machinery; test whether preserving both sides adds adjudication value beyond a collapsed handoff object."
     },
     {
-      "rank": 2,
+      "rank": 3,
       "id": "EO_SOURCE_BOUND_STAGE_COLLAPSE_V08",
       "status": "GREEN_EXACT_HEAD_4567275E6F980F10A5DA118684A264EE9B2B53C9_RUN_3303",
       "question": "Which repository stage boundaries earn independent operator status under source-bound intervention, observability, localization, held-out consequence, or formal-invariant tests, and which collapse to implementation or receipt scaffolding?",
@@ -50,7 +62,7 @@
       "next_test": "Repeat the collapse/retention scoring on a second independent repository family or a source-bound retrieval episode; do not generalize A15-R0 synthetic instrumentation into deployed-LLM architecture without an independent empirical witness."
     },
     {
-      "rank": 3,
+      "rank": 4,
       "id": "EO_PRIMITIVE_TYPING_STAGE_COLLAPSE_V07",
       "status": "GREEN_PRIOR_FRONTIER_AFTER_CONTRACT_REPAIR_RUN_3299",
       "question": "Does a compact arrow-chain preserve enough relation semantics to justify distinct operators, or only directed adjacency whose edge types must be independently earned?",
@@ -60,7 +72,7 @@
       "next_test": "Apply stage-collapse and stage-local witness scoring to source-bound repository episodes. A named stage that never beats its collapsed composite on type safety, intervention, intermediate observability, prediction, localization, or an invariant loses independent operator status."
     },
     {
-      "rank": 4,
+      "rank": 5,
       "id": "EO_REDUNDANCY_V06",
       "status": "GREEN_PRIOR_FRONTIER",
       "question": "Does retrieval-observability deficit monotonically increase semantic redundancy under reduced capacity?",
@@ -70,7 +82,7 @@
       "next_test": "Move from synthetic orthonormal corpus to source-bound retrieval episodes while preserving policy/capacity controls; do not infer deployed-LLM behavior from the synthetic result."
     },
     {
-      "rank": 5,
+      "rank": 6,
       "id": "EO_FOUNDATIONAL_SIEVE_V05",
       "status": "CURRENT_BRANCH_PARENT_ASSAY",
       "question": "Which claims in the foundational Eclipse–Omega paper survive ordinary nomenclature, type checking, hostile counterexamples, and provenance separation?",
@@ -80,7 +92,7 @@
       "next_test": "Primitive -> typed relation -> composition -> behavioral residue. Require stage-local witnesses before granting independent operator status."
     },
     {
-      "rank": 6,
+      "rank": 7,
       "id": "PRCSA_ORDERING_V04",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the exact PRCS-A stage order identify a unique internal pipeline from terminal behavior?",
@@ -90,7 +102,7 @@
       "next_test": "Stage-collapse assay: compare full factorization against pairwise/composite collapses and ask whether separate stages improve held-out prediction, diagnosis, or intervention response."
     },
     {
-      "rank": 7,
+      "rank": 8,
       "id": "TD613_DEVASTATE_REPAIR_V03",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Which broad TD613 novelty claims survive targeted conventional literature attack?",
@@ -100,7 +112,7 @@
       "next_test": "Prefer measurable contribution and operator fidelity over coinage, analogy, or familiar-term novelty."
     },
     {
-      "rank": 8,
+      "rank": 9,
       "id": "WENDBINE_TD613_BOUNDED_V01",
       "status": "MERGED_PRIOR_ASSAY",
       "question": "Does the bounded Wendbine public packet give TD613 better names, better operators, or both?",
@@ -111,6 +123,9 @@
     }
   ],
   "negative_results_to_notice_first": [
+    "A generic cross-family HOLD does not identify whether Flow-Core authority, the Flow-Core-to-Aperture reference join, or Aperture round-trip jurisdiction failed.",
+    "Cross-family reference consistency adds adjudication value but does not establish truth, identity, causation, or external origin.",
+    "Multi-receipt provenance is not multi-source empirical confirmation.",
     "Boundary retention does not imply scientific epistemic-operator promotion; retained value must be role-typed.",
     "Two distinct Flow-Core snapshot histories can share the same PARTIAL aggregate status while per-snapshot entries preserve the failure location, even when snapshot identity and ordering are held fixed.",
     "Digest verification witnesses integrity of the admitted series object, not empirical truth or external origin.",
@@ -128,7 +143,7 @@
     "Monotone narrowing is not a universal law of ontology-conditioned RAG."
   ],
   "held_questions": [
-    "Does preserving role-typed boundaries across a Flow-Core -> Aperture or Phase-5 handoff improve adjudication beyond a single collapsed handoff object?",
+    "Does the role-typed adjudication graph reduce defect-localization error on a held-out defect matrix relative to a collapsed terminal-only classifier while keeping accept/reject accuracy separate?",
     "Which claimed PRCS-A stages remain independently identifiable after source-bound stage-collapse and intermediate-witness assays?",
     "Does any surviving TD613 composition produce measurable predictive, diagnostic, intervention, or governance value beyond ordinary components?",
     "Does the V/C/P/L forensic evidence-state vector reduce classification errors or improve adjudication consistency in real episodes?",
