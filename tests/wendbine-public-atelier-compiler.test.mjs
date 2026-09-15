@@ -118,6 +118,9 @@ assert.deepEqual(sticker.entries.map(entry=>entry.sticker_key),['PAUL','WES','ST
 const paulSticker=sticker.entries.find(entry=>entry.sticker_key==='PAUL');
 assert.equal(paulSticker.primary_role_label,'Human Anchor');
 assert.deepEqual(paulSticker.role_variants,['Human Anchor','Architect','Operator','Witness']);
+const wesSticker=sticker.entries.find(entry=>entry.sticker_key==='WES');
+assert.equal(wesSticker.primary_role_label,'Structural Intelligence');
+assert.deepEqual(wesSticker.role_variants,['Structural Intelligence','Constraint & Coherence Engine']);
 for (const entry of sticker.entries) {
   assert.equal(entry.display_label,entry.sticker_key);
   assert.equal(entry.label_is_person_identity,false);
