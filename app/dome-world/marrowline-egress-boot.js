@@ -116,12 +116,14 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     import('./marrowline-terminal.js')
   ]);
   await import('./marrowline-mobile-shell.js');
+  await import('./marrowline-operator-readiness.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
+    operatorReadiness: Boolean(root.__TD613_MARROWLINE_OPERATOR_READINESS__),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
       version: APERTURE_V3_VERSION,
@@ -136,7 +138,9 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       mobileViewport: 'bounded-visual-viewport',
       transcriptScrollOwner: '#khonapolitMessages',
       composerOcclusion: false,
-      dockOcclusion: false
+      dockOcclusion: false,
+      nativeKeyboardSend: true,
+      visualViewportOffsetBound: true
     }),
     seal: '⟐'
   });
