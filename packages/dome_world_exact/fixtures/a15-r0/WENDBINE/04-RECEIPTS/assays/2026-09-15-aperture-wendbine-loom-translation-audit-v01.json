@@ -1,7 +1,7 @@
 {
   "schema": "td613.aperture-wendbine-loom-translation-audit-receipt/v0.1",
   "date": "2026-09-15",
-  "state": "GREEN_AWAITING_ARCHIVAL_EXACT_HEAD_VALIDATION",
+  "state": "SEALED_ARCHIVAL_GREEN_PARENT_VALIDATED",
   "bounded_result": "APERTURE_TRANSLATION_AUDIT_GREEN",
   "parent_bridge_pr": 1138,
   "parent_bridge_head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
@@ -26,6 +26,13 @@
     "run_id": 34924547811,
     "conclusion": "success",
     "meaning": "The preregistered Aperture v3.2-alpha audit passed at the exact implementation head with all parent relation classes preserved, all fourteen hostile mutations rejected, no sticker-induced person/operator/authority promotion, both negative residuals preserved, and REPAIR_PATH != RECOVERY != RETURN retained."
+  },
+  "archival_green_parent": {
+    "head": "f839b148b65f61f0531920cdd65ded979d163240",
+    "run_number": 3372,
+    "run_id": 34924727555,
+    "conclusion": "success",
+    "meaning": "The scientific GREEN was written into the receipt and the resulting exact archival parent head passed the same consolidated contract without changing the bounded scientific result."
   },
   "observed_relation_counts": {
     "PARTIAL": 5,
@@ -69,8 +76,13 @@
     "run_id": 34924547811,
     "conclusion": "success"
   },
-  "archival_green_head": null,
-  "archival_validation_run": null,
+  "archival_green_head": "f839b148b65f61f0531920cdd65ded979d163240",
+  "archival_validation_run": {
+    "run_number": 3372,
+    "run_id": 34924727555,
+    "conclusion": "success"
+  },
+  "current_receipt_head_requires_only_receipt_binding_validation": true,
   "next_stage_if_green": "CUSTODIAN_INDEPENDENT_REPAIRABILITY_ASSAY_BEFORE_ANY_DOME_WORLD_TOMOGRAPHY",
   "human_closure_required": true,
   "operator_closure_required": true,
