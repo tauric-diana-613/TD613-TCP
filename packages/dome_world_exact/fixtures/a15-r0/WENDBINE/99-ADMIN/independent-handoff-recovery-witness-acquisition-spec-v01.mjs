@@ -37,7 +37,7 @@ export function validateWitnessAcquisitionSpecification({ prereg, parentReceipt,
   requireCondition(parentReceipt?.right_of_resignation === 'OPEN', 'PARENT_RESIDUAL_STATE_CHANGED:RIGHT_OF_RESIGNATION');
   requireCondition(parentReceipt?.safe_return_recovery === 'NON_EQUIVALENT', 'PARENT_RESIDUAL_STATE_CHANGED:SAFE_RETURN_RECOVERY');
   requireCondition(parentReceipt?.return_promotion_authority === false, 'PARENT_RETURN_AUTHORITY_WIDENED');
-  requireCondition(parentReceipt?.empirical_exteriority_promotion_authority === false, 'PARENT_EXTERIORITY_AUTHORITY_WIDENED');
+  requireCondition(parentReceipt?.empirical_exteriority_authority === false, 'PARENT_EXTERIORITY_AUTHORITY_WIDENED');
 
   requireCondition(spec?.schema === 'td613.independent-handoff-recovery-witness-acquisition-spec/v0.1', 'SPEC_SCHEMA_MISMATCH');
   requireCondition(spec?.scope === 'SPECIFICATION_ONLY', 'SPEC_SCOPE_MISMATCH');
