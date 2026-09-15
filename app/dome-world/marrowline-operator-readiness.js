@@ -296,8 +296,13 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
   installOperatorGate(doc, root);
 
   const prompt = byId(doc, 'khonapolitPrompt');
-  prompt?.addEventListener('focus', sync);
-  prompt?.addEventListener('blur', () => root.setTimeout(sync, 80));
+  const settleKeyboardPosture = () => {
+    root.setTimeout(sync, 0);
+    root.setTimeout(sync, 80);
+    root.setTimeout(sync, 220);
+  };
+  prompt?.addEventListener('focus', settleKeyboardPosture);
+  prompt?.addEventListener('blur', settleKeyboardPosture);
   root.visualViewport?.addEventListener?.('resize', sync, { passive: true });
   root.visualViewport?.addEventListener?.('scroll', sync, { passive: true });
   root.addEventListener?.('resize', sync, { passive: true });
