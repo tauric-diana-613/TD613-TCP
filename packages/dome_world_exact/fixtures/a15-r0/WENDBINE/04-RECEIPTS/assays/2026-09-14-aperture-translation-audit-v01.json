@@ -1,0 +1,30 @@
+{
+  "schema": "td613.aperture.wendbine-loom-translation-audit-receipt/v0.1",
+  "date": "2026-09-14",
+  "state": "HOSTILE_AUDIT_HOLD_FOR_REPAIR",
+  "input_manifest": "WENDBINE/01-MANIFESTS/wendbine-loom-translation-v01.json",
+  "expected_result": {
+    "outcome": "HOLD_FOR_REPAIR",
+    "lexical_admitted": 7,
+    "operational_admitted": 0,
+    "operator_witness_missing": 7,
+    "rejected": 0
+  },
+  "diagnosis": "MACHINE_READABLE_CROSSWALK_DOES_NOT_YET_ESTABLISH_OPERATOR_FIDELITY_OR_CUSTODIAN_INDEPENDENT_UNDERSTANDING",
+  "next_test": "BIND_EXISTING_EXECUTABLE_OPERATOR_WITNESSES_WITHOUT_INVENTING_MISSING_ONES",
+  "laws": [
+    "LEXICAL_TRANSLATION_ADMITTED != OPERATIONAL_TRANSLATION_ADMITTED",
+    "OPERATOR_WITNESS != SEMANTIC_IDENTITY",
+    "PARTIAL_OPERATOR_COVERAGE != COMPLETE_BRIDGE",
+    "REPOSITORY_TEST_BINDING != EXTERNAL_INTEROPERABILITY",
+    "GREEN_CI != SCIENTIFIC_PROMOTION"
+  ],
+  "authority": {
+    "merge": false,
+    "deployment": false,
+    "vercel": false,
+    "external_host_enforcement": false,
+    "scientific_promotion": false,
+    "human_closure_required": true
+  }
+}
