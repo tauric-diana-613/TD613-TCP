@@ -1,0 +1,48 @@
+{
+  "schema": "td613.independent-handoff-recovery-witness-acquisition-spec-receipt/v0.1",
+  "phase": "IMPLEMENTATION_CANDIDATE_AWAITING_GREEN_VALIDATION",
+  "parent_tomography": {
+    "pr": 1143,
+    "sealed_head": "cf6232fe74c2adf319f009ab78942b3aa396f428",
+    "result": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED"
+  },
+  "preregistration_red": {
+    "run_id": 34932133102,
+    "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/34932133102",
+    "head": "3bb06da4a0ddbc9ce39f7bf41fb21049feb756a8",
+    "expected_failure": true,
+    "failed_job": "a15-r0 / a15-r0",
+    "observed_deficits": [
+      "WITNESS_ACQUISITION_SPEC_MISSING",
+      "WITNESS_ACQUISITION_VALIDATOR_MISSING",
+      "WITNESS_ACQUISITION_RECEIPT_MISSING",
+      "WITNESS_ACQUISITION_OPERATION_MISSING"
+    ]
+  },
+  "maximum_green": "BOUNDED_INDEPENDENT_HANDOFF_RECOVERY_WITNESS_ACQUISITION_SPEC_SUPPORTED",
+  "scope": "SPECIFICATION_ONLY",
+  "witness_acquired": false,
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "future_episode_initial_state": "NOT_ACQUIRED",
+  "right_of_resignation_promotion_authority": false,
+  "recovery_promotion_authority": false,
+  "return_promotion_authority": false,
+  "human_replication_promotion_authority": false,
+  "empirical_exteriority_promotion_authority": false,
+  "claim_ceiling": [
+    "ACQUISITION_SPECIFICATION != WITNESS_ACQUISITION",
+    "SPEC_COMPLETE != EPISODE_OBSERVED",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "CANDIDATE != RETURN",
+    "INDEPENDENT_MACHINE_VALIDATION != INDEPENDENT_HUMAN_EXECUTION",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != RECOVERY",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ],
+  "scientific_green": null,
+  "receipt_binding_green": null,
+  "next_lawful_move_after_green": "ACQUIRE_INDEPENDENT_EXECUTION_WITNESSES_UNDER_THIS_SPEC_BEFORE_ANY_RIGHT_OF_RESIGNATION_RECOVERY_OR_RETURN_PROMOTION"
+}
