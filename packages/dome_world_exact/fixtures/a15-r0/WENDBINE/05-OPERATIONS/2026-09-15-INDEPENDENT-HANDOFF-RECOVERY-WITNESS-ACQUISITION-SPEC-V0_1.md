@@ -11,7 +11,7 @@ Parent state retained without promotion:
 - Right of Resignation: `OPEN`
 - Safe Return / Recovery: `NON_EQUIVALENT`
 - Return-promotion authority: `false`
-- empirical-exteriority-promotion authority: `false`
+- empirical-exteriority authority: `false`
 
 The parent named one lawful successor:
 
@@ -21,7 +21,7 @@ The parent named one lawful successor:
 
 The successor was preregistered before implementation at head `3bb06da4a0ddbc9ce39f7bf41fb21049feb756a8`.
 
-GitHub Actions run `34932133102` produced the intended RED. All jobs except A15-R0 passed; A15-R0 failed only on the four declared absences:
+GitHub Actions run `34932133102` produced the intended RED. A15-R0 failed on the four declared absences:
 
 - `WITNESS_ACQUISITION_SPEC_MISSING`
 - `WITNESS_ACQUISITION_VALIDATOR_MISSING`
@@ -76,11 +76,44 @@ Permitted source classes in this specification are independent receiver observat
 
 Every future episode begins `NOT_ACQUIRED`. `HELD` and `FAILED` episodes remain retained. `CANDIDATE` requires all declared witness families for the relevant lane and absence of a declared defeat condition. `CANDIDATE` still does not mean Return.
 
-## Maximum possible GREEN
+## Maximum earned result
 
 `BOUNDED_INDEPENDENT_HANDOFF_RECOVERY_WITNESS_ACQUISITION_SPEC_SUPPORTED`
 
-That result means only that the acquisition specification survived its bounded hostile validator. It does not mean that any witness has been acquired or that either residual has been resolved.
+This means only that the bounded acquisition specification survived its preregistered hostile validation. It does not mean that any independent execution witness has been acquired or that either parent residual has been resolved.
+
+## Validation lineage
+
+### Preregistered RED
+
+- head: `3bb06da4a0ddbc9ce39f7bf41fb21049feb756a8`
+- run: `34932133102`
+- meaning: the hostile gate existed before the spec, validator, receipt, and operation record.
+
+### Implementation RED
+
+- head: `e8ef62443a9c6b87196a68e445b772167b33b425`
+- run: `34932417352`
+- exact defect: the new validator requested parent field `empirical_exteriority_promotion_authority`, while the sealed #1143 receipt actually exposes `empirical_exteriority_authority`.
+- interpretation: implementation binding error only; the preregistration was not altered and the parent authority ceiling was not widened.
+
+### Scientific GREEN
+
+- head: `5a866943b245092beb4376aa21b7e52f851f9831`
+- run #3387 / `34935100382`
+- conclusion: `success`
+- A15-R0 research field: `success`
+
+The repair changed only the validator's parent-field binding from the nonexistent promotion-authority name to the exact field exposed by the sealed parent receipt.
+
+### Receipt-binding GREEN
+
+- head: `e04f8be69dac33f8f4b6a77107c93a65d0cf23b1`
+- run #3388 / `34935275560`
+- conclusion: `success`
+- A15-R0 research field: `success`
+
+The receipt-bearing head preserved the scientific result and all claim ceilings under the same consolidated validation.
 
 ## Claim ceiling
 
@@ -104,14 +137,25 @@ That result means only that the acquisition specification survived its bounded h
 
 `GREEN != EMPIRICAL_EXTERIORITY`
 
-## Current implementation state
+## Current state before seal validation
 
-The bounded specification, validator, candidate receipt, and operation record are now present. Scientific GREEN has not yet been claimed in this document. The candidate must pass the consolidated A15-R0 hostile path before the receipt may bind a GREEN run.
+Scientific GREEN and receipt-binding GREEN are earned. This commit records that lineage and therefore still requires its own exact-head consolidated GREEN before it may be treated as the sealed chamber head.
 
-No merge. No deployment. No Vercel mutation. No mark-ready transition. No production mutation. No human-replication claim. No external-witness claim. No Right-of-Resignation promotion. No Recovery promotion. No Return promotion. No empirical-exteriority promotion.
+Still retained:
 
-## Lawful successor after a genuine GREEN
+- witness acquired: `false`
+- Right of Resignation: `OPEN`
+- Safe Return / Recovery: `NON_EQUIVALENT`
+- human replication promoted: `false`
+- Return promoted: `false`
+- empirical exteriority promoted: `false`
+
+No merge. No deployment. No Vercel mutation. No mark-ready transition. No production mutation.
+
+## Lawful successor after seal validation
 
 `ACQUIRE_INDEPENDENT_EXECUTION_WITNESSES_UNDER_THIS_SPEC_BEFORE_ANY_RIGHT_OF_RESIGNATION_RECOVERY_OR_RETURN_PROMOTION`
+
+The specification may now govern a later acquisition episode. The present chamber itself has acquired no such witness.
 
 Marked ⟐
