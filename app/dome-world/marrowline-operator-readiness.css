@@ -27,11 +27,9 @@
   }
 
   html.marrowline-mobile-shell body[data-composer-active="true"] #speakingPanel .composer-actions{
-    position:sticky;
-    left:0;
-    right:0;
-    bottom:-1px;
-    z-index:18;
+    position:static!important;
+    inset:auto!important;
+    z-index:auto!important;
     margin-top:6px!important;
     padding:4px 0 2px;
     background:rgba(1,8,6,.985);
@@ -41,15 +39,55 @@
     min-width:min(52vw,190px)!important;
   }
 
+  /* iOS Safari can pan the layout viewport while the software keyboard is open.
+     In that state the ordinary page grid is not a trustworthy bottom edge. Bind
+     the speaking vessel itself to the VisualViewport rectangle so the composer
+     ends at the keyboard boundary instead of floating above a dead strip. */
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"][data-mobile-view="speak"] #speakingPanel{
+    position:fixed!important;
+    top:var(--marrowline-vv-top,0px)!important;
+    left:var(--marrowline-vv-left,0px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--marrowline-vv-width,100vw)!important;
+    height:var(--marrowline-vh,100dvh)!important;
+    max-height:var(--marrowline-vh,100dvh)!important;
+    min-height:0!important;
+    z-index:120!important;
+    grid-template-rows:auto minmax(72px,1fr) auto!important;
+    overflow:hidden!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-form{
+    position:relative!important;
+    inset:auto!important;
+    align-self:end!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:min(52%,260px)!important;
+    margin:0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    padding-bottom:max(7px,env(safe-area-inset-bottom))!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions{
+    position:static!important;
+    inset:auto!important;
+    margin-top:7px!important;
+  }
+
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .prompt-label textarea{
+    display:block!important;
+    min-height:58px!important;
+    max-height:96px!important;
+    margin:0!important;
+  }
+
   html.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
     height:var(--marrowline-vh,100dvh)!important;
     min-height:0!important;
     padding-bottom:0!important;
-  }
-
-  html.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel{
-    height:100%!important;
-    max-height:100%!important;
   }
 
   html.marrowline-mobile-shell .terminal-hold-card{
