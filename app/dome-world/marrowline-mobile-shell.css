@@ -348,3 +348,5 @@
 @media(prefers-reduced-motion:reduce){
   html.marrowline-mobile-shell .mobile-dock{transition:none}
 }
+
+/* PR #1150 preregistration witness: product file touched without changing the broken portable-action sizing. */
