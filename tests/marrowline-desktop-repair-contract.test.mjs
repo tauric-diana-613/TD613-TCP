@@ -31,10 +31,17 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
-test('starter carousel exposes sixteen assays behind the requested rotate control', () => {
+test('starter carousel exposes sixteen assays behind a geometrically locked round control', () => {
   const assayRows = js.match(/^  \['[^\n]+$/gm) || [];
   assert.equal(assayRows.length, 16);
   assert.match(js, /rotate\.textContent = '🗘'/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*flex:0 0 36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*width:36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*height:36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*aspect-ratio:1\/1/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*border-radius:999px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:38px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*height:38px!important/);
   assert.equal(release.composer.starterCarousel.assayPrompts, 16);
   assert.equal(release.composer.starterCarousel.control, '🗘');
 });
