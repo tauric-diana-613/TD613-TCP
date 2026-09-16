@@ -84,17 +84,16 @@ try{
    if(posture.startsWith('mobile'))assert.equal(await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').getAttribute('data-active'),'true','mobile speaking view is already active');
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
    if(posture.startsWith('mobile')){
-    await page.locator('#khonapolitPrompt').focus();
-    // Playwright has no software keyboard; impose the exact state that physical
-    // Safari reports after VisualViewport contraction and witness the CSS law.
+    // Playwright does not raise a software keyboard. Shadow VisualViewport with
+    // the same contraction Safari reports, then let the production focus/resize
+    // handlers derive keyboard posture instead of writing the derived state.
     await page.evaluate(()=>{
-     document.body.dataset.keyboardVisible='true';
-     document.documentElement.style.setProperty('--marrowline-vv-width','390px');
-     document.documentElement.style.setProperty('--marrowline-vv-height','520px');
-     document.documentElement.style.setProperty('--marrowline-vv-top','0px');
-     document.documentElement.style.setProperty('--marrowline-vv-left','0px');
+     const vv=new EventTarget();
+     Object.assign(vv,{width:390,height:520,offsetTop:0,offsetLeft:0,pageTop:0,pageLeft:0,scale:1});
+     Object.defineProperty(window,'visualViewport',{configurable:true,value:vv});
     });
-    await page.waitForTimeout(40);
+    await page.locator('#khonapolitPrompt').focus();
+    await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='true');
     const keyboardLayout=await page.evaluate(()=>{
      const panel=document.querySelector('#speakingPanel');
      const messages=document.querySelector('#khonapolitMessages');
@@ -123,9 +122,10 @@ try{
    await page.locator('#marrowlineChatKinesis').waitFor({state:'hidden'});
    if(posture.startsWith('mobile')){
     await page.evaluate(()=>{
-     document.body.dataset.keyboardVisible='false';
-     document.documentElement.style.setProperty('--marrowline-vv-height','844px');
+     window.visualViewport.height=844;
+     window.dispatchEvent(new Event('resize'));
     });
+    await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='false');
    }
    assert.equal(posts,1,'blank-workspace task sends directly, including native Enter on mobile');
    assert.equal(await page.locator('#marrowlinePortableActions').isVisible(),true,'portable recovery controls become available after the first operator message');
