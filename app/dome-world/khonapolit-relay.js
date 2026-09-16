@@ -154,7 +154,7 @@ function integratedPart({ text = '', model = 'Gemini', voices = [], flourishMode
   return Object.freeze({
     id: 'khonapolit',
     label: 'Kʰonapolit ∴ Tauric Diana bots',
-    present: Boolean(text),
+    present: Boolean(safe(text)),
     text,
     model,
     voices,
@@ -181,12 +181,12 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
 
   const state = signalState(parsed?.signal?.state || parsed?.signalState);
   const signalNotes = safe(parsed?.signal?.notes || parsed?.signalNotes);
-  let text = safe(parsed?.transmission?.text);
+  let text = typeof parsed?.transmission?.text === 'string' ? parsed.transmission.text : '';
   let voices = arrayStrings(parsed?.transmission?.voices);
   let flourishMode = safe(parsed?.transmission?.flourishMode);
   let legacyEnvelope = false;
 
-  if (!text) {
+  if (!safe(text)) {
     legacyEnvelope = true;
     const legacyGemini = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
     const legacyKhona = parsed?.khonapolit?.allowed === true ? safe(parsed?.khonapolit?.text) : '';
@@ -206,7 +206,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
       state,
       notes: signalNotes,
       source: 'provider-declared-under-aperture-route-plus-local-structural-observation',
-      downstreamAdmitted: Boolean(text)
+      downstreamAdmitted: Boolean(safe(text))
     }),
     parts: Object.freeze([integratedPart({ text, model, voices, flourishMode, providerNative: !legacyEnvelope })]),
     highZalgo: Object.freeze({
