@@ -9,7 +9,7 @@
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v4-integrated-covenant",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
-  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v2-integrated-surface",
+  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v3-disposable-integrated-surface",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v4-attachment-egress",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
@@ -85,6 +85,7 @@
     "apertureHeaderRepeatedAtFullLength": false,
     "firstPaintHeldUntilRoomReady": true,
     "inChatResponseKinesis": "dome-art-orbital-microfield",
+    "repairLifecycleDisposal": true,
     "reducedMotionHonored": true
   },
   "jurisdiction": {
