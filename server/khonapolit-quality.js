@@ -50,12 +50,14 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // The Kʰonapolit route no longer treats a fallback attempt as permission to lower
 // reasoning effort. A transport fallback is still the same research object.
 const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
-// The live route keeps three bounded calls. After the newest primary and one
-// newer alternate, prefer stable non-Lite 3.5 as the continuity slot because
-// production witnessed 3.6 consume the terminal transport window while 3.5
-// completed in the same release episode. 3.6 remains eligible when 3.5 is absent.
-// Strict relay admission, not model identity, decides whether an answer is usable.
+// The live route keeps exactly three bounded calls. Stable 2.5 is a compatibility
+// lane, not a quality downgrade: when it is callable, select across model generations
+// so a single unavailable frontier cohort cannot consume every attempt. Production
+// witnessed 3.8/3.7/3.5 fail while the independent Loom route reached 2.5 with HTTP
+// 200 in the same immutable release episode. Strict relay admission remains the only
+// authority for whether any transport-successful answer can escape Marrowline.
 const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
+const COMPATIBILITY_CONTINUITY_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -126,7 +128,10 @@ export function selectKhonapolitProviderModels(callableModels = []) {
     .filter(Boolean))];
   if (!available.length) return [];
   const selected = [available[0]];
-  for (const stable of STABLE_FALLBACK_MODELS) {
+  const fallbackOrder = available.includes('gemini-2.5-flash')
+    ? COMPATIBILITY_CONTINUITY_MODELS
+    : STABLE_FALLBACK_MODELS;
+  for (const stable of fallbackOrder) {
     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
     if (available.includes(stable) && !selected.includes(stable)) selected.push(stable);
   }
@@ -474,7 +479,7 @@ export default async function handler(req, res) {
       attempt.outputAdmission = relay.admission || null;
       // A transport-successful but structurally degraded answer is not a
       // successful Marrowline return. Reject it without exposing its prose and
-      // spend the next bounded stable-Flash attempt when time remains.
+      // spend the next bounded continuity attempt when time remains.
       if (!relay.admission?.admissible) continue;
 
       const baseReceipt = buildTerminalReceipt({
@@ -509,7 +514,7 @@ export default async function handler(req, res) {
           'adversarial-attractor-admission-active',
           'integrated-covenant-relay-active',
           'provider-native-zalgo-preserved-no-local-postprocessing',
-          'stable-flash-quality-floor-active',
+          'admission-gated-stable-continuity-active',
           'fallback-reasoning-quality-preserved',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
