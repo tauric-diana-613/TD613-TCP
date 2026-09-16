@@ -46,10 +46,17 @@ function installStarterCarousel(doc, root) {
   const decorate = () => {
     const starters = messages.querySelector('.starter-prompts');
     if (!starters || starters.dataset.carouselInstalled === 'true') return;
-    const baseButtons = [...starters.querySelectorAll('button')].slice(0, 2);
-    if (baseButtons.length < 2) return;
+    const originals = [...starters.querySelectorAll('button')].slice(0, 2);
+    if (originals.length < 2) return;
+    // Living-chat owns the initial starter listeners. Clone before rebinding so
+    // the carousel has exactly one prompt writer and cannot snap back to stale
+    // starter text after a rotated option is clicked.
+    const baseButtons = originals.map(original => {
+      const clone = original.cloneNode(true);
+      original.replaceWith(clone);
+      return clone;
+    });
     starters.dataset.carouselInstalled = 'true';
-    const base = baseButtons.map(button => ({ label: button.textContent, value: button.dataset.promptValue || null }));
     let page = -1;
     const applyPrompt = (button, entry) => {
       const [label, value] = entry;
@@ -61,7 +68,6 @@ function installStarterCarousel(doc, root) {
         prompt.focus({ preventScroll: true });
       };
     };
-    // Rebind the original two so their values are explicit and reversible.
     applyPrompt(baseButtons[0], ['Follow a memory', 'Help me find words for a memory I am carrying.']);
     applyPrompt(baseButtons[1], ['Meet the Ash Moon', 'Tell me a story of the Ash Moon, within the authored mythology of Marrowline.']);
     const rotate = doc.createElement('button');
@@ -95,9 +101,9 @@ function installStarterCarousel(doc, root) {
   return true;
 }
 
-function openLoom(environment) {
+function openLoom(doc, environment) {
   const imported = (() => { try { return Boolean(peekLastConsumedLoomAiHandoff()); } catch { return false; } })();
-  const continueButton = document.getElementById('marrowlineAiaContinue');
+  const continueButton = byId(doc, 'marrowlineAiaContinue');
   if (imported && continueButton) {
     continueButton.click();
     return 'continued';
@@ -168,6 +174,10 @@ function installUniversalContextPlus(doc, root) {
     menu.style.left = `${left}px`;
     menu.style.top = `${Math.max(10, rect.top - menu.offsetHeight - 8)}px`;
   };
+  const nextFrame = callback => {
+    if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
+    else (root.setTimeout ?? setTimeout)(callback, 0);
+  };
   const refreshLoom = () => {
     let awake = false;
     try { awake = Boolean(peekLastConsumedLoomAiHandoff()); } catch {}
@@ -191,12 +201,12 @@ function installUniversalContextPlus(doc, root) {
   photoInput.addEventListener('change', () => stage(photoInput, 'photo'));
   fileItem.button.addEventListener('click', () => fileInput.click());
   photoItem.button.addEventListener('click', () => photoInput.click());
-  loomItem.button.addEventListener('click', () => { close(); openLoom(root); refreshLoom(); });
+  loomItem.button.addEventListener('click', () => { close(); openLoom(doc, root); refreshLoom(); });
   plus.addEventListener('click', () => {
     const opening = menu.hidden;
     menu.hidden = !opening;
     plus.setAttribute('aria-expanded', String(opening));
-    if (opening) { refreshLoom(); requestAnimationFrame(position); }
+    if (opening) { refreshLoom(); nextFrame(position); }
   });
   root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, () => {
     const state = attachmentState();
@@ -213,12 +223,15 @@ function installUniversalContextPlus(doc, root) {
   return true;
 }
 
-function installConversationActionDismissal(doc) {
+function installConversationActionDismissal(doc, root) {
   const details = doc.querySelector('.conversation-actions');
   if (!details || details.dataset.dismissInstalled === 'true') return false;
   details.dataset.dismissInstalled = 'true';
   details.addEventListener('click', event => {
-    if (event.target.closest('.conversation-action-menu button')) queueMicrotask(() => { details.open = false; });
+    if (event.target.closest('.conversation-action-menu button')) {
+      const defer = root.queueMicrotask || queueMicrotask;
+      defer(() => { details.open = false; });
+    }
   });
   doc.addEventListener('click', event => {
     if (details.open && !details.contains(event.target)) details.open = false;
@@ -233,11 +246,15 @@ function installTranscriptCustody(doc, root) {
   if (!messages || !form || messages.dataset.desktopCustodyInstalled === 'true') return false;
   messages.dataset.desktopCustodyInstalled = 'true';
   const bottom = () => { messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight); };
-  form.addEventListener('submit', () => { root.requestAnimationFrame?.(bottom); root.setTimeout?.(bottom, 80); });
+  const nextFrame = callback => {
+    if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
+    else (root.setTimeout ?? setTimeout)(callback, 0);
+  };
+  form.addEventListener('submit', () => { nextFrame(bottom); root.setTimeout?.(bottom, 80); });
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(records => {
-      if (records.some(record => record.addedNodes?.length)) root.requestAnimationFrame?.(bottom);
+      if (records.some(record => record.addedNodes?.length)) nextFrame(bottom);
     });
     observer.observe(messages, { childList: true, subtree: false });
     root.__TD613_MARROWLINE_TRANSCRIPT_CUSTODY_OBSERVER__ = observer;
@@ -269,7 +286,7 @@ function installDesktopInstrumentTabs(doc, root) {
       event.stopPropagation();
       const same = tools.dataset.desktopOpen === 'true' && tools.dataset.desktopActive === targetId;
       if (same) { close(); return; }
-      tools.querySelectorAll(':scope > details').forEach(panel => { panel.open = panel.id === targetId; });
+      [...tools.children].filter(panel => panel.tagName === 'DETAILS').forEach(panel => { panel.open = panel.id === targetId; });
       tools.dataset.desktopActive = targetId;
       tools.dataset.desktopOpen = 'true';
       tabs.querySelectorAll('button').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
@@ -277,7 +294,9 @@ function installDesktopInstrumentTabs(doc, root) {
     tabs.append(button);
   });
   head.append(tabs);
-  const x = doc.createElement('button'); x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = '×'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close); tools.prepend(x);
+  const x = doc.createElement('button');
+  x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = '×'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close);
+  tools.prepend(x);
   doc.addEventListener('click', event => { if (tools.dataset.desktopOpen === 'true' && !tools.contains(event.target) && !tabs.contains(event.target)) close(); });
   doc.addEventListener('keydown', event => { if (event.key === 'Escape' && tools.dataset.desktopOpen === 'true') close(); });
   close();
@@ -288,10 +307,9 @@ export function installMarrowlineDesktopRepair(doc = document, root = window) {
   ensureStylesheet(doc);
   installStarterCarousel(doc, root);
   installUniversalContextPlus(doc, root);
-  installConversationActionDismissal(doc);
+  installConversationActionDismissal(doc, root);
   installTranscriptCustody(doc, root);
   installDesktopInstrumentTabs(doc, root);
-  // Retire the old Loom-only plus from human-facing surfaces. The universal + above owns file/photo/Loom access.
   doc.documentElement.dataset.marrowlineDesktopRepair = MARROWLINE_DESKTOP_REPAIR_VERSION;
   root.__TD613_MARROWLINE_DESKTOP_REPAIR__ = Object.freeze({ version: MARROWLINE_DESKTOP_REPAIR_VERSION, state: 'ACTIVE' });
   return root.__TD613_MARROWLINE_DESKTOP_REPAIR__;
