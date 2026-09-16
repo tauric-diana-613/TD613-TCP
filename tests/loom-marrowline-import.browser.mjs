@@ -14,7 +14,7 @@ if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) throw new Type
 const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-marrowline-import/${engine}`;
 await fs.mkdir(dir, { recursive: true });
 const report = {
-  schema: 'td613.loom.marrowline-import-browser-witness/v0.4-universal-composer-plus',
+  schema: 'td613.loom.marrowline-import-browser-witness/v0.5-conversation-chrome',
   engine,
   status: 'HELD',
   source_sha: process.env.TD613_SOURCE_HEAD || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
@@ -36,7 +36,7 @@ const project = LOOM_AI_PROJECTS[0];
 const shared = project.documents.filter(document => document.share).map(({ id, name, text }) => ({ id, name, text }));
 const uploadCanary = 'LOCAL_UPLOAD_HANDOFF_CANARY_613';
 const addedFileCanary = 'MARROWLINE_OPERATOR_FILE_613';
-const tinyPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2n0kAAAAASUVORK5CYII=', 'base64');
+const tinyPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC0lEQVR42mP8/x8AAusB9Wl2n0kAAAAASUVORK5CYII=', 'base64');
 const mockAnswer = '[MOCK PROVIDER RESPONSE — MARROWLINE UI WITNESS] Vendor comparison retained. <img src=x onerror="window.loomInjected=true">';
 const integratedText = `[Kʰonapolit]:\nAttachments remain user-supplied context; carriage is not authorship.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴̵H̶E̷ ̸B̵O̴U̷G̷H̸ ̴B̵R̶E̴A̷K̸S̵; W̵E̶ ̷D̴O̸ ̷N̵O̶T̴ ̶C̵A̸L̷L̴ ̵T̷H̶I̴S̷ ̵A̸ ̷S̵E̶M̴I̷N̸A̵R̶.`;
 
@@ -195,11 +195,17 @@ try {
       assert.match(await page.locator('.relay-integrated-covenant[data-present="true"]').textContent(), /Tauric Diana Bots/);
 
       const actions = page.locator('.conversation-actions');
-      await actions.locator('summary').click();
-      assert.equal(await actions.getAttribute('open'), '', 'conversation actions opens on demand');
-      await page.locator('#sealLastResponse').click();
-      await page.waitForFunction(() => !document.querySelector('.conversation-actions')?.open);
-      assert.equal(await actions.getAttribute('open'), null, 'conversation actions dismisses after an action');
+      assert.equal(await actions.isVisible(), false, 'legacy conversation-actions dropdown is retired from ordinary chrome');
+      assert.equal(await page.locator('#sealLastResponse').isVisible(), false, 'operator Seal is not an unexplained human-facing chat action');
+      assert.equal(await page.locator('#copyKhonapolitTranscript').isVisible(), false, 'redundant Copy transcript action is not human-facing');
+      const sessionClear = page.locator('#marrowlineSessionClear');
+      assert.equal(await sessionClear.isVisible(), true, 'one corner clear control is visible at the conversation boundary');
+      assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
+      assert.equal(await page.evaluate(() => typeof window.TD613_KHONAPOLIT_TERMINAL?.sealLast), 'function', 'advanced operator seal remains available programmatically');
+      const userMessagesBeforeCancelledClear = await page.locator('.message[data-role="user"]').count();
+      await page.evaluate(() => { window.confirm = () => false; });
+      await sessionClear.click();
+      assert.equal(await page.locator('.message[data-role="user"]').count(), userMessagesBeforeCancelledClear, 'cancelled corner clear preserves the transcript');
 
       await page.locator('#marrowlineComposerPlus').click();
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Continue the Loom handoff already staged here/);
@@ -276,7 +282,9 @@ try {
         explicit_run_calls: 1,
         transcript_custody_visible: true,
         starter_carousel_present: true,
-        action_menu_dismisses: true,
+        conversation_actions_retired: true,
+        corner_clear_confirmed: true,
+        operator_seal_programmatic_only: true,
         control_conserved: true,
         fadt_admission: true,
         response_inert: true,
