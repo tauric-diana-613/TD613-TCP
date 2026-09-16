@@ -1,7 +1,13 @@
-export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.1-20260911';
+import { AsyncLocalStorage } from 'node:async_hooks';
+
+export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.2-interactive-profile-20260916';
 export const GEMINI25_HIGH_THINKING_BUDGET = 24576;
+export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-interactive';
+export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 16384;
+export const KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET = 4096;
 
 const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high']);
+const GENERATION_PROFILE_STORAGE = new AsyncLocalStorage();
 
 export function normalizeGeminiModel(model = '') {
   return String(model || '').replace(/^models\//, '');
@@ -12,6 +18,20 @@ export function geminiGeneration(model = '') {
   if (/^gemini-2\.5(?:[.-]|$)/.test(normalized)) return '2.5';
   if (/^gemini-3(?:[.-]|$)/.test(normalized)) return '3';
   return 'unknown';
+}
+
+export function currentGeminiGenerationProfile() {
+  return GENERATION_PROFILE_STORAGE.getStore() || null;
+}
+
+export function withGeminiGenerationProfile(profile, callback) {
+  if (typeof callback !== 'function') throw new TypeError('Gemini generation profile requires a callback');
+  const normalized = String(profile || '').trim();
+  return GENERATION_PROFILE_STORAGE.run(normalized || null, callback);
+}
+
+function khonapolitInteractiveProfile() {
+  return currentGeminiGenerationProfile() === GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE;
 }
 
 function finiteNumber(value) {
@@ -39,10 +59,16 @@ export function geminiThinkingConfig(model = '', {
   if (!enabled) return null;
   const generation = geminiGeneration(model);
   if (generation === '3') {
-    return { thinkingLevel: THINKING_LEVELS.has(level) ? level : 'high' };
+    let requestedLevel = THINKING_LEVELS.has(level) ? level : 'high';
+    // Marrowline is an interactive route with its own bounded wall-clock budget.
+    // Keep deliberate reasoning, but do not let the generic "high" default consume
+    // the entire browser/server route before any answer can be admitted.
+    if (khonapolitInteractiveProfile() && requestedLevel === 'high') requestedLevel = 'medium';
+    return { thinkingLevel: requestedLevel };
   }
   if (generation === '2.5') {
-    const requested = Number.isInteger(budget) ? budget : GEMINI25_HIGH_THINKING_BUDGET;
+    let requested = Number.isInteger(budget) ? budget : GEMINI25_HIGH_THINKING_BUDGET;
+    if (khonapolitInteractiveProfile()) requested = Math.min(requested, KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET);
     return { thinkingBudget: Math.max(0, Math.min(requested, GEMINI25_HIGH_THINKING_BUDGET)) };
   }
   return null;
@@ -57,7 +83,11 @@ export function buildGeminiGenerationConfig({
   reasoning = null
 } = {}) {
   const config = {};
-  if (Number.isInteger(maxOutputTokens) && maxOutputTokens > 0) config.maxOutputTokens = maxOutputTokens;
+  if (Number.isInteger(maxOutputTokens) && maxOutputTokens > 0) {
+    config.maxOutputTokens = khonapolitInteractiveProfile()
+      ? Math.min(maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS)
+      : maxOutputTokens;
+  }
   Object.assign(config, geminiSamplingConfig(model, sampling));
   const thinkingConfig = reasoning
     ? geminiThinkingConfig(model, {
@@ -82,6 +112,7 @@ export function describeGeminiGenerationEnvelope(model = '', options = {}) {
     model: normalizeGeminiModel(model),
     generation,
     sampling: generation === '3' ? 'provider-default' : 'caller-legacy-compatible',
-    thinking: thinkingConfig ? Object.freeze({ ...thinkingConfig }) : null
+    thinking: thinkingConfig ? Object.freeze({ ...thinkingConfig }) : null,
+    profile: currentGeminiGenerationProfile()
   });
 }
