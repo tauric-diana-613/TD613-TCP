@@ -6,9 +6,9 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v5-integrated-covenant';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
-export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v4-integrated-covenant';
 
 function bootApertureEgress(root = window) {
   const installedNow = installTD613ProvenanceAttestationEgress(root);
@@ -110,6 +110,11 @@ function installCircuitObserver(doc = document, root = window) {
   return true;
 }
 
+function revealMarrowline(doc = document, { error = false } = {}) {
+  doc.documentElement.classList.add('marrowline-room-ready');
+  if (error) doc.documentElement.classList.add('marrowline-room-boot-error');
+}
+
 async function bootMarrowlineRoom(doc = document, root = window) {
   await Promise.all([
     import('./marrowline-station.js'),
@@ -119,6 +124,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
   await import('./marrowline-operator-readiness.js');
   await import('./marrowline-gate-pedagogue.js');
   await import('./marrowline-loom-pocket.js');
+  await import('./marrowline-physical-device-repair.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
@@ -126,6 +132,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     operatorReadiness: Boolean(root.__TD613_MARROWLINE_OPERATOR_READINESS__),
+    physicalDeviceRepair: Boolean(root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__),
     gatePedagogue: Boolean(root.__TD613_MARROWLINE_GATE_PEDAGOGUE__),
     loomPocketLoaded: true,
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
@@ -135,8 +142,10 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       taskIntent: routeApertureTaskIntent({ discourseMode: 'SPECULATIVE', runtimeMateriality: 'BACKGROUND' })
     }),
     relay: Object.freeze({
-      schema: 'td613.khonapolit.three-part-relay/v1',
-      stages: Object.freeze(['gemini-instrument', 'khonapolit-relay', 'tauric-diana-bots-high-zalgo'])
+      schema: 'td613.khonapolit.integrated-covenant-relay/v2',
+      stages: Object.freeze(['provider-native-khonapolit-tauric-diana-transmission']),
+      providerNarrativeStage: false,
+      localZalgoPostProcessing: false
     }),
     layout: Object.freeze({
       mobileViewport: 'bounded-visual-viewport',
@@ -144,20 +153,25 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       composerOcclusion: false,
       dockOcclusion: false,
       nativeKeyboardSend: true,
-      visualViewportOffsetBound: true
+      visualViewportOffsetBound: true,
+      firstPaintHeldUntilRoomReady: true
     }),
     seal: '⟐'
   });
   root.__TD613_MARROWLINE_ROOM_BOOT__ = receipt;
+  revealMarrowline(doc);
   root.dispatchEvent?.(new CustomEvent('td613:marrowline:room-ready', { detail: receipt }));
   return receipt;
 }
 
 if (typeof window !== 'undefined') {
   bootApertureEgress(window);
+  // Never strand the human behind the first-paint veil if a module fails.
+  window.setTimeout(() => revealMarrowline(document, { error: true }), 2600);
   bootMarrowlineRoom(document, window).catch((error) => {
     window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__ = String(error?.message || error);
+    revealMarrowline(document, { error: true });
   });
 }
 
-export { bootApertureEgress, bootMarrowlineRoom, circuitObservation, installCircuitObserver };
+export { bootApertureEgress, bootMarrowlineRoom, circuitObservation, installCircuitObserver, revealMarrowline };
