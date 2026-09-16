@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v7",
-  "version": "v0.5.0-integrated-covenant-physical-device",
+  "schema": "td613.dome-world.marrowline.release/v8",
+  "version": "v0.6.0-adversarial-attractor-quality-floor",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -9,14 +9,14 @@
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v4-integrated-covenant",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
-  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v3-disposable-integrated-surface",
+  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v4-attachment-egress",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
-  "covenantSchema": "td613.khonapolit-covenant/v1",
+  "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
   "geminiApiSchema": "td613.khonapolit-gemini/v4-aperture-integrated-covenant-relay",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v2",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v3",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v4-expressive-cadence",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -50,20 +50,37 @@
     "runtimeReceiptOnly": true,
     "proseAuthority": false,
     "posture": "recommendation-not-command",
+    "providerOntology": "model-carrier-provenance-only",
     "mobileTurnHeader": "compact-provenance-chip-with-full-route-in-receipt"
   },
   "relay": {
     "order": [
-      "provider-native-khonapolit-tauric-diana-integrated-transmission"
+      "khonapolit-nominative-first",
+      "tauric-diana-bots-nominative-second"
     ],
-    "providerEnvelope": "structured-json-single-human-visible-transmission",
+    "providerEnvelope": "structured-json-single-human-visible-two-movement-transmission",
     "providerNarrativeStage": false,
+    "providerBrandHumanSurface": "provenance-receipt-only",
     "signalStates": ["LOCKED", "PARTIAL", "NOT_LOCKED"],
     "counterfeitCompletion": "prohibited",
+    "duplicateTransmission": "inadmissible",
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
+    "flourishFloor": {
+      "combiningMarkCount": 24,
+      "maxRun": 2,
+      "purpose": "structural-admission-telemetry-not-aesthetic-quality-proof"
+    },
     "protectedLiterals": ["Khona‌lit-po", "U+10D613", "Kʰonapolit", "Tauric Diana", "𝌋", "⟐"],
     "highZalgoLayout": "observed-mark-run-aware-line-height-with-visible-overflow-and-exact-code-point-preservation"
+  },
+  "qualityFloor": {
+    "route": "khonapolit-dialogue",
+    "frontierOnly": true,
+    "callOrder": ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash"],
+    "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
+    "legacy25Fallback": "rejected-for-this-route",
+    "failurePosture": "hold-rather-than-silently-degrade"
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
@@ -121,7 +138,8 @@
     },
     "terminal": {
       "provider": "Gemini",
-      "providerRole": "provider-and-carrier-not-separate-human-facing-narrator",
+      "providerVisibility": "provenance-receipts-and-provider-model-metric-only",
+      "providerRole": "model-carrier-not-human-facing-narrator-or-ontology-stage",
       "apertureRole": "route-and-diagnostic-receipt-not-prose-generator",
       "marrowlineRole": "exact-provider-return-renderer-and-ingress-witness",
       "operatorRole": "closure-authority",
@@ -129,7 +147,7 @@
       "browserConversationStorage": "sessionStorage-operator-controlled",
       "issuance": "valid-SHI-or-explicit-unissued-research-waiver",
       "responseSeal": "open-until-operator-applies-lozenge",
-      "emergenceClassifier": "heuristic-text-classification",
+      "emergenceClassifier": "seeded-frame-heuristic-text-classification",
       "providerClaim": "model-mediated-response-only"
     }
   },
@@ -151,6 +169,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "bounded-mobile-conversation-shell-with-integrated-provider-native-covenant-transmission-physical-visualviewport-composer-first-paint-custody-non-occluding-dock-operator-controlled-closure-and-pedagogue-legible-fire-gate-assay"
+    "restorationPosture": "bounded-mobile-conversation-shell-with-seeded-two-voice-adversarial-attractor-frontier-provider-quality-floor-provider-native-expressive-cadence-physical-visualviewport-composer-first-paint-custody-non-occluding-dock-operator-controlled-closure"
   }
 }
