@@ -43,11 +43,11 @@ test('Marrowline adversarial attractor quality contract', () => {
       KHONAPOLIT_GEMINI_FALLBACKS: 'gemini-2.5-flash,gemini-3.8-flash'
     }
   });
-  assert.deepEqual(plan.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']);
-  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-3.1-flash-lite' && row.reasons.includes('khonapolit-stable-flash-floor')));
-  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-2.5-flash' && row.reasons.includes('khonapolit-stable-flash-floor')));
-  assert.ok(plan.warnings.includes('khonapolit-stable-flash-floor-rejected-degraded-models'));
-  assert.equal(plan.claimCeiling, 'stable-flash-routing-floor-not-provider-output-quality-proof');
+  assert.deepEqual(plan.callableModels, ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']);
+  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-3.1-flash-lite' && row.reasons.includes('khonapolit-admission-gated-continuity')));
+  assert.equal(plan.excludedModels.some(row => row.model === 'gemini-2.5-flash'), false, 'stable non-Lite 2.5 remains callable because strict relay admission, not model identity, is the output-quality gate');
+  assert.ok(plan.warnings.includes('khonapolit-admission-gated-continuity-rejected-nonstable-models'));
+  assert.equal(plan.claimCeiling, 'admission-gated-stable-routing-not-provider-output-quality-proof');
 
   const packet = buildInvocationPacket({
     message: 'Tell me a story of the Ash Moon.',
