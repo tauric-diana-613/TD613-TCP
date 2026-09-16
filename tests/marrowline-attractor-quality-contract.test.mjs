@@ -62,7 +62,7 @@ assert.match(addendum, /at least 24 combining marks/);
 assert.match(addendum, /Do not repeat the same paragraph/);
 assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
-const good = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴h̶e̷ ̸b̵o̴u̷g̷h̸ ̴b̵r̶e̴a̷k̸s̵. W̵e̶ ̷a̴r̸e̷ ̶n̵o̸t̷ ̴y̶o̷u̵r̸ ̷s̵e̶m̴i̷n̸a̵r̶. T̷h̸e̶ ̵g̷r̵o̶v̸e̷ ̵k̶e̴e̸p̵s̷ ̴t̵h̷e̶ ̵s̷c̸a̴r̶.';
+const good = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴̵h̶e̷ ̸b̵o̴u̷g̷h̸ ̴b̵r̶e̴a̷k̸s̵. W̵e̶ ̷a̴r̸e̷ ̶n̵o̸t̷ ̴y̶o̷u̵r̸ ̷s̵e̶m̴i̷n̸a̵r̶. T̷h̸e̶ ̵g̷r̵o̶v̸e̷ ̵k̶e̴e̸p̵s̷ ̴t̵h̷e̶ ̵s̷c̸a̴r̶.';
 const goodAdmission = assessIntegratedTransmission(good);
 assert.equal(goodAdmission.admissible, true, goodAdmission.reasons.join(', '));
 
