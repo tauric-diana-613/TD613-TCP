@@ -11,11 +11,16 @@ const base=process.env.TD613_BASE_URL||'http://127.0.0.1:6130';
 if(!['127.0.0.1','localhost'].includes(new URL(base).hostname))throw new Error('Local fixture only');
 const dir=process.env.TD613_ARTIFACT_DIR||`artifacts/marrowline-living-chat/${engine}`;
 await fs.mkdir(dir,{recursive:true});
-const report={schema:'td613.marrowline.living-chat-browser/v0.4-ios-operator-readiness',status:'HELD',engine,
+const report={schema:'td613.marrowline.living-chat-browser/v0.5-integrated-covenant-physical-keyboard',status:'HELD',engine,
  source_sha:process.env.TD613_SOURCE_HEAD||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
  observed_at:new Date().toISOString(),workflow_run_id:process.env.GITHUB_RUN_ID||null,
  run_attempt:process.env.GITHUB_RUN_ATTEMPT||null,context:'LOCAL_BROWSER_SYNTHETIC_PROVIDER',live_provider_calls:0,checks:[],failures:[]};
-const text='  A\u0315\u0300\u0338\u035c\u0361\u0308\u0302\u0301\u0342\u0303  \n\nKhona‌lit-po · 𝌋 · 𐰸  ';
+const text=[
+ 'Kʰonapolit: R(route) ≠ R(receiver). Khona‌lit-po stays exact.',
+ '',
+ 'THE MATRON: H̷͇̋̇̈́͝O̶̞͆̍̈́͘R̷̛̯̿͑̔N̶̑͘͜A̸͎̿͠N̸͎̔͗Ḯ̵͙ — watch the density move.',
+ 'clean / clean / ṫ̶̤̯̱̅̿̋͋͠h̵͇̖͆̅̒̋̏͝ë̷͎̫́̾̓͂͘ ̶͙̺̓̿̈́͠͝ẅ̵́̑̍̋̄ͅà̸͉̄̇̾͝l̷͈̿̎̾̓͑l̴͎̾̔̐̎ ̴̫̋͗̓͝b̵̰̈́͑͂͂̽e̵͇̍͂̾͘n̷͔̾̑d̵͎̒̔s̴̠͑̈́͠ / clean again.'
+].join('\n');
 let browser;
 try{
  browser=await type.launch({headless:true});
@@ -28,7 +33,18 @@ try{
    posts++;
    const request=route.request().postDataJSON?.()||{};
    if(String(request.message||'').includes('SYNTHETIC HOLD TEST'))return route.fulfill({status:503,json:{ok:false,error:'no-eligible-callable-models'}});
-   await route.fulfill({json:{ok:true,text,relay:{apertureHeader:'SYNTHETIC ROUTE · TECHNICAL_RUNTIME_REVIEW',signal:{state:'LOCKED'},parts:[{id:'gemini',label:'Gemini',present:true,text},{id:'khonapolit',label:'Kʰonapolit',present:true,text:'SYNTHETIC COVENANT VOICE'},{id:'tauric-diana-bots',label:'Tauric Diana',present:true,text:text.repeat(5),motif:'synthetic',intensity:3}]},receipt:{provider:{model:'SYNTHETIC_MODEL'},relay:{signal:{state:'LOCKED'}},seal:{state:'OPEN'}}}});
+   await new Promise(resolve=>setTimeout(resolve,180));
+   await route.fulfill({json:{
+    ok:true,text,
+    relay:{
+     schema:'td613.khonapolit.integrated-covenant-relay/v2',
+     apertureHeader:'SYNTHETIC ROUTE · TECHNICAL_RUNTIME_REVIEW',
+     signal:{state:'LOCKED'},
+     parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text,integrated:true,providerNative:true,voices:['Kʰonapolit','The Matron'],flourishMode:'clean-to-eruption-to-clean'}],
+     highZalgo:{applied:false,providerGenerated:true,source:'provider-native',combiningMarkCount:64,maxRun:6,runCount:18}
+    },
+    receipt:{provider:{model:'SYNTHETIC_MODEL'},relay:{partsPresent:['khonapolit'],signal:{state:'LOCKED'},highZalgo:{applied:false,providerGenerated:true,source:'provider-native'}},seal:{state:'OPEN'}}
+   }});
   });
   await page.route('**/api/dome-world/marrowline?*',async route=>{
    gateCalls++;
@@ -45,8 +61,11 @@ try{
   try{
    await page.goto(`${base}/dome-world/marrowline.html`,{waitUntil:'domcontentloaded'});
    await page.locator('.starter-prompts button').first().waitFor();
+   await page.waitForFunction(()=>document.documentElement.classList.contains('marrowline-room-ready'));
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.geometryReady==='true');
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_OPERATOR_READINESS__));
+   await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__));
+   assert.equal(await page.locator('html').evaluate(el=>el.classList.contains('marrowline-room-ready')),true,'room leaves first-paint veil only after final boot');
    await page.locator('#marrowlineRest').click();
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
@@ -66,25 +85,48 @@ try{
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
    if(posture.startsWith('mobile')){
     await page.locator('#khonapolitPrompt').focus();
-    await page.setViewportSize({width:390,height:520});
-    await page.waitForTimeout(80);
+    // Playwright has no software keyboard; impose the exact state that physical
+    // Safari reports after VisualViewport contraction and witness the CSS law.
+    await page.evaluate(()=>{
+     document.body.dataset.keyboardVisible='true';
+     document.documentElement.style.setProperty('--marrowline-vv-width','390px');
+     document.documentElement.style.setProperty('--marrowline-vv-height','520px');
+     document.documentElement.style.setProperty('--marrowline-vv-top','0px');
+     document.documentElement.style.setProperty('--marrowline-vv-left','0px');
+    });
+    await page.waitForTimeout(40);
     const keyboardLayout=await page.evaluate(()=>{
      const panel=document.querySelector('#speakingPanel');
      const messages=document.querySelector('#khonapolitMessages');
      const form=document.querySelector('#khonapolitForm');
      const prompt=document.querySelector('#khonapolitPrompt');
      const send=document.querySelector('#khonapolitSend');
-     const box=node=>node?.getBoundingClientRect()||{top:0,bottom:0,height:0};
-     return {innerHeight,composerActive:document.body.dataset.composerActive,panel:box(panel),messages:box(messages),form:box(form),prompt:box(prompt),send:box(send)};
+     const actions=document.querySelector('#khonapolitForm .composer-actions');
+     const box=node=>{const r=node?.getBoundingClientRect();return r?{top:r.top,bottom:r.bottom,height:r.height}:null};
+     return {keyboardVisible:document.body.dataset.keyboardVisible,panel:box(panel),messages:box(messages),form:box(form),prompt:box(prompt),actions:box(actions),send:box(send),formOverflow:getComputedStyle(form).overflowY};
     });
-    assert.equal(keyboardLayout.composerActive,'true','focused mobile composer enters keyboard posture');
-    assert.ok(keyboardLayout.form.bottom<=keyboardLayout.innerHeight+2,`composer remains inside shrunken visual chamber (${JSON.stringify(keyboardLayout)})`);
-    assert.ok(keyboardLayout.send.bottom<=keyboardLayout.innerHeight+2,'page send control remains reachable above keyboard posture');
+    assert.equal(keyboardLayout.keyboardVisible,'true');
+    assert.ok(keyboardLayout.panel.bottom<=522,`speaking chamber is bounded by simulated physical VisualViewport (${JSON.stringify(keyboardLayout)})`);
+    assert.ok(keyboardLayout.form.bottom<=522,'composer ends above the keyboard boundary');
+    assert.ok(keyboardLayout.actions.bottom<=522,'conversation actions remain in the visible composer row');
+    assert.ok(keyboardLayout.send.bottom<=522,'page send control remains reachable above keyboard posture');
     assert.ok(keyboardLayout.messages.height>=72,'keyboard posture retains a usable transcript strip');
+    assert.equal(keyboardLayout.formOverflow,'visible','keyboard composer does not hide controls inside a nested scroll box');
     await page.locator('#khonapolitPrompt').press('Enter');
-    await page.setViewportSize(viewport);
    }else await page.locator('#khonapolitSend').click();
+
+   await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
+   assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
+   assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
+   assert.match(await page.locator('#marrowlineChatKinesis').textContent(),/Listening at the shoreline/);
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
+   await page.locator('#marrowlineChatKinesis').waitFor({state:'hidden'});
+   if(posture.startsWith('mobile')){
+    await page.evaluate(()=>{
+     document.body.dataset.keyboardVisible='false';
+     document.documentElement.style.setProperty('--marrowline-vv-height','844px');
+    });
+   }
    assert.equal(posts,1,'blank-workspace task sends directly, including native Enter on mobile');
    assert.equal(await page.locator('#marrowlinePortableActions').isVisible(),true,'portable recovery controls become available after the first operator message');
    if(posture.startsWith('mobile')){
@@ -101,15 +143,20 @@ try{
       portableHeight:portable?.getBoundingClientRect().height||0
      };
     });
-    assert.equal(mobileLayout.composerOverflowY,'auto','mobile composer must own overflow when portable recovery controls expand');
+    assert.equal(mobileLayout.composerOverflowY,'auto','restored mobile composer owns overflow when portable recovery controls expand');
     assert.ok(mobileLayout.transcriptHeight>=mobileLayout.panelHeight*.32,`portable controls must not crush the transcript viewport (${JSON.stringify(mobileLayout)})`);
    }
-   assert.equal(await page.locator('.relay-stage-text').first().textContent(),text,'exact marks and whitespace retained');
-   assert.equal(await page.locator('.additional-voices').getAttribute('open'),null,'additional voices do not displace the main answer');
-   assert.match(await page.locator('.relay-stage-text').first().evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
+
+   const integrated=page.locator('.relay-integrated-covenant .relay-stage-text').last();
+   assert.equal(await integrated.textContent(),text,'provider-native combining marks and whitespace remain exact');
+   assert.equal(await page.locator('.relay-integrated-covenant .relay-stage-head > span:first-child').last().textContent(),'Kʰonapolit ∴ Tauric Diana bots');
+   assert.equal(await page.locator('.relay-gemini[data-present="true"]').count(),0,'no human-facing Gemini prose stage exists');
+   assert.equal(await page.locator('.relay-bots[data-present="true"]').count(),0,'no separately post-processed bot stage exists');
+   assert.equal(await page.locator('.additional-voices').count(),0,'integrated covenant output is not buried in a secondary disclosure');
+   assert.match(await integrated.evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
+   const providerLines=page.locator('.relay-integrated-covenant .provider-native-line');
+   assert.ok(await providerLines.count()>=3,'provider-native line preparation gives extreme vertical flourishes room without rewriting bytes');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
-   await page.locator('.additional-voices > summary').click();
-   assert.equal(await page.locator('.relay-bots .relay-stage-text').textContent(),text.repeat(5),'expanded flourishes preserve exact text');
    await page.locator('.return-details > summary').click();
    assert.match(await page.locator('.relay-aperture-header').last().textContent(),/TECHNICAL_RUNTIME_REVIEW/);
 
@@ -141,7 +188,7 @@ try{
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
-   report.checks.push({posture,status:'PASS',composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),ordinary_unissued_entry:true,one_explicit_post:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,portable_recovery_does_not_crush_transcript:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
+   report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,portable_recovery_does_not_crush_transcript:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
  }
