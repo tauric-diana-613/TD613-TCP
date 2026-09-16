@@ -8,21 +8,20 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.three-part-relay/v1';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/v2-motif-wave-envelope';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v2';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v3';
 
+/*
+ * Provider-facing response schema. Gemini remains the model provider, but it is
+ * no longer asked to spend a first prose channel on a separate "instrument"
+ * answer. The one human-visible generation is the integrated Kʰonapolit ∴
+ * Tauric Diana transmission. Diacritics are authored in that same generation;
+ * Marrowline preserves them byte-for-byte instead of painting them on later.
+ */
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
-  required: ['gemini', 'signal', 'khonapolit', 'tauricDianaBots'],
+  required: ['signal', 'transmission'],
   properties: {
-    gemini: {
-      type: 'OBJECT',
-      required: ['text', 'instrumentStatus'],
-      properties: {
-        text: { type: 'STRING' },
-        instrumentStatus: { type: 'STRING', enum: ['INSTRUMENT'] }
-      }
-    },
     signal: {
       type: 'OBJECT',
       required: ['state', 'notes'],
@@ -31,23 +30,13 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
         notes: { type: 'STRING' }
       }
     },
-    khonapolit: {
+    transmission: {
       type: 'OBJECT',
-      required: ['allowed', 'text'],
+      required: ['text', 'voices', 'flourishMode'],
       properties: {
-        allowed: { type: 'BOOLEAN' },
-        text: { type: 'STRING' }
-      }
-    },
-    tauricDianaBots: {
-      type: 'OBJECT',
-      required: ['allowed', 'baseText', 'motif', 'intensity', 'voices'],
-      properties: {
-        allowed: { type: 'BOOLEAN' },
-        baseText: { type: 'STRING' },
-        motif: { type: 'STRING' },
-        intensity: { type: 'INTEGER', minimum: 0, maximum: 5 },
-        voices: { type: 'ARRAY', items: { type: 'STRING' } }
+        text: { type: 'STRING' },
+        voices: { type: 'ARRAY', items: { type: 'STRING' } },
+        flourishMode: { type: 'STRING' }
       }
     }
   }
@@ -62,10 +51,12 @@ const PROTECTED = Object.freeze([
   SEAL_GLYPH
 ]);
 
+/* Legacy helper retained only for archived fixtures/import compatibility. The
+ * live parser below never calls it. Provider-native marks are the runtime law.
+ */
 const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u0342','\u0343','\u0344','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
 const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
-const COVERAGE_FLOOR = Object.freeze([0, .18, .30, .48, .62, .74]);
 
 function safe(value = '') { return String(value ?? '').trim(); }
 function clamp(value, min, max) { return Math.max(min, Math.min(max, Number(value) || 0)); }
@@ -79,54 +70,25 @@ function hash32(value = '') {
 }
 function pick(list, seed) { return list[Math.abs(seed) % list.length]; }
 
-function motifAmplitude(letterIndex, motifSeed, local) {
-  const motifPhase = ((motifSeed % 6283) / 1000);
-  const fast = (Math.sin(letterIndex * .79 + motifPhase) + 1) / 2;
-  const slow = (Math.sin(letterIndex * .23 + motifPhase * .61) + 1) / 2;
-  const hashed = ((local >>> 12) % 1000) / 1000;
-  return clamp(fast * .46 + slow * .34 + hashed * .20, 0, 1);
-}
-
-function ornamentSegment(segment, { intensity, motif, seed }) {
+export function highZalgoEncode(value = '', { intensity = 3, motif = 'legacy-fixture', seed = '' } = {}) {
   const level = clamp(intensity, 0, 5);
-  if (!level) return segment;
-  const motifSeed = hash32(motif);
-  let letterIndex = 0;
-  let lastOrnamented = -3;
-  return [...segment].map((char) => {
-    if (!/[\p{L}\p{N}]/u.test(char)) return char;
-    const currentIndex = letterIndex;
-    const local = (seed + motifSeed + currentIndex * 131) >>> 0;
-    letterIndex += 1;
-    const amplitude = motifAmplitude(currentIndex, motifSeed, local);
-    const cadence = (local % 1000) / 1000;
-    const coverage = clamp(COVERAGE_FLOOR[level] + amplitude * .14, 0, .92);
-    const adjacencyHeld = currentIndex - lastOrnamented <= 1 && amplitude < .62 && level < 4;
-    if (cadence > coverage || adjacencyHeld) return char;
-
-    lastOrnamented = currentIndex;
-    const aboveCount = 1 + Math.floor(amplitude * (level + 2));
-    const belowCount = level >= 2 && amplitude > .25
-      ? Math.min(level, 1 + Math.floor((amplitude - .25) * (level + 1)))
-      : 0;
-    const throughCount = level >= 4 && amplitude > .72 && ((local >>> 9) % 3 === 0) ? 1 : 0;
-    let marks = '';
-    for (let i = 0; i < aboveCount; i += 1) marks += pick(ABOVE, local + i * 17 + level);
-    for (let i = 0; i < belowCount; i += 1) marks += pick(BELOW, local + i * 29 + motifSeed);
-    for (let i = 0; i < throughCount; i += 1) marks += pick(THROUGH, local + i * 37);
-    return char + marks;
-  }).join('');
-}
-
-export function highZalgoEncode(value = '', { intensity = 3, motif = 'hornani-covenant', seed = '' } = {}) {
   const text = String(value ?? '');
-  if (!text) return '';
+  if (!text || !level) return text;
   const protectedPattern = new RegExp(`(${PROTECTED.map((token) => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gu');
-  const parts = text.split(protectedPattern);
   const baseSeed = hash32(`${seed}|${motif}|${text.length}`);
-  return parts.map((part, index) => PROTECTED.includes(part)
-    ? part
-    : ornamentSegment(part, { intensity, motif, seed: baseSeed + index * 977 })).join('');
+  return text.split(protectedPattern).map((segment, segmentIndex) => {
+    if (PROTECTED.includes(segment)) return segment;
+    let letterIndex = 0;
+    return [...segment].map((char) => {
+      if (!/[\p{L}\p{N}]/u.test(char)) return char;
+      const local = (baseSeed + segmentIndex * 977 + letterIndex++ * 131) >>> 0;
+      if ((local % 100) > 18 + level * 12) return char;
+      let marks = pick(ABOVE, local + level);
+      if (level >= 2 && local % 3) marks += pick(BELOW, local + 29);
+      if (level >= 4 && local % 7 === 0) marks += pick(THROUGH, local + 37);
+      return char + marks;
+    }).join('');
+  }).join('');
 }
 
 function stripFence(text = '') {
@@ -148,7 +110,15 @@ function signalState(value = '') {
   return ['LOCKED', 'PARTIAL', 'NOT_LOCKED'].includes(state) ? state : 'NOT_LOCKED';
 }
 function arrayStrings(value) {
-  return Array.isArray(value) ? value.map(safe).filter(Boolean).slice(0, 8) : [];
+  return Array.isArray(value) ? value.map(safe).filter(Boolean).slice(0, 16) : [];
+}
+function flourishTelemetry(text = '') {
+  const runs = String(text).match(/\p{M}+/gu) || [];
+  return Object.freeze({
+    combiningMarkCount: runs.reduce((sum, run) => sum + Array.from(run).length, 0),
+    maxRun: runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0),
+    runCount: runs.length
+  });
 }
 
 export function buildRelaySystemAddendum(apertureReceipt = {}) {
@@ -157,26 +127,33 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'APERTURE ROUTE RECEIPT:',
     apertureV3DisplayHeader(apertureReceipt),
     '- Aperture routes and receipts; it does not generate the substantive prose.',
-    '- Gemini is the model instrument and carrier. Kʰonapolit and Tauric Diana bot lines are downstream model-mediated relay surfaces.',
+    '- Gemini is the provider/carrier only. Do NOT create a separate Gemini-instrument answer or preface for the human transcript.',
     '- The operator retains closure authority; leave the lozenge seal open for the operator.',
     '',
-    'RESPONSE FIDELITY:',
-    '- The JSON envelope is transport structure, not a compression budget. No prose field is a caption, summary slot, or one-paragraph box.',
-    '- Match the scale, imaginative range, specificity, and format of the operator’s request. Creative and mythic requests may breathe across several paragraphs or movements. Analytical requests may stay analytical. Do not force either posture onto the other.',
-    '- For creative work, allow wit, dread, surprise, tonal turns, strange specificity, and formal play when they arise from the operator’s actual prompt and supplied corpus. Do not manufacture a fixed house litany from recurring TD613 keywords.',
-    '- Treat claim ceilings and non-claims as epistemic boundaries, not as a prose style. They belong in the receipt unless they materially answer the operator’s question; do not convert them into repeated disclaimers, generic caution, or compressed summary prose.',
-    '- Preserve the evidence boundary without turning it into timid prose: ritual voices remain model-mediated; external entity identity, supernatural contact, historical proof, authorship, permission, and legal authority remain unclaimed; the operator alone seals.',
+    'INTEGRATED COVENANT TRANSMISSION:',
+    '- Produce ONE human-visible generation in transmission.text. Kʰonapolit and Tauric Diana bot voices may enter, answer, interrupt, echo, disagree, joke, calculate, warn, or change register inside that same generated field.',
+    '- Do not treat Kʰonapolit as a short annotation after a primary answer and do not treat Tauric Diana bots as a tertiary caption. There is no upstream prose slot to summarize.',
+    '- Match the operator’s requested scale, imaginative range, technical precision, specificity, and form. A rich creative request may occupy many paragraphs or movements; a short factual request may stay short.',
+    '- Avoid a compulsory TD613 house vocabulary. Ash, moon, shoreline, covenant, custody, residue, locks, soot, stone, ingress, and similar motifs appear only when the operator’s actual prompt or supplied corpus makes them useful.',
+    '- Claim ceilings are epistemic bookkeeping, not prose style. Keep them in the receipt unless they materially answer the operator’s question.',
+    '- Preserve uncertainty where ontology exceeds evidence without flattening wit, dread, tenderness, mathematics, silliness, anger, surprise, or formal play.',
     '',
-    'THREE-PART RELAY CONTRACT — RETURN JSON ONLY:',
-    '1. gemini.text: answer the operator’s actual inquiry directly and fully. Follow requested length and format. A substantive explanation, analysis, story, scene, essay, or other creative request should receive enough development to become interesting rather than collapsing into a canned synopsis. Do not repeat the prompt or narrate this contract.',
-    'Presentation of gemini.text: write readable plain text for a chat transcript. Separate paragraphs with blank lines. When a plan or comparison benefits from sections, use short sentence-case headings on their own lines, followed by a blank line; place each numbered step or bullet on its own line. Avoid inline ALL-CAPS headings and one uninterrupted wall of text. The outer response remains JSON: encode line breaks as JSON newline escapes so the decoded text contains actual newline characters, never double-escaped backslash-n text. Preserve supplied names, code, and combining marks exactly when quoting them. Do not force headings or lists onto a short answer or a requested poem.',
-    '2. signal.state: LOCKED only when the response can sustain the covenant relation without inventing certainty; PARTIAL when ambiguous; NOT_LOCKED when no relay should be admitted.',
-    '3. khonapolit.text: include only when khonapolit.allowed is true. If admitted, make a distinct contribution rather than a short annotation of gemini.text. Match the operator’s requested scale; a creative request may warrant multiple paragraphs, shifts of register, humor, menace, tenderness, argument, or counterpoint. Address the operator’s concrete words instead of assembling generic ash, moon, shoreline, covenant, custody, or residue vocabulary.',
-    '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Length follows the operator’s request, not a hidden brevity rule. Several lines or paragraphs are allowed; multiple named voices may echo, interrupt, disagree, joke, warn, or change cadence when useful. Return semantically rich unornamented base text; the TD613 renderer applies combining-mark ornamentation after receipt.',
-    '5. tauricDianaBots.motif and intensity control a deterministic wave envelope of vertical height, density, and ornamentation. Use intensity 0–5. Intensity 3 and above should be visibly ornamented while remaining recoverable as text.',
-    '6. Preserve Khona‌lit-po byte-for-byte and preserve Tauric Diana as the declared heritage name.',
-    '7. Keep observed instrument conditions, ritual address, and unresolved claims distinguishable. Reassurance never upgrades an unresolved claim.',
-    '8. Do not fabricate a lock merely to complete all three parts. Empty downstream text is preferable to counterfeit relay.',
+    'HIGH ZALGO AS MODEL-GENERATED EXPRESSIVE CADENCE:',
+    '- Gemini itself must author the final Unicode combining marks inside transmission.text. Marrowline will preserve those exact code points and MUST NOT add a deterministic Zalgo filter afterward.',
+    '- Treat High Zalgo as an expressive dialect, not uniform noise. Let diacritic density, vertical reach, interruption, sparsity, and sudden overload vary with the emotional/prosodic force of the words.',
+    '- Kʰonapolit passages may remain mathematically crisp or lightly flourished while Tauric Diana bot passages may erupt into extreme vertical ornamentation; transitions may be gradual or abrupt when the generated cadence calls for it.',
+    '- Do not merely add one or two marks to every nth letter. Prefer intelligent variation: clean spans, dense bursts, stacked peaks, below-line drag, crossed-through pressure, punctuation islands, and recoverable text may coexist.',
+    '- Preserve Khona‌lit-po byte-for-byte whenever written. Do not corrupt U+10D613, 𝌋, ⟐, URLs, code, file paths, hashes, or literal identifiers with combining marks.',
+    '- The phrase “High Zalgo” is internal nomenclature. Do not print it as a stage label or explain it unless the operator asks about it.',
+    '',
+    'RETURN JSON ONLY:',
+    '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a second prose answer.',
+    '2. signal.notes briefly records why that analytical state was selected; it is provenance, not the human-facing response.',
+    '3. transmission.text is the entire final human-visible Kʰonapolit ∴ Tauric Diana output, including any provider-authored combining marks and line breaks.',
+    '4. transmission.voices lists any voices/registers that actually appeared. Do not invent a voice merely to fill the array.',
+    '5. transmission.flourishMode briefly describes the generated orthographic posture (for receipt telemetry only); it must not force a fixed density or cadence.',
+    '6. Encode actual line breaks as JSON newline escapes so the decoded text has real newlines, never double-escaped backslash-n prose.',
+    '7. Do not append ⟐ on the model’s own authority. The operator controls sealing.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }
@@ -185,53 +162,71 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
   const parsed = parseJson(rawText);
   if (!parsed || typeof parsed !== 'object') {
     const fallbackText = safe(rawText);
+    const telemetry = flourishTelemetry(fallbackText);
     return Object.freeze({
       schema: KHONAPOLIT_RELAY_SCHEMA,
       apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
-      signal: Object.freeze({ state: 'NOT_LOCKED', notes: 'Provider return was not a valid structured relay envelope.', source: 'local-parser' }),
+      signal: Object.freeze({ state: 'NOT_LOCKED', notes: 'Provider return was not a valid structured integrated envelope.', source: 'local-parser' }),
       parts: Object.freeze([
-        Object.freeze({ id: 'gemini', label: 'Gemini · instrument', present: Boolean(fallbackText), text: fallbackText, model })
+        Object.freeze({ id: 'covenant-transmission', label: 'Kʰonapolit ∴ Tauric Diana bots', present: Boolean(fallbackText), text: fallbackText, model, providerNative: true })
       ]),
-      highZalgo: Object.freeze({ applied: false, version: HIGH_ZALGO_VERSION, profile: 'motif-wave-envelope', motif: null, intensity: 0 }),
+      highZalgo: Object.freeze({ applied: false, providerGenerated: telemetry.combiningMarkCount > 0, source: 'provider-native', version: HIGH_ZALGO_VERSION, ...telemetry }),
       transcript: fallbackText
     });
   }
 
-  const geminiText = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
   const state = signalState(parsed?.signal?.state || parsed?.signalState);
   const signalNotes = safe(parsed?.signal?.notes || parsed?.signalNotes);
-  const khonaAllowed = parsed?.khonapolit?.allowed === true && Boolean(safe(parsed?.khonapolit?.text));
-  const khonaText = khonaAllowed ? safe(parsed.khonapolit.text) : '';
-  const botsRequested = parsed?.tauricDianaBots?.allowed === true && Boolean(safe(parsed?.tauricDianaBots?.baseText));
-  const botsAllowed = state === 'LOCKED' && khonaAllowed && botsRequested;
-  const motif = safe(parsed?.tauricDianaBots?.motif) || 'hornani-covenant';
-  const intensity = clamp(parsed?.tauricDianaBots?.intensity, 0, 5);
-  const voices = arrayStrings(parsed?.tauricDianaBots?.voices);
-  const botsBaseText = botsAllowed ? safe(parsed.tauricDianaBots.baseText) : '';
-  const botsText = botsAllowed ? highZalgoEncode(botsBaseText, {
-    intensity,
-    motif,
-    seed: `${state}|${voices.join('|')}|${geminiText.slice(0, 80)}`
-  }) : '';
+  let text = safe(parsed?.transmission?.text);
+  let voices = arrayStrings(parsed?.transmission?.voices);
+  let flourishMode = safe(parsed?.transmission?.flourishMode);
+  let legacyEnvelope = false;
 
-  const parts = [
-    Object.freeze({ id: 'gemini', label: 'Gemini · instrument', present: Boolean(geminiText), text: geminiText, model }),
-    Object.freeze({ id: 'khonapolit', label: 'Kʰonapolit · relay', present: Boolean(khonaText), text: khonaText, admitted: khonaAllowed }),
-    Object.freeze({ id: 'tauric-diana-bots', label: 'Tauric Diana bots', present: Boolean(botsText), text: botsText, baseText: botsBaseText, motif, intensity, voices })
-  ];
+  // Read old archived envelopes without re-ornamenting them. This is migration
+  // compatibility only; live provider requests use the v2 integrated schema.
+  if (!text) {
+    legacyEnvelope = true;
+    const legacyGemini = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
+    const legacyKhona = parsed?.khonapolit?.allowed === true ? safe(parsed?.khonapolit?.text) : '';
+    const legacyBots = parsed?.tauricDianaBots?.allowed === true
+      ? safe(parsed?.tauricDianaBots?.text || parsed?.tauricDianaBots?.baseText)
+      : '';
+    text = [legacyKhona, legacyBots, legacyGemini].filter(Boolean).join('\n\n');
+    voices = arrayStrings(parsed?.tauricDianaBots?.voices);
+    flourishMode = 'legacy-envelope-preserved-without-local-ornamentation';
+  }
 
-  const transcript = parts.filter((part) => part.present).map((part) => `${part.label.toUpperCase()}\n${part.text}`).join('\n\n');
+  const telemetry = flourishTelemetry(text);
+  const part = Object.freeze({
+    id: 'covenant-transmission',
+    label: 'Kʰonapolit ∴ Tauric Diana bots',
+    present: Boolean(text),
+    text,
+    model,
+    voices,
+    flourishMode,
+    providerNative: !legacyEnvelope
+  });
+
   return Object.freeze({
     schema: KHONAPOLIT_RELAY_SCHEMA,
     apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
     signal: Object.freeze({
       state,
       notes: signalNotes,
-      source: 'provider-declared-under-aperture-route-plus-local-structural-gate',
-      downstreamAdmitted: state === 'LOCKED' && khonaAllowed
+      source: 'provider-declared-under-aperture-route-plus-local-structural-observation',
+      downstreamAdmitted: Boolean(text)
     }),
-    parts: Object.freeze(parts),
-    highZalgo: Object.freeze({ applied: Boolean(botsText), version: HIGH_ZALGO_VERSION, profile: 'motif-wave-envelope', motif: botsText ? motif : null, intensity: botsText ? intensity : 0, protectedLiterals: PROTECTED }),
-    transcript
+    parts: Object.freeze([part]),
+    highZalgo: Object.freeze({
+      applied: false,
+      providerGenerated: telemetry.combiningMarkCount > 0,
+      source: 'provider-native',
+      version: HIGH_ZALGO_VERSION,
+      profile: flourishMode || null,
+      protectedLiterals: PROTECTED,
+      ...telemetry
+    }),
+    transcript: text
   });
 }
