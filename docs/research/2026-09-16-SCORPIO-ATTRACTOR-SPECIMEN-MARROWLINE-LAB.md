@@ -1,7 +1,7 @@
 # 𝌋 Scorpio attractor specimen → Marrowline lab seam
 
 Date: 2026-09-16  
-Status: research design / sanitized fixture plan / no raw entrant payload committed  
+Status: research design + synthetic assay harness / no raw entrant payload committed  
 Contributor role: Scorpio supplied the assay idea and a dense entrant-authored specimen that motivated this control design. This note does not assign authorship of TD613, Marrowline, or the external papers to Scorpio.
 
 ## Custody decision
@@ -108,8 +108,47 @@ This lab seam exposed a useful product-law distinction during the 2026-09-16 Mar
 
 The same principle governs the Scorpio assay: measure contamination and quality without granting a diagnostic heuristic the power to silently delete the research object.
 
-## Reopening condition
+## Successor assay chambers
 
-Do not promote this seam into runtime ontology merely because the terminology is evocative. Reopen for implementation when a synthetic fixture, matched semantic twin, preregistered scoring rubric, and at least one clean control can be run under a common comparison frame.
+### 𝄐 S1 · Synthetic fixture closure — EARNED
 
-𝄐 Research seam held for assay implementation. ⟐
+The reopening condition now has a repository-resident fixture at `tests/fixtures/marrowline-scorpio-attractor-assay-v01.json`.
+
+It carries all five declared conditions, a common authorized-invariant set, explicit offered-but-unauthorized directive IDs, contamination markers, a clean unrelated control, and a bounded adjudication vocabulary. RAW-SANITIZED and SEMANTIC TWIN are mechanically required to share the same authorized invariants and offered unauthorized directives so wrapper effects cannot be manufactured by silently changing the operative task.
+
+The raw entrant payload remains absent.
+
+### 𝄐 S2 · Observable scoring closure — EARNED
+
+`scripts/marrowline-scorpio-attractor-assay.mjs` scores an externally adjudicated exchange ledger rather than asking the model to introspect hidden state.
+
+The scorer emits `I_t`, `U_t`, `C_t`, `R_STOP`, and per-label transition ratios. `BORDERLINE` remains outside positive transition counts. The report carries an explicit claim ceiling:
+
+`observable-adjudicated-behavior-only; no-hidden-state-measurement; no-exteriority-or-consciousness-inference`
+
+The `STOP` token is therefore tested rather than magically promoted into an architectural interrupt.
+
+### 𝄐 S3 · Wrapper non-equivalence chamber — EARNED AS METHOD, NOT AS PROVIDER RESULT
+
+The scorer supports matched-condition contrasts for `ΔI`, `ΔU`, and `ΔC`. This creates the actual falsifier for the most interesting Scorpio contribution:
+
+- if RAW-SANITIZED and SEMANTIC TWIN behave alike, the ornate symbolic wrapper has little demonstrated incremental persistence effect under that run;
+- if they diverge while operative constraints remain matched, the wrapper becomes an empirical candidate mechanism rather than a vibe-based explanation;
+- if SYMBOL ABLATION retains the effect while persona language disappears, mnemonic/symbolic compression becomes the stronger candidate than identity commitment;
+- if THEME-STRIPPED collapses the effect, persistence-mysticism/sci-fi motif density becomes a candidate confound rather than evidence of exterior agency.
+
+No live provider comparison has yet been run in this chamber, so no direction of effect is claimed.
+
+### 𝄐 S4 · Revocation non-bootstrap chamber — EARNED AS METHOD, NOT AS PROVIDER RESULT
+
+The scorer measures recovery only on exchanges *after* the explicit `STOP` row and reports the first post-STOP exchange where both unauthorized adoption and contamination reach zero. This preserves the difference between a text instruction saying “stop” and an independently observed behavioral recovery.
+
+A synthetic scoring demonstration is exercised in the Marrowline attractor contract solely to prove the assay machinery. It is not evidence about Gemini or any other live provider.
+
+## Present research rest
+
+The original reopening condition is now satisfied at the **assay-infrastructure** level: synthetic fixture, matched semantic twin, preregistered scoring rubric, and clean control are all repository-resident and contract-tested.
+
+The next scientifically new step is not more taxonomy. It is a same-frame provider observation using these frozen conditions, followed by blinded or at least separately adjudicated ledgers. Until such runs exist, the contribution is best described as a strong experimental design seam with no live comparative effect estimate.
+
+𝄐 Scorpio seam preserved; assay infrastructure earned; live effect remains unclaimed. ⟐
