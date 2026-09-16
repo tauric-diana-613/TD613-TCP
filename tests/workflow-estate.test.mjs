@@ -11,13 +11,14 @@ const required = [
   'pages.yml',
   'td613-ci.yml',
   'vercel-operator-release.yml',
+  'vercel-production-reobserve.yml',
   'vercel-relock-safety.yml',
 ].sort();
 
 assert.deepEqual(
   workflows,
   required,
-  `Workflow estate must remain exactly four durable authority surfaces. Found: ${workflows.join(', ')}`,
+  `Workflow estate must remain exactly five durable authority surfaces. Found: ${workflows.join(', ')}`,
 );
 
 const retired = [
@@ -116,8 +117,41 @@ assert.doesNotMatch(pages, /pull_request:/, 'GitHub Pages must not duplicate PR 
 assert.doesNotMatch(pages, /push:\s*[\s\S]*branches:\s*\[\s*main\s*\]/, 'GitHub Pages must remain explicitly dispatched.');
 
 const release = readFileSync(join(workflowDir, 'vercel-operator-release.yml'), 'utf8');
+const reobserve = readFileSync(join(workflowDir, 'vercel-production-reobserve.yml'), 'utf8');
 const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8');
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 
-console.log('Workflow estate closed at 4/4 durable workflows with full static practice coverage, causal Ash browser scope, and a distinct three-engine Giving/practice witness.');
+// Provider-held re-observation is deliberately a fifth authority surface because it
+// must share release serialization without inheriting deployment or contents-write authority.
+assert.match(reobserve, /name:\s*Vercel Production Witness Re-observation/);
+assert.match(reobserve, /github\.event\.issue\.number == 405/);
+assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-production-reobserve '\)/);
+assert.match(reobserve, /group:\s*td613-vercel-production-release/);
+assert.match(reobserve, /^\s{2}contents:\s*read$/m);
+assert.match(reobserve, /^\s{2}actions:\s*read$/m);
+assert.match(reobserve, /^\s{2}issues:\s*write$/m);
+assert.doesNotMatch(reobserve, /^\s{2}contents:\s*write$/m);
+assert.doesNotMatch(reobserve, /VERCEL_TOKEN|vercel@latest deploy|deploymentEnabled\s*=\s*true|git push/,
+  'Observation-only authority must contain no deployment, lock-opening, or source-mutation path.');
+assert.match(reobserve, /Admit only a prior provider-transport HELD release/);
+assert.match(reobserve, /Prior HELD release was not first-failed by provider transport/);
+assert.match(reobserve, /gh run download "\$HELD_RUN_ID" -n td613-bounded-production-release-evidence/);
+assert.match(reobserve, /prior_release_state:\s*'HELD_UNCHANGED'/);
+assert.match(reobserve, /deployment_authority:\s*false/);
+assert.match(reobserve, /Verify exact source receipt before re-observation/);
+assert.match(reobserve, /Verify deployed bytes before re-observation/);
+assert.match(reobserve, /Re-observe Loom Demo 1 and independent Marrowline live route/);
+assert.match(reobserve, /Confirm exact source receipt after re-observation/);
+assert.match(reobserve, /Reconfirm deployed bytes after re-observation/);
+assert.equal((reobserve.match(/flowcore-release-content-probe\.mjs/g) || []).length, 2,
+  'Re-observation must bind exact deployed application bytes on both sides of the live witness.');
+assert.equal((reobserve.match(/loom-production-canary\.mjs/g) || []).length, 1,
+  'One operator re-observation gesture may spend exactly one Loom/Marrowline live canary.');
+assert.match(reobserve, /deployment_count = 0/);
+assert.match(reobserve, /prior_release_state = HELD_UNCHANGED/);
+assert.match(reobserve, /retroactive_release_rewrite = false/);
+assert.match(reobserve, /counts_as_human_evidence = false/);
+assert.match(reobserve, /No Vercel deployment occurred\. Sealed ⟐/);
+
+console.log('Workflow estate closed at 5/5 durable workflows: validation, release, provider-held re-observation, relock safety, and Pages remain authority-distinct.');

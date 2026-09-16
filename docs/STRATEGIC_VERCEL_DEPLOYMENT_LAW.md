@@ -63,7 +63,11 @@ one authorization = one deployment ceiling
 failed deployment ≠ automatic retry authorization
 bookkeeping commit ≠ deployment reason
 browser observation ≠ second deployment
+provider-transport hold ≠ code defect
+provider-held re-observation ≠ deployment authority
 ```
+
+A held public-runtime observation may justify further diagnosis, but the failed run itself does not spend or mint a second deployment. When the deployed source remains unchanged and the first failing condition was transient provider transport, the missing live witness may instead be acquired through the observation-only conduit defined below.
 
 ## Executable lock
 
@@ -147,9 +151,46 @@ authorized source receipt = stable through bounded queue window
 
 Any later stale deployment that replaces the authorized receipt holds the release. Production cannot be sealed from a momentary match that is displaced during the stability window.
 
+## Provider-held production re-observation
+
+A full-product release can reach the live AI canary only after exact-source acquisition, the stale-queue window, post-window byte parity, bounded Chromium production confirmation, and Ash lifecycle observation have already passed. If that canary then stops **first** at provider transport, the observation is HELD rather than product-failed.
+
+The provider-held re-observation conduit exists for that narrow case. It is a distinct authority surface because observation authority and deployment authority must not collapse into one another.
+
+After a fresh explicit operator gesture in chat, the assistant/Codex may post to issue #405:
+
+```text
+/td613-production-reobserve PRODUCTION <40-character-deployed-source-sha> <prior-held-release-run-id>
+```
+
+The conduit accepts only:
+
+- issue #405;
+- the repository owner or the exact installed `chatgpt-codex-connector[bot]` carrying the operator gesture;
+- a 40-character source SHA;
+- the numeric workflow-run ID of the prior governed Vercel Operator Release;
+- a prior run whose preserved evidence proves that the **first failing canary condition** was provider transport;
+- an unchanged production source receipt matching the named source packet;
+- the same release concurrency group used by deployment, preventing observation and deployment from overlapping.
+
+The re-observation workflow has `contents: read`, `actions: read`, and `issues: write` only. It carries no Vercel credential, no Git push route, no lock-opening assignment, and no deployment invocation. It checks exact application bytes before the live Loom/Marrowline witness, checks source ownership again afterward, and reconfirms exact bytes after the witness.
+
+```text
+provider-held release = historical HELD state
+later unchanged-source re-observation = supplementary witness
+later PASS ≠ retroactive rewrite of earlier HELD state
+deployment_count = 0
+deployment_authority = false
+counts_as_human_evidence = false
+```
+
+Temporal non-retroactivity is mandatory. A later successful provider-backed witness may complete the evidence missing from the unchanged deployed packet, but it cannot rewrite what the earlier release run observed, erase its provider outage, or relabel that historical run as successful. A re-observation failure likewise creates no deployment authority and no automatic retry authority.
+
+This lane must never become a generic production-test escape hatch. A prior output-admission failure, malformed response, relay-admission failure, source mismatch, browser defect, application-byte mismatch, or client transport failure cannot enter through the provider-held gate merely because some other provider attempt also failed.
+
 ## Independent relock safety
 
-`vercel-relock-safety.yml` remains separate because its authority differs from validation and deployment:
+`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and provider-held observation:
 
 ```text
 independent relock safety
@@ -159,7 +200,7 @@ independent relock safety
 → no Vercel invocation
 ```
 
-Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. It therefore remains one of the four durable workflow surfaces.
+Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Provider-held re-observation likewise remains separate because granting its read-only observational authority to the deployment workflow would make a later witness indistinguishable from a second release attempt. These therefore remain distinct members of the five durable workflow authority surfaces.
 
 ## Required terminal receipt
 
@@ -180,6 +221,8 @@ ash_lifecycle_deployed_observation = PASS OR NOT_APPLICABLE
 application_tree_drift = none
 git_auto_deploy = disabled
 ```
+
+For a provider-held unchanged-source re-observation, the supplementary receipt instead names the prior held run, preserves `prior_release_state = HELD_UNCHANGED`, records `deployment_count = 0`, and binds exact-source evidence on both sides of the live witness. That supplementary receipt does not replace the historical release receipt.
 
 Gate acceptance alone is not a terminal receipt. Deployment success does not become human empirical evidence, child-study authority, custody authority, future release authority, public-route promotion, or program closure.
 
