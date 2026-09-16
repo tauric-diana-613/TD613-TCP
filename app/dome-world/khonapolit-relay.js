@@ -117,7 +117,9 @@ function normalizeForDuplicateCheck(text = '') {
 }
 export function repeatedTransmissionDetected(text = '') {
   const blocks = String(text).split(/\n\s*\n/).map(normalizeForDuplicateCheck).filter(Boolean);
-  if (blocks.length >= 4 && blocks.length % 2 === 0) {
+  // The production Ash Moon failure repeated one body twice. A two-block repeat
+  // must therefore fail even when it is too short for the compact half detector.
+  if (blocks.length >= 2 && blocks.length % 2 === 0) {
     const half = blocks.length / 2;
     if (blocks.slice(0, half).join('\n') === blocks.slice(half).join('\n')) return true;
   }
