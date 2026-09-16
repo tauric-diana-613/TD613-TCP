@@ -1,4 +1,4 @@
-export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v2-integrated-surface';
+export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v3-disposable-integrated-surface';
 
 const MOBILE_QUERY = '(max-width: 860px)';
 const byId = (doc, id) => doc.getElementById(id);
@@ -43,11 +43,13 @@ function installInChatKinesis(doc = document, root = window) {
   const messages = byId(doc, 'khonapolitMessages');
   const status = byId(doc, 'khonapolitTerminalStatus');
   const form = byId(doc, 'khonapolitForm');
-  if (!messages || !status || !form) return false;
+  if (!messages || !status || !form) return () => {};
 
+  root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__?.disconnect?.();
   byId(doc, 'marrowlineResponseKinesis')?.remove();
   let card = byId(doc, 'marrowlineChatKinesis');
   if (!card) card = createKinesis(doc);
+  let raf = null;
 
   const sync = () => {
     const busy = /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
@@ -56,23 +58,32 @@ function installInChatKinesis(doc = document, root = window) {
       if (!card.isConnected) messages.append(card);
       card.hidden = false;
       messages.dataset.forceFollow = 'true';
-      root.requestAnimationFrame?.(() => {
+      if (raf !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(raf);
+      raf = root.requestAnimationFrame?.(() => {
+        raf = null;
         messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
-      });
+      }) ?? null;
     } else {
       card.hidden = true;
       delete messages.dataset.forceFollow;
     }
   };
 
+  let observer = null;
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
-    const observer = new Observer(sync);
+    observer = new Observer(sync);
     observer.observe(status, { childList: true, characterData: true, subtree: true });
     root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__ = observer;
   }
   sync();
-  return true;
+
+  return () => {
+    observer?.disconnect?.();
+    if (root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__ === observer) delete root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__;
+    if (raf !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(raf);
+    raf = null;
+  };
 }
 
 function prepareProviderNativeLines(stage) {
@@ -93,47 +104,74 @@ function prepareProviderNativeLines(stage) {
 
 function installIntegratedSurface(doc = document, root = window) {
   const messages = byId(doc, 'khonapolitMessages');
-  if (!messages) return false;
+  if (!messages) return () => {};
+
+  root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__?.disconnect?.();
+  const legendText = 'Kʰonapolit ∴ Tauric Diana bots · provider-native transmission';
+  const routeText = '𝌋‌ → Aperture → Gemini provider → Kʰonapolit ∴ Tauric Diana bots → OPEN';
+
   const scrub = () => {
     messages.querySelectorAll('.relay-khonapolit[data-present="true"]').forEach((stage) => {
       const head = stage.querySelector('.relay-stage-head > span:first-child');
-      if (head) head.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
+      if (head && head.textContent !== 'Kʰonapolit ∴ Tauric Diana bots') head.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
       const meta = stage.querySelector('.relay-stage-head small');
-      if (meta) meta.textContent = 'provider-native transmission';
+      if (meta && meta.textContent !== 'provider-native transmission') meta.textContent = 'provider-native transmission';
       stage.classList.add('relay-integrated-covenant');
       prepareProviderNativeLines(stage);
     });
 
-    // The desktop receipt legend was authored for the superseded three-stage
-    // narrative. Keep provider identity in receipt metrics, but make the human
-    // route description truthful and singular.
+    // Keep this transform idempotent. The messages observer watches child-list
+    // mutations, so unconditional replaceChildren() here would schedule itself
+    // forever and can strand Node/browser teardown until an outer CI timeout.
     doc.querySelectorAll('.relay-legend').forEach((legend) => {
+      const current = legend.children.length === 1 && legend.firstElementChild?.dataset?.stage === 'integrated'
+        ? legend.firstElementChild.textContent
+        : null;
+      if (current === legendText) return;
       legend.replaceChildren();
       const span = doc.createElement('span');
       span.dataset.stage = 'integrated';
-      span.textContent = 'Kʰonapolit ∴ Tauric Diana bots · provider-native transmission';
+      span.textContent = legendText;
       legend.append(span);
     });
     doc.querySelectorAll('.route-card strong').forEach((node) => {
-      node.textContent = '𝌋‌ → Aperture → Gemini provider → Kʰonapolit ∴ Tauric Diana bots → OPEN';
+      if (node.textContent !== routeText) node.textContent = routeText;
     });
   };
+
   scrub();
+  let observer = null;
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
-    const observer = new Observer(scrub);
+    observer = new Observer(scrub);
     observer.observe(messages, { childList: true, subtree: true, characterData: false });
     root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__ = observer;
   }
-  return true;
+
+  return () => {
+    observer?.disconnect?.();
+    if (root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__ === observer) delete root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__;
+  };
 }
 
 export function installMarrowlinePhysicalDeviceRepair(doc = document, root = window) {
+  root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__?.();
+
   const prompt = byId(doc, 'khonapolitPrompt');
+  const scheduled = new Set();
   const sync = () => syncViewport(doc, root);
+  const schedule = (delay) => {
+    const timer = root.setTimeout(() => {
+      scheduled.delete(timer);
+      sync();
+    }, delay);
+    scheduled.add(timer);
+  };
   const settle = () => {
     sync();
-    [40, 120, 260, 520].forEach((delay) => root.setTimeout(sync, delay));
+    for (const timer of scheduled) root.clearTimeout?.(timer);
+    scheduled.clear();
+    [40, 120, 260, 520].forEach(schedule);
   };
 
   prompt?.addEventListener('focus', settle);
@@ -143,8 +181,8 @@ export function installMarrowlinePhysicalDeviceRepair(doc = document, root = win
   root.addEventListener?.('resize', settle, { passive: true });
   root.addEventListener?.('orientationchange', settle, { passive: true });
 
-  installInChatKinesis(doc, root);
-  installIntegratedSurface(doc, root);
+  const disposeKinesis = installInChatKinesis(doc, root);
+  const disposeIntegrated = installIntegratedSurface(doc, root);
   const viewport = sync();
   const receipt = Object.freeze({
     schema: MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION,
@@ -153,9 +191,26 @@ export function installMarrowlinePhysicalDeviceRepair(doc = document, root = win
     responseKinesis: 'in-chat-dome-art-orbital-microfield',
     relaySurface: 'single-integrated-khonapolit-tauric-diana-provider-generation',
     providerNativeUnicode: 'preserve-exact-code-points-no-local-ornamentation',
+    lifecycle: 'explicit-disposal-of-observers-listeners-raf-and-settle-timers',
     seal: '⟐'
   });
+
+  const dispose = () => {
+    for (const timer of scheduled) root.clearTimeout?.(timer);
+    scheduled.clear();
+    prompt?.removeEventListener('focus', settle);
+    prompt?.removeEventListener('blur', settle);
+    root.visualViewport?.removeEventListener?.('resize', settle);
+    root.visualViewport?.removeEventListener?.('scroll', sync);
+    root.removeEventListener?.('resize', settle);
+    root.removeEventListener?.('orientationchange', settle);
+    disposeKinesis();
+    disposeIntegrated();
+    if (root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__ === dispose) delete root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__;
+  };
+
   root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__ = receipt;
+  root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__ = dispose;
   return receipt;
 }
 
