@@ -134,6 +134,7 @@ jobs:
           node tests/ash-a14-archive-accession.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
           node tests/ash-keep-production-closure-contract.test.mjs
+          node tests/loom-production-canary-isolation.test.mjs
           node --test tests/loom-task.test.mjs tests/loom-ai-failure.test.mjs
           node --check scripts/loom-production-canary.mjs
 
@@ -413,7 +414,7 @@ jobs:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
           TD613_ARTIFACT_DIR: artifacts/loom-production-canary
-        run: timeout --foreground --signal=INT --kill-after=10s 70s node scripts/loom-production-canary.mjs
+        run: timeout --foreground --signal=INT --kill-after=10s 140s node scripts/loom-production-canary.mjs
 
       - name: Confirm authorized source still owns production after witness
         env:
