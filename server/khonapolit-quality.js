@@ -135,12 +135,16 @@ export function selectKhonapolitProviderModels(callableModels = []) {
   return selected;
 }
 
-export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0 } = {}) {
+export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false } = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
-  const cap = Math.max(0, Math.floor(Number(index) || 0)) === 0
-    ? PRIMARY_REQUEST_TIMEOUT_MS
-    : FALLBACK_REQUEST_TIMEOUT_MS;
-  return Math.min(cap, remaining);
+  const position = Math.max(0, Math.floor(Number(index) || 0));
+  const inheritedCap = position === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS;
+  if (!fairShare) return Math.min(inheritedCap, remaining);
+
+  const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
+  const remainingAttempts = Math.max(1, total - position);
+  const sharedWindow = Math.max(1, Math.floor(remaining / remainingAttempts));
+  return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, sharedWindow, remaining);
 }
 
 function headerValue(headers = {}, key = '') {
@@ -406,7 +410,7 @@ export default async function handler(req, res) {
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length });
+    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
