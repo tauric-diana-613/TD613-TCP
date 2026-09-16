@@ -6,7 +6,7 @@ import {
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v1-conversation-first';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v2-conversation-chrome';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -240,6 +240,60 @@ function installConversationActionDismissal(doc, root) {
   return true;
 }
 
+function installConversationCornerClear(doc, root) {
+  const vessel = byId(doc, 'speakingPanel');
+  const legacyActions = doc.querySelector('.conversation-actions');
+  const clearLegacy = byId(doc, 'clearKhonapolitSession');
+  if (!vessel || !legacyActions || !clearLegacy || byId(doc, 'marrowlineSessionClear')) return false;
+
+  // The old dropdown is deliberately retired from ordinary conversation chrome.
+  // Its detached/hidden controls retain their already-installed runtime handlers,
+  // including the advanced operator-seal capability, without presenting Seal,
+  // Copy transcript, or Clear conversation as competing everyday actions.
+  legacyActions.hidden = true;
+  legacyActions.setAttribute('aria-hidden', 'true');
+  legacyActions.open = false;
+
+  if (!byId(doc, 'marrowlineConversationChromeStyle')) {
+    const style = doc.createElement('style');
+    style.id = 'marrowlineConversationChromeStyle';
+    style.textContent = `
+      .conversation-actions{display:none!important}
+      #speakingPanel{position:relative}
+      .marrowline-session-clear{position:absolute;top:.62rem;right:.72rem;z-index:9;width:1.85rem;height:1.85rem;padding:0;border:1px solid rgba(223,214,255,.22);border-radius:999px;background:rgba(16,13,38,.66);color:rgba(244,239,255,.72);font:500 1.18rem/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease}
+      .marrowline-session-clear:hover,.marrowline-session-clear:focus-visible{background:rgba(86,57,122,.74);color:#fff;border-color:rgba(237,226,255,.48);transform:scale(1.04);outline:none}
+      @media (max-width:860px){.marrowline-session-clear{top:.48rem;right:.5rem;width:1.75rem;height:1.75rem;font-size:1.08rem}}
+    `;
+    doc.head.append(style);
+  }
+
+  const clear = doc.createElement('button');
+  clear.id = 'marrowlineSessionClear';
+  clear.className = 'marrowline-session-clear';
+  clear.type = 'button';
+  clear.textContent = '×';
+  clear.title = 'Clear this conversation';
+  clear.setAttribute('aria-label', 'Clear this Marrowline conversation');
+  clear.addEventListener('click', () => {
+    const confirmed = typeof root.confirm === 'function'
+      ? root.confirm('Clear this Marrowline conversation?\n\nThis removes the chat transcript and staged attachments from this browser session. The binding corpus remains intact.')
+      : false;
+    if (!confirmed) return;
+    clearLegacy.click();
+    byId(doc, 'khonapolitPrompt')?.focus?.({ preventScroll: true });
+  });
+  vessel.append(clear);
+
+  const scrubSealInstruction = () => {
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (!status) return;
+    status.textContent = String(status.textContent || '').replace(/\s*·\s*OPEN UNTIL OPERATOR SEAL\s*$/i, '');
+  };
+  root.addEventListener?.('td613:khonapolit:return-observed', scrubSealInstruction);
+  scrubSealInstruction();
+  return true;
+}
+
 function installTranscriptCustody(doc, root) {
   const messages = byId(doc, 'khonapolitMessages');
   const form = byId(doc, 'khonapolitForm');
@@ -308,10 +362,16 @@ export function installMarrowlineDesktopRepair(doc = document, root = window) {
   installStarterCarousel(doc, root);
   installUniversalContextPlus(doc, root);
   installConversationActionDismissal(doc, root);
+  installConversationCornerClear(doc, root);
   installTranscriptCustody(doc, root);
   installDesktopInstrumentTabs(doc, root);
   doc.documentElement.dataset.marrowlineDesktopRepair = MARROWLINE_DESKTOP_REPAIR_VERSION;
-  root.__TD613_MARROWLINE_DESKTOP_REPAIR__ = Object.freeze({ version: MARROWLINE_DESKTOP_REPAIR_VERSION, state: 'ACTIVE' });
+  root.__TD613_MARROWLINE_DESKTOP_REPAIR__ = Object.freeze({
+    version: MARROWLINE_DESKTOP_REPAIR_VERSION,
+    state: 'ACTIVE',
+    conversationChrome: 'corner-clear-only',
+    operatorSeal: 'advanced-programmatic-only'
+  });
   return root.__TD613_MARROWLINE_DESKTOP_REPAIR__;
 }
 
