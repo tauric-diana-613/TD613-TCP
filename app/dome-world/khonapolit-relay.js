@@ -131,17 +131,36 @@ export function repeatedTransmissionDetected(text = '') {
   return false;
 }
 
-export function assessIntegratedTransmission(text = '') {
+function canonicalVoiceId(value = '') {
+  const normalized = safe(value).normalize('NFKC').replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
+  if (normalized === 'kʰonapolit') return 'khonapolit';
+  if (normalized === 'tauric diana bot' || normalized === 'tauric diana bots') return 'tauric-diana-bots';
+  return null;
+}
+
+export function assessIntegratedTransmission(text = '', voices = []) {
   const value = String(text || '');
+  const declaredVoices = arrayStrings(voices);
+  const canonicalVoices = declaredVoices.map(canonicalVoiceId).filter(Boolean);
+  const structuredVoiceEvidence = declaredVoices.length > 0;
   const khonaIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
   const botsIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Tauric Diana Bots?\b/iu);
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
   const reasons = [];
   const qualityWarnings = [];
-  if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
-  if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
-  if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
+
+  if (structuredVoiceEvidence) {
+    if (canonicalVoices[0] !== 'khonapolit') reasons.push('khonapolit-structured-voice-missing-or-out-of-order');
+    if (canonicalVoices[1] !== 'tauric-diana-bots') reasons.push('tauric-diana-bots-structured-voice-missing-or-out-of-order');
+  } else {
+    // Archive/unstructured fallback only. Live provider envelopes carry the required
+    // transmission.voices field, so their admission must not depend on parser tokens
+    // being repeated verbatim inside otherwise usable human-facing prose.
+    if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
+    if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
+    if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
+  }
   if (duplicate) reasons.push('repeated-transmission-detected');
   if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) qualityWarnings.push('provider-native-flourish-below-floor');
   const admissible = reasons.length === 0;
@@ -150,6 +169,9 @@ export function assessIntegratedTransmission(text = '') {
     quality: admissible ? (qualityWarnings.length ? 'PARTIAL' : 'PASS') : 'HELD',
     reasons: Object.freeze(reasons),
     qualityWarnings: Object.freeze(qualityWarnings),
+    voiceEvidence: structuredVoiceEvidence ? 'structured-envelope' : 'text-nominative-fallback',
+    declaredVoices: Object.freeze(declaredVoices),
+    canonicalVoices: Object.freeze(canonicalVoices),
     khonapolitIndex: khonaIndex,
     botsIndex,
     duplicate,
@@ -169,8 +191,9 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL:',
     '- transmission.text MUST contain two substantial human-visible movements in this exact order.',
-    '- Movement I MUST begin with a nominative Kʰonapolit announcement such as “[Kʰonapolit]:”. Kʰonapolit speaks first.',
-    '- Movement II MUST begin with a nominative Tauric Diana bots announcement such as “[Tauric Diana Bots : Direct Broadcast Override]”. The bots speak second and close the generated response.',
+    '- Movement I belongs to Kʰonapolit and comes first. Movement II belongs to Tauric Diana bots and closes the generated response.',
+    '- transmission.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”. This structured field carries the machine-readable voice-order evidence.',
+    '- Human-facing headings may name the movements when useful, but admission must not depend on repeating parser tokens verbatim inside otherwise valid prose.',
     '- Do not merge the two voices into one anonymous narrator. Do not omit either movement. Do not insert a provider voice before, between, or after them.',
     '- Both movements belong to ONE provider generation in transmission.text; they may interrupt, quote, disagree, calculate, joke, prosecute, or mutate each other while preserving the ordered frame.',
     '- Do not repeat the same paragraph, scene, movement, or full answer twice. Exact or near-exact duplicated halves are a failed return.',
@@ -205,7 +228,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a prose stage.',
     '2. signal.notes briefly records why that analytical state was selected; it is provenance, not the human-facing response.',
     '3. transmission.text is the entire final two-movement Kʰonapolit → Tauric Diana bots output, including provider-authored combining marks and line breaks.',
-    '4. transmission.voices MUST include “Kʰonapolit” and “Tauric Diana bots” when the response is structurally valid.',
+    '4. transmission.voices MUST begin with “Kʰonapolit”, then “Tauric Diana bots”; optional named bot voices may follow.',
     '5. transmission.flourishMode describes the generated orthographic posture for receipt telemetry only.',
     '6. Encode actual line breaks as JSON newline escapes so the decoded text has real newlines, never double-escaped backslash-n prose.',
     '7. Do not append ⟐ on the model’s own authority. The operator controls sealing.',
@@ -264,7 +287,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'provider', apertureR
   }
 
   const telemetry = flourishTelemetry(text);
-  const admission = assessIntegratedTransmission(text);
+  const admission = assessIntegratedTransmission(text, legacyEnvelope ? [] : voices);
   const state = !admission.admissible
     ? 'NOT_LOCKED'
     : admission.quality === 'PARTIAL'
