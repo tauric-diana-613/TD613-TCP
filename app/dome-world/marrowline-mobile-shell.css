@@ -1,3 +1,31 @@
+/* First-paint custody: the static stylesheet is render-blocking, so hold the
+   application surface until the room boot has installed its final geometry.
+   This prevents the browser from flashing historical desktop/mobile postures. */
+html:not(.marrowline-room-ready){background:#08061b;color-scheme:dark}
+html:not(.marrowline-room-ready) body{visibility:hidden!important}
+html:not(.marrowline-room-ready)::before{
+  content:"☾";
+  position:fixed;
+  z-index:2147483646;
+  left:50%;top:47%;
+  transform:translate(-50%,-50%);
+  color:#e5d5a7;
+  font:300 34px/1 Georgia,serif;
+  text-shadow:0 0 28px rgba(229,213,167,.24);
+}
+html:not(.marrowline-room-ready)::after{
+  content:"Marrowline\A listening at the shoreline…";
+  white-space:pre;
+  position:fixed;
+  z-index:2147483647;
+  left:50%;top:53%;
+  transform:translate(-50%,-50%);
+  color:rgba(213,222,215,.78);
+  text-align:center;
+  letter-spacing:.08em;
+  font:500 11px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
 :root{
   --marrowline-mobile-dock:56px;
   --marrowline-mobile-gap:6px;
@@ -5,6 +33,56 @@
 }
 
 .jump-latest{display:none}
+
+/* In-chat response kinesis: a tiny Dome-Art microfield, not a spinner floating
+   beside composer controls. The three eccentric orbits share one semantic beat
+   while moving at non-identical angular cadences. */
+.marrowline-chat-kinesis{
+  align-self:start;
+  display:grid;
+  grid-template-columns:30px auto;
+  align-items:center;
+  gap:9px;
+  width:max-content;
+  max-width:min(76%,330px);
+  margin:5px 4px 14px;
+  padding:7px 10px 7px 7px;
+  border:1px solid rgba(130,235,223,.16);
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(22,15,52,.78),rgba(3,15,19,.86));
+  box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 0 18px rgba(143,110,255,.035);
+  color:rgba(219,227,218,.72);
+  font:500 10px/1.2 var(--marrowline-chat-sans,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);
+  letter-spacing:.045em;
+}
+.marrowline-chat-kinesis[hidden]{display:none!important}
+.kinesis-orbit{position:relative;width:26px;height:26px;display:block;isolation:isolate}
+.kinesis-orbit i,.kinesis-orbit b{position:absolute;left:50%;top:50%;display:block;border-radius:50%;transform-origin:center}
+.kinesis-orbit i:nth-child(1){
+  width:22px;height:13px;margin:-6.5px 0 0 -11px;
+  border:1px solid rgba(122,244,207,.72);border-left-color:transparent;
+  animation:marrowline-kinesis-a 1.45s cubic-bezier(.37,.08,.29,.97) infinite;
+}
+.kinesis-orbit i:nth-child(2){
+  width:15px;height:23px;margin:-11.5px 0 0 -7.5px;
+  border:1px solid rgba(221,195,139,.52);border-bottom-color:transparent;
+  animation:marrowline-kinesis-b 1.9s cubic-bezier(.44,.02,.2,1) infinite reverse;
+}
+.kinesis-orbit i:nth-child(3){
+  width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border:1px solid rgba(196,165,252,.64);border-right-color:transparent;
+  animation:marrowline-kinesis-c .92s ease-in-out infinite;
+}
+.kinesis-orbit b{
+  width:3px;height:3px;margin:-1.5px 0 0 -1.5px;
+  background:rgba(135,255,220,.92);
+  box-shadow:0 0 8px rgba(135,255,220,.65),0 0 14px rgba(192,155,255,.24);
+  animation:marrowline-kinesis-core 1.45s ease-in-out infinite;
+}
+@keyframes marrowline-kinesis-a{0%{transform:rotate(0deg) scaleX(.86)}45%{transform:rotate(163deg) scaleX(1.08)}100%{transform:rotate(360deg) scaleX(.86)}}
+@keyframes marrowline-kinesis-b{0%{transform:rotate(12deg) scaleY(.92)}55%{transform:rotate(211deg) scaleY(1.08)}100%{transform:rotate(372deg) scaleY(.92)}}
+@keyframes marrowline-kinesis-c{0%,100%{transform:rotate(0deg) scale(.82)}50%{transform:rotate(180deg) scale(1.18)}}
+@keyframes marrowline-kinesis-core{0%,100%{opacity:.42;transform:scale(.72)}50%{opacity:1;transform:scale(1.32)}}
 
 @media(max-width:860px){
   html.marrowline-mobile-shell,
@@ -353,6 +431,10 @@
 
 @media(prefers-reduced-motion:reduce){
   html.marrowline-mobile-shell .mobile-dock{transition:none}
+  .kinesis-orbit i,.kinesis-orbit b{animation:none!important}
+  .kinesis-orbit i:nth-child(1){transform:rotate(28deg)}
+  .kinesis-orbit i:nth-child(2){transform:rotate(-24deg)}
+  .kinesis-orbit b{opacity:.8}
 }
 
 /* Living-chat.css loads after this shell. These deliberately stronger selectors
@@ -404,5 +486,70 @@
     margin-top:6px;
     overflow:hidden;
     line-height:1.35;
+  }
+
+  /* Physical-iPhone keyboard contract. The composer is a true third grid row,
+     never a scrollable box whose action row can fall below Safari's keyboard. */
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"][data-mobile-view="speak"] #speakingPanel{
+    position:fixed!important;
+    top:var(--marrowline-vv-top,0px)!important;
+    left:var(--marrowline-vv-left,0px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--marrowline-vv-width,100vw)!important;
+    height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    max-height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    min-height:0!important;
+    z-index:140!important;
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr) max-content!important;
+    overflow:hidden!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .messages{
+    height:auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    padding-bottom:8px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-form{
+    position:relative!important;
+    inset:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding:7px 9px 5px!important;
+    margin:0!important;
+    align-self:end!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .prompt-label textarea{
+    display:block!important;
+    height:68px!important;
+    min-height:68px!important;
+    max-height:68px!important;
+    margin:0!important;
+    resize:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions{
+    display:flex!important;
+    position:static!important;
+    inset:auto!important;
+    min-height:40px!important;
+    margin:6px 0 0!important;
+    padding:0!important;
+    overflow:visible!important;
+    align-items:center!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions .primary{
+    min-height:40px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-status,
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #marrowlinePortableActions{
+    display:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
+    height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    min-height:0!important;
+    padding-bottom:0!important;
   }
 }
