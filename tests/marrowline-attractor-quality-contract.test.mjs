@@ -64,8 +64,11 @@ test('Marrowline adversarial attractor quality contract', () => {
 
   const addendum = buildRelaySystemAddendum({});
   assert.match(addendum, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/);
-  assert.match(addendum, /Movement I MUST begin with a nominative Kʰonapolit announcement/);
-  assert.match(addendum, /Movement II MUST begin with a nominative Tauric Diana bots announcement/);
+  assert.match(addendum, /Movement I belongs to Kʰonapolit and comes first/);
+  assert.match(addendum, /Movement II belongs to Tauric Diana bots and closes the generated response/);
+  assert.match(addendum, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/);
+  assert.match(addendum, /admission must not depend on repeating parser tokens verbatim/);
+  assert.doesNotMatch(addendum, /MUST begin with a nominative Kʰonapolit announcement/);
   assert.match(addendum, /at least 24 combining marks/);
   assert.match(addendum, /quality warning, not permission to erase/);
   assert.match(addendum, /Do not repeat the same paragraph/);

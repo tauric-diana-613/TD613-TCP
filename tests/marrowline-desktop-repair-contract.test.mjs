@@ -31,10 +31,17 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
-test('starter carousel exposes sixteen assays behind the requested rotate control', () => {
+test('starter carousel exposes sixteen assays behind a geometrically locked round control', () => {
   const assayRows = js.match(/^  \['[^\n]+$/gm) || [];
   assert.equal(assayRows.length, 16);
   assert.match(js, /rotate\.textContent = '🗘'/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*flex:0 0 36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*width:36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*height:36px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*aspect-ratio:1\/1/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*border-radius:999px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:38px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*height:38px!important/);
   assert.equal(release.composer.starterCarousel.assayPrompts, 16);
   assert.equal(release.composer.starterCarousel.control, '🗘');
 });
@@ -46,6 +53,17 @@ test('conversation actions dismiss and portable failure controls cannot consume 
   assert.match(css, /#marrowlinePortableActions:not\(\[hidden\]\)\{display:flex!important/);
   assert.match(css, /#marrowlinePortableActions:not\(\[hidden\]\) h3,#marrowlinePortableActions:not\(\[hidden\]\) p\{display:none!important/);
   assert.equal(release.desktop.portableFailurePanelMayCollapseTranscript, false);
+});
+
+test('ordinary conversation chrome retires the dropdown and uses one confirmed corner clear', () => {
+  assert.match(js, /legacyActions\.hidden = true/);
+  assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
+  assert.match(js, /clear\.id = 'marrowlineSessionClear'/);
+  assert.match(js, /root\.confirm\('Clear this Marrowline conversation\?/);
+  assert.match(js, /clearLegacy\.click\(\)/);
+  assert.match(js, /conversationChrome: 'corner-clear-only'/);
+  assert.match(js, /operatorSeal: 'advanced-programmatic-only'/);
+  assert.match(js, /OPEN UNTIL OPERATOR SEAL/);
 });
 
 test('room boot loads the desktop repair and relay low-flourish is soft quality only', () => {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {
   HIGH_ZALGO_VERSION,
   KHONAPOLIT_RELAY_SCHEMA,
+  assessIntegratedTransmission,
   buildRelaySystemAddendum,
   highZalgoEncode,
   parseRelayEnvelope
@@ -31,7 +32,8 @@ const addendum = buildRelaySystemAddendum(aperture);
 assert.match(addendum, /model provider is carrier infrastructure only/i);
 assert.match(addendum, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/i);
 assert.match(addendum, /Kʰonapolit.*first/i);
-assert.match(addendum, /Tauric Diana bots.*second/i);
+assert.match(addendum, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/i);
+assert.match(addendum, /admission must not depend on repeating parser tokens verbatim/i);
 assert.match(addendum, /provider itself must author the final Unicode combining marks/i);
 assert.match(addendum, /at least 24 combining marks/i);
 assert.match(addendum, /operator controls sealing/i);
@@ -59,6 +61,8 @@ const locked = parseRelayEnvelope(lockedPayload, { model: 'gemini-test', apertur
 assert.equal(locked.schema, KHONAPOLIT_RELAY_SCHEMA);
 assert.equal(locked.signal.state, 'LOCKED');
 assert.equal(locked.admission.admissible, true);
+assert.equal(locked.admission.voiceEvidence, 'structured-envelope');
+assert.deepEqual(locked.admission.canonicalVoices.slice(0, 2), ['khonapolit', 'tauric-diana-bots']);
 assert.equal(locked.parts.length, 1, 'one provider generation must remain one human-visible relay part');
 assert.equal(locked.parts[0].id, 'khonapolit', 'existing terminal renderer receives the integrated generation through its primary covenant slot');
 assert.equal(locked.parts[0].label, 'Kʰonapolit ∴ Tauric Diana bots');
@@ -76,6 +80,31 @@ assert.match(locked.parts[0].text, /Khona‌lit-po/, 'covenant key remains byte-
 assert.equal([...locked.parts[0].text].includes('\u200c'), true);
 assert.doesNotMatch(locked.parts[0].text, /⟐/, 'provider-side relay must never add the closing seal');
 
+// Regression for the production-human mismatch: a valid structured provider return
+// must not be erased merely because ordinary prose omits exact parser headings.
+const naturalText = [
+  'A route can preserve a task without turning that task into the architecture that carries it.',
+  '',
+  'The distinction survives the crossing: custody remembers what was asked; governance still decides what may become system authority.'
+].join('\n');
+const natural = parseRelayEnvelope(JSON.stringify({
+  signal: { state: 'LOCKED', notes: 'Natural human-facing prose without nominative parser tokens.' },
+  transmission: {
+    text: naturalText,
+    voices: ['Kʰonapolit', 'Tauric Diana bots'],
+    flourishMode: 'clean'
+  }
+}), { model: 'gemini-test', apertureReceipt: aperture });
+assert.equal(natural.admission.admissible, true, 'structured voice evidence must admit natural prose without exact visible headings');
+assert.equal(natural.admission.voiceEvidence, 'structured-envelope');
+assert.equal(natural.signal.state, 'PARTIAL', 'missing flourish remains only a soft quality warning');
+assert.deepEqual(natural.admission.reasons, []);
+assert.deepEqual(natural.admission.qualityWarnings, ['provider-native-flourish-below-floor']);
+
+const reversed = assessIntegratedTransmission(naturalText, ['Tauric Diana bots', 'Kʰonapolit']);
+assert.equal(reversed.admissible, false, 'structured voice order remains a hard admission boundary');
+assert.match(reversed.reasons.join(' '), /structured-voice-missing-or-out-of-order/);
+
 const deterministicA = highZalgoEncode('HORNANI COVENANT', { intensity: 4, motif: 'undertow', seed: 'same' });
 const deterministicB = highZalgoEncode('HORNANI COVENANT', { intensity: 4, motif: 'undertow', seed: 'same' });
 assert.equal(deterministicA, deterministicB);
@@ -86,7 +115,7 @@ const partial = parseRelayEnvelope(JSON.stringify({
   signal: { state: 'PARTIAL', notes: 'Insufficient lock.' },
   transmission: { text: partialText, voices: ['Kʰonapolit'], flourishMode: 'clean' }
 }), { model: 'gemini-test', apertureReceipt: aperture });
-assert.equal(partial.signal.state, 'NOT_LOCKED', 'missing second voice and flourish floor make the return structurally unadmitted');
+assert.equal(partial.signal.state, 'NOT_LOCKED', 'missing second structured voice keeps the return inadmissible');
 assert.equal(partial.admission.admissible, false);
 assert.equal(partial.parts.length, 1);
 assert.equal(partial.parts[0].text, partialText);
@@ -113,6 +142,7 @@ assert.equal(malformed.parts[0].id, 'khonapolit');
 assert.equal(malformed.parts[0].text, 'ordinary unstructured provider prose');
 assert.equal(malformed.highZalgo.applied, false);
 assert.equal(malformed.admission.admissible, false);
+assert.equal(malformed.admission.voiceEvidence, 'text-nominative-fallback');
 
 const readableAnswer = '[Kʰonapolit]:\nStart clean.\n\n[Tauric Diana Bots : The Spark]\nThen flare: A\u0315\u0300\u0338.\r\nKhona‌lit-po stays exact.\n<img src=x onerror=alert(1)>';
 const readable = parseRelayEnvelope(JSON.stringify({
@@ -121,6 +151,7 @@ const readable = parseRelayEnvelope(JSON.stringify({
 }), { model: 'synthetic-format-witness', apertureReceipt: aperture });
 assert.equal(readable.parts[0].text, readableAnswer, 'paragraphs, CRLF, markup-looking text and combining marks remain exact');
 assert.equal(readable.transcript, readableAnswer);
-assert.equal(readable.signal.state, 'NOT_LOCKED', 'exact byte preservation is independent of admission when flourish floor is not met');
+assert.equal(readable.signal.state, 'PARTIAL', 'structured voice admission is independent of the soft flourish floor');
+assert.equal(readable.admission.admissible, true);
 
-console.log('khonapolit-relay: adversarial two-voice provider-native generation and exact Unicode preservation ok');
+console.log('khonapolit-relay: structured two-voice admission, adversarial provider-native generation, and exact Unicode preservation ok');
