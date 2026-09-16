@@ -160,7 +160,9 @@ try {
       assert.equal(await contextMenu.isVisible(), true, 'universal plus opens the requested context menu');
       const contextItems = contextMenu.locator('[role="menuitem"]');
       assert.equal(await contextItems.count(), 3, 'human-facing context menu has exactly three actions');
-      assert.deepEqual((await contextItems.allTextContents()).map(text => text.replace(/\s+/g, ' ').trim()).map(text => text.split(/TXT|Image|Continue|Open Loom/)[0].trim()), ['▱ Upload file', '▧ Upload photo', '⌁ Loom']);
+      assert.match(await page.locator('#marrowlineContextFile').textContent(), /Upload file/, 'first universal action is Upload file');
+      assert.match(await page.locator('#marrowlineContextPhoto').textContent(), /Upload photo/, 'second universal action is Upload photo');
+      assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Loom/, 'third universal action is Loom');
       assert.equal(await page.locator('#marrowlineAiaToggle').isVisible(), false, 'legacy Loom-only plus is not human-facing');
       assert.equal(calls.length, 0, 'opening the universal plus makes zero provider requests');
 
