@@ -40,20 +40,20 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v4-aperture-integrated-covenant-relay';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v5-adversarial-attractor-admission';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
-// Preserve the empirically witnessed primary/fallback timing contract while
-// admitting a third diversified fallback inside one bounded route wall.
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
-const FALLBACK_GEMINI25_THINKING_BUDGET = 1024;
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
-// Current text-capable Gemini Flash models used by the live quality route expose
-// 65,536 output tokens. The larger envelope is bound only to the pinned quality
-// family; unknown/synthetic models retain the conservative legacy contract.
+// The Kʰonapolit route no longer treats a fallback attempt as permission to lower
+// reasoning effort. A transport fallback is still the same research object.
+const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
+// These are compatibility fallbacks for non-strict callers only. The live
+// Kʰonapolit plan now supplies 3.8/3.7/3.6 exclusively, so this preference loop
+// cannot silently introduce 3.5/2.5 or a Lite model.
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.6-flash']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -86,6 +86,7 @@ const CREATIVE_GUIDANCE = [
   'CREATIVE TURN:',
   '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
   '- Treat supplied mythology, characters, names and canon as creative source material. Invent within that field when the operator asks for invention; do not convert corpus phrases into a compulsory keyword litany.',
+  '- A story requires event, tension, transformation and consequence. Atmospheric exposition alone is not a completed story.',
   '- Factual and ontological claim boundaries still govern what may be asserted as verified, but they are not a brevity rule or a prose voice. Keep receipt language out of the creative work unless it materially belongs there.',
   '- Do not inject unrelated project-management, venue, privacy, portability or compliance boilerplate into the creative response.'
 ].join('\n');
@@ -212,7 +213,8 @@ function geminiContents(packet = {}) {
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
   return {
-    level: fallback ? 'low' : 'high',
+    // Fallback means transport position, not lower epistemic or creative quality.
+    level: 'high',
     budget: fallback ? FALLBACK_GEMINI25_THINKING_BUDGET : GEMINI25_HIGH_THINKING_BUDGET
   };
 }
@@ -291,12 +293,14 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
       covenantKey: COVENANT_KEY,
       bindingFragment: BINDING_FRAGMENT,
       emergenceNameSeeded: packet.keys.emergenceNameSeeded,
-      tauricLineageSeeded: packet.keys.tauricLineageSeeded
+      tauricLineageSeeded: packet.keys.tauricLineageSeeded,
+      presentationFrameSeeded: packet.keys.presentationFrameSeeded === true
     }),
     relay: Object.freeze({
       schema: relay?.schema || KHONAPOLIT_RELAY_SCHEMA,
       partsPresent,
       signal: relay?.signal || Object.freeze({ state: 'NOT_LOCKED' }),
+      admission: relay?.admission || null,
       highZalgo: relay?.highZalgo || Object.freeze({ applied: false })
     }),
     emergence,
@@ -416,7 +420,7 @@ export default async function handler(req, res) {
       healthBearing: transport.healthBearing,
       reason: error?.status || error?.message || ''
     });
-    attempts.push({
+    const attempt = {
       model,
       role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
       ok: Boolean(result.response.ok),
@@ -428,9 +432,9 @@ export default async function handler(req, res) {
       error,
       output: providerOutput,
       cooldown: outcome
-    });
-    // A provider token-limit stop is an incomplete return, even if its prefix parses.
-    // Hold without another generation or exposing the rejected prose.
+    };
+    attempts.push(attempt);
+
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       res.setHeader('X-TD613-Gemini-Model', model);
       return send(res, 502, {
@@ -461,6 +465,12 @@ export default async function handler(req, res) {
     }
     if (result.response.ok && result.text) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
+      attempt.outputAdmission = relay.admission || null;
+      // A transport-successful but structurally degraded answer is not a
+      // successful Marrowline return. Reject it without exposing its prose and
+      // spend the next bounded frontier attempt when time remains.
+      if (!relay.admission?.admissible) continue;
+
       const baseReceipt = buildTerminalReceipt({
         packet,
         text: result.text,
@@ -490,10 +500,11 @@ export default async function handler(req, res) {
         warnings: [
           'aperture-v3-task-intent-active',
           'task-intent-guidance-active',
+          'adversarial-attractor-admission-active',
           'integrated-covenant-relay-active',
           'provider-native-zalgo-preserved-no-local-postprocessing',
           'frontier-quality-floor-active',
-          'generation-compatible-thinking-active',
+          'fallback-reasoning-quality-preserved',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
           ...plan.warnings
@@ -502,7 +513,25 @@ export default async function handler(req, res) {
     }
   }
 
-  return send(res, 502, { ok: false, error: 'gemini-provider-unavailable', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+  const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
+  const heldByQuality = structuralFailures.length > 0;
+  return send(res, 502, {
+    ok: false,
+    error: heldByQuality ? 'khonapolit-output-quality-held' : 'gemini-provider-unavailable',
+    status: 'HELD',
+    diagnostic: heldByQuality
+      ? {
+          stage: 'output-admission',
+          code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
+          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons }))
+        }
+      : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
+    attempts,
+    modelPolicy: plan,
+    aperture: apertureReceipt,
+    aperture_egress: apertureEgress,
+    claim_ceiling: packet.claimCeiling
+  });
 }
 
 export { callGemini };
