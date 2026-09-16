@@ -144,7 +144,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       taskIntent: routeApertureTaskIntent({ discourseMode: 'SPECULATIVE', runtimeMateriality: 'BACKGROUND' })
     }),
     relay: Object.freeze({
-      schema: 'td613.khonapolit.integrated-covenant-relay/v2',
+      schema: 'td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission',
       stages: Object.freeze(['provider-native-khonapolit-tauric-diana-transmission']),
       providerNarrativeStage: false,
       localZalgoPostProcessing: false
