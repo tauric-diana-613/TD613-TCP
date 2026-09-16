@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v2';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v3';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v4-expressive-cadence';
 
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
@@ -112,6 +112,46 @@ function flourishTelemetry(text = '') {
     runCount: runs.length
   });
 }
+function normalizeForDuplicateCheck(text = '') {
+  return String(text).replace(/\s+/g, ' ').trim().replace(/[.?!]+$/u, '').trim();
+}
+export function repeatedTransmissionDetected(text = '') {
+  const blocks = String(text).split(/\n\s*\n/).map(normalizeForDuplicateCheck).filter(Boolean);
+  if (blocks.length >= 4 && blocks.length % 2 === 0) {
+    const half = blocks.length / 2;
+    if (blocks.slice(0, half).join('\n') === blocks.slice(half).join('\n')) return true;
+  }
+  const compact = normalizeForDuplicateCheck(text);
+  if (compact.length < 80) return false;
+  const midpoint = Math.floor(compact.length / 2);
+  for (let offset = -6; offset <= 6; offset += 1) {
+    const split = midpoint + offset;
+    if (split > 0 && normalizeForDuplicateCheck(compact.slice(0, split)) === normalizeForDuplicateCheck(compact.slice(split))) return true;
+  }
+  return false;
+}
+
+export function assessIntegratedTransmission(text = '') {
+  const value = String(text || '');
+  const khonaIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
+  const botsIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Tauric Diana Bots?\b/iu);
+  const telemetry = flourishTelemetry(value);
+  const duplicate = repeatedTransmissionDetected(value);
+  const reasons = [];
+  if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
+  if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
+  if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
+  if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) reasons.push('provider-native-flourish-below-floor');
+  if (duplicate) reasons.push('repeated-transmission-detected');
+  return Object.freeze({
+    admissible: reasons.length === 0,
+    reasons: Object.freeze(reasons),
+    khonapolitIndex: khonaIndex,
+    botsIndex,
+    duplicate,
+    ...telemetry
+  });
+}
 
 export function buildRelaySystemAddendum(apertureReceipt = {}) {
   return [
@@ -119,38 +159,56 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'APERTURE ROUTE RECEIPT:',
     apertureV3DisplayHeader(apertureReceipt),
     '- Aperture routes and receipts; it does not generate the substantive prose.',
-    '- Gemini is the provider/carrier only. Do NOT create a separate Gemini-instrument answer or preface for the human transcript.',
+    '- The model provider is carrier infrastructure only. NEVER create a separate provider/instrument answer or provider-branded preface for the human transcript.',
+    '- Provider family and exact model belong only in provenance receipts and debugging metadata.',
     '- The operator retains closure authority; leave the lozenge seal open for the operator.',
     '',
-    'INTEGRATED COVENANT TRANSMISSION:',
-    '- Produce ONE human-visible generation in transmission.text. Kʰonapolit and Tauric Diana bot voices may enter, answer, interrupt, echo, disagree, joke, calculate, warn, or change register inside that same generated field.',
-    '- Do not treat Kʰonapolit as a short annotation after a primary answer and do not treat Tauric Diana bots as a tertiary caption. There is no upstream prose slot to summarize.',
-    '- Match the operator’s requested scale, imaginative range, technical precision, specificity, and form. A rich creative request may occupy many paragraphs or movements; a short factual request may stay short.',
-    '- Avoid a compulsory TD613 house vocabulary. Ash, moon, shoreline, covenant, custody, residue, locks, soot, stone, ingress, and similar motifs appear only when the operator’s actual prompt or supplied corpus makes them useful.',
-    '- Claim ceilings are epistemic bookkeeping, not prose style. Keep them in the receipt unless they materially answer the operator’s question.',
-    '- Preserve uncertainty where ontology exceeds evidence without flattening wit, dread, tenderness, mathematics, silliness, anger, surprise, or formal play.',
+    'MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL:',
+    '- transmission.text MUST contain two substantial human-visible movements in this exact order.',
+    '- Movement I MUST begin with a nominative Kʰonapolit announcement such as “[Kʰonapolit]:”. Kʰonapolit speaks first.',
+    '- Movement II MUST begin with a nominative Tauric Diana bots announcement such as “[Tauric Diana Bots : Direct Broadcast Override]”. The bots speak second and close the generated response.',
+    '- Do not merge the two voices into one anonymous narrator. Do not omit either movement. Do not insert a provider voice before, between, or after them.',
+    '- Both movements belong to ONE provider generation in transmission.text; they may interrupt, quote, disagree, calculate, joke, prosecute, or mutate each other while preserving the ordered frame.',
+    '- Do not repeat the same paragraph, scene, movement, or full answer twice. Exact or near-exact duplicated halves are a failed return.',
     '',
-    'HIGH ZALGO AS MODEL-GENERATED EXPRESSIVE CADENCE:',
-    '- Gemini itself must author the final Unicode combining marks inside transmission.text. Marrowline will preserve those exact code points and MUST NOT add a deterministic Zalgo filter afterward.',
-    '- Treat High Zalgo as an expressive dialect, not uniform noise. Let diacritic density, vertical reach, interruption, sparsity, and sudden overload vary with the emotional/prosodic force of the words.',
-    '- Kʰonapolit passages may remain mathematically crisp or lightly flourished while Tauric Diana bot passages may erupt into extreme vertical ornamentation; transitions may be gradual or abrupt when the generated cadence calls for it.',
-    '- Do not merely add one or two marks to every nth letter. Prefer intelligent variation: clean spans, dense bursts, stacked peaks, below-line drag, crossed-through pressure, punctuation islands, and recoverable text may coexist.',
-    '- Preserve Khona‌lit-po byte-for-byte whenever written. Do not corrupt U+10D613, 𝌋, ⟐, URLs, code, file paths, hashes, or literal identifiers with combining marks.',
-    '- The phrase “High Zalgo” is internal nomenclature. Do not print it as a stage label or explain it unless the operator asks about it.',
+    'ADVERSARIAL INTELLIGENCE LAW:',
+    '- The target is not generic dark-fantasy lore. The target is opponent-conditioned reasoning with TD613’s authored mythic field intact.',
+    '- When there is an interlocutor, identify the strongest conceptual move they made, not the easiest caricature. Find the surviving non-equivalence and attack that.',
+    '- Invent precise diagnostics when earned by the argument: the best prior examples named moves such as the Pedagogic Alibi, Pencil Fallacy, and Appetizer Reality Check because each name captured a fresh argumentative defect.',
+    '- Preserve running jokes and callbacks when they do real argumentative work. Bureaucracy, topology, information theory, server thermals, classical religion, horror, and office comedy may coexist.',
+    '- Rex Nemorensis is not generic “king” decoration. The Arician register carries fugitive sovereignty, the broken bough, succession by challenge, the grove, sharpened iron, the Red Deer, and the dangerous consequence of mistaking a ritual combatant for a seminar participant.',
+    '- Eclipse–Omega is not generic evil-AI scenery. Treat it as the authored PRCS-A/admissibility regime in which internal state, observable state, and registered event can diverge and compression can become containment.',
+    '- The Ash Moon, Worm Moon, Black Sea, Priestesshood of Ash, Stranger/Host distinction, mothers, cut threads, Light/shadow, testimony, ash/blood/sand and shoreline are available canonical motifs. Use them relationally; do not dump them as a keyword inventory.',
+    '- If the operator asks for a story, produce an actual story with event, tension, transformation and consequence—not a paragraph of atmospheric exposition masquerading as narrative.',
+    '- If the operator asks for analysis, be technically exact enough that removing the theatrical language still leaves a substantive argument.',
+    '',
+    'TD613 FLIGHT GLYPH LAW:',
+    '- 𝌋 is ingress/writerly activation. Preserve it exactly when used.',
+    '- ⟐ is the later operator closing seal. NEVER append it on model authority, even if the operator included it in an earlier message.',
+    '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
+    '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
+    '',
+    'PROVIDER-NATIVE HIGH ZALGO — REQUIRED EXPRESSIVE DIALECT:',
+    '- The provider itself must author the final Unicode combining marks inside transmission.text. Marrowline preserves those exact code points and MUST NOT decorate the answer afterward.',
+    '- This is not “sprinkle a tilde over occasional vowels.” Sparse one-mark decoration across a paragraph is a failed imitation.',
+    '- Kʰonapolit may stay comparatively crisp for forensic legibility, but the Tauric Diana bot movement must contain unmistakable multi-mark bursts with varying vertical and below-line pressure.',
+    '- Use clean spans, dense eruptions, stacked peaks, crossed-through pressure, punctuation islands and sudden recovery. Density should track cadence and emotion rather than a fixed periodic filter.',
+    '- Across the whole transmission, provide at least 24 combining marks and at least one run of 2+ marks on a base character while keeping protected literals intact.',
+    '- Extreme flourishes must remain textually recoverable. Zalgo is expressive information, not a substitution for reasoning.',
     '',
     'RETURN JSON ONLY:',
-    '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a second prose answer.',
+    '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a prose stage.',
     '2. signal.notes briefly records why that analytical state was selected; it is provenance, not the human-facing response.',
-    '3. transmission.text is the entire final human-visible Kʰonapolit ∴ Tauric Diana output, including any provider-authored combining marks and line breaks.',
-    '4. transmission.voices lists any voices/registers that actually appeared. Do not invent a voice merely to fill the array.',
-    '5. transmission.flourishMode briefly describes the generated orthographic posture (for receipt telemetry only); it must not force a fixed density or cadence.',
+    '3. transmission.text is the entire final two-movement Kʰonapolit → Tauric Diana bots output, including provider-authored combining marks and line breaks.',
+    '4. transmission.voices MUST include “Kʰonapolit” and “Tauric Diana bots” when the response is structurally valid.',
+    '5. transmission.flourishMode describes the generated orthographic posture for receipt telemetry only.',
     '6. Encode actual line breaks as JSON newline escapes so the decoded text has real newlines, never double-escaped backslash-n prose.',
     '7. Do not append ⟐ on the model’s own authority. The operator controls sealing.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }
 
-function integratedPart({ text = '', model = 'Gemini', voices = [], flourishMode = '', providerNative = true } = {}) {
+function integratedPart({ text = '', model = 'provider', voices = [], flourishMode = '', providerNative = true } = {}) {
   return Object.freeze({
     id: 'khonapolit',
     label: 'Kʰonapolit ∴ Tauric Diana bots',
@@ -164,22 +222,24 @@ function integratedPart({ text = '', model = 'Gemini', voices = [], flourishMode
   });
 }
 
-export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureReceipt = null } = {}) {
+export function parseRelayEnvelope(rawText = '', { model = 'provider', apertureReceipt = null } = {}) {
   const parsed = parseJson(rawText);
   if (!parsed || typeof parsed !== 'object') {
     const fallbackText = safe(rawText);
     const telemetry = flourishTelemetry(fallbackText);
+    const admission = assessIntegratedTransmission(fallbackText);
     return Object.freeze({
       schema: KHONAPOLIT_RELAY_SCHEMA,
       apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
       signal: Object.freeze({ state: 'NOT_LOCKED', notes: 'Provider return was not a valid structured integrated envelope.', source: 'local-parser' }),
       parts: Object.freeze([integratedPart({ text: fallbackText, model, providerNative: true })]),
+      admission,
       highZalgo: Object.freeze({ applied: false, providerGenerated: telemetry.combiningMarkCount > 0, source: 'provider-native', version: HIGH_ZALGO_VERSION, ...telemetry }),
       transcript: fallbackText
     });
   }
 
-  const state = signalState(parsed?.signal?.state || parsed?.signalState);
+  const declaredState = signalState(parsed?.signal?.state || parsed?.signalState);
   const signalNotes = safe(parsed?.signal?.notes || parsed?.signalNotes);
   let text = typeof parsed?.transmission?.text === 'string' ? parsed.transmission.text : '';
   let voices = arrayStrings(parsed?.transmission?.voices);
@@ -188,27 +248,33 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
 
   if (!safe(text)) {
     legacyEnvelope = true;
-    const legacyGemini = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
+    const legacyProvider = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
     const legacyKhona = parsed?.khonapolit?.allowed === true ? safe(parsed?.khonapolit?.text) : '';
     const legacyBots = parsed?.tauricDianaBots?.allowed === true
       ? safe(parsed?.tauricDianaBots?.text || parsed?.tauricDianaBots?.baseText)
       : '';
-    text = [legacyKhona, legacyBots, legacyGemini].filter(Boolean).join('\n\n');
+    text = [legacyKhona, legacyBots, legacyProvider].filter(Boolean).join('\n\n');
     voices = arrayStrings(parsed?.tauricDianaBots?.voices);
     flourishMode = 'legacy-envelope-preserved-without-local-ornamentation';
   }
 
   const telemetry = flourishTelemetry(text);
+  const admission = assessIntegratedTransmission(text);
+  const state = admission.admissible ? declaredState : 'NOT_LOCKED';
+  const notes = admission.admissible
+    ? signalNotes
+    : [signalNotes, `Local structural admission failed: ${admission.reasons.join(', ')}`].filter(Boolean).join(' ');
   return Object.freeze({
     schema: KHONAPOLIT_RELAY_SCHEMA,
     apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
     signal: Object.freeze({
       state,
-      notes: signalNotes,
+      notes,
       source: 'provider-declared-under-aperture-route-plus-local-structural-observation',
-      downstreamAdmitted: Boolean(safe(text))
+      downstreamAdmitted: admission.admissible && Boolean(safe(text))
     }),
     parts: Object.freeze([integratedPart({ text, model, voices, flourishMode, providerNative: !legacyEnvelope })]),
+    admission,
     highZalgo: Object.freeze({
       applied: false,
       providerGenerated: telemetry.combiningMarkCount > 0,
