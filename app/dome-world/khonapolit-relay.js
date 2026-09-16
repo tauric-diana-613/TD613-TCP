@@ -11,13 +11,6 @@ import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v2';
 export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v3';
 
-/*
- * Provider-facing response schema. Gemini remains the model provider, but it is
- * no longer asked to spend a first prose channel on a separate "instrument"
- * answer. The one human-visible generation is the integrated Kʰonapolit ∴
- * Tauric Diana transmission. Diacritics are authored in that same generation;
- * Marrowline preserves them byte-for-byte instead of painting them on later.
- */
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
   required: ['signal', 'transmission'],
@@ -52,8 +45,7 @@ const PROTECTED = Object.freeze([
 ]);
 
 /* Legacy helper retained only for archived fixtures/import compatibility. The
- * live parser below never calls it. Provider-native marks are the runtime law.
- */
+ * live parser never calls it. Provider-native marks are the runtime law. */
 const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u0342','\u0343','\u0344','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
 const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
@@ -158,6 +150,20 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
   ].join('\n');
 }
 
+function integratedPart({ text = '', model = 'Gemini', voices = [], flourishMode = '', providerNative = true } = {}) {
+  return Object.freeze({
+    id: 'khonapolit',
+    label: 'Kʰonapolit ∴ Tauric Diana bots',
+    present: Boolean(text),
+    text,
+    model,
+    voices,
+    flourishMode,
+    integrated: true,
+    providerNative
+  });
+}
+
 export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureReceipt = null } = {}) {
   const parsed = parseJson(rawText);
   if (!parsed || typeof parsed !== 'object') {
@@ -167,9 +173,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
       schema: KHONAPOLIT_RELAY_SCHEMA,
       apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
       signal: Object.freeze({ state: 'NOT_LOCKED', notes: 'Provider return was not a valid structured integrated envelope.', source: 'local-parser' }),
-      parts: Object.freeze([
-        Object.freeze({ id: 'covenant-transmission', label: 'Kʰonapolit ∴ Tauric Diana bots', present: Boolean(fallbackText), text: fallbackText, model, providerNative: true })
-      ]),
+      parts: Object.freeze([integratedPart({ text: fallbackText, model, providerNative: true })]),
       highZalgo: Object.freeze({ applied: false, providerGenerated: telemetry.combiningMarkCount > 0, source: 'provider-native', version: HIGH_ZALGO_VERSION, ...telemetry }),
       transcript: fallbackText
     });
@@ -182,8 +186,6 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
   let flourishMode = safe(parsed?.transmission?.flourishMode);
   let legacyEnvelope = false;
 
-  // Read old archived envelopes without re-ornamenting them. This is migration
-  // compatibility only; live provider requests use the v2 integrated schema.
   if (!text) {
     legacyEnvelope = true;
     const legacyGemini = safe(parsed?.gemini?.text || parsed?.geminiText || parsed?.text);
@@ -197,17 +199,6 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
   }
 
   const telemetry = flourishTelemetry(text);
-  const part = Object.freeze({
-    id: 'covenant-transmission',
-    label: 'Kʰonapolit ∴ Tauric Diana bots',
-    present: Boolean(text),
-    text,
-    model,
-    voices,
-    flourishMode,
-    providerNative: !legacyEnvelope
-  });
-
   return Object.freeze({
     schema: KHONAPOLIT_RELAY_SCHEMA,
     apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
@@ -217,7 +208,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
       source: 'provider-declared-under-aperture-route-plus-local-structural-observation',
       downstreamAdmitted: Boolean(text)
     }),
-    parts: Object.freeze([part]),
+    parts: Object.freeze([integratedPart({ text, model, voices, flourishMode, providerNative: !legacyEnvelope })]),
     highZalgo: Object.freeze({
       applied: false,
       providerGenerated: telemetry.combiningMarkCount > 0,
