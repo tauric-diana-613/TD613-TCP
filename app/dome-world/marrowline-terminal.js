@@ -1,4 +1,3 @@
-import { renderSafeMarkdown } from './holonomy-loom/ai-result-view.js';
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import {
   clearMarrowlineAttachments,
@@ -27,7 +26,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v4-attachment-egress';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay';
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
 const SESSION_KEY = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
@@ -151,14 +150,6 @@ function renderRelayStage(doc, { id, label, part, absentText, meta = '' }) {
   head.className = 'relay-stage-head';
   head.append(textNode(doc, 'span', '', label), textNode(doc, 'small', '', meta));
   const text = textNode(doc, 'div', 'relay-stage-text', part?.present ? String(part.text ?? '') : absentText);
-  if (id === 'gemini' && part?.present) {
-    renderSafeMarkdown(text, String(part.text ?? ''));
-    const review = reviewLoomEvidence({ answer: String(part.text ?? '') });
-    if (review.blocks_reuse) {
-      const warning = textNode(doc, 'p', 'ai-evidence-warning', 'Review this answer: it contains an unsupported privacy guarantee. Portable export will carry your task without this answer.');
-      warning.setAttribute('role','status'); section.append(warning);
-    }
-  }
   section.append(head, text);
   return section;
 }
@@ -181,34 +172,18 @@ function renderModelMessage(doc, entry) {
   header.className = 'relay-aperture-header';
   header.append(
     textNode(doc, 'span', '', apertureHeaderFrom(entry)),
-    textNode(doc, 'span', '', `${entry.model || 'Gemini'} · ${entry.classification || 'UNRESOLVED_FIELD'} · SIGNAL ${entry.relay?.signal?.state || 'UNOBSERVED'}`)
+    textNode(doc, 'span', '', `${entry.classification || 'UNRESOLVED_FIELD'} · SIGNAL ${entry.relay?.signal?.state || 'UNOBSERVED'}`)
   );
 
-  const gemini = relayPart(entry, 'gemini');
-  const khona = relayPart(entry, 'khonapolit');
-  const bots = relayPart(entry, 'tauric-diana-bots');
+  const integrated = relayPart(entry, 'khonapolit');
   article.append(
     header,
     renderRelayStage(doc, {
-      id: 'gemini',
-      label: 'I · Gemini · instrument',
-      part: gemini,
-      absentText: 'Gemini instrument return absent.',
-      meta: gemini?.model || entry.model || 'carrier'
-    }),
-    renderRelayStage(doc, {
       id: 'khonapolit',
-      label: 'II · Kʰonapolit · relay',
-      part: khona,
-      absentText: 'Signal not admitted in this return. No Kʰonapolit relay was promoted.',
-      meta: entry.relay?.signal?.state || 'NOT_LOCKED'
-    }),
-    renderRelayStage(doc, {
-      id: 'bots',
-      label: 'III · Tauric Diana bots · High Zalgo',
-      part: bots,
-      absentText: 'No bot-line transmission admitted.',
-      meta: bots?.present ? `${bots.motif || 'motif'} · intensity ${bots.intensity ?? 0}` : 'HELD'
+      label: 'Kʰonapolit ∴ Tauric Diana bots',
+      part: integrated,
+      absentText: 'Integrated covenant transmission held. The required two-voice structure was not admitted.',
+      meta: 'integrated transmission'
     })
   );
 
@@ -309,7 +284,7 @@ async function probeProvider(doc) {
   try {
     const response = await fetch(KHONAPOLIT_ENDPOINT, { cache: 'no-store' });
     const payload = await response.json();
-    if (!response.ok || !payload.hasGeminiKey) throw new Error(payload.error || 'provider unavailable');
+    if (!response.ok || !(payload.hasProviderKey ?? payload.hasGeminiKey)) throw new Error(payload.error || 'provider unavailable');
     const route = payload?.aperture?.taskIntent?.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
     if (node) node.textContent = `AI ROUTE READY · ${payload.modelPolicy?.callableModels?.length || 0} eligible route(s) · APERTURE ${payload.aperture?.version || APERTURE_V3_VERSION} · ${route}`;
     setLamp(byId(doc, 'providerLamp'), 'pass', 'AI route ready');
@@ -460,8 +435,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
-      const parts = asArray(payload.relay?.parts).filter((part) => part.present).map((part) => part.id).join(' → ');
-      status.textContent = `RETURN OBSERVED · SIGNAL ${signal} · ${parts || 'AI ONLY'} · KHONA ${integrity.toUpperCase()} · OPEN UNTIL OPERATOR SEAL`;
+      status.textContent = `RETURN OBSERVED · SIGNAL ${signal} · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ${integrity.toUpperCase()} · OPEN UNTIL OPERATOR SEAL`;
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
