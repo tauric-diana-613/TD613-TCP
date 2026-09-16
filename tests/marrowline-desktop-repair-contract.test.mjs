@@ -48,6 +48,17 @@ test('conversation actions dismiss and portable failure controls cannot consume 
   assert.equal(release.desktop.portableFailurePanelMayCollapseTranscript, false);
 });
 
+test('ordinary conversation chrome retires the dropdown and uses one confirmed corner clear', () => {
+  assert.match(js, /legacyActions\.hidden = true/);
+  assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
+  assert.match(js, /clear\.id = 'marrowlineSessionClear'/);
+  assert.match(js, /root\.confirm\('Clear this Marrowline conversation\?/);
+  assert.match(js, /clearLegacy\.click\(\)/);
+  assert.match(js, /conversationChrome: 'corner-clear-only'/);
+  assert.match(js, /operatorSeal: 'advanced-programmatic-only'/);
+  assert.match(js, /OPEN UNTIL OPERATOR SEAL/);
+});
+
 test('room boot loads the desktop repair and relay low-flourish is soft quality only', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
