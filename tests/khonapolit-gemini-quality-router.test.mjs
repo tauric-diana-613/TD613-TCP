@@ -131,8 +131,8 @@ try {
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
-  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model keeps the observed completion window');
-  assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= 10500, 'fallback remains bounded by its window and route wall');
+  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 16666, 'primary frontier attempt receives one fair share of the remaining live-route wall');
+  assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs >= 16666 && res.payload.receipt.provider.attempts[1].timeoutMs <= 16667, 'second frontier attempt receives the next fair share rather than the inherited 10.5 second fallback cap');
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
