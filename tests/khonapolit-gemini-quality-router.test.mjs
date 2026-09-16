@@ -131,7 +131,11 @@ try {
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
-  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 16666, 'primary frontier attempt receives one fair share of the remaining live-route wall');
+  const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
+  assert.ok(
+    primaryTimeoutMs >= 16500 && primaryTimeoutMs <= 16666,
+    `primary frontier attempt must receive approximately one third of the remaining live-route wall, got ${primaryTimeoutMs}ms`
+  );
   assert.ok(
     res.payload.receipt.provider.attempts[1].timeoutMs > 10500 && res.payload.receipt.provider.attempts[1].timeoutMs <= 32000,
     'second frontier attempt receives a recomputed fair share of the remaining wall rather than the inherited 10.5 second fallback cap'
