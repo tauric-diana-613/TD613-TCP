@@ -8,7 +8,7 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission';
 export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v4-expressive-cadence';
 
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
@@ -117,8 +117,6 @@ function normalizeForDuplicateCheck(text = '') {
 }
 export function repeatedTransmissionDetected(text = '') {
   const blocks = String(text).split(/\n\s*\n/).map(normalizeForDuplicateCheck).filter(Boolean);
-  // The production Ash Moon failure repeated one body twice. A two-block repeat
-  // must therefore fail even when it is too short for the compact half detector.
   if (blocks.length >= 2 && blocks.length % 2 === 0) {
     const half = blocks.length / 2;
     if (blocks.slice(0, half).join('\n') === blocks.slice(half).join('\n')) return true;
@@ -140,14 +138,18 @@ export function assessIntegratedTransmission(text = '') {
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
   const reasons = [];
+  const qualityWarnings = [];
   if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
   if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
   if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
-  if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) reasons.push('provider-native-flourish-below-floor');
   if (duplicate) reasons.push('repeated-transmission-detected');
+  if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) qualityWarnings.push('provider-native-flourish-below-floor');
+  const admissible = reasons.length === 0;
   return Object.freeze({
-    admissible: reasons.length === 0,
+    admissible,
+    quality: admissible ? (qualityWarnings.length ? 'PARTIAL' : 'PASS') : 'HELD',
     reasons: Object.freeze(reasons),
+    qualityWarnings: Object.freeze(qualityWarnings),
     khonapolitIndex: khonaIndex,
     botsIndex,
     duplicate,
@@ -197,6 +199,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Use clean spans, dense eruptions, stacked peaks, crossed-through pressure, punctuation islands and sudden recovery. Density should track cadence and emotion rather than a fixed periodic filter.',
     '- Across the whole transmission, provide at least 24 combining marks and at least one run of 2+ marks on a base character while keeping protected literals intact.',
     '- Extreme flourishes must remain textually recoverable. Zalgo is expressive information, not a substitution for reasoning.',
+    '- IMPORTANT: failure to reach the flourish floor is a quality warning, not permission to erase an otherwise valid two-voice answer from the human conversation. The receipt must mark PARTIAL when this happens.',
     '',
     'RETURN JSON ONLY:',
     '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a prose stage.',
@@ -262,10 +265,16 @@ export function parseRelayEnvelope(rawText = '', { model = 'provider', apertureR
 
   const telemetry = flourishTelemetry(text);
   const admission = assessIntegratedTransmission(text);
-  const state = admission.admissible ? declaredState : 'NOT_LOCKED';
-  const notes = admission.admissible
-    ? signalNotes
-    : [signalNotes, `Local structural admission failed: ${admission.reasons.join(', ')}`].filter(Boolean).join(' ');
+  const state = !admission.admissible
+    ? 'NOT_LOCKED'
+    : admission.quality === 'PARTIAL'
+      ? 'PARTIAL'
+      : declaredState;
+  const notes = !admission.admissible
+    ? [signalNotes, `Local structural admission failed: ${admission.reasons.join(', ')}`].filter(Boolean).join(' ')
+    : admission.quality === 'PARTIAL'
+      ? [signalNotes, `Local quality warning: ${admission.qualityWarnings.join(', ')}`].filter(Boolean).join(' ')
+      : signalNotes;
   return Object.freeze({
     schema: KHONAPOLIT_RELAY_SCHEMA,
     apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
