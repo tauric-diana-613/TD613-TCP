@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import handler, { buildGeminiRequest, observeGeminiOutput } from '../server/khonapolit-quality.js';
+import handler, { buildGeminiRequest, observeGeminiOutput, selectKhonapolitProviderModels } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
 const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
@@ -8,6 +8,17 @@ assert.match(source, /resolveGeminiModelPlan\(\{ task: 'khonapolit-dialogue'/);
 assert.match(source, /sticky-success-promotion-disabled/);
 assert.match(source, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
 assert.doesNotMatch(source, /gemini-flash-lite-latest/);
+
+assert.deepEqual(
+  selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
+  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash'],
+  'when the full stable Flash set is callable, Marrowline preserves a bounded continuity slot for the same-release proven 3.5 transport rather than spending its final call on 3.6'
+);
+assert.deepEqual(
+  selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
+  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'],
+  '3.6 remains the lawful third call when stable 3.5 is unavailable'
+);
 
 const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
 const direct3 = buildGeminiRequest(directPacket, {}, 'gemini-3.8-flash');
@@ -18,6 +29,10 @@ const fallback3 = buildGeminiRequest(directPacket, {}, 'gemini-3.7-flash', { fal
 assert.equal(fallback3.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(fallback3.generationConfig.thinkingConfig, { thinkingLevel: 'high' }, 'frontier fallback keeps full reasoning quality');
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback3.generationConfig, key), false);
+const fallback35 = buildGeminiRequest(directPacket, {}, 'gemini-3.5-flash', { fallback: true });
+assert.equal(fallback35.generationConfig.maxOutputTokens, 65536);
+assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: 'high' }, 'continuity fallback keeps the same Marrowline reasoning envelope and remains subject to strict relay admission');
+for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback35.generationConfig, key), false);
 const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
 assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
 assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
