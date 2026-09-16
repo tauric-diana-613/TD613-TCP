@@ -50,10 +50,12 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // The Kʰonapolit route no longer treats a fallback attempt as permission to lower
 // reasoning effort. A transport fallback is still the same research object.
 const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
-// These are compatibility fallbacks for non-strict callers only. The live
-// Kʰonapolit plan now supplies 3.8/3.7/3.6 exclusively, so this preference loop
-// cannot silently introduce 3.5/2.5 or a Lite model.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.6-flash']);
+// The live route keeps three bounded calls. After the newest primary and one
+// newer alternate, prefer stable non-Lite 3.5 as the continuity slot because
+// production witnessed 3.6 consume the terminal transport window while 3.5
+// completed in the same release episode. 3.6 remains eligible when 3.5 is absent.
+// Strict relay admission, not model identity, decides whether an answer is usable.
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -472,7 +474,7 @@ export default async function handler(req, res) {
       attempt.outputAdmission = relay.admission || null;
       // A transport-successful but structurally degraded answer is not a
       // successful Marrowline return. Reject it without exposing its prose and
-      // spend the next bounded frontier attempt when time remains.
+      // spend the next bounded stable-Flash attempt when time remains.
       if (!relay.admission?.admissible) continue;
 
       const baseReceipt = buildTerminalReceipt({
@@ -507,7 +509,7 @@ export default async function handler(req, res) {
           'adversarial-attractor-admission-active',
           'integrated-covenant-relay-active',
           'provider-native-zalgo-preserved-no-local-postprocessing',
-          'frontier-quality-floor-active',
+          'stable-flash-quality-floor-active',
           'fallback-reasoning-quality-preserved',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
