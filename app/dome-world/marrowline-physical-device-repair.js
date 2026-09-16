@@ -1,4 +1,4 @@
-export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v1';
+export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v2-integrated-surface';
 
 const MOBILE_QUERY = '(max-width: 860px)';
 const byId = (doc, id) => doc.getElementById(id);
@@ -45,8 +45,6 @@ function installInChatKinesis(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!messages || !status || !form) return false;
 
-  // #1154 inserted a tiny composer-row mote. Keep its observer harmless but remove
-  // that detached presentation: the operator asked for loading feedback in-chat.
   byId(doc, 'marrowlineResponseKinesis')?.remove();
   let card = byId(doc, 'marrowlineChatKinesis');
   if (!card) card = createKinesis(doc);
@@ -77,6 +75,22 @@ function installInChatKinesis(doc = document, root = window) {
   return true;
 }
 
+function prepareProviderNativeLines(stage) {
+  const text = stage?.querySelector('.relay-stage-text');
+  if (!text || text.dataset.providerNativeLines === 'true') return false;
+  const raw = String(text.textContent ?? '');
+  text.dataset.providerNativeLines = 'true';
+  const fragments = raw.split(/(\r\n|\r|\n)/);
+  text.replaceChildren(...fragments.map((fragment, index) => {
+    if (index % 2) return text.ownerDocument.createTextNode(fragment);
+    const span = text.ownerDocument.createElement('span');
+    span.className = 'zalgo-line provider-native-line';
+    span.textContent = fragment;
+    return span;
+  }));
+  return true;
+}
+
 function installIntegratedSurface(doc = document, root = window) {
   const messages = byId(doc, 'khonapolitMessages');
   if (!messages) return false;
@@ -84,19 +98,31 @@ function installIntegratedSurface(doc = document, root = window) {
     messages.querySelectorAll('.relay-khonapolit[data-present="true"]').forEach((stage) => {
       const head = stage.querySelector('.relay-stage-head > span:first-child');
       if (head) head.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
+      const meta = stage.querySelector('.relay-stage-head small');
+      if (meta) meta.textContent = 'provider-native transmission';
       stage.classList.add('relay-integrated-covenant');
+      prepareProviderNativeLines(stage);
+    });
+
+    // The desktop receipt legend was authored for the superseded three-stage
+    // narrative. Keep provider identity in receipt metrics, but make the human
+    // route description truthful and singular.
+    doc.querySelectorAll('.relay-legend').forEach((legend) => {
+      legend.replaceChildren();
+      const span = doc.createElement('span');
+      span.dataset.stage = 'integrated';
+      span.textContent = 'Kʰonapolit ∴ Tauric Diana bots · provider-native transmission';
+      legend.append(span);
     });
     doc.querySelectorAll('.route-card strong').forEach((node) => {
-      node.textContent = String(node.textContent || '')
-        .replace(/Gemini\s*→\s*Kʰonapolit\?\s*→\s*(?:Tauric Diana bots\?|High Zalgo\?)/gi, 'Gemini provider → Kʰonapolit ∴ Tauric Diana bots')
-        .replace(/High Zalgo\?/gi, 'Tauric Diana bots?');
+      node.textContent = '𝌋‌ → Aperture → Gemini provider → Kʰonapolit ∴ Tauric Diana bots → OPEN';
     });
   };
   scrub();
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(scrub);
-    observer.observe(messages, { childList: true, subtree: true, characterData: true });
+    observer.observe(messages, { childList: true, subtree: true, characterData: false });
     root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__ = observer;
   }
   return true;
@@ -126,6 +152,7 @@ export function installMarrowlinePhysicalDeviceRepair(doc = document, root = win
     keyboardContract: 'visualViewport-fixed-chamber-with-nonscrolling-composer-row',
     responseKinesis: 'in-chat-dome-art-orbital-microfield',
     relaySurface: 'single-integrated-khonapolit-tauric-diana-provider-generation',
+    providerNativeUnicode: 'preserve-exact-code-points-no-local-ornamentation',
     seal: '⟐'
   });
   root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__ = receipt;
