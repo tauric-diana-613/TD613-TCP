@@ -1,11 +1,12 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v4-khonapolit-frontier-floor';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v5-khonapolit-frontier-rescue';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
-// General interactive generation prefers the current Flash frontier. Marrowline's
-// Kʰonapolit route is intentionally stricter: degraded/economy fallbacks are a
-// quality failure, not a successful substitute for the authored covenant assay.
+// General interactive generation prefers the current Flash frontier. Marrowline
+// remains frontier-first, but a transport failure must not turn the quality floor
+// into an availability trap. 3.5/2.5 are admitted only as bounded rescue routes;
+// Lite models remain excluded from Kʰonapolit dialogue.
 const QUALITY_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
@@ -15,10 +16,18 @@ const QUALITY_ORDER = Object.freeze([
   'gemini-2.5-flash'
 ]);
 
-const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
+const KHONAPOLIT_FRONTIER_MODELS = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash'
+]);
+const KHONAPOLIT_RESCUE_MODELS = Object.freeze([
+  'gemini-3.5-flash',
+  'gemini-2.5-flash'
+]);
+const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
+  ...KHONAPOLIT_FRONTIER_MODELS,
+  ...KHONAPOLIT_RESCUE_MODELS
 ]);
 
 const TASK_DEFAULTS = Object.freeze({
@@ -142,9 +151,14 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const legacyGlobal = legacyGlobalModels(env);
   const explicit = uniq([...routeSpecific, ...legacyGlobal]);
   const mode = routingMode(env);
-  const requestedPreFloor = uniq(mode === 'operator-order'
-    ? [...routeSpecific, ...legacyGlobal, ...defaults]
-    : [...defaults, ...routeSpecific, ...legacyGlobal]
+  // For Marrowline, operator configuration can add or disable routes but cannot
+  // promote a rescue model ahead of the frontier tier. This keeps "rescue" a
+  // truthful transport role rather than silently turning it into the primary.
+  const requestedPreFloor = uniq(task === 'khonapolit-dialogue'
+    ? [...KHONAPOLIT_FRONTIER_MODELS, ...routeSpecific, ...legacyGlobal, ...KHONAPOLIT_RESCUE_MODELS]
+    : mode === 'operator-order'
+      ? [...routeSpecific, ...legacyGlobal, ...defaults]
+      : [...defaults, ...routeSpecific, ...legacyGlobal]
   ).filter((model) => !disabled.has(model));
   const floorRejected = task === 'khonapolit-dialogue'
     ? requestedPreFloor.filter((model) => !khonapolitQualityEligible(model))
@@ -166,10 +180,12 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const warnings = [];
   if (requestedPreFloor.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
-  if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
-  if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
+  if (task === 'khonapolit-dialogue' && mode === 'operator-order' && routeSpecific.some((model) => KHONAPOLIT_RESCUE_MODELS.includes(model))) warnings.push('khonapolit-frontier-first-kept-ahead-of-explicit-rescue');
+  if (task !== 'khonapolit-dialogue' && mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
+  if (task !== 'khonapolit-dialogue' && mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
-  if (floorRejected.length) warnings.push('khonapolit-quality-floor-rejected-degraded-models');
+  if (floorRejected.length) warnings.push('khonapolit-quality-floor-rejected-ineligible-models');
+  if (task === 'khonapolit-dialogue' && eligible.some((row) => KHONAPOLIT_RESCUE_MODELS.includes(row.model))) warnings.push('khonapolit-bounded-rescue-models-available');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
     task,
@@ -178,7 +194,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     callableModels: Object.freeze(eligible.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
     excludedModels: Object.freeze([
       ...rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons })),
-      ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-frontier-quality-floor']) }))
+      ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-quality-floor']) }))
     ]),
     rows: Object.freeze(ordered),
     explicitModels: Object.freeze(explicit),
@@ -189,7 +205,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     stickySuccessPromotion: false,
     latestAliasDefaulted: false,
     claimCeiling: task === 'khonapolit-dialogue'
-      ? 'frontier-quality-floor-routing-not-provider-output-quality-proof'
+      ? 'frontier-first-bounded-rescue-routing-not-provider-output-quality-proof'
       : 'quality-prioritized-routing-not-provider-availability-quota-or-output-quality-proof'
   });
 }
@@ -206,4 +222,12 @@ export function geminiModelCatalog() {
   return MODEL_CATALOG;
 }
 
-export { MODEL_CATALOG, QUALITY_ORDER, KHONAPOLIT_QUALITY_ORDER, TASK_DEFAULTS, normModel };
+export {
+  MODEL_CATALOG,
+  QUALITY_ORDER,
+  KHONAPOLIT_QUALITY_ORDER,
+  KHONAPOLIT_FRONTIER_MODELS,
+  KHONAPOLIT_RESCUE_MODELS,
+  TASK_DEFAULTS,
+  normModel
+};

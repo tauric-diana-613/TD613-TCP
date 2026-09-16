@@ -89,8 +89,9 @@ const providerListing = {
 };
 const plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', env: {}, at, providerListing });
 assert.equal(plan.callableModels[0], 'gemini-3.8-flash');
-assert.deepEqual(plan.callableModels.slice(0, 6), ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash']);
+assert.deepEqual(plan.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
 assert.ok(!plan.callableModels.some(model => /flash-lite/.test(model)));
+assert.ok(!plan.callableModels.includes('gemini-3-flash-preview'), 'Marrowline rescue uses pinned stable routes, not preview rescue');
 
 const livingChat = await fs.readFile(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
 assert.match(livingChat, /family=Reddit\+Sans/);
@@ -100,4 +101,4 @@ assert.match(livingChat, /Noto Sans/);
 assert.match(livingChat, /relay-bots\[data-intensity=\\"5\\"\][\s\S]*line-height:4!important/);
 assert.match(livingChat, /\.zalgo-line\{display:block!important/);
 
-console.log('marrowline-loom-frontier-envelope: generation-aware Gemini routing, primary-quality/fallback-latency thinking, 64K output, and Zalgo-safe type guard ok');
+console.log('marrowline-loom-frontier-envelope: frontier-first Marrowline rescue, generation-aware Gemini routing, 64K output, and Zalgo-safe type guard ok');

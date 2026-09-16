@@ -40,20 +40,20 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v5-adversarial-attractor-admission';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v6-live-route-recovery';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
-const WALL_TIMEOUT_MS = 50500;
-const RESPONSE_RESERVE_MS = 500;
+// The browser preserves a task for 55 s. Keep the entire server route comfortably
+// inside that boundary, including provider discovery, parsing and response write.
+export const KHONAPOLIT_PRIMARY_REQUEST_TIMEOUT_MS = 26000;
+export const KHONAPOLIT_FALLBACK_REQUEST_TIMEOUT_MS = 8500;
+export const KHONAPOLIT_WALL_TIMEOUT_MS = 45000;
+export const KHONAPOLIT_RESPONSE_RESERVE_MS = 1500;
 const LEGACY_OUTPUT_TOKENS = 4096;
-// The Kʰonapolit route no longer treats a fallback attempt as permission to lower
-// reasoning effort. A transport fallback is still the same research object.
-const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
-// These are compatibility fallbacks for non-strict callers only. The live
-// Kʰonapolit plan now supplies 3.8/3.7/3.6 exclusively, so this preference loop
-// cannot silently introduce 3.5/2.5 or a Lite model.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.6-flash']);
+// Rescue is an availability posture, not a claim that lower reasoning is
+// epistemically equivalent to the frontier attempt. The receipt keeps the model
+// and reasoning envelope visible.
+const FALLBACK_GEMINI25_THINKING_BUDGET = 1024;
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -71,6 +71,7 @@ const safe = (value = '') => String(value ?? '').trim();
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
+const isRescueModel = (model = '') => STABLE_FALLBACK_MODELS.includes(String(model || '').replace(/^models\//, ''));
 
 const ORDINARY_PROJECT_GUIDANCE = [
   'ORDINARY PROJECT WORK:',
@@ -123,6 +124,8 @@ export function selectKhonapolitProviderModels(callableModels = []) {
     .map((model) => String(model || '').replace(/^models\//, '').trim())
     .filter(Boolean))];
   if (!available.length) return [];
+  // One frontier attempt first. Then prefer the historically responsive rescue
+  // family so a slow frontier stack cannot consume the entire interactive wall.
   const selected = [available[0]];
   for (const stable of STABLE_FALLBACK_MODELS) {
     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
@@ -138,8 +141,8 @@ export function selectKhonapolitProviderModels(callableModels = []) {
 export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0 } = {}) {
   const remaining = Math.max(0, Math.floor(Number(remainingMs) || 0));
   const cap = Math.max(0, Math.floor(Number(index) || 0)) === 0
-    ? PRIMARY_REQUEST_TIMEOUT_MS
-    : FALLBACK_REQUEST_TIMEOUT_MS;
+    ? KHONAPOLIT_PRIMARY_REQUEST_TIMEOUT_MS
+    : KHONAPOLIT_FALLBACK_REQUEST_TIMEOUT_MS;
   return Math.min(cap, remaining);
 }
 
@@ -212,10 +215,10 @@ function geminiContents(packet = {}) {
 
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
+  const rescue = fallback && isRescueModel(model);
   return {
-    // Fallback means transport position, not lower epistemic or creative quality.
-    level: 'high',
-    budget: fallback ? FALLBACK_GEMINI25_THINKING_BUDGET : GEMINI25_HIGH_THINKING_BUDGET
+    level: rescue ? 'low' : 'high',
+    budget: rescue ? FALLBACK_GEMINI25_THINKING_BUDGET : GEMINI25_HIGH_THINKING_BUDGET
   };
 }
 
@@ -314,7 +317,7 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
-async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
+async function callGemini(model, packet, apertureReceipt, timeoutMs = KHONAPOLIT_PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -404,7 +407,7 @@ export default async function handler(req, res) {
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
     const fallback = index > 0;
-    const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+    const remainingMs = KHONAPOLIT_WALL_TIMEOUT_MS - (Date.now() - startedAt) - KHONAPOLIT_RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length });
     const attemptStartedAt = Date.now();
@@ -423,6 +426,7 @@ export default async function handler(req, res) {
     const attempt = {
       model,
       role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
+      routeTier: isRescueModel(model) ? 'bounded-rescue' : 'frontier',
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
@@ -466,9 +470,9 @@ export default async function handler(req, res) {
     if (result.response.ok && result.text) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       attempt.outputAdmission = relay.admission || null;
-      // A transport-successful but structurally degraded answer is not a
-      // successful Marrowline return. Reject it without exposing its prose and
-      // spend the next bounded frontier attempt when time remains.
+      // Preserve the authored two-voice hard boundary. A structurally degraded
+      // output may spend one later bounded attempt, but the rescue route is now
+      // cheap enough that this cannot consume the browser's whole deadline.
       if (!relay.admission?.admissible) continue;
 
       const baseReceipt = buildTerminalReceipt({
@@ -492,6 +496,7 @@ export default async function handler(req, res) {
       res.setHeader('X-TD613-Signal-State', relay.signal.state);
       res.setHeader('X-TD613-Seal-State', 'OPEN');
       res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Khonapolit-Route-Tier', isRescueModel(model) ? 'bounded-rescue' : 'frontier');
       return send(res, 200, {
         ok: true,
         text: relay.transcript,
@@ -503,8 +508,7 @@ export default async function handler(req, res) {
           'adversarial-attractor-admission-active',
           'integrated-covenant-relay-active',
           'provider-native-zalgo-preserved-no-local-postprocessing',
-          'frontier-quality-floor-active',
-          'fallback-reasoning-quality-preserved',
+          'frontier-first-bounded-rescue-active',
           'sticky-success-promotion-disabled',
           'moving-latest-alias-disabled-by-default',
           ...plan.warnings
@@ -515,9 +519,10 @@ export default async function handler(req, res) {
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const heldByQuality = structuralFailures.length > 0;
+  const allTimedOut = attempts.length > 0 && attempts.every((attempt) => attempt.timedOut === true);
   return send(res, 502, {
     ok: false,
-    error: heldByQuality ? 'khonapolit-output-quality-held' : 'gemini-provider-unavailable',
+    error: heldByQuality ? 'khonapolit-output-quality-held' : allTimedOut ? 'gemini-provider-timeout' : 'gemini-provider-unavailable',
     status: 'HELD',
     diagnostic: heldByQuality
       ? {
@@ -525,7 +530,7 @@ export default async function handler(req, res) {
           code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
           rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons }))
         }
-      : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
+      : { stage: 'provider-transport', code: allTimedOut ? 'PROVIDER_TIMEOUT' : 'PROVIDER_UNAVAILABLE' },
     attempts,
     modelPolicy: plan,
     aperture: apertureReceipt,
