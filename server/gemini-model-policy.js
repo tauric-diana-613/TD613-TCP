@@ -1,10 +1,11 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v3-frontier-quality-floor';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v4-khonapolit-frontier-floor';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
-// Interactive generation never defaults to Flash-Lite. Operator-order remains an
-// explicit escape hatch, while quality-first follows the current stable Flash frontier.
+// General interactive generation prefers the current Flash frontier. Marrowline's
+// Kʰonapolit route is intentionally stricter: degraded/economy fallbacks are a
+// quality failure, not a successful substitute for the authored covenant assay.
 const QUALITY_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
@@ -14,9 +15,15 @@ const QUALITY_ORDER = Object.freeze([
   'gemini-2.5-flash'
 ]);
 
+const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.6-flash'
+]);
+
 const TASK_DEFAULTS = Object.freeze({
   'hush-transform': QUALITY_ORDER,
-  'khonapolit-dialogue': QUALITY_ORDER,
+  'khonapolit-dialogue': KHONAPOLIT_QUALITY_ORDER,
   'general-text': QUALITY_ORDER,
   readiness: Object.freeze(['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'])
 });
@@ -69,6 +76,11 @@ function cooldownFor(status = 0, timedOut = false, retryAfterSeconds = 0, strike
   return 0;
 }
 
+function khonapolitQualityEligible(model = '') {
+  const id = normModel(model);
+  return KHONAPOLIT_QUALITY_ORDER.includes(id) && !/-lite(?:-|$)/i.test(id);
+}
+
 export function clearGeminiModelState() {
   MODEL_STATE.clear();
 }
@@ -79,8 +91,6 @@ export function recordGeminiModelOutcome(model, outcome = {}, at = Date.now()) {
   const status = Number(outcome.status || 0);
   const previous = MODEL_STATE.get(id) || {};
   if (requestRejected(status, outcome.healthBearing)) {
-    // Request-authored 4xx failures describe the submitted instrument, not model health.
-    // Preserve any prior provider-health memory without creating, extending, or clearing cooldown.
     const state = readGeminiModelState(id, at);
     return Object.freeze({
       ...state,
@@ -132,10 +142,16 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const legacyGlobal = legacyGlobalModels(env);
   const explicit = uniq([...routeSpecific, ...legacyGlobal]);
   const mode = routingMode(env);
-  const requested = uniq(mode === 'operator-order'
+  const requestedPreFloor = uniq(mode === 'operator-order'
     ? [...routeSpecific, ...legacyGlobal, ...defaults]
     : [...defaults, ...routeSpecific, ...legacyGlobal]
   ).filter((model) => !disabled.has(model));
+  const floorRejected = task === 'khonapolit-dialogue'
+    ? requestedPreFloor.filter((model) => !khonapolitQualityEligible(model))
+    : [];
+  const requested = task === 'khonapolit-dialogue'
+    ? requestedPreFloor.filter(khonapolitQualityEligible)
+    : requestedPreFloor;
   const rows = requested.map((model, index) => {
     const state = readGeminiModelState(model, at);
     const metadata = MODEL_CATALOG[model] || Object.freeze({ tier: 'operator-supplied', stability: 'unknown', quality: 0, role: 'operator-supplied' });
@@ -148,18 +164,22 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const held = available.filter((row) => !row.eligibility.eligible);
   const ordered = [...eligible, ...held, ...cooling].slice(0, Math.max(1, maxModels));
   const warnings = [];
-  if (requested.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
+  if (requestedPreFloor.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
   if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
+  if (floorRejected.length) warnings.push('khonapolit-quality-floor-rejected-degraded-models');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
     task,
     mode,
     models: Object.freeze(ordered.map((row) => row.model)),
     callableModels: Object.freeze(eligible.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
-    excludedModels: Object.freeze(rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons }))),
+    excludedModels: Object.freeze([
+      ...rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons })),
+      ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-frontier-quality-floor']) }))
+    ]),
     rows: Object.freeze(ordered),
     explicitModels: Object.freeze(explicit),
     routeSpecificModels: Object.freeze(routeSpecific),
@@ -168,13 +188,14 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     warnings: Object.freeze(warnings),
     stickySuccessPromotion: false,
     latestAliasDefaulted: false,
-    claimCeiling: 'quality-prioritized-routing-not-provider-availability-quota-or-output-quality-proof'
+    claimCeiling: task === 'khonapolit-dialogue'
+      ? 'frontier-quality-floor-routing-not-provider-output-quality-proof'
+      : 'quality-prioritized-routing-not-provider-availability-quota-or-output-quality-proof'
   });
 }
 
 export { listGeminiGenerateContentModels };
 
-// Only this acquisition path supplies runtime listing evidence; archived receipts are never imported.
 export async function resolveGeminiProviderPlan(options = {}) {
   const env = options.env || process.env;
   const listing = await listGeminiGenerateContentModels(env.GEMINI_API_KEY);
@@ -185,4 +206,4 @@ export function geminiModelCatalog() {
   return MODEL_CATALOG;
 }
 
-export { MODEL_CATALOG, QUALITY_ORDER, TASK_DEFAULTS, normModel };
+export { MODEL_CATALOG, QUALITY_ORDER, KHONAPOLIT_QUALITY_ORDER, TASK_DEFAULTS, normModel };
