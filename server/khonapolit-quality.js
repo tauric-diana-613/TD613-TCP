@@ -40,7 +40,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v3-aperture-three-part-relay';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v4-aperture-integrated-covenant-relay';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
 // Preserve the empirically witnessed primary/fallback timing contract while
 // admitting a third diversified fallback inside one bounded route wall.
@@ -490,8 +490,8 @@ export default async function handler(req, res) {
         warnings: [
           'aperture-v3-task-intent-active',
           'task-intent-guidance-active',
-          'three-part-relay-envelope-active',
-          'high-zalgo-rendered-after-provider-return',
+          'integrated-covenant-relay-active',
+          'provider-native-zalgo-preserved-no-local-postprocessing',
           'frontier-quality-floor-active',
           'generation-compatible-thinking-active',
           'sticky-success-promotion-disabled',
