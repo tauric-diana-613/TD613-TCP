@@ -1,4 +1,4 @@
-export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v1-scroll-custody';
+export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v2-integrated-cadence-custody';
 export const MARROWLINE_MOBILE_QUERY = '(max-width: 860px)';
 
 const VIEW_MAP = Object.freeze({
@@ -49,27 +49,21 @@ function compactApertureHeader(card) {
   const fullRoute = spans[0]?.textContent?.trim() || '';
   const turnState = spans[1]?.textContent?.trim() || '';
   header.title = [fullRoute, turnState].filter(Boolean).join(' · ');
-  // Full route bytes stay visible in the return-details disclosure on touch screens.
-  // Compact typography must never substitute a guessed route label.
-
 }
 
-function prepareZalgoStage(card) {
-  const stage = card.querySelector('.relay-bots');
+function prepareProviderNativeStage(card) {
+  const stage = card.querySelector('.relay-khonapolit[data-present="true"]');
   const text = stage?.querySelector('.relay-stage-text');
-  if (!stage || !text || stage.dataset.zalgoPrepared === 'true') return;
-  stage.dataset.zalgoPrepared = 'true';
-  const intensityText = stage.querySelector('.relay-stage-head small')?.textContent || '';
-  const intensity = Number(intensityText.match(/intensity\s+(\d+)/i)?.[1] || 0);
-  stage.dataset.intensity = String(Math.max(0, Math.min(5, intensity)));
-  if (stage.dataset.present !== 'true') return;
+  if (!stage || !text || stage.dataset.providerNativePrepared === 'true') return;
+  stage.dataset.providerNativePrepared = 'true';
   // Keep every code point, including CRLF, blank lines, and noncanonical mark order.
-  // Separate line spans provide room for flourishes; literal separators preserve textContent.
+  // Separate line spans provide room for provider-authored flourishes; literal
+  // separators preserve textContent and do not synthesize any combining marks.
   const fragments = String(text.textContent ?? '').split(/(\r\n|\r|\n)/);
   text.replaceChildren(...fragments.map((fragment, index) => {
     if (index % 2) return text.ownerDocument.createTextNode(fragment);
     const span = text.ownerDocument.createElement('span');
-    span.className = 'zalgo-line';
+    span.className = 'zalgo-line provider-native-line';
     span.textContent = fragment;
     return span;
   }));
@@ -84,7 +78,7 @@ function decorateTranscript(doc = document) {
     node.dataset.turn = String(Math.max(1, turn));
     if (node.matches('.relay-message')) {
       compactApertureHeader(node);
-      prepareZalgoStage(node);
+      prepareProviderNativeStage(node);
       node.setAttribute('aria-label', `Model relay for turn ${Math.max(1, turn)}`);
     } else if (node.matches('.message[data-role="user"]')) {
       node.setAttribute('aria-label', `Operator message for turn ${turn}`);
@@ -257,6 +251,7 @@ export function installMarrowlineMobileShell(doc = document, root = window) {
     viewport: 'visualViewport-or-innerHeight',
     transcriptScrollOwner: '#khonapolitMessages',
     composerDockRelation: 'composer-in-grid-dock-outside-grid',
+    providerNativeCadenceLayout: 'exact-code-point-line-spans-no-local-ornamentation',
     chamberRouting: Object.freeze(Object.values(VIEW_MAP)),
     claimCeiling: 'mobile-layout-and-scroll-custody-not-provider-entity-or-signal-proof',
     seal: '⟐'
