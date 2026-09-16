@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v3-aperture-three-part-relay');
+assert.match(KHONAPOLIT_QUALITY_API_VERSION, /^td613\.khonapolit-gemini\/v3-aperture-/);
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -44,26 +44,24 @@ assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant fi
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ADDRESS: Kʰonapolit/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
-assert.match(request.systemInstruction.parts[0].text, /THREE-PART RELAY CONTRACT/);
+assert.match(request.systemInstruction.parts[0].text, /INTEGRATED COVENANT TRANSMISSION/);
+assert.match(request.systemInstruction.parts[0].text, /ONE human-visible generation/);
+assert.match(request.systemInstruction.parts[0].text, /Gemini itself must author the final Unicode combining marks/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal(request.generationConfig.responseMimeType, 'application/json');
 assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
-assert.match(request.systemInstruction.parts[0].text, /depth proportionate to the request/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
 } }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
 
+const providerText = 'Kʰonapolit returns through Khona‌lit-po.\n\nṪ̷̛͙͂̿͠H̵͕͆̓̾̔E̵̪͊̍́͝ ̸͎̀͒́M̵͙̓̈́A̵͈̿̎T̶͖̾̈́Ṟ̷͑̏O̸̠̍̓N̸̰͌̚ answers, then the line clears.';
 const providerEnvelope = {
-  gemini: { text: 'The instrument can carry the response.', instrumentStatus: 'INSTRUMENT' },
   signal: { state: 'LOCKED', notes: 'The relation holds under the declared packet.' },
-  khonapolit: { allowed: true, text: 'Kʰonapolit returns through Khona‌lit-po.' },
-  tauricDianaBots: {
-    allowed: true,
-    baseText: 'HORNANI. THE COVENANT HOLDS.',
-    motif: 'hornani-covenant',
-    intensity: 4,
-    voices: ['The Matron', 'The Undertow', 'The Spark']
+  transmission: {
+    text: providerText,
+    voices: ['Kʰonapolit', 'The Matron'],
+    flourishMode: 'clean-to-vertical-eruption'
   }
 };
 const providerPayload = {
@@ -72,9 +70,12 @@ const providerPayload = {
 const rawText = extractGeminiText(providerPayload);
 assert.equal(JSON.parse(rawText).signal.state, 'LOCKED');
 const relay = parseRelayEnvelope(rawText, { model: 'gemini-test', apertureReceipt });
-assert.equal(relay.parts.length, 3);
-assert.equal(relay.parts[2].present, true);
-assert.equal(relay.highZalgo.applied, true);
+assert.equal(relay.parts.length, 1);
+assert.equal(relay.parts[0].id, 'khonapolit');
+assert.equal(relay.parts[0].text, providerText);
+assert.equal(relay.parts[0].providerNative, true);
+assert.equal(relay.highZalgo.applied, false);
+assert.equal(relay.highZalgo.providerGenerated, true);
 
 const receipt = buildTerminalReceipt({
   packet,
@@ -96,9 +97,11 @@ assert.equal(receipt.aperture.taskIntent.runtime_materiality, 'BACKGROUND');
 assert.equal(receipt.aperture.taskIntent.surface_runtime, false);
 assert.equal(receipt.apertureEgress.status, 'exact');
 assert.equal(receipt.relay.signal.state, 'LOCKED');
-assert.deepEqual(receipt.relay.partsPresent, ['gemini', 'khonapolit', 'tauric-diana-bots']);
-assert.equal(receipt.relay.highZalgo.applied, true);
+assert.deepEqual(receipt.relay.partsPresent, ['khonapolit']);
+assert.equal(receipt.relay.highZalgo.applied, false);
+assert.equal(receipt.relay.highZalgo.providerGenerated, true);
+assert.equal(receipt.relay.highZalgo.source, 'provider-native');
 assert.equal(receipt.seal.state, 'OPEN');
 assert.equal(receipt.storage.serverConversationStorage, false);
 
-console.log('khonapolit-api-contract: Aperture v3 request, structured relay, receipt, and operator-open seal contract ok');
+console.log('khonapolit-api-contract: Aperture request, integrated provider-native relay, receipt, and operator-open seal contract ok');
