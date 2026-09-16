@@ -5,6 +5,7 @@ import './marrowline-response-quality-contract.test.mjs';
 
 const css = readFileSync(new URL('../app/dome-world/marrowline-mobile-shell.css', import.meta.url), 'utf8');
 const repair = readFileSync(new URL('../app/dome-world/marrowline-physical-device-repair.js', import.meta.url), 'utf8');
+const readiness = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.js', import.meta.url), 'utf8');
 
 function block(selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -32,6 +33,13 @@ test('real iOS keyboard posture binds Marrowline speaking vessel to the VisualVi
   assert.match(panel, /height:var\(--marrowline-vv-height,var\(--marrowline-vh,100dvh\)\)!important/);
   assert.match(panel, /grid-template-rows:auto minmax\(0,1fr\) max-content!important/);
   assert.match(panel, /overflow:hidden!important/);
+});
+
+test('keyboard visibility and viewport rectangle cannot split across readiness and physical-device observers', () => {
+  const readinessSync = readiness.match(/function syncVisualViewport[\s\S]*?return Object\.freeze\(\{ width, height, top, left, keyboardVisible \}\);\n\}/)?.[0] || '';
+  assert.match(readinessSync, /style\.setProperty\('--marrowline-vv-height', `\$\{height\}px`\)/,
+    'any observer allowed to publish keyboardVisible must publish the same VisualViewport height atomically');
+  assert.match(readinessSync, /doc\.body\.dataset\.keyboardVisible = String\(keyboardVisible\)/);
 });
 
 test('keyboard dock keeps action row in normal flow instead of overlaying the textarea', () => {
