@@ -43,7 +43,15 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
   for (const [key, value] of Object.entries(globals)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   let living;
-  t.after(() => { living?.dispose(); dom.window.close(); for (const [key, descriptor] of before) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
+  t.after(() => {
+    win.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__?.();
+    living?.dispose();
+    dom.window.close();
+    for (const [key, descriptor] of before) {
+      if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+      else delete globalThis[key];
+    }
+  });
   if (storedMessages.length) win.sessionStorage.setItem(sessionKey, JSON.stringify({ messages: storedMessages }));
   assert.equal(installKhonapolitTerminal(doc, win), true);
   if (mobile) installMarrowlineMobileShell(doc, win);
