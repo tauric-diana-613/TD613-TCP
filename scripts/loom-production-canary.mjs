@@ -4,6 +4,7 @@ import path from 'node:path';
 const base = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/\/$/, '');
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-production-canary';
+const LIVE_WITNESS_TIMEOUT_MS = 57000;
 const fixturePath = 'docs/research/receipts/2026-09-10-loom-live-receiver/portable-aia.json';
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
@@ -32,7 +33,7 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 
 fs.mkdirSync(artifactDir, { recursive: true });
 
-async function postJson(url, body, timeoutMs = 57000) {
+async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS) {
   let httpStatus = 0;
   let payload = null;
   let transportError = null;
@@ -67,6 +68,19 @@ const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
 // first, then Loom, while preserving the full admission requirements for each.
 const canaryStartedAt = Date.now();
 const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput);
+const marrowlineCheckpoint = {
+  schema: 'td613.loom.production-canary-route-checkpoint/v0.1',
+  source_packet_commit: sourcePacketCommit || null,
+  observed_at: new Date().toISOString(),
+  route: 'marrowline',
+  request_id: marrowlineRequestId,
+  witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
+  http_status: marrowlineResult.httpStatus || null,
+  transport_error_class: marrowlineResult.transportError,
+  elapsed_ms: Number.isSafeInteger(marrowlineResult.elapsedMs) && marrowlineResult.elapsedMs >= 0 ? marrowlineResult.elapsedMs : null
+};
+fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json'), `${JSON.stringify(marrowlineCheckpoint, null, 2)}\n`);
+console.log(`[loom-production-canary] checkpoint ${JSON.stringify(marrowlineCheckpoint)}`);
 const loomResult = await postJson(loomUrl, input);
 const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
@@ -139,6 +153,7 @@ const receipt = {
   request_count: 2,
   request_execution: 'serial-independent',
   request_order: ['marrowline', 'loom'],
+  per_witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
   canary_elapsed_ms: boundedCount(canaryElapsedMs),
   http_status: httpStatus || null,
   transport_error_class: transportError,
