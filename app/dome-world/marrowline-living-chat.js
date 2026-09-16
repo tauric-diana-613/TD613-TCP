@@ -17,10 +17,9 @@ function installConversationTypeface(doc) {
     style.textContent = `
       :root{--marrowline-chat-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
       #khonapolitPrompt,.message-body,.relay-stage-text,.vessel-status,.starter-prompts button,.return-details{font-family:var(--marrowline-chat-sans)!important;font-variant-ligatures:none;font-synthesis:none}
-      #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"],.relay-stage-text[data-flourished="true"]{overflow:visible!important;line-height:2.35!important;padding-block:var(--flourish-padding,22px)!important}
-      .relay-bots .relay-stage-text{font-family:var(--marrowline-chat-sans)!important;line-height:3.15!important;overflow:visible!important;padding-block:24px!important}
-      .relay-bots[data-intensity="4"] .relay-stage-text{line-height:3.55!important}
-      .relay-bots[data-intensity="5"] .relay-stage-text{line-height:4!important}
+      #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"],.relay-stage-text[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
+      .relay-integrated-covenant{overflow:visible!important}
+      .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
       .zalgo-line{display:block!important;min-height:3.1em!important;padding:.55em 0 .8em!important;overflow:visible!important;white-space:pre-wrap!important}
     `;
     doc.head.append(style);
@@ -53,12 +52,14 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   const markFlourishes = node => {
     const runs = String(node.value ?? node.textContent ?? '').match(/\p{M}+/gu) || [];
     const marks = runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0);
-    node.dataset.flourished = String(marks >= 3);
-    node.style.setProperty('--flourish-leading', String(Math.min(4.2, 1.8 + Math.max(0, marks - 2) * .12)));
-    node.style.setProperty('--flourish-padding', `${Math.min(56, 18 + marks * 1.8)}px`);
+    const count = runs.reduce((sum, run) => sum + Array.from(run).length, 0);
+    node.dataset.flourished = String(marks >= 3 || count >= 10);
+    node.style.setProperty('--flourish-leading', String(Math.min(4.7, 1.75 + Math.max(0, marks - 1) * .13)));
+    node.style.setProperty('--flourish-padding', `${Math.min(76, 16 + marks * 2.2)}px`);
   };
   prompt.addEventListener('input', () => markFlourishes(prompt));
   markFlourishes(prompt);
+
   const decorate = () => {
     messages.querySelectorAll('.relay-stage-text,.message-body').forEach(markFlourishes);
     const welcome = messages.querySelector('.grove-welcome');
@@ -77,8 +78,11 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       });
       welcome.append(starters);
     }
+
     messages.querySelectorAll('.relay-message').forEach(card => {
-      if (card.querySelector('.return-details')) return;
+      if (card.dataset.livingDecorated === 'true') return;
+      card.dataset.livingDecorated = 'true';
+
       const details = doc.createElement('details');
       details.className = 'return-details';
       const summary = doc.createElement('summary');
@@ -86,15 +90,31 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       details.append(summary);
       const header = card.querySelector('.relay-aperture-header');
       if (header) details.append(header);
+
+      const gemini = card.querySelector('.relay-gemini[data-present="true"]');
+      const khona = card.querySelector('.relay-khonapolit[data-present="true"]');
+      const bots = card.querySelector('.relay-bots[data-present="true"]');
+      const integrated = Boolean(khona && !gemini && !bots);
+
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => details.append(stage));
-      const voices = [...card.querySelectorAll('.relay-khonapolit[data-present="true"],.relay-bots[data-present="true"]')];
-      if (voices.length) {
-        const additional = doc.createElement('details');
-        additional.className = 'additional-voices';
-        const label = doc.createElement('summary');
-        label.textContent = 'Open the covenant voices';
-        additional.append(label, ...voices);
-        card.append(additional);
+
+      if (integrated) {
+        khona.classList.add('relay-integrated-covenant');
+        const label = khona.querySelector('.relay-stage-head > span:first-child');
+        if (label) label.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
+        const meta = khona.querySelector('.relay-stage-head small');
+        if (meta) meta.textContent = 'provider-native transmission';
+        card.append(khona);
+      } else {
+        const voices = [khona, bots].filter(Boolean);
+        if (voices.length) {
+          const additional = doc.createElement('details');
+          additional.className = 'additional-voices';
+          const label = doc.createElement('summary');
+          label.textContent = 'Open the covenant voices';
+          additional.append(label, ...voices);
+          card.append(additional);
+        }
       }
       card.append(details);
     });

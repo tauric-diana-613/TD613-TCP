@@ -78,10 +78,12 @@ globalThis.fetch = async (url, options = {}) => {
     async json() {
       return {
         candidates: [{ finishReason: tokenLimit ? 'MAX_TOKENS' : 'STOP', content: { parts: [{ text: JSON.stringify({
-          gemini: { text: tokenLimit ? 'REJECTED_PARTIAL_RESPONSE' : developedAnswer, instrumentStatus: 'INSTRUMENT' },
           signal: { state: 'NOT_LOCKED', notes: '' },
-          khonapolit: { allowed: false, text: '' },
-          tauricDianaBots: { allowed: false, baseText: '', motif: '', intensity: 0, voices: [] }
+          transmission: {
+            text: tokenLimit ? 'REJECTED_PARTIAL_RESPONSE' : developedAnswer,
+            voices: [],
+            flourishMode: 'clean'
+          }
         }) }] } }],
         usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: tokenLimit ? 4096 : 1600, thoughtsTokenCount: 300, totalTokenCount: tokenLimit ? 5596 : 3100, privatePayload: 'DO_NOT_COPY_PROVIDER_FIELDS' }
       };
@@ -113,6 +115,7 @@ try {
   assert.deepEqual(requestBodies[1].generationConfig.thinkingConfig, { thinkingLevel: 'low' });
   for (const body of requestBodies) {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
+    assert.deepEqual(body.generationConfig.responseSchema.required, ['signal', 'transmission']);
   }
   assert.equal(res.payload.receipt.provider.model, 'gemini-3-flash-preview');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
@@ -124,7 +127,10 @@ try {
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'low', 'successful fallback output retains truthful reasoning telemetry');
   assert.ok(res.payload.receipt.provider.attempts.every(a => a.elapsedMs >= 0));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
-  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'a developed answer survives the server and relay without local clipping');
+  assert.equal(res.payload.relay.parts.length, 1);
+  assert.equal(res.payload.relay.parts[0].id, 'khonapolit');
+  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'a developed integrated answer survives the server and relay without local clipping');
+  assert.equal(res.payload.relay.highZalgo.applied, false, 'server does not post-process provider text with a local Zalgo filter');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
   assert.equal(res.payload.receipt.provider.output.usage.candidatesTokenCount, 1600);
   assert.equal(res.payload.receipt.provider.output.outputTokenLimitReached, false);

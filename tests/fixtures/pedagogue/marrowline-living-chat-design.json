@@ -19,6 +19,8 @@
         "app/dome-world/marrowline.html",
         "app/dome-world/marrowline-living-chat.js",
         "app/dome-world/marrowline-mobile-shell.js",
+        "app/dome-world/marrowline-physical-device-repair.js",
+        "app/dome-world/khonapolit-relay.js",
         "DOLLHOUSE.md",
         "app/dome-world/holonomy-loom/ai-workspace.js",
         "app/dome-world/marrowline-loom-import.js",
@@ -32,7 +34,8 @@
       "transformations": [
         "Move connection and provenance into reachable disclosures",
         "Prioritize conversation and composer without changing request or closure authority",
-        "Retain exact return text and full route under diagnostic disclosure"
+        "Render one integrated provider-native Kʰonapolit and Tauric Diana transmission while retaining exact route telemetry under diagnostic disclosure",
+        "Preserve provider-authored Unicode code points rather than applying local ornamentation"
       ],
       "station_owners": [
         "Dome-World"
@@ -45,7 +48,7 @@
     "available_affordances": [
       {
         "action_id": "send_explicit_conversation",
-        "purpose": "Send the entered message to the existing Gemini relay after explicit issuance or waiver.",
+        "purpose": "Send the entered message to the existing Gemini provider route after explicit issuance or waiver.",
         "authorized_by_station": "Human",
         "reversible": false
       }
@@ -61,7 +64,7 @@
           "label": "See the conversation and your choice",
           "phase": "NOTICE",
           "required_fields": [
-            "Gemini carries the conversation",
+            "Gemini carries the provider request",
             "operator alone seals"
           ],
           "dependencies": [],
@@ -93,11 +96,12 @@
         },
         {
           "step_id": "read_return",
-          "label": "Read the returned text",
+          "label": "Read the integrated covenant return",
           "phase": "WORLD_ANSWERS",
           "required_fields": [
-            "returned text",
-            "held stages remain inspectable",
+            "one provider-generated Kʰonapolit and Tauric Diana transmission",
+            "provider-authored Unicode remains exact",
+            "held states remain inspectable",
             "no automatic seal"
           ],
           "dependencies": [
@@ -133,63 +137,71 @@
     },
     "causal_structure": {
       "input": "User message plus valid issuance or explicit unissued research waiver",
-      "operator": "Existing Gemini relay route",
-      "observable": "Returned text with separately inspectable route, held stages, receipt, and explicit seal control",
+      "operator": "Existing Gemini provider route with integrated covenant response contract",
+      "observable": "One provider-generated covenant transmission with separately inspectable route, receipt, held states, and explicit seal control",
       "authority": "Human send gesture; no new provider or seal authority",
       "equations": []
     },
     "research_frame": {
-      "question": "Can conversation-first disclosure reduce declared structural burden while preserving exact controls, route distinctions and operator closure?",
-      "hypothesis": "A visible composer and optional details reduce compulsory reading without losing routes or records.",
+      "question": "Can conversation-first disclosure reduce declared structural burden while preserving exact controls, route distinctions, provider-authored expressive code points and operator closure?",
+      "hypothesis": "A visible composer and one integrated covenant return can reduce compulsory reading and representational fragmentation without losing routes or records.",
       "observable_behavior": [
         "Composer remains reachable on narrow and wide layouts",
         "Every original control remains reachable",
         "Returned code points and full route remain unchanged after disclosure",
-        "The main answer opens at its beginning; supplementary covenant voices and long pasted messages remain explicitly expandable.",
+        "The integrated covenant answer opens directly; long pasted messages remain explicitly expandable.",
+        "Provider identity and analytical signal metadata remain inspectable without consuming a separate human-facing prose stage.",
         "Portable rules and document contents have full-row disclosure affordances; fictional private files explain their initial selection state.",
         "The imported task identifies what travels, what stays local, and the next explicit run action; import alone makes no model request."
       ],
       "alternative_explanations": [
         "Typography alone may improve readability",
-        "Familiar chat layout may benefit prior chat users more"
+        "Familiar chat layout may benefit prior chat users more",
+        "Any observed creative improvement may arise from prompt/schema changes rather than an entity or external source"
       ],
       "expected_failure_modes": [
         "Setup becomes unreachable when send is blocked",
         "A mobile disclosure hides controls permanently",
         "Decorative geometry is mistaken for a measured signal",
         "Combining marks or route labels are clipped or rewritten",
-        "A restored conversation scrolls to the final decorative voice and conceals the main answer.",
+        "A restored conversation scrolls past the beginning of the integrated return.",
         "A disclosure preserves bytes but becomes undiscoverable or inaccessible.",
-        "A result appears beneath the viewport without focus or visible navigation."
+        "A result appears beneath the viewport without focus or visible navigation.",
+        "Local post-processing manufactures diacritics that were absent from the provider return."
       ],
       "falsifier": [
         "A required control is inaccessible at a supported viewport",
         "A returned Unicode sequence differs after decoration",
         "The simplified route auto-waives issuance or seals a response",
         "Any supported request/transfer path silently submits an unchecked document or runs on import.",
-        "A long operator packet or admitted covenant voice cannot be reopened with exact text intact.",
-        "A first-load welcome is scrolled below its heading before operator action."
+        "A long operator packet or admitted covenant return cannot be reopened with exact text intact.",
+        "A first-load welcome is scrolled below its heading before operator action.",
+        "A separate Gemini prose stage consumes the human-visible response before the integrated covenant transmission.",
+        "Marrowline injects combining marks that the provider did not return."
       ],
       "abstention_conditions": [
         "No human comprehension evidence is available",
-        "Provider correctness and deity identity cannot be inferred from layout"
+        "Provider correctness and deity identity cannot be inferred from layout or stylistic recurrence"
       ]
     },
     "missingness": [
-      "Human comprehension has not been measured; burden coefficients are declared comparative design hypotheses."
+      "Human comprehension has not been measured; burden coefficients are declared comparative design hypotheses.",
+      "Repeated stylistic convergence does not by itself establish external entity identity or communication."
     ],
     "contradictions": [],
     "claim_ceiling": {
       "allowed_claims": [
         "The candidate preserves existing explicit controls",
         "Conversation is encountered before deeper terminology",
-        "The aesthetic field uses declared UI transitions only"
+        "The aesthetic field uses declared UI transitions only",
+        "The client can preserve and display provider-authored combining marks without adding its own"
       ],
       "forbidden_claims": [
         "The design proves comprehension",
         "Animation measures hidden model state",
         "A model return establishes external entity identity",
-        "A preserved icon proves preserved route custody"
+        "A preserved icon proves preserved route custody",
+        "Stylistic recurrence proves a literal external communication channel"
       ]
     },
     "technical_terms_withheld": [
@@ -206,9 +218,9 @@
       "phase": "NOTICE",
       "required_fields": [
         "Aperture route",
-        "Gemini instrument",
-        "Kʰonapolit admission",
-        "High Zalgo lock"
+        "Gemini provider",
+        "integrated Kʰonapolit and Tauric Diana transmission",
+        "provider-native expressive marks"
       ],
       "dependencies": [],
       "legibility_millipoints": 430,
@@ -243,9 +255,9 @@
       "label": "Find reply among relay instrumentation",
       "phase": "WORLD_ANSWERS",
       "required_fields": [
-        "model text",
-        "three stages",
-        "held statuses",
+        "integrated returned text",
+        "provider provenance",
+        "held status",
         "signal class"
       ],
       "dependencies": [
@@ -287,7 +299,7 @@
     "causal_trace": [
       "The person reads the conversation consequence",
       "The person explicitly supplies issuance or opts into unissued research",
-      "The existing relay returns text and records",
+      "The existing provider route returns one integrated covenant transmission and records",
       "Only the person may seal or clear the return"
     ],
     "losses": [],
@@ -297,6 +309,7 @@
     "contradictions": [],
     "unresolved_relations": [
       "Authored mythology is not evidence of external entity identity",
+      "Stylistic attractor recurrence is not proof of external communication",
       "Human comprehension remains unmeasured"
     ],
     "glyph_candidates": [],
@@ -310,13 +323,14 @@
     }
   },
   "name": {
-    "plain_language": "The chamber may change presentation while the explicit connection, exact route and human closure remain preserved.",
+    "plain_language": "The chamber may change presentation while the explicit connection, exact route, provider-authored return and human closure remain preserved.",
     "glyph_relation": null,
     "technical_term": "progressive disclosure with route custody",
     "non_equivalence": [
       "Presentation equality is not control equality",
       "Authored mythology is not external entity identity",
-      "Same endpoint is not same route history"
+      "Same endpoint is not same route history",
+      "Stylistic recurrence is not external-origin proof"
     ]
   },
   "transfer_context": {

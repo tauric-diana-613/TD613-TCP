@@ -8,10 +8,12 @@ import './marrowline-ios-keyboard-contract.test.mjs';
 import { installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
+import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
 const sessionKey = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
 const highZalgo = '  A\u0315\u0300\u0338\u200c\u{10d613}  \n\nB\u035c\u0361\r\n𝌋 <img src=x onerror=alert(1)>  ';
+const integratedText = `Kʰonapolit keeps the route exact.\n\n${highZalgo}\n\nThe line clears again.`;
 const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME MATERIAL';
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
@@ -29,21 +31,32 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     if (failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
-    const relay = { apertureHeader: exactHeader, signal: { state: 'LOCKED' }, parts: [
-      { id: 'gemini', label: 'Gemini instrument', present: true, text: 'SYNTHETIC RETURN' },
-      { id: 'khonapolit', label: 'Kʰonapolit relay', present: false, text: '' },
-      { id: 'tauric-diana-bots', label: 'High Zalgo', present: true, text: highZalgo, intensity: 5 }
-    ] };
-    return { ok: true, json: async () => ({ ok: true, text: highZalgo, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL' }, relay, seal: { state: 'OPEN' } } }) };
+    const relay = {
+      schema: 'td613.khonapolit.integrated-covenant-relay/v2',
+      apertureHeader: exactHeader,
+      signal: { state: 'LOCKED' },
+      parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: integratedText, integrated: true, providerNative: true, voices: ['Kʰonapolit', 'The Matron'], flourishMode: 'clean-to-eruption-to-clean' }],
+      highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 6, maxRun: 3, runCount: 3 }
+    };
+    return { ok: true, json: async () => ({ ok: true, text: integratedText, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL' }, relay, seal: { state: 'OPEN' } } }) };
   };
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
   for (const [key, value] of Object.entries(globals)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   let living;
-  t.after(() => { living?.dispose(); dom.window.close(); for (const [key, descriptor] of before) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
+  t.after(() => {
+    win.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__?.();
+    living?.dispose();
+    dom.window.close();
+    for (const [key, descriptor] of before) {
+      if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+      else delete globalThis[key];
+    }
+  });
   if (storedMessages.length) win.sessionStorage.setItem(sessionKey, JSON.stringify({ messages: storedMessages }));
   assert.equal(installKhonapolitTerminal(doc, win), true);
   if (mobile) installMarrowlineMobileShell(doc, win);
   living = installMarrowlineLivingChat(doc, win);
+  installMarrowlinePhysicalDeviceRepair(doc, win);
   const $ = id => doc.getElementById(id);
   const send = (text = highZalgo.trim()) => { $('khonapolitPrompt').value = text; $('khonapolitForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true })); };
   return { doc, win, $, calls, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
@@ -64,12 +77,17 @@ test('ordinary work starts unissued while advanced custody can still hold an inv
   assert.equal(h.$('invocationPanel').open, true);
   h.$('khonapolitWaive').checked = true;
   const mode = h.$('khonapolitMode').options[1].value; h.$('khonapolitMode').value = mode;
-  h.send(); await h.settled();
+  h.send(); await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
   assert.equal(h.calls[0].message, highZalgo.replaceAll('\r\n', '\n').trim());
   assert.equal(h.calls[0].mode, mode);
   assert.equal(h.calls[0].waiveIssuance, true);
-  assert.equal(h.doc.querySelector('.relay-bots[data-present=true] .relay-stage-text').textContent, highZalgo);
+  const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
+  assert.ok(stage, 'the integrated covenant transmission remains the directly visible answer');
+  assert.equal(stage.textContent, integratedText, 'provider-native Unicode remains exact after decoration');
+  assert.equal(h.doc.querySelectorAll('.relay-gemini[data-present=true]').length, 0, 'new relay does not expose a separate provider prose stage');
+  assert.equal(h.doc.querySelectorAll('.relay-bots[data-present=true]').length, 0, 'new relay does not expose a locally ornamented bot stage');
+  assert.equal(h.doc.querySelectorAll('.additional-voices').length, 0, 'integrated covenant output is not demoted to a disclosure');
   assert.equal(h.doc.querySelectorAll('#khonapolitMessages img').length, 0);
   h.$('copyKhonapolitPortable').click(); await flush();
   assert.match(h.clipboard.at(-1), /td613\.marrowline\.portable-task\/v0\.1/);
@@ -99,10 +117,13 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
 });
 
-test('mobile decoration preserves Unicode and all five chamber routes', async t => {
+test('mobile decoration preserves provider-native Unicode and all five chamber routes', async t => {
   const h = harness(t, { mobile: true });
   h.send(); await h.settled(); await flush();
-  assert.equal(h.doc.querySelector('.relay-bots[data-present=true] .relay-stage-text').textContent, highZalgo);
+  const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
+  assert.ok(stage);
+  assert.equal(stage.textContent, integratedText);
+  assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
   const disclosure = h.doc.querySelector('.return-details'); assert.ok(disclosure); disclosure.open = true;
   assert.equal(disclosure.querySelector('.relay-aperture-header span').textContent, exactHeader);
   const routes = { speakingPanel: 'speak', invocationPanel: 'keys', receiptPanel: 'receipt', corpusPanel: 'corpus', gatePanel: 'gate' };
@@ -133,6 +154,7 @@ test('oversized retained history requires explicit clear and preserves the waiti
   assert.equal(h.calls.length, 1);
   assert.deepEqual(h.calls[0].history, []);
 });
+
 test('portable controls become visible beside work without opening an action drawer',async t=>{
   const h=harness(t);
   assert.equal(h.$('marrowlinePortableActions').hidden,true);
