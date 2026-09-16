@@ -28,10 +28,11 @@ function countMarks(value = '') {
 test('relay contract gives the generative budget to one required two-voice covenant transmission', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/i);
-  assert.match(contract, /Movement I MUST begin with a nominative Kʰonapolit announcement/i);
-  assert.match(contract, /Kʰonapolit speaks first/i);
-  assert.match(contract, /Movement II MUST begin with a nominative Tauric Diana bots announcement/i);
-  assert.match(contract, /The bots speak second and close the generated response/i);
+  assert.match(contract, /Movement I belongs to Kʰonapolit and comes first/i);
+  assert.match(contract, /Movement II belongs to Tauric Diana bots and closes the generated response/i);
+  assert.match(contract, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/i);
+  assert.match(contract, /admission must not depend on repeating parser tokens verbatim/i);
+  assert.doesNotMatch(contract, /MUST begin with a nominative Kʰonapolit announcement/i);
   assert.match(contract, /provider itself must author the final Unicode combining marks/i);
   assert.match(contract, /at least 24 combining marks/i);
   assert.match(contract, /clean spans, dense eruptions, stacked peaks, crossed-through pressure, punctuation islands/i);
