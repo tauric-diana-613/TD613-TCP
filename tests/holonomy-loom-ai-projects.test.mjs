@@ -47,14 +47,14 @@ test('each admitted corpus contains a source-instruction challenge and useful in
   }
 });
 
-test('independent Marrowline fallbacks spend their short rescue windows on low-latency reasoning', () => {
+test('independent Marrowline frontier fallbacks preserve the route quality floor', () => {
   const packet = { systemInstruction: 'Synthetic system.', history: [], message: 'Plan a small workshop.', mode: 'full-invocation' };
   const primary = buildGeminiRequest(packet, {}, 'gemini-3.8-flash', { fallback: false });
   const fallback = buildGeminiRequest(packet, {}, 'gemini-3.8-flash', { fallback: true });
   const fallback25 = buildGeminiRequest(packet, {}, 'gemini-2.5-flash', { fallback: true });
   assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
-  assert.deepEqual(fallback.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
-  assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
+  assert.deepEqual(fallback.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0 }), 32000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1 }), 10500);
 });

@@ -86,35 +86,21 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       const details = doc.createElement('details');
       details.className = 'return-details';
       const summary = doc.createElement('summary');
-      summary.textContent = 'Return details · route and held stages';
+      summary.textContent = 'Return details · route and receipt';
       details.append(summary);
       const header = card.querySelector('.relay-aperture-header');
       if (header) details.append(header);
 
-      const gemini = card.querySelector('.relay-gemini[data-present="true"]');
-      const khona = card.querySelector('.relay-khonapolit[data-present="true"]');
-      const bots = card.querySelector('.relay-bots[data-present="true"]');
-      const integrated = Boolean(khona && !gemini && !bots);
-
+      const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => details.append(stage));
 
       if (integrated) {
-        khona.classList.add('relay-integrated-covenant');
-        const label = khona.querySelector('.relay-stage-head > span:first-child');
+        integrated.classList.add('relay-integrated-covenant');
+        const label = integrated.querySelector('.relay-stage-head > span:first-child');
         if (label) label.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
-        const meta = khona.querySelector('.relay-stage-head small');
-        if (meta) meta.textContent = 'provider-native transmission';
-        card.append(khona);
-      } else {
-        const voices = [khona, bots].filter(Boolean);
-        if (voices.length) {
-          const additional = doc.createElement('details');
-          additional.className = 'additional-voices';
-          const label = doc.createElement('summary');
-          label.textContent = 'Open the covenant voices';
-          additional.append(label, ...voices);
-          card.append(additional);
-        }
+        const meta = integrated.querySelector('.relay-stage-head small');
+        if (meta) meta.textContent = 'integrated transmission';
+        card.append(integrated);
       }
       card.append(details);
     });

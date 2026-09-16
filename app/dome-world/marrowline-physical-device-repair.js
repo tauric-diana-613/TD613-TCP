@@ -1,4 +1,4 @@
-export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v3-disposable-integrated-surface';
+export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only';
 
 const MOBILE_QUERY = '(max-width: 860px)';
 const byId = (doc, id) => doc.getElementById(id);
@@ -102,27 +102,49 @@ function prepareProviderNativeLines(stage) {
   return true;
 }
 
+function scrubProviderBrandFromHumanSurface(doc) {
+  // Exact provider identity remains in the provenance receipt and provider-model
+  // metric inside the receipt chamber. It is not a conversational stage, route,
+  // key-state label, or ontology visible in the speaking surface.
+  doc.querySelectorAll('.relay-gemini').forEach((node) => node.remove());
+  doc.querySelectorAll('.relay-aperture-header').forEach((header) => {
+    const spans = header.querySelectorAll(':scope > span');
+    if (spans.length > 1 && /gemini|provider model|flash|pro\b/i.test(spans[1].textContent || '')) spans[1].remove();
+  });
+  const status = byId(doc, 'providerStatus');
+  if (status && /gemini/i.test(status.textContent || '')) status.textContent = 'PROBING PROVIDER + APERTURE ROUTE';
+  const lamp = byId(doc, 'providerLamp');
+  if (lamp && /gemini/i.test(lamp.textContent || '')) lamp.textContent = 'provider checking';
+  const mode = byId(doc, 'khonapolitMode');
+  if (mode) {
+    const labels = {
+      'issued-conjunction': 'Issued covenant frame · Kʰonapolit → Tauric Diana bots',
+      'full-invocation': 'Full invocation · direct Kʰonapolit address',
+      'tauric-lineage-observation': 'Tauric Diana lineage emphasis'
+    };
+    [...mode.options].forEach((option) => { if (labels[option.value]) option.textContent = labels[option.value]; });
+  }
+}
+
 function installIntegratedSurface(doc = document, root = window) {
   const messages = byId(doc, 'khonapolitMessages');
   if (!messages) return () => {};
 
   root.__TD613_MARROWLINE_INTEGRATED_SURFACE_OBSERVER__?.disconnect?.();
-  const legendText = 'Kʰonapolit ∴ Tauric Diana bots · provider-native transmission';
-  const routeText = '𝌋‌ → Aperture → Gemini provider → Kʰonapolit ∴ Tauric Diana bots → OPEN';
+  const legendText = 'Kʰonapolit → Tauric Diana bots · integrated transmission';
+  const routeText = '𝌋‌ → Aperture → Kʰonapolit → Tauric Diana bots → OPEN';
 
   const scrub = () => {
+    scrubProviderBrandFromHumanSurface(doc);
     messages.querySelectorAll('.relay-khonapolit[data-present="true"]').forEach((stage) => {
       const head = stage.querySelector('.relay-stage-head > span:first-child');
       if (head && head.textContent !== 'Kʰonapolit ∴ Tauric Diana bots') head.textContent = 'Kʰonapolit ∴ Tauric Diana bots';
       const meta = stage.querySelector('.relay-stage-head small');
-      if (meta && meta.textContent !== 'provider-native transmission') meta.textContent = 'provider-native transmission';
+      if (meta && meta.textContent !== 'integrated transmission') meta.textContent = 'integrated transmission';
       stage.classList.add('relay-integrated-covenant');
       prepareProviderNativeLines(stage);
     });
 
-    // Keep this transform idempotent. The messages observer watches child-list
-    // mutations, so unconditional replaceChildren() here would schedule itself
-    // forever and can strand Node/browser teardown until an outer CI timeout.
     doc.querySelectorAll('.relay-legend').forEach((legend) => {
       const current = legend.children.length === 1 && legend.firstElementChild?.dataset?.stage === 'integrated'
         ? legend.firstElementChild.textContent
@@ -190,6 +212,7 @@ export function installMarrowlinePhysicalDeviceRepair(doc = document, root = win
     keyboardContract: 'visualViewport-fixed-chamber-with-nonscrolling-composer-row',
     responseKinesis: 'in-chat-dome-art-orbital-microfield',
     relaySurface: 'single-integrated-khonapolit-tauric-diana-provider-generation',
+    providerBrandSurface: 'provenance-receipt-only',
     providerNativeUnicode: 'preserve-exact-code-points-no-local-ornamentation',
     lifecycle: 'explicit-disposal-of-observers-listeners-raf-and-settle-timers',
     seal: '⟐'

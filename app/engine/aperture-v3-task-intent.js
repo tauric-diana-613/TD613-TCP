@@ -17,12 +17,6 @@ function normalize(value, allowed, fallback) {
   return allowed.includes(candidate) ? candidate : fallback;
 }
 
-/**
- * A deliberately narrow, local task-intent classifier. It is not a semantic
- * authority and does not upgrade evidence. Its only job is to keep obvious
- * creative/legal/runtime/speculative requests from inheriting an unrelated
- * generation posture. Everything else remains ordinary requested synthesis.
- */
 export function classifyApertureDiscourseMode(message = '') {
   const text = String(message || '').trim();
   if (!text) return 'GENERAL';
@@ -116,7 +110,7 @@ export function buildApertureV3InvocationReceipt({
     apertureEgress: apertureEgress || null,
     relation: Object.freeze({
       aperture: 'routes-and-receipts',
-      gemini: 'instrument-and-carrier',
+      provider: 'model-carrier-provenance-only',
       marrowline: 'relay-renderer-and-ingress-witness',
       operator: 'closure-authority'
     }),
