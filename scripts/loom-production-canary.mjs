@@ -60,10 +60,15 @@ async function postJson(url, body, timeoutMs = 57000) {
 
 const loomUrl = new URL('/api/khonapolit?operation=loom-task', `${base}/`);
 const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
-const [loomResult, marrowlineResult] = await Promise.all([
-  postJson(loomUrl, input),
-  postJson(marrowlineUrl, marrowlineInput)
-]);
+
+// These are independent production witnesses, not a concurrency/load test. Running
+// both provider-backed routes at once can make the release probe itself contend for
+// the same provider budget and falsify interactive liveness. Observe Marrowline
+// first, then Loom, while preserving the full admission requirements for each.
+const canaryStartedAt = Date.now();
+const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput);
+const loomResult = await postJson(loomUrl, input);
+const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
 
 const boundedCount = value => Number.isSafeInteger(value) && value >= 0 ? value : null;
@@ -72,6 +77,11 @@ const boundedDiagnostic = value => value && typeof value === 'object'
   && typeof value.stage === 'string' && /^[a-z-]{1,40}$/.test(value.stage)
   && typeof value.code === 'string' && /^[A-Z_]{1,80}$/.test(value.code)
   ? { schema: value.schema, stage: value.stage, code: value.code }
+  : null;
+const boundedRouteDiagnostic = value => value && typeof value === 'object'
+  && typeof value.stage === 'string' && /^[a-z-]{1,40}$/.test(value.stage)
+  && typeof value.code === 'string' && /^[A-Z_]{1,80}$/.test(value.code)
+  ? { stage: value.stage, code: value.code }
   : null;
 const boundedStageTimings = value => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
@@ -115,13 +125,21 @@ const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload
 const marrowlineAdmission = marrowlinePayload?.relay?.admission && typeof marrowlinePayload.relay.admission === 'object'
   ? marrowlinePayload.relay.admission
   : null;
+const marrowlineAttemptsSource = Array.isArray(marrowlineReceipt?.provider?.attempts)
+  ? marrowlineReceipt.provider.attempts
+  : Array.isArray(marrowlinePayload?.attempts)
+    ? marrowlinePayload.attempts
+    : [];
 const receipt = {
-  schema: 'td613.loom.production-canary/v0.2-marowline-live-route',
+  schema: 'td613.loom.production-canary/v0.3-independent-live-routes',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   target_origin: origin,
   request_id: requestId,
   request_count: 2,
+  request_execution: 'serial-independent',
+  request_order: ['marrowline', 'loom'],
+  canary_elapsed_ms: boundedCount(canaryElapsedMs),
   http_status: httpStatus || null,
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
@@ -144,17 +162,28 @@ const receipt = {
     transport_error_class: marrowlineResult.transportError,
     elapsed_ms: boundedCount(marrowlineResult.elapsedMs),
     ok: marrowlinePayload?.ok === true,
+    diagnostic: boundedRouteDiagnostic(marrowlinePayload?.diagnostic),
+    error: typeof marrowlinePayload?.error === 'string' ? marrowlinePayload.error.slice(0, 120) : null,
     answer_nonempty: typeof marrowlinePayload?.text === 'string' && marrowlinePayload.text.trim().length > 0,
     relay_admitted: marrowlineAdmission?.admissible === true,
     relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
     final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
-    provider_attempts: boundedMarrowlineAttempts(marrowlineReceipt?.provider?.attempts),
+    provider_attempts: boundedMarrowlineAttempts(marrowlineAttemptsSource),
     api_version: typeof marrowlineReceipt?.apiVersion === 'string' ? marrowlineReceipt.apiVersion : null
   },
   counts_as_human_evidence: false
 };
 fs.writeFileSync(path.join(artifactDir, 'receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
 console.log(`[loom-production-canary] ${JSON.stringify(receipt)}`);
+
+if (marrowlineResult.transportError) throw new Error(`Marrowline production canary transport failed (${marrowlineResult.transportError}).`);
+if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
+  const attempts = receipt.marrowline_live_route.provider_attempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}${attempt.timed_out ? ':timeout' : ''}`).join(',') || 'none';
+  const diagnostic = receipt.marrowline_live_route.diagnostic?.code || receipt.marrowline_live_route.error || 'none';
+  throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic}.`);
+}
+if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
+if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
 
 if (transportError) throw new Error(`Loom production canary transport failed (${transportError}).`);
 if (httpStatus !== 200 || payload?.status !== 'completed') {
@@ -168,13 +197,4 @@ if (!usedDocumentIds.length || !usedDocumentIds.every(id => input.documents.some
   throw new Error('Loom production canary returned invalid selected-document claims.');
 }
 
-if (marrowlineResult.transportError) throw new Error(`Marrowline production canary transport failed (${marrowlineResult.transportError}).`);
-if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
-  const attempts = receipt.marrowline_live_route.provider_attempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}${attempt.timed_out ? ':timeout' : ''}`).join(',') || 'none';
-  const diagnostic = marrowlinePayload?.diagnostic?.code || marrowlinePayload?.error || 'none';
-  throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic}.`);
-}
-if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
-if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
-
-console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'}`);
+console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'} canary_elapsed_ms=${receipt.canary_elapsed_ms ?? 'unknown'}`);
