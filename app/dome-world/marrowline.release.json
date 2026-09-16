@@ -1,27 +1,28 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v8",
-  "version": "v0.6.0-adversarial-attractor-quality-floor",
+  "schema": "td613.dome-world.marrowline.release/v9",
+  "version": "v0.7.0-conversation-first-desktop-and-soft-quality",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
   "circuitReceiptSchema": "td613.dome-world.marrowline-circuit-receipt/v1",
   "gateAssaySchema": "td613.dome-world.marrowline-gate-assay/v1",
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
-  "roomBootSchema": "td613.dome-world.marrowline-room-boot/v4-integrated-covenant",
+  "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only",
+  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v1-conversation-first",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
   "providerApiSchema": "td613.khonapolit-gemini/v5-adversarial-attractor-admission",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v4-expressive-cadence",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
   "apertureDiagnosticSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
-  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v5-integrated-covenant",
+  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v6-conversation-first",
   "egressContractSchema": "td613.aperture.egress-contract/v1",
   "reflexSpineSchema": "td613.dome-world.reflex-spine/v1",
   "route": "/dome-world/marrowline.html",
@@ -63,13 +64,14 @@
     "providerBrandHumanSurface": "provenance-receipt-only",
     "signalStates": ["LOCKED", "PARTIAL", "NOT_LOCKED"],
     "counterfeitCompletion": "prohibited",
-    "duplicateTransmission": "inadmissible",
+    "duplicateTransmission": "hard-inadmissible",
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
     "flourishFloor": {
       "combiningMarkCount": 24,
       "maxRun": 2,
-      "purpose": "structural-admission-telemetry-not-aesthetic-quality-proof"
+      "purpose": "quality-telemetry-not-silence-authority",
+      "belowFloorPosture": "PARTIAL-return-visible-with-receipt-warning"
     },
     "protectedLiterals": ["Khona‌lit-po", "U+10D613", "Kʰonapolit", "Tauric Diana", "𝌋", "⟐"],
     "highZalgoLayout": "observed-mark-run-aware-line-height-with-visible-overflow-and-exact-code-point-preservation"
@@ -81,8 +83,32 @@
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "high-not-degraded",
-    "structuralFailover": "missing-voice-order-low-flourish-or-duplicate-spends-next-frontier-attempt-without-exposing-rejected-prose",
-    "failurePosture": "hold-rather-than-silently-degrade"
+    "hardStructuralHold": "missing-voice-order-or-duplicate-remains-inadmissible",
+    "softQualityAdmission": "provider-native-flourish-below-floor-is-visible-as-PARTIAL-not-erased",
+    "failurePosture": "hold-hard-structure-return-soft-quality-with-receipt-warning"
+  },
+  "composer": {
+    "universalPlus": true,
+    "plusActions": ["UPLOAD_FILE", "UPLOAD_PHOTO", "LOOM"],
+    "loomDormantAction": "open-loom-in-new-tab",
+    "loomAwakeAction": "continue-staged-loom-handoff",
+    "conversationActionMenuDismisses": ["selection", "outside-click", "escape"],
+    "portableFailureActions": "compact-row-never-transcript-collapse",
+    "starterCarousel": {
+      "basePrompts": 2,
+      "assayPrompts": 16,
+      "control": "🗘"
+    }
+  },
+  "desktop": {
+    "posture": "conversation-first-single-column",
+    "instrumentSurface": "on-demand-drawer-tabs",
+    "instrumentTabs": ["Keys", "Receipt", "Stories", "Gate"],
+    "persistentRightTelemetryColumn": false,
+    "transcriptMinimumHeightPx": 260,
+    "portableFailurePanelMayCollapseTranscript": false,
+    "backgroundGeometry": "subdued",
+    "conversationTypeface": "Reddit Sans"
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
@@ -105,7 +131,8 @@
     "firstPaintHeldUntilRoomReady": true,
     "inChatResponseKinesis": "dome-art-orbital-microfield",
     "repairLifecycleDisposal": true,
-    "reducedMotionHonored": true
+    "reducedMotionHonored": true,
+    "universalComposerPlus": true
   },
   "jurisdiction": {
     "mode": "issued-covenant-terminal-plus-aperture-v3-routing-plus-live-marrowline-ingress",
@@ -166,11 +193,12 @@
     "mobileShellRuntime": "app/dome-world/marrowline-mobile-shell.js",
     "mobileShellStyles": "app/dome-world/marrowline-mobile-shell.css",
     "physicalDeviceRepair": "app/dome-world/marrowline-physical-device-repair.js",
+    "desktopRepair": "app/dome-world/marrowline-desktop-repair.js",
     "gateAssay": "app/dome-world/marrowline-gate-assay.js",
     "gatePedagogue": "app/dome-world/marrowline-gate-pedagogue.js",
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "bounded-mobile-conversation-shell-with-seeded-two-voice-adversarial-attractor-frontier-provider-quality-floor-provider-native-expressive-cadence-physical-visualviewport-composer-first-paint-custody-non-occluding-dock-operator-controlled-closure"
+    "restorationPosture": "conversation-first-desktop-plus-bounded-mobile-shell-with-seeded-two-voice-adversarial-attractor-frontier-provider-quality-floor-provider-native-expressive-cadence-operator-controlled-closure"
   }
 }

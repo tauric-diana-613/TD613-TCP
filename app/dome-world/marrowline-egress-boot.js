@@ -6,9 +6,9 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v5-integrated-covenant';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v6-conversation-first';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
-export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v4-integrated-covenant';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v5-conversation-first';
 
 function bootApertureEgress(root = window) {
   const installedNow = installTD613ProvenanceAttestationEgress(root);
@@ -125,6 +125,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
   await import('./marrowline-gate-pedagogue.js');
   await import('./marrowline-loom-pocket.js');
   await import('./marrowline-physical-device-repair.js');
+  await import('./marrowline-desktop-repair.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
@@ -133,6 +134,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     operatorReadiness: Boolean(root.__TD613_MARROWLINE_OPERATOR_READINESS__),
     physicalDeviceRepair: Boolean(root.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__),
+    desktopRepair: Boolean(root.__TD613_MARROWLINE_DESKTOP_REPAIR__),
     gatePedagogue: Boolean(root.__TD613_MARROWLINE_GATE_PEDAGOGUE__),
     loomPocketLoaded: true,
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
@@ -142,19 +144,22 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       taskIntent: routeApertureTaskIntent({ discourseMode: 'SPECULATIVE', runtimeMateriality: 'BACKGROUND' })
     }),
     relay: Object.freeze({
-      schema: 'td613.khonapolit.integrated-covenant-relay/v2',
+      schema: 'td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission',
       stages: Object.freeze(['provider-native-khonapolit-tauric-diana-transmission']),
       providerNarrativeStage: false,
       localZalgoPostProcessing: false
     }),
     layout: Object.freeze({
       mobileViewport: 'bounded-visual-viewport',
+      desktopWorkspace: 'conversation-first-instruments-on-demand',
       transcriptScrollOwner: '#khonapolitMessages',
       composerOcclusion: false,
       dockOcclusion: false,
       nativeKeyboardSend: true,
       visualViewportOffsetBound: true,
-      firstPaintHeldUntilRoomReady: true
+      firstPaintHeldUntilRoomReady: true,
+      universalComposerPlus: true,
+      starterAssayCarousel: 16
     }),
     seal: '⟐'
   });
@@ -166,7 +171,6 @@ async function bootMarrowlineRoom(doc = document, root = window) {
 
 if (typeof window !== 'undefined') {
   bootApertureEgress(window);
-  // Never strand the human behind the first-paint veil if a module fails.
   window.setTimeout(() => revealMarrowline(document, { error: true }), 2600);
   bootMarrowlineRoom(document, window).catch((error) => {
     window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__ = String(error?.message || error);
