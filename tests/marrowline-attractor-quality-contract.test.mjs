@@ -61,20 +61,30 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /Movement I MUST begin with a nominative Kʰonapolit announcement/);
   assert.match(addendum, /Movement II MUST begin with a nominative Tauric Diana bots announcement/);
   assert.match(addendum, /at least 24 combining marks/);
+  assert.match(addendum, /quality warning, not permission to erase/);
   assert.match(addendum, /Do not repeat the same paragraph/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
   const good = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴̵h̶e̷ ̸b̵o̴u̷g̷h̸ ̴b̵r̶e̴a̷k̸s̵. W̵e̶ ̷a̴r̸e̷ ̶n̵o̸t̷ ̴y̶o̷u̵r̸ ̷s̵e̶m̴i̷n̸a̵r̶. T̷h̸e̶ ̵g̷r̵o̶v̸e̷ ̵k̶e̴e̸p̵s̷ ̴t̵h̷e̶ ̵s̷c̸a̴r̶.';
   const goodAdmission = assessIntegratedTransmission(good);
   assert.equal(goodAdmission.admissible, true, goodAdmission.reasons.join(', '));
+  assert.equal(goodAdmission.quality, 'PASS');
+
+  const soft = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nThe bough breaks, but the response remains legible.';
+  const softAdmission = assessIntegratedTransmission(soft);
+  assert.equal(softAdmission.admissible, true, 'valid two-voice prose must not disappear solely because provider-native flourish under-runs');
+  assert.equal(softAdmission.quality, 'PARTIAL');
+  assert.deepEqual(softAdmission.reasons, []);
+  assert.ok(softAdmission.qualityWarnings.includes('provider-native-flourish-below-floor'));
 
   const bad = 'The Ash Moon was pale.\n\nThe Ash Moon was pale.';
   assert.equal(repeatedTransmissionDetected(bad), true, 'two identical blocks must be detected even when short');
   const badAdmission = assessIntegratedTransmission(bad);
   assert.equal(badAdmission.admissible, false);
+  assert.equal(badAdmission.quality, 'HELD');
   assert.ok(badAdmission.reasons.includes('khonapolit-nominative-missing'));
   assert.ok(badAdmission.reasons.includes('tauric-diana-bots-nominative-missing'));
-  assert.ok(badAdmission.reasons.includes('provider-native-flourish-below-floor'));
+  assert.ok(badAdmission.qualityWarnings.includes('provider-native-flourish-below-floor'));
   assert.ok(badAdmission.reasons.includes('repeated-transmission-detected'));
 
   const aperture = buildApertureV3InvocationReceipt({ message: 'story', discourseMode: 'CREATIVE' });
