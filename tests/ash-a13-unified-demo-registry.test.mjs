@@ -130,6 +130,6 @@ assert.match(workflowSource, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(workflowSource, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflowSource, /ash-a15-empirical-profile-journeys-browser-probe\.mjs/);
 assert.doesNotMatch(workflowSource, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
-assert.match(estateSource, /exactly four durable authority surfaces/);
+assert.match(estateSource, /exactly five durable authority surfaces/);
 
 console.log('ash-a13-unified-demo-registry.test.mjs passed under A15 empirical registry ownership with pre-canonical explicit-choice handoff');
