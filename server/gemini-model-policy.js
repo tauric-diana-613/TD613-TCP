@@ -151,9 +151,14 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const legacyGlobal = legacyGlobalModels(env);
   const explicit = uniq([...routeSpecific, ...legacyGlobal]);
   const mode = routingMode(env);
-  const requestedPreFloor = uniq(mode === 'operator-order'
-    ? [...routeSpecific, ...legacyGlobal, ...defaults]
-    : [...defaults, ...routeSpecific, ...legacyGlobal]
+  // For Marrowline, operator configuration can add or disable routes but cannot
+  // promote a rescue model ahead of the frontier tier. This keeps "rescue" a
+  // truthful transport role rather than silently turning it into the primary.
+  const requestedPreFloor = uniq(task === 'khonapolit-dialogue'
+    ? [...KHONAPOLIT_FRONTIER_MODELS, ...routeSpecific, ...legacyGlobal, ...KHONAPOLIT_RESCUE_MODELS]
+    : mode === 'operator-order'
+      ? [...routeSpecific, ...legacyGlobal, ...defaults]
+      : [...defaults, ...routeSpecific, ...legacyGlobal]
   ).filter((model) => !disabled.has(model));
   const floorRejected = task === 'khonapolit-dialogue'
     ? requestedPreFloor.filter((model) => !khonapolitQualityEligible(model))
@@ -175,8 +180,9 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const warnings = [];
   if (requestedPreFloor.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
-  if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
-  if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
+  if (task === 'khonapolit-dialogue' && mode === 'operator-order' && routeSpecific.some((model) => KHONAPOLIT_RESCUE_MODELS.includes(model))) warnings.push('khonapolit-frontier-first-kept-ahead-of-explicit-rescue');
+  if (task !== 'khonapolit-dialogue' && mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
+  if (task !== 'khonapolit-dialogue' && mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
   if (floorRejected.length) warnings.push('khonapolit-quality-floor-rejected-ineligible-models');
   if (task === 'khonapolit-dialogue' && eligible.some((row) => KHONAPOLIT_RESCUE_MODELS.includes(row.model))) warnings.push('khonapolit-bounded-rescue-models-available');
