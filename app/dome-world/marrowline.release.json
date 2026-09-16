@@ -11,10 +11,10 @@
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
-  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v4-attachment-egress",
+  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "geminiApiSchema": "td613.khonapolit-gemini/v4-aperture-integrated-covenant-relay",
+  "providerApiSchema": "td613.khonapolit-gemini/v5-adversarial-attractor-admission",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v4-expressive-cadence",
   "apertureVersion": "v3.2-alpha",
@@ -80,6 +80,8 @@
     "callOrder": ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash"],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
+    "fallbackReasoning": "high-not-degraded",
+    "structuralFailover": "missing-voice-order-low-flourish-or-duplicate-spends-next-frontier-attempt-without-exposing-rejected-prose",
     "failurePosture": "hold-rather-than-silently-degrade"
   },
   "mobile": {
@@ -137,7 +139,7 @@
       "claimCeiling": "human-operated-adversarial-boundary-assay-for-the-declared-marrowline-endpoint-with-local-control-public-absorption-and-server-token-bypass-control; establishes-observed-route-response-egress-and-bypass-outcome-for-the-tested-fire-only; does-not-generalize-to-external-identity-authorship-or-unrelated-network-behavior"
     },
     "terminal": {
-      "provider": "Gemini",
+      "providerFamilyReceipt": "Gemini",
       "providerVisibility": "provenance-receipts-and-provider-model-metric-only",
       "providerRole": "model-carrier-not-human-facing-narrator-or-ontology-stage",
       "apertureRole": "route-and-diagnostic-receipt-not-prose-generator",
