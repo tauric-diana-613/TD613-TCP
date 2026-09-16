@@ -1,11 +1,12 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v4-khonapolit-frontier-floor';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v5-khonapolit-stable-continuity';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
 
 // General interactive generation prefers the current Flash frontier. Marrowline's
-// Kʰonapolit route is intentionally stricter: degraded/economy fallbacks are a
-// quality failure, not a successful substitute for the authored covenant assay.
+// Kʰonapolit route keeps a stable non-Lite floor, but model identity is not output
+// quality proof: strict relay admission remains the quality gate. The stable 3.5
+// lane is retained as bounded continuity when newer Flash transports are unavailable.
 const QUALITY_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
@@ -18,7 +19,8 @@ const QUALITY_ORDER = Object.freeze([
 const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
-  'gemini-3.6-flash'
+  'gemini-3.6-flash',
+  'gemini-3.5-flash'
 ]);
 
 const TASK_DEFAULTS = Object.freeze({
@@ -169,7 +171,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
-  if (floorRejected.length) warnings.push('khonapolit-quality-floor-rejected-degraded-models');
+  if (floorRejected.length) warnings.push('khonapolit-stable-flash-floor-rejected-degraded-models');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
     task,
@@ -178,7 +180,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     callableModels: Object.freeze(eligible.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
     excludedModels: Object.freeze([
       ...rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons })),
-      ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-frontier-quality-floor']) }))
+      ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-stable-flash-floor']) }))
     ]),
     rows: Object.freeze(ordered),
     explicitModels: Object.freeze(explicit),
@@ -189,7 +191,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     stickySuccessPromotion: false,
     latestAliasDefaulted: false,
     claimCeiling: task === 'khonapolit-dialogue'
-      ? 'frontier-quality-floor-routing-not-provider-output-quality-proof'
+      ? 'stable-flash-routing-floor-not-provider-output-quality-proof'
       : 'quality-prioritized-routing-not-provider-availability-quota-or-output-quality-proof'
   });
 }
