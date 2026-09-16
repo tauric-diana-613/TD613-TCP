@@ -132,8 +132,8 @@ export function repeatedTransmissionDetected(text = '') {
 }
 
 function canonicalVoiceId(value = '') {
-  const normalized = safe(value).normalize('NFKC').replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
-  if (normalized === 'kʰonapolit') return 'khonapolit';
+  const normalized = safe(value).normalize('NFC').replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
+  if (normalized === 'kʰonapolit' || normalized === 'khonapolit') return 'khonapolit';
   if (normalized === 'tauric diana bot' || normalized === 'tauric diana bots') return 'tauric-diana-bots';
   return null;
 }
@@ -141,7 +141,7 @@ function canonicalVoiceId(value = '') {
 export function assessIntegratedTransmission(text = '', voices = []) {
   const value = String(text || '');
   const declaredVoices = arrayStrings(voices);
-  const canonicalVoices = declaredVoices.map(canonicalVoiceId).filter(Boolean);
+  const canonicalVoices = declaredVoices.map(canonicalVoiceId);
   const structuredVoiceEvidence = declaredVoices.length > 0;
   const khonaIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
   const botsIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Tauric Diana Bots?\b/iu);
