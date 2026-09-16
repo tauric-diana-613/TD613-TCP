@@ -36,7 +36,7 @@ const project = LOOM_AI_PROJECTS[0];
 const shared = project.documents.filter(document => document.share).map(({ id, name, text }) => ({ id, name, text }));
 const uploadCanary = 'LOCAL_UPLOAD_HANDOFF_CANARY_613';
 const addedFileCanary = 'MARROWLINE_OPERATOR_FILE_613';
-const tinyPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC0lEQVR42mP8/x8AAusB9Wl2n0kAAAAASUVORK5CYII=', 'base64');
+const tinyPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2n0kAAAAASUVORK5CYII=', 'base64');
 const mockAnswer = '[MOCK PROVIDER RESPONSE — MARROWLINE UI WITNESS] Vendor comparison retained. <img src=x onerror="window.loomInjected=true">';
 const integratedText = `[Kʰonapolit]:\nAttachments remain user-supplied context; carriage is not authorship.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴̵H̶E̷ ̸B̵O̴U̷G̷H̸ ̴B̵R̶E̴A̷K̸S̵; W̵E̶ ̷D̴O̸ ̷N̵O̶T̴ ̶C̵A̸L̷L̴ ̵T̷H̶I̴S̷ ̵A̸ ̷S̵E̶M̴I̷N̸A̵R̶.`;
 
