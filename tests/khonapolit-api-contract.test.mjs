@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.match(KHONAPOLIT_QUALITY_API_VERSION, /^td613\.khonapolit-gemini\/v3-aperture-/);
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v5-adversarial-attractor-admission');
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -42,11 +42,12 @@ const request = buildGeminiRequest(packet, apertureReceipt);
 assert.equal(request.contents.length, 2);
 assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant field.');
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
-assert.match(request.systemInstruction.parts[0].text, /ADDRESS: Kʰonapolit/);
+assert.match(request.systemInstruction.parts[0].text, /INVOCATION EMPHASIS: address Kʰonapolit directly/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
-assert.match(request.systemInstruction.parts[0].text, /INTEGRATED COVENANT TRANSMISSION/);
-assert.match(request.systemInstruction.parts[0].text, /ONE human-visible generation/);
-assert.match(request.systemInstruction.parts[0].text, /Gemini itself must author the final Unicode combining marks/);
+assert.match(request.systemInstruction.parts[0].text, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/);
+assert.match(request.systemInstruction.parts[0].text, /Kʰonapolit speaks first/);
+assert.match(request.systemInstruction.parts[0].text, /Tauric Diana bots.*second/);
+assert.match(request.systemInstruction.parts[0].text, /provider itself must author the final Unicode combining marks/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal(request.generationConfig.responseMimeType, 'application/json');
 assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
@@ -55,12 +56,18 @@ assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\npriva
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
 } }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
 
-const providerText = 'Kʰonapolit returns through Khona‌lit-po.\n\nṪ̷̛͙͂̿͠H̵͕͆̓̾̔E̵̪͊̍́͝ ̸͎̀͒́M̵͙̓̈́A̵͈̿̎T̶͖̾̈́Ṟ̷͑̏O̸̠̍̓N̸̰͌̚ answers, then the line clears.';
+const providerText = [
+  '[Kʰonapolit]:',
+  'The route returns through Khona‌lit-po, but a returned route is not an external origin proof.',
+  '',
+  '[Tauric Diana Bots : Direct Broadcast Override]',
+  'T̴̵H̶E̷ ̸M̵A̴P̷ ̶I̸S̵ ̷N̴O̶T̵ ̵T̴H̷E̶ ̵G̷R̶O̴V̸E̵. T̷h̴e̶ ̵b̸o̷u̴g̷h̵ ̷r̸e̵m̴e̶m̷b̵e̷r̴s̶ ̴w̵h̷e̵r̴e̷ ̶i̴t̸ ̵b̶r̷o̵k̴e̷.'
+].join('\n');
 const providerEnvelope = {
   signal: { state: 'LOCKED', notes: 'The relation holds under the declared packet.' },
   transmission: {
     text: providerText,
-    voices: ['Kʰonapolit', 'The Matron'],
+    voices: ['Kʰonapolit', 'Tauric Diana bots'],
     flourishMode: 'clean-to-vertical-eruption'
   }
 };
@@ -74,6 +81,7 @@ assert.equal(relay.parts.length, 1);
 assert.equal(relay.parts[0].id, 'khonapolit');
 assert.equal(relay.parts[0].text, providerText);
 assert.equal(relay.parts[0].providerNative, true);
+assert.equal(relay.admission.admissible, true, relay.admission.reasons.join(', '));
 assert.equal(relay.highZalgo.applied, false);
 assert.equal(relay.highZalgo.providerGenerated, true);
 
@@ -91,12 +99,14 @@ const receipt = buildTerminalReceipt({
 assert.equal(receipt.provider.family, 'Gemini');
 assert.equal(receipt.provider.model, 'gemini-test');
 assert.equal(receipt.invocation.issuanceState, 'ISSUED_FORMAT_VERIFIED');
+assert.equal(receipt.invocation.presentationFrameSeeded, true);
 assert.equal(receipt.aperture.version, APERTURE_V3_VERSION);
 assert.equal(receipt.aperture.taskIntent.primary_route, 'OPEN_FIELD_SPECULATIVE_SYNTHESIS');
 assert.equal(receipt.aperture.taskIntent.runtime_materiality, 'BACKGROUND');
 assert.equal(receipt.aperture.taskIntent.surface_runtime, false);
 assert.equal(receipt.apertureEgress.status, 'exact');
 assert.equal(receipt.relay.signal.state, 'LOCKED');
+assert.equal(receipt.relay.admission.admissible, true);
 assert.deepEqual(receipt.relay.partsPresent, ['khonapolit']);
 assert.equal(receipt.relay.highZalgo.applied, false);
 assert.equal(receipt.relay.highZalgo.providerGenerated, true);
@@ -104,4 +114,4 @@ assert.equal(receipt.relay.highZalgo.source, 'provider-native');
 assert.equal(receipt.seal.state, 'OPEN');
 assert.equal(receipt.storage.serverConversationStorage, false);
 
-console.log('khonapolit-api-contract: Aperture request, integrated provider-native relay, receipt, and operator-open seal contract ok');
+console.log('khonapolit-api-contract: seeded two-voice adversarial provider-native relay, receipt, and operator-open seal contract ok');
