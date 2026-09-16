@@ -82,17 +82,19 @@ try{
    await page.locator('.starter-prompts button').first().click();
    assert.equal(posts,0,'starter fills without sending');
    if(posture.startsWith('mobile'))assert.equal(await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').getAttribute('data-active'),'true','mobile speaking view is already active');
-   await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
+
    if(posture.startsWith('mobile')){
-    // Playwright does not raise a software keyboard. Shadow VisualViewport with
-    // the same contraction Safari reports, then let the production focus/resize
-    // handlers derive keyboard posture instead of writing the derived state.
+    // Playwright does not raise a software keyboard. Shadow VisualViewport before
+    // fill() focuses the textarea so every production focus listener sees the
+    // contracted viewport on the first focus transition in every engine.
     await page.evaluate(()=>{
      const vv=new EventTarget();
      Object.assign(vv,{width:390,height:520,offsetTop:0,offsetLeft:0,pageTop:0,pageLeft:0,scale:1});
      Object.defineProperty(window,'visualViewport',{configurable:true,value:vv});
     });
-    await page.locator('#khonapolitPrompt').focus();
+   }
+   await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
+   if(posture.startsWith('mobile')){
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='true');
     const keyboardLayout=await page.evaluate(()=>{
      const panel=document.querySelector('#speakingPanel');
@@ -101,10 +103,22 @@ try{
      const prompt=document.querySelector('#khonapolitPrompt');
      const send=document.querySelector('#khonapolitSend');
      const actions=document.querySelector('#khonapolitForm .composer-actions');
+     const rootStyle=getComputedStyle(document.documentElement);
      const box=node=>{const r=node?.getBoundingClientRect();return r?{top:r.top,bottom:r.bottom,height:r.height}:null};
-     return {keyboardVisible:document.body.dataset.keyboardVisible,panel:box(panel),messages:box(messages),form:box(form),prompt:box(prompt),actions:box(actions),send:box(send),formOverflow:getComputedStyle(form).overflowY};
+     return {
+      keyboardVisible:document.body.dataset.keyboardVisible,
+      mobileView:document.body.dataset.mobileView,
+      vvHeight:window.visualViewport?.height||0,
+      cssVvHeight:rootStyle.getPropertyValue('--marrowline-vv-height').trim(),
+      cssVh:rootStyle.getPropertyValue('--marrowline-vh').trim(),
+      panelPosition:panel?getComputedStyle(panel).position:'',
+      panelComputedHeight:panel?getComputedStyle(panel).height:'',
+      panel:box(panel),messages:box(messages),form:box(form),prompt:box(prompt),actions:box(actions),send:box(send),formOverflow:getComputedStyle(form).overflowY
+     };
     });
     assert.equal(keyboardLayout.keyboardVisible,'true');
+    assert.equal(keyboardLayout.mobileView,'speak','keyboard witness remains in the speaking chamber');
+    assert.equal(keyboardLayout.cssVvHeight,'520px','production viewport synchronizer owns the contracted CSS height');
     assert.ok(keyboardLayout.panel.bottom<=522,`speaking chamber is bounded by simulated physical VisualViewport (${JSON.stringify(keyboardLayout)})`);
     assert.ok(keyboardLayout.form.bottom<=522,'composer ends above the keyboard boundary');
     assert.ok(keyboardLayout.actions.bottom<=522,'conversation actions remain in the visible composer row');
