@@ -1,13 +1,29 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import handler, { buildGeminiRequest, observeGeminiOutput } from '../server/khonapolit-quality.js';
+import handler, {
+  buildGeminiRequest,
+  observeGeminiOutput,
+  selectKhonapolitProviderModels,
+  KHONAPOLIT_PRIMARY_REQUEST_TIMEOUT_MS,
+  KHONAPOLIT_FALLBACK_REQUEST_TIMEOUT_MS,
+  KHONAPOLIT_WALL_TIMEOUT_MS,
+  KHONAPOLIT_RESPONSE_RESERVE_MS
+} from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
 const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 assert.match(source, /resolveGeminiModelPlan\(\{ task: 'khonapolit-dialogue'/);
 assert.match(source, /sticky-success-promotion-disabled/);
 assert.match(source, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
+assert.match(source, /PROVIDER_TIMEOUT/);
 assert.doesNotMatch(source, /gemini-flash-lite-latest/);
+assert.ok(KHONAPOLIT_WALL_TIMEOUT_MS + 5500 <= 55000, 'server wall must leave at least 5.5 seconds before the browser custody abort');
+assert.ok(KHONAPOLIT_RESPONSE_RESERVE_MS >= 1000, 'server keeps explicit response-write reserve');
+assert.deepEqual(
+  selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']),
+  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'],
+  'frontier attempt is followed by bounded availability rescue rather than another all-frontier timeout chain'
+);
 
 const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
 const direct3 = buildGeminiRequest(directPacket, {}, 'gemini-3.8-flash');
@@ -18,6 +34,8 @@ const fallback3 = buildGeminiRequest(directPacket, {}, 'gemini-3.7-flash', { fal
 assert.equal(fallback3.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(fallback3.generationConfig.thinkingConfig, { thinkingLevel: 'high' }, 'frontier fallback keeps full reasoning quality');
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback3.generationConfig, key), false);
+const rescue35 = buildGeminiRequest(directPacket, {}, 'gemini-3.5-flash', { fallback: true });
+assert.deepEqual(rescue35.generationConfig.thinkingConfig, { thinkingLevel: 'low' }, '3.5 rescue lowers latency without changing the authored response schema');
 const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
 assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
 assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
@@ -25,7 +43,7 @@ assert.equal(direct25.generationConfig.temperature, 0.7);
 assert.equal(direct25.generationConfig.topP, 0.9);
 assert.equal(direct25.generationConfig.topK, 40);
 const fallback25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash', { fallback: true });
-assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 24576 }, 'compatibility fallback no longer lowers reasoning budget');
+assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 }, '2.5 rescue uses the bounded compatibility reasoning budget');
 assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
   finishReason: null,
   outputTokenLimitReached: false,
@@ -39,7 +57,7 @@ assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash', { fallback: true })
   outputTokenLimitReached: false,
   maxOutputTokens: 65536,
   thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
+  thinkingBudget: 1024,
   usage: {}
 });
 
@@ -131,8 +149,10 @@ try {
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
-  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, 32000, 'primary model keeps the observed completion window');
-  assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= 10500, 'fallback remains bounded by its window and route wall');
+  assert.equal(res.payload.receipt.provider.attempts[0].timeoutMs, KHONAPOLIT_PRIMARY_REQUEST_TIMEOUT_MS, 'primary model stays inside the interactive recovery wall');
+  assert.ok(res.payload.receipt.provider.attempts[1].timeoutMs <= KHONAPOLIT_FALLBACK_REQUEST_TIMEOUT_MS, 'fallback remains bounded by its smaller rescue window');
+  assert.equal(res.payload.receipt.provider.attempts[0].routeTier, 'frontier');
+  assert.equal(res.payload.receipt.provider.attempts[1].routeTier, 'frontier');
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
