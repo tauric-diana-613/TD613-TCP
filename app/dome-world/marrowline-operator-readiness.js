@@ -29,7 +29,11 @@ function syncVisualViewport(doc = document, root = window) {
   const top = Math.max(0, Math.round(viewport?.offsetTop || 0));
   const left = Math.max(0, Math.round(viewport?.offsetLeft || 0));
   const style = doc.documentElement.style;
+  // Keyboard-visible state and its rectangle are one atomic observation. Never
+  // let readiness publish data-keyboard-visible=true while leaving a stale
+  // physical-device --marrowline-vv-height from an earlier layout viewport.
   style.setProperty('--marrowline-vv-width', `${width}px`);
+  style.setProperty('--marrowline-vv-height', `${height}px`);
   style.setProperty('--marrowline-vh', `${height}px`);
   style.setProperty('--marrowline-vv-top', `${top}px`);
   style.setProperty('--marrowline-vv-left', `${left}px`);
