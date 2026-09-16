@@ -3,6 +3,10 @@ import geminiReadinessHandler from '../server/gemini-readiness.js';
 import loomTaskHandler from '../server/loom-task.js';
 import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  withGeminiGenerationProfile
+} from '../server/gemini-generation-envelope.js';
 
 function requestedOperation(req) {
   const queryOperation = req?.query?.operation;
@@ -33,7 +37,10 @@ export default function handler(req, res) {
     return geminiReadinessHandler(req, res);
   }
   if (requestHasAttachments(req)) return marrowlineAttachmentHandler(req, res);
-  return khonapolitHandler(req, res);
+  return withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => khonapolitHandler(req, res)
+  );
 }
 
 export * from '../server/khonapolit-quality.js';

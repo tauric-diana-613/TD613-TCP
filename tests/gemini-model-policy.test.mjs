@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   GEMINI_MODEL_POLICY_VERSION,
   clearGeminiModelState,
@@ -6,6 +7,14 @@ import {
   recordGeminiModelOutcome,
   resolveGeminiModelPlan
 } from '../server/gemini-model-policy.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET,
+  KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS,
+  buildGeminiGenerationConfig,
+  currentGeminiGenerationProfile,
+  withGeminiGenerationProfile
+} from '../server/gemini-generation-envelope.js';
 
 clearGeminiModelState();
 const defaultPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 1000 });
@@ -71,6 +80,47 @@ recordGeminiModelOutcome('gemini-3.6-flash', { ok: true, status: 200 }, 1000);
 const noPromotionPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 2000 });
 assert.equal(noPromotionPlan.models[0], 'gemini-3.8-flash');
 assert.equal(noPromotionPlan.models.indexOf('gemini-3.6-flash'), 2);
+
+const ordinaryGeneration = buildGeminiGenerationConfig({
+  model: 'gemini-3.8-flash',
+  maxOutputTokens: 65536,
+  reasoning: { level: 'high', budget: 24576 }
+});
+assert.equal(ordinaryGeneration.maxOutputTokens, 65536);
+assert.deepEqual(ordinaryGeneration.thinkingConfig, { thinkingLevel: 'high' });
+assert.equal(currentGeminiGenerationProfile(), null);
+
+const interactiveGeneration = await withGeminiGenerationProfile(
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  async () => {
+    await Promise.resolve();
+    assert.equal(currentGeminiGenerationProfile(), GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE);
+    return buildGeminiGenerationConfig({
+      model: 'gemini-3.8-flash',
+      maxOutputTokens: 65536,
+      reasoning: { level: 'high', budget: 24576 }
+    });
+  }
+);
+assert.equal(interactiveGeneration.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
+assert.deepEqual(interactiveGeneration.thinkingConfig, { thinkingLevel: 'medium' });
+assert.equal(currentGeminiGenerationProfile(), null, 'request-scoped profile must not leak after the callback');
+
+const interactive25 = await withGeminiGenerationProfile(
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  () => buildGeminiGenerationConfig({
+    model: 'gemini-2.5-flash',
+    maxOutputTokens: 65536,
+    reasoning: { level: 'high', budget: 24576 }
+  })
+);
+assert.equal(interactive25.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
+assert.deepEqual(interactive25.thinkingConfig, { thinkingBudget: KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET });
+
+const khonapolitApiSource = fs.readFileSync('api/khonapolit.js', 'utf8');
+assert.match(khonapolitApiSource, /GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE/);
+assert.match(khonapolitApiSource, /withGeminiGenerationProfile/);
+assert.match(khonapolitApiSource, /\(\) => khonapolitHandler\(req, res\)/);
 
 const listing = await listGeminiGenerateContentModels('test-key', {
   force: true,

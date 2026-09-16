@@ -8,12 +8,20 @@ const fixturePath = 'docs/research/receipts/2026-09-10-loom-live-receiver/portab
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
 const requestId = `release-canary-${Date.now()}`;
+const marrowlineRequestId = `marrowline-release-canary-${Date.now()}`;
 const input = {
   schema: 'td613.loom.ai-task/v0.1',
   request_id: requestId,
   task: fixture.task,
   documents: fixture.documents,
   rules: fixture.rules
+};
+const marrowlineInput = {
+  message: 'Explain why preserving a user task across turns differs from adopting that task as architectural authority. Keep the answer compact but substantive.',
+  history: [],
+  mode: 'issued-conjunction',
+  waiveIssuance: true,
+  request_id: marrowlineRequestId
 };
 
 if (!/^https?:\/\//.test(base)) throw new Error('TD613_BASE_URL must be an absolute HTTP(S) URL.');
@@ -23,28 +31,40 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 }
 
 fs.mkdirSync(artifactDir, { recursive: true });
-const url = new URL('/api/khonapolit?operation=loom-task', `${base}/`);
-let httpStatus = 0;
-let payload = null;
-let transportError = null;
-try {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'origin': origin,
-      'sec-fetch-site': 'same-origin',
-      'cache-control': 'no-cache'
-    },
-    body: JSON.stringify(input),
-    redirect: 'follow',
-    signal: AbortSignal.timeout(57000)
-  });
-  httpStatus = response.status;
-  try { payload = await response.json(); } catch { payload = null; }
-} catch (error) {
-  transportError = `${error?.name || 'Error'}`;
+
+async function postJson(url, body, timeoutMs = 57000) {
+  let httpStatus = 0;
+  let payload = null;
+  let transportError = null;
+  const startedAt = Date.now();
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'origin': origin,
+        'sec-fetch-site': 'same-origin',
+        'cache-control': 'no-cache'
+      },
+      body: JSON.stringify(body),
+      redirect: 'follow',
+      signal: AbortSignal.timeout(timeoutMs)
+    });
+    httpStatus = response.status;
+    try { payload = await response.json(); } catch { payload = null; }
+  } catch (error) {
+    transportError = `${error?.name || 'Error'}`;
+  }
+  return { httpStatus, payload, transportError, elapsedMs: Date.now() - startedAt };
 }
+
+const loomUrl = new URL('/api/khonapolit?operation=loom-task', `${base}/`);
+const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
+const [loomResult, marrowlineResult] = await Promise.all([
+  postJson(loomUrl, input),
+  postJson(marrowlineUrl, marrowlineInput)
+]);
+const { httpStatus, payload, transportError } = loomResult;
 
 const boundedCount = value => Number.isSafeInteger(value) && value >= 0 ? value : null;
 const boundedDiagnostic = value => value && typeof value === 'object'
@@ -62,6 +82,16 @@ const boundedStageTimings = value => {
   }
   return Object.keys(output).length ? output : null;
 };
+const boundedMarrowlineAttempts = value => Array.isArray(value)
+  ? value.slice(0, 3).map(attempt => ({
+      model: String(attempt?.model || '').slice(0, 120),
+      status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
+      elapsed_ms: boundedCount(attempt?.elapsedMs),
+      timeout_ms: boundedCount(attempt?.timeoutMs),
+      timed_out: attempt?.timedOut === true,
+      admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null
+    }))
+  : [];
 
 const observations = payload?.observations && typeof payload.observations === 'object' ? payload.observations : {};
 const providerAttempts = Array.isArray(observations.provider_attempts)
@@ -80,13 +110,18 @@ const providerAttemptTimings = Array.isArray(observations.provider_attempt_timin
     }))
   : [];
 const usedDocumentIds = Array.isArray(payload?.used_document_ids) ? payload.used_document_ids.filter(id => typeof id === 'string').slice(0, 8) : [];
+const marrowlinePayload = marrowlineResult.payload;
+const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload.receipt === 'object' ? marrowlinePayload.receipt : {};
+const marrowlineAdmission = marrowlinePayload?.relay?.admission && typeof marrowlinePayload.relay.admission === 'object'
+  ? marrowlinePayload.relay.admission
+  : null;
 const receipt = {
-  schema: 'td613.loom.production-canary/v0.1',
+  schema: 'td613.loom.production-canary/v0.2-marowline-live-route',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   target_origin: origin,
   request_id: requestId,
-  request_count: 1,
+  request_count: 2,
   http_status: httpStatus || null,
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
@@ -103,6 +138,19 @@ const receipt = {
   used_document_ids: usedDocumentIds,
   missing_information_count: Array.isArray(payload?.missing_information) ? payload.missing_information.length : null,
   source_claims: observations.source_claims === 'model-reported-unverified' ? observations.source_claims : null,
+  marrowline_live_route: {
+    request_id: marrowlineRequestId,
+    http_status: marrowlineResult.httpStatus || null,
+    transport_error_class: marrowlineResult.transportError,
+    elapsed_ms: boundedCount(marrowlineResult.elapsedMs),
+    ok: marrowlinePayload?.ok === true,
+    answer_nonempty: typeof marrowlinePayload?.text === 'string' && marrowlinePayload.text.trim().length > 0,
+    relay_admitted: marrowlineAdmission?.admissible === true,
+    relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
+    final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
+    provider_attempts: boundedMarrowlineAttempts(marrowlineReceipt?.provider?.attempts),
+    api_version: typeof marrowlineReceipt?.apiVersion === 'string' ? marrowlineReceipt.apiVersion : null
+  },
   counts_as_human_evidence: false
 };
 fs.writeFileSync(path.join(artifactDir, 'receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
@@ -120,4 +168,13 @@ if (!usedDocumentIds.length || !usedDocumentIds.every(id => input.documents.some
   throw new Error('Loom production canary returned invalid selected-document claims.');
 }
 
-console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} model=${receipt.final_model || 'unknown'} calls=${receipt.provider_calls ?? 'unknown'} elapsed_ms=${receipt.elapsed_ms ?? 'unknown'}`);
+if (marrowlineResult.transportError) throw new Error(`Marrowline production canary transport failed (${marrowlineResult.transportError}).`);
+if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
+  const attempts = receipt.marrowline_live_route.provider_attempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}${attempt.timed_out ? ':timeout' : ''}`).join(',') || 'none';
+  const diagnostic = marrowlinePayload?.diagnostic?.code || marrowlinePayload?.error || 'none';
+  throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic}.`);
+}
+if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
+if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
+
+console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'}`);
