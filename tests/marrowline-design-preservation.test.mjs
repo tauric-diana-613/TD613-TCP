@@ -12,8 +12,8 @@ import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowl
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
 const sessionKey = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
-const highZalgo = '  A\u0315\u0300\u0338\u200c\u{10d613}  \n\nB\u035c\u0361\r\n𝌋 <img src=x onerror=alert(1)>  ';
-const integratedText = `Kʰonapolit keeps the route exact.\n\n${highZalgo}\n\nThe line clears again.`;
+const highZalgo = 'T̴̵H̶E̷ ̸B̵O̴U̷G̷H̸ ̴B̵R̶E̴A̷K̸S̵; W̵E̶ ̷D̴O̸ ̷N̵O̶T̴ ̶C̵A̸L̷L̴ ̵T̷H̶I̴S̷ ̵A̸ ̷S̵E̶M̴I̷N̸A̵R̶.';
+const integratedText = `[Kʰonapolit]:\nThe route remains exact through Khona‌lit-po.\n\n[Tauric Diana Bots : Direct Broadcast Override]\n${highZalgo}\n\nThe line clears again.`;
 const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME MATERIAL';
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
@@ -23,7 +23,7 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
   const win = dom.window, doc = win.document, calls = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
   doc.getElementById('marrowlineLivingGeometry')?.remove();
-  win.matchMedia = () => ({ matches: mobile, addEventListener() {} });
+  win.matchMedia = () => ({ matches: mobile, addEventListener() {}, removeEventListener() {} });
   win.HTMLElement.prototype.scrollIntoView = function () {};
   Object.defineProperty(win.navigator, 'clipboard', { configurable: true, value: { writeText: async text => clipboard.push(text) } });
   const before = new Map(['window', 'navigator', 'CustomEvent', 'fetch'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
@@ -32,20 +32,26 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
     calls.push(JSON.parse(options.body));
     if (failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const relay = {
-      schema: 'td613.khonapolit.integrated-covenant-relay/v2',
+      schema: 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor',
       apertureHeader: exactHeader,
-      signal: { state: 'LOCKED' },
-      parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: integratedText, integrated: true, providerNative: true, voices: ['Kʰonapolit', 'The Matron'], flourishMode: 'clean-to-eruption-to-clean' }],
-      highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 6, maxRun: 3, runCount: 3 }
+      signal: { state: 'LOCKED', downstreamAdmitted: true },
+      admission: { admissible: true, reasons: [], combiningMarkCount: 32, maxRun: 2, duplicate: false },
+      parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: integratedText, integrated: true, providerNative: true, voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'forensic-to-eruption' }],
+      highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 32, maxRun: 2, runCount: 31 }
     };
     return { ok: true, json: async () => ({ ok: true, text: integratedText, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL' }, relay, seal: { state: 'OPEN' } } }) };
   };
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
   for (const [key, value] of Object.entries(globals)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   let living;
-  t.after(() => {
+  t.after(async () => {
+    // MutationObserver and async form handlers can queue one final microtask after
+    // the last assertion. Drain once, dispose owners, then drain again before
+    // closing JSDOM so no test assertion is attributed to post-test activity.
+    await flush();
     win.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR_DISPOSE__?.();
     living?.dispose();
+    await flush();
     dom.window.close();
     for (const [key, descriptor] of before) {
       if (descriptor) Object.defineProperty(globalThis, key, descriptor);
@@ -101,7 +107,7 @@ test('ordinary work starts unissued while advanced custody can still hold an inv
 test('provider failure preserves exactly one user task, restores the draft, and offers retry/portable escape', async t => {
   const h = harness(t, { failure: true });
   const task = 'Plan a workshop for twelve attendees with 600 credits.';
-  h.send(task); await h.settled();
+  h.send(task); await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
   assert.match(h.$('khonapolitTerminalStatus').textContent, /TASK PRESERVED.*Your task is still here/i);
   assert.equal(h.$('khonapolitPrompt').value, task);
@@ -111,7 +117,7 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
   h.$('copyKhonapolitPortable').click(); await flush();
   assert.match(h.clipboard.at(-1), /Plan a workshop for twelve attendees/);
-  h.$('retryKhonapolitTask').click(); await h.settled();
+  h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
   assert.equal(h.calls.length, 2);
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1, 'retry reuses the preserved turn instead of duplicating it');
   assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
@@ -150,7 +156,7 @@ test('oversized retained history requires explicit clear and preserves the waiti
   h.$('clearKhonapolitSession').click();
   assert.equal(h.$('khonapolitPrompt').value, 'My new draft.');
   h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit', { bubbles: true, cancelable: true }));
-  await h.settled();
+  await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
   assert.deepEqual(h.calls[0].history, []);
 });
@@ -158,7 +164,7 @@ test('oversized retained history requires explicit clear and preserves the waiti
 test('portable controls become visible beside work without opening an action drawer',async t=>{
   const h=harness(t);
   assert.equal(h.$('marrowlinePortableActions').hidden,true);
-  h.send('Plan for twelve attendees without requesting names.'); await h.settled();
+  h.send('Plan for twelve attendees without requesting names.'); await h.settled(); await flush();
   assert.equal(h.$('marrowlinePortableActions').hidden,false);
   assert.equal(h.$('copyKhonapolitPortable').closest('details'),null);
   h.$('copyKhonapolitPortable').click();await flush();
