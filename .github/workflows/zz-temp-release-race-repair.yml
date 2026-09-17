@@ -1,0 +1,63 @@
+name: Temporary release/relock race repair
+
+on:
+  push:
+    branches: [release-concurrency-eviction-1168]
+    paths: [.github/workflows/zz-temp-release-race-repair.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release-concurrency-eviction-1168
+          fetch-depth: 0
+
+      - name: Patch relock orchestration without rewriting unrelated custody code
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/vercel-relock-safety.yml')
+          text = path.read_text()
+
+          old_concurrency = """concurrency:\n  group: td613-vercel-production-release\n  cancel-in-progress: false\n"""
+          new_concurrency = """# Job-level command guards run after workflow-level concurrency admission.\n# A release comment therefore must not let this safety wrapper compete with the\n# actual Vercel Operator Release for the one pending production slot. Explicit\n# zero-deploy confirmation still serializes against the production lane.\nconcurrency:\n  group: >-\n    ${{ startsWith(github.event.comment.body, '/td613-vercel-confirm ')\n        && 'td613-vercel-production-release'\n        || format('td613-vercel-relock-safety-{0}', github.run_id) }}\n  cancel-in-progress: false\n"""
+          if text.count(old_concurrency) != 1:
+              raise SystemExit(f'expected one old concurrency block, found {text.count(old_concurrency)}')
+          text = text.replace(old_concurrency, new_concurrency, 1)
+
+          old_timeout = """    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    env:\n      RELEASE_GATE_ISSUE: '405'\n"""
+          new_timeout = """    runs-on: ubuntu-latest\n    timeout-minutes: 50\n    env:\n      RELEASE_GATE_ISSUE: '405'\n"""
+          if text.count(old_timeout) != 1:
+              raise SystemExit(f'expected one relock timeout block, found {text.count(old_timeout)}')
+          text = text.replace(old_timeout, new_timeout, 1)
+
+          marker = """    steps:\n      - name: Check out live main after the release lane\n"""
+          wait_step = """    steps:\n      - name: Wait for the governed release lane to reach a terminal state\n        env:\n          AUTHORIZATION: ${{ github.event.comment.body }}\n        shell: bash\n        run: |\n          set -euo pipefail\n          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< \"$AUTHORIZATION\"\n          [[ \"$COMMAND\" == '/td613-vercel-release' && \"$TARGET\" == 'PRODUCTION' ]] || { echo 'Unexpected release authorization.' >&2; exit 1; }\n          [[ -z \"${EXTRA:-}\" && \"$SELECTED_SHA\" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed release authorization.' >&2; exit 1; }\n\n          RELEASE_RUN_ID=''\n          for _ in $(seq 1 18); do\n            RELEASE_RUN_ID=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs?event=issue_comment&branch=main&per_page=30\" \\\n              --jq \"[.workflow_runs[] | select(.name == \\\"Vercel Operator Release\\\" and .head_sha == \\\"$SELECTED_SHA\\\")] | max_by(.id) | .id // empty\")\"\n            [[ -n \"$RELEASE_RUN_ID\" ]] && break\n            sleep 5\n          done\n          [[ -n \"$RELEASE_RUN_ID\" ]] || { echo \"No Vercel Operator Release run appeared for $SELECTED_SHA.\" >&2; exit 1; }\n          echo \"[td613-relock-safety] release_run=$RELEASE_RUN_ID source=$SELECTED_SHA\"\n\n          for _ in $(seq 1 270); do\n            STATUS=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs/$RELEASE_RUN_ID\" --jq .status)\"\n            [[ \"$STATUS\" == 'completed' ]] && exit 0\n            sleep 10\n          done\n          echo \"Release run $RELEASE_RUN_ID did not reach a terminal state within the safety window.\" >&2\n          exit 1\n\n      - name: Check out live main after the release lane\n"""
+          if text.count(marker) != 1:
+              raise SystemExit(f'expected one relock steps marker, found {text.count(marker)}')
+          text = text.replace(marker, wait_step, 1)
+
+          path.write_text(text)
+          PY
+
+          git diff --check
+          grep -F "td613-vercel-relock-safety-{0}" .github/workflows/vercel-relock-safety.yml
+          grep -F "Wait for the governed release lane to reach a terminal state" .github/workflows/vercel-relock-safety.yml
+
+      - name: Commit the surgical repair and remove this temporary worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/zz-temp-release-race-repair.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/vercel-relock-safety.yml .github/workflows/zz-temp-release-race-repair.yml
+          git commit -m 'Fix Vercel release/relock concurrency eviction'
+          git push origin HEAD:release-concurrency-eviction-1168
