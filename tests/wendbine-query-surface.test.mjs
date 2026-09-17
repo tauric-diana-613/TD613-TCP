@@ -41,6 +41,10 @@ const debt = semanticSearch(index, 'archival debt per card payload persisted rec
 const debtHit = debt.find(hit => /2026-09-16-public-profile-card-loss-ledger-v01\.json$/.test(hit.path));
 assert.ok(debtHit, 'Sept 16 per-card archival debt must remain semantically retrievable rather than hidden behind aggregate coverage.');
 assert.equal(debtHit.status, 'ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED', 'Query retrieval must preserve the explicit capture-debt state.');
+assert.equal(debtHit.schema, 'wendbine-observation-loss-ledger/v0.1', 'Query results must expose schema separately from record identity.');
+assert.equal(debtHit.id, '04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json#1', 'Generic JSON documents must resolve by artifact identity rather than schema name.');
+assert.equal(resolveEntry(index, debtHit.id).length, 1, 'Path-backed fallback IDs must resolve one exact persisted artifact.');
+assert.equal(resolveEntry(index, debtHit.schema).length, 0, 'A shared schema name may not masquerade as a stable record identifier.');
 
 const recent = recentEntries(index, { limit: 40 });
 assert.ok(recent.some(hit => /public-reddit-profile-delta-20260916-snapshot-v04\.json$/.test(hit.path)), 'Sept 16 profile observation must appear in chronological retrieval.');
