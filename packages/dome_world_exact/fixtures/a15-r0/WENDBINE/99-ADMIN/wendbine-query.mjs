@@ -84,8 +84,9 @@ function idOf(record, relPath, ordinal) {
     ?? record?.snapshot_id
     ?? record?.atelier_snapshot_id
     ?? record?.receipt_id
-    ?? record?.schema
-    ?? record?.schema_version
+    ?? record?.record_id
+    ?? record?.observation_id
+    ?? record?.evidence_id
     ?? `${relPath}#${ordinal}`;
 }
 
@@ -109,6 +110,7 @@ function makeEntry(record, relPath, ordinal, kind) {
   const searchText = [relPath, aliasText, header, summary, conceptText, flattened].filter(Boolean).join(' ');
   return {
     id: idOf(record, relPath, ordinal),
+    schema: record?.schema ?? record?.schema_version ?? null,
     path: relPath,
     ordinal,
     kind,
@@ -153,6 +155,7 @@ export function buildIndex(root = DEFAULT_ROOT) {
 function publicView(entry, score = undefined, match_basis = undefined) {
   const out = {
     id: entry.id,
+    schema: entry.schema,
     path: entry.path,
     ordinal: entry.ordinal,
     kind: entry.kind,
@@ -259,6 +262,7 @@ function main(argv = process.argv.slice(2)) {
       dated_records: index.filter(entry => entry.date).length,
       source_like_records: index.filter(entry => entry.canonical_url || /^reddit:|^facebook:/.test(String(entry.id))).length,
       held_records: index.filter(entry => /HELD|UNBOUND|STALE|NOT_EXHAUSTIVE/i.test(String(entry.status ?? ''))).length,
+      archival_debt_records: index.filter(entry => /ARCHIVAL_DEBT|CAPTURE_DEBT|LOSS/i.test(String(entry.status ?? '')) || /loss-ledger/i.test(entry.path)).length,
       membranes: [
         'QUERY_MATCH != SOURCE_PROMOTION',
         'SEMANTIC_MATCH != CAUSAL_RELATION',
