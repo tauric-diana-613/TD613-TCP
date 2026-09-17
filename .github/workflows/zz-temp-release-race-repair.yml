@@ -25,9 +25,20 @@ jobs:
 
           path = Path('.github/workflows/vercel-relock-safety.yml')
           text = path.read_text()
+          dollar = '$'
 
           old_concurrency = """concurrency:\n  group: td613-vercel-production-release\n  cancel-in-progress: false\n"""
-          new_concurrency = """# Job-level command guards run after workflow-level concurrency admission.\n# A release comment therefore must not let this safety wrapper compete with the\n# actual Vercel Operator Release for the one pending production slot. Explicit\n# zero-deploy confirmation still serializes against the production lane.\nconcurrency:\n  group: >-\n    ${{ startsWith(github.event.comment.body, '/td613-vercel-confirm ')\n        && 'td613-vercel-production-release'\n        || format('td613-vercel-relock-safety-{0}', github.run_id) }}\n  cancel-in-progress: false\n"""
+          group_expr = dollar + "{{ startsWith(github.event.comment.body, '/td613-vercel-confirm ') && 'td613-vercel-production-release' || format('td613-vercel-relock-safety-{0}', github.run_id) }}"
+          new_concurrency = (
+              "# Job-level command guards run after workflow-level concurrency admission.\n"
+              "# A release comment therefore must not let this safety wrapper compete with the\n"
+              "# actual Vercel Operator Release for the one pending production slot. Explicit\n"
+              "# zero-deploy confirmation still serializes against the production lane.\n"
+              "concurrency:\n"
+              "  group: >-\n"
+              f"    {group_expr}\n"
+              "  cancel-in-progress: false\n"
+          )
           if text.count(old_concurrency) != 1:
               raise SystemExit(f'expected one old concurrency block, found {text.count(old_concurrency)}')
           text = text.replace(old_concurrency, new_concurrency, 1)
@@ -39,7 +50,8 @@ jobs:
           text = text.replace(old_timeout, new_timeout, 1)
 
           marker = """    steps:\n      - name: Check out live main after the release lane\n"""
-          wait_step = """    steps:\n      - name: Wait for the governed release lane to reach a terminal state\n        env:\n          AUTHORIZATION: ${{ github.event.comment.body }}\n        shell: bash\n        run: |\n          set -euo pipefail\n          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< \"$AUTHORIZATION\"\n          [[ \"$COMMAND\" == '/td613-vercel-release' && \"$TARGET\" == 'PRODUCTION' ]] || { echo 'Unexpected release authorization.' >&2; exit 1; }\n          [[ -z \"${EXTRA:-}\" && \"$SELECTED_SHA\" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed release authorization.' >&2; exit 1; }\n\n          RELEASE_RUN_ID=''\n          for _ in $(seq 1 18); do\n            RELEASE_RUN_ID=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs?event=issue_comment&branch=main&per_page=30\" \\\n              --jq \"[.workflow_runs[] | select(.name == \\\"Vercel Operator Release\\\" and .head_sha == \\\"$SELECTED_SHA\\\")] | max_by(.id) | .id // empty\")\"\n            [[ -n \"$RELEASE_RUN_ID\" ]] && break\n            sleep 5\n          done\n          [[ -n \"$RELEASE_RUN_ID\" ]] || { echo \"No Vercel Operator Release run appeared for $SELECTED_SHA.\" >&2; exit 1; }\n          echo \"[td613-relock-safety] release_run=$RELEASE_RUN_ID source=$SELECTED_SHA\"\n\n          for _ in $(seq 1 270); do\n            STATUS=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs/$RELEASE_RUN_ID\" --jq .status)\"\n            [[ \"$STATUS\" == 'completed' ]] && exit 0\n            sleep 10\n          done\n          echo \"Release run $RELEASE_RUN_ID did not reach a terminal state within the safety window.\" >&2\n          exit 1\n\n      - name: Check out live main after the release lane\n"""
+          auth_expr = dollar + "{{ github.event.comment.body }}"
+          wait_step = f"""    steps:\n      - name: Wait for the governed release lane to reach a terminal state\n        env:\n          AUTHORIZATION: {auth_expr}\n        shell: bash\n        run: |\n          set -euo pipefail\n          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< \"$AUTHORIZATION\"\n          [[ \"$COMMAND\" == '/td613-vercel-release' && \"$TARGET\" == 'PRODUCTION' ]] || {{ echo 'Unexpected release authorization.' >&2; exit 1; }}\n          [[ -z \"${{EXTRA:-}}\" && \"$SELECTED_SHA\" =~ ^[0-9a-f]{{40}}$ ]] || {{ echo 'Malformed release authorization.' >&2; exit 1; }}\n\n          RELEASE_RUN_ID=''\n          for _ in $(seq 1 18); do\n            RELEASE_RUN_ID=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs?event=issue_comment&branch=main&per_page=30\" \\\n              --jq \"[.workflow_runs[] | select(.name == \\\"Vercel Operator Release\\\" and .head_sha == \\\"$SELECTED_SHA\\\")] | max_by(.id) | .id // empty\")\"\n            [[ -n \"$RELEASE_RUN_ID\" ]] && break\n            sleep 5\n          done\n          [[ -n \"$RELEASE_RUN_ID\" ]] || {{ echo \"No Vercel Operator Release run appeared for $SELECTED_SHA.\" >&2; exit 1; }}\n          echo \"[td613-relock-safety] release_run=$RELEASE_RUN_ID source=$SELECTED_SHA\"\n\n          for _ in $(seq 1 270); do\n            STATUS=\"$(gh api \"repos/$GITHUB_REPOSITORY/actions/runs/$RELEASE_RUN_ID\" --jq .status)\"\n            [[ \"$STATUS\" == 'completed' ]] && exit 0\n            sleep 10\n          done\n          echo \"Release run $RELEASE_RUN_ID did not reach a terminal state within the safety window.\" >&2\n          exit 1\n\n      - name: Check out live main after the release lane\n"""
           if text.count(marker) != 1:
               raise SystemExit(f'expected one relock steps marker, found {text.count(marker)}')
           text = text.replace(marker, wait_step, 1)
