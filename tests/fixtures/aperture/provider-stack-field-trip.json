@@ -1,0 +1,65 @@
+{
+  "schema": "td613.aperture.provider-instrument-field-fixture/v0.1",
+  "cases": [
+    {
+      "id": "release-1103-gemini25-route-rejection",
+      "evidence_class": "REPOSITORY_PLUS_PRODUCTION_RECEIPT_BOUND",
+      "input": {
+        "listing_status": "FRESH_LISTED",
+        "request_envelope": "REJECTED",
+        "generation_completion": "NOT_REACHED",
+        "compute_budget": "NOT_REACHED",
+        "sampling_controls": "GENERATION_MISMATCH",
+        "retry_policy": "BOUNDED_TRANSIENT_ONLY",
+        "health_memory_scope": "PROCESS_LOCAL",
+        "receiver_identity": "RECEIPT_ONLY",
+        "http_status": 400
+      }
+    },
+    {
+      "id": "hush-http200-completion-blindness",
+      "evidence_class": "SOURCE_INSPECTION_BOUND_SYNTHETIC_REPLAY",
+      "input": {
+        "listing_status": "FRESH_LISTED",
+        "request_envelope": "VALIDATED",
+        "generation_completion": "UNOBSERVED",
+        "compute_budget": "TRUNCATION_RISK",
+        "sampling_controls": "COMPATIBLE_EXPLICIT",
+        "retry_policy": "BOUNDED_TRANSIENT_ONLY",
+        "health_memory_scope": "PROCESS_LOCAL",
+        "receiver_identity": "RECEIPT_ONLY",
+        "http_status": 200
+      }
+    },
+    {
+      "id": "marrowline-successful-fallback-receipt-only",
+      "evidence_class": "RETAINED_HOSTED_RECEIPT_BOUND",
+      "input": {
+        "listing_status": "FRESH_LISTED",
+        "request_envelope": "VALIDATED",
+        "generation_completion": "COMPLETE",
+        "compute_budget": "ADEQUATE",
+        "sampling_controls": "DEFAULTS",
+        "retry_policy": "BOUNDED_TRANSIENT_ONLY",
+        "health_memory_scope": "DURABLE",
+        "receiver_identity": "RECEIPT_ONLY",
+        "http_status": 200
+      }
+    },
+    {
+      "id": "clean-reference-control",
+      "evidence_class": "SYNTHETIC_NEGATIVE_CONTROL",
+      "input": {
+        "listing_status": "FRESH_LISTED",
+        "request_envelope": "VALIDATED",
+        "generation_completion": "COMPLETE",
+        "compute_budget": "ADEQUATE",
+        "sampling_controls": "DEFAULTS",
+        "retry_policy": "BOUNDED_TRANSIENT_ONLY",
+        "health_memory_scope": "DURABLE",
+        "receiver_identity": "SALIENT",
+        "http_status": 200
+      }
+    }
+  ]
+}

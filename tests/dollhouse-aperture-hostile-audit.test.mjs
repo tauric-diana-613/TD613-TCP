@@ -14,6 +14,10 @@ import {
   operateDollhousePortableProjection,
   revalidateDollhousePortableReturn
 } from '../app/engine/dollhouse-portable-aia-roundtrip.js';
+import {
+  auditProviderInstrumentState,
+  selfTestProviderInstrumentAudit
+} from '../app/engine/aperture-v32-provider-instrument-audit.js';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 
@@ -88,4 +92,58 @@ test('hostile origin accessors do not run at the control boundary', () => {
   Object.defineProperty(packet, 'analysis', { enumerable: true, get() { reads += 1; return {}; } });
   assert.throws(() => createPortableFlowcoreControl(packet), /accessors or hidden data/);
   assert.equal(reads, 0);
+});
+
+test('Aperture provider-instrument audit keeps visibility, envelope compatibility, health and receiver identity non-equivalent', () => {
+  const routeAuthored400 = auditProviderInstrumentState({
+    listing_status: 'FRESH_LISTED',
+    request_envelope: 'REJECTED',
+    generation_completion: 'NOT_REACHED',
+    compute_budget: 'NOT_REACHED',
+    sampling_controls: 'GENERATION_MISMATCH',
+    retry_policy: 'BOUNDED_TRANSIENT_ONLY',
+    health_memory_scope: 'PROCESS_LOCAL',
+    receiver_identity: 'RECEIPT_ONLY',
+    http_status: 400
+  });
+  assert.equal(routeAuthored400.disposition, 'REJECT');
+  assert.ok(routeAuthored400.deficit_classes.includes('REQUEST_ENVELOPE_INCOMPATIBLE'));
+  assert.ok(routeAuthored400.deficit_classes.includes('REQUEST_CONTROL_GENERATION_MISMATCH'));
+  assert.ok(routeAuthored400.deficit_classes.includes('CLIENT_REQUEST_REJECTION'));
+  assert.equal(routeAuthored400.health_attribution, 'ROUTE_OR_REQUEST_FAULT_NOT_PROVIDER_HEALTH_EVIDENCE');
+  assert.equal(routeAuthored400.model_removal_authority, false);
+  assert.equal(routeAuthored400.routing_mutation_authority, false);
+
+  const transient503 = auditProviderInstrumentState({
+    listing_status: 'FRESH_LISTED',
+    request_envelope: 'VALIDATED',
+    generation_completion: 'NOT_REACHED',
+    compute_budget: 'NOT_REACHED',
+    sampling_controls: 'DEFAULTS',
+    retry_policy: 'NONE',
+    health_memory_scope: 'DURABLE',
+    receiver_identity: 'SALIENT',
+    http_status: 503
+  });
+  assert.equal(transient503.disposition, 'PROPOSE');
+  assert.ok(transient503.deficit_classes.includes('TRANSIENT_RESILIENCE_DEFICIT'));
+  assert.equal(transient503.health_attribution, 'TRANSIENT_PROVIDER_SIGNAL_ONLY');
+  assert.equal(transient503.model_removal_authority, false);
+
+  const receiptOnlySuccess = auditProviderInstrumentState({
+    listing_status: 'FRESH_LISTED',
+    request_envelope: 'VALIDATED',
+    generation_completion: 'COMPLETE',
+    compute_budget: 'ADEQUATE',
+    sampling_controls: 'DEFAULTS',
+    retry_policy: 'BOUNDED_TRANSIENT_ONLY',
+    health_memory_scope: 'DURABLE',
+    receiver_identity: 'RECEIPT_ONLY',
+    http_status: 200
+  });
+  assert.equal(receiptOnlySuccess.disposition, 'PROPOSE');
+  assert.deepEqual(receiptOnlySuccess.deficit_classes, ['RECEIVER_IDENTITY_SALIENCE_DEFICIT']);
+  assert.equal(receiptOnlySuccess.health_attribution, 'REQUEST_SUCCESS_NOT_GLOBAL_PROVIDER_HEALTH_PROOF');
+
+  assert.equal(selfTestProviderInstrumentAudit().status, 'pass');
 });
