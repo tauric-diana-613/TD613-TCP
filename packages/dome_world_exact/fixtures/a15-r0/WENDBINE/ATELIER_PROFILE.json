@@ -4,9 +4,24 @@
   "method_version": "td613.atelier-method/v0.1",
   "method_pr": 1118,
   "research_question": "Can a relational architecture be reconstructed from a bounded serialized public output stream without converting semantic resemblance into private state, hidden memory, motive, lineage, or authority?",
-  "source_unit": "public Reddit post with canonical URL, day-level timestamp, bounded paraphrase, concept tags, and typed source observations",
+  "source_unit": "public Reddit post or bounded public-card observation with canonical source binding when exposed, truthful timestamp precision, bounded paraphrase when text is observed, concept tags, typed source observations, and explicit capture state",
   "snapshot_model": "BOUNDED_PUBLIC_STREAM_SNAPSHOT",
   "profile_state": "DRAFT_UNMERGED_PUBLIC_SURFACE_ATELIER",
+  "current_source_bound_public_reddit_count": 35,
+  "query_model": "READ_ONLY_UNIFIED_LEXICAL_AND_CONCEPT_RELATIONAL_RETRIEVAL",
+  "query_entry": "99-ADMIN/wendbine-query.mjs",
+  "capture_reconciliation_law": "OBSERVED_CARD_COUNT = PERSISTED_PER_CARD_OBSERVATIONS + EXPLICITLY_RECEIPTED_CAPTURE_FAILURES",
+  "capture_contract": "06-INSTRUMENTS/WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1.md",
+  "known_archival_debt": [
+    {
+      "snapshot_id": "wendbine-public-reddit-profile-delta-20260916-v04",
+      "observed_cards": 25,
+      "persisted_per_card_records_at_original_capture": 0,
+      "explicit_capture_debt": 25,
+      "receipt": "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+      "state": "ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED"
+    }
+  ],
   "active_stages": [
     "S0_SCOPE_CUSTODY",
     "S1_IDENTITY_MANIFESTATION_CONTROL",
@@ -31,16 +46,26 @@
     "SHUFFLE_CONTROL",
     "CONCEPT_LABEL_PERMUTATION",
     "TYPED_EDGE_ABLATION",
-    "UNRELATED_POST_DECOY"
+    "UNRELATED_POST_DECOY",
+    "READ_ONLY_UNIFIED_QUERY_SURFACE",
+    "LEXICAL_AND_CONCEPT_RELATIONAL_RETRIEVAL",
+    "OBSERVED_CARD_CAPTURE_RECONCILIATION",
+    "QUERYABLE_ARCHIVAL_DEBT"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
+  "retrieval_law": "QUERY_MATCH != SOURCE_PROMOTION; SEMANTIC_MATCH != CAUSAL_RELATION; RECENCY != AUTHORITY",
+  "capture_law": "PERSISTED_OBSERVATION != SOURCE_PROMOTION; HELD != ERASED; UNHYDRATED != UNOBSERVED",
   "negative_states": [
     "NOT_RETRIEVED",
     "UNBOUND_TITLE",
     "SAME_DAY_ORDER_UNRESOLVED",
     "PRIVATE_SURFACE_NOT_ADMITTED",
-    "AUTHOR_INTENT_UNADJUDICATED"
+    "AUTHOR_INTENT_UNADJUDICATED",
+    "HELD_CANONICAL_URL_NOT_SUPPLIED",
+    "PUBLIC_PROFILE_FIRST_PAGE_BOUNDED_NOT_EXHAUSTIVE",
+    "ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED",
+    "FAILED_CAPTURE_RECONCILIATION"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
