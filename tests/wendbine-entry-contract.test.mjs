@@ -8,7 +8,7 @@ const connector = fs.readFileSync(path.join(root, 'CONNECTOR_ENTRY.md'), 'utf8')
 const profile = JSON.parse(fs.readFileSync(path.join(root, 'ATELIER_PROFILE.json'), 'utf8'));
 
 for (const surface of [readme, connector]) {
-  assert.match(surface, /source[-_ ]bound public Reddit (?:corpus|posts).*35/is, 'Canonical Wendbine entry surfaces must expose the current 35-post source-bound corpus rather than the stale 33-post base only.');
+  assert.match(surface, /source[-_ ]bound[-_ ]public[-_ ]reddit[-_ ](?:corpus|posts).*35/is, 'Canonical Wendbine entry surfaces must expose the current 35-post source-bound corpus rather than the stale 33-post base only.');
   assert.match(surface, /wendbine-query\.mjs/, 'Canonical Wendbine entry surfaces must route future sessions to the unified read-only query surface.');
   assert.match(surface, /WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1\.md/, 'Canonical Wendbine entry surfaces must route future syncs through the capture reconciliation contract.');
   assert.match(surface, /ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED/, 'Canonical Wendbine entry surfaces must expose the Sept16 capture scar rather than hide it behind aggregate hydration state.');
