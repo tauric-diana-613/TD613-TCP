@@ -3,14 +3,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve('packages/dome_world_exact/fixtures/a15-r0/WENDBINE');
+const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
 const connector = fs.readFileSync(path.join(root, 'CONNECTOR_ENTRY.md'), 'utf8');
 const profile = JSON.parse(fs.readFileSync(path.join(root, 'ATELIER_PROFILE.json'), 'utf8'));
 
-assert.match(connector, /source_bound_public_reddit_posts = 35/, 'Connector entry must expose the current source-bound corpus rather than the stale 33-post base only.');
-assert.match(connector, /wendbine-query\.mjs/, 'Connector entry must route future sessions to the unified read-only query surface.');
-assert.match(connector, /WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1\.md/, 'Connector entry must route future syncs through the capture reconciliation contract.');
-assert.match(connector, /ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED/, 'Connector entry must expose the Sept16 capture scar rather than hide it behind aggregate hydration state.');
-assert.match(connector, /observed_card_count\s*=\s*persisted_per_card_observations\s*\+\s*explicitly_receipted_capture_failures/s, 'Connector entry must preserve observed-card custody reconciliation.');
+for (const surface of [readme, connector]) {
+  assert.match(surface, /source[-_ ]bound public Reddit (?:corpus|posts).*35/is, 'Canonical Wendbine entry surfaces must expose the current 35-post source-bound corpus rather than the stale 33-post base only.');
+  assert.match(surface, /wendbine-query\.mjs/, 'Canonical Wendbine entry surfaces must route future sessions to the unified read-only query surface.');
+  assert.match(surface, /WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1\.md/, 'Canonical Wendbine entry surfaces must route future syncs through the capture reconciliation contract.');
+  assert.match(surface, /ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED/, 'Canonical Wendbine entry surfaces must expose the Sept16 capture scar rather than hide it behind aggregate hydration state.');
+  assert.match(surface, /observed_card_count\s*=\s*persisted_per_card_observations\s*\+\s*explicitly_receipted_capture_failures/s, 'Canonical Wendbine entry surfaces must preserve observed-card custody reconciliation.');
+}
 
 assert.equal(profile.current_source_bound_public_reddit_count, 35);
 assert.equal(profile.query_model, 'READ_ONLY_UNIFIED_LEXICAL_AND_CONCEPT_RELATIONAL_RETRIEVAL');
@@ -30,4 +33,4 @@ assert.deepEqual(profile.known_archival_debt, [{
   state: 'ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED'
 }]);
 
-console.log('Wendbine connector entry and Atelier profile current-state contract passed.');
+console.log('Wendbine README, connector entry, and Atelier profile current-state contract passed.');
