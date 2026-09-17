@@ -1,0 +1,99 @@
+{
+  "schema": "td613.cross-family-handoff-adjudication/v0.10",
+  "date": "2026-09-15",
+  "state": "SOURCE_BOUND_CROSS_FAMILY_HANDOFF_ASSAY_ZERO_NOVELTY_PROMOTION",
+  "question": "When Flow-Core context and an Aperture round-trip receipt meet inside Phase-5 relation construction, does preserving their separate typed boundaries add adjudication value beyond one collapsed handoff result?",
+  "source_paths": [
+    "app/engine/flowcore-context-series.js",
+    "app/engine/aperture-v3-reciprocal-bridge.js",
+    "app/engine/phase5-relation-contract.js",
+    "tests/helpers/phase5-fixtures.mjs",
+    "tests/phase5-third-object.test.mjs"
+  ],
+  "hostile_worlds": [
+    {
+      "id": "FLOWCORE_AUTHORITY_BREACH",
+      "collapsed_terminal": "HOLD",
+      "localized_cause": "FLOWCORE_AUTHORITY_CONTRACT",
+      "flowcore_component_valid": false,
+      "cross_family_reference_consistent": null,
+      "aperture_roundtrip_valid": null
+    },
+    {
+      "id": "CROSS_FAMILY_REFERENCE_MISMATCH",
+      "collapsed_terminal": "HOLD",
+      "localized_cause": "FLOWCORE_TO_APERTURE_REFERENCE_JOIN",
+      "flowcore_component_valid": true,
+      "cross_family_reference_consistent": false,
+      "aperture_roundtrip_valid": false
+    },
+    {
+      "id": "APERTURE_JURISDICTION_BREACH",
+      "collapsed_terminal": "HOLD",
+      "localized_cause": "APERTURE_ROUNDTRIP_JURISDICTION",
+      "flowcore_component_valid": true,
+      "cross_family_reference_consistent": true,
+      "aperture_roundtrip_valid": false
+    }
+  ],
+  "collapsed_classifier": {
+    "distinct_hostile_worlds": 3,
+    "distinct_terminal_outcomes": 1,
+    "terminal_outcome": "HOLD",
+    "localization_accuracy_from_terminal_only": 0,
+    "interpretation": "A terminal-only hold preserves rejection behavior but erases which boundary failed."
+  },
+  "role_typed_boundaries": [
+    {
+      "boundary": "FLOWCORE_CONTEXT_ADMISSIBILITY",
+      "role_credit": ["GOVERNANCE_TYPE_SAFETY", "AUTHORITY_BOUNDARY"],
+      "scientific_epistemic_operator": false
+    },
+    {
+      "boundary": "APERTURE_ROUNDTRIP_VALIDATION",
+      "role_credit": ["REPLAY_INTEGRITY", "JURISDICTION_BOUNDARY"],
+      "scientific_epistemic_operator": false
+    },
+    {
+      "boundary": "FLOWCORE_TO_APERTURE_REFERENCE_JOIN",
+      "role_credit": ["RELATIONAL_CONSISTENCY", "DIAGNOSTIC_LOCALIZATION"],
+      "scientific_epistemic_operator": false
+    },
+    {
+      "boundary": "PHASE5_RELATION_PROPOSAL_COMPOSITION",
+      "role_credit": ["PROVENANCE_COMPOSITION", "GOVERNANCE_NONTRANSFER"],
+      "scientific_epistemic_operator": false
+    }
+  ],
+  "valid_handoff": {
+    "proposal_state": "PROPOSED",
+    "separate_reference_families": ["ASH", "FLOWCORE", "APERTURE_ROUND_TRIP"],
+    "raw_artifact_disclosure": false,
+    "automatic_relation_creation": false,
+    "automatic_confirmation": false,
+    "automatic_ash_action": false,
+    "prediction_authorized": false
+  },
+  "laws": [
+    "GENERIC_HANDOFF_HOLD != UNIQUE_FAILURE_CAUSE",
+    "CROSS_FAMILY_JOIN != COMPONENT_VALIDITY",
+    "FLOWCORE_VALID + ROUNDTRIP_STRUCTURALLY_PRESENT != CROSS_FAMILY_REFERENCE_CONSISTENT",
+    "DECISION_EQUIVALENCE != ADJUDICATION_EQUIVALENCE",
+    "MULTI_RECEIPT_PROVENANCE != MULTI_SOURCE_EMPIRICAL_CONFIRMATION",
+    "REFERENCE_CONSISTENCY != TRUTH",
+    "CROSS_FAMILY_ADJUDICATION_VALUE != SCIENTIFIC_OPERATOR_PROMOTION"
+  ],
+  "verdict": "PRESERVE_ROLE_TYPED_CROSS_FAMILY_BOUNDARIES_WHEN_THEY_IMPROVE_DEFECT_LOCALIZATION_WITHOUT_PROMOTING_GOVERNANCE_OR_INTEGRITY_TO_EPISTEMIC_TRUTH",
+  "next_test": "Compare a collapsed terminal-only classifier with the role-typed stage-local adjudication graph on a held-out defect matrix; score accept/reject accuracy separately from defect-localization accuracy.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "deployed_llm_architecture_inference": false,
+    "externality_inference": false,
+    "monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}

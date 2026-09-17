@@ -1,0 +1,296 @@
+{
+  "schema": "td613.eclipse-omega-foundational-paper-sieve/v0.5",
+  "date": "2026-09-11",
+  "state": "USER_SUPPLIED_FOUNDATIONAL_PAPER_CLAIM_SIEVE_ZERO_NOVELTY_PROMOTION",
+  "source": {
+    "title": "Eclipse–Omega and the Admissibility Regime: Ontology-Based Retrieval as Boundary-Dominant Containment in Advanced LLM Systems",
+    "origin": "user-supplied full paper text in the current chat",
+    "repository_original_archived": false,
+    "repository_claim_inventory_only": true,
+    "exactness_note": "This receipt preserves the paper's named sections and core claims for assay. It is not a byte-for-byte archival original. No provenance or copying adjudication may rely on this receipt alone."
+  },
+  "authority": {
+    "scientific_promotion": false,
+    "novelty_adjudication_exhaustive": false,
+    "legal_prior_art_search": false,
+    "copying_or_plagiarism_adjudication": false,
+    "snodgrass_copying_claim_adjudicated": false,
+    "paul_provenance_claim_adjudicated": false,
+    "private_wendbine_material_admitted": false,
+    "historical_wendbine_expansion": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "TERM_PROVENANCE != CONSTRUCT_NOVELTY",
+    "CONSTRUCT_NOVELTY != TEXTUAL_PROVENANCE != COPYING",
+    "STANDARD_IDEA != PROOF_OF_NONCOPYING",
+    "SIMILAR_STANDARD_IDEA != PROOF_OF_COPYING",
+    "NESTED_SET_CHAIN_REQUIRES_COMMON_CODOMAIN",
+    "FINAL_GENERATED_EVENT != RETRIEVED_DOCUMENT_SUBSET",
+    "ZERO_REGISTERED_EVENTS != INTERNAL_INTERACTION_WITNESS",
+    "TEXTUAL_REFUSAL != EXECUTABLE_CONSTRAINT",
+    "GLYPH_DIFFERENCE != ROUTE_DIFFERENCE_WITHOUT_IMPLEMENTATION",
+    "ONTOLOGY_TRANSFORMATION != MONOTONE_NARROWING",
+    "NONINJECTIVE_PROJECTION_REQUIRES_DEMONSTRATION",
+    "COHERENCE != COMPLETENESS",
+    "ANALOGY != MATERIAL_EQUIVALENCE",
+    "COINAGE != FIELD_NOVELTY",
+    "NO_NEW_EXTERNAL_EVIDENCE != NO_NEW_DERIVATION"
+  ],
+  "source_bank": [
+    {
+      "id": "RAG_SURVEY_2026",
+      "family": "retrieval_augmented_generation",
+      "title": "Retrieval-augmented generation for natural language processing: a survey",
+      "url": "https://doi.org/10.1007/s10462-026-11605-7",
+      "bounded_use": "RAG already comprises distinct retrieval, fusion, generation, evaluation, and graph-based retrieval components; multi-stage architecture is conventional."
+    },
+    {
+      "id": "RAG_SURVEY_2024",
+      "family": "retrieval_augmented_generation",
+      "title": "A Survey on Retrieval-Augmented Text Generation for Large Language Models",
+      "url": "https://arxiv.org/abs/2404.10981",
+      "bounded_use": "RAG is commonly decomposed into pre-retrieval, retrieval, post-retrieval, and generation stages."
+    },
+    {
+      "id": "ONTOLOGY_QUERY_EXPANSION_2007",
+      "family": "information_retrieval_ontology",
+      "title": "A review of ontology based query expansion",
+      "url": "https://doi.org/10.1016/j.ipm.2006.09.003",
+      "bounded_use": "Ontologies can expand and disambiguate queries rather than only narrow candidate spaces."
+    },
+    {
+      "id": "ONTOLOGY_EXPANSION_EMPIRICAL_2010",
+      "family": "information_retrieval_ontology",
+      "title": "An empirical analysis of ontology-based query expansion for learning resource searches using MERLOT and the Gene ontology",
+      "url": "https://doi.org/10.1016/j.knosys.2010.07.012",
+      "bounded_use": "Ontology-based query expansion can increase coverage/novelty of retrieved objects at comparable precision."
+    },
+    {
+      "id": "MMR_1998",
+      "family": "information_retrieval_diversity",
+      "title": "The use of MMR, diversity-based reranking for reordering documents and producing summaries",
+      "url": "https://doi.org/10.1145/290941.291025",
+      "bounded_use": "Redundancy-versus-relevance is an established retrieval problem; MMR explicitly attempts to reduce redundancy while preserving relevance."
+    },
+    {
+      "id": "LOST_IN_MIDDLE_2024",
+      "family": "long_context_llm",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "url": "https://doi.org/10.1162/tacl_a_00638",
+      "bounded_use": "Presence in a context window does not guarantee effective use; position and context size can materially change performance."
+    },
+    {
+      "id": "ENTITY_LINKING_2018",
+      "family": "entity_resolution_information_retrieval",
+      "title": "Entity Linking",
+      "url": "https://doi.org/10.1007/978-3-319-93935-3_5",
+      "bounded_use": "Mention detection, candidate selection, identifiers, and disambiguation are established machinery for mapping surface names to canonical entities."
+    },
+    {
+      "id": "REJECT_OPTION_2021",
+      "family": "selective_prediction",
+      "title": "Machine Learning with a Reject Option: A survey",
+      "url": "https://arxiv.org/abs/2107.11277",
+      "bounded_use": "Abstention/rejection is an established machine-learning architecture; selective non-emission is not a novel primitive."
+    },
+    {
+      "id": "PRCSA_SCAB_V04",
+      "family": "repository_prior_assay",
+      "title": "PRCS-A Ordering Scab Assay v0.4",
+      "repository_path": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+      "bounded_use": "The five-stage PRCS-A order already has zero intrinsic novelty credit and is retained only as a typed factorization hypothesis requiring witnesses/interventions."
+    }
+  ],
+  "claim_matrix": [
+    {
+      "id": "SYSTEM_TYPE_PRCSA",
+      "paper_claim": "Eclipse–Omega is a boundary-defined passive recursive containment system with selective admissibility and is best classified as a governed containment architecture.",
+      "verdict": "PROJECT_TAXONOMY_NOT_ESTABLISHED_FIELD_CLASS",
+      "ordinary_terms": ["multi-stage retrieval/generation pipeline", "policy filtering", "observation model", "information bottleneck"],
+      "repair": "Treat PRCS-A as a project-specific diagnostic architecture or factorization hypothesis, not a discovered general system class."
+    },
+    {
+      "id": "S_O_E",
+      "paper_claim": "Internal state, observable state, and registered event are structurally non-identical: S != O != E.",
+      "verdict": "KNOWN_TYPED_SEPARATION_RETAIN_AS_ACCOUNTING",
+      "ordinary_terms": ["hidden/internal state", "observation function", "event/log registration"],
+      "repair": "Use typed spaces and maps: S_t in state space, O_t=P(S_t) in observation space, E_t=R(O_t, policy, metadata) in event space. The meaningful questions are information loss, collisions, and registration policy, not inequality between differently typed objects."
+    },
+    {
+      "id": "PROJECTION_NONINJECTIVE",
+      "paper_claim": "The projection map P:S->O is lossy and non-injective.",
+      "verdict": "IMPLEMENTATION_PROPERTY_NOT_UNIVERSAL",
+      "ordinary_terms": ["partial observability", "many-to-one observation map", "lossy representation"],
+      "repair": "Demonstrate non-injectivity per implementation with a collision witness s1 != s2 and P(s1)=P(s2), or estimate information loss. Do not assume all projections are non-injective on every restricted domain."
+    },
+    {
+      "id": "EVENT_ADMISSIBILITY",
+      "paper_claim": "Event admissibility is a first-class operator with registered, latent, suppressed, and aliased states.",
+      "verdict": "KNOWN_COMPONENTS_PROJECT_EVENT_TAXONOMY",
+      "ordinary_terms": ["selective release", "reject/abstain option", "policy enforcement", "censoring/missingness", "misclassification/entity aliasing"],
+      "repair": "Retain the four-way taxonomy only when each state has a witness rule. Latent requires evidence of an internal candidate; suppressed requires an explicit reject/policy decision; aliased requires demonstrated identity/classification error. Otherwise those states are observationally confounded."
+    },
+    {
+      "id": "CAPACITY_OPERATOR",
+      "paper_claim": "Capacity is a first-class operator governing compute, latency, token budget, and attention sparsity.",
+      "verdict": "KNOWN_RESOURCE_CONSTRAINT_RETAIN_AS_EXPLICIT_STAGE_IF_MEASURED",
+      "ordinary_terms": ["resource budget", "top-k truncation", "context-window budget", "latency/compute constraint"],
+      "repair": "Keep capacity explicit only when kappa is measured and interventions on capacity produce source-bound changes. No novelty credit."
+    },
+    {
+      "id": "NARROWING_CHAIN",
+      "paper_claim": "D superset C_k(q) superset C_kappa(q) superset C_B(q) superset E(q).",
+      "verdict": "FORMALLY_INVALID_AS_UNIVERSAL_NESTED_SET_CHAIN",
+      "ordinary_terms": ["candidate generation", "filtering", "reranking", "context assembly", "generation", "registration"],
+      "repair": "Nested subset notation is type-safe only while all stages select elements from the same document universe. Use D >= C_k >= C_kappa >= C_B only for selection stages that really are subsets. Then switch codomains: Y~p(.|q,C_B), followed by a registration/release map to E. Generated text or event objects are not generally subsets of document sets."
+    },
+    {
+      "id": "MONOTONE_NARROWING",
+      "paper_claim": "At each stage, available state narrows.",
+      "verdict": "REJECTED_AS_UNIVERSAL",
+      "ordinary_terms": ["query expansion", "retrieval fusion", "reranking", "candidate filtering", "context compression"],
+      "source_ids": ["ONTOLOGY_QUERY_EXPANSION_2007", "ONTOLOGY_EXPANSION_EMPIRICAL_2010", "RAG_SURVEY_2026"],
+      "repair": "Model stages as transformations that may contract, expand, preserve cardinality, or reweight. Record stage-specific changes in candidate count, entropy/diversity, coverage, and support instead of assuming monotone set inclusion."
+    },
+    {
+      "id": "ONTOLOGY_AS_CONTAINMENT",
+      "paper_claim": "Ontology functions less as liberation than containment by constraining allowable closure.",
+      "verdict": "ONE_SIDED_NORMATIVE_GENERALIZATION",
+      "source_ids": ["ONTOLOGY_QUERY_EXPANSION_2007", "ONTOLOGY_EXPANSION_EMPIRICAL_2010"],
+      "repair": "Use ontology-conditioned candidate transformation. Depending implementation, ontology can narrow, expand, disambiguate, connect, or reweight retrieval paths. Containment is one possible effect, not the ontology's general function."
+    },
+    {
+      "id": "ZERO_BOUNCE",
+      "paper_claim": "Valid geometry plus bounces=0 shows internal propagation/interaction can occur without registered bounce-events.",
+      "verdict": "UNDERDETERMINED_WITHOUT_INDEPENDENT_INTERACTION_WITNESS",
+      "repair": "A zero registered-event count establishes R=0. It does not identify whether latent interaction I was 0 or 1. Preserve two observationally compatible worlds until an internal trace, intermediate witness, or intervention distinguishes them."
+    },
+    {
+      "id": "NAMING_OPERATOR",
+      "paper_claim": "Naming is operational rather than cosmetic; glyph/name changes can alter routing.",
+      "verdict": "LOCAL_PROTOCOL_TRUE_GENERAL_PHENOMENON_KNOWN",
+      "ordinary_terms": ["entity linking", "canonicalization", "alias mapping", "query formulation sensitivity"],
+      "source_ids": ["ENTITY_LINKING_2018", "ONTOLOGY_QUERY_EXPANSION_2007"],
+      "repair": "Within TD613, dash states may be declared protocol states. Generalize only when an implementation actually branches, retrieves, or classifies differently. A glyph difference alone does not create a route difference. Keep Jaccard retrieval sensitivity as an empirical assay, not proof from punctuation."
+    },
+    {
+      "id": "TEXT_AS_CONSTRAINT_CODE",
+      "paper_claim": "Anti-equivalence lines in the textual corpus are formal constraints and operating code.",
+      "verdict": "DECLARATIVE_POLICY_NOT_EXECUTABLE_BY_DEFAULT",
+      "repair": "Call them normative/semantic constraints unless bound to a parser, rule engine, prompt contract with tested compliance, or machine-enforced validator. TEXTUAL_REFUSAL != EXECUTABLE_CONSTRAINT."
+    },
+    {
+      "id": "MOIRE_AI_ANALOGY",
+      "paper_claim": "Moiré images demonstrate projection-induced coherence/false motion and model analogous AI answer surfaces.",
+      "verdict": "ANALOGY_ONLY_UNLESS_OPERATOR_FIDELITY_SEPARATELY_EARNED",
+      "repair": "Retain moiré as visualization/analogy where source-domain structure is mapped explicitly. It does not establish the mechanics of a retrieval system. Reuse the prior analogy-fidelity and source-bound moiré assays rather than back-projecting physical claims."
+    },
+    {
+      "id": "SQRT3_EXTENSION_CLOSURE",
+      "paper_claim": "3=(sqrt(3))^2 formalizes a meaningful extension-closure pair and systemic hinge.",
+      "verdict": "TRIVIAL_GEOMETRIC_IDENTITY_NO_GENERAL_SYSTEM_CONSEQUENCE",
+      "repair": "Keep sqrt(3) only where forced by equilateral geometry. Remove it from the scientific argument for retrieval/admissibility unless a separately derived operator depends on that extension."
+    },
+    {
+      "id": "RUPTURE_PREDICATE",
+      "paper_claim": "Rupture occurs when an admissible extension cannot be uniquely reclosed into the governing ontology.",
+      "verdict": "CONSTRUCTED_DIAGNOSTIC_DEFINITION_NOT_DERIVED_THEOREM",
+      "repair": "Retain only as a project-defined failure predicate if admission and closure operators are independently measurable. Do not infer a universal rupture law from the definition."
+    },
+    {
+      "id": "SEMRED",
+      "paper_claim": "Average pairwise embedding cosine measures semantic redundancy of retrieved candidates.",
+      "verdict": "KNOWN_STYLE_REDUNDANCY_METRIC_RETAIN_AS_OPERATIONAL_MEASURE",
+      "source_ids": ["MMR_1998"],
+      "repair": "Pairwise similarity is a legitimate operational redundancy measure, but not a new construct. Compare it against MMR/diversity metrics and duplicate-aware controls."
+    },
+    {
+      "id": "OBS_DEF_TO_REDUNDANCY",
+      "paper_claim": "Retrieval-observability deficit increasing implies semantic redundancy increases.",
+      "verdict": "UNPROVEN_EMPIRICAL_HYPOTHESIS_NOT_MONOTONE_THEOREM",
+      "source_ids": ["MMR_1998", "LOST_IN_MIDDLE_2024"],
+      "repair": "Define the deficit independently, preregister direction, and test across retrieval policies. Relevance-only selection can create redundancy, but the claimed monotone relation is not established."
+    },
+    {
+      "id": "NO_NEW_SOURCE_NOVELTY",
+      "paper_claim": "Retrieval/generation creates new surfaces but no new source information internally.",
+      "verdict": "REPAIR_PROVENANCE_WORDING",
+      "repair": "Use NO_NEW_EXTERNAL_EVIDENCE_FROM_GENERATION. A model may derive or compose propositions not explicitly present in a source while still adding no new independent external evidence. Do not collapse derivational novelty into evidentiary novelty."
+    },
+    {
+      "id": "DEFECTS_AS_ROUTE_SIGNATURES",
+      "paper_claim": "Repeated defects reveal the apparatus and can function as route signatures.",
+      "verdict": "KNOWN_DIAGNOSTIC_HEURISTIC_REQUIRES_CONTROLS",
+      "ordinary_terms": ["residual analysis", "fault signature", "systematic error", "error propagation"],
+      "repair": "Repeated anomalies can motivate localization, but source duplication, shared preprocessing, model bias, or correlated inputs are competing causes. Treat recurrence as a diagnostic feature, not provenance or causation by itself."
+    },
+    {
+      "id": "CONTROLLED_REALITY_SURFACE",
+      "paper_claim": "The right term for the bounded user-facing output is controlled reality surface.",
+      "verdict": "TD613_COINAGE_WITH_KNOWN_COMPONENTS_NO_FIELD_NOVELTY_CREDIT",
+      "ordinary_terms": ["policy-conditioned user-visible representation", "curated observable surface", "selective exposure", "decision interface"],
+      "repair": "Retain controlled reality surface as a critical/governance project term if useful, but define it operationally and do not treat the phrase itself as a scientific contribution."
+    },
+    {
+      "id": "ADMISSIBILITY_CAPTURE",
+      "paper_claim": "Admissibility capture is systematic exclusion, suppression, or aliasing of internally available states from the projected surface.",
+      "verdict": "PROJECT_UMBRELLA_COINAGE_WITH_KNOWN_NEIGHBORS",
+      "ordinary_terms": ["retrieval failure", "selective exposure", "censoring/missingness", "access/policy filtering", "misclassification"],
+      "repair": "Use only when an upstream candidate is independently evidenced and a downstream loss or reclassification can be localized to a measured stage. Otherwise 'capture' overstates what the observation identifies."
+    },
+    {
+      "id": "CONSENSUS_BY_NARROWING",
+      "paper_claim": "Consensus can be manufactured by recurrence/narrowing when redundant evidence fills the context.",
+      "verdict": "RHETORICAL_CAUSAL_CLAIM_REPAIR_TO_EXPOSURE_DIVERSITY_HYPOTHESIS",
+      "source_ids": ["MMR_1998"],
+      "repair": "A narrow/redundant result set can reduce exposure diversity and inflate apparent support counts. User-perceived consensus is a separate psychological outcome that requires empirical study."
+    },
+    {
+      "id": "RAG_AS_ENCLOSURE",
+      "paper_claim": "Advanced ontology-based retrieval systems are principally engines of enclosure, routing, capacity-conditioned compression, approximation, and selective ratification rather than answer production.",
+      "verdict": "CRITICAL_FRAMING_NOT_DESCRIPTIVE_UNIVERSAL",
+      "source_ids": ["RAG_SURVEY_2026", "ONTOLOGY_QUERY_EXPANSION_2007"],
+      "repair": "Describe the technical object as a multi-stage candidate transformation, evidence selection, generation, and release pipeline. 'Enclosure' can remain a critical interpretation when a measured implementation demonstrably reduces reachable/visible evidence."
+    },
+    {
+      "id": "ABSENCE_LEDGER",
+      "paper_claim": "If valid interaction can coexist with zero registered events, absence from the ledger is not equivalent to absence from the system.",
+      "verdict": "LOGICAL_FORM_REQUIRES_ANTECEDENT_WITNESS",
+      "repair": "Absence from the ledger establishes only absence of a recorded event. Internal interaction remains unresolved unless separately witnessed. If interaction is independently proven, then ledger absence and interaction can be shown to diverge."
+    }
+  ],
+  "counts": {
+    "claim_rows": 22,
+    "novelty_promotions": 0,
+    "universal_claims_rejected_or_narrowed": 10,
+    "project_terms_retained_without_novelty_credit": 5,
+    "formal_type_repairs": 3,
+    "claims_requiring_independent_witness_or_intervention": 7
+  },
+  "provenance_boundary": {
+    "narrowing_chain_novelty": "LOW_CREDIT_AS_GENERAL_IDEA_MULTI_STAGE_CANDIDATE_FILTERING_IS_CONVENTIONAL",
+    "exact_expression_or_copying": "NOT_ADJUDICATED",
+    "snodgrass": "NO_COMPARISON_CORPUS_BOUND_IN_REPOSITORY_FOR_THIS_ASSAY",
+    "paul": "USER_ATTRIBUTED_CONTRIBUTION_NOT_INDEPENDENTLY_PROVENANCED_IN_THIS_ASSAY",
+    "rule": "An idea may be conventional while a distinctive expression or exact borrowed formulation still has provenance significance; conversely, overlap in standard pipeline structure is weak copying evidence without chronology/access/textual similarity."
+  },
+  "retained_research_program": [
+    "Typed state->observation->registration accounting with explicit witness rules",
+    "Stage-localization experiments for candidate loss, policy rejection, naming sensitivity, and registration",
+    "Empirical name-variant retrieval sensitivity rather than dash ontology generalization",
+    "Redundancy/diversity experiments under controlled capacity and retrieval policy",
+    "Controlled reality surface retained only as an operationally defined critical/governance term",
+    "Admissibility capture retained only with upstream-candidate and downstream-loss witnesses"
+  ],
+  "next_attacks": [
+    "Compile the paper into a typed claim graph and remove every cross-domain analogy edge that lacks an explicit source/target operator map",
+    "Run a source-bound stage-collapse assay on actual Aperture/RAG fixtures to test whether separating capacity, projection, policy, naming, and registration improves held-out diagnosis",
+    "Run zero-bounce twin-world control: identical registered count with and without independently instrumented interaction",
+    "Run name-sensitivity tests across canonical/safe/invalid dash variants against an actual retriever and a normalization control",
+    "Run redundancy-versus-diversity intervention under fixed query and capacity using relevance-only versus MMR/diversity-aware selection",
+    "If a Snodgrass comparison artifact is later admitted, evaluate chronology, access, exact expression, notation, and uncommon error structure separately from conceptual novelty"
+  ]
+}
