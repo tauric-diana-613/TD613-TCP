@@ -3,6 +3,11 @@ import fs from 'node:fs';
 
 await import('./ash-a15-r0-review-hardening-sharded.test.mjs');
 await import('./wendbine-public-atelier-compiler.test.mjs');
+await import('./wendbine-sticker-nomenclature.test.mjs');
+await import('./wendbine-public-refresh-v04.test.mjs');
+await import('./wendbine-query-surface.test.mjs');
+await import('./wendbine-capture-reconciliation.test.mjs');
+await import('./wendbine-entry-contract.test.mjs');
 await import('./wendbine-td613-bounded-assay-v01.test.mjs');
 await import('./td613-residual-literature-sieve-v02.test.mjs');
 await import('./td613-devastate-repair-sieve-v03.test.mjs');

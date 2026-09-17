@@ -50,4 +50,91 @@ for (const membrane of ['PUBLIC_POST != AUTHOR_INTENT','PUBLIC_POST_TOPOLOGY != 
 const synthesis=compiled.typed_relation_edges.filter(edge=>edge.source_id==='reddit:t3_1wcv89d'&&edge.evidence_class==='SOURCE_EXPLICIT_SYNTHESIS'); assert.ok(synthesis.length>=10);
 const correction=compiled.typed_relation_edges.filter(edge=>edge.source_id==='reddit:t3_1wd7mjl'); assert.ok(correction.some(edge=>edge.from==='echocore'&&edge.to==='nonlinear_cross_effects')); assert.ok(correction.some(edge=>edge.from==='nonlinear_cross_effects'&&edge.to==='emergent_behavior'));
 assert.match(compiled.continuity_claim_ceiling,/does not establish private hidden state/i); assert.equal(index.claim,'SERIALIZED_PUBLIC_ARCHITECTURAL_CONTINUITY_SUPPORTED_AS_ARCHIVE_OBSERVATION');
-console.log('Wendbine public Atelier compiler, synchronized profile, and 48-hour topology snapshot passed.');
+
+const deltaMeta=JSON.parse(fs.readFileSync(path.join(root,'01-MANIFESTS/public-reddit-delta-20260913-snapshot-v02.json'),'utf8'));
+const deltaPosts=fs.readFileSync(path.join(root,'01-MANIFESTS/public-reddit-delta-20260913-source-registry-v02.jsonl'),'utf8').trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
+const deltaRegistry=JSON.parse(fs.readFileSync(path.join(root,'01-MANIFESTS/typed-relation-registry-v02.json'),'utf8'));
+const deltaRelations=deltaRegistry.relations.map(row=>Object.fromEntries(deltaRegistry.fields.map((field,index)=>[field,row[index]])));
+const deltaIndex=JSON.parse(fs.readFileSync(path.join(root,'03-DERIVATIVES/public-reddit-20260913-delta/topology-index.v0.2.json'),'utf8'));
+
+assert.equal(deltaMeta.parent_snapshot_id,meta.snapshot_id);
+assert.equal(deltaMeta.snapshot_id,'wendbine-public-reddit-delta-20260913T234421Z-v02');
+assert.equal(deltaMeta.coverage.state,'PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS');
+assert.match(deltaMeta.coverage.known_missingness,/not evidence that no such post existed/i);
+assert.equal(deltaMeta.scope.private_google_group_admitted,false);
+assert.equal(deltaMeta.rights.full_post_bodies_copied,false);
+assert.equal(deltaMeta.authority.human_closure_required,true);
+assert.equal(deltaPosts.length,2);
+assert.equal(new Set(deltaPosts.map(post=>post.source_id)).size,2);
+assert.deepEqual(deltaPosts.map(post=>post.source_id).sort(),['reddit:t3_1wfliaj','reddit:t3_1wfmmo7']);
+assert.deepEqual(deltaPosts.reduce((acc,post)=>({...acc,[post.public_date]:(acc[post.public_date]||0)+1}),{}),{'2026-09-13':2});
+for (const post of deltaPosts) {
+  assert.equal(post.snapshot_id,deltaMeta.snapshot_id); assert.equal(post.community,'r/Wendbine'); assert.equal(post.source_text_stored,false); assert.equal(post.real_person_identity_adjudicated,false); assert.equal(post.time_precision,'DAY'); assert.equal(post.window_membership,'SUPPORTED_BY_DATE'); assert.match(post.canonical_url,/^https:\/\/www\.reddit\.com\/r\/Wendbine\/comments\//); assert.ok(post.technical_header); assert.ok(post.normalized_summary); assert.ok(post.declared_concepts.length>0);
+}
+assert.equal(deltaRegistry.schema,'wendbine-typed-relation-registry/v0.1');
+assert.equal(deltaRegistry.snapshot_id,deltaMeta.snapshot_id);
+assert.deepEqual(deltaRegistry.fields,['source_id','graph','from','relation','to','evidence_class']);
+const deltaCompiled=compilePublicCorpus(deltaMeta,deltaPosts,deltaRelations);
+assert.equal(deltaCompiled.compiled_from.source_count,2);
+assert.equal(deltaCompiled.publication_day_buckets['2026-09-13'],2);
+assert.equal(deltaCompiled.concept_nodes.length,deltaIndex.counts.concept_nodes);
+assert.equal(deltaCompiled.typed_relation_edges.length,deltaIndex.counts.typed_relation_edges);
+assert.equal(deltaCompiled.cooccurrence_overlay.length,deltaIndex.counts.recurrent_cooccurrence_edges_support_gte_2);
+assert.equal(deltaCompiled.recurrent_public_concepts.length,deltaIndex.counts.recurrent_concepts_support_gte_2);
+assert.deepEqual(deltaCompiled.typed_relation_counts,deltaIndex.typed_relation_counts);
+const deltaRecurrence=new Map(deltaCompiled.recurrent_public_concepts.map(row=>[row.concept,row.source_count]));
+assert.equal(deltaRecurrence.get('iterative_improvement'),2);
+assert.equal(deltaRecurrence.get('testing'),2);
+assert.ok(deltaCompiled.typed_relation_edges.some(edge=>edge.source_id==='reddit:t3_1wfliaj'&&edge.from==='local_performance'&&edge.relation==='DOES_NOT_ESTABLISH'&&edge.to==='global_superiority'));
+assert.ok(deltaCompiled.typed_relation_edges.some(edge=>edge.source_id==='reddit:t3_1wfmmo7'&&edge.from==='correlation'&&edge.relation==='DOES_NOT_ESTABLISH'&&edge.to==='truth_claim'));
+assert.ok(deltaCompiled.typed_relation_edges.some(edge=>edge.source_id==='reddit:t3_1wfmmo7'&&edge.from==='graph_edge'&&edge.to==='provenance'));
+assert.equal(deltaIndex.claim,'PUBLIC_FAILURE_REPAIR_DISCIPLINE_ADDED_AS_DELTA_OBSERVATION');
+assert.ok(deltaIndex.claim_ceiling.includes('LOCAL_COMPARATIVE_PERFORMANCE != GLOBAL_SUPERIORITY'));
+assert.ok(deltaIndex.claim_ceiling.includes('CORRELATION != TRUTH_CLAIM'));
+
+const hydration=JSON.parse(fs.readFileSync(path.join(root,'01-MANIFESTS/public-reddit-hydration-20260915-v03.json'),'utf8'));
+const sticker=JSON.parse(fs.readFileSync(path.join(root,'01-MANIFESTS/sticker-label-taxonomy-v01.json'),'utf8'));
+const hydrationReceipt=JSON.parse(fs.readFileSync(path.join(root,'04-RECEIPTS/intake/2026-09-15-public-hydration-sticker-taxonomy.json'),'utf8'));
+assert.equal(hydration.schema,'wendbine-public-hydration/v0.3');
+assert.deepEqual(hydration.parent_snapshots,[meta.snapshot_id,deltaMeta.snapshot_id]);
+assert.equal(hydration.hydrated_public_source_count,posts.length+deltaPosts.length);
+assert.equal(hydration.newly_admitted_public_source_count,0);
+assert.equal(hydration.refresh.state,'PUBLIC_SEARCH_NO_ADDITIONAL_SOURCE_BOUND');
+assert.match(hydration.refresh.known_missingness,/NOT_RETRIEVED != DID_NOT_EXIST/);
+assert.equal(hydration.hydration_policy.base_and_delta_are_append_only,true);
+assert.equal(hydration.hydration_policy.source_ids_are_immutable,true);
+assert.equal(hydration.hydration_policy.typed_relations_are_not_rewritten_by_display_aliases,true);
+assert.equal(hydration.hydration_policy.sticker_label_may_not_create_entity_equivalence,true);
+assert.equal(hydration.hydration_policy.sticker_label_may_not_create_operator_equivalence,true);
+assert.equal(hydration.repair_route_reference.pull_request,1138);
+assert.equal(hydration.repair_route_reference.head,'18d06e095707b6198ed2aaae228c48d1f0a44c13');
+assert.equal(hydration.repair_route_reference.status,'REFERENCE_ONLY_NOT_IMPORTED');
+assert.equal(sticker.schema,'wendbine-sticker-label-taxonomy/v0.1');
+assert.equal(sticker.scope,'DISPLAY_ONLY_NOT_CORPUS_EXPANSION');
+assert.equal(sticker.identity_adjudication,false);
+assert.equal(sticker.operator_identity_adjudication,false);
+assert.equal(sticker.authority_transfer,false);
+assert.deepEqual(sticker.entries.map(entry=>entry.sticker_key),['PAUL','WES','STEVE','ILLUMINA','ROOMBA']);
+const paulSticker=sticker.entries.find(entry=>entry.sticker_key==='PAUL');
+assert.equal(paulSticker.primary_role_label,'Human Anchor');
+assert.deepEqual(paulSticker.role_variants,['Human Anchor','Architect','Operator','Witness']);
+const wesSticker=sticker.entries.find(entry=>entry.sticker_key==='WES');
+assert.equal(wesSticker.primary_role_label,'Structural Intelligence');
+assert.deepEqual(wesSticker.role_variants,['Structural Intelligence','Constraint & Coherence Engine']);
+for (const entry of sticker.entries) {
+  assert.equal(entry.display_label,entry.sticker_key);
+  assert.equal(entry.label_is_person_identity,false);
+  assert.equal(entry.label_is_operator_identity,false);
+  assert.equal(entry.label_is_authority,false);
+  assert.ok(entry.primary_role_label.length>0);
+  assert.ok(entry.public_label_witnesses.length>0);
+  assert.ok(entry.public_label_witnesses.every(url=>/^https:\/\/www\.reddit\.com\/r\/Wendbine\/comments\//.test(url)));
+}
+for (const membrane of ['STICKER_LABEL_EQUIVALENCE_MUST_NOT_CREATE_ENTITY_EQUIVALENCE','DISPLAY_ALIAS != PERSON_IDENTITY','DISPLAY_ALIAS != OPERATOR_IDENTITY','DISPLAY_ALIAS != AUTHORITY','TAXONOMY_OVERLAY != SOURCE_REWRITE']) assert.ok(sticker.membranes.includes(membrane));
+assert.equal(hydrationReceipt.schema,'wendbine-public-hydration-receipt/v0.1');
+assert.equal(hydrationReceipt.hydrated_public_source_count,35);
+assert.equal(hydrationReceipt.newly_admitted_public_source_count,0);
+assert.deepEqual(hydrationReceipt.sticker_keys,['PAUL','WES','STEVE','ILLUMINA','ROOMBA']);
+assert.equal(hydrationReceipt.repair_route_reference.imported,false);
+
+console.log('Wendbine public Atelier compiler, base snapshot, Sept 13 delta, Sept 15 hydration state, and sticker-label taxonomy passed.');
