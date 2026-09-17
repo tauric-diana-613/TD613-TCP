@@ -299,7 +299,12 @@ function installTranscriptCustody(doc, root) {
   const form = byId(doc, 'khonapolitForm');
   if (!messages || !form || messages.dataset.desktopCustodyInstalled === 'true') return false;
   messages.dataset.desktopCustodyInstalled = 'true';
-  const bottom = () => { messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight); };
+  const bottom = () => {
+    const latest = messages.querySelector('.relay-message:last-child');
+    messages.scrollTop = latest
+      ? Math.max(0, messages.scrollTop + latest.getBoundingClientRect().top - messages.getBoundingClientRect().top - 24)
+      : Math.max(0, messages.scrollHeight - messages.clientHeight);
+  };
   const nextFrame = callback => {
     if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
     else (root.setTimeout ?? setTimeout)(callback, 0);

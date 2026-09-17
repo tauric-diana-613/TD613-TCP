@@ -29,13 +29,17 @@
       ],
       "evidence_basis": [
         "Existing explicit issuance-or-waiver and operator seal controls",
-        "Static DOM control preservation; runtime synthetic checks are separate from human comprehension"
+        "Static DOM control preservation; runtime synthetic checks are separate from human comprehension",
+        "2026-09-17 live skeptical episode: held first call, successful retry, held follow-up; stale success receipt and bottom-positioned response observed."
       ],
       "transformations": [
         "Move connection and provenance into reachable disclosures",
         "Prioritize conversation and composer without changing request or closure authority",
         "Render one integrated provider-native Kʰonapolit and Tauric Diana transmission while retaining exact route telemetry under diagnostic disclosure",
-        "Preserve provider-authored Unicode code points rather than applying local ornamentation"
+        "Preserve provider-authored Unicode code points rather than applying local ornamentation",
+        "Attach prior receipts to their own replies; clear current receipt on a new attempt and show current failure separately.",
+        "Keep Kʰonapolit in ordinary orthography; expressive line styling begins only at an explicit Tauric Diana bots heading; preserve exact returned code points.",
+        "Completed replies open at their beginning; pending animation cannot pull a completed reply to its end."
       ],
       "station_owners": [
         "Dome-World"
