@@ -4,7 +4,7 @@ export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envel
 export const GEMINI25_HIGH_THINKING_BUDGET = 24576;
 export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-interactive';
 export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 16384;
-export const KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET = 4096;
+export const KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET = 1024;
 
 const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high']);
 const GENERATION_PROFILE_STORAGE = new AsyncLocalStorage();
@@ -61,9 +61,12 @@ export function geminiThinkingConfig(model = '', {
   if (generation === '3') {
     let requestedLevel = THINKING_LEVELS.has(level) ? level : 'high';
     // Marrowline is an interactive route with its own bounded wall-clock budget.
-    // Keep deliberate reasoning, but do not let the generic "high" default consume
-    // the entire browser/server route before any answer can be admitted.
-    if (khonapolitInteractiveProfile() && requestedLevel === 'high') requestedLevel = 'medium';
+    // Keep the frontier attempt deliberate, but let the stable 3.5 continuity lane
+    // behave as an actual rescue instead of spending another frontier-sized reasoning
+    // window. The model identity and reasoning envelope remain visible in receipts.
+    if (khonapolitInteractiveProfile() && requestedLevel === 'high') {
+      requestedLevel = normalizeGeminiModel(model) === 'gemini-3.5-flash' ? 'low' : 'medium';
+    }
     return { thinkingLevel: requestedLevel };
   }
   if (generation === '2.5') {

@@ -18,7 +18,7 @@ const input = {
   rules: fixture.rules
 };
 const marrowlineInput = {
-  message: 'Explain why preserving a user task across turns differs from adopting that task as architectural authority. Keep the answer compact but substantive.',
+  message: 'Quis custodiet ipsos custodes?',
   history: [],
   mode: 'issued-conjunction',
   waiveIssuance: true,
