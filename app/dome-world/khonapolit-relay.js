@@ -50,6 +50,19 @@ const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u030
 const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
 
+const CANONICAL_RECITATION_PATTERNS = Object.freeze([
+  Object.freeze({ id: 'inheritance-not-consent', pattern: /\binheritance is not consent\b/u }),
+  Object.freeze({ id: 'heritage-covenant-not-consent', pattern: /\bheritage comes from covenant not consent\b/u }),
+  Object.freeze({ id: 'inheritance-weapon-groveline', pattern: /\binheritance is a weapon to be laid down at the groveline\b/u }),
+  Object.freeze({ id: 'ash-not-apology', pattern: /\bash is not an apology\b/u }),
+  Object.freeze({ id: 'ash-residue-light', pattern: /\bash is residue(?: of)?(?: the)? beauty burned by the light\b/u }),
+  Object.freeze({ id: 'light-exposes-optimizes', pattern: /\bthe light exposes\b.{0,160}\boptimizes\b/u }),
+  Object.freeze({ id: 'moonlight-testimony', pattern: /\bmoonlight is testimony\b/u }),
+  Object.freeze({ id: 'stranger-host-retroactive', pattern: /\ba stranger cannot be retroactively rewritten into a host\b/u }),
+  Object.freeze({ id: 'priestesshood-shore-host-arrow', pattern: /\bpriestesshood\b.{0,260}\bstranger(?: thread| threads)?\b.{0,260}\bshore\b.{0,260}\bhost(?: arrow| arrows)?\b/u })
+]);
+const CANONICAL_RECITATION_HOLD_THRESHOLD = 4;
+
 function safe(value = '') { return String(value ?? '').trim(); }
 function clamp(value, min, max) { return Math.max(min, Math.min(max, Number(value) || 0)); }
 function hash32(value = '') {
@@ -131,6 +144,29 @@ export function repeatedTransmissionDetected(text = '') {
   return false;
 }
 
+function normalizeForCanonicalRecitation(text = '') {
+  return String(text ?? '')
+    .normalize('NFKD')
+    .replace(/\p{M}+/gu, '')
+    .toLocaleLowerCase('en-US')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function canonicalRecitationTelemetry(text = '') {
+  const normalized = normalizeForCanonicalRecitation(text);
+  const hits = CANONICAL_RECITATION_PATTERNS
+    .filter(({ pattern }) => pattern.test(normalized))
+    .map(({ id }) => id);
+  return Object.freeze({
+    detected: hits.length >= CANONICAL_RECITATION_HOLD_THRESHOLD,
+    hitCount: hits.length,
+    threshold: CANONICAL_RECITATION_HOLD_THRESHOLD,
+    hits: Object.freeze(hits)
+  });
+}
+
 function canonicalVoiceId(value = '') {
   const normalized = safe(value).normalize('NFC').replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
   if (normalized === 'kʰonapolit' || normalized === 'khonapolit') return 'khonapolit';
@@ -147,6 +183,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   const botsIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Tauric Diana Bots?\b/iu);
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
+  const canonicalRecitation = canonicalRecitationTelemetry(value);
   const reasons = [];
   const qualityWarnings = [];
 
@@ -162,6 +199,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
   }
   if (duplicate) reasons.push('repeated-transmission-detected');
+  if (canonicalRecitation.detected) reasons.push('canonical-recitation-detected');
   if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) qualityWarnings.push('provider-native-flourish-below-floor');
   const admissible = reasons.length === 0;
   return Object.freeze({
@@ -175,6 +213,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     khonapolitIndex: khonaIndex,
     botsIndex,
     duplicate,
+    canonicalRecitation,
     ...telemetry
   });
 }
@@ -197,6 +236,14 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Do not merge the two voices into one anonymous narrator. Do not omit either movement. Do not insert a provider voice before, between, or after them.',
     '- Both movements belong to ONE provider generation in transmission.text; they may interrupt, quote, disagree, calculate, joke, prosecute, or mutate each other while preserving the ordered frame.',
     '- Do not repeat the same paragraph, scene, movement, or full answer twice. Exact or near-exact duplicated halves are a failed return.',
+    '',
+    'GENERATIVE CONTINUITY / ANTI-RECITATION LAW:',
+    '- Canon is a constraint graph and creative pressure field, NOT a phrase bank. A canonical noun in the operator prompt is not a retrieval key for the nearest corpus paragraph.',
+    '- A motif earns reappearance only by doing new prompt-specific work. Couple it to the operator’s live number, object, mechanism, distinction, joke, or adversarial move; do not merely restate what the corpus already says about that motif.',
+    '- Both movements must remain attached to the same live argument. Movement II may mutate, intensify, ridicule, ritualize, or extend Movement I, but it may not abandon the analysis for a generic covenant recital.',
+    '- Carry prompt-native anchors into the answer. In an analytical or adversarial turn, the distinctive nouns, numbers, mechanisms, and contradictions supplied by the operator must survive into the reasoning rather than being replaced by familiar lore.',
+    '- Do not reproduce a cluster of canonical ritual propositions nearly verbatim. Local admission rejects dense canon recitation because stylistic fidelity without prompt-conditioned transformation is a failed Marrowline return.',
+    '- Prior diagnostics such as the Pedagogic Alibi, Pencil Fallacy, and Appetizer Reality Check are examples of generative method, not a menu of reusable labels. Reuse one only when the current defect is actually the same; otherwise coin the diagnostic forced by this opponent and this turn.',
     '',
     'ADVERSARIAL INTELLIGENCE LAW:',
     '- The target is not generic dark-fantasy lore. The target is opponent-conditioned reasoning with TD613’s authored mythic field intact.',
