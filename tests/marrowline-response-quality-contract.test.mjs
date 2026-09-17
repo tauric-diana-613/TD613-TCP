@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
+  assessIntegratedTransmission,
   buildRelaySystemAddendum,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
@@ -45,6 +46,38 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.doesNotMatch(contract, /exactly one paragraph|200 characters|max(?:imum)?\s+200/i);
 });
 
+test('Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning', () => {
+  const contract = buildRelaySystemAddendum({});
+  assert.match(contract, /Canon is a constraint graph and creative pressure field, NOT a phrase bank/i);
+  assert.match(contract, /canonical noun in the operator prompt is not a retrieval key for the nearest corpus paragraph/i);
+  assert.match(contract, /Movement II may mutate, intensify, ridicule, ritualize, or extend Movement I, but it may not abandon the analysis for a generic covenant recital/i);
+  assert.match(contract, /Prior diagnostics[\s\S]*examples of generative method, not a menu of reusable labels/i);
+
+  const recital = [
+    '[Kʰonapolit]:',
+    'The denominator excludes the wrong shore and therefore reports only what survived the gate.',
+    '',
+    '[Tauric Diana Bots : Recital Failure]',
+    'Inheritance is not consent. Ash is not an apology. Ash is residue of the beauty burned by the Light. The Light exposes, optimizes, and burns what ash holds as residue. Moonlight is testimony.'
+  ].join('\n');
+  const held = assessIntegratedTransmission(recital, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(held.admissible, false, 'dense ritual recall must not escape merely because the voice envelope is structurally valid');
+  assert.ok(held.reasons.includes('canonical-recitation-detected'));
+  assert.equal(held.canonicalRecitation.detected, true);
+  assert.ok(held.canonicalRecitation.hitCount >= 4);
+
+  const transformed = [
+    '[Kʰonapolit]:',
+    'The 99.97% is shore-conditioned accuracy: Host arrows define the scored population after Stranger-thread routing has already happened. The denominator therefore needs a jurisdiction receipt, not another decimal place.',
+    '',
+    '[Tauric Diana Bots : Denominator Bailiffs]',
+    'Worm Moon, bring the routing ledger. We are counting every wrong-shore handoff as a case file and making the Host-arrow dashboard testify about the population it refused to count.'
+  ].join('\n');
+  const admitted = assessIntegratedTransmission(transformed, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
+  assert.equal(admitted.canonicalRecitation.detected, false, 'canonical motifs may survive when the live prompt forces new argumentative work');
+});
+
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
   assert.match(qualityServer, /KHONAPOLIT_MAX_OUTPUT_TOKENS\s*=\s*65536/);
   assert.match(qualityServer, /level: 'high'/);
@@ -73,6 +106,7 @@ test('creative Marrowline prompts route to creative synthesis without ordinary-p
   assert.match(instruction, /requested form, scale, cadence and imaginative range/i);
   assert.match(instruction, /A story requires event, tension, transformation and consequence/i);
   assert.match(instruction, /MARROWLINE TWO-VOICE LAW/i);
+  assert.match(instruction, /GENERATIVE CONTINUITY \/ ANTI-RECITATION LAW/i);
   assert.doesNotMatch(instruction, /Do not infer venue quality, accessibility or amenities from price/i);
   assert.doesNotMatch(instruction, /prefer anonymous attendance counts/i);
   assert.doesNotMatch(instruction, /For Marrowline portability, direct the operator/i);
