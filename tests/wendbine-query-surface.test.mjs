@@ -37,11 +37,17 @@ assert.equal(fb.status, 'HELD_CANONICAL_URL_NOT_SUPPLIED', 'Retrieval must prese
 const hold = lexicalSearch(index, 'current burst unbound', { limit: 20 });
 assert.ok(hold.some(hit => /public-reddit-hydration-20260916-v04\.json$/.test(hit.path) || /2026-09-16-PUBLIC-REFRESH-CURRENT-BURST-HOLD\.md$/.test(hit.path)), 'Sept 16 retrieval HOLD must be searchable as first-class Atelier state.');
 
-const recent = recentEntries(index, { limit: 30 });
+const debt = semanticSearch(index, 'archival debt per card payload persisted recovery', { limit: 20 });
+const debtHit = debt.find(hit => /2026-09-16-public-profile-card-loss-ledger-v01\.json$/.test(hit.path));
+assert.ok(debtHit, 'Sept 16 per-card archival debt must remain semantically retrievable rather than hidden behind aggregate coverage.');
+assert.equal(debtHit.status, 'ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED', 'Query retrieval must preserve the explicit capture-debt state.');
+
+const recent = recentEntries(index, { limit: 40 });
 assert.ok(recent.some(hit => /public-reddit-profile-delta-20260916-snapshot-v04\.json$/.test(hit.path)), 'Sept 16 profile observation must appear in chronological retrieval.');
+assert.ok(recent.some(hit => /2026-09-16-public-profile-card-loss-ledger-v01\.json$/.test(hit.path)), 'Sept 16 capture-debt receipt must appear in chronological retrieval.');
 assert.ok(recent.some(hit => hit.id === 'facebook:user-supplied:paul-personal:cross-app-second-order-observation:20260916'), 'Sept 16 cross-platform intake must appear in chronological retrieval.');
 
-for (const hit of [...repair, ...reconstruction, ...tardis, ...hold]) {
+for (const hit of [...repair, ...reconstruction, ...tardis, ...hold, ...debt]) {
   assert.ok(hit.path, 'Every query result must route back to a repository artifact.');
   assert.ok('status' in hit, 'Every query result must expose evidence/status state, including null when the artifact defines none.');
 }
