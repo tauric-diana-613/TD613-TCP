@@ -119,14 +119,16 @@ function installHumanSurfaceVocabulary(doc = document, root = window) {
 
 export function boundedFailureMessage(failure = {}) {
   const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
-  if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A reply came back, but it failed the conversation format checks. Your message is still here; you can retry.';
-  if (code.includes('provider_unavailable') || code.includes('provider-unavailable') || code.includes('503')) return 'The AI service could not complete this request. Your message is still here; you can retry.';
-  if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
+  // Prefer the route's typed diagnostic over its coarse HTTP envelope. Several
+  // distinct holds legitimately travel as 502/503 responses.
   if (code.includes('missing-gemini-api-key')) return 'The server AI credential is unavailable. Your task was not discarded.';
   if (code.includes('no-eligible-callable-models')) return 'No callable model route was admitted for this request. Your task was not discarded.';
+  if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A reply came back, but it failed the conversation format checks. Your message is still here; you can retry.';
+  if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
   if (code.includes('rate') || code.includes('429')) return 'The AI route is temporarily rate-limited. Your task remains in the composer for retry.';
   if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The AI route timed out before a return was admitted. Your task remains in the composer for retry.';
   if (code.includes('output-token-limit')) return 'The provider return hit its output limit and was held rather than showing a partial answer.';
+  if (code.includes('provider_unavailable') || code.includes('provider-unavailable') || code.includes('503')) return 'The AI service could not complete this request. Your message is still here; you can retry.';
   return 'No model return was admitted. Your task remains in the composer for retry.';
 }
 

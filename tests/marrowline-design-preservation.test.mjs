@@ -208,6 +208,8 @@ test('expressive line styling begins only at the bot heading with exact source t
 
 test('failure notice distinguishes unavailable service, rejected format and browser timeout', () => {
   assert.match(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}), /service could not complete/);
+  assert.match(boundedFailureMessage({error:'no-eligible-callable-models',httpStatus:503}), /No callable model route was admitted/,
+    'typed route diagnostic takes precedence over the shared HTTP failure envelope');
   assert.match(boundedFailureMessage({error:'khonapolit-output-quality-held'}), /reply came back.*format checks/);
   assert.match(boundedFailureMessage({error:'request-timeout'}), /timed out/);
 });
