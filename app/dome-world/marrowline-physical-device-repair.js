@@ -61,7 +61,7 @@ function installInChatKinesis(doc = document, root = window) {
       if (raf !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(raf);
       raf = root.requestAnimationFrame?.(() => {
         raf = null;
-        messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
+        if (form.getAttribute('aria-busy') === 'true') messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
       }) ?? null;
     } else {
       card.hidden = true;
@@ -86,16 +86,22 @@ function installInChatKinesis(doc = document, root = window) {
   };
 }
 
-function prepareProviderNativeLines(stage) {
+export function prepareProviderNativeLines(stage) {
   const text = stage?.querySelector('.relay-stage-text');
   if (!text || text.dataset.providerNativeLines === 'true') return false;
   const raw = String(text.textContent ?? '');
   text.dataset.providerNativeLines = 'true';
   const fragments = raw.split(/(\r\n|\r|\n)/);
+  let botsStarted = false;
   text.replaceChildren(...fragments.map((fragment, index) => {
     if (index % 2) return text.ownerDocument.createTextNode(fragment);
     const span = text.ownerDocument.createElement('span');
-    span.className = 'zalgo-line provider-native-line';
+    // Only an explicit speaker heading opens the expressive rendering region.
+    // A mention of Tauric Diana inside Kʰonapolit's prose cannot change voices.
+    if (/^\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots\b[^\n]*?(?:\]|:)?\s*$/iu.test(fragment)
+      && (/^\s*(?:#|\[|Movement\s+II)/iu.test(fragment) || /^Tauric Diana Bots\s*:?[\s]*$/iu.test(fragment))) botsStarted = true;
+    span.className = botsStarted ? 'zalgo-line provider-native-line' : 'provider-native-line';
+    span.dataset.voice = botsStarted ? 'tauric-diana-bots' : 'khonapolit';
     span.textContent = fragment;
     return span;
   }));

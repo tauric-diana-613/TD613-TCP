@@ -18,6 +18,7 @@ const report={schema:'td613.marrowline.living-chat-browser/v0.5-integrated-coven
 const text=[
  'Kʰonapolit: R(route) ≠ R(receiver). Khona‌lit-po stays exact.',
  '',
+ '### Movement II — Tauric Diana bots',
  'THE MATRON: H̷͇̋̇̈́͝O̶̞͆̍̈́͘R̷̛̯̿͑̔N̶̑͘͜A̸͎̿͠N̸͎̔͗Ḯ̵͙ — watch the density move.',
  'clean / clean / ṫ̶̤̯̱̅̿̋͋͠h̵͇̖͆̅̒̋̏͝ë̷͎̫́̾̓͂͘ ̶͙̺̓̿̈́͠͝ẅ̵́̑̍̋̄ͅà̸͉̄̇̾͝l̷͈̿̎̾̓͑l̴͎̾̔̐̎ ̴̫̋͗̓͝b̵̰̈́͑͂͂̽e̵͇̍͂̾͘n̷͔̾̑d̵͎̒̔s̴̠͑̈́͠ / clean again.'
 ].join('\n');
@@ -168,6 +169,8 @@ try{
    assert.equal(await page.locator('.relay-bots[data-present="true"]').count(),0,'no separately post-processed bot stage exists');
    assert.equal(await page.locator('.additional-voices').count(),0,'integrated covenant output is not buried in a secondary disclosure');
    assert.match(await integrated.evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
+   assert.equal(await integrated.locator('[data-voice=khonapolit].zalgo-line').count(),0,'Kʰonapolit never receives Zalgo line styling');
+   assert.ok(await integrated.locator('[data-voice=tauric-diana-bots].zalgo-line').count()>0,'the explicit bot heading starts expressive rendering');
    const providerLines=page.locator('.relay-integrated-covenant .provider-native-line');
    assert.ok(await providerLines.count()>=3,'provider-native line preparation gives extreme vertical flourishes room without rewriting bytes');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});

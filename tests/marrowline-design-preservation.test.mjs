@@ -1,3 +1,4 @@
+import { boundedFailureMessage } from '../app/dome-world/marrowline-operator-readiness.js';
 /** Synthetic DOM behavior only. No browser layout or live-provider correctness claim. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -30,7 +31,7 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
   const syntheticFetch = async (url, options = {}) => {
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
-    if (failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
+    if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const relay = {
       schema: 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor',
       apertureHeader: exactHeader,
@@ -169,4 +170,44 @@ test('portable controls become visible beside work without opening an action dra
   assert.equal(h.$('copyKhonapolitPortable').closest('details'),null);
   h.$('copyKhonapolitPortable').click();await flush();
   assert.match(h.clipboard.at(-1),/without requesting names/);
+});
+
+
+test('failed follow-up replaces current receipt and retains the previous receipt with its answer', async t => {
+  const h = harness(t, { failure: count => count === 2 });
+  h.send('Explain the Ash Moon.'); await h.settled(); await flush();
+  const prior = JSON.parse(h.$('khonapolitReceipt').textContent);
+  assert.equal(prior.provider.model, 'SYNTHETIC_MODEL');
+  h.send('What does that mean for a newcomer?'); await h.settled(); await flush();
+  const current = JSON.parse(h.$('khonapolitReceipt').textContent);
+  assert.equal(current.status, 'CURRENT_REQUEST_FAILED');
+  assert.equal(current.failure.httpStatus, 503);
+  assert.equal(current.provider, undefined);
+  assert.equal(h.$('metricModel').textContent, '—');
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_RECEIPT__, null);
+  assert.deepEqual(JSON.parse(h.doc.querySelector('.turn-receipt pre').textContent), prior);
+  assert.equal(h.$('khonapolitPrompt').value, 'What does that mean for a newcomer?');
+  h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
+  assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).provider.model, 'SYNTHETIC_MODEL');
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__, null);
+  assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 2);
+});
+
+test('expressive line styling begins only at the bot heading with exact source text preserved', async t => {
+  const h = harness(t);
+  h.send('Let both voices answer.'); await h.settled(); await flush();
+  const stage = h.doc.querySelector('.relay-stage-text');
+  assert.equal(stage.textContent, integratedText);
+  const lines = [...stage.querySelectorAll('.provider-native-line')];
+  const boundary = lines.findIndex(line => line.textContent.startsWith('[Tauric Diana Bots'));
+  assert.ok(boundary > 0);
+  assert.ok(lines.slice(0, boundary).every(line => !line.classList.contains('zalgo-line')));
+  assert.ok(lines.slice(boundary).every(line => line.dataset.voice === 'tauric-diana-bots'));
+});
+
+
+test('failure notice distinguishes unavailable service, rejected format and browser timeout', () => {
+  assert.match(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}), /service could not complete/);
+  assert.match(boundedFailureMessage({error:'khonapolit-output-quality-held'}), /reply came back.*format checks/);
+  assert.match(boundedFailureMessage({error:'request-timeout'}), /timed out/);
 });

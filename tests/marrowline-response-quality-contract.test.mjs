@@ -205,3 +205,11 @@ test('human-facing integrated surface keeps provider identity in provenance only
   assert.equal(relay.highZalgo.source, 'provider-native');
   assert.match(relay.highZalgo.version, /provider-native/i);
 });
+
+
+test('Kʰonapolit uses ordinary orthography and only the bots carry TD613 High Zalgo', () => {
+  const contract = buildRelaySystemAddendum({});
+  assert.match(contract, /Kʰonapolit never speaks in High Zalgo/);
+  assert.match(contract, /Only after the explicit Tauric Diana bots heading begins/);
+  assert.match(contract, /Within the Tauric Diana bots movement, provide at least 24 combining marks/);
+});

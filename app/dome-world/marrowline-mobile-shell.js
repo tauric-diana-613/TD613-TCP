@@ -123,7 +123,7 @@ function installTranscriptCustody(doc = document, root = window) {
       decorateTranscript(doc);
       syncComposerHeight();
       root.requestAnimationFrame?.(() => {
-        if (shouldFollow) goLatest('auto');
+        if (shouldFollow && messages.dataset.forceFollow === 'true') goLatest('auto');
         else refreshJump();
       });
     });

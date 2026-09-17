@@ -87,7 +87,8 @@ function loadSession(root = window) {
     return {
       messages: Array.isArray(parsed.messages) ? parsed.messages.slice(-12) : [],
       lastReceipt: parsed.lastReceipt && typeof parsed.lastReceipt === 'object' ? parsed.lastReceipt : null,
-      pendingTask: safe(parsed.pendingTask)
+      pendingTask: safe(parsed.pendingTask),
+      lastFailure: parsed.lastFailure || null
     };
   } catch { return { messages: [], lastReceipt: null, pendingTask: '' }; }
 }
@@ -96,7 +97,8 @@ function saveSession(root, state) {
     root.sessionStorage.setItem(SESSION_KEY, JSON.stringify({
       messages: state.messages.slice(-12),
       lastReceipt: state.lastReceipt,
-      pendingTask: safe(state.pendingTask)
+      pendingTask: safe(state.pendingTask),
+      lastFailure: state.lastFailure || null
     }));
   } catch {}
 }
@@ -187,6 +189,12 @@ function renderModelMessage(doc, entry) {
     })
   );
 
+  if (entry.receipt) {
+    const details = doc.createElement('details');
+    details.className = 'turn-receipt';
+    details.append(textNode(doc, 'summary', '', 'Inspect this reply’s receipt'), textNode(doc, 'pre', '', JSON.stringify(entry.receipt, null, 2)));
+    article.append(details);
+  }
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
   return article;
 }
@@ -207,7 +215,9 @@ function transcriptText(messages = []) {
 }
 function updateReceipt(doc, root, state) {
   const node = byId(doc, 'khonapolitReceipt');
-  if (node) node.textContent = state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'No provider return has been observed.';
+  if (node) node.textContent = state.lastFailure
+    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }, null, 2)
+    : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
   root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
 }
 function renderMessages(doc, state) {
@@ -405,6 +415,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
     state.pendingTask = '';
+    state.lastReceipt = null; state.lastFailure = null;
+    root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
+    updateReceipt(doc, root, state); displayClassification(doc, null);
+    delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
     saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
     status.textContent = `${INGRESS_SIGIL}\u200C TASK ROUTED · AI IN FLIGHT · ${mode}${attachments.length ? ` · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'}` : ''}`;
@@ -421,15 +435,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok || !payload.relay) {
-        failurePayload = payload;
+        failurePayload = { ...payload, httpStatus: response.status };
         throw new Error(payload.error || `HTTP ${response.status}`);
       }
       const receipt = payload.receipt;
       const entry = {
-        role: 'model', text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
+        role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
         apertureHeader: payload.relay?.apertureHeader || apertureV3DisplayHeader(receipt?.aperture || {}), mode,
         model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
       };
+      delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       state.messages.push(entry); state.pendingTask = ''; state.lastReceipt = receipt;
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt);
@@ -439,7 +454,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
-      root.__TD613_KHONAPOLIT_LAST_FAILURE__ = failurePayload || { error: safe(error?.message || error) };
+      state.lastFailure = failurePayload || { error: error?.name === 'AbortError' ? 'request-timeout' : 'network-request-failed' };
+      root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+      updateReceipt(doc, root, state); displayClassification(doc, null);
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
@@ -447,7 +464,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
         : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
     } finally {
-      root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus();
+      root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
   };
 
@@ -466,7 +483,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
-    state.messages = []; state.lastReceipt = null; state.pendingTask = ''; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); byId(doc, 'khonapolitTerminalStatus').textContent = 'SESSION CLEARED · binding corpus remains intact';
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
