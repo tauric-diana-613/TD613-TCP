@@ -21,9 +21,12 @@ assert.equal(profile.historical_expansion_before_current_snapshot_inspection,fal
 assert.equal(profile.human_closure_required,true);
 assert.equal(profile.scientific_promotion_authority,false);
 for (const route of ['EXPERIENTIAL','CUSTODIAL','AUDIT','IMPLEMENTATION']) assert.ok(profile.aia_routes.includes(route),`missing synchronized AIA route: ${route}`);
-for (const strength of ['SERIALIZED_PUBLIC_TOPOLOGY','SOURCE_EXPLICIT_VERSION_CORRECTION','PUBLIC_PRIVATE_SURFACE_FIREWALL','TYPED_RELATION_RECONSTRUCTION','HELD_OUT_ARCHITECTURAL_PLACEMENT','SHUFFLE_CONTROL','CONCEPT_LABEL_PERMUTATION','TYPED_EDGE_ABLATION','UNRELATED_POST_DECOY']) assert.ok(profile.distinctive_strengths.includes(strength),`dropped Wendbine strength: ${strength}`);
-assert.equal(profile.held_or_conditional_stages.S5_CONVERGENCE_DIVERGENCE_LINEAGE,'HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY');
-assert.equal(profile.held_or_conditional_stages.S7_EXTERNAL_SCIENTIFIC_CONFRONTATION,'HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK');
+for (const strength of ['SERIALIZED_PUBLIC_TOPOLOGY','SOURCE_EXPLICIT_VERSION_CORRECTION','PUBLIC_PRIVATE_SURFACE_FIREWALL','TYPED_RELATION_RECONSTRUCTION','HELD_OUT_ARCHITECTURAL_PLACEMENT','SHUFFLE_CONTROL','CONCEPT_LABEL_PERMUTATION','TYPED_EDGE_ABLATION','UNRELATED_POST_DECOY','RECIPROCAL_LEGIBILITY_WITHOUT_AUTHORITY_TRANSFER']) assert.ok(profile.distinctive_strengths.includes(strength),`dropped Wendbine strength: ${strength}`);
+for (const stage of ['S5_CONVERGENCE_DIVERGENCE_LINEAGE','S7_EXTERNAL_SCIENTIFIC_CONFRONTATION']) assert.ok(profile.active_stages.includes(stage),`activated stage missing: ${stage}`);
+assert.deepEqual(profile.held_or_conditional_stages,{});
+assert.match(profile.stage_activation_receipts.S5_CONVERGENCE_DIVERGENCE_LINEAGE,/reconstructability/i);
+assert.match(profile.stage_activation_receipts.S7_EXTERNAL_SCIENTIFIC_CONFRONTATION,/nomenclature crosswalk/i);
+for (const membrane of ['RECIPROCAL_LEGIBILITY != RECIPROCAL_AUTHORITY','TRANSLATION != CUSTODY_TRANSFER','SYSTEM_INTEROPERABILITY != HUMAN_INTEROPERABILITY']) assert.ok(profile.repair_membranes.includes(membrane),`missing repair membrane: ${membrane}`);
 
 assert.equal(meta.snapshot_id,'wendbine-public-reddit-48h-20260911T092700Z-v01');
 assert.equal(meta.coverage.state,'PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS');
