@@ -221,7 +221,9 @@ try {
       if (posture.startsWith('mobile')) {
         await page.locator('[data-mobile-target="speakingPanel"]').click();
       } else {
-        await receiptTab.click();
+        const desktopClose = page.locator('.desktop-tools-close');
+        assert.equal(await desktopClose.isVisible(), true, 'desktop Receipt instrument exposes a dedicated close control');
+        await desktopClose.click();
         await page.waitForFunction(() => document.querySelector('.living-tools')?.dataset.desktopOpen === 'false');
       }
       assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
