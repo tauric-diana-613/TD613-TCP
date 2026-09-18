@@ -92,7 +92,7 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, wait for bounded Vercel acknowledgement of that exact release SHA, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
           EOF_COMMENT
           )"
 
