@@ -414,7 +414,7 @@ export function installMarrowlineDesktopRepair(doc = document, root = window) {
     version: MARROWLINE_DESKTOP_REPAIR_VERSION,
     state: 'ACTIVE',
     conversationChrome: 'send-left-retry-copy-clear-right',
-    operatorSeal: 'advanced-programmatic-only'
+    operatorSeal: 'receipt-instrument-explicit-operator'
   });
   return root.__TD613_MARROWLINE_DESKTOP_REPAIR__;
 }
