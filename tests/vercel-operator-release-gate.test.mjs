@@ -30,6 +30,7 @@ assert.match(practiceReleaseContracts, /pedagogue-practice-fixture\.test\.mjs/);
 assert.match(practiceReleaseContracts, /pedagogue-design-gate\.test\.mjs/);
 assert.doesNotMatch(practiceReleaseContracts, /ash-a|ash-lifecycle|ash-keep-production/i, 'Practice release contracts must not bind or re-litigate live Ash runtime.');
 assert.match(workflow, /^\s{2}contents: write$/m);
+assert.match(workflow, /^\s{2}statuses: read$/m);
 assert.match(workflow, /mode=direct-token/);
 assert.match(workflow, /mode=git-fallback/);
 assert.match(workflow, /secrets\.VERCEL_TOKEN/);
@@ -38,17 +39,26 @@ assert.match(workflow, /VERCEL_SCOPE: tauric-diana-s-projects/);
 assert.equal((workflow.match(/vercel@latest deploy/g) || []).length, 1);
 assert.match(workflow, /Create one bounded Git-fallback release commit/);
 assert.match(workflow, /config\.git\.deploymentEnabled = true/);
-assert.match(workflow, /Restore the Git deployment lock immediately after fallback admission/);
+assert.match(workflow, /Await Vercel acknowledgement of fallback release commit/);
+assert.match(workflow, /TD613_VERCEL_ACK_ATTEMPTS: '24'/);
+assert.match(workflow, /TD613_VERCEL_ACK_DELAY_MS: '5000'/);
+assert.match(workflow, /commits\/\\\$\{sha\}\/statuses\?per_page=100/);
+assert.match(workflow, /String\(row\?\.context \|\| ''\)\.toLowerCase\(\) === 'vercel'/);
+assert.match(workflow, /state === 'failure' \|\| state === 'error'/);
+assert.match(workflow, /Vercel never acknowledged fallback release SHA/);
+assert.match(workflow, /Restore the Git deployment lock immediately after fallback acknowledgement attempt/);
 assert.match(workflow, /deploymentEnabled: false/);
 assert.equal((workflow.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((workflow.match(/deploymentEnabled: false/g) || []).length, 1);
 
 const releaseIndex = workflow.indexOf('- name: Create one bounded Git-fallback release commit');
-const relockIndex = workflow.indexOf('- name: Restore the Git deployment lock immediately after fallback admission');
+const ackIndex = workflow.indexOf('- name: Await Vercel acknowledgement of fallback release commit');
+const relockIndex = workflow.indexOf('- name: Restore the Git deployment lock immediately after fallback acknowledgement attempt');
 const resolveIndex = workflow.indexOf('- name: Resolve deployed production URL');
 const exactIndex = workflow.indexOf('- name: Verify deployed bytes match the authorized source packet');
 const browserInstallIndex = workflow.indexOf('- name: Install one production browser engine');
-assert.ok(releaseIndex >= 0 && relockIndex > releaseIndex, 'fallback relock must follow the single deployable release commit');
+assert.ok(releaseIndex >= 0 && ackIndex > releaseIndex, 'Vercel handoff acknowledgement must follow the single deployable release commit');
+assert.ok(relockIndex > ackIndex, 'fallback relock must follow the bounded Vercel acknowledgement attempt');
 assert.ok(resolveIndex > relockIndex, 'fallback must be relocked before production URL observation begins');
 assert.ok(exactIndex > relockIndex, 'exact-source observation must happen only after the fallback gate is closed');
 assert.ok(browserInstallIndex > relockIndex, 'browser installation must happen only after the fallback gate is closed');
@@ -83,7 +93,7 @@ assert.doesNotMatch(materializeReceiptStep, /^\s+if:/m,
   'the exact-source receipt must be materialized for Giving, practice, and full-product releases');
 assert.match(workflow, /app\/giving\/history\/release-source\.json/);
 assert.match(workflow, /source_packet_commit: sourcePacketCommit/);
-const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback release commit[\s\S]*?(?=\n\s+- name: Restore the Git deployment lock immediately after fallback admission)/)?.[0] || '';
+const fallbackRelease = workflow.match(/- name: Create one bounded Git-fallback release commit[\s\S]*?(?=\n\s+- name: Await Vercel acknowledgement of fallback release commit)/)?.[0] || '';
 assert.match(fallbackRelease, /git add vercel\.json app\/giving\/history\/release-source\.json/,
   'the one deployable fallback commit must bind the exact-source receipt for every release scope');
 
@@ -150,7 +160,7 @@ for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase I
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
-assert.match(law, /one deployable fallback commit → immediate relock → production observation/);
+assert.match(law, /one deployable fallback commit → bounded Vercel acknowledgement → immediate relock → production observation/);
 assert.match(law, /The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing/);
 assert.match(law, /direct token bridge/);
 assert.match(law, /bounded Git fallback/);
@@ -160,4 +170,4 @@ assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
 assert.match(law, /stale-queue stability window/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, immediate relock, stale-queue stability, and bounded scope-aligned production confirmation');
+console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, Vercel handoff acknowledgement, immediate relock, stale-queue stability, and bounded scope-aligned production confirmation');
