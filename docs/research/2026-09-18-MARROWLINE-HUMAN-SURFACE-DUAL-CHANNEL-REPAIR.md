@@ -115,15 +115,11 @@ DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW
 
 It uses positive compilation language rather than repeated anti-roleplay priming. The provider remains provenance/transport infrastructure and is not inserted as a third speaker.
 
-Sampling is raised from the former conservative setting:
+Gemini 3.x sampling remains provider-default. Current Gemini API guidance recommends removing temperature/top-p/top-k overrides for 3.x and keeping the default temperature at 1.0. The local generation envelope therefore strips legacy sampling overrides for Gemini 3.x rather than forcing a lower value.
 
-- Balanced: temperature 0.92
-- Analytic: temperature 0.86
-- Lineage: temperature 0.96
-- topP 0.95
-- topK 64
+The operator-supplied Gemini diagnostic correctly identified output entropy as a variable worth testing; the current API-specific implementation expresses that by preserving Gemini 3.x defaults while changing prompt geometry, model routing and the hard output-quality gate.
 
-Hard local admission remains the safety/quality gate.
+Hard local admission remains the quality gate.
 
 ## Structured-output falsifier
 
