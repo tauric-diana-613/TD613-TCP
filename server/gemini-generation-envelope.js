@@ -1,10 +1,8 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.2-interactive-profile-20260916';
-export const GEMINI25_HIGH_THINKING_BUDGET = 24576;
+export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.3-gemini3-only-20260918';
 export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-interactive';
 export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 16384;
-export const KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET = 1024;
 
 const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high']);
 const GENERATION_PROFILE_STORAGE = new AsyncLocalStorage();
@@ -15,7 +13,6 @@ export function normalizeGeminiModel(model = '') {
 
 export function geminiGeneration(model = '') {
   const normalized = normalizeGeminiModel(model);
-  if (/^gemini-2\.5(?:[.-]|$)/.test(normalized)) return '2.5';
   if (/^gemini-3(?:[.-]|$)/.test(normalized)) return '3';
   return 'unknown';
 }
@@ -41,8 +38,7 @@ function finiteNumber(value) {
 export function geminiSamplingConfig(model = '', sampling = {}) {
   // Gemini 3.x is tuned for provider-default sampling. Google explicitly warns that
   // legacy temperature/topP/topK overrides can degrade reasoning quality. Preserve
-  // those controls only for 2.5 and unknown/synthetic models where the caller's
-  // legacy envelope remains the conservative compatibility posture.
+  // caller controls only for unknown/synthetic fixtures. Active provider routes are Gemini 3.x.
   if (geminiGeneration(model) === '3') return {};
   const config = {};
   if (finiteNumber(sampling.temperature)) config.temperature = sampling.temperature;
@@ -53,8 +49,7 @@ export function geminiSamplingConfig(model = '', sampling = {}) {
 
 export function geminiThinkingConfig(model = '', {
   enabled = false,
-  level = 'high',
-  budget = GEMINI25_HIGH_THINKING_BUDGET
+  level = 'high'
 } = {}) {
   if (!enabled) return null;
   const generation = geminiGeneration(model);
@@ -68,11 +63,6 @@ export function geminiThinkingConfig(model = '', {
       requestedLevel = normalizeGeminiModel(model) === 'gemini-3.5-flash' ? 'low' : 'medium';
     }
     return { thinkingLevel: requestedLevel };
-  }
-  if (generation === '2.5') {
-    let requested = Number.isInteger(budget) ? budget : GEMINI25_HIGH_THINKING_BUDGET;
-    if (khonapolitInteractiveProfile()) requested = Math.min(requested, KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET);
-    return { thinkingBudget: Math.max(0, Math.min(requested, GEMINI25_HIGH_THINKING_BUDGET)) };
   }
   return null;
 }
@@ -114,7 +104,7 @@ export function describeGeminiGenerationEnvelope(model = '', options = {}) {
     version: GEMINI_GENERATION_ENVELOPE_VERSION,
     model: normalizeGeminiModel(model),
     generation,
-    sampling: generation === '3' ? 'provider-default' : 'caller-legacy-compatible',
+    sampling: generation === '3' ? 'provider-default' : 'caller-synthetic-compatible',
     thinking: thinkingConfig ? Object.freeze({ ...thinkingConfig }) : null,
     profile: currentGeminiGenerationProfile()
   });
