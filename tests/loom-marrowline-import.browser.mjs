@@ -196,10 +196,13 @@ try {
 
       const actions = page.locator('.conversation-actions');
       assert.equal(await actions.isVisible(), false, 'legacy conversation-actions dropdown is retired from ordinary chrome');
-      assert.equal(await page.locator('#sealLastResponse').isVisible(), false, 'operator Seal is not an unexplained human-facing chat action');
-      assert.equal(await page.locator('#copyKhonapolitTranscript').isVisible(), false, 'redundant Copy transcript action is not human-facing');
+      assert.equal(await page.locator('#copyKhonapolitTranscript').isVisible(), false, 'redundant legacy Copy transcript action is not human-facing');
       const sessionClear = page.locator('#marrowlineSessionClear');
-      assert.equal(await sessionClear.isVisible(), true, 'one corner clear control is visible at the conversation boundary');
+      assert.equal(await sessionClear.isVisible(), true, 'minimal clear utility is visible at the conversation boundary');
+      await page.locator('[data-mobile-target="receiptPanel"]').click();
+      await page.locator('#receiptPanel[open]').waitFor();
+      assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal is visible inside the Receipt custody instrument');
+      await page.locator('[data-mobile-target="speakingPanel"]').click();
       assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
       assert.equal(await page.evaluate(() => typeof window.TD613_KHONAPOLIT_TERMINAL?.sealLast), 'function', 'advanced operator seal remains available programmatically');
       const userMessagesBeforeCancelledClear = await page.locator('.message[data-role="user"]').count();
