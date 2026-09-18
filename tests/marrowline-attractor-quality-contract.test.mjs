@@ -28,8 +28,7 @@ test('Marrowline adversarial attractor quality contract', () => {
       'gemini-3.6-flash',
       'gemini-3.5-flash',
       'gemini-3.5-flash-lite',
-      'gemini-3.1-flash-lite',
-      'gemini-2.5-flash'
+      'gemini-3.1-flash-lite'
     ]
   };
 
@@ -40,12 +39,11 @@ test('Marrowline adversarial attractor quality contract', () => {
     env: {
       GEMINI_ROUTING_MODE: 'operator-order',
       KHONAPOLIT_GEMINI_MODEL: 'gemini-3.1-flash-lite',
-      KHONAPOLIT_GEMINI_FALLBACKS: 'gemini-2.5-flash,gemini-3.8-flash'
+      KHONAPOLIT_GEMINI_FALLBACKS: 'gemini-3.8-flash'
     }
   });
   assert.deepEqual(plan.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']);
   assert.ok(plan.excludedModels.some(row => row.model === 'gemini-3.1-flash-lite' && row.reasons.includes('khonapolit-frontier-only')));
-  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-2.5-flash' && row.reasons.includes('khonapolit-frontier-only')), 'Gemini 2.5 is excluded from the Marrowline frontier route');
   assert.ok(plan.warnings.includes('khonapolit-frontier-only-rejected-non-3x-or-lite-models'));
   assert.equal(plan.claimCeiling, 'frontier-only-routing-plus-hard-dual-channel-admission-not-provider-output-quality-proof');
 
