@@ -17,9 +17,9 @@ const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8
 
 const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
 
-test('independent Marrowline provider routing preserves inherited completion windows plus diversified fallback runway', () => {
+test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash']);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 32000,
     'primary preserves the previously witnessed completion window');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3 }), 10500,
