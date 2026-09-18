@@ -190,15 +190,27 @@ This lane must never become a generic production-test escape hatch. A prior outp
 
 ## Independent relock safety
 
-`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and provider-held observation:
+`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and provider-held observation.
+
+Ordinary production release and emergency relock recovery use different issue #405 commands:
 
 ```text
-independent relock safety
-→ contents write permitted only to close a stranded lock
-→ deployment count = 0
-→ no browser installation
-→ no Vercel invocation
+/td613-vercel-release PRODUCTION <exact-current-main-sha>
+    → Vercel Operator Release only
+    → bounded deployment ceiling = 1
+    → release workflow itself relocks immediately after fallback admission
+
+/td613-vercel-relock PRODUCTION <authorized-source-sha>
+    → independent Relock Safety only
+    → contents write permitted only to close a stranded lock
+    → deployment count = 0
+    → no browser installation
+    → no Vercel invocation
 ```
+
+The two workflows retain the same `td613-vercel-production-release` concurrency group so an explicitly invoked recovery cannot overlap an active deployment. They MUST NOT subscribe to the same ordinary release verb. A release comment that awakens both workflows creates a scheduler race in which the safety membrane can consume the shared concurrency slot and cancel the actual release before it receives a job.
+
+The installed ChatGPT/Codex connector may transport either exact #405 command only after the human operator explicitly authorizes the corresponding release or recovery action in chat. Duplicate connector delivery does not widen authority: a release remains bound to exact current main, while relock recovery is idempotent when the Git deployment lock is already closed.
 
 Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Provider-held re-observation likewise remains separate because granting its read-only observational authority to the deployment workflow would make a later witness indistinguishable from a second release attempt. These therefore remain distinct members of the five durable workflow authority surfaces.
 
