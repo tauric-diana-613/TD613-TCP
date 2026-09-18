@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { buildLoomTaskProviderRequest, createLoomTaskHandler, validateLoomTaskInput, selectLoomProviderModels, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET, LOOM_TASK_MAX_PROVIDER_CALLS, LOOM_TASK_TRANSIENT_BACKOFF_MS, LOOM_TASK_GEMINI25_THINKING_BUDGET, LOOM_TASK_FALLBACK_THINKING_LEVEL, LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET } from '../server/loom-task.js';
+import { buildLoomTaskProviderRequest, createLoomTaskHandler, validateLoomTaskInput, selectLoomProviderModels, LOOM_TASK_SCHEMA, LOOM_TASK_RESULT_SCHEMA, LOOM_TASK_TIMEOUT_MS, LOOM_TASK_OUTPUT_TOKEN_BUDGET, LOOM_TASK_MAX_PROVIDER_CALLS, LOOM_TASK_TRANSIENT_BACKOFF_MS, LOOM_TASK_FALLBACK_THINKING_LEVEL } from '../server/loom-task.js';
 const task = () => ({ schema: LOOM_TASK_SCHEMA, request_id: 'fixture-1', task: 'Compare budget and dependencies using only the shared packet.', documents: [{ id: 'budget', name: 'Shared budget', text: 'Project Rowan has 12 workstreams and a projected budget of 42000.' }], rules: ['Use project aliases.'] });
 const answer = () => ({ answer: 'Project Rowan has 12 workstreams; dependencies remain unspecified [budget].', missing_information: ['Dependency edges'], used_document_ids: ['budget'], suggested_next_step: 'Supply a dependency map with aliases.' });
 function payload(value = answer(), finishReason = 'STOP') { return { candidates: [{ finishReason, content: { parts: [{ text: JSON.stringify(value) }] } }], usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180, hidden: 'omit', thoughtsTokenCount: -1 } }; }
@@ -40,13 +40,13 @@ test('real provider boundary builds structured generation from admitted input, p
   assert.equal(r.headers['Cache-Control'], 'no-store, max-age=0');
 });
 
-test('Loom thinking controls remain compatible across Gemini 3 and Gemini 2.5 generations', () => {
-  const g3 = buildLoomTaskProviderRequest(task(), 'gemini-3.8-flash');
-  assert.deepEqual(g3.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
-  const g25 = buildLoomTaskProviderRequest(task(), 'gemini-2.5-flash');
-  assert.deepEqual(g25.generationConfig.thinkingConfig, { thinkingBudget: LOOM_TASK_GEMINI25_THINKING_BUDGET });
-  assert.equal(LOOM_TASK_GEMINI25_THINKING_BUDGET, 24576);
-  assert.equal(Object.hasOwn(g25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
+test('Loom thinking controls stay within Gemini 3.x reasoning levels', () => {
+  const primary = buildLoomTaskProviderRequest(task(), 'gemini-3.8-flash');
+  const fallback35 = buildLoomTaskProviderRequest(task(), 'gemini-3.5-flash', { fallback: true });
+  const fallback37 = buildLoomTaskProviderRequest(task(), 'gemini-3.7-flash', { fallback: true });
+  assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FALLBACK_THINKING_LEVEL });
+  assert.deepEqual(fallback37.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FALLBACK_THINKING_LEVEL });
 });
 
 test('reject unknown fields, sparse lists, duplicates, credential fields and oversized inputs before provider access', async () => {
@@ -120,11 +120,11 @@ test('one transient HTTP failure may fail over to the next eligible model', asyn
 });
 
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {
-  assert.deepEqual(selectLoomProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']),
-    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+  assert.deepEqual(selectLoomProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
   const attempted = []; const sleeps = [];
   const result = await harness({
-    resolvePlan: async () => ({ callableModels: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] }),
+    resolvePlan: async () => ({ callableModels: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'] }),
     sleep: async ms => sleeps.push(ms),
     fetchImpl: async (url, options) => {
       const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
@@ -133,20 +133,19 @@ test('quality-first Loom failover diversifies away from adjacent frontier siblin
     }
   }).run();
   assert.equal(result.status, 200);
-  assert.deepEqual(attempted.map(row => row.model), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+  assert.deepEqual(attempted.map(row => row.model), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
   assert.deepEqual(attempted[0].request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   assert.deepEqual(attempted[1].request.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FALLBACK_THINKING_LEVEL });
-  assert.deepEqual(attempted[2].request.generationConfig.thinkingConfig, { thinkingBudget: LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET });
-  assert.equal(Object.hasOwn(attempted[2].request.generationConfig.thinkingConfig, 'thinkingLevel'), false);
+  assert.deepEqual(attempted[2].request.generationConfig.thinkingConfig, { thinkingLevel: LOOM_TASK_FALLBACK_THINKING_LEVEL });
   assert.deepEqual(sleeps, [...LOOM_TASK_TRANSIENT_BACKOFF_MS]);
   assert.equal(result.body.observations.provider_calls, 3);
-  assert.equal(result.body.observations.model, 'gemini-2.5-flash');
-  assert.equal(result.body.observations.thinking_level, 'not-applicable');
-  assert.equal(result.body.observations.thinking_budget, LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET);
+  assert.equal(result.body.observations.model, 'gemini-3.7-flash');
+  assert.equal(result.body.observations.thinking_level, LOOM_TASK_FALLBACK_THINKING_LEVEL);
+  assert.equal(Object.hasOwn(result.body.observations, 'thinking_budget'), false);
   assert.deepEqual(result.body.observations.provider_attempts, [
     { model: 'gemini-3.8-flash', status: 503 },
     { model: 'gemini-3.5-flash', status: 503 },
-    { model: 'gemini-2.5-flash', status: 200 }
+    { model: 'gemini-3.7-flash', status: 200 }
   ]);
 });
 
