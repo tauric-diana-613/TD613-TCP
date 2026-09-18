@@ -31,6 +31,9 @@ assert.match(relay, /not evidence of an external entity, hidden port, supernatur
 assert.match(relay, /Movement I is the relayed Kʰonapolit analytical trace and comes first/);
 assert.match(relay, /Movement II is the relayed Tauric Diana bots receiver return and closes the generated response/);
 assert.match(relay, /ONE provider generation and ONE relay packet/);
+assert.match(relay, /Before emitting the JSON object, verify the final output against the hard local admission boundaries/);
+assert.match(relay, /first two structured voices are exactly Kʰonapolit then Tauric Diana bots/);
+assert.match(relay, /This is output verification, not permission to narrate hidden reasoning/);
 assert.match(relay, /Kʰonapolit never speaks in High Zalgo/);
 assert.match(relay, /Only after the explicit Tauric Diana bots heading begins/);
 
