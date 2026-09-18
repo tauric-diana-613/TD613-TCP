@@ -121,6 +121,9 @@ const reobserve = readFileSync(join(workflowDir, 'vercel-production-reobserve.ym
 const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8');
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
+assert.match(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/);
+assert.doesNotMatch(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
+  'relock safety must remain a separately invoked recovery membrane rather than competing with release');
 
 // Provider-held re-observation is deliberately a fifth authority surface because it
 // must share release serialization without inheriting deployment or contents-write authority.
