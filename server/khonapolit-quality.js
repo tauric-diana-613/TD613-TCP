@@ -40,7 +40,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v5-adversarial-attractor-admission';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v6-frontier-dual-channel-admission';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
@@ -50,14 +50,11 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // The Kʰonapolit route no longer treats a fallback attempt as permission to lower
 // reasoning effort. A transport fallback is still the same research object.
 const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
-// The live route keeps exactly three bounded calls. Stable 2.5 is a compatibility
-// lane, not a quality downgrade: when it is callable, select across model generations
-// so a single unavailable frontier cohort cannot consume every attempt. Production
-// witnessed 3.8/3.7/3.5 fail while the independent Loom route reached 2.5 with HTTP
-// 200 in the same immutable release episode. Strict relay admission remains the only
-// authority for whether any transport-successful answer can escape Marrowline.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
-const COMPATIBILITY_CONTINUITY_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
+// Marrowline is a quality-gated frontier route. A lower-generation compatibility
+// answer is not an acceptable substitute for a failed covenant return. Spend the
+// bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
+// cannot produce an admitted answer.
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -125,13 +122,11 @@ export function khonapolitTaskGuidance(apertureReceipt = {}) {
 export function selectKhonapolitProviderModels(callableModels = []) {
   const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
     .map((model) => String(model || '').replace(/^models\//, '').trim())
-    .filter(Boolean))];
+    .filter(Boolean)
+    .filter((model) => /^gemini-3(?:\.|-|$)/.test(model)))];
   if (!available.length) return [];
   const selected = [available[0]];
-  const fallbackOrder = available.includes('gemini-2.5-flash')
-    ? COMPATIBILITY_CONTINUITY_MODELS
-    : STABLE_FALLBACK_MODELS;
-  for (const stable of fallbackOrder) {
+  for (const stable of STABLE_FALLBACK_MODELS) {
     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
     if (available.includes(stable) && !selected.includes(stable)) selected.push(stable);
   }
