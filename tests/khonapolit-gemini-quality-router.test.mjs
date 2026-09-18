@@ -11,8 +11,8 @@ assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash'],
-  'when the full stable Flash set is callable, Marrowline preserves a bounded continuity slot for the same-release proven 3.5 transport rather than spending its final call on 3.6'
+  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash'],
+  'when the full 3.x set is callable, Marrowline gives the empirically successful 3.5 lane the meaningful second attempt before the remaining frontier lane'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
