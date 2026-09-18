@@ -92,11 +92,27 @@ const boundedDiagnostic = value => value && typeof value === 'object'
   && typeof value.code === 'string' && /^[A-Z_]{1,80}$/.test(value.code)
   ? { schema: value.schema, stage: value.stage, code: value.code }
   : null;
-const boundedRouteDiagnostic = value => value && typeof value === 'object'
-  && typeof value.stage === 'string' && /^[a-z-]{1,40}$/.test(value.stage)
-  && typeof value.code === 'string' && /^[A-Z_]{1,80}$/.test(value.code)
-  ? { stage: value.stage, code: value.code }
-  : null;
+const boundedAdmissionReasons = value => Array.isArray(value)
+  ? value
+      .filter(reason => typeof reason === 'string' && /^[a-z0-9-]{1,100}$/i.test(reason))
+      .slice(0, 8)
+  : [];
+const boundedRouteDiagnostic = value => {
+  if (!value || typeof value !== 'object'
+    || typeof value.stage !== 'string' || !/^[a-z-]{1,40}$/.test(value.stage)
+    || typeof value.code !== 'string' || !/^[A-Z_]{1,80}$/.test(value.code)) return null;
+  const rejectedAttempts = Array.isArray(value.rejectedAttempts)
+    ? value.rejectedAttempts.slice(0, 3).map(attempt => ({
+        model: String(attempt?.model || '').slice(0, 120),
+        reasons: boundedAdmissionReasons(attempt?.reasons)
+      }))
+    : [];
+  return {
+    stage: value.stage,
+    code: value.code,
+    ...(rejectedAttempts.length ? { rejected_attempts: rejectedAttempts } : {})
+  };
+};
 const boundedStageTimings = value => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const output = {};
@@ -113,7 +129,10 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
       elapsed_ms: boundedCount(attempt?.elapsedMs),
       timeout_ms: boundedCount(attempt?.timeoutMs),
       timed_out: attempt?.timedOut === true,
-      admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null
+      admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null,
+      admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons),
+      attempt_kind: attempt?.attemptKind === 'structural-retry' ? 'structural-retry' : 'model-plan',
+      structural_retry_of: typeof attempt?.structuralRetryOf === 'string' ? attempt.structuralRetryOf.slice(0, 120) : null
     }))
   : [];
 
