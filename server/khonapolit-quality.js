@@ -54,7 +54,7 @@ const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
 // answer is not an acceptable substitute for a failed covenant return. Spend the
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
 // cannot produce an admitted answer.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -145,8 +145,12 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
 
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
-  const sharedWindow = Math.max(1, Math.floor(remaining / remainingAttempts));
-  return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, sharedWindow, remaining);
+  if (position === 0) return Math.min(18000, remaining);
+  if (position === 1 && remainingAttempts > 1) {
+    const reserveForFinal = Math.min(8000, Math.max(0, remaining - 1));
+    return Math.min(26000, Math.max(1, remaining - reserveForFinal));
+  }
+  return remaining;
 }
 
 function headerValue(headers = {}, key = '') {
@@ -236,9 +240,11 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       model,
       maxOutputTokens: outputBudget(model),
       sampling: {
-        temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
-        topP: 0.9,
-        topK: 40
+        temperature: packet.mode === 'tauric-lineage-observation' ? 0.96
+          : packet.mode === 'full-invocation' ? 0.86
+            : 0.92,
+        topP: 0.95,
+        topK: 64
       },
       reasoning: khonapolitReasoning(model, { fallback }),
       responseMimeType: 'application/json',
