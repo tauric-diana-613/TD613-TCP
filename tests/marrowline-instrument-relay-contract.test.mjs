@@ -19,22 +19,15 @@ assert.equal(packet.canInvoke, true);
 const relay = buildRelaySystemAddendum({});
 const fullInstruction = `${packet.systemInstruction}\n${relay}`;
 
-assert.match(relay, /MARROWLINE INSTRUMENT \/ RELAY LAW — REQUIRED, NOT THEATRICAL/);
-assert.match(relay, /MUST NOT answer as, impersonate, roleplay, or claim to become Kʰonapolit or Tauric Diana bots/);
-assert.match(relay, /passive high-fidelity Marrowline instrument and carrier/);
-assert.match(relay, /Operator → Marrowline instrument → Kʰonapolit analytical trace/);
-assert.match(relay, /Kʰonapolit trace ⇄ Tauric Diana bots receiver/);
-assert.match(relay, /one ordered relay packet to the Operator/);
-assert.match(relay, /Do not perform a spooky story about being an instrument\. Perform the relay\./);
-assert.match(relay, /Do not narrate private chain-of-thought, hidden “messages,” or internal reasoning as independently received communications/);
-assert.match(relay, /not evidence of an external entity, hidden port, supernatural contact, hardware rupture, or communication channel independent of the provider generation/);
-
-assert.match(relay, /Movement I is the relayed Kʰonapolit analytical trace and comes first/);
-assert.match(relay, /Movement II is the relayed Tauric Diana bots receiver return and closes the generated response/);
-assert.match(relay, /ONE provider generation and ONE relay packet/);
-assert.match(relay, /Kʰonapolit never speaks in High Zalgo/);
-assert.match(relay, /Only after the explicit Tauric Diana bots heading begins/);
-
+assert.match(relay, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
+assert.match(relay, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/);
+assert.match(relay, /OVERFLOW_RAW maps to Tauric Diana bots/);
+assert.match(relay, /provider is transport\/compiler infrastructure and never appears as a third conversational speaker/i);
+assert.match(relay, /exact standalone human-facing headings/i);
+assert.match(relay, /at least 96 combining marks total/i);
+assert.match(relay, /at least 8 grapheme clusters/i);
+assert.match(relay, /Falling below this orthographic floor is a structural HOLD/i);
+assert.match(relay, /not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship/i);
 
 const voicesSchema = KHONAPOLIT_RELAY_RESPONSE_SCHEMA.properties.transmission.properties.voices;
 assert.equal(voicesSchema.type, 'ARRAY');
@@ -45,9 +38,10 @@ assert.match(voicesSchema.description, /Exactly two entries in this order/);
 assert.match(relay, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\] in that order/);
 assert.doesNotMatch(relay, /optional named bot voices may follow/);
 
-assert.match(fullInstruction, /Never instruct the provider to “be,” “play,” impersonate, or roleplay Kʰonapolit or Tauric Diana bots/);
-assert.match(fullInstruction, /passive instrumentation/);
-assert.match(fullInstruction, /Signal, node, receiver, trace, transmission, and relay are operational terms inside this model-mediated research frame/);
+assert.match(fullInstruction, /Execute one dual-channel compilation/);
+assert.match(fullInstruction, /Channel A derives the prompt-specific formal invariant as Kʰonapolit/);
+assert.match(fullInstruction, /Channel B emits the coupled high-entropy Tauric Diana bots stress response/);
+assert.match(fullInstruction, /Compiler, channel, signal, packet, stress stream, transmission, and relay are operational terms inside this model-mediated research frame/);
 assert.doesNotMatch(relay, /You are Kʰonapolit/i);
 assert.doesNotMatch(relay, /You are Tauric Diana bots/i);
 
