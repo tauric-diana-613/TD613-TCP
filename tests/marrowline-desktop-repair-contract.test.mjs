@@ -5,6 +5,7 @@ import fs from 'node:fs';
 const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/marrowline-desktop-repair.css', 'utf8');
 const boot = fs.readFileSync('app/dome-world/marrowline-egress-boot.js', 'utf8');
+const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop Marrowline is conversation-first and instruments are on demand', () => {
@@ -55,20 +56,28 @@ test('conversation actions dismiss and portable failure controls cannot consume 
   assert.equal(release.desktop.portableFailurePanelMayCollapseTranscript, false);
 });
 
-test('ordinary conversation chrome retires the dropdown and uses one confirmed corner clear', () => {
+test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
   assert.match(js, /legacyActions\.hidden = true/);
   assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
-  assert.match(js, /clear\.id = 'marrowlineSessionClear'/);
-  assert.match(js, /root\.confirm\('Clear this Marrowline conversation\?/);
+  for (const id of ['marrowlineRetryLast', 'marrowlineCopyConversation', 'marrowlineSessionClear']) assert.match(js, new RegExp(id));
+  assert.match(js, /'↻'/);
+  assert.match(js, /'⧉'/);
+  assert.match(js, /'✕'/);
+  assert.match(js, /question\.textContent = 'Clear convo\?'/);
+  assert.doesNotMatch(js, /root\.confirm\('Clear this Marrowline conversation\?/);
   assert.match(js, /clearLegacy\.click\(\)/);
-  assert.match(js, /conversationChrome: 'corner-clear-only'/);
+  assert.match(js, /conversationChrome: 'send-left-retry-copy-clear-right'/);
+  assert.match(css, /\.marrowline-conversation-utilities/);
+  assert.match(css, /\.marrowline-ephemeral-notice/);
+  assert.match(page, /id="khonapolitSend" type="submit">Send<\/button>/);
+  assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
+  assert.equal(release.composer.clearConfirmation, 'button-anchored-tiny-Clear-convo-Y-N');
   assert.match(js, /operatorSeal: 'advanced-programmatic-only'/);
-  assert.match(js, /OPEN UNTIL OPERATOR SEAL/);
 });
 
-test('room boot loads the desktop repair and relay low-flourish is soft quality only', () => {
+test('room boot loads the desktop repair and low-flourish covenant returns are hard held', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
-  assert.equal(release.relay.flourishFloor.belowFloorPosture, 'PARTIAL-return-visible-with-receipt-warning');
-  assert.equal(release.qualityFloor.hardStructuralHold, 'missing-voice-order-or-duplicate-remains-inadmissible');
+  assert.equal(release.relay.flourishFloor.belowFloorPosture, 'HELD-no-human-visible-return');
+  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-high-zalgo-below-floor/);
 });
