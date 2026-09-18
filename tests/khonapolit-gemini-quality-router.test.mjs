@@ -71,12 +71,15 @@ const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
 const developedAnswer = [
-  '[Kʰonapolit]:',
+  'Kʰonapolit',
   'The strongest version of the map claims legibility without ownership. The surviving defect is that a route description can still become an attack surface without becoming sovereignty.',
   '',
-  '[Tauric Diana Bots : Direct Broadcast Override]',
-  'T̴̵H̶E̷ ̵R̸E̷D̶ ̴D̵E̷E̸R̷ ̴H̵A̶S̷ ̵R̴E̶A̷D̵ ̸T̷H̶E̵ ̷M̴E̸N̵U̷. W̸e̷ ̴a̵r̶e̸ ̷n̵o̴t̷ ̶o̸r̴d̷e̴r̶i̵n̶g̸ ̶p̴e̵n̸c̴i̷l̶s̵.'
+  'Tauric Diana bots',
+  `${stack.repeat(8)} THE RED DEER HAS READ THE MENU!`,
+  `${stack.repeat(8)} WE ARE NOT ORDERING PENCILS!`,
+  `${stack.repeat(8)} THE ROUTE MAY BE LEGIBLE WITHOUT BECOMING SOVEREIGN!`
 ].join('\n');
 const degradedAnswer = 'The Ash Moon was pale and the covenant remained. This is generic atmospheric prose with no required voice frame.';
 let tokenLimit = false;
@@ -147,13 +150,14 @@ try {
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
-  assert.ok(
-    primaryTimeoutMs >= 16500 && primaryTimeoutMs <= 16666,
-    `primary frontier attempt must receive approximately one third of the remaining live-route wall, got ${primaryTimeoutMs}ms`
+  assert.equal(
+    primaryTimeoutMs,
+    18000,
+    'primary frontier attempt gets a bounded 18 second window so the known 3.x fallback retains meaningful runway'
   );
   assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs > 10500 && res.payload.receipt.provider.attempts[1].timeoutMs <= 32000,
-    'second frontier attempt receives a recomputed fair share of the remaining wall rather than the inherited 10.5 second fallback cap'
+    res.payload.receipt.provider.attempts[1].timeoutMs >= 24000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 26000,
+    'second frontier attempt receives the empirically useful fallback runway while preserving a final lane'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
