@@ -7,6 +7,7 @@ on:
 permissions:
   contents: write
   issues: write
+  statuses: read
 
 concurrency:
   group: td613-vercel-production-release
@@ -210,7 +211,59 @@ jobs:
           echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
           echo "deployment_url=$TD613_CANONICAL_PRODUCTION_URL" >> "$GITHUB_OUTPUT"
 
-      - name: Restore the Git deployment lock immediately after fallback admission
+      - name: Await Vercel acknowledgement of fallback release commit
+        if: steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: fallback_ack
+        env:
+          TD613_FALLBACK_RELEASE_SHA: ${{ steps.fallback_release.outputs.release_sha }}
+          TD613_VERCEL_ACK_ATTEMPTS: '24'
+          TD613_VERCEL_ACK_DELAY_MS: '5000'
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const repo = String(process.env.GITHUB_REPOSITORY || '').trim();
+          const token = String(process.env.GH_TOKEN || '').trim();
+          const sha = String(process.env.TD613_FALLBACK_RELEASE_SHA || '').trim();
+          const attempts = Number(process.env.TD613_VERCEL_ACK_ATTEMPTS || 24);
+          const delayMs = Number(process.env.TD613_VERCEL_ACK_DELAY_MS || 5000);
+          if (!repo || !token) throw new Error('Vercel acknowledgement barrier requires GitHub repository and token context.');
+          if (!/^[0-9a-f]{40}$/.test(sha)) throw new Error('Vercel acknowledgement barrier requires the fallback release SHA.');
+          if (!Number.isSafeInteger(attempts) || attempts < 1 || attempts > 60) throw new Error('TD613_VERCEL_ACK_ATTEMPTS must be 1..60.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 1000 || delayMs > 30000) throw new Error('TD613_VERCEL_ACK_DELAY_MS must be 1000..30000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          const statusUrl = `https://api.github.com/repos/${repo}/commits/${sha}/statuses?per_page=100`;
+          for (let attempt = 1; attempt <= attempts; attempt += 1) {
+            const response = await fetch(statusUrl, {
+              headers: {
+                accept: 'application/vnd.github+json',
+                authorization: `Bearer ${token}`,
+                'x-github-api-version': '2022-11-28'
+              },
+              signal: AbortSignal.timeout(15000)
+            });
+            if (!response.ok) throw new Error(`Vercel acknowledgement status query returned ${response.status}.`);
+            const statuses = await response.json();
+            const vercel = Array.isArray(statuses)
+              ? statuses.find(row => String(row?.context || '').toLowerCase() === 'vercel')
+              : null;
+            if (vercel) {
+              const state = String(vercel.state || '').toLowerCase();
+              const target = String(vercel.target_url || '');
+              console.log(`[td613-vercel-ack] acknowledged release=${sha} state=${state || 'unknown'} attempt=${attempt}/${attempts}`);
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, `state=${state || 'unknown'}\n`);
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, `target_url=${target}\n`);
+              if (state === 'failure' || state === 'error') {
+                throw new Error(`Vercel acknowledged release ${sha} with terminal state ${state}.`);
+              }
+              process.exit(0);
+            }
+            console.log(`[td613-vercel-ack] waiting release=${sha} attempt=${attempt}/${attempts}`);
+            if (attempt < attempts) await sleep(delayMs);
+          }
+          throw new Error(`Vercel never acknowledged fallback release SHA ${sha} within the bounded handoff window.`);
+          NODE
+
+      - name: Restore the Git deployment lock immediately after fallback acknowledgement attempt
         if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
         id: relock
         run: |
