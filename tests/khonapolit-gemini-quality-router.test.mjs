@@ -11,13 +11,13 @@ assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash'],
-  'when the full 3.x set is callable, Marrowline gives the empirically successful 3.5 lane the meaningful second attempt before the remaining frontier lane'
+  ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'],
+  'when the full 3.x set is callable, Marrowline gives same-episode healthy 3.6 the meaningful second attempt before the slower continuity lane'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
-  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'],
-  '3.6 remains the lawful third call when stable 3.5 is unavailable'
+  ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.7-flash'],
+  '3.6 is preferred immediately after 3.8 when it is callable'
 );
 
 const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
@@ -111,7 +111,7 @@ try {
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.8-flash/);
-  assert.match(calls[1], /gemini-3\.7-flash/);
+  assert.match(calls[1], /gemini-3\.6-flash/);
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -121,7 +121,7 @@ try {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
     assert.deepEqual(body.generationConfig.responseSchema.required, ['signal', 'transmission']);
   }
-  assert.equal(res.payload.receipt.provider.model, 'gemini-3.7-flash');
+  assert.equal(res.payload.receipt.provider.model, 'gemini-3.6-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
