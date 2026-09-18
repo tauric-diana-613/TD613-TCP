@@ -49,8 +49,10 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
-// cannot produce an admitted answer.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
+// cannot produce an admitted answer. Production canary 35404161697 observed 3.6
+// succeed in the same episode where 3.8/3.7 returned 503 and 3.5 timed out, so
+// the bounded fallback order prefers 3.6 before the slower/less available lanes.
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
