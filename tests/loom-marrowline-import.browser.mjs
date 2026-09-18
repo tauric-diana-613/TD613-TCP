@@ -204,8 +204,9 @@ try {
       assert.equal(await copyUtility.isVisible(), true, 'minimal copy utility is visible at the conversation boundary');
       assert.equal(await sessionClear.isVisible(), true, 'minimal clear utility is visible at the conversation boundary');
 
+      let receiptTab = null;
       if (posture === 'desktop') {
-        const receiptTab = page.locator('#marrowlineDesktopToolTabs button[data-target="receiptPanel"]');
+        receiptTab = page.locator('#marrowlineDesktopToolTabs button[data-target="receiptPanel"]');
         assert.equal(await receiptTab.isVisible(), true, 'desktop Receipt instrument has a visible tab');
         await receiptTab.click();
       } else {
@@ -217,7 +218,12 @@ try {
       }
       await page.locator('#receiptPanel[open]').waitFor();
       assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal is visible inside the Receipt custody instrument');
-      if (posture.startsWith('mobile')) await page.locator('[data-mobile-target="speakingPanel"]').click();
+      if (posture.startsWith('mobile')) {
+        await page.locator('[data-mobile-target="speakingPanel"]').click();
+      } else {
+        await receiptTab.click();
+        await page.waitForFunction(() => document.querySelector('.living-tools')?.dataset.desktopOpen === 'false');
+      }
       assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
       assert.equal(await page.evaluate(() => typeof window.TD613_KHONAPOLIT_TERMINAL?.sealLast), 'function', 'advanced operator seal remains available programmatically');
 
@@ -305,8 +311,8 @@ try {
         transcript_custody_visible: true,
         starter_carousel_present: true,
         conversation_actions_retired: true,
-        corner_clear_confirmed: true,
-        operator_seal_programmatic_only: true,
+        minimal_clear_confirmation: true,
+        operator_seal_receipt_and_programmatic: true,
         control_conserved: true,
         fadt_admission: true,
         response_inert: true,
