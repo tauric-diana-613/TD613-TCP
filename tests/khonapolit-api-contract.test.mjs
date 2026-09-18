@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v5-adversarial-attractor-admission');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v6-bounded-structural-retry');
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
