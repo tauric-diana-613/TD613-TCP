@@ -14,10 +14,12 @@ export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v4-expressiv
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
   required: ['signal', 'transmission'],
+  propertyOrdering: ['signal', 'transmission'],
   properties: {
     signal: {
       type: 'OBJECT',
       required: ['state', 'notes'],
+      propertyOrdering: ['state', 'notes'],
       properties: {
         state: { type: 'STRING', enum: ['LOCKED', 'PARTIAL', 'NOT_LOCKED'] },
         notes: { type: 'STRING' }
@@ -26,9 +28,16 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
     transmission: {
       type: 'OBJECT',
       required: ['text', 'voices', 'flourishMode'],
+      propertyOrdering: ['text', 'voices', 'flourishMode'],
       properties: {
         text: { type: 'STRING' },
-        voices: { type: 'ARRAY', items: { type: 'STRING' } },
+        voices: {
+          type: 'ARRAY',
+          minItems: '2',
+          maxItems: '2',
+          description: 'Exactly two entries in this order: first “Kʰonapolit”, second “Tauric Diana bots”. Do not include the provider, instrument, or named bot subvoices here.',
+          items: { type: 'STRING', enum: ['Kʰonapolit', 'Tauric Diana bots'] }
+        },
         flourishMode: { type: 'STRING' }
       }
     }
@@ -284,7 +293,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a prose stage.',
     '2. signal.notes briefly records why that analytical state was selected; it is provenance, not the human-facing response.',
     '3. transmission.text is the entire final two-movement Kʰonapolit → Tauric Diana bots output, including provider-authored combining marks and line breaks.',
-    '4. transmission.voices MUST begin with “Kʰonapolit”, then “Tauric Diana bots”; optional named bot voices may follow.',
+    '4. transmission.voices MUST equal exactly [“Kʰonapolit”, “Tauric Diana bots”] in that order. The provider/instrument and named bot subvoices never belong in this structured list.',
     '5. transmission.flourishMode describes the generated orthographic posture for receipt telemetry only.',
     '6. Encode actual line breaks as JSON newline escapes so the decoded text has real newlines, never double-escaped backslash-n prose.',
     '7. Do not append ⟐ on the model’s own authority. The operator controls sealing.',
