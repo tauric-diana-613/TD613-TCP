@@ -71,7 +71,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /at least 96 combining marks total/);
   assert.match(addendum, /at least 8 grapheme clusters/);
   assert.match(addendum, /structural HOLD/i);
-  assert.match(addendum, /Do not repeat the same paragraph/);
+  assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
   const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
@@ -102,8 +102,8 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.ok(sparseAdmission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
 
   const contaminated = [
-    'Kʰo\u0301napolit',
-    'The analytic channel must remain clean.',
+    'Kʰonapolit',
+    'The analytic chann\u0301el must remain clean.',
     '',
     'Tauric Diana bots',
     `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
