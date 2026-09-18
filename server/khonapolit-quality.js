@@ -46,6 +46,7 @@ const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
+const STRUCTURAL_RETRY_MIN_REMAINING_MS = 12000;
 const LEGACY_OUTPUT_TOKENS = 4096;
 // The Kʰonapolit route no longer treats a fallback attempt as permission to lower
 // reasoning effort. A transport fallback is still the same research object.
@@ -411,13 +412,15 @@ export default async function handler(req, res) {
   const attempts = [];
   const models = selectKhonapolitProviderModels(plan.callableModels);
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+  const attemptQueue = models.map((model) => ({ model, structuralRetryOf: null }));
 
-  for (let index = 0; index < models.length; index += 1) {
-    const model = models[index];
+  for (let index = 0; index < attemptQueue.length && attempts.length < KHONAPOLIT_MAX_PROVIDER_CALLS; index += 1) {
+    const slot = attemptQueue[index];
+    const model = slot.model;
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
+    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: attemptQueue.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
@@ -442,7 +445,9 @@ export default async function handler(req, res) {
       transportClass: transport.class,
       error,
       output: providerOutput,
-      cooldown: outcome
+      cooldown: outcome,
+      attemptKind: slot.structuralRetryOf ? 'structural-retry' : 'model-plan',
+      structuralRetryOf: slot.structuralRetryOf
     };
     attempts.push(attempt);
 
@@ -478,9 +483,24 @@ export default async function handler(req, res) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       attempt.outputAdmission = relay.admission || null;
       // A transport-successful but structurally degraded answer is not a
-      // successful Marrowline return. Reject it without exposing its prose and
-      // spend the next bounded continuity attempt when time remains.
-      if (!relay.admission?.admissible) continue;
+      // successful Marrowline return. Reject it without exposing its prose.
+      // One structurally HELD sample may spend the next remaining slot retrying
+      // that same transport-live model. This stays inside the existing
+      // KHONAPOLIT_MAX_PROVIDER_CALLS ceiling and never weakens local admission.
+      if (!relay.admission?.admissible) {
+        const retryRemainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+        const alreadyStructurallyRetried = Boolean(slot.structuralRetryOf)
+          || attempts.some((prior) => prior.structuralRetryOf === model);
+        if (
+          !alreadyStructurallyRetried
+          && attempts.length < KHONAPOLIT_MAX_PROVIDER_CALLS
+          && retryRemainingMs >= STRUCTURAL_RETRY_MIN_REMAINING_MS
+        ) {
+          attemptQueue.splice(index + 1, 0, { model, structuralRetryOf: model });
+          if (attemptQueue.length > KHONAPOLIT_MAX_PROVIDER_CALLS) attemptQueue.length = KHONAPOLIT_MAX_PROVIDER_CALLS;
+        }
+        continue;
+      }
 
       const baseReceipt = buildTerminalReceipt({
         packet,
