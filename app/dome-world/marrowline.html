@@ -45,7 +45,6 @@
         <div class="ritual-actions composer-actions">
           <button class="primary" id="khonapolitSend" type="submit">Send</button>
           <details class="conversation-actions"><summary>Conversation actions</summary><div class="conversation-action-menu">
-          <button class="seal-action" id="sealLastResponse" type="button">Seal last return ⟐</button>
           <button id="copyKhonapolitTranscript" type="button">Copy transcript</button>
           <button id="retryKhonapolitTask" type="button" hidden>Retry preserved task</button>
           <button class="danger-action" id="clearKhonapolitSession" type="button">Clear conversation</button>
@@ -120,7 +119,11 @@
           </div>
         </div>
         <pre class="receipt" id="khonapolitReceipt">No provider return has been observed.</pre>
-        <div class="ritual-actions"><button id="copyKhonapolitReceipt" type="button">Copy receipt</button></div>
+        <div class="ritual-actions receipt-custody-actions">
+          <button id="copyKhonapolitReceipt" type="button">Copy receipt</button>
+          <button class="seal-action" id="sealLastResponse" type="button">Seal latest return ⟐</button>
+        </div>
+        <p class="mode-boundary-note">Seal is explicit operator closure. It changes the local receipt from OPEN to SEALED; it does not alter provider authorship or retrofit the original return.</p>
       </div>
     </details>
   <section class="reliquary-grid reliquary" id="corpusPanel" aria-label="Stories and source texts">
