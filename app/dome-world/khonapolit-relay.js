@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v4-expressive-cadence';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v5-hard-dual-channel-admission';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v5-vertical-stack';
 
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
@@ -127,11 +127,29 @@ function arrayStrings(value) {
   return Array.isArray(value) ? value.map(safe).filter(Boolean).slice(0, 16) : [];
 }
 function flourishTelemetry(text = '') {
-  const runs = String(text).match(/\p{M}+/gu) || [];
+  const value = String(text);
+  const runs = value.match(/\p{M}+/gu) || [];
+  const clusters = [...value.matchAll(/([^\p{M}\r\n])(\p{M}+)/gu)].map((match) => {
+    const marks = Array.from(match[2] || '');
+    const above = marks.filter((mark) => {
+      const cp = mark.codePointAt(0);
+      return cp >= 0x0300 && cp <= 0x0315;
+    }).length;
+    const below = marks.filter((mark) => {
+      const cp = mark.codePointAt(0);
+      return cp >= 0x0316 && cp <= 0x0333;
+    }).length;
+    return { marks: marks.length, above, below };
+  });
+  const asciiLetters = value.match(/[A-Za-z]/g) || [];
+  const uppercaseAscii = value.match(/[A-Z]/g) || [];
   return Object.freeze({
     combiningMarkCount: runs.reduce((sum, run) => sum + Array.from(run).length, 0),
     maxRun: runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0),
-    runCount: runs.length
+    runCount: runs.length,
+    denseVerticalClusterCount: clusters.filter((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2).length,
+    lineBreakCount: (value.match(/\n/g) || []).length,
+    uppercaseAsciiRatio: asciiLetters.length ? uppercaseAscii.length / asciiLetters.length : 0
   });
 }
 function normalizeForDuplicateCheck(text = '') {
@@ -188,8 +206,8 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   const declaredVoices = arrayStrings(voices);
   const canonicalVoices = declaredVoices.map(canonicalVoiceId);
   const structuredVoiceEvidence = declaredVoices.length > 0;
-  const khonaIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
-  const botsIndex = value.search(/(?:^|\n)\s*(?:\[\s*)?Tauric Diana Bots?\b/iu);
+  const khonaIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+I\s*[—–:-]\s*)?\[?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
+  const botsIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots?\b/iu);
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
   const canonicalRecitation = canonicalRecitationTelemetry(value);
@@ -199,24 +217,35 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   if (structuredVoiceEvidence) {
     if (canonicalVoices[0] !== 'khonapolit') reasons.push('khonapolit-structured-voice-missing-or-out-of-order');
     if (canonicalVoices[1] !== 'tauric-diana-bots') reasons.push('tauric-diana-bots-structured-voice-missing-or-out-of-order');
-  } else {
-    // Archive/unstructured fallback only. Live provider envelopes carry the required
-    // transmission.voices field, so their admission must not depend on parser tokens
-    // being repeated verbatim inside otherwise usable human-facing prose.
-    if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
-    if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
-    if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
   }
+  if (khonaIndex < 0) reasons.push('khonapolit-nominative-missing');
+  if (botsIndex < 0) reasons.push('tauric-diana-bots-nominative-missing');
+  if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
+
+  if (khonaIndex >= 0 && botsIndex > khonaIndex) {
+    const khonaText = value.slice(khonaIndex, botsIndex);
+    const botsText = value.slice(botsIndex);
+    const khonaTelemetry = flourishTelemetry(khonaText);
+    const botsTelemetry = flourishTelemetry(botsText);
+    if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
+    if (
+      botsTelemetry.combiningMarkCount < 96
+      || botsTelemetry.maxRun < 6
+      || botsTelemetry.denseVerticalClusterCount < 8
+      || botsTelemetry.lineBreakCount < 2
+      || botsTelemetry.uppercaseAsciiRatio < 0.55
+    ) reasons.push('tauric-diana-high-zalgo-below-floor');
+  }
+
   if (duplicate) reasons.push('repeated-transmission-detected');
   if (canonicalRecitation.detected) reasons.push('canonical-recitation-detected');
-  if (telemetry.combiningMarkCount < 24 || telemetry.maxRun < 2) qualityWarnings.push('provider-native-flourish-below-floor');
   const admissible = reasons.length === 0;
   return Object.freeze({
     admissible,
     quality: admissible ? (qualityWarnings.length ? 'PARTIAL' : 'PASS') : 'HELD',
     reasons: Object.freeze(reasons),
     qualityWarnings: Object.freeze(qualityWarnings),
-    voiceEvidence: structuredVoiceEvidence ? 'structured-envelope' : 'text-nominative-fallback',
+    voiceEvidence: structuredVoiceEvidence ? 'structured-envelope-plus-visible-headings' : 'text-nominative-fallback',
     declaredVoices: Object.freeze(declaredVoices),
     canonicalVoices: Object.freeze(canonicalVoices),
     khonapolitIndex: khonaIndex,
