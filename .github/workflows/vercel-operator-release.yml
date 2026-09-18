@@ -91,7 +91,7 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, relock immediately, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, require bounded Vercel adoption of that exact transient commit, relock immediately after adoption, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
           EOF_COMMENT
           )"
 
@@ -210,7 +210,65 @@ jobs:
           echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
           echo "deployment_url=$TD613_CANONICAL_PRODUCTION_URL" >> "$GITHUB_OUTPUT"
 
-      - name: Restore the Git deployment lock immediately after fallback admission
+      - name: Await Vercel adoption of exact Git-fallback commit
+        if: steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: fallback_adoption
+        env:
+          RELEASE_SHA: ${{ steps.fallback_release.outputs.release_sha }}
+          TD613_VERCEL_ADOPTION_ATTEMPTS: '45'
+          TD613_VERCEL_ADOPTION_DELAY_MS: '2000'
+        run: |
+          node --input-type=module <<'NODE'
+          const repository = String(process.env.GITHUB_REPOSITORY || '').trim();
+          const token = String(process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '').trim();
+          const releaseSha = String(process.env.RELEASE_SHA || '').trim();
+          const attempts = Number(process.env.TD613_VERCEL_ADOPTION_ATTEMPTS || 45);
+          const delayMs = Number(process.env.TD613_VERCEL_ADOPTION_DELAY_MS || 2000);
+          if (!/^[^/]+\/[^/]+$/.test(repository)) throw new Error('GITHUB_REPOSITORY is required for Vercel adoption acknowledgement.');
+          if (!token) throw new Error('GH_TOKEN is required for Vercel adoption acknowledgement.');
+          if (!/^[0-9a-f]{40}$/.test(releaseSha)) throw new Error('Vercel adoption acknowledgement requires the transient release SHA.');
+          if (!Number.isSafeInteger(attempts) || attempts < 1 || attempts > 120) throw new Error('TD613_VERCEL_ADOPTION_ATTEMPTS must be 1..120.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 500 || delayMs > 10000) throw new Error('TD613_VERCEL_ADOPTION_DELAY_MS must be 500..10000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          let lastState = 'MISSING';
+          for (let attempt = 1; attempt <= attempts; attempt += 1) {
+            const response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
+              headers: {
+                accept: 'application/vnd.github+json',
+                authorization: `Bearer ${token}`,
+                'x-github-api-version': '2022-11-28'
+              },
+              redirect: 'follow',
+              signal: AbortSignal.timeout(10000)
+            });
+            if (!response.ok) {
+              if ([408, 425, 429].includes(response.status) || response.status >= 500) {
+                lastState = `HTTP_${response.status}`;
+                console.log(`[td613-vercel-adoption] pending attempt=${attempt}/${attempts} observation=${lastState}`);
+                if (attempt < attempts) await sleep(delayMs);
+                continue;
+              }
+              throw new Error(`Vercel adoption status lookup returned non-retryable ${response.status}.`);
+            }
+            const payload = await response.json();
+            const status = Array.isArray(payload?.statuses)
+              ? payload.statuses.find(item => item?.context === 'Vercel')
+              : null;
+            lastState = String(status?.state || 'MISSING').toUpperCase();
+            if (status) {
+              if (lastState === 'FAILURE' || lastState === 'ERROR') {
+                throw new Error(`Vercel adopted ${releaseSha} but reported ${lastState} before relock.`);
+              }
+              console.log(`[td613-vercel-adoption] adopted release_sha=${releaseSha} state=${lastState} attempt=${attempt}/${attempts}`);
+              process.exit(0);
+            }
+            console.log(`[td613-vercel-adoption] pending attempt=${attempt}/${attempts} observation=${lastState}`);
+            if (attempt < attempts) await sleep(delayMs);
+          }
+          throw new Error(`Vercel never acknowledged transient release commit ${releaseSha} before bounded relock; last state ${lastState}.`);
+          NODE
+
+      - name: Restore the Git deployment lock immediately after Vercel adoption
         if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
         id: relock
         run: |
@@ -219,7 +277,7 @@ jobs:
           import fs from 'node:fs';
           const path = 'vercel.json';
           const config = JSON.parse(fs.readFileSync(path, 'utf8'));
-          if (config.git?.deploymentEnabled !== true) throw new Error('Immediate relock expected the single release commit to hold the gate open.');
+          if (config.git?.deploymentEnabled !== true) throw new Error('Adoption-gated relock expected the single release commit to hold the gate open.');
           config.git = { ...(config.git || {}), deploymentEnabled: false };
           fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
           NODE

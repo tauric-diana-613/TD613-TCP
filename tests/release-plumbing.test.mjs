@@ -63,15 +63,21 @@ assert.match(release, /release_relay = \$\{\{ github\.event\.comment\.user\.logi
   'accepted release receipts must identify which narrow relay transported the operator gesture');
 assert.equal((release.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((release.match(/deploymentEnabled: false/g) || []).length, 1);
+assert.match(release, /commits\/\$\{releaseSha\}\/status/);
+assert.match(release, /item\?\.context === 'Vercel'/);
+assert.match(release, /Vercel never acknowledged transient release commit/);
 assert.equal((release.match(/vercel@latest deploy/g) || []).length, 1);
 assert.match(release, /Create one bounded Git-fallback release commit/);
-assert.match(release, /Restore the Git deployment lock immediately after fallback admission/);
+assert.match(release, /Await Vercel adoption of exact Git-fallback commit/);
+assert.match(release, /Restore the Git deployment lock immediately after Vercel adoption/);
 
 const releaseCommitIndex = release.indexOf('- name: Create one bounded Git-fallback release commit');
-const immediateRelockIndex = release.indexOf('- name: Restore the Git deployment lock immediately after fallback admission');
+const adoptionIndex = release.indexOf('- name: Await Vercel adoption of exact Git-fallback commit');
+const immediateRelockIndex = release.indexOf('- name: Restore the Git deployment lock immediately after Vercel adoption');
 const productionObservationIndex = release.indexOf('- name: Resolve deployed production URL');
 assert.ok(releaseCommitIndex >= 0, 'fallback release admission step must exist');
-assert.ok(immediateRelockIndex > releaseCommitIndex, 'fallback relock must immediately follow deployment admission');
+assert.ok(adoptionIndex > releaseCommitIndex, 'fallback must wait for bounded Vercel adoption after deployment admission');
+assert.ok(immediateRelockIndex > adoptionIndex, 'fallback relock must follow Vercel adoption acknowledgement');
 assert.ok(productionObservationIndex > immediateRelockIndex, 'fallback gate must be closed before production observation begins');
 
 const exactSourceProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
@@ -163,4 +169,4 @@ assert.match(zenodoSync, /automatic_retry = not authorized/,
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, immediate fallback relock, zero-deploy production confirmation, and operator-gated live SRC Zenodo intake');
+console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, adoption-gated fallback relock, zero-deploy production confirmation, and operator-gated live SRC Zenodo intake');
