@@ -154,4 +154,16 @@ assert.match(reobserve, /retroactive_release_rewrite = false/);
 assert.match(reobserve, /counts_as_human_evidence = false/);
 assert.match(reobserve, /No Vercel deployment occurred\. Sealed ⟐/);
 
+assert.match(reobserve, /github\.event\.issue\.number == 1172/);
+assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-marrowline-dollhouse-trial '\)/);
+assert.match(reobserve, /name:\s*Marrowline Dollhouse four-agent production trial/);
+assert.match(reobserve, /Verify Dollhouse trial has no release authority/);
+assert.match(reobserve, /run-pedagogue-design-gate\.mjs tests\/fixtures\/pedagogue\/marrowline-living-chat-design\.json/);
+assert.match(reobserve, /marrowline-dollhouse-trial-contract\.test\.mjs/);
+assert.match(reobserve, /run-marrowline-dollhouse-production-trial\.mjs/);
+assert.match(reobserve, /td613-marrowline-dollhouse-trial-evidence/);
+assert.match(reobserve, /deployment_authority = false/);
+assert.match(reobserve, /counts_as_human_evidence = false/);
+assert.match(reobserve, /No production mutation occurred\. ⟐/);
+
 console.log('Workflow estate closed at 5/5 durable workflows: validation, release, provider-held re-observation, relock safety, and Pages remain authority-distinct.');
