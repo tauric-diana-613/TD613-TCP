@@ -89,8 +89,8 @@ test('FADT preserves the gap when machine-PASS cases carry different qualitative
     '[Tauric Diana Bots : Receiver Return]',
     flare
   ].join('\n');
-  const good = runMarrowlineDollhouseCaseAudit({ caseSpec: spec, payload: payload(goodText), httpStatus: 200 });
-  const bad = runMarrowlineDollhouseCaseAudit({ caseSpec: spec, payload: payload(badText), httpStatus: 200 });
+  const good = runMarrowlineDollhouseCaseAudit({ caseSpec: { ...spec, id: 'information-test-good' }, payload: payload(goodText), httpStatus: 200 });
+  const bad = runMarrowlineDollhouseCaseAudit({ caseSpec: { ...spec, id: 'information-test-bad' }, payload: payload(badText), httpStatus: 200 });
   const fadt = runMarrowlineDollhouseFadtAudit([good, bad]);
   assert.equal(fadt.all_fibres_exact, false);
   assert.equal(fadt.fibres[0].verdict, 'HOLD');
