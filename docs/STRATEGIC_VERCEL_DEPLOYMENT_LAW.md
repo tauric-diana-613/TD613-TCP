@@ -30,10 +30,10 @@ repeating the same browser matrix after deployment ≠ stronger evidence
 
 ```text
 operator authorization → assistant/Codex execution → one Vercel deployment
-one deployable fallback commit → immediate relock → production observation
+one deployable fallback commit → bounded Vercel acknowledgement → immediate relock → production observation
 ```
 
-The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, observes, relocks, and reports. Relay identity does not create release authority.
+The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, waits only for Vercel to acknowledge the one deployable fallback SHA, relocks immediately, observes production, and reports. Relay identity does not create release authority.
 
 ## Evidence placement
 
