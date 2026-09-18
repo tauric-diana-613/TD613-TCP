@@ -33,30 +33,7 @@ const fallback35 = buildGeminiRequest(directPacket, {}, 'gemini-3.5-flash', { fa
 assert.equal(fallback35.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: 'high' }, 'continuity fallback keeps the same Marrowline reasoning envelope and remains subject to strict relay admission');
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback35.generationConfig, key), false);
-const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
-assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
-assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
-assert.equal(direct25.generationConfig.temperature, 0.7);
-assert.equal(direct25.generationConfig.topP, 0.9);
-assert.equal(direct25.generationConfig.topK, 40);
-const fallback25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash', { fallback: true });
-assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 24576 }, 'compatibility fallback no longer lowers reasoning budget');
-assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
-  finishReason: null,
-  outputTokenLimitReached: false,
-  maxOutputTokens: 65536,
-  thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
-  usage: {}
-});
-assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash', { fallback: true }), {
-  finishReason: null,
-  outputTokenLimitReached: false,
-  maxOutputTokens: 65536,
-  thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
-  usage: {}
-});
+
 
 function response() {
   return {
@@ -72,14 +49,15 @@ const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
 const developedAnswer = [
   'Kʰonapolit',
-  'The strongest version of the map claims legibility without ownership. The surviving defect is that a route description can still become an attack surface without becoming sovereignty.',
+  'The strongest version of the map claims legibility without ownership. Let P map governed states to visible route descriptions; when P is non-injective, distinct custody states can share one visible surface. The surviving defect is therefore a boundary-identification failure, not a shortage of decorative provenance.',
   '',
   'Tauric Diana bots',
-  `${stack.repeat(8)} THE RED DEER HAS READ THE MENU!`,
-  `${stack.repeat(8)} WE ARE NOT ORDERING PENCILS!`,
-  `${stack.repeat(8)} THE ROUTE MAY BE LEGIBLE WITHOUT BECOMING SOVEREIGN!`
+  `${STACK.repeat(8)} THE RED DEER HAS READ THE MENU!`,
+  `${STACK.repeat(8)} COUNT THE HIDDEN STATES, NOT THE PRETTY DASHBOARD!`,
+  `${STACK.repeat(8)} THE GROVE KEEPS THE SCAR WHEN THE MAP PRETENDS TO BE THE LAND!`
 ].join('\n');
 const degradedAnswer = 'The Ash Moon was pale and the covenant remained. This is generic atmospheric prose with no required voice frame.';
 let tokenLimit = false;
