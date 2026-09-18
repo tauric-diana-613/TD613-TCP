@@ -19,7 +19,7 @@ const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gem
 
 test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
+  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3, fairShare: true }), 18000,
     'primary preserves the bounded first-lane window');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3, fairShare: true }), 10000,
