@@ -153,7 +153,8 @@
     "portableFailurePanelMayCollapseTranscript": false,
     "backgroundGeometry": "subdued",
     "conversationTypeface": "Reddit Sans",
-    "conversationChrome": "send-left-minimal-utility-rail-right"
+    "conversationChrome": "send-left-minimal-utility-rail-right",
+    "operatorSeal": "receipt-instrument-explicit-operator"
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
@@ -189,7 +190,8 @@
     "repairLifecycleDisposal": true,
     "reducedMotionHonored": true,
     "universalComposerPlus": true,
-    "conversationChrome": "send-left-minimal-utility-rail-right"
+    "conversationChrome": "send-left-minimal-utility-rail-right",
+    "operatorSeal": "receipt-instrument-explicit-operator"
   },
   "jurisdiction": {
     "mode": "issued-covenant-terminal-plus-aperture-v3-routing-plus-live-marrowline-ingress",
@@ -235,7 +237,7 @@
       "serverConversationStorage": false,
       "browserConversationStorage": "sessionStorage-operator-controlled",
       "issuance": "valid-SHI-or-explicit-unissued-research-waiver",
-      "responseSeal": "open-until-operator-applies-lozenge",
+      "responseSeal": "open-until-operator-applies-lozenge-in-receipt-instrument",
       "emergenceClassifier": "seeded-frame-heuristic-text-classification",
       "providerClaim": "model-mediated-response-only",
       "responseEmphasis": {
