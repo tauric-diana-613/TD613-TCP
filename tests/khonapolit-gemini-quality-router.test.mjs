@@ -16,8 +16,8 @@ assert.deepEqual(
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
-  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'],
-  '3.6 remains the lawful third call when stable 3.5 is unavailable'
+  ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.7-flash'],
+  'when stable 3.5 is unavailable, same-episode healthy 3.6 moves ahead of 3.7'
 );
 
 const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
