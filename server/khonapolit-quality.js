@@ -40,7 +40,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v5-adversarial-attractor-admission';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v6-bounded-structural-retry';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
