@@ -96,16 +96,17 @@
     "frontierOnly": true,
     "callOrder": [
       "gemini-3.8-flash",
-      "gemini-3.7-flash",
       "gemini-3.5-flash",
       "gemini-3.6-flash",
+      "gemini-3.7-flash",
       "gemini-3-flash-preview"
     ],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "high-not-degraded",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor",
-    "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5"
+    "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
+    "thirdSeatEvidence": "2026-09-18 production episode: Marrowline 3.7=503 while independent Loom 3.6=200 in same canary"
   },
   "composer": {
     "universalPlus": true,
