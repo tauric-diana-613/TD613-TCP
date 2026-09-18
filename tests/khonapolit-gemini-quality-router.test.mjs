@@ -130,7 +130,7 @@ try {
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.8-flash/);
-  assert.match(calls[1], /gemini-3\.7-flash/);
+  assert.match(calls[1], /gemini-3\.8-flash/, 'a structurally HELD transport-live response gets one same-model retry before consuming a different fallback');
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -140,12 +140,16 @@ try {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
     assert.deepEqual(body.generationConfig.responseSchema.required, ['signal', 'transmission']);
   }
-  assert.equal(res.payload.receipt.provider.model, 'gemini-3.7-flash');
+  assert.equal(res.payload.receipt.provider.model, 'gemini-3.8-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
+  assert.equal(res.payload.receipt.provider.attempts[0].attemptKind, 'model-plan');
+  assert.equal(res.payload.receipt.provider.attempts[0].structuralRetryOf, null);
+  assert.equal(res.payload.receipt.provider.attempts[1].attemptKind, 'structural-retry');
+  assert.equal(res.payload.receipt.provider.attempts[1].structuralRetryOf, 'gemini-3.8-flash');
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.ok(
     primaryTimeoutMs >= 16500 && primaryTimeoutMs <= 16666,
@@ -153,7 +157,7 @@ try {
   );
   assert.ok(
     res.payload.receipt.provider.attempts[1].timeoutMs > 10500 && res.payload.receipt.provider.attempts[1].timeoutMs <= 32000,
-    'second frontier attempt receives a recomputed fair share of the remaining wall rather than the inherited 10.5 second fallback cap'
+    'same-model structural retry receives a recomputed fair share of the remaining wall rather than the inherited 10.5 second fallback cap'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
@@ -162,7 +166,7 @@ try {
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts.length, 1);
   assert.equal(res.payload.relay.parts[0].id, 'khonapolit');
-  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'only the structurally admitted frontier answer survives into the relay');
+  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'only the structurally admitted same-model retry survives into the relay');
   assert.equal(res.payload.relay.admission.admissible, true);
   assert.equal(res.payload.relay.highZalgo.applied, false, 'server does not post-process provider text with a local Zalgo filter');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
