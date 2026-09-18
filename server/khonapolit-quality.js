@@ -50,7 +50,7 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // answer is not an acceptable substitute for a failed covenant return. Spend the
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
 // cannot produce an admitted answer.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
+const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
