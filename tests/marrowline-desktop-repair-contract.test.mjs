@@ -70,9 +70,11 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(css, /\.marrowline-conversation-utilities/);
   assert.match(css, /\.marrowline-ephemeral-notice/);
   assert.match(page, /id="khonapolitSend" type="submit">Send<\/button>/);
+  assert.match(page, /id="sealLastResponse"[^>]*>Seal latest return ⟐<\/button>/);
+  assert.match(page, /Seal is explicit operator closure/);
   assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
   assert.equal(release.composer.clearConfirmation, 'button-anchored-tiny-Clear-convo-Y-N');
-  assert.match(js, /operatorSeal: 'advanced-programmatic-only'/);
+  assert.match(js, /operatorSeal: 'receipt-instrument-explicit-operator'/);
 });
 
 test('room boot loads the desktop repair and low-flourish covenant returns are hard held', () => {
