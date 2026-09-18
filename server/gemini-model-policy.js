@@ -1,4 +1,4 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v7-khonapolit-frontier-only';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v8-repo-gemini3-only';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
@@ -12,8 +12,7 @@ const QUALITY_ORDER = Object.freeze([
   'gemini-3.7-flash',
   'gemini-3.6-flash',
   'gemini-3.5-flash',
-  'gemini-3-flash-preview',
-  'gemini-2.5-flash'
+  'gemini-3-flash-preview'
 ]);
 
 const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
@@ -28,7 +27,7 @@ const TASK_DEFAULTS = Object.freeze({
   'hush-transform': QUALITY_ORDER,
   'khonapolit-dialogue': KHONAPOLIT_QUALITY_ORDER,
   'general-text': QUALITY_ORDER,
-  readiness: Object.freeze(['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite'])
+  readiness: Object.freeze(['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'])
 });
 
 const MODEL_STATE = new Map();
@@ -145,10 +144,15 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const legacyGlobal = legacyGlobalModels(env);
   const explicit = uniq([...routeSpecific, ...legacyGlobal]);
   const mode = routingMode(env);
-  const requestedPreFloor = uniq(mode === 'operator-order'
+  const requestedRaw = uniq(mode === 'operator-order'
     ? [...routeSpecific, ...legacyGlobal, ...defaults]
     : [...defaults, ...routeSpecific, ...legacyGlobal]
   ).filter((model) => !disabled.has(model));
+  const preThreeConfigured = requestedRaw.filter((model) => {
+    const match = model.match(/^gemini-(\d+(?:\.\d+)?)/);
+    return Boolean(match && Number(match[1]) < 3);
+  });
+  const requestedPreFloor = requestedRaw.filter((model) => !preThreeConfigured.includes(model));
   const floorRejected = task === 'khonapolit-dialogue'
     ? requestedPreFloor.filter((model) => !khonapolitQualityEligible(model))
     : [];
@@ -172,6 +176,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
+  if (preThreeConfigured.length) warnings.push('pre-gemini-3-config-ignored');
   if (floorRejected.length) warnings.push('khonapolit-frontier-only-rejected-non-3x-or-lite-models');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
