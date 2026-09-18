@@ -156,6 +156,11 @@ assert.match(reobserve, /No Vercel deployment occurred\. Sealed ⟐/);
 
 assert.match(reobserve, /github\.event\.issue\.number == 1172/);
 assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-marrowline-dollhouse-trial '\)/);
+assert.match(reobserve, /github\.event\.comment\.user\.login == github\.repository_owner/);
+assert.match(reobserve, /github\.event\.comment\.performed_via_github_app == null/);
+assert.match(reobserve, /Dollhouse production trial rejects GitHub-App-mediated comments/);
+assert.doesNotMatch(reobserve, /issue\.number == 1172[\s\S]{0,260}chatgpt-codex-connector\[bot\]/,
+  'Experimental Dollhouse production trials must not accept an app-mediated issue comment as operator authority.');
 assert.match(reobserve, /name:\s*Marrowline Dollhouse four-agent production trial/);
 assert.match(reobserve, /Verify Dollhouse trial has no release authority/);
 assert.match(reobserve, /run-pedagogue-design-gate\.mjs tests\/fixtures\/pedagogue\/marrowline-living-chat-design\.json/);
