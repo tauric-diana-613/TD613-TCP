@@ -154,7 +154,7 @@ test('Markdown tables become semantic tables without activating markup or losing
 
 test('independent Marrowline origin has frontier-only fallback, ordinary entry and portable task parity', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']), ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash']);
+  assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 32000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16667, index: 1, modelCount: 3 }), 10500);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1 }), 32000);
