@@ -315,7 +315,8 @@ jobs:
     if: >-
       github.event.issue.number == 1172 &&
       github.event.issue.pull_request == null &&
-      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      github.event.comment.user.login == github.repository_owner &&
+      github.event.comment.performed_via_github_app == null &&
       startsWith(github.event.comment.body, '/td613-marrowline-dollhouse-trial ')
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -332,6 +333,16 @@ jobs:
           AUTHORIZATION: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+          if (event?.comment?.user?.login !== event?.repository?.owner?.login) {
+            throw new Error('Dollhouse production trial requires the repository owner as the direct comment author.');
+          }
+          if (event?.comment?.performed_via_github_app !== null && event?.comment?.performed_via_github_app !== undefined) {
+            throw new Error('Dollhouse production trial rejects GitHub-App-mediated comments; a direct non-app owner gesture is required.');
+          }
+          NODE
           read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
           [[ "$COMMAND" == '/td613-marrowline-dollhouse-trial' ]] || { echo 'Unexpected Dollhouse command.' >&2; exit 1; }
           [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only PRODUCTION may be observed.' >&2; exit 1; }
