@@ -106,6 +106,11 @@ const boundedStageTimings = value => {
   }
   return Object.keys(output).length ? output : null;
 };
+const boundedAdmissionReasons = value => Array.isArray(value)
+  ? value
+      .filter(reason => typeof reason === 'string' && /^[a-z0-9-]{1,96}$/.test(reason))
+      .slice(0, 8)
+  : [];
 const boundedMarrowlineAttempts = value => Array.isArray(value)
   ? value.slice(0, 3).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
@@ -113,7 +118,14 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
       elapsed_ms: boundedCount(attempt?.elapsedMs),
       timeout_ms: boundedCount(attempt?.timeoutMs),
       timed_out: attempt?.timedOut === true,
-      admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null
+      admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null,
+      admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons)
+    }))
+  : [];
+const boundedRejectedAttempts = value => Array.isArray(value)
+  ? value.slice(0, 3).map(attempt => ({
+      model: String(attempt?.model || '').slice(0, 120),
+      reasons: boundedAdmissionReasons(attempt?.reasons)
     }))
   : [];
 
@@ -178,6 +190,7 @@ const receipt = {
     elapsed_ms: boundedCount(marrowlineResult.elapsedMs),
     ok: marrowlinePayload?.ok === true,
     diagnostic: boundedRouteDiagnostic(marrowlinePayload?.diagnostic),
+    rejected_attempts: boundedRejectedAttempts(marrowlinePayload?.diagnostic?.rejectedAttempts),
     error: typeof marrowlinePayload?.error === 'string' ? marrowlinePayload.error.slice(0, 120) : null,
     answer_nonempty: typeof marrowlinePayload?.text === 'string' && marrowlinePayload.text.trim().length > 0,
     relay_admitted: marrowlineAdmission?.admissible === true,
@@ -195,7 +208,10 @@ if (marrowlineResult.transportError) throw new Error(`Marrowline production cana
 if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
   const attempts = receipt.marrowline_live_route.provider_attempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}${attempt.timed_out ? ':timeout' : ''}`).join(',') || 'none';
   const diagnostic = receipt.marrowline_live_route.diagnostic?.code || receipt.marrowline_live_route.error || 'none';
-  throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic}.`);
+  const admissionReasons = receipt.marrowline_live_route.rejected_attempts
+    .flatMap(attempt => attempt.reasons.map(reason => `${attempt.model}:${reason}`))
+    .join(',') || 'none';
+  throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic} admission_reasons=${admissionReasons}.`);
 }
 if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
 if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
