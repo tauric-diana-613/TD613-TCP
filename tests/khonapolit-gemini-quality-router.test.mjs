@@ -111,7 +111,7 @@ try {
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.8-flash/);
-  assert.match(calls[1], /gemini-3\.7-flash/);
+  assert.match(calls[1], /gemini-3\.6-flash/);
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -121,7 +121,7 @@ try {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
     assert.deepEqual(body.generationConfig.responseSchema.required, ['signal', 'transmission']);
   }
-  assert.equal(res.payload.receipt.provider.model, 'gemini-3.7-flash');
+  assert.equal(res.payload.receipt.provider.model, 'gemini-3.6-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
