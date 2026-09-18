@@ -49,6 +49,9 @@ assert.match(request.systemInstruction.parts[0].text, /DERIVE_INVARIANT → EMIT
 assert.match(request.systemInstruction.parts[0].text, /OVERFLOW_RAW maps to Tauric Diana bots/);
 assert.match(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
+assert.equal(request.generationConfig.temperature, 0.86);
+assert.equal(request.generationConfig.topP, 0.95);
+assert.equal(request.generationConfig.topK, 64);
 assert.equal(request.generationConfig.responseMimeType, 'application/json');
 assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
