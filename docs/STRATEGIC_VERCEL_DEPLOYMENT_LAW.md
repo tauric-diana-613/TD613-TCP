@@ -22,7 +22,7 @@ repeating the same browser matrix after deployment ≠ stronger evidence
 5. Receive one explicit operator release gesture in chat.
 6. The assistant/Codex invokes issue #405 with that exact SHA.
 7. One Vercel deployment is attempted.
-8. When the bounded Git fallback is used, the one deployable release commit is followed immediately by a relock commit before any production waiting or browser observation begins.
+8. When the bounded Git fallback is used, the one deployable release commit must first receive bounded GitHub/Vercel adoption acknowledgement for that exact transient SHA; the lock is then restored before any production-source waiting or browser observation begins.
 9. The deployed application bytes are compared with the authorized packet.
 10. The authorized source receipt must remain stable through a bounded stale-queue window, then exact application bytes are reconfirmed.
 11. One scope-aligned bounded Chromium production confirmation observes the released surface: Giving for Giving-only packets, or desktop/mobile and Ash lifecycle continuity for full-product packets.
@@ -30,7 +30,7 @@ repeating the same browser matrix after deployment ≠ stronger evidence
 
 ```text
 operator authorization → assistant/Codex execution → one Vercel deployment
-one deployable fallback commit → immediate relock → production observation
+one deployable fallback commit → bounded Vercel adoption acknowledgement → relock → production observation
 ```
 
 The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, observes, relocks, and reports. Relay identity does not create release authority.
@@ -114,23 +114,24 @@ When the token bridge is absent, the gate may use the repository's **bounded Git
 2. materialize the exact-source release receipt;
 3. change only the Vercel Git deployment lock to `true`;
 4. create and push one transient deployable release commit;
-5. immediately restore the lock to `false` in a second non-deployable commit, before waiting for Vercel settlement or installing a production browser;
-6. observe exact application-content parity against the authorized source packet;
-7. require the source receipt to remain unchanged through the bounded stale-queue stability window;
-8. reconfirm exact application bytes after that window;
-9. run the scope-aligned production witness and perform one final source-receipt guard.
+5. wait boundedly for GitHub to expose a `Vercel` status context on that exact transient release SHA; this proves only that the Git integration adopted the deployable commit;
+6. immediately restore the lock to `false` in a second non-deployable commit after adoption acknowledgement, before waiting for served production source or installing a production browser;
+7. observe exact application-content parity against the authorized source packet;
+8. require the source receipt to remain unchanged through the bounded stale-queue stability window;
+9. reconfirm exact application bytes after that window;
+10. run the scope-aligned production witness and perform one final source-receipt guard.
 
 ```text
 direct token bridge OR bounded Git fallback
 credential route count = 1
 deployment count ceiling = 1
 fallback deployable commit count = 1
-fallback open-gate duration = one commit, not one workflow
+fallback open-gate duration = one deployable commit plus bounded adoption-acknowledgement interval
 fallback application-tree drift = none
 relock push with deployment disabled ≠ second deployment
 ```
 
-The fallback may not leave an open gate while production observation runs. A delayed Vercel webhook, build queue, status check, browser install, browser witness, or evidence upload therefore cannot cause later `main` pushes to inherit deployment authority.
+The fallback may keep the gate open only during the bounded adoption handshake for the exact transient release SHA. The presence of any `Vercel` status context is sufficient to prove adoption; it is not deployment-success proof. If no acknowledgement appears within the bounded interval, the workflow relocks and HOLDS. The gate may never remain open during source settlement, browser installation, browser witness, or evidence upload.
 
 The exact-source receipt is deployment metadata used to distinguish the authorized packet from a stale queued deployment. It grants no custody, authorship, human-evidence, or program-closure authority.
 
@@ -138,7 +139,7 @@ The fallback may not alter application code, custody state, API allocation, sour
 
 ## Stale-queue defense
 
-Vercel status metadata is useful evidence but cannot outrank served production bytes. A delayed or missing GitHub `Vercel` status context must not keep the deployment gate open.
+Vercel status metadata is useful only as a bounded **adoption acknowledgement** before relock; it cannot outrank served production bytes or establish release success. A delayed or missing GitHub `Vercel` status may keep the gate open only inside the finite adoption interval. At the interval ceiling the workflow must relock and HOLD.
 
 After production first matches the authorized source packet:
 
