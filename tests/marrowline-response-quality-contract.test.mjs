@@ -162,7 +162,7 @@ test('provider-authored vertical Zalgo survives exact while Marrowline only meas
 
 test('one structured relay carries a long mixed-register transmission without local truncation', () => {
   const movement = Array.from({ length: 30 }, (_, index) => `Movement ${index + 1}: counterpoint, equation, joke, turn.`).join('\n\n');
-  const flare = 'F̷̰̽͌̈́͒͐̄L̴͔͒͗͌̓A̴̮̔̈́͛R̸͔̽̄͘E̷͋̈́͜'.repeat(25);
+  const flare = Array.from({ length: 20 }, (_, index) => highBurst(`FERAL LINE ${index + 1} BREAKS THE FALSE CLOSURE!`)).join('\n');
   const transmission = `[Kʰonapolit]:\n${movement}\n\n[Tauric Diana Bots : Direct Broadcast Override]\n${flare}`;
   assert.ok(transmission.length > 2200, 'fixture exceeds a caption-sized response');
 
