@@ -102,8 +102,8 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.ok(sparseAdmission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
 
   const contaminated = [
-    'Kʰo\u0301napolit',
-    'The analytic channel must remain clean.',
+    'Kʰonapolit',
+    'The analytic chann\u0301el must remain clean.',
     '',
     'Tauric Diana bots',
     `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
