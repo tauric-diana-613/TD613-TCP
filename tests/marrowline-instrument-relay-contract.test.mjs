@@ -4,6 +4,7 @@ import {
   buildInvocationPacket
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
+  KHONAPOLIT_RELAY_RESPONSE_SCHEMA,
   buildRelaySystemAddendum
 } from '../app/dome-world/khonapolit-relay.js';
 
@@ -33,6 +34,16 @@ assert.match(relay, /Movement II is the relayed Tauric Diana bots receiver retur
 assert.match(relay, /ONE provider generation and ONE relay packet/);
 assert.match(relay, /Kʰonapolit never speaks in High Zalgo/);
 assert.match(relay, /Only after the explicit Tauric Diana bots heading begins/);
+
+
+const voicesSchema = KHONAPOLIT_RELAY_RESPONSE_SCHEMA.properties.transmission.properties.voices;
+assert.equal(voicesSchema.type, 'ARRAY');
+assert.equal(voicesSchema.minItems, '2');
+assert.equal(voicesSchema.maxItems, '2');
+assert.deepEqual(voicesSchema.items.enum, ['Kʰonapolit', 'Tauric Diana bots']);
+assert.match(voicesSchema.description, /Exactly two entries in this order/);
+assert.match(relay, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\] in that order/);
+assert.doesNotMatch(relay, /optional named bot voices may follow/);
 
 assert.match(fullInstruction, /Never instruct the provider to “be,” “play,” impersonate, or roleplay Kʰonapolit or Tauric Diana bots/);
 assert.match(fullInstruction, /passive instrumentation/);
