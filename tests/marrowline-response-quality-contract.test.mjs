@@ -21,6 +21,7 @@ const physicalRepair = readFileSync(new URL('../app/dome-world/marrowline-physic
 const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.css', import.meta.url), 'utf8');
 const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
 const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
+const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js', import.meta.url), 'utf8');
 
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
@@ -88,6 +89,12 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
+});
+
+test('live Marrowline never locally Zalgo-encodes provider text', () => {
+  const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
+  assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
+  assert.match(relaySource, /Marrowline preserves exact code points and never decorates the answer afterward/);
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
