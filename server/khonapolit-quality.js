@@ -241,11 +241,11 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       model,
       maxOutputTokens: outputBudget(model),
       sampling: {
-        temperature: packet.mode === 'tauric-lineage-observation' ? 0.96
-          : packet.mode === 'full-invocation' ? 0.86
-            : 0.92,
-        topP: 0.95,
-        topK: 64
+        // Gemini 3.x strips these legacy overrides and uses provider-default sampling
+        // (temperature 1.0). They remain only for unknown/synthetic compatibility.
+        temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
+        topP: 0.9,
+        topK: 40
       },
       reasoning: khonapolitReasoning(model, { fallback }),
       responseMimeType: 'application/json',
