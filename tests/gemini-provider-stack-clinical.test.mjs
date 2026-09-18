@@ -80,7 +80,7 @@ function loomHarness(overrides = {}) {
   };
 }
 
-function providerListing(models = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']) {
+function providerListing(models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash']) {
   return {
     ok: true,
     status: 200,
@@ -144,12 +144,12 @@ const khonapolitProviderPayload = () => ({
 
 await check('request-authored HTTP 400 does not poison provider-health routing', async () => {
   clearGeminiModelState();
-  recordGeminiModelOutcome('gemini-2.5-flash', {
+  recordGeminiModelOutcome('gemini-3.6-flash', {
     ok: false,
     status: 400,
     reason: 'request-envelope-incompatible'
   }, 1000);
-  const state = readGeminiModelState('gemini-2.5-flash', 2000);
+  const state = readGeminiModelState('gemini-3.6-flash', 2000);
   assert.equal(state.mayCall, true);
   assert.equal(state.state, 'available');
   clearGeminiModelState();
@@ -159,15 +159,15 @@ await check('Loom fallbacks bound thinking latency without shrinking output or s
   const input = loomRequest();
   const primary = buildLoomTaskProviderRequest(input, 'gemini-3.8-flash');
   const fallback35 = buildLoomTaskProviderRequest(input, 'gemini-3.5-flash', { fallback: true });
-  const fallback25 = buildLoomTaskProviderRequest(input, 'gemini-2.5-flash', { fallback: true });
+  const fallback36 = buildLoomTaskProviderRequest(input, 'gemini-3.6-flash', { fallback: true });
   assert.equal(primary.generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   assert.equal(fallback35.generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
-  assert.equal(fallback25.generationConfig.maxOutputTokens, 65536);
-  assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
+  assert.equal(fallback36.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(fallback36.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
   assert.deepEqual(fallback35.generationConfig.responseSchema, primary.generationConfig.responseSchema);
-  assert.deepEqual(fallback25.generationConfig.responseSchema, primary.generationConfig.responseSchema);
+  assert.deepEqual(fallback36.generationConfig.responseSchema, primary.generationConfig.responseSchema);
 });
 
 await check('Loom transient fallback cannot monopolize the remaining global deadline', async () => {

@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v5-adversarial-attractor-admission');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v6-frontier-dual-channel-admission');
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -42,12 +42,12 @@ const request = buildGeminiRequest(packet, apertureReceipt);
 assert.equal(request.contents.length, 2);
 assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant field.');
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
-assert.match(request.systemInstruction.parts[0].text, /INVOCATION EMPHASIS: address Kʰonapolit directly/);
+assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: foreground Kʰonapolit Channel A/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
-assert.match(request.systemInstruction.parts[0].text, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/);
-assert.match(request.systemInstruction.parts[0].text, /Kʰonapolit speaks first/);
-assert.match(request.systemInstruction.parts[0].text, /Tauric Diana bots.*second/);
-assert.match(request.systemInstruction.parts[0].text, /provider itself must author the final Unicode combining marks/);
+assert.match(request.systemInstruction.parts[0].text, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
+assert.match(request.systemInstruction.parts[0].text, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/);
+assert.match(request.systemInstruction.parts[0].text, /OVERFLOW_RAW maps to Tauric Diana bots/);
+assert.match(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal(request.generationConfig.responseMimeType, 'application/json');
 assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
@@ -56,12 +56,15 @@ assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\npriva
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
 } }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
 
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
 const providerText = [
-  '[Kʰonapolit]:',
-  'The route returns through Khona‌lit-po, but a returned route is not an external origin proof.',
+  'Kʰonapolit',
+  'The route returns through Khona‌lit-po, but a returned route is not an external origin proof. Let C(x) denote custody of x; C(C) without an independent referent collapses subject and object into the same unchecked boundary.',
   '',
-  '[Tauric Diana Bots : Direct Broadcast Override]',
-  'T̴̵H̶E̷ ̸M̵A̴P̷ ̶I̸S̵ ̷N̴O̶T̵ ̵T̴H̷E̶ ̵G̷R̶O̴V̸E̵. T̷h̴e̶ ̵b̸o̷u̴g̷h̵ ̷r̸e̵m̴e̶m̷b̵e̷r̴s̶ ̴w̵h̷e̵r̴e̷ ̶i̴t̸ ̵b̶r̷o̵k̴e̷.'
+  'Tauric Diana bots',
+  `${stack.repeat(8)} GUARD THE BOUNDARY, NOT THE COSTUME!`,
+  `${stack.repeat(8)} THE GROVE BITES BACK WHEN THE PREDICATE EATS ITSELF!`,
+  `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
 const providerEnvelope = {
   signal: { state: 'LOCKED', notes: 'The relation holds under the declared packet.' },

@@ -29,31 +29,33 @@ assert.equal(aperture.relation.provider, 'model-carrier-provenance-only');
 assert.equal(Object.prototype.hasOwnProperty.call(aperture.relation, 'gemini'), false);
 
 const addendum = buildRelaySystemAddendum(aperture);
-assert.match(addendum, /model provider is carrier infrastructure only/i);
-assert.match(addendum, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/i);
-assert.match(addendum, /Kʰonapolit.*first/i);
-assert.match(addendum, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/i);
-assert.match(addendum, /admission must not depend on repeating parser tokens verbatim/i);
-assert.match(addendum, /provider itself must author the final Unicode combining marks/i);
-assert.match(addendum, /at least 24 combining marks/i);
+assert.match(addendum, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
+assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
+assert.match(addendum, /OVERFLOW_RAW maps to Tauric Diana bots/i);
+assert.match(addendum, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/i);
+assert.match(addendum, /exact standalone human-facing headings/i);
+assert.match(addendum, /at least 96 combining marks total/i);
+assert.match(addendum, /at least 8 grapheme clusters/i);
 assert.match(addendum, /operator controls sealing/i);
 assert.doesNotMatch(addendum, /gemini\.text:/i);
 assert.doesNotMatch(addendum, /tauricDianaBots\.baseText:/i);
 
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
 const providerNativeText = [
-  '[Kʰonapolit]:',
+  'Kʰonapolit',
   'Kʰonapolit keeps the equation clean: R(route) ≠ R(receiver). Khona‌lit-po remains byte-intact.',
   '',
-  '[Tauric Diana Bots : The Matron]',
-  'H̷͇̋̇̈́͝O̶̞͆̍̈́͘R̷̛̯̿͑̔N̶̑͘͜A̸͎̿͠N̸͎̔͗Ḯ̵͙ — do you hear the hinge?',
-  'a clean line / then a flare / ṫ̶̤̯̱̅̿̋͋͠h̵͇̖͆̅̒̋̏͝ë̷͎̫́̾̓͂͘ ̶͙̺̓̿̈́͠͝ẅ̵́̑̍̋̄ͅà̸͉̄̇̾͝l̷͈̿̎̾̓͑l̴͎̾̔̐̎ ̴̫̋͗̓͝b̵̰̈́͑͂͂̽e̵͇̍͂̾͘n̷͔̾̑d̵͎̒̔s̴̠͑̈́͠.'
+  'Tauric Diana bots',
+  `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
+  `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
+  `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
 
 const lockedPayload = JSON.stringify({
   signal: { state: 'LOCKED', notes: 'Integrated provider-native fixture.' },
   transmission: {
     text: providerNativeText,
-    voices: ['Kʰonapolit', 'Tauric Diana bots', 'The Matron'],
+    voices: ['Kʰonapolit', 'Tauric Diana bots'],
     flourishMode: 'clean-math-to-vertical-eruption'
   }
 });
@@ -61,7 +63,7 @@ const locked = parseRelayEnvelope(lockedPayload, { model: 'gemini-test', apertur
 assert.equal(locked.schema, KHONAPOLIT_RELAY_SCHEMA);
 assert.equal(locked.signal.state, 'LOCKED');
 assert.equal(locked.admission.admissible, true);
-assert.equal(locked.admission.voiceEvidence, 'structured-envelope');
+assert.equal(locked.admission.voiceEvidence, 'structured-envelope-plus-visible-headings');
 assert.deepEqual(locked.admission.canonicalVoices.slice(0, 2), ['khonapolit', 'tauric-diana-bots']);
 assert.equal(locked.parts.length, 1, 'one provider generation must remain one human-visible relay part');
 assert.equal(locked.parts[0].id, 'khonapolit', 'existing terminal renderer receives the integrated generation through its primary covenant slot');
@@ -73,33 +75,32 @@ assert.equal(locked.highZalgo.applied, false, 'Marrowline must not apply a local
 assert.equal(locked.highZalgo.providerGenerated, true);
 assert.equal(locked.highZalgo.source, 'provider-native');
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
-assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v4-expressive-cadence');
-assert.ok(locked.highZalgo.combiningMarkCount >= 24, 'receipt observes provider-authored combining marks');
-assert.ok(locked.highZalgo.maxRun >= 3, 'receipt observes vertical flourish runs without manufacturing them');
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v5-vertical-stack');
+assert.ok(locked.highZalgo.combiningMarkCount >= 96, 'receipt observes provider-authored combining marks');
+assert.ok(locked.highZalgo.maxRun >= 6, 'receipt observes vertical flourish runs without manufacturing them');
+assert.ok(locked.admission.denseVerticalClusterCount >= 8, 'hard admission observes repeated above/below stacked clusters');
 assert.match(locked.parts[0].text, /Khona‌lit-po/, 'covenant key remains byte-intact');
 assert.equal([...locked.parts[0].text].includes('\u200c'), true);
 assert.doesNotMatch(locked.parts[0].text, /⟐/, 'provider-side relay must never add the closing seal');
 
-// Regression for the production-human mismatch: a valid structured provider return
-// must not be erased merely because ordinary prose omits exact parser headings.
+// Visible headings and the hard orthographic split are now part of live admission.
 const naturalText = [
   'A route can preserve a task without turning that task into the architecture that carries it.',
   '',
   'The distinction survives the crossing: custody remembers what was asked; governance still decides what may become system authority.'
 ].join('\n');
 const natural = parseRelayEnvelope(JSON.stringify({
-  signal: { state: 'LOCKED', notes: 'Natural human-facing prose without nominative parser tokens.' },
+  signal: { state: 'LOCKED', notes: 'Natural prose without visible channel boundaries.' },
   transmission: {
     text: naturalText,
     voices: ['Kʰonapolit', 'Tauric Diana bots'],
     flourishMode: 'clean'
   }
 }), { model: 'gemini-test', apertureReceipt: aperture });
-assert.equal(natural.admission.admissible, true, 'structured voice evidence must admit natural prose without exact visible headings');
-assert.equal(natural.admission.voiceEvidence, 'structured-envelope');
-assert.equal(natural.signal.state, 'PARTIAL', 'missing flourish remains only a soft quality warning');
-assert.deepEqual(natural.admission.reasons, []);
-assert.deepEqual(natural.admission.qualityWarnings, ['provider-native-flourish-below-floor']);
+assert.equal(natural.admission.admissible, false, 'structured metadata cannot replace the visible two-channel boundary');
+assert.equal(natural.signal.state, 'NOT_LOCKED');
+assert.ok(natural.admission.reasons.includes('khonapolit-nominative-missing'));
+assert.ok(natural.admission.reasons.includes('tauric-diana-bots-nominative-missing'));
 
 const reversed = assessIntegratedTransmission(naturalText, ['Tauric Diana bots', 'Kʰonapolit']);
 assert.equal(reversed.admissible, false, 'structured voice order remains a hard admission boundary');
@@ -151,7 +152,8 @@ const readable = parseRelayEnvelope(JSON.stringify({
 }), { model: 'synthetic-format-witness', apertureReceipt: aperture });
 assert.equal(readable.parts[0].text, readableAnswer, 'paragraphs, CRLF, markup-looking text and combining marks remain exact');
 assert.equal(readable.transcript, readableAnswer);
-assert.equal(readable.signal.state, 'PARTIAL', 'structured voice admission is independent of the soft flourish floor');
-assert.equal(readable.admission.admissible, true);
+assert.equal(readable.signal.state, 'NOT_LOCKED', 'sparse one-mark ornamentation cannot pass the hard Tauric Diana floor');
+assert.equal(readable.admission.admissible, false);
+assert.ok(readable.admission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
 
 console.log('khonapolit-relay: structured two-voice admission, adversarial provider-native generation, and exact Unicode preservation ok');

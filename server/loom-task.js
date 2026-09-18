@@ -11,7 +11,7 @@ export const LOOM_TASK_TIMEOUT_MS = 50000;
 // one primary call plus two diversified transient-failure fallbacks within the same deadline.
 export const LOOM_TASK_MAX_PROVIDER_CALLS = 3;
 export const LOOM_TASK_TRANSIENT_BACKOFF_MS = Object.freeze([750, 1500]);
-const LOOM_TASK_STABLE_FALLBACKS = Object.freeze(['gemini-3.5-flash', 'gemini-2.5-flash']);
+const LOOM_TASK_STABLE_FALLBACKS = Object.freeze(['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
 // Conservative compatibility envelope for unknown/synthetic models.
 export const LOOM_TASK_OUTPUT_TOKEN_BUDGET = 16384;
 export const LOOM_TASK_RESPONSE_CHAR_BUDGET = 40000;
@@ -22,17 +22,12 @@ export const LOOM_TASK_FRONTIER_RESPONSE_CHAR_BUDGET = 240000;
 export const LOOM_TASK_FRONTIER_ANSWER_CHAR_BUDGET = 220000;
 export const LOOM_TASK_FRONTIER_THINKING_LEVEL = 'high';
 export const LOOM_TASK_FALLBACK_THINKING_LEVEL = 'low';
-// Gemini 2.5 does not accept thinkingLevel. Preserve the high-effort primary budget while
-// emergency fallback uses the bounded low-latency budget recommended for 2.5 Flash.
-export const LOOM_TASK_GEMINI25_THINKING_BUDGET = 24576;
-export const LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET = 1024;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
   'gemini-3.5-flash',
-  'gemini-3-flash-preview',
-  'gemini-2.5-flash'
+  'gemini-3-flash-preview'
 ]);
 class OutputAdmissionError extends TypeError {
   constructor(code) { super('Provider output was not admitted'); this.code = code; }
@@ -45,7 +40,6 @@ const text = (value, max, empty = false) => typeof value === 'string' && value.l
 const dense = (value, max) => Array.isArray(value) && value.length <= max && Object.keys(value).length === value.length;
 const normalizedModel = (model = '') => String(model || '').replace(/^models\//, '');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(normalizedModel(model));
-const gemini25Model = (model = '') => /^gemini-2\.5(?:-|$)/.test(normalizedModel(model));
 const outputBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET : LOOM_TASK_OUTPUT_TOKEN_BUDGET;
 const responseCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_RESPONSE_CHAR_BUDGET : LOOM_TASK_RESPONSE_CHAR_BUDGET;
 const answerCharBudget = (model = '') => qualityEnvelope(model) ? LOOM_TASK_FRONTIER_ANSWER_CHAR_BUDGET : LOOM_TASK_ANSWER_CHAR_BUDGET;
@@ -53,9 +47,6 @@ const validModel = model => typeof model === 'string' && /^[a-zA-Z0-9._-]{1,120}
 
 export function loomThinkingConfig(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
-  if (gemini25Model(model)) {
-    return { thinkingBudget: fallback ? LOOM_TASK_GEMINI25_FALLBACK_THINKING_BUDGET : LOOM_TASK_GEMINI25_THINKING_BUDGET };
-  }
   return { thinkingLevel: fallback ? LOOM_TASK_FALLBACK_THINKING_LEVEL : LOOM_TASK_FRONTIER_THINKING_LEVEL };
 }
 

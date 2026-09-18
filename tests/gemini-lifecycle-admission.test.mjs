@@ -5,11 +5,11 @@ import { clearGeminiModelState, recordGeminiModelOutcome, resolveGeminiModelPlan
 import handler from '../server/hush-generate-quality.js';
 
 const at = 1000000;
-const models = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-3.1-flash-lite-preview', 'gemini-3.1-flash-image', 'gemini-flash-latest', 'operator-future-model'];
+const models = ['gemini-3.5-flash', 'gemini-3.8-flash', 'gemini-3.1-flash-lite-preview', 'gemini-3.1-flash-image', 'gemini-flash-latest', 'operator-future-model'];
 const listing = { ok: true, complete: true, observedAt: at - 1000, expiresAt: at + 599000, models };
 clearGeminiModelState();
 const plan = (providerListing, env = {}) => resolveGeminiModelPlan({ task: 'hush-transform', env, at, providerListing });
-assert.deepEqual(plan(listing).callableModels, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.deepEqual(plan(listing).callableModels, ['gemini-3.8-flash', 'gemini-3.5-flash']);
 assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3.7-flash' && row.reasons.includes('provider-absent')));
 assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3.6-flash' && row.reasons.includes('provider-absent')));
 assert.ok(plan(listing).excludedModels.some(row => row.model === 'gemini-3-flash-preview' && row.reasons.includes('provider-absent')));
@@ -23,7 +23,7 @@ assert.equal(assessGeminiEligibility('gemini-3.8-flash', { listing, at }).eligib
 assert.equal(assessGeminiEligibility('gemini-3.8-flash', { explicit: true, listing, at }).eligible, true);
 for (const [id, reason] of [['gemini-3.1-flash-lite-preview', 'documented-shutdown'], ['gemini-3.1-flash-image', 'specialized-route-required']]) {
   const p = plan(listing, { HUSH_GEMINI_MODEL: id });
-  assert.equal(p.explicitModels[0], id); // Preserve the request and explain its hold.
+  assert.equal(p.explicitModels[0], id);
   assert.ok(!p.callableModels.includes(id));
   assert.ok(p.excludedModels.find(row => row.model === id).reasons.includes(reason));
 }
@@ -36,12 +36,11 @@ assert.ok(!plan(listing, { GEMINI_DISABLED_MODELS: 'gemini-3.8-flash' }).callabl
 assert.equal(resolveGeminiModelPlan({ env: {}, at, providerListing: listing, maxModels: 1 }).callableModels.length, 1);
 
 recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429 }, at);
-assert.deepEqual(plan(listing).callableModels, ['gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.deepEqual(plan(listing).callableModels, ['gemini-3.5-flash']);
 clearGeminiModelState();
 const scheduledAt = Date.parse('2027-05-07');
 assert.ok(assessGeminiEligibility('gemini-3.1-flash-lite', { explicit: true, at: scheduledAt, listing: { ...listing, models: ['gemini-3.1-flash-lite'], observedAt: scheduledAt, expiresAt: scheduledAt + 1000 } }).reasons.includes('lifecycle-review-required'));
 
-// A complete empty listing must cause zero generation attempts, including via Hush.
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const originalModel = process.env.HUSH_GEMINI_MODEL;
@@ -68,7 +67,6 @@ try {
   clearGeminiModelState();
 }
 
-// External-episode reconciliation: visibility, generation outcome, and lifecycle stay distinct.
 const reconciliation = JSON.parse(fs.readFileSync(
   new URL('./fixtures/gemini/gemini-visibility-availability-non-equivalence-v01.json', import.meta.url),
   'utf8'
@@ -87,10 +85,10 @@ assert.equal(post.cached, false);
 assert.equal(post.model_visible, true);
 assert.equal(failure.status, 503);
 assert.equal(failure.successful_generation, false);
-assert.equal(failure.model, undefined, 'generation model remains bound by the repository source rather than duplicated fixture prose');
+assert.equal(failure.model, undefined);
 assert.ok(Date.parse(pre.completed_at) < Date.parse(failure.observed_at));
 assert.ok(Date.parse(failure.observed_at) < Date.parse(post.started_at));
-assert.equal(post.current_main_dispatch, false, 'historical rerun must not masquerade as current-main dispatch closure');
+assert.equal(post.current_main_dispatch, false);
 assert.notEqual(post.source_sha, reconciliation.execution_parent);
 assert.equal(GEMINI_LIFECYCLE_VERSION, reconciliation.lifecycle.registry_version);
 assert.equal(MODEL_CATALOG[reconciliation.model].stability, reconciliation.lifecycle.registry_stability);
@@ -102,9 +100,7 @@ assert.match(handoff, new RegExp(failure.request_id));
 assert.match(handoff, /returned a provider HTTP 503 after 2,196 ms/);
 assert.match(handoff, /model `gemini-3\.8-flash`/);
 assert.match(handoff, /stage\s+`provider-transport`/);
-for (const claim of Object.values(reconciliation.claim_ceiling)) {
-  assert.equal(claim, false, 'negative authority ceilings must remain false');
-}
+for (const claim of Object.values(reconciliation.claim_ceiling)) assert.equal(claim, false);
 assert.deepEqual(reconciliation.earned_if_valid, [
   'CREDENTIAL_SCOPED_LIST_VISIBILITY_DOES_NOT_IMPLY_GENERATION_EPISODE_SUCCESS',
   'DOCUMENTED_CURRENT_LIFECYCLE_DOES_NOT_IMPLY_PER_EPISODE_TRANSPORT_SUCCESS',

@@ -9,7 +9,6 @@ import {
 } from '../server/gemini-model-policy.js';
 import {
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-  KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET,
   KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS,
   buildGeminiGenerationConfig,
   currentGeminiGenerationProfile,
@@ -19,52 +18,58 @@ import {
 clearGeminiModelState();
 const defaultPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 1000 });
 assert.equal(defaultPlan.version, GEMINI_MODEL_POLICY_VERSION);
-assert.deepEqual(defaultPlan.models.slice(0, 6), [
+assert.deepEqual(defaultPlan.models.slice(0, 5), [
   'gemini-3.8-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
   'gemini-3.5-flash',
-  'gemini-3-flash-preview',
-  'gemini-2.5-flash'
+  'gemini-3-flash-preview'
 ]);
 assert.equal(defaultPlan.stickySuccessPromotion, false);
 assert.equal(defaultPlan.latestAliasDefaulted, false);
 assert.ok(!defaultPlan.models.some((model) => /-latest$/.test(model)));
 assert.ok(!defaultPlan.models.some((model) => /flash-lite/.test(model)), 'interactive defaults must not silently descend into Flash-Lite');
-assert.ok(!defaultPlan.models.includes('gemini-2.5-pro'));
 assert.ok(!defaultPlan.models.includes('gemini-3.1-pro-preview'));
 
 const staleGlobalPlan = resolveGeminiModelPlan({
   task: 'hush-transform',
-  env: { GEMINI_MODEL: 'gemini-2.5-flash-lite' },
+  env: { GEMINI_MODEL: 'gemini-3.1-flash-lite' },
   at: 1000
 });
 assert.equal(staleGlobalPlan.models[0], 'gemini-3.8-flash');
-assert.equal(staleGlobalPlan.legacyGlobalModels[0], 'gemini-2.5-flash-lite');
+assert.equal(staleGlobalPlan.legacyGlobalModels[0], 'gemini-3.1-flash-lite');
 assert.ok(staleGlobalPlan.warnings.includes('legacy-global-models-demoted-under-quality-first'));
 
 const operatorOrderPlan = resolveGeminiModelPlan({
   task: 'hush-transform',
-  env: { GEMINI_MODEL: 'gemini-2.5-flash-lite', GEMINI_ROUTING_MODE: 'operator-order' },
+  env: { GEMINI_MODEL: 'gemini-3.1-flash-lite', GEMINI_ROUTING_MODE: 'operator-order' },
   at: 1000
 });
-assert.equal(operatorOrderPlan.models[0], 'gemini-2.5-flash-lite');
+assert.equal(operatorOrderPlan.models[0], 'gemini-3.1-flash-lite');
 assert.equal(operatorOrderPlan.mode, 'operator-order');
+
+const preThreePlan = resolveGeminiModelPlan({
+  task: 'hush-transform',
+  env: { GEMINI_MODEL: 'gemini-2.4-flash' },
+  at: 1000
+});
+assert.ok(preThreePlan.warnings.includes('pre-gemini-3-config-ignored'));
+assert.equal(preThreePlan.models.includes('gemini-2.4-flash'), false);
 
 const overridePlan = resolveGeminiModelPlan({
   task: 'hush-transform',
   env: {
-    HUSH_GEMINI_MODEL: 'gemini-2.5-pro',
-    HUSH_GEMINI_FALLBACKS: 'gemini-3.5-flash,gemini-2.5-flash',
-    GEMINI_DISABLED_MODELS: 'gemini-2.5-flash'
+    HUSH_GEMINI_MODEL: 'gemini-3.1-pro-preview',
+    HUSH_GEMINI_FALLBACKS: 'gemini-3.5-flash,gemini-3-flash-preview',
+    GEMINI_DISABLED_MODELS: 'gemini-3-flash-preview'
   },
   at: 1000
 });
 assert.equal(overridePlan.models[0], 'gemini-3.8-flash');
-assert.equal(overridePlan.routeSpecificModels[0], 'gemini-2.5-pro');
-assert.ok(overridePlan.models.includes('gemini-2.5-pro'));
-assert.ok(!overridePlan.models.includes('gemini-2.5-flash'));
-assert.deepEqual(overridePlan.explicitModels.slice(0, 3), ['gemini-2.5-pro', 'gemini-3.5-flash', 'gemini-2.5-flash']);
+assert.equal(overridePlan.routeSpecificModels[0], 'gemini-3.1-pro-preview');
+assert.ok(overridePlan.models.includes('gemini-3.1-pro-preview'));
+assert.ok(!overridePlan.models.includes('gemini-3-flash-preview'));
+assert.deepEqual(overridePlan.explicitModels.slice(0, 3), ['gemini-3.1-pro-preview', 'gemini-3.5-flash', 'gemini-3-flash-preview']);
 assert.ok(overridePlan.warnings.includes('route-specific-models-demoted-under-quality-first'));
 
 clearGeminiModelState();
@@ -84,13 +89,13 @@ assert.equal(noPromotionPlan.models.indexOf('gemini-3.6-flash'), 2);
 const ordinaryGeneration = buildGeminiGenerationConfig({
   model: 'gemini-3.8-flash',
   maxOutputTokens: 65536,
-  reasoning: { level: 'high', budget: 24576 }
+  reasoning: { level: 'high' }
 });
 assert.equal(ordinaryGeneration.maxOutputTokens, 65536);
 assert.deepEqual(ordinaryGeneration.thinkingConfig, { thinkingLevel: 'high' });
 assert.equal(currentGeminiGenerationProfile(), null);
 
-const interactiveGeneration = await withGeminiGenerationProfile(
+const interactive38 = await withGeminiGenerationProfile(
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
   async () => {
     await Promise.resolve();
@@ -98,24 +103,24 @@ const interactiveGeneration = await withGeminiGenerationProfile(
     return buildGeminiGenerationConfig({
       model: 'gemini-3.8-flash',
       maxOutputTokens: 65536,
-      reasoning: { level: 'high', budget: 24576 }
+      reasoning: { level: 'high' }
     });
   }
 );
-assert.equal(interactiveGeneration.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
-assert.deepEqual(interactiveGeneration.thinkingConfig, { thinkingLevel: 'medium' });
+assert.equal(interactive38.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
+assert.deepEqual(interactive38.thinkingConfig, { thinkingLevel: 'medium' });
 assert.equal(currentGeminiGenerationProfile(), null, 'request-scoped profile must not leak after the callback');
 
-const interactive25 = await withGeminiGenerationProfile(
+const interactive35 = await withGeminiGenerationProfile(
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
   () => buildGeminiGenerationConfig({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash',
     maxOutputTokens: 65536,
-    reasoning: { level: 'high', budget: 24576 }
+    reasoning: { level: 'high' }
   })
 );
-assert.equal(interactive25.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
-assert.deepEqual(interactive25.thinkingConfig, { thinkingBudget: KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET });
+assert.equal(interactive35.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
+assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'low' });
 
 const khonapolitApiSource = fs.readFileSync('api/khonapolit.js', 'utf8');
 assert.match(khonapolitApiSource, /GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE/);

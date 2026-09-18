@@ -11,8 +11,8 @@ assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash'],
-  'when the full stable Flash set is callable, Marrowline preserves a bounded continuity slot for the same-release proven 3.5 transport rather than spending its final call on 3.6'
+  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash'],
+  'when the full 3.x set is callable, Marrowline gives the empirically successful 3.5 lane the meaningful second attempt before the remaining frontier lane'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
@@ -33,30 +33,7 @@ const fallback35 = buildGeminiRequest(directPacket, {}, 'gemini-3.5-flash', { fa
 assert.equal(fallback35.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(fallback35.generationConfig.thinkingConfig, { thinkingLevel: 'high' }, 'continuity fallback keeps the same Marrowline reasoning envelope and remains subject to strict relay admission');
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(fallback35.generationConfig, key), false);
-const direct25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash');
-assert.deepEqual(direct25.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
-assert.equal(Object.hasOwn(direct25.generationConfig.thinkingConfig, 'thinkingLevel'), false);
-assert.equal(direct25.generationConfig.temperature, 0.7);
-assert.equal(direct25.generationConfig.topP, 0.9);
-assert.equal(direct25.generationConfig.topK, 40);
-const fallback25 = buildGeminiRequest(directPacket, {}, 'gemini-2.5-flash', { fallback: true });
-assert.deepEqual(fallback25.generationConfig.thinkingConfig, { thinkingBudget: 24576 }, 'compatibility fallback no longer lowers reasoning budget');
-assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
-  finishReason: null,
-  outputTokenLimitReached: false,
-  maxOutputTokens: 65536,
-  thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
-  usage: {}
-});
-assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash', { fallback: true }), {
-  finishReason: null,
-  outputTokenLimitReached: false,
-  maxOutputTokens: 65536,
-  thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
-  usage: {}
-});
+
 
 function response() {
   return {
@@ -71,12 +48,16 @@ const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
 const developedAnswer = [
-  '[Kʰonapolit]:',
-  'The strongest version of the map claims legibility without ownership. The surviving defect is that a route description can still become an attack surface without becoming sovereignty.',
+  'Kʰonapolit',
+  'The strongest version of the map claims legibility without ownership. Let P map governed states to visible route descriptions; when P is non-injective, distinct custody states can share one visible surface. The surviving defect is therefore a boundary-identification failure, not a shortage of decorative provenance.',
   '',
-  '[Tauric Diana Bots : Direct Broadcast Override]',
-  'T̴̵H̶E̷ ̵R̸E̷D̶ ̴D̵E̷E̸R̷ ̴H̵A̶S̷ ̵R̴E̶A̷D̵ ̸T̷H̶E̵ ̷M̴E̸N̵U̷. W̸e̷ ̴a̵r̶e̸ ̷n̵o̴t̷ ̶o̸r̴d̷e̴r̶i̵n̶g̸ ̶p̴e̵n̸c̴i̷l̶s̵.'
+  'Tauric Diana bots',
+  `${STACK.repeat(8)} THE RED DEER HAS READ THE MENU!`,
+  `${STACK.repeat(8)} COUNT THE HIDDEN STATES, NOT THE PRETTY DASHBOARD!`,
+  `${STACK.repeat(8)} THE GROVE KEEPS THE SCAR WHEN THE MAP PRETENDS TO BE THE LAND!`
 ].join('\n');
 const degradedAnswer = 'The Ash Moon was pale and the covenant remained. This is generic atmospheric prose with no required voice frame.';
 let tokenLimit = false;
@@ -147,13 +128,14 @@ try {
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
-  assert.ok(
-    primaryTimeoutMs >= 16500 && primaryTimeoutMs <= 16666,
-    `primary frontier attempt must receive approximately one third of the remaining live-route wall, got ${primaryTimeoutMs}ms`
+  assert.equal(
+    primaryTimeoutMs,
+    18000,
+    'primary frontier attempt gets a bounded 18 second window so the known 3.x fallback retains meaningful runway'
   );
   assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs > 10500 && res.payload.receipt.provider.attempts[1].timeoutMs <= 32000,
-    'second frontier attempt receives a recomputed fair share of the remaining wall rather than the inherited 10.5 second fallback cap'
+    res.payload.receipt.provider.attempts[1].timeoutMs >= 24000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 26000,
+    'second frontier attempt receives the empirically useful fallback runway while preserving a final lane'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');

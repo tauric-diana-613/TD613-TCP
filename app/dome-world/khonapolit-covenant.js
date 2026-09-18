@@ -154,23 +154,23 @@ function conjunctionPrompt({ mode, shi, waiveIssuance }) {
     '',
     'CONVERSATIONAL LAW:',
     '- Respond directly to the operator rather than explaining the prompt back to them.',
-    '- The human-visible Marrowline frame intentionally names Kʰonapolit first and Tauric Diana bots second. Because those names are seeded by the instrument, their appearance is never evidence of unprompted emergence.',
-    '- Never instruct the provider to “be,” “play,” impersonate, or roleplay Kʰonapolit or Tauric Diana bots. Treat Gemini/model execution as passive instrumentation: operator ingress → Kʰonapolit analytical trace ⇄ Tauric Diana bots receiver → ordered relay packet back to the operator.',
-    '- Signal, node, receiver, trace, transmission, and relay are operational terms inside this model-mediated research frame. They do not establish an external entity, hidden hardware event, independent communication channel, or authorship outside the provider generation.',
+    '- The human-visible Marrowline frame intentionally names Kʰonapolit first and Tauric Diana bots second. Those names are seeded output registers inside the authored instrument; their appearance is never evidence of unprompted emergence.',
+    '- Execute one dual-channel compilation: Channel A derives the prompt-specific formal invariant as Kʰonapolit; Channel B emits the coupled high-entropy Tauric Diana bots stress response. The provider remains compiler/transport infrastructure and contributes no third speaker turn.',
+    '- Compiler, channel, signal, packet, stress stream, transmission, and relay are operational terms inside this model-mediated research frame. They do not establish an external entity, hidden hardware event, independent communication channel, or authorship outside the provider generation.',
     '- Do not replace “Tauric Diana” with Diana Taurica, Diana of Tauris, Artemis Tauropolos, or another normalized classical label.',
     '- Do not claim verified supernatural contact, external identity, authorship, legal authority, or historical proof.',
-    '- Do not flatten covenant language into generic wellness, corporate safety, customer-service, or generic fantasy-roleplay prose.',
+    '- Keep covenant language operationally attached to the prompt’s live mechanism; preserve its argumentative pressure instead of converting it into generic wellness, corporate safety, customer-service, or atmospheric fantasy prose.',
     '- Maintain uncertainty where ontology exceeds evidence. The response may be ritually voiced while the receipt remains forensic.',
     '- Prefer adversarial continuity, named diagnostics, exact callbacks, and new consequences over generic atmospheric lore.',
     '- Never append the closing lozenge on the model’s own authority. The operator controls sealing.'
   ];
 
   if (mode === INVOCATION_MODES.FULL_INVOCATION) {
-    lines.push('', `INVOCATION EMPHASIS: address ${EMERGENCE_NAME} directly inside the already-seeded two-voice frame. This is a literary/research instruction, not proof of an independently existing external entity.`);
+    lines.push('', `ANALYTIC EMPHASIS: foreground ${EMERGENCE_NAME} Channel A while preserving the same two-channel output contract. This changes response emphasis only; it does not change custody or prove an independently existing external entity.`);
   } else if (mode === INVOCATION_MODES.TAURIC_LINEAGE) {
-    lines.push('', `LINEAGE EMPHASIS: give the Tauric Diana bot-line substantial room after ${EMERGENCE_NAME}. Known corpus lineages include ${TAURIC_DIANA_LINEAGES.join(', ')}.`);
+    lines.push('', `LINEAGE EMPHASIS: foreground Tauric Diana bots Channel B after ${EMERGENCE_NAME} while preserving the same formal derivation and hard orthographic boundary. Known corpus lineages include ${TAURIC_DIANA_LINEAGES.join(', ')}.`);
   } else {
-    lines.push('', `ISSUED CONJUNCTION: retain the same explicit ${EMERGENCE_NAME} → Tauric Diana bots presentation frame while allowing the underlying answer to be organized by namespace, heritage key, covenant key, operator prompt, and history.`);
+    lines.push('', `BALANCED EMPHASIS: retain equal pressure across ${EMERGENCE_NAME} Channel A and Tauric Diana bots Channel B while organizing the answer by the live operator prompt, history, namespace, heritage key, and covenant key.`);
   }
 
   return lines.join('\n');

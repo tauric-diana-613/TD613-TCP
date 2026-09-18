@@ -5,7 +5,6 @@ import {
   buildLoomTaskProviderRequest,
   LOOM_TASK_FRONTIER_OUTPUT_TOKEN_BUDGET,
   LOOM_TASK_FRONTIER_THINKING_LEVEL,
-  LOOM_TASK_GEMINI25_THINKING_BUDGET,
   LOOM_TASK_OUTPUT_TOKEN_BUDGET
 } from '../server/loom-task.js';
 import { resolveGeminiModelPlan } from '../server/gemini-model-policy.js';
@@ -26,22 +25,6 @@ assert.deepEqual(observeGeminiOutput({}, 'gemini-3.8-flash'), {
   outputTokenLimitReached: false,
   maxOutputTokens: 65536,
   thinkingLevel: 'high',
-  usage: {}
-});
-
-const stable25Marrowline = buildGeminiRequest(packet, {}, 'gemini-2.5-flash');
-assert.equal(stable25Marrowline.generationConfig.maxOutputTokens, 65536);
-assert.equal(stable25Marrowline.generationConfig.temperature, 0.7);
-assert.equal(stable25Marrowline.generationConfig.topP, 0.9);
-assert.equal(stable25Marrowline.generationConfig.topK, 40);
-assert.deepEqual(stable25Marrowline.generationConfig.thinkingConfig, { thinkingBudget: 24576 });
-assert.equal(Object.hasOwn(stable25Marrowline.generationConfig.thinkingConfig, 'thinkingLevel'), false);
-assert.deepEqual(observeGeminiOutput({}, 'gemini-2.5-flash'), {
-  finishReason: null,
-  outputTokenLimitReached: false,
-  maxOutputTokens: 65536,
-  thinkingLevel: 'not-applicable',
-  thinkingBudget: 24576,
   usage: {}
 });
 
@@ -67,13 +50,6 @@ const fallback35Loom = buildLoomTaskProviderRequest(loomInput, 'gemini-3.5-flash
 assert.equal(fallback35Loom.generationConfig.maxOutputTokens, 65536);
 assert.deepEqual(fallback35Loom.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
 assert.deepEqual(fallback35Loom.generationConfig.responseSchema, frontierLoom.generationConfig.responseSchema);
-const stable25Loom = buildLoomTaskProviderRequest(loomInput, 'gemini-2.5-flash');
-assert.deepEqual(stable25Loom.generationConfig.thinkingConfig, { thinkingBudget: LOOM_TASK_GEMINI25_THINKING_BUDGET });
-assert.equal(Object.hasOwn(stable25Loom.generationConfig.thinkingConfig, 'thinkingLevel'), false);
-const fallback25Loom = buildLoomTaskProviderRequest(loomInput, 'gemini-2.5-flash', { fallback: true });
-assert.equal(fallback25Loom.generationConfig.maxOutputTokens, 65536);
-assert.deepEqual(fallback25Loom.generationConfig.thinkingConfig, { thinkingBudget: 1024 });
-assert.deepEqual(fallback25Loom.generationConfig.responseSchema, frontierLoom.generationConfig.responseSchema);
 const syntheticLoom = buildLoomTaskProviderRequest(loomInput, 'synthetic-model');
 assert.equal(syntheticLoom.generationConfig.maxOutputTokens, LOOM_TASK_OUTPUT_TOKEN_BUDGET);
 assert.equal(syntheticLoom.generationConfig.maxOutputTokens, 16384);
@@ -85,11 +61,11 @@ const providerListing = {
   complete: true,
   observedAt: at - 1000,
   expiresAt: at + 599000,
-  models: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-2.5-flash-lite']
+  models: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite']
 };
 const plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', env: {}, at, providerListing });
 assert.equal(plan.callableModels[0], 'gemini-3.8-flash');
-assert.deepEqual(plan.callableModels.slice(0, 6), ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash']);
+assert.deepEqual(plan.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']);
 assert.ok(!plan.callableModels.some(model => /flash-lite/.test(model)));
 
 const livingChat = await fs.readFile(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
@@ -100,4 +76,4 @@ assert.match(livingChat, /Noto Sans/);
 assert.match(livingChat, /relay-bots\[data-intensity=\\"5\\"\][\s\S]*line-height:4!important/);
 assert.match(livingChat, /\.zalgo-line\{display:block!important/);
 
-console.log('marrowline-loom-frontier-envelope: generation-aware Gemini routing, primary-quality/fallback-latency thinking, 64K output, and Zalgo-safe type guard ok');
+console.log('marrowline-loom-frontier-envelope: Gemini 3.x-only routing, generation-aware thinking, 64K output, and Zalgo-safe type guard ok');

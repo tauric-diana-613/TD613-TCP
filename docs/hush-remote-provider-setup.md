@@ -26,9 +26,7 @@ Blank model overrides use the repository-wide pinned text order:
 ```text
 gemini-3.5-flash
 gemini-3-flash-preview
-gemini-2.5-flash
 gemini-3.1-flash-lite
-gemini-2.5-flash-lite
 ```
 
 The first eligible high-quality model is tried first. A fallback is used only after failure, timeout, quota pressure, or temporary cooldown. A successful fallback is not promoted above higher-quality models on later requests.

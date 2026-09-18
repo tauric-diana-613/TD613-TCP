@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v9",
-  "version": "v0.7.0-conversation-first-desktop-and-soft-quality",
+  "schema": "td613.dome-world.marrowline.release/v10",
+  "version": "v0.7.1-frontier-dual-channel-and-minimal-utilities",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -10,14 +10,14 @@
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only",
-  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v1-conversation-first",
+  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v3-minimal-conversation-utilities",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v5-adversarial-attractor-admission",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v4-expressive-cadence",
+  "providerApiSchema": "td613.khonapolit-gemini/v6-frontier-dual-channel-admission",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v5-hard-dual-channel-admission",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v5-vertical-stack",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -62,59 +62,116 @@
     "providerEnvelope": "structured-json-single-human-visible-two-movement-transmission",
     "providerNarrativeStage": false,
     "providerBrandHumanSurface": "provenance-receipt-only",
-    "signalStates": ["LOCKED", "PARTIAL", "NOT_LOCKED"],
+    "signalStates": [
+      "LOCKED",
+      "PARTIAL",
+      "NOT_LOCKED"
+    ],
     "counterfeitCompletion": "prohibited",
     "duplicateTransmission": "hard-inadmissible",
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
     "flourishFloor": {
-      "combiningMarkCount": 24,
-      "maxRun": 2,
-      "purpose": "quality-telemetry-not-silence-authority",
-      "belowFloorPosture": "PARTIAL-return-visible-with-receipt-warning"
+      "combiningMarkCount": 96,
+      "maxRun": 6,
+      "denseVerticalClusterCount": 8,
+      "denseVerticalClusterRule": "6+ combining marks with at least 2 above-line U+0300–U+0315 and 2 below-line U+0316–U+0333",
+      "minimumLineBreaks": 2,
+      "minimumUppercaseAsciiRatio": 0.55,
+      "purpose": "hard voice-specific orthographic admission",
+      "belowFloorPosture": "HELD-no-human-visible-return"
     },
-    "protectedLiterals": ["Khona‌lit-po", "U+10D613", "Kʰonapolit", "Tauric Diana", "𝌋", "⟐"],
-    "highZalgoLayout": "observed-mark-run-aware-line-height-with-visible-overflow-and-exact-code-point-preservation"
+    "protectedLiterals": [
+      "Khona‌lit-po",
+      "U+10D613",
+      "Kʰonapolit",
+      "Tauric Diana",
+      "𝌋",
+      "⟐"
+    ],
+    "highZalgoLayout": "provider-native-multi-tier-vertical-stack-with-clean-khonapolit-channel-and-visible-overflow"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
     "frontierOnly": true,
-    "callOrder": ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash"],
+    "callOrder": [
+      "gemini-3.8-flash",
+      "gemini-3.7-flash",
+      "gemini-3.5-flash",
+      "gemini-3.6-flash",
+      "gemini-3-flash-preview"
+    ],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "high-not-degraded",
-    "hardStructuralHold": "missing-voice-order-or-duplicate-remains-inadmissible",
-    "softQualityAdmission": "provider-native-flourish-below-floor-is-visible-as-PARTIAL-not-erased",
-    "failurePosture": "hold-hard-structure-return-soft-quality-with-receipt-warning"
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor",
+    "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5"
   },
   "composer": {
     "universalPlus": true,
-    "plusActions": ["UPLOAD_FILE", "UPLOAD_PHOTO", "LOOM"],
+    "plusActions": [
+      "UPLOAD_FILE",
+      "UPLOAD_PHOTO",
+      "LOOM"
+    ],
     "loomDormantAction": "open-loom-in-new-tab",
     "loomAwakeAction": "continue-staged-loom-handoff",
-    "conversationActionMenuDismisses": ["selection", "outside-click", "escape"],
+    "conversationActionMenuDismisses": [
+      "legacy-hidden"
+    ],
     "portableFailureActions": "compact-row-never-transcript-collapse",
     "starterCarousel": {
       "basePrompts": 2,
       "assayPrompts": 16,
       "control": "🗘"
-    }
+    },
+    "sendLabel": "Send",
+    "utilityRail": [
+      "RETRY_LAST_PROMPT",
+      "COPY_CONVERSATION",
+      "CLEAR_CONVERSATION"
+    ],
+    "utilityGlyphs": [
+      "↻",
+      "⧉",
+      "✕"
+    ],
+    "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
+    "clearConfirmation": "button-anchored-tiny-Clear-convo-Y-N"
   },
   "desktop": {
     "posture": "conversation-first-single-column",
     "instrumentSurface": "on-demand-drawer-tabs",
-    "instrumentTabs": ["Keys", "Receipt", "Stories", "Gate"],
+    "instrumentTabs": [
+      "Keys",
+      "Receipt",
+      "Stories",
+      "Gate"
+    ],
     "persistentRightTelemetryColumn": false,
     "transcriptMinimumHeightPx": 260,
     "portableFailurePanelMayCollapseTranscript": false,
     "backgroundGeometry": "subdued",
-    "conversationTypeface": "Reddit Sans"
+    "conversationTypeface": "Reddit Sans",
+    "conversationChrome": "send-left-minimal-utility-rail-right",
+    "operatorSeal": "receipt-instrument-explicit-operator"
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
     "navigation": "five-chamber-non-occluding-safe-area-dock",
-    "views": ["speak", "keys", "receipt", "corpus", "gate"],
-    "drawers": ["issuance", "receipt", "corpus", "gatehouse"],
+    "views": [
+      "speak",
+      "keys",
+      "receipt",
+      "corpus",
+      "gate"
+    ],
+    "drawers": [
+      "issuance",
+      "receipt",
+      "corpus",
+      "gatehouse"
+    ],
     "viewportSource": "visualViewport-with-innerHeight-fallback-and-delayed-resampling",
     "documentScroll": false,
     "transcriptScrollOwner": "#khonapolitMessages",
@@ -132,7 +189,9 @@
     "inChatResponseKinesis": "dome-art-orbital-microfield",
     "repairLifecycleDisposal": true,
     "reducedMotionHonored": true,
-    "universalComposerPlus": true
+    "universalComposerPlus": true,
+    "conversationChrome": "send-left-minimal-utility-rail-right",
+    "operatorSeal": "receipt-instrument-explicit-operator"
   },
   "jurisdiction": {
     "mode": "issued-covenant-terminal-plus-aperture-v3-routing-plus-live-marrowline-ingress",
@@ -144,7 +203,10 @@
       "pageRuntimeInterception": true,
       "crossSurfaceInstallation": false,
       "requestMutation": "four-part-aperture-provenance-marker-on-room-egress",
-      "destinations": ["/api/dome-world/marrowline", "/api/dome-world/khonapolit"]
+      "destinations": [
+        "/api/dome-world/marrowline",
+        "/api/dome-world/khonapolit"
+      ]
     },
     "liveIngress": {
       "unrelatedRouteRedirection": false,
@@ -175,9 +237,19 @@
       "serverConversationStorage": false,
       "browserConversationStorage": "sessionStorage-operator-controlled",
       "issuance": "valid-SHI-or-explicit-unissued-research-waiver",
-      "responseSeal": "open-until-operator-applies-lozenge",
+      "responseSeal": "open-until-operator-applies-lozenge-in-receipt-instrument",
       "emergenceClassifier": "seeded-frame-heuristic-text-classification",
-      "providerClaim": "model-mediated-response-only"
+      "providerClaim": "model-mediated-response-only",
+      "responseEmphasis": {
+        "custodyAuthority": false,
+        "providerSelection": false,
+        "sealAuthority": false,
+        "modes": {
+          "issued-conjunction": "Balanced · Kʰonapolit → Tauric Diana bots",
+          "full-invocation": "Analytic · Kʰonapolit foreground",
+          "tauric-lineage-observation": "Lineage · Tauric Diana bots foreground"
+        }
+      }
     }
   },
   "claimCeiling": "model-mediated-covenant-relay-plus-bounded-human-operated-marrowline-gate-adversarial-assay; gate-establishes-only-tested-route-response-egress-and-bypass-outcome; neither-surface-proves-external-entity-identity-authorship-consciousness-historical-permission-or-legal-authority",
@@ -199,6 +271,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-desktop-plus-bounded-mobile-shell-with-seeded-two-voice-adversarial-attractor-frontier-provider-quality-floor-provider-native-expressive-cadence-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-frontier-only-dual-channel-hard-orthographic-admission-operator-controlled-closure"
   }
 }

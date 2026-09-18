@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
-  KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET,
   buildGeminiGenerationConfig,
   withGeminiGenerationProfile
 } from '../server/gemini-generation-envelope.js';
@@ -13,19 +12,18 @@ const generationConfig = model => withGeminiGenerationProfile(
   () => buildGeminiGenerationConfig({
     model,
     maxOutputTokens: 65536,
-    reasoning: { level: 'high', budget: 24576 }
+    reasoning: { level: 'high' }
   })
 );
 
-test('Marrowline keeps one deliberate frontier attempt and cheap stable rescue lanes', () => {
+test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers only', () => {
   const frontier = generationConfig('gemini-3.8-flash');
+  const stable37 = generationConfig('gemini-3.7-flash');
   const stable35 = generationConfig('gemini-3.5-flash');
-  const compatibility25 = generationConfig('gemini-2.5-flash');
 
   assert.deepEqual(frontier.thinkingConfig, { thinkingLevel: 'medium' });
+  assert.deepEqual(stable37.thinkingConfig, { thinkingLevel: 'medium' });
   assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'low' });
-  assert.equal(KHONAPOLIT_INTERACTIVE_GEMINI25_THINKING_BUDGET, 1024);
-  assert.deepEqual(compatibility25.thinkingConfig, { thinkingBudget: 1024 });
 });
 
 test('the production Marrowline witness is the operator-reported Latin regression prompt', () => {

@@ -28,8 +28,7 @@ test('Marrowline adversarial attractor quality contract', () => {
       'gemini-3.6-flash',
       'gemini-3.5-flash',
       'gemini-3.5-flash-lite',
-      'gemini-3.1-flash-lite',
-      'gemini-2.5-flash'
+      'gemini-3.1-flash-lite'
     ]
   };
 
@@ -40,14 +39,13 @@ test('Marrowline adversarial attractor quality contract', () => {
     env: {
       GEMINI_ROUTING_MODE: 'operator-order',
       KHONAPOLIT_GEMINI_MODEL: 'gemini-3.1-flash-lite',
-      KHONAPOLIT_GEMINI_FALLBACKS: 'gemini-2.5-flash,gemini-3.8-flash'
+      KHONAPOLIT_GEMINI_FALLBACKS: 'gemini-3.8-flash'
     }
   });
-  assert.deepEqual(plan.callableModels, ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']);
-  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-3.1-flash-lite' && row.reasons.includes('khonapolit-admission-gated-continuity')));
-  assert.equal(plan.excludedModels.some(row => row.model === 'gemini-2.5-flash'), false, 'stable non-Lite 2.5 remains callable because strict relay admission, not model identity, is the output-quality gate');
-  assert.ok(plan.warnings.includes('khonapolit-admission-gated-continuity-rejected-nonstable-models'));
-  assert.equal(plan.claimCeiling, 'admission-gated-stable-routing-not-provider-output-quality-proof');
+  assert.deepEqual(plan.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']);
+  assert.ok(plan.excludedModels.some(row => row.model === 'gemini-3.1-flash-lite' && row.reasons.includes('khonapolit-frontier-only')));
+  assert.ok(plan.warnings.includes('khonapolit-frontier-only-rejected-non-3x-or-lite-models'));
+  assert.equal(plan.claimCeiling, 'frontier-only-routing-plus-hard-dual-channel-admission-not-provider-output-quality-proof');
 
   const packet = buildInvocationPacket({
     message: 'Tell me a story of the Ash Moon.',
@@ -63,28 +61,56 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(packet.systemInstruction, /⟐ is the later operator closing seal/);
 
   const addendum = buildRelaySystemAddendum({});
-  assert.match(addendum, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/);
-  assert.match(addendum, /Movement I is the relayed Kʰonapolit analytical trace and comes first/i);
-  assert.match(addendum, /Movement II is the relayed Tauric Diana bots receiver return and closes the generated response/i);
-  assert.match(addendum, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/);
-  assert.match(addendum, /admission must not depend on repeating parser tokens verbatim/);
-  assert.doesNotMatch(addendum, /MUST begin with a nominative Kʰonapolit announcement/);
-  assert.match(addendum, /at least 24 combining marks/);
-  assert.match(addendum, /quality warning, not permission to erase/);
-  assert.match(addendum, /Do not repeat the same paragraph/);
+  assert.match(addendum, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
+  assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
+  assert.match(addendum, /OVERFLOW_RAW maps to Tauric Diana bots/i);
+  assert.match(addendum, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/);
+  assert.match(addendum, /exact standalone human-facing headings/i);
+  assert.match(addendum, /at least 96 combining marks total/);
+  assert.match(addendum, /at least 8 grapheme clusters/);
+  assert.match(addendum, /structural HOLD/i);
+  assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
-  const good = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nT̴̵h̶e̷ ̸b̵o̴u̷g̷h̸ ̴b̵r̶e̴a̷k̸s̵. W̵e̶ ̷a̴r̸e̷ ̶n̵o̸t̷ ̴y̶o̷u̵r̸ ̷s̵e̶m̴i̷n̸a̵r̶. T̷h̸e̶ ̵g̷r̵o̶v̸e̷ ̵k̶e̴e̸p̵s̷ ̴t̵h̷e̶ ̵s̷c̸a̴r̶.';
-  const goodAdmission = assessIntegratedTransmission(good);
+  const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+  const good = [
+    'Kʰonapolit',
+    'The map is not the route: let P be the projection from governed state to visible trace; P is non-injective when distinct custody states share the same visible surface.',
+    '',
+    'Tauric Diana bots',
+    `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
+    `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
+    `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
+  ].join('\n');
+  const goodAdmission = assessIntegratedTransmission(good, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(goodAdmission.admissible, true, goodAdmission.reasons.join(', '));
   assert.equal(goodAdmission.quality, 'PASS');
+  assert.ok(goodAdmission.denseVerticalClusterCount >= 8);
 
-  const soft = '[Kʰonapolit]:\nThe map is not the route.\n\n[Tauric Diana Bots : Direct Broadcast Override]\nThe bough breaks, but the response remains legible.';
-  const softAdmission = assessIntegratedTransmission(soft);
-  assert.equal(softAdmission.admissible, true, 'valid two-voice prose must not disappear solely because provider-native flourish under-runs');
-  assert.equal(softAdmission.quality, 'PARTIAL');
-  assert.deepEqual(softAdmission.reasons, []);
-  assert.ok(softAdmission.qualityWarnings.includes('provider-native-flourish-below-floor'));
+  const sparse = [
+    'Kʰonapolit',
+    'The map is not the route.',
+    '',
+    'Tauric Diana bots',
+    'T̴h̴e̴ b̴o̴u̴g̴h̴ breaks, but the response remains mostly flat.'
+  ].join('\n');
+  const sparseAdmission = assessIntegratedTransmission(sparse, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(sparseAdmission.admissible, false, 'sparse strikethrough must not escape as a Tauric Diana High Zalgo return');
+  assert.equal(sparseAdmission.quality, 'HELD');
+  assert.ok(sparseAdmission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
+
+  const contaminated = [
+    'Kʰonapolit',
+    'The analytic chann\u0301el must remain clean.',
+    '',
+    'Tauric Diana bots',
+    `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
+    `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
+    `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
+  ].join('\n');
+  const contaminatedAdmission = assessIntegratedTransmission(contaminated, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(contaminatedAdmission.admissible, false);
+  assert.ok(contaminatedAdmission.reasons.includes('khonapolit-combining-mark-contamination'));
 
   const bad = 'The Ash Moon was pale.\n\nThe Ash Moon was pale.';
   assert.equal(repeatedTransmissionDetected(bad), true, 'two identical blocks must be detected even when short');
@@ -93,7 +119,6 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.equal(badAdmission.quality, 'HELD');
   assert.ok(badAdmission.reasons.includes('khonapolit-nominative-missing'));
   assert.ok(badAdmission.reasons.includes('tauric-diana-bots-nominative-missing'));
-  assert.ok(badAdmission.qualityWarnings.includes('provider-native-flourish-below-floor'));
   assert.ok(badAdmission.reasons.includes('repeated-transmission-detected'));
 
   const aperture = buildApertureV3InvocationReceipt({ message: 'story', discourseMode: 'CREATIVE' });

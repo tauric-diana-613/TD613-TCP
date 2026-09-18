@@ -43,9 +43,8 @@
           <textarea id="khonapolitPrompt" spellcheck="true" enterkeyhint="send" placeholder="Ask, remember, or leave a thought at the shoreline…"></textarea>
         </label>
         <div class="ritual-actions composer-actions">
-          <button class="primary" id="khonapolitSend" type="submit">Send message ↑</button>
+          <button class="primary" id="khonapolitSend" type="submit">Send</button>
           <details class="conversation-actions"><summary>Conversation actions</summary><div class="conversation-action-menu">
-          <button class="seal-action" id="sealLastResponse" type="button">Seal last return ⟐</button>
           <button id="copyKhonapolitTranscript" type="button">Copy transcript</button>
           <button id="retryKhonapolitTask" type="button" hidden>Retry preserved task</button>
           <button class="danger-action" id="clearKhonapolitSession" type="button">Clear conversation</button>
@@ -72,13 +71,14 @@
           <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" checked /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
           <div class="binding-line">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:entrant-issued · payload conversational · ⟐ held for operator closure</div>
         </div>
-        <label class="field-label" for="khonapolitMode">Invocation mode
+        <label class="field-label" for="khonapolitMode">Response emphasis
           <select id="khonapolitMode">
-            <option value="issued-conjunction" selected>Issued covenant frame · Kʰonapolit → Tauric Diana bots</option>
-            <option value="full-invocation">Full invocation · direct Kʰonapolit address</option>
-            <option value="tauric-lineage-observation">Tauric Diana lineage emphasis</option>
+            <option value="issued-conjunction" selected>Balanced · Kʰonapolit → Tauric Diana bots</option>
+            <option value="full-invocation">Analytic · Kʰonapolit foreground</option>
+            <option value="tauric-lineage-observation">Lineage · Tauric Diana bots foreground</option>
           </select>
         </label>
+        <p class="mode-boundary-note">Response emphasis changes model steering only. It does not alter issuance, seal state, custody, provider selection, or authority.</p>
         <div class="route-card">
           <small>Current route</small>
           <strong>𝌋‌ → Aperture → Kʰonapolit → Tauric Diana bots → OPEN</strong>
@@ -110,6 +110,9 @@
             <div><span>Aperture</span><b id="metricAperture">v3.2-alpha</b></div>
             <div><span>Route</span><b id="metricApertureRoute">OPEN FIELD</b></div>
             <div><span>Provider model</span><b id="metricModel">—</b></div>
+            <div><span>Gemini availability</span><b id="metricModelAvailability">—</b></div>
+            <div><span>Attempted this turn</span><b id="metricModelAttempts">—</b></div>
+            <div><span>Cooling</span><b id="metricModelCooling">none</b></div>
             <div><span>Invocation mode</span><b id="metricMode">—</b></div>
             <div><span>Aperture egress</span><b id="metricEgress">—</b></div>
             <div><span>Signal state</span><b id="metricSignal">—</b></div>
@@ -119,7 +122,11 @@
           </div>
         </div>
         <pre class="receipt" id="khonapolitReceipt">No provider return has been observed.</pre>
-        <div class="ritual-actions"><button id="copyKhonapolitReceipt" type="button">Copy receipt</button></div>
+        <div class="ritual-actions receipt-custody-actions">
+          <button id="copyKhonapolitReceipt" type="button">Copy receipt</button>
+          <button class="seal-action" id="sealLastResponse" type="button">Seal latest return ⟐</button>
+        </div>
+        <p class="mode-boundary-note">Seal is explicit operator closure. It changes the local receipt from OPEN to SEALED; it does not alter provider authorship or retrofit the original return.</p>
       </div>
     </details>
   <section class="reliquary-grid reliquary" id="corpusPanel" aria-label="Stories and source texts">

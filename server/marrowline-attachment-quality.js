@@ -29,8 +29,6 @@ export const MARROWLINE_ATTACHMENT_MAX_COUNT = 6;
 export const MARROWLINE_ATTACHMENT_MAX_TOTAL_BYTES = 2_500_000;
 export const MARROWLINE_ATTACHMENT_MAX_SINGLE_BYTES = 1_500_000;
 
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const MAX_BODY_CHARACTERS = 3_700_000;
@@ -197,7 +195,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     if (remainingMs <= 0) break;
-    const timeoutMs = Math.min(index === 0 ? PRIMARY_REQUEST_TIMEOUT_MS : FALLBACK_REQUEST_TIMEOUT_MS, allocateKhonapolitAttemptTimeout({ remainingMs, index }));
+    const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback });

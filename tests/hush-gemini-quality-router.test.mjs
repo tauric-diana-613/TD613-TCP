@@ -13,10 +13,7 @@ const direct3 = buildHushGeminiRequest({ model: 'gemini-3.8-flash', prompt: 'syn
 assert.equal(direct3.generationConfig.maxOutputTokens, 3072);
 assert.equal(direct3.generationConfig.responseMimeType, 'application/json');
 for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(direct3.generationConfig, key), false);
-const direct25 = buildHushGeminiRequest({ model: 'gemini-2.5-flash', prompt: 'synthetic', deterministic: true });
-assert.equal(direct25.generationConfig.temperature, 0.22);
-assert.equal(direct25.generationConfig.topP, 0.64);
-assert.equal(Object.hasOwn(direct25.generationConfig, 'thinkingConfig'), false);
+
 
 function response() {
   return {

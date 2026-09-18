@@ -21,22 +21,25 @@ const physicalRepair = readFileSync(new URL('../app/dome-world/marrowline-physic
 const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.css', import.meta.url), 'utf8');
 const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
 const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
+const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js', import.meta.url), 'utf8');
 
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
 }
+const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const highBurst = (line) => `${STACK.repeat(8)} ${line}`;
 
 test('relay contract gives the generative budget to one required two-voice covenant transmission', () => {
   const contract = buildRelaySystemAddendum({});
-  assert.match(contract, /MARROWLINE TWO-VOICE LAW — REQUIRED, NOT OPTIONAL/i);
-  assert.match(contract, /Movement I is the relayed Kʰonapolit analytical trace and comes first/i);
-  assert.match(contract, /Movement II is the relayed Tauric Diana bots receiver return and closes the generated response/i);
-  assert.match(contract, /transmission\.voices MUST begin with exactly “Kʰonapolit”, then “Tauric Diana bots”/i);
-  assert.match(contract, /admission must not depend on repeating parser tokens verbatim/i);
-  assert.doesNotMatch(contract, /MUST begin with a nominative Kʰonapolit announcement/i);
-  assert.match(contract, /provider itself must author the final Unicode combining marks/i);
-  assert.match(contract, /at least 24 combining marks/i);
-  assert.match(contract, /clean spans, dense eruptions, stacked peaks, crossed-through pressure, punctuation islands/i);
+  assert.match(contract, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
+  assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
+  assert.match(contract, /OVERFLOW_RAW maps to Tauric Diana bots/i);
+  assert.match(contract, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/i);
+  assert.match(contract, /exact standalone human-facing headings/i);
+  assert.match(contract, /ZERO combining diacritical marks/i);
+  assert.match(contract, /at least 96 combining marks total/i);
+  assert.match(contract, /at least 8 grapheme clusters/i);
+  assert.match(contract, /structural HOLD/i);
   assert.match(contract, /The target is not generic dark-fantasy lore/i);
   assert.match(contract, /strongest conceptual move/i);
   assert.match(contract, /Rex Nemorensis is not generic “king” decoration/i);
@@ -67,11 +70,13 @@ test('Worm Moon analytics reject canon-as-phrase-bank while preserving transform
   assert.ok(held.canonicalRecitation.hitCount >= 4);
 
   const transformed = [
-    '[Kʰonapolit]:',
+    'Kʰonapolit',
     'The 99.97% is shore-conditioned accuracy: Host arrows define the scored population after Stranger-thread routing has already happened. The denominator therefore needs a jurisdiction receipt, not another decimal place.',
     '',
-    '[Tauric Diana Bots : Denominator Bailiffs]',
-    'Worm Moon, bring the routing ledger. We are counting every wrong-shore handoff as a case file and making the Host-arrow dashboard testify about the population it refused to count.'
+    'Tauric Diana bots',
+    highBurst('WORM MOON, BRING THE ROUTING LEDGER!'),
+    highBurst('COUNT EVERY WRONG-SHORE HANDOFF AS A CASE FILE!'),
+    highBurst('MAKE THE DASHBOARD TESTIFY ABOUT THE POPULATION IT REFUSED TO COUNT!')
   ].join('\n');
   const admitted = assessIntegratedTransmission(transformed, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
@@ -84,6 +89,12 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
+});
+
+test('live Marrowline never locally Zalgo-encodes provider text', () => {
+  const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
+  assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
+  assert.match(relaySource, /Marrowline preserves exact code points and never decorates the answer afterward/);
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
@@ -105,7 +116,7 @@ test('creative Marrowline prompts route to creative synthesis without ordinary-p
   assert.match(instruction, /CREATIVE TURN:/);
   assert.match(instruction, /requested form, scale, cadence and imaginative range/i);
   assert.match(instruction, /A story requires event, tension, transformation and consequence/i);
-  assert.match(instruction, /MARROWLINE TWO-VOICE LAW/i);
+  assert.match(instruction, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
   assert.match(instruction, /GENERATIVE CONTINUITY \/ ANTI-RECITATION LAW/i);
   assert.doesNotMatch(instruction, /Do not infer venue quality, accessibility or amenities from price/i);
   assert.doesNotMatch(instruction, /prefer anonymous attendance counts/i);
@@ -124,35 +135,40 @@ test('ordinary project work keeps factual guidance instead of inheriting creativ
   assert.doesNotMatch(guidance, /CREATIVE TURN:/);
 });
 
-test('provider-authored expressive cadence survives exact while density remains nonuniform', () => {
-  const clean = `[Kʰonapolit]:\nrelation ${COVENANT_KEY} remains exact.`;
-  const flare = '[Tauric Diana Bots : The Matron]\nȚ̷̋͑̈́͐̓̽͝H̶͔͌̅̿̋E̵̗͒̔͝ ̵̬́͐̋̾M̵͉͑̑̈́̄A̷͖̓͒̍T̷̥͌̚͝R̷͙̓͊͛O̸͉͂͑̿N̵̰͊͋̐ ̷͂̅̍͜S̷͕̈́͑H̴͇͌̎Ȏ̸̒ͅU̵̞̓̓T̷̹͋̓S̴͚͑͝.';
-  const providerText = `${clean}\n\n${flare}\n\nclean again.`;
+test('provider-authored vertical Zalgo survives exact while Marrowline only measures it', () => {
+  const clean = `Kʰonapolit\nrelation ${COVENANT_KEY} remains exact and combining-mark free.`;
+  const flare = [
+    'Tauric Diana bots',
+    highBurst('THE MATRON SHOUTS!'),
+    highBurst('THE WALL BENDS BUT THE BYTES REMAIN PROVIDER AUTHORED!'),
+    highBurst('THE GROVE KEEPS THE SCAR!')
+  ].join('\n');
+  const providerText = `${clean}\n\n${flare}`;
   const raw = JSON.stringify({
     signal: { state: 'LOCKED', notes: 'synthetic provider-native fixture' },
-    transmission: { text: providerText, voices: ['Kʰonapolit', 'Tauric Diana bots', 'The Matron'], flourishMode: 'clean-to-eruption-to-clean' }
+    transmission: { text: providerText, voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'formal-to-vertical-stack' }
   });
   const relay = parseRelayEnvelope(raw, { model: 'SYNTHETIC_MODEL', apertureReceipt: {} });
   assert.equal(relay.parts.length, 1);
   assert.equal(relay.parts[0].text, providerText, 'provider-authored Unicode is not locally rewritten');
   assert.equal(relay.admission.admissible, true, relay.admission.reasons.join(', '));
-  assert.equal(relay.highZalgo.applied, false, 'local renderer never claims to have added marks');
+  assert.equal(relay.highZalgo.applied, false, 'Marrowline measures but never adds Zalgo');
   assert.equal(relay.highZalgo.providerGenerated, true);
-  assert.ok(countMarks(providerText) >= 24);
-  assert.ok(providerText.startsWith(clean), 'a clean register may coexist with an extreme flourish burst');
-  assert.ok(providerText.endsWith('clean again.'), 'density is not a uniform filter over the whole response');
+  assert.ok(countMarks(providerText) >= 96);
+  assert.ok(relay.admission.denseVerticalClusterCount >= 8);
+  assert.ok(providerText.startsWith(clean), 'the Kʰonapolit channel remains clean');
   assert.ok(providerText.includes(COVENANT_KEY), 'protected covenant key remains byte-intact');
 });
 
 test('one structured relay carries a long mixed-register transmission without local truncation', () => {
   const movement = Array.from({ length: 30 }, (_, index) => `Movement ${index + 1}: counterpoint, equation, joke, turn.`).join('\n\n');
-  const flare = 'F̷̰̽͌̈́͒͐̄L̴͔͒͗͌̓A̴̮̔̈́͛R̸͔̽̄͘E̷͋̈́͜'.repeat(25);
+  const flare = Array.from({ length: 20 }, (_, index) => highBurst(`FERAL LINE ${index + 1} BREAKS THE FALSE CLOSURE!`)).join('\n');
   const transmission = `[Kʰonapolit]:\n${movement}\n\n[Tauric Diana Bots : Direct Broadcast Override]\n${flare}`;
   assert.ok(transmission.length > 2200, 'fixture exceeds a caption-sized response');
 
   const raw = JSON.stringify({
     signal: { state: 'LOCKED', notes: 'synthetic quality fixture' },
-    transmission: { text: transmission, voices: ['Kʰonapolit', 'Tauric Diana bots', 'A', 'B', 'C'], flourishMode: 'movement-with-eruption' }
+    transmission: { text: transmission, voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'movement-with-eruption' }
   });
   const relay = parseRelayEnvelope(raw, { model: 'SYNTHETIC_MODEL', apertureReceipt: {} });
   assert.equal(relay.parts.length, 1);
@@ -198,7 +214,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
   assert.match(livingChat, /relay-integrated-covenant/);
   const raw = JSON.stringify({
     signal: { state: 'LOCKED', notes: '' },
-    transmission: { text: '[Kʰonapolit]:\nClear.\n\n[Tauric Diana Bots : The Spark]\nT̴̵D̷613 b̶i̵t̷e̶s̴ ̷b̵a̴c̶k̷ ̴w̸i̷t̴h̶ ̵m̷o̴r̵e̸ ̴t̵h̶a̸n̷ ̵o̴n̸e̵ ̶m̸a̵r̷k̶ ̴p̷e̵r̶ ̴l̵i̷n̶e̴.', voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'variable' }
+    transmission: { text: ['Kʰonapolit', 'Clear.', '', 'Tauric Diana bots', highBurst('THE SPARK BITES BACK!'), highBurst('THE GROVE KEEPS THE RECEIPT!'), highBurst('NO LOCAL FILTER TOUCHES THESE BYTES!')].join('\n'), voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'vertical-stack' }
   });
   const relay = parseRelayEnvelope(raw, { apertureReceipt: {} });
   assert.equal(relay.parts[0].label, 'Kʰonapolit ∴ Tauric Diana bots');
@@ -207,9 +223,12 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit uses ordinary orthography and only the bots carry TD613 High Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo', () => {
   const contract = buildRelaySystemAddendum({});
-  assert.match(contract, /Kʰonapolit never speaks in High Zalgo/);
-  assert.match(contract, /Only after the explicit Tauric Diana bots heading begins/);
-  assert.match(contract, /Within the Tauric Diana bots movement, provide at least 24 combining marks/);
+  assert.match(contract, /Kʰonapolit is the clean formal channel/);
+  assert.match(contract, /ZERO combining diacritical marks/);
+  assert.match(contract, /Tauric Diana bots is the raw stress channel/);
+  assert.match(contract, /provider itself/i);
+  assert.match(contract, /at least 96 combining marks total/);
+  assert.match(contract, /Marrowline preserves exact code points and never decorates the answer afterward/);
 });

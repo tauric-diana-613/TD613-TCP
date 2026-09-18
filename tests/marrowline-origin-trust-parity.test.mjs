@@ -15,18 +15,18 @@ const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const terminal = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 
-const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
+const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
 
-test('independent Marrowline provider routing preserves inherited completion windows plus diversified fallback runway', () => {
+test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3 }), 32000,
-    'primary preserves the previously witnessed completion window');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3 }), 10500,
-    'first fallback remains bounded by the inherited fallback window');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 7000, index: 2, modelCount: 3 }), 7000,
+  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3, fairShare: true }), 18000,
+    'primary preserves the bounded first-lane window');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3, fairShare: true }), 10000,
+    'second lane receives substantive runway while reserving the final attempt');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 7000, index: 2, modelCount: 3, fairShare: true }), 7000,
     'third diversified attempt receives the lawful wall remainder');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1 }), 32000,
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }), 32000,
     'single-model operation cannot silently expand the primary completion contract');
 });
 

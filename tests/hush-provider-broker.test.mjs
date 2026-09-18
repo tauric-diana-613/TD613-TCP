@@ -9,7 +9,7 @@ import {
 } from '../app/engine/hush-provider-broker.js';
 
 clearProviderBrokerState();
-const meta = { provider: 'gemini-strict', model: 'gemini-2.5-flash-lite', endpoint: 'https://td613.com/api/hush-generate-strict' };
+const meta = { provider: 'gemini-strict', model: 'gemini-3.5-flash-lite', endpoint: 'https://td613.com/api/hush-generate-strict' };
 const key = providerKey(meta);
 assert(key.includes('gemini-strict'));
 assert.equal(providerMayCall(meta, 1000).mayCall, true);
