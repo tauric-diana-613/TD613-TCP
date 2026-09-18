@@ -244,6 +244,38 @@ function setSignalState(doc, state = 'UNOBSERVED') {
   const metric = byId(doc, 'metricSignal');
   if (metric) metric.textContent = canonical;
 }
+function shortGeminiModel(model = '') {
+  const id = safe(model).replace(/^models\//, '');
+  const match = id.match(/^gemini-(3(?:\.\d+)?)-flash$/);
+  if (match) return match[1];
+  if (id === 'gemini-3-flash-preview') return '3 Flash Preview';
+  return id.replace(/^gemini-/, '') || '—';
+}
+
+function renderModelRouteReceipt(doc, receipt = null) {
+  const callable = Array.isArray(receipt?.modelPolicy?.callableModels) ? receipt.modelPolicy.callableModels : [];
+  const attempts = Array.isArray(receipt?.provider?.attempts) ? receipt.provider.attempts : [];
+  const rows = Array.isArray(receipt?.modelPolicy?.rows) ? receipt.modelPolicy.rows : [];
+  const cooling = rows.filter((row) => row?.state?.mayCall === false || row?.state?.state === 'cooling_down');
+
+  const availabilityNode = byId(doc, 'metricModelAvailability');
+  const attemptsNode = byId(doc, 'metricModelAttempts');
+  const coolingNode = byId(doc, 'metricModelCooling');
+
+  if (availabilityNode) availabilityNode.textContent = callable.length
+    ? callable.map((model) => `${shortGeminiModel(model)} ✓`).join(' · ')
+    : '—';
+  if (attemptsNode) attemptsNode.textContent = attempts.length
+    ? attempts.map((attempt) => shortGeminiModel(attempt?.model)).filter(Boolean).join(' → ')
+    : '—';
+  if (coolingNode) coolingNode.textContent = cooling.length
+    ? cooling.map((row) => {
+        const retry = Number(row?.state?.retryAfterSeconds || 0);
+        return `${shortGeminiModel(row?.model)}${retry > 0 ? ` · ${retry}s` : ''}`;
+      }).join(' · ')
+    : 'none';
+}
+
 function displayClassification(doc, receipt = null) {
   const emergence = receipt?.emergence || null;
   const aperture = receipt?.aperture || null;
@@ -252,6 +284,7 @@ function displayClassification(doc, receipt = null) {
   if (byId(doc, 'metricAperture')) byId(doc, 'metricAperture').textContent = aperture?.version || APERTURE_V3_VERSION;
   if (byId(doc, 'metricApertureRoute')) byId(doc, 'metricApertureRoute').textContent = task.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
   if (byId(doc, 'metricModel')) byId(doc, 'metricModel').textContent = receipt?.provider?.model || '—';
+  renderModelRouteReceipt(doc, receipt);
   if (byId(doc, 'metricMode')) byId(doc, 'metricMode').textContent = receipt?.invocation?.mode || '—';
   if (byId(doc, 'metricEgress')) byId(doc, 'metricEgress').textContent = receipt?.apertureEgress?.status || '—';
   if (byId(doc, 'metricKhona')) byId(doc, 'metricKhona').textContent = emergence?.signals?.covenantKeyIntegrity?.status || '—';
