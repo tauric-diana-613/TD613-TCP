@@ -197,18 +197,37 @@ try {
       const actions = page.locator('.conversation-actions');
       assert.equal(await actions.isVisible(), false, 'legacy conversation-actions dropdown is retired from ordinary chrome');
       assert.equal(await page.locator('#copyKhonapolitTranscript').isVisible(), false, 'redundant legacy Copy transcript action is not human-facing');
+      const retryUtility = page.locator('#marrowlineRetryLast');
+      const copyUtility = page.locator('#marrowlineCopyConversation');
       const sessionClear = page.locator('#marrowlineSessionClear');
+      assert.equal(await retryUtility.isVisible(), true, 'minimal retry utility is visible at the conversation boundary');
+      assert.equal(await copyUtility.isVisible(), true, 'minimal copy utility is visible at the conversation boundary');
       assert.equal(await sessionClear.isVisible(), true, 'minimal clear utility is visible at the conversation boundary');
-      await page.locator('[data-mobile-target="receiptPanel"]').click();
+
+      if (posture === 'desktop') {
+        const receiptTab = page.locator('#marrowlineDesktopToolTabs button[data-target="receiptPanel"]');
+        assert.equal(await receiptTab.isVisible(), true, 'desktop Receipt instrument has a visible tab');
+        await receiptTab.click();
+      } else {
+        await page.locator('#khonapolitPrompt').evaluate(element => element.blur());
+        await page.waitForFunction(() => document.body.dataset.composerActive !== 'true');
+        const receiptDock = page.locator('[data-mobile-target="receiptPanel"]');
+        assert.equal(await receiptDock.isVisible(), true, 'mobile Receipt instrument returns after composer focus is dismissed');
+        await receiptDock.click();
+      }
       await page.locator('#receiptPanel[open]').waitFor();
       assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal is visible inside the Receipt custody instrument');
-      await page.locator('[data-mobile-target="speakingPanel"]').click();
+      if (posture.startsWith('mobile')) await page.locator('[data-mobile-target="speakingPanel"]').click();
       assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
       assert.equal(await page.evaluate(() => typeof window.TD613_KHONAPOLIT_TERMINAL?.sealLast), 'function', 'advanced operator seal remains available programmatically');
+
       const userMessagesBeforeCancelledClear = await page.locator('.message[data-role="user"]').count();
-      await page.evaluate(() => { window.confirm = () => false; });
       await sessionClear.click();
-      assert.equal(await page.locator('.message[data-role="user"]').count(), userMessagesBeforeCancelledClear, 'cancelled corner clear preserves the transcript');
+      const clearConfirmation = page.locator('#marrowlineClearConfirmation');
+      assert.equal(await clearConfirmation.isVisible(), true, 'destructive clear opens the anchored micro-confirmation');
+      await clearConfirmation.getByRole('button', { name: 'No, keep conversation' }).click();
+      assert.equal(await clearConfirmation.isVisible(), false, 'No closes the micro-confirmation');
+      assert.equal(await page.locator('.message[data-role="user"]').count(), userMessagesBeforeCancelledClear, 'cancelled minimalist clear preserves the transcript');
 
       await page.locator('#marrowlineComposerPlus').click();
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Continue the Loom handoff already staged here/);
