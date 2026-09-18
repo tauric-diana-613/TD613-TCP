@@ -11,8 +11,8 @@ assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash'],
-  'when the full 3.x set is callable, Marrowline gives the empirically successful 3.5 lane the meaningful second attempt before the remaining frontier lane'
+  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash'],
+  'when the full 3.x set is callable, Marrowline gives 3.5 the meaningful second attempt and the same-episode healthy 3.6 lane the third seat'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
