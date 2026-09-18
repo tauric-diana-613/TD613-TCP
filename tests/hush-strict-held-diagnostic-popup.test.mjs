@@ -47,8 +47,8 @@ const providerLog = {
     reason: 'strict_budgeted_upstream_no_releasable_candidate',
     error: 'strict_budgeted_upstream_no_releasable_candidate',
     warnings: ['strict-budgeted-upstream', 'strict-api-no-usable-candidates', 'no-local-fallback'],
-    attempts: [{ model: 'gemini-2.5-flash-lite', ok: true, status: 200, parsedCandidates: 2, usableCandidates: 0, literalIntegrityRejected: 1, catchphraseRejected: 1, warnings: ['candidate-integrity-gate-rejected'], textPreview: 'candidate preview' }],
-    requestReceipt: { strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictAttemptBudget: 2, elapsedMs: 9130, modelOrder: ['gemini-2.5-flash-lite'] }
+    attempts: [{ model: 'gemini-3.5-flash-lite', ok: true, status: 200, parsedCandidates: 2, usableCandidates: 0, literalIntegrityRejected: 1, catchphraseRejected: 1, warnings: ['candidate-integrity-gate-rejected'], textPreview: 'candidate preview' }],
+    requestReceipt: { strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictAttemptBudget: 2, elapsedMs: 9130, modelOrder: ['gemini-3.5-flash-lite'] }
   }
 };
 
@@ -91,7 +91,7 @@ const successLog = {
     warnings: ['prompt-detox-active', 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-normal-upstream-budget-applied'],
     candidates: [{ text: 'Remote candidate released for review.' }, { text: 'Second remote candidate.' }],
     attempts: [
-      { model: 'gemini-2.5-flash-lite', ok: false, status: 503, parsedCandidates: 0, usableCandidates: 0, warnings: ['provider-returned-invalid-json'], error: { code: 503, status: 'UNAVAILABLE' } },
+      { model: 'gemini-3.5-flash-lite', ok: false, status: 503, parsedCandidates: 0, usableCandidates: 0, warnings: ['provider-returned-invalid-json'], error: { code: 503, status: 'UNAVAILABLE' } },
       { model: 'gemini-flash-lite-latest', ok: true, status: 200, parsedCandidates: 2, usableCandidates: 2, warnings: ['prompt-detox-active'], error: null }
     ],
     requestReceipt: { strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true }
