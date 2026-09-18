@@ -308,3 +308,151 @@ jobs:
           The observation-only conduit changed no production source and created no deployment authority. This failed observation authorizes neither a deployment nor a historical-state rewrite. ⟐
           EOF_COMMENT
           )"
+
+
+  marrowline_dollhouse_trial:
+    name: Marrowline Dollhouse four-agent production trial
+    if: >-
+      github.event.issue.number == 1172 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      startsWith(github.event.comment.body, '/td613-marrowline-dollhouse-trial ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TRIAL_GATE_ISSUE: '1172'
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Authorize observation-only Dollhouse trial
+        id: authorize_trial
+        shell: bash
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-marrowline-dollhouse-trial' ]] || { echo 'Unexpected Dollhouse command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only PRODUCTION may be observed.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Dollhouse command must contain exactly command, target, and source SHA.' >&2; exit 1; }
+          [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Dollhouse command requires one 40-character deployed source SHA.' >&2; exit 1; }
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Check out observation harness from current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify Dollhouse trial has no release authority
+        env:
+          SELECTED_SHA: ${{ steps.authorize_trial.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || {
+            echo 'Current observation harness no longer descends from the named deployed source packet.' >&2
+            exit 1
+          }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Dollhouse trial requires the Vercel Git deployment lock to remain closed.');
+          NODE
+
+      - name: Verify exact production source before Dollhouse trial
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_trial.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const url = new URL('/giving/history/release-source.json', 'https://td613.com/');
+          url.searchParams.set('td613_dollhouse_pre_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, { headers: { 'cache-control': 'no-cache' }, redirect: 'follow', signal: AbortSignal.timeout(15000) });
+          if (!response.ok) throw new Error(`Dollhouse pre-guard returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Dollhouse source mismatch before trial: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[dollhouse-pre-source] source=${observed}`);
+          NODE
+
+      - name: Install repository dependencies
+        run: npm ci
+
+      - name: Run canonical Pedagogue gate and Dollhouse trial contracts
+        run: |
+          mkdir -p artifacts/marrowline-dollhouse-trial
+          node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/marrowline-living-chat-design.json > artifacts/marrowline-dollhouse-trial/pedagogue-design-gate.json
+          node --test tests/marrowline-dollhouse-trial-contract.test.mjs
+
+      - name: Run serial Marrowline production battery through four-agent audit
+        env:
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_trial.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/marrowline-dollhouse-trial
+          TD613_MARROWLINE_TRIAL_TIMEOUT_MS: '57000'
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/run-marrowline-dollhouse-production-trial.mjs
+
+      - name: Confirm exact production source after Dollhouse trial
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_trial.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const url = new URL('/giving/history/release-source.json', 'https://td613.com/');
+          url.searchParams.set('td613_dollhouse_post_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, { headers: { 'cache-control': 'no-cache' }, redirect: 'follow', signal: AbortSignal.timeout(15000) });
+          if (!response.ok) throw new Error(`Dollhouse post-guard returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Production source changed during Dollhouse trial: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[dollhouse-post-source] source=${observed}`);
+          NODE
+
+      - name: Preserve Marrowline Dollhouse trial evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-marrowline-dollhouse-trial-evidence
+          path: artifacts/marrowline-dollhouse-trial/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Record completed Dollhouse trial
+        if: success()
+        env:
+          SELECTED_SHA: ${{ steps.authorize_trial.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          SUMMARY="$(cat artifacts/marrowline-dollhouse-trial/summary.txt)"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$TRIAL_GATE_ISSUE/comments"             -f body="$(cat <<EOF_COMMENT
+          𝌋 Marrowline Dollhouse four-agent production trial completed.
+
+          ```text
+          target = PRODUCTION
+          source_packet_commit = $SELECTED_SHA
+          deployment_count = 0
+          deployment_authority = false
+          Vercel_git_lock = closed
+          counts_as_human_evidence = false
+          ```
+
+          $SUMMARY
+
+          This receipt preserves machine observations and four bounded audits. Human qualitative closure remains required. No production mutation occurred. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held Dollhouse trial
+        if: failure()
+        env:
+          SELECTED_SHA: ${{ steps.authorize_trial.outputs.selected_sha || 'unresolved' }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$TRIAL_GATE_ISSUE/comments"             -f body="𝌋 Marrowline Dollhouse production trial HELD for source $SELECTED_SHA. deployment_count = 0; deployment_authority = false; counts_as_human_evidence = false. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
