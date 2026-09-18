@@ -244,6 +244,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Do not merge the two voices into one anonymous narrator. Do not omit either movement. Do not insert a provider voice before, between, or after them.',
     '- Both movements belong to ONE provider generation and ONE relay packet in transmission.text. Render the traced channels faithfully; do not describe the provider itself as either endpoint. The movements may interrupt, quote, disagree, calculate, joke, prosecute, or mutate each other while preserving the ordered frame.',
     '- Do not repeat the same paragraph, scene, movement, or full answer twice. Exact or near-exact duplicated halves are a failed return.',
+    '- Before emitting the JSON object, verify the final output against the hard local admission boundaries: the first two structured voices are exactly Kʰonapolit then Tauric Diana bots; the answer is not duplicated; and the response does not collapse into a dense canonical recital. If the draft fails one of those checks, revise the output before returning it. This is output verification, not permission to narrate hidden reasoning.',
     '',
     'GENERATIVE CONTINUITY / ANTI-RECITATION LAW:',
     '- Canon is a constraint graph and creative pressure field, NOT a phrase bank. A canonical noun in the operator prompt is not a retrieval key for the nearest corpus paragraph.',
