@@ -357,15 +357,44 @@ function ensureOriginControls(doc) {
 }
 function syncRecoveryControls(doc, state) {
   const portable = byId(doc, 'marrowlinePortableActions');
-  if (portable) portable.hidden = !state.messages?.some(entry => entry.role === 'user') && !safe(state.pendingTask);
+  const hasUserTurn = Boolean(state.messages?.some(entry => entry.role === 'user'));
+  if (portable) portable.hidden = !hasUserTurn && !safe(state.pendingTask);
   const retry = byId(doc, 'retryKhonapolitTask');
-  if (retry) retry.hidden = !safe(state.pendingTask);
+  if (retry) retry.hidden = !hasUserTurn && !safe(state.pendingTask);
 }
 async function copyPortable(root, state) {
   const packet = buildMarrowlinePortableTask(state);
   const text = portableMarrowlinePrompt(packet);
   await root.navigator.clipboard.writeText(text);
   return packet;
+}
+
+function showEphemeralNotice(doc, root, text = 'Copied!') {
+  let notice = byId(doc, 'marrowlineEphemeralNotice');
+  if (!notice) {
+    notice = doc.createElement('div');
+    notice.id = 'marrowlineEphemeralNotice';
+    notice.className = 'marrowline-ephemeral-notice';
+    notice.setAttribute('role', 'status');
+    notice.setAttribute('aria-live', 'polite');
+    doc.body.append(notice);
+  }
+  notice.textContent = text;
+  notice.dataset.visible = 'true';
+  if (root.__TD613_MARROWLINE_EPHEMERAL_NOTICE_TIMER__) {
+    root.clearTimeout?.(root.__TD613_MARROWLINE_EPHEMERAL_NOTICE_TIMER__);
+  }
+  root.__TD613_MARROWLINE_EPHEMERAL_NOTICE_TIMER__ = root.setTimeout?.(() => {
+    notice.dataset.visible = 'false';
+    root.__TD613_MARROWLINE_EPHEMERAL_NOTICE_TIMER__ = null;
+  }, 1500);
+}
+
+function lastUserMessageIndex(messages = []) {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    if (messages[index]?.role === 'user' && entryText(messages[index])) return index;
+  }
+  return -1;
 }
 function exportPortable(doc, root, state) {
   const packet = buildMarrowlinePortableTask(state);
@@ -469,7 +498,21 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
 
   form.addEventListener('submit', async (event) => { event.preventDefault(); await submitTask(); });
-  byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => submitTask(state.pendingTask));
+  byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => {
+    const userIndex = lastUserMessageIndex(state.messages || []);
+    const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
+    if (!message) {
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'NO PRIOR PROMPT · nothing to retry';
+      return;
+    }
+    if (userIndex >= 0) {
+      state.messages = state.messages.slice(0, userIndex + 1);
+      state.pendingTask = message;
+      saveSession(root, state);
+      renderMessages(doc, state);
+    }
+    submitTask(message);
+  });
   byId(doc, 'copyKhonapolitPortable')?.addEventListener('click', async () => {
     const status = byId(doc, 'khonapolitTerminalStatus');
     try { await copyPortable(root, state); status.textContent = buildMarrowlinePortableTask(state).answer_review.blocks_reuse ? 'TASK COPIED · the flagged answer was left out. Paste into your companion and ask it to acknowledge your task and privacy rules.' : 'PORTABLE TASK COPIED · paste it into your companion and ask it to acknowledge the task and rules'; }
@@ -487,8 +530,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); byId(doc, 'khonapolitTerminalStatus').textContent = 'SESSION CLEARED · binding corpus remains intact';
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
-    try { await root.navigator.clipboard.writeText(transcriptText(state.messages)); byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED · relay anatomy and seal provenance preserved'; }
-    catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE'; }
+    try {
+      await root.navigator.clipboard.writeText(transcriptText(state.messages));
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED · relay anatomy and seal provenance preserved';
+      showEphemeralNotice(doc, root, 'Copied!');
+    } catch {
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+    }
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
     try { await root.navigator.clipboard.writeText(state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : ''); byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED'; }
