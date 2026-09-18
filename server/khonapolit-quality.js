@@ -29,7 +29,6 @@ import {
   resolveGeminiProviderPlan
 } from './gemini-model-policy.js';
 import {
-  GEMINI25_HIGH_THINKING_BUDGET,
   buildGeminiGenerationConfig,
   geminiThinkingConfig
 } from './gemini-generation-envelope.js';
@@ -47,9 +46,6 @@ const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
 const RESPONSE_RESERVE_MS = 500;
 const LEGACY_OUTPUT_TOKENS = 4096;
-// The Kʰonapolit route no longer treats a fallback attempt as permission to lower
-// reasoning effort. A transport fallback is still the same research object.
-const FALLBACK_GEMINI25_THINKING_BUDGET = GEMINI25_HIGH_THINKING_BUDGET;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
@@ -61,8 +57,7 @@ const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.7-flash',
   'gemini-3.6-flash',
   'gemini-3.5-flash',
-  'gemini-3-flash-preview',
-  'gemini-2.5-flash'
+  'gemini-3-flash-preview'
 ]);
 const WINDOW_MS = 10 * 60 * 1000;
 const REQUESTS_PER_WINDOW = 12;
@@ -224,9 +219,8 @@ function geminiContents(packet = {}) {
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
   if (!qualityEnvelope(model)) return null;
   return {
-    // Fallback means transport position, not lower epistemic or creative quality.
-    level: 'high',
-    budget: fallback ? FALLBACK_GEMINI25_THINKING_BUDGET : GEMINI25_HIGH_THINKING_BUDGET
+    // Fallback means transport position, not permission to lower the requested reasoning level.
+    level: 'high'
   };
 }
 
