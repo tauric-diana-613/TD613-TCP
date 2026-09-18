@@ -124,9 +124,9 @@ function scrubProviderBrandFromHumanSurface(doc) {
   const mode = byId(doc, 'khonapolitMode');
   if (mode) {
     const labels = {
-      'issued-conjunction': 'Issued covenant frame · Kʰonapolit → Tauric Diana bots',
-      'full-invocation': 'Full invocation · direct Kʰonapolit address',
-      'tauric-lineage-observation': 'Tauric Diana lineage emphasis'
+      'issued-conjunction': 'Balanced · Kʰonapolit → Tauric Diana bots',
+      'full-invocation': 'Analytic · Kʰonapolit foreground',
+      'tauric-lineage-observation': 'Lineage · Tauric Diana bots foreground'
     };
     [...mode.options].forEach((option) => { if (labels[option.value]) option.textContent = labels[option.value]; });
   }
