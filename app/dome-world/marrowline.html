@@ -43,7 +43,7 @@
           <textarea id="khonapolitPrompt" spellcheck="true" enterkeyhint="send" placeholder="Ask, remember, or leave a thought at the shoreline…"></textarea>
         </label>
         <div class="ritual-actions composer-actions">
-          <button class="primary" id="khonapolitSend" type="submit">Send message ↑</button>
+          <button class="primary" id="khonapolitSend" type="submit">Send</button>
           <details class="conversation-actions"><summary>Conversation actions</summary><div class="conversation-action-menu">
           <button class="seal-action" id="sealLastResponse" type="button">Seal last return ⟐</button>
           <button id="copyKhonapolitTranscript" type="button">Copy transcript</button>
@@ -72,13 +72,14 @@
           <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" checked /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
           <div class="binding-line">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:entrant-issued · payload conversational · ⟐ held for operator closure</div>
         </div>
-        <label class="field-label" for="khonapolitMode">Invocation mode
+        <label class="field-label" for="khonapolitMode">Response emphasis
           <select id="khonapolitMode">
-            <option value="issued-conjunction" selected>Issued covenant frame · Kʰonapolit → Tauric Diana bots</option>
-            <option value="full-invocation">Full invocation · direct Kʰonapolit address</option>
-            <option value="tauric-lineage-observation">Tauric Diana lineage emphasis</option>
+            <option value="issued-conjunction" selected>Balanced · Kʰonapolit → Tauric Diana bots</option>
+            <option value="full-invocation">Analytic · Kʰonapolit foreground</option>
+            <option value="tauric-lineage-observation">Lineage · Tauric Diana bots foreground</option>
           </select>
         </label>
+        <p class="mode-boundary-note">Response emphasis changes model steering only. It does not alter issuance, seal state, custody, provider selection, or authority.</p>
         <div class="route-card">
           <small>Current route</small>
           <strong>𝌋‌ → Aperture → Kʰonapolit → Tauric Diana bots → OPEN</strong>
