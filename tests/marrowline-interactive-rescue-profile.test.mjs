@@ -28,7 +28,14 @@ test('Marrowline keeps one deliberate frontier attempt and cheap stable rescue l
   assert.deepEqual(compatibility25.thinkingConfig, { thinkingBudget: 1024 });
 });
 
-test('the production Marrowline witness is the operator-reported Latin regression prompt', () => {
+test('the production Marrowline witness is the operator-reported Latin regression prompt and preserves admission failure reasons', () => {
   const canary = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
+  const qualityRoute = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
   assert.match(canary, /message:\s*'Quis custodiet ipsos custodes\?'/);
+  assert.match(canary, /admission_reasons/);
+  assert.match(canary, /rejected_attempts/);
+  assert.match(canary, /structural_retry_of/);
+  assert.match(qualityRoute, /STRUCTURAL_RETRY_MIN_REMAINING_MS\s*=\s*12000/);
+  assert.match(qualityRoute, /attemptKind:\s*slot\.structuralRetryOf \? 'structural-retry' : 'model-plan'/);
+  assert.match(qualityRoute, /attemptQueue\.splice\(index \+ 1, 0, \{ model, structuralRetryOf: model \}\)/);
 });
