@@ -55,6 +55,15 @@ PEDAGOGUE != APERTURE != ATLAS != FADT
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
 
+
+## Experimental production-trial authority
+
+A Dollhouse production trial is an experimental observation surface, not a release surface. Its issue-comment trigger requires a direct repository-owner GitHub gesture whose raw event records `performed_via_github_app == null`.
+
+An app-mediated issue comment—including one transported through the ChatGPT/Codex connector—does not itself establish contemporaneous operator presence for this trial. Amari may prepare the trial, inspect repository evidence, and analyze results under a direct chat instruction, but the #1172 production-trial execution gesture remains non-app owner-only.
+
+This restriction is intentionally narrower than issue #405. The canonical Vercel release gate separately reviews and permits connector transport after explicit operator authorization; Dollhouse inherits no such exception.
+
 ## Portable AIA operational roundtrip candidate
 
 Packetization remains the carrier. Operational portability remains the phenomenon.
