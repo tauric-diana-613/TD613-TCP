@@ -50,10 +50,10 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
 // cannot produce an admitted answer.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
-  'gemini-3.5-flash',
   'gemini-3.8-flash',
-  'gemini-3.7-flash',
+  'gemini-3.5-flash',
   'gemini-3.6-flash',
+  'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
@@ -146,10 +146,14 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
   if (total === 1) return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, remaining);
-  if (position === 0) return Math.min(30000, remaining);
+  if (position === 0) return Math.min(8000, remaining);
+  if (position === 1 && remainingAttempts > 1) {
+    const reserveForTail = Math.min(14000, Math.max(0, remaining - 1));
+    return Math.min(28000, Math.max(1, remaining - reserveForTail));
+  }
   if (remainingAttempts === 1) return remaining;
-  const reserveForLater = Math.min((remainingAttempts - 1) * 4000, Math.max(0, remaining - 1));
-  const cap = position === 1 ? 10000 : position === 2 ? 8000 : 6000;
+  const reserveForLater = Math.min((remainingAttempts - 1) * 4500, Math.max(0, remaining - 1));
+  const cap = position === 2 ? 6000 : 5000;
   return Math.min(cap, Math.max(1, remaining - reserveForLater));
 }
 
