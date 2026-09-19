@@ -120,7 +120,20 @@ const interactive35 = await withGeminiGenerationProfile(
   })
 );
 assert.equal(interactive35.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
-assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'low' });
+assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'minimal' });
+
+for (const model of ['gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
+  const fallback = await withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiGenerationConfig({
+      model,
+      maxOutputTokens: 65536,
+      reasoning: { level: 'high' }
+    })
+  );
+  assert.equal(fallback.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
+  assert.deepEqual(fallback.thinkingConfig, { thinkingLevel: 'low' });
+}
 
 const khonapolitApiSource = fs.readFileSync('api/khonapolit.js', 'utf8');
 assert.match(khonapolitApiSource, /GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE/);
