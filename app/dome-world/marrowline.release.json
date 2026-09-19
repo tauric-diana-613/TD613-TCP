@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.3-raw-dual-packet-provider-output",
+  "version": "v0.7.4-human-liveness-portable-chrome",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -119,16 +119,19 @@
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
-      "primaryMs": 12000,
-      "preferredSecondMaxMs": 22000,
-      "laterLaneMaxMs": 8000,
-      "laterLaneReserveMs": 5000,
+      "primaryMs": 8000,
+      "preferredSecondMaxMs": 28000,
+      "reservedTailAfterSecondMs": 14000,
+      "thirdLaneMaxMs": 6000,
+      "fourthLaneMaxMs": 5000,
+      "finalLane": "lawful-wall-remainder",
       "wallMs": 50500,
-      "purpose": "preserve 3.5 completion runway while keeping every approved Gemini 3 lane reachable after fast transport failures"
+      "purpose": "preserve 3.8 first-quality privilege, give empirically proven 3.5 Marrowline continuity meaningful runway, and keep every later approved Gemini 3 lane reachable"
     },
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
-      "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200"
+      "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200",
+      "2026-09-19 Vercel Operator Release #1172: Marrowline gemini-3.8-flash=503 then gemini-3.5-flash=200 with relay_admitted=true and relay_quality=PASS"
     ],
     "structuredOutputPosture": "removed-from-live-marrowline-after-3.7-reached-output-admission-but-failed-tauric-diana-high-zalgo-floor-on-release-1169",
     "rawPacketEvidence": [
@@ -148,7 +151,7 @@
     "conversationActionMenuDismisses": [
       "legacy-hidden"
     ],
-    "portableFailureActions": "compact-row-never-transcript-collapse",
+    "portableFailureActions": "not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic",
     "starterCarousel": {
       "basePrompts": 2,
       "assayPrompts": 16,
@@ -183,7 +186,8 @@
     "backgroundGeometry": "subdued",
     "conversationTypeface": "Reddit Sans",
     "conversationChrome": "send-left-minimal-utility-rail-right",
-    "operatorSeal": "receipt-instrument-explicit-operator"
+    "operatorSeal": "receipt-instrument-explicit-operator",
+    "portableFailurePanelRendered": false
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
@@ -300,6 +304,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-frontier-only-raw-dual-packet-hard-orthographic-admission-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-only-raw-dual-packet-hard-orthographic-admission-operator-controlled-closure"
   }
 }
