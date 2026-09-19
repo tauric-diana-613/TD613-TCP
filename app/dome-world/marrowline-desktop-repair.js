@@ -6,7 +6,7 @@ import {
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v3-minimal-conversation-utilities';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v4-preloaded-prompt-custody';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -64,6 +64,7 @@ function installStarterCarousel(doc, root) {
       button.dataset.promptValue = value;
       button.onclick = () => {
         prompt.value = value;
+        prompt.dataset.preloadedPrompt = 'true';
         prompt.dispatchEvent(new root.Event('input', { bubbles: true }));
         prompt.focus({ preventScroll: true });
       };
