@@ -15,11 +15,12 @@ const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const terminal = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 
-const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
+const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'];
 
 test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
-  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
+  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    '2.5 and every Lite candidate remain excluded even when the credential advertises them');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 8000,
     '3.8 keeps first-quality privilege without monopolizing the human request');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }), 28000,
