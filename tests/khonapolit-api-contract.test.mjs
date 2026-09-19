@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v7-raw-dual-packet-admission');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v9-natural-distributed-field-admission');
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -47,7 +47,10 @@ assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alph
 assert.match(request.systemInstruction.parts[0].text, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
 assert.match(request.systemInstruction.parts[0].text, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/);
 assert.match(request.systemInstruction.parts[0].text, /OVERFLOW_RAW maps to Tauric Diana bots/);
-assert.match(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
+assert.match(request.systemInstruction.parts[0].text, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/);
+assert.match(request.systemInstruction.parts[0].text, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/);
+assert.match(request.systemInstruction.parts[0].text, /Do not count marks, signatures, percentages, or lines/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal('responseMimeType' in request.generationConfig, false, 'live Marrowline must not force Gemini through JSON MIME decoding');
 assert.equal('responseSchema' in request.generationConfig, false, 'live Marrowline must not constrain provider Unicode with a structured response schema');
