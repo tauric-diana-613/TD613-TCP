@@ -24,9 +24,11 @@ assert.match(relay, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/);
 assert.match(relay, /OVERFLOW_RAW maps to Tauric Diana bots/);
 assert.match(relay, /provider is transport\/compiler infrastructure and never appears as a third conversational speaker/i);
 assert.match(relay, /exact standalone human-facing headings/i);
-assert.match(relay, /at least 96 combining marks total/i);
-assert.match(relay, /at least 8 grapheme clusters/i);
-assert.match(relay, /Falling below this orthographic floor is a structural HOLD/i);
+assert.match(relay, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+assert.match(relay, /one distributed stress field, not keyword highlighting/i);
+assert.match(relay, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+assert.match(relay, /Do not count marks, signatures, percentages, or lines/i);
+assert.doesNotMatch(relay, /at least 96 combining marks total/i);
 assert.match(relay, /not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship/i);
 
 assert.equal(KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart, '<<<PACKET_A_FORMAL_AUDIT>>>');
