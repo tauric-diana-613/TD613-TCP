@@ -18,7 +18,7 @@ const input = {
   rules: fixture.rules
 };
 const marrowlineInput = {
-  message: 'Quis custodiet ipsos custodes?',
+  message: 'MAINFRAME claims recursive perspectives monotonically increase epistemic depth. Build a counterexample and distinguish recursion from depth without losing the joke.',
   history: [],
   mode: 'issued-conjunction',
   waiveIssuance: true,

@@ -26,7 +26,7 @@ test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers only',
   assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'low' });
 });
 
-test('the production Marrowline witness is the operator-reported Latin regression prompt', () => {
+test('the production Marrowline witness is the exact human MAINFRAME falsifier', () => {
   const canary = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
-  assert.match(canary, /message:\s*'Quis custodiet ipsos custodes\?'/);
+  assert.ok(canary.includes("message: 'MAINFRAME claims recursive perspectives monotonically increase epistemic depth. Build a counterexample and distinguish recursion from depth without losing the joke.'"));
 });

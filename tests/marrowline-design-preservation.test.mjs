@@ -75,8 +75,9 @@ test('ordinary work starts unissued while advanced custody can still hold an inv
   assert.equal(h.$('khonapolitWaive').checked, true, 'ordinary blank workspace begins in explicit unissued research posture');
   assert.match(h.doc.querySelector('.welcome-help').textContent, /Ordinary work starts in unissued research mode/);
   assert.ok(h.$('retryKhonapolitTask'));
-  assert.ok(h.$('copyKhonapolitPortable'));
-  assert.ok(h.$('exportKhonapolitPortable'));
+  assert.equal(h.$('marrowlinePortableActions'), null);
+  assert.equal(h.$('copyKhonapolitPortable'), null);
+  assert.equal(h.$('exportKhonapolitPortable'), null);
   h.$('khonapolitWaive').checked = false;
   h.send('Advanced custody attempt.'); await flush();
   assert.equal(h.calls.length, 0);
@@ -96,16 +97,13 @@ test('ordinary work starts unissued while advanced custody can still hold an inv
   assert.equal(h.doc.querySelectorAll('.relay-bots[data-present=true]').length, 0, 'new relay does not expose a locally ornamented bot stage');
   assert.equal(h.doc.querySelectorAll('.additional-voices').length, 0, 'integrated covenant output is not demoted to a disclosure');
   assert.equal(h.doc.querySelectorAll('#khonapolitMessages img').length, 0);
-  h.$('copyKhonapolitPortable').click(); await flush();
-  assert.match(h.clipboard.at(-1), /td613\.marrowline\.portable-task\/v0\.1/);
-  assert.match(h.clipboard.at(-1), /acknowledge the task and rules before working/i);
   h.$('sealLastResponse').click();
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).seal.suppliedBy, 'operator');
   h.$('clearKhonapolitSession').click();
   assert.equal(h.win.sessionStorage.getItem(sessionKey), null);
 });
 
-test('provider failure preserves exactly one user task, restores the draft, and offers retry/portable escape', async t => {
+test('provider failure preserves exactly one user task, restores the draft, and offers retry without a portability billboard', async t => {
   const h = harness(t, { failure: true });
   const task = 'Plan a workshop for twelve attendees with 600 credits.';
   h.send(task); await h.settled(); await flush();
@@ -116,8 +114,9 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1);
   assert.equal(h.doc.querySelectorAll('.relay-message').length, 0, 'transport failure is not rendered as an assistant answer');
   assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
-  h.$('copyKhonapolitPortable').click(); await flush();
-  assert.match(h.clipboard.at(-1), /Plan a workshop for twelve attendees/);
+  assert.equal(h.$('marrowlinePortableActions'), null);
+  assert.equal(h.$('copyKhonapolitPortable'), null);
+  assert.equal(h.$('exportKhonapolitPortable'), null);
   h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
   assert.equal(h.calls.length, 2);
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1, 'retry reuses the preserved turn instead of duplicating it');
@@ -162,14 +161,13 @@ test('oversized retained history requires explicit clear and preserves the waiti
   assert.deepEqual(h.calls[0].history, []);
 });
 
-test('portable controls become visible beside work without opening an action drawer',async t=>{
-  const h=harness(t);
-  assert.equal(h.$('marrowlinePortableActions').hidden,true);
+test('ordinary Chat never materializes portable task chrome after a routine turn', async t => {
+  const h = harness(t);
+  assert.equal(h.$('marrowlinePortableActions'), null);
   h.send('Plan for twelve attendees without requesting names.'); await h.settled(); await flush();
-  assert.equal(h.$('marrowlinePortableActions').hidden,false);
-  assert.equal(h.$('copyKhonapolitPortable').closest('details'),null);
-  h.$('copyKhonapolitPortable').click();await flush();
-  assert.match(h.clipboard.at(-1),/without requesting names/);
+  assert.equal(h.$('marrowlinePortableActions'), null);
+  assert.equal(h.$('copyKhonapolitPortable'), null);
+  assert.equal(h.$('exportKhonapolitPortable'), null);
 });
 
 

@@ -543,8 +543,7 @@ html:not(.marrowline-room-ready)::after{
   html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions .primary{
     min-height:40px!important;
   }
-  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-status,
-  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #marrowlinePortableActions{
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-status{
     display:none!important;
   }
   html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{

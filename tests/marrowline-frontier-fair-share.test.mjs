@@ -3,26 +3,36 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { allocateKhonapolitAttemptTimeout } from '../server/khonapolit-quality.js';
 
-test('live Marrowline weights the wall clock toward the empirically useful 3.x fallback', () => {
+test('live Marrowline preserves 3.8-first quality while giving 3.5 a long continuity lane', () => {
   assert.equal(
-    allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3, fairShare: true }),
-    18000,
-    'attempt one gets a bounded frontier window while preserving meaningful fallback runway'
+    allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }),
+    8000,
+    '3.8 gets the first look but cannot consume the human request wall'
   );
   assert.equal(
-    allocateKhonapolitAttemptTimeout({ remainingMs: 33334, index: 1, modelCount: 3, fairShare: true }),
-    25334,
-    'attempt two receives enough runway for the empirically slower high-quality 3.x fallback while reserving a final lane'
+    allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }),
+    28000,
+    '3.5 gets the empirically proven long Marrowline completion runway while preserving fourteen seconds for the tail'
   );
   assert.equal(
-    allocateKhonapolitAttemptTimeout({ remainingMs: 16667, index: 2, modelCount: 3, fairShare: true }),
-    16667,
-    'the last frontier attempt receives the lawful remainder'
+    allocateKhonapolitAttemptTimeout({ remainingMs: 14000, index: 2, modelCount: 5, fairShare: true }),
+    5000,
+    'the third seat yields enough time to keep both later approved seats reachable'
+  );
+  assert.equal(
+    allocateKhonapolitAttemptTimeout({ remainingMs: 9000, index: 3, modelCount: 5, fairShare: true }),
+    4500,
+    'the fourth seat preserves a lawful final-seat remainder'
+  );
+  assert.equal(
+    allocateKhonapolitAttemptTimeout({ remainingMs: 4500, index: 4, modelCount: 5, fairShare: true }),
+    4500,
+    'the final approved seat receives the lawful remainder'
   );
   assert.equal(
     allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }),
     32000,
-    'single-model operation keeps the existing primary completion ceiling'
+    'single-model operation keeps the inherited primary ceiling'
   );
   assert.equal(
     allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3 }),

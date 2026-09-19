@@ -47,13 +47,14 @@ test('starter carousel exposes sixteen assays behind a geometrically locked roun
   assert.equal(release.composer.starterCarousel.control, '🗘');
 });
 
-test('conversation actions dismiss and portable failure controls cannot consume the transcript', () => {
+test('conversation actions dismiss and ordinary Chat carries no portable failure billboard', () => {
   assert.match(js, /conversation-action-menu button/);
   assert.match(js, /details\.open = false/);
   assert.match(js, /event\.key === 'Escape'/);
-  assert.match(css, /#marrowlinePortableActions:not\(\[hidden\]\)\{display:flex!important/);
-  assert.match(css, /#marrowlinePortableActions:not\(\[hidden\]\) h3,#marrowlinePortableActions:not\(\[hidden\]\) p\{display:none!important/);
+  assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/);
   assert.equal(release.desktop.portableFailurePanelMayCollapseTranscript, false);
+  assert.equal(release.desktop.portableFailurePanelRendered, false);
+  assert.equal(release.composer.portableFailureActions, 'not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic');
 });
 
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {

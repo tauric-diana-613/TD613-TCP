@@ -385,13 +385,9 @@ function ensureOriginControls(doc) {
   };
   const retry = add('retryKhonapolitTask', 'Retry preserved task');
   retry.hidden = true;
-  add('copyKhonapolitPortable', 'Copy portable task');
-  add('exportKhonapolitPortable', 'Export portable task');
 }
 function syncRecoveryControls(doc, state) {
-  const portable = byId(doc, 'marrowlinePortableActions');
   const hasUserTurn = Boolean(state.messages?.some(entry => entry.role === 'user'));
-  if (portable) portable.hidden = !hasUserTurn && !safe(state.pendingTask);
   const retry = byId(doc, 'retryKhonapolitTask');
   if (retry) retry.hidden = !hasUserTurn && !safe(state.pendingTask);
 }
@@ -546,17 +542,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
     submitTask(message);
   });
-  byId(doc, 'copyKhonapolitPortable')?.addEventListener('click', async () => {
-    const status = byId(doc, 'khonapolitTerminalStatus');
-    try { await copyPortable(root, state); status.textContent = buildMarrowlinePortableTask(state).answer_review.blocks_reuse ? 'TASK COPIED · the flagged answer was left out. Paste into your companion and ask it to acknowledge your task and privacy rules.' : 'PORTABLE TASK COPIED · paste it into your companion and ask it to acknowledge the task and rules'; }
-    catch { status.textContent = 'CLIPBOARD UNAVAILABLE · export remains available'; }
-  });
-  byId(doc, 'exportKhonapolitPortable')?.addEventListener('click', () => {
-    const status = byId(doc, 'khonapolitTerminalStatus');
-    try { exportPortable(doc, root, state); status.textContent = buildMarrowlinePortableTask(state).answer_review.blocks_reuse ? 'TASK EXPORTED · the flagged answer was left out; your task and rules remain in the JSON.' : 'PORTABLE TASK EXPORTED · JSON packet created from your Marrowline work'; }
-    catch { status.textContent = 'EXPORT UNAVAILABLE · copy remains available'; }
-  });
-
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
     state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}

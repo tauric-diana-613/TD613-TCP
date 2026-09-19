@@ -132,12 +132,12 @@ try {
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.equal(
     primaryTimeoutMs,
-    12000,
-    'primary frontier attempt gets a bounded 12 second window so later approved 3.x lanes remain reachable'
+    8000,
+    '3.8 gets a bounded eight-second first look so a human request cannot be consumed by the first provider seat'
   );
   assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs >= 21000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 22000,
-    'second frontier attempt receives empirically useful 3.5 runway while preserving a multi-model tail'
+    res.payload.receipt.provider.attempts[1].timeoutMs >= 27000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 28000,
+    'second approved seat receives the long continuity runway while preserving the remaining approved tail'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
