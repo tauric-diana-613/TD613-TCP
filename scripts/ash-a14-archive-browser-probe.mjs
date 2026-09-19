@@ -8,8 +8,6 @@ const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a14';
 const browserType = { chromium, firefox, webkit }[browserName];
 if (!browserType) throw new Error(`Unsupported browser ${browserName}`);
 await fs.mkdir(artifactDir, { recursive:true });
-const browser = await browserType.launch({ headless:true });
-
 async function waitForRegistry(page) {
   await page.waitForFunction(() => {
     const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
@@ -226,22 +224,33 @@ async function inspect(page, label) {
   return { ...result, persisted_profile:archiveCase.profile, persisted_archive_marker:true };
 }
 
+async function inspectMode(label, contextOptions) {
+  const browser = await browserType.launch({ headless:true });
+  try {
+    const context = await browser.newContext(contextOptions);
+    try {
+      return { mode:label, ...(await inspect(await context.newPage(), label)) };
+    } finally {
+      await context.close().catch(() => {});
+    }
+  } finally {
+    await browser.close().catch(() => {});
+  }
+}
+
 const receipts = [];
 try {
-  const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
-  receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
-  await desktop.close();
+  receipts.push(await inspectMode('desktop', { viewport:{ width:1280, height:900 } }));
 
   const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
   if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
-  const mobile = await browser.newContext(mobileOptions);
-  receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
-  await mobile.close();
+  receipts.push(await inspectMode('mobile-reduced-motion', mobileOptions));
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.6-a15-registry-current',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.7-process-isolated-postures',
     browser:browserName,
     receipts,
+    browser_process_isolation_per_posture:true,
     registry_owner:'ASH_DEMO_REGISTRY',
     promoted_profiles:6,
     archive_status:'PROMOTED',
@@ -266,8 +275,10 @@ try {
     human_closure_required:true
   }, null, 2));
 } catch (error) {
-  await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-failure.json`), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
+  await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-failure.json`), JSON.stringify({
+    error:String(error?.stack || error),
+    completed_receipts:receipts,
+    browser_process_isolation_per_posture:true
+  }, null, 2));
   throw error;
-} finally {
-  await browser.close();
 }
