@@ -104,8 +104,8 @@ assert.match(workflow, /Confirm authorized source still owns production after wi
 assert.match(workflow, /Confirm authorized source still owns production after witness[\s\S]*if: >-[\s\S]*always\(\)[\s\S]*steps\.deployed\.outputs\.url != ''[\s\S]*steps\.authorize\.outputs\.selected_sha != ''/,
   'post-witness source custody must still be observed after a failed production witness');
 assert.match(workflow, /Production source changed during witness/);
-assert.match(workflow, /timeout-minutes: 60/,
-  'release orchestration ceiling must exceed the sum of its bounded inner witness ceilings');
+assert.match(workflow, /timeout-minutes: 120/,
+  'release orchestration ceiling must exceed bounded propagation plus production witness ceilings');
 assert.match(workflow, /stale_queue_stability_window = PASS/);
 assert.match(workflow, /post_witness_source_guard = PASS/);
 assert.match(workflow, /artifacts\/exact-source-stable\//);
