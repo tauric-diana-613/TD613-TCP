@@ -337,9 +337,10 @@ html:not(.marrowline-room-ready)::after{
   }
   html.marrowline-mobile-shell .zalgo-line{
     display:block;
-    min-height:2.7em;
-    padding:.36em 0 .54em;
+    min-height:0;
+    padding:0;
     overflow:visible;
+    line-height:inherit;
   }
 
   html.marrowline-mobile-shell .jump-latest{
