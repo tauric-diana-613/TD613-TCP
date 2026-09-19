@@ -10,9 +10,9 @@ assert.match(source, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
 assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
-  selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash'],
-  'when the full 3.x set is callable, Marrowline gives 3.5 the meaningful second attempt and the same-episode healthy 3.6 lane the third seat'
+  selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
+  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+  'when the full 3.x set is callable, Marrowline can reach every approved frontier lane within the bounded five-seat cascade'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
@@ -130,12 +130,12 @@ try {
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.equal(
     primaryTimeoutMs,
-    18000,
-    'primary frontier attempt gets a bounded 18 second window so the known 3.x fallback retains meaningful runway'
+    12000,
+    'primary frontier attempt gets a bounded 12 second window so later approved 3.x lanes remain reachable'
   );
   assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs >= 24000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 26000,
-    'second frontier attempt receives the empirically useful fallback runway while preserving a final lane'
+    res.payload.receipt.provider.attempts[1].timeoutMs >= 21000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 22000,
+    'second frontier attempt receives empirically useful 3.5 runway while preserving a multi-model tail'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
