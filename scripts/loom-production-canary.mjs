@@ -4,7 +4,7 @@ import path from 'node:path';
 const base = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/\/$/, '');
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-production-canary';
-const LIVE_WITNESS_TIMEOUT_MS = 240000;
+const LIVE_WITNESS_TIMEOUT_MS = 270000;
 const fixturePath = 'docs/research/receipts/2026-09-10-loom-live-receiver/portable-aia.json';
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
@@ -102,7 +102,7 @@ const boundedStageTimings = value => {
   const output = {};
   for (const stage of ['provider-plan', 'provider-transport', 'provider-json', 'output-admission']) {
     const count = boundedCount(value[stage]);
-    if (count !== null && count <= 60000) output[stage] = count;
+    if (count !== null && count <= LIVE_WITNESS_TIMEOUT_MS) output[stage] = count;
   }
   return Object.keys(output).length ? output : null;
 };
@@ -119,7 +119,17 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
       timeout_ms: boundedCount(attempt?.timeoutMs),
       timed_out: attempt?.timedOut === true,
       admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null,
-      admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons)
+      admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons),
+      provider_stream: attempt?.providerStream && typeof attempt.providerStream === 'object'
+        ? {
+            requested: attempt.providerStream.requested === true,
+            observed: attempt.providerStream.observed === true,
+            first_chunk_ms: boundedCount(attempt.providerStream.firstChunkMs),
+            chunk_count: boundedCount(attempt.providerStream.chunkCount),
+            byte_count: boundedCount(attempt.providerStream.byteCount),
+            parse_errors: boundedCount(attempt.providerStream.parseErrors)
+          }
+        : null
     }))
   : [];
 const boundedRejectedAttempts = value => Array.isArray(value)

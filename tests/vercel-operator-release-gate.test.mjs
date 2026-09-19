@@ -101,7 +101,11 @@ assert.match(workflow, /Stale queued deployment displaced authorized source/);
 assert.match(workflow, /Reconfirm exact deployed bytes after stability window/);
 assert.match(workflow, /TD613_ARTIFACT_DIR: artifacts\/exact-source-stable/);
 assert.match(workflow, /Confirm authorized source still owns production after witness/);
+assert.match(workflow, /Confirm authorized source still owns production after witness[\s\S]*if: >-[\s\S]*always\(\)[\s\S]*steps\.deployed\.outputs\.url != ''[\s\S]*steps\.authorize\.outputs\.selected_sha != ''/,
+  'post-witness source custody must still be observed after a failed production witness');
 assert.match(workflow, /Production source changed during witness/);
+assert.match(workflow, /timeout-minutes: 120/,
+  'release orchestration ceiling must exceed bounded propagation plus production witness ceilings');
 assert.match(workflow, /stale_queue_stability_window = PASS/);
 assert.match(workflow, /post_witness_source_guard = PASS/);
 assert.match(workflow, /artifacts\/exact-source-stable\//);

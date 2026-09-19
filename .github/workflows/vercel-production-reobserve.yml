@@ -21,7 +21,7 @@ jobs:
       (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
       startsWith(github.event.comment.body, '/td613-production-reobserve ')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       RELEASE_GATE_ISSUE: '405'
       TD613_CANONICAL_PRODUCTION_URL: https://td613.com
