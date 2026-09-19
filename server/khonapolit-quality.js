@@ -156,7 +156,7 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   if (remainingAttempts === 1) return remaining;
   const cap = caps[position] || FALLBACK_REQUEST_TIMEOUT_MS;
 
-  const laterMinimums = [75000, 40000, 30000, 15000];
+  const laterMinimums = [75000, 40000, 30000, 10000];
   let reserveForLater = 0;
   for (let i = position; i < total - 1; i += 1) {
     reserveForLater += laterMinimums[i] || 15000;
@@ -335,25 +335,100 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
+function mergeGeminiStreamPayload(chunks = []) {
+  let text = '';
+  let finishReason = null;
+  let usageMetadata = null;
+  for (const payload of chunks) {
+    const candidate = payload?.candidates?.[0] || null;
+    for (const part of candidate?.content?.parts || []) {
+      if (typeof part?.text === 'string' && part.thought !== true) text += part.text;
+    }
+    if (typeof candidate?.finishReason === 'string' && candidate.finishReason) finishReason = candidate.finishReason;
+    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
+  }
+  const candidate = {
+    content: { parts: text ? [{ text }] : [] },
+    ...(finishReason ? { finishReason } : {})
+  };
+  return {
+    candidates: [candidate],
+    ...(usageMetadata ? { usageMetadata } : {})
+  };
+}
+
+function consumeGeminiSseEvent(rawEvent = '', chunks = [], progress = {}) {
+  const data = String(rawEvent || '')
+    .split(/\r?\n/)
+    .filter((line) => /^data:/.test(line))
+    .map((line) => line.replace(/^data:\s?/, ''))
+    .join('\n')
+    .trim();
+  if (!data || data === '[DONE]') return;
+  try {
+    const payload = JSON.parse(data);
+    chunks.push(payload);
+    progress.chunkCount += 1;
+    if (progress.firstChunkMs === null) progress.firstChunkMs = Date.now() - progress.startedAt;
+  } catch {
+    progress.parseErrors += 1;
+  }
+}
+
+async function readGeminiSse(response, progress) {
+  const reader = response?.body?.getReader?.();
+  if (!reader) return null;
+  const decoder = new TextDecoder();
+  let buffer = '';
+  const chunks = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    progress.byteCount += value?.byteLength || 0;
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split(/\r?\n\r?\n/);
+    buffer = events.pop() || '';
+    for (const event of events) consumeGeminiSseEvent(event, chunks, progress);
+  }
+  buffer += decoder.decode();
+  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress);
+  return mergeGeminiStreamPayload(chunks);
+}
+
 async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
   try {
-    const response = await fetch(geminiGenerateContentUrl(model), {
+    const response = await fetch(geminiStreamGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
       body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model, { fallback })),
       signal: controller.signal
     });
-    const payload = await response.json().catch(() => ({}));
-    return { response, payload, text: extractGeminiText(payload), timedOut: false };
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      return { response, payload, text: '', timedOut: false, streamed: false, ...progress };
+    }
+    const streamedPayload = await readGeminiSse(response, progress);
+    const payload = streamedPayload || await response.json().catch(() => ({}));
+    return {
+      response,
+      payload,
+      text: extractGeminiText(payload),
+      timedOut: false,
+      streamed: Boolean(streamedPayload),
+      ...progress
+    };
   } catch (error) {
     const timedOut = error?.name === 'AbortError';
     return {
       response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
       payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
       text: '',
-      timedOut
+      timedOut,
+      streamed: progress.chunkCount > 0,
+      ...progress
     };
   } finally {
     clearTimeout(timer);
@@ -450,6 +525,14 @@ export default async function handler(req, res) {
       timeoutMs,
       elapsedMs: Date.now() - attemptStartedAt,
       transportClass: transport.class,
+      providerStream: {
+        requested: true,
+        observed: result.streamed === true,
+        firstChunkMs: Number.isInteger(result.firstChunkMs) ? result.firstChunkMs : null,
+        chunkCount: Number.isInteger(result.chunkCount) ? result.chunkCount : 0,
+        byteCount: Number.isInteger(result.byteCount) ? result.byteCount : 0,
+        parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0
+      },
       error,
       output: providerOutput,
       cooldown: outcome
