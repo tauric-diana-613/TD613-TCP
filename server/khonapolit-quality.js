@@ -33,17 +33,17 @@ import {
 } from './gemini-generation-envelope.js';
 import {
   classifyGeminiTransport,
-  geminiGenerateContentUrl,
+  geminiStreamGenerateContentUrl,
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v7-raw-dual-packet-admission';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
-const WALL_TIMEOUT_MS = 50500;
-const RESPONSE_RESERVE_MS = 500;
+const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
+const WALL_TIMEOUT_MS = 210000;
+const RESPONSE_RESERVE_MS = 5000;
 const LEGACY_OUTPUT_TOKENS = 4096;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
@@ -147,14 +147,20 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
   if (total === 1) return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, remaining);
-  if (position === 0) return Math.min(8000, remaining);
-  if (position === 1 && remainingAttempts > 1) {
-    const reserveForTail = Math.min(14000, Math.max(0, remaining - 1));
-    return Math.min(28000, Math.max(1, remaining - reserveForTail));
-  }
+
+  // Human-liveness geometry: these are completion windows, not health probes.
+  // 3.8 remains first; 3.5 retains the empirically proven continuity lane; later
+  // Gemini 3 seats receive enough time to finish a real dual-packet generation.
+  const caps = [50000, 75000, 40000, 30000];
   if (remainingAttempts === 1) return remaining;
-  const reserveForLater = Math.min((remainingAttempts - 1) * 4500, Math.max(0, remaining - 1));
-  const cap = position === 2 ? 6000 : 5000;
+  const cap = caps[position] || FALLBACK_REQUEST_TIMEOUT_MS;
+
+  const laterMinimums = [75000, 40000, 30000, 10000];
+  let reserveForLater = 0;
+  for (let i = position; i < total - 1; i += 1) {
+    reserveForLater += laterMinimums[i] || 15000;
+  }
+  reserveForLater = Math.min(reserveForLater, Math.max(0, remaining - 1));
   return Math.min(cap, Math.max(1, remaining - reserveForLater));
 }
 
@@ -328,25 +334,100 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
   });
 }
 
+function mergeGeminiStreamPayload(chunks = []) {
+  let text = '';
+  let finishReason = null;
+  let usageMetadata = null;
+  for (const payload of chunks) {
+    const candidate = payload?.candidates?.[0] || null;
+    for (const part of candidate?.content?.parts || []) {
+      if (typeof part?.text === 'string' && part.thought !== true) text += part.text;
+    }
+    if (typeof candidate?.finishReason === 'string' && candidate.finishReason) finishReason = candidate.finishReason;
+    if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
+  }
+  const candidate = {
+    content: { parts: text ? [{ text }] : [] },
+    ...(finishReason ? { finishReason } : {})
+  };
+  return {
+    candidates: [candidate],
+    ...(usageMetadata ? { usageMetadata } : {})
+  };
+}
+
+function consumeGeminiSseEvent(rawEvent = '', chunks = [], progress = {}) {
+  const data = String(rawEvent || '')
+    .split(/\r?\n/)
+    .filter((line) => /^data:/.test(line))
+    .map((line) => line.replace(/^data:\s?/, ''))
+    .join('\n')
+    .trim();
+  if (!data || data === '[DONE]') return;
+  try {
+    const payload = JSON.parse(data);
+    chunks.push(payload);
+    progress.chunkCount += 1;
+    if (progress.firstChunkMs === null) progress.firstChunkMs = Date.now() - progress.startedAt;
+  } catch {
+    progress.parseErrors += 1;
+  }
+}
+
+async function readGeminiSse(response, progress) {
+  const reader = response?.body?.getReader?.();
+  if (!reader) return null;
+  const decoder = new TextDecoder();
+  let buffer = '';
+  const chunks = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    progress.byteCount += value?.byteLength || 0;
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split(/\r?\n\r?\n/);
+    buffer = events.pop() || '';
+    for (const event of events) consumeGeminiSseEvent(event, chunks, progress);
+  }
+  buffer += decoder.decode();
+  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress);
+  return mergeGeminiStreamPayload(chunks);
+}
+
 async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
   try {
-    const response = await fetch(geminiGenerateContentUrl(model), {
+    const response = await fetch(geminiStreamGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
       body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model, { fallback })),
       signal: controller.signal
     });
-    const payload = await response.json().catch(() => ({}));
-    return { response, payload, text: extractGeminiText(payload), timedOut: false };
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      return { response, payload, text: '', timedOut: false, streamed: false, ...progress };
+    }
+    const streamedPayload = await readGeminiSse(response, progress);
+    const payload = streamedPayload || await response.json().catch(() => ({}));
+    return {
+      response,
+      payload,
+      text: extractGeminiText(payload),
+      timedOut: false,
+      streamed: Boolean(streamedPayload),
+      ...progress
+    };
   } catch (error) {
     const timedOut = error?.name === 'AbortError';
     return {
       response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
       payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
       text: '',
-      timedOut
+      timedOut,
+      streamed: progress.chunkCount > 0,
+      ...progress
     };
   } finally {
     clearTimeout(timer);
@@ -443,6 +524,14 @@ export default async function handler(req, res) {
       timeoutMs,
       elapsedMs: Date.now() - attemptStartedAt,
       transportClass: transport.class,
+      providerStream: {
+        requested: true,
+        observed: result.streamed === true,
+        firstChunkMs: Number.isInteger(result.firstChunkMs) ? result.firstChunkMs : null,
+        chunkCount: Number.isInteger(result.chunkCount) ? result.chunkCount : 0,
+        byteCount: Number.isInteger(result.byteCount) ? result.byteCount : 0,
+        parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0
+      },
       error,
       output: providerOutput,
       cooldown: outcome

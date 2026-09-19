@@ -8,7 +8,7 @@
       "maxDuration": 60
     },
     "api/khonapolit.js": {
-      "maxDuration": 60
+      "maxDuration": 240
     },
     "api/giving.js": {
       "maxDuration": 30

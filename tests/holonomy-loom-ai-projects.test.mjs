@@ -53,8 +53,10 @@ test('independent Marrowline 3.x fallbacks preserve the route quality floor', ()
   const fallback = buildGeminiRequest(packet, {}, 'gemini-3.8-flash', { fallback: true });
   assert.deepEqual(primary.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   assert.deepEqual(fallback.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0 }), 32000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1 }), 10500);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0 }), 50000,
+    'the widened primary ceiling must not be silently collapsed back to the old 32-second probe');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1 }), 18000,
+    'fallback callers may use the lawful remaining wall up to the widened 30-second inherited cap');
 });
 
 test('Demo 3 supplies a bounded newcomer takeaway before the engineering report', () => {

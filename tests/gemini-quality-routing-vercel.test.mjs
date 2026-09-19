@@ -14,7 +14,7 @@ const before = (earlier, later) => {
 };
 
 assert.equal(vercel.functions['api/hush-generate-quality.js']?.maxDuration, 60);
-assert.equal(vercel.functions['api/khonapolit.js']?.maxDuration, 60);
+assert.equal(vercel.functions['api/khonapolit.js']?.maxDuration, 240);
 assert.equal(vercel.functions['api/gemini-readiness.js']?.maxDuration, 20);
 assert.ok(!vercel.functions['api/hush-generate.js']);
 assert.ok(!vercel.functions['api/khonapolit-quality.js']);

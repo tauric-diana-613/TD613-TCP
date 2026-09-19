@@ -214,7 +214,7 @@ jobs:
           TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
           TD613_ARTIFACT_DIR: artifacts/loom-production-reobserve
-        run: timeout --foreground --signal=INT --kill-after=10s 140s node scripts/loom-production-canary.mjs
+        run: timeout --foreground --signal=INT --kill-after=10s 600s node scripts/loom-production-canary.mjs
 
       - name: Confirm exact source receipt after re-observation
         env:
@@ -408,7 +408,7 @@ jobs:
           TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_trial.outputs.selected_sha }}
           TD613_ARTIFACT_DIR: artifacts/marrowline-dollhouse-trial
-          TD613_MARROWLINE_TRIAL_TIMEOUT_MS: '57000'
+          TD613_MARROWLINE_TRIAL_TIMEOUT_MS: '240000'
         run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/run-marrowline-dollhouse-production-trial.mjs
 
       - name: Confirm exact production source after Dollhouse trial

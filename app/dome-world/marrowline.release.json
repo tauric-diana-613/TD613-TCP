@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.5-provider-liveness-recovery",
+  "version": "v0.7.6-streamed-adult-timeouts",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -99,7 +99,10 @@
       "responseMimeTypeForced": false,
       "responseSchemaForced": false,
       "delimiterMutation": "transport-delimiters-removed-only",
-      "payloadUnicode": "provider-authored-preserved-exactly"
+      "payloadUnicode": "provider-authored-preserved-exactly",
+      "streamingTransport": "gemini-streamGenerateContent-sse-server-accumulated",
+      "partialBrowserExposure": false,
+      "partialProviderChunks": "telemetry-only-until-complete-dual-packet-admission"
     }
   },
   "qualityFloor": {
@@ -119,21 +122,25 @@
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
-      "primaryMs": 8000,
-      "preferredSecondMaxMs": 28000,
-      "reservedTailAfterSecondMs": 14000,
-      "thirdLaneMaxMs": 6000,
-      "fourthLaneMaxMs": 5000,
+      "primaryMs": 50000,
+      "preferredSecondMaxMs": 75000,
+      "thirdLaneMaxMs": 40000,
+      "fourthLaneMaxMs": 30000,
+      "finalLaneMinimumMs": 10000,
       "finalLane": "lawful-wall-remainder",
-      "wallMs": 50500,
-      "purpose": "preserve 3.8 first-quality privilege, give empirically proven 3.5 Marrowline continuity meaningful runway, and keep every later approved Gemini 3 lane reachable"
+      "wallMs": 210000,
+      "functionMaxDurationMs": 240000,
+      "responseReserveMs": 5000,
+      "purpose": "treat advanced Gemini lanes as completion windows rather than health probes while retaining five-seat reachability"
     },
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
       "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200",
       "2026-09-19 Vercel Operator Release #1172: Marrowline gemini-3.8-flash=503 then gemini-3.5-flash=200 with relay_admitted=true and relay_quality=PASS",
       "2026-09-19 release run 35453876040: MAINFRAME witness 3.8=503, 3.5=28s timeout, 3.6=6s timeout, 3.7=5s timeout, preview=remaining-wall timeout; zero output admission",
-      "2026-09-19 zero-deploy re-observation 35454323679: 3.8=503, 3.5=28s timeout, 3.6=6s timeout, 3.7=503, preview=remaining-wall timeout; Loom provider plan separately held NO_ELIGIBLE_MODEL with zero calls"
+      "2026-09-19 zero-deploy re-observation 35454323679: 3.8=503, 3.5=28s timeout, 3.6=6s timeout, 3.7=503, preview=remaining-wall timeout; Loom provider plan separately held NO_ELIGIBLE_MODEL with zero calls",
+      "2026-09-19 release run 35456378853 on ba7312a7: new provider-plan and reduced-thinking repair reached production, but MAINFRAME still returned zero provider text; 3.8=8s local timeout, 3.5=27.743s local timeout, 3.6=4.999s local timeout, 3.7=4.498s local timeout, Preview=4.499s local timeout; independent Loom 3.8 returned HTTP 503",
+      "35456378853 falsifies short-seat geometry as sufficient evidence of model failure: all Marrowline seats were aborted before any candidate text reached admission"
     ],
     "structuredOutputPosture": "removed-from-live-marrowline-after-3.7-reached-output-admission-but-failed-tauric-diana-high-zalgo-floor-on-release-1169",
     "rawPacketEvidence": [
@@ -144,6 +151,17 @@
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",
       "lifecycleAdmissionBypass": false,
       "staleNarrowListingAuthority": false
+    },
+    "streamingProgressReceipt": {
+      "requested": true,
+      "fields": [
+        "observed",
+        "firstChunkMs",
+        "chunkCount",
+        "byteCount",
+        "parseErrors"
+      ],
+      "authority": "transport-progress-only-not-output-admission"
     }
   },
   "composer": {

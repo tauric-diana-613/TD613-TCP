@@ -21,18 +21,12 @@ test('independent Marrowline provider routing is frontier-only with bounded 3.x 
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
     '2.5 and every Lite candidate remain excluded even when the credential advertises them');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 8000,
-    '3.8 keeps first-quality privilege without monopolizing the human request');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }), 28000,
-    '3.5 receives the empirically proven long Marrowline continuity lane while reserving fourteen seconds for the later 3.x tail');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000,
-    'third seat cannot consume the reserve required to reach later frontier lanes');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000,
-    'fourth seat preserves a final five-second floor when time allows');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 5000, index: 4, modelCount: 5, fairShare: true }), 5000,
-    'fifth seat receives the lawful wall remainder');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }), 32000,
-    'single-model operation cannot silently expand the primary completion contract');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 5, fairShare: true }), 50000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 155000, index: 1, modelCount: 5, fairShare: true }), 75000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 80000, index: 2, modelCount: 5, fairShare: true }), 40000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 40000, index: 3, modelCount: 5, fairShare: true }), 30000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 4, modelCount: 5, fairShare: true }), 10000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 1, fairShare: true }), 50000);
 });
 
 test('blank Marrowline exposes an ordinary unissued task lane before advanced custody settings', () => {

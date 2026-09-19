@@ -110,8 +110,8 @@ try {
   await handler(req, res);
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
-  assert.match(calls[0], /gemini-3\.8-flash/);
-  assert.match(calls[1], /gemini-3\.6-flash/);
+  assert.match(calls[0], /gemini-3\.8-flash.*:streamGenerateContent\?alt=sse/);
+  assert.match(calls[1], /gemini-3\.6-flash.*:streamGenerateContent\?alt=sse/);
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -132,17 +132,19 @@ try {
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.equal(
     primaryTimeoutMs,
-    8000,
-    '3.8 gets a bounded eight-second first look so a human request cannot be consumed by the first provider seat'
+    50000,
+    '3.8 receives a genuine fifty-second completion window'
   );
-  assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs >= 27000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 28000,
-    'second approved seat receives the long continuity runway while preserving the remaining approved tail'
+  assert.equal(
+    res.payload.receipt.provider.attempts[1].timeoutMs,
+    75000,
+    'the next available approved Gemini 3 lane receives a genuine seventy-five-second continuity window'
   );
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
   assert.ok(res.payload.receipt.provider.attempts.every(a => a.elapsedMs >= 0));
+  assert.ok(res.payload.receipt.provider.attempts.every(a => a.providerStream?.requested === true));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts.length, 1);
   assert.equal(res.payload.relay.parts[0].id, 'khonapolit');

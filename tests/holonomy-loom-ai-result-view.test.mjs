@@ -155,12 +155,12 @@ test('Markdown tables become semantic tables without activating markup or losing
 test('independent Marrowline origin has frontier-only fallback, ordinary entry and portable task parity', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 8000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }), 28000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 5000, index: 4, modelCount: 5, fairShare: true }), 5000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }), 32000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 5, fairShare: true }), 50000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 155000, index: 1, modelCount: 5, fairShare: true }), 75000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 80000, index: 2, modelCount: 5, fairShare: true }), 40000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 40000, index: 3, modelCount: 5, fairShare: true }), 30000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 4, modelCount: 5, fairShare: true }), 10000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 1, fairShare: true }), 50000);
   const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
   const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
   assert.match(page, /id="khonapolitWaive"[^>]*checked/);

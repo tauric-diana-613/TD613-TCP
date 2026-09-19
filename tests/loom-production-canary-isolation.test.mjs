@@ -17,7 +17,7 @@ assert.ok(marrowlineProbe < loomProbe, 'Marrowline and Loom witnesses must execu
 const witnessTimeoutMatch = source.match(/const LIVE_WITNESS_TIMEOUT_MS = (\d+);/);
 assert.ok(witnessTimeoutMatch, 'production canary must declare one explicit per-witness timeout');
 const witnessTimeoutMs = Number(witnessTimeoutMatch[1]);
-assert.equal(witnessTimeoutMs, 57000, 'strict live-route witness timeout must remain 57 seconds');
+assert.equal(witnessTimeoutMs, 240000, 'streamed Marrowline live-route witness must allow the bounded 210-second completion wall');
 const outerTimeoutMatch = releaseWorkflow.match(/timeout --foreground --signal=INT --kill-after=10s (\d+)s node scripts\/loom-production-canary\.mjs/);
 assert.ok(outerTimeoutMatch, 'release workflow must retain an explicit outer canary timeout');
 const outerTimeoutMs = Number(outerTimeoutMatch[1]) * 1000;
@@ -26,7 +26,7 @@ assert.ok(
   outerTimeoutMs >= requiredSerialBudgetMs,
   `outer canary timeout ${outerTimeoutMs}ms cannot preempt two strict serial ${witnessTimeoutMs}ms witnesses plus 15s orchestration margin`
 );
-assert.ok(outerTimeoutMs <= 180000, 'outer canary timeout must remain bounded to three minutes or less');
+assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Marrowline and Loom live routes under the streamed completion wall');
 
 assert.match(source, /request_execution:\s*'serial-independent'/);
 assert.match(source, /request_order:\s*\['marrowline',\s*'loom'\]/);

@@ -13,15 +13,21 @@ assert.deepEqual(givingRedirects, [{
   permanent: true
 }], 'the only admitted Giving redirect is the canonical trailing-slash redirect');
 
-const baselineProjection = { ...config };
+const baselineProjection = structuredClone(config);
 delete baselineProjection.redirects;
+// Giving's route-integrity hash owns Giving routing, not an unrelated Marrowline
+// function-duration budget. Normalize the separately tested Kʰonapolit duration
+// before hashing so every other Vercel byte remains protected by the baseline.
+if (baselineProjection.functions?.['api/khonapolit.js']) {
+  baselineProjection.functions['api/khonapolit.js'].maxDuration = 60;
+}
 const baselineRaw = `${JSON.stringify(baselineProjection, null, 2)}\n`;
 const gitBlob = Buffer.concat([
   Buffer.from(`blob ${Buffer.byteLength(baselineRaw)}\0`),
   Buffer.from(baselineRaw)
 ]);
 const projectedSha = crypto.createHash('sha1').update(gitBlob).digest('hex');
-assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside the admitted redirects, vercel.json must remain byte-equivalent to the reviewed baseline');
+assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside admitted Giving redirects and the separately governed Kʰonapolit duration, vercel.json must remain byte-equivalent to the reviewed baseline');
 
 const slashlessRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history');
 const slashfulRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history/');
