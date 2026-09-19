@@ -21,6 +21,11 @@ assert.match(probe, /a13-convergence-diagnostic\.json/,
 assert.match(probe, /a13-convergence-timeout\.png/,
   'timeout state must retain a visual witness when Chromium remains screenshot-capable.');
 
+assert.match(probe, /async function inspectMode\(label, contextOptions\)[\s\S]*browserType\.launch\(\{ headless:true \}\)[\s\S]*browser\.close\(\)\.catch/,
+  'A13 desktop and mobile postures must own independent browser processes.');
+assert.match(probe, /browser_process_isolation_per_posture:true/,
+  'A13 receipt must declare posture-level browser-process isolation.');
+
 const unchangedConjunction = /Boolean\(window\.__td613AshKeep\?\.current\?\.\(\)\?\.case_id\)[\s\S]*ashDemoRegistryProfile === 'investigation'[\s\S]*ashPremiumWorkspace === 'home'[\s\S]*timeout:120_000/;
 assert.match(probe, unchangedConjunction,
   'diagnostic instrumentation may not weaken, skip, or substitute the canonical A13 post-click convergence law.');
