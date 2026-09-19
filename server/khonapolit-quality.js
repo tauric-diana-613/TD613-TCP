@@ -123,7 +123,8 @@ export function selectKhonapolitProviderModels(callableModels = []) {
   const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
     .map((model) => String(model || '').replace(/^models\//, '').trim())
     .filter(Boolean)
-    .filter((model) => /^gemini-3(?:\.|-|$)/.test(model)))];
+    .filter((model) => /^gemini-3(?:\.|-|$)/.test(model))
+    .filter((model) => !/lite/i.test(model)))];
   if (!available.length) return [];
   const selected = [];
   for (const model of HUMAN_LIVENESS_MODEL_ORDER) {
