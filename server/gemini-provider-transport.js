@@ -5,6 +5,10 @@ export function geminiGenerateContentUrl(model = '') {
   return `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizedModel(model))}:generateContent`;
 }
 
+export function geminiStreamGenerateContentUrl(model = '') {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizedModel(model))}:streamGenerateContent?alt=sse`;
+}
+
 export function geminiRequestHeaders(apiKey = '') {
   return Object.freeze({
     'content-type': 'application/json',
