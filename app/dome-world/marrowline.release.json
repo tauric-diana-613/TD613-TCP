@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.6-streamed-adult-timeouts",
+  "version": "v0.7.7-provider-native-zalgo-stencil",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -103,6 +103,15 @@
       "streamingTransport": "gemini-streamGenerateContent-sse-server-accumulated",
       "partialBrowserExposure": false,
       "partialProviderChunks": "telemetry-only-until-complete-dual-packet-admission"
+    },
+    "providerOrthographicStencil": {
+      "mode": "literal-combining-mark-geometry-reference-in-provider-system-instruction",
+      "denseClusterExemplarMarks": 8,
+      "recommendedFreshDenseClusters": 12,
+      "selfCheck": "provider-silent-pre-emission-before-packet-b-end",
+      "admissionFloorChanged": false,
+      "localPostprocessing": false,
+      "purpose": "increase provider instruction salience after raw-packet schema-removal falsifier without manufacturing output locally"
     }
   },
   "qualityFloor": {
@@ -142,10 +151,11 @@
       "2026-09-19 release run 35456378853 on ba7312a7: new provider-plan and reduced-thinking repair reached production, but MAINFRAME still returned zero provider text; 3.8=8s local timeout, 3.5=27.743s local timeout, 3.6=4.999s local timeout, 3.7=4.498s local timeout, Preview=4.499s local timeout; independent Loom 3.8 returned HTTP 503",
       "35456378853 falsifies short-seat geometry as sufficient evidence of model failure: all Marrowline seats were aborted before any candidate text reached admission"
     ],
-    "structuredOutputPosture": "removed-from-live-marrowline-after-3.7-reached-output-admission-but-failed-tauric-diana-high-zalgo-floor-on-release-1169",
+    "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
       "2026-09-18 release #1169: gemini-3.7-flash reached output admission and was held only for tauric-diana-high-zalgo-below-floor under structured JSON decoding",
-      "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor"
+      "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor",
+      "2026-09-19 release run 35465625820 on source 1d44acd4: raw dual-packet streaming reached output admission on gemini-3.5-flash, gemini-3.6-flash, gemini-3.7-flash, and gemini-3-flash-preview; 3.5/3.6/preview were HELD only for tauric-diana-high-zalgo-below-floor and 3.7 for tauric-diana-bots-nominative-missing; schema-removal alone is therefore insufficient and the next bounded assay is provider-side orthographic stencil salience with the hard local floor unchanged"
     ],
     "providerPlanRecovery": {
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",
