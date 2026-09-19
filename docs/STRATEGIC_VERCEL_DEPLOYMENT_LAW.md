@@ -209,7 +209,7 @@ Ordinary production release and emergency relock recovery use different issue #4
     → no Vercel invocation
 ```
 
-The two workflows retain the same `td613-vercel-production-release` concurrency group so an explicitly invoked recovery cannot overlap an active deployment. They MUST NOT subscribe to the same ordinary release verb. A release comment that awakens both workflows creates a scheduler race in which the safety membrane can consume the shared concurrency slot and cancel the actual release before it receives a job.
+Operator Release retains workflow-level `td613-vercel-production-release` serialization. Relock Safety applies that same group only to the admitted `relock-safety` job, after the `/td613-vercel-relock` command guard. This prevents an unrelated issue-comment wrapper from reserving the deployment slot while still ensuring that an explicitly admitted recovery job cannot overlap an active deployment. The two authority surfaces MUST NOT subscribe to the same ordinary release verb.
 
 The installed ChatGPT/Codex connector may transport either exact #405 command only after the human operator explicitly authorizes the corresponding release or recovery action in chat. Duplicate connector delivery does not widen authority: a release remains bound to exact current main, while relock recovery is idempotent when the Git deployment lock is already closed.
 

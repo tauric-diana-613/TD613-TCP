@@ -140,6 +140,11 @@ assert.match(relock, /deployment_count = 0/);
 assert.match(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/);
 assert.doesNotMatch(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
   'relock safety must remain a separately invoked recovery membrane rather than competing with release');
+assert.doesNotMatch(relock, /^concurrency:\s*$/m,
+  'relock workflow wrapper must not enter shared release concurrency before command admission');
+assert.match(relock, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel-production-release/,
+  'the admitted relock job itself remains serialized against deployment');
+
 
 // Provider-held re-observation is deliberately a fifth authority surface because it
 // must share release serialization without inheriting deployment or contents-write authority.

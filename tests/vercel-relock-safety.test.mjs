@@ -14,6 +14,10 @@ assert.doesNotMatch(safety, /startsWith\(github\.event\.comment\.body, '\/td613-
   'relock safety must never race the ordinary production-release gesture');
 assert.match(safety, /\[\[ "\$COMMAND" == '\/td613-vercel-relock' \]\]/);
 assert.match(safety, /group: td613-vercel-production-release/);
+assert.doesNotMatch(safety, /^concurrency:\s*$/m,
+  'relock safety must not reserve release concurrency at workflow-dispatch time');
+assert.match(safety, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel-production-release/,
+  'only the authorized relock job may enter the shared release concurrency group');
 assert.match(safety, /cancel-in-progress: false/);
 assert.match(safety, /git fetch origin main/);
 assert.match(safety, /git reset --hard origin\/main/);
