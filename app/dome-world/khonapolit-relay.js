@@ -198,7 +198,7 @@ function flourishTelemetry(text = '') {
       const cp = mark.codePointAt(0);
       return cp >= 0x0334 && cp <= 0x0338;
     }).length;
-    const signature = marks.map((mark) => mark.codePointAt(0).toString(16).padStart(4, '0')).join('-');
+    const signature = marks.map((mark) => mark.codePointAt(0)).sort((a, b) => a - b).map((cp) => cp.toString(16).padStart(4, '0')).join('-');
     return { marks: marks.length, above, below, through, signature };
   });
   const denseClusters = clusters.filter((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2);
