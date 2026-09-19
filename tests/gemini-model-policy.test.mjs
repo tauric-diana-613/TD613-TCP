@@ -121,7 +121,7 @@ const interactive35 = await withGeminiGenerationProfile(
   })
 );
 assert.equal(interactive35.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
-assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'minimal' });
+assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'low' });
 
 const interactive36 = await withGeminiGenerationProfile(
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
