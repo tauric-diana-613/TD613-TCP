@@ -15,6 +15,11 @@ test('production canary preserves five-seat Marrowline diagnostics without rejec
   assert.match(source, /callable_models: callableModels/);
   assert.match(source, /excluded_models: excludedModels/);
   assert.match(source, /provider_plan: boundedModelPlan\(marrowlinePayload\?\.modelPolicy \|\| marrowlineReceipt\?\.modelPolicy\)/);
+  assert.match(source, /provider_stream: attempt\?\.providerStream/);
+  assert.match(source, /first_chunk_ms: boundedCount\(attempt\.providerStream\.firstChunkMs\)/);
+  assert.match(source, /chunk_count: boundedCount\(attempt\.providerStream\.chunkCount\)/);
+  assert.match(source, /byte_count: boundedCount\(attempt\.providerStream\.byteCount\)/);
+  assert.match(source, /parse_errors: boundedCount\(attempt\.providerStream\.parseErrors\)/);
   assert.match(source, /observations\.provider_attempts\.slice\(0, 5\)/,
     'independent Loom evidence must preserve all five bounded provider attempts');
   assert.match(source, /observations\.provider_attempt_timings\.slice\(0, 5\)/,
