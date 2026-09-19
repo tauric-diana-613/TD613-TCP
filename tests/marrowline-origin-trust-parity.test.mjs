@@ -20,10 +20,10 @@ const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gem
 test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 12000,
-    'primary keeps a bounded frontier window while preserving tail reachability');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 38000, index: 1, modelCount: 5, fairShare: true }), 22000,
-    '3.5 retains meaningful completion runway while reserving the later 3.x tail');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 8000,
+    '3.8 keeps first-quality privilege without monopolizing the human request');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }), 28000,
+    '3.5 receives the empirically proven long Marrowline continuity lane while reserving fourteen seconds for the later 3.x tail');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000,
     'third seat cannot consume the reserve required to reach later frontier lanes');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000,
@@ -38,8 +38,8 @@ test('blank Marrowline exposes an ordinary unissued task lane before advanced cu
   assert.match(page, /id="khonapolitWaive"[^>]*checked/);
   assert.match(page, /Ordinary work starts in unissued research mode/i);
   assert.match(page, /id="retryKhonapolitTask"/);
-  assert.match(page, /id="copyKhonapolitPortable"/);
-  assert.match(page, /id="exportKhonapolitPortable"/);
+  assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/,
+    'ordinary Chat must not advertise emergency portability chrome');
   assert.doesNotMatch(page, /Choose your connection in Keys & settings, then send a message/);
   assert.doesNotMatch(living, /openPanel\('invocationPanel', true\)/,
     'ordinary first submit cannot be diverted into the custody-settings drawer');
@@ -68,10 +68,10 @@ test('independent Marrowline portable packet preserves task, context, rules and 
   assert.match(prompt, /td613\.marrowline\.portable-task\/v0\.1/);
 });
 
-test('independent-task recovery keeps the original draft and offers retry plus portability', () => {
+test('independent-task recovery keeps the original draft and offers retry without advertising portability', () => {
   assert.match(terminal, /retryKhonapolitTask/);
-  assert.match(terminal, /copyKhonapolitPortable/);
-  assert.match(terminal, /exportKhonapolitPortable/);
+  assert.doesNotMatch(terminal, /copyKhonapolitPortable|exportKhonapolitPortable/,
+    'ordinary terminal listeners must not recreate the retired portable buttons');
   assert.match(terminal, /Your task is still here/i);
   assert.match(terminal, /prompt\.value\s*=\s*message/,
     'failed transport must restore the exact submitted task to the composer');
