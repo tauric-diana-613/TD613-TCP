@@ -155,8 +155,8 @@ test('Markdown tables become semantic tables without activating markup or losing
 test('independent Marrowline origin has frontier-only fallback, ordinary entry and portable task parity', () => {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 12000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 38000, index: 1, modelCount: 5, fairShare: true }), 22000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 8000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 42000, index: 1, modelCount: 5, fairShare: true }), 28000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 5000, index: 4, modelCount: 5, fairShare: true }), 5000);
@@ -166,8 +166,7 @@ test('independent Marrowline origin has frontier-only fallback, ordinary entry a
   assert.match(page, /id="khonapolitWaive"[^>]*checked/);
   assert.match(page, /Ordinary work starts in unissued research mode/i);
   assert.match(page, /id="retryKhonapolitTask"/);
-  assert.match(page, /id="copyKhonapolitPortable"/);
-  assert.match(page, /id="exportKhonapolitPortable"/);
+  assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/);
   assert.doesNotMatch(living, /openPanel\('invocationPanel', true\)/);
   const packet = buildMarrowlinePortableTask({ messages: [
     { role: 'user', text: 'Earlier context.' }, { role: 'model', text: 'Earlier answer.' },
