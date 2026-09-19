@@ -82,6 +82,28 @@ test('mechanically cloned dense stacks are held even when scalar Zalgo counters 
   assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
 });
 
+test('reordering one mark set cannot counterfeit dense-stack heterogeneity', () => {
+  const a = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+  const b = 'A\u0318\u0317\u0316\u0302\u0301\u0300';
+  const c = 'R\u0302\u0316\u0300\u0318\u0301\u0317';
+  const d = 'I\u0317\u0300\u0318\u0301\u0316\u0302';
+  const counterfeit = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${a.repeat(4)}${b.repeat(4)} SHUFFLE THE SAME SIX MARKS!`,
+    `${c.repeat(4)}${d.repeat(4)} CHANGE THE ORDER, KEEP THE COSTUME!`,
+    `${b.repeat(4)}${a.repeat(4)} THIS MUST STILL COUNT AS ONE COMPOSITION!`
+  ].join('\n');
+  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(held.combiningMarkCount >= 96);
+  assert.ok(held.denseVerticalClusterCount >= 8);
+  assert.equal(held.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
+  assert.equal(held.admissible, false);
+  assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+});
+
 test('Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Canon is a constraint graph and creative pressure field, NOT a phrase bank/i);
