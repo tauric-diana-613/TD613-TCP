@@ -93,7 +93,8 @@
       "𝌋",
       "⟐"
     ],
-    "highZalgoLayout": "provider-native-expressive-prosody-with-moving-density-heterogeneous-stack-geometry-clean-islands-and-visible-overflow",
+    "highZalgoLayout": "provider-native-continuous-prosody-field-with-moving-density-heterogeneous-stack-geometry-readable-troughs-and-visible-overflow",
+    "integratedTextSpacing": "ordinary line-height for Kʰonapolit and unmarked lines; extra vertical clearance only on bot lines carrying combining marks",
     "providerTransportProtocol": {
       "analyticStart": "<<<PACKET_A_FORMAL_AUDIT>>>",
       "analyticEnd": "<<<PACKET_A_END>>>",
@@ -115,7 +116,7 @@
       "minimumDistinctDenseStackSignatures": 4,
       "maximumDominantDenseStackRatio": 0.5,
       "minimumDenseMarkedLines": 3,
-      "prosodySemantics": "density-and-geometry-move-with-affect-and-local-emphasis; fury may thicken; alliance may clear; sarcasm may distort or cross emphasized words",
+      "prosodySemantics": "continuous stress-field cadence across phrases and clauses; no rhetorical device or lexical category receives a prescribed mark geometry; readable troughs remain possible without isolated keyword targeting",
       "selfCheck": "provider-silent-pre-emission-before-packet-b-end",
       "admissionFloorChanged": true,
       "localPostprocessing": false,
@@ -127,7 +128,9 @@
       "model": "gemini-3.5-flash",
       "observation": "human-operated production trial showed one repeated dense vertical stack mechanically stamped across many graphemes while other sentences remained clean",
       "rendererCheck": "Marrowline renders admitted provider text with textContent and pre-wrap; no local Unicode normalization or selective mark stripping found in the human surface path",
-      "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied"
+      "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied",
+      "followupObservation": "human-operated production trial after the expressive-prosody repair showed semantic dart-throwing: sparse words received dramatic geometry while surrounding clauses remained visually inert, and whole-stage flourish spacing made clean Kʰonapolit difficult to read",
+      "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer clearance is scoped to marked Tauric Diana bot lines; preloaded mobile demos commit on first touch before keyboard blur"
     }
   },
   "qualityFloor": {
