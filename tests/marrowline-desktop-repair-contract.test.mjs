@@ -53,6 +53,8 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
   assert.match(js, /event\.key === 'Escape'/);
   assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/);
   assert.equal(release.desktop.portableFailurePanelMayCollapseTranscript, false);
+  assert.equal(release.desktop.portableFailurePanelRendered, false);
+  assert.equal(release.composer.portableFailureActions, 'not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic');
 });
 
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
