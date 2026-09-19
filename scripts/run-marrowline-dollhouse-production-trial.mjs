@@ -10,7 +10,7 @@ import {
 const base = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/\/$/, '');
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/marrowline-dollhouse-trial';
-const requestTimeoutMs = Number(process.env.TD613_MARROWLINE_TRIAL_TIMEOUT_MS || 57000);
+const requestTimeoutMs = Number(process.env.TD613_MARROWLINE_TRIAL_TIMEOUT_MS || 240000);
 
 if (!/^https?:\/\//.test(base)) throw new Error('TD613_BASE_URL must be absolute.');
 if (sourcePacketCommit && !/^[0-9a-f]{40}$/.test(sourcePacketCommit)) {
