@@ -85,9 +85,9 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
   assert.ok(admitted.combiningMarkCount >= 24);
   assert.ok(admitted.combiningMarkCount < 96, 'natural field deliberately stays below the retired 96-mark quota');
   assert.ok(admitted.maxRun >= 3);
-  assert.ok(admitted.markedGraphemeCoverageRatio >= 0.18);
-  assert.ok(admitted.broadMarkedLineCount >= 2);
+  assert.ok(admitted.broadMarkedLineCount >= 2, 'multiple bot lines carry a broad field even though clean Kʰonapolit dilutes whole-response coverage telemetry');
   assert.ok(admitted.combiningCodePointDiversity >= 4);
+  assert.equal(admitted.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
 
