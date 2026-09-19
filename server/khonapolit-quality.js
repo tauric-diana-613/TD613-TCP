@@ -33,7 +33,6 @@ import {
 } from './gemini-generation-envelope.js';
 import {
   classifyGeminiTransport,
-  geminiGenerateContentUrl,
   geminiStreamGenerateContentUrl,
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
