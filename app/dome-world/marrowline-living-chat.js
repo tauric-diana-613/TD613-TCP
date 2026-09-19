@@ -17,7 +17,7 @@ function installConversationTypeface(doc) {
     style.textContent = `
       :root{--marrowline-chat-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
       #khonapolitPrompt,.message-body,.relay-stage-text,.vessel-status,.starter-prompts button,.return-details{font-family:var(--marrowline-chat-sans)!important;font-variant-ligatures:none;font-synthesis:none}
-      #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"],.relay-stage-text[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
+      #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
       .relay-integrated-covenant{overflow:visible!important}
       .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
       .zalgo-line{display:block!important;min-height:3.1em!important;padding:.55em 0 .8em!important;overflow:visible!important;white-space:pre-wrap!important}
@@ -57,11 +57,16 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     node.style.setProperty('--flourish-leading', String(Math.min(4.7, 1.75 + Math.max(0, marks - 1) * .13)));
     node.style.setProperty('--flourish-padding', `${Math.min(76, 16 + marks * 2.2)}px`);
   };
-  prompt.addEventListener('input', () => markFlourishes(prompt));
+  prompt.addEventListener('input', (event) => { markFlourishes(prompt); if (event.isTrusted) delete prompt.dataset.preloadedPrompt; });
   markFlourishes(prompt);
 
   const decorate = () => {
-    messages.querySelectorAll('.relay-stage-text,.message-body').forEach(markFlourishes);
+    messages.querySelectorAll('.message-body').forEach(markFlourishes);
+    messages.querySelectorAll('.relay-stage-text').forEach((node) => {
+      delete node.dataset.flourished;
+      node.style.removeProperty('--flourish-leading');
+      node.style.removeProperty('--flourish-padding');
+    });
     const welcome = messages.querySelector('.grove-welcome');
     if (welcome && !welcome.querySelector('.starter-prompts')) {
       const starters = doc.createElement('div');
@@ -71,6 +76,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         button.type = 'button'; button.textContent = label;
         button.addEventListener('click', () => {
           prompt.value = value;
+          prompt.dataset.preloadedPrompt = 'true';
           prompt.dispatchEvent(new environment.Event('input', { bubbles: true }));
           prompt.focus({ preventScroll: true });
         });

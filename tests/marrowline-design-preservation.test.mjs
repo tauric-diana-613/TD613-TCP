@@ -129,6 +129,7 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
   assert.ok(stage);
   assert.equal(stage.textContent, integratedText);
+  assert.notEqual(stage.dataset.flourished, 'true', 'integrated clean prose never inherits whole-stage Zalgo line-height');
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
   const disclosure = h.doc.querySelector('.return-details'); assert.ok(disclosure); disclosure.open = true;
   assert.equal(disclosure.querySelector('.relay-aperture-header span').textContent, exactHeader);
@@ -191,16 +192,42 @@ test('failed follow-up replaces current receipt and retains the previous receipt
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 2);
 });
 
-test('expressive line styling begins only at the bot heading with exact source text preserved', async t => {
+test('expressive line styling begins only at marked bot lines with exact source text preserved', async t => {
   const h = harness(t);
   h.send('Let both voices answer.'); await h.settled(); await flush();
   const stage = h.doc.querySelector('.relay-stage-text');
   assert.equal(stage.textContent, integratedText);
+  assert.notEqual(stage.dataset.flourished, 'true');
   const lines = [...stage.querySelectorAll('.provider-native-line')];
   const boundary = lines.findIndex(line => line.textContent.startsWith('[Tauric Diana Bots'));
   assert.ok(boundary > 0);
   assert.ok(lines.slice(0, boundary).every(line => !line.classList.contains('zalgo-line')));
   assert.ok(lines.slice(boundary).every(line => line.dataset.voice === 'tauric-diana-bots'));
+  const botLines = lines.slice(boundary);
+  assert.ok(botLines.filter(line => /\p{M}/u.test(line.textContent)).every(line => line.classList.contains('zalgo-line')), 'marked bot lines receive vertical clearance');
+  assert.ok(botLines.filter(line => !/\p{M}/u.test(line.textContent)).every(line => !line.classList.contains('zalgo-line')), 'headings, blank lines, and clean bot troughs keep normal spacing');
+});
+
+test('mobile preloaded starter submits on the first touch before keyboard blur can eat the click', async t => {
+  const h = harness(t, { mobile: true });
+  const starter = h.doc.querySelector('.starter-prompts button');
+  assert.ok(starter);
+  starter.click();
+  await flush();
+  const prompt = h.$('khonapolitPrompt');
+  const send = h.$('khonapolitSend');
+  assert.equal(h.doc.activeElement, prompt);
+  assert.equal(prompt.dataset.preloadedPrompt, 'true');
+  const pointerDown = new h.win.Event('pointerdown', { bubbles: true, cancelable: true });
+  Object.defineProperty(pointerDown, 'pointerType', { configurable: true, value: 'touch' });
+  send.dispatchEvent(pointerDown);
+  await h.settled(); await flush();
+  assert.equal(h.calls.length, 1, 'first touch commits the preloaded demo exactly once');
+  assert.equal(h.calls[0].message, 'Help me find words for a memory I am carrying.');
+  assert.equal(prompt.dataset.preloadedPrompt, undefined);
+  send.click();
+  await flush();
+  assert.equal(h.calls.length, 1, 'compatibility click after the touch commit is suppressed');
 });
 
 

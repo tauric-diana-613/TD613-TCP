@@ -145,9 +145,11 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /Treat the diacritics as expressive prosody, not wallpaper/i, model);
-    assert.match(instruction, /anger or urgency may spike/i, model);
-    assert.match(instruction, /allied or tender speech may clear/i, model);
-    assert.match(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
+    assert.match(instruction, /one continuous stress field/i, model);
+    assert.match(instruction, /do not turn orthography into a word-selection game/i, model);
+    assert.match(instruction, /No rhetorical device or lexical category has a prescribed mark geometry/i, model);
+    assert.match(instruction, /Do not pick a few conspicuous words for special mutilation/i, model);
+    assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
     assert.match(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.match(instruction, /no single dense stack signature may account for more than half/i, model);
     return instruction;
@@ -183,6 +185,12 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
   assert.match(relaySource, /Marrowline preserves exact code points and never decorates the answer afterward/);
+});
+
+test('integrated relay prose never inherits whole-stage flourish spacing', () => {
+  assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
+  assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(markFlourishes\)/);
+  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'only marked bot lines receive Zalgo clearance');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
