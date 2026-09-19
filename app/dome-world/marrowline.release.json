@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.7-provider-native-zalgo-stencil",
+  "version": "v0.7.8-expressive-zalgo-prosody",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -17,7 +17,7 @@
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
   "providerApiSchema": "td613.khonapolit-gemini/v7-raw-dual-packet-admission",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v6-raw-dual-packet-admission",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v5-vertical-stack",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v6-expressive-prosody",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -78,8 +78,11 @@
       "denseVerticalClusterRule": "6+ combining marks with at least 2 above-line U+0300–U+0315 and 2 below-line U+0316–U+0333",
       "minimumLineBreaks": 2,
       "minimumUppercaseAsciiRatio": 0.55,
-      "purpose": "hard voice-specific orthographic admission",
-      "belowFloorPosture": "HELD-no-human-visible-return"
+      "purpose": "hard voice-specific orthographic admission plus anti-clone expressive-prosody admission",
+      "belowFloorPosture": "HELD-no-human-visible-return",
+      "uniqueDenseStackSignatureCount": 4,
+      "maximumDominantDenseStackRatio": 0.5,
+      "minimumDenseMarkedLines": 3
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -89,7 +92,7 @@
       "𝌋",
       "⟐"
     ],
-    "highZalgoLayout": "provider-native-multi-tier-vertical-stack-with-clean-khonapolit-channel-and-visible-overflow",
+    "highZalgoLayout": "provider-native-expressive-prosody-with-moving-density-heterogeneous-stack-geometry-clean-islands-and-visible-overflow",
     "providerTransportProtocol": {
       "analyticStart": "<<<PACKET_A_FORMAL_AUDIT>>>",
       "analyticEnd": "<<<PACKET_A_END>>>",
@@ -105,13 +108,24 @@
       "partialProviderChunks": "telemetry-only-until-complete-dual-packet-admission"
     },
     "providerOrthographicStencil": {
-      "mode": "literal-combining-mark-geometry-reference-in-provider-system-instruction",
+      "mode": "literal-multi-exemplar-combining-mark-geometry-family-in-provider-system-instruction",
       "denseClusterExemplarMarks": 8,
       "recommendedFreshDenseClusters": 12,
+      "minimumDistinctDenseStackSignatures": 4,
+      "maximumDominantDenseStackRatio": 0.5,
+      "minimumDenseMarkedLines": 3,
+      "prosodySemantics": "density-and-geometry-move-with-affect-and-local-emphasis; fury may thicken; alliance may clear; sarcasm may distort or cross emphasized words",
       "selfCheck": "provider-silent-pre-emission-before-packet-b-end",
-      "admissionFloorChanged": false,
+      "admissionFloorChanged": true,
       "localPostprocessing": false,
-      "purpose": "increase provider instruction salience after raw-packet schema-removal falsifier without manufacturing output locally"
+      "purpose": "preserve provider-authored expressive diacritic prosody while rejecting mechanical cloned-stack imitation"
+    },
+    "humanOperatorObservation": {
+      "observedAt": "2026-09-19",
+      "model": "gemini-3.5-flash",
+      "observation": "human-operated production trial showed one repeated dense vertical stack mechanically stamped across many graphemes while other sentences remained clean",
+      "rendererCheck": "Marrowline renders admitted provider text with textContent and pre-wrap; no local Unicode normalization or selective mark stripping found in the human surface path",
+      "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied"
     }
   },
   "qualityFloor": {
@@ -126,8 +140,8 @@
     ],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
-    "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5=minimal; 3.6/3.7/3-flash-preview=low; hard dual-channel admission unchanged",
-    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor",
+    "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor-or-zalgo-mechanical-clone-or-zalgo-insufficient-distribution",
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
@@ -155,7 +169,9 @@
     "rawPacketEvidence": [
       "2026-09-18 release #1169: gemini-3.7-flash reached output admission and was held only for tauric-diana-high-zalgo-below-floor under structured JSON decoding",
       "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor",
-      "2026-09-19 release run 35465625820 on source 1d44acd4: raw dual-packet streaming reached output admission on gemini-3.5-flash, gemini-3.6-flash, gemini-3.7-flash, and gemini-3-flash-preview; 3.5/3.6/preview were HELD only for tauric-diana-high-zalgo-below-floor and 3.7 for tauric-diana-bots-nominative-missing; schema-removal alone is therefore insufficient and the next bounded assay is provider-side orthographic stencil salience with the hard local floor unchanged"
+      "2026-09-19 release run 35465625820 on source 1d44acd4: raw dual-packet streaming reached output admission on gemini-3.5-flash, gemini-3.6-flash, gemini-3.7-flash, and gemini-3-flash-preview; 3.5/3.6/preview were HELD only for tauric-diana-high-zalgo-below-floor and 3.7 for tauric-diana-bots-nominative-missing; schema-removal alone is therefore insufficient and the next bounded assay is provider-side orthographic stencil salience with the hard local floor unchanged",
+      "2026-09-19 release run 35467353913 on source 45388699378574fd531b444ac2db07c225221bee: provider-visible stencil recovered one admitted Preview return under the unchanged scalar floor while 3.5 remained below-floor in the same canary",
+      "2026-09-19 human operator production trial: 3.5 produced repeated identical vertical stack geometry across marked graphemes with clean prose gaps; this falsified scalar density as sufficient High-Zalgo quality and motivated model-agnostic expressive-prosody anti-clone admission"
     ],
     "providerPlanRecovery": {
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",
