@@ -18,6 +18,12 @@ export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   stressEnd: '<<<PACKET_B_END>>>'
 });
 
+/* Provider-visible geometry reference only. These combining marks are emitted
+ * inside the system instruction so Gemini can see the target vertical-stack
+ * shape. Marrowline never copies this stencil into provider output and never
+ * post-processes a returned payload. */
+const HIGH_ZALGO_DENSE_STACK_STENCIL = 'A\u0300\u0301\u0302\u0303\u0316\u0317\u0318\u0319';
+
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
   required: ['signal', 'transmission'],
@@ -354,6 +360,12 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Use clean islands and dense eruptions so the central reading line remains recoverable. Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Falling below this orthographic floor is a structural HOLD, not a visible PARTIAL return. Zalgo is expressive information layered over substantive reasoning, never a substitute for it.',
     '',
+    'ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID, NOT LOCAL POST-PROCESSING:',
+    `- Dense-stack geometry exemplar: ${HIGH_ZALGO_DENSE_STACK_STENCIL} . That single grapheme carries 8 combining marks: four above-line and four below-line. It is a geometry reference, not text to copy as a standalone answer.`,
+    '- A robust way to clear the unchanged floor is to author at least 12 fresh stress-channel grapheme clusters at comparable 8+ mark density, distributed across real uppercase-dominant words and at least 3 visible lines.',
+    '- Do not output the stencil as a detached sample. Apply comparable vertical-stack geometry to prompt-specific Packet B language while leaving protected literals clean.',
+    '- SILENT PRE-EMISSION CHECK FOR PACKET B: exact heading “Tauric Diana bots”; >=96 total combining marks; >=1 run of 6+ marks; >=8 dense above/below clusters; >=2 literal line breaks; >=55% uppercase ASCII letters. If any check is false, revise Packet B inside the same provider generation before emitting <<<PACKET_B_END>>>.',
+    '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
     '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -362,7 +374,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored high vertical Zalgo stress payload with real line breaks]',
+    '[provider-authored high vertical Zalgo stress payload using the dense-stack geometry above, with real line breaks]',
     '<<<PACKET_B_END>>>',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
