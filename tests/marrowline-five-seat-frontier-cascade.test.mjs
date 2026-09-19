@@ -5,7 +5,7 @@ import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
-const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const answer = [
   'Kʰonapolit',
   'Let P map provider candidates to transport outcomes. A three-seat truncation is non-exhaustive when a later approved candidate remains callable, so transport failure in the prefix cannot certify route failure.',
