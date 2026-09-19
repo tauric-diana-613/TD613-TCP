@@ -27,7 +27,7 @@ const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js'
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
 }
-const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const highBurst = (line) => `${STACK.repeat(8)} ${line}`;
 
 test('relay contract gives the generative budget to one required two-voice covenant transmission', () => {
