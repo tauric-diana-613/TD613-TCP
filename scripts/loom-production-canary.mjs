@@ -149,13 +149,13 @@ const boundedModelPlan = value => {
 
 const observations = payload?.observations && typeof payload.observations === 'object' ? payload.observations : {};
 const providerAttempts = Array.isArray(observations.provider_attempts)
-  ? observations.provider_attempts.slice(0, 3).map(attempt => ({
+  ? observations.provider_attempts.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null
     }))
   : [];
 const providerAttemptTimings = Array.isArray(observations.provider_attempt_timings)
-  ? observations.provider_attempt_timings.slice(0, 3).map(attempt => ({
+  ? observations.provider_attempt_timings.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
       elapsed_ms: boundedCount(attempt?.elapsed_ms),

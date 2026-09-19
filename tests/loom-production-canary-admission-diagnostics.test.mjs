@@ -15,6 +15,10 @@ test('production canary preserves five-seat Marrowline diagnostics without rejec
   assert.match(source, /callable_models: callableModels/);
   assert.match(source, /excluded_models: excludedModels/);
   assert.match(source, /provider_plan: boundedModelPlan\(marrowlinePayload\?\.modelPolicy \|\| marrowlineReceipt\?\.modelPolicy\)/);
+  assert.match(source, /observations\.provider_attempts\.slice\(0, 5\)/,
+    'independent Loom evidence must preserve all five bounded provider attempts');
+  assert.match(source, /observations\.provider_attempt_timings\.slice\(0, 5\)/,
+    'independent Loom timing evidence must preserve all five bounded provider attempts');
   assert.doesNotMatch(source, /rejected_attempts:[\s\S]{0,400}transmission\.text/);
   assert.doesNotMatch(source, /admission_reasons:[\s\S]{0,400}marrowlinePayload\?\.text/);
   assert.doesNotMatch(source, /provider_plan:[\s\S]{0,500}(?:api[-_]?key|x-goog-api-key|authorization)/i);

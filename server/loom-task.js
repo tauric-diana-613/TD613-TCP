@@ -7,9 +7,10 @@ export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
 export const LOOM_TASK_DIAGNOSTIC_SCHEMA = 'td613.loom.ai-task-diagnostic/v0.1';
 // Retain the validated shared-function deadline; the browser allows 55s and Vercel 60s.
 export const LOOM_TASK_TIMEOUT_MS = 50000;
-// Stateless resilience must survive Vercel cold starts. One Loom submission may make
-// one primary call plus two diversified transient-failure fallbacks within the same deadline.
-export const LOOM_TASK_MAX_PROVIDER_CALLS = 3;
+// Stateless resilience must survive Vercel cold starts. One Loom submission may walk
+// the full approved Gemini 3 frontier within the same bounded deadline when earlier
+// candidates fail at transport. Deterministic output-admission failures remain terminal.
+export const LOOM_TASK_MAX_PROVIDER_CALLS = 5;
 export const LOOM_TASK_TRANSIENT_BACKOFF_MS = Object.freeze([750, 1500]);
 const LOOM_TASK_STABLE_FALLBACKS = Object.freeze(['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
 // Conservative compatibility envelope for unknown/synthetic models.
@@ -56,8 +57,9 @@ export function selectLoomProviderModels(callableModels = []) {
   if (!eligible.length) return [];
   const selected = [eligible[0]];
   // The newest adjacent frontier siblings have shown correlated 503s in human production
-  // episodes. Prefer already-eligible stable generations as the next two attempts so the
-  // request does not depend on process-local cooldown memory surviving a serverless cold start.
+  // episodes. Prefer already-eligible stable generations before walking the rest of the
+  // callable frontier so request success does not depend on process-local cooldown memory
+  // surviving a serverless cold start.
   for (const fallback of LOOM_TASK_STABLE_FALLBACKS) {
     if (eligible.includes(fallback) && !selected.includes(fallback)) selected.push(fallback);
     if (selected.length >= LOOM_TASK_MAX_PROVIDER_CALLS) return selected;
