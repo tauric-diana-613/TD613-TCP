@@ -76,8 +76,9 @@ try{
    assert.ok(initial&&initial.y>=0&&initial.y+initial.height<=viewport.height,'composer is visible on first screen');
    assert.equal(await page.locator('.living-geometry-canvas').count(),1);
    assert.equal(await page.locator('#retryKhonapolitTask').count(),1);
-   assert.equal(await page.locator('#copyKhonapolitPortable').count(),1);
-   assert.equal(await page.locator('#exportKhonapolitPortable').count(),1);
+   assert.equal(await page.locator('#marrowlinePortableActions').count(),0);
+   assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
+   assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
    assert.equal(await page.locator('#marrowlineOperatorToken').count(),1,'human operator gate token control is installed');
    await page.screenshot({path:path.join(dir,`${posture}-welcome.png`)});
    await page.locator('.starter-prompts button').first().click();
@@ -143,24 +144,9 @@ try{
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='false');
    }
    assert.equal(posts,1,'blank-workspace task sends directly, including native Enter on mobile');
-   assert.equal(await page.locator('#marrowlinePortableActions').isVisible(),true,'portable recovery controls become available after the first operator message');
-   if(posture.startsWith('mobile')){
-    const mobileLayout=await page.evaluate(()=>{
-     const panel=document.querySelector('#speakingPanel');
-     const messages=document.querySelector('#khonapolitMessages');
-     const form=document.querySelector('#khonapolitForm');
-     const portable=document.querySelector('#marrowlinePortableActions');
-     return {
-      panelHeight:panel?.getBoundingClientRect().height||0,
-      transcriptHeight:messages?.getBoundingClientRect().height||0,
-      composerHeight:form?.getBoundingClientRect().height||0,
-      composerOverflowY:form?getComputedStyle(form).overflowY:'',
-      portableHeight:portable?.getBoundingClientRect().height||0
-     };
-    });
-    assert.equal(mobileLayout.composerOverflowY,'auto','restored mobile composer owns overflow when portable recovery controls expand');
-    assert.ok(mobileLayout.transcriptHeight>=mobileLayout.panelHeight*.32,`portable controls must not crush the transcript viewport (${JSON.stringify(mobileLayout)})`);
-   }
+   assert.equal(await page.locator('#marrowlinePortableActions').count(),0,'ordinary Chat never materializes the retired portable handoff panel after a turn');
+   assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
+   assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
 
    const integrated=page.locator('.relay-integrated-covenant .relay-stage-text').last();
    assert.equal(await integrated.textContent(),text,'provider-native combining marks and whitespace remain exact');
@@ -200,12 +186,13 @@ try{
     await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
     assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/No callable model route was admitted/,'provider failure is visible as transport status rather than silence');
     assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/not a Kʰonapolit or Tauric Diana voice/,'held transport is not laundered into a covenant voice');
+    assert.doesNotMatch(await page.locator('#marrowlineTerminalHold').textContent(),/Continue with your own AI|portable task/i,'failure chrome must not advertise the retired emergency handoff');
    }
 
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
-   report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_controls_present:true,portable_recovery_does_not_crush_transcript:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
+   report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_chrome_absent:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
  }
