@@ -8,7 +8,11 @@ assert.equal(config.git?.deploymentEnabled, false, 'Vercel Git auto-deploy lock 
 assert.match(safety, /^\s{2}issue_comment:\s*$/m);
 assert.match(safety, /github\.event\.issue\.number == 405/);
 assert.match(safety, /github\.event\.comment\.user\.login == github\.repository_owner/);
-assert.match(safety, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
+assert.match(safety, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/);
+assert.match(safety, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/);
+assert.doesNotMatch(safety, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
+  'relock safety must never race the ordinary production-release gesture');
+assert.match(safety, /\[\[ "\$COMMAND" == '\/td613-vercel-relock' \]\]/);
 assert.match(safety, /group: td613-vercel-production-release/);
 assert.match(safety, /cancel-in-progress: false/);
 assert.match(safety, /git fetch origin main/);
