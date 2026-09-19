@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.3-raw-dual-packet-provider-output",
+  "schema": "td613.dome-world.marrowline.release/v13",
+  "version": "v0.7.4-quality-order-frontier-reachability",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -107,9 +107,9 @@
     "frontierOnly": true,
     "callOrder": [
       "gemini-3.8-flash",
-      "gemini-3.5-flash",
-      "gemini-3.6-flash",
       "gemini-3.7-flash",
+      "gemini-3.6-flash",
+      "gemini-3.5-flash",
       "gemini-3-flash-preview"
     ],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
@@ -119,12 +119,13 @@
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
-      "primaryMs": 12000,
-      "preferredSecondMaxMs": 22000,
-      "laterLaneMaxMs": 8000,
-      "laterLaneReserveMs": 5000,
+      "primaryMaxMs": 8000,
+      "preferredSecondMaxMs": 18000,
+      "middleMaxMs": 8000,
+      "fourthMaxMs": 6000,
+      "laterLaneReserveMs": 6000,
       "wallMs": 50500,
-      "purpose": "preserve 3.5 completion runway while keeping every approved Gemini 3 lane reachable after fast transport failures"
+      "purpose": "preserve quality-order frontier walking while guaranteeing bounded tail reachability when the listed models consume their full allowances"
     },
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
@@ -134,7 +135,13 @@
     "rawPacketEvidence": [
       "2026-09-18 release #1169: gemini-3.7-flash reached output admission and was held only for tauric-diana-high-zalgo-below-floor under structured JSON decoding",
       "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor"
-    ]
+    ],
+    "frontierReachabilityEvidence": [
+      "2026-09-19 release #1170: raw-packet source deployed correctly; Marrowline 3.8=503, 3.5=408 at 22s, 3.6=408 at 8s; no output admission reached before wall",
+      "2026-09-19 re-observation #30: unchanged source; Marrowline 3.8=503, 3.5=408 at 22s, 3.6=503; no output admission reached before wall",
+      "3.5 second-seat reservation is therefore incompatible with the declared five-seat reachability objective under observed provider latency"
+    ],
+    "routingTelemetry": "receipt exposes credential-scoped callableModels and selectedModels; production canary preserves both"
   },
   "composer": {
     "universalPlus": true,

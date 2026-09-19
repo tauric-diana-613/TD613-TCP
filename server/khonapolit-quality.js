@@ -49,7 +49,7 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // answer is not an acceptable substitute for a failed covenant return. Spend the
 // bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
 // cannot produce an admitted answer.
-const STABLE_FALLBACK_MODELS = Object.freeze(['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
+const FRONTIER_FALLBACK_MODELS = Object.freeze(['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;
 const QUALITY_ENVELOPE_MODELS = new Set([
   'gemini-3.8-flash',
@@ -120,7 +120,7 @@ export function selectKhonapolitProviderModels(callableModels = []) {
     .filter((model) => /^gemini-3(?:\.|-|$)/.test(model)))];
   if (!available.length) return [];
   const selected = [available[0]];
-  for (const stable of STABLE_FALLBACK_MODELS) {
+  for (const stable of FRONTIER_FALLBACK_MODELS) {
     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
     if (available.includes(stable) && !selected.includes(stable)) selected.push(stable);
   }
@@ -140,14 +140,15 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
   if (total === 1) return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, remaining);
-  if (position === 0) return Math.min(12000, remaining);
+  if (position === 0) return Math.min(8000, remaining);
   if (position === 1 && remainingAttempts > 1) {
-    const reserveForTail = Math.min(12000, Math.max(0, remaining - 1));
-    return Math.min(22000, Math.max(1, remaining - reserveForTail));
+    const reserveForTail = Math.min((remainingAttempts - 1) * 6000, Math.max(0, remaining - 1));
+    return Math.min(18000, Math.max(1, remaining - reserveForTail));
   }
   if (remainingAttempts === 1) return remaining;
-  const reserveForLater = Math.min((remainingAttempts - 1) * 5000, Math.max(0, remaining - 1));
-  return Math.min(8000, Math.max(1, remaining - reserveForLater));
+  const reserveForLater = Math.min((remainingAttempts - 1) * 6000, Math.max(0, remaining - 1));
+  const cap = position === 2 ? 8000 : 6000;
+  return Math.min(cap, Math.max(1, remaining - reserveForLater));
 }
 
 function headerValue(headers = {}, key = '') {
@@ -449,6 +450,7 @@ export default async function handler(req, res) {
         status: 'HELD',
         diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
         attempts,
+        selectedModels: models,
         modelPolicy: plan,
         aperture: apertureReceipt,
         aperture_egress: apertureEgress,
@@ -463,6 +465,7 @@ export default async function handler(req, res) {
         status: 'HELD',
         diagnostic: { stage: 'provider-transport', code: 'PROVIDER_REQUEST_REJECTED' },
         attempts,
+        selectedModels: models,
         modelPolicy: plan,
         aperture: apertureReceipt,
         aperture_egress: apertureEgress,
@@ -490,7 +493,12 @@ export default async function handler(req, res) {
       });
       const receipt = Object.freeze({
         ...baseReceipt,
-        provider: Object.freeze({ ...baseReceipt.provider, routingPolicy: GEMINI_MODEL_POLICY_VERSION }),
+        provider: Object.freeze({
+          ...baseReceipt.provider,
+          routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+          callableModels: Object.freeze([...plan.callableModels]),
+          selectedModels: Object.freeze([...models])
+        }),
         modelPolicy: plan,
         elapsedMs: Date.now() - startedAt
       });
@@ -533,6 +541,7 @@ export default async function handler(req, res) {
         }
       : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
     attempts,
+    selectedModels: models,
     modelPolicy: plan,
     aperture: apertureReceipt,
     aperture_egress: apertureEgress,

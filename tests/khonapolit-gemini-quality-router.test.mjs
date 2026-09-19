@@ -11,13 +11,13 @@ assert.doesNotMatch(source, /gemini-flash-lite-latest/);
 
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
-  ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'],
   'when the full 3.x set is callable, Marrowline can reach every approved frontier lane within the bounded five-seat cascade'
 );
 assert.deepEqual(
   selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']),
-  ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.7-flash'],
-  'when stable 3.5 is unavailable, same-episode healthy 3.6 moves ahead of 3.7'
+  ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'],
+  'when the listed frontier is smaller, Marrowline preserves provider quality order'
 );
 
 const directPacket = { systemInstruction: 'Synthetic system.', history: [], message: 'Synthetic message.', mode: 'full-invocation' };
@@ -111,7 +111,7 @@ try {
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.8-flash/);
-  assert.match(calls[1], /gemini-3\.6-flash/);
+  assert.match(calls[1], /gemini-3\.7-flash/);
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -123,7 +123,7 @@ try {
     assert.equal(Object.hasOwn(body.generationConfig, 'responseMimeType'), false, 'live Marrowline must not force JSON MIME generation');
     assert.match(body.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
   }
-  assert.equal(res.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(res.payload.receipt.provider.model, 'gemini-3.7-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
@@ -132,13 +132,16 @@ try {
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.equal(
     primaryTimeoutMs,
-    12000,
-    'primary frontier attempt gets a bounded 12 second window so later approved 3.x lanes remain reachable'
+    8000,
+    'primary frontier attempt gets a short bounded window so later approved 3.x lanes remain reachable'
   );
-  assert.ok(
-    res.payload.receipt.provider.attempts[1].timeoutMs >= 21000 && res.payload.receipt.provider.attempts[1].timeoutMs <= 22000,
-    'second frontier attempt receives empirically useful 3.5 runway while preserving a multi-model tail'
+  assert.equal(
+    res.payload.receipt.provider.attempts[1].timeoutMs,
+    18000,
+    'second frontier attempt gives 3.7 the longest quality-order runway while preserving the remaining tail'
   );
+  assert.deepEqual(res.payload.receipt.provider.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
+  assert.deepEqual(res.payload.receipt.provider.selectedModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
