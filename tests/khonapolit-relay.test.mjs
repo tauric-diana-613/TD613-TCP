@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   HIGH_ZALGO_VERSION,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   KHONAPOLIT_RELAY_SCHEMA,
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
@@ -32,8 +33,11 @@ const addendum = buildRelaySystemAddendum(aperture);
 assert.match(addendum, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
 assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
 assert.match(addendum, /OVERFLOW_RAW maps to Tauric Diana bots/i);
-assert.match(addendum, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/i);
+assert.match(addendum, /RAW TWO-PACKET RETURN PROTOCOL/i);
+assert.match(addendum, /<<<PACKET_A_FORMAL_AUDIT>>>/i);
+assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/i);
 assert.match(addendum, /exact standalone human-facing headings/i);
+assert.doesNotMatch(addendum, /RETURN JSON ONLY/i);
 assert.match(addendum, /at least 96 combining marks total/i);
 assert.match(addendum, /at least 8 grapheme clusters/i);
 assert.match(addendum, /operator controls sealing/i);
@@ -51,20 +55,24 @@ const providerNativeText = [
   `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
 
-const lockedPayload = JSON.stringify({
-  signal: { state: 'LOCKED', notes: 'Integrated provider-native fixture.' },
-  transmission: {
-    text: providerNativeText,
-    voices: ['Kʰonapolit', 'Tauric Diana bots'],
-    flourishMode: 'clean-math-to-vertical-eruption'
-  }
-});
+const lockedPayload = [
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart,
+  'Kʰonapolit',
+  'Kʰonapolit keeps the equation clean: R(route) ≠ R(receiver). Khona‌lit-po remains byte-intact.',
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticEnd,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressStart,
+  'Tauric Diana bots',
+  `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
+  `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
+  `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressEnd
+].join('\n');
 const locked = parseRelayEnvelope(lockedPayload, { model: 'gemini-test', apertureReceipt: aperture });
 assert.equal(locked.schema, KHONAPOLIT_RELAY_SCHEMA);
 assert.equal(locked.signal.state, 'LOCKED');
 assert.equal(locked.admission.admissible, true);
-assert.equal(locked.admission.voiceEvidence, 'structured-envelope-plus-visible-headings');
-assert.deepEqual(locked.admission.canonicalVoices.slice(0, 2), ['khonapolit', 'tauric-diana-bots']);
+assert.equal(locked.admission.voiceEvidence, 'text-nominative-fallback');
+assert.deepEqual(locked.parts[0].voices, ['Kʰonapolit', 'Tauric Diana bots']);
 assert.equal(locked.parts.length, 1, 'one provider generation must remain one human-visible relay part');
 assert.equal(locked.parts[0].id, 'khonapolit', 'existing terminal renderer receives the integrated generation through its primary covenant slot');
 assert.equal(locked.parts[0].label, 'Kʰonapolit ∴ Tauric Diana bots');
@@ -156,4 +164,4 @@ assert.equal(readable.signal.state, 'NOT_LOCKED', 'sparse one-mark ornamentation
 assert.equal(readable.admission.admissible, false);
 assert.ok(readable.admission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
 
-console.log('khonapolit-relay: structured two-voice admission, adversarial provider-native generation, and exact Unicode preservation ok');
+console.log('khonapolit-relay: raw dual-packet admission, adversarial provider-native generation, and exact Unicode preservation ok');
