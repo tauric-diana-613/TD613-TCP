@@ -20,7 +20,7 @@ jobs:
       (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
       startsWith(github.event.comment.body, '/td613-vercel-release ')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       RELEASE_GATE_ISSUE: '405'
       VERCEL_PROJECT: td-613-tcp
