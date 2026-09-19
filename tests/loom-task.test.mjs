@@ -120,8 +120,10 @@ test('one transient HTTP failure may fail over to the next eligible model', asyn
 });
 
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {
-  assert.deepEqual(selectLoomProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']),
-    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash']);
+  assert.deepEqual(selectLoomProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
+  assert.deepEqual(selectLoomProviderModels(['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
+    ['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
   const attempted = []; const sleeps = [];
   const result = await harness({
     resolvePlan: async () => ({ callableModels: ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'] }),
@@ -149,18 +151,42 @@ test('quality-first Loom failover diversifies away from adjacent frontier siblin
   ]);
 });
 
-test('transient failover has a hard three-call ceiling and deterministic output failures never fail over', async () => {
+test('Loom reaches Gemini 3 Flash Preview after three transport failures when it is callable', async () => {
+  const attempted = [];
+  const result = await harness({
+    resolvePlan: async () => ({ callableModels: ['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'] }),
+    sleep: async () => {},
+    fetchImpl: async (url) => {
+      const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
+      attempted.push(model);
+      if (model !== 'gemini-3-flash-preview') return { ok: false, status: 503 };
+      return { ok: true, status: 200, json: async () => payload() };
+    }
+  }).run();
+  assert.equal(result.status, 200);
+  assert.deepEqual(attempted, ['gemini-3.7-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);
+  assert.equal(result.body.observations.provider_calls, 4);
+  assert.equal(result.body.observations.model, 'gemini-3-flash-preview');
+  assert.equal(result.body.observations.provider_attempts[3].status, 200);
+});
+
+test('transient failover has a hard five-call ceiling and deterministic output failures never fail over', async () => {
   let transientCalls = 0;
   const failed = await harness({
-    resolvePlan: async () => ({ callableModels: ['gemini-first', 'gemini-second', 'gemini-third', 'gemini-fourth'] }),
+    resolvePlan: async () => ({ callableModels: ['gemini-first', 'gemini-second', 'gemini-third', 'gemini-fourth', 'gemini-fifth', 'gemini-sixth'] }),
     fetchImpl: async () => { transientCalls += 1; return { ok: false, status: 503 }; }
   }).run();
+  assert.equal(LOOM_TASK_MAX_PROVIDER_CALLS, 5);
   assert.equal(failed.status, 502);
   assert.equal(transientCalls, LOOM_TASK_MAX_PROVIDER_CALLS);
   assert.equal(failed.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
-  assert.equal(failed.body.observations.model, 'gemini-third');
+  assert.equal(failed.body.observations.model, 'gemini-fifth');
   assert.deepEqual(failed.body.observations.provider_attempts, [
-    { model: 'gemini-first', status: 503 }, { model: 'gemini-second', status: 503 }, { model: 'gemini-third', status: 503 }
+    { model: 'gemini-first', status: 503 },
+    { model: 'gemini-second', status: 503 },
+    { model: 'gemini-third', status: 503 },
+    { model: 'gemini-fourth', status: 503 },
+    { model: 'gemini-fifth', status: 503 }
   ]);
   let admissionCalls = 0;
   const held = await harness({
