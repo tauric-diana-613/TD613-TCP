@@ -105,13 +105,14 @@ try {
   assert.equal(res.payload.ok, true);
   assert.deepEqual(calls, [
     'gemini-3.8-flash',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
     'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.5-flash',
     'gemini-3-flash-preview'
   ]);
   assert.equal(res.payload.receipt.provider.model, 'gemini-3-flash-preview');
   assert.equal(res.payload.receipt.provider.attempts.length, 5);
+  assert.deepEqual(res.payload.receipt.provider.selectedModels, calls);
   assert.deepEqual(
     res.payload.receipt.provider.attempts.slice(0, 4).map(attempt => attempt.status),
     [503, 503, 503, 503]
