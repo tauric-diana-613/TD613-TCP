@@ -223,7 +223,8 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
   assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(markFlourishes\)/);
-  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'only marked bot lines receive Zalgo clearance');
+  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'High Zalgo may collide across ordinary line boxes while remaining unclipped');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
