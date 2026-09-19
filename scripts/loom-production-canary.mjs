@@ -111,8 +111,13 @@ const boundedAdmissionReasons = value => Array.isArray(value)
       .filter(reason => typeof reason === 'string' && /^[a-z0-9-]{1,96}$/.test(reason))
       .slice(0, 8)
   : [];
+const boundedModelList = value => Array.isArray(value)
+  ? value
+      .filter(model => typeof model === 'string' && /^[a-zA-Z0-9._-]{1,120}$/.test(model))
+      .slice(0, 8)
+  : [];
 const boundedMarrowlineAttempts = value => Array.isArray(value)
-  ? value.slice(0, 3).map(attempt => ({
+  ? value.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
       elapsed_ms: boundedCount(attempt?.elapsedMs),
@@ -123,7 +128,7 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
     }))
   : [];
 const boundedRejectedAttempts = value => Array.isArray(value)
-  ? value.slice(0, 3).map(attempt => ({
+  ? value.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       reasons: boundedAdmissionReasons(attempt?.reasons)
     }))
@@ -156,6 +161,14 @@ const marrowlineAttemptsSource = Array.isArray(marrowlineReceipt?.provider?.atte
   : Array.isArray(marrowlinePayload?.attempts)
     ? marrowlinePayload.attempts
     : [];
+const marrowlineCallableModels = boundedModelList(
+  marrowlineReceipt?.provider?.callableModels
+    || marrowlinePayload?.modelPolicy?.callableModels
+);
+const marrowlineSelectedModels = boundedModelList(
+  marrowlineReceipt?.provider?.selectedModels
+    || marrowlinePayload?.selectedModels
+);
 const receipt = {
   schema: 'td613.loom.production-canary/v0.3-independent-live-routes',
   source_packet_commit: sourcePacketCommit || null,
@@ -196,6 +209,8 @@ const receipt = {
     relay_admitted: marrowlineAdmission?.admissible === true,
     relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
     final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
+    callable_models: marrowlineCallableModels,
+    selected_models: marrowlineSelectedModels,
     provider_attempts: boundedMarrowlineAttempts(marrowlineAttemptsSource),
     api_version: typeof marrowlineReceipt?.apiVersion === 'string' ? marrowlineReceipt.apiVersion : null
   },
