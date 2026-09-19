@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.3-gemini3-only-20260918';
+export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.4-matched-interactive-low-20260919';
 export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-interactive';
 export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 16384;
 
@@ -58,12 +58,13 @@ export function geminiThinkingConfig(model = '', {
     // Marrowline is an interactive route with its own bounded wall-clock budget.
     // Keep 3.8 deliberate. The empirically designated continuity/fallback lanes
     // trade thinking latency for a chance to return inside the same human request;
-    // hard downstream dual-channel admission remains unchanged.
+    // hard downstream dual-channel admission remains unchanged. Keep 3.5 and
+    // Preview on the same LOW tier so model-conditioned orthographic behavior is
+    // not confounded by a MINIMAL-vs-LOW reasoning split.
     if (khonapolitInteractiveProfile() && requestedLevel === 'high') {
       const id = normalizeGeminiModel(model);
       if (id === 'gemini-3.8-flash') requestedLevel = 'medium';
-      else if (id === 'gemini-3.5-flash') requestedLevel = 'minimal';
-      else if (['gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'].includes(id)) requestedLevel = 'low';
+      else if (['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'].includes(id)) requestedLevel = 'low';
       else requestedLevel = 'medium';
     }
     return { thinkingLevel: requestedLevel };
