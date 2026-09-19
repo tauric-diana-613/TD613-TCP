@@ -45,7 +45,6 @@ function readAuthorized(name, expectedPushes) {
   assert.doesNotMatch(source, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
   assert.match(source, /github\.event\.issue\.number == 405/);
   assert.match(source, /github\.event\.comment\.user\.login == github\.repository_owner/);
-  assert.match(source, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
   assert.match(source, /^ {2}contents:\s*write\s*$/m);
   assert.equal((source.match(/^\s*git push origin HEAD:main\s*$/gm) || []).length, expectedPushes);
   assert.doesNotMatch(source, /patch-td613-flight/i);
@@ -53,6 +52,8 @@ function readAuthorized(name, expectedPushes) {
 }
 
 const release = readAuthorized('vercel-operator-release.yml', 2);
+assert.match(release, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
+  'operator release remains the sole ordinary production-release command');
 assert.match(release, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
   'the installed chat relay may transport an operator-authorized #405 command');
 assert.doesNotMatch(release, /endsWith\([^\n]*\[bot\]/,
@@ -93,6 +94,13 @@ assert.match(exactSourceProbe, /release_source_receipt: releaseSourceReceipt/,
   'exact-source evidence must retain the release-canary receipt');
 
 const relock = readAuthorized('vercel-relock-safety.yml', 1);
+assert.match(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/,
+  'independent relock safety must require its own explicit recovery command');
+assert.doesNotMatch(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
+  'relock safety must not compete with the ordinary release gesture');
+assert.match(relock, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
+  'the exact installed chat relay may transport an explicitly authorized relock recovery command');
+assert.match(relock, /\[\[ "\$COMMAND" == '\/td613-vercel-relock' \]\]/);
 assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.doesNotMatch(relock, /vercel@latest deploy/);
 assert.match(relock, /deployment_count = 0/);
