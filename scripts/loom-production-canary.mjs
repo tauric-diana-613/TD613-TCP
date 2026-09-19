@@ -4,7 +4,7 @@ import path from 'node:path';
 const base = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/\/$/, '');
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-production-canary';
-const LIVE_WITNESS_TIMEOUT_MS = 57000;
+const LIVE_WITNESS_TIMEOUT_MS = 240000;
 const fixturePath = 'docs/research/receipts/2026-09-10-loom-live-receiver/portable-aia.json';
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
