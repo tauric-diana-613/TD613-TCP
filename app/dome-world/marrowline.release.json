@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.4-human-liveness-portable-chrome",
+  "version": "v0.7.5-human-liveness-reasoning-rescue",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -114,7 +114,7 @@
     ],
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
-    "fallbackReasoning": "high-not-degraded",
+    "fallbackReasoning": "interactive-profile-visible-in-receipts",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor",
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
@@ -131,13 +131,23 @@
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
       "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200",
-      "2026-09-19 Vercel Operator Release #1172: Marrowline gemini-3.8-flash=503 then gemini-3.5-flash=200 with relay_admitted=true and relay_quality=PASS"
+      "2026-09-19 Vercel Operator Release #1172: Marrowline gemini-3.8-flash=503 then gemini-3.5-flash=200 with relay_admitted=true and relay_quality=PASS",
+      "2026-09-19 release run 35453876040 MAINFRAME witness: 3.8=503 in 2.885s, 3.5=timeout at 28.004s, 3.6=timeout at 6.002s, 3.7=timeout at 5.001s, Preview=timeout at 7.908s; no output reached admission, establishing transport exhaustion rather than Zalgo/admission failure"
     ],
     "structuredOutputPosture": "removed-from-live-marrowline-after-3.7-reached-output-admission-but-failed-tauric-diana-high-zalgo-floor-on-release-1169",
     "rawPacketEvidence": [
       "2026-09-18 release #1169: gemini-3.7-flash reached output admission and was held only for tauric-diana-high-zalgo-below-floor under structured JSON decoding",
       "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor"
-    ]
+    ],
+    "interactiveReasoning": {
+      "gemini-3.8-flash": "medium",
+      "gemini-3.5-flash": "minimal",
+      "gemini-3.6-flash": "low",
+      "gemini-3.7-flash": "low",
+      "gemini-3-flash-preview": "low",
+      "qualityBackstop": "unchanged-hard-dual-channel-and-high-zalgo-admission"
+    },
+    "reasoningRescuePurpose": "reduce hidden provider compute only on interactive fallbacks while preserving model order, timeout geometry, raw provider packets, and the hard visible-output quality floor"
   },
   "composer": {
     "universalPlus": true,
