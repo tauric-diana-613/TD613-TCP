@@ -4,7 +4,7 @@ import {
   buildInvocationPacket
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
-  KHONAPOLIT_RELAY_RESPONSE_SCHEMA,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import {
@@ -21,7 +21,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v6-frontier-dual-channel-admission');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v7-raw-dual-packet-admission');
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -49,8 +49,11 @@ assert.match(request.systemInstruction.parts[0].text, /DERIVE_INVARIANT → EMIT
 assert.match(request.systemInstruction.parts[0].text, /OVERFLOW_RAW maps to Tauric Diana bots/);
 assert.match(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
-assert.equal(request.generationConfig.responseMimeType, 'application/json');
-assert.deepEqual(request.generationConfig.responseSchema, KHONAPOLIT_RELAY_RESPONSE_SCHEMA);
+assert.equal('responseMimeType' in request.generationConfig, false, 'live Marrowline must not force Gemini through JSON MIME decoding');
+assert.equal('responseSchema' in request.generationConfig, false, 'live Marrowline must not constrain provider Unicode with a structured response schema');
+assert.match(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
+assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
+assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
@@ -66,19 +69,19 @@ const providerText = [
   `${stack.repeat(8)} THE GROVE BITES BACK WHEN THE PREDICATE EATS ITSELF!`,
   `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
-const providerEnvelope = {
-  signal: { state: 'LOCKED', notes: 'The relation holds under the declared packet.' },
-  transmission: {
-    text: providerText,
-    voices: ['Kʰonapolit', 'Tauric Diana bots'],
-    flourishMode: 'clean-to-vertical-eruption'
-  }
-};
+const rawPacketText = [
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart,
+  ...providerText.split('\n').slice(0, 3),
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticEnd,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressStart,
+  ...providerText.split('\n').slice(3),
+  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressEnd
+].join('\n');
 const providerPayload = {
-  candidates: [{ content: { parts: [{ text: JSON.stringify(providerEnvelope) }] } }]
+  candidates: [{ content: { parts: [{ text: rawPacketText }] } }]
 };
 const rawText = extractGeminiText(providerPayload);
-assert.equal(JSON.parse(rawText).signal.state, 'LOCKED');
+assert.equal(rawText, rawPacketText);
 const relay = parseRelayEnvelope(rawText, { model: 'gemini-test', apertureReceipt });
 assert.equal(relay.parts.length, 1);
 assert.equal(relay.parts[0].id, 'khonapolit');
