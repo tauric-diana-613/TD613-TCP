@@ -167,8 +167,11 @@ assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.match(a14Observer, /registry\?\.asset_epoch === '20260726-a15-empirical-v1'/);
 assert.match(a14Observer, /const normalizedDocket = result\.docket_text\.toLowerCase\(\)\.replace/);
 assert.match(a14Observer, /const authoritySequence = \['claim ceiling','no ownership','authenticity','access grant','release','declassification','publication','transfer authority'\]/);
+assert.match(a14Observer, /async function inspectMode\(label, contextOptions\)[\s\S]*browserType\.launch\(\{ headless:true \}\)[\s\S]*browser\.close\(\)\.catch/,
+  'A14 desktop and mobile postures must own independent browser processes.');
+assert.match(a14Observer, /browser_process_isolation_per_posture:true/);
 assert.doesNotMatch(a14Observer, /'no access grant'/);
-assert.match(a14Observer, /v0\.6-a15-registry-current/);
+assert.match(a14Observer, /v0\.7-process-isolated-postures/);
 assert.match(a15Observer, /matrix_cells:snapshot\.empirical_matrix_cells/);
 assert.match(a15Observer, /result\.matrix_cells !== 120/);
 assert.match(a15Observer, /HELD_SENSITIVE_CONTEXT/);
