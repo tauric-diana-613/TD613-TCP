@@ -476,15 +476,32 @@ jobs:
             exit "$failed"
           )
 
-          run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
-          run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
-          run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1 & extended_profiles_pid=$!
-          run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
+          if [[ "$browser" == 'webkit' ]]; then
+            # WebKit repeatedly starved when two browser-heavy clients drove the same
+            # extended runtime (6131) concurrently. Preserve bounded parallelism across
+            # independent runtimes, then give the extended profile journey sole custody
+            # of 6131 for the second wave.
+            run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
+            run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
+            run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
 
-          wait "$core_pid"; core_status=$?
-          wait "$extended_frontline_pid"; extended_frontline_status=$?
-          wait "$extended_profiles_pid"; extended_profiles_status=$?
-          wait "$flowcore_pid"; flowcore_status=$?
+            wait "$core_pid"; core_status=$?
+            wait "$extended_frontline_pid"; extended_frontline_status=$?
+            wait "$flowcore_pid"; flowcore_status=$?
+
+            run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1
+            extended_profiles_status=$?
+          else
+            run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
+            run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
+            run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1 & extended_profiles_pid=$!
+            run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
+
+            wait "$core_pid"; core_status=$?
+            wait "$extended_frontline_pid"; extended_frontline_status=$?
+            wait "$extended_profiles_pid"; extended_profiles_status=$?
+            wait "$flowcore_pid"; flowcore_status=$?
+          fi
 
           printf 'core\t%s\nextended_frontline\t%s\nextended_profiles\t%s\nflowcore\t%s\n' "$core_status" "$extended_frontline_status" "$extended_profiles_status" "$flowcore_status" > "artifacts/$browser/lane-status.tsv"
           BROWSER="$browser" CORE_STATUS="$core_status" EXTENDED_FRONTLINE_STATUS="$extended_frontline_status" EXTENDED_PROFILES_STATUS="$extended_profiles_status" FLOWCORE_STATUS="$flowcore_status" node <<'NODE'
@@ -502,6 +519,8 @@ jobs:
             a12_cross_engine_preflight:true,
             fail_fast:false,
             lane_parallelism:true,
+            lane_schedule:process.env.BROWSER === 'webkit' ? 'independent-three-then-extended-profiles' : 'four-way-parallel',
+            webkit_extended_same_runtime_overlap:process.env.BROWSER === 'webkit' ? false : null,
             extended_failure_isolation:true,
             authority_changed:false,
             source_bytes_moved:false,
