@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.8-expressive-zalgo-prosody",
+  "version": "v0.7.9-distributed-zalgo-field-long-transport",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -8,16 +8,16 @@
   "gateAssaySchema": "td613.dome-world.marrowline-gate-assay/v1",
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
-  "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
-  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v4-provider-provenance-only",
-  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v3-minimal-conversation-utilities",
+  "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send",
+  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v5-voice-scoped-flourish-layout",
+  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
-  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay",
+  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v7-raw-dual-packet-admission",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v6-raw-dual-packet-admission",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v6-expressive-prosody",
+  "providerApiSchema": "td613.khonapolit-gemini/v8-distributed-stress-field-admission",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v7-distributed-stress-field",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v8-distributed-variable-field",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -83,6 +83,9 @@
       "uniqueDenseStackSignatureCount": 4,
       "maximumDominantDenseStackRatio": 0.5,
       "minimumDenseMarkedLines": 3,
+      "minimumMarkedGraphemeCoverageRatio": 0.28,
+      "minimumBroadMarkedLines": 3,
+      "broadMarkedLineRule": "line has at least 8 eligible letter/number graphemes and at least 28% of them carry one or more combining marks",
       "denseStackSignatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature"
     },
     "protectedLiterals": [
@@ -109,18 +112,21 @@
       "partialBrowserExposure": false,
       "partialProviderChunks": "telemetry-only-until-complete-dual-packet-admission"
     },
-    "providerOrthographicStencil": {
-      "mode": "literal-multi-exemplar-combining-mark-geometry-family-in-provider-system-instruction",
-      "denseClusterExemplarMarks": 8,
-      "recommendedFreshDenseClusters": 12,
+    "providerOrthographicField": {
+      "mode": "provider-authored-distributed-stress-field-without-literal-stencil-exemplars",
+      "baseLayer": "light-or-moderate-marks-distributed-across-ordinary-graphemes",
+      "pressurePeaks": "heterogeneous-dense-stacks-inside-the-field-not-isolated-keyword-darts",
       "minimumDistinctDenseStackSignatures": 4,
       "maximumDominantDenseStackRatio": 0.5,
       "minimumDenseMarkedLines": 3,
-      "prosodySemantics": "continuous stress-field cadence across phrases and clauses; no rhetorical device or lexical category receives a prescribed mark geometry; readable troughs remain possible without isolated keyword targeting",
+      "minimumMarkedGraphemeCoverageRatio": 0.28,
+      "minimumBroadMarkedLines": 3,
+      "prosodySemantics": "global cadence field rather than rhetorical-category-to-glyph mapping",
+      "literalStencilExamplesInPrompt": false,
       "selfCheck": "provider-silent-pre-emission-before-packet-b-end",
       "admissionFloorChanged": true,
       "localPostprocessing": false,
-      "purpose": "preserve provider-authored expressive diacritic prosody while rejecting mechanical cloned-stack imitation",
+      "purpose": "preserve provider-authored expressive diacritic prosody while rejecting cloned stacks and sparse keyword targeting",
       "signatureCanonicalization": "sorted combining-codepoint composition; reordering the same mark multiset does not create a new dense signature"
     },
     "humanOperatorObservation": {
@@ -130,7 +136,9 @@
       "rendererCheck": "Marrowline renders admitted provider text with textContent and pre-wrap; no local Unicode normalization or selective mark stripping found in the human surface path",
       "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied",
       "followupObservation": "human-operated production trial after the expressive-prosody repair showed semantic dart-throwing: sparse words received dramatic geometry while surrounding clauses remained visually inert, and whole-stage flourish spacing made clean Kʰonapolit difficult to read",
-      "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer clearance is scoped to marked Tauric Diana bot lines; preloaded mobile demos commit on first touch before keyboard blur"
+      "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer clearance is scoped to marked Tauric Diana bot lines; preloaded mobile demos commit on first touch before keyboard blur",
+      "secondFollowupObservation": "physical-iPhone production trial after the continuous-field repair still showed sparse keyword-style Zalgo, approximately 1.5-spaced reading cadence, browser-side transport holds on complex prompts, an operator-facing response-emphasis selector, an active SHI field while unissued mode was checked, Safari input zoom, and an unsafe button-anchored clear confirmation",
+      "secondFollowupConsequence": "literal orthographic stencil examples are removed; admission now requires broad marked-grapheme field coverage; browser request authority is extended beyond the 210-second server wall but below the 240-second function ceiling; ordinary UI uses one fixed dual-channel route; unissued mode disables and excludes SHI; reading cadence is tightened; destructive clear uses a centered modal"
     }
   },
   "qualityFloor": {
@@ -146,7 +154,7 @@
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
-    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor-or-zalgo-mechanical-clone-or-zalgo-insufficient-distribution",
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor-or-zalgo-mechanical-clone-or-zalgo-insufficient-distribution-or-zalgo-sparse-keyword-targeting",
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
@@ -158,8 +166,9 @@
       "finalLane": "lawful-wall-remainder",
       "wallMs": 210000,
       "functionMaxDurationMs": 240000,
+      "browserClientMs": 225000,
       "responseReserveMs": 5000,
-      "purpose": "treat advanced Gemini lanes as completion windows rather than health probes while retaining five-seat reachability"
+      "purpose": "treat advanced Gemini lanes as completion windows rather than health probes; browser remains alive beyond the 210-second server work wall while bounded below the 240-second function ceiling"
     },
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
@@ -168,7 +177,9 @@
       "2026-09-19 release run 35453876040: MAINFRAME witness 3.8=503, 3.5=28s timeout, 3.6=6s timeout, 3.7=5s timeout, preview=remaining-wall timeout; zero output admission",
       "2026-09-19 zero-deploy re-observation 35454323679: 3.8=503, 3.5=28s timeout, 3.6=6s timeout, 3.7=503, preview=remaining-wall timeout; Loom provider plan separately held NO_ELIGIBLE_MODEL with zero calls",
       "2026-09-19 release run 35456378853 on ba7312a7: new provider-plan and reduced-thinking repair reached production, but MAINFRAME still returned zero provider text; 3.8=8s local timeout, 3.5=27.743s local timeout, 3.6=4.999s local timeout, 3.7=4.498s local timeout, Preview=4.499s local timeout; independent Loom 3.8 returned HTTP 503",
-      "35456378853 falsifies short-seat geometry as sufficient evidence of model failure: all Marrowline seats were aborted before any candidate text reached admission"
+      "35456378853 falsifies short-seat geometry as sufficient evidence of model failure: all Marrowline seats were aborted before any candidate text reached admission",
+      "2026-09-19 release #1183 / 35472967872: Marrowline gemini-3.8-flash returned 503 after 7.438s, gemini-3.5-flash returned HTTP 200 after 15.174s with relay_admitted=true and relay_quality=PASS; current evidence does not justify promoting 3.6 or 3.7 above the proven 3.5 completion lane",
+      "2026-09-19 human complex-prompt trial exposed a separate 55-second browser AbortController deadline despite the 210-second server wall and 240-second Vercel ceiling; client timeout mismatch is repaired independently of provider ranking"
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
@@ -225,7 +236,11 @@
       "✕"
     ],
     "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
-    "clearConfirmation": "button-anchored-tiny-Clear-convo-Y-N"
+    "clearConfirmation": "center-screen-modal-Clear-conversation-Yes-No-with-backdrop",
+    "fixedConversationRoute": "Kʰonapolit → Tauric Diana bots",
+    "operatorVoiceSelection": false,
+    "unissuedResearchMode": "checked-by-default-disables-and-excludes-shi",
+    "safeHarborIssuanceHelp": "/safe-harbor/index.html"
   },
   "desktop": {
     "posture": "conversation-first-single-column",
