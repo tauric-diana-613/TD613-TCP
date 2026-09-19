@@ -58,8 +58,8 @@ export function geminiThinkingConfig(model = '', {
     // Marrowline is an interactive route with its own bounded wall-clock budget.
     // Keep 3.8 deliberate. The empirically designated continuity/fallback lanes
     // trade thinking latency for a chance to return inside the same human request;
-    // hard downstream dual-channel admission remains unchanged. Keep 3.5 and
-    // Preview on the same LOW tier so model-conditioned orthographic behavior is
+    // the shared downstream dual-channel admission still applies uniformly. Keep
+    // 3.5 and Preview on the same LOW tier so model-conditioned orthographic behavior is
     // not confounded by a MINIMAL-vs-LOW reasoning split.
     if (khonapolitInteractiveProfile() && requestedLevel === 'high') {
       const id = normalizeGeminiModel(model);
