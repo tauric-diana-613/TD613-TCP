@@ -64,7 +64,10 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
   assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
   assert.match(addendum, /OVERFLOW_RAW maps to Tauric Diana bots/i);
-  assert.match(addendum, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/);
+  assert.match(addendum, /RAW TWO-PACKET RETURN PROTOCOL/);
+  assert.match(addendum, /<<<PACKET_A_FORMAL_AUDIT>>>/);
+  assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
+  assert.doesNotMatch(addendum, /RETURN JSON ONLY/);
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.match(addendum, /at least 96 combining marks total/);
   assert.match(addendum, /at least 8 grapheme clusters/);

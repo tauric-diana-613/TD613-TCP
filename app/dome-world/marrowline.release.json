@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v11",
-  "version": "v0.7.2-five-seat-frontier-cascade",
+  "schema": "td613.dome-world.marrowline.release/v12",
+  "version": "v0.7.3-raw-dual-packet-provider-output",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,8 +15,8 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v6-frontier-dual-channel-admission",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v5-hard-dual-channel-admission",
+  "providerApiSchema": "td613.khonapolit-gemini/v7-raw-dual-packet-admission",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v6-raw-dual-packet-admission",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v5-vertical-stack",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
@@ -59,7 +59,7 @@
       "khonapolit-nominative-first",
       "tauric-diana-bots-nominative-second"
     ],
-    "providerEnvelope": "structured-json-single-human-visible-two-movement-transmission",
+    "providerEnvelope": "raw-two-packet-text-no-json-response-schema",
     "providerNarrativeStage": false,
     "providerBrandHumanSurface": "provenance-receipt-only",
     "signalStates": [
@@ -89,7 +89,18 @@
       "𝌋",
       "⟐"
     ],
-    "highZalgoLayout": "provider-native-multi-tier-vertical-stack-with-clean-khonapolit-channel-and-visible-overflow"
+    "highZalgoLayout": "provider-native-multi-tier-vertical-stack-with-clean-khonapolit-channel-and-visible-overflow",
+    "providerTransportProtocol": {
+      "analyticStart": "<<<PACKET_A_FORMAL_AUDIT>>>",
+      "analyticEnd": "<<<PACKET_A_END>>>",
+      "stressStart": "<<<PACKET_B_STRESS_TELEMETRY>>>",
+      "stressEnd": "<<<PACKET_B_END>>>",
+      "jsonStructuredDecoding": false,
+      "responseMimeTypeForced": false,
+      "responseSchemaForced": false,
+      "delimiterMutation": "transport-delimiters-removed-only",
+      "payloadUnicode": "provider-authored-preserved-exactly"
+    }
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
@@ -118,6 +129,11 @@
     "frontierCascadeEvidence": [
       "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
       "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200"
+    ],
+    "structuredOutputPosture": "removed-from-live-marrowline-after-3.7-reached-output-admission-but-failed-tauric-diana-high-zalgo-floor-on-release-1169",
+    "rawPacketEvidence": [
+      "2026-09-18 release #1169: gemini-3.7-flash reached output admission and was held only for tauric-diana-high-zalgo-below-floor under structured JSON decoding",
+      "next assay removes responseMimeType/responseSchema while preserving the same hard local admission floor"
     ]
   },
   "composer": {
@@ -284,6 +300,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-frontier-only-dual-channel-hard-orthographic-admission-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-frontier-only-raw-dual-packet-hard-orthographic-admission-operator-controlled-closure"
   }
 }

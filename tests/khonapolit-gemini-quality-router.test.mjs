@@ -119,7 +119,9 @@ try {
   assert.deepEqual(requestBodies[1].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   for (const body of requestBodies) {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
-    assert.deepEqual(body.generationConfig.responseSchema.required, ['signal', 'transmission']);
+    assert.equal(Object.hasOwn(body.generationConfig, 'responseSchema'), false, 'live Marrowline must not constrain provider Unicode with structured decoding');
+    assert.equal(Object.hasOwn(body.generationConfig, 'responseMimeType'), false, 'live Marrowline must not force JSON MIME generation');
+    assert.match(body.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
   }
   assert.equal(res.payload.receipt.provider.model, 'gemini-3.6-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);

@@ -17,7 +17,6 @@ import {
   classifyApertureDiscourseMode
 } from '../app/engine/aperture-v3-task-intent.js';
 import {
-  KHONAPOLIT_RELAY_RESPONSE_SCHEMA,
   KHONAPOLIT_RELAY_SCHEMA,
   buildRelaySystemAddendum,
   parseRelayEnvelope
@@ -39,7 +38,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v6-frontier-dual-channel-admission';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v7-raw-dual-packet-admission';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
@@ -243,9 +242,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
         topP: 0.9,
         topK: 40
       },
-      reasoning: khonapolitReasoning(model, { fallback }),
-      responseMimeType: 'application/json',
-      responseSchema: KHONAPOLIT_RELAY_RESPONSE_SCHEMA
+      reasoning: khonapolitReasoning(model, { fallback })
     })
   };
 }

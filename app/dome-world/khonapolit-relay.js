@@ -8,8 +8,15 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v5-hard-dual-channel-admission';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v6-raw-dual-packet-admission';
 export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v5-vertical-stack';
+
+export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
+  analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
+  analyticEnd: '<<<PACKET_A_END>>>',
+  stressStart: '<<<PACKET_B_STRESS_TELEMETRY>>>',
+  stressEnd: '<<<PACKET_B_END>>>'
+});
 
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
@@ -122,6 +129,41 @@ function parseJson(text = '') {
   }
   return null;
 }
+function unwrapPacketPayload(value = '') {
+  return String(value)
+    .replace(/^\r?\n/, '')
+    .replace(/\r?\n$/, '');
+}
+
+export function parseRawRelayPackets(rawText = '') {
+  const clean = stripFence(rawText);
+  const {
+    analyticStart,
+    analyticEnd,
+    stressStart,
+    stressEnd
+  } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
+
+  const a0 = clean.indexOf(analyticStart);
+  const a1 = clean.indexOf(analyticEnd);
+  const b0 = clean.indexOf(stressStart);
+  const b1 = clean.indexOf(stressEnd);
+  if (a0 < 0 || a1 < 0 || b0 < 0 || b1 < 0) return null;
+  if (!(a0 < a1 && a1 < b0 && b0 < b1)) return null;
+
+  const analytic = unwrapPacketPayload(clean.slice(a0 + analyticStart.length, a1));
+  const stress = unwrapPacketPayload(clean.slice(b0 + stressStart.length, b1));
+  if (!safe(analytic) || !safe(stress)) return null;
+
+  return Object.freeze({
+    analytic,
+    stress,
+    text: `${analytic}\n\n${stress}`,
+    voices: Object.freeze(['Kʰonapolit', 'Tauric Diana bots']),
+    flourishMode: 'provider-native-raw-dual-packet'
+  });
+}
+
 function signalState(value = '') {
   const state = safe(value).toUpperCase().replace(/[\s-]+/g, '_');
   return ['LOCKED', 'PARTIAL', 'NOT_LOCKED'].includes(state) ? state : 'NOT_LOCKED';
@@ -273,8 +315,8 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Compile the operator input into two sequential, unmerged human-visible streams. The model provider is transport/compiler infrastructure and never appears as a third conversational speaker.',
     '- DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit. Recover the prompt-specific contradiction, dependency, non-equivalence, number, mechanism, or boundary condition and express the strongest rigorous derivation available.',
     '- OVERFLOW_RAW maps to Tauric Diana bots. It must remain attached to the terminal finding from Kʰonapolit while intensifying, mutating, ridiculing, ritualizing, or extending that finding.',
-    '- Use these exact standalone human-facing headings in transmission.text, in this order: “Kʰonapolit” then “Tauric Diana bots”.',
-    '- transmission.voices MUST equal exactly [“Kʰonapolit”, “Tauric Diana bots”] in that order. Both streams belong to one provider generation and one relay packet.',
+    '- Use these exact standalone human-facing headings inside the raw packet payloads, in this order: “Kʰonapolit” then “Tauric Diana bots”.',
+    '- Both streams belong to one provider generation. Packet A is the clean analytic channel; Packet B is the raw stress channel. Do not merge them and do not add a provider/instrument speaker.',
     '- Provider family/model identity belongs only in provenance receipts. Named streams are operational output registers inside this model-mediated research frame, not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship.',
     '- Preserve one live argument across both streams. Never duplicate the same paragraph, scene, movement, or full answer.',
     '',
@@ -312,14 +354,19 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Use clean islands and dense eruptions so the central reading line remains recoverable. Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Falling below this orthographic floor is a structural HOLD, not a visible PARTIAL return. Zalgo is expressive information layered over substantive reasoning, never a substitute for it.',
     '',
-    'RETURN JSON ONLY:',
-    '1. signal.state is analytical metadata: LOCKED, PARTIAL, or NOT_LOCKED. It does not create a prose stage.',
-    '2. signal.notes briefly records why that analytical state was selected; it is provenance, not the human-facing response.',
-    '3. transmission.text is the entire final two-movement Kʰonapolit → Tauric Diana bots output, including provider-authored combining marks and line breaks.',
-    '4. transmission.voices MUST equal exactly [“Kʰonapolit”, “Tauric Diana bots”] in that order. The provider/instrument and named bot subvoices never belong in this structured list.',
-    '5. transmission.flourishMode describes the generated orthographic posture for receipt telemetry only.',
-    '6. Encode actual line breaks as JSON newline escapes so the decoded text has real newlines, never double-escaped backslash-n prose.',
-    '7. Do not append ⟐ on the model’s own authority. The operator controls sealing.',
+    'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
+    'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
+    '<<<PACKET_A_FORMAL_AUDIT>>>',
+    'Kʰonapolit',
+    '[clean formal derivation; zero combining marks]',
+    '<<<PACKET_A_END>>>',
+    '<<<PACKET_B_STRESS_TELEMETRY>>>',
+    'Tauric Diana bots',
+    '[provider-authored high vertical Zalgo stress payload with real line breaks]',
+    '<<<PACKET_B_END>>>',
+    '- Delimiters are transport framing only. Never decorate or mutate them.',
+    '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
+    '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }
@@ -339,6 +386,45 @@ function integratedPart({ text = '', model = 'provider', voices = [], flourishMo
 }
 
 export function parseRelayEnvelope(rawText = '', { model = 'provider', apertureReceipt = null } = {}) {
+  const rawPacket = parseRawRelayPackets(rawText);
+  if (rawPacket) {
+    const text = rawPacket.text;
+    const telemetry = flourishTelemetry(text);
+    const admission = assessIntegratedTransmission(text);
+    const state = admission.admissible ? 'LOCKED' : 'NOT_LOCKED';
+    const notes = admission.admissible
+      ? 'Provider raw dual-packet return admitted without Unicode transformation.'
+      : `Provider raw dual-packet return held: ${admission.reasons.join(', ')}`;
+    return Object.freeze({
+      schema: KHONAPOLIT_RELAY_SCHEMA,
+      apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
+      signal: Object.freeze({
+        state,
+        notes,
+        source: 'provider-raw-dual-packet-plus-local-structural-observation',
+        downstreamAdmitted: admission.admissible && Boolean(safe(text))
+      }),
+      parts: Object.freeze([integratedPart({
+        text,
+        model,
+        voices: rawPacket.voices,
+        flourishMode: rawPacket.flourishMode,
+        providerNative: true
+      })]),
+      admission,
+      highZalgo: Object.freeze({
+        applied: false,
+        providerGenerated: telemetry.combiningMarkCount > 0,
+        source: 'provider-native',
+        version: HIGH_ZALGO_VERSION,
+        profile: rawPacket.flourishMode,
+        protectedLiterals: PROTECTED,
+        ...telemetry
+      }),
+      transcript: text
+    });
+  }
+
   const parsed = parseJson(rawText);
   if (!parsed || typeof parsed !== 'object') {
     const fallbackText = safe(rawText);

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
+  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
   parseRelayEnvelope
@@ -34,8 +35,11 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
   assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
   assert.match(contract, /OVERFLOW_RAW maps to Tauric Diana bots/i);
-  assert.match(contract, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\]/i);
+  assert.match(contract, /RAW TWO-PACKET RETURN PROTOCOL/i);
+  assert.match(contract, /<<<PACKET_A_FORMAL_AUDIT>>>/i);
+  assert.match(contract, /<<<PACKET_B_STRESS_TELEMETRY>>>/i);
   assert.match(contract, /exact standalone human-facing headings/i);
+  assert.doesNotMatch(contract, /RETURN JSON ONLY/i);
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /at least 96 combining marks total/i);
   assert.match(contract, /at least 8 grapheme clusters/i);
@@ -81,6 +85,15 @@ test('Worm Moon analytics reject canon-as-phrase-bank while preserving transform
   const admitted = assessIntegratedTransmission(transformed, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
   assert.equal(admitted.canonicalRecitation.detected, false, 'canonical motifs may survive when the live prompt forces new argumentative work');
+});
+
+test('live Gemini request has no structured-output pressure on the stress channel', () => {
+  const packet = { systemInstruction: 'Synthetic covenant field.', history: [], message: 'Quis custodiet ipsos custodes?', mode: 'issued-conjunction' };
+  const request = buildGeminiRequest(packet, {}, 'gemini-3.7-flash');
+  assert.equal('responseMimeType' in request.generationConfig, false);
+  assert.equal('responseSchema' in request.generationConfig, false);
+  assert.match(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
+  assert.match(request.systemInstruction.parts[0].text, /NO JSON/);
 });
 
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
@@ -135,7 +148,7 @@ test('ordinary project work keeps factual guidance instead of inheriting creativ
   assert.doesNotMatch(guidance, /CREATIVE TURN:/);
 });
 
-test('provider-authored vertical Zalgo survives exact while Marrowline only measures it', () => {
+test('provider-authored vertical Zalgo survives raw packet parsing while Marrowline only measures it', () => {
   const clean = `Kʰonapolit\nrelation ${COVENANT_KEY} remains exact and combining-mark free.`;
   const flare = [
     'Tauric Diana bots',
@@ -143,21 +156,26 @@ test('provider-authored vertical Zalgo survives exact while Marrowline only meas
     highBurst('THE WALL BENDS BUT THE BYTES REMAIN PROVIDER AUTHORED!'),
     highBurst('THE GROVE KEEPS THE SCAR!')
   ].join('\n');
-  const providerText = `${clean}\n\n${flare}`;
-  const raw = JSON.stringify({
-    signal: { state: 'LOCKED', notes: 'synthetic provider-native fixture' },
-    transmission: { text: providerText, voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'formal-to-vertical-stack' }
-  });
+  const raw = [
+    KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart,
+    clean,
+    KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticEnd,
+    KHONAPOLIT_RAW_PACKET_PROTOCOL.stressStart,
+    flare,
+    KHONAPOLIT_RAW_PACKET_PROTOCOL.stressEnd
+  ].join('\n');
   const relay = parseRelayEnvelope(raw, { model: 'SYNTHETIC_MODEL', apertureReceipt: {} });
+  const expected = `${clean}\n\n${flare}`;
   assert.equal(relay.parts.length, 1);
-  assert.equal(relay.parts[0].text, providerText, 'provider-authored Unicode is not locally rewritten');
+  assert.equal(relay.parts[0].text, expected, 'only transport delimiters are removed; provider payload Unicode remains exact');
   assert.equal(relay.admission.admissible, true, relay.admission.reasons.join(', '));
   assert.equal(relay.highZalgo.applied, false, 'Marrowline measures but never adds Zalgo');
   assert.equal(relay.highZalgo.providerGenerated, true);
-  assert.ok(countMarks(providerText) >= 96);
+  assert.ok(countMarks(expected) >= 96);
   assert.ok(relay.admission.denseVerticalClusterCount >= 8);
-  assert.ok(providerText.startsWith(clean), 'the Kʰonapolit channel remains clean');
-  assert.ok(providerText.includes(COVENANT_KEY), 'protected covenant key remains byte-intact');
+  assert.ok(relay.parts[0].text.startsWith(clean), 'the Kʰonapolit channel remains clean');
+  assert.ok(relay.parts[0].text.includes(COVENANT_KEY), 'protected covenant key remains byte-intact');
+  assert.equal(relay.signal.source, 'provider-raw-dual-packet-plus-local-structural-observation');
 });
 
 test('one structured relay carries a long mixed-register transmission without local truncation', () => {
