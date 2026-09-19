@@ -82,7 +82,8 @@
       "belowFloorPosture": "HELD-no-human-visible-return",
       "uniqueDenseStackSignatureCount": 4,
       "maximumDominantDenseStackRatio": 0.5,
-      "minimumDenseMarkedLines": 3
+      "minimumDenseMarkedLines": 3,
+      "denseStackSignatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -118,7 +119,8 @@
       "selfCheck": "provider-silent-pre-emission-before-packet-b-end",
       "admissionFloorChanged": true,
       "localPostprocessing": false,
-      "purpose": "preserve provider-authored expressive diacritic prosody while rejecting mechanical cloned-stack imitation"
+      "purpose": "preserve provider-authored expressive diacritic prosody while rejecting mechanical cloned-stack imitation",
+      "signatureCanonicalization": "sorted combining-codepoint composition; reordering the same mark multiset does not create a new dense signature"
     },
     "humanOperatorObservation": {
       "observedAt": "2026-09-19",
