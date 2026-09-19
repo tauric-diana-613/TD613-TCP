@@ -1,4 +1,4 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v8-repo-gemini3-only';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v9-empty-plan-force-refresh';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
@@ -206,8 +206,24 @@ export { listGeminiGenerateContentModels };
 
 export async function resolveGeminiProviderPlan(options = {}) {
   const env = options.env || process.env;
-  const listing = await listGeminiGenerateContentModels(env.GEMINI_API_KEY);
-  return resolveGeminiModelPlan({ ...options, env, at: Date.now(), providerListing: listing });
+  const listModels = typeof options.listModels === 'function'
+    ? options.listModels
+    : listGeminiGenerateContentModels;
+  const planOptions = { ...options };
+  delete planOptions.listModels;
+
+  const listing = await listModels(env.GEMINI_API_KEY);
+  let plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: listing });
+  if (plan.callableModels.length) return plan;
+
+  // A serverless isolate may retain a fresh-but-narrow provider listing while its
+  // only visible model is locally cooling, or the first listing observation may
+  // fail transiently. Do not weaken lifecycle admission: force exactly one fresh,
+  // complete credential-scoped observation and recompute. If that still yields no
+  // callable model, preserve the hold.
+  const refreshedListing = await listModels(env.GEMINI_API_KEY, { force: true });
+  plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: refreshedListing });
+  return plan;
 }
 
 export function geminiModelCatalog() {

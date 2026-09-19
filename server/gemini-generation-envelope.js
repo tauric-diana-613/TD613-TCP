@@ -56,11 +56,15 @@ export function geminiThinkingConfig(model = '', {
   if (generation === '3') {
     let requestedLevel = THINKING_LEVELS.has(level) ? level : 'high';
     // Marrowline is an interactive route with its own bounded wall-clock budget.
-    // Keep the frontier attempt deliberate, but let the stable 3.5 continuity lane
-    // behave as an actual rescue instead of spending another frontier-sized reasoning
-    // window. The model identity and reasoning envelope remain visible in receipts.
+    // Keep 3.8 deliberate. The empirically designated continuity/fallback lanes
+    // trade thinking latency for a chance to return inside the same human request;
+    // hard downstream dual-channel admission remains unchanged.
     if (khonapolitInteractiveProfile() && requestedLevel === 'high') {
-      requestedLevel = normalizeGeminiModel(model) === 'gemini-3.5-flash' ? 'low' : 'medium';
+      const id = normalizeGeminiModel(model);
+      if (id === 'gemini-3.8-flash') requestedLevel = 'medium';
+      else if (id === 'gemini-3.5-flash') requestedLevel = 'minimal';
+      else if (['gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'].includes(id)) requestedLevel = 'low';
+      else requestedLevel = 'medium';
     }
     return { thinkingLevel: requestedLevel };
   }

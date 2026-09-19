@@ -19,11 +19,15 @@ const generationConfig = model => withGeminiGenerationProfile(
 test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers only', () => {
   const frontier = generationConfig('gemini-3.8-flash');
   const stable37 = generationConfig('gemini-3.7-flash');
+  const stable36 = generationConfig('gemini-3.6-flash');
   const stable35 = generationConfig('gemini-3.5-flash');
+  const preview = generationConfig('gemini-3-flash-preview');
 
   assert.deepEqual(frontier.thinkingConfig, { thinkingLevel: 'medium' });
-  assert.deepEqual(stable37.thinkingConfig, { thinkingLevel: 'medium' });
-  assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'low' });
+  assert.deepEqual(stable37.thinkingConfig, { thinkingLevel: 'low' });
+  assert.deepEqual(stable36.thinkingConfig, { thinkingLevel: 'low' });
+  assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'minimal' });
+  assert.deepEqual(preview.thinkingConfig, { thinkingLevel: 'low' });
 });
 
 test('the production Marrowline witness is the exact human MAINFRAME falsifier', () => {

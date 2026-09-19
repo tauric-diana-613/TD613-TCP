@@ -5,7 +5,8 @@ import {
   clearGeminiModelState,
   listGeminiGenerateContentModels,
   recordGeminiModelOutcome,
-  resolveGeminiModelPlan
+  resolveGeminiModelPlan,
+  resolveGeminiProviderPlan
 } from '../server/gemini-model-policy.js';
 import {
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
@@ -120,7 +121,17 @@ const interactive35 = await withGeminiGenerationProfile(
   })
 );
 assert.equal(interactive35.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
-assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'low' });
+assert.deepEqual(interactive35.thinkingConfig, { thinkingLevel: 'minimal' });
+
+const interactive36 = await withGeminiGenerationProfile(
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  () => buildGeminiGenerationConfig({
+    model: 'gemini-3.6-flash',
+    maxOutputTokens: 65536,
+    reasoning: { level: 'high' }
+  })
+);
+assert.deepEqual(interactive36.thinkingConfig, { thinkingLevel: 'low' });
 
 const khonapolitApiSource = fs.readFileSync('api/khonapolit.js', 'utf8');
 assert.match(khonapolitApiSource, /GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE/);
@@ -148,6 +159,60 @@ const listing = await listGeminiGenerateContentModels('test-key', {
 assert.deepEqual(listing.models, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite']);
 assert.equal(listing.ok, true);
 
+clearGeminiModelState();
+{
+  const now = Date.now();
+  recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 503 }, now);
+  let listingCalls = 0;
+  const narrow = Object.freeze({
+    ok: true, status: 200, models: Object.freeze(['gemini-3.8-flash']), cached: true,
+    complete: true, observedAt: now - 1000, expiresAt: now + 599000, pageCount: 1, error: null
+  });
+  const refreshed = Object.freeze({
+    ok: true, status: 200,
+    models: Object.freeze(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
+    cached: false, complete: true, observedAt: now, expiresAt: now + 600000, pageCount: 1, error: null
+  });
+  const plan = await resolveGeminiProviderPlan({
+    task: 'general-text',
+    env: { GEMINI_API_KEY: 'synthetic-key' },
+    maxModels: 8,
+    listModels: async (_key, options = {}) => {
+      listingCalls += 1;
+      if (listingCalls === 1) {
+        assert.equal(options.force, undefined);
+        return narrow;
+      }
+      assert.equal(options.force, true, 'empty callable plan must force one fresh provider listing');
+      return refreshed;
+    }
+  });
+  assert.equal(listingCalls, 2);
+  assert.equal(plan.callableModels.includes('gemini-3.8-flash'), false, 'local cooldown remains honored');
+  assert.deepEqual(plan.callableModels.slice(0, 4), ['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'],
+    'fresh credential observation may recover alternate current models without bypassing lifecycle admission');
+}
+clearGeminiModelState();
+{
+  let listingCalls = 0;
+  const failedListing = Object.freeze({
+    ok: false, status: 408, models: Object.freeze([]), cached: false,
+    complete: false, observedAt: null, expiresAt: null, error: 'model-list-timeout'
+  });
+  const held = await resolveGeminiProviderPlan({
+    task: 'general-text',
+    env: { GEMINI_API_KEY: 'synthetic-key' },
+    maxModels: 8,
+    listModels: async (_key, options = {}) => {
+      listingCalls += 1;
+      if (listingCalls === 2) assert.equal(options.force, true);
+      return failedListing;
+    }
+  });
+  assert.equal(listingCalls, 2, 'an empty first plan may earn exactly one forced observation retry');
+  assert.deepEqual(held.callableModels, [], 'failed or incomplete fresh observation must preserve NO_ELIGIBLE_MODEL rather than bootstrap callability');
+  assert.ok(held.excludedModels.every(row => row.reasons.includes('fresh-complete-provider-observation-required')));
+}
 clearGeminiModelState();
 await import('./gemini-provider-stack-clinical.test.mjs');
 await import('./gemini-quality-pilot-clinical.test.mjs');

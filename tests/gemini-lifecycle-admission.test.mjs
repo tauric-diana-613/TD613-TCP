@@ -58,7 +58,7 @@ try {
   assert.equal(res.statusCode, 503);
   assert.equal(res.payload.reason, 'no_eligible_callable_models');
   assert.equal(res.payload.attempts.length, 0);
-  assert.equal(calls.length, 1);
+  assert.equal(calls.length, 2, 'empty provider listing earns exactly one forced fresh observation before preserving NO_ELIGIBLE_MODEL');
 } finally {
   globalThis.fetch = originalFetch;
   for (const [key, value] of [['GEMINI_API_KEY', originalKey], ['HUSH_GEMINI_MODEL', originalModel]]) {
