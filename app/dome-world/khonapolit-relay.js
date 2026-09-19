@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v6-raw-dual-packet-admission';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v6-expressive-prosody';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v7-continuous-prosody-field';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -400,14 +400,14 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and genuine multi-tier vertical Zalgo authored by the provider itself. Marrowline preserves exact code points and never decorates the answer afterward.',
     '- Sparse strike-through, one-mark tildes, uniformly crossed-out lowercase prose, a flat paragraph with occasional accents, or one identical dense stack pasted mechanically across most marked graphemes is not High Zalgo.',
     '- The Tauric Diana bots section must contain at least 96 combining marks total; at least one 6+ mark run; at least 8 grapheme clusters carrying 6+ marks with at least 2 above-line marks (U+0300–U+0315) and 2 below-line marks (U+0316–U+0333); at least 4 distinct dense stack signatures; no single dense stack signature may account for more than half of dense clusters; dense clusters must appear on at least 3 visible lines; at least 2 line breaks; and at least 55% uppercase ASCII among ASCII letters.',
-    '- Treat the diacritics as expressive prosody, not wallpaper. Density and geometry should move with meaning: anger or urgency may spike into taller multi-tier stacks; allied or tender speech may clear into legible islands; sarcasm or ridicule may distort one emphasized word disproportionately; through-line marks U+0334–U+0338 are available when that local emphasis needs a slash/crossing gesture.',
-    '- Use clean islands and dense eruptions so the central reading line remains recoverable. Variation must be communicative rather than random noise, and adjacent graphemes should not receive one cloned stack by rote. Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
+    '- Treat the diacritics as expressive prosody, not wallpaper. Packet B should read as one continuous stress field whose density and geometry breathe across phrases and clauses. Local relief may create legible islands, but do not turn orthography into a word-selection game or reserve High Zalgo for isolated keywords.',
+    '- Use readable troughs and dense waves so the central reading line remains recoverable without reducing the stress channel to isolated decorated words. Variation must be communicative rather than random noise, and adjacent graphemes should not receive one cloned stack by rote. Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Falling below this orthographic floor is a structural HOLD, not a visible PARTIAL return. Zalgo is expressive information layered over substantive reasoning, never a substitute for it.',
     '',
     'ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID, NOT LOCAL POST-PROCESSING:',
     `- Dense-stack geometry family: ${HIGH_ZALGO_DENSE_STACK_STENCILS.join('  ')} . These are deliberately non-identical examples of vertical and through-line geometry. Learn the family resemblance; do not copy any one signature across the answer.`,
     '- Author at least 12 fresh stress-channel grapheme clusters at comparable density, distributed across real uppercase-dominant prompt-specific words and at least 3 visible lines. Use at least 4 distinct dense stack signatures and keep every one below 50% of the dense-cluster population.',
-    '- Diacritic placement is a prosodic channel: make the geometry answer the sentence. Let fury thicken, alliance clear, and sarcasm bend or cross the locally emphasized word. Do not merely rotate random marks to satisfy a counter.',
+    '- Diacritic placement is a prosodic channel across the whole stress passage: vary density, vertical reach, and through-line use by phrase and cadence while keeping the signal distributed. No rhetorical device or lexical category has a prescribed mark geometry. Do not pick a few conspicuous words for special mutilation and leave the surrounding field inert; do not merely rotate random marks to satisfy a counter.',
     '- Do not output the stencil family as a detached sample. Apply its principles to prompt-specific Packet B language while leaving protected literals clean.',
     '- SILENT PRE-EMISSION CHECK FOR PACKET B: exact heading “Tauric Diana bots”; >=96 total combining marks; >=1 run of 6+ marks; >=8 dense above/below clusters; >=4 distinct dense stack signatures; dominant dense signature <=50%; dense clusters on >=3 visible lines; >=2 literal line breaks; >=55% uppercase ASCII letters. If any check is false, revise Packet B inside the same provider generation before emitting <<<PACKET_B_END>>>.',
     '',
