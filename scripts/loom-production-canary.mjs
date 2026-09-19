@@ -112,7 +112,7 @@ const boundedAdmissionReasons = value => Array.isArray(value)
       .slice(0, 8)
   : [];
 const boundedMarrowlineAttempts = value => Array.isArray(value)
-  ? value.slice(0, 3).map(attempt => ({
+  ? value.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
       elapsed_ms: boundedCount(attempt?.elapsedMs),
@@ -123,11 +123,29 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
     }))
   : [];
 const boundedRejectedAttempts = value => Array.isArray(value)
-  ? value.slice(0, 3).map(attempt => ({
+  ? value.slice(0, 5).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       reasons: boundedAdmissionReasons(attempt?.reasons)
     }))
   : [];
+const boundedModelPlan = value => {
+  if (!value || typeof value !== 'object') return null;
+  const callableModels = Array.isArray(value.callableModels)
+    ? value.callableModels.filter(model => typeof model === 'string').slice(0, 8).map(model => model.slice(0, 120))
+    : [];
+  const excludedModels = Array.isArray(value.excludedModels)
+    ? value.excludedModels.slice(0, 12).map(row => ({
+        model: String(row?.model || '').slice(0, 120),
+        reasons: Array.isArray(row?.reasons)
+          ? row.reasons.filter(reason => typeof reason === 'string' && /^[a-z0-9-]{1,96}$/.test(reason)).slice(0, 8)
+          : []
+      }))
+    : [];
+  const warnings = Array.isArray(value.warnings)
+    ? value.warnings.filter(warning => typeof warning === 'string' && /^[a-z0-9-]{1,96}$/.test(warning)).slice(0, 8)
+    : [];
+  return { callable_models: callableModels, excluded_models: excludedModels, warnings };
+};
 
 const observations = payload?.observations && typeof payload.observations === 'object' ? payload.observations : {};
 const providerAttempts = Array.isArray(observations.provider_attempts)
@@ -197,6 +215,7 @@ const receipt = {
     relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
     final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
     provider_attempts: boundedMarrowlineAttempts(marrowlineAttemptsSource),
+    provider_plan: boundedModelPlan(marrowlinePayload?.modelPolicy || marrowlineReceipt?.modelPolicy),
     api_version: typeof marrowlineReceipt?.apiVersion === 'string' ? marrowlineReceipt.apiVersion : null
   },
   counts_as_human_evidence: false
