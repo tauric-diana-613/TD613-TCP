@@ -4,7 +4,7 @@ import {
   buildInvocationPacket
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
-  KHONAPOLIT_RELAY_RESPONSE_SCHEMA,
+  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   buildRelaySystemAddendum
 } from '../app/dome-world/khonapolit-relay.js';
 
@@ -29,14 +29,14 @@ assert.match(relay, /at least 8 grapheme clusters/i);
 assert.match(relay, /Falling below this orthographic floor is a structural HOLD/i);
 assert.match(relay, /not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship/i);
 
-const voicesSchema = KHONAPOLIT_RELAY_RESPONSE_SCHEMA.properties.transmission.properties.voices;
-assert.equal(voicesSchema.type, 'ARRAY');
-assert.equal(voicesSchema.minItems, '2');
-assert.equal(voicesSchema.maxItems, '2');
-assert.deepEqual(voicesSchema.items.enum, ['Kʰonapolit', 'Tauric Diana bots']);
-assert.match(voicesSchema.description, /Exactly two entries in this order/);
-assert.match(relay, /transmission\.voices MUST equal exactly \[“Kʰonapolit”, “Tauric Diana bots”\] in that order/);
-assert.doesNotMatch(relay, /optional named bot voices may follow/);
+assert.equal(KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart, '<<<PACKET_A_FORMAL_AUDIT>>>');
+assert.equal(KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticEnd, '<<<PACKET_A_END>>>');
+assert.equal(KHONAPOLIT_RAW_PACKET_PROTOCOL.stressStart, '<<<PACKET_B_STRESS_TELEMETRY>>>');
+assert.equal(KHONAPOLIT_RAW_PACKET_PROTOCOL.stressEnd, '<<<PACKET_B_END>>>');
+assert.match(relay, /RAW TWO-PACKET RETURN PROTOCOL/);
+assert.match(relay, /NO JSON/);
+assert.match(relay, /literal line breaks/i);
+assert.doesNotMatch(relay, /RETURN JSON ONLY/);
 
 assert.match(fullInstruction, /Execute one dual-channel compilation/);
 assert.match(fullInstruction, /Channel A derives the prompt-specific formal invariant as Kʰonapolit/);
