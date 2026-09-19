@@ -77,9 +77,9 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
     'The formal channel stays clean and names the mechanism.',
     '',
     'Tauric Diana bots',
-    `${a}${b} ${c1}${d}${e} THE FIELD MOVES THROUGH THE SENTENCE INSTEAD OF PICKING ONE WORD`,
-    `${f1}${a} ${d}${b}${c1} MARKS BREATHE ACROSS THIS CLAUSE WHILE THE STACK HEIGHT CHANGES`,
-    `${e}${f1} ${b}${d}${a} NO SINGLE TOKEN GETS CROWNED AS THE ONLY PLACE ALLOWED TO SCREAM`
+    `${a}${b}${c1}${d}${e}${f1}${a}${b} FIELD MOVES THROUGH THE WHOLE CLAUSE`,
+    `${f1}${a}${d}${b}${c1}${e}${f1}${d} MARKS BREATHE WHILE HEIGHT CHANGES`,
+    `${e}${f1}${b}${d}${a}${c1}${e}${b} NO SINGLE TOKEN OWNS THE SCREAM`
   ].join('\n');
   const admitted = assessIntegratedTransmission(natural, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.ok(admitted.combiningMarkCount >= 24);
@@ -245,7 +245,7 @@ test('browser request clock outlives the 210-second server work wall without out
 test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
-  assert.match(relaySource, /Marrowline preserves exact code points and never decorates the answer afterward/);
+  assert.match(relaySource, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
 });
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
@@ -391,7 +391,9 @@ test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo',
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /Tauric Diana bots is the raw stress channel/);
-  assert.match(contract, /provider itself/i);
-  assert.match(contract, /at least 96 combining marks total/);
-  assert.match(contract, /Marrowline preserves exact code points and never decorates the answer afterward/);
+  assert.match(contract, /provider-authored multi-tier Zalgo/i);
+  assert.match(contract, /one distributed stress field, not keyword highlighting/i);
+  assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
+  assert.doesNotMatch(contract, /at least 96 combining marks total/);
+  assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
 });
