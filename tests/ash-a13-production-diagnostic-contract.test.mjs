@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const probe = fs.readFileSync('scripts/ash-a13-demo-registry-browser-probe.mjs', 'utf8');
+const archiveProbe = fs.readFileSync('scripts/ash-a14-archive-browser-probe.mjs', 'utf8');
 
 assert.match(probe, /captureConvergenceState\(page, checkpoint\)/,
   'A13 observer must preserve coordinate-level post-click diagnostics.');
@@ -31,3 +32,19 @@ assert.doesNotMatch(probe, /fetch\([^\n]*(POST|PUT|PATCH|DELETE)|git push|vercel
   'A13 observer must remain read-only.');
 
 console.log('ash-a13-production-diagnostic-contract.test.mjs passed: A13 convergence law preserved with coordinate telemetry and no mutation authority');
+
+
+for (const [label, source] of [['A13', probe], ['A14', archiveProbe]]) {
+  assert.match(source, /async function inspectFreshBrowserMode\(options, label\)/,
+    `${label} production browser witness must isolate desktop and mobile modes behind one fresh-process helper.`);
+  assert.match(source, /const browser = await browserType\.launch\(\{ headless:true \}\);/,
+    `${label} fresh-mode helper must launch its own browser process.`);
+  assert.match(source, /context = await browser\.newContext\(options\)/,
+    `${label} mode context must be bound to the fresh browser process.`);
+  assert.match(source, /if \(context\) await context\.close\(\)\.catch\(\(\) => \{\}\);[\s\S]*await browser\.close\(\)\.catch\(\(\) => \{\}\);/,
+    `${label} mode cleanup must tolerate a provider browser crash without poisoning the next witness.`);
+  assert.match(source, /inspectFreshBrowserMode\(\{ viewport:\{ width:1280, height:900 \} \}, 'desktop'\)/,
+    `${label} desktop witness must use a fresh browser process.`);
+  assert.match(source, /inspectFreshBrowserMode\(mobileOptions, 'mobile-reduced-motion'\)/,
+    `${label} mobile witness must use an independent fresh browser process.`);
+}
