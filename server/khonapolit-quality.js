@@ -34,16 +34,17 @@ import {
 import {
   classifyGeminiTransport,
   geminiGenerateContentUrl,
+  geminiStreamGenerateContentUrl,
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v7-raw-dual-packet-admission';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
-const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
-const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
-const WALL_TIMEOUT_MS = 50500;
-const RESPONSE_RESERVE_MS = 500;
+const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
+const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
+const WALL_TIMEOUT_MS = 210000;
+const RESPONSE_RESERVE_MS = 5000;
 const LEGACY_OUTPUT_TOKENS = 4096;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
@@ -147,14 +148,20 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
   if (total === 1) return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, remaining);
-  if (position === 0) return Math.min(8000, remaining);
-  if (position === 1 && remainingAttempts > 1) {
-    const reserveForTail = Math.min(14000, Math.max(0, remaining - 1));
-    return Math.min(28000, Math.max(1, remaining - reserveForTail));
-  }
+
+  // Human-liveness geometry: these are completion windows, not health probes.
+  // 3.8 remains first; 3.5 retains the empirically proven continuity lane; later
+  // Gemini 3 seats receive enough time to finish a real dual-packet generation.
+  const caps = [50000, 75000, 40000, 30000];
   if (remainingAttempts === 1) return remaining;
-  const reserveForLater = Math.min((remainingAttempts - 1) * 4500, Math.max(0, remaining - 1));
-  const cap = position === 2 ? 6000 : 5000;
+  const cap = caps[position] || FALLBACK_REQUEST_TIMEOUT_MS;
+
+  const laterMinimums = [75000, 40000, 30000, 15000];
+  let reserveForLater = 0;
+  for (let i = position; i < total - 1; i += 1) {
+    reserveForLater += laterMinimums[i] || 15000;
+  }
+  reserveForLater = Math.min(reserveForLater, Math.max(0, remaining - 1));
   return Math.min(cap, Math.max(1, remaining - reserveForLater));
 }
 
