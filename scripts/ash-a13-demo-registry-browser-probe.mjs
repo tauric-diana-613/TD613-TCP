@@ -8,8 +8,6 @@ const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a13';
 const browserType = { chromium, firefox, webkit }[browserName];
 if (!browserType) throw new Error(`Unsupported browser ${browserName}`);
 await fs.mkdir(artifactDir, { recursive:true });
-const browser = await browserType.launch({ headless:true });
-
 const promoted = ['investigation','political_campaign','fundraiser','research','legal','archive'];
 
 async function selectRegistryProfile(page, profile) {
@@ -182,17 +180,25 @@ async function inspect(page, label) {
   return { ...result, convergence };
 }
 
+async function inspectFreshBrowserMode(options, label) {
+  const browser = await browserType.launch({ headless:true });
+  let context = null;
+  try {
+    context = await browser.newContext(options);
+    return { mode:label, ...(await inspect(await context.newPage(), label)) };
+  } finally {
+    if (context) await context.close().catch(() => {});
+    await browser.close().catch(() => {});
+  }
+}
+
 const receipts = [];
 try {
-  const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
-  receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
-  await desktop.close();
+  receipts.push(await inspectFreshBrowserMode({ viewport:{ width:1280, height:900 } }, 'desktop'));
 
   const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
   if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
-  const mobile = await browser.newContext(mobileOptions);
-  receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
-  await mobile.close();
+  receipts.push(await inspectFreshBrowserMode(mobileOptions, 'mobile-reduced-motion'));
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a13-registry-receipt.json`), JSON.stringify({
     schema:'td613.ash.shared-demo-registry-browser-witness/v0.3-a15',
@@ -216,6 +222,4 @@ try {
     convergence:error?.td613A13Convergence || null
   }, null, 2));
   throw error;
-} finally {
-  await browser.close();
 }
