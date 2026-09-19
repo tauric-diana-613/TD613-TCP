@@ -40,7 +40,7 @@ import {
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v6-frontier-dual-channel-admission';
-export const KHONAPOLIT_MAX_PROVIDER_CALLS = 3;
+export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 const PRIMARY_REQUEST_TIMEOUT_MS = 32000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 50500;
@@ -141,12 +141,14 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
   const total = Math.max(position + 1, Math.floor(Number(modelCount) || 1));
   const remainingAttempts = Math.max(1, total - position);
   if (total === 1) return Math.min(PRIMARY_REQUEST_TIMEOUT_MS, remaining);
-  if (position === 0) return Math.min(18000, remaining);
+  if (position === 0) return Math.min(12000, remaining);
   if (position === 1 && remainingAttempts > 1) {
-    const reserveForFinal = Math.min(8000, Math.max(0, remaining - 1));
-    return Math.min(26000, Math.max(1, remaining - reserveForFinal));
+    const reserveForTail = Math.min(12000, Math.max(0, remaining - 1));
+    return Math.min(22000, Math.max(1, remaining - reserveForTail));
   }
-  return remaining;
+  if (remainingAttempts === 1) return remaining;
+  const reserveForLater = Math.min((remainingAttempts - 1) * 5000, Math.max(0, remaining - 1));
+  return Math.min(8000, Math.max(1, remaining - reserveForLater));
 }
 
 function headerValue(headers = {}, key = '') {

@@ -153,10 +153,13 @@ test('Markdown tables become semantic tables without activating markup or losing
 });
 
 test('independent Marrowline origin has frontier-only fallback, ordinary entry and portable task parity', () => {
-  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3, fairShare: true }), 18000);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16667, index: 1, modelCount: 3, fairShare: true }), 8667);
+  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
+  assert.deepEqual(selectKhonapolitProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 12000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 38000, index: 1, modelCount: 5, fairShare: true }), 22000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 5000, index: 4, modelCount: 5, fairShare: true }), 5000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }), 32000);
   const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
   const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');

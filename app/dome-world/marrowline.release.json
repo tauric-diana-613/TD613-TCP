@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v10",
-  "version": "v0.7.1-frontier-dual-channel-and-minimal-utilities",
+  "schema": "td613.dome-world.marrowline.release/v11",
+  "version": "v0.7.2-five-seat-frontier-cascade",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -106,7 +106,19 @@
     "fallbackReasoning": "high-not-degraded",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-high-zalgo-below-floor",
     "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
-    "thirdSeatEvidence": "2026-09-18 production episode: Marrowline 3.7=503 while independent Loom 3.6=200 in same canary"
+    "providerCallCeiling": 5,
+    "timeoutGeometry": {
+      "primaryMs": 12000,
+      "preferredSecondMaxMs": 22000,
+      "laterLaneMaxMs": 8000,
+      "laterLaneReserveMs": 5000,
+      "wallMs": 50500,
+      "purpose": "preserve 3.5 completion runway while keeping every approved Gemini 3 lane reachable after fast transport failures"
+    },
+    "frontierCascadeEvidence": [
+      "2026-09-18 release #1164: Marrowline 3.8=503, 3.5=408 timeout, 3.7=503 while independent Loom 3.6=200",
+      "2026-09-18 release #1168: Marrowline 3.8=503, 3.5=503, 3.6=503 while independent Loom 3.7=503 then gemini-3-flash-preview=200"
+    ]
   },
   "composer": {
     "universalPlus": true,

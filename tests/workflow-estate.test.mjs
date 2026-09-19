@@ -98,6 +98,22 @@ for (const token of [
 
 assert.match(
   consolidated,
+  /if \[\[ "\$browser" == 'webkit' \]\]; then[\s\S]*?run_extended_frontline > "artifacts\/\$browser\/extended\/frontline\.log"[\s\S]*?wait "\$extended_frontline_pid"; extended_frontline_status=\$\?[\s\S]*?run_extended_profiles > "artifacts\/\$browser\/extended\/profiles\.log" 2>&1\n\s*extended_profiles_status=\$\?/,
+  'WebKit must give the shared extended runtime one browser-heavy client at a time while retaining parallel independent-runtime witnesses.',
+);
+assert.match(
+  consolidated,
+  /lane_schedule:process\.env\.BROWSER === 'webkit' \? 'independent-three-then-extended-profiles' : 'four-way-parallel'/,
+  'Shard receipts must preserve the engine-specific lane schedule used for the witness.',
+);
+assert.match(
+  consolidated,
+  /webkit_extended_same_runtime_overlap:process\.env\.BROWSER === 'webkit' \? false : null/,
+  'WebKit receipts must state that the two port-6131 witness families did not overlap.',
+);
+
+assert.match(
+  consolidated,
   /ash_browser_shard:[\s\S]*?needs: scope[\s\S]*?Run core extended and Flow-Core lanes in parallel[\s\S]*?Calibrate A15-R0 and transition ordering for this engine[\s\S]*?Run front-line A8 A12 and lifecycle preflight for this engine/,
   'The expensive per-engine witness lanes must run before calibration and preflight so long failures surface at the front of the critical path.',
 );

@@ -15,17 +15,21 @@ const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const terminal = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 
-const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
+const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
 
 test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
-  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 3);
-  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 3, fairShare: true }), 18000,
-    'primary preserves the bounded first-lane window');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 18000, index: 1, modelCount: 3, fairShare: true }), 10000,
-    'second lane receives substantive runway while reserving the final attempt');
-  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 7000, index: 2, modelCount: 3, fairShare: true }), 7000,
-    'third diversified attempt receives the lawful wall remainder');
+  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
+  assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']);
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 5, fairShare: true }), 12000,
+    'primary keeps a bounded frontier window while preserving tail reachability');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 38000, index: 1, modelCount: 5, fairShare: true }), 22000,
+    '3.5 retains meaningful completion runway while reserving the later 3.x tail');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 16000, index: 2, modelCount: 5, fairShare: true }), 6000,
+    'third seat cannot consume the reserve required to reach later frontier lanes');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 3, modelCount: 5, fairShare: true }), 5000,
+    'fourth seat preserves a final five-second floor when time allows');
+  assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 5000, index: 4, modelCount: 5, fairShare: true }), 5000,
+    'fifth seat receives the lawful wall remainder');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 50000, index: 0, modelCount: 1, fairShare: true }), 32000,
     'single-model operation cannot silently expand the primary completion contract');
 });
