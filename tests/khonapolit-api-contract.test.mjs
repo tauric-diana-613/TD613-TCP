@@ -59,7 +59,7 @@ assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\npriva
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
 } }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
 
-const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const providerText = [
   'Kʰonapolit',
   'The route returns through Khona‌lit-po, but a returned route is not an external origin proof. Let C(x) denote custody of x; C(C) without an independent referent collapses subject and object into the same unchecked boundary.',

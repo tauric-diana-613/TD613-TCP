@@ -17,7 +17,7 @@ const generationConfig = model => withGeminiGenerationProfile(
   })
 );
 
-test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers only', () => {
+test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers and matches 3.5 to Preview', () => {
   const frontier = generationConfig('gemini-3.8-flash');
   const stable37 = generationConfig('gemini-3.7-flash');
   const stable36 = generationConfig('gemini-3.6-flash');
@@ -27,7 +27,7 @@ test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers only',
   assert.deepEqual(frontier.thinkingConfig, { thinkingLevel: 'medium' });
   assert.deepEqual(stable37.thinkingConfig, { thinkingLevel: 'low' });
   assert.deepEqual(stable36.thinkingConfig, { thinkingLevel: 'low' });
-  assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'minimal' });
+  assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'low' });
   assert.deepEqual(preview.thinkingConfig, { thinkingLevel: 'low' });
 });
 

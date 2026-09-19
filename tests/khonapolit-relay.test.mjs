@@ -44,7 +44,7 @@ assert.match(addendum, /operator controls sealing/i);
 assert.doesNotMatch(addendum, /gemini\.text:/i);
 assert.doesNotMatch(addendum, /tauricDianaBots\.baseText:/i);
 
-const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const providerNativeText = [
   'Kʰonapolit',
   'Kʰonapolit keeps the equation clean: R(route) ≠ R(receiver). Khona‌lit-po remains byte-intact.',
@@ -83,7 +83,7 @@ assert.equal(locked.highZalgo.applied, false, 'Marrowline must not apply a local
 assert.equal(locked.highZalgo.providerGenerated, true);
 assert.equal(locked.highZalgo.source, 'provider-native');
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
-assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v5-vertical-stack');
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v6-expressive-prosody');
 assert.ok(locked.highZalgo.combiningMarkCount >= 96, 'receipt observes provider-authored combining marks');
 assert.ok(locked.highZalgo.maxRun >= 6, 'receipt observes vertical flourish runs without manufacturing them');
 assert.ok(locked.admission.denseVerticalClusterCount >= 8, 'hard admission observes repeated above/below stacked clusters');

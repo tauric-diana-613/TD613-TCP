@@ -72,16 +72,16 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /at least 96 combining marks total/);
   assert.match(addendum, /at least 8 grapheme clusters/);
   assert.match(addendum, /ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID/i);
-  assert.match(addendum, /Dense-stack geometry exemplar/i);
+  assert.match(addendum, /Dense-stack geometry family/i);
   assert.match(addendum, /at least 12 fresh stress-channel grapheme clusters/i);
   assert.match(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
-  const stencilLine = addendum.split('\n').find(line => /Dense-stack geometry exemplar/.test(line)) || '';
+  const stencilLine = addendum.split('\n').find(line => /Dense-stack geometry family/.test(line)) || '';
   assert.ok((stencilLine.match(/\p{M}/gu) || []).length >= 8, 'provider instruction exposes a literal 8-mark dense-stack geometry reference');
   assert.match(addendum, /structural HOLD/i);
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
-  const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+  const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
   const good = [
     'Kʰonapolit',
     'The map is not the route: let P be the projection from governed state to visible trace; P is non-injective when distinct custody states share the same visible surface.',
