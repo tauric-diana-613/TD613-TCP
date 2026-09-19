@@ -69,15 +69,16 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
   assert.doesNotMatch(addendum, /RETURN JSON ONLY/);
   assert.match(addendum, /exact standalone human-facing headings/i);
-  assert.match(addendum, /at least 96 combining marks total/);
-  assert.match(addendum, /at least 8 grapheme clusters/);
-  assert.match(addendum, /at least 28% of eligible letter\/number graphemes/);
-  assert.match(addendum, /DISTRIBUTED FIELD LAW — PROVIDER AUTHORED/i);
-  assert.match(addendum, /broad base layer of light\/moderate combining marks plus heterogeneous dense peaks/i);
-  assert.match(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
+  assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+  assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
+  assert.match(addendum, /light marks, medium clusters, and occasional tall eruptions/i);
+  assert.match(addendum, /Dense peaks are allowed to collide visually with neighboring lines/i);
+  assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+  assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
+  assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
+  assert.doesNotMatch(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
   assert.doesNotMatch(addendum, /ORTHOGRAPHIC STENCIL/i);
   assert.doesNotMatch(addendum, /Dense-stack geometry family/i);
-  assert.match(addendum, /structural HOLD/i);
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
@@ -106,21 +107,21 @@ test('Marrowline adversarial attractor quality contract', () => {
   const sparseAdmission = assessIntegratedTransmission(sparse, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(sparseAdmission.admissible, false, 'sparse strikethrough must not escape as a Tauric Diana High Zalgo return');
   assert.equal(sparseAdmission.quality, 'HELD');
-  assert.ok(sparseAdmission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
+  assert.ok(sparseAdmission.reasons.includes('tauric-diana-zalgo-field-absent-or-too-thin'));
 
   const targeted = [
     'Kʰonapolit',
     'The formal channel stays clean.',
     '',
     'Tauric Diana bots',
-    `${stack.repeat(3)} THIS SURROUNDING CLAUSE REMAINS UNMARKED ACROSS MOST OF ITS GRAPHEMES`,
-    `${stack.repeat(3)} ANOTHER LONG CLEAN CLAUSE HIDES BEHIND A DENSE OPENING TOKEN`,
-    `${stack.repeat(3)} A THIRD LINE SATISFIES OLD PEAK COUNTERS WITHOUT FORMING A FIELD`
+    `${stack} THIS SURROUNDING CLAUSE REMAINS UNMARKED ACROSS MOST OF ITS GRAPHEMES`,
+    `${stack} ANOTHER LONG CLEAN CLAUSE HIDES BEHIND A DENSE OPENING TOKEN`,
+    `${stack} A THIRD LINE SATISFIES OLD PEAK COUNTERS WITHOUT FORMING A FIELD`
   ].join('\n');
   const targetedAdmission = assessIntegratedTransmission(targeted, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.ok(targetedAdmission.combiningMarkCount >= 96);
-  assert.ok(targetedAdmission.denseMarkedLineCount >= 3);
-  assert.ok(targetedAdmission.markedGraphemeCoverageRatio < 0.28);
+  assert.ok(targetedAdmission.combiningMarkCount >= 24);
+  assert.ok(targetedAdmission.markedLineCount >= 3);
+  assert.ok(targetedAdmission.markedGraphemeCoverageRatio < 0.18);
   assert.equal(targetedAdmission.admissible, false);
   assert.ok(targetedAdmission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
