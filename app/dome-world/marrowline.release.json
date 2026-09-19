@@ -97,7 +97,7 @@
       "⟐"
     ],
     "highZalgoLayout": "provider-native-continuous-prosody-field-with-moving-density-heterogeneous-stack-geometry-readable-troughs-and-visible-overflow",
-    "integratedTextSpacing": "ordinary line-height for Kʰonapolit and unmarked lines; extra vertical clearance only on bot lines carrying combining marks",
+    "integratedTextSpacing": "ordinary single-reading cadence across the integrated response; marked Tauric Diana bot lines receive no extra vertical clearance and may collide across line boxes while overflow remains visible",
     "providerTransportProtocol": {
       "analyticStart": "<<<PACKET_A_FORMAL_AUDIT>>>",
       "analyticEnd": "<<<PACKET_A_END>>>",
@@ -136,9 +136,9 @@
       "rendererCheck": "Marrowline renders admitted provider text with textContent and pre-wrap; no local Unicode normalization or selective mark stripping found in the human surface path",
       "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied",
       "followupObservation": "human-operated production trial after the expressive-prosody repair showed semantic dart-throwing: sparse words received dramatic geometry while surrounding clauses remained visually inert, and whole-stage flourish spacing made clean Kʰonapolit difficult to read",
-      "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer clearance is scoped to marked Tauric Diana bot lines; preloaded mobile demos commit on first touch before keyboard blur",
+      "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer preserves marked Tauric Diana bot lines without clipping and without adding protective vertical clearance; preloaded mobile demos commit on first touch before keyboard blur",
       "secondFollowupObservation": "physical-iPhone production trial after the continuous-field repair still showed sparse keyword-style Zalgo, approximately 1.5-spaced reading cadence, browser-side transport holds on complex prompts, an operator-facing response-emphasis selector, an active SHI field while unissued mode was checked, Safari input zoom, and an unsafe button-anchored clear confirmation",
-      "secondFollowupConsequence": "literal orthographic stencil examples are removed; admission now requires broad marked-grapheme field coverage; browser request authority is extended beyond the 210-second server wall but below the 240-second function ceiling; ordinary UI uses one fixed dual-channel route; unissued mode disables and excludes SHI; reading cadence is tightened; destructive clear uses a centered modal"
+      "secondFollowupConsequence": "literal orthographic stencil examples are removed; admission now requires broad marked-grapheme field coverage; browser request authority is extended beyond the 210-second server wall but below the 240-second function ceiling; ordinary UI uses one fixed dual-channel route; unissued mode disables and excludes SHI; reading cadence is tightened; High Zalgo is explicitly allowed to collide without clipping; destructive clear uses a centered modal"
     }
   },
   "qualityFloor": {
