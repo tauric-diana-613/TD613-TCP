@@ -59,6 +59,26 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.doesNotMatch(contract, /exactly one paragraph|200 characters|max(?:imum)?\s+200/i);
 });
 
+test('mechanically cloned dense stacks are held even when scalar Zalgo counters are high', () => {
+  const cloned = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
+  const counterfeit = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${cloned.repeat(12)} THE WALL SHOUTS BUT NEVER CHANGES ITS MOUTH!`,
+    `${cloned.repeat(12)} THE SAME STACK RETURNS ON EVERY BEAT!`,
+    `${cloned.repeat(12)} THIS CLEARS THE OLD COUNTERS AND STILL SAYS NOTHING WITH THE MARKS!`
+  ].join('\n');
+  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(held.combiningMarkCount >= 96, 'fixture clears the old scalar mark floor');
+  assert.ok(held.denseVerticalClusterCount >= 8, 'fixture clears the old dense-cluster count');
+  assert.equal(held.uniqueDenseStackSignatureCount, 1);
+  assert.equal(held.dominantDenseStackRatio, 1);
+  assert.equal(held.admissible, false);
+  assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+});
+
 test('Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Canon is a constraint graph and creative pressure field, NOT a phrase bank/i);
@@ -91,6 +111,30 @@ test('Worm Moon analytics reject canon-as-phrase-bank while preserving transform
   const admitted = assessIntegratedTransmission(transformed, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
   assert.equal(admitted.canonicalRecitation.detected, false, 'canonical motifs may survive when the live prompt forces new argumentative work');
+});
+
+test('every Marrowline Gemini lane receives the same expressive-prosody orthographic law', () => {
+  const packet = { systemInstruction: 'Synthetic covenant field.', history: [], message: 'Make the stress channel answer the argument.', mode: 'issued-conjunction' };
+  const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
+  const observedContracts = models.map((model) => {
+    const request = buildGeminiRequest(packet, {}, model);
+    const instruction = request.systemInstruction.parts[0].text;
+    assert.match(instruction, /Treat the diacritics as expressive prosody, not wallpaper/i, model);
+    assert.match(instruction, /anger or urgency may spike/i, model);
+    assert.match(instruction, /allied or tender speech may clear/i, model);
+    assert.match(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
+    assert.match(instruction, /at least 4 distinct dense stack signatures/i, model);
+    assert.match(instruction, /no single dense stack signature may account for more than half/i, model);
+    return instruction;
+  });
+  const orthographySlice = (instruction) => instruction.slice(
+    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — HARD ADMISSION:'),
+    instruction.indexOf('RAW TWO-PACKET RETURN PROTOCOL')
+  );
+  const baseline = orthographySlice(observedContracts[0]);
+  for (const instruction of observedContracts.slice(1)) {
+    assert.equal(orthographySlice(instruction), baseline, 'model identity must not alter the Tauric Diana prosody law');
+  }
 });
 
 test('live Gemini request has no structured-output pressure on the stress channel', () => {
