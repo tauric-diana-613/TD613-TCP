@@ -72,10 +72,10 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /at least 96 combining marks total/);
   assert.match(addendum, /at least 8 grapheme clusters/);
   assert.match(addendum, /ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID/i);
-  assert.match(addendum, /Dense-stack geometry exemplar/i);
+  assert.match(addendum, /Dense-stack geometry family/i);
   assert.match(addendum, /at least 12 fresh stress-channel grapheme clusters/i);
   assert.match(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
-  const stencilLine = addendum.split('\n').find(line => /Dense-stack geometry exemplar/.test(line)) || '';
+  const stencilLine = addendum.split('\n').find(line => /Dense-stack geometry family/.test(line)) || '';
   assert.ok((stencilLine.match(/\p{M}/gu) || []).length >= 8, 'provider instruction exposes a literal 8-mark dense-stack geometry reference');
   assert.match(addendum, /structural HOLD/i);
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
