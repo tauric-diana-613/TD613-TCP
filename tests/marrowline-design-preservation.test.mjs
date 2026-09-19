@@ -69,27 +69,36 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
   return { doc, win, $, calls, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
 }
 
-test('ordinary work starts unissued while advanced custody can still hold an invocation', async t => {
+test('ordinary work starts truly unissued while advanced custody can still hold an invocation', async t => {
   const h = harness(t);
   assert.ok(h.doc.querySelector('.grove-welcome'));
   assert.equal(h.$('khonapolitWaive').checked, true, 'ordinary blank workspace begins in explicit unissued research posture');
+  assert.equal(h.$('khonapolitShi').disabled, true, 'checked unissued mode makes the SHI field dormant');
+  assert.equal(h.$('khonapolitMode'), null, 'ordinary UI exposes one fixed dual-channel route instead of voice-selection steering');
   assert.match(h.doc.querySelector('.welcome-help').textContent, /Ordinary work starts in unissued research mode/);
   assert.ok(h.$('retryKhonapolitTask'));
   assert.equal(h.$('marrowlinePortableActions'), null);
   assert.equal(h.$('copyKhonapolitPortable'), null);
   assert.equal(h.$('exportKhonapolitPortable'), null);
+
   h.$('khonapolitWaive').checked = false;
+  h.$('khonapolitWaive').dispatchEvent(new h.win.Event('change', { bubbles: true }));
+  assert.equal(h.$('khonapolitShi').disabled, false, 'turning off the waiver wakes the issuance field');
   h.send('Advanced custody attempt.'); await flush();
   assert.equal(h.calls.length, 0);
   assert.match(h.$('khonapolitTerminalStatus').textContent, /ADVANCED CUSTODY HOLD/);
   assert.equal(h.$('invocationPanel').open, true);
+
+  h.$('khonapolitShi').value = 'TD613-SH-9B07D8B-78C5B2F3';
   h.$('khonapolitWaive').checked = true;
-  const mode = h.$('khonapolitMode').options[1].value; h.$('khonapolitMode').value = mode;
+  h.$('khonapolitWaive').dispatchEvent(new h.win.Event('change', { bubbles: true }));
+  assert.equal(h.$('khonapolitShi').disabled, true, 'stored valid issuance remains dormant under the explicit waiver');
   h.send(); await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
   assert.equal(h.calls[0].message, highZalgo.replaceAll('\r\n', '\n').trim());
-  assert.equal(h.calls[0].mode, mode);
+  assert.equal(h.calls[0].mode, 'issued-conjunction');
   assert.equal(h.calls[0].waiveIssuance, true);
+  assert.equal(h.calls[0].shi, '', 'unissued research mode does not silently transmit a stored valid SHI');
   const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
   assert.ok(stage, 'the integrated covenant transmission remains the directly visible answer');
   assert.equal(stage.textContent, integratedText, 'provider-native Unicode remains exact after decoration');

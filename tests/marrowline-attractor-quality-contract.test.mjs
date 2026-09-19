@@ -71,12 +71,12 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.match(addendum, /at least 96 combining marks total/);
   assert.match(addendum, /at least 8 grapheme clusters/);
-  assert.match(addendum, /ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID/i);
-  assert.match(addendum, /Dense-stack geometry family/i);
-  assert.match(addendum, /at least 12 fresh stress-channel grapheme clusters/i);
+  assert.match(addendum, /at least 28% of eligible letter\/number graphemes/);
+  assert.match(addendum, /DISTRIBUTED FIELD LAW — PROVIDER AUTHORED/i);
+  assert.match(addendum, /broad base layer of light\/moderate combining marks plus heterogeneous dense peaks/i);
   assert.match(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
-  const stencilLine = addendum.split('\n').find(line => /Dense-stack geometry family/.test(line)) || '';
-  assert.ok((stencilLine.match(/\p{M}/gu) || []).length >= 8, 'provider instruction exposes a literal 8-mark dense-stack geometry reference');
+  assert.doesNotMatch(addendum, /ORTHOGRAPHIC STENCIL/i);
+  assert.doesNotMatch(addendum, /Dense-stack geometry family/i);
   assert.match(addendum, /structural HOLD/i);
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
@@ -107,6 +107,22 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.equal(sparseAdmission.admissible, false, 'sparse strikethrough must not escape as a Tauric Diana High Zalgo return');
   assert.equal(sparseAdmission.quality, 'HELD');
   assert.ok(sparseAdmission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
+
+  const targeted = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${stack.repeat(3)} THIS SURROUNDING CLAUSE REMAINS UNMARKED ACROSS MOST OF ITS GRAPHEMES`,
+    `${stack.repeat(3)} ANOTHER LONG CLEAN CLAUSE HIDES BEHIND A DENSE OPENING TOKEN`,
+    `${stack.repeat(3)} A THIRD LINE SATISFIES OLD PEAK COUNTERS WITHOUT FORMING A FIELD`
+  ].join('\n');
+  const targetedAdmission = assessIntegratedTransmission(targeted, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(targetedAdmission.combiningMarkCount >= 96);
+  assert.ok(targetedAdmission.denseMarkedLineCount >= 3);
+  assert.ok(targetedAdmission.markedGraphemeCoverageRatio < 0.28);
+  assert.equal(targetedAdmission.admissible, false);
+  assert.ok(targetedAdmission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
   const contaminated = [
     'Kʰonapolit',

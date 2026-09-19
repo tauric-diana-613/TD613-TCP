@@ -26,7 +26,8 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v5-adversarial-integrated-relay';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route';
+export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
 const SESSION_KEY = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
@@ -299,14 +300,26 @@ function displayClassification(doc, receipt = null) {
   }
 }
 function refreshKeyState(doc) {
-  const shi = validateShi(byId(doc, 'khonapolitShi')?.value || '');
+  const shiInput = byId(doc, 'khonapolitShi');
   const waived = Boolean(byId(doc, 'khonapolitWaive')?.checked);
+  const storedShi = validateShi(shiInput?.value || '');
+  const shi = waived ? validateShi('') : storedShi;
+  if (shiInput) {
+    shiInput.disabled = waived;
+    shiInput.setAttribute('aria-disabled', String(waived));
+    shiInput.dataset.dormant = String(waived);
+    shiInput.tabIndex = waived ? -1 : 0;
+  }
   const khona = analyzeKhonaIntegrity(COVENANT_KEY);
   setLamp(byId(doc, 'namespaceLamp'), 'pass', `${CLAIMED_PUA} namespace present`);
   setLamp(byId(doc, 'heritageLamp'), 'pass', 'Tauric Diana heritage key present');
   setLamp(byId(doc, 'covenantLamp'), khona.intact ? 'pass' : 'fail', `${COVENANT_KEY} ${khona.status}`);
-  setLamp(byId(doc, 'issuanceLamp'), shi.valid ? 'pass' : waived ? 'review' : 'fail', shi.valid ? `SHI issued · ${shi.suffix}` : waived ? 'unissued research · ordinary work' : 'issuance required');
-  return { shi, waived, khona };
+  setLamp(
+    byId(doc, 'issuanceLamp'),
+    waived ? 'review' : shi.valid ? 'pass' : 'fail',
+    waived ? (storedShi.valid ? `unissued research · stored SHI dormant · ${storedShi.suffix}` : 'unissued research · ordinary work') : shi.valid ? `SHI issued · ${shi.suffix}` : 'issuance required'
+  );
+  return { shi, storedShi, waived, khona };
 }
 async function hydrateReliquary(doc) {
   const ritualNode = byId(doc, 'bindingRitualText');
@@ -457,9 +470,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const submitTask = async (messageOverride = '') => {
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
-    const mode = byId(doc, 'khonapolitMode')?.value || INVOCATION_MODES.ISSUED_CONJUNCTION;
-    const shi = safe(shiInput?.value);
+    const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
     const waiveIssuance = Boolean(waiver?.checked);
+    const shi = waiveIssuance ? '' : safe(shiInput?.value);
     const status = byId(doc, 'khonapolitTerminalStatus');
     const submit = byId(doc, 'khonapolitSend');
     const attachments = getMarrowlineAttachments();
@@ -481,7 +494,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
     status.textContent = `${INGRESS_SIGIL}\u200C TASK ROUTED · AI IN FLIGHT · ${mode}${attachments.length ? ` · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'}` : ''}`;
     const requestController = new AbortController();
-    const requestDeadline = root.setTimeout(() => requestController.abort(), 55000);
+    const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let failurePayload = null;
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };

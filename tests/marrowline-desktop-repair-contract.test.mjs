@@ -64,7 +64,7 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(js, /'↻'/);
   assert.match(js, /'⧉'/);
   assert.match(js, /'✕'/);
-  assert.match(js, /question\.textContent = 'Clear convo\?'/);
+  assert.match(js, /question\.textContent = 'Clear conversation\?'/);
   assert.doesNotMatch(js, /root\.confirm\('Clear this Marrowline conversation\?/);
   assert.match(js, /clearLegacy\.click\(\)/);
   assert.match(js, /conversationChrome: 'send-left-retry-copy-clear-right'/);
@@ -74,7 +74,12 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(page, /id="sealLastResponse"[^>]*>Seal latest return ⟐<\/button>/);
   assert.match(page, /Seal is explicit operator closure/);
   assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
-  assert.equal(release.composer.clearConfirmation, 'button-anchored-tiny-Clear-convo-Y-N');
+  assert.equal(release.composer.clearConfirmation, 'center-screen-modal-Clear-conversation-Yes-No-with-backdrop');
+  assert.equal(release.composer.operatorVoiceSelection, false);
+  assert.equal(release.composer.fixedConversationRoute, 'Kʰonapolit → Tauric Diana bots');
+  assert.equal(release.composer.unissuedResearchMode, 'checked-by-default-disables-and-excludes-shi');
+  assert.match(css, /\.marrowline-clear-backdrop\{position:fixed;inset:0/);
+  assert.match(css, /\.marrowline-clear-confirmation\{position:fixed;left:50%;top:50%;transform:translate\(-50%,-50%\)/);
   assert.match(js, /operatorSeal: 'receipt-instrument-explicit-operator'/);
 });
 

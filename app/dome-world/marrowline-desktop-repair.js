@@ -6,7 +6,7 @@ import {
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v4-preloaded-prompt-custody';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -276,30 +276,42 @@ function installConversationUtilityRail(doc, root) {
   const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation');
   const clear = utility('marrowlineSessionClear', '✕', 'Clear conversation');
 
-  const confirm = doc.createElement('span');
+  const backdrop = doc.createElement('div');
+  backdrop.id = 'marrowlineClearBackdrop';
+  backdrop.className = 'marrowline-clear-backdrop';
+  backdrop.hidden = true;
+
+  const confirm = doc.createElement('div');
   confirm.id = 'marrowlineClearConfirmation';
   confirm.className = 'marrowline-clear-confirmation';
   confirm.hidden = true;
   confirm.setAttribute('role', 'dialog');
+  confirm.setAttribute('aria-modal', 'true');
   confirm.setAttribute('aria-label', 'Clear conversation?');
   const question = doc.createElement('span');
-  question.textContent = 'Clear convo?';
+  question.textContent = 'Clear conversation?';
+  const actions = doc.createElement('span');
+  actions.className = 'marrowline-clear-confirmation-actions';
   const yes = doc.createElement('button');
-  yes.type = 'button'; yes.textContent = 'Y'; yes.setAttribute('aria-label', 'Yes, clear conversation');
-  const slash = doc.createTextNode('/');
+  yes.type = 'button'; yes.textContent = 'Yes'; yes.setAttribute('aria-label', 'Yes, clear conversation');
   const no = doc.createElement('button');
-  no.type = 'button'; no.textContent = 'N'; no.setAttribute('aria-label', 'No, keep conversation');
-  confirm.append(question, yes, slash, no);
+  no.type = 'button'; no.textContent = 'No'; no.setAttribute('aria-label', 'No, keep conversation');
+  actions.append(yes, no);
+  confirm.append(question, actions);
 
   const closeConfirm = ({ focus = false } = {}) => {
     confirm.hidden = true;
+    backdrop.hidden = true;
+    doc.body.dataset.clearConversationModal = 'false';
     clear.setAttribute('aria-expanded', 'false');
-    if (focus) clear.focus?.();
+    if (focus) clear.focus?.({ preventScroll: true });
   };
   const openConfirm = () => {
+    backdrop.hidden = false;
     confirm.hidden = false;
+    doc.body.dataset.clearConversationModal = 'true';
     clear.setAttribute('aria-expanded', 'true');
-    no.focus?.();
+    no.focus?.({ preventScroll: true });
   };
   clear.setAttribute('aria-haspopup', 'dialog');
   clear.setAttribute('aria-expanded', 'false');
@@ -311,18 +323,16 @@ function installConversationUtilityRail(doc, root) {
   yes.addEventListener('click', () => {
     closeConfirm();
     clearLegacy.click();
-    byId(doc, 'khonapolitPrompt')?.focus?.({ preventScroll: true });
   });
   no.addEventListener('click', () => closeConfirm({ focus: true }));
-  doc.addEventListener('click', event => {
-    if (!confirm.hidden && !rail.contains(event.target)) closeConfirm();
-  });
+  backdrop.addEventListener('click', () => closeConfirm({ focus: true }));
   doc.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !confirm.hidden) closeConfirm({ focus: true });
   });
 
-  rail.append(retry, copy, clear, confirm);
+  rail.append(retry, copy, clear);
   composer.append(rail);
+  doc.body.append(backdrop, confirm);
 
   const scrubSealInstruction = () => {
     const status = byId(doc, 'khonapolitTerminalStatus');

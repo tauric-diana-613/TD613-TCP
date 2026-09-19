@@ -232,9 +232,16 @@ try {
       const userMessagesBeforeCancelledClear = await page.locator('.message[data-role="user"]').count();
       await sessionClear.click();
       const clearConfirmation = page.locator('#marrowlineClearConfirmation');
-      assert.equal(await clearConfirmation.isVisible(), true, 'destructive clear opens the anchored micro-confirmation');
+      assert.equal(await clearConfirmation.isVisible(), true, 'destructive clear opens the centered modal confirmation');
+      assert.equal(await page.locator('#marrowlineClearBackdrop').isVisible(), true, 'modal backdrop separates destructive confirmation from composer controls');
+      const confirmBox = await clearConfirmation.boundingBox();
+      const viewport = page.viewportSize();
+      assert.ok(confirmBox && viewport);
+      assert.ok(Math.abs((confirmBox.x + confirmBox.width / 2) - viewport.width / 2) < 4, 'clear modal is horizontally centered');
+      assert.ok(Math.abs((confirmBox.y + confirmBox.height / 2) - viewport.height / 2) < 4, 'clear modal is vertically centered');
       await clearConfirmation.getByRole('button', { name: 'No, keep conversation' }).click();
-      assert.equal(await clearConfirmation.isVisible(), false, 'No closes the micro-confirmation');
+      assert.equal(await clearConfirmation.isVisible(), false, 'No closes the centered confirmation');
+      assert.equal(await page.locator('#marrowlineClearBackdrop').isVisible(), false, 'backdrop leaves with the modal');
       assert.equal(await page.locator('.message[data-role="user"]').count(), userMessagesBeforeCancelledClear, 'cancelled minimalist clear preserves the transcript');
 
       await page.locator('#marrowlineComposerPlus').click();
@@ -313,7 +320,7 @@ try {
         transcript_custody_visible: true,
         starter_carousel_present: true,
         conversation_actions_retired: true,
-        minimal_clear_confirmation: true,
+        centered_clear_confirmation: true,
         operator_seal_receipt_and_programmatic: true,
         control_conserved: true,
         fadt_admission: true,

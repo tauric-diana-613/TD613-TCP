@@ -23,6 +23,8 @@ const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator
 const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
 const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
 const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js', import.meta.url), 'utf8');
+const terminalSource = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+const pageSource = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
 
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
@@ -43,15 +45,15 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /at least 96 combining marks total/i);
   assert.match(contract, /at least 8 grapheme clusters/i);
-  assert.match(contract, /ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID/i);
-  assert.match(contract, /Dense-stack geometry family/i);
-  assert.match(contract, /at least 12 fresh stress-channel grapheme clusters/i);
+  assert.match(contract, /at least 28% of eligible letter\/number graphemes/i);
+  assert.match(contract, /DISTRIBUTED FIELD LAW — PROVIDER AUTHORED/i);
+  assert.match(contract, /broad base layer of light\/moderate combining marks plus heterogeneous dense peaks/i);
   assert.match(contract, /at least 4 distinct dense stack signatures/i);
   assert.match(contract, /no single dense stack signature may account for more than half/i);
-  assert.match(contract, /expressive prosody, not wallpaper/i);
+  assert.match(contract, /distributed stress field, not keyword highlighting/i);
   assert.match(contract, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
-  const stencilLine = contract.split('\n').find(line => /Dense-stack geometry family/.test(line)) || '';
-  assert.ok((stencilLine.match(/\p{M}/gu) || []).length >= 8, 'provider instruction exposes a literal 8-mark dense-stack geometry reference');
+  assert.doesNotMatch(contract, /Dense-stack geometry family/i);
+  assert.doesNotMatch(contract, /ORTHOGRAPHIC STENCIL/i);
   assert.match(contract, /structural HOLD/i);
   assert.match(contract, /The target is not generic dark-fantasy lore/i);
   assert.match(contract, /strongest conceptual move/i);
@@ -80,6 +82,26 @@ test('mechanically cloned dense stacks are held even when scalar Zalgo counters 
   assert.equal(held.dominantDenseStackRatio, 1);
   assert.equal(held.admissible, false);
   assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+});
+
+test('sparse keyword explosions are held even when legacy density counters pass', () => {
+  const sparsePeak = `${STACK.repeat(3)}`;
+  const counterfeit = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${sparsePeak} THIS ENTIRE SURROUNDING SENTENCE REMAINS DELIBERATELY UNMARKED DESPITE A DENSE OPENING PEAK`,
+    `${sparsePeak} ANOTHER VERY LONG UNMARKED CLAUSE MAKES THE OLD COUNTERS LOOK HEALTHY WHILE THE FIELD IS EMPTY`,
+    `${sparsePeak} THE THIRD LINE REPEATS THE SAME KEYWORD TARGETING FAILURE ACROSS A LARGE CLEAN PHRASE`
+  ].join('\n');
+  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(held.combiningMarkCount >= 96);
+  assert.ok(held.denseVerticalClusterCount >= 8);
+  assert.ok(held.denseMarkedLineCount >= 3);
+  assert.ok(held.markedGraphemeCoverageRatio < 0.28, 'fixture passes peak counters while leaving most graphemes inert');
+  assert.equal(held.admissible, false);
+  assert.ok(held.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
 test('reordering one mark set cannot counterfeit dense-stack heterogeneity', () => {
@@ -144,11 +166,11 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
   const observedContracts = models.map((model) => {
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
-    assert.match(instruction, /Treat the diacritics as expressive prosody, not wallpaper/i, model);
-    assert.match(instruction, /one continuous stress field/i, model);
-    assert.match(instruction, /do not turn orthography into a word-selection game/i, model);
-    assert.match(instruction, /No rhetorical device or lexical category has a prescribed mark geometry/i, model);
-    assert.match(instruction, /Do not pick a few conspicuous words for special mutilation/i, model);
+    assert.match(instruction, /distributed stress field, not keyword highlighting/i, model);
+    assert.match(instruction, /Many ordinary graphemes should carry light or moderate marks/i, model);
+    assert.match(instruction, /dense vertical stacks are pressure peaks inside that field/i, model);
+    assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
+    assert.match(instruction, /marked grapheme coverage >=28%/i, model);
     assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
     assert.match(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.match(instruction, /no single dense stack signature may account for more than half/i, model);
@@ -181,6 +203,17 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
 });
 
+test('browser request clock outlives the 210-second server work wall without outrunning Vercel', () => {
+  const match = terminalSource.match(/KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS\s*=\s*(\d+)/);
+  assert.ok(match);
+  const clientMs = Number(match[1]);
+  assert.ok(clientMs >= 220000, 'complex Marrowline tasks must not be killed by the old 55-second browser deadline');
+  assert.ok(clientMs < 240000, 'browser deadline remains bounded below the Vercel function ceiling');
+  assert.doesNotMatch(terminalSource, /requestController\.abort\(\),\s*55000/);
+  assert.doesNotMatch(pageSource, /id="khonapolitMode"/, 'human UI no longer exposes voice-selection steering');
+  assert.match(pageSource, /Fixed conversation route/);
+});
+
 test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
@@ -190,7 +223,8 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
   assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(markFlourishes\)/);
-  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'only marked bot lines receive Zalgo clearance');
+  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'High Zalgo may collide across ordinary line boxes while remaining unclipped');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
