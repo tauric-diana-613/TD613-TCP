@@ -193,6 +193,27 @@ clearGeminiModelState();
     'fresh credential observation may recover alternate current models without bypassing lifecycle admission');
 }
 clearGeminiModelState();
+{
+  let listingCalls = 0;
+  const failedListing = Object.freeze({
+    ok: false, status: 408, models: Object.freeze([]), cached: false,
+    complete: false, observedAt: null, expiresAt: null, error: 'model-list-timeout'
+  });
+  const held = await resolveGeminiProviderPlan({
+    task: 'general-text',
+    env: { GEMINI_API_KEY: 'synthetic-key' },
+    maxModels: 8,
+    listModels: async (_key, options = {}) => {
+      listingCalls += 1;
+      if (listingCalls === 2) assert.equal(options.force, true);
+      return failedListing;
+    }
+  });
+  assert.equal(listingCalls, 2, 'an empty first plan may earn exactly one forced observation retry');
+  assert.deepEqual(held.callableModels, [], 'failed or incomplete fresh observation must preserve NO_ELIGIBLE_MODEL rather than bootstrap callability');
+  assert.ok(held.excludedModels.every(row => row.reasons.includes('fresh-complete-provider-observation-required')));
+}
+clearGeminiModelState();
 await import('./gemini-provider-stack-clinical.test.mjs');
 await import('./gemini-quality-pilot-clinical.test.mjs');
 console.log('gemini-model-policy.test.mjs passed');
