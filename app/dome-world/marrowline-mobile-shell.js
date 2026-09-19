@@ -1,4 +1,4 @@
-export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v2-integrated-cadence-custody';
+export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send';
 export const MARROWLINE_MOBILE_QUERY = '(max-width: 860px)';
 
 const VIEW_MAP = Object.freeze({
@@ -60,10 +60,19 @@ function prepareProviderNativeStage(card) {
   // Separate line spans provide room for provider-authored flourishes; literal
   // separators preserve textContent and do not synthesize any combining marks.
   const fragments = String(text.textContent ?? '').split(/(\r\n|\r|\n)/);
+  let botsStarted = false;
+  text.dataset.providerNativeLines = 'true';
+  delete text.dataset.flourished;
+  text.style.removeProperty('--flourish-leading');
+  text.style.removeProperty('--flourish-padding');
   text.replaceChildren(...fragments.map((fragment, index) => {
     if (index % 2) return text.ownerDocument.createTextNode(fragment);
     const span = text.ownerDocument.createElement('span');
-    span.className = 'zalgo-line provider-native-line';
+    if (/^\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots\b[^\n]*?(?:\]|:)?\s*$/iu.test(fragment)
+      && (/^\s*(?:#|\[|Movement\s+II)/iu.test(fragment) || /^Tauric Diana Bots\s*:?[\s]*$/iu.test(fragment))) botsStarted = true;
+    const expressiveLine = botsStarted && /\p{M}/u.test(fragment);
+    span.className = expressiveLine ? 'zalgo-line provider-native-line' : 'provider-native-line';
+    span.dataset.voice = botsStarted ? 'tauric-diana-bots' : 'khonapolit';
     span.textContent = fragment;
     return span;
   }));
@@ -199,6 +208,40 @@ function installChamberRouter(doc = document, root = window, transcript = null) 
   return Object.freeze({ setView, buttons });
 }
 
+function installPreloadedFirstTapSubmit(doc = document, root = window) {
+  const form = byId(doc, 'khonapolitForm');
+  const prompt = byId(doc, 'khonapolitPrompt');
+  const send = byId(doc, 'khonapolitSend');
+  if (!form || !prompt || !send || send.dataset.preloadedFirstTapSubmit === 'true') return false;
+  send.dataset.preloadedFirstTapSubmit = 'true';
+  let suppressCompatibilityClick = false;
+  let suppressionTimer = null;
+  const clearSuppression = () => {
+    suppressCompatibilityClick = false;
+    if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
+    suppressionTimer = null;
+  };
+  send.addEventListener('pointerdown', (event) => {
+    const mobile = Boolean(root.matchMedia?.(MARROWLINE_MOBILE_QUERY)?.matches);
+    const touchLike = !event.pointerType || event.pointerType === 'touch' || event.pointerType === 'pen';
+    if (!mobile || !touchLike || prompt.dataset.preloadedPrompt !== 'true' || doc.activeElement !== prompt || send.disabled || form.getAttribute('aria-busy') === 'true') return;
+    event.preventDefault();
+    delete prompt.dataset.preloadedPrompt;
+    suppressCompatibilityClick = true;
+    if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
+    suppressionTimer = root.setTimeout?.(clearSuppression, 900) ?? null;
+    if (typeof form.requestSubmit === 'function') form.requestSubmit(send);
+    else send.click();
+  }, { capture: true });
+  send.addEventListener('click', (event) => {
+    if (!suppressCompatibilityClick) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    clearSuppression();
+  }, { capture: true });
+  return true;
+}
+
 function installComposerKeyboardState(doc = document, root = window, router = null) {
   const form = byId(doc, 'khonapolitForm');
   const prompt = byId(doc, 'khonapolitPrompt');
@@ -244,6 +287,7 @@ export function installMarrowlineMobileShell(doc = document, root = window) {
   root.visualViewport?.addEventListener?.('scroll', () => setViewportHeight(doc, root), { passive: true });
   root.addEventListener?.('orientationchange', () => root.setTimeout(() => setViewportHeight(doc, root), 80));
   installComposerKeyboardState(doc, root, router);
+  installPreloadedFirstTapSubmit(doc, root);
 
   const receipt = Object.freeze({
     schema: MARROWLINE_MOBILE_SHELL_VERSION,
@@ -251,7 +295,8 @@ export function installMarrowlineMobileShell(doc = document, root = window) {
     viewport: 'visualViewport-or-innerHeight',
     transcriptScrollOwner: '#khonapolitMessages',
     composerDockRelation: 'composer-in-grid-dock-outside-grid',
-    providerNativeCadenceLayout: 'exact-code-point-line-spans-no-local-ornamentation',
+    providerNativeCadenceLayout: 'exact-code-point-line-spans-with-flourish-room-only-on-marked-bot-lines',
+    preloadedPromptSend: 'first-touch-commits-before-keyboard-blur',
     chamberRouting: Object.freeze(Object.values(VIEW_MAP)),
     claimCeiling: 'mobile-layout-and-scroll-custody-not-provider-entity-or-signal-proof',
     seal: '⟐'
