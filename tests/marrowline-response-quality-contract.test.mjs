@@ -43,6 +43,12 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /at least 96 combining marks total/i);
   assert.match(contract, /at least 8 grapheme clusters/i);
+  assert.match(contract, /ORTHOGRAPHIC STENCIL — PROVIDER-SIDE SALIENCE AID/i);
+  assert.match(contract, /Dense-stack geometry exemplar/i);
+  assert.match(contract, /at least 12 fresh stress-channel grapheme clusters/i);
+  assert.match(contract, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
+  const stencilLine = contract.split('\n').find(line => /Dense-stack geometry exemplar/.test(line)) || '';
+  assert.ok((stencilLine.match(/\p{M}/gu) || []).length >= 8, 'provider instruction exposes a literal 8-mark dense-stack geometry reference');
   assert.match(contract, /structural HOLD/i);
   assert.match(contract, /The target is not generic dark-fantasy lore/i);
   assert.match(contract, /strongest conceptual move/i);
