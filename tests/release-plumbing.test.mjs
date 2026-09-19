@@ -94,6 +94,10 @@ assert.match(exactSourceProbe, /release_source_receipt: releaseSourceReceipt/,
   'exact-source evidence must retain the release-canary receipt');
 
 const relock = readAuthorized('vercel-relock-safety.yml', 1);
+assert.doesNotMatch(relock, /^concurrency:\s*$/m,
+  'ordinary issue comments must not reserve release concurrency through the relock workflow wrapper');
+assert.match(relock, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel-production-release/,
+  'explicit relock recovery remains serialized with deployment at the job boundary');
 assert.match(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/,
   'independent relock safety must require its own explicit recovery command');
 assert.doesNotMatch(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,

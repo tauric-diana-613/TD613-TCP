@@ -8,10 +8,6 @@ permissions:
   contents: write
   issues: write
 
-concurrency:
-  group: td613-vercel-production-release
-  cancel-in-progress: false
-
 jobs:
   relock-safety:
     if: >-
@@ -19,6 +15,9 @@ jobs:
       github.event.issue.pull_request == null &&
       (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
       startsWith(github.event.comment.body, '/td613-vercel-relock ')
+    concurrency:
+      group: td613-vercel-production-release
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
