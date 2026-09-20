@@ -45,7 +45,7 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 
 fs.mkdirSync(artifactDir, { recursive: true });
 
-async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '' } = {}) {
+async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '', canaryRecovery = '' } = {}) {
   let httpStatus = 0;
   let payload = null;
   let transportError = null;
@@ -59,7 +59,8 @@ async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canary
         'sec-fetch-site': 'same-origin',
         'cache-control': 'no-cache',
         'x-td613-release-canary': '1',
-        ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {})
+        ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {}),
+        ...(canaryRecovery ? { 'x-td613-canary-recovery': canaryRecovery } : {})
       },
       body: JSON.stringify(body),
       redirect: 'follow',
@@ -118,7 +119,12 @@ if (marrowlineSeatRetryTrigger) {
   const retryModel = orderedAlternates.find(model => callableSet.has(model)) || '';
   const retryBudgetMs = Math.max(0, LIVE_WITNESS_TIMEOUT_MS - marrowlinePrimaryResult.elapsedMs);
   if (retryModel && retryBudgetMs >= 15000) {
-    const retryResult = await postJson(marrowlineUrl, marrowlineInput, retryBudgetMs, { canaryModel: retryModel });
+    const retryResult = await postJson(marrowlineUrl, marrowlineInput, retryBudgetMs, {
+      canaryModel: retryModel,
+      canaryRecovery: marrowlineSeatRetryTrigger === 'provider-unavailable'
+        ? 'transport-retry'
+        : 'output-admission-retry'
+    });
     marrowlineSeatRetry = {
       trigger: marrowlineSeatRetryTrigger,
       primary_model: marrowlineCanaryModel,
@@ -308,7 +314,7 @@ const releaseConsumptionEvents = [
     route: 'release-witness:loom',
     release_witness: true
   })))
-].slice(0, 5);
+].slice(0, 8);
 const releaseGeminiConsumption = {
   schema: 'td613.gemini-consumption-release-witness/v0.1',
   coverage: 'this-release-witness-only',
@@ -327,12 +333,12 @@ const receipt = {
   release_canary_budget: {
     posture: 'quota-conservative-bounded-seat-failover',
     max_http_requests: 3,
-    max_provider_requests: 5,
+    max_provider_requests: 8,
     marrowline_model: marrowlineCanaryModel,
     marrowline_retry_model: marrowlineSeatRetry?.retry_model || null,
     loom_model: loomCanaryModel,
     marrowline_structural_repair_ceiling: 1,
-    loom_provider_seat_ceiling: 2
+    loom_provider_seat_ceiling: 5
   },
   request_order: marrowlineSeatRetry
     ? ['marrowline-primary', 'marrowline-seat-retry', 'loom']
