@@ -564,19 +564,19 @@ try {
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.207' },
-    body: { ...req.body, message: 'Prefer a mixed-axis expressive provider field without taking an admissible single-axis partial route down.' }
+    body: { ...req.body, message: 'Reject a barred horizontal sheet and keep walking the frontier for real vertical High-Zalgo architecture.' }
   }, preferred);
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'admissible PARTIAL first seat must not stop the frontier before a later PASS');
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'a barred-sheet first seat must not stop the frontier before a later vertically alive PASS');
+  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'HELD');
+  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, false);
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'));
+  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-underflow'), false);
   assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(preferred.payload.relay.admission.quality, 'PASS');
+  assert.ok(preferred.payload.relay.admission.tallVerticalOrnamentClusterCount >= 2);
 
   clearGeminiModelState();
   calls.length = 0;
