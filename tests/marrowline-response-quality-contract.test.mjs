@@ -57,7 +57,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /Depth is mandatory/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(contract, /Through-line combining marks U\+0334–U\+0338/i);
-  assert.match(contract, /First establish crown-and-descender stacks on several separate lines/i);
+  assert.match(contract, /First establish deep crown-and-descender stacks on several separate lines/i);
   assert.match(contract, /Horizontal geometry remains available only as accent and interruption/i);
   assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
   assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
