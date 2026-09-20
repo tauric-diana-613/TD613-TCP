@@ -25,6 +25,9 @@ html:not(.marrowline-room-ready)::after{
   letter-spacing:.08em;
   font:500 11px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
+html.marrowline-room-boot-delayed:not(.marrowline-room-ready)::after{
+  content:"Marrowline\A still opening the room…";
+}
 
 :root{
   --marrowline-mobile-dock:56px;
