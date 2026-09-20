@@ -28,6 +28,19 @@ ONE MODEL 429 != PROVIDER-WIDE EXHAUSTION
 
 and later code can still erase that distinction.
 
+## Draft progress already completed
+
+This chamber has moved beyond a pure handoff. The first bounded repair pass now:
+
+- preserves `model_quota_exhausted` in the browser broker instead of promoting every HTTP 429 to provider scope;
+- leaves a bare/ambiguous 429 callable rather than freezing `auto-quality`;
+- permits explicit provider/shared scope to create route-wide cooldown;
+- adds an explicit `unknown` quota state to PR123 rather than defaulting missing scope evidence to provider-wide exhaustion;
+- preserves that unknown state through PR141 as `unknown-diagnostic`;
+- updates Hush setup documentation and the synthetic quality pilot to the current 3.x family: 3.8, 3.7, 3.6, 3.5, Preview.
+
+The remaining major runtime gap is server-side structured quota observation and cross-layer consistency after Marrowline #1209 lands.
+
 ## Current contradiction
 
 ### Surface A — client transform still contains the good repair
@@ -42,7 +55,7 @@ and later code can still erase that distinction.
 
 That client can distinguish a single-model quota event from a genuinely exhausted attempted set.
 
-### Surface B — browser provider broker can collapse the distinction again
+### Surface B — browser provider broker promotion seam — CLOSED IN THIS DRAFT
 
 `app/engine/hush-provider-broker.js` currently contains:
 
@@ -61,9 +74,9 @@ export function writeProviderStateFromReceipt(input = {}, receipt = {}, at = now
 }
 ```
 
-The `status === 429` branch rewrites the receipt reason to `provider_quota_exhausted`. A client receipt that correctly says `model_quota_exhausted` can therefore be promoted back to provider scope before entering persisted broker state.
+That exact promotion seam was repaired in this Draft: model scope is stored under the concrete model, explicit provider/shared scope may cool the route, and a bare 429 stays unpromoted.
 
-This is the most likely **staple**.
+This was the **staple**. Keep the tests; do not re-open it unless a new falsifier appears.
 
 ### Surface C — server Hush router has no quota-scope semantics
 
