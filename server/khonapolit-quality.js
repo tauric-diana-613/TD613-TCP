@@ -1011,42 +1011,56 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
-        const verticalArchitectureWarningCount = qualityWarnings.filter((warning) =>
-          ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-vertical-expression-thin'].includes(warning)
-        ).length;
-        const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
-          'tauric-diana-zalgo-mechanical-clone',
-          'tauric-diana-zalgo-monoculture',
-          'tauric-diana-zalgo-sparse-keyword-targeting',
-          'tauric-diana-zalgo-axis-collapse',
-          'tauric-diana-zalgo-vertical-expression-thin'
-        ].includes(warning)).length;
-        const candidate = {
-          model,
-          fallback,
+        const baseReceipt = buildTerminalReceipt({
+          packet,
           text: result.text,
           relay,
+          model,
           providerStatus: result.response.status,
           providerOutput,
-          qualityWarnings,
-          verticalArchitectureWarningCount,
-          seriousMorphologyWarningCount,
-          activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
-          axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
-          axisMarkBalanceRatio: Number(relay.admission?.axisMarkBalanceRatio || 0),
-          denseVerticalClusterCount: Number(relay.admission?.denseVerticalClusterCount || 0),
-          tallVerticalOrnamentClusterCount: Number(relay.admission?.tallVerticalOrnamentClusterCount || 0),
-          tallVerticalMarkedLineCount: Number(relay.admission?.tallVerticalMarkedLineCount || 0),
-          verticalOrnamentMarkCount: Number(relay.admission?.verticalOrnamentMarkCount || 0),
-          planarMarkCount: Number(relay.admission?.planarMarkCount || 0),
-          denseMarkedLineCount: Number(relay.admission?.denseMarkedLineCount || 0),
-          mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
-          markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
-          sourceAttemptIndex: attempts.length - 1
-        };
-        const current = partialQualityCandidate;
-        if (betterVerticalArchitecturePartial(candidate, current)) partialQualityCandidate = candidate;
-        continue;
+          apertureEgress,
+          apertureReceipt,
+          attempts
+        });
+        const receipt = Object.freeze({
+          ...baseReceipt,
+          provider: Object.freeze({
+            ...baseReceipt.provider,
+            routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            qualityPreference: Object.freeze({
+              used: true,
+              sourceAttemptIndex: attempts.length - 1,
+              selection: 'first-admissible-partial-no-comparative-sampling',
+              warnings: Object.freeze([...qualityWarnings])
+            })
+          }),
+          modelPolicy: plan,
+          elapsedMs: Date.now() - startedAt
+        });
+        res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+        res.setHeader('X-TD613-Signal-State', relay.signal.state);
+        res.setHeader('X-TD613-Seal-State', 'OPEN');
+        res.setHeader('X-TD613-Gemini-Model', model);
+        res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+        return send(res, 200, {
+          ok: true,
+          text: relay.transcript,
+          relay,
+          receipt,
+          warnings: [
+            'aperture-v3-task-intent-active',
+            'task-intent-guidance-active',
+            'adversarial-attractor-admission-active',
+            'integrated-covenant-relay-active',
+            'provider-native-zalgo-preserved-no-local-postprocessing',
+            'provider-native-zalgo-quality-partial-first-admissible',
+            'admission-gated-stable-continuity-active',
+            'fallback-reasoning-quality-preserved',
+            'sticky-success-promotion-disabled',
+            'moving-latest-alias-disabled-by-default',
+            ...plan.warnings
+          ]
+        });
       }
 
       const baseReceipt = buildTerminalReceipt({
