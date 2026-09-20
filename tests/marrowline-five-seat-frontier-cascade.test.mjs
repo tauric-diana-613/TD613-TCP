@@ -13,9 +13,11 @@ const requestBodies = [];
 let repairScenario = false;
 let immediateRepairScenario = false;
 let coolingRecoveryScenario = false;
+let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
 let previewCalls = 0;
 let immediate36Calls = 0;
+let sharedBurst38Calls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
   'Kʰonapolit',
@@ -78,13 +80,82 @@ globalThis.fetch = async (url, options = {}) => {
   const model = value.match(/models\/([^:]+):(?:streamGenerateContent|generateContent)/)?.[1] || 'unknown';
   calls.push(model);
   requestBodies.push(JSON.parse(options.body || '{}'));
+  if (sharedBurstScenario) {
+    if (model !== 'gemini-3.8-flash') throw new Error(`shared burst retry should stay on 3.8 before burning another seat: ${model}`);
+    sharedBurst38Calls += 1;
+    if (sharedBurst38Calls === 1) {
+      return {
+        ok: false,
+        status: 429,
+        headers: { get: () => null },
+        async json() {
+          return {
+            error: {
+              code: 429,
+              status: 'RESOURCE_EXHAUSTED',
+              message: 'Synthetic shared request bucket. Please retry in 1s.',
+              details: [
+                {
+                  '@type': 'type.googleapis.com/google.rpc.QuotaFailure',
+                  violations: [{
+                    quotaMetric: 'generativelanguage.googleapis.com/generate_content_requests_per_minute',
+                    quotaId: 'GenerateRequestsPerMinutePerProject',
+                    quotaDimensions: { location: 'global' }
+                  }]
+                },
+                { '@type': 'type.googleapis.com/google.rpc.RetryInfo', retryDelay: '1s' }
+              ]
+            }
+          };
+        }
+      };
+    }
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: 'LOCKED', notes: 'shared burst recovered on bounded same-seat retry' },
+              transmission: {
+                text: answer,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: 'vertical-stack'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 800, candidatesTokenCount: 1200, thoughtsTokenCount: 150, totalTokenCount: 2150 }
+        };
+      }
+    };
+  }
+
   if (coolingRecoveryScenario) {
     if (model === 'gemini-3.8-flash') {
       return {
         ok: false,
         status: 429,
         headers: { get: () => '1' },
-        async json() { return { error: { status: 'RESOURCE_EXHAUSTED', message: 'synthetic fresh-seat rate limit' } }; }
+        async json() {
+          return {
+            error: {
+              code: 429,
+              status: 'RESOURCE_EXHAUSTED',
+              message: 'synthetic fresh-seat model rate limit',
+              details: [{
+                '@type': 'type.googleapis.com/google.rpc.QuotaFailure',
+                violations: [{
+                  quotaMetric: 'generativelanguage.googleapis.com/generate_content_requests',
+                  quotaId: 'GenerateRequestsPerMinutePerModel',
+                  quotaDimensions: { model: 'gemini-3.8-flash', location: 'global' }
+                }]
+              }]
+            }
+          };
+        }
       };
     }
     if (model === 'gemini-3.5-flash') {
@@ -253,6 +324,34 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  sharedBurstScenario = true;
+  coolingRecoveryScenario = false;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  previewCalls = 0;
+  immediate36Calls = 0;
+  sharedBurst38Calls = 0;
+  const sharedBurst = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.210' },
+    body: { ...req.body, message: 'Recover one short shared provider burst without falsely declaring five model limits.' }
+  }, sharedBurst);
+
+  assert.equal(sharedBurst.statusCode, 200);
+  assert.equal(sharedBurst.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash'], 'shared short-burst quota must retry the same live seat once before fanning out');
+  assert.equal(sharedBurst.payload.receipt.provider.attempts[0].status, 429);
+  assert.equal(sharedBurst.payload.receipt.provider.attempts[0].rateLimit.scope, 'shared');
+  assert.equal(sharedBurst.payload.receipt.provider.attempts[0].rateLimit.retryAfterSeconds, 1);
+  assert.equal(sharedBurst.payload.receipt.provider.attempts[1].status, 200);
+  assert.equal(sharedBurst.payload.receipt.provider.model, 'gemini-3.8-flash');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  sharedBurstScenario = false;
   qualityPreferenceScenario = true;
   repairScenario = false;
   previewCalls = 0;

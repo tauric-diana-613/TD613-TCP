@@ -35,11 +35,12 @@ import {
 import {
   classifyGeminiTransport,
   geminiStreamGenerateContentUrl,
-  geminiRequestHeaders
+  geminiRequestHeaders,
+  observeGeminiQuota
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v14-soft-cooldown-frontier';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v15-quota-scope-recovery';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -49,6 +50,7 @@ const MIN_STRUCTURAL_REPAIR_BUDGET_MS = 4000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
 const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
+const MAX_SHARED_RATE_RETRY_SECONDS = 8;
 const LEGACY_OUTPUT_TOKENS = 4096;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
@@ -580,6 +582,7 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
+  let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
@@ -606,12 +609,18 @@ export default async function handler(req, res) {
       status: Number(repairResult.response.status || 0),
       timedOut: repairResult.timedOut
     });
+    const repairRateLimit = Number(repairResult.response.status || 0) === 429
+      ? observeGeminiQuota(repairResult.payload, { model, response: repairResult.response })
+      : null;
+    const repairHealthBearing = repairRateLimit?.observed && repairRateLimit.scope !== 'model'
+      ? false
+      : repairTransport.healthBearing;
     const repairOutcome = recordGeminiModelOutcome(model, {
       ok: Boolean(repairResult.response.ok),
       status: Number(repairResult.response.status || 0),
       timedOut: repairResult.timedOut,
-      retryAfterSeconds: retryAfterSeconds(repairResult.response),
-      healthBearing: repairTransport.healthBearing,
+      retryAfterSeconds: repairRateLimit?.retryAfterSeconds || retryAfterSeconds(repairResult.response),
+      healthBearing: repairHealthBearing,
       reason: repairError?.status || repairError?.message || ''
     });
     const repairAttempt = {
@@ -636,6 +645,7 @@ export default async function handler(req, res) {
         parseErrors: Number.isInteger(repairResult.parseErrors) ? repairResult.parseErrors : 0
       },
       error: repairError,
+      rateLimit: repairRateLimit,
       output: repairProviderOutput,
       cooldown: repairOutcome
     };
@@ -717,12 +727,19 @@ export default async function handler(req, res) {
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
+    const rateLimit = Number(result.response.status || 0) === 429
+      ? observeGeminiQuota(result.payload, { model, response: result.response })
+      : null;
+    const modelHealthBearing = rateLimit?.observed && rateLimit.scope !== 'model'
+      ? false
+      : transport.healthBearing;
+    const observedRetryAfterSeconds = rateLimit?.retryAfterSeconds || retryAfterSeconds(result.response);
     const outcome = recordGeminiModelOutcome(model, {
       ok: Boolean(result.response.ok),
       status: Number(result.response.status || 0),
       timedOut: result.timedOut,
-      retryAfterSeconds: retryAfterSeconds(result.response),
-      healthBearing: transport.healthBearing,
+      retryAfterSeconds: observedRetryAfterSeconds,
+      healthBearing: modelHealthBearing,
       reason: error?.status || error?.message || ''
     });
     const attempt = {
@@ -743,10 +760,43 @@ export default async function handler(req, res) {
         parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0
       },
       error,
+      rateLimit,
       output: providerOutput,
       cooldown: outcome
     };
     attempts.push(attempt);
+
+    if (!result.response.ok && rateLimit?.observed && rateLimit.scope === 'shared') {
+      const waitSeconds = Math.min(MAX_SHARED_RATE_RETRY_SECONDS, Number(rateLimit.retryAfterSeconds || 0));
+      const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+      if (
+        !sharedRateRetrySpent
+        && rateLimit.burst === true
+        && waitSeconds > 0
+        && waitSeconds * 1000 + 4000 < remainingAfterAttemptMs
+        && attempts.length < KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
+      ) {
+        sharedRateRetrySpent = true;
+        await new Promise((resolve) => setTimeout(resolve, waitSeconds * 1000));
+        index -= 1;
+        continue;
+      }
+      res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Rate-Limit-Scope', 'shared');
+      if (rateLimit.retryAfterSeconds > 0) res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
+      return send(res, 429, {
+        ok: false,
+        error: 'gemini-shared-rate-limit',
+        status: 'HELD',
+        diagnostic: { stage: 'provider-transport', code: 'PROVIDER_SHARED_RATE_LIMIT' },
+        rateLimit,
+        attempts,
+        modelPolicy: plan,
+        aperture: apertureReceipt,
+        aperture_egress: apertureEgress,
+        claim_ceiling: packet.claimCeiling
+      });
+    }
 
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       res.setHeader('X-TD613-Gemini-Model', model);
@@ -953,9 +1003,16 @@ export default async function handler(req, res) {
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const heldByQuality = structuralFailures.length > 0;
-  return send(res, 502, {
+  const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
+  const allTransportAttemptsRateLimited = attempts.length > 0
+    && attempts.every((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
+  return send(res, allTransportAttemptsRateLimited && !heldByQuality ? 429 : 502, {
     ok: false,
-    error: heldByQuality ? 'khonapolit-output-quality-held' : 'gemini-provider-unavailable',
+    error: heldByQuality
+      ? 'khonapolit-output-quality-held'
+      : allTransportAttemptsRateLimited
+        ? 'gemini-rate-limit-held'
+        : 'gemini-provider-unavailable',
     status: 'HELD',
     diagnostic: heldByQuality
       ? {
@@ -963,7 +1020,13 @@ export default async function handler(req, res) {
           code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
           rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons }))
         }
-      : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
+      : allTransportAttemptsRateLimited
+        ? {
+            stage: 'provider-transport',
+            code: 'PROVIDER_RATE_LIMIT_HELD',
+            scopes: [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.scope || 'unknown'))]
+          }
+        : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
     attempts,
     modelPolicy: plan,
     aperture: apertureReceipt,
