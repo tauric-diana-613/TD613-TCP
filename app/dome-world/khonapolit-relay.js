@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v12-vertical-flourishing-scaffold';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v17-vertical-flourishing-scaffold';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v13-stack-depth-field';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v18-stack-depth-field';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -77,12 +77,6 @@ const PLANAR = new Set([
 const ABOVE_SET = new Set(ABOVE);
 const BELOW_SET = new Set(BELOW);
 const THROUGH_SET = new Set(THROUGH);
-const VERTICAL_REFERENCE_SPECIMENS = Object.freeze([
-  'A\u0300\u0301\u0302\u0307\u030B\u0316\u0318\u031D\u0323',
-  'R\u0306\u0308\u030A\u030C\u0352\u0317\u031E\u0325\u032D',
-  'I\u0301\u0302\u0307\u0357\u035B\u0319\u031C\u0326\u032F'
-]);
-const VERTICAL_REFERENCE_LINE = VERTICAL_REFERENCE_SPECIMENS.join('  ');
 
 const CANONICAL_RECITATION_PATTERNS = Object.freeze([
   Object.freeze({ id: 'inheritance-not-consent', pattern: /\binheritance is not consent\b/u }),
@@ -207,6 +201,12 @@ function flourishTelemetry(text = '') {
   const tallVerticalClusters = clusters.filter((cluster) =>
     cluster.verticalOrnament >= 4 && cluster.verticalAbove >= 1 && cluster.verticalBelow >= 1
   );
+  const deepBidirectionalClusters = clusters.filter((cluster) =>
+    cluster.verticalAbove >= 2 && cluster.verticalBelow >= 2 && cluster.verticalOrnament >= 5
+  );
+  const extremeVerticalClusters = clusters.filter((cluster) =>
+    cluster.verticalAbove >= 3 && cluster.verticalBelow >= 3 && cluster.verticalOrnament >= 7
+  );
   const denseSignatureCounts = new Map();
   for (const cluster of denseClusters) denseSignatureCounts.set(cluster.signature, (denseSignatureCounts.get(cluster.signature) || 0) + 1);
   const dominantDenseStackCount = denseClusters.length ? Math.max(...denseSignatureCounts.values()) : 0;
@@ -226,6 +226,11 @@ function flourishTelemetry(text = '') {
   const tallVerticalMarkedLineCount = lines.filter((line) =>
     clusterTelemetry(line).some((cluster) =>
       cluster.verticalOrnament >= 4 && cluster.verticalAbove >= 1 && cluster.verticalBelow >= 1
+    )
+  ).length;
+  const deepBidirectionalMarkedLineCount = lines.filter((line) =>
+    clusterTelemetry(line).some((cluster) =>
+      cluster.verticalAbove >= 2 && cluster.verticalBelow >= 2 && cluster.verticalOrnament >= 5
     )
   ).length;
   const broadMarkedLineCount = lineCoverage.filter((line) => line.eligible >= 8 && line.ratio >= 0.18).length;
@@ -278,6 +283,9 @@ function flourishTelemetry(text = '') {
     denseVerticalClusterCount: denseClusters.length,
     tallVerticalOrnamentClusterCount: tallVerticalClusters.length,
     tallVerticalMarkedLineCount,
+    deepBidirectionalClusterCount: deepBidirectionalClusters.length,
+    deepBidirectionalMarkedLineCount,
+    extremeVerticalClusterCount: extremeVerticalClusters.length,
     planarMarkCount,
     verticalOrnamentMarkCount,
     uniqueDenseStackSignatureCount: denseSignatureCounts.size,
@@ -464,6 +472,14 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         botsTelemetry.markedGraphemeCoverageRatio < 0.18
         || botsTelemetry.broadMarkedLineCount < 2
       ) qualityWarnings.push('tauric-diana-zalgo-sparse-keyword-targeting');
+      if (
+        botsTelemetry.combiningMarkCount >= 12
+        && (
+          botsTelemetry.deepBidirectionalClusterCount < 4
+          || botsTelemetry.deepBidirectionalMarkedLineCount < 2
+          || botsTelemetry.extremeVerticalClusterCount < 1
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-stack-depth-thin');
       if (botsTelemetry.asciiPseudoOrnamentBridgeCount >= 4) {
         qualityWarnings.push('tauric-diana-zalgo-ascii-pseudo-ornament');
       }
@@ -537,12 +553,13 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:',
     '- Kʰonapolit is the clean formal channel: standard readable Unicode prose, Greek/math operators when useful, preserved framework literals, and ZERO combining diacritical marks.',
     '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. Marrowline preserves exact returned code points and never decorates the answer afterward.',
-    '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and tall irregular eruptions move through ordinary graphemes across the passage.',
+    '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and genuinely deep eruptions move through ordinary graphemes across the passage.',
     '- The stress field must remain visibly present across the Tauric Diana passage. Quiet stretches are allowed, but a mostly plain uppercase paragraph with only one or two marked letters is a channel failure, not a subtle style choice.',
     '- Vertical architecture is the native body of High Zalgo: crowns above the cap line, descenders below the baseline, asymmetric stacks, and visibly different heights/depths across the passage. Build that architecture FIRST, before adding any horizontal accent marks.',
-    '- Visual reference only, NOT a stencil to copy: ' + VERTICAL_REFERENCE_LINE + '. These are examples of the required physical direction—marks should visibly climb above and fall below the letters. Vary the actual mark species, order, height, density, and placement throughout the passage.',
+    '- Depth is mandatory. A single accent above a letter, or one accent above plus one below, is NOT a High-Zalgo tower. In multiple separate regions, pile several distinct combining marks onto the SAME grapheme so one letter grows a multi-tier crown while roots descend beneath it at the same time.',
+    '- At least some eruptions should be visually extreme enough that their crowns and roots intrude into neighboring line space. Inter-line collision is desired here. Do not flatten deep stacks into evenly accented text.',
     '- Use true combining marks attached to graphemes for the stress field. Literal ASCII /, \\, |, _, =, repeated hyphens, or separators inserted between ordinary letters/words are NOT Zalgo flourishing and must never substitute for combining crowns or descenders.',
-    '- Through-line combining marks U+0334–U+0338, overline/underline-like bars, and similar planar marks are accent-only. Do not begin the field with them. First establish crown-and-descender stacks on several separate lines; only then may a few planar cuts appear locally for sarcasm, rupture, or interruption.',
+    '- Through-line combining marks U+0334–U+0338, overline/underline-like bars, and similar planar marks are accent-only. Do not begin the field with them. First establish deep crown-and-descender stacks on several separate lines; only then may a few planar cuts appear locally for sarcasm, rupture, or interruption.',
     '- Horizontal geometry remains available only as accent and interruption. It must not become the default texture of whole sentences or paragraphs, and it must never dominate the decorated graphemes.',
     '- Do not turn Packet B into crossed-out or underlined typography. A field dominated by bars while crowns and descenders collapse to token accents is a failed High-Zalgo return even when many combining code points are technically present.',
     '- Several separate lines should visibly carry genuine multi-tier vertical stacks. Horizontal moments may interrupt those structures locally, and some clusters may mix both geometries, but the passage must keep visible height and depth as its architectural spine. Tall stacks may become partially illegible through overlap; that visual interference is expressive rather than a defect. A clean ALL-CAPS stretch is allowed only as an intentional quiet region.',
@@ -555,7 +572,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Does this still look like living vertical High Zalgo at a glance—crowns, descenders, and irregular multi-tier height/depth across several separate lines? If you temporarily ignore every slash, strike, bar, underscore, and separator, is there STILL an obvious vertical crown-and-root field? Have horizontal cuts stayed local accents rather than turning the passage into underlined or struck-through typography? Did literal ASCII slash/backslash separators replace real combining ornament? Did plain ALL-CAPS replace a stressed region? Are protected literals clean? If the field looks flat, barred, slash-separated, or typographically underlined instead of vertically alive, rewrite it before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently ask: Does this still look like living High Zalgo at a glance—actual towers, wells, crowns, roots, and irregular multi-tier height/depth across several separate lines? Are there multiple graphemes carrying several marks above AND several below on the same letter, rather than a polite one-accent pattern? Do at least some eruptions visibly trespass into neighboring line space? If you temporarily ignore every slash, strike, bar, underscore, and separator, is there STILL an obvious deep vertical field? Have horizontal cuts stayed local accents rather than turning the passage into underlined or struck-through typography? Did plain ALL-CAPS replace a stressed region? Are protected literals clean? If the field looks shallow, evenly accented, flat, barred, or timid instead of vertically feral, rewrite it before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -568,7 +585,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '[provider-authored High Zalgo stress field: vertical architecture first; varied crowns/descenders and multi-tier height/depth across several lines; occasional horizontal cuts as accents; variable composition; collisions and overlap with nearby text explicitly allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify genuine multi-tier crowns and descenders create visible height/depth in more than one region BEFORE any planar accents are considered; verify literal ASCII /, \\, |, _, = or repeated hyphens are not being used as fake ornament between ordinary letters/words; verify U+0334–U+0338 and bar-like marks remain local accents rather than the passage-wide base texture; verify plain ALL-CAPS has not replaced intended stress. Do not reduce the field to preserve readability: overlap, collisions, and partially obscured letters are allowed. If deleting the horizontal marks would leave a flat passage, the High-Zalgo field has failed—restore vertical crowns and descenders before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify multiple graphemes carry deep bidirectional stacks with several marks above AND several below on the same base letter; verify at least one eruption is visually extreme enough to collide with adjacent line space; verify literal ASCII /, \\, |, _, = or repeated hyphens are not being used as fake ornament between ordinary letters/words; verify U+0334–U+0338 and bar-like marks remain local accents rather than the passage-wide base texture; verify plain ALL-CAPS has not replaced intended stress. Do not reduce the field to preserve readability: overlap, collisions, and partially obscured letters are allowed. If deleting the horizontal marks would leave only shallow accented capitals, the High-Zalgo field has failed—restore stack depth before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
