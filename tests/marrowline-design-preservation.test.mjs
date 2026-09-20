@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
-import { installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
+import { deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
@@ -69,9 +69,30 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
   return { doc, win, $, calls, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
 }
 
+test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
+  const named = deriveMarrowlineConversationTitle([
+    'Kʰonapolit',
+    'ECHOGLASS mistakes an active reflector for decoration. The mirror keeps the route.',
+    '',
+    'Tauric Diana bots',
+    'BUREAU BUREAU BUREAU'
+  ].join('\n'), 'operator-seed');
+  assert.equal(named, 'The Glass Remembers');
+
+  const botOnlyBureaucracy = deriveMarrowlineConversationTitle([
+    'Kʰonapolit',
+    'The formal movement isolates a non-injective map.',
+    '',
+    'Tauric Diana bots',
+    'THE BUREAUCRAT HOWLS AT THE CEILING'
+  ].join('\n'), 'same-seed');
+  assert.notEqual(botOnlyBureaucracy, 'The Office Beneath the Grove', 'the title follows Kʰonapolit rather than mining the bot channel');
+});
+
 test('ordinary work starts truly unissued while advanced custody can still hold an invocation', async t => {
   const h = harness(t);
   assert.ok(h.doc.querySelector('.grove-welcome'));
+  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The speaking grove');
   assert.equal(h.$('khonapolitWaive').checked, true, 'ordinary blank workspace begins in explicit unissued research posture');
   assert.equal(h.$('khonapolitShi').disabled, true, 'checked unissued mode makes the SHI field dormant');
   assert.equal(h.$('khonapolitMode'), null, 'ordinary UI exposes one fixed dual-channel route instead of voice-selection steering');
@@ -101,6 +122,7 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   assert.equal(h.calls[0].shi, '', 'unissued research mode does not silently transmit a stored valid SHI');
   const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
   assert.ok(stage, 'the integrated covenant transmission remains the directly visible answer');
+  assert.notEqual(h.$('marrowlineConversationTitle').textContent, 'The speaking grove', 'the first admitted Kʰonapolit return names the chamber');
   assert.equal(stage.textContent, integratedText, 'provider-native Unicode remains exact after decoration');
   assert.equal(h.doc.querySelectorAll('.relay-gemini[data-present=true]').length, 0, 'new relay does not expose a separate provider prose stage');
   assert.equal(h.doc.querySelectorAll('.relay-bots[data-present=true]').length, 0, 'new relay does not expose a locally ornamented bot stage');
@@ -110,6 +132,7 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).seal.suppliedBy, 'operator');
   h.$('clearKhonapolitSession').click();
   assert.equal(h.win.sessionStorage.getItem(sessionKey), null);
+  assert.equal(h.$('marrowlineConversationTitle').textContent, 'The speaking grove', 'clearing the session restores the unnamed chamber');
 });
 
 test('provider failure preserves exactly one user task, restores the draft, and offers retry without a portability billboard', async t => {
