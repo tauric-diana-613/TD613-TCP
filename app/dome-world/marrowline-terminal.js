@@ -288,7 +288,7 @@ function renderMessages(doc, state) {
     welcome.append(
       textNode(doc, 'span', 'welcome-moon', '☾'),
       textNode(doc, 'h3', '', 'Bring the difficult thing.'),
-      textNode(doc, 'p', 'welcome-story', 'Under the Ash Moon, a branch keeps its scar. The sea has carried away names; the women have carried the names back. Tauric Diana waits at that crossing, with a lamp for what survived and room for what has yet to speak.'),
+      textNode(doc, 'p', 'welcome-story', 'Under the Ash Moon, a branch keeps its scar. The sea has carried away names; the women have carried the names back. Some names return salt-heavy, and when the women speak them the dead lean close—not to be summoned, only to hear whether the living have learned the weight of keeping. Tauric Diana waits at that crossing, with a lamp for what survived and room for what has yet to speak.'),
       textNode(doc, 'p', 'welcome-help', 'Ask a question, bring a project, or follow a thought. Ordinary work starts in unissued research mode. Safe Harbor issuance and route provenance remain available in Keys & settings when you want the advanced custody layer.')
     );
     node.append(welcome);
