@@ -158,7 +158,7 @@ test('reordering one mark set still records one mechanical composition without b
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
 });
 
-test('zero provider-authored marks remain a hard Tauric Diana channel failure', () => {
+test('zero provider-authored marks remain visible as PARTIAL quality telemetry instead of taking the route down', () => {
   const plain = [
     'Kʰonapolit',
     'The formal channel stays clean.',
@@ -166,10 +166,11 @@ test('zero provider-authored marks remain a hard Tauric Diana channel failure', 
     'Tauric Diana bots',
     'THE RAW CHANNEL ARRIVED COMPLETELY PLAIN.'
   ].join('\n');
-  const held = assessIntegratedTransmission(plain, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(held.admissible, false);
-  assert.equal(held.quality, 'HELD');
-  assert.ok(held.reasons.includes('tauric-diana-zalgo-absent'));
+  const observed = assessIntegratedTransmission(plain, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-absent'), false);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-absent'));
 });
 
 test('Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning', () => {
