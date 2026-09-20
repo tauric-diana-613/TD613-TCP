@@ -51,6 +51,10 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /mixed-axis burst field/i);
   assert.match(contract, /not a vertical-only stack exercise and not a horizontal strike sheet/i);
   assert.match(contract, /Deep vertical mass remains indispensable/i);
+  assert.match(contract, /LOUD-BURST VISUAL REFERENCE — SCALE ONLY/i);
+  assert.match(contract, /dozens of heterogeneous combining marks/i);
+  assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
+  assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
   assert.match(contract, /several distinct marks above AND several below the SAME grapheme/i);
   assert.match(contract, /one accent above every capital/i);
   assert.match(contract, /Do not distribute ornament evenly/i);
@@ -369,6 +373,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
     assert.match(instruction, /mixed-axis burst field/i, model);
     assert.match(instruction, /Deep vertical mass remains indispensable/i, model);
+    assert.match(instruction, /LOUD-BURST VISUAL REFERENCE — SCALE ONLY/i, model);
+    assert.match(instruction, /dozens of heterogeneous combining marks/i, model);
+    assert.match(instruction, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i, model);
     assert.match(instruction, /Horizontal and oblique geometry are first-class expressive motion/i, model);
     assert.match(instruction, /Do not distribute ornament evenly/i, model);
     assert.match(instruction, /two axes should feel braided rather than alternated by rule/i, model);
@@ -503,6 +510,7 @@ test('provider-authored vertical Zalgo survives raw packet parsing while Marrowl
   assert.equal(relay.admission.admissible, true, relay.admission.reasons.join(', '));
   assert.equal(relay.highZalgo.applied, false, 'Marrowline measures but never adds Zalgo');
   assert.equal(relay.highZalgo.providerGenerated, true);
+  assert.equal(relay.parts[0].text, expected, 'browser-visible combining code points must be the exact provider payload, not a locally decorated derivative');
   assert.ok(countMarks(expected) >= 96);
   assert.ok(relay.admission.denseVerticalClusterCount >= 8);
   assert.ok(relay.parts[0].text.startsWith(clean), 'the Kʰonapolit channel remains clean');
@@ -685,6 +693,9 @@ test('structural repair repeats the vertical-scaffold law without authorizing lo
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
   assert.match(directive, /irregular provider-authored High-Zalgo burst field/i);
+  assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
+  assert.match(directive, /compact specimen only as a physical-scale reference/i);
+  assert.match(directive, /dozens of heterogeneous marks/i);
   assert.match(directive, /deep towers\/wells/i);
   assert.match(directive, /local planar or oblique combining motion/i);
   assert.match(directive, /mixed-axis clusters/i);
