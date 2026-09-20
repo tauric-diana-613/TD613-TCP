@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
 const qualityServer = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
+const loomServer = fs.readFileSync('server/loom-task.js', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.doesNotMatch(source, /Promise\.all\s*\(/, 'production AI witnesses must not be launched concurrently');
@@ -42,11 +43,15 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /posture: 'quota-conservative-bounded-seat-failover'/);
+assert.match(source, /posture: 'route-faithful-five-seat-transport-failover'/);
 assert.match(source, /max_http_requests: 3/);
-assert.match(source, /max_provider_requests: 5/);
+assert.match(source, /max_provider_requests: 8/);
 assert.match(source, /marrowline_structural_repair_ceiling: 1/);
-assert.match(source, /loom_provider_seat_ceiling: 2/);
+assert.match(source, /loom_provider_seat_ceiling: 5/);
+assert.match(loomServer, /const canaryModels = canaryModel/);
+assert.match(loomServer, /\.\.\.allModels\.filter\(candidate => candidate !== canaryModel\)/);
+assert.match(loomServer, /\.slice\(0, LOOM_TASK_MAX_PROVIDER_CALLS\)/);
+assert.match(loomServer, /const models = releaseCanary \? canaryModels : allModels;/);
 assert.doesNotMatch(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must retain the same one-shot provider-authored structural repair as interactive Marrowline');
 assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.stage === 'provider-transport'/);
@@ -64,7 +69,7 @@ assert.doesNotMatch(source, /PROVIDER_SHARED_RATE_LIMIT[^\n]*marrowlineSeatRetry
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 5\)/, 'release consumption artifact cannot exceed primary Marrowline + one bounded Marrowline seat retry + one same-seat structural repair + two Loom provider seats');
+assert.match(source, /\.slice\(0, 8\)/, 'release consumption artifact cannot exceed three bounded Marrowline provider attempts plus the five-seat Loom transport frontier');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
