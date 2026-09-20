@@ -1,4 +1,4 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v9-empty-plan-force-refresh';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v10-khonapolit-cooldown-frontier';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
@@ -170,12 +170,20 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const cooling = rows.filter((row) => !row.state.mayCall);
   const held = available.filter((row) => !row.eligibility.eligible);
   const ordered = [...eligible, ...held, ...cooling].slice(0, Math.max(1, maxModels));
+  // Generic routes may suppress cooling models between requests. Marrowline is
+  // different: a fresh human turn must retain every provider-listed eligible
+  // frontier seat. Cooldown remains telemetry and ordering pressure, not a
+  // cross-request authority to erase the fallback frontier.
+  const callable = task === 'khonapolit-dialogue'
+    ? ordered.filter((row) => row.eligibility.eligible)
+    : eligible;
   const warnings = [];
   if (requestedPreFloor.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
   if (mode === 'quality-first' && routeSpecific.length) warnings.push('route-specific-models-demoted-under-quality-first');
   if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
+  if (task === 'khonapolit-dialogue' && cooling.some((row) => row.eligibility.eligible)) warnings.push('khonapolit-cooling-models-retained-callable');
   if (preThreeConfigured.length) warnings.push('pre-gemini-3-config-ignored');
   if (floorRejected.length) warnings.push('khonapolit-frontier-only-rejected-non-3x-or-lite-models');
   return Object.freeze({
@@ -183,7 +191,7 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
     task,
     mode,
     models: Object.freeze(ordered.map((row) => row.model)),
-    callableModels: Object.freeze(eligible.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
+    callableModels: Object.freeze(callable.slice(0, Math.max(1, maxModels)).map((row) => row.model)),
     excludedModels: Object.freeze([
       ...rows.filter((row) => !row.eligibility.eligible).map((row) => ({ model: row.model, reasons: row.eligibility.reasons })),
       ...floorRejected.map((model) => ({ model, reasons: Object.freeze(['khonapolit-frontier-only']) }))
