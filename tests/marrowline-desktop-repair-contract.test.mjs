@@ -83,6 +83,16 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
   assert.equal(release.composer.portableFailureActions, 'not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic');
 });
 
+test('desktop visually renders Send as an up-arrow while mobile keeps the Send label', () => {
+  assert.match(page, /<button class="primary" id="khonapolitSend" type="submit">Send<\/button>/);
+  assert.match(css, /#khonapolitSend\{[^}]*font-size:0!important[^}]*display:inline-grid!important/s);
+  assert.match(css, /#khonapolitSend::before\{[^}]*content:"⇧"[^}]*font:650 22px\/1 var\(--marrowline-desktop-sans\)/s);
+  const desktopBlock = css.split('@media (min-width:861px){')[1]?.split('/* Marrowline mobile couture')[0] || '';
+  assert.match(desktopBlock, /#khonapolitSend::before/);
+  const mobileBlock = css.split('/* Marrowline mobile couture v1 — shared glass grammar for Chat + Gate. */')[1] || '';
+  assert.doesNotMatch(mobileBlock, /#khonapolitSend::before/, 'mobile must retain the literal Send label');
+});
+
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
   assert.match(js, /legacyActions\.hidden = true/);
   assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
