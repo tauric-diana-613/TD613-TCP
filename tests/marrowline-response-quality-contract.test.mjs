@@ -566,7 +566,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini authors mixed-axis bot Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo with planar accents', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
@@ -574,10 +574,11 @@ test('Kʰonapolit stays clean while Gemini authors mixed-axis bot Zalgo', () => 
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
-  assert.match(contract, /Several separate lines should visibly carry actual combining marks/i);
-  assert.match(contract, /horizontal sections can use slash\/strike\/through-line overlays/i);
-  assert.match(contract, /Do not overcorrect in the opposite direction either/i);
-  assert.match(contract, /do not substitute plain uppercase where either axis was meant to carry stress/i);
+  assert.match(contract, /Several separate lines should visibly carry genuine multi-tier vertical stacks/i);
+  assert.match(contract, /Horizontal geometry remains available as accent and interruption/i);
+  assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
+  assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
+  assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
