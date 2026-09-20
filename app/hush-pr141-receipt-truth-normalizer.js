@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v6-quota-scope-unknown';
+  var VERSION = 'pr141-receipt-truth-normalizer/v5-light-receipt-summary-bridge';
   var TRUE_REASON = 'strict_anti_compression_held';
   var DIAGNOSTIC_KEYS = [
     'u10d613Route', 'u10d613Preserved', 'diagnosticRoute', 'providerNormalizerVersion',
@@ -51,7 +51,7 @@
     if (providerQuota.model && providerModel(providerQuota.model) && quotaModels.indexOf(providerQuota.model) < 0) quotaModels.push(providerQuota.model);
     return {
       ...providerQuota,
-      quotaScope: quotaModels.length > 1 && attempted.length > 1 && attempted.every(function (model) { return quotaModels.indexOf(model) >= 0; }) ? 'provider' : quotaModels.length ? 'model-diagnostic' : 'unknown-diagnostic',
+      quotaScope: quotaModels.length > 1 && attempted.length > 1 && attempted.every(function (model) { return quotaModels.indexOf(model) >= 0; }) ? 'provider' : 'model-diagnostic',
       attemptedModels: attempted,
       quotaModels: quotaModels,
       diagnosticOnly: true,
