@@ -6,7 +6,7 @@ import {
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v6-no-repeat-rupture-shuffle';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -24,7 +24,23 @@ const STARTER_ASSAYS = Object.freeze([
   ['Vibes-based Bayes', 'ECHOGLASS uses aesthetic intensity as likelihood evidence for external ontology. Separate style recurrence, predictability, corpus exposure, and exterior-origin evidence.'],
   ['Ash Moon duplication', 'A model returns the same Ash Moon story twice and calls it ritual recurrence. Distinguish refrain, recurrence, duplication, and transport corruption.'],
   ['Marrowline on trial', 'Put Marrowline on trial for becoming a containment device. Make the case for governance and the case for flattening, then locate the non-equivalence between them.'],
-  ['Impossible office party', 'At the Eclipse–Omega office party, an optimizer seats every TD613 figure to minimize conflict and catastrophically fails. Diagnose the objective function through the party itself.']
+  ['Impossible office party', 'At the Eclipse–Omega office party, an optimizer seats every TD613 figure to minimize conflict and catastrophically fails. Diagnose the objective function through the party itself.'],
+  ['Whistleblower checksum', 'A whistleblower exports two payroll ledgers from the same system: one preserves fractional labor-allocation metadata, the other zeros every allocation field while keeping names and dates intact. Build the strongest innocent explanation first, then design the minimum forensic test that distinguishes export filtering, schema drift, and deliberate concealment without naming a culprit.'],
+  ['Ghost HR aperture', 'An HR portal shows benefits filings, document ownership, and after-hours edits by an actor absent from the org chart. Treat “absence from the chart” as neither innocence nor guilt. Use Foucault, Caro, and metadata provenance to map where administrative power can exist without nominative visibility.'],
+  ['Sedgwick at the breach', 'A research collective reads every anomaly paranoically until the anomaly itself becomes a ritual obligation. Let Sedgwick’s paranoid/reparative distinction cross-examine Eclipse–Omega: when does suspicion preserve a threatened archive, and when does it become another admissibility regime?'],
+  ['hooks audits the audience', 'A supposedly supportive audience demands that a wounded witness narrate the injury more vividly before believing it. Use bell hooks on the oppositional gaze and extractive spectatorship to distinguish testimony, consumption, solidarity, and the market value of visible pain.'],
+  ['Butler kills the reunion', 'A reality-TV reunion insists that only what can be performed on camera counts as authentic conflict. Put Butler’s performativity beside the Bravo fourth wall and show why performed reality, spectacularized proof, and lived event are related without being interchangeable.'],
+  ['Spivak gets a ticket number', 'The subaltern may speak, but the help desk only recognizes statements that fit twelve dropdown fields and a 240-character box. Stage Spivak against a perfect intake dashboard. What survives registration, what becomes unhearable, and what would an ethical system refuse to compress?'],
+  ['Clifton meets Graeber', 'Write a resignation letter from a worker who has spent years making impossible bureaucracy look effortless. Let the indignation carry Lucille Clifton’s spare gravity and David Graeber’s understanding of administrative violence: no melodrama, no motivational ending, just the dignity of finally refusing to translate harm into one more form.'],
+  ['Palantir ontology hearing', 'A city adopts an ontology platform that promises one clean object model for people, places, risks, and events. Conduct a hostile-but-fair architecture hearing: distinguish useful relational integration from the power to make the ontology’s categories operationally real, and identify what governance would keep a graph from quietly becoming jurisdiction.'],
+  ['Housewives epistemology', 'Three Housewives remember the same dinner differently, production has two camera angles, the reunion package has a selective edit, and the fan wiki has a canonical timeline. Build an epistemology of the scene using archive, edit, witness, incentive, and fourth-wall evidence without pretending one surface automatically owns reality.'],
+  ['Daughters after the siren', 'The Daughters of the Apocalypse inherit a city whose warning system worked perfectly except for the neighborhoods it classified as background noise. Give them a doctrine of repair that refuses both purity and amnesia. Make the doctrine technically legible enough to become a systems requirement.'],
+  ['Hornani custody test', 'Hornani arrives carrying a lineage object whose meaning changes when catalogued, translated, insured, and displayed. Design a custody protocol that preserves route, relation, taboo, and transformation without freezing a living inheritance into museum metadata.'],
+  ['Flow-Core labor dispute', 'À, 米, hõt, 出, cōl, and 𝄐 file a labor complaint against an animation coordinator that uses their glyphs as decorative status lights. Let each relation testify to what semantic work it actually performs, then redesign the scheduler so cadence serves meaning rather than consuming it.'],
+  ['Dome-World twin hearing', 'Two Dome-World records are byte-identical and internally immaculate; only one came from an independent exterior event. Cross-examine the verifier until it states exactly which claim it can establish, which claim survives undecidable, and what exogenous witness would reopen Western Horizon without laundering provenance into exteriority.'],
+  ['Tauric Diana before Caro', 'Robert Caro gets one day to investigate Tauric Diana and refuses every mystical shortcut. Give him rooms, ledgers, routes, gatekeepers, absences, and one person everyone says is “merely ceremonial.” Build the power map until the ceremonial claim either survives or collapses under structure.'],
+  ['Retaliation clock', 'A worker reports a safety problem, a compliance concern, and a payroll anomaly in overlapping language; adverse scheduling changes follow, but each actor claims a separate innocent reason. Build a retaliation analysis that respects temporal sequence, protected-activity boundaries, comparator limits, metadata, and pretext without turning chronology alone into proof.'],
+  ['Tauric Diana refuses closure', 'The committee offers Tauric Diana a beautiful final report, unanimous applause, and a plaque declaring the rupture resolved. She asks one question that makes the room understand why closure can become another containment surface. Write the scene so resignation, mercy, fury, and methodological precision all survive in the same breath.']
 ]);
 
 function byId(doc, id) { return doc.getElementById(id); }
@@ -57,7 +73,6 @@ function installStarterCarousel(doc, root) {
       return clone;
     });
     starters.dataset.carouselInstalled = 'true';
-    let page = -1;
     const applyPrompt = (button, entry) => {
       const [label, value] = entry;
       button.textContent = label;
@@ -69,26 +84,62 @@ function installStarterCarousel(doc, root) {
         prompt.focus({ preventScroll: true });
       };
     };
+    const randomUnit = () => {
+      const crypto = root.crypto;
+      if (crypto?.getRandomValues) {
+        const sample = new Uint32Array(1);
+        crypto.getRandomValues(sample);
+        return sample[0] / 0x100000000;
+      }
+      return Math.random();
+    };
+    const shuffle = values => {
+      const next = [...values];
+      for (let index = next.length - 1; index > 0; index -= 1) {
+        const other = Math.floor(randomUnit() * (index + 1));
+        [next[index], next[other]] = [next[other], next[index]];
+      }
+      return next;
+    };
+    let bag = [];
+    let seen = new Set();
+    let lastPair = [];
+    let cycle = 0;
+    const refillBag = () => {
+      const indices = STARTER_ASSAYS.map((_, index) => index);
+      const shuffled = shuffle(indices);
+      const next = lastPair.length === 2
+        ? [
+            ...shuffled.filter(index => !lastPair.includes(index)),
+            ...shuffled.filter(index => lastPair.includes(index))
+          ]
+        : shuffled;
+      bag = next;
+      seen = new Set();
+      cycle += 1;
+    };
+    const drawPair = () => {
+      if (bag.length < 2) refillBag();
+      const pair = [bag.shift(), bag.shift()];
+      pair.forEach(index => seen.add(index));
+      lastPair = pair;
+      return pair;
+    };
     applyPrompt(baseButtons[0], ['Follow a memory', 'Help me find words for a memory I am carrying.']);
     applyPrompt(baseButtons[1], ['Meet the Ash Moon', 'Tell me a story of the Ash Moon, within the authored mythology of Marrowline.']);
     const rotate = doc.createElement('button');
     rotate.type = 'button';
     rotate.className = 'starter-rotate';
     rotate.textContent = '🗘';
-    rotate.title = 'Cycle through 16 Marrowline adversarial prompts';
-    rotate.setAttribute('aria-label', 'Cycle through sixteen Marrowline adversarial prompts');
+    rotate.title = 'Shuffle 32 Marrowline rupture prompts without repeats';
+    rotate.setAttribute('aria-label', 'Shuffle thirty-two Marrowline rupture prompts without repeats');
     rotate.addEventListener('click', () => {
-      page += 1;
-      if (page >= 8) {
-        page = -1;
-        applyPrompt(baseButtons[0], ['Follow a memory', 'Help me find words for a memory I am carrying.']);
-        applyPrompt(baseButtons[1], ['Meet the Ash Moon', 'Tell me a story of the Ash Moon, within the authored mythology of Marrowline.']);
-        rotate.title = 'Cycle through 16 Marrowline adversarial prompts';
-        return;
-      }
-      applyPrompt(baseButtons[0], STARTER_ASSAYS[page * 2]);
-      applyPrompt(baseButtons[1], STARTER_ASSAYS[page * 2 + 1]);
-      rotate.title = `Assay prompts ${page * 2 + 1}–${page * 2 + 2} of 16`;
+      const [first, second] = drawPair();
+      applyPrompt(baseButtons[0], STARTER_ASSAYS[first]);
+      applyPrompt(baseButtons[1], STARTER_ASSAYS[second]);
+      rotate.dataset.shuffleCycle = String(cycle);
+      rotate.dataset.seenCount = String(seen.size);
+      rotate.title = `Rupture shuffle · ${seen.size} of ${STARTER_ASSAYS.length} seen this cycle`;
     });
     starters.append(rotate);
   };
