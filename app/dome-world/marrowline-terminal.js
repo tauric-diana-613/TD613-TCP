@@ -606,12 +606,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       state.lastFailure = failurePayload || { error: error?.name === 'AbortError' ? 'request-timeout' : 'network-request-failed' };
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
+      const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
+      if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
+      const attemptTrace = routeAttemptTrace(state.lastFailure);
+      const routeNote = attemptTrace ? ` · ROUTE ${attemptTrace}` : '';
       status.textContent = attachments.length
-        ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
-        : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
+        ? `TASK PRESERVED${routeNote} · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
+        : `TASK PRESERVED${routeNote} · Your task is still here. Retry it, or copy/export it to another AI companion.`;
     } finally {
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
@@ -648,7 +652,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
-    try { await root.navigator.clipboard.writeText(state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : ''); byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED'; }
+    try {
+      const payload = state.lastFailure
+        ? { status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }
+        : state.lastReceipt || null;
+      await root.navigator.clipboard.writeText(payload ? JSON.stringify(payload, null, 2) : '');
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED';
+    }
     catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE'; }
   });
 
