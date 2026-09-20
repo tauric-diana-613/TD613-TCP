@@ -6,6 +6,18 @@ const safe = (value = '') => String(value ?? '').trim();
 const arr = (value) => Array.isArray(value) ? value : [];
 const boundedNumber = (value) => value !== null && value !== undefined && value !== ''
   && Number.isFinite(Number(value)) ? Number(value) : null;
+const PACIFIC_TIME_ZONE = 'America/Los_Angeles';
+
+function pacificDayKey(value = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: PACIFIC_TIME_ZONE,
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(date);
+  const row = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return row.year && row.month && row.day ? `${row.year}-${row.month}-${row.day}` : '';
+}
 
 function candidateReceipt(payload = {}) {
   if (!payload || typeof payload !== 'object') return null;
@@ -43,6 +55,7 @@ export function ingestGeminiConsumption(payload = {}, root = globalThis) {
     seen.add(id);
     ledger.events.push({
       event_id: id,
+      observed_at: safe(event.observed_at || receipt.observed_at) || null,
       route: safe(event.route) || 'unknown',
       request_id: safe(event.request_id) || null,
       ordinal: Number(event.ordinal || 0) || null,
@@ -83,6 +96,27 @@ export function summarizeGeminiBrowserLedger(root = globalThis) {
     by_route: byRoute,
     by_model: byModel,
     events: arr(ledger.events)
+  };
+}
+
+export function currentGeminiDailyQuotaHints(root = globalThis, at = new Date()) {
+  const ledger = readLedger(root);
+  const currentPacificDay = pacificDayKey(at);
+  const models = new Set();
+  for (const event of arr(ledger.events)) {
+    const quota = event?.quota && typeof event.quota === 'object' ? event.quota : null;
+    if (!quota || Number(event?.status) !== 429 || safe(quota.scope) !== 'model') continue;
+    const cadence = `${safe(quota.quota_id)} ${safe(quota.metric)}`;
+    if (!/(?:PerDay|daily|free_tier_requests)/i.test(cadence)) continue;
+    if (!currentPacificDay || pacificDayKey(event?.observed_at) !== currentPacificDay) continue;
+    const model = safe(quota.model || event.model).replace(/^models\//, '');
+    if (model) models.add(model);
+  }
+  return {
+    schema: 'td613.gemini-browser-daily-quota-hints/v0.1',
+    coverage: 'this-browser-current-pacific-day-model-scoped-429s-only',
+    pacific_day: currentPacificDay || null,
+    models: [...models]
   };
 }
 
