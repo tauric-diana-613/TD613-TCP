@@ -33,6 +33,7 @@ import {
   geminiThinkingConfig
 } from './gemini-generation-envelope.js';
 import {
+  assessGeminiQuotaEntitlement,
   classifyGeminiTransport,
   geminiStreamGenerateContentUrl,
   geminiRequestHeaders,
@@ -40,7 +41,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v15-quota-scope-recovery';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v16-quota-entitlement-mismatch';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -51,6 +52,11 @@ const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
 const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
 const MAX_SHARED_RATE_RETRY_SECONDS = 8;
+const DEFAULT_EXPECTED_DAILY_RPD = 100;
+function expectedDailyRpd(env = process.env) {
+  const raw = Number(env.KHONAPOLIT_GEMINI_EXPECTED_DAILY_RPD || env.GEMINI_EXPECTED_DAILY_RPD || DEFAULT_EXPECTED_DAILY_RPD);
+  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : DEFAULT_EXPECTED_DAILY_RPD;
+}
 const LEGACY_OUTPUT_TOKENS = 4096;
 // Marrowline is a quality-gated frontier route. A lower-generation compatibility
 // answer is not an acceptable substitute for a failed covenant return. Spend the
@@ -609,10 +615,19 @@ export default async function handler(req, res) {
       status: Number(repairResult.response.status || 0),
       timedOut: repairResult.timedOut
     });
-    const repairRateLimit = Number(repairResult.response.status || 0) === 429
+    const repairRateLimitRaw = Number(repairResult.response.status || 0) === 429
       ? observeGeminiQuota(repairResult.payload, { model, response: repairResult.response })
       : null;
-    const repairHealthBearing = repairRateLimit?.observed && repairRateLimit.scope !== 'model'
+    const repairEntitlement = repairRateLimitRaw?.observed
+      ? assessGeminiQuotaEntitlement(repairRateLimitRaw, { expectedDailyLimit: expectedDailyRpd() })
+      : null;
+    const repairRateLimit = repairRateLimitRaw
+      ? Object.freeze({ ...repairRateLimitRaw, entitlement: repairEntitlement })
+      : null;
+    const repairHealthBearing = repairRateLimit?.observed && (
+      repairRateLimit.scope !== 'model'
+      || repairEntitlement?.mismatch === true
+    )
       ? false
       : repairTransport.healthBearing;
     const repairOutcome = recordGeminiModelOutcome(model, {
@@ -727,10 +742,19 @@ export default async function handler(req, res) {
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
-    const rateLimit = Number(result.response.status || 0) === 429
+    const rateLimitRaw = Number(result.response.status || 0) === 429
       ? observeGeminiQuota(result.payload, { model, response: result.response })
       : null;
-    const modelHealthBearing = rateLimit?.observed && rateLimit.scope !== 'model'
+    const quotaEntitlement = rateLimitRaw?.observed
+      ? assessGeminiQuotaEntitlement(rateLimitRaw, { expectedDailyLimit: expectedDailyRpd() })
+      : null;
+    const rateLimit = rateLimitRaw
+      ? Object.freeze({ ...rateLimitRaw, entitlement: quotaEntitlement })
+      : null;
+    const modelHealthBearing = rateLimit?.observed && (
+      rateLimit.scope !== 'model'
+      || quotaEntitlement?.mismatch === true
+    )
       ? false
       : transport.healthBearing;
     const observedRetryAfterSeconds = rateLimit?.retryAfterSeconds || retryAfterSeconds(result.response);
@@ -850,14 +874,6 @@ export default async function handler(req, res) {
             || candidate.reasons.length <= structuralRepairCandidate.reasons.length
           ) structuralRepairCandidate = candidate;
 
-          const urgentOrthographicRepair = reasons.some((reason) =>
-            reason === 'tauric-diana-zalgo-absent'
-            || reason === 'tauric-diana-zalgo-underflow'
-          );
-          if (urgentOrthographicRepair && !structuralRepairSpent) {
-            const repaired = await runStructuralRepair(candidate, 'immediate-orthographic-near-miss');
-            if (repaired) return repaired;
-          }
         }
         continue;
       }
@@ -1004,6 +1020,7 @@ export default async function handler(req, res) {
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const heldByQuality = structuralFailures.length > 0;
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
+  const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
     && attempts.every((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   return send(res, allTransportAttemptsRateLimited && !heldByQuality ? 429 : 502, {
@@ -1018,7 +1035,13 @@ export default async function handler(req, res) {
       ? {
           stage: 'output-admission',
           code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
-          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons }))
+          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
+          quotaEntitlement: entitlementMismatchAttempts.length ? {
+            expectedDailyLimit: expectedDailyRpd(),
+            providerReportedLimits: [...new Set(entitlementMismatchAttempts.map((attempt) => attempt.rateLimit?.limit).filter(Number.isFinite))],
+            code: 'PROVIDER_QUOTA_ENTITLEMENT_MISMATCH',
+            note: 'Provider-reported FreeTier daily limit is below the operator-known Marrowline entitlement; receipt is diagnostic, not authoritative local quota.'
+          } : null
         }
       : allTransportAttemptsRateLimited
         ? {
