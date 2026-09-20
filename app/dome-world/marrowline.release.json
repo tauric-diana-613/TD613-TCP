@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.10-natural-zalgo-field-admission",
+  "version": "v0.7.11-zalgo-quality-telemetry",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,9 +15,9 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v9-natural-distributed-field-admission",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v8-natural-distributed-stress-field",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v9-natural-distributed-field",
+  "providerApiSchema": "td613.khonapolit-gemini/v10-zalgo-quality-telemetry",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v9-zalgo-quality-telemetry",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v10-quality-telemetry",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -71,25 +71,29 @@
     "duplicateTransmission": "hard-inadmissible",
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
-    "flourishFloor": {
-      "combiningMarkCount": 24,
-      "maxRun": 3,
-      "minimumMarkedLines": 2,
-      "minimumLineBreaks": 1,
-      "minimumUppercaseAsciiRatio": 0.4,
-      "minimumCombiningCodePointDiversity": 4,
-      "expressiveClusterRule": "eligible letter/number grapheme carrying at least 2 combining marks",
-      "minimumDistinctExpressiveStackSignatures": 2,
-      "minimumExpressiveClustersBeforeCloneTest": 4,
-      "maximumDominantExpressiveStackRatio": 0.85,
-      "minimumMarkedGraphemeCoverageRatio": 0.18,
-      "minimumBroadMarkedLines": 2,
-      "broadMarkedLineRule": "line has at least 8 eligible letter/number graphemes and at least 18% of them carry one or more combining marks",
-      "purpose": "modest local anti-counterfeit floor: reject absent, nearly plain, cloned-stamp, or isolated-keyword output without prescribing provider geometry",
+    "zalgoQualityPolicy": {
+      "hardStructuralRequirement": "at-least-one-provider-authored-combining-mark-in-tauric-diana-bots",
+      "zeroMarkPosture": "HELD-no-human-visible-return",
+      "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
+      "mechanicalClonePosture": "PARTIAL-visible-with-quality-warning",
       "providerVisibleAsChecklist": false,
-      "belowFloorPosture": "HELD-no-human-visible-return",
+      "diagnosticThresholds": {
+        "combiningMarkCount": 24,
+        "maxRun": 3,
+        "minimumMarkedLines": 2,
+        "minimumLineBreaks": 1,
+        "minimumUppercaseAsciiRatio": 0.4,
+        "minimumCombiningCodePointDiversity": 4,
+        "minimumDistinctExpressiveStackSignatures": 2,
+        "minimumExpressiveClustersBeforeCloneTest": 4,
+        "maximumDominantExpressiveStackRatio": 0.85,
+        "minimumMarkedGraphemeCoverageRatio": 0.18,
+        "minimumBroadMarkedLines": 2
+      },
+      "diagnosticAuthority": "quality-observation-only-not-service-availability",
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
-      "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature"
+      "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
+      "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -124,22 +128,24 @@
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "modest anti-counterfeit floor remains local and is not exposed as a generation checklist",
+      "localAdmission": "structural admission requires provider-authored diacritic presence; thin, sparse or cloned morphology remains admitted as PARTIAL quality telemetry",
       "localPostprocessing": false,
-      "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas"
+      "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
     "humanOperatorObservation": {
       "observedAt": "2026-09-19",
       "model": "gemini-3.5-flash",
       "observation": "human-operated production trial showed one repeated dense vertical stack mechanically stamped across many graphemes while other sentences remained clean",
       "rendererCheck": "Marrowline renders admitted provider text with textContent and pre-wrap; no local Unicode normalization or selective mark stripping found in the human surface path",
-      "consequence": "mechanical repeated-stack geometry is now a structural HOLD even when legacy scalar mark counters are satisfied",
+      "consequence": "mechanical repeated-stack geometry was initially promoted to a structural HOLD; later production canaries falsified that coupling and it is now retained as quality telemetry instead",
       "followupObservation": "human-operated production trial after the expressive-prosody repair showed semantic dart-throwing: sparse words received dramatic geometry while surrounding clauses remained visually inert, and whole-stage flourish spacing made clean Kʰonapolit difficult to read",
       "followupConsequence": "provider instruction now targets a continuous stress field instead of emotion-to-word effects; renderer preserves marked Tauric Diana bot lines without clipping and without adding protective vertical clearance; preloaded mobile demos commit on first touch before keyboard blur",
       "secondFollowupObservation": "physical-iPhone production trial after the continuous-field repair still showed sparse keyword-style Zalgo, approximately 1.5-spaced reading cadence, browser-side transport holds on complex prompts, an operator-facing response-emphasis selector, an active SHI field while unissued mode was checked, Safari input zoom, and an unsafe button-anchored clear confirmation",
       "secondFollowupConsequence": "literal orthographic stencil examples are removed; browser request authority is extended beyond the 210-second server wall but below the 240-second function ceiling; ordinary UI uses one fixed dual-channel route; unissued mode disables and excludes SHI; reading cadence is tightened; High Zalgo is explicitly allowed to collide without clipping; destructive clear uses a centered modal",
       "thirdFollowupObservation": "Vercel Operator Release #1184 / run 35476737160 proved the transport repair: the Marrowline canary remained alive for about 50.9 seconds and three fallback models returned complete streamed packets. Gemini 3.6 and Preview were then HELD only by the old quota/dense-stack admission, while 3.7 missed the Tauric Diana bots nominative heading.",
-      "thirdFollowupConsequence": "provider-visible mark quotas, signature quotas, dense-cluster quotas and percentage checklists are retired. The prompt now gives qualitative natural-field guidance only; local admission keeps a modest anti-counterfeit floor for absent, nearly plain, cloned-stamp or isolated-keyword returns without dictating a costume."
+      "thirdFollowupConsequence": "provider-visible mark quotas, signature quotas, dense-cluster quotas and percentage checklists are retired. The prompt now gives qualitative natural-field guidance only.",
+      "fourthFollowupObservation": "Vercel Operator Release #1186 / run 35478462876 preserved exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD only because three complete streamed Marrowline returns from Gemini 3.5, 3.6 and Preview were rejected by local thin/sparse Zalgo morphology rules. 3.5 and Preview carried thin+sparse warnings; 3.6 carried thin-field warning. The independent Loom witness later encountered provider transport pressure, but the Marrowline failure was already isolated to output admission.",
+      "fourthFollowupConsequence": "Zalgo morphology quality is decoupled from route availability. Zero provider-authored combining marks remains structural; thin, sparse or mechanically cloned provider-authored fields are admitted as PARTIAL with qualityWarnings and preserved exact Unicode for human R&D."
     }
   },
   "qualityFloor": {
@@ -155,8 +161,9 @@
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
-    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-field-absent-or-too-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting",
-    "failurePosture": "hold-on-structural-or-orthographic-failure-never-downgrade-to-gemini-2.5",
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-canonical-recitation",
+    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting",
+    "failurePosture": "hold-on-structural-failure; preserve admitted style warnings visibly; never downgrade to gemini-2.5",
     "providerCallCeiling": 5,
     "timeoutGeometry": {
       "primaryMs": 50000,
@@ -181,7 +188,8 @@
       "35456378853 falsifies short-seat geometry as sufficient evidence of model failure: all Marrowline seats were aborted before any candidate text reached admission",
       "2026-09-19 release #1183 / 35472967872: Marrowline gemini-3.8-flash returned 503 after 7.438s, gemini-3.5-flash returned HTTP 200 after 15.174s with relay_admitted=true and relay_quality=PASS; current evidence does not justify promoting 3.6 or 3.7 above the proven 3.5 completion lane",
       "2026-09-19 human complex-prompt trial exposed a separate 55-second browser AbortController deadline despite the 210-second server wall and 240-second Vercel ceiling; client timeout mismatch is repaired independently of provider ranking",
-      "2026-09-19 release #1184 / run 35476737160: browser transport remained live for ~50.9s; 3.6 and Preview streamed complete returns but the old dense-stack/quota admission HELD them, while 3.7 missed the Tauric Diana bots heading. Release remained HELD. This falsified provider-visible quota rubrics as compatible with natural prosody."
+      "2026-09-19 release #1184 / run 35476737160: browser transport remained live for ~50.9s; 3.6 and Preview streamed complete returns but the old dense-stack/quota admission HELD them, while 3.7 missed the Tauric Diana bots heading. Release remained HELD. This falsified provider-visible quota rubrics as compatible with natural prosody.",
+      "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary."
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
@@ -190,7 +198,8 @@
       "2026-09-19 release run 35465625820 on source 1d44acd4: raw dual-packet streaming reached output admission on gemini-3.5-flash, gemini-3.6-flash, gemini-3.7-flash, and gemini-3-flash-preview; 3.5/3.6/preview were HELD only for tauric-diana-high-zalgo-below-floor and 3.7 for tauric-diana-bots-nominative-missing; schema-removal alone is therefore insufficient and the next bounded assay is provider-side orthographic stencil salience with the hard local floor unchanged",
       "2026-09-19 release run 35467353913 on source 45388699378574fd531b444ac2db07c225221bee: provider-visible stencil recovered one admitted Preview return under the unchanged scalar floor while 3.5 remained below-floor in the same canary",
       "2026-09-19 human operator production trial: 3.5 produced repeated identical vertical stack geometry across marked graphemes with clean prose gaps; this falsified scalar density as sufficient High-Zalgo quality and motivated model-agnostic expressive-prosody anti-clone admission",
-      "2026-09-19 release #1184 / run 35476737160: natural-field prompting still carried hidden quota pressure through explicit provider-visible thresholds; 3.6 and Preview reached output admission with complete streamed packets but were rejected by the legacy dense-stack floor. The next bounded assay removes numeric orthographic rubrics from the provider prompt and simplifies local admission without adding local Zalgo."
+      "2026-09-19 release #1184 / run 35476737160: natural-field prompting still carried hidden quota pressure through explicit provider-visible thresholds; 3.6 and Preview reached output admission with complete streamed packets but were rejected by the legacy dense-stack floor. The next bounded assay removes numeric orthographic rubrics from the provider prompt and simplifies local admission without adding local Zalgo.",
+      "2026-09-20 release #1186 / run 35478462876: three complete provider-authored Marrowline returns survived transport and packet framing but were discarded solely by local thin/sparse morphology judgments. The next bounded assay keeps zero-mark absence structural and demotes morphology judgments to PARTIAL quality telemetry."
     ],
     "providerPlanRecovery": {
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",
