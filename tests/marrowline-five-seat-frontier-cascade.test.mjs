@@ -437,7 +437,7 @@ try {
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.211' },
-    body: { ...req.body, message: 'Do not let a provider FreeTier 20 mismatch rewrite the Marrowline 100/day entitlement or model health.' }
+    body: { ...req.body, message: 'Treat FreeTier 20 as a per-model bucket inside the five-seat Marrowline 100/day route budget.' }
   }, entitlement);
 
   assert.equal(entitlement.statusCode, 200);
@@ -446,9 +446,39 @@ try {
   const mismatchAttempt = entitlement.payload.receipt.provider.attempts[0];
   assert.equal(mismatchAttempt.rateLimit.limit, 20);
   assert.equal(mismatchAttempt.rateLimit.entitlement.expectedDailyLimit, 100);
-  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, true);
-  assert.notEqual(mismatchAttempt.cooldown?.state, 'cooling_down', 'entitlement mismatch must not poison model-local cooldown');
+  assert.equal(mismatchAttempt.rateLimit.entitlement.limitScope, 'per-model');
+  assert.equal(mismatchAttempt.rateLimit.entitlement.routeModelCount, 5);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.routeDailyCapacity, 100);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, false);
+  assert.equal(mismatchAttempt.cooldown?.state, 'cooling_down');
+  assert.equal(mismatchAttempt.cooldown?.retryAfterSeconds, 27, 'provider Retry-After stays authoritative instead of inflating to 120/240/480 seconds');
   assert.equal(entitlement.payload.receipt.provider.model, 'gemini-3.5-flash');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  entitlementMismatchScenario = false;
+  sharedBurstScenario = false;
+  coolingRecoveryScenario = false;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  const releaseCanary = response();
+  await handler({
+    ...req,
+    headers: {
+      'x-forwarded-for': '203.0.113.212',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash'
+    },
+    body: { ...req.body, message: 'Bound production release witness to one provider seat.' }
+  }, releaseCanary);
+
+  assert.equal(releaseCanary.statusCode, 502);
+  assert.deepEqual(calls, ['gemini-3.6-flash'], 'release canary may spend exactly one Marrowline provider seat');
+  assert.equal(releaseCanary.payload.attempts.length, 1);
+  assert.equal(releaseCanary.payload.attempts[0].model, 'gemini-3.6-flash');
+  assert.equal(releaseCanary.payload.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
 
   clearGeminiModelState();
   calls.length = 0;
