@@ -90,7 +90,8 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
   const desktopBlock = css.split('@media (min-width:861px){')[1]?.split('/* Marrowline mobile couture')[0] || '';
   assert.match(desktopBlock, /#khonapolitSend::before/);
   const mobileArrowBlock = css.split('@media(max-width:860px){\n  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions')[1]?.split('@media (min-width:861px){')[0] || '';
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧"/);
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧︎"/);
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:24px[\s\S]*height:24px[\s\S]*transform:translateY\(2px\)/);
   assert.match(mobileArrowBlock, /#khonapolitSend\{[\s\S]*width:42px!important[\s\S]*font-size:0!important/);
   assert.equal(release.composer.desktopSendGlyph, '⇧');
   assert.equal(release.composer.mobileSendGlyph, '⇧');
@@ -177,4 +178,9 @@ test('mobile couture collapses Chat dead space while preserving the proven Zalgo
     'couture may change composer chrome but not the proven chatbox typography');
   assert.doesNotMatch(couture, /#speakingPanel \.message-body\{[^}]*\bfont(?:-family|-size|-style|-weight|:)/s,
     'couture may change message-card chrome but not the proven Zalgo typography');
+});
+
+
+test('empty-state welcome keeps the authored ancestral-return line', () => {
+  assert.match(terminalJs, /Some names return salt-heavy, and when the women speak them the dead lean close—not to be summoned, only to hear whether the living have learned the weight of keeping\./);
 });
