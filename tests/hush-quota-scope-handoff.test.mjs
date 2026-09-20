@@ -19,9 +19,13 @@ test('existing Hush client still carries the June model-vs-provider quota distin
   assert.match(client, /provider_quota_exhausted/);
 });
 
-test('handoff pins the current broker promotion seam so a future repair cannot lose it', () => {
-  assert.match(broker, /reason === 'provider_quota_exhausted' \|\| status === 429/);
-  assert.match(broker, /reason: 'provider_quota_exhausted', httpStatus: 429/);
+test('draft repair closes the broker promotion seam without freezing unknown 429 scope', () => {
+  assert.match(broker, /reason === 'model_quota_exhausted'/);
+  assert.match(broker, /scope === 'model-diagnostic'/);
+  assert.match(broker, /scope === 'provider'/);
+  assert.match(broker, /scope === 'shared'/);
+  assert.match(broker, /bare\/ambiguous 429 cannot establish provider scope/i);
+  assert.doesNotMatch(broker, /reason === 'provider_quota_exhausted' \|\| status === 429/);
 });
 
 test('handoff pins the current server-side semantic gap', () => {
@@ -30,8 +34,15 @@ test('handoff pins the current server-side semantic gap', () => {
   assert.doesNotMatch(server, /observeGeminiQuota/);
 });
 
-test.todo('repair broker persistence so model_quota_exhausted cannot be promoted by HTTP 429 alone');
-test.todo('reuse shared Gemini quota observer after Marrowline #1209 lands and preserve model/shared/unknown in Hush server receipts');
+test('live PR123 and PR141 surfaces now preserve an explicit unknown quota state', () => {
+  const stable = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
+  const normalizer = fs.readFileSync('app/hush-pr141-receipt-truth-normalizer.js', 'utf8');
+  assert.match(stable, /return'unknown'/);
+  assert.match(stable, /quota_scope_unknown/);
+  assert.match(normalizer, /unknown-diagnostic/);
+});
+
+test.todo('reuse shared Gemini quota observer after Marrowline #1209 lands and preserve structured model/shared/unknown scope in Hush server receipts');
 test.todo('decide bounded cooldown law for shared short-burst RetryInfo without weakening strict no-fallback Hush custody');
 
 console.log('hush-quota-scope-handoff.test.mjs handoff hooks loaded');
