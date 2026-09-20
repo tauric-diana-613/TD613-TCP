@@ -8,6 +8,7 @@ import {
   GEMINI_BROWSER_LEDGER_SCHEMA,
   GEMINI_BROWSER_LEDGER_KEY,
   clearGeminiBrowserLedger,
+  currentGeminiDailyQuotaHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
 } from '../app/gemini-consumption-ledger.js';
@@ -113,4 +114,56 @@ test('browser ledger deduplicates exact events and labels its coverage as browse
   assert.deepEqual(summary.by_route, { hush: 1, marrowline: 2 });
   assert.deepEqual(summary.by_model, { 'gemini-3.8-flash': 2, 'gemini-3.5-flash': 1 });
   assert.ok(root.localStorage.getItem(GEMINI_BROWSER_LEDGER_KEY));
+});
+
+
+test('browser daily model quota hints survive serverless-isolate churn only within the current Pacific quota day', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const daily = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'daily-quota-1',
+    observedAt: '2026-09-20T12:00:00.000Z',
+    attempts: [{
+      model: 'gemini-3.8-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.8-flash',
+        limit: 20,
+        retryAfterSeconds: 0
+      }
+    }]
+  });
+  const shared = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'shared-burst-1',
+    observedAt: '2026-09-20T12:05:00.000Z',
+    attempts: [{
+      model: 'gemini-3.5-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'shared',
+        quotaId: 'GenerateRequestsPerMinutePerProject',
+        metric: 'generativelanguage.googleapis.com/generate_content_requests_per_minute',
+        model: null,
+        limit: 10,
+        retryAfterSeconds: 5
+      }
+    }]
+  });
+
+  ingestGeminiConsumption({ gemini_consumption: daily }, root);
+  ingestGeminiConsumption({ gemini_consumption: shared }, root);
+
+  const sameDay = currentGeminiDailyQuotaHints(root, new Date('2026-09-20T15:00:00.000Z'));
+  assert.equal(sameDay.schema, 'td613.gemini-browser-daily-quota-hints/v0.1');
+  assert.equal(sameDay.coverage, 'this-browser-current-pacific-day-model-scoped-429s-only');
+  assert.deepEqual(sameDay.models, ['gemini-3.8-flash']);
+  assert.equal(sameDay.pacific_day, '2026-09-20');
+
+  const nextPacificDay = currentGeminiDailyQuotaHints(root, new Date('2026-09-21T08:00:00.000Z'));
+  assert.deepEqual(nextPacificDay.models, [], 'daily exhaustion evidence must expire after the Pacific provider day changes');
 });

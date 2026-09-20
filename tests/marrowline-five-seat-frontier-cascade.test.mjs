@@ -569,17 +569,50 @@ try {
     body: { ...req.body, message: 'Repair one provider-authored nominative omission on the same release-canary seat.' }
   }, releaseCanaryRepair);
 
-  assert.equal(releaseCanaryRepair.statusCode, 200);
-  assert.equal(releaseCanaryRepair.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.6-flash', 'gemini-3.6-flash'], 'release canary may spend exactly one same-seat structural repair after an HTTP-200 repairable envelope defect');
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts.length, 2);
-  assert.deepEqual(releaseCanaryRepair.payload.receipt.provider.attempts[0].outputAdmission.reasons, ['tauric-diana-bots-nominative-missing']);
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].repairOfAttempt, 0);
-  assert.deepEqual(releaseCanaryRepair.payload.receipt.provider.attempts[1].repairReasons, ['tauric-diana-bots-nominative-missing']);
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].outputAdmission.admissible, true);
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.structuralRepair.used, true);
-  assert.equal(releaseCanaryRepair.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(releaseCanaryRepair.statusCode, 502);
+  assert.equal(releaseCanaryRepair.payload.ok, false);
+  assert.deepEqual(calls, ['gemini-3.6-flash'], 'release canary records one provider-authored near miss without spending a repair request');
+  assert.equal(releaseCanaryRepair.payload.attempts.length, 1);
+  assert.deepEqual(releaseCanaryRepair.payload.attempts[0].outputAdmission.reasons, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(releaseCanaryRepair.payload.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
+  assert.equal(releaseCanaryRepair.payload.diagnostic.code, 'ATTRACTOR_STRUCTURE_NOT_ADMITTED');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  releaseCanaryHeadingRepairScenario = false;
+  sharedBurstScenario = false;
+  entitlementMismatchScenario = false;
+  coolingRecoveryScenario = false;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  previewCalls = 0;
+  const pacificParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date());
+  const pacificRow = Object.fromEntries(pacificParts.map(part => [part.type, part.value]));
+  const pacificDay = `${pacificRow.year}-${pacificRow.month}-${pacificRow.day}`;
+  const hinted = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.215' },
+    body: {
+      ...req.body,
+      message: 'Carry browser-observed daily quota exhaustion across a fresh serverless isolate.',
+      dailyQuotaHints: {
+        schema: 'td613.gemini-browser-daily-quota-hints/v0.1',
+        pacific_day: pacificDay,
+        models: ['gemini-3.8-flash']
+      }
+    }
+  }, hinted);
+
+  assert.equal(hinted.statusCode, 200);
+  assert.equal(hinted.payload.ok, true);
+  assert.equal(calls.includes('gemini-3.8-flash'), false, 'browser-observed daily exhaustion must prevent a fresh isolate from rediscovering the same dead seat');
+  assert.equal(hinted.payload.receipt.provider.model, 'gemini-3-flash-preview');
 
   clearGeminiModelState();
   calls.length = 0;

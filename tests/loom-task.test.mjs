@@ -124,7 +124,7 @@ test('one transient HTTP failure may fail over to the next eligible model', asyn
   ]);
 });
 
-test('production release canary keeps its selected Loom seat and permits one transient alternate', async () => {
+test('production release Loom canary keeps exactly one pinned provider seat on transient failure', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -137,9 +137,7 @@ test('production release canary keeps its selected Loom seat and permits one tra
     fetchImpl: async (url) => {
       const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
       attempted.push(model);
-      return attempted.length === 1
-        ? { ok: false, status: 503 }
-        : { ok: true, status: 200, json: async () => payload() };
+      return { ok: false, status: 503 };
     }
   });
   const result = await h.run(task(), {
@@ -152,17 +150,16 @@ test('production release canary keeps its selected Loom seat and permits one tra
       'x-td613-canary-model': 'gemini-3.6-flash'
     }
   });
-  assert.equal(result.status, 200);
-  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash']);
-  assert.equal(result.body.observations.provider_calls, 2);
+  assert.equal(result.status, 502);
+  assert.deepEqual(attempted, ['gemini-3.6-flash']);
+  assert.equal(result.body.observations.provider_calls, 1);
   assert.deepEqual(result.body.observations.provider_attempts, [
-    { model: 'gemini-3.6-flash', status: 503 },
-    { model: 'gemini-3.8-flash', status: 200 }
+    { model: 'gemini-3.6-flash', status: 503 }
   ]);
-  assert.equal(result.body.observations.model, 'gemini-3.8-flash');
+  assert.equal(result.body.observations.model, 'gemini-3.6-flash');
 });
 
-test('production release Loom canary reaches a third seat after two transient transport failures', async () => {
+test('production release Loom canary does not fan a model-scoped 429 across alternate seats', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -174,9 +171,7 @@ test('production release Loom canary reaches a third seat after two transient tr
     ] }),
     fetchImpl: async (url) => {
       attempted.push(decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || ''));
-      return attempted.length < 3
-        ? { ok: false, status: attempted.length === 1 ? 429 : 503 }
-        : { ok: true, status: 200, json: async () => payload() };
+      return { ok: false, status: 429 };
     }
   });
   const result = await h.run(task(), {
@@ -189,13 +184,14 @@ test('production release Loom canary reaches a third seat after two transient tr
       'x-td613-canary-model': 'gemini-3.6-flash'
     }
   });
-  assert.equal(result.status, 200);
-  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash']);
-  assert.equal(result.body.observations.provider_calls, 3);
-  assert.equal(result.body.observations.model, 'gemini-3.5-flash');
+  assert.equal(result.status, 502);
+  assert.deepEqual(attempted, ['gemini-3.6-flash']);
+  assert.equal(result.body.observations.provider_calls, 1);
+  assert.equal(result.body.observations.model, 'gemini-3.6-flash');
+  assert.deepEqual(result.body.observations.provider_attempts, [{ model: 'gemini-3.6-flash', status: 429 }]);
 });
 
-test('production release Loom canary exhausts the same five-seat transport frontier as ordinary Loom', async () => {
+test('production release Loom canary remains one-seat even when the ordinary route has five callable seats', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -221,14 +217,9 @@ test('production release Loom canary exhausts the same five-seat transport front
     }
   });
   assert.equal(result.status, 502);
-  assert.deepEqual(attempted, [
-    'gemini-3.6-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash',
-    'gemini-3.7-flash',
-    'gemini-3-flash-preview'
-  ]);
-  assert.equal(result.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
+  assert.deepEqual(attempted, ['gemini-3.6-flash']);
+  assert.equal(result.body.observations.provider_calls, 1);
+  assert.ok(LOOM_TASK_MAX_PROVIDER_CALLS > result.body.observations.provider_calls, 'interactive Loom retains broader failover than the release witness');
 });
 
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {

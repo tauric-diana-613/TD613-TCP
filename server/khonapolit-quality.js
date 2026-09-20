@@ -98,6 +98,25 @@ const requestHeader = (req = {}, name = '') => {
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
+const PACIFIC_TIME_ZONE = 'America/Los_Angeles';
+function pacificDayKey(at = Date.now()) {
+  const date = at instanceof Date ? at : new Date(at);
+  if (Number.isNaN(date.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: PACIFIC_TIME_ZONE,
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(date);
+  const row = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return row.year && row.month && row.day ? `${row.year}-${row.month}-${row.day}` : '';
+}
+function clientDailyQuotaHintModels(body = {}, at = Date.now()) {
+  const hints = body?.dailyQuotaHints;
+  if (!hints || hints.schema !== 'td613.gemini-browser-daily-quota-hints/v0.1') return new Set();
+  if (safe(hints.pacific_day) !== pacificDayKey(at)) return new Set();
+  return new Set((Array.isArray(hints.models) ? hints.models : [])
+    .map((model) => safe(model).replace(/^models\//, ''))
+    .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)));
+}
 
 const ORDINARY_PROJECT_GUIDANCE = [
   'ORDINARY PROJECT WORK:',
@@ -657,23 +676,24 @@ export default async function handler(req, res) {
   });
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
-  const allModels = selectKhonapolitProviderModelsFromPlan(plan);
+  const clientDailyQuotaHints = clientDailyQuotaHintModels(body);
+  const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
+  const allModels = providerModels.filter((model) => !clientDailyQuotaHints.has(model));
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
   const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
-  const routeModelCount = Math.max(1, allModels.length);
+  const routeModelCount = Math.max(1, providerModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
-    // Release-canary mode is still pinned to one requested provider seat per HTTP
-    // invocation, but it must exercise the same single provider-authored structural
-    // repair that interactive Marrowline uses. This repairs HTTP-200 envelope defects
-    // (for example a dropped nominative heading) without widening to another model,
-    // weakening admission, or performing local Unicode/text surgery.
+    if (releaseCanary) return null;
+    // Human turns retain one bounded provider-authored structural repair. Release
+    // canaries are transport/liveness witnesses and may spend only their one pinned
+    // Marrowline provider request; they never repair, fail over, or retry that seat.
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
@@ -812,7 +832,20 @@ export default async function handler(req, res) {
     return null;
   };
 
-  if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+  if (!models.length) return send(res, clientDailyQuotaHints.size ? 429 : 503, {
+    ok: false,
+    error: clientDailyQuotaHints.size ? 'client-observed-daily-model-quota-held' : 'no-eligible-callable-models',
+    status: clientDailyQuotaHints.size ? 'HELD' : undefined,
+    diagnostic: clientDailyQuotaHints.size
+      ? { stage: 'provider-plan', code: 'CLIENT_OBSERVED_DAILY_MODEL_QUOTA_HELD', models: [...clientDailyQuotaHints] }
+      : undefined,
+    attempts,
+    clientDailyQuotaHints: [...clientDailyQuotaHints],
+    modelPolicy: plan,
+    aperture: apertureReceipt,
+    aperture_egress: apertureEgress,
+    claim_ceiling: packet.claimCeiling
+  });
 
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
