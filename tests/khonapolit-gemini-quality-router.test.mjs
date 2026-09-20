@@ -60,7 +60,8 @@ const developedAnswer = [
   `${STACK.repeat(8)} THE GROVE KEEPS THE SCAR WHEN THE MAP PRETENDS TO BE THE LAND!`
 ].join('\n');
 const degradedAnswer = 'The Ash Moon was pale and the covenant remained. This is generic atmospheric prose with no required voice frame.';
-let tokenLimit = false;
+let tokenLimitCallsRemaining = 0;
+let requestRejectCallsRemaining = 0;
 clearGeminiModelState();
 process.env.GEMINI_API_KEY = 'test-key';
 globalThis.fetch = async (url, options = {}) => {
@@ -73,15 +74,28 @@ globalThis.fetch = async (url, options = {}) => {
   };
   calls.push(String(url));
   requestBodies.push(JSON.parse(options.body));
-  const attemptWithinRequest = tokenLimit ? 1 : ((calls.length - 1) % 2) + 1;
-  const text = tokenLimit ? 'REJECTED_PARTIAL_RESPONSE' : attemptWithinRequest === 1 ? degradedAnswer : developedAnswer;
+  if (requestRejectCallsRemaining > 0) {
+    requestRejectCallsRemaining -= 1;
+    return {
+      ok: false,
+      status: 400,
+      headers: { get: () => null },
+      async json() {
+        return { error: { status: 'INVALID_ARGUMENT', code: 400, message: 'synthetic model-seat request rejection' } };
+      }
+    };
+  }
+  const tokenLimited = tokenLimitCallsRemaining > 0;
+  if (tokenLimited) tokenLimitCallsRemaining -= 1;
+  const attemptWithinRequest = tokenLimited ? 1 : ((calls.length - 1) % 2) + 1;
+  const text = tokenLimited ? 'REJECTED_PARTIAL_RESPONSE' : attemptWithinRequest === 1 ? degradedAnswer : developedAnswer;
   return {
     ok: true,
     status: 200,
     headers: { get: () => null },
     async json() {
       return {
-        candidates: [{ finishReason: tokenLimit ? 'MAX_TOKENS' : 'STOP', content: { parts: [{ text: JSON.stringify({
+        candidates: [{ finishReason: tokenLimited ? 'MAX_TOKENS' : 'STOP', content: { parts: [{ text: JSON.stringify({
           signal: { state: 'LOCKED', notes: attemptWithinRequest === 1 ? 'synthetic degraded first attempt' : 'synthetic admitted second attempt' },
           transmission: {
             text,
@@ -89,7 +103,7 @@ globalThis.fetch = async (url, options = {}) => {
             flourishMode: attemptWithinRequest === 1 ? 'clean' : 'forensic-to-eruption'
           }
         }) }] } }],
-        usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: tokenLimit ? 4096 : 1600, thoughtsTokenCount: 300, totalTokenCount: tokenLimit ? 5596 : 3100, privatePayload: 'DO_NOT_COPY_PROVIDER_FIELDS' }
+        usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: tokenLimited ? 4096 : 1600, thoughtsTokenCount: 300, totalTokenCount: tokenLimited ? 5596 : 3100, privatePayload: 'DO_NOT_COPY_PROVIDER_FIELDS' }
       };
     }
   };
@@ -170,19 +184,27 @@ try {
     assert.equal(invalid.payload.relay, undefined);
   }
 
-  tokenLimit = true;
-  const held = response();
-  await handler(req, held);
-  assert.equal(held.statusCode, 502);
-  assert.equal(held.payload.status, 'HELD');
-  assert.equal(held.payload.error, 'gemini-output-token-limit');
-  assert.equal(held.payload.diagnostic.code, 'OUTPUT_TOKEN_LIMIT');
-  assert.equal(held.payload.attempts.length, 1, 'token-limited output must not trigger an automatic second generation');
-  assert.equal(held.payload.attempts[0].output.finishReason, 'MAX_TOKENS');
-  assert.equal(held.payload.attempts[0].output.usage.candidatesTokenCount, 4096);
-  assert.equal(held.payload.relay, undefined);
-  assert.equal(held.payload.text, undefined);
-  assert.doesNotMatch(held.text, /REJECTED_PARTIAL_RESPONSE|DO_NOT_COPY_PROVIDER_FIELDS/);
+  tokenLimitCallsRemaining = 1;
+  const recoveredFromTokenLimit = response();
+  await handler(req, recoveredFromTokenLimit);
+  assert.equal(recoveredFromTokenLimit.statusCode, 200);
+  assert.equal(recoveredFromTokenLimit.payload.ok, true);
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 2, 'one token-limited seat must advance to the next approved model');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.finishReason, 'MAX_TOKENS');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.usage.candidatesTokenCount, 4096);
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].output.finishReason, 'STOP');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.doesNotMatch(recoveredFromTokenLimit.text, /REJECTED_PARTIAL_RESPONSE|DO_NOT_COPY_PROVIDER_FIELDS/);
+
+  requestRejectCallsRemaining = 1;
+  const recoveredFromSeatReject = response();
+  await handler(req, recoveredFromSeatReject);
+  assert.equal(recoveredFromSeatReject.statusCode, 200);
+  assert.equal(recoveredFromSeatReject.payload.ok, true);
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts.length, 2, 'recoverable seat-local request rejection must not become an immediate human-visible failure');
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[0].status, 400);
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[1].status, 200);
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.model, 'gemini-3.6-flash');
 } finally {
   globalThis.fetch = originalFetch;
   if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
