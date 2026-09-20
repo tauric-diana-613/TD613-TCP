@@ -2,6 +2,7 @@ import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 import { buildProtectedLiteralList } from './hush-protected-literals.js';
 import { classifyHushSourceSpeechAct } from './hush-speech-act-custody.js';
+import { ingestGeminiConsumption } from '../gemini-consumption-ledger.js';
 
 export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache+pr135-authorship-moves+line-break-custody+speech-act-lock';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
@@ -314,6 +315,7 @@ export async function requestRemoteProviderCandidates(input = {}, options = {}) 
     });
     if (!response.ok) throw new Error(`remote-llm-proxy-failed:${response.status}`);
     const payload = await response.json();
+    ingestGeminiConsumption(payload, globalThis);
     const report = normalizeRemoteProviderResponse(payload, contract);
     report.cache = { hit: false, key: cacheKey, scope: 'browser-session' };
     setCachedRemoteProviderReport(cacheKey, report);
@@ -376,7 +378,7 @@ export function normalizeRemoteProviderResponse(payload = {}, contract = {}) {
     }).filter((item) => item.text),
     warnings: asArray(payload.warnings),
     rawText: payload.rawText || '',
-    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', authorshipKernelVersion: contract.flightPacket?.authorship_kernel?.version || contract.authorshipKernel?.version || '' }
+    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', authorshipKernelVersion: contract.flightPacket?.authorship_kernel?.version || contract.authorshipKernel?.version || '', gemini_consumption: payload.gemini_consumption || null }
   };
 }
 
