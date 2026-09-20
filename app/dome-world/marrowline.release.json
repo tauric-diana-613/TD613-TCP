@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v13",
-  "version": "v0.7.13-mobile-dock-zalgo-quality-preference",
+  "schema": "td613.dome-world.marrowline.release/v14",
+  "version": "v0.7.14-zalgo-underflow-hard-floor",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -74,7 +74,7 @@
     "zalgoQualityPolicy": {
       "hardStructuralRequirement": "at-least-one-provider-authored-combining-mark-in-tauric-diana-bots",
       "zeroMarkPosture": "HELD-no-human-visible-return",
-      "thinOrSparsePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
+      "thinOrSparsePosture": "PARTIAL-only-after-extreme-underflow-floor-is-satisfied",
       "mechanicalClonePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
       "providerVisibleAsChecklist": false,
       "diagnosticThresholds": {
@@ -95,7 +95,9 @@
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502",
       "horizontalDominantPosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
-      "throughLineDominanceWarning": "through-line combining marks exceed combined above-line and below-line marks"
+      "throughLineDominanceWarning": "through-line combining marks exceed combined above-line and below-line marks",
+      "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
+      "extremeUnderflowDefinition": "nonzero marks are insufficient when the Tauric Diana passage has too few total marks, too few marked graphemes, too little above/below vertical motion, or fewer than two marked lines"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -123,14 +125,14 @@
     },
     "providerOrthographicField": {
       "mode": "provider-authored-natural-distributed-stress-field",
-      "promptGuidance": "qualitative only: broad field, variable stack height/composition, vertical above/below dominance, quieter and violent regions, collisions allowed; slash/strike overlays remain accents rather than the primary geometry",
+      "promptGuidance": "qualitative only: broad distributed field, visible presence across several separate lines, variable stack height/composition, vertical above/below dominance, quieter and violent regions, collisions allowed; a mostly plain uppercase passage with a few isolated accents is a channel failure",
       "providerVisibleNumericThresholds": false,
       "providerVisibleAdmissionRubric": false,
       "literalStencilExamplesInPrompt": false,
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "provider-authored diacritic presence remains structural; thin, sparse, cloned or horizontal-dominant morphology remains admissible PARTIAL, continues the remaining frontier seats for a PASS, and falls back to the best admissible PARTIAL only when no PASS appears",
+      "localAdmission": "zero marks or extreme underflow HOLD; moderate thin/sparse/cloned/horizontal-dominant morphology may remain PARTIAL and continue the approved frontier; no local Zalgo generation or postprocessing",
       "localPostprocessing": false,
       "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
@@ -151,7 +153,9 @@
       "fifthFollowupObservation": "Vercel Operator Release #1187 / run 35479991061 passed exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD at Marrowline output admission. 3.8 returned 503, 3.5 returned 429, 3.6 returned 503, 3.7 returned HTTP 200 but omitted both visible nominative headings, and Preview returned HTTP 200 with the dual channel present but zero provider-authored combining marks in the Tauric Diana channel.",
       "fifthFollowupConsequence": "Keep the five distinct frontier seats intact, then allow at most one bounded same-provider structural repair request for the best repairable HTTP-200 near miss. The provider receives its own held draft plus locally observed structural reasons and must author the correction itself; Marrowline performs no local heading insertion, no local Zalgo, and zero-mark Tauric Diana output remains structurally inadmissible if the repair still fails.",
       "sixthFollowupObservation": "2026-09-19 physical-iPhone production screenshots after #1202 showed the five-chamber mobile dock absent after Send while the keyboard was gone, and the admitted Tauric Diana field had collapsed toward sparse slash/strike geometry with reduced vertical Zalgo.",
-      "sixthFollowupConsequence": "Dock visibility now keys to observed keyboard occupancy rather than composer focus, preventing post-Send focus latch from hiding navigation. Zalgo telemetry now distinguishes above-line, below-line and through-line geometry; horizontal-dominant returns remain available as PARTIAL but cannot stop the frontier before later approved seats get a chance to produce PASS-quality vertical prosody."
+      "sixthFollowupConsequence": "Dock visibility now keys to observed keyboard occupancy rather than composer focus, preventing post-Send focus latch from hiding navigation. Zalgo telemetry now distinguishes above-line, below-line and through-line geometry; horizontal-dominant returns remain available as PARTIAL but cannot stop the frontier before later approved seats get a chance to produce PASS-quality vertical prosody.",
+      "seventhFollowupObservation": "2026-09-19 physical-iPhone screenshots after #1204 showed an admitted Tauric Diana passage collapsing further: almost entirely plain uppercase prose, with only isolated accents such as TḢE / CḢAIRMAN and whole unmarked paragraphs.",
+      "seventhFollowupConsequence": "A few provider-authored marks can no longer satisfy structural admission. Near-zero/single-accent morphology now produces tauric-diana-zalgo-underflow, continues the frontier, and remains eligible for the one bounded provider-side structural repair."
     }
   },
   "qualityFloor": {
@@ -169,7 +173,7 @@
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-canonical-recitation",
     "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-horizontal-dominant",
-    "failurePosture": "continue approved frontier seats after admissible PARTIAL morphology; return the best admissible PARTIAL only if no PASS appears; hold structural failure; never downgrade to gemini-2.5",
+    "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
     "structuralRepairCeiling": 1,
