@@ -460,7 +460,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini authors mixed-axis bot Zalgo', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
@@ -468,9 +468,9 @@ test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo',
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
-  assert.match(contract, /Several separate lines should visibly carry above\/below motion/i);
-  assert.match(contract, /genuinely bipolar and heterogeneous/i);
-  assert.match(contract, /A few isolated dots or accents do not satisfy the raw stress channel/i);
+  assert.match(contract, /Several separate lines should visibly carry actual combining marks/i);
+  assert.match(contract, /horizontal sections can use slash\/strike\/through-line overlays/i);
+  assert.match(contract, /do not substitute plain uppercase where the stress wants to move horizontally/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
