@@ -24,6 +24,7 @@ const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', im
 const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
 const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js', import.meta.url), 'utf8');
 const terminalSource = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+const roomBootSource = readFileSync(new URL('../app/dome-world/marrowline-egress-boot.js', import.meta.url), 'utf8');
 const pageSource = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
 
 function countMarks(value = '') {
@@ -424,6 +425,12 @@ test('human operator gets an in-chat Dome-Art kinesis with reduced-motion rest',
 test('first paint is held behind one stable Marrowline veil until room boot completes', () => {
   assert.match(mobileCss, /html:not\(\.marrowline-room-ready\) body\{visibility:hidden!important\}/);
   assert.match(mobileCss, /listening at the shoreline/);
+  assert.match(mobileCss, /marrowline-room-boot-delayed:not\(\.marrowline-room-ready\)/);
+  assert.match(mobileCss, /still opening the room/);
+  assert.doesNotMatch(roomBootSource, /setTimeout\(\(\) => revealMarrowline\(document, \{ error: true \}\), 2600\)/,
+    'a slow successful boot must never reveal the historical shell on a timer');
+  assert.match(roomBootSource, /marrowline-room-boot-delayed/);
+  assert.match(roomBootSource, /6000/);
 });
 
 test('physical keyboard posture keeps action row visible and avoids nested form scroll', () => {
