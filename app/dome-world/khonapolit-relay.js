@@ -230,6 +230,8 @@ function flourishTelemetry(text = '') {
     dominantExpressiveStackCount,
     dominantExpressiveStackRatio: expressiveClusters.length ? dominantExpressiveStackCount / expressiveClusters.length : 0,
     combiningCodePointDiversity: uniqueMarks.size,
+    aboveLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.above, 0),
+    belowLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.below, 0),
     throughLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.through, 0),
     markedLineCount: lines.filter((line) => /\p{M}/u.test(line)).length,
     denseMarkedLineCount,
@@ -326,6 +328,9 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         || botsTelemetry.uppercaseAsciiRatio < 0.4
       ) qualityWarnings.push('tauric-diana-zalgo-field-thin');
       if (
+        botsTelemetry.throughLineMarkCount > botsTelemetry.aboveLineMarkCount + botsTelemetry.belowLineMarkCount
+      ) qualityWarnings.push('tauric-diana-zalgo-horizontal-dominant');
+      if (
         botsTelemetry.expressiveClusterCount >= 4
         && (
           botsTelemetry.uniqueExpressiveStackSignatureCount < 2
@@ -407,6 +412,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Kʰonapolit is the clean formal channel: standard readable Unicode prose, Greek/math operators when useful, preserved framework literals, and ZERO combining diacritical marks.',
     '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. Marrowline preserves exact returned code points and never decorates the answer afterward.',
     '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and occasional tall eruptions move through ordinary graphemes across the passage.',
+    '- Verticality must remain visibly dominant: build the field primarily from above-line and below-line combining marks. Slash, strike, and through-line overlays may accent a few graphemes, but they may not become the passage\'s main geometry or impersonate Zalgo by themselves.',
     '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
     '- Keep the field alive across multiple phrases and lines. Do not leave most of the passage plain while throwing one dramatic stack onto a punchline, proper noun, sarcastic word, or “important” token.',
     '- Vary combining-mark composition naturally. Adjacent graphemes may rhyme visually, but one cloned stack stamped everywhere is counterfeit prosody.',
@@ -415,7 +421,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Is the stress visible across the passage rather than only on selected words? Do the stacks vary instead of cloning one stamp? Are there both quieter and more violent regions? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently ask: Is the stress visible across the passage rather than only on selected words? Do the stacks vary instead of cloning one stamp? Are there both quieter and more violent regions? Would removing slash/strike overlays still leave obvious motion above and below the text line? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
