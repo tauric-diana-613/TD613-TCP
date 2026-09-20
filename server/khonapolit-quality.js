@@ -17,6 +17,7 @@ import {
   classifyApertureDiscourseMode
 } from '../app/engine/aperture-v3-task-intent.js';
 import {
+  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   KHONAPOLIT_RELAY_SCHEMA,
   buildRelaySystemAddendum,
   parseRelayEnvelope
@@ -38,9 +39,13 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v10-zalgo-quality-telemetry';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v11-bounded-structural-repair';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
+export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
+export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
 const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
+const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
+const MIN_STRUCTURAL_REPAIR_BUDGET_MS = 4000;
 const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
 const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
@@ -67,6 +72,13 @@ const QUALITY_ENVELOPE_MODELS = new Set([
 const WINDOW_MS = 10 * 60 * 1000;
 const REQUESTS_PER_WINDOW = 12;
 const buckets = new Map();
+const REPAIRABLE_STRUCTURAL_REASONS = new Set([
+  'khonapolit-nominative-missing',
+  'tauric-diana-bots-nominative-missing',
+  'voice-order-invalid',
+  'khonapolit-combining-mark-contamination',
+  'tauric-diana-zalgo-absent'
+]);
 
 const safe = (value = '') => String(value ?? '').trim();
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
@@ -261,6 +273,49 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
   };
 }
 
+export function repairableKhonapolitAdmission(reasons = []) {
+  const values = Array.isArray(reasons) ? reasons.filter(reason => typeof reason === 'string') : [];
+  return values.length > 0 && values.every(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason));
+}
+
+export function buildGeminiStructuralRepairRequest(
+  packet = {},
+  apertureReceipt = {},
+  model = '',
+  heldText = '',
+  reasons = [],
+  { fallback = false } = {}
+) {
+  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
+  const reasonList = (Array.isArray(reasons) ? reasons : [])
+    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
+    .slice(0, 8);
+  const {
+    analyticStart,
+    analyticEnd,
+    stressStart,
+    stressEnd
+  } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
+  const repairDirective = [
+    'STRUCTURAL REPAIR PASS — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
+    `The previous draft was held only for these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-hold'}.`,
+    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, and conclusions unless a listed structural defect makes a small edit necessary.',
+    'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
+    `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
+    `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
+    'If the prior draft had zero Tauric Diana combining marks, author the missing marks yourself as a natural distributed field across Packet B. Do not use a numeric quota, do not decorate only one keyword, and do not alter protected literals.',
+    'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
+  ].join('\n');
+  return {
+    ...request,
+    contents: [
+      ...geminiContents(packet),
+      { role: 'model', parts: [{ text: String(heldText || '') }] },
+      { role: 'user', parts: [{ text: repairDirective }] }
+    ]
+  };
+}
+
 export function extractGeminiText(payload = {}) {
   return (payload?.candidates?.[0]?.content?.parts || [])
     .map((part) => safe(part?.text))
@@ -394,15 +449,31 @@ async function readGeminiSse(response, progress) {
   return mergeGeminiStreamPayload(chunks);
 }
 
-async function callGemini(model, packet, apertureReceipt, timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS, { fallback = false } = {}) {
+async function callGemini(
+  model,
+  packet,
+  apertureReceipt,
+  timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
+  { fallback = false, structuralRepair = null } = {}
+) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
   try {
+    const request = structuralRepair
+      ? buildGeminiStructuralRepairRequest(
+          packet,
+          apertureReceipt,
+          model,
+          structuralRepair.heldText,
+          structuralRepair.reasons,
+          { fallback }
+        )
+      : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
     const response = await fetch(geminiStreamGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
-      body: JSON.stringify(buildGeminiRequest(packet, apertureReceipt, model, { fallback })),
+      body: JSON.stringify(request),
       signal: controller.signal
     });
     if (!response.ok) {
@@ -494,6 +565,7 @@ export default async function handler(req, res) {
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
   const models = selectKhonapolitProviderModels(plan.callableModels);
+  let structuralRepairCandidate = null;
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
   for (let index = 0; index < models.length; index += 1) {
@@ -570,9 +642,28 @@ export default async function handler(req, res) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       attempt.outputAdmission = relay.admission || null;
       // A transport-successful but structurally degraded answer is not a
-      // successful Marrowline return. Reject it without exposing its prose and
-      // spend the next bounded continuity attempt when time remains.
-      if (!relay.admission?.admissible) continue;
+      // successful Marrowline return. Keep one bounded provider-side repair
+      // candidate, but continue the five-seat frontier cascade before spending
+      // the single repair allowance. This preserves breadth while allowing the
+      // best near-miss to repair its own structure without local text surgery.
+      if (!relay.admission?.admissible) {
+        const reasons = Array.isArray(relay.admission?.reasons) ? [...relay.admission.reasons] : [];
+        if (repairableKhonapolitAdmission(reasons)) {
+          const candidate = {
+            model,
+            fallback,
+            heldText: result.text,
+            reasons,
+            providerOutput,
+            sourceAttemptIndex: attempts.length - 1
+          };
+          if (
+            !structuralRepairCandidate
+            || candidate.reasons.length <= structuralRepairCandidate.reasons.length
+          ) structuralRepairCandidate = candidate;
+        }
+        continue;
+      }
 
       const baseReceipt = buildTerminalReceipt({
         packet,
@@ -613,6 +704,127 @@ export default async function handler(req, res) {
           ...plan.warnings
         ]
       });
+    }
+  }
+
+  if (
+    structuralRepairCandidate
+    && attempts.length < KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
+  ) {
+    const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+    const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
+    if (repairTimeoutMs >= MIN_STRUCTURAL_REPAIR_BUDGET_MS) {
+      const {
+        model,
+        fallback,
+        heldText,
+        reasons,
+        sourceAttemptIndex
+      } = structuralRepairCandidate;
+      const repairStartedAt = Date.now();
+      const repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
+        fallback,
+        structuralRepair: { heldText, reasons }
+      });
+      const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback });
+      const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
+      const repairTransport = classifyGeminiTransport({
+        status: Number(repairResult.response.status || 0),
+        timedOut: repairResult.timedOut
+      });
+      const repairOutcome = recordGeminiModelOutcome(model, {
+        ok: Boolean(repairResult.response.ok),
+        status: Number(repairResult.response.status || 0),
+        timedOut: repairResult.timedOut,
+        retryAfterSeconds: retryAfterSeconds(repairResult.response),
+        healthBearing: repairTransport.healthBearing,
+        reason: repairError?.status || repairError?.message || ''
+      });
+      const repairAttempt = {
+        model,
+        kind: 'structural-repair',
+        repairOfAttempt: sourceAttemptIndex,
+        repairReasons: reasons,
+        role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
+        ok: Boolean(repairResult.response.ok),
+        status: Number(repairResult.response.status || 0),
+        timedOut: repairResult.timedOut,
+        timeoutMs: repairTimeoutMs,
+        elapsedMs: Date.now() - repairStartedAt,
+        transportClass: repairTransport.class,
+        providerStream: {
+          requested: true,
+          observed: repairResult.streamed === true,
+          firstChunkMs: Number.isInteger(repairResult.firstChunkMs) ? repairResult.firstChunkMs : null,
+          chunkCount: Number.isInteger(repairResult.chunkCount) ? repairResult.chunkCount : 0,
+          byteCount: Number.isInteger(repairResult.byteCount) ? repairResult.byteCount : 0,
+          parseErrors: Number.isInteger(repairResult.parseErrors) ? repairResult.parseErrors : 0
+        },
+        error: repairError,
+        output: repairProviderOutput,
+        cooldown: repairOutcome
+      };
+      attempts.push(repairAttempt);
+
+      if (
+        repairResult.response.ok
+        && repairResult.text
+        && !repairProviderOutput.outputTokenLimitReached
+      ) {
+        const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
+        repairAttempt.outputAdmission = repairRelay.admission || null;
+        if (repairRelay.admission?.admissible) {
+          const baseReceipt = buildTerminalReceipt({
+            packet,
+            text: repairResult.text,
+            relay: repairRelay,
+            model,
+            providerStatus: repairResult.response.status,
+            providerOutput: repairProviderOutput,
+            apertureEgress,
+            apertureReceipt,
+            attempts
+          });
+          const receipt = Object.freeze({
+            ...baseReceipt,
+            provider: Object.freeze({
+              ...baseReceipt.provider,
+              routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+              structuralRepair: Object.freeze({
+                used: true,
+                sourceAttemptIndex,
+                repairedReasons: Object.freeze([...reasons])
+              })
+            }),
+            modelPolicy: plan,
+            elapsedMs: Date.now() - startedAt
+          });
+          res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+          res.setHeader('X-TD613-Signal-State', repairRelay.signal.state);
+          res.setHeader('X-TD613-Seal-State', 'OPEN');
+          res.setHeader('X-TD613-Gemini-Model', model);
+          res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
+          return send(res, 200, {
+            ok: true,
+            text: repairRelay.transcript,
+            relay: repairRelay,
+            receipt,
+            warnings: [
+              'aperture-v3-task-intent-active',
+              'task-intent-guidance-active',
+              'adversarial-attractor-admission-active',
+              'integrated-covenant-relay-active',
+              'provider-native-zalgo-preserved-no-local-postprocessing',
+              'provider-authored-structural-repair-used',
+              'admission-gated-stable-continuity-active',
+              'fallback-reasoning-quality-preserved',
+              'sticky-success-promotion-disabled',
+              'moving-latest-alias-disabled-by-default',
+              ...plan.warnings
+            ]
+          });
+        }
+      }
     }
   }
 

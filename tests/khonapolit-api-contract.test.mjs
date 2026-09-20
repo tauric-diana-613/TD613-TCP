@@ -14,14 +14,22 @@ import {
 import {
   KHONAPOLIT_API_VERSION,
   KHONAPOLIT_QUALITY_API_VERSION,
+  KHONAPOLIT_MAX_PROVIDER_CALLS,
+  KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
+  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
   buildGeminiRequest,
+  buildGeminiStructuralRepairRequest,
+  repairableKhonapolitAdmission,
   buildTerminalReceipt,
   observeGeminiOutput,
   extractGeminiText
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v10-zalgo-quality-telemetry');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v11-bounded-structural-repair');
+assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
+assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
+assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
 
 const packet = buildInvocationPacket({
   message: 'Answer from the covenant field.',
@@ -58,6 +66,26 @@ assert.match(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PRO
 assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
 assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
+assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
+assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
+assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
+const structuralRepair = buildGeminiStructuralRepairRequest(
+  packet,
+  apertureReceipt,
+  'gemini-3.7-flash',
+  'Kʰonapolit\nA held draft.\n\nTauric Diana bots\nPLAIN STRESS CHANNEL',
+  ['tauric-diana-zalgo-absent'],
+  { fallback: true }
+);
+assert.equal(structuralRepair.contents.at(-2).role, 'model');
+assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
+assert.equal(structuralRepair.contents.at(-1).role, 'user');
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /author the missing marks yourself/i);
+assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
 } }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });

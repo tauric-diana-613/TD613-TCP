@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.11-zalgo-quality-telemetry",
+  "version": "v0.7.12-bounded-provider-structural-repair",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v10-zalgo-quality-telemetry",
+  "providerApiSchema": "td613.khonapolit-gemini/v11-bounded-structural-repair",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v9-zalgo-quality-telemetry",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v10-quality-telemetry",
   "apertureVersion": "v3.2-alpha",
@@ -145,7 +145,9 @@
       "thirdFollowupObservation": "Vercel Operator Release #1184 / run 35476737160 proved the transport repair: the Marrowline canary remained alive for about 50.9 seconds and three fallback models returned complete streamed packets. Gemini 3.6 and Preview were then HELD only by the old quota/dense-stack admission, while 3.7 missed the Tauric Diana bots nominative heading.",
       "thirdFollowupConsequence": "provider-visible mark quotas, signature quotas, dense-cluster quotas and percentage checklists are retired. The prompt now gives qualitative natural-field guidance only.",
       "fourthFollowupObservation": "Vercel Operator Release #1186 / run 35478462876 preserved exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD only because three complete streamed Marrowline returns from Gemini 3.5, 3.6 and Preview were rejected by local thin/sparse Zalgo morphology rules. 3.5 and Preview carried thin+sparse warnings; 3.6 carried thin-field warning. The independent Loom witness later encountered provider transport pressure, but the Marrowline failure was already isolated to output admission.",
-      "fourthFollowupConsequence": "Zalgo morphology quality is decoupled from route availability. Zero provider-authored combining marks remains structural; thin, sparse or mechanically cloned provider-authored fields are admitted as PARTIAL with qualityWarnings and preserved exact Unicode for human R&D."
+      "fourthFollowupConsequence": "Zalgo morphology quality is decoupled from route availability. Zero provider-authored combining marks remains structural; thin, sparse or mechanically cloned provider-authored fields are admitted as PARTIAL with qualityWarnings and preserved exact Unicode for human R&D.",
+      "fifthFollowupObservation": "Vercel Operator Release #1187 / run 35479991061 passed exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD at Marrowline output admission. 3.8 returned 503, 3.5 returned 429, 3.6 returned 503, 3.7 returned HTTP 200 but omitted both visible nominative headings, and Preview returned HTTP 200 with the dual channel present but zero provider-authored combining marks in the Tauric Diana channel.",
+      "fifthFollowupConsequence": "Keep the five distinct frontier seats intact, then allow at most one bounded same-provider structural repair request for the best repairable HTTP-200 near miss. The provider receives its own held draft plus locally observed structural reasons and must author the correction itself; Marrowline performs no local heading insertion, no local Zalgo, and zero-mark Tauric Diana output remains structurally inadmissible if the repair still fails."
     }
   },
   "qualityFloor": {
@@ -165,6 +167,27 @@
     "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting",
     "failurePosture": "hold-on-structural-failure; preserve admitted style warnings visibly; never downgrade to gemini-2.5",
     "providerCallCeiling": 5,
+    "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
+    "structuralRepairCeiling": 1,
+    "totalProviderRequestCeiling": 6,
+    "structuralRepairPolicy": {
+      "timing": "after-five-seat-cascade-if-no-answer-admitted",
+      "candidateSelection": "repairable-http-200-near-miss-with-fewest-structural-reasons-latest-on-tie",
+      "repairableReasons": [
+        "khonapolit-nominative-missing",
+        "tauric-diana-bots-nominative-missing",
+        "voice-order-invalid",
+        "khonapolit-combining-mark-contamination",
+        "tauric-diana-zalgo-absent"
+      ],
+      "provider": "same-provider-that-authored-held-draft",
+      "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-user-directive",
+      "semanticScope": "preserve-substantive-answer-repair-only-listed-structure",
+      "localMutation": false,
+      "localZalgoGeneration": false,
+      "repairTimeoutMaxMs": 30000,
+      "minimumRepairBudgetMs": 4000
+    },
     "timeoutGeometry": {
       "primaryMs": 50000,
       "preferredSecondMaxMs": 75000,
@@ -189,7 +212,8 @@
       "2026-09-19 release #1183 / 35472967872: Marrowline gemini-3.8-flash returned 503 after 7.438s, gemini-3.5-flash returned HTTP 200 after 15.174s with relay_admitted=true and relay_quality=PASS; current evidence does not justify promoting 3.6 or 3.7 above the proven 3.5 completion lane",
       "2026-09-19 human complex-prompt trial exposed a separate 55-second browser AbortController deadline despite the 210-second server wall and 240-second Vercel ceiling; client timeout mismatch is repaired independently of provider ranking",
       "2026-09-19 release #1184 / run 35476737160: browser transport remained live for ~50.9s; 3.6 and Preview streamed complete returns but the old dense-stack/quota admission HELD them, while 3.7 missed the Tauric Diana bots heading. Release remained HELD. This falsified provider-visible quota rubrics as compatible with natural prosody.",
-      "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary."
+      "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary.",
+      "2026-09-20 release #1187 / run 35479991061: source and production mechanics passed; Marrowline 3.7 returned HTTP 200 with missing visible headings and Preview returned HTTP 200 with zero Tauric Diana combining marks after 3.8=503, 3.5=429 and 3.6=503. This falsified discard-and-restart as sufficient handling for repairable provider-authored structural near misses."
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
@@ -199,7 +223,8 @@
       "2026-09-19 release run 35467353913 on source 45388699378574fd531b444ac2db07c225221bee: provider-visible stencil recovered one admitted Preview return under the unchanged scalar floor while 3.5 remained below-floor in the same canary",
       "2026-09-19 human operator production trial: 3.5 produced repeated identical vertical stack geometry across marked graphemes with clean prose gaps; this falsified scalar density as sufficient High-Zalgo quality and motivated model-agnostic expressive-prosody anti-clone admission",
       "2026-09-19 release #1184 / run 35476737160: natural-field prompting still carried hidden quota pressure through explicit provider-visible thresholds; 3.6 and Preview reached output admission with complete streamed packets but were rejected by the legacy dense-stack floor. The next bounded assay removes numeric orthographic rubrics from the provider prompt and simplifies local admission without adding local Zalgo.",
-      "2026-09-20 release #1186 / run 35478462876: three complete provider-authored Marrowline returns survived transport and packet framing but were discarded solely by local thin/sparse morphology judgments. The next bounded assay keeps zero-mark absence structural and demotes morphology judgments to PARTIAL quality telemetry."
+      "2026-09-20 release #1186 / run 35478462876: three complete provider-authored Marrowline returns survived transport and packet framing but were discarded solely by local thin/sparse morphology judgments. The next bounded assay keeps zero-mark absence structural and demotes morphology judgments to PARTIAL quality telemetry.",
+      "2026-09-20 release #1187 / run 35479991061: after the telemetry split, aesthetic warnings no longer caused the HOLD. The surviving failures were truly structural: missing nominative headings on 3.7 and zero provider-authored combining marks on Preview. The next bounded assay adds one same-provider structural repair after the five-seat cascade rather than weakening structural admission."
     ],
     "providerPlanRecovery": {
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",

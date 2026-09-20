@@ -90,4 +90,11 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.relay.zalgoQualityPolicy.thinOrSparsePosture, 'PARTIAL-visible-with-quality-warning');
   assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent/);
   assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
+  assert.equal(release.qualityFloor.providerCallCeiling, 5);
+  assert.equal(release.qualityFloor.providerCallCeilingMeaning, 'maximum distinct frontier model-seat attempts');
+  assert.equal(release.qualityFloor.structuralRepairCeiling, 1);
+  assert.equal(release.qualityFloor.totalProviderRequestCeiling, 6);
+  assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
+  assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
+  assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
 });
