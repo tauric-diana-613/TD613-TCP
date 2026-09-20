@@ -677,12 +677,13 @@ export default async function handler(req, res) {
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
   const clientDailyQuotaHints = clientDailyQuotaHintModels(body);
-  const allModels = selectKhonapolitProviderModelsFromPlan(plan).filter((model) => !clientDailyQuotaHints.has(model));
+  const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
+  const allModels = providerModels.filter((model) => !clientDailyQuotaHints.has(model));
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
   const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
-  const routeModelCount = Math.max(1, allModels.length);
+  const routeModelCount = Math.max(1, providerModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
