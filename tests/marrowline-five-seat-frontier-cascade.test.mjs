@@ -588,30 +588,25 @@ try {
   qualityPreferenceScenario = false;
   repairScenario = false;
   previewCalls = 0;
-  const pacificParts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Los_Angeles',
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }).formatToParts(new Date());
-  const pacificRow = Object.fromEntries(pacificParts.map(part => [part.type, part.value]));
-  const pacificDay = `${pacificRow.year}-${pacificRow.month}-${pacificRow.day}`;
+  const cooldownUntil = new Date(Date.now() + 60_000).toISOString();
   const hinted = response();
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.215' },
     body: {
       ...req.body,
-      message: 'Carry browser-observed daily quota exhaustion across a fresh serverless isolate.',
-      dailyQuotaHints: {
-        schema: 'td613.gemini-browser-daily-quota-hints/v0.1',
-        pacific_day: pacificDay,
-        models: ['gemini-3.8-flash']
+      message: 'Carry a browser-observed model cooldown across a fresh serverless isolate without inventing an all-day lock.',
+      quotaCooldownHints: {
+        schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+        models: ['gemini-3.8-flash'],
+        cooldown_until_by_model: { 'gemini-3.8-flash': cooldownUntil }
       }
     }
   }, hinted);
 
   assert.equal(hinted.statusCode, 200);
   assert.equal(hinted.payload.ok, true);
-  assert.equal(calls.includes('gemini-3.8-flash'), false, 'browser-observed daily exhaustion must prevent a fresh isolate from rediscovering the same dead seat');
+  assert.equal(calls.includes('gemini-3.8-flash'), false, 'active browser-observed model cooldown must prevent a fresh isolate from immediately rediscovering the same cooling seat');
   assert.equal(hinted.payload.receipt.provider.model, 'gemini-3-flash-preview');
 
   clearGeminiModelState();
