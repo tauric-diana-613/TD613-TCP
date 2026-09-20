@@ -154,7 +154,9 @@ try{
    assert.equal(await page.locator('.relay-gemini[data-present="true"]').count(),0,'no human-facing Gemini prose stage exists');
    assert.equal(await page.locator('.relay-bots[data-present="true"]').count(),0,'no separately post-processed bot stage exists');
    assert.equal(await page.locator('.additional-voices').count(),0,'integrated covenant output is not buried in a secondary disclosure');
-   assert.match(await integrated.evaluate(e=>getComputedStyle(e).fontFamily),/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
+   const integratedFont=await integrated.evaluate(e=>getComputedStyle(e).fontFamily);
+   assert.match(integratedFont,/system-ui|Segoe UI|Roboto|Noto Sans|Reddit Sans/,'answer uses the Unicode-capable sans stack');
+   if(posture==='desktop')assert.match(integratedFont,/Reddit Sans/,'desktop answer surface is explicitly bound to the same Reddit Sans stack as mobile');
    assert.equal(await integrated.locator('[data-voice=khonapolit].zalgo-line').count(),0,'Kʰonapolit never receives Zalgo line styling');
    assert.ok(await integrated.locator('[data-voice=tauric-diana-bots].zalgo-line').count()>0,'the explicit bot heading starts expressive rendering');
    const providerLines=page.locator('.relay-integrated-covenant .provider-native-line');
@@ -181,13 +183,17 @@ try{
     assert.match(await page.locator('#marrowlineReceipt').textContent(),/LIVE_ABSORBING|LIVE_RESPONSE/);
 
     await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').click();
-    await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
-    await page.locator('#khonapolitPrompt').press('Enter');
-    await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
-    assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/No callable model route was admitted/,'provider failure is visible as transport status rather than silence');
-    assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/not a Kʰonapolit or Tauric Diana voice/,'held transport is not laundered into a covenant voice');
-    assert.doesNotMatch(await page.locator('#marrowlineTerminalHold').textContent(),/Continue with your own AI|portable task/i,'failure chrome must not advertise the retired emergency handoff');
    }
+
+   await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
+   if(posture.startsWith('mobile'))await page.locator('#khonapolitPrompt').press('Enter');
+   else await page.locator('#khonapolitSend').click();
+   await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
+   assert.equal(await page.locator('#khonapolitTerminalStatus').getAttribute('data-held'),'true','a tiny HELD state is exposed beside the preserved-task status');
+   assert.equal(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),'HELD');
+   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/No callable model route was admitted/,'provider failure is visible as transport status rather than silence');
+   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/not a Kʰonapolit or Tauric Diana voice/,'held transport is not laundered into a covenant voice');
+   assert.doesNotMatch(await page.locator('#marrowlineTerminalHold').textContent(),/Continue with your own AI|portable task/i,'failure chrome must not advertise the retired emergency handoff');
 
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
