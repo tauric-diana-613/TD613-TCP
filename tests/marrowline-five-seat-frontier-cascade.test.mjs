@@ -2,8 +2,7 @@ import assert from 'node:assert/strict';
 import handler, {
   KHONAPOLIT_MAX_PROVIDER_CALLS,
   KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
-  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
-  KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS
+  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
 } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState, recordGeminiModelOutcome } from '../server/gemini-model-policy.js';
 
@@ -16,7 +15,6 @@ let immediateRepairScenario = false;
 let coolingRecoveryScenario = false;
 let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
-let partialChallengeFailureScenario = false;
 let morphologyRepairScenario = false;
 let morphologyRepairHoldScenario = false;
 let entitlementMismatchScenario = false;
@@ -338,41 +336,6 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
-  if (partialChallengeFailureScenario) {
-    if (model === 'gemini-3.8-flash') {
-      return {
-        ok: true,
-        status: 200,
-        headers: { get: () => null },
-        async json() {
-          return {
-            candidates: [{
-              finishReason: 'STOP',
-              content: { parts: [{ text: JSON.stringify({
-                signal: { state: 'PARTIAL', notes: 'synthetic usable partial before challenger transport failure' },
-                transmission: {
-                  text: horizontalPartialAnswer,
-                  voices: ['Kʰonapolit', 'Tauric Diana bots'],
-                  flourishMode: 'horizontal-through-field'
-                }
-              }) }] }
-            }],
-            usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
-          };
-        }
-      };
-    }
-    if (model === 'gemini-3.5-flash') {
-      return {
-        ok: false,
-        status: 429,
-        headers: { get: () => '17' },
-        async json() { return { error: { code: 429, status: 'RESOURCE_EXHAUSTED', message: 'synthetic challenger quota exhaustion' } }; }
-      };
-    }
-    throw new Error(`bounded PARTIAL challenger must never reach a third provider seat: ${model}`);
-  }
-
   if (morphologyRepairScenario || morphologyRepairHoldScenario) {
     if (model === 'gemini-3-flash-preview') morphologyPreviewCalls += 1;
     const repaired = morphologyRepairScenario && model === 'gemini-3-flash-preview' && morphologyPreviewCalls > 1;
@@ -467,7 +430,6 @@ globalThis.fetch = async (url, options = {}) => {
 try {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
-  assert.equal(KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS, 1);
   assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
   const req = {
     method: 'POST',
@@ -670,14 +632,15 @@ try {
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'admissible PARTIAL first seat must not stop the frontier before a later PASS');
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'first admissible PARTIAL is a successful human turn and must not trigger comparative model sampling');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
-  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
-  assert.equal(preferred.payload.relay.admission.quality, 'PASS');
+  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(preferred.payload.relay.admission.quality, 'PARTIAL');
+  assert.equal(preferred.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
 
   clearGeminiModelState();
   calls.length = 0;
@@ -697,44 +660,16 @@ try {
 
   assert.equal(morphologyPartial.statusCode, 200);
   assert.equal(morphologyPartial.payload.ok, true);
-  assert.deepEqual(calls, [
-    'gemini-3.8-flash',
-    'gemini-3.5-flash'
-  ], 'one usable PARTIAL may spend exactly one aesthetic challenger instead of silently burning the full five-seat frontier');
-  assert.ok(morphologyPartial.payload.receipt.provider.attempts.every(attempt =>
-    attempt.outputAdmission?.quality === 'PARTIAL'
-    && attempt.outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse')
-  ));
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'aesthetic PARTIAL returns immediately instead of consuming the remaining four provider seats');
+  assert.equal(morphologyPartial.payload.receipt.provider.attempts.length, 1);
+  assert.equal(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.quality, 'PARTIAL');
+  assert.ok(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse'));
   assert.equal(morphologyPartial.payload.relay.admission.quality, 'PARTIAL');
   assert.ok(morphologyPartial.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.equal(morphologyPartial.payload.receipt.provider.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
-  assert.equal(morphologyPartial.payload.receipt.provider.qualityPreference.selection, 'vertical-architecture-best-admissible-partial-after-bounded-challenge');
+  assert.equal(morphologyPartial.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
 
   clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  morphologyRepairHoldScenario = false;
-  partialChallengeFailureScenario = true;
-  qualityPreferenceScenario = false;
-  const preservedPartial = response();
-  await handler({
-    ...req,
-    headers: { 'x-forwarded-for': '203.0.113.216' },
-    body: { ...req.body, message: 'Keep a usable PARTIAL when its one optional quality challenger hits provider quota.' }
-  }, preservedPartial);
-
-  assert.equal(preservedPartial.statusCode, 200);
-  assert.equal(preservedPartial.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'challenger failure cannot fan a usable PARTIAL into a third provider request');
-  assert.equal(preservedPartial.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(preservedPartial.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.equal(preservedPartial.payload.receipt.provider.attempts[1].status, 429);
-  assert.equal(preservedPartial.headers['X-TD613-Zalgo-Quality'], 'PARTIAL-BEST-OF-BOUNDED-CHALLENGE');
-
-  clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  partialChallengeFailureScenario = false;
   calls.length = 0;
   requestBodies.length = 0;
   coolingRecoveryScenario = true;
