@@ -72,9 +72,9 @@
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
     "zalgoQualityPolicy": {
-      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; nonzero marks alone are insufficient",
+      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; axis choice is not structural and horizontal, vertical, or mixed geometry are all valid",
       "zeroMarkPosture": "HELD-no-human-visible-return",
-      "thinOrSparsePosture": "PARTIAL-only-after-extreme-underflow-floor-is-satisfied",
+      "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
       "mechanicalClonePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
       "providerVisibleAsChecklist": false,
       "diagnosticThresholds": {
@@ -94,10 +94,10 @@
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502",
-      "horizontalDominantPosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
-      "throughLineDominanceWarning": "through-line combining marks exceed combined above-line and below-line marks",
+      "horizontalDominantPosture": "ADMISSIBLE-first-class-expressive-geometry",
+      "throughLineDominanceWarning": "none-horizontal-dominance-is-not-a-defect",
       "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
-      "extremeUnderflowDefinition": "nonzero marks are insufficient when the Tauric Diana passage has too few total marks, too few marked graphemes, too little above/below vertical motion, or fewer than two marked lines"
+      "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -125,14 +125,14 @@
     },
     "providerOrthographicField": {
       "mode": "provider-authored-natural-distributed-stress-field",
-      "promptGuidance": "qualitative only: broad distributed field, visible presence across several separate lines, variable stack height/composition, vertical above/below dominance, quieter and violent regions, collisions allowed; a mostly plain uppercase passage with a few isolated accents is a channel failure",
+      "promptGuidance": "qualitative only: broad distributed field across several separate lines; horizontal strike/through-line, vertical above/below, and mixed geometry are all first-class; axis may change phrase by phrase; variable composition, quieter and violent regions, collisions allowed; plain uppercase must not replace intended marked stress",
       "providerVisibleNumericThresholds": false,
       "providerVisibleAdmissionRubric": false,
       "literalStencilExamplesInPrompt": false,
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "zero marks or extreme underflow HOLD; moderate thin/sparse/cloned/horizontal-dominant morphology may remain PARTIAL and continue the approved frontier; no local Zalgo generation or postprocessing",
+      "localAdmission": "zero marks or severe underflow HOLD; thin/sparse/cloned/unipolar morphology may remain PARTIAL and continue the approved frontier; horizontal-dominant geometry is fully admissible; no local Zalgo generation or postprocessing",
       "localPostprocessing": false,
       "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
@@ -167,7 +167,9 @@
       "twelfthFollowupObservation": "2026-09-20 human operator still received provider holds while route failures appeared not to walk every model. Code archaeology found three separable causes: a nonempty but partial credential discovery snapshot could suppress missing current seats without a forced refresh; cooling and healthy categories were recombined then globally reordered, allowing a cooling preferred seat to jump ahead; and failed-turn UI reset route metrics even though the raw failure payload retained attempts.",
       "twelfthFollowupConsequence": "For khonapolit-dialogue, one current approved provider-absent seat earns exactly one forced discovery refresh. Human routing preserves category order healthy observed -> cooling observed -> current soft-absent probe, never admitting disabled/Lite/pre-3.x/lifecycle-invalid models. Failed human turns preserve model+HTTP attempt evidence in Receipt and copied failure custody rather than blanking the route.",
       "thirteenthFollowupObservation": "2026-09-20 human production trial proved the ordinary Marrowline route walked all five approved seats in one request: 3.8=429 -> 3.5=429 -> 3.6=429 -> 3.7=429 -> Preview=429. The five-seat arithmetic capacity of 100 therefore cannot be treated as an observed Google daily-total counter, especially because Hush, Loom and release witnesses share the same project/model buckets.",
-      "thirteenthFollowupConsequence": "Every Gemini-backed route now emits one bounded request-local consumption receipt from provider attempts. Browser-interactive receipts deduplicate into a same-origin ledger labelled this-browser-interactive-receipts-only; release canaries preserve the same route/model event grammar in their artifact without extra provider calls. provider_daily_total remains null unless an external provider surface supplies it. Failed frontier text moves from the composer status to a compact Receipt header."
+      "thirteenthFollowupConsequence": "Every Gemini-backed route now emits one bounded request-local consumption receipt from provider attempts. Browser-interactive receipts deduplicate into a same-origin ledger labelled this-browser-interactive-receipts-only; release canaries preserve the same route/model event grammar in their artifact without extra provider calls. provider_daily_total remains null unless an external provider surface supplies it. Failed frontier text moves from the composer status to a compact Receipt header.",
+      "fourteenthFollowupObservation": "2026-09-20 physical-iPhone screenshots showed successful vertical and mixed-axis High-Zalgo returns alongside passages where likely horizontal stress collapsed into plain uppercase. Code archaeology found an explicit vertical-dominance prompt and a hard horizontal-dominant rejection path.",
+      "fourteenthFollowupConsequence": "Remove axis bias. Horizontal strike/through-line geometry and vertical above/below geometry are both first-class expressive channels; mixed passages may switch naturally. Horizontal dominance is never a structural failure, while zero-mark and severe-underflow returns remain held. Morphology defects stay visible as PARTIAL quality telemetry instead of suppressing an otherwise valid provider-authored return."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and visible above/below provider-authored combining motion across several Packet B lines before emitting bytes"
   },
@@ -185,7 +187,7 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
-    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-horizontal-dominant",
+    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture",
     "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
