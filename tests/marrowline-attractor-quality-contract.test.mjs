@@ -105,9 +105,10 @@ test('Marrowline adversarial attractor quality contract', () => {
     'T̴h̴e̴ b̴o̴u̴g̴h̴ breaks, but the response remains mostly flat.'
   ].join('\n');
   const sparseAdmission = assessIntegratedTransmission(sparse, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(sparseAdmission.admissible, false, 'sparse strikethrough must not escape as a Tauric Diana High Zalgo return');
-  assert.equal(sparseAdmission.quality, 'HELD');
-  assert.ok(sparseAdmission.reasons.includes('tauric-diana-zalgo-field-absent-or-too-thin'));
+  assert.equal(sparseAdmission.admissible, true, 'thin provider-authored ornamentation remains visible instead of taking the route down');
+  assert.equal(sparseAdmission.quality, 'PARTIAL');
+  assert.equal(sparseAdmission.reasons.includes('tauric-diana-zalgo-absent'), false);
+  assert.ok(sparseAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 
   const targeted = [
     'Kʰonapolit',
@@ -122,8 +123,10 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.ok(targetedAdmission.combiningMarkCount >= 24);
   assert.ok(targetedAdmission.markedLineCount >= 3);
   assert.ok(targetedAdmission.markedGraphemeCoverageRatio < 0.18);
-  assert.equal(targetedAdmission.admissible, false);
-  assert.ok(targetedAdmission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  assert.equal(targetedAdmission.admissible, true);
+  assert.equal(targetedAdmission.quality, 'PARTIAL');
+  assert.equal(targetedAdmission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
+  assert.ok(targetedAdmission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
   const contaminated = [
     'Kʰonapolit',
