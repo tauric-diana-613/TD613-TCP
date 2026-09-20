@@ -39,7 +39,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
       properties: {
         text: {
           type: 'STRING',
-          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant multi-tier mixed-axis combining-diacritic stress payload with preserved line breaks.'
+          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant multi-tier vertical combining-diacritic stress payload with preserved line breaks and optional planar accent cuts.'
         },
         voices: {
           type: 'ARRAY',
