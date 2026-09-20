@@ -81,7 +81,29 @@ assert.equal(cooldownPlan.callableModels.includes('gemini-3.8-flash'), false);
 assert.equal(cooldownPlan.models.at(-1), 'gemini-3.8-flash');
 assert.ok(cooldownPlan.warnings.includes('cooling-models-demoted'));
 
-const khonapolitCooldownPlan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', env: {}, at: 2000 });
+const khonapolitCooldownListing = Object.freeze({
+  ok: true,
+  status: 200,
+  models: Object.freeze([
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.5-flash',
+    'gemini-3-flash-preview'
+  ]),
+  cached: false,
+  complete: true,
+  observedAt: 2000,
+  expiresAt: 602000,
+  pageCount: 1,
+  error: null
+});
+const khonapolitCooldownPlan = resolveGeminiModelPlan({
+  task: 'khonapolit-dialogue',
+  env: {},
+  at: 2000,
+  providerListing: khonapolitCooldownListing
+});
 assert.equal(khonapolitCooldownPlan.models.at(-1), 'gemini-3.8-flash', 'cooldown still demotes the seat in plan ordering');
 assert.ok(khonapolitCooldownPlan.callableModels.includes('gemini-3.8-flash'), 'Marrowline keeps provider-listed cooling seats callable on a fresh human turn');
 assert.equal(khonapolitCooldownPlan.callableModels.length, 5, 'one prior 429 cannot collapse the five-seat Marrowline frontier');
