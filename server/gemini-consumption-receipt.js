@@ -41,6 +41,8 @@ export function buildGeminiConsumptionReceipt({
   releaseWitness = false,
   observedAt = null
 } = {}) {
+  const observed = safe(observedAt) || new Date().toISOString();
+  const observationKey = safe(requestId) || observed;
   const events = (Array.isArray(attempts) ? attempts : []).map((attempt, index) => {
     const status = boundedStatus(attempt?.status);
     const timedOut = attempt?.timedOut === true || attempt?.timed_out === true;
@@ -48,7 +50,7 @@ export function buildGeminiConsumptionReceipt({
     const timeoutMs = boundedMs(attempt?.timeoutMs ?? attempt?.timeout_ms);
     const model = modelId(attempt?.model);
     const ordinal = index + 1;
-    const eventId = [safe(route) || 'unknown', safe(requestId) || 'unbound', ordinal, model || 'unknown', status ?? 'none'].join(':');
+    const eventId = [safe(route) || 'unknown', observationKey, ordinal, model || 'unknown', status ?? 'none'].join(':');
     return Object.freeze({
       schema: GEMINI_CONSUMPTION_SCHEMA,
       event_id: eventId,
@@ -75,7 +77,7 @@ export function buildGeminiConsumptionReceipt({
     schema: GEMINI_CONSUMPTION_SCHEMA,
     coverage: 'request-local-provider-attempts-only',
     provider_daily_total: null,
-    observed_at: safe(observedAt) || null,
+    observed_at: observed,
     call_count: events.length,
     models: Object.freeze(byModel),
     events: Object.freeze(events)
