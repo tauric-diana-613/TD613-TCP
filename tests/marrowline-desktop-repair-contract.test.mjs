@@ -121,3 +121,14 @@ test('mobile couture collapses Chat dead space while preserving the proven Zalgo
   assert.doesNotMatch(couture, /#speakingPanel \.message-body\{[^}]*\bfont(?:-family|-size|-style|-weight|:)/s,
     'couture may change message-card chrome but not the proven Zalgo typography');
 });
+
+test('mobile Gate action hierarchy keeps one restrained primary above two compact secondary actions', () => {
+  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\{[\s\S]*min-height:42px!important/);
+  assert.doesNotMatch(css, /#gatePanel \.ritual-actions button\{[^}]*min-height:58px!important/s);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*grid-column:1\/-1!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*min-height:48px!important/);
+  assert.match(css, /#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
+  assert.doesNotMatch(css, /#gatePanel \.ritual-actions button\.primary\{[^}]*0 0 28px/s,
+    'primary action may keep hierarchy without the old neon halo');
+});
