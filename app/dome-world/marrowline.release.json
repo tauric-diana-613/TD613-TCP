@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v18",
-  "version": "v0.7.18-quota-entitlement-mismatch",
+  "schema": "td613.dome-world.marrowline.release/v19",
+  "version": "v0.7.19-route-quota-budget-canary",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,8 +15,8 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v16-quota-entitlement-mismatch",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v10-zalgo-underflow-floor",
+  "providerApiSchema": "td613.khonapolit-gemini/v17-route-quota-budget-canary",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v11-underflow-floor",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
@@ -161,8 +161,11 @@
       "ninthFollowupObservation": "2026-09-20 zero-deploy re-observation after #1206 showed process-local cooldown narrowing Marrowline to callable_models=[gemini-3.8-flash]; that lone seat returned 429 while the credential-scoped route still carried cooling Gemini 3.x seats in policy rows, recreating an immediate route hold on a fresh request.",
       "ninthFollowupConsequence": "For khonapolit-dialogue only, provider-listed lifecycle-eligible cooling seats remain available as bounded fallbacks after non-cooling seats. Cooldown remains telemetry and ordering pressure, not hard model removal. Disabled, non-3.x, Lite, or lifecycle-ineligible models remain excluded.",
       "tenthFollowupObservation": "2026-09-20 human operator recognized the earlier Hush false-quota regression family: Hush commit 6b5455266bb331af726725373e917d883603daad stopped treating a single-model 429 as provider-wide exhaustion. Marrowline production evidence still flattened upstream 429s to one generic rate-limited class and discarded quota metric/scope/retry metadata.",
-      "tenthFollowupConsequence": "Gemini quota payloads now preserve bounded metric, quota ID, model dimension, RetryInfo/Retry-After, and model/shared/unknown scope. Shared short-burst limits receive one bounded same-seat retry; model limits retain failover; unknown limits are never promoted to provider-wide exhaustion."
-    }
+      "tenthFollowupConsequence": "Gemini quota payloads now preserve bounded metric, quota ID, model dimension, RetryInfo/Retry-After, and model/shared/unknown scope. Shared short-burst limits receive one bounded same-seat retry; model limits retain failover; unknown limits are never promoted to provider-wide exhaustion.",
+      "eleventhFollowupObservation": "2026-09-20 provider receipts exposed GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20 on current Gemini seats while the operator tracked a 100-call Marrowline route budget; release canaries had been consuming multiple model-seat calls plus repair/failover.",
+      "eleventhFollowupConsequence": "Interpret 20 as per-model, compose route capacity across five approved seats, honor provider Retry-After without 120/240/480 inflation, and cap release verification to two total provider requests across Marrowline plus Loom."
+    },
+    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and visible above/below provider-authored combining motion across several Packet B lines before emitting bytes"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
@@ -254,7 +257,10 @@
       "operatorExpectedDailyRpd": 100,
       "quotaEntitlementMismatch": "provider-reported GenerateRequestsPerDayPerProjectPerModel-FreeTier below the operator-known 100/day Marrowline entitlement is diagnostic mismatch evidence, not authoritative local quota",
       "sharedBurstRetry": "one same-model retry only when provider supplies a short retry window <=8s and wall-clock reserve remains; otherwise HOLD with explicit shared scope instead of fanning the same project bucket across all seats",
-      "modelCooldownAuthority": "only model-scoped 429 that does not contradict the operator-known daily entitlement may write model health cooldown; entitlement mismatch, shared, or unknown 429 does not poison per-model process-local state"
+      "modelCooldownAuthority": "only model-scoped 429 that does not contradict the operator-known daily entitlement may write model health cooldown; entitlement mismatch, shared, or unknown 429 does not poison per-model process-local state",
+      "routeQuotaSemantics": "GenerateRequestsPerDayPerProjectPerModel-FreeTier is a per-model bucket; a 20-call bucket across five approved current Marrowline seats composes to a 100-call route budget and must not be narrated as a 20-call route ceiling",
+      "releaseCanaryBudget": "full-product production release witness may spend at most one Marrowline provider request plus one distinct Loom provider request; no Marrowline failover, repair, or shared-rate retry is authorized by the release-canary header",
+      "providerRetryWindowAuthority": "when Gemini supplies Retry-After for HTTP 429, process-local cooldown follows that bounded window; exponential local quota backoff is reserved for 429 responses without a provider retry window"
     },
     "streamingProgressReceipt": {
       "requested": true,
