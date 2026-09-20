@@ -74,6 +74,10 @@ const ROUTE_PREFIXES = Object.freeze([
 
 function resolvePublicPath(pathname) {
   if (pathname === '/' || pathname === '/dome-world') return 'app/dome-world/index.html';
+  // Vercel publishes selected app-root browser modules at the public root.
+  // The local closure server must preserve that URL geometry for nested
+  // Dome-World ES-module imports such as ../../gemini-consumption-ledger.js.
+  if (pathname === '/gemini-consumption-ledger.js') return 'app/gemini-consumption-ledger.js';
   for (const [publicPrefix, repositoryPrefix] of ROUTE_PREFIXES) {
     if (pathname.startsWith(publicPrefix)) return `${repositoryPrefix}${pathname.slice(publicPrefix.length)}`;
   }
