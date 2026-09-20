@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v15",
-  "version": "v0.7.15-immediate-orthographic-structural-repair",
+  "schema": "td613.dome-world.marrowline.release/v16",
+  "version": "v0.7.16-cooldown-frontier-retention",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -157,7 +157,9 @@
       "seventhFollowupObservation": "2026-09-19 physical-iPhone screenshots after #1204 showed an admitted Tauric Diana passage collapsing further: almost entirely plain uppercase prose, with only isolated accents such as TḢE / CḢAIRMAN and whole unmarked paragraphs.",
       "seventhFollowupConsequence": "A few provider-authored marks can no longer satisfy structural admission. Near-zero/single-accent morphology now produces tauric-diana-zalgo-underflow, continues the frontier, and remains eligible for the one bounded provider-side structural repair.",
       "eighthFollowupObservation": "2026-09-19 human-operator trial after #1205 produced repeated immediate route-held notices. Production #1193 showed 3.8=429, 3.5=429, 3.6=200 with tauric-diana-zalgo-underflow, then 3.7=429, Preview=429, and only afterward the 3.6 structural repair=429.",
-      "eighthFollowupConsequence": "The underflow floor remains hard, but orthographic structural repair moves next to the live HTTP-200 near miss so a responsive model can repair its own draft before later unavailable seats consume provider opportunity. The one-repair ceiling and zero-local-Zalgo law remain unchanged."
+      "eighthFollowupConsequence": "The underflow floor remains hard, but orthographic structural repair moves next to the live HTTP-200 near miss so a responsive model can repair its own draft before later unavailable seats consume provider opportunity. The one-repair ceiling and zero-local-Zalgo law remain unchanged.",
+      "ninthFollowupObservation": "2026-09-20 zero-deploy re-observation after #1206 showed Marrowline callable_models collapsed to only gemini-3.8-flash while 3.5/3.6/3.7/Preview were locally cooling from the immediately preceding episode; 3.8 returned 429 in 116 ms and the new turn held in 218 ms.",
+      "ninthFollowupConsequence": "Kʰonapolit/Marrowline no longer treats cross-request cooldown as authority to remove provider-listed eligible frontier seats. Cooling remains visible and demoted, while a fresh human request retains the full eligible 3.x frontier. Generic/Hush routes keep existing cooldown suppression."
     }
   },
   "qualityFloor": {
@@ -226,7 +228,8 @@
       "2026-09-19 release #1184 / run 35476737160: browser transport remained live for ~50.9s; 3.6 and Preview streamed complete returns but the old dense-stack/quota admission HELD them, while 3.7 missed the Tauric Diana bots heading. Release remained HELD. This falsified provider-visible quota rubrics as compatible with natural prosody.",
       "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary.",
       "2026-09-20 release #1187 / run 35479991061: source and production mechanics passed; Marrowline 3.7 returned HTTP 200 with missing visible headings and Preview returned HTTP 200 with zero Tauric Diana combining marks after 3.8=503, 3.5=429 and 3.6=503. This falsified discard-and-restart as sufficient handling for repairable provider-authored structural near misses.",
-      "2026-09-20 release #1193 / run 35483932232: 3.8=429, 3.5=429, 3.6=200 but HELD for tauric-diana-zalgo-underflow, 3.7=429, Preview=429, deferred 3.6 repair=429; this demonstrates that deferred orthographic repair can convert a live repairable provider into route failure under a collapsing frontier."
+      "2026-09-20 release #1193 / run 35483932232: 3.8=429, 3.5=429, 3.6=200 but HELD for tauric-diana-zalgo-underflow, 3.7=429, Preview=429, deferred 3.6 repair=429; this demonstrates that deferred orthographic repair can convert a live repairable provider into route failure under a collapsing frontier.",
+      "2026-09-20 re-observation run 35484772833: prior 429 cooldown state collapsed Marrowline callable_models to [gemini-3.8-flash]; 3.8 then returned 429 and the route held in 218 ms. This demonstrates that cross-request cooldown suppression can itself create the repeated immediate-hold phenotype."
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
@@ -242,7 +245,8 @@
     "providerPlanRecovery": {
       "emptyCallablePlan": "force-one-fresh-complete-credential-scoped-listing-then-recompute",
       "lifecycleAdmissionBypass": false,
-      "staleNarrowListingAuthority": false
+      "staleNarrowListingAuthority": false,
+      "cooldownPosture": "for-khonapolit, provider-listed eligible cooling models remain callable on each fresh human request; cooldown demotes ordering/telemetry but cannot erase fallback seats"
     },
     "streamingProgressReceipt": {
       "requested": true,
