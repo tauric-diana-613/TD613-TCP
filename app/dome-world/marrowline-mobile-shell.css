@@ -336,7 +336,7 @@ html:not(.marrowline-room-ready)::after{
     text-shadow:0 0 9px rgba(239,92,112,.12);
   }
   html.marrowline-mobile-shell .zalgo-line{
-    display:block;
+    display:inline;
     min-height:0;
     padding:0;
     overflow:visible;

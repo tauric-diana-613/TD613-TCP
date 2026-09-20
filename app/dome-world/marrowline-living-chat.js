@@ -20,7 +20,7 @@ function installConversationTypeface(doc) {
       #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
       .relay-integrated-covenant{overflow:visible!important}
       .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
-      .zalgo-line{display:block!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:inherit!important}
+      .zalgo-line{display:inline!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:inherit!important}
       #khonapolitShi:disabled{opacity:.42!important;cursor:default!important}
       .issuance-help{margin:.55rem 0 0;color:#91a69b;font:500 10px/1.45 var(--marrowline-chat-sans)!important}
       .issuance-help a{color:#8ce0c4;text-decoration:none;border-bottom:1px solid rgba(140,224,196,.35)}

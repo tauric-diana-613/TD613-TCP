@@ -34,7 +34,7 @@ const horizontalPartialAnswer = [
   '',
   'Tauric Diana bots',
   `${slash.repeat(8)} THE FIRST SEAT DRAWS THROUGH THE LINE INSTEAD OF RISING ABOVE IT!`,
-  `${slash.repeat(8)} THIS REMAINS STRUCTURALLY VALID BUT EXPRESSIVELY PARTIAL!`,
+  `${slash.repeat(8)} THIS IS NOT HIGH ZALGO JUST BECAUSE THE LINE GOT SCRATCHED SIDEWAYS!`,
   `${slash.repeat(8)} KEEP WALKING THE FRONTIER FOR A BETTER FIELD!`
 ].join('\n');
 const answer = [
@@ -497,9 +497,9 @@ try {
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'PARTIAL first seat must not stop the frontier before a later PASS');
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'HELD pseudo-Zalgo first seat must not stop the frontier before a later PASS');
+  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'HELD');
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'));
   assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(preferred.payload.relay.admission.quality, 'PASS');
 
@@ -607,7 +607,7 @@ try {
   assert.equal(repairBody.contents.at(-1).role, 'user');
   assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /author the missing marks yourself/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /multiple distinct above-line AND below-line combining-mark species/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;

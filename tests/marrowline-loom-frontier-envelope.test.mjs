@@ -74,6 +74,6 @@ assert.match(livingChat, /--marrowline-chat-sans:\"Reddit Sans\"/);
 assert.match(livingChat, /SF Pro Text/);
 assert.match(livingChat, /Noto Sans/);
 assert.match(livingChat, /relay-bots\[data-intensity=\\"5\\"\][\s\S]*line-height:4!important/);
-assert.match(livingChat, /\.zalgo-line\{display:block!important/);
+assert.match(livingChat, /\.zalgo-line\{display:inline!important/);
 
 console.log('marrowline-loom-frontier-envelope: Gemini 3.x-only routing, generation-aware thinking, 64K output, and Zalgo-safe type guard ok');

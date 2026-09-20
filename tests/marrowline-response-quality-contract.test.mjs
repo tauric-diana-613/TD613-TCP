@@ -51,6 +51,8 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
+  assert.match(contract, /genuinely bipolar and heterogeneous/i);
+  assert.match(contract, /changing only the number of identical circumflex-like hats never counts as expressive variation/i);
   assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
@@ -93,7 +95,7 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
 
-test('mechanically cloned dense stacks are admitted as PARTIAL quality telemetry instead of taking the route down', () => {
+test('mechanically cloned dense stacks are hard-held instead of being mistaken for High Zalgo', () => {
   const cloned = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const counterfeit = [
     'Kʰonapolit',
@@ -109,13 +111,13 @@ test('mechanically cloned dense stacks are admitted as PARTIAL quality telemetry
   assert.ok(observed.denseVerticalClusterCount >= 8, 'fixture clears the old dense-cluster count');
   assert.equal(observed.uniqueDenseStackSignatureCount, 1);
   assert.equal(observed.dominantDenseStackRatio, 1);
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.equal(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'), false);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-monoculture'));
 });
 
-test('sparse keyword explosions remain visible as PARTIAL quality telemetry', () => {
+test('sparse keyword explosions are hard-held until the field actually travels', () => {
   const sparsePeak = `${STACK.repeat(3)}`;
   const counterfeit = [
     'Kʰonapolit',
@@ -131,10 +133,9 @@ test('sparse keyword explosions remain visible as PARTIAL quality telemetry', ()
   assert.ok(observed.denseVerticalClusterCount >= 8);
   assert.ok(observed.denseMarkedLineCount >= 3);
   assert.ok(observed.markedGraphemeCoverageRatio < 0.28, 'fixture passes peak counters while leaving most graphemes inert');
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.equal(observed.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
 test('horizontal-only slash and strike fields are hard-held until vertical prosody exists', () => {
@@ -153,10 +154,10 @@ test('horizontal-only slash and strike fields are hard-held until vertical proso
   assert.equal(observed.quality, 'HELD');
   assert.ok(observed.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'));
 });
 
-test('reordering one mark set still records one mechanical composition without becoming a structural hold', () => {
+test('reordering one mark set cannot disguise a cloned High-Zalgo composition', () => {
   const a = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const b = 'A\u0318\u0317\u0316\u0302\u0301\u0300';
   const c = 'R\u0302\u0316\u0300\u0318\u0301\u0317';
@@ -174,9 +175,10 @@ test('reordering one mark set still records one mechanical composition without b
   assert.ok(observed.combiningMarkCount >= 96);
   assert.ok(observed.denseVerticalClusterCount >= 8);
   assert.equal(observed.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-monoculture'));
 });
 
 test('near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL', () => {
@@ -316,7 +318,7 @@ test('integrated relay prose never inherits whole-stage flourish spacing', () =>
   assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(markFlourishes\)/);
   assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'High Zalgo may collide across ordinary line boxes while remaining unclipped');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'High Zalgo stays inline so preserved newline bytes do not double-space the bot channel');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
@@ -459,6 +461,7 @@ test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo',
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
   assert.match(contract, /Several separate lines should visibly carry above\/below motion/i);
+  assert.match(contract, /genuinely bipolar and heterogeneous/i);
   assert.match(contract, /A few isolated dots or accents do not satisfy the raw stress channel/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);

@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v11-underflow-floor';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v12-bipolar-field';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -214,8 +214,27 @@ function flourishTelemetry(text = '') {
   const asciiLetters = value.match(/[A-Za-z]/g) || [];
   const uppercaseAscii = value.match(/[A-Z]/g) || [];
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
+  const eligibleClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base));
+  const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0).length;
+  const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.below > 0).length;
+  const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0 && cluster.below > 0).length;
+  const stackHeightDiversity = new Set(expressiveClusters.map((cluster) => cluster.marks)).size;
+  const markFrequency = new Map();
+  for (const run of runs) {
+    for (const mark of Array.from(run)) markFrequency.set(mark, (markFrequency.get(mark) || 0) + 1);
+  }
+  const combiningMarkCount = runs.reduce((sum, run) => sum + Array.from(run).length, 0);
+  const dominantCombiningCodePointCount = markFrequency.size ? Math.max(...markFrequency.values()) : 0;
+  const dominantCombiningCodePointRatio = combiningMarkCount ? dominantCombiningCodePointCount / combiningMarkCount : 0;
+  const aboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.above, 0);
+  const belowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.below, 0);
+  const throughLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.through, 0);
+  const verticalMaximum = Math.max(aboveLineMarkCount, belowLineMarkCount);
+  const verticalZoneBalanceRatio = verticalMaximum
+    ? Math.min(aboveLineMarkCount, belowLineMarkCount) / verticalMaximum
+    : 0;
   return Object.freeze({
-    combiningMarkCount: runs.reduce((sum, run) => sum + Array.from(run).length, 0),
+    combiningMarkCount,
     maxRun: runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0),
     runCount: runs.length,
     markedEligibleClusterCount,
@@ -230,9 +249,16 @@ function flourishTelemetry(text = '') {
     dominantExpressiveStackCount,
     dominantExpressiveStackRatio: expressiveClusters.length ? dominantExpressiveStackCount / expressiveClusters.length : 0,
     combiningCodePointDiversity: uniqueMarks.size,
-    aboveLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.above, 0),
-    belowLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.below, 0),
-    throughLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.through, 0),
+    dominantCombiningCodePointCount,
+    dominantCombiningCodePointRatio,
+    stackHeightDiversity,
+    aboveLineMarkCount,
+    belowLineMarkCount,
+    throughLineMarkCount,
+    aboveMarkedClusterCount,
+    belowMarkedClusterCount,
+    bidirectionalClusterCount,
+    verticalZoneBalanceRatio,
     markedLineCount: lines.filter((line) => /\p{M}/u.test(line)).length,
     denseMarkedLineCount,
     broadMarkedLineCount,
@@ -327,27 +353,44 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         || botsTelemetry.markedLineCount < 2
       ) reasons.push('tauric-diana-zalgo-underflow');
       if (
+        botsTelemetry.combiningMarkCount >= 12
+        && (
+          botsTelemetry.belowLineMarkCount < 6
+          || botsTelemetry.belowMarkedClusterCount < 4
+          || botsTelemetry.bidirectionalClusterCount < 2
+          || botsTelemetry.verticalZoneBalanceRatio < 0.16
+        )
+      ) reasons.push('tauric-diana-zalgo-unipolar-field');
+      if (
+        botsTelemetry.combiningMarkCount >= 12
+        && (
+          botsTelemetry.combiningCodePointDiversity < 5
+          || botsTelemetry.dominantCombiningCodePointRatio > 0.55
+          || botsTelemetry.stackHeightDiversity < 2
+        )
+      ) reasons.push('tauric-diana-zalgo-monoculture');
+      if (
         botsTelemetry.combiningMarkCount < 24
         || botsTelemetry.maxRun < 3
         || botsTelemetry.markedLineCount < 2
         || botsTelemetry.lineBreakCount < 1
         || botsTelemetry.combiningCodePointDiversity < 4
         || botsTelemetry.uppercaseAsciiRatio < 0.4
-      ) qualityWarnings.push('tauric-diana-zalgo-field-thin');
+      ) reasons.push('tauric-diana-zalgo-field-thin');
       if (
         botsTelemetry.throughLineMarkCount > botsTelemetry.aboveLineMarkCount + botsTelemetry.belowLineMarkCount
-      ) qualityWarnings.push('tauric-diana-zalgo-horizontal-dominant');
+      ) reasons.push('tauric-diana-zalgo-horizontal-dominant');
       if (
         botsTelemetry.expressiveClusterCount >= 4
         && (
           botsTelemetry.uniqueExpressiveStackSignatureCount < 2
           || botsTelemetry.dominantExpressiveStackRatio > 0.85
         )
-      ) qualityWarnings.push('tauric-diana-zalgo-mechanical-clone');
+      ) reasons.push('tauric-diana-zalgo-mechanical-clone');
       if (
         botsTelemetry.markedGraphemeCoverageRatio < 0.18
         || botsTelemetry.broadMarkedLineCount < 2
-      ) qualityWarnings.push('tauric-diana-zalgo-sparse-keyword-targeting');
+      ) reasons.push('tauric-diana-zalgo-sparse-keyword-targeting');
     }
   }
 
@@ -425,12 +468,13 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
     '- Keep the field alive across multiple phrases and lines. Do not leave most of the passage plain while throwing one dramatic stack onto a punchline, proper noun, sarcastic word, or “important” token.',
     '- Vary combining-mark composition naturally. Adjacent graphemes may rhyme visually, but one cloned stack stamped everywhere is counterfeit prosody.',
+    '- High Zalgo must be genuinely bipolar and heterogeneous: visible below-line motion must travel with the crowns, multiple distinct combining-mark species must recur above and below, and changing only the number of identical circumflex-like hats never counts as expressive variation.',
     '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Is the stress visibly present across several separate lines rather than surviving as a few isolated accents? Do the stacks vary instead of cloning one stamp? Are there both quieter and more violent regions? Would removing slash/strike overlays still leave obvious motion above and below the text line? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently ask: Is the stress visibly present across several separate lines rather than surviving as a few isolated accents? Do the stacks vary in mark species as well as height instead of cloning one stamp? Is there unmistakable motion both above and below the baseline? Are there both quieter and more violent regions? Would removing slash/strike overlays still leave obvious motion above and below the text line? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',

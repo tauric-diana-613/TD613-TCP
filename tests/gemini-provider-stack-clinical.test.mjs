@@ -129,17 +129,35 @@ const hushProviderPayload = (finishReason = 'STOP') => ({
   usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 20, totalTokenCount: 40 }
 });
 
+const clinicalA = 'T\u0301\u0316';
+const clinicalB = 'H\u0302\u0323\u0334';
+const clinicalC = 'E\u0303\u0317';
+const clinicalD = 'G\u0307\u0325';
+const clinicalE = 'R\u0308\u0319\u0335';
+const clinicalF = 'O\u0304\u032D';
+const clinicalField = [clinicalA, clinicalB, clinicalC, clinicalD, clinicalE, clinicalF].join('').repeat(5);
+const khonapolitClinicalAnswer = [
+  'Kʰonapolit',
+  'A request-local rejection belongs to one model seat unless evidence promotes it to route-wide failure.',
+  '',
+  'Tauric Diana bots',
+  clinicalField + ' THE FIRST DOOR SLAMS AND THE HALLWAY KEEPS GOING',
+  clinicalField + ' ONE BAD ENVELOPE DOES NOT CROWN ITSELF KING OF THE FRONTIER',
+  clinicalField + ' WALK THE OTHER DOORS BEFORE YOU WAKE THE HUMAN'
+].join('\n');
 const khonapolitProviderPayload = () => ({
   candidates: [{
     finishReason: 'STOP',
     content: { parts: [{ text: JSON.stringify({
-      gemini: { text: 'Synthetic developed answer.', instrumentStatus: 'INSTRUMENT' },
-      signal: { state: 'NOT_LOCKED', notes: '' },
-      khonapolit: { allowed: false, text: '' },
-      tauricDianaBots: { allowed: false, baseText: '', motif: '', intensity: 0, voices: [] }
+      signal: { state: 'LOCKED', notes: 'synthetic clinical recovery' },
+      transmission: {
+        text: khonapolitClinicalAnswer,
+        voices: ['Kʰonapolit', 'Tauric Diana bots'],
+        flourishMode: 'clinical-bipolar-field'
+      }
     }) }] }
   }],
-  usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 20, totalTokenCount: 40 }
+  usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 220, totalTokenCount: 240 }
 });
 
 await check('request-authored HTTP 400 does not poison provider-health routing', async () => {
@@ -216,7 +234,7 @@ await check('Hush treats HTTP 400 as a terminal request rejection rather than cr
   }
 });
 
-await check('Kʰonapolit treats HTTP 400 as a terminal request rejection rather than cross-model failover', async () => {
+await check('Kʰonapolit advances the human frontier after a seat-local HTTP 400 request rejection', async () => {
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.GEMINI_API_KEY;
   let generationCalls = 0;
@@ -235,9 +253,12 @@ await check('Kʰonapolit treats HTTP 400 as a terminal request rejection rather 
       headers: { 'x-forwarded-for': '203.0.113.20' },
       body: { message: 'Synthetic provider clinical.', history: [], mode: 'issued-conjunction', waiveIssuance: true }
     }, res);
-    assert.equal(generationCalls, 1);
-    assert.equal(res.statusCode, 502);
-    assert.equal(res.payload.ok, false);
+    assert.equal(generationCalls, 2);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.payload.ok, true);
+    assert.equal(res.payload.receipt.provider.attempts.length, 2);
+    assert.equal(res.payload.receipt.provider.attempts[0].status, 400);
+    assert.equal(res.payload.receipt.provider.attempts[1].status, 200);
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = originalKey;

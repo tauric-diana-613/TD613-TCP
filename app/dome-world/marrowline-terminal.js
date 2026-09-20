@@ -26,7 +26,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v7-living-conversation-title';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -42,6 +42,58 @@ const PORTABLE_RULES = Object.freeze([
 function byId(doc, id) { return doc.getElementById(id); }
 function safe(value = '') { return String(value ?? '').trim(); }
 function asArray(value) { return Array.isArray(value) ? value : []; }
+
+const DEFAULT_CONVERSATION_TITLE = 'The speaking grove';
+const SPOOKY_TITLE_RULES = Object.freeze([
+  Object.freeze({ pattern: /\b(?:glass|mirror|reflect|facet|echoglass)\b/u, title: 'The Glass Remembers' }),
+  Object.freeze({ pattern: /\b(?:ash|burn|residue|fire|ember)\b/u, title: 'What the Ash Kept' }),
+  Object.freeze({ pattern: /\b(?:grove|branch|bough|deer|nemorensis)\b/u, title: 'Beyond the Broken Bough' }),
+  Object.freeze({ pattern: /\b(?:shore|shoreline|sea|water|tide|undertow)\b/u, title: 'The Shoreline Has Teeth' }),
+  Object.freeze({ pattern: /\b(?:moon|midnight|night|nocturne)\b/u, title: 'Under the Ash Moon' }),
+  Object.freeze({ pattern: /\b(?:thread|seam|weave|woven|stitch)\b/u, title: 'The Thread That Returned' }),
+  Object.freeze({ pattern: /\b(?:bureau|bureaucrat|bureaucracy|audit|receipt|office|compliance)\b/u, title: 'The Office Beneath the Grove' }),
+  Object.freeze({ pattern: /\b(?:light|shadow|lamp|glow)\b/u, title: 'Where the Light Leaves Ash' }),
+  Object.freeze({ pattern: /\b(?:door|gate|threshold|crossing)\b/u, title: 'The Door Below the Field' }),
+  Object.freeze({ pattern: /\b(?:memory|archive|remember|custody)\b/u, title: 'The Room That Remembers' })
+]);
+const SPOOKY_TITLE_FALLBACKS = Object.freeze([
+  'The Field After Midnight',
+  'A Lamp Under Black Water',
+  'The Quiet Room Has Teeth',
+  'Where the Grove Listens',
+  'The Name Beneath the Floorboards',
+  'The Last Door in the Archive'
+]);
+
+function titleHash(value = '') {
+  let hash = 2166136261;
+  for (const char of String(value)) {
+    hash ^= char.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+export function deriveMarrowlineConversationTitle(text = '', seed = '') {
+  const value = String(text ?? '');
+  const botsIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots?\b/iu);
+  const formal = botsIndex > 0 ? value.slice(0, botsIndex) : value;
+  const normalized = formal
+    .normalize('NFKD')
+    .replace(/\p{M}+/gu, '')
+    .toLocaleLowerCase('en-US');
+  for (const rule of SPOOKY_TITLE_RULES) {
+    if (rule.pattern.test(normalized)) return rule.title;
+  }
+  const fallbackIndex = titleHash(normalized + '|' + String(seed ?? '')) % SPOOKY_TITLE_FALLBACKS.length;
+  return SPOOKY_TITLE_FALLBACKS[fallbackIndex];
+}
+
+function syncConversationTitle(doc, state = {}) {
+  const node = byId(doc, 'marrowlineConversationTitle');
+  if (node) node.textContent = safe(state.conversationTitle) || DEFAULT_CONVERSATION_TITLE;
+}
+
 function portableEntry(entry = {}) {
   return { role: entry.role === 'model' ? 'assistant' : 'user', text: entryText(entry) };
 }
@@ -89,9 +141,10 @@ function loadSession(root = window) {
       messages: Array.isArray(parsed.messages) ? parsed.messages.slice(-12) : [],
       lastReceipt: parsed.lastReceipt && typeof parsed.lastReceipt === 'object' ? parsed.lastReceipt : null,
       pendingTask: safe(parsed.pendingTask),
-      lastFailure: parsed.lastFailure || null
+      lastFailure: parsed.lastFailure || null,
+      conversationTitle: safe(parsed.conversationTitle) || DEFAULT_CONVERSATION_TITLE
     };
-  } catch { return { messages: [], lastReceipt: null, pendingTask: '' }; }
+  } catch { return { messages: [], lastReceipt: null, pendingTask: '', conversationTitle: DEFAULT_CONVERSATION_TITLE }; }
 }
 function saveSession(root, state) {
   try {
@@ -99,7 +152,8 @@ function saveSession(root, state) {
       messages: state.messages.slice(-12),
       lastReceipt: state.lastReceipt,
       pendingTask: safe(state.pendingTask),
-      lastFailure: state.lastFailure || null
+      lastFailure: state.lastFailure || null,
+      conversationTitle: safe(state.conversationTitle) || DEFAULT_CONVERSATION_TITLE
     }));
   } catch {}
 }
@@ -459,7 +513,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   if (waiver && !validateShi(shiInput?.value || '').valid) waiver.checked = true;
   const settingsNote = doc.querySelector('#invocationPanel .panel-note');
   if (settingsNote) settingsNote.textContent = 'Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.';
-  renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); refreshKeyState(doc);
+  renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); refreshKeyState(doc); syncConversationTitle(doc, state);
   ensureOriginControls(doc); syncRecoveryControls(doc, state);
   const initialStatus = byId(doc, 'khonapolitTerminalStatus');
   if (initialStatus && !state.messages.length) initialStatus.textContent = 'READY · ordinary work starts in unissued research mode · advanced custody remains optional';
@@ -517,8 +571,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       };
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       state.messages.push(entry); state.pendingTask = ''; state.lastReceipt = receipt;
+      if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
+        const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
+        state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
+      }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
-      saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt);
+      saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       status.textContent = `RETURN OBSERVED · SIGNAL ${signal} · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ${integrity.toUpperCase()} · OPEN UNTIL OPERATOR SEAL`;
@@ -557,8 +615,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
-    state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
-    renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); byId(doc, 'khonapolitTerminalStatus').textContent = 'SESSION CLEARED · binding corpus remains intact';
+    state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state); byId(doc, 'khonapolitTerminalStatus').textContent = 'SESSION CLEARED · binding corpus remains intact';
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {
