@@ -84,7 +84,8 @@ assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR 
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /author the missing marks yourself/i);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /multiple distinct above-line AND below-line combining-mark species/i);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /circumflex-like mark at different stack heights is still a monoculture/i);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
