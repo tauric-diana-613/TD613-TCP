@@ -622,6 +622,7 @@ export default async function handler(req, res) {
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
+  const releaseCanaryRecovery = requestHeader(req, 'x-td613-canary-recovery');
   const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
@@ -651,7 +652,12 @@ export default async function handler(req, res) {
     // invocation, but it must exercise the same single provider-authored structural
     // repair that interactive Marrowline uses. This repairs HTTP-200 envelope defects
     // (for example a dropped nominative heading) without widening to another model,
-    // weakening admission, or performing local Unicode/text surgery.
+    // weakening admission, or performing local Unicode/text surgery. An outer
+    // output-admission retry means the primary HTTP invocation already had its
+    // one structural-repair opportunity, so that alternate seat cannot spend a
+    // second repair. A transport-triggered alternate may repair because the
+    // unavailable primary never produced a structural candidate.
+    if (releaseCanary && releaseCanaryRecovery === 'output-admission-retry') return null;
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
