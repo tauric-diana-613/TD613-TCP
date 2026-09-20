@@ -1,22 +1,20 @@
 export const GEMINI_BROWSER_LEDGER_SCHEMA = 'td613.gemini-browser-consumption-ledger/v0.1';
 export const GEMINI_BROWSER_LEDGER_KEY = 'TD613_GEMINI_CONSUMPTION_LEDGER_V1';
 const MAX_EVENTS = 500;
+const DEFAULT_MODEL_QUOTA_COOLDOWN_SECONDS = 120;
+const MAX_MODEL_QUOTA_COOLDOWN_SECONDS = 1800;
 
 const safe = (value = '') => String(value ?? '').trim();
 const arr = (value) => Array.isArray(value) ? value : [];
 const boundedNumber = (value) => value !== null && value !== undefined && value !== ''
   && Number.isFinite(Number(value)) ? Number(value) : null;
-const PACIFIC_TIME_ZONE = 'America/Los_Angeles';
 
-function pacificDayKey(value = new Date()) {
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: PACIFIC_TIME_ZONE,
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }).formatToParts(date);
-  const row = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return row.year && row.month && row.day ? `${row.year}-${row.month}-${row.day}` : '';
+function quotaCooldownSeconds(quota = {}) {
+  const observed = boundedNumber(quota?.retry_after_seconds);
+  if (observed !== null && observed > 0) {
+    return Math.max(1, Math.min(MAX_MODEL_QUOTA_COOLDOWN_SECONDS, Math.ceil(observed)));
+  }
+  return DEFAULT_MODEL_QUOTA_COOLDOWN_SECONDS;
 }
 
 function candidateReceipt(payload = {}) {
@@ -99,24 +97,50 @@ export function summarizeGeminiBrowserLedger(root = globalThis) {
   };
 }
 
-export function currentGeminiDailyQuotaHints(root = globalThis, at = new Date()) {
+export function currentGeminiQuotaCooldownHints(root = globalThis, at = new Date()) {
   const ledger = readLedger(root);
-  const currentPacificDay = pacificDayKey(at);
-  const models = new Set();
+  const now = at instanceof Date ? at.getTime() : new Date(at).getTime();
+  const active = new Map();
+  if (!Number.isFinite(now)) {
+    return {
+      schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+      coverage: 'this-browser-active-model-scoped-429-cooldowns-only',
+      observed_at: null,
+      models: [],
+      cooldown_until_by_model: {}
+    };
+  }
+
   for (const event of arr(ledger.events)) {
     const quota = event?.quota && typeof event.quota === 'object' ? event.quota : null;
-    if (!quota || Number(event?.status) !== 429 || safe(quota.scope) !== 'model') continue;
-    const cadence = `${safe(quota.quota_id)} ${safe(quota.metric)}`;
-    if (!/(?:PerDay|daily|free_tier_requests)/i.test(cadence)) continue;
-    if (!currentPacificDay || pacificDayKey(event?.observed_at) !== currentPacificDay) continue;
-    const model = safe(quota.model || event.model).replace(/^models\//, '');
-    if (model) models.add(model);
+    if (!quota || Number(event?.status) !== 429 || safe(quota.scope) !== 'model' || event?.release_witness === true) continue;
+    const observedAt = new Date(event?.observed_at || '').getTime();
+    if (!Number.isFinite(observedAt)) continue;
+    const model = safe(event?.model || quota.model).replace(/^models\//, '');
+    if (!model) continue;
+    const cooldownSeconds = quotaCooldownSeconds(quota);
+    const cooldownUntil = observedAt + cooldownSeconds * 1000;
+    if (cooldownUntil <= now) continue;
+    const previous = active.get(model);
+    if (!previous || cooldownUntil > previous.cooldownUntil) {
+      active.set(model, { cooldownUntil, retryAfterSeconds: cooldownSeconds });
+    }
   }
+
+  const models = [...active.keys()];
   return {
-    schema: 'td613.gemini-browser-daily-quota-hints/v0.1',
-    coverage: 'this-browser-current-pacific-day-model-scoped-429s-only',
-    pacific_day: currentPacificDay || null,
-    models: [...models]
+    schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+    coverage: 'this-browser-active-model-scoped-429-cooldowns-only',
+    observed_at: new Date(now).toISOString(),
+    models,
+    cooldown_until_by_model: Object.fromEntries(models.map((model) => [
+      model,
+      new Date(active.get(model).cooldownUntil).toISOString()
+    ])),
+    retry_after_seconds_by_model: Object.fromEntries(models.map((model) => [
+      model,
+      active.get(model).retryAfterSeconds
+    ]))
   };
 }
 
