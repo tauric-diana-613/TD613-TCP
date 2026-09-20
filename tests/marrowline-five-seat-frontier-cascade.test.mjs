@@ -16,8 +16,10 @@ let coolingRecoveryScenario = false;
 let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
 let entitlementMismatchScenario = false;
+let releaseCanaryRepairScenario = false;
 let previewCalls = 0;
 let immediate36Calls = 0;
+let releaseCanary36Calls = 0;
 let sharedBurst38Calls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
@@ -28,6 +30,14 @@ const zeroMarkAnswer = [
   'THE RAW CHANNEL IS PRESENT BUT ITS DIACRITIC STRESS FIELD IS MISSING.'
 ].join('\n');
 const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+const missingBotsHeadingAnswer = [
+  'Kʰonapolit',
+  'The formal channel completed, but the provider accidentally dropped the required Tauric Diana nominative heading.',
+  '',
+  `${stack.repeat(8)} THE STRESS PAYLOAD EXISTS BUT ITS VISIBLE NAMEPLATE FELL OFF!`,
+  `${stack.repeat(8)} REPAIR THE ENVELOPE WITHOUT REWRITING THE ARGUMENT!`,
+  `${stack.repeat(8)} SAME SEAT, SAME REASONING, ONE BOUNDED PROVIDER FIX!`
+].join('\n');
 const horizontalPartialAnswer = [
   'Kʰonapolit',
   'The formal channel completed cleanly while the stress morphology stayed horizontally collapsed.',
@@ -296,6 +306,33 @@ globalThis.fetch = async (url, options = {}) => {
     throw new Error(`deferred repair scenario should complete on 3.7 before preview: ${model}`);
   }
 
+  if (releaseCanaryRepairScenario && model === 'gemini-3.6-flash') {
+    releaseCanary36Calls += 1;
+    if (releaseCanary36Calls > 2) throw new Error('release canary structural repair exceeded one same-seat retry');
+    const selectedText = releaseCanary36Calls === 1 ? missingBotsHeadingAnswer : answer;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: releaseCanary36Calls === 1 ? 'NOT_LOCKED' : 'LOCKED', notes: 'synthetic release-canary structural repair' },
+              transmission: {
+                text: selectedText,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: 'release-canary-same-seat-repair'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
+        };
+      }
+    };
+  }
+
   if (qualityPreferenceScenario && (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash')) {
     const selectedText = model === 'gemini-3.8-flash' ? horizontalPartialAnswer : answer;
     return {
@@ -483,6 +520,67 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  releaseCanaryRepairScenario = true;
+  releaseCanary36Calls = 0;
+  sharedBurstScenario = false;
+  entitlementMismatchScenario = false;
+  coolingRecoveryScenario = false;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  const releaseCanaryRepair = response();
+  await handler({
+    ...req,
+    headers: {
+      'x-forwarded-for': '203.0.113.213',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash'
+    },
+    body: { ...req.body, message: 'Repair one production canary heading omission on the same bounded provider seat.' }
+  }, releaseCanaryRepair);
+
+  assert.equal(releaseCanaryRepair.statusCode, 200);
+  assert.equal(releaseCanaryRepair.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.6-flash', 'gemini-3.6-flash'], 'release canary may spend one same-seat structural repair but may not open the five-seat frontier');
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts.length, 2);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[0].outputAdmission.admissible, false);
+  assert.deepEqual(releaseCanaryRepair.payload.receipt.provider.attempts[0].outputAdmission.reasons, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].repairOfAttempt, 0);
+  assert.deepEqual(releaseCanaryRepair.payload.receipt.provider.attempts[1].repairReasons, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.attempts[1].outputAdmission.admissible, true);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.structuralRepair.used, true);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.structuralRepair.sourceAttemptIndex, 0);
+  assert.equal(releaseCanaryRepair.payload.receipt.provider.model, 'gemini-3.6-flash');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  releaseCanary36Calls = 0;
+  const transportRetryNearMiss = response();
+  await handler({
+    ...req,
+    headers: {
+      'x-forwarded-for': '203.0.113.214',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash',
+      'x-td613-canary-recovery': 'transport-retry'
+    },
+    body: { ...req.body, message: 'An alternate transport seat may not spend a second structural recovery budget.' }
+  }, transportRetryNearMiss);
+
+  assert.equal(transportRetryNearMiss.statusCode, 502);
+  assert.deepEqual(calls, ['gemini-3.6-flash'], 'transport-retry canary invocation must not stack a structural repair onto the alternate seat');
+  assert.equal(transportRetryNearMiss.payload.attempts.length, 1);
+  assert.deepEqual(transportRetryNearMiss.payload.attempts[0].outputAdmission.reasons, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(transportRetryNearMiss.payload.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  releaseCanaryRepairScenario = false;
+  calls.length = 0;
+  requestBodies.length = 0;
   sharedBurstScenario = false;
   entitlementMismatchScenario = false;
   qualityPreferenceScenario = true;
@@ -492,7 +590,7 @@ try {
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.207' },
-    body: { ...req.body, message: 'Prefer a vertically expressive provider field without taking an admissible partial route down.' }
+    body: { ...req.body, message: 'Prefer a mixed-axis expressive provider field without taking an admissible single-axis partial route down.' }
   }, preferred);
 
   assert.equal(preferred.statusCode, 200);
@@ -501,6 +599,7 @@ try {
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
   assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(preferred.payload.relay.admission.quality, 'PASS');
@@ -610,6 +709,7 @@ try {
   assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal strike\/through-line geometry and vertical above\/below geometry are equally valid/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /Do not overcorrect toward either axis/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;
