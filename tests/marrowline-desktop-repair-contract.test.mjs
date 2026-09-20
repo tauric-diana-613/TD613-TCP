@@ -8,6 +8,7 @@ const boot = fs.readFileSync('app/dome-world/marrowline-egress-boot.js', 'utf8')
 const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.css', 'utf8');
 const livingChatJs = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
+const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop Marrowline is conversation-first and instruments are on demand', () => {
@@ -43,9 +44,13 @@ test('starter carousel keeps its left rail while using one compact glass control
   assert.match(css, /\.starter-prompts>button:not\(\.starter-rotate\)\{[\s\S]*border-radius:14px!important/);
   assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*width:42px!important/);
   assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*height:42px!important/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*border-radius:14px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*border:0!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*background:transparent!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate::before\{[\s\S]*text-shadow:/);
+  assert.match(css, /drop-shadow\(0 0 5px rgba\(78,237,240,\.34\)\)/);
   assert.match(css, /marrowline-mobile-shell \.starter-prompts>button:not\(\.starter-rotate\)\{[^}]*height:42px!important/);
   assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:42px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*border-radius:0!important/);
   assert.equal(release.composer.starterCarousel.control, '🗘');
   assert.equal(release.composer.starterCarousel.assayPrompts, 32);
   assert.equal(release.composer.starterCarousel.selectionPolicy, 'shuffle-bag-without-replacement-two-at-a-time');
@@ -56,6 +61,18 @@ test('starter carousel keeps its left rail while using one compact glass control
   assert.match(js, /if \(bag\.length < 2\) refillBag\(\)/);
   assert.match(js, /shuffled\.filter\(index => !lastPair\.includes\(index\)\)/);
 });
+test('current Marrowline skin is render-blocking before room-ready reveal', () => {
+  assert.match(page, /<link rel="stylesheet" href="\.\/marrowline-desktop-repair\.css" data-marrowline-desktop-repair="render-blocking-current-shell" \/>/);
+  assert.match(mobileShellCss, /html:not\(\.marrowline-room-ready\) body\{visibility:hidden!important\}/);
+  assert.match(boot, /firstPaintHeldUntilRoomReady: true/);
+});
+
+test('clearing a conversation removes the obsolete visible status strip', () => {
+  assert.doesNotMatch(terminalJs, /SESSION CLEARED · binding corpus remains intact/);
+  assert.match(terminalJs, /if \(terminalStatus\) terminalStatus\.textContent = ''/);
+  assert.match(css, /#khonapolitTerminalStatus:empty\{\s*display:none!important/);
+});
+
 test('conversation actions dismiss and ordinary Chat carries no portable failure billboard', () => {
   assert.match(js, /conversation-action-menu button/);
   assert.match(js, /details\.open = false/);
