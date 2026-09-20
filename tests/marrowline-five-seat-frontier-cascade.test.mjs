@@ -492,7 +492,7 @@ try {
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.207' },
-    body: { ...req.body, message: 'Prefer a vertically expressive provider field without taking an admissible partial route down.' }
+    body: { ...req.body, message: 'Prefer a mixed-axis expressive provider field without taking an admissible single-axis partial route down.' }
   }, preferred);
 
   assert.equal(preferred.statusCode, 200);
@@ -501,6 +501,7 @@ try {
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
   assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(preferred.payload.relay.admission.quality, 'PASS');
@@ -610,6 +611,7 @@ try {
   assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal strike\/through-line geometry and vertical above\/below geometry are equally valid/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /Do not overcorrect toward either axis/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;
