@@ -85,6 +85,17 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(js, /operatorSeal: 'receipt-instrument-explicit-operator'/);
 });
 
+
+test('Gate actions stay left aligned with one primary row and compact secondary controls', () => {
+  assert.match(css, /Gate action hierarchy v2/);
+  assert.match(css, /#gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\{[\s\S]*text-align:left!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*grid-column:1\/-1!important;[\s\S]*min-height:44px!important/);
+  assert.match(css, /#gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*min-height:36px!important/);
+  assert.match(css, /marrowline-mobile-shell body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions button\.primary\{[\s\S]*min-height:48px!important/);
+  assert.match(css, /marrowline-mobile-shell body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#copyMarrowlineReceipt\{[\s\S]*min-height:40px!important/);
+});
+
 test('room boot loads the desktop repair and separates Zalgo aesthetics from structural admission', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);

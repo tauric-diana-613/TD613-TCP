@@ -472,3 +472,91 @@
     background:#08091b!important;
   }
 }
+
+
+/* Gate action hierarchy v2 — preserve left alignment; remove oversized equal-weight button tiles. */
+#gatePanel .ritual-actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:8px!important;
+  margin:14px 0 0!important;
+}
+#gatePanel .ritual-actions button{
+  min-width:0!important;
+  text-align:left!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+  box-shadow:none!important;
+  transition:background .15s ease,border-color .15s ease,color .15s ease!important;
+}
+#gatePanel .ritual-actions button.primary{
+  grid-column:1/-1!important;
+  min-height:44px!important;
+  padding:10px 13px!important;
+  border:1px solid rgba(92,226,219,.42)!important;
+  border-radius:11px!important;
+  background:rgba(20,70,72,.38)!important;
+  color:#effffc!important;
+  font-weight:650!important;
+}
+#gatePanel .ritual-actions button.primary:hover,
+#gatePanel .ritual-actions button.primary:focus-visible{
+  background:rgba(25,88,88,.52)!important;
+  border-color:rgba(102,239,230,.62)!important;
+}
+#gatePanel .ritual-actions #buildLocalMarrowline,
+#gatePanel .ritual-actions #copyMarrowlineReceipt{
+  min-height:36px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#b9c7c0!important;
+  font-weight:550!important;
+}
+#gatePanel .ritual-actions #buildLocalMarrowline:hover,
+#gatePanel .ritual-actions #buildLocalMarrowline:focus-visible,
+#gatePanel .ritual-actions #copyMarrowlineReceipt:hover,
+#gatePanel .ritual-actions #copyMarrowlineReceipt:focus-visible{
+  background:rgba(255,255,255,.055)!important;
+  border-color:rgba(145,126,205,.34)!important;
+  color:#eef2ef!important;
+}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px!important;
+    margin-top:6px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button{
+    min-width:0!important;
+    text-align:left!important;
+    text-transform:none!important;
+    letter-spacing:0!important;
+    box-shadow:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary{
+    grid-column:1/-1!important;
+    min-height:48px!important;
+    padding:11px 13px!important;
+    border:1px solid rgba(81,230,221,.48)!important;
+    border-radius:11px!important;
+    background:rgba(18,75,77,.42)!important;
+    color:#f0fffc!important;
+    font-size:.78rem!important;
+    line-height:1.2!important;
+    font-weight:650!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #buildLocalMarrowline,
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt{
+    min-height:40px!important;
+    padding:8px 10px!important;
+    border:1px solid rgba(255,255,255,.10)!important;
+    border-radius:9px!important;
+    background:rgba(255,255,255,.025)!important;
+    color:#b8c3ca!important;
+    font-size:.67rem!important;
+    line-height:1.25!important;
+    font-weight:550!important;
+  }
+}
