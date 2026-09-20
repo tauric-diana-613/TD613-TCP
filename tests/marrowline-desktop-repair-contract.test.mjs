@@ -108,6 +108,18 @@ test('desktop and mobile Chat share the same Reddit Sans Zalgo type guard before
   assert.match(livingChatJs, /font-family:var\(--marrowline-chat-sans\)!important/);
 });
 
+test('mobile Gate action hierarchy keeps one clear primary and two compact secondary controls', () => {
+  assert.match(page, /<button class="primary" type="submit">Fire live Marrowline<\/button>/);
+  assert.match(page, /id="buildLocalMarrowline"/);
+  assert.match(page, /id="copyMarrowlineReceipt"/);
+  assert.match(css, /#gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\{[\s\S]*min-height:42px!important/);
+  assert.doesNotMatch(css, /#gatePanel \.ritual-actions button\{[\s\S]*min-height:58px!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*grid-column:1\/-1!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*min-height:46px!important/);
+  assert.match(css, /#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
+});
+
 test('mobile couture collapses Chat dead space while preserving the proven Zalgo type guard', () => {
   assert.match(mobileShellCss, /grid-template-rows:auto minmax\(0,1fr\) auto;/);
   assert.doesNotMatch(mobileShellCss, /minmax\(0,32%\)/);
