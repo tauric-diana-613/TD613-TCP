@@ -609,12 +609,18 @@ export default async function handler(req, res) {
       status: Number(repairResult.response.status || 0),
       timedOut: repairResult.timedOut
     });
+    const repairRateLimit = Number(repairResult.response.status || 0) === 429
+      ? observeGeminiQuota(repairResult.payload, { model, response: repairResult.response })
+      : null;
+    const repairHealthBearing = repairRateLimit?.observed && repairRateLimit.scope !== 'model'
+      ? false
+      : repairTransport.healthBearing;
     const repairOutcome = recordGeminiModelOutcome(model, {
       ok: Boolean(repairResult.response.ok),
       status: Number(repairResult.response.status || 0),
       timedOut: repairResult.timedOut,
-      retryAfterSeconds: retryAfterSeconds(repairResult.response),
-      healthBearing: repairTransport.healthBearing,
+      retryAfterSeconds: repairRateLimit?.retryAfterSeconds || retryAfterSeconds(repairResult.response),
+      healthBearing: repairHealthBearing,
       reason: repairError?.status || repairError?.message || ''
     });
     const repairAttempt = {
@@ -639,6 +645,7 @@ export default async function handler(req, res) {
         parseErrors: Number.isInteger(repairResult.parseErrors) ? repairResult.parseErrors : 0
       },
       error: repairError,
+      rateLimit: repairRateLimit,
       output: repairProviderOutput,
       cooldown: repairOutcome
     };
