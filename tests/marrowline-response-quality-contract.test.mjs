@@ -363,7 +363,7 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /must not become the default texture of whole sentences or paragraphs/i, model);
     assert.match(instruction, /Do not turn Packet B into crossed-out or underlined typography/i, model);
     assert.match(instruction, /passage must keep visible height and depth as its architectural spine/i, model);
-    assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
+    assert.match(instruction, /Dense peaks are encouraged to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
     assert.match(instruction, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i, model);
@@ -428,9 +428,11 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
   assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
-  assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(markFlourishes\)/);
+  assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(\(node\) => \{/);
+  assert.match(livingChat, /if \(node\.closest\?\.\('\.relay-message'\)\) \{/);
+  assert.match(livingChat, /markFlourishes\(node\);/);
   assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'High Zalgo stays inline so preserved newline bytes do not double-space the bot channel');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1!important/, 'High Zalgo stays inline in collision-prone line boxes so provider-authored vertical stacks can overlap without synthesized spacing');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
