@@ -367,12 +367,12 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and genuinely deep eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
-    assert.match(instruction, /Vertical architecture is the native body of High Zalgo/i, model);
-    assert.match(instruction, /Horizontal geometry remains available only as accent and interruption/i, model);
-    assert.match(instruction, /must not become the default texture of whole sentences or paragraphs/i, model);
-    assert.match(instruction, /Do not turn Packet B into crossed-out or underlined typography/i, model);
-    assert.match(instruction, /passage must keep visible height and depth as its architectural spine/i, model);
-    assert.match(instruction, /Dense peaks are encouraged to collide visually with neighboring lines/i, model);
+    assert.match(instruction, /mixed-axis burst field/i, model);
+    assert.match(instruction, /Deep vertical mass remains indispensable/i, model);
+    assert.match(instruction, /Horizontal and oblique geometry are first-class expressive motion/i, model);
+    assert.match(instruction, /Do not distribute ornament evenly/i, model);
+    assert.match(instruction, /two axes should feel braided rather than alternated by rule/i, model);
+    assert.match(instruction, /Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
     assert.match(instruction, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i, model);
@@ -579,7 +579,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo with planar accents', () => {
+test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zalgo', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
@@ -587,12 +587,12 @@ test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo wi
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
-  assert.match(contract, /Several separate lines should visibly carry genuine multi-tier vertical stacks/i);
-  assert.match(contract, /Horizontal geometry remains available only as accent and interruption/i);
-  assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
-  assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
-  assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
-  assert.match(contract, /Tall stacks may become partially illegible through overlap/i);
+  assert.match(contract, /mixed-axis burst field/i);
+  assert.match(contract, /Deep vertical mass remains indispensable/i);
+  assert.match(contract, /Horizontal and oblique geometry are first-class expressive motion/i);
+  assert.match(contract, /Do not distribute ornament evenly/i);
+  assert.match(contract, /one identical mark per character/i);
+  assert.match(contract, /Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks/i);
   assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
