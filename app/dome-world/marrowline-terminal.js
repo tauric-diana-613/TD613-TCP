@@ -26,6 +26,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 import {
+  currentGeminiDailyQuotaHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
 } from '../gemini-consumption-ledger.js';
@@ -593,6 +594,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let failurePayload = null;
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
+      const dailyQuotaHints = currentGeminiDailyQuotaHints(root);
+      if (dailyQuotaHints.models.length) requestBody.dailyQuotaHints = dailyQuotaHints;
       if (attachments.length) requestBody.attachments = attachments;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
