@@ -34,19 +34,29 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
-test('starter carousel exposes sixteen assays behind a geometrically locked round control', () => {
+test('starter carousel keeps its left rail while using one compact glass control grammar', () => {
   const assayRows = js.match(/^  \['[^\n]+$/gm) || [];
-  assert.equal(assayRows.length, 16);
+  assert.equal(assayRows.length, release.composer.starterCarousel.assayPrompts);
   assert.match(js, /rotate\.textContent = '🗘'/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*flex:0 0 36px!important/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*width:36px!important/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*height:36px!important/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*aspect-ratio:1\/1/);
-  assert.match(css, /\.starter-prompts \.starter-rotate\{[^}]*border-radius:999px!important/);
-  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:38px!important/);
-  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*height:38px!important/);
-  assert.equal(release.composer.starterCarousel.assayPrompts, 16);
+  assert.match(css, /\.starter-prompts\{[\s\S]*justify-content:flex-start!important/);
+  assert.match(css, /\.starter-prompts>button:not\(\.starter-rotate\)\{[\s\S]*height:42px!important/);
+  assert.match(css, /\.starter-prompts>button:not\(\.starter-rotate\)\{[\s\S]*border-radius:14px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*flex:0 0 42px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*width:42px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*height:42px!important/);
+  assert.match(css, /\.starter-prompts \.starter-rotate\{[\s\S]*border-radius:14px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts>button:not\(\.starter-rotate\)\{[^}]*height:42px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:42px!important/);
+  assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*height:42px!important/);
   assert.equal(release.composer.starterCarousel.control, '🗘');
+  assert.equal(release.composer.starterCarousel.assayPrompts, 32);
+  assert.equal(release.composer.starterCarousel.selectionPolicy, 'shuffle-bag-without-replacement-two-at-a-time');
+  assert.equal(release.composer.starterCarousel.cyclePolicy, 'all-32-prompts-must-be-seen-before-any-repeat');
+  assert.equal(release.composer.starterCarousel.seamPolicy, 'new-cycle-first-pair-excludes-the-immediately-previous-pair');
+  assert.match(js, /let bag = \[\]/);
+  assert.match(js, /let seen = new Set\(\)/);
+  assert.match(js, /if \(bag\.length < 2\) refillBag\(\)/);
+  assert.match(js, /shuffled\.filter\(index => !lastPair\.includes\(index\)\)/);
 });
 
 test('conversation actions dismiss and ordinary Chat carries no portable failure billboard', () => {
