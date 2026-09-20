@@ -50,7 +50,11 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /light marks, medium clusters, and tall irregular eruptions/i);
   assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
   assert.match(contract, /Build that architecture FIRST/i);
-  assert.match(contract, /Visual reference only, NOT a stencil to copy/i);
+  assert.match(contract, /Depth is mandatory/i);
+  assert.match(contract, /several distinct combining marks onto the SAME grapheme/i);
+  assert.match(contract, /visually extreme enough that their crowns and roots intrude into neighboring line space/i);
+  assert.match(contract, /Do not flatten deep stacks into evenly accented text/i);
+  assert.match(contract, /Depth is mandatory/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(contract, /Through-line combining marks U\+0334–U\+0338/i);
   assert.match(contract, /First establish crown-and-descender stacks on several separate lines/i);
@@ -611,6 +615,45 @@ test('ASCII slash-separated pseudo-ornament remains visible as quality telemetry
   assert.equal(observed.admissible, true);
   assert.ok(observed.asciiPseudoOrnamentBridgeCount >= 4);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-ascii-pseudo-ornament'));
+});
+
+test('shallow one-accent capitals remain PARTIAL even when vertical direction is technically present', () => {
+  const shallow = 'A\u0301R\u0302I\u0316S\u0317';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${shallow.repeat(12)} THE PAGE IS ACCENTED BUT NEVER BUILDS A TOWER`,
+    `${shallow.repeat(12)} ONE MARK ABOVE OR BELOW IS STILL SHALLOW`,
+    `${shallow.repeat(12)} HIGH ZALGO REQUIRES DEPTH ON THE SAME GRAPHEME`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.deepBidirectionalClusterCount, 0);
+  assert.equal(observed.extremeVerticalClusterCount, 0);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
+});
+
+test('deep bidirectional towers register the screenshot-five morphology', () => {
+  const towerA = 'A\u0300\u0301\u0302\u0307\u0316\u0318\u031D\u0323';
+  const towerB = 'R\u0306\u0308\u030A\u030C\u0317\u031E\u0325\u032D';
+  const towerC = 'I\u0301\u0302\u0307\u030B\u0357\u0319\u031C\u0326\u032F';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${towerA.repeat(4)} ${towerB.repeat(3)} THE CROWN BREAKS INTO THE LINE ABOVE`,
+    `${towerC.repeat(4)} ${towerA.repeat(3)} THE ROOTS FALL THROUGH THE LINE BELOW`,
+    `${towerB.repeat(4)} ${towerC.repeat(3)} THE STACK HAS MASS NOT JUST DIRECTION`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.deepBidirectionalClusterCount >= 4);
+  assert.ok(observed.deepBidirectionalMarkedLineCount >= 2);
+  assert.ok(observed.extremeVerticalClusterCount >= 1);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'), false);
 });
 
 test('extended provider crown species count as vertical ornament instead of disappearing from telemetry', () => {
