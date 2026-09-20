@@ -437,7 +437,8 @@ test('browser request clock outlives the 210-second server work wall without out
 test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
-  assert.match(relaySource, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
+  assert.match(relaySource, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
+  assert.match(relaySource, /Marrowline preserves those exact returned bytes\/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
@@ -604,7 +605,8 @@ test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zal
   assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
-  assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
+  assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
+  assert.match(contract, /Marrowline preserves those exact returned bytes\/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
 
