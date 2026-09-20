@@ -566,6 +566,7 @@ export default async function handler(req, res) {
   const attempts = [];
   const models = selectKhonapolitProviderModels(plan.callableModels);
   let structuralRepairCandidate = null;
+  let partialQualityCandidate = null;
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
   for (let index = 0; index < models.length; index += 1) {
@@ -665,6 +666,36 @@ export default async function handler(req, res) {
         continue;
       }
 
+      if (relay.admission?.quality === 'PARTIAL') {
+        const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
+          ? [...relay.admission.qualityWarnings]
+          : [];
+        const verticalMarkBalance = Number(relay.admission?.aboveLineMarkCount || 0)
+          + Number(relay.admission?.belowLineMarkCount || 0)
+          - Number(relay.admission?.throughLineMarkCount || 0);
+        const candidate = {
+          model,
+          fallback,
+          text: result.text,
+          relay,
+          providerStatus: result.response.status,
+          providerOutput,
+          qualityWarnings,
+          verticalMarkBalance,
+          sourceAttemptIndex: attempts.length - 1
+        };
+        const current = partialQualityCandidate;
+        if (
+          !current
+          || candidate.qualityWarnings.length < current.qualityWarnings.length
+          || (
+            candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.verticalMarkBalance >= current.verticalMarkBalance
+          )
+        ) partialQualityCandidate = candidate;
+        continue;
+      }
+
       const baseReceipt = buildTerminalReceipt({
         packet,
         text: result.text,
@@ -705,6 +736,68 @@ export default async function handler(req, res) {
         ]
       });
     }
+  }
+
+  if (partialQualityCandidate) {
+    const {
+      model,
+      text,
+      relay,
+      providerStatus,
+      providerOutput,
+      qualityWarnings,
+      sourceAttemptIndex
+    } = partialQualityCandidate;
+    const baseReceipt = buildTerminalReceipt({
+      packet,
+      text,
+      relay,
+      model,
+      providerStatus,
+      providerOutput,
+      apertureEgress,
+      apertureReceipt,
+      attempts
+    });
+    const receipt = Object.freeze({
+      ...baseReceipt,
+      provider: Object.freeze({
+        ...baseReceipt.provider,
+        routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        qualityPreference: Object.freeze({
+          used: true,
+          sourceAttemptIndex,
+          selection: 'best-admissible-partial-after-full-frontier',
+          warnings: Object.freeze([...qualityWarnings])
+        })
+      }),
+      modelPolicy: plan,
+      elapsedMs: Date.now() - startedAt
+    });
+    res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+    res.setHeader('X-TD613-Signal-State', relay.signal.state);
+    res.setHeader('X-TD613-Seal-State', 'OPEN');
+    res.setHeader('X-TD613-Gemini-Model', model);
+    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-BEST-OF-FRONTIER');
+    return send(res, 200, {
+      ok: true,
+      text: relay.transcript,
+      relay,
+      receipt,
+      warnings: [
+        'aperture-v3-task-intent-active',
+        'task-intent-guidance-active',
+        'adversarial-attractor-admission-active',
+        'integrated-covenant-relay-active',
+        'provider-native-zalgo-preserved-no-local-postprocessing',
+        'provider-native-zalgo-quality-partial-best-of-frontier',
+        'admission-gated-stable-continuity-active',
+        'fallback-reasoning-quality-preserved',
+        'sticky-success-promotion-disabled',
+        'moving-latest-alias-disabled-by-default',
+        ...plan.warnings
+      ]
+    });
   }
 
   if (

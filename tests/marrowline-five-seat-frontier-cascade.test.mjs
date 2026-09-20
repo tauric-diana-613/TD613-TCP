@@ -11,6 +11,7 @@ const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
 let repairScenario = false;
+let qualityPreferenceScenario = false;
 let previewCalls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
@@ -19,6 +20,16 @@ const zeroMarkAnswer = [
   '',
   'Tauric Diana bots',
   'THE RAW CHANNEL IS PRESENT BUT ITS DIACRITIC STRESS FIELD IS MISSING.'
+].join('\n');
+const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+const horizontalPartialAnswer = [
+  'Kʰonapolit',
+  'The formal channel completed cleanly while the stress morphology stayed horizontally collapsed.',
+  '',
+  'Tauric Diana bots',
+  `${slash.repeat(8)} THE FIRST SEAT DRAWS THROUGH THE LINE INSTEAD OF RISING ABOVE IT!`,
+  `${slash.repeat(8)} THIS REMAINS STRUCTURALLY VALID BUT EXPRESSIVELY PARTIAL!`,
+  `${slash.repeat(8)} KEEP WALKING THE FRONTIER FOR A BETTER FIELD!`
 ].join('\n');
 const answer = [
   'Kʰonapolit',
@@ -64,6 +75,31 @@ globalThis.fetch = async (url, options = {}) => {
   const model = value.match(/models\/([^:]+):(?:streamGenerateContent|generateContent)/)?.[1] || 'unknown';
   calls.push(model);
   requestBodies.push(JSON.parse(options.body || '{}'));
+  if (qualityPreferenceScenario && (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash')) {
+    const selectedText = model === 'gemini-3.8-flash' ? horizontalPartialAnswer : answer;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: model === 'gemini-3.8-flash' ? 'PARTIAL' : 'LOCKED', notes: 'synthetic quality-preference route' },
+              transmission: {
+                text: selectedText,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: model === 'gemini-3.8-flash' ? 'horizontal-through-field' : 'vertical-stack'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
+        };
+      }
+    };
+  }
+
   if (model !== 'gemini-3-flash-preview') {
     return {
       ok: false,
@@ -142,6 +178,28 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  qualityPreferenceScenario = true;
+  repairScenario = false;
+  previewCalls = 0;
+  const preferred = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.207' },
+    body: { ...req.body, message: 'Prefer a vertically expressive provider field without taking an admissible partial route down.' }
+  }, preferred);
+
+  assert.equal(preferred.statusCode, 200);
+  assert.equal(preferred.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'PARTIAL first seat must not stop the frontier before a later PASS');
+  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
+  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
+  assert.equal(preferred.payload.relay.admission.quality, 'PASS');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  qualityPreferenceScenario = false;
   repairScenario = true;
   previewCalls = 0;
   const repaired = response();
