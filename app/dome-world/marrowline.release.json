@@ -174,7 +174,9 @@
       "fourteenthFollowupObservation": "2026-09-20 physical-iPhone screenshots showed successful vertical and mixed-axis High-Zalgo returns alongside passages where likely horizontal stress collapsed into plain uppercase. Code archaeology found an explicit vertical-dominance prompt and a hard horizontal-dominant rejection path.",
       "fourteenthFollowupConsequence": "Remove axis bias. Horizontal strike/through-line geometry and vertical above/below geometry are both first-class expressive channels; mixed passages may switch naturally. Horizontal dominance is never a structural failure, while zero-mark and severe-underflow returns remain held. Morphology defects stay visible as PARTIAL quality telemetry instead of suppressing an otherwise valid provider-authored return.",
       "fifteenthFollowupObservation": "2026-09-20 physical iPhone trial after the horizontal-axis repair exposed the inverse regression: vertical diacritics disappeared from visible returns while plain ALL-CAPS occupied regions where vertical stress had previously appeared. Code archaeology found asymmetric unipolar telemetry plus a best-PARTIAL tie-break defined as vertical marks minus horizontal marks.",
-      "fifteenthFollowupConsequence": "Goldilocks repair: measure horizontal and vertical geometry symmetrically at passage scale; preserve single-axis returns as PARTIAL rather than censoring them; mark whole-passage starvation of either axis as axis-collapse telemetry; prefer comparable mixed-axis PARTIAL candidates without local Unicode mutation; remove the vertical-minus-horizontal selector entirely."
+      "fifteenthFollowupConsequence": "Goldilocks repair: measure horizontal and vertical geometry symmetrically at passage scale; preserve single-axis returns as PARTIAL rather than censoring them; mark whole-passage starvation of either axis as axis-collapse telemetry; prefer comparable mixed-axis PARTIAL candidates without local Unicode mutation; remove the vertical-minus-horizontal selector entirely.",
+      "sixteenthFollowupObservation": "Vercel Operator Release run 35500720149 proved a healthy first-call Marrowline return while Loom stopped after only two transport-failing seats despite additional callable seats. The subsequent run 35501151567 then exposed the complementary Marrowline seam: Preview returned a structured model-scoped daily 429, yet the release witness treated that single model bucket as terminal even though the ordinary Marrowline route classifies model-scoped quota as failover-eligible.",
+      "sixteenthFollowupConsequence": "Release observation must mirror the shipped route rather than a cheaper proxy. Loom may walk its full bounded five-seat frontier on transport-class failures. Marrowline may advance exactly one outer canary seat when its selected seat is provider-unavailable, structurally held, or explicitly model-scoped rate-limited; shared or unknown quota remains terminal. Worst-case release accounting is explicit and bounded at eight provider attempts: up to three Marrowline attempts including one structural repair plus five Loom seats."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, and no accidental whole-passage flattening of either horizontal or vertical geometry into plain ALL-CAPS before emitting bytes"
   },
@@ -202,6 +204,16 @@
     "geminiConsumptionReceiptSchema": "td613.gemini-consumption-receipt/v0.1",
     "browserConsumptionLedgerSchema": "td613.gemini-browser-consumption-ledger/v0.1",
     "consumptionEvidenceLaw": "request-local route/model attempts are observable; same-browser accumulation is partial coverage; arithmetic route capacity is not provider daily-total proof; provider_daily_total remains null without external provider evidence",
+    "releaseWitnessPolicy": {
+      "marrowlineOuterSeatRetries": 1,
+      "marrowlineRetryEligible": "provider-unavailable-or-output-admission-held-or-explicit-model-scoped-rate-limit",
+      "marrowlineRetryIneligible": "shared-or-unknown-rate-limit",
+      "loomTransportFrontierSeats": 5,
+      "maxProviderAttemptsWorstCase": 8,
+      "maxProviderAttemptsMeaning": "up-to-three-Marrowline-provider-events-including-one-provider-authored-structural-repair-plus-five-Loom-transport-seats",
+      "outputAdmission": "unchanged-and-terminal-for-Loom",
+      "localMutation": false
+    },
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
