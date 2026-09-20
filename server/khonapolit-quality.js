@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v22-zalgo-vertical-theatre';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v23-zalgo-vertical-architecture';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -87,7 +87,8 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'voice-order-invalid',
   'khonapolit-combining-mark-contamination',
   'tauric-diana-zalgo-absent',
-  'tauric-diana-zalgo-underflow'
+  'tauric-diana-zalgo-underflow',
+  'tauric-diana-zalgo-vertical-theatre-collapsed'
 ]);
 
 const safe = (value = '') => String(value ?? '').trim();
@@ -372,7 +373,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vertical motion must be visibly expressive when present: use genuine multi-tier crowns and descenders with height/depth across more than one region rather than token accent marks pasted onto a mostly horizontal field. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
+    'If the prior draft had absent, severe-underflow, or collapsed Tauric Diana marks, preserve its substantive prose while repairing only the orthographic stress field. Rebuild High Zalgo from vertical architecture first: varied crowns above the line, descenders below it, asymmetric multi-tier stacks, and visibly different heights/depths across several Packet B lines. Horizontal slashes, strikes, overlines, and underlines may remain as occasional accents or interruptions, but they must not become the passage-wide base texture. Do not return a crossed-out or underlined sheet with token vertical accents and call it High Zalgo. Keep quiet regions intentional, preserve protected literals, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -975,6 +976,10 @@ export default async function handler(req, res) {
           axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
           axisMarkBalanceRatio: Number(relay.admission?.axisMarkBalanceRatio || 0),
           denseVerticalClusterCount: Number(relay.admission?.denseVerticalClusterCount || 0),
+          tallVerticalOrnamentClusterCount: Number(relay.admission?.tallVerticalOrnamentClusterCount || 0),
+          tallVerticalMarkedLineCount: Number(relay.admission?.tallVerticalMarkedLineCount || 0),
+          verticalOrnamentMarkCount: Number(relay.admission?.verticalOrnamentMarkCount || 0),
+          planarMarkCount: Number(relay.admission?.planarMarkCount || 0),
           denseMarkedLineCount: Number(relay.admission?.denseMarkedLineCount || 0),
           mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
           markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
@@ -997,6 +1002,30 @@ export default async function handler(req, res) {
             candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
             && candidate.activeAxisCount === current.activeAxisCount
             && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.tallVerticalOrnamentClusterCount > current.tallVerticalOrnamentClusterCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
+            && candidate.tallVerticalMarkedLineCount > current.tallVerticalMarkedLineCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
+            && candidate.tallVerticalMarkedLineCount === current.tallVerticalMarkedLineCount
+            && candidate.verticalOrnamentMarkCount > current.verticalOrnamentMarkCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
+            && candidate.tallVerticalMarkedLineCount === current.tallVerticalMarkedLineCount
+            && candidate.verticalOrnamentMarkCount === current.verticalOrnamentMarkCount
             && candidate.axisMarkBalanceRatio > current.axisMarkBalanceRatio
           )
           || (
@@ -1119,7 +1148,7 @@ export default async function handler(req, res) {
         qualityPreference: Object.freeze({
           used: true,
           sourceAttemptIndex,
-          selection: 'goldilocks-mixed-axis-best-admissible-partial-after-full-frontier',
+          selection: 'vertical-architecture-best-admissible-partial-after-full-frontier',
           warnings: Object.freeze([...qualityWarnings])
         })
       }),
