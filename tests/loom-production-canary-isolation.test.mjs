@@ -7,7 +7,7 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.doesNotMatch(source, /Promise\.all\s*\(/, 'production AI witnesses must not be launched concurrently');
 
-const marrowlineProbe = source.indexOf('const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });');
+const marrowlineProbe = source.indexOf('const marrowlinePrimaryResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });');
 const marrowlineCheckpoint = source.indexOf("fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json')");
 const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });');
 assert.ok(marrowlineProbe >= 0, 'Marrowline live-route witness must remain present');
@@ -41,16 +41,22 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /posture: 'quota-conservative-single-seat-per-route'/);
-assert.match(source, /max_provider_requests: 2/);
+assert.match(source, /posture: 'quota-conservative-primary-with-one-transport-only-marrowline-retry'/);
+assert.match(source, /max_provider_requests: 3/);
+assert.match(source, /marrowlinePrimaryPayload\?\.diagnostic\?\.stage === 'provider-transport'/);
+assert.match(source, /marrowlinePrimaryPayload\?\.diagnostic\?\.code === 'PROVIDER_UNAVAILABLE'/);
+assert.match(source, /retryBudgetMs = Math\.max\(0, LIVE_WITNESS_TIMEOUT_MS - marrowlinePrimaryResult\.elapsedMs\)/);
+assert.match(source, /callableModels\.find\(model => RELEASE_CANARY_MODELS\.includes\(model\) && model !== marrowlineCanaryModel\)/);
+assert.doesNotMatch(source, /PROVIDER_RATE_LIMIT_HELD[^\n]*marrowlineTransportRetry/, 'release witness must not retry a provider rate-limit hold as ordinary unavailability');
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 2\)/, 'release consumption artifact cannot exceed the existing two-call canary ceiling');
+assert.match(source, /\.slice\(0, 3\)/, 'release consumption artifact cannot exceed primary Marrowline + one transport-only retry + Loom');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
-assert.match(source, /request_order:\s*\['marrowline',\s*'loom'\]/);
+assert.match(source, /request_order:\s*marrowlineTransportRetry/);
+assert.match(source, /'marrowline-transport-retry'/);
 assert.match(source, /per_witness_timeout_ms:\s*LIVE_WITNESS_TIMEOUT_MS/);
 assert.match(source, /count <= LIVE_WITNESS_TIMEOUT_MS/, 'long stage timing evidence must survive the post-60s provider world');
 assert.match(source, /provider_stream:\s*attempt\?\.providerStream/, 'production receipts must preserve bounded provider stream progress');
