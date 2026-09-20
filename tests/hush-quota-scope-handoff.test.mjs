@@ -34,15 +34,18 @@ test('handoff pins the current server-side semantic gap', () => {
   assert.doesNotMatch(server, /observeGeminiQuota/);
 });
 
-test('live PR123 and PR141 surfaces now preserve an explicit unknown quota state', () => {
-  const stable = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
-  const normalizer = fs.readFileSync('app/hush-pr141-receipt-truth-normalizer.js', 'utf8');
-  assert.match(stable, /return'unknown'/);
-  assert.match(stable, /quota_scope_unknown/);
-  assert.match(normalizer, /unknown-diagnostic/);
+test('historical PR123 stable-transform and PR141 normalizer are not in the current adversarial-bench runtime chain', () => {
+  const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
+  const light = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
+  const coherence = fs.readFileSync('app/hush-current-runtime-coherence.js', 'utf8');
+  assert.doesNotMatch(html, /hush-pr123-stable-transform\.js/);
+  assert.doesNotMatch(html, /hush-pr141-receipt-truth-normalizer\.js/);
+  assert.doesNotMatch(light, /hush-pr123-stable-transform|hush-pr141-receipt-truth-normalizer/);
+  assert.doesNotMatch(coherence, /hush-pr123-stable-transform|hush-pr141-receipt-truth-normalizer/);
+  assert.match(html, /hush-pr123-strict-undefined-fallback\.js/);
 });
 
-test.todo('reuse shared Gemini quota observer after Marrowline #1209 lands and preserve structured model/shared/unknown scope in Hush server receipts');
+test.todo('reuse shared Gemini quota observer after Marrowline #1209 lands and preserve structured model/shared/unknown scope in the live Hush server receipts');
 test.todo('decide bounded cooldown law for shared short-burst RetryInfo without weakening strict no-fallback Hush custody');
 
 console.log('hush-quota-scope-handoff.test.mjs handoff hooks loaded');
