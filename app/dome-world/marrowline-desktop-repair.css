@@ -400,41 +400,57 @@
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions{
     display:grid!important;
-    grid-template-columns:1fr 1fr!important;
-    gap:10px!important;
-    margin-top:3px!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px!important;
+    margin-top:6px!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button{
-    min-height:58px!important;
-    border-radius:12px!important;
+    min-height:42px!important;
+    border-radius:10px!important;
     white-space:normal!important;
-    line-height:1.35!important;
-    padding:10px 11px!important;
+    line-height:1.2!important;
+    padding:9px 11px!important;
+    font-size:.72rem!important;
+    letter-spacing:.01em!important;
+    box-shadow:inset 0 1px rgba(255,255,255,.026),0 8px 20px rgba(0,0,0,.12)!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary{
-    border-color:rgba(71,242,231,.66)!important;
+    grid-column:1/-1!important;
+    min-height:46px!important;
+    border-color:rgba(71,242,231,.48)!important;
     background:
-      linear-gradient(180deg,rgba(21,89,93,.36),rgba(9,36,46,.72))!important;
-    color:#ecffff!important;
+      linear-gradient(180deg,rgba(24,74,83,.42),rgba(12,39,50,.72))!important;
+    color:#edfffd!important;
+    font-weight:650!important;
     box-shadow:
-      0 0 28px rgba(57,232,224,.12),
-      inset 0 0 22px rgba(65,234,224,.055)!important;
+      inset 0 1px rgba(255,255,255,.034),
+      0 10px 26px rgba(36,180,184,.075)!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary:hover,
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary:focus-visible{
+    border-color:rgba(91,245,236,.68)!important;
+    background:
+      linear-gradient(180deg,rgba(27,88,95,.48),rgba(13,46,57,.78))!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #buildLocalMarrowline{
-    border-color:rgba(143,91,246,.58)!important;
+    border-color:rgba(143,91,246,.28)!important;
     background:
-      linear-gradient(180deg,rgba(72,42,130,.42),rgba(35,24,78,.74))!important;
-    color:#f0e9ff!important;
-    box-shadow:
-      0 0 28px rgba(115,72,226,.10),
-      inset 0 0 22px rgba(130,87,239,.045)!important;
+      linear-gradient(180deg,rgba(50,37,88,.58),rgba(31,25,65,.74))!important;
+    color:#ddd5ef!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt{
-    grid-column:1/-1!important;
-    border-color:rgba(124,112,218,.44)!important;
+    grid-column:auto!important;
+    border-color:rgba(109,207,219,.22)!important;
     background:
-      linear-gradient(180deg,rgba(34,31,78,.66),rgba(24,23,61,.78))!important;
-    color:#e2dcf4!important;
+      linear-gradient(180deg,rgba(26,34,59,.62),rgba(20,27,49,.78))!important;
+    color:#cddadd!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #buildLocalMarrowline:hover,
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #buildLocalMarrowline:focus-visible,
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt:hover,
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt:focus-visible{
+    border-color:rgba(123,222,227,.36)!important;
+    color:#f0edf7!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel #marrowlineStatus{
     display:flex;
