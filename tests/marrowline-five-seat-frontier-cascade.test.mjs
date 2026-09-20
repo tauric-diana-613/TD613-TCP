@@ -588,31 +588,52 @@ try {
   qualityPreferenceScenario = false;
   repairScenario = false;
   previewCalls = 0;
-  const pacificParts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Los_Angeles',
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }).formatToParts(new Date());
-  const pacificRow = Object.fromEntries(pacificParts.map(part => [part.type, part.value]));
-  const pacificDay = `${pacificRow.year}-${pacificRow.month}-${pacificRow.day}`;
+  const cooldownUntil = new Date(Date.now() + 60_000).toISOString();
   const hinted = response();
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.215' },
     body: {
       ...req.body,
-      message: 'Carry browser-observed daily quota exhaustion across a fresh serverless isolate.',
-      dailyQuotaHints: {
-        schema: 'td613.gemini-browser-daily-quota-hints/v0.1',
-        pacific_day: pacificDay,
-        models: ['gemini-3.8-flash']
+      message: 'Carry a browser-observed model cooldown across a fresh serverless isolate without inventing an all-day lock.',
+      quotaCooldownHints: {
+        schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+        models: ['gemini-3.8-flash'],
+        cooldown_until_by_model: { 'gemini-3.8-flash': cooldownUntil }
       }
     }
   }, hinted);
 
   assert.equal(hinted.statusCode, 200);
   assert.equal(hinted.payload.ok, true);
-  assert.equal(calls.includes('gemini-3.8-flash'), false, 'browser-observed daily exhaustion must prevent a fresh isolate from rediscovering the same dead seat');
+  assert.equal(calls.includes('gemini-3.8-flash'), false, 'active browser-observed model cooldown must prevent a fresh isolate from immediately rediscovering the same cooling seat');
   assert.equal(hinted.payload.receipt.provider.model, 'gemini-3-flash-preview');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  const allCooling = response();
+  const allCoolingUntil = new Date(Date.now() + 45_000).toISOString();
+  const allCoolingModels = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'];
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.217' },
+    body: {
+      ...req.body,
+      message: 'Do not probe provider seats while every browser-observed model cooldown is still active.',
+      quotaCooldownHints: {
+        schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+        models: allCoolingModels,
+        cooldown_until_by_model: Object.fromEntries(allCoolingModels.map(model => [model, allCoolingUntil]))
+      }
+    }
+  }, allCooling);
+
+  assert.equal(allCooling.statusCode, 429);
+  assert.equal(allCooling.payload.ok, false);
+  assert.equal(allCooling.payload.diagnostic.code, 'CLIENT_OBSERVED_MODEL_QUOTA_COOLING');
+  assert.deepEqual(calls, [], 'active browser cooldowns for every approved seat must not spend a provider request');
+  assert.ok(Number(allCooling.headers['Retry-After']) >= 1 && Number(allCooling.headers['Retry-After']) <= 45);
 
   clearGeminiModelState();
   calls.length = 0;

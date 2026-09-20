@@ -95,7 +95,7 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
 
   const cadenceText = [...metrics, ...quotaIds].join(' ').toLowerCase();
   const daily = /(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|tokens[_ -]?per[_ -]?day)/i.test(cadenceText);
-  const burst = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate)/i.test(cadenceText)
+  const burst = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText)
     || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
   const limit = Number(limitFromMessage);
 

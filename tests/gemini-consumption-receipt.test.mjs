@@ -8,7 +8,7 @@ import {
   GEMINI_BROWSER_LEDGER_SCHEMA,
   GEMINI_BROWSER_LEDGER_KEY,
   clearGeminiBrowserLedger,
-  currentGeminiDailyQuotaHints,
+  currentGeminiQuotaCooldownHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
 } from '../app/gemini-consumption-ledger.js';
@@ -117,30 +117,30 @@ test('browser ledger deduplicates exact events and labels its coverage as browse
 });
 
 
-test('browser daily model quota hints survive serverless-isolate churn only within the current Pacific quota day', () => {
+test('browser model-scoped 429 cooldown hints survive isolate churn only for the bounded retry window', () => {
   const root = { localStorage: storage() };
   clearGeminiBrowserLedger(root);
-  const daily = buildGeminiConsumptionReceipt({
+  const limited = buildGeminiConsumptionReceipt({
     route: 'marrowline',
-    requestId: 'daily-quota-1',
-    observedAt: '2026-09-20T12:00:00.000Z',
+    requestId: 'quota-cooldown-1',
+    observedAt: '2026-09-20T15:56:12.221Z',
     attempts: [{
-      model: 'gemini-3.8-flash',
+      model: 'gemini-3-flash-preview',
       status: 429,
       rateLimit: {
         scope: 'model',
         quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
         metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
-        model: 'gemini-3.8-flash',
+        model: 'gemini-3-flash',
         limit: 20,
-        retryAfterSeconds: 0
+        retryAfterSeconds: 48
       }
     }]
   });
   const shared = buildGeminiConsumptionReceipt({
     route: 'marrowline',
     requestId: 'shared-burst-1',
-    observedAt: '2026-09-20T12:05:00.000Z',
+    observedAt: '2026-09-20T15:56:12.221Z',
     attempts: [{
       model: 'gemini-3.5-flash',
       status: 429,
@@ -155,15 +155,46 @@ test('browser daily model quota hints survive serverless-isolate churn only with
     }]
   });
 
-  ingestGeminiConsumption({ gemini_consumption: daily }, root);
+  ingestGeminiConsumption({ gemini_consumption: limited }, root);
   ingestGeminiConsumption({ gemini_consumption: shared }, root);
 
-  const sameDay = currentGeminiDailyQuotaHints(root, new Date('2026-09-20T15:00:00.000Z'));
-  assert.equal(sameDay.schema, 'td613.gemini-browser-daily-quota-hints/v0.1');
-  assert.equal(sameDay.coverage, 'this-browser-current-pacific-day-model-scoped-429s-only');
-  assert.deepEqual(sameDay.models, ['gemini-3.8-flash']);
-  assert.equal(sameDay.pacific_day, '2026-09-20');
+  const active = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T15:56:40.000Z'));
+  assert.equal(active.schema, 'td613.gemini-browser-quota-cooldown-hints/v0.2');
+  assert.equal(active.coverage, 'this-browser-active-model-scoped-429-cooldowns-only');
+  assert.deepEqual(active.models, ['gemini-3-flash-preview'], 'actual called seat wins over a provider-normalized quota model alias');
+  assert.equal(active.retry_after_seconds_by_model['gemini-3-flash-preview'], 48);
+  assert.equal(active.cooldown_until_by_model['gemini-3-flash-preview'], '2026-09-20T15:57:00.221Z');
 
-  const nextPacificDay = currentGeminiDailyQuotaHints(root, new Date('2026-09-21T08:00:00.000Z'));
-  assert.deepEqual(nextPacificDay.models, [], 'daily exhaustion evidence must expire after the Pacific provider day changes');
+  const expiredSameDay = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T15:57:01.000Z'));
+  assert.deepEqual(expiredSameDay.models, [], 'explicit Retry-After expiry must reopen the seat even on the same provider calendar day');
+});
+
+test('model-scoped 429 without Retry-After uses the bounded Hush-style 120-second browser cooldown', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const limited = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'quota-cooldown-default',
+    observedAt: '2026-09-20T12:00:00.000Z',
+    attempts: [{
+      model: 'gemini-3.8-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.8-flash',
+        limit: 20,
+        retryAfterSeconds: 0
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: limited }, root);
+
+  const active = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T12:01:59.000Z'));
+  assert.deepEqual(active.models, ['gemini-3.8-flash']);
+  assert.equal(active.retry_after_seconds_by_model['gemini-3.8-flash'], 120);
+
+  const expired = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T12:02:01.000Z'));
+  assert.deepEqual(expired.models, []);
 });

@@ -85,6 +85,8 @@ test('FreeTier daily 20 per model composes to the five-seat Marrowline route bud
   const entitlement = assessGeminiQuotaEntitlement(observed, { expectedDailyLimit: 100, routeModelCount: 5 });
   assert.equal(observed.scope, 'model');
   assert.equal(observed.daily, true);
+  assert.equal(observed.burst, false, 'generate_content_free_tier_requests must not match burst merely because “generate” contains the letters “rate”');
+  assert.equal(observed.retryAfterSeconds, 27);
   assert.equal(observed.limit, 20);
   assert.equal(entitlement.limitScope, 'per-model');
   assert.equal(entitlement.routeModelCount, 5);

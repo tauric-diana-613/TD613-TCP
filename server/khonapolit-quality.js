@@ -98,24 +98,29 @@ const requestHeader = (req = {}, name = '') => {
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
-const PACIFIC_TIME_ZONE = 'America/Los_Angeles';
-function pacificDayKey(at = Date.now()) {
-  const date = at instanceof Date ? at : new Date(at);
-  if (Number.isNaN(date.getTime())) return '';
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: PACIFIC_TIME_ZONE,
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }).formatToParts(date);
-  const row = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return row.year && row.month && row.day ? `${row.year}-${row.month}-${row.day}` : '';
-}
-function clientDailyQuotaHintModels(body = {}, at = Date.now()) {
-  const hints = body?.dailyQuotaHints;
-  if (!hints || hints.schema !== 'td613.gemini-browser-daily-quota-hints/v0.1') return new Set();
-  if (safe(hints.pacific_day) !== pacificDayKey(at)) return new Set();
-  return new Set((Array.isArray(hints.models) ? hints.models : [])
-    .map((model) => safe(model).replace(/^models\//, ''))
-    .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)));
+const MAX_CLIENT_QUOTA_COOLDOWN_MS = 30 * 60 * 1000;
+function clientQuotaCooldownHints(body = {}, at = Date.now()) {
+  const hints = body?.quotaCooldownHints;
+  if (!hints || hints.schema !== 'td613.gemini-browser-quota-cooldown-hints/v0.2') {
+    return { models: new Set(), retryAfterSeconds: 0 };
+  }
+  const now = Number(at instanceof Date ? at.getTime() : at);
+  if (!Number.isFinite(now)) return { models: new Set(), retryAfterSeconds: 0 };
+  const untilByModel = hints.cooldown_until_by_model && typeof hints.cooldown_until_by_model === 'object'
+    ? hints.cooldown_until_by_model
+    : {};
+  const models = new Set();
+  let retryAfterSeconds = 0;
+  for (const rawModel of Array.isArray(hints.models) ? hints.models : []) {
+    const model = safe(rawModel).replace(/^models\//, '');
+    if (!HUMAN_LIVENESS_MODEL_ORDER.includes(model)) continue;
+    const until = Date.parse(safe(untilByModel[model]));
+    if (!Number.isFinite(until) || until <= now || until - now > MAX_CLIENT_QUOTA_COOLDOWN_MS) continue;
+    models.add(model);
+    const remaining = Math.max(1, Math.ceil((until - now) / 1000));
+    retryAfterSeconds = retryAfterSeconds ? Math.min(retryAfterSeconds, remaining) : remaining;
+  }
+  return { models, retryAfterSeconds };
 }
 
 const ORDINARY_PROJECT_GUIDANCE = [
@@ -653,9 +658,9 @@ export default async function handler(req, res) {
   });
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
-  const clientDailyQuotaHints = clientDailyQuotaHintModels(body);
+  const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
-  const allModels = providerModels.filter((model) => !clientDailyQuotaHints.has(model));
+  const allModels = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
@@ -808,20 +813,26 @@ export default async function handler(req, res) {
     return null;
   };
 
-  if (!models.length) return send(res, clientDailyQuotaHints.size ? 429 : 503, {
-    ok: false,
-    error: clientDailyQuotaHints.size ? 'client-observed-daily-model-quota-held' : 'no-eligible-callable-models',
-    status: clientDailyQuotaHints.size ? 'HELD' : undefined,
-    diagnostic: clientDailyQuotaHints.size
-      ? { stage: 'provider-plan', code: 'CLIENT_OBSERVED_DAILY_MODEL_QUOTA_HELD', models: [...clientDailyQuotaHints] }
-      : undefined,
-    attempts,
-    clientDailyQuotaHints: [...clientDailyQuotaHints],
-    modelPolicy: plan,
-    aperture: apertureReceipt,
-    aperture_egress: apertureEgress,
-    claim_ceiling: packet.claimCeiling
-  });
+  if (!models.length) {
+    const cooldownHeld = clientQuotaCooldown.models.size > 0;
+    if (cooldownHeld && clientQuotaCooldown.retryAfterSeconds > 0) {
+      res.setHeader('Retry-After', String(clientQuotaCooldown.retryAfterSeconds));
+    }
+    return send(res, cooldownHeld ? 429 : 503, {
+      ok: false,
+      error: cooldownHeld ? 'client-observed-model-quota-cooling' : 'no-eligible-callable-models',
+      status: cooldownHeld ? 'HELD' : undefined,
+      diagnostic: cooldownHeld
+        ? { stage: 'provider-plan', code: 'CLIENT_OBSERVED_MODEL_QUOTA_COOLING', models: [...clientQuotaCooldown.models] }
+        : undefined,
+      attempts,
+      clientQuotaCooldownHints: [...clientQuotaCooldown.models],
+      modelPolicy: plan,
+      aperture: apertureReceipt,
+      aperture_egress: apertureEgress,
+      claim_ceiling: packet.claimCeiling
+    });
+  }
 
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
