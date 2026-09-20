@@ -52,7 +52,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
   assert.match(contract, /genuinely bipolar and heterogeneous/i);
-  assert.match(contract, /same circumflex-like mark at different stack heights never counts as expressive variation/i);
+  assert.match(contract, /changing only the number of identical circumflex-like hats never counts as expressive variation/i);
   assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
