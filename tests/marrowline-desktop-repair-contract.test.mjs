@@ -83,9 +83,11 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(js, /operatorSeal: 'receipt-instrument-explicit-operator'/);
 });
 
-test('room boot loads the desktop repair and low-flourish covenant returns are hard held', () => {
+test('room boot loads the desktop repair and separates Zalgo aesthetics from structural admission', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
-  assert.equal(release.relay.flourishFloor.belowFloorPosture, 'HELD-no-human-visible-return');
-  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-field-absent-or-too-thin/);
+  assert.equal(release.relay.zalgoQualityPolicy.zeroMarkPosture, 'HELD-no-human-visible-return');
+  assert.equal(release.relay.zalgoQualityPolicy.thinOrSparsePosture, 'PARTIAL-visible-with-quality-warning');
+  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent/);
+  assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
 });
