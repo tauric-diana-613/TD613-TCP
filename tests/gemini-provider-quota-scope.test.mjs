@@ -65,7 +65,7 @@ test('ambiguous 429 remains unknown rather than becoming provider exhaustion', (
 });
 
 
-test('FreeTier daily 20 is diagnostic mismatch against Marrowline operator entitlement 100', () => {
+test('FreeTier daily 20 per model composes to the five-seat Marrowline route budget 100', () => {
   const payload = {
     error: {
       code: 429,
@@ -82,23 +82,44 @@ test('FreeTier daily 20 is diagnostic mismatch against Marrowline operator entit
     }
   };
   const observed = observeGeminiQuota(payload, { model: 'gemini-3.8-flash', response: response('27') });
-  const entitlement = assessGeminiQuotaEntitlement(observed, { expectedDailyLimit: 100 });
+  const entitlement = assessGeminiQuotaEntitlement(observed, { expectedDailyLimit: 100, routeModelCount: 5 });
   assert.equal(observed.scope, 'model');
   assert.equal(observed.daily, true);
   assert.equal(observed.limit, 20);
-  assert.equal(entitlement.mismatch, true);
+  assert.equal(entitlement.limitScope, 'per-model');
+  assert.equal(entitlement.routeModelCount, 5);
+  assert.equal(entitlement.routeDailyCapacity, 100);
+  assert.equal(entitlement.mismatch, false);
   assert.equal(entitlement.expectedDailyLimit, 100);
   assert.equal(entitlement.providerReportedDailyLimit, 20);
-  assert.equal(entitlement.reason, 'provider-free-tier-daily-limit-below-operator-entitlement');
+  assert.equal(entitlement.reason, null);
 });
 
-test('matching or higher provider daily quota is not misclassified as an entitlement mismatch', () => {
+test('the same per-model 20 receipt is a route-budget mismatch if only four seats exist', () => {
   const entitlement = assessGeminiQuotaEntitlement({
+    scope: 'model',
     daily: true,
-    limit: 100,
+    limit: 20,
     quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
     metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
     model: 'gemini-3.8-flash'
-  }, { expectedDailyLimit: 100 });
+  }, { expectedDailyLimit: 100, routeModelCount: 4 });
+  assert.equal(entitlement.limitScope, 'per-model');
+  assert.equal(entitlement.routeDailyCapacity, 80);
+  assert.equal(entitlement.mismatch, true);
+  assert.equal(entitlement.reason, 'provider-route-daily-capacity-below-operator-entitlement');
+});
+
+test('a provider project-wide daily 100 receipt remains a route-wide 100 budget', () => {
+  const entitlement = assessGeminiQuotaEntitlement({
+    scope: 'shared',
+    daily: true,
+    limit: 100,
+    quotaId: 'GenerateRequestsPerDayPerProject-FreeTier',
+    metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+    model: 'gemini-3.8-flash'
+  }, { expectedDailyLimit: 100, routeModelCount: 5 });
+  assert.equal(entitlement.limitScope, 'route-or-project');
+  assert.equal(entitlement.routeDailyCapacity, 100);
   assert.equal(entitlement.mismatch, false);
 });
