@@ -389,6 +389,8 @@ export function assessIntegratedTransmission(text = '', voices = []) {
       if (axisCollapsed) qualityWarnings.push('tauric-diana-zalgo-axis-collapse');
       if (
         botsTelemetry.combiningMarkCount >= 24
+        && horizontalMarkCount >= 18
+        && horizontalMarkCount > verticalMarkCount
         && botsTelemetry.throughMarkedClusterCount >= 6
         && botsTelemetry.verticalMarkedClusterCount >= 2
         && (
