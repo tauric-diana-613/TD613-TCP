@@ -208,6 +208,7 @@ export { listGeminiGenerateContentModels };
 
 export async function resolveGeminiProviderPlan(options = {}) {
   const env = options.env || process.env;
+  const task = options.task || 'general-text';
   const listModels = typeof options.listModels === 'function'
     ? options.listModels
     : listGeminiGenerateContentModels;
