@@ -25,8 +25,12 @@ import {
   APERTURE_V3_VERSION,
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
+import {
+  ingestGeminiConsumption,
+  summarizeGeminiBrowserLedger
+} from '../gemini-consumption-ledger.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v8-visible-frontier-failures';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -327,6 +331,22 @@ function routeAttemptTrace(value = null) {
     return model ? model + suffix : '';
   }).filter(Boolean).join(' → ');
 }
+function renderGeminiBrowserLedger(doc, root = globalThis) {
+  const summary = summarizeGeminiBrowserLedger(root);
+  const total = byId(doc, 'geminiLedgerTotal');
+  const routes = byId(doc, 'geminiLedgerRoutes');
+  if (total) total.textContent = `${summary.observed_calls} Gemini call${summary.observed_calls === 1 ? '' : 's'}`;
+  if (routes) {
+    const parts = Object.entries(summary.by_route || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([route, count]) => `${route} ${count}`);
+    routes.textContent = parts.length
+      ? `Observed routes · ${parts.join(' · ')}`
+      : 'No interactive Gemini provider calls have been observed in this browser yet.';
+  }
+  return summary;
+}
+
 function renderModelRouteReceipt(doc, receipt = null) {
   const callable = Array.isArray(receipt?.modelPolicy?.callableModels) ? receipt.modelPolicy.callableModels : [];
   const attempts = Array.isArray(receipt?.provider?.attempts) ? receipt.provider.attempts : [];
@@ -340,9 +360,10 @@ function renderModelRouteReceipt(doc, receipt = null) {
   if (availabilityNode) availabilityNode.textContent = callable.length
     ? callable.map((model) => `${shortGeminiModel(model)} ✓`).join(' · ')
     : '—';
-  if (attemptsNode) attemptsNode.textContent = attempts.length
-    ? routeAttemptTrace(receipt)
-    : '—';
+  const trace = attempts.length ? routeAttemptTrace(receipt) : '';
+  if (attemptsNode) attemptsNode.textContent = trace || '—';
+  const frontier = byId(doc, 'receiptFrontierTrace');
+  if (frontier) frontier.textContent = `FRONTIER · ${trace || '—'}`;
   if (coolingNode) coolingNode.textContent = cooling.length
     ? cooling.map((row) => {
         const retry = Number(row?.state?.retryAfterSeconds || 0);
@@ -533,7 +554,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   if (waiver && !validateShi(shiInput?.value || '').valid) waiver.checked = true;
   const settingsNote = doc.querySelector('#invocationPanel .panel-note');
   if (settingsNote) settingsNote.textContent = 'Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.';
-  renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); refreshKeyState(doc); syncConversationTitle(doc, state);
+  renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); renderGeminiBrowserLedger(doc, root); refreshKeyState(doc); syncConversationTitle(doc, state);
   ensureOriginControls(doc); syncRecoveryControls(doc, state);
   const initialStatus = byId(doc, 'khonapolitTerminalStatus');
   if (initialStatus && !state.messages.length) initialStatus.textContent = 'READY · ordinary work starts in unissued research mode · advanced custody remains optional';
@@ -579,6 +600,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         body: JSON.stringify(requestBody)
       });
       const payload = await response.json().catch(() => ({}));
+      ingestGeminiConsumption(payload, root);
+      renderGeminiBrowserLedger(doc, root);
       if (!response.ok || !payload.ok || !payload.relay) {
         failurePayload = { ...payload, httpStatus: response.status };
         throw new Error(payload.error || `HTTP ${response.status}`);
@@ -611,11 +634,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
-      const attemptTrace = routeAttemptTrace(state.lastFailure);
-      const routeNote = attemptTrace ? ` · ROUTE ${attemptTrace}` : '';
+      renderGeminiBrowserLedger(doc, root);
       status.textContent = attachments.length
-        ? `TASK PRESERVED${routeNote} · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
-        : `TASK PRESERVED${routeNote} · Your task is still here. Retry it, or copy/export it to another AI companion.`;
+        ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
+        : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
     } finally {
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
@@ -653,9 +675,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
     try {
-      const payload = state.lastFailure
+      const current = state.lastFailure
         ? { status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }
         : state.lastReceipt || null;
+      const payload = current
+        ? { current, browser_consumption: summarizeGeminiBrowserLedger(root) }
+        : null;
       await root.navigator.clipboard.writeText(payload ? JSON.stringify(payload, null, 2) : '');
       byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED';
     }
