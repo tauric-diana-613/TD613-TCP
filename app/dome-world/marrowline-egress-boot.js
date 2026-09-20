@@ -159,7 +159,8 @@ async function bootMarrowlineRoom(doc = document, root = window) {
       visualViewportOffsetBound: true,
       firstPaintHeldUntilRoomReady: true,
       universalComposerPlus: true,
-      starterAssayCarousel: 16
+      starterAssayCarousel: 32,
+      desktopRepairCssRenderBlocking: true
     }),
     seal: '⟐'
   });

@@ -65,31 +65,50 @@
   margin:0!important;
   display:inline-grid!important;
   place-items:center!important;
-  overflow:hidden;
-  border:1px solid rgba(121,210,223,.18)!important;
-  border-radius:14px!important;
-  color:#b8d8d3!important;
-  background:linear-gradient(180deg,rgba(24,30,48,.82),rgba(18,23,39,.86))!important;
-  box-shadow:inset 0 1px rgba(255,255,255,.028),0 8px 18px rgba(0,0,0,.11)!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  color:#75f4f1!important;
+  background:transparent!important;
+  box-shadow:none!important;
   font-size:0!important;
   line-height:1!important;
   text-indent:0!important;
+  -webkit-tap-highlight-color:transparent;
 }
 .starter-prompts .starter-rotate::before{
   content:"↻";
   display:block;
-  font:500 17px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
+  font:500 23px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
   transform:none;
-  opacity:.92;
+  opacity:.98;
+  text-shadow:
+    0 0 5px rgba(111,255,251,.88),
+    0 0 12px rgba(62,235,238,.56),
+    0 0 24px rgba(47,210,231,.28);
+  filter:drop-shadow(0 0 5px rgba(78,237,240,.34));
+  transition:transform .15s ease,text-shadow .15s ease,filter .15s ease,opacity .15s ease;
 }
 .starter-prompts .starter-rotate:hover,
 .starter-prompts .starter-rotate:focus-visible{
-  border-color:rgba(107,229,232,.34)!important;
-  color:#d9efea!important;
-  background:linear-gradient(180deg,rgba(31,39,59,.90),rgba(22,29,47,.92))!important;
+  border:0!important;
+  color:#c7ffff!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+}
+.starter-prompts .starter-rotate:hover::before,
+.starter-prompts .starter-rotate:focus-visible::before{
+  transform:scale(1.08);
+  opacity:1;
+  text-shadow:
+    0 0 6px rgba(188,255,255,.98),
+    0 0 16px rgba(72,243,244,.80),
+    0 0 32px rgba(43,217,234,.46);
+  filter:drop-shadow(0 0 9px rgba(79,239,241,.56));
 }
 .composer-actions>.marrowline-aia-pocket-control{display:none!important}
-@media(max-width:860px){html:root.marrowline-mobile-shell .composer-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important}html:root.marrowline-mobile-shell .composer-actions .primary{order:1!important;margin-right:auto!important;min-width:0!important}html:root.marrowline-mobile-shell .marrowline-conversation-utilities{order:2;margin-left:auto;gap:10px}html:root.marrowline-mobile-shell .marrowline-utility-action{font-size:19px!important;padding:2px!important}html:root.marrowline-mobile-shell .marrowline-clear-confirmation{width:min(300px,calc(100vw - 32px));padding:17px}html:root.marrowline-mobile-shell .marrowline-composer-input-row{grid-template-columns:40px minmax(0,1fr);gap:7px}html:root.marrowline-mobile-shell .marrowline-composer-plus{width:40px;height:40px;min-width:40px;margin-bottom:3px;font-size:23px}html:root.marrowline-mobile-shell .marrowline-context-menu{width:min(270px,calc(100vw - 20px))}html:root.marrowline-mobile-shell .composer-actions{flex-wrap:wrap!important}html:root.marrowline-mobile-shell .conversation-actions[open]{order:3;flex:1 0 100%;width:100%}html:root.marrowline-mobile-shell .conversation-actions[open]>.conversation-action-menu{position:static;left:auto;bottom:auto;width:100%;margin-top:6px;z-index:auto;box-shadow:none}html:root.marrowline-mobile-shell .starter-prompts{gap:8px!important}html:root.marrowline-mobile-shell .starter-prompts>button:not(.starter-rotate){min-height:42px!important;height:42px!important;padding:0 14px!important;border-radius:14px!important;font-size:13px!important}html:root.marrowline-mobile-shell .starter-prompts .starter-rotate{flex-basis:42px!important;width:42px!important;min-width:42px!important;max-width:42px!important;height:42px!important;min-height:42px!important;max-height:42px!important;border-radius:14px!important}}
+@media(max-width:860px){html:root.marrowline-mobile-shell .composer-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important}html:root.marrowline-mobile-shell .composer-actions .primary{order:1!important;margin-right:auto!important;min-width:0!important}html:root.marrowline-mobile-shell .marrowline-conversation-utilities{order:2;margin-left:auto;gap:10px}html:root.marrowline-mobile-shell .marrowline-utility-action{font-size:19px!important;padding:2px!important}html:root.marrowline-mobile-shell .marrowline-clear-confirmation{width:min(300px,calc(100vw - 32px));padding:17px}html:root.marrowline-mobile-shell .marrowline-composer-input-row{grid-template-columns:40px minmax(0,1fr);gap:7px}html:root.marrowline-mobile-shell .marrowline-composer-plus{width:40px;height:40px;min-width:40px;margin-bottom:3px;font-size:23px}html:root.marrowline-mobile-shell .marrowline-context-menu{width:min(270px,calc(100vw - 20px))}html:root.marrowline-mobile-shell .composer-actions{flex-wrap:wrap!important}html:root.marrowline-mobile-shell .conversation-actions[open]{order:3;flex:1 0 100%;width:100%}html:root.marrowline-mobile-shell .conversation-actions[open]>.conversation-action-menu{position:static;left:auto;bottom:auto;width:100%;margin-top:6px;z-index:auto;box-shadow:none}html:root.marrowline-mobile-shell .starter-prompts{gap:8px!important}html:root.marrowline-mobile-shell .starter-prompts>button:not(.starter-rotate){min-height:42px!important;height:42px!important;padding:0 14px!important;border-radius:14px!important;font-size:13px!important}html:root.marrowline-mobile-shell .starter-prompts .starter-rotate{flex-basis:42px!important;width:42px!important;min-width:42px!important;max-width:42px!important;height:42px!important;min-height:42px!important;max-height:42px!important;border-radius:0!important}}
 
 @media (min-width:861px){
   :root{--marrowline-desktop-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}

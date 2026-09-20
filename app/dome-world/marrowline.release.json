@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v23",
-  "version": "v0.7.23-goldilocks-rupture-shuffle",
+  "schema": "td613.dome-world.marrowline.release/v24",
+  "version": "v0.7.24-mobile-affordance-first-paint",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -333,7 +333,7 @@
       "cyclePolicy": "all-32-prompts-must-be-seen-before-any-repeat",
       "seamPolicy": "new-cycle-first-pair-excludes-the-immediately-previous-pair",
       "alignment": "left-rail-preserved",
-      "controlGrammar": "compact-42px-glass-cards-with-matched-refresh-control"
+      "controlGrammar": "compact-42px-glass-prompt-cards-plus-borderless-cyan-radiant-refresh-glyph"
     },
     "sendLabel": "Send",
     "utilityRail": [
@@ -348,6 +348,7 @@
     ],
     "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
     "clearConfirmation": "center-screen-modal-Clear-conversation-Yes-No-with-backdrop",
+    "clearCompletionStatus": "empty-hidden-no-visible-session-cleared-strip",
     "fixedConversationRoute": "Kʰonapolit → Tauric Diana bots",
     "operatorVoiceSelection": false,
     "unissuedResearchMode": "checked-by-default-disables-and-excludes-shi",
@@ -366,6 +367,7 @@
     "transcriptMinimumHeightPx": 260,
     "portableFailurePanelMayCollapseTranscript": false,
     "backgroundGeometry": "subdued",
+    "firstPaint": "base-surface-hidden-until-room-ready-with-current-desktop-repair-css-render-blocking",
     "conversationTypeface": "Reddit Sans",
     "conversationChrome": "send-left-minimal-utility-rail-right",
     "operatorSeal": "receipt-instrument-explicit-operator",
@@ -401,6 +403,7 @@
     "integratedRelaySingleSurface": true,
     "apertureHeaderRepeatedAtFullLength": false,
     "firstPaintHeldUntilRoomReady": true,
+    "desktopRepairCssRenderBlocking": true,
     "inChatResponseKinesis": "dome-art-orbital-microfield",
     "repairLifecycleDisposal": true,
     "reducedMotionHonored": true,
