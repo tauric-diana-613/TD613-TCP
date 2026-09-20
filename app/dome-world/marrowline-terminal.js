@@ -636,8 +636,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       prompt.style.height = '';
       renderGeminiBrowserLedger(doc, root);
       status.textContent = attachments.length
-        ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
-        : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
+        ? `TASK PRESERVED · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'} HELD`
+        : 'TASK PRESERVED';
     } finally {
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
