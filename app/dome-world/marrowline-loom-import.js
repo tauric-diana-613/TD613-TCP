@@ -3,6 +3,7 @@ import * as base from './marrowline-loom-import-base.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
 import { renderLoomAiResult, renderSafeMarkdown } from './holonomy-loom/ai-result-view.js';
 import { LOOM_AI_TASK_SCHEMA, createLoomAiGovernance, createLoomAiTaskGovernor, peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
+import { ingestGeminiConsumption } from '../gemini-consumption-ledger.js';
 
 function continuationTask(packet, followup) {
   const prior = packet.continuation?.prior_result;
@@ -155,6 +156,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
       const input = { schema: LOOM_AI_TASK_SCHEMA, request_id, task: selected.task, documents: selected.documents, rules: selected.rules };
       const response = await environment.fetch('/api/khonapolit?operation=loom-task', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin', body: JSON.stringify(input), signal: pending.signal });
       const output = await response.json();
+      ingestGeminiConsumption(output, environment);
       if (pending.signal.aborted) return;
       providerFailure = readLoomAiFailure(output, request_id);
       if (!response.ok || providerFailure) throw new Error(describeLoomAiFailure(providerFailure, response.status));
