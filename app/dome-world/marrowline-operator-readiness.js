@@ -165,7 +165,7 @@ function installTerminalHoldNotice(doc = document, root = window) {
       const body = doc.createElement('p');
       body.textContent = explanation;
       const help = doc.createElement('p');
-      help.textContent = 'Retry the preserved task. This notice is transport status, not a Kʰonapolit or Tauric Diana voice.';
+      help.textContent = 'Retry the preserved task. This notice reports route status, not a Kʰonapolit or Tauric Diana voice.';
       card.append(title, body, help);
       lastSignature = signature;
     }
