@@ -17,6 +17,13 @@ function installConversationTypeface(doc) {
     style.textContent = `
       :root{--marrowline-chat-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans","Segoe UI",Roboto,Arial,sans-serif}
       #khonapolitPrompt,.message-body,.relay-stage-text,.vessel-status,.starter-prompts button,.return-details{font-family:var(--marrowline-chat-sans)!important;font-variant-ligatures:none;font-synthesis:none}
+      @media(min-width:861px){
+        #speakingPanel,#speakingPanel button,#speakingPanel textarea,#speakingPanel input,#speakingPanel select,#speakingPanel summary,#speakingPanel label{
+          font-family:var(--marrowline-chat-sans)!important;
+          font-variant-ligatures:none;
+          font-synthesis:none;
+        }
+      }
       #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
       .relay-integrated-covenant{overflow:visible!important}
       .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
