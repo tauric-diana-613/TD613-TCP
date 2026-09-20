@@ -41,7 +41,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v16-quota-entitlement-mismatch';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v17-route-quota-budget-canary';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -90,6 +90,11 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
 ]);
 
 const safe = (value = '') => String(value ?? '').trim();
+const requestHeader = (req = {}, name = '') => {
+  const target = String(name || '').toLowerCase();
+  const pair = Object.entries(req.headers || {}).find(([key]) => String(key).toLowerCase() === target);
+  return typeof pair?.[1] === 'string' ? pair[1].trim() : '';
+};
 const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 const qualityEnvelope = (model = '') => QUALITY_ENVELOPE_MODELS.has(String(model || '').replace(/^models\//, ''));
 const outputBudget = (model = '') => qualityEnvelope(model) ? KHONAPOLIT_MAX_OUTPUT_TOKENS : LEGACY_OUTPUT_TOKENS;
@@ -572,6 +577,8 @@ export default async function handler(req, res) {
 
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
+  const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
+  const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
@@ -584,13 +591,19 @@ export default async function handler(req, res) {
   });
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
-  const models = selectKhonapolitProviderModelsFromPlan(plan);
+  const allModels = selectKhonapolitProviderModelsFromPlan(plan);
+  const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
+    ? requestedCanaryModel
+    : allModels[0] || null;
+  const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
+  const routeModelCount = Math.max(1, allModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
+    if (releaseCanary) return null;
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
@@ -619,7 +632,7 @@ export default async function handler(req, res) {
       ? observeGeminiQuota(repairResult.payload, { model, response: repairResult.response })
       : null;
     const repairEntitlement = repairRateLimitRaw?.observed
-      ? assessGeminiQuotaEntitlement(repairRateLimitRaw, { expectedDailyLimit: expectedDailyRpd() })
+      ? assessGeminiQuotaEntitlement(repairRateLimitRaw, { expectedDailyLimit: expectedDailyRpd(), routeModelCount })
       : null;
     const repairRateLimit = repairRateLimitRaw
       ? Object.freeze({ ...repairRateLimitRaw, entitlement: repairEntitlement })
@@ -746,7 +759,7 @@ export default async function handler(req, res) {
       ? observeGeminiQuota(result.payload, { model, response: result.response })
       : null;
     const quotaEntitlement = rateLimitRaw?.observed
-      ? assessGeminiQuotaEntitlement(rateLimitRaw, { expectedDailyLimit: expectedDailyRpd() })
+      ? assessGeminiQuotaEntitlement(rateLimitRaw, { expectedDailyLimit: expectedDailyRpd(), routeModelCount })
       : null;
     const rateLimit = rateLimitRaw
       ? Object.freeze({ ...rateLimitRaw, entitlement: quotaEntitlement })
@@ -794,7 +807,8 @@ export default async function handler(req, res) {
       const waitSeconds = Math.min(MAX_SHARED_RATE_RETRY_SECONDS, Number(rateLimit.retryAfterSeconds || 0));
       const remainingAfterAttemptMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
       if (
-        !sharedRateRetrySpent
+        !releaseCanary
+        && !sharedRateRetrySpent
         && rateLimit.burst === true
         && waitSeconds > 0
         && waitSeconds * 1000 + 4000 < remainingAfterAttemptMs

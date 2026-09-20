@@ -4,6 +4,7 @@ import {
   GEMINI_MODEL_POLICY_VERSION,
   clearGeminiModelState,
   listGeminiGenerateContentModels,
+  readGeminiModelState,
   recordGeminiModelOutcome,
   resolveGeminiModelPlan,
   resolveGeminiProviderPlan
@@ -74,12 +75,21 @@ assert.deepEqual(overridePlan.explicitModels.slice(0, 3), ['gemini-3.1-pro-previ
 assert.ok(overridePlan.warnings.includes('route-specific-models-demoted-under-quality-first'));
 
 clearGeminiModelState();
-recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429, retryAfterSeconds: 60 }, 1000);
+const retryBound = recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429, retryAfterSeconds: 60 }, 1000);
+assert.equal(retryBound.retryAfterSeconds, 60, 'provider Retry-After must not be inflated to the old 120-second floor');
+assert.equal(retryBound.cooldownUntil, 61000);
+assert.equal(readGeminiModelState('gemini-3.8-flash', 2000).retryAfterSeconds, 59);
 const cooldownPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 2000 });
 assert.equal(cooldownPlan.models[0], 'gemini-3.7-flash');
 assert.equal(cooldownPlan.callableModels.includes('gemini-3.8-flash'), false);
 assert.equal(cooldownPlan.models.at(-1), 'gemini-3.8-flash');
 assert.ok(cooldownPlan.warnings.includes('cooling-models-demoted'));
+
+clearGeminiModelState();
+const unhintedFirst = recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429, retryAfterSeconds: 0 }, 1000);
+const unhintedSecond = recordGeminiModelOutcome('gemini-3.8-flash', { ok: false, status: 429, retryAfterSeconds: 0 }, 2000);
+assert.equal(unhintedFirst.retryAfterSeconds, 120, 'unhinted quota failure keeps bounded local fallback backoff');
+assert.equal(unhintedSecond.retryAfterSeconds, 240, 'strike escalation remains only when provider supplies no retry window');
 
 clearGeminiModelState();
 recordGeminiModelOutcome('gemini-3.6-flash', { ok: true, status: 200 }, 1000);

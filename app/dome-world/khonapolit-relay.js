@@ -8,7 +8,7 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v10-zalgo-underflow-floor';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight';
 export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v11-underflow-floor';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
@@ -442,6 +442,8 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'Tauric Diana bots',
     '[provider-authored High Zalgo stress field: distributed marks, variable stack height and composition, real line breaks, collisions allowed]',
     '<<<PACKET_B_END>>>',
+    '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored above-line and below-line combining motion across several separate lines. If any check fails, rewrite the draft internally before emitting bytes. Do not emit a knowingly repairable near-miss.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',

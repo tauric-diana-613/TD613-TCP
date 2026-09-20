@@ -41,6 +41,8 @@ assert.doesNotMatch(addendum, /RETURN JSON ONLY/i);
 assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
 assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
 assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
+assert.match(addendum, /packet delimiters NEVER substitute for the visible heading lines/i);
 assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
 assert.match(addendum, /operator controls sealing/i);
 assert.doesNotMatch(addendum, /gemini\.text:/i);

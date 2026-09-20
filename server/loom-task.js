@@ -227,7 +227,13 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     try {
       const plan = await Promise.race([resolvePlan({ task: 'general-text', env, maxModels: 8 }), deadline]);
       if (controller.signal.aborted) throw new Error('request-aborted');
-      const models = selectLoomProviderModels(plan.callableModels);
+      const allModels = selectLoomProviderModels(plan.callableModels);
+      const releaseCanary = header(req, 'x-td613-release-canary') === '1';
+      const requestedCanaryModel = normalizedModel(header(req, 'x-td613-canary-model'));
+      const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
+        ? requestedCanaryModel
+        : allModels[0] || null;
+      const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
       if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
       let response = null;

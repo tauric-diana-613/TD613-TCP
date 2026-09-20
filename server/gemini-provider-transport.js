@@ -115,25 +115,40 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   });
 }
 
-export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimit = 0 } = {}) {
+export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimit = 0, routeModelCount = 1 } = {}) {
   const expected = Number(expectedDailyLimit || 0);
   const observed = Number(rateLimit?.limit);
   const quotaId = safeText(rateLimit?.quotaId, 240);
   const metric = safeText(rateLimit?.metric, 240);
   const model = normalizedModel(rateLimit?.model || '');
+  const models = Number.isFinite(Number(routeModelCount)) && Number(routeModelCount) > 0
+    ? Math.max(1, Math.floor(Number(routeModelCount)))
+    : 1;
   const freeTierDaily = rateLimit?.daily === true
     && /FreeTier/i.test(quotaId)
     && /PerDay|daily|free_tier_requests/i.test(`${quotaId} ${metric}`);
+  const perModel = freeTierDaily && (
+    /PerModel/i.test(quotaId)
+    || rateLimit?.scope === 'model'
+  );
+  const providerReportedDailyLimit = Number.isFinite(observed) && observed >= 0 ? observed : null;
+  const routeDailyCapacity = providerReportedDailyLimit === null
+    ? null
+    : perModel
+      ? providerReportedDailyLimit * models
+      : providerReportedDailyLimit;
   const mismatch = Number.isFinite(expected) && expected > 0
-    && Number.isFinite(observed) && observed >= 0
-    && freeTierDaily
-    && observed < expected;
+    && Number.isFinite(routeDailyCapacity)
+    && routeDailyCapacity < expected;
 
   return Object.freeze({
     expectedDailyLimit: Number.isFinite(expected) && expected > 0 ? expected : null,
-    providerReportedDailyLimit: Number.isFinite(observed) && observed >= 0 ? observed : null,
+    providerReportedDailyLimit,
+    limitScope: perModel ? 'per-model' : freeTierDaily ? 'route-or-project' : 'unknown',
+    routeModelCount: models,
+    routeDailyCapacity,
     mismatch,
-    reason: mismatch ? 'provider-free-tier-daily-limit-below-operator-entitlement' : null,
+    reason: mismatch ? 'provider-route-daily-capacity-below-operator-entitlement' : null,
     model: model || null,
     quotaId: quotaId || null,
     metric: metric || null

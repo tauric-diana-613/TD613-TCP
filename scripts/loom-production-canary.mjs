@@ -10,6 +10,18 @@ const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
 const requestId = `release-canary-${Date.now()}`;
 const marrowlineRequestId = `marrowline-release-canary-${Date.now()}`;
+const RELEASE_CANARY_MODELS = Object.freeze([
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3-flash-preview'
+]);
+const canarySeed = sourcePacketCommit && /^[0-9a-f]{40}$/.test(sourcePacketCommit)
+  ? Number.parseInt(sourcePacketCommit.slice(-2), 16)
+  : 0;
+const marrowlineCanaryModel = RELEASE_CANARY_MODELS[canarySeed % RELEASE_CANARY_MODELS.length];
+const loomCanaryModel = RELEASE_CANARY_MODELS[(canarySeed + 1) % RELEASE_CANARY_MODELS.length];
 const input = {
   schema: 'td613.loom.ai-task/v0.1',
   request_id: requestId,
@@ -33,7 +45,7 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 
 fs.mkdirSync(artifactDir, { recursive: true });
 
-async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS) {
+async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '' } = {}) {
   let httpStatus = 0;
   let payload = null;
   let transportError = null;
@@ -45,7 +57,9 @@ async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS) {
         'content-type': 'application/json',
         'origin': origin,
         'sec-fetch-site': 'same-origin',
-        'cache-control': 'no-cache'
+        'cache-control': 'no-cache',
+        'x-td613-release-canary': '1',
+        ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {})
       },
       body: JSON.stringify(body),
       redirect: 'follow',
@@ -67,7 +81,7 @@ const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
 // the same provider budget and falsify interactive liveness. Observe Marrowline
 // first, then Loom, while preserving the full admission requirements for each.
 const canaryStartedAt = Date.now();
-const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput);
+const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });
 const marrowlineCheckpoint = {
   schema: 'td613.loom.production-canary-route-checkpoint/v0.1',
   source_packet_commit: sourcePacketCommit || null,
@@ -81,7 +95,7 @@ const marrowlineCheckpoint = {
 };
 fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json'), `${JSON.stringify(marrowlineCheckpoint, null, 2)}\n`);
 console.log(`[loom-production-canary] checkpoint ${JSON.stringify(marrowlineCheckpoint)}`);
-const loomResult = await postJson(loomUrl, input);
+const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });
 const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
 
@@ -114,6 +128,7 @@ const boundedAdmissionReasons = value => Array.isArray(value)
 const boundedRateLimit = value => {
   if (!value || typeof value !== 'object' || value.observed !== true) return null;
   const scope = ['model', 'shared', 'unknown'].includes(value.scope) ? value.scope : 'unknown';
+  const entitlement = value.entitlement && typeof value.entitlement === 'object' ? value.entitlement : null;
   return {
     scope,
     metric: typeof value.metric === 'string' ? value.metric.slice(0, 240) : null,
@@ -123,7 +138,15 @@ const boundedRateLimit = value => {
     limit: Number.isFinite(Number(value.limit)) && Number(value.limit) >= 0 ? Number(value.limit) : null,
     daily: value.daily === true,
     burst: value.burst === true,
-    structured: value.structured === true
+    structured: value.structured === true,
+    entitlement: entitlement ? {
+      expected_daily_limit: boundedCount(entitlement.expectedDailyLimit),
+      provider_reported_daily_limit: boundedCount(entitlement.providerReportedDailyLimit),
+      limit_scope: typeof entitlement.limitScope === 'string' ? entitlement.limitScope.slice(0, 80) : null,
+      route_model_count: boundedCount(entitlement.routeModelCount),
+      route_daily_capacity: boundedCount(entitlement.routeDailyCapacity),
+      mismatch: entitlement.mismatch === true
+    } : null
   };
 };
 const boundedMarrowlineAttempts = value => Array.isArray(value)
@@ -211,6 +234,12 @@ const receipt = {
   request_id: requestId,
   request_count: 2,
   request_execution: 'serial-independent',
+  release_canary_budget: {
+    posture: 'quota-conservative-single-seat-per-route',
+    max_provider_requests: 2,
+    marrowline_model: marrowlineCanaryModel,
+    loom_model: loomCanaryModel
+  },
   request_order: ['marrowline', 'loom'],
   per_witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
   canary_elapsed_ms: boundedCount(canaryElapsedMs),
@@ -232,6 +261,7 @@ const receipt = {
   source_claims: observations.source_claims === 'model-reported-unverified' ? observations.source_claims : null,
   marrowline_live_route: {
     request_id: marrowlineRequestId,
+    canary_model: marrowlineCanaryModel,
     http_status: marrowlineResult.httpStatus || null,
     transport_error_class: marrowlineResult.transportError,
     elapsed_ms: boundedCount(marrowlineResult.elapsedMs),

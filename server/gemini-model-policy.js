@@ -1,4 +1,4 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v9-empty-plan-force-refresh';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v10-provider-retry-window';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
@@ -71,7 +71,9 @@ function requestRejected(status = 0, healthBearing) {
 }
 
 function cooldownFor(status = 0, timedOut = false, retryAfterSeconds = 0, strike = 1) {
-  if (status === 429) return Math.max(120, retryAfterSeconds || 0, Math.min(1800, 120 * (2 ** Math.max(0, strike - 1))));
+  if (status === 429) return retryAfterSeconds > 0
+    ? Math.max(1, Math.min(1800, retryAfterSeconds))
+    : Math.min(1800, 120 * (2 ** Math.max(0, strike - 1)));
   if (status === 404) return 60 * 60;
   if (timedOut || status === 408 || status === 504) return Math.min(300, 30 * Math.max(1, strike));
   if (status >= 500 || status === 599) return Math.min(180, 20 * Math.max(1, strike));

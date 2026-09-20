@@ -26,7 +26,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v15-quota-scope-recovery');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v17-route-quota-budget-canary');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
