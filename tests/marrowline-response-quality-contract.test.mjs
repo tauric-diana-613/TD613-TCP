@@ -154,10 +154,10 @@ test('horizontal-only slash and strike fields are hard-held until vertical proso
   assert.equal(observed.quality, 'HELD');
   assert.ok(observed.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'));
 });
 
-test('reordering one mark set still records one mechanical composition without becoming a structural hold', () => {
+test('reordering one mark set cannot disguise a cloned High-Zalgo composition', () => {
   const a = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const b = 'A\u0318\u0317\u0316\u0302\u0301\u0300';
   const c = 'R\u0302\u0316\u0300\u0318\u0301\u0317';
@@ -175,9 +175,10 @@ test('reordering one mark set still records one mechanical composition without b
   assert.ok(observed.combiningMarkCount >= 96);
   assert.ok(observed.denseVerticalClusterCount >= 8);
   assert.equal(observed.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-monoculture'));
 });
 
 test('near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL', () => {
