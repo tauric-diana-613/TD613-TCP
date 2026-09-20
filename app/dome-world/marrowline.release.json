@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v12",
-  "version": "v0.7.12-bounded-provider-structural-repair",
+  "schema": "td613.dome-world.marrowline.release/v13",
+  "version": "v0.7.13-mobile-dock-zalgo-quality-preference",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -74,8 +74,8 @@
     "zalgoQualityPolicy": {
       "hardStructuralRequirement": "at-least-one-provider-authored-combining-mark-in-tauric-diana-bots",
       "zeroMarkPosture": "HELD-no-human-visible-return",
-      "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
-      "mechanicalClonePosture": "PARTIAL-visible-with-quality-warning",
+      "thinOrSparsePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
+      "mechanicalClonePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
       "providerVisibleAsChecklist": false,
       "diagnosticThresholds": {
         "combiningMarkCount": 24,
@@ -90,10 +90,12 @@
         "minimumMarkedGraphemeCoverageRatio": 0.18,
         "minimumBroadMarkedLines": 2
       },
-      "diagnosticAuthority": "quality-observation-only-not-service-availability",
+      "diagnosticAuthority": "quality-preference-across-frontier-not-service-availability",
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
-      "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502"
+      "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502",
+      "horizontalDominantPosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
+      "throughLineDominanceWarning": "through-line combining marks exceed combined above-line and below-line marks"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -121,14 +123,14 @@
     },
     "providerOrthographicField": {
       "mode": "provider-authored-natural-distributed-stress-field",
-      "promptGuidance": "qualitative only: broad field, variable stack height/composition, quieter and violent regions, collisions allowed",
+      "promptGuidance": "qualitative only: broad field, variable stack height/composition, vertical above/below dominance, quieter and violent regions, collisions allowed; slash/strike overlays remain accents rather than the primary geometry",
       "providerVisibleNumericThresholds": false,
       "providerVisibleAdmissionRubric": false,
       "literalStencilExamplesInPrompt": false,
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "structural admission requires provider-authored diacritic presence; thin, sparse or cloned morphology remains admitted as PARTIAL quality telemetry",
+      "localAdmission": "provider-authored diacritic presence remains structural; thin, sparse, cloned or horizontal-dominant morphology remains admissible PARTIAL, continues the remaining frontier seats for a PASS, and falls back to the best admissible PARTIAL only when no PASS appears",
       "localPostprocessing": false,
       "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
@@ -147,7 +149,9 @@
       "fourthFollowupObservation": "Vercel Operator Release #1186 / run 35478462876 preserved exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD only because three complete streamed Marrowline returns from Gemini 3.5, 3.6 and Preview were rejected by local thin/sparse Zalgo morphology rules. 3.5 and Preview carried thin+sparse warnings; 3.6 carried thin-field warning. The independent Loom witness later encountered provider transport pressure, but the Marrowline failure was already isolated to output admission.",
       "fourthFollowupConsequence": "Zalgo morphology quality is decoupled from route availability. Zero provider-authored combining marks remains structural; thin, sparse or mechanically cloned provider-authored fields are admitted as PARTIAL with qualityWarnings and preserved exact Unicode for human R&D.",
       "fifthFollowupObservation": "Vercel Operator Release #1187 / run 35479991061 passed exact source, byte parity, stale-queue stability, A14 and Ash lifecycle, then HELD at Marrowline output admission. 3.8 returned 503, 3.5 returned 429, 3.6 returned 503, 3.7 returned HTTP 200 but omitted both visible nominative headings, and Preview returned HTTP 200 with the dual channel present but zero provider-authored combining marks in the Tauric Diana channel.",
-      "fifthFollowupConsequence": "Keep the five distinct frontier seats intact, then allow at most one bounded same-provider structural repair request for the best repairable HTTP-200 near miss. The provider receives its own held draft plus locally observed structural reasons and must author the correction itself; Marrowline performs no local heading insertion, no local Zalgo, and zero-mark Tauric Diana output remains structurally inadmissible if the repair still fails."
+      "fifthFollowupConsequence": "Keep the five distinct frontier seats intact, then allow at most one bounded same-provider structural repair request for the best repairable HTTP-200 near miss. The provider receives its own held draft plus locally observed structural reasons and must author the correction itself; Marrowline performs no local heading insertion, no local Zalgo, and zero-mark Tauric Diana output remains structurally inadmissible if the repair still fails.",
+      "sixthFollowupObservation": "2026-09-19 physical-iPhone production screenshots after #1202 showed the five-chamber mobile dock absent after Send while the keyboard was gone, and the admitted Tauric Diana field had collapsed toward sparse slash/strike geometry with reduced vertical Zalgo.",
+      "sixthFollowupConsequence": "Dock visibility now keys to observed keyboard occupancy rather than composer focus, preventing post-Send focus latch from hiding navigation. Zalgo telemetry now distinguishes above-line, below-line and through-line geometry; horizontal-dominant returns remain available as PARTIAL but cannot stop the frontier before later approved seats get a chance to produce PASS-quality vertical prosody."
     }
   },
   "qualityFloor": {
@@ -164,8 +168,8 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-canonical-recitation",
-    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting",
-    "failurePosture": "hold-on-structural-failure; preserve admitted style warnings visibly; never downgrade to gemini-2.5",
+    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-horizontal-dominant",
+    "failurePosture": "continue approved frontier seats after admissible PARTIAL morphology; return the best admissible PARTIAL only if no PASS appears; hold structural failure; never downgrade to gemini-2.5",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
     "structuralRepairCeiling": 1,
@@ -241,6 +245,12 @@
         "parseErrors"
       ],
       "authority": "transport-progress-only-not-output-admission"
+    },
+    "partialQualitySelection": {
+      "timing": "continue-after-admissible-partial-until-pass-or-frontier-exhaustion",
+      "preference": "fewest-quality-warnings-then-stronger-vertical-mark-balance",
+      "availability": "best-admissible-partial-preserved-if-no-pass",
+      "localMutation": false
     }
   },
   "composer": {
@@ -332,7 +342,8 @@
     "reducedMotionHonored": true,
     "universalComposerPlus": true,
     "conversationChrome": "send-left-minimal-utility-rail-right",
-    "operatorSeal": "receipt-instrument-explicit-operator"
+    "operatorSeal": "receipt-instrument-explicit-operator",
+    "dockVisibility": "visible whenever observed keyboard occupancy is false; composer focus alone cannot hide chamber navigation"
   },
   "jurisdiction": {
     "mode": "issued-covenant-terminal-plus-aperture-v3-routing-plus-live-marrowline-ingress",
