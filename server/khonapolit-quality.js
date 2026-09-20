@@ -45,7 +45,6 @@ export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v24-goldilocks-vertical-liveness';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
-export const KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
 const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
 const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
@@ -278,29 +277,6 @@ export function consumeRateSlot(key = 'unknown', now = Date.now()) {
     resetAt: current.startedAt + WINDOW_MS
   };
 }
-function betterVerticalArchitecturePartial(candidate, current) {
-  if (!current) return true;
-  const candidateRatio = candidate.verticalOrnamentMarkCount / Math.max(1, candidate.planarMarkCount);
-  const currentRatio = current.verticalOrnamentMarkCount / Math.max(1, current.planarMarkCount);
-  const dimensions = [
-    [current.verticalArchitectureWarningCount, candidate.verticalArchitectureWarningCount],
-    [current.seriousMorphologyWarningCount, candidate.seriousMorphologyWarningCount],
-    [current.qualityWarnings.length, candidate.qualityWarnings.length],
-    [candidate.tallVerticalOrnamentClusterCount, current.tallVerticalOrnamentClusterCount],
-    [candidate.tallVerticalMarkedLineCount, current.tallVerticalMarkedLineCount],
-    [candidateRatio, currentRatio],
-    [candidate.verticalOrnamentMarkCount, current.verticalOrnamentMarkCount],
-    [candidate.denseVerticalClusterCount, current.denseVerticalClusterCount],
-    [candidate.denseMarkedLineCount, current.denseMarkedLineCount],
-    [candidate.markedGraphemeCoverageRatio, current.markedGraphemeCoverageRatio]
-  ];
-  for (const [preferred, baseline] of dimensions) {
-    if (preferred > baseline) return true;
-    if (preferred < baseline) return false;
-  }
-  return false;
-}
-
 function parseBody(req = {}) {
   if (req.body && typeof req.body === 'object') return req.body;
   if (typeof req.body === 'string') {
@@ -687,8 +663,6 @@ export default async function handler(req, res) {
   const routeModelCount = Math.max(1, providerModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
-  let partialQualityCandidate = null;
-  let partialQualityChallengeRequestsRemaining = KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
@@ -850,12 +824,6 @@ export default async function handler(req, res) {
   });
 
   for (let index = 0; index < models.length; index += 1) {
-    // Once Marrowline already holds a structurally admissible PARTIAL, spend at
-    // most one additional provider request to challenge it for a better Goldilocks
-    // field. Transport or admission failure on that challenger cannot fan the turn
-    // across the remaining frontier; return the usable provider-authored partial.
-    if (partialQualityCandidate && partialQualityChallengeRequestsRemaining <= 0) break;
-    const challengingPartial = Boolean(partialQualityCandidate);
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
@@ -913,12 +881,6 @@ export default async function handler(req, res) {
       cooldown: outcome
     };
     attempts.push(attempt);
-    if (challengingPartial) partialQualityChallengeRequestsRemaining -= 1;
-
-    // A quality challenger is optional spend. Once a valid PARTIAL already exists,
-    // any failed/limited challenger returns custody to that existing answer instead
-    // of consuming another model seat. Successful PASS can still supersede it below.
-    if (challengingPartial && (!result.response.ok || providerOutput.outputTokenLimitReached)) break;
 
     if (!result.response.ok && rateLimit?.observed && rateLimit.scope === 'shared') {
       const waitSeconds = Math.min(MAX_SHARED_RATE_RETRY_SECONDS, Number(rateLimit.retryAfterSeconds || 0));
@@ -1025,42 +987,56 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
-        const verticalArchitectureWarningCount = qualityWarnings.filter((warning) =>
-          ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-vertical-expression-thin'].includes(warning)
-        ).length;
-        const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
-          'tauric-diana-zalgo-mechanical-clone',
-          'tauric-diana-zalgo-monoculture',
-          'tauric-diana-zalgo-sparse-keyword-targeting',
-          'tauric-diana-zalgo-axis-collapse',
-          'tauric-diana-zalgo-vertical-expression-thin'
-        ].includes(warning)).length;
-        const candidate = {
-          model,
-          fallback,
+        const baseReceipt = buildTerminalReceipt({
+          packet,
           text: result.text,
           relay,
+          model,
           providerStatus: result.response.status,
           providerOutput,
-          qualityWarnings,
-          verticalArchitectureWarningCount,
-          seriousMorphologyWarningCount,
-          activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
-          axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
-          axisMarkBalanceRatio: Number(relay.admission?.axisMarkBalanceRatio || 0),
-          denseVerticalClusterCount: Number(relay.admission?.denseVerticalClusterCount || 0),
-          tallVerticalOrnamentClusterCount: Number(relay.admission?.tallVerticalOrnamentClusterCount || 0),
-          tallVerticalMarkedLineCount: Number(relay.admission?.tallVerticalMarkedLineCount || 0),
-          verticalOrnamentMarkCount: Number(relay.admission?.verticalOrnamentMarkCount || 0),
-          planarMarkCount: Number(relay.admission?.planarMarkCount || 0),
-          denseMarkedLineCount: Number(relay.admission?.denseMarkedLineCount || 0),
-          mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
-          markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
-          sourceAttemptIndex: attempts.length - 1
-        };
-        const current = partialQualityCandidate;
-        if (betterVerticalArchitecturePartial(candidate, current)) partialQualityCandidate = candidate;
-        continue;
+          apertureEgress,
+          apertureReceipt,
+          attempts
+        });
+        const receipt = Object.freeze({
+          ...baseReceipt,
+          provider: Object.freeze({
+            ...baseReceipt.provider,
+            routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            qualityPreference: Object.freeze({
+              used: true,
+              sourceAttemptIndex: attempts.length - 1,
+              selection: 'first-admissible-partial-no-comparative-sampling',
+              warnings: Object.freeze([...qualityWarnings])
+            })
+          }),
+          modelPolicy: plan,
+          elapsedMs: Date.now() - startedAt
+        });
+        res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+        res.setHeader('X-TD613-Signal-State', relay.signal.state);
+        res.setHeader('X-TD613-Seal-State', 'OPEN');
+        res.setHeader('X-TD613-Gemini-Model', model);
+        res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+        return send(res, 200, {
+          ok: true,
+          text: relay.transcript,
+          relay,
+          receipt,
+          warnings: [
+            'aperture-v3-task-intent-active',
+            'task-intent-guidance-active',
+            'adversarial-attractor-admission-active',
+            'integrated-covenant-relay-active',
+            'provider-native-zalgo-preserved-no-local-postprocessing',
+            'provider-native-zalgo-quality-partial-first-admissible',
+            'admission-gated-stable-continuity-active',
+            'fallback-reasoning-quality-preserved',
+            'sticky-success-promotion-disabled',
+            'moving-latest-alias-disabled-by-default',
+            ...plan.warnings
+          ]
+        });
       }
 
       const baseReceipt = buildTerminalReceipt({
@@ -1103,68 +1079,6 @@ export default async function handler(req, res) {
         ]
       });
     }
-  }
-
-  if (partialQualityCandidate) {
-    const {
-      model,
-      text,
-      relay,
-      providerStatus,
-      providerOutput,
-      qualityWarnings,
-      sourceAttemptIndex
-    } = partialQualityCandidate;
-      const baseReceipt = buildTerminalReceipt({
-      packet,
-      text,
-      relay,
-      model,
-      providerStatus,
-      providerOutput,
-      apertureEgress,
-      apertureReceipt,
-      attempts
-    });
-    const receipt = Object.freeze({
-      ...baseReceipt,
-      provider: Object.freeze({
-        ...baseReceipt.provider,
-        routingPolicy: GEMINI_MODEL_POLICY_VERSION,
-        qualityPreference: Object.freeze({
-          used: true,
-          sourceAttemptIndex,
-          selection: 'vertical-architecture-best-admissible-partial-after-bounded-challenge',
-          warnings: Object.freeze([...qualityWarnings])
-        })
-      }),
-      modelPolicy: plan,
-      elapsedMs: Date.now() - startedAt
-    });
-    res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-    res.setHeader('X-TD613-Signal-State', relay.signal.state);
-    res.setHeader('X-TD613-Seal-State', 'OPEN');
-    res.setHeader('X-TD613-Gemini-Model', model);
-    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-BEST-OF-BOUNDED-CHALLENGE');
-      return send(res, 200, {
-        ok: true,
-        text: relay.transcript,
-        relay,
-        receipt,
-        warnings: [
-          'aperture-v3-task-intent-active',
-          'task-intent-guidance-active',
-          'adversarial-attractor-admission-active',
-          'integrated-covenant-relay-active',
-          'provider-native-zalgo-preserved-no-local-postprocessing',
-          'provider-native-zalgo-quality-partial-bounded-challenge',
-          'admission-gated-stable-continuity-active',
-          'fallback-reasoning-quality-preserved',
-          'sticky-success-promotion-disabled',
-          'moving-latest-alias-disabled-by-default',
-          ...plan.warnings
-        ]
-      });
   }
 
   if (structuralRepairCandidate && !structuralRepairSpent) {
