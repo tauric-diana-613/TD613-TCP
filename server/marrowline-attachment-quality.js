@@ -22,6 +22,7 @@ import {
   observeGeminiOutput,
   selectKhonapolitProviderModelsFromPlan
 } from './khonapolit-quality.js';
+import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-ingress/v0.2-frontier-custody';
 export const MARROWLINE_ATTACHMENT_SCHEMA = 'td613.marrowline.attachment/v0.1';
@@ -52,13 +53,23 @@ function headerValue(headers = {}, name = '') {
 }
 
 function send(res, status, payload, extraHeaders = {}) {
+  const attempts = Array.isArray(payload?.receipt?.provider?.attempts)
+    ? payload.receipt.provider.attempts
+    : Array.isArray(payload?.attempts)
+      ? payload.attempts
+      : [];
+  const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'marrowline-attachment', attempts });
+  const body = geminiConsumption.call_count
+    ? { ...payload, gemini_consumption: geminiConsumption }
+    : payload;
+  if (geminiConsumption.call_count) logGeminiConsumption(geminiConsumption);
   res.statusCode = status;
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-TD613-Marrowline-Attachment-Ingress', MARROWLINE_ATTACHMENT_API_VERSION);
   for (const [name, value] of Object.entries(extraHeaders)) res.setHeader(name, value);
-  return res.end(JSON.stringify(payload));
+  return res.end(JSON.stringify(body));
 }
 
 function allowedMime(kind, mime) {
