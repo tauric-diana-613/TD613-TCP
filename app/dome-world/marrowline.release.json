@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v19",
-  "version": "v0.7.19-route-quota-budget-canary",
+  "schema": "td613.dome-world.marrowline.release/v20",
+  "version": "v0.7.20-frontier-custody-visible-attempts",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -12,10 +12,10 @@
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v5-voice-scoped-flourish-layout",
   "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
-  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v7-living-conversation-title",
+  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v8-visible-frontier-failures",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v18-high-zalgo-frontier",
+  "providerApiSchema": "td613.khonapolit-gemini/v19-frontier-custody",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v12-bipolar-field",
   "apertureVersion": "v3.2-alpha",
@@ -163,7 +163,9 @@
       "tenthFollowupObservation": "2026-09-20 human operator recognized the earlier Hush false-quota regression family: Hush commit 6b5455266bb331af726725373e917d883603daad stopped treating a single-model 429 as provider-wide exhaustion. Marrowline production evidence still flattened upstream 429s to one generic rate-limited class and discarded quota metric/scope/retry metadata.",
       "tenthFollowupConsequence": "Gemini quota payloads now preserve bounded metric, quota ID, model dimension, RetryInfo/Retry-After, and model/shared/unknown scope. Shared short-burst limits receive one bounded same-seat retry; model limits retain failover; unknown limits are never promoted to provider-wide exhaustion.",
       "eleventhFollowupObservation": "2026-09-20 provider receipts exposed GenerateRequestsPerDayPerProjectPerModel-FreeTier limit 20 on current Gemini seats while the operator tracked a 100-call Marrowline route budget; release canaries had been consuming multiple model-seat calls plus repair/failover.",
-      "eleventhFollowupConsequence": "Interpret 20 as per-model, compose route capacity across five approved seats, honor provider Retry-After without 120/240/480 inflation, and cap release verification to two total provider requests across Marrowline plus Loom."
+      "eleventhFollowupConsequence": "Interpret 20 as per-model, compose route capacity across five approved seats, honor provider Retry-After without 120/240/480 inflation, and cap release verification to two total provider requests across Marrowline plus Loom.",
+      "twelfthFollowupObservation": "2026-09-20 human operator still received provider holds while route failures appeared not to walk every model. Code archaeology found three separable causes: a nonempty but partial credential discovery snapshot could suppress missing current seats without a forced refresh; cooling and healthy categories were recombined then globally reordered, allowing a cooling preferred seat to jump ahead; and failed-turn UI reset route metrics even though the raw failure payload retained attempts.",
+      "twelfthFollowupConsequence": "For khonapolit-dialogue, one current approved provider-absent seat earns exactly one forced discovery refresh. Human routing preserves category order healthy observed -> cooling observed -> current soft-absent probe, never admitting disabled/Lite/pre-3.x/lifecycle-invalid models. Failed human turns display model+HTTP attempt trace and Copy receipt copies the failure receipt rather than an empty prior-success slot."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and visible above/below provider-authored combining motion across several Packet B lines before emitting bytes"
   },
@@ -185,6 +187,9 @@
     "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
+    "discoveryRefreshLaw": "a nonempty but partial fresh credential snapshot cannot certify the remaining approved Marrowline seats absent; one forced complete refresh is required",
+    "frontierCategoryOrder": "healthy-observed -> cooling-observed -> current-soft-absent-probe; category boundaries survive model preference ordering",
+    "failedTurnObservability": "human-visible route metric and copied failure receipt preserve every attempted model plus HTTP status",
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
