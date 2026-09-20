@@ -39,7 +39,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v13-immediate-structural-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v14-soft-cooldown-frontier';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -149,6 +149,17 @@ export function selectKhonapolitProviderModels(callableModels = []) {
     if (!selected.includes(model)) selected.push(model);
   }
   return selected;
+}
+
+export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+  const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
+  const coolingEligible = (Array.isArray(plan?.rows) ? plan.rows : [])
+    .filter((row) => row?.eligibility?.eligible === true && row?.state?.mayCall === false)
+    .map((row) => row.model);
+  // Process-local cooldown is a routing hint, not provider lifecycle revocation.
+  // A fresh human request keeps those provider-listed seats as bounded fallbacks
+  // after non-cooling seats, so warm-isolate memory cannot collapse the frontier.
+  return selectKhonapolitProviderModels([...callable, ...coolingEligible]);
 }
 
 export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false } = {}) {
@@ -565,7 +576,7 @@ export default async function handler(req, res) {
   });
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
-  const models = selectKhonapolitProviderModels(plan.callableModels);
+  const models = selectKhonapolitProviderModelsFromPlan(plan);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
