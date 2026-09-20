@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v22",
-  "version": "v0.7.22-zalgo-goldilocks-ui",
+  "schema": "td613.dome-world.marrowline.release/v23",
+  "version": "v0.7.23-goldilocks-rupture-shuffle",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -10,7 +10,7 @@
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send",
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v5-voice-scoped-flourish-layout",
-  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal",
+  "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v6-no-repeat-rupture-shuffle",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
@@ -176,7 +176,7 @@
       "fifteenthFollowupObservation": "2026-09-20 physical iPhone trial after the horizontal-axis repair exposed the inverse regression: vertical diacritics disappeared from visible returns while plain ALL-CAPS occupied regions where vertical stress had previously appeared. Code archaeology found asymmetric unipolar telemetry plus a best-PARTIAL tie-break defined as vertical marks minus horizontal marks.",
       "fifteenthFollowupConsequence": "Goldilocks repair: measure horizontal and vertical geometry symmetrically at passage scale; preserve single-axis returns as PARTIAL rather than censoring them; mark whole-passage starvation of either axis as axis-collapse telemetry; prefer comparable mixed-axis PARTIAL candidates without local Unicode mutation; remove the vertical-minus-horizontal selector entirely."
     },
-    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and visible above/below provider-authored combining motion across several Packet B lines before emitting bytes"
+    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, and no accidental whole-passage flattening of either horizontal or vertical geometry into plain ALL-CAPS before emitting bytes"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
@@ -192,7 +192,7 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
-    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture",
+    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture-or-zalgo-axis-collapse",
     "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
@@ -295,7 +295,7 @@
     },
     "partialQualitySelection": {
       "timing": "continue-after-admissible-partial-until-pass-or-frontier-exhaustion",
-      "preference": "fewest-quality-warnings-then-stronger-vertical-mark-balance",
+      "preference": "serious-morphology-warning-count-then-active-axis-count-then-total-warning-count-then-axis-balance-then-mixed-clusters-then-coverage; no vertical-minus-horizontal bias",
       "availability": "best-admissible-partial-preserved-if-no-pass",
       "localMutation": false
     }
@@ -315,8 +315,13 @@
     "portableFailureActions": "not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic",
     "starterCarousel": {
       "basePrompts": 2,
-      "assayPrompts": 16,
-      "control": "🗘"
+      "assayPrompts": 32,
+      "control": "🗘",
+      "selectionPolicy": "shuffle-bag-without-replacement-two-at-a-time",
+      "cyclePolicy": "all-32-prompts-must-be-seen-before-any-repeat",
+      "seamPolicy": "new-cycle-first-pair-excludes-the-immediately-previous-pair",
+      "alignment": "left-rail-preserved",
+      "controlGrammar": "compact-42px-glass-cards-with-matched-refresh-control"
     },
     "sendLabel": "Send",
     "utilityRail": [

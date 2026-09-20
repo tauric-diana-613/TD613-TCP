@@ -47,8 +47,15 @@ test('starter carousel keeps its left rail while using one compact glass control
   assert.match(css, /marrowline-mobile-shell \.starter-prompts>button:not\(\.starter-rotate\)\{[^}]*height:42px!important/);
   assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:42px!important/);
   assert.equal(release.composer.starterCarousel.control, '🗘');
+  assert.equal(release.composer.starterCarousel.assayPrompts, 32);
+  assert.equal(release.composer.starterCarousel.selectionPolicy, 'shuffle-bag-without-replacement-two-at-a-time');
+  assert.equal(release.composer.starterCarousel.cyclePolicy, 'all-32-prompts-must-be-seen-before-any-repeat');
+  assert.equal(release.composer.starterCarousel.seamPolicy, 'new-cycle-first-pair-excludes-the-immediately-previous-pair');
+  assert.match(js, /let bag = \[\]/);
+  assert.match(js, /let seen = new Set\(\)/);
+  assert.match(js, /if \(bag\.length < 2\) refillBag\(\)/);
+  assert.match(js, /shuffled\.filter\(index => !lastPair\.includes\(index\)\)/);
 });
-
 test('conversation actions dismiss and ordinary Chat carries no portable failure billboard', () => {
   assert.match(js, /conversation-action-menu button/);
   assert.match(js, /details\.open = false/);
