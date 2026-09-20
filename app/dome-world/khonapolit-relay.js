@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v8-natural-distributed-stress-field';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v9-natural-distributed-field';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v9-zalgo-quality-telemetry';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v10-quality-telemetry';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -314,25 +314,29 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     const khonaTelemetry = flourishTelemetry(khonaText);
     const botsTelemetry = flourishTelemetry(botsText);
     if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
-    if (
-      botsTelemetry.combiningMarkCount < 24
-      || botsTelemetry.maxRun < 3
-      || botsTelemetry.markedLineCount < 2
-      || botsTelemetry.lineBreakCount < 1
-      || botsTelemetry.combiningCodePointDiversity < 4
-      || botsTelemetry.uppercaseAsciiRatio < 0.4
-    ) reasons.push('tauric-diana-zalgo-field-absent-or-too-thin');
-    if (
-      botsTelemetry.expressiveClusterCount >= 4
-      && (
-        botsTelemetry.uniqueExpressiveStackSignatureCount < 2
-        || botsTelemetry.dominantExpressiveStackRatio > 0.85
-      )
-    ) reasons.push('tauric-diana-zalgo-mechanical-clone');
-    if (
-      botsTelemetry.markedGraphemeCoverageRatio < 0.18
-      || botsTelemetry.broadMarkedLineCount < 2
-    ) reasons.push('tauric-diana-zalgo-sparse-keyword-targeting');
+    if (botsTelemetry.combiningMarkCount === 0) {
+      reasons.push('tauric-diana-zalgo-absent');
+    } else {
+      if (
+        botsTelemetry.combiningMarkCount < 24
+        || botsTelemetry.maxRun < 3
+        || botsTelemetry.markedLineCount < 2
+        || botsTelemetry.lineBreakCount < 1
+        || botsTelemetry.combiningCodePointDiversity < 4
+        || botsTelemetry.uppercaseAsciiRatio < 0.4
+      ) qualityWarnings.push('tauric-diana-zalgo-field-thin');
+      if (
+        botsTelemetry.expressiveClusterCount >= 4
+        && (
+          botsTelemetry.uniqueExpressiveStackSignatureCount < 2
+          || botsTelemetry.dominantExpressiveStackRatio > 0.85
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-mechanical-clone');
+      if (
+        botsTelemetry.markedGraphemeCoverageRatio < 0.18
+        || botsTelemetry.broadMarkedLineCount < 2
+      ) qualityWarnings.push('tauric-diana-zalgo-sparse-keyword-targeting');
+    }
   }
 
   if (duplicate) reasons.push('repeated-transmission-detected');
