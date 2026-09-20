@@ -89,5 +89,6 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.relay.zalgoQualityPolicy.zeroMarkPosture, 'PARTIAL-visible-with-quality-warning');
   assert.equal(release.relay.zalgoQualityPolicy.thinOrSparsePosture, 'PARTIAL-visible-with-quality-warning');
   assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent/);
-  assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
+  assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent|zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
+  assert.match(release.qualityFloor.qualityWarningOnly, /tauric-diana-zalgo-absent/);
 });
