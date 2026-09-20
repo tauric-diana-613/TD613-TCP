@@ -248,17 +248,18 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
         ? requestedCanaryModel
         : allModels[0] || null;
-      const canaryFallbackModel = canaryModel
-        ? allModels.find(candidate => candidate !== canaryModel) || null
-        : null;
-      // A release witness keeps its deterministic primary seat but may exercise one
-      // route-native alternate only when the provider transport classifier permits
-      // failover. Output admission, request rejection, and source validation remain
-      // unchanged; this merely prevents one transient provider seat from falsifying
-      // Loom route liveness.
-      const models = releaseCanary
-        ? [canaryModel, canaryFallbackModel].filter(Boolean)
-        : allModels;
+      const canaryModels = canaryModel
+        ? [
+            canaryModel,
+            ...allModels.filter(candidate => candidate !== canaryModel)
+          ].slice(0, LOOM_TASK_MAX_PROVIDER_CALLS)
+        : [];
+      // A release witness keeps its deterministic primary seat, then exercises the
+      // same bounded transport frontier as ordinary Loom when the existing transport
+      // classifier permits failover. Output admission, request rejection, source
+      // validation, and the five-call ceiling remain unchanged. A route with five
+      // callable seats cannot be declared unavailable after sampling only two.
+      const models = releaseCanary ? canaryModels : allModels;
       if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
       let response = null;
