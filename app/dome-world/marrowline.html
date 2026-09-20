@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="./holonomy-loom/living-geometry.css" />
 <link rel="stylesheet" href="./marrowline-mobile-shell.css" data-marrowline-mobile-shell="td613.dome-world.marrowline-mobile-shell/v1-scroll-custody" />
 <link rel="stylesheet" href="./marrowline-living-chat.css" />
+<link rel="stylesheet" href="./marrowline-gate-couture.css" data-marrowline-gate-couture="td613.dome-world.marrowline-gate-couture/v1" />
 </head>
 <body>
 <div id="marrowlineLivingGeometry" class="marrowline-living-geometry" aria-hidden="true"></div>
@@ -165,36 +166,51 @@
       </div>
     </details>
   </section>
-  <details class="gatehouse ritual-panel mobile-drawer" id="gatePanel">
-    <summary><span><small>Advanced instrument</small><b>Marrowline gate</b></span><i aria-hidden="true">⌄</i></summary>
+  <details class="gatehouse ritual-panel mobile-drawer gate-couture" id="gatePanel">
+    <summary>
+      <span class="gate-summary-copy">
+        <small>Advanced instrument</small>
+        <b>Marrowline gate</b>
+        <span class="gate-summary-subtitle">Bridge signals · extend agency · stay aligned</span>
+      </span>
+      <i aria-hidden="true">⌄</i>
+    </summary>
     <div class="panel-body gate-grid">
       <section class="gate-controls">
-        <p class="panel-note">The original ingress organ remains separate from the AI conversation: the gate absorbs ingress, while the terminal stages a model-mediated covenant relay.</p>
+        <p class="panel-note gate-context-note">The original ingress organ remains separate from the AI conversation: the gate absorbs ingress, while the terminal stages a model-mediated covenant relay.</p>
         <form id="marrowlineForm">
-          <label class="field-label" for="marrowlineSeed">Local fallback seed
-            <input id="marrowlineSeed" value="Kʰonapolit / witness memory / local fallback" spellcheck="false" />
+          <label class="field-label gate-seed-field" for="marrowlineSeed">
+            <span class="gate-field-title">Local fallback seed <span class="gate-field-orbit" aria-hidden="true">◎</span></span>
+            <span class="gate-input-shell gate-input-shell-seed">
+              <input id="marrowlineSeed" value="Kʰonapolit / witness memory / local fallback" spellcheck="false" />
+            </span>
           </label>
-          <div class="row">
-            <label class="field-label" for="marrowlineDepth">Depth
-              <select id="marrowlineDepth"><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option></select>
+          <div class="row gate-range-row">
+            <label class="field-label gate-range-field" for="marrowlineDepth" data-gate-range="depth">
+              <span class="gate-range-heading"><span class="gate-range-icon" aria-hidden="true">≋</span><span><b>Depth</b><small>Deeper queries · bigger reach</small></span></span>
+              <span class="gate-select-shell"><select id="marrowlineDepth"><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option></select><span class="gate-range-track" aria-hidden="true"></span></span>
             </label>
-            <label class="field-label" for="marrowlineBreadth">Breadth
-              <select id="marrowlineBreadth"><option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+            <label class="field-label gate-range-field" for="marrowlineBreadth" data-gate-range="breadth">
+              <span class="gate-range-heading"><span class="gate-range-icon" aria-hidden="true">◉</span><span><b>Breadth</b><small>Wider exploration · more paths</small></span></span>
+              <span class="gate-select-shell"><select id="marrowlineBreadth"><option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><span class="gate-range-track" aria-hidden="true"></span></span>
             </label>
           </div>
-          <div class="ritual-actions">
-            <button class="primary" type="submit">Fire live Marrowline</button>
-            <button id="buildLocalMarrowline" type="button">Build local fallback</button>
-            <button id="copyMarrowlineReceipt" type="button">Copy gate receipt</button>
+          <div class="ritual-actions gate-actions">
+            <button class="primary gate-fire-action" type="submit"><span aria-hidden="true">ϟ</span>Fire live Marrowline</button>
+            <button class="gate-fallback-action" id="buildLocalMarrowline" type="button"><span aria-hidden="true">◇</span>Build local fallback</button>
+            <button class="gate-receipt-action" id="copyMarrowlineReceipt" type="button"><span aria-hidden="true">▤</span>Copy gate receipt</button>
           </div>
         </form>
-        <div class="status" id="marrowlineStatus">ARMED · awaiting Aperture-marked live ingress call</div>
+        <div class="status gate-live-status" id="marrowlineStatus">ARMED · awaiting Aperture-marked live ingress call</div>
       </section>
-      <section class="gate-output">
-        <div class="gate-stage"><canvas id="marrowlineCanvas" aria-label="Marrowline matrix field"></canvas></div>
-        <div class="rail" id="marrowlineRail" aria-live="polite"></div>
-        <pre class="receipt" id="marrowlineReceipt"></pre>
-      </section>
+      <details class="gate-evidence-drawer">
+        <summary><span>Inspect gate evidence</span><small>matrix · route rail · raw receipt</small></summary>
+        <section class="gate-output">
+          <div class="gate-stage"><canvas id="marrowlineCanvas" aria-label="Marrowline matrix field"></canvas></div>
+          <div class="rail" id="marrowlineRail" aria-live="polite"></div>
+          <pre class="receipt" id="marrowlineReceipt"></pre>
+        </section>
+      </details>
     </div>
   </details>
     <nav class="threshold-nav" aria-label="Related places"><a href="/safe-harbor/td613-flight.html" target="_blank" rel="noopener noreferrer">Flight ↗</a><a href="/safe-harbor/" target="_blank" rel="noopener noreferrer">Safe Harbor ↗</a><a href="/aperture/" target="_blank" rel="noopener noreferrer">Aperture ↗</a></nav>
