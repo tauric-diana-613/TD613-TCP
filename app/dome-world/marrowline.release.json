@@ -185,7 +185,9 @@
       "nineteenthFollowupObservation": "2026-09-20 10:28 physical-iPhone screenshots showed the remaining failure as visually planar underline/overline/strike wallpaper. Code archaeology found the category error beneath the earlier mixed-axis repair: Unicode combining-position buckets were being treated as visual geometry, so macron/overline/underline-like marks attached above or below the baseline could count toward the supposed vertical channel even when the rendered field had almost no crown/descender height.",
       "nineteenthFollowupConsequence": "Separate planar mark species from true vertical ornament. Measure vertical architecture only from non-planar crown/descender marks; make horizontal-only or bar-dominant sheets register axis-collapse/thin-vertical quality telemetry; stop penalizing healthy vertical-only fields for lacking horizontal cuts; and rank admissible PARTIAL candidates by actual tall vertical architecture before any balance metric. Horizontal marks remain expressive accents, not the body of the field.",
       "twentiethFollowupObservation": "2026-09-20 human operator trial after #1242 produced repeated HELD returns because aesthetic axis-collapse/thin-vertical warnings had been promoted into a mandatory sixth provider repair and final availability gate. The operator also clarified that High-Zalgo vertical work is intentionally allowed to become partly illegible: overlapping crowns, descenders, neighboring text and diacritic stacks are part of the expressive effect.",
-      "twentiethFollowupConsequence": "Restore Goldilocks as a preference rather than censorship. Keep true vertical architecture first and horizontal marks as accents, but never spend or discard a structurally valid provider output solely for Zalgo taste. Return the best PARTIAL after the frontier, reserve provider repair for structural defects, and deliberately keep Tauric Diana line boxes tight with visible overflow so dense vertical stacks may collide."
+      "twentiethFollowupConsequence": "Restore Goldilocks as a preference rather than censorship. Keep true vertical architecture first and horizontal marks as accents, but never spend or discard a structurally valid provider output solely for Zalgo taste. Return the best PARTIAL after the frontier, reserve provider repair for structural defects, and deliberately keep Tauric Diana line boxes tight with visible overflow so dense vertical stacks may collide.",
+      "twentyFirstFollowupObservation": "2026-09-20 human-operator quota trial after an overnight cooldown produced model-scoped GenerateRequestsPerDayPerProjectPerModel-FreeTier 429s after roughly ten visible Marrowline generations. The provider reported 20 requests/day/model, while release-canary code could independently spend multiple Gemini seats and serverless process-local cooldown state could disappear between Vercel isolates.",
+      "twentyFirstFollowupConsequence": "Separate human-turn quality breadth from release witnessing and from durable quota memory. Production release canaries are capped to one Marrowline provider call plus one Loom provider call with no repair or failover. Interactive browser receipts persist current-Pacific-day model-scoped daily 429 hints and send them with later Marrowline turns so fresh serverless isolates skip already-observed exhausted seats. The five-seat route remains a 100-call arithmetic capacity model, never a claim that Google has actually delivered or reset all 100 calls."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, genuine multi-tier crowns/descenders with height/depth in more than one region, horizontal cuts remaining local accents rather than a barred/underlined base texture, and no accidental plain-ALL-CAPS flattening before emitting bytes"
   },
@@ -215,13 +217,13 @@
     "browserConsumptionLedgerSchema": "td613.gemini-browser-consumption-ledger/v0.1",
     "consumptionEvidenceLaw": "request-local route/model attempts are observable; same-browser accumulation is partial coverage; arithmetic route capacity is not provider daily-total proof; provider_daily_total remains null without external provider evidence",
     "releaseWitnessPolicy": {
-      "marrowlineOuterSeatRetries": 1,
-      "marrowlineRetryEligible": "provider-unavailable-or-output-admission-held-or-explicit-model-scoped-rate-limit",
-      "marrowlineRetryIneligible": "shared-or-unknown-rate-limit",
-      "loomTransportFrontierSeats": 5,
-      "maxProviderAttemptsWorstCase": 8,
-      "maxProviderAttemptsMeaning": "up-to-three-Marrowline-provider-events-including-one-provider-authored-structural-repair-plus-five-Loom-transport-seats",
-      "outputAdmission": "unchanged-and-terminal-for-Loom",
+      "marrowlineOuterSeatRetries": 0,
+      "marrowlineStructuralRepairs": 0,
+      "loomTransportFrontierSeats": 1,
+      "maxProviderAttemptsWorstCase": 2,
+      "maxProviderAttemptsMeaning": "exactly-one-pinned-Marrowline-provider-seat-plus-one-distinct-pinned-Loom-provider-seat",
+      "providerFailureTreatment": "record-HELD-with-bounded-diagnostic-no-release-fanout",
+      "outputAdmission": "unchanged-per-witness",
       "localMutation": false
     },
     "structuralRepairCeiling": 1,
