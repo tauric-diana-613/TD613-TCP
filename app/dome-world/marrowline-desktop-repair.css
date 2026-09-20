@@ -133,12 +133,14 @@
     content:"⇧︎";
     display:grid;
     place-items:center;
-    width:24px;
-    height:24px;
-    font:650 22px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
+    width:28px;
+    height:28px;
+    font:800 28px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
     letter-spacing:0;
     text-align:center;
-    transform:translateY(2px);
+    -webkit-text-stroke:.55px currentColor;
+    text-shadow:0 0 .01px currentColor;
+    transform:translateY(1px);
     transform-origin:center;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
@@ -622,5 +624,40 @@
     font-size:.67rem!important;
     line-height:1.25!important;
     font-weight:550!important;
+  }
+}
+
+
+/* Marrowline field-motion legibility: movement remains aesthetic and single-clock.
+   Rest gets immediate visual feedback; motion gets a visibly stronger field. */
+.marrowline-living-geometry{
+  transition:opacity .28s ease,filter .28s ease;
+}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell .marrowline-living-geometry[data-geometry-rest="false"]{
+    opacity:.84!important;
+    filter:saturate(.96) brightness(.98)!important;
+  }
+  html:root.marrowline-mobile-shell .marrowline-living-geometry[data-geometry-rest="true"]{
+    opacity:.46!important;
+    filter:saturate(.48) brightness(.72)!important;
+  }
+  html:root.marrowline-mobile-shell #marrowlineRest[aria-pressed="true"]{
+    border-color:rgba(116,235,232,.46)!important;
+    box-shadow:inset 0 0 0 1px rgba(117,111,233,.14),0 0 20px rgba(79,224,229,.10)!important;
+  }
+}
+@media(min-width:861px){
+  .marrowline-living-geometry[data-geometry-rest="false"]{
+    opacity:.36!important;
+    filter:saturate(.90) brightness(.96)!important;
+  }
+  .marrowline-living-geometry[data-geometry-rest="true"]{
+    opacity:.18!important;
+    filter:saturate(.42) brightness(.70)!important;
+  }
+  #marrowlineRest[aria-pressed="true"]{
+    border-color:rgba(116,235,232,.42)!important;
+    box-shadow:0 0 18px rgba(79,224,229,.08)!important;
   }
 }
