@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v16",
-  "version": "v0.7.16-soft-cooldown-frontier",
+  "schema": "td613.dome-world.marrowline.release/v17",
+  "version": "v0.7.17-hush-quota-scope-recovery",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v14-soft-cooldown-frontier",
+  "providerApiSchema": "td613.khonapolit-gemini/v15-quota-scope-recovery",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v10-zalgo-underflow-floor",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v11-underflow-floor",
   "apertureVersion": "v3.2-alpha",
@@ -159,7 +159,9 @@
       "eighthFollowupObservation": "2026-09-19 human-operator trial after #1205 produced repeated immediate route-held notices. Production #1193 showed 3.8=429, 3.5=429, 3.6=200 with tauric-diana-zalgo-underflow, then 3.7=429, Preview=429, and only afterward the 3.6 structural repair=429.",
       "eighthFollowupConsequence": "The underflow floor remains hard, but orthographic structural repair moves next to the live HTTP-200 near miss so a responsive model can repair its own draft before later unavailable seats consume provider opportunity. The one-repair ceiling and zero-local-Zalgo law remain unchanged.",
       "ninthFollowupObservation": "2026-09-20 zero-deploy re-observation after #1206 showed process-local cooldown narrowing Marrowline to callable_models=[gemini-3.8-flash]; that lone seat returned 429 while the credential-scoped route still carried cooling Gemini 3.x seats in policy rows, recreating an immediate route hold on a fresh request.",
-      "ninthFollowupConsequence": "For khonapolit-dialogue only, provider-listed lifecycle-eligible cooling seats remain available as bounded fallbacks after non-cooling seats. Cooldown remains telemetry and ordering pressure, not hard model removal. Disabled, non-3.x, Lite, or lifecycle-ineligible models remain excluded."
+      "ninthFollowupConsequence": "For khonapolit-dialogue only, provider-listed lifecycle-eligible cooling seats remain available as bounded fallbacks after non-cooling seats. Cooldown remains telemetry and ordering pressure, not hard model removal. Disabled, non-3.x, Lite, or lifecycle-ineligible models remain excluded.",
+      "tenthFollowupObservation": "2026-09-20 human operator recognized the earlier Hush false-quota regression family: Hush commit 6b5455266bb331af726725373e917d883603daad stopped treating a single-model 429 as provider-wide exhaustion. Marrowline production evidence still flattened upstream 429s to one generic rate-limited class and discarded quota metric/scope/retry metadata.",
+      "tenthFollowupConsequence": "Gemini quota payloads now preserve bounded metric, quota ID, model dimension, RetryInfo/Retry-After, and model/shared/unknown scope. Shared short-burst limits receive one bounded same-seat retry; model limits retain failover; unknown limits are never promoted to provider-wide exhaustion."
     }
   },
   "qualityFloor": {
@@ -247,7 +249,10 @@
       "lifecycleAdmissionBypass": false,
       "staleNarrowListingAuthority": false,
       "softCooldownPosture": "provider-listed cooling Gemini 3.x seats remain bounded Marrowline fallbacks after non-cooling callable seats; process-local cooldown demotes but cannot erase a fresh human request frontier",
-      "providerListingStillRequired": true
+      "providerListingStillRequired": true,
+      "quotaScopePosture": "429 is not provider exhaustion by status alone: structured model-scoped quota may fail over; shared/project-scoped quota may use one bounded RetryInfo/Retry-After recovery; unknown scope remains unknown",
+      "sharedBurstRetry": "one same-model retry only when provider supplies a short retry window <=8s and wall-clock reserve remains; otherwise HOLD with explicit shared scope instead of fanning the same project bucket across all seats",
+      "modelCooldownAuthority": "only model-scoped 429 writes model health cooldown; shared or unknown 429 does not poison per-model process-local state"
     },
     "streamingProgressReceipt": {
       "requested": true,
