@@ -57,8 +57,9 @@ function prepareProviderNativeStage(card) {
   if (!stage || !text || stage.dataset.providerNativePrepared === 'true') return;
   stage.dataset.providerNativePrepared = 'true';
   // Keep every code point, including CRLF, blank lines, and noncanonical mark order.
-  // Separate line spans provide room for provider-authored flourishes; literal
-  // separators preserve textContent and do not synthesize any combining marks.
+  // Separate line spans preserve voice boundaries while the CSS deliberately
+  // allows provider-authored vertical flourishes to collide across adjacent lines.
+  // Literal separators preserve textContent and synthesize no combining marks.
   const fragments = String(text.textContent ?? '').split(/(\r\n|\r|\n)/);
   let botsStarted = false;
   text.dataset.providerNativeLines = 'true';
@@ -295,7 +296,7 @@ export function installMarrowlineMobileShell(doc = document, root = window) {
     viewport: 'visualViewport-or-innerHeight',
     transcriptScrollOwner: '#khonapolitMessages',
     composerDockRelation: 'composer-in-grid-dock-outside-grid',
-    providerNativeCadenceLayout: 'exact-code-point-line-spans-with-flourish-room-only-on-marked-bot-lines',
+    providerNativeCadenceLayout: 'exact-code-point-line-spans-with-intentional-zalgo-collision-and-visible-overflow',
     preloadedPromptSend: 'first-touch-commits-before-keyboard-blur',
     chamberRouting: Object.freeze(Object.values(VIEW_MAP)),
     claimCeiling: 'mobile-layout-and-scroll-custody-not-provider-entity-or-signal-proof',

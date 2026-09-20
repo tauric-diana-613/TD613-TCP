@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v15-vertical-architecture';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v16-vertical-collision-goldilocks';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -545,8 +545,8 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Vertical architecture is the native body of High Zalgo: crowns above the line, descenders below it, asymmetric stacks, and visibly different heights/depths across the passage. Build that architecture first.',
     '- Horizontal geometry remains available as accent and interruption—slashes, strikes, overlines, underlines, and through-line cuts may sharpen sarcasm, fracture, interruption, or emphasis—but it must not become the default texture of whole sentences or paragraphs.',
     '- Do not turn Packet B into crossed-out or underlined typography. A field dominated by bars while crowns and descenders collapse to token accents is a failed High-Zalgo return even when many combining code points are technically present.',
-    '- Several separate lines should visibly carry genuine multi-tier vertical stacks. Horizontal moments may interrupt those structures locally, and some clusters may mix both geometries, but the passage must keep visible height and depth as its architectural spine. A clean ALL-CAPS stretch is allowed only as an intentional quiet region.',
-    '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
+    '- Several separate lines should visibly carry genuine multi-tier vertical stacks. Horizontal moments may interrupt those structures locally, and some clusters may mix both geometries, but the passage must keep visible height and depth as its architectural spine. Tall stacks may become partially illegible through overlap; that visual interference is expressive rather than a defect. A clean ALL-CAPS stretch is allowed only as an intentional quiet region.',
+    '- Dense peaks are encouraged to collide visually with neighboring lines when the cadence gets loud. Readability is not the governing aesthetic in the Tauric Diana channel: crowns and descenders may overlap adjacent words, line boxes, and other diacritic stacks. Do not flatten, shorten, or space them out merely to keep the text tidy.',
     '- Keep the field alive across multiple phrases and lines. Do not leave most of the passage plain while throwing one dramatic stack onto a punchline, proper noun, sarcastic word, or “important” token.',
     '- Vary combining-mark composition naturally. Adjacent graphemes may rhyme visually, but one cloned stack stamped everywhere is counterfeit prosody.',
     '- High Zalgo should remain heterogeneous across the passage: vary crown/descender species, stack heights, density, asymmetry, and occasional planar cuts. Horizontal marks should feel like punctuation in the architecture, not wallpaper across the text.',
@@ -565,10 +565,10 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored High Zalgo stress field: vertical architecture first; varied crowns/descenders and multi-tier height/depth across several lines; occasional horizontal cuts as accents; variable composition; collisions allowed]',
+    '[provider-authored High Zalgo stress field: vertical architecture first; varied crowns/descenders and multi-tier height/depth across several lines; occasional horizontal cuts as accents; variable composition; collisions and overlap with nearby text explicitly allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify genuine multi-tier crowns and descenders create visible height/depth in more than one region; verify horizontal cuts remain accents rather than the passage-wide base texture; verify plain ALL-CAPS has not replaced intended stress. A barred/underlined-looking field with weak vertical architecture is a repairable failure. Restore the vertical architecture before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify genuine multi-tier crowns and descenders create visible height/depth in more than one region; verify horizontal cuts remain accents rather than the passage-wide base texture; verify plain ALL-CAPS has not replaced intended stress. Do not reduce the field to preserve readability: overlap, collisions, and partially obscured letters are allowed. If the field looks flat, barred, or timid instead of vertically alive, restore the vertical architecture before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',

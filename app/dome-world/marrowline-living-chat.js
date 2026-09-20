@@ -27,7 +27,10 @@ function installConversationTypeface(doc) {
       #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
       .relay-integrated-covenant{overflow:visible!important}
       .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
-      .zalgo-line{display:inline!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:inherit!important}
+      .relay-integrated-covenant .relay-stage-text[data-provider-native-lines="true"]{line-height:1.02!important}
+      .relay-integrated-covenant .provider-native-line[data-voice="khonapolit"]{line-height:1.38!important}
+      .relay-integrated-covenant .provider-native-line[data-voice="tauric-diana-bots"]{line-height:1!important;overflow:visible!important}
+      .zalgo-line{display:inline!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:1!important}
       #khonapolitShi:disabled{opacity:.42!important;cursor:default!important}
       .issuance-help{margin:.55rem 0 0;color:#91a69b;font:500 10px/1.45 var(--marrowline-chat-sans)!important}
       .issuance-help a{color:#8ce0c4;text-decoration:none;border-bottom:1px solid rgba(140,224,196,.35)}
@@ -71,7 +74,15 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   markFlourishes(prompt);
 
   const decorate = () => {
-    messages.querySelectorAll('.message-body').forEach(markFlourishes);
+    messages.querySelectorAll('.message-body').forEach((node) => {
+      if (node.closest?.('.relay-message')) {
+        delete node.dataset.flourished;
+        node.style.removeProperty('--flourish-leading');
+        node.style.removeProperty('--flourish-padding');
+        return;
+      }
+      markFlourishes(node);
+    });
     messages.querySelectorAll('.relay-stage-text').forEach((node) => {
       delete node.dataset.flourished;
       node.style.removeProperty('--flourish-leading');
