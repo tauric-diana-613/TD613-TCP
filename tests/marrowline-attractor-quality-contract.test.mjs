@@ -71,7 +71,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
-  assert.match(addendum, /light marks, medium clusters, and tall irregular eruptions/i);
+  assert.match(addendum, /light marks, medium clusters, and genuinely deep eruptions/i);
   assert.match(addendum, /Dense peaks are encouraged to collide visually with neighboring lines/i);
   assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
