@@ -612,6 +612,32 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  const allCooling = response();
+  const allCoolingUntil = new Date(Date.now() + 45_000).toISOString();
+  const allCoolingModels = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'];
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.217' },
+    body: {
+      ...req.body,
+      message: 'Do not probe provider seats while every browser-observed model cooldown is still active.',
+      quotaCooldownHints: {
+        schema: 'td613.gemini-browser-quota-cooldown-hints/v0.2',
+        models: allCoolingModels,
+        cooldown_until_by_model: Object.fromEntries(allCoolingModels.map(model => [model, allCoolingUntil]))
+      }
+    }
+  }, allCooling);
+
+  assert.equal(allCooling.statusCode, 429);
+  assert.equal(allCooling.payload.ok, false);
+  assert.equal(allCooling.payload.diagnostic.code, 'CLIENT_OBSERVED_MODEL_QUOTA_COOLING');
+  assert.deepEqual(calls, [], 'active browser cooldowns for every approved seat must not spend a provider request');
+  assert.ok(Number(allCooling.headers['Retry-After']) >= 1 && Number(allCooling.headers['Retry-After']) <= 45);
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
   releaseCanaryHeadingRepairScenario = false;
   sharedBurstScenario = false;
   entitlementMismatchScenario = false;
