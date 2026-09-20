@@ -4,6 +4,8 @@ const MAX_EVENTS = 500;
 
 const safe = (value = '') => String(value ?? '').trim();
 const arr = (value) => Array.isArray(value) ? value : [];
+const boundedNumber = (value) => value !== null && value !== undefined && value !== ''
+  && Number.isFinite(Number(value)) ? Number(value) : null;
 
 function candidateReceipt(payload = {}) {
   if (!payload || typeof payload !== 'object') return null;
@@ -53,8 +55,8 @@ export function ingestGeminiConsumption(payload = {}, root = globalThis) {
         quota_id: safe(event.quota.quota_id) || null,
         metric: safe(event.quota.metric) || null,
         model: safe(event.quota.model) || null,
-        limit: Number.isFinite(Number(event.quota.limit)) ? Number(event.quota.limit) : null,
-        retry_after_seconds: Number.isFinite(Number(event.quota.retry_after_seconds)) ? Number(event.quota.retry_after_seconds) : null
+        limit: boundedNumber(event.quota.limit),
+        retry_after_seconds: boundedNumber(event.quota.retry_after_seconds)
       } : null
     });
   }
