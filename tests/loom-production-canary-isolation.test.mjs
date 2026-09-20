@@ -7,9 +7,9 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.doesNotMatch(source, /Promise\.all\s*\(/, 'production AI witnesses must not be launched concurrently');
 
-const marrowlineProbe = source.indexOf('const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput);');
+const marrowlineProbe = source.indexOf('const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });');
 const marrowlineCheckpoint = source.indexOf("fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json')");
-const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input);');
+const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });');
 assert.ok(marrowlineProbe >= 0, 'Marrowline live-route witness must remain present');
 assert.ok(marrowlineCheckpoint > marrowlineProbe, 'Marrowline transport evidence must checkpoint after its live witness completes');
 assert.ok(loomProbe > marrowlineCheckpoint, 'Marrowline checkpoint must be durable before the Loom witness starts');
@@ -39,6 +39,12 @@ assert.ok(
 );
 assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Marrowline and Loom live routes under the streamed completion wall');
 
+assert.match(source, /'x-td613-release-canary': '1'/);
+assert.match(source, /'x-td613-canary-model': canaryModel/);
+assert.match(source, /posture: 'quota-conservative-single-seat-per-route'/);
+assert.match(source, /max_provider_requests: 2/);
+assert.match(source, /marrowline_model: marrowlineCanaryModel/);
+assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
 assert.match(source, /request_order:\s*\['marrowline',\s*'loom'\]/);
 assert.match(source, /per_witness_timeout_ms:\s*LIVE_WITNESS_TIMEOUT_MS/);
