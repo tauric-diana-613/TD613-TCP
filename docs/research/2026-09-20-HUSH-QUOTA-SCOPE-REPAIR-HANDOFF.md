@@ -35,11 +35,10 @@ This chamber has moved beyond a pure handoff. The first bounded repair pass now:
 - preserves `model_quota_exhausted` in the browser broker instead of promoting every HTTP 429 to provider scope;
 - leaves a bare/ambiguous 429 callable rather than freezing `auto-quality`;
 - permits explicit provider/shared scope to create route-wide cooldown;
-- adds an explicit `unknown` quota state to PR123 rather than defaulting missing scope evidence to provider-wide exhaustion;
-- preserves that unknown state through PR141 as `unknown-diagnostic`;
+- identifies `hush-pr123-stable-transform.js` and PR141 as historical/test surfaces rather than current adversarial-bench runtime modules, and restores them to main bytes after that discovery;
 - updates Hush setup documentation and the synthetic quality pilot to the current 3.x family: 3.8, 3.7, 3.6, 3.5, Preview.
 
-The remaining major runtime gap is server-side structured quota observation and cross-layer consistency after Marrowline #1209 lands.
+The remaining major runtime gap is the live strict bridge/server chain: `hush-pr123-strict-undefined-fallback.js` → `/api/hush-generate-strict` → budgeted quality router, plus structured quota observation after Marrowline #1209 lands.
 
 ## Current contradiction
 
@@ -78,7 +77,7 @@ That exact promotion seam was repaired in this Draft: model scope is stored unde
 
 This was the **staple**. Keep the tests; do not re-open it unless a new falsifier appears.
 
-### Surface C — server Hush router has no quota-scope semantics
+### Surface C — LIVE server Hush router has no quota-scope semantics
 
 `server/hush-generate-quality.js` currently:
 
@@ -191,12 +190,13 @@ These fixtures are protocol tests, not empirical provider evidence.
 
 ## Suggested files to inspect in order
 
-1. `app/engine/hush-provider-broker.js`
-2. `tests/hush-provider-broker.test.mjs` or nearest broker tests
-3. `tests/hush-gemini-quality-router.test.mjs`
-4. `server/hush-generate-quality.js`
-5. `app/hush-pr123-stable-transform.js`
-6. shared `server/gemini-provider-transport.js` after #1209 lands
+1. `app/hush-pr123-strict-undefined-fallback.js` — current browser bridge loaded by `adversarial-bench.html`
+2. `server/hush-generate-strict.js` — current strict proxy/watchdog
+3. `server/hush-generate-quality.js` — live Gemini quality router and main quota-scope gap
+4. `tests/hush-gemini-quality-router.test.mjs`
+5. shared `server/gemini-provider-transport.js` after #1209 lands
+6. `app/engine/hush-provider-broker.js` — currently appears unimported by production page; keep scope-preserving repair as sidecar hygiene, not proof of live repair
+7. historical `app/hush-pr123-stable-transform.js` / PR141 only for lineage comparison
 
 ## Explicit non-goals
 
