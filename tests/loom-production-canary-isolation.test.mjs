@@ -41,8 +41,10 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /posture: 'quota-conservative-primary-with-one-route-faithful-marrowline-retry'/);
-assert.match(source, /max_provider_requests: 3/);
+assert.match(source, /posture: 'quota-conservative-bounded-seat-failover'/);
+assert.match(source, /max_http_requests: 3/);
+assert.match(source, /max_provider_requests: 4/);
+assert.match(source, /loom_provider_seat_ceiling: 2/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.stage === 'provider-transport'/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.code === 'PROVIDER_UNAVAILABLE'/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.stage === 'output-admission'/);
@@ -58,7 +60,7 @@ assert.doesNotMatch(source, /PROVIDER_SHARED_RATE_LIMIT[^\n]*marrowlineSeatRetry
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 3\)/, 'release consumption artifact cannot exceed primary Marrowline + one bounded seat retry + Loom');
+assert.match(source, /\.slice\(0, 4\)/, 'release consumption artifact cannot exceed primary Marrowline + one bounded Marrowline retry + two Loom provider seats');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
