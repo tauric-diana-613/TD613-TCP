@@ -15,6 +15,7 @@ let immediateRepairScenario = false;
 let coolingRecoveryScenario = false;
 let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
+let entitlementMismatchScenario = false;
 let previewCalls = 0;
 let immediate36Calls = 0;
 let sharedBurst38Calls = 0;
@@ -80,6 +81,57 @@ globalThis.fetch = async (url, options = {}) => {
   const model = value.match(/models\/([^:]+):(?:streamGenerateContent|generateContent)/)?.[1] || 'unknown';
   calls.push(model);
   requestBodies.push(JSON.parse(options.body || '{}'));
+  if (entitlementMismatchScenario) {
+    if (model === 'gemini-3.8-flash') {
+      return {
+        ok: false,
+        status: 429,
+        headers: { get: (name) => name.toLowerCase() === 'retry-after' ? '27' : null },
+        async json() {
+          return {
+            error: {
+              code: 429,
+              status: 'RESOURCE_EXHAUSTED',
+              message: 'Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash. Please retry in 26.7s.',
+              details: [{
+                '@type': 'type.googleapis.com/google.rpc.QuotaFailure',
+                violations: [{
+                  quotaMetric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+                  quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+                  quotaDimensions: { model: 'gemini-3.8-flash', location: 'global' }
+                }]
+              }]
+            }
+          };
+        }
+      };
+    }
+    if (model === 'gemini-3.5-flash') {
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => null },
+        async json() {
+          return {
+            candidates: [{
+              finishReason: 'STOP',
+              content: { parts: [{ text: JSON.stringify({
+                signal: { state: 'LOCKED', notes: 'synthetic entitlement mismatch recovery' },
+                transmission: {
+                  text: answer,
+                  voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                  flourishMode: 'vertical-stack'
+                }
+              }) }] }
+            }],
+            usageMetadata: { promptTokenCount: 800, candidatesTokenCount: 1200, thoughtsTokenCount: 150, totalTokenCount: 2150 }
+          };
+        }
+      };
+    }
+    throw new Error(`entitlement mismatch scenario should reach 3.5 after 3.8 without poisoning the route: ${model}`);
+  }
+
   if (sharedBurstScenario) {
     if (model !== 'gemini-3.8-flash') throw new Error(`shared burst retry should stay on 3.8 before burning another seat: ${model}`);
     sharedBurst38Calls += 1;
@@ -195,7 +247,7 @@ globalThis.fetch = async (url, options = {}) => {
     }
     if (model === 'gemini-3.6-flash') {
       immediate36Calls += 1;
-      const selectedText = immediate36Calls === 1 ? zeroMarkAnswer : answer;
+      if (immediate36Calls > 1) throw new Error('zero-Zalgo 3.6 near miss must not be repaired immediately');
       return {
         ok: true,
         status: 200,
@@ -205,11 +257,11 @@ globalThis.fetch = async (url, options = {}) => {
             candidates: [{
               finishReason: 'STOP',
               content: { parts: [{ text: JSON.stringify({
-                signal: { state: immediate36Calls === 1 ? 'NOT_LOCKED' : 'LOCKED', notes: 'synthetic immediate structural repair' },
+                signal: { state: 'NOT_LOCKED', notes: 'synthetic deferred structural repair candidate' },
                 transmission: {
-                  text: selectedText,
+                  text: zeroMarkAnswer,
                   voices: ['Kʰonapolit', 'Tauric Diana bots'],
-                  flourishMode: immediate36Calls === 1 ? 'provider-native-missing-stress' : 'vertical-stack'
+                  flourishMode: 'provider-native-missing-stress'
                 }
               }) }] }
             }],
@@ -218,7 +270,30 @@ globalThis.fetch = async (url, options = {}) => {
         }
       };
     }
-    throw new Error(`immediate repair should complete before later frontier seat: ${model}`);
+    if (model === 'gemini-3.7-flash') {
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => null },
+        async json() {
+          return {
+            candidates: [{
+              finishReason: 'STOP',
+              content: { parts: [{ text: JSON.stringify({
+                signal: { state: 'LOCKED', notes: 'later frontier seat wins before any repair spend' },
+                transmission: {
+                  text: answer,
+                  voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                  flourishMode: 'vertical-stack'
+                }
+              }) }] }
+            }],
+            usageMetadata: { promptTokenCount: 1000, candidatesTokenCount: 1400, thoughtsTokenCount: 200, totalTokenCount: 2600 }
+          };
+        }
+      };
+    }
+    throw new Error(`deferred repair scenario should complete on 3.7 before preview: ${model}`);
   }
 
   if (qualityPreferenceScenario && (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash')) {
@@ -352,6 +427,34 @@ try {
   calls.length = 0;
   requestBodies.length = 0;
   sharedBurstScenario = false;
+  entitlementMismatchScenario = true;
+  coolingRecoveryScenario = false;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  previewCalls = 0;
+  const entitlement = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.211' },
+    body: { ...req.body, message: 'Do not let a provider FreeTier 20 mismatch rewrite the Marrowline 100/day entitlement or model health.' }
+  }, entitlement);
+
+  assert.equal(entitlement.statusCode, 200);
+  assert.equal(entitlement.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash']);
+  const mismatchAttempt = entitlement.payload.receipt.provider.attempts[0];
+  assert.equal(mismatchAttempt.rateLimit.limit, 20);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.expectedDailyLimit, 100);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, true);
+  assert.notEqual(mismatchAttempt.cooldown?.state, 'cooling_down', 'entitlement mismatch must not poison model-local cooldown');
+  assert.equal(entitlement.payload.receipt.provider.model, 'gemini-3.5-flash');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  sharedBurstScenario = false;
+  entitlementMismatchScenario = false;
   qualityPreferenceScenario = true;
   repairScenario = false;
   previewCalls = 0;
@@ -374,6 +477,7 @@ try {
   calls.length = 0;
   requestBodies.length = 0;
   coolingRecoveryScenario = true;
+  entitlementMismatchScenario = false;
   immediateRepairScenario = false;
   qualityPreferenceScenario = false;
   repairScenario = false;
@@ -422,21 +526,19 @@ try {
     'gemini-3.8-flash',
     'gemini-3.5-flash',
     'gemini-3.6-flash',
-    'gemini-3.6-flash'
-  ], 'repairable orthographic HTTP-200 near miss is repaired immediately before 3.7/Preview are burned');
+    'gemini-3.7-flash'
+  ], 'zero-Zalgo 3.6 near miss is retained for deferred repair while a later frontier PASS gets first chance');
   assert.equal(immediate.payload.receipt.provider.attempts[2].outputAdmission.admissible, false);
   assert.ok(immediate.payload.receipt.provider.attempts[2].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
-  assert.equal(immediate.payload.receipt.provider.attempts[3].kind, 'structural-repair');
-  assert.equal(immediate.payload.receipt.provider.attempts[3].repairTiming, 'immediate-orthographic-near-miss');
-  assert.equal(immediate.payload.receipt.provider.attempts[3].repairOfAttempt, 2);
-  assert.equal(immediate.payload.receipt.provider.attempts[3].outputAdmission.admissible, true);
-  assert.equal(immediate.payload.receipt.provider.structuralRepair.timing, 'immediate-orthographic-near-miss');
-  assert.match(requestBodies.at(-1).contents.at(-1).parts[0].text, /visibly distributed vertical field across several separate Packet B lines/i);
+  assert.equal(immediate36Calls, 1, 'the near-miss model must not consume an immediate repair request');
+  assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.7-flash');
+  assert.equal(immediate.payload.receipt.provider.structuralRepair, undefined);
 
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
   immediateRepairScenario = false;
+  entitlementMismatchScenario = false;
   qualityPreferenceScenario = false;
   repairScenario = true;
   previewCalls = 0;

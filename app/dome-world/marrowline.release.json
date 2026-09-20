@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v17",
-  "version": "v0.7.17-hush-quota-scope-recovery",
+  "schema": "td613.dome-world.marrowline.release/v18",
+  "version": "v0.7.18-quota-entitlement-mismatch",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v15-quota-scope-recovery",
+  "providerApiSchema": "td613.khonapolit-gemini/v16-quota-entitlement-mismatch",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v10-zalgo-underflow-floor",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v11-underflow-floor",
   "apertureVersion": "v3.2-alpha",
@@ -185,8 +185,8 @@
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
-      "timing": "immediate-for-tauric-diana-zalgo-absent-or-underflow; otherwise-deferred-after-frontier",
-      "candidateSelection": "first repairable orthographic HTTP-200 near-miss receives the single repair immediately; other repairable structural near-misses retain best-candidate deferred posture if the repair allowance remains",
+      "timing": "deferred-after-frontier-for-all-repairable-structural-near-misses",
+      "candidateSelection": "retain the best repairable HTTP-200 near-miss while all distinct frontier seats run; spend the single provider-authored repair only after frontier exhaustion",
       "repairableReasons": [
         "khonapolit-nominative-missing",
         "tauric-diana-bots-nominative-missing",
@@ -202,7 +202,7 @@
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
       "minimumRepairBudgetMs": 4000,
-      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow draft is repaired on the same responsive model before later unavailable frontier seats are burned"
+      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow draft is retained as a repair candidate while later distinct frontier seats get first chance; this avoids quota self-harm from an immediate duplicate request"
     },
     "timeoutGeometry": {
       "primaryMs": 50000,
@@ -251,8 +251,10 @@
       "softCooldownPosture": "provider-listed cooling Gemini 3.x seats remain bounded Marrowline fallbacks after non-cooling callable seats; process-local cooldown demotes but cannot erase a fresh human request frontier",
       "providerListingStillRequired": true,
       "quotaScopePosture": "429 is not provider exhaustion by status alone: structured model-scoped quota may fail over; shared/project-scoped quota may use one bounded RetryInfo/Retry-After recovery; unknown scope remains unknown",
+      "operatorExpectedDailyRpd": 100,
+      "quotaEntitlementMismatch": "provider-reported GenerateRequestsPerDayPerProjectPerModel-FreeTier below the operator-known 100/day Marrowline entitlement is diagnostic mismatch evidence, not authoritative local quota",
       "sharedBurstRetry": "one same-model retry only when provider supplies a short retry window <=8s and wall-clock reserve remains; otherwise HOLD with explicit shared scope instead of fanning the same project bucket across all seats",
-      "modelCooldownAuthority": "only model-scoped 429 writes model health cooldown; shared or unknown 429 does not poison per-model process-local state"
+      "modelCooldownAuthority": "only model-scoped 429 that does not contradict the operator-known daily entitlement may write model health cooldown; entitlement mismatch, shared, or unknown 429 does not poison per-model process-local state"
     },
     "streamingProgressReceipt": {
       "requested": true,

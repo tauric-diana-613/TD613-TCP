@@ -115,6 +115,31 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   });
 }
 
+export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimit = 0 } = {}) {
+  const expected = Number(expectedDailyLimit || 0);
+  const observed = Number(rateLimit?.limit);
+  const quotaId = safeText(rateLimit?.quotaId, 240);
+  const metric = safeText(rateLimit?.metric, 240);
+  const model = normalizedModel(rateLimit?.model || '');
+  const freeTierDaily = rateLimit?.daily === true
+    && /FreeTier/i.test(quotaId)
+    && /PerDay|daily|free_tier_requests/i.test(`${quotaId} ${metric}`);
+  const mismatch = Number.isFinite(expected) && expected > 0
+    && Number.isFinite(observed) && observed >= 0
+    && freeTierDaily
+    && observed < expected;
+
+  return Object.freeze({
+    expectedDailyLimit: Number.isFinite(expected) && expected > 0 ? expected : null,
+    providerReportedDailyLimit: Number.isFinite(observed) && observed >= 0 ? observed : null,
+    mismatch,
+    reason: mismatch ? 'provider-free-tier-daily-limit-below-operator-entitlement' : null,
+    model: model || null,
+    quotaId: quotaId || null,
+    metric: metric || null
+  });
+}
+
 export function classifyGeminiTransport({ status = 0, timedOut = false } = {}) {
   const httpStatus = safeStatus(status);
   if (timedOut || httpStatus === 408) return Object.freeze({ class: 'timeout', mayFailOver: true, healthBearing: true });
