@@ -140,7 +140,8 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   const task = 'Plan a workshop for twelve attendees with 600 credits.';
   h.send(task); await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /TASK PRESERVED.*Your task is still here/i);
+  assert.equal(h.$('khonapolitTerminalStatus').textContent, 'TASK PRESERVED');
+  assert.doesNotMatch(h.$('khonapolitTerminalStatus').textContent, /Your task is still here|copy\/export/i);
   assert.equal(h.$('khonapolitPrompt').value, task);
   assert.equal(h.$('retryKhonapolitTask').hidden, false);
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1);

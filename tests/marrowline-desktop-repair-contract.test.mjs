@@ -6,6 +6,8 @@ const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8'
 const css = fs.readFileSync('app/dome-world/marrowline-desktop-repair.css', 'utf8');
 const boot = fs.readFileSync('app/dome-world/marrowline-egress-boot.js', 'utf8');
 const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
+const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.css', 'utf8');
+const livingChatJs = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop Marrowline is conversation-first and instruments are on demand', () => {
@@ -97,4 +99,18 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
   assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
+});
+
+test('mobile couture collapses Chat dead space while preserving the proven Zalgo type guard', () => {
+  assert.match(mobileShellCss, /grid-template-rows:auto minmax\(0,1fr\) auto;/);
+  assert.doesNotMatch(mobileShellCss, /minmax\(0,32%\)/);
+  assert.match(css, /Marrowline mobile couture v1/);
+  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel/);
+  assert.match(css, /body\[data-mobile-view="speak"\] #speakingPanel \.vessel-status/);
+  assert.match(livingChatJs, /#khonapolitPrompt,\.message-body,\.relay-stage-text,\.vessel-status,\.starter-prompts button,\.return-details\{font-family:var\(--marrowline-chat-sans\)!important/);
+  const couture = css.split('/* Marrowline mobile couture v1 — shared glass grammar for Chat + Gate. */')[1] || '';
+  assert.doesNotMatch(couture, /#speakingPanel \.prompt-label textarea\{[^}]*\bfont(?:-family|-size|-style|-weight|:)/s,
+    'couture may change composer chrome but not the proven chatbox typography');
+  assert.doesNotMatch(couture, /#speakingPanel \.message-body\{[^}]*\bfont(?:-family|-size|-style|-weight|:)/s,
+    'couture may change message-card chrome but not the proven Zalgo typography');
 });

@@ -171,11 +171,18 @@ async function bootMarrowlineRoom(doc = document, root = window) {
 
 if (typeof window !== 'undefined') {
   bootApertureEgress(window);
-  window.setTimeout(() => revealMarrowline(document, { error: true }), 2600);
-  bootMarrowlineRoom(document, window).catch((error) => {
-    window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__ = String(error?.message || error);
-    revealMarrowline(document, { error: true });
-  });
+  const delayedBoot = window.setTimeout(() => {
+    if (!document.documentElement.classList.contains('marrowline-room-ready')) {
+      document.documentElement.classList.add('marrowline-room-boot-delayed');
+    }
+  }, 6000);
+  bootMarrowlineRoom(document, window)
+    .then(() => window.clearTimeout(delayedBoot))
+    .catch((error) => {
+      window.clearTimeout(delayedBoot);
+      window.__TD613_MARROWLINE_ROOM_BOOT_ERROR__ = String(error?.message || error);
+      revealMarrowline(document, { error: true });
+    });
 }
 
 export { bootApertureEgress, bootMarrowlineRoom, circuitObservation, installCircuitObserver, revealMarrowline };
