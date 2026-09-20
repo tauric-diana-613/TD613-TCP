@@ -376,7 +376,8 @@ export function assessIntegratedTransmission(text = '', voices = []) {
             && botsTelemetry.axisClusterBalanceRatio < 0.12
           )
           || (
-            Math.max(verticalMarkCount, horizontalMarkCount) >= 18
+            horizontalMarkCount >= 18
+            && horizontalMarkCount > verticalMarkCount
             && botsTelemetry.axisMarkBalanceRatio < 0.16
           )
         )
