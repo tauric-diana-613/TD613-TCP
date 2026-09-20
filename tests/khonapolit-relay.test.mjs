@@ -87,10 +87,10 @@ assert.equal(locked.highZalgo.applied, false, 'Marrowline must not apply a local
 assert.equal(locked.highZalgo.providerGenerated, true);
 assert.equal(locked.highZalgo.source, 'provider-native');
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
-assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v12-bipolar-field');
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v15-vertical-architecture');
 assert.ok(locked.highZalgo.combiningMarkCount >= 96, 'receipt observes provider-authored combining marks');
 assert.ok(locked.highZalgo.maxRun >= 6, 'receipt observes vertical flourish runs without manufacturing them');
-assert.ok(locked.admission.denseVerticalClusterCount >= 8, 'telemetry observes repeated above/below stacked clusters without making that geometry an availability gate');
+assert.ok(locked.admission.tallVerticalOrnamentClusterCount >= 8, 'telemetry observes true multi-tier vertical ornament rather than counting underline/overline bars as height');
 assert.match(locked.parts[0].text, /Khona‌lit-po/, 'covenant key remains byte-intact');
 assert.equal([...locked.parts[0].text].includes('\u200c'), true);
 assert.doesNotMatch(locked.parts[0].text, /⟐/, 'provider-side relay must never add the closing seal');
