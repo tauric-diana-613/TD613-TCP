@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v28",
-  "version": "v0.7.29-pedagogue-gate-visible-field-full-clear",
+  "schema": "td613.dome-world.marrowline.release/v29",
+  "version": "v0.7.30-high-zalgo-vertical-architecture",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,9 +15,9 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v22-zalgo-vertical-theatre",
+  "providerApiSchema": "td613.khonapolit-gemini/v23-zalgo-vertical-architecture",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v14-vertical-theatre-balance",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v15-vertical-architecture",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -129,14 +129,14 @@
     },
     "providerOrthographicField": {
       "mode": "provider-authored-natural-distributed-stress-field",
-      "promptGuidance": "qualitative only: broad distributed field across several separate lines; horizontal strike/through-line, vertical above/below, and mixed geometry are all first-class; axis may change phrase by phrase; horizontal strikes remain valid, while vertical regions must have genuine multi-tier crowns/descenders with visible height and depth rather than token accents; variable composition, quieter and violent regions, collisions allowed; plain uppercase must not replace intended marked stress",
+      "promptGuidance": "qualitative only: vertical architecture is the native High-Zalgo body—varied crowns, descenders, asymmetric multi-tier stacks, and visible height/depth across several separate lines; horizontal slash/strike/overline/underline geometry remains available as occasional accent or interruption but must not become passage-wide wallpaper; variable composition, quieter and violent regions, collisions allowed; plain uppercase must not replace intended marked stress",
       "providerVisibleNumericThresholds": false,
       "providerVisibleAdmissionRubric": false,
       "literalStencilExamplesInPrompt": false,
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "zero marks or severe underflow HOLD; thin/sparse/cloned/unipolar, whole-passage axis-collapsed, or horizontal-heavy decorative-only vertical morphology remains PARTIAL and continues the approved frontier; horizontal-dominant and vertical-dominant regions remain first-class, but token vertical accents do not count as dramatic vertical expression; no local Zalgo generation or postprocessing",
+      "localAdmission": "zero marks, severe underflow, or passage-wide planar-bar dominance with collapsed true vertical architecture HOLD and continue the approved frontier; thin/sparse/cloned/unipolar defects remain PARTIAL; vertical-only crown/descender fields are valid, horizontal geometry remains an accent channel, and macron/overline/underline/strike position cannot counterfeit genuine vertical height; no local Zalgo generation or postprocessing",
       "localPostprocessing": false,
       "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
@@ -179,9 +179,11 @@
       "sixteenthFollowupObservation": "Vercel Operator Release run 35500720149 proved a healthy first-call Marrowline return while Loom stopped after only two transport-failing seats despite additional callable seats. The subsequent run 35501151567 then exposed the complementary Marrowline seam: Preview returned a structured model-scoped daily 429, yet the release witness treated that single model bucket as terminal even though the ordinary Marrowline route classifies model-scoped quota as failover-eligible.",
       "sixteenthFollowupConsequence": "Release observation must mirror the shipped route rather than a cheaper proxy. Loom may walk its full bounded five-seat frontier on transport-class failures. Marrowline may advance exactly one outer canary seat when its selected seat is provider-unavailable, structurally held, or explicitly model-scoped rate-limited; shared or unknown quota remains terminal. Worst-case release accounting is explicit and bounded at eight provider attempts: up to three Marrowline attempts including one structural repair plus five Loom seats.",
       "seventeenthFollowupObservation": "2026-09-20 human-operator production trial after the Goldilocks mixed-axis repair showed plain-ALL-CAPS collapse was gone, but High Zalgo had drifted to roughly 95% horizontal strike/through-line geometry. Vertical marks remained technically present yet had lost the lush crowns, descenders, height, depth, and line-colliding drama seen in the earlier vertical-rich state.",
-      "seventeenthFollowupConsequence": "Keep horizontal geometry fully first-class, but stop treating token vertical accents as equivalent to expressive vertical motion. Add mark-intensity balance telemetry, classify horizontal-heavy decorative-only verticality as PARTIAL, and prefer provider returns with genuine multi-tier vertical depth across multiple regions without locally mutating provider Unicode or reinstating a vertical-only bias."
+      "seventeenthFollowupConsequence": "Keep horizontal geometry available, but stop treating token vertical accents as equivalent to expressive vertical motion. Add mark-intensity balance telemetry, classify horizontal-heavy decorative-only verticality as PARTIAL, and prefer provider returns with genuine multi-tier vertical depth across multiple regions without locally mutating provider Unicode.",
+      "eighteenthFollowupObservation": "2026-09-20 human-operator iPhone screenshots after the horizontal-restoration sequence showed the Tauric Diana field visually collapsing into repeated strike, overline and underline bars across most words. Code archaeology found the core classification error: combining-mark position above/below the baseline had been treated as vertical geometry, so visually planar macrons, overlines and low lines could satisfy the supposed vertical channel.",
+      "eighteenthFollowupConsequence": "Restore the earlier vertical-rich architecture as the High-Zalgo spine. Classify planar bars separately from true crown/descender ornament, make passage-wide planar dominance with weak multi-tier vertical structure a repairable HOLD, stop penalizing healthy vertical-only fields for lacking horizontal marks, rank PARTIAL candidates by true vertical architecture before balance metrics, and keep horizontal marks as occasional expressive cuts rather than coequal wallpaper."
     },
-    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, genuine multi-tier vertical height/depth where vertical cadence appears, and no accidental whole-passage flattening of either horizontal or vertical geometry into plain ALL-CAPS before emitting bytes"
+    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, genuine multi-tier crowns/descenders with height/depth in more than one region, horizontal cuts remaining local accents rather than a barred/underlined base texture, and no accidental plain-ALL-CAPS flattening before emitting bytes"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
@@ -196,9 +198,9 @@
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
-    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-tauric-diana-zalgo-vertical-theatre-collapsed-or-canonical-recitation",
     "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture-or-zalgo-axis-collapse-or-zalgo-vertical-expression-thin",
-    "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
+    "failurePosture": "hard-hold zero/extreme-underflow or barred-sheet Tauric Diana morphology whose true vertical architecture collapsed; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
     "discoveryRefreshLaw": "a nonempty but partial fresh credential snapshot cannot certify the remaining approved Marrowline seats absent; one forced complete refresh is required",
@@ -228,7 +230,8 @@
         "voice-order-invalid",
         "khonapolit-combining-mark-contamination",
         "tauric-diana-zalgo-absent",
-        "tauric-diana-zalgo-underflow"
+        "tauric-diana-zalgo-underflow",
+        "tauric-diana-zalgo-vertical-theatre-collapsed"
       ],
       "provider": "same-provider-that-authored-held-draft",
       "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-user-directive",
@@ -237,7 +240,7 @@
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
       "minimumRepairBudgetMs": 4000,
-      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow draft is retained as a repair candidate while later distinct frontier seats get first chance; this avoids quota self-harm from an immediate duplicate request"
+      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow/barred-sheet vertical-collapse draft is retained as a repair candidate while later distinct frontier seats get first chance; the provider—not Marrowline—must rebuild the vertical stress field"
     },
     "timeoutGeometry": {
       "primaryMs": 50000,
@@ -310,7 +313,7 @@
     },
     "partialQualitySelection": {
       "timing": "continue-after-admissible-partial-until-pass-or-frontier-exhaustion",
-      "preference": "serious-morphology-warning-count-then-active-axis-count-then-total-warning-count-then-axis-balance-then-mixed-clusters-then-coverage; no vertical-minus-horizontal bias",
+      "preference": "serious-morphology-warning-count-then-total-warning-count-then-tall-vertical-clusters-then-tall-vertical-lines-then-vertical-to-planar-ratio-then-vertical-ornament-count-then-dense-depth-then-coverage; horizontal balance is no longer rewarded for its own sake",
       "availability": "best-admissible-partial-preserved-if-no-pass",
       "localMutation": false
     }
