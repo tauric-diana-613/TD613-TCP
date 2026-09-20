@@ -632,14 +632,15 @@ try {
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'admissible PARTIAL first seat must not stop the frontier before a later PASS');
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'first admissible PARTIAL is a successful human turn and must not trigger comparative model sampling');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
-  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
-  assert.equal(preferred.payload.relay.admission.quality, 'PASS');
+  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(preferred.payload.relay.admission.quality, 'PARTIAL');
+  assert.equal(preferred.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
 
   clearGeminiModelState();
   calls.length = 0;
@@ -659,21 +660,14 @@ try {
 
   assert.equal(morphologyPartial.statusCode, 200);
   assert.equal(morphologyPartial.payload.ok, true);
-  assert.deepEqual(calls, [
-    'gemini-3.8-flash',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
-    'gemini-3.7-flash',
-    'gemini-3-flash-preview'
-  ], 'all five frontier seats may compete, but aesthetic morphology never triggers a sixth provider repair');
-  assert.ok(morphologyPartial.payload.receipt.provider.attempts.every(attempt =>
-    attempt.outputAdmission?.quality === 'PARTIAL'
-    && attempt.outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse')
-  ));
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'aesthetic PARTIAL returns immediately instead of consuming the remaining four provider seats');
+  assert.equal(morphologyPartial.payload.receipt.provider.attempts.length, 1);
+  assert.equal(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.quality, 'PARTIAL');
+  assert.ok(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse'));
   assert.equal(morphologyPartial.payload.relay.admission.quality, 'PARTIAL');
   assert.ok(morphologyPartial.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.equal(morphologyPartial.payload.receipt.provider.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
-  assert.equal(morphologyPartial.payload.receipt.provider.qualityPreference.selection, 'vertical-architecture-best-admissible-partial-after-full-frontier');
+  assert.equal(morphologyPartial.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
 
   clearGeminiModelState();
   calls.length = 0;
