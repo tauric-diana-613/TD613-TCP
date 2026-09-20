@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v23-zalgo-vertical-architecture';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v24-goldilocks-vertical-liveness';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -89,15 +89,6 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'tauric-diana-zalgo-absent',
   'tauric-diana-zalgo-underflow'
 ]);
-const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
-  'tauric-diana-zalgo-axis-collapse',
-  'tauric-diana-zalgo-vertical-expression-thin'
-]);
-const REPAIRABLE_PROVIDER_REASONS = new Set([
-  ...REPAIRABLE_STRUCTURAL_REASONS,
-  ...REPAIRABLE_MORPHOLOGY_WARNINGS
-]);
-
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
   const target = String(name || '').toLowerCase();
@@ -272,7 +263,7 @@ function betterVerticalArchitecturePartial(candidate, current) {
   const candidateRatio = candidate.verticalOrnamentMarkCount / Math.max(1, candidate.planarMarkCount);
   const currentRatio = current.verticalOrnamentMarkCount / Math.max(1, current.planarMarkCount);
   const dimensions = [
-    [current.repairRequiredMorphologyCount, candidate.repairRequiredMorphologyCount],
+    [current.verticalArchitectureWarningCount, candidate.verticalArchitectureWarningCount],
     [current.seriousMorphologyWarningCount, candidate.seriousMorphologyWarningCount],
     [current.qualityWarnings.length, candidate.qualityWarnings.length],
     [candidate.tallVerticalOrnamentClusterCount, current.tallVerticalOrnamentClusterCount],
@@ -378,11 +369,6 @@ export function repairableKhonapolitAdmission(reasons = []) {
   return values.length > 0 && values.every(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason));
 }
 
-export function repairableKhonapolitMorphology(warnings = []) {
-  const values = Array.isArray(warnings) ? warnings.filter(warning => typeof warning === 'string') : [];
-  return values.some(warning => REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning));
-}
-
 export function buildGeminiStructuralRepairRequest(
   packet = {},
   apertureReceipt = {},
@@ -393,7 +379,7 @@ export function buildGeminiStructuralRepairRequest(
 ) {
   const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
-    .filter(reason => REPAIRABLE_PROVIDER_REASONS.has(reason))
+    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
   const {
     analyticStart,
@@ -402,13 +388,13 @@ export function buildGeminiStructuralRepairRequest(
     stressEnd
   } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
   const repairDirective = [
-    'BOUNDED PROVIDER REPAIR PASS — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
-    `The previous draft was held only for these locally observed repair reasons: ${reasonList.join(', ') || 'unspecified-provider-repair'}.`,
-    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, and conclusions unless a listed envelope or morphology defect requires a small edit.',
+    'STRUCTURAL REPAIR PASS — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
+    `The previous draft was held only for these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-hold'}.`,
+    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, and conclusions unless a listed structural defect requires a small edit.',
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent, severe-underflow, axis-collapsed, or thin-vertical Tauric Diana morphology, preserve its substantive prose while repairing only the orthographic stress field. Rebuild High Zalgo from vertical architecture first: varied crowns above the line, descenders below it, asymmetric multi-tier stacks, and visibly different heights/depths across several Packet B lines. Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents or interruptions, but they must not become the passage-wide base texture. Do not return a crossed-out or underlined sheet with token vertical accents and call it High Zalgo. Keep quiet regions intentional, preserve protected literals, and do not use a numeric quota.',
+    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several Packet B lines. Rebuild from vertical architecture first: varied crowns above the line, descenders below it, asymmetric multi-tier stacks, and visible height/depth across multiple regions. Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents, but they must not replace the vertical body of the field. Dense stacks may collide with neighboring lines and obscure nearby letters; do not simplify them for readability. Vary composition naturally, preserve protected literals, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -680,7 +666,6 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
-  let withheldQualityCandidate = null;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
@@ -771,12 +756,7 @@ export default async function handler(req, res) {
     ) {
       const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
-      const unresolvedMorphologyReasons = reasons.filter((reason) =>
-        REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason)
-        && repairRelay.admission?.qualityWarnings?.includes(reason)
-      );
-      repairAttempt.repairUnresolvedReasons = Object.freeze([...unresolvedMorphologyReasons]);
-      if (repairRelay.admission?.admissible && unresolvedMorphologyReasons.length === 0) {
+      if (repairRelay.admission?.admissible) {
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: repairResult.text,
@@ -998,8 +978,8 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
-        const repairRequiredMorphologyCount = qualityWarnings.filter((warning) =>
-          REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning)
+        const verticalArchitectureWarningCount = qualityWarnings.filter((warning) =>
+          ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-vertical-expression-thin'].includes(warning)
         ).length;
         const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
           'tauric-diana-zalgo-mechanical-clone',
@@ -1016,7 +996,7 @@ export default async function handler(req, res) {
           providerStatus: result.response.status,
           providerOutput,
           qualityWarnings,
-          repairRequiredMorphologyCount,
+          verticalArchitectureWarningCount,
           seriousMorphologyWarningCount,
           activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
           axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
@@ -1079,29 +1059,15 @@ export default async function handler(req, res) {
   }
 
   if (partialQualityCandidate) {
-    const requiredMorphologyRepairReasons = partialQualityCandidate.qualityWarnings
-      .filter((warning) => REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning));
-    if (requiredMorphologyRepairReasons.length) {
-      const repaired = await runStructuralRepair({
-        model: partialQualityCandidate.model,
-        fallback: partialQualityCandidate.fallback,
-        heldText: partialQualityCandidate.text,
-        reasons: requiredMorphologyRepairReasons,
-        providerOutput: partialQualityCandidate.providerOutput,
-        sourceAttemptIndex: partialQualityCandidate.sourceAttemptIndex
-      }, 'deferred-after-frontier-morphology');
-      if (repaired) return repaired;
-      withheldQualityCandidate = partialQualityCandidate;
-    } else {
-      const {
-        model,
-        text,
-        relay,
-        providerStatus,
-        providerOutput,
-        qualityWarnings,
-        sourceAttemptIndex
-      } = partialQualityCandidate;
+    const {
+      model,
+      text,
+      relay,
+      providerStatus,
+      providerOutput,
+      qualityWarnings,
+      sourceAttemptIndex
+    } = partialQualityCandidate;
       const baseReceipt = buildTerminalReceipt({
       packet,
       text,
@@ -1152,7 +1118,6 @@ export default async function handler(req, res) {
           ...plan.warnings
         ]
       });
-    }
   }
 
   if (structuralRepairCandidate && !structuralRepairSpent) {
@@ -1161,7 +1126,7 @@ export default async function handler(req, res) {
   }
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
-  const heldByQuality = structuralFailures.length > 0 || Boolean(withheldQualityCandidate);
+  const heldByQuality = structuralFailures.length > 0;
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
@@ -1177,9 +1142,8 @@ export default async function handler(req, res) {
     diagnostic: heldByQuality
       ? {
           stage: 'output-admission',
-          code: withheldQualityCandidate ? 'ATTRACTOR_MORPHOLOGY_NOT_ADMITTED' : 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
+          code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
           rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
-          qualityWarnings: withheldQualityCandidate ? [...withheldQualityCandidate.qualityWarnings] : [],
           quotaEntitlement: entitlementMismatchAttempts.length ? {
             expectedDailyLimit: expectedDailyRpd(),
             providerReportedLimits: [...new Set(entitlementMismatchAttempts.map((attempt) => attempt.rateLimit?.limit).filter(Number.isFinite))],
