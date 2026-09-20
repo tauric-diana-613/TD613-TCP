@@ -248,20 +248,18 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
         ? requestedCanaryModel
         : allModels[0] || null;
-      const requestedCanarySeatCeiling = Number.parseInt(header(req, 'x-td613-canary-provider-seat-ceiling'), 10);
-      const canarySeatCeiling = Number.isSafeInteger(requestedCanarySeatCeiling) && requestedCanarySeatCeiling > 0
-        ? Math.min(LOOM_TASK_MAX_PROVIDER_CALLS, requestedCanarySeatCeiling)
-        : 2;
-      // A release witness keeps its deterministic primary seat, then may walk only
-      // the route-native provider seats explicitly budgeted by the outer release
-      // witness. The outer witness allocates unused Marrowline provider capacity to
-      // Loom while preserving one global provider-call ceiling. Output admission,
-      // request rejection, and source validation remain unchanged.
-      const models = releaseCanary
-        ? [canaryModel, ...allModels.filter(candidate => candidate !== canaryModel)]
-            .filter(Boolean)
-            .slice(0, canarySeatCeiling)
-        : allModels;
+      const canaryModels = canaryModel
+        ? [
+            canaryModel,
+            ...allModels.filter(candidate => candidate !== canaryModel)
+          ].slice(0, LOOM_TASK_MAX_PROVIDER_CALLS)
+        : [];
+      // A release witness keeps its deterministic primary seat, then exercises the
+      // same bounded transport frontier as ordinary Loom when the existing transport
+      // classifier permits failover. Output admission, request rejection, source
+      // validation, and the five-call ceiling remain unchanged. A route with five
+      // callable seats cannot be declared unavailable after sampling only two.
+      const models = releaseCanary ? canaryModels : allModels;
       if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
       let response = null;
