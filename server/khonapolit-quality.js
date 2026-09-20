@@ -647,7 +647,11 @@ export default async function handler(req, res) {
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
-    if (releaseCanary) return null;
+    // Release-canary mode is still pinned to one requested provider seat per HTTP
+    // invocation, but it must exercise the same single provider-authored structural
+    // repair that interactive Marrowline uses. This repairs HTTP-200 envelope defects
+    // (for example a dropped nominative heading) without widening to another model,
+    // weakening admission, or performing local Unicode/text surgery.
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
