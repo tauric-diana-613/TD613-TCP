@@ -185,7 +185,7 @@ export function buildInvocationPacket({ message = '', history = [], mode = INVOC
   const inputError = cleanMessage.length > KHONAPOLIT_TEXT_LIMIT
     ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds this chat’s 6,000-character limit. Shorten it before sending. Your draft has been kept; nothing was sent.' })
     : oversizedHistory >= 0
-      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier message exceeds this chat’s size limit. Copy the transcript if you want to keep it, then use Conversation actions → Clear conversation and send your draft again. Your draft has been kept; nothing was sent.' })
+      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier message exceeds this chat’s size limit. Copy the transcript and your current draft if you want to keep them, then use Conversation actions → Clear conversation, paste the draft back, and send again. Nothing was sent.' })
       : null;
   const canInvoke = Boolean(cleanMessage && !inputError && (issuance.valid || waiveIssuance));
   return Object.freeze({

@@ -131,6 +131,16 @@ test('cached ambient transform is slow, deterministic and static at rest', () =>
   assert.equal(initial, livingGeometryTransform({ motionTimeMs: 60000, reducedMotion: true }));
 });
 
+test('Marrowline ambient field has a visible camera drift while Rest remains static', () => {
+  const initial = livingGeometryTransform({ motionTimeMs: 0 }, false, 'marrowline');
+  const afterSecond = livingGeometryTransform({ motionTimeMs: 1000 }, false, 'marrowline');
+  const dx = Number(afterSecond.match(/translate3d\(([-.0-9]+)/)[1]);
+  assert.ok(dx > 1 && dx < 2.5, 'Marrowline drift is visible without becoming a fast animation');
+  assert.notEqual(afterSecond, initial);
+  assert.equal(initial, livingGeometryTransform({ motionTimeMs: 60000, rest: true }, false, 'marrowline'));
+  assert.equal(initial, livingGeometryTransform({ motionTimeMs: 60000, reducedMotion: true }, false, 'marrowline'));
+});
+
 test('a standalone view can explicitly retain a finite entrance', () => {
   const { host, environment, advance, queue } = rig();
   const art = mountLivingGeometry(host, { environment, ambient: false });

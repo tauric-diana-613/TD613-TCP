@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v27",
-  "version": "v0.7.28-welcome-custody-mobile-arrow-centering",
+  "schema": "td613.dome-world.marrowline.release/v28",
+  "version": "v0.7.29-pedagogue-gate-visible-field-full-clear",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -342,7 +342,7 @@
     "desktopSendGlyph": "⇧",
     "mobileSendGlyph": "⇧",
     "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
-    "mobileSendGlyphRendering": "text-presentation-variation-selector in a centered 24px glyph box with mobile optical baseline correction",
+    "mobileSendGlyphRendering": "text-presentation-variation-selector in a centered 28px glyph box with 800-weight, subtle stroke reinforcement, and mobile optical baseline correction",
     "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
     "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [
@@ -358,10 +358,13 @@
     "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
     "clearConfirmation": "center-screen-modal-Clear-conversation-Yes-No-with-backdrop",
     "clearCompletionStatus": "empty-hidden-no-visible-session-cleared-strip",
+    "clearDraftPolicy": "clear-conversation-empties-composer-and-preloaded-draft-state",
     "fixedConversationRoute": "Kʰonapolit → Tauric Diana bots",
     "operatorVoiceSelection": false,
     "unissuedResearchMode": "checked-by-default-disables-and-excludes-shi",
-    "safeHarborIssuanceHelp": "/safe-harbor/index.html"
+    "safeHarborIssuanceHelp": "/safe-harbor/index.html",
+    "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
+    "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop"
   },
   "desktop": {
     "posture": "conversation-first-single-column",

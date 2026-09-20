@@ -662,9 +662,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
     state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    const prompt = byId(doc, 'khonapolitPrompt');
+    if (prompt) {
+      prompt.value = '';
+      prompt.style.height = '';
+      delete prompt.dataset.preloadedPrompt;
+    }
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     const terminalStatus = byId(doc, 'khonapolitTerminalStatus');
     if (terminalStatus) terminalStatus.textContent = '';
+    prompt?.focus?.({ preventScroll: true });
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {

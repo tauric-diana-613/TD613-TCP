@@ -13,6 +13,7 @@ export const LIVING_GEOMETRY_CONTRACT = Object.freeze({
   claimCeiling: 'Aesthetic composition from declared view/request/rest only; no measured hidden state or physical inference.',
   maxDpr: 1.5, maxPixels: 2000000, maxFps: 30, durationMs: 1800,
   ambientPeriodMs: 180000, maxDriftPx: 6, maxTiltDegrees: .3,
+  marrowlineAmbientPeriodMs: 54000, marrowlineMaxDriftPx: 14, marrowlineMaxTiltDegrees: .65,
   maxPaths: 180, maxSegments: 16000,
 });
 
@@ -174,12 +175,16 @@ export function drawLivingGeometry(ctx, viewport, field) {
 }
 
 /** A slow deterministic camera drift over cached geometry, not a measurement. */
-export function livingGeometryTransform(snapshot = {}, rest = false) {
+export function livingGeometryTransform(snapshot = {}, rest = false, variant = 'loom') {
   const staticView = rest || snapshot.rest || snapshot.reducedMotion;
-  const phase = staticView ? 0 : finite(snapshot.motionTimeMs, 0) / LIVING_GEOMETRY_CONTRACT.ambientPeriodMs * TAU;
-  const x = Math.sin(phase) * LIVING_GEOMETRY_CONTRACT.maxDriftPx;
-  const y = (Math.cos(phase * .7) - 1) * LIVING_GEOMETRY_CONTRACT.maxDriftPx * .5;
-  const tilt = Math.sin(phase * .8) * LIVING_GEOMETRY_CONTRACT.maxTiltDegrees;
+  const marrowline = variant === 'marrowline';
+  const period = marrowline ? LIVING_GEOMETRY_CONTRACT.marrowlineAmbientPeriodMs : LIVING_GEOMETRY_CONTRACT.ambientPeriodMs;
+  const maxDrift = marrowline ? LIVING_GEOMETRY_CONTRACT.marrowlineMaxDriftPx : LIVING_GEOMETRY_CONTRACT.maxDriftPx;
+  const maxTilt = marrowline ? LIVING_GEOMETRY_CONTRACT.marrowlineMaxTiltDegrees : LIVING_GEOMETRY_CONTRACT.maxTiltDegrees;
+  const phase = staticView ? 0 : finite(snapshot.motionTimeMs, 0) / period * TAU;
+  const x = Math.sin(phase) * maxDrift;
+  const y = (Math.cos(phase * .7) - 1) * maxDrift * .5;
+  const tilt = Math.sin(phase * .8) * maxTilt;
   return `translate3d(${x.toFixed(4)}px, ${y.toFixed(4)}px, 0) rotate(${tilt.toFixed(5)}deg) scale(1.04)`;
 }
 
@@ -228,9 +233,10 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
       rasterKey = key;
       draws++;
     }
-    canvas.style.transform = livingGeometryTransform({ ...snapshot, reducedMotion }, state.rest === true);
+    canvas.style.transform = livingGeometryTransform({ ...snapshot, reducedMotion }, state.rest === true, field.variant);
     canvas.style.willChange = field.rest ? 'auto' : 'transform';
     host.dataset.geometryPhase = field.phase;
+    host.dataset.geometryRest = String(field.rest);
     host.dataset.geometryReady = 'true';
     frames++;
   };
@@ -239,6 +245,7 @@ export function mountLivingGeometry(host, { coordinator: supplied, environment =
     if (disposed) return;
     state = { ...state, ...next, variant };
     host.dataset.geometryView = state.view ?? variant;
+    host.dataset.geometryRest = String(state.rest === true);
     if (supplied) {
       if (lastSnapshot) draw(lastSnapshot);
       else draw({ progress: 1, rest: state.rest === true, packet: {} });

@@ -67,6 +67,13 @@ test('current Marrowline skin is render-blocking before room-ready reveal', () =
   assert.match(boot, /firstPaintHeldUntilRoomReady: true/);
 });
 
+test('clearing a conversation also empties the composer draft', () => {
+  assert.match(terminalJs, /const prompt = byId\(doc, 'khonapolitPrompt'\)/);
+  assert.match(terminalJs, /prompt\.value = ''/);
+  assert.match(terminalJs, /delete prompt\.dataset\.preloadedPrompt/);
+  assert.equal(release.composer.clearDraftPolicy, 'clear-conversation-empties-composer-and-preloaded-draft-state');
+});
+
 test('clearing a conversation removes the obsolete visible status strip', () => {
   assert.doesNotMatch(terminalJs, /SESSION CLEARED · binding corpus remains intact/);
   assert.match(terminalJs, /if \(terminalStatus\) terminalStatus\.textContent = ''/);
@@ -91,7 +98,7 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
   assert.match(desktopBlock, /#khonapolitSend::before/);
   const mobileArrowBlock = css.split('@media(max-width:860px){\n  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions')[1]?.split('@media (min-width:861px){')[0] || '';
   assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧︎"/);
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:24px[\s\S]*height:24px[\s\S]*transform:translateY\(2px\)/);
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*transform:translateY\(1px\)/);
   assert.match(mobileArrowBlock, /#khonapolitSend\{[\s\S]*width:42px!important[\s\S]*font-size:0!important/);
   assert.equal(release.composer.desktopSendGlyph, '⇧');
   assert.equal(release.composer.mobileSendGlyph, '⇧');
