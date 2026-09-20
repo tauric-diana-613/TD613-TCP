@@ -53,7 +53,9 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
   assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
   assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
-  assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
+  assert.match(contract, /Dense peaks are encouraged to collide visually with neighboring lines/i);
+  assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
+  assert.match(contract, /crowns and descenders may overlap adjacent words, line boxes, and other diacritic stacks/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
   assert.match(contract, /Horizontal marks should feel like punctuation in the architecture, not wallpaper across the text/i);
@@ -397,11 +399,13 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
   assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must remain eligible for the bounded provider repair pass');
   assert.match(qualityServer, /betterVerticalArchitecturePartial/, 'best-PARTIAL selection must use the vertical-architecture comparator');
-  assert.match(qualityServer, /repairRequiredMorphologyCount/, 'repair-required morphology must outrank cosmetic warning counts');
+  assert.match(qualityServer, /verticalArchitectureWarningCount/, 'vertical-architecture warnings guide preference without becoming availability gates');
   assert.match(qualityServer, /tallVerticalOrnamentClusterCount/, 'best-PARTIAL selection must observe actual multi-tier vertical structure');
   assert.match(qualityServer, /tallVerticalMarkedLineCount/, 'best-PARTIAL selection must observe vertical depth across lines');
   assert.match(qualityServer, /verticalOrnamentMarkCount \/ Math\.max\(1, candidate\.planarMarkCount\)/, 'planar bars cannot win merely by increasing mark volume');
   assert.match(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'receipt must name the new selection law');
+  assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never become a final HELD diagnostic');
+  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'aesthetic morphology must never consume a sixth provider call');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
@@ -579,6 +583,8 @@ test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo wi
   assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
   assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
   assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
+  assert.match(contract, /Tall stacks may become partially illegible through overlap/i);
+  assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
