@@ -169,7 +169,7 @@ assert.equal(readable.admission.admissible, false);
 assert.equal(readable.admission.quality, 'HELD');
 assert.equal(readable.admission.reasons.includes('tauric-diana-zalgo-absent'), false);
 assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-underflow'));
-assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-field-thin'));
-assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
+assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
 console.log('khonapolit-relay: raw dual-packet admission, adversarial provider-native generation, and exact Unicode preservation ok');
