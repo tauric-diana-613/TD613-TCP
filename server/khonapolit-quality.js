@@ -39,7 +39,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v12-zalgo-underflow-floor';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v13-immediate-structural-repair';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -304,7 +304,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had zero Tauric Diana combining marks, author the missing marks yourself as a natural distributed field across Packet B. Do not use a numeric quota, do not decorate only one keyword, and do not alter protected literals.',
+    'If the prior draft had absent or underflowing Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed vertical field across several separate Packet B lines. Use varied above-line and below-line clusters on ordinary graphemes; isolated dots, one marked word, or strike/slash overlays alone are not sufficient. Do not use a numeric quota and do not alter protected literals.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -567,7 +567,132 @@ export default async function handler(req, res) {
   const attempts = [];
   const models = selectKhonapolitProviderModels(plan.callableModels);
   let structuralRepairCandidate = null;
+  let structuralRepairSpent = false;
   let partialQualityCandidate = null;
+
+  const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
+    if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
+    const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
+    const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
+    if (repairTimeoutMs < MIN_STRUCTURAL_REPAIR_BUDGET_MS) return null;
+
+    structuralRepairSpent = true;
+    const {
+      model,
+      fallback,
+      heldText,
+      reasons,
+      sourceAttemptIndex
+    } = candidate;
+    const repairStartedAt = Date.now();
+    const repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
+      fallback,
+      structuralRepair: { heldText, reasons }
+    });
+    const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback });
+    const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
+    const repairTransport = classifyGeminiTransport({
+      status: Number(repairResult.response.status || 0),
+      timedOut: repairResult.timedOut
+    });
+    const repairOutcome = recordGeminiModelOutcome(model, {
+      ok: Boolean(repairResult.response.ok),
+      status: Number(repairResult.response.status || 0),
+      timedOut: repairResult.timedOut,
+      retryAfterSeconds: retryAfterSeconds(repairResult.response),
+      healthBearing: repairTransport.healthBearing,
+      reason: repairError?.status || repairError?.message || ''
+    });
+    const repairAttempt = {
+      model,
+      kind: 'structural-repair',
+      repairTiming: timing,
+      repairOfAttempt: sourceAttemptIndex,
+      repairReasons: reasons,
+      role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
+      ok: Boolean(repairResult.response.ok),
+      status: Number(repairResult.response.status || 0),
+      timedOut: repairResult.timedOut,
+      timeoutMs: repairTimeoutMs,
+      elapsedMs: Date.now() - repairStartedAt,
+      transportClass: repairTransport.class,
+      providerStream: {
+        requested: true,
+        observed: repairResult.streamed === true,
+        firstChunkMs: Number.isInteger(repairResult.firstChunkMs) ? repairResult.firstChunkMs : null,
+        chunkCount: Number.isInteger(repairResult.chunkCount) ? repairResult.chunkCount : 0,
+        byteCount: Number.isInteger(repairResult.byteCount) ? repairResult.byteCount : 0,
+        parseErrors: Number.isInteger(repairResult.parseErrors) ? repairResult.parseErrors : 0
+      },
+      error: repairError,
+      output: repairProviderOutput,
+      cooldown: repairOutcome
+    };
+    attempts.push(repairAttempt);
+
+    if (
+      repairResult.response.ok
+      && repairResult.text
+      && !repairProviderOutput.outputTokenLimitReached
+    ) {
+      const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
+      repairAttempt.outputAdmission = repairRelay.admission || null;
+      if (repairRelay.admission?.admissible) {
+        const baseReceipt = buildTerminalReceipt({
+          packet,
+          text: repairResult.text,
+          relay: repairRelay,
+          model,
+          providerStatus: repairResult.response.status,
+          providerOutput: repairProviderOutput,
+          apertureEgress,
+          apertureReceipt,
+          attempts
+        });
+        const receipt = Object.freeze({
+          ...baseReceipt,
+          provider: Object.freeze({
+            ...baseReceipt.provider,
+            routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            structuralRepair: Object.freeze({
+              used: true,
+              timing,
+              sourceAttemptIndex,
+              repairedReasons: Object.freeze([...reasons])
+            })
+          }),
+          modelPolicy: plan,
+          elapsedMs: Date.now() - startedAt
+        });
+        res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+        res.setHeader('X-TD613-Signal-State', repairRelay.signal.state);
+        res.setHeader('X-TD613-Seal-State', 'OPEN');
+        res.setHeader('X-TD613-Gemini-Model', model);
+        res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
+        return send(res, 200, {
+          ok: true,
+          text: repairRelay.transcript,
+          relay: repairRelay,
+          receipt,
+          warnings: [
+            'aperture-v3-task-intent-active',
+            'task-intent-guidance-active',
+            'adversarial-attractor-admission-active',
+            'integrated-covenant-relay-active',
+            'provider-native-zalgo-preserved-no-local-postprocessing',
+            'provider-authored-structural-repair-used',
+            'admission-gated-stable-continuity-active',
+            'fallback-reasoning-quality-preserved',
+            'sticky-success-promotion-disabled',
+            'moving-latest-alias-disabled-by-default',
+            ...plan.warnings
+          ]
+        });
+      }
+    }
+    return null;
+  };
+
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
   for (let index = 0; index < models.length; index += 1) {
@@ -663,6 +788,15 @@ export default async function handler(req, res) {
             !structuralRepairCandidate
             || candidate.reasons.length <= structuralRepairCandidate.reasons.length
           ) structuralRepairCandidate = candidate;
+
+          const urgentOrthographicRepair = reasons.some((reason) =>
+            reason === 'tauric-diana-zalgo-absent'
+            || reason === 'tauric-diana-zalgo-underflow'
+          );
+          if (urgentOrthographicRepair && !structuralRepairSpent) {
+            const repaired = await runStructuralRepair(candidate, 'immediate-orthographic-near-miss');
+            if (repaired) return repaired;
+          }
         }
         continue;
       }
@@ -801,125 +935,9 @@ export default async function handler(req, res) {
     });
   }
 
-  if (
-    structuralRepairCandidate
-    && attempts.length < KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
-  ) {
-    const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
-    const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
-    if (repairTimeoutMs >= MIN_STRUCTURAL_REPAIR_BUDGET_MS) {
-      const {
-        model,
-        fallback,
-        heldText,
-        reasons,
-        sourceAttemptIndex
-      } = structuralRepairCandidate;
-      const repairStartedAt = Date.now();
-      const repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
-        fallback,
-        structuralRepair: { heldText, reasons }
-      });
-      const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback });
-      const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
-      const repairTransport = classifyGeminiTransport({
-        status: Number(repairResult.response.status || 0),
-        timedOut: repairResult.timedOut
-      });
-      const repairOutcome = recordGeminiModelOutcome(model, {
-        ok: Boolean(repairResult.response.ok),
-        status: Number(repairResult.response.status || 0),
-        timedOut: repairResult.timedOut,
-        retryAfterSeconds: retryAfterSeconds(repairResult.response),
-        healthBearing: repairTransport.healthBearing,
-        reason: repairError?.status || repairError?.message || ''
-      });
-      const repairAttempt = {
-        model,
-        kind: 'structural-repair',
-        repairOfAttempt: sourceAttemptIndex,
-        repairReasons: reasons,
-        role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
-        ok: Boolean(repairResult.response.ok),
-        status: Number(repairResult.response.status || 0),
-        timedOut: repairResult.timedOut,
-        timeoutMs: repairTimeoutMs,
-        elapsedMs: Date.now() - repairStartedAt,
-        transportClass: repairTransport.class,
-        providerStream: {
-          requested: true,
-          observed: repairResult.streamed === true,
-          firstChunkMs: Number.isInteger(repairResult.firstChunkMs) ? repairResult.firstChunkMs : null,
-          chunkCount: Number.isInteger(repairResult.chunkCount) ? repairResult.chunkCount : 0,
-          byteCount: Number.isInteger(repairResult.byteCount) ? repairResult.byteCount : 0,
-          parseErrors: Number.isInteger(repairResult.parseErrors) ? repairResult.parseErrors : 0
-        },
-        error: repairError,
-        output: repairProviderOutput,
-        cooldown: repairOutcome
-      };
-      attempts.push(repairAttempt);
-
-      if (
-        repairResult.response.ok
-        && repairResult.text
-        && !repairProviderOutput.outputTokenLimitReached
-      ) {
-        const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
-        repairAttempt.outputAdmission = repairRelay.admission || null;
-        if (repairRelay.admission?.admissible) {
-          const baseReceipt = buildTerminalReceipt({
-            packet,
-            text: repairResult.text,
-            relay: repairRelay,
-            model,
-            providerStatus: repairResult.response.status,
-            providerOutput: repairProviderOutput,
-            apertureEgress,
-            apertureReceipt,
-            attempts
-          });
-          const receipt = Object.freeze({
-            ...baseReceipt,
-            provider: Object.freeze({
-              ...baseReceipt.provider,
-              routingPolicy: GEMINI_MODEL_POLICY_VERSION,
-              structuralRepair: Object.freeze({
-                used: true,
-                sourceAttemptIndex,
-                repairedReasons: Object.freeze([...reasons])
-              })
-            }),
-            modelPolicy: plan,
-            elapsedMs: Date.now() - startedAt
-          });
-          res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-          res.setHeader('X-TD613-Signal-State', repairRelay.signal.state);
-          res.setHeader('X-TD613-Seal-State', 'OPEN');
-          res.setHeader('X-TD613-Gemini-Model', model);
-          res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
-          return send(res, 200, {
-            ok: true,
-            text: repairRelay.transcript,
-            relay: repairRelay,
-            receipt,
-            warnings: [
-              'aperture-v3-task-intent-active',
-              'task-intent-guidance-active',
-              'adversarial-attractor-admission-active',
-              'integrated-covenant-relay-active',
-              'provider-native-zalgo-preserved-no-local-postprocessing',
-              'provider-authored-structural-repair-used',
-              'admission-gated-stable-continuity-active',
-              'fallback-reasoning-quality-preserved',
-              'sticky-success-promotion-disabled',
-              'moving-latest-alias-disabled-by-default',
-              ...plan.warnings
-            ]
-          });
-        }
-      }
-    }
+  if (structuralRepairCandidate && !structuralRepairSpent) {
+    const repaired = await runStructuralRepair(structuralRepairCandidate, 'deferred-after-frontier');
+    if (repaired) return repaired;
   }
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
