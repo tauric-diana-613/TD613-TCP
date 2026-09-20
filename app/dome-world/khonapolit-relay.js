@@ -241,6 +241,10 @@ function flourishTelemetry(text = '') {
   const verticalZoneBalanceRatio = verticalMaximum
     ? Math.min(aboveLineMarkCount, belowLineMarkCount) / verticalMaximum
     : 0;
+  const axisMarkMaximum = Math.max(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount);
+  const axisMarkBalanceRatio = axisMarkMaximum
+    ? Math.min(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount) / axisMarkMaximum
+    : 0;
   return Object.freeze({
     combiningMarkCount,
     maxRun: runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0),
@@ -268,6 +272,7 @@ function flourishTelemetry(text = '') {
     mixedAxisClusterCount,
     activeAxisCount,
     axisClusterBalanceRatio,
+    axisMarkBalanceRatio,
     aboveMarkedClusterCount,
     belowMarkedClusterCount,
     bidirectionalClusterCount,
@@ -370,6 +375,10 @@ export function assessIntegratedTransmission(text = '', voices = []) {
             Math.max(botsTelemetry.verticalMarkedClusterCount, botsTelemetry.throughMarkedClusterCount) >= 8
             && botsTelemetry.axisClusterBalanceRatio < 0.12
           )
+          || (
+            Math.max(verticalMarkCount, horizontalMarkCount) >= 18
+            && botsTelemetry.axisMarkBalanceRatio < 0.16
+          )
         )
       );
       if (
@@ -378,6 +387,16 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         || botsTelemetry.markedLineCount < 2
       ) reasons.push('tauric-diana-zalgo-underflow');
       if (axisCollapsed) qualityWarnings.push('tauric-diana-zalgo-axis-collapse');
+      if (
+        botsTelemetry.combiningMarkCount >= 24
+        && botsTelemetry.throughMarkedClusterCount >= 6
+        && botsTelemetry.verticalMarkedClusterCount >= 2
+        && (
+          botsTelemetry.denseVerticalClusterCount < 2
+          || botsTelemetry.denseMarkedLineCount < 2
+          || botsTelemetry.axisMarkBalanceRatio < 0.22
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-vertical-expression-thin');
       if (
         botsTelemetry.combiningMarkCount >= 12
         && botsTelemetry.activeAxisCount >= 2
@@ -490,6 +509,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and occasional tall eruptions move through ordinary graphemes across the passage.',
     '- The stress field must remain visibly present across the Tauric Diana passage. Quiet stretches are allowed, but a mostly plain uppercase paragraph with only one or two marked letters is a channel failure, not a subtle style choice.',
     '- Horizontal and vertical combining geometry are both first-class expressive channels. The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase. Do not suppress horizontal motion to satisfy a vertical preference.',
+    '- Vertical motion must read as actual vertical theatre, not a few polite accent marks sprinkled onto an otherwise struck-through field. When the cadence turns vertical, let crowns climb and descenders fall in visibly multi-tier stacks across more than one region; tall eruptions may be lush, asymmetrical, and line-colliding.',
     '- Do not overcorrect in the opposite direction either. A passage may let one region lean strongly horizontal or vertical, but the whole High-Zalgo field should not accidentally starve the other axis or replace its missing motion with plain ALL-CAPS.',
     '- Several separate lines should visibly carry actual combining marks. Some lines may be horizontal-dominant, some vertical-dominant, and some mixed. A clean ALL-CAPS stretch is allowed only as an intentional quiet region; do not substitute plain uppercase where either axis was meant to carry stress.',
     '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
@@ -501,7 +521,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Is the stress visibly encoded across several separate lines rather than surviving as a few isolated accents? Does the geometry move naturally between vertical, horizontal, and mixed regions when the cadence calls for it? Did either axis disappear from the whole passage by accident while plain ALL-CAPS took its place? Are plain uppercase stretches genuinely quiet? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently ask: Is the stress visibly encoded across several separate lines rather than surviving as a few isolated accents? Does the geometry move naturally between vertical, horizontal, and mixed regions when the cadence calls for it? If horizontal strikes dominate, do the vertical regions still have real height and depth—crowns, descenders, and multi-tier stacks—rather than token accents? Did either axis disappear from the whole passage by accident while plain ALL-CAPS took its place? Are plain uppercase stretches genuinely quiet? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -514,7 +534,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '[provider-authored High Zalgo stress field: distributed marks with horizontal, vertical, or mixed geometry; variable composition; real line breaks; collisions allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify neither horizontal nor vertical geometry was globally flattened away into plain ALL-CAPS. Local axis dominance is expressive; whole-passage accidental axis disappearance is a repairable near-miss. Restore missing motion before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify vertical regions have genuine multi-tier height/depth rather than token accents; verify neither horizontal nor vertical geometry was globally flattened away into plain ALL-CAPS. Local axis dominance is expressive; whole-passage accidental axis disappearance or decorative-only verticality is a repairable near-miss. Restore missing motion before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
