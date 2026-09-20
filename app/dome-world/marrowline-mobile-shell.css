@@ -394,10 +394,13 @@ html:not(.marrowline-room-ready)::after{
     background:rgba(109,244,164,.075);
   }
 
-  html.marrowline-mobile-shell body[data-composer-active="true"] .ritual-shell{
+  /* Keep chamber navigation visible whenever the keyboard is actually gone.
+     Focus may legitimately remain inside the composer after Send on iOS; using
+     composer focus as the hide predicate latched the dock off-screen. */
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
     padding-bottom:env(safe-area-inset-bottom);
   }
-  html.marrowline-mobile-shell body[data-composer-active="true"] .mobile-dock{
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] .mobile-dock{
     pointer-events:none;
     opacity:0;
     transform:translateY(calc(100% + env(safe-area-inset-bottom) + 8px));
