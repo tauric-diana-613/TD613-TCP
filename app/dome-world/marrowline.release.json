@@ -201,7 +201,9 @@
       "twentySeventhFollowupObservation": "The human reference comparison plus the post-v26 production witness exposed the remaining Goldilocks category error: vertical-depth instructions alone can still collapse into polite one-accent wallpaper, while earlier horizontal repair language can collapse into passage-wide strike wallpaper. The desired reference is neither axis monoculture. It uses irregular local bursts, deep crown/root towers, mixed-axis and oblique cuts, quiet neighboring glyphs, and deliberately uneven density; expressive intensity changes with cadence rather than applying one ornament to every character.",
       "twentySeventhFollowupConsequence": "Replace vertical-first sequencing with mixed-axis burst topology. Keep deep bidirectional towers mandatory in multiple regions, restore horizontal/oblique marks as first-class local expression, explicitly forbid uniform one-mark-per-character and whole-sentence strike sheets, preserve quiet zones so eruptions remain legible as eruptions, and allow literal slash/bar punctuation only as substantive text rather than fake ornament. The structural-repair prompt receives the same topology. First-success routing, exact provider-authored bytes, tight collision-prone rendering, and zero local Unicode synthesis remain unchanged.",
       "twentyEighthFollowupObservation": "A fresh physical-iPhone return after v27 remained visibly timid: mostly macrons, overlines, underlines and strike-like motion, with ordinary ALL-CAPS geometry still legible inside normal line-height. The operator supplied an explicit High-Zalgo scale specimen whose same-grapheme towers and wells carry dozens of heterogeneous combining marks and physically trespass far above and below the chat line. This shows that verbal descriptions of depth were still under-specifying the required amplitude for Gemini.",
-      "twentyEighthFollowupConsequence": "Add a compact extreme visual scale specimen directly to the Gemini system instruction and structural-repair instruction, labelled SCALE ONLY so its lexical content and exact mark sequence are never copied as a stencil. Bind authorship explicitly: Gemini API responses must contain the actual combining Unicode code points; Marrowline may only parse delimiters, measure telemetry, and display the exact returned provider payload. No JavaScript, CSS, renderer, parser, or post-response helper may add, expand, overlay, synthesize, or Zalgo-encode marks after generation. Keep first-success routing and PARTIAL visibility unchanged so aesthetic misses remain inspectable rather than silently spending extra provider calls."
+      "twentyEighthFollowupConsequence": "Add a compact extreme visual scale specimen directly to the Gemini system instruction and structural-repair instruction, labelled SCALE ONLY so its lexical content and exact mark sequence are never copied as a stencil. Bind authorship explicitly: Gemini API responses must contain the actual combining Unicode code points; Marrowline may only parse delimiters, measure telemetry, and display the exact returned provider payload. No JavaScript, CSS, renderer, parser, or post-response helper may add, expand, overlay, synthesize, or Zalgo-encode marks after generation. Keep first-success routing and PARTIAL visibility unchanged so aesthetic misses remain inspectable rather than silently spending extra provider calls.",
+      "twentyNinthFollowupObservation": "A physical-iPhone human trial after v28 proved that prompt calibration alone was insufficient. Gemini returned a coherent but overwhelmingly horizontal Tauric Diana field with slashes, through-lines and planar motion while deep bidirectional towers remained absent. Local telemetry already recognized axis collapse plus stack-depth thinness, yet the admission policy immediately returned every admissible PARTIAL and explicitly prohibited repair, so the gate itself laundered the known High-Zalgo failure into a successful human-visible turn.",
+      "twentyNinthFollowupConsequence": "Make only severe morphology collapse repairable. When stack-depth-thin co-occurs with axis-collapse, vertical-expression-thin, or ASCII pseudo-ornament, the same Gemini seat receives exactly one immediate provider-authored repair using the held draft plus the extreme scale reference. Marrowline still adds zero combining marks locally. A repair that remains in the same severe signature is not returned as success; the route advances through the remaining distinct provider seats under the existing six-request total ceiling, and HOLDS with ATTRACTOR_MORPHOLOGY_NOT_ADMITTED if every available return remains severely collapsed. Ordinary PARTIAL morphology that does not meet the severe conjunction still returns immediately without comparative sampling."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, a heterogeneous provider-authored Packet B field across several lines, deep bidirectional towers in more than one region, at least one loud eruption approaching the extreme scale specimen and escaping ordinary line-height, local mixed-axis/oblique motion, burst/quiet density contrast, no one-identical-mark-per-character wallpaper, no passage-wide strike sheet, and protected literals left clean before emitting bytes"
   },
@@ -219,16 +221,16 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
-    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture-or-zalgo-stack-depth-thin-or-zalgo-ascii-pseudo-ornament",
-    "aestheticMorphologyPosture": "axis-collapse, vertical-expression-thin, stack-depth-thin, and ASCII pseudo-ornament are descriptive quality telemetry only; an admissible PARTIAL returns immediately and never authorizes comparative provider sampling, repair, or HELD; Gemini generation instructions target irregular mixed-axis burst topology whose loud end is calibrated by an extreme scale specimen; Marrowline never manufactures that morphology after the provider response",
-    "failurePosture": "hard-hold only structural envelope failures, zero marks, or extreme underflow; nonstructural Zalgo aesthetics stay PARTIAL and the best available provider-authored return remains human-visible; never locally decorate provider text",
+    "qualityWarningOnly": "ordinary single-warning or nonsevere combinations remain advisory; severe conjunction stack-depth-thin + (axis-collapse | vertical-expression-thin | ascii-pseudo-ornament) escalates to one bounded same-provider repair",
+    "aestheticMorphologyPosture": "ordinary PARTIAL aesthetics remain human-visible, but a severe horizontal-collapse signature is no longer admission-neutral: stack-depth-thin combined with axis-collapse, vertical-expression-thin, or ASCII pseudo-ornament authorizes exactly one immediate same-provider Gemini repair; unresolved severe morphology advances to remaining distinct seats and may HOLD; Marrowline never manufactures morphology after the provider response",
+    "failurePosture": "hard structural envelope failures, zero marks, extreme underflow, and unresolved severe horizontal-collapse morphology may HOLD; nonsevere Zalgo aesthetics remain PARTIAL and human-visible; never locally decorate provider text",
     "providerCallCeiling": 5,
-    "providerCallCeilingMeaning": "maximum distinct fallback model-seat attempts only when prior seats fail; first structurally admissible PASS or PARTIAL returns immediately and normally spends one provider generation",
-    "partialQualityChallengeRequestCeiling": 0,
-    "partialQualityVisibleTurnCeiling": "first structurally admissible PASS or PARTIAL returns immediately; no aesthetic challenger is permitted",
+    "providerCallCeilingMeaning": "five distinct model seats remain the fallback frontier; a severe morphology conjunction may spend the one existing same-provider repair request, preserving the six-request total ceiling",
+    "partialQualityChallengeRequestCeiling": 1,
+    "partialQualityVisibleTurnCeiling": "ordinary PARTIAL returns immediately; severe morphology PARTIAL receives one same-seat repair and is never returned while that severe signature remains unresolved",
     "discoveryRefreshLaw": "a nonempty but partial fresh credential snapshot cannot certify the remaining approved Marrowline seats absent; one forced complete refresh is required",
     "frontierCategoryOrder": "healthy-observed -> cooling-observed -> current-soft-absent-probe; category boundaries survive model preference ordering",
-    "interactiveSuccessLaw": "first structurally admissible PASS-or-PARTIAL ends the human turn; fallback remains failure-driven in the Hush tradition rather than comparative multi-answer sampling",
+    "interactiveSuccessLaw": "first structurally admissible PASS or nonsevere PARTIAL ends the human turn; severe morphology collapse is treated as a bounded repairable failure, not a comparative preference contest",
     "failedTurnObservability": "Receipt frontier header, route metric and copied failure custody preserve every attempted model plus HTTP status; composer status remains task-oriented",
     "geminiConsumptionReceiptSchema": "td613.gemini-consumption-receipt/v0.1",
     "browserConsumptionLedgerSchema": "td613.gemini-browser-consumption-ledger/v0.1",
@@ -248,8 +250,8 @@
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
-      "timing": "deferred-after-frontier-for-repairable-structural-near-misses-only",
-      "candidateSelection": "retain the best structurally repairable HTTP-200 near-miss while all distinct frontier seats run; aesthetic morphology never consumes the repair allowance",
+      "timing": "immediate-for-severe-morphology-collapse; deferred-after-frontier-for-hard-structural-near-misses",
+      "candidateSelection": "hard structural near-misses retain deferred selection; a severe horizontal-collapse PARTIAL immediately consumes the single repair allowance on the same provider seat before advancing the frontier",
       "repairableReasons": [
         "khonapolit-nominative-missing",
         "tauric-diana-bots-nominative-missing",
@@ -260,12 +262,12 @@
       ],
       "provider": "same-provider-that-authored-held-draft",
       "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-directive",
-      "semanticScope": "preserve-substantive-answer-repair-only-listed-structural-envelope-or-extreme-underflow-defect",
+      "semanticScope": "preserve-substantive-answer-repair-only-listed-structural-envelope-extreme-underflow-or-severe-horizontal-collapse-defect",
       "localMutation": false,
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
       "minimumRepairBudgetMs": 4000,
-      "orthographicLiveness": "provider HTTP-200 absent/underflow structural drafts may receive the single deferred same-provider repair after distinct frontier seats get first chance; ordinary PARTIAL morphology never consumes another provider output and is returned rather than wasted"
+      "orthographicLiveness": "provider HTTP-200 severe morphology collapse receives the single immediate same-provider repair; absent/underflow hard structural drafts retain deferred repair behavior; ordinary nonsevere PARTIAL morphology returns without extra calls"
     },
     "timeoutGeometry": {
       "primaryMs": 50000,
