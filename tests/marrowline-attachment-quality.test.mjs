@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
+import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
   MARROWLINE_ATTACHMENT_SCHEMA,
@@ -49,9 +50,11 @@ test('Marrowline keeps file and photo MIME classes non-interchangeable', () => {
 test('attachment turns walk the same five-seat frontier before waking the human', async t => {
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.GEMINI_API_KEY;
+  clearGeminiModelState();
   process.env.GEMINI_API_KEY = 'synthetic-attachment-frontier-key';
   const generationCalls = [];
   t.after(() => {
+    clearGeminiModelState();
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
     else process.env.GEMINI_API_KEY = originalKey;
