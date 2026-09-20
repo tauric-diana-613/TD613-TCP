@@ -112,8 +112,11 @@ const boundedAdmissionReasons = value => Array.isArray(value)
       .slice(0, 8)
   : [];
 const boundedMarrowlineAttempts = value => Array.isArray(value)
-  ? value.slice(0, 5).map(attempt => ({
+  ? value.slice(0, 6).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
+      kind: attempt?.kind === 'structural-repair' ? 'structural-repair' : 'model-seat',
+      repair_of_attempt: Number.isSafeInteger(attempt?.repairOfAttempt) && attempt.repairOfAttempt >= 0 ? attempt.repairOfAttempt : null,
+      repair_reasons: boundedAdmissionReasons(attempt?.repairReasons),
       status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
       elapsed_ms: boundedCount(attempt?.elapsedMs),
       timeout_ms: boundedCount(attempt?.timeoutMs),
@@ -133,7 +136,7 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
     }))
   : [];
 const boundedRejectedAttempts = value => Array.isArray(value)
-  ? value.slice(0, 5).map(attempt => ({
+  ? value.slice(0, 6).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
       reasons: boundedAdmissionReasons(attempt?.reasons)
     }))
