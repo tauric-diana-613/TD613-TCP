@@ -454,6 +454,7 @@ try {
   calls.length = 0;
   requestBodies.length = 0;
   sharedBurstScenario = false;
+  entitlementMismatchScenario = false;
   qualityPreferenceScenario = true;
   repairScenario = false;
   previewCalls = 0;
@@ -476,6 +477,7 @@ try {
   calls.length = 0;
   requestBodies.length = 0;
   coolingRecoveryScenario = true;
+  entitlementMismatchScenario = false;
   immediateRepairScenario = false;
   qualityPreferenceScenario = false;
   repairScenario = false;
