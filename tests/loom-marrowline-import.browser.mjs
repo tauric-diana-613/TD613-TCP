@@ -146,9 +146,29 @@ try {
       const rotate = page.locator('.starter-rotate');
       await rotate.waitFor({ state: 'visible' });
       assert.equal(await rotate.textContent(), '🗘');
+      const starterChoices = page.locator('.starter-prompts button:not(.starter-rotate)');
+      const initialLabels = await starterChoices.allTextContents();
+      assert.equal(initialLabels.length, 2);
+      const seenStarterLabels = new Set(initialLabels);
       await rotate.click();
-      assert.match(await page.locator('.starter-prompts').textContent(), /Ash Moon subpoena/);
-      assert.match(await page.locator('.starter-prompts').textContent(), /Rex at design review/);
+      const firstShuffledLabels = await starterChoices.allTextContents();
+      assert.equal(firstShuffledLabels.length, 2);
+      assert.notDeepEqual(firstShuffledLabels, initialLabels, 'first rupture shuffle replaces both gentle first-paint prompts');
+      firstShuffledLabels.forEach(label => seenStarterLabels.add(label));
+      for (let turn = 1; turn < 16; turn += 1) {
+        await rotate.click();
+        const labels = await starterChoices.allTextContents();
+        assert.equal(labels.length, 2);
+        for (const label of labels) {
+          assert.equal(seenStarterLabels.has(label), false, `rupture prompt repeated before the 32-prompt bag was exhausted: ${label}`);
+          seenStarterLabels.add(label);
+        }
+      }
+      assert.equal(seenStarterLabels.size, 34, 'two gentle starters plus all thirty-two rupture prompts were observed without replacement');
+      const previousPair = await starterChoices.allTextContents();
+      await rotate.click();
+      const newCyclePair = await starterChoices.allTextContents();
+      assert.equal(newCyclePair.some(label => previousPair.includes(label)), false, 'new shuffle cycle cannot immediately repeat either prompt from the previous pair');
 
       const destinationText = await page.locator('#loomImportedWorkspace').textContent();
       assert.equal(destinationText.includes(uploadCanary), false);
