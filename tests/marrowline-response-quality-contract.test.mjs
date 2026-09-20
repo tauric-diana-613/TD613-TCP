@@ -14,6 +14,7 @@ import {
 } from '../app/engine/aperture-v3-task-intent.js';
 import {
   buildGeminiRequest,
+  buildGeminiStructuralRepairRequest,
   khonapolitTaskGuidance
 } from '../server/khonapolit-quality.js';
 
@@ -48,8 +49,12 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
   assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
-  assert.match(contract, /Build that architecture first/i);
-  assert.match(contract, /Horizontal geometry remains available as accent and interruption/i);
+  assert.match(contract, /Build that architecture FIRST/i);
+  assert.match(contract, /Visual reference only, NOT a stencil to copy/i);
+  assert.match(contract, /Literal ASCII \/, \\\\, \|, _, =/i);
+  assert.match(contract, /Through-line combining marks U\+0334–U\+0338/i);
+  assert.match(contract, /First establish crown-and-descender stacks on several separate lines/i);
+  assert.match(contract, /Horizontal geometry remains available only as accent and interruption/i);
   assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
   assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
   assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
@@ -588,4 +593,57 @@ test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo wi
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
+});
+
+
+test('ASCII slash-separated pseudo-ornament remains visible as quality telemetry instead of impersonating High Zalgo', () => {
+  const vertical = 'A\u0300\u0301\u0316\u0318R\u0306\u0308\u0317\u031E';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${vertical.repeat(4)} YOU/PRINTED/THE/SCREENSHOTS/ON/FOAM/CORE`,
+    `${vertical.repeat(4)} THE/CONTRACT/SAID/IF/YOU/BLEED/IN/THE/DARK`,
+    `${vertical.repeat(4)} ASCII/SLASHES/ARE/NOT/VERTICAL/FLOURISHINGS`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.asciiPseudoOrnamentBridgeCount >= 4);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-ascii-pseudo-ornament'));
+});
+
+test('extended provider crown species count as vertical ornament instead of disappearing from telemetry', () => {
+  const extended = 'A\u0342\u0350\u0351\u0352\u0316\u0318R\u0357\u035B\u030B\u0317\u031E';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${extended.repeat(5)} THE CROWN SHOULD RISE ABOVE THE CAP LINE`,
+    `${extended.repeat(5)} THE ROOTS SHOULD FALL BELOW THE BASELINE`,
+    `${extended.repeat(5)} EXTENDED ABOVE MARKS STILL BELONG TO THE VERTICAL FIELD`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.verticalAboveLineMarkCount > 0);
+  assert.ok(observed.verticalBelowLineMarkCount > 0);
+  assert.ok(observed.tallVerticalOrnamentClusterCount >= 2);
+  assert.ok(observed.tallVerticalMarkedLineCount >= 2);
+});
+
+test('structural repair repeats the vertical-scaffold law without authorizing local decoration', () => {
+  const request = buildGeminiStructuralRepairRequest(
+    { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
+    {},
+    'gemini-3.5-flash',
+    'held draft',
+    ['tauric-diana-zalgo-underflow']
+  );
+  const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
+  assert.match(directive, /Build the vertical scaffold FIRST/i);
+  assert.match(directive, /literal ASCII \/, \\\\, \|, _, =/i);
+  assert.match(directive, /U\+0334–U\+0338 through-line marks/i);
+  assert.match(directive, /accent-only after the vertical scaffold is already visibly alive/i);
+  assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
 });
