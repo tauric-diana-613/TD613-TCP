@@ -45,7 +45,7 @@ export function ingestGeminiConsumption(payload = {}, root = globalThis) {
       request_id: safe(event.request_id) || null,
       ordinal: Number(event.ordinal || 0) || null,
       model: safe(event.model) || null,
-      status: Number.isInteger(Number(event.status)) ? Number(event.status) : null,
+      status: event.status !== null && event.status !== undefined && Number.isInteger(Number(event.status)) ? Number(event.status) : null,
       outcome: safe(event.outcome) || 'unknown',
       release_witness: event.release_witness === true,
       quota: event.quota && typeof event.quota === 'object' ? {
