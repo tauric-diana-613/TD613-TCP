@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v24-goldilocks-vertical-liveness';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v25-vertical-flourishing-scaffold';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -395,7 +395,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several Packet B lines. Rebuild from vertical architecture first: varied crowns above the line, descenders below it, asymmetric multi-tier stacks, and visible height/depth across multiple regions. Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents, but they must not replace the vertical body of the field. Dense stacks may collide with neighboring lines and obscure nearby letters; do not simplify them for readability. Vary composition naturally, preserve protected literals, and do not use a numeric quota.',
+    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several Packet B lines. Build the vertical scaffold FIRST: true combining crowns above graphemes plus descenders below them, with asymmetric multi-tier height/depth on several separate lines. Do not use literal ASCII /, \\, |, _, =, repeated hyphens, or separators between ordinary words as fake Zalgo. Do not begin with U+0334–U+0338 through-line marks, overlines, underlines, or strike wallpaper; those are accent-only after the vertical scaffold is already visibly alive. Dense crowns and roots may collide with neighboring lines and obscure nearby letters; do not simplify them for readability. Vary composition naturally, preserve protected literals, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
