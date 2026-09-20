@@ -12,6 +12,7 @@ import {
 import { installMarrowlineGatePedagogue } from '../app/dome-world/marrowline-gate-pedagogue.js';
 
 const fixtureUrl = new URL('./fixtures/pedagogue/marrowline-fire-gate-design.json', import.meta.url);
+const pedagogueCssUrl = new URL('../app/dome-world/marrowline-gate-pedagogue.css', import.meta.url);
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 test('Pedagogue design gate admits the consequence-first Fire Gate route without widening authority', async () => {
@@ -76,6 +77,15 @@ test('adversarial receipt keeps the comparison and falsifiers explicit', () => {
   assert.equal(assay.adversarialUse.operatorControl, 'same-endpoint-server-token-bypass-when-admitted');
   assert.ok(assay.falsifiers.includes('operator-token-persists-in-receipt'));
   assert.match(assay.claimCeiling, /human-operated-adversarial-boundary-assay/);
+});
+
+test('Pedagogue Gate instrument keeps Depth/Breadth paired and secondary actions compact on mobile and desktop', async () => {
+  const css = await readFile(pedagogueCssUrl, 'utf8');
+  assert.match(css, /Pedagogue instrument geometry v2/);
+  assert.match(css, /#gatePanel #marrowlineForm \.row\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
+  assert.match(css, /#gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
+  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel #marrowlineForm \.row\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
+  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
 });
 
 test('human-facing Gate guide translates changing receipts while leaving technical receipt intact', async () => {
