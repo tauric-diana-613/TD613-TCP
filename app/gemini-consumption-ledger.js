@@ -18,7 +18,7 @@ function candidateReceipt(payload = {}) {
     || null;
 }
 
-function readLedger(root = window) {
+function readLedger(root = globalThis) {
   try {
     const parsed = JSON.parse(root.localStorage?.getItem(GEMINI_BROWSER_LEDGER_KEY) || 'null');
     if (parsed?.schema === GEMINI_BROWSER_LEDGER_SCHEMA && Array.isArray(parsed.events)) return parsed;
@@ -30,7 +30,7 @@ function writeLedger(root, ledger) {
   try { root.localStorage?.setItem(GEMINI_BROWSER_LEDGER_KEY, JSON.stringify(ledger)); } catch {}
 }
 
-export function ingestGeminiConsumption(payload = {}, root = window) {
+export function ingestGeminiConsumption(payload = {}, root = globalThis) {
   const receipt = candidateReceipt(payload);
   if (!receipt || !Array.isArray(receipt.events) || !receipt.events.length) return summarizeGeminiBrowserLedger(root);
   const ledger = readLedger(root);
@@ -63,7 +63,7 @@ export function ingestGeminiConsumption(payload = {}, root = window) {
   return summarizeGeminiBrowserLedger(root);
 }
 
-export function summarizeGeminiBrowserLedger(root = window) {
+export function summarizeGeminiBrowserLedger(root = globalThis) {
   const ledger = readLedger(root);
   const byRoute = {};
   const byModel = {};
@@ -84,7 +84,7 @@ export function summarizeGeminiBrowserLedger(root = window) {
   };
 }
 
-export function clearGeminiBrowserLedger(root = window) {
+export function clearGeminiBrowserLedger(root = globalThis) {
   try { root.localStorage?.removeItem(GEMINI_BROWSER_LEDGER_KEY); } catch {}
   return summarizeGeminiBrowserLedger(root);
 }
