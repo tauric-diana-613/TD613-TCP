@@ -160,6 +160,8 @@ assert.doesNotMatch(reobserve, /VERCEL_TOKEN|vercel@latest deploy|deploymentEnab
   'Observation-only authority must contain no deployment, lock-opening, or source-mutation path.');
 assert.match(reobserve, /Admit only a prior provider-transport HELD release/);
 assert.match(reobserve, /Prior HELD release was not first-failed by provider transport/);
+assert.match(reobserve, /\['PROVIDER_UNAVAILABLE', 'PROVIDER_RATE_LIMIT_HELD'\]\.includes\(marrow\.diagnostic\?\.code\)/,
+  'Provider-held re-observation must admit both unavailable and explicit model rate-limit transport holds.');
 assert.match(reobserve, /gh run download "\$HELD_RUN_ID" -n td613-bounded-production-release-evidence/);
 assert.match(reobserve, /prior_release_state:\s*'HELD_UNCHANGED'/);
 assert.match(reobserve, /deployment_authority:\s*false/);

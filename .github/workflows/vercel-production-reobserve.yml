@@ -119,7 +119,7 @@ jobs:
           const marrowProviderHeld = !marrow.transport_error_class
             && (marrow.http_status !== 200 || marrow.ok !== true)
             && marrow.diagnostic?.stage === 'provider-transport'
-            && marrow.diagnostic?.code === 'PROVIDER_UNAVAILABLE';
+            && ['PROVIDER_UNAVAILABLE', 'PROVIDER_RATE_LIMIT_HELD'].includes(marrow.diagnostic?.code);
           const marrowPassedAdmission = !marrow.transport_error_class
             && marrow.http_status === 200
             && marrow.ok === true
