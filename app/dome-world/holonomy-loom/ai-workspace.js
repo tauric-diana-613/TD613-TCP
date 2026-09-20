@@ -7,6 +7,7 @@ import { renderLoomAiResult } from './ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './ai-failure.js';
 import { AnimationCoordinator } from './animation-coordinator.js';
 import { mountLivingGeometry } from './living-geometry.js';
+import { ingestGeminiConsumption } from '../../gemini-consumption-ledger.js';
 
 // Provider output supplies content only. This local event grammar alone owns motion.
 export function projectLoomRequestEvent(event) {
@@ -182,7 +183,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       routeFacts.binding_verified=true;
       controller=new AbortController();const deadline=environment.setTimeout(()=>{clientDeadlineExceeded=true;controller?.abort();},55000);const started=environment.performance.now();
       let response,result;
-      try {routeFacts.outbound_submitted=true;project('pending',{request_id:requestId,provider_call_observed:false,note:`${prepared.request.documents.length} documents submitted to the Loom provider route.`});status('Flow-Core AI is working on your selected task. Waiting for the response…');response=await environment.fetch('/api/khonapolit?operation=loom-task',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prepared.request),signal:controller.signal});if(disposed)return;const raw=await response.text();if(disposed)return;routeFacts.response_received=true;if(raw.length>131072)throw new Error('The reply exceeded the admitted response size.');try{result=JSON.parse(raw);}catch{throw new Error('The provider route returned an unreadable response.');}}finally{environment.clearTimeout(deadline);controller=null;}
+      try {routeFacts.outbound_submitted=true;project('pending',{request_id:requestId,provider_call_observed:false,note:`${prepared.request.documents.length} documents submitted to the Loom provider route.`});status('Flow-Core AI is working on your selected task. Waiting for the response…');response=await environment.fetch('/api/khonapolit?operation=loom-task',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prepared.request),signal:controller.signal});if(disposed)return;const raw=await response.text();if(disposed)return;routeFacts.response_received=true;if(raw.length>131072)throw new Error('The reply exceeded the admitted response size.');try{result=JSON.parse(raw);ingestGeminiConsumption(result,environment);}catch{throw new Error('The provider route returned an unreadable response.');}}finally{environment.clearTimeout(deadline);controller=null;}
       $('aiElapsed').textContent=`${((environment.performance.now()-started)/1000).toFixed(1)} s`;
       if(!response.ok){const failure=readLoomAiFailure(result,requestId);const error=new Error(describeLoomAiFailure(failure,response.status));error.loomFailure=failure;throw error;}
       project('received',{request_id:requestId});
