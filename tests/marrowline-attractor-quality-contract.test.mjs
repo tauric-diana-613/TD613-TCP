@@ -74,6 +74,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /light marks, medium clusters, and occasional tall eruptions/i);
   assert.match(addendum, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+  assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
   assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
   assert.doesNotMatch(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
