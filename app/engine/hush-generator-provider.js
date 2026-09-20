@@ -313,9 +313,9 @@ export async function requestRemoteProviderCandidates(input = {}, options = {}) 
       body: JSON.stringify({ contract }),
       signal: options.signal
     });
-    if (!response.ok) throw new Error(`remote-llm-proxy-failed:${response.status}`);
-    const payload = await response.json();
+    const payload = await response.json().catch(() => ({}));
     ingestGeminiConsumption(payload, globalThis);
+    if (!response.ok) throw new Error(`remote-llm-proxy-failed:${response.status}`);
     const report = normalizeRemoteProviderResponse(payload, contract);
     report.cache = { hit: false, key: cacheKey, scope: 'browser-session' };
     setCachedRemoteProviderReport(cacheKey, report);
