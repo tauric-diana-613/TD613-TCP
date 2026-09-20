@@ -157,7 +157,55 @@ const marrowlineCheckpoint = {
 };
 fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json'), `${JSON.stringify(marrowlineCheckpoint, null, 2)}\n`);
 console.log(`[loom-production-canary] checkpoint ${JSON.stringify(marrowlineCheckpoint)}`);
-const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });
+const loomPrimaryResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });
+const loomPrimaryPayload = loomPrimaryResult.payload;
+const loomPrimaryDiagnostic = loomPrimaryPayload?.diagnostic && typeof loomPrimaryPayload.diagnostic === 'object'
+  ? loomPrimaryPayload.diagnostic
+  : null;
+const loomPrimaryAttempts = Array.isArray(loomPrimaryPayload?.observations?.provider_attempts)
+  ? loomPrimaryPayload.observations.provider_attempts
+  : [];
+const loomPrimaryProviderUnavailable = !loomPrimaryResult.transportError
+  && loomPrimaryResult.httpStatus === 502
+  && loomPrimaryPayload?.status === 'held'
+  && loomPrimaryDiagnostic?.stage === 'provider-transport'
+  && loomPrimaryDiagnostic?.code === 'PROVIDER_HTTP_ERROR'
+  && loomPrimaryAttempts.some(attempt => Number(attempt?.status) === 503);
+let loomResult = loomPrimaryResult;
+let loomSeatRetry = null;
+if (!marrowlineSeatRetry && loomPrimaryProviderUnavailable) {
+  const primaryModelIndex = RELEASE_CANARY_MODELS.indexOf(loomCanaryModel);
+  const orderedAlternates = primaryModelIndex >= 0
+    ? [
+        ...RELEASE_CANARY_MODELS.slice(primaryModelIndex + 1),
+        ...RELEASE_CANARY_MODELS.slice(0, primaryModelIndex)
+      ]
+    : [...RELEASE_CANARY_MODELS];
+  const retryModel = orderedAlternates.find(model => model !== loomCanaryModel) || '';
+  const retryBudgetMs = Math.max(0, LIVE_WITNESS_TIMEOUT_MS - loomPrimaryResult.elapsedMs);
+  if (retryModel && retryBudgetMs >= 15000) {
+    const retryResult = await postJson(loomUrl, input, retryBudgetMs, { canaryModel: retryModel });
+    const retryPayload = retryResult.payload;
+    loomSeatRetry = {
+      trigger: 'provider-unavailable',
+      primary_model: loomCanaryModel,
+      primary_http_status: loomPrimaryResult.httpStatus || null,
+      primary_diagnostic_stage: typeof loomPrimaryDiagnostic?.stage === 'string' ? loomPrimaryDiagnostic.stage : null,
+      primary_diagnostic_code: typeof loomPrimaryDiagnostic?.code === 'string' ? loomPrimaryDiagnostic.code : null,
+      primary_provider_attempts: loomPrimaryAttempts.slice(0, 5).map(attempt => ({
+        model: String(attempt?.model || '').slice(0, 120),
+        status: Number.isInteger(attempt?.status) ? attempt.status : null
+      })),
+      primary_elapsed_ms: Number.isSafeInteger(loomPrimaryResult.elapsedMs) && loomPrimaryResult.elapsedMs >= 0 ? loomPrimaryResult.elapsedMs : null,
+      retry_model: retryModel,
+      retry_timeout_ms: retryBudgetMs,
+      retry_http_status: retryResult.httpStatus || null,
+      retry_observed_model: typeof retryPayload?.observations?.model === 'string' ? retryPayload.observations.model : null,
+      retry_elapsed_ms: Number.isSafeInteger(retryResult.elapsedMs) && retryResult.elapsedMs >= 0 ? retryResult.elapsedMs : null
+    };
+    loomResult = retryResult;
+  }
+}
 const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
 
@@ -262,21 +310,32 @@ const boundedModelPlan = value => {
 };
 
 const observations = payload?.observations && typeof payload.observations === 'object' ? payload.observations : {};
-const providerAttempts = Array.isArray(observations.provider_attempts)
-  ? observations.provider_attempts.slice(0, 5).map(attempt => ({
-      model: String(attempt?.model || '').slice(0, 120),
-      status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null
-    }))
-  : [];
-const providerAttemptTimings = Array.isArray(observations.provider_attempt_timings)
-  ? observations.provider_attempt_timings.slice(0, 5).map(attempt => ({
-      model: String(attempt?.model || '').slice(0, 120),
-      status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
-      elapsed_ms: boundedCount(attempt?.elapsed_ms),
-      timeout_ms: boundedCount(attempt?.timeout_ms),
-      timed_out: attempt?.timed_out === true
-    }))
-  : [];
+const loomObservationPayloads = loomSeatRetry ? [loomPrimaryPayload, payload] : [payload];
+const providerAttempts = loomObservationPayloads.flatMap(providerPayload => {
+  const routeObservations = providerPayload?.observations && typeof providerPayload.observations === 'object'
+    ? providerPayload.observations
+    : {};
+  return Array.isArray(routeObservations.provider_attempts)
+    ? routeObservations.provider_attempts.map(attempt => ({
+        model: String(attempt?.model || '').slice(0, 120),
+        status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null
+      }))
+    : [];
+}).slice(0, 5);
+const providerAttemptTimings = loomObservationPayloads.flatMap(providerPayload => {
+  const routeObservations = providerPayload?.observations && typeof providerPayload.observations === 'object'
+    ? providerPayload.observations
+    : {};
+  return Array.isArray(routeObservations.provider_attempt_timings)
+    ? routeObservations.provider_attempt_timings.map(attempt => ({
+        model: String(attempt?.model || '').slice(0, 120),
+        status: Number.isInteger(attempt?.status) && attempt.status >= 100 && attempt.status <= 599 ? attempt.status : null,
+        elapsed_ms: boundedCount(attempt?.elapsed_ms),
+        timeout_ms: boundedCount(attempt?.timeout_ms),
+        timed_out: attempt?.timed_out === true
+      }))
+    : [];
+}).slice(0, 5);
 const usedDocumentIds = Array.isArray(payload?.used_document_ids) ? payload.used_document_ids.filter(id => typeof id === 'string').slice(0, 8) : [];
 const marrowlinePayload = marrowlineResult.payload;
 const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload.receipt === 'object' ? marrowlinePayload.receipt : {};
@@ -303,11 +362,17 @@ const releaseConsumptionEvents = [
       release_witness: true
     }))
   ),
-  ...((observations?.gemini_consumption?.events || []).map(event => ({
-    ...event,
-    route: 'release-witness:loom',
-    release_witness: true
-  })))
+  ...loomObservationPayloads.flatMap((providerPayload, index) =>
+    (providerPayload?.observations?.gemini_consumption?.events || []).map(event => ({
+      ...event,
+      route: index === 0 && loomSeatRetry
+        ? 'release-witness:loom-primary'
+        : index === 1 && loomSeatRetry
+          ? 'release-witness:loom-seat-retry'
+          : 'release-witness:loom',
+      release_witness: true
+    }))
+  )
 ].slice(0, 3);
 const releaseGeminiConsumption = {
   schema: 'td613.gemini-consumption-release-witness/v0.1',
@@ -322,25 +387,31 @@ const receipt = {
   observed_at: new Date().toISOString(),
   target_origin: origin,
   request_id: requestId,
-  request_count: 2 + (marrowlineSeatRetry ? 1 : 0),
+  request_count: 2 + (marrowlineSeatRetry ? 1 : 0) + (loomSeatRetry ? 1 : 0),
   request_execution: 'serial-independent',
   release_canary_budget: {
-    posture: 'quota-conservative-primary-with-one-route-faithful-marrowline-retry',
+    posture: 'quota-conservative-primary-with-one-route-faithful-retry-total',
     max_provider_requests: 3,
     marrowline_model: marrowlineCanaryModel,
     marrowline_retry_model: marrowlineSeatRetry?.retry_model || null,
-    loom_model: loomCanaryModel
+    loom_model: loomCanaryModel,
+    loom_retry_model: loomSeatRetry?.retry_model || null
   },
   request_order: marrowlineSeatRetry
     ? ['marrowline-primary', 'marrowline-seat-retry', 'loom']
-    : ['marrowline', 'loom'],
+    : loomSeatRetry
+      ? ['marrowline', 'loom-primary', 'loom-seat-retry']
+      : ['marrowline', 'loom'],
   per_witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
   canary_elapsed_ms: boundedCount(canaryElapsedMs),
   http_status: httpStatus || null,
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
   diagnostic: boundedDiagnostic(payload?.diagnostic),
-  provider_calls: Number.isSafeInteger(observations.provider_calls) ? observations.provider_calls : null,
+  provider_calls: loomObservationPayloads.reduce((sum, providerPayload) => {
+    const count = providerPayload?.observations?.provider_calls;
+    return sum + (Number.isSafeInteger(count) && count >= 0 ? count : 0);
+  }, 0),
   provider_attempts: providerAttempts,
   provider_attempt_timings: providerAttemptTimings,
   final_model: typeof observations.model === 'string' ? observations.model : null,
@@ -352,6 +423,7 @@ const receipt = {
   used_document_ids: usedDocumentIds,
   missing_information_count: Array.isArray(payload?.missing_information) ? payload.missing_information.length : null,
   source_claims: observations.source_claims === 'model-reported-unverified' ? observations.source_claims : null,
+  loom_seat_retry: loomSeatRetry,
   gemini_consumption: releaseGeminiConsumption,
   marrowline_live_route: {
     request_id: marrowlineRequestId,
