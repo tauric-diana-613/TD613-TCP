@@ -26,7 +26,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v7-living-conversation-title';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v8-visible-frontier-failures';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -307,6 +307,26 @@ function shortGeminiModel(model = '') {
   return id.replace(/^gemini-/, '') || '—';
 }
 
+function routeReceiptFromFailure(failure = null) {
+  if (!failure || typeof failure !== 'object') return null;
+  return {
+    modelPolicy: failure.modelPolicy || null,
+    provider: { attempts: Array.isArray(failure.attempts) ? failure.attempts : [] }
+  };
+}
+function routeAttemptTrace(value = null) {
+  const attempts = Array.isArray(value?.provider?.attempts)
+    ? value.provider.attempts
+    : Array.isArray(value?.attempts)
+      ? value.attempts
+      : [];
+  return attempts.map((attempt) => {
+    const model = shortGeminiModel(attempt?.model);
+    const status = Number(attempt?.status || 0);
+    const suffix = attempt?.timedOut ? ' timeout' : status ? ' ' + status : '';
+    return model ? model + suffix : '';
+  }).filter(Boolean).join(' → ');
+}
 function renderModelRouteReceipt(doc, receipt = null) {
   const callable = Array.isArray(receipt?.modelPolicy?.callableModels) ? receipt.modelPolicy.callableModels : [];
   const attempts = Array.isArray(receipt?.provider?.attempts) ? receipt.provider.attempts : [];
@@ -321,7 +341,7 @@ function renderModelRouteReceipt(doc, receipt = null) {
     ? callable.map((model) => `${shortGeminiModel(model)} ✓`).join(' · ')
     : '—';
   if (attemptsNode) attemptsNode.textContent = attempts.length
-    ? attempts.map((attempt) => shortGeminiModel(attempt?.model)).filter(Boolean).join(' → ')
+    ? routeAttemptTrace(receipt)
     : '—';
   if (coolingNode) coolingNode.textContent = cooling.length
     ? cooling.map((row) => {
