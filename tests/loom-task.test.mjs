@@ -162,7 +162,40 @@ test('production release canary keeps its selected Loom seat and permits one tra
   assert.equal(result.body.observations.model, 'gemini-3.8-flash');
 });
 
-test('production release Loom canary still stops after its one bounded alternate seat', async () => {
+test('production release Loom canary reaches a third seat after two transient transport failures', async () => {
+  const attempted = [];
+  const h = harness({
+    resolvePlan: async () => ({ callableModels: [
+      'gemini-3.8-flash',
+      'gemini-3.7-flash',
+      'gemini-3.6-flash',
+      'gemini-3.5-flash',
+      'gemini-3-flash-preview'
+    ] }),
+    fetchImpl: async (url) => {
+      attempted.push(decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || ''));
+      return attempted.length < 3
+        ? { ok: false, status: attempted.length === 1 ? 429 : 503 }
+        : { ok: true, status: 200, json: async () => payload() };
+    }
+  });
+  const result = await h.run(task(), {
+    headers: {
+      host: 'td613.com',
+      origin: 'https://td613.com',
+      'content-type': 'application/json',
+      'sec-fetch-site': 'same-origin',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash'
+    }
+  });
+  assert.equal(result.status, 200);
+  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash']);
+  assert.equal(result.body.observations.provider_calls, 3);
+  assert.equal(result.body.observations.model, 'gemini-3.5-flash');
+});
+
+test('production release Loom canary exhausts the same five-seat transport frontier as ordinary Loom', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -188,8 +221,14 @@ test('production release Loom canary still stops after its one bounded alternate
     }
   });
   assert.equal(result.status, 502);
-  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash']);
-  assert.equal(result.body.observations.provider_calls, 2);
+  assert.deepEqual(attempted, [
+    'gemini-3.6-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.7-flash',
+    'gemini-3-flash-preview'
+  ]);
+  assert.equal(result.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
 });
 
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {
