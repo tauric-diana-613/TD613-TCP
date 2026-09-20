@@ -4,13 +4,14 @@ import fs from 'node:fs';
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
 const qualityServer = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
+const loomServer = fs.readFileSync('server/loom-task.js', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.doesNotMatch(source, /Promise\.all\s*\(/, 'production AI witnesses must not be launched concurrently');
 
 const marrowlineProbe = source.indexOf('const marrowlinePrimaryResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });');
 const marrowlineCheckpoint = source.indexOf("fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json')");
-const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, {');
+const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });');
 assert.ok(marrowlineProbe >= 0, 'Marrowline live-route witness must remain present');
 assert.ok(marrowlineCheckpoint > marrowlineProbe, 'Marrowline transport evidence must checkpoint after its live witness completes');
 assert.ok(loomProbe > marrowlineCheckpoint, 'Marrowline checkpoint must be durable before the Loom witness starts');
@@ -42,15 +43,15 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /'x-td613-canary-provider-seat-ceiling': String\(canaryProviderSeatCeiling\)/);
-assert.match(source, /posture: 'quota-conservative-bounded-seat-failover'/);
+assert.match(source, /posture: 'route-faithful-five-seat-transport-failover'/);
 assert.match(source, /max_http_requests: 3/);
-assert.match(source, /const RELEASE_CANARY_MAX_PROVIDER_REQUESTS = 5/);
-assert.match(source, /max_provider_requests: RELEASE_CANARY_MAX_PROVIDER_REQUESTS/);
+assert.match(source, /max_provider_requests: 8/);
 assert.match(source, /marrowline_structural_repair_ceiling: 1/);
-assert.match(source, /marrowline_provider_calls_spent: marrowlineProviderCallsSpent/);
-assert.match(source, /loom_provider_seat_ceiling: loomProviderSeatCeiling/);
-assert.match(source, /RELEASE_CANARY_MAX_PROVIDER_REQUESTS - marrowlineProviderCallsSpent/);
+assert.match(source, /loom_provider_seat_ceiling: 5/);
+assert.match(loomServer, /const canaryModels = canaryModel/);
+assert.match(loomServer, /\.\.\.allModels\.filter\(candidate => candidate !== canaryModel\)/);
+assert.match(loomServer, /\.slice\(0, LOOM_TASK_MAX_PROVIDER_CALLS\)/);
+assert.match(loomServer, /const models = releaseCanary \? canaryModels : allModels;/);
 assert.doesNotMatch(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must retain the same one-shot provider-authored structural repair as interactive Marrowline');
 assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.stage === 'provider-transport'/);
@@ -68,7 +69,7 @@ assert.doesNotMatch(source, /PROVIDER_SHARED_RATE_LIMIT[^\n]*marrowlineSeatRetry
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 5\)/, 'release consumption artifact remains capped to the five-call global provider witness budget');
+assert.match(source, /\.slice\(0, 8\)/, 'release consumption artifact cannot exceed three bounded Marrowline provider attempts plus the five-seat Loom transport frontier');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
