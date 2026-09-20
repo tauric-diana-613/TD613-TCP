@@ -308,7 +308,7 @@ const releaseConsumptionEvents = [
     route: 'release-witness:loom',
     release_witness: true
   })))
-].slice(0, 4);
+].slice(0, 5);
 const releaseGeminiConsumption = {
   schema: 'td613.gemini-consumption-release-witness/v0.1',
   coverage: 'this-release-witness-only',
@@ -327,10 +327,11 @@ const receipt = {
   release_canary_budget: {
     posture: 'quota-conservative-bounded-seat-failover',
     max_http_requests: 3,
-    max_provider_requests: 4,
+    max_provider_requests: 5,
     marrowline_model: marrowlineCanaryModel,
     marrowline_retry_model: marrowlineSeatRetry?.retry_model || null,
     loom_model: loomCanaryModel,
+    marrowline_structural_repair_ceiling: 1,
     loom_provider_seat_ceiling: 2
   },
   request_order: marrowlineSeatRetry
