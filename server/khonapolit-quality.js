@@ -260,6 +260,28 @@ export function consumeRateSlot(key = 'unknown', now = Date.now()) {
     resetAt: current.startedAt + WINDOW_MS
   };
 }
+function betterVerticalArchitecturePartial(candidate, current) {
+  if (!current) return true;
+  const candidateRatio = candidate.verticalOrnamentMarkCount / Math.max(1, candidate.planarMarkCount);
+  const currentRatio = current.verticalOrnamentMarkCount / Math.max(1, current.planarMarkCount);
+  const dimensions = [
+    [current.seriousMorphologyWarningCount, candidate.seriousMorphologyWarningCount],
+    [current.qualityWarnings.length, candidate.qualityWarnings.length],
+    [candidate.tallVerticalOrnamentClusterCount, current.tallVerticalOrnamentClusterCount],
+    [candidate.tallVerticalMarkedLineCount, current.tallVerticalMarkedLineCount],
+    [candidateRatio, currentRatio],
+    [candidate.verticalOrnamentMarkCount, current.verticalOrnamentMarkCount],
+    [candidate.denseVerticalClusterCount, current.denseVerticalClusterCount],
+    [candidate.denseMarkedLineCount, current.denseMarkedLineCount],
+    [candidate.markedGraphemeCoverageRatio, current.markedGraphemeCoverageRatio]
+  ];
+  for (const [preferred, baseline] of dimensions) {
+    if (preferred > baseline) return true;
+    if (preferred < baseline) return false;
+  }
+  return false;
+}
+
 function parseBody(req = {}) {
   if (req.body && typeof req.body === 'object') return req.body;
   if (typeof req.body === 'string') {
@@ -986,94 +1008,7 @@ export default async function handler(req, res) {
           sourceAttemptIndex: attempts.length - 1
         };
         const current = partialQualityCandidate;
-        if (
-          !current
-          || candidate.seriousMorphologyWarningCount < current.seriousMorphologyWarningCount
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount > current.activeAxisCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length < current.qualityWarnings.length
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.tallVerticalOrnamentClusterCount > current.tallVerticalOrnamentClusterCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
-            && candidate.tallVerticalMarkedLineCount > current.tallVerticalMarkedLineCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
-            && candidate.tallVerticalMarkedLineCount === current.tallVerticalMarkedLineCount
-            && candidate.verticalOrnamentMarkCount > current.verticalOrnamentMarkCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.tallVerticalOrnamentClusterCount === current.tallVerticalOrnamentClusterCount
-            && candidate.tallVerticalMarkedLineCount === current.tallVerticalMarkedLineCount
-            && candidate.verticalOrnamentMarkCount === current.verticalOrnamentMarkCount
-            && candidate.axisMarkBalanceRatio > current.axisMarkBalanceRatio
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio > current.axisClusterBalanceRatio
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount > current.denseVerticalClusterCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount > current.denseMarkedLineCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
-            && candidate.mixedAxisClusterCount > current.mixedAxisClusterCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
-            && candidate.mixedAxisClusterCount === current.mixedAxisClusterCount
-            && candidate.markedGraphemeCoverageRatio >= current.markedGraphemeCoverageRatio
-          )
-        ) partialQualityCandidate = candidate;
+        if (betterVerticalArchitecturePartial(candidate, current)) partialQualityCandidate = candidate;
         continue;
       }
 
