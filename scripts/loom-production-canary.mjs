@@ -111,6 +111,21 @@ const boundedAdmissionReasons = value => Array.isArray(value)
       .filter(reason => typeof reason === 'string' && /^[a-z0-9-]{1,96}$/.test(reason))
       .slice(0, 8)
   : [];
+const boundedRateLimit = value => {
+  if (!value || typeof value !== 'object' || value.observed !== true) return null;
+  const scope = ['model', 'shared', 'unknown'].includes(value.scope) ? value.scope : 'unknown';
+  return {
+    scope,
+    metric: typeof value.metric === 'string' ? value.metric.slice(0, 240) : null,
+    quota_id: typeof value.quotaId === 'string' ? value.quotaId.slice(0, 240) : null,
+    model: typeof value.model === 'string' ? value.model.slice(0, 120) : null,
+    retry_after_seconds: boundedCount(value.retryAfterSeconds),
+    limit: Number.isFinite(Number(value.limit)) && Number(value.limit) >= 0 ? Number(value.limit) : null,
+    daily: value.daily === true,
+    burst: value.burst === true,
+    structured: value.structured === true
+  };
+};
 const boundedMarrowlineAttempts = value => Array.isArray(value)
   ? value.slice(0, 6).map(attempt => ({
       model: String(attempt?.model || '').slice(0, 120),
@@ -123,6 +138,7 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
       timed_out: attempt?.timedOut === true,
       admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null,
       admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons),
+      rate_limit: boundedRateLimit(attempt?.rateLimit),
       provider_stream: attempt?.providerStream && typeof attempt.providerStream === 'object'
         ? {
             requested: attempt.providerStream.requested === true,
