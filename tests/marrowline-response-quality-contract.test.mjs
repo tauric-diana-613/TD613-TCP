@@ -388,11 +388,13 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
   assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must be eligible for the bounded provider repair pass');
-  assert.match(qualityServer, /axisClusterBalanceRatio/, 'best-PARTIAL selection must retain cluster-balance telemetry');
-  assert.match(qualityServer, /axisMarkBalanceRatio/, 'best-PARTIAL selection must prefer substantive axis intensity rather than token vertical accents');
-  assert.match(qualityServer, /denseVerticalClusterCount/, 'best-PARTIAL selection must observe dramatic vertical stack depth');
-  assert.match(qualityServer, /tauric-diana-zalgo-vertical-expression-thin/, 'horizontal-heavy fields with decorative-only verticality must remain visible as PARTIAL telemetry');
-  assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal preference must not return');
+  assert.match(qualityServer, /tauric-diana-zalgo-vertical-theatre-collapsed/, 'barred-sheet collapse must be eligible for provider-authored repair rather than visible as fake High Zalgo');
+  assert.match(qualityServer, /betterVerticalArchitecturePartial/, 'best-PARTIAL selection must use the vertical-architecture comparator');
+  assert.match(qualityServer, /tallVerticalOrnamentClusterCount/, 'best-PARTIAL selection must prefer actual multi-tier vertical structure');
+  assert.match(qualityServer, /tallVerticalMarkedLineCount/, 'best-PARTIAL selection must prefer vertical depth distributed across lines');
+  assert.match(qualityServer, /verticalOrnamentMarkCount \/ Math\.max\(1, candidate\.planarMarkCount\)/, 'planar bars cannot win merely by increasing mark volume');
+  assert.match(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'receipt names the new selection law');
+  assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
 test('browser request clock outlives the 210-second server work wall without outrunning Vercel', () => {
