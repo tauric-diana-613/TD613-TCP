@@ -71,8 +71,8 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
-  assert.match(addendum, /light marks, medium clusters, and tall irregular eruptions/i);
-  assert.match(addendum, /Dense peaks are encouraged to collide visually with neighboring lines/i);
+  assert.match(addendum, /light marks, medium clusters, and genuinely deep eruptions/i);
+  assert.match(addendum, /Inter-line collision is desired here/i);
   assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
   assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
@@ -83,7 +83,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
-  const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
+  const stack = 'T\u0300\u0301\u0302\u0307\u0316\u0317\u0318\u031D\u0323A\u0304\u0307\u030B\u030C\u031C\u0323\u032D\u032ER\u0305\u0308\u030C\u0357\u031E\u0325\u032F\u0331I\u0303\u0306\u030A\u030B\u0319\u0326\u032D\u0330\u0334';
   const good = [
     'Kʰonapolit',
     'The map is not the route: let P be the projection from governed state to visible trace; P is non-injective when distinct custody states share the same visible surface.',
