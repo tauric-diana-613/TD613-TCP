@@ -96,11 +96,23 @@ const marrowlinePrimaryOutputAdmissionHeld = !marrowlinePrimaryResult.transportE
   && marrowlinePrimaryPayload?.ok !== true
   && marrowlinePrimaryDiagnostic?.stage === 'output-admission'
   && marrowlinePrimaryDiagnostic?.code === 'ATTRACTOR_STRUCTURE_NOT_ADMITTED';
+const marrowlinePrimaryRateLimitScopes = Array.isArray(marrowlinePrimaryDiagnostic?.scopes)
+  ? marrowlinePrimaryDiagnostic.scopes.filter(scope => ['model', 'shared', 'unknown'].includes(scope))
+  : [];
+const marrowlinePrimaryModelRateLimited = !marrowlinePrimaryResult.transportError
+  && marrowlinePrimaryResult.httpStatus === 429
+  && marrowlinePrimaryPayload?.ok !== true
+  && marrowlinePrimaryDiagnostic?.stage === 'provider-transport'
+  && marrowlinePrimaryDiagnostic?.code === 'PROVIDER_RATE_LIMIT_HELD'
+  && marrowlinePrimaryRateLimitScopes.length > 0
+  && marrowlinePrimaryRateLimitScopes.every(scope => scope === 'model');
 const marrowlineSeatRetryTrigger = marrowlinePrimaryProviderUnavailable
   ? 'provider-unavailable'
   : marrowlinePrimaryOutputAdmissionHeld
     ? 'output-admission-held'
-    : null;
+    : marrowlinePrimaryModelRateLimited
+      ? 'model-rate-limit-held'
+      : null;
 let marrowlineResult = marrowlinePrimaryResult;
 let marrowlineSeatRetry = null;
 if (marrowlineSeatRetryTrigger) {
@@ -128,6 +140,7 @@ if (marrowlineSeatRetryTrigger) {
       primary_rejected_attempts: Array.isArray(marrowlinePrimaryDiagnostic?.rejectedAttempts)
         ? marrowlinePrimaryDiagnostic.rejectedAttempts.slice(0, 6)
         : [],
+      primary_rate_limit_scopes: marrowlinePrimaryRateLimitScopes,
       primary_elapsed_ms: Number.isSafeInteger(marrowlinePrimaryResult.elapsedMs) && marrowlinePrimaryResult.elapsedMs >= 0 ? marrowlinePrimaryResult.elapsedMs : null,
       retry_model: retryModel,
       retry_timeout_ms: retryBudgetMs,
@@ -138,7 +151,7 @@ if (marrowlineSeatRetryTrigger) {
   }
 }
 const marrowlineCheckpoint = {
-  schema: 'td613.loom.production-canary-route-checkpoint/v0.3-route-faithful-seat-retry',
+  schema: 'td613.loom.production-canary-route-checkpoint/v0.4-route-faithful-rate-limit-failover',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   route: 'marrowline',
@@ -148,6 +161,7 @@ const marrowlineCheckpoint = {
   primary_http_status: marrowlinePrimaryResult.httpStatus || null,
   primary_diagnostic_stage: typeof marrowlinePrimaryDiagnostic?.stage === 'string' ? marrowlinePrimaryDiagnostic.stage : null,
   primary_diagnostic_code: typeof marrowlinePrimaryDiagnostic?.code === 'string' ? marrowlinePrimaryDiagnostic.code : null,
+  primary_rate_limit_scopes: marrowlinePrimaryRateLimitScopes,
   primary_elapsed_ms: Number.isSafeInteger(marrowlinePrimaryResult.elapsedMs) && marrowlinePrimaryResult.elapsedMs >= 0 ? marrowlinePrimaryResult.elapsedMs : null,
   seat_retry_used: Boolean(marrowlineSeatRetry),
   seat_retry: marrowlineSeatRetry,
