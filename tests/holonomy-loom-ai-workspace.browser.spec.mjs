@@ -81,9 +81,9 @@ try {
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#aiProjectChoices').isVisible(), false, 'demo projects wait for the invitation gesture');
-      assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas borrows the workspace clock');
       assert.equal(await page.locator('#aiDemoInvitation').isVisible(), true);
       await page.waitForFunction(() => document.documentElement.dataset.loomBoot === 'ready' && document.querySelector('#loomLivingGeometry')?.dataset.geometryReady === 'true');
+      assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas borrows the workspace clock after the async Loom boot owns the geometry');
       await page.locator('#aiStillField').click();
       await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames === '0');
       assert.equal(requests.length, 0, 'explicit rest settles without making a request');
