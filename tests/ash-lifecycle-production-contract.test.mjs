@@ -202,7 +202,9 @@ for (const token of [
   'function sendGuardedDomeReadiness(res)',
   "'x-td613-dome-world-local-closure': 'production-guard-parity'",
   "'x-td613-custody-route': 'isolated'",
-  'url.pathname === DOME_READINESS_ROUTE'
+  'url.pathname === DOME_READINESS_ROUTE',
+  "pathname === '/gemini-consumption-ledger.js'",
+  "return 'app/gemini-consumption-ledger.js'"
 ]) assert.ok(localClosureServer.includes(token), `Local closure server omitted ${token}`);
 assert.match(domeGuard, /def guarded_readiness_receipt\(operation="readiness"\)/);
 assert.match(vercelConfig, /"source": "\/api\/dome-world\/readiness"[\s\S]{0,160}"destination": "\/api\/dome-world-engine-guard\?operation=readiness"/);
