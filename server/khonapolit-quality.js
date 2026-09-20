@@ -277,29 +277,6 @@ export function consumeRateSlot(key = 'unknown', now = Date.now()) {
     resetAt: current.startedAt + WINDOW_MS
   };
 }
-function betterVerticalArchitecturePartial(candidate, current) {
-  if (!current) return true;
-  const candidateRatio = candidate.verticalOrnamentMarkCount / Math.max(1, candidate.planarMarkCount);
-  const currentRatio = current.verticalOrnamentMarkCount / Math.max(1, current.planarMarkCount);
-  const dimensions = [
-    [current.verticalArchitectureWarningCount, candidate.verticalArchitectureWarningCount],
-    [current.seriousMorphologyWarningCount, candidate.seriousMorphologyWarningCount],
-    [current.qualityWarnings.length, candidate.qualityWarnings.length],
-    [candidate.tallVerticalOrnamentClusterCount, current.tallVerticalOrnamentClusterCount],
-    [candidate.tallVerticalMarkedLineCount, current.tallVerticalMarkedLineCount],
-    [candidateRatio, currentRatio],
-    [candidate.verticalOrnamentMarkCount, current.verticalOrnamentMarkCount],
-    [candidate.denseVerticalClusterCount, current.denseVerticalClusterCount],
-    [candidate.denseMarkedLineCount, current.denseMarkedLineCount],
-    [candidate.markedGraphemeCoverageRatio, current.markedGraphemeCoverageRatio]
-  ];
-  for (const [preferred, baseline] of dimensions) {
-    if (preferred > baseline) return true;
-    if (preferred < baseline) return false;
-  }
-  return false;
-}
-
 function parseBody(req = {}) {
   if (req.body && typeof req.body === 'object') return req.body;
   if (typeof req.body === 'string') {
@@ -686,7 +663,6 @@ export default async function handler(req, res) {
   const routeModelCount = Math.max(1, providerModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
-  let partialQualityCandidate = null;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
@@ -1103,68 +1079,6 @@ export default async function handler(req, res) {
         ]
       });
     }
-  }
-
-  if (partialQualityCandidate) {
-    const {
-      model,
-      text,
-      relay,
-      providerStatus,
-      providerOutput,
-      qualityWarnings,
-      sourceAttemptIndex
-    } = partialQualityCandidate;
-      const baseReceipt = buildTerminalReceipt({
-      packet,
-      text,
-      relay,
-      model,
-      providerStatus,
-      providerOutput,
-      apertureEgress,
-      apertureReceipt,
-      attempts
-    });
-    const receipt = Object.freeze({
-      ...baseReceipt,
-      provider: Object.freeze({
-        ...baseReceipt.provider,
-        routingPolicy: GEMINI_MODEL_POLICY_VERSION,
-        qualityPreference: Object.freeze({
-          used: true,
-          sourceAttemptIndex,
-          selection: 'vertical-architecture-best-admissible-partial-after-full-frontier',
-          warnings: Object.freeze([...qualityWarnings])
-        })
-      }),
-      modelPolicy: plan,
-      elapsedMs: Date.now() - startedAt
-    });
-    res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-    res.setHeader('X-TD613-Signal-State', relay.signal.state);
-    res.setHeader('X-TD613-Seal-State', 'OPEN');
-    res.setHeader('X-TD613-Gemini-Model', model);
-    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-BEST-OF-FRONTIER');
-      return send(res, 200, {
-        ok: true,
-        text: relay.transcript,
-        relay,
-        receipt,
-        warnings: [
-          'aperture-v3-task-intent-active',
-          'task-intent-guidance-active',
-          'adversarial-attractor-admission-active',
-          'integrated-covenant-relay-active',
-          'provider-native-zalgo-preserved-no-local-postprocessing',
-          'provider-native-zalgo-quality-partial-best-of-frontier',
-          'admission-gated-stable-continuity-active',
-          'fallback-reasoning-quality-preserved',
-          'sticky-success-promotion-disabled',
-          'moving-latest-alias-disabled-by-default',
-          ...plan.warnings
-        ]
-      });
   }
 
   if (structuralRepairCandidate && !structuralRepairSpent) {
