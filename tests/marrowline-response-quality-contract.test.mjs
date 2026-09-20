@@ -15,7 +15,8 @@ import {
 import {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
-  khonapolitTaskGuidance
+  khonapolitTaskGuidance,
+  severeMorphologyRepairWarnings
 } from '../server/khonapolit-quality.js';
 
 const mobileCss = readFileSync(new URL('../app/dome-world/marrowline-mobile-shell.css', import.meta.url), 'utf8');
@@ -414,8 +415,10 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
   assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must remain eligible for the bounded provider repair pass');
-  assert.match(qualityServer, /first-admissible-partial-no-comparative-sampling/, 'an admissible PARTIAL must return immediately instead of sampling later models');
-  assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must name the first-admissible PARTIAL posture');
+  assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'severe horizontal-collapse morphology must have a dedicated bounded repair gate');
+  assert.match(qualityServer, /immediate-severe-morphology/, 'severe morphology must repair on the same provider seat before visibility');
+  assert.match(qualityServer, /first-admissible-partial-no-comparative-sampling/, 'ordinary nonsevere PARTIAL still returns immediately instead of aesthetic model shopping');
+  assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must preserve the ordinary nonsevere PARTIAL posture');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
   assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never become a final HELD diagnostic');
@@ -625,6 +628,9 @@ test('ASCII slash-separated pseudo-ornament remains visible as quality telemetry
   assert.equal(observed.admissible, true);
   assert.ok(observed.asciiPseudoOrnamentBridgeCount >= 4);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-ascii-pseudo-ornament'));
+  if (observed.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin')) {
+    assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-ascii-pseudo-ornament'));
+  }
 });
 
 test('shallow one-accent capitals remain PARTIAL even when vertical direction is technically present', () => {
@@ -643,6 +649,7 @@ test('shallow one-accent capitals remain PARTIAL even when vertical direction is
   assert.equal(observed.deepBidirectionalClusterCount, 0);
   assert.equal(observed.extremeVerticalClusterCount, 0);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
+  assert.deepEqual(severeMorphologyRepairWarnings(observed.qualityWarnings), [], 'stack-depth thinness alone remains an advisory PARTIAL rather than spending repair');
 });
 
 test('deep bidirectional towers register the screenshot-five morphology', () => {
@@ -685,24 +692,22 @@ test('extended provider crown species count as vertical ornament instead of disa
   assert.ok(observed.tallVerticalMarkedLineCount >= 2);
 });
 
-test('structural repair repeats the vertical-scaffold law without authorizing local decoration', () => {
+test('structural repair re-authors severe morphology in Gemini without authorizing local decoration', () => {
   const request = buildGeminiStructuralRepairRequest(
     { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
     {},
     'gemini-3.5-flash',
     'held draft',
-    ['tauric-diana-zalgo-underflow']
+    ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
-  assert.match(directive, /irregular provider-authored High-Zalgo burst field/i);
+  assert.match(directive, /severe morphology collapse/i);
   assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
-  assert.match(directive, /compact specimen only as a physical-scale reference/i);
+  assert.match(directive, /horizontal-only scratch field/i);
+  assert.match(directive, /several distinct combining marks above AND several below the SAME grapheme/i);
+  assert.match(directive, /physical-scale reference/i);
   assert.match(directive, /dozens of heterogeneous marks/i);
-  assert.match(directive, /deep towers\/wells/i);
-  assert.match(directive, /local planar or oblique combining motion/i);
-  assert.match(directive, /mixed-axis clusters/i);
-  assert.match(directive, /Never spread one shallow accent across every capital/i);
-  assert.match(directive, /never turn a whole sentence into one continuous strike-through sheet/i);
+  assert.match(directive, /visibly invade the lines above and below/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(directive, /never count as Zalgo ornament/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
