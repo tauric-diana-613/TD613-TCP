@@ -47,7 +47,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
-  assert.match(contract, /light marks, medium clusters, and tall irregular eruptions/i);
+  assert.match(contract, /light marks, medium clusters, and genuinely deep eruptions/i);
   assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
   assert.match(contract, /Build that architecture FIRST/i);
   assert.match(contract, /Depth is mandatory/i);
@@ -365,7 +365,7 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
-    assert.match(instruction, /light marks, medium clusters, and tall irregular eruptions/i, model);
+    assert.match(instruction, /light marks, medium clusters, and genuinely deep eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
     assert.match(instruction, /Vertical architecture is the native body of High Zalgo/i, model);
     assert.match(instruction, /Horizontal geometry remains available only as accent and interruption/i, model);
@@ -687,6 +687,6 @@ test('structural repair repeats the vertical-scaffold law without authorizing lo
   assert.match(directive, /Build the vertical scaffold FIRST/i);
   assert.ok(directive.includes('literal ASCII /, \\, |, _, ='));
   assert.match(directive, /U\+0334–U\+0338 through-line marks/i);
-  assert.match(directive, /accent-only after the vertical scaffold is already visibly alive/i);
+  assert.match(directive, /accent-only after the deep vertical scaffold is already visibly alive/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
 });
