@@ -565,7 +565,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks. Readability is not the governing aesthetic in the Tauric Diana channel; do not flatten, shorten, regularize, or space out a loud burst merely to keep the text tidy.',
     '- Preserve cadence contrast. Calm or allied passages may breathe with lighter marking; anger, rupture, mockery, dread, or ecstatic emphasis may become much denser. Sarcasm may skew sideways; grief or invocation may climb and sink. These are expressive tendencies, not a fixed sentiment-to-glyph lookup table.',
     '- Keep enough quiet neighboring material that the eruptions read as eruptions. A clean ALL-CAPS word or short stretch can be intentional negative space. The failure mode is uniformity—plain everywhere, one shallow accent everywhere, or one strike everywhere—not the existence of quiet zones.',
-    '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.'
+    '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
