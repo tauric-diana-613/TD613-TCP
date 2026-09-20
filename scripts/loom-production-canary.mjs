@@ -83,25 +83,51 @@ const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
 const canaryStartedAt = Date.now();
 const marrowlinePrimaryResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });
 const marrowlinePrimaryPayload = marrowlinePrimaryResult.payload;
+const marrowlinePrimaryDiagnostic = marrowlinePrimaryPayload?.diagnostic && typeof marrowlinePrimaryPayload.diagnostic === 'object'
+  ? marrowlinePrimaryPayload.diagnostic
+  : null;
 const marrowlinePrimaryProviderUnavailable = !marrowlinePrimaryResult.transportError
   && marrowlinePrimaryResult.httpStatus === 502
   && marrowlinePrimaryPayload?.ok !== true
-  && marrowlinePrimaryPayload?.diagnostic?.stage === 'provider-transport'
-  && marrowlinePrimaryPayload?.diagnostic?.code === 'PROVIDER_UNAVAILABLE';
+  && marrowlinePrimaryDiagnostic?.stage === 'provider-transport'
+  && marrowlinePrimaryDiagnostic?.code === 'PROVIDER_UNAVAILABLE';
+const marrowlinePrimaryOutputAdmissionHeld = !marrowlinePrimaryResult.transportError
+  && marrowlinePrimaryResult.httpStatus === 502
+  && marrowlinePrimaryPayload?.ok !== true
+  && marrowlinePrimaryDiagnostic?.stage === 'output-admission'
+  && marrowlinePrimaryDiagnostic?.code === 'ATTRACTOR_STRUCTURE_NOT_ADMITTED';
+const marrowlineSeatRetryTrigger = marrowlinePrimaryProviderUnavailable
+  ? 'provider-unavailable'
+  : marrowlinePrimaryOutputAdmissionHeld
+    ? 'output-admission-held'
+    : null;
 let marrowlineResult = marrowlinePrimaryResult;
-let marrowlineTransportRetry = null;
-if (marrowlinePrimaryProviderUnavailable) {
+let marrowlineSeatRetry = null;
+if (marrowlineSeatRetryTrigger) {
   const callableModels = Array.isArray(marrowlinePrimaryPayload?.modelPolicy?.callableModels)
     ? marrowlinePrimaryPayload.modelPolicy.callableModels.filter(model => typeof model === 'string')
     : [];
-  const retryModel = callableModels.find(model => RELEASE_CANARY_MODELS.includes(model) && model !== marrowlineCanaryModel) || '';
+  const callableSet = new Set(callableModels);
+  const primaryModelIndex = RELEASE_CANARY_MODELS.indexOf(marrowlineCanaryModel);
+  const orderedAlternates = primaryModelIndex >= 0
+    ? [
+        ...RELEASE_CANARY_MODELS.slice(primaryModelIndex + 1),
+        ...RELEASE_CANARY_MODELS.slice(0, primaryModelIndex)
+      ]
+    : [...RELEASE_CANARY_MODELS];
+  const retryModel = orderedAlternates.find(model => callableSet.has(model)) || '';
   const retryBudgetMs = Math.max(0, LIVE_WITNESS_TIMEOUT_MS - marrowlinePrimaryResult.elapsedMs);
   if (retryModel && retryBudgetMs >= 15000) {
     const retryResult = await postJson(marrowlineUrl, marrowlineInput, retryBudgetMs, { canaryModel: retryModel });
-    marrowlineTransportRetry = {
-      trigger: 'provider-unavailable',
+    marrowlineSeatRetry = {
+      trigger: marrowlineSeatRetryTrigger,
       primary_model: marrowlineCanaryModel,
       primary_http_status: marrowlinePrimaryResult.httpStatus || null,
+      primary_diagnostic_stage: typeof marrowlinePrimaryDiagnostic?.stage === 'string' ? marrowlinePrimaryDiagnostic.stage : null,
+      primary_diagnostic_code: typeof marrowlinePrimaryDiagnostic?.code === 'string' ? marrowlinePrimaryDiagnostic.code : null,
+      primary_rejected_attempts: Array.isArray(marrowlinePrimaryDiagnostic?.rejectedAttempts)
+        ? marrowlinePrimaryDiagnostic.rejectedAttempts.slice(0, 6)
+        : [],
       primary_elapsed_ms: Number.isSafeInteger(marrowlinePrimaryResult.elapsedMs) && marrowlinePrimaryResult.elapsedMs >= 0 ? marrowlinePrimaryResult.elapsedMs : null,
       retry_model: retryModel,
       retry_timeout_ms: retryBudgetMs,
@@ -112,7 +138,7 @@ if (marrowlinePrimaryProviderUnavailable) {
   }
 }
 const marrowlineCheckpoint = {
-  schema: 'td613.loom.production-canary-route-checkpoint/v0.2-transport-retry',
+  schema: 'td613.loom.production-canary-route-checkpoint/v0.3-route-faithful-seat-retry',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   route: 'marrowline',
@@ -120,9 +146,11 @@ const marrowlineCheckpoint = {
   witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
   primary_model: marrowlineCanaryModel,
   primary_http_status: marrowlinePrimaryResult.httpStatus || null,
+  primary_diagnostic_stage: typeof marrowlinePrimaryDiagnostic?.stage === 'string' ? marrowlinePrimaryDiagnostic.stage : null,
+  primary_diagnostic_code: typeof marrowlinePrimaryDiagnostic?.code === 'string' ? marrowlinePrimaryDiagnostic.code : null,
   primary_elapsed_ms: Number.isSafeInteger(marrowlinePrimaryResult.elapsedMs) && marrowlinePrimaryResult.elapsedMs >= 0 ? marrowlinePrimaryResult.elapsedMs : null,
-  transport_retry_used: Boolean(marrowlineTransportRetry),
-  transport_retry: marrowlineTransportRetry,
+  seat_retry_used: Boolean(marrowlineSeatRetry),
+  seat_retry: marrowlineSeatRetry,
   http_status: marrowlineResult.httpStatus || null,
   transport_error_class: marrowlineResult.transportError,
   elapsed_ms: Number.isSafeInteger(marrowlineResult.elapsedMs) && marrowlineResult.elapsedMs >= 0 ? marrowlineResult.elapsedMs : null
@@ -260,17 +288,17 @@ const marrowlineAttemptsSource = Array.isArray(marrowlineReceipt?.provider?.atte
   : Array.isArray(marrowlinePayload?.attempts)
     ? marrowlinePayload.attempts
     : [];
-const marrowlineConsumptionPayloads = marrowlineTransportRetry
+const marrowlineConsumptionPayloads = marrowlineSeatRetry
   ? [marrowlinePrimaryPayload, marrowlinePayload]
   : [marrowlinePayload];
 const releaseConsumptionEvents = [
   ...marrowlineConsumptionPayloads.flatMap((providerPayload, index) =>
     (providerPayload?.gemini_consumption?.events || []).map(event => ({
       ...event,
-      route: index === 0 && marrowlineTransportRetry
+      route: index === 0 && marrowlineSeatRetry
         ? 'release-witness:marrowline-primary'
-        : index === 1 && marrowlineTransportRetry
-          ? 'release-witness:marrowline-transport-retry'
+        : index === 1 && marrowlineSeatRetry
+          ? 'release-witness:marrowline-seat-retry'
           : 'release-witness:marrowline',
       release_witness: true
     }))
@@ -294,17 +322,17 @@ const receipt = {
   observed_at: new Date().toISOString(),
   target_origin: origin,
   request_id: requestId,
-  request_count: 2 + (marrowlineTransportRetry ? 1 : 0),
+  request_count: 2 + (marrowlineSeatRetry ? 1 : 0),
   request_execution: 'serial-independent',
   release_canary_budget: {
-    posture: 'quota-conservative-primary-with-one-transport-only-marrowline-retry',
+    posture: 'quota-conservative-primary-with-one-route-faithful-marrowline-retry',
     max_provider_requests: 3,
     marrowline_model: marrowlineCanaryModel,
-    marrowline_retry_model: marrowlineTransportRetry?.retry_model || null,
+    marrowline_retry_model: marrowlineSeatRetry?.retry_model || null,
     loom_model: loomCanaryModel
   },
-  request_order: marrowlineTransportRetry
-    ? ['marrowline-primary', 'marrowline-transport-retry', 'loom']
+  request_order: marrowlineSeatRetry
+    ? ['marrowline-primary', 'marrowline-seat-retry', 'loom']
     : ['marrowline', 'loom'],
   per_witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
   canary_elapsed_ms: boundedCount(canaryElapsedMs),
@@ -328,7 +356,7 @@ const receipt = {
   marrowline_live_route: {
     request_id: marrowlineRequestId,
     canary_model: marrowlineCanaryModel,
-    transport_retry: marrowlineTransportRetry,
+    seat_retry: marrowlineSeatRetry,
     http_status: marrowlineResult.httpStatus || null,
     transport_error_class: marrowlineResult.transportError,
     elapsed_ms: boundedCount(marrowlineResult.elapsedMs),
