@@ -400,11 +400,6 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         && botsTelemetry.markedEligibleClusterCount >= 6
         && (
           botsTelemetry.verticalMarkedClusterCount < 2
-          || botsTelemetry.throughMarkedClusterCount < 2
-          || (
-            Math.max(botsTelemetry.verticalMarkedClusterCount, botsTelemetry.throughMarkedClusterCount) >= 8
-            && botsTelemetry.axisClusterBalanceRatio < 0.12
-          )
           || (
             horizontalMarkCount >= 18
             && horizontalMarkCount > verticalMarkCount
