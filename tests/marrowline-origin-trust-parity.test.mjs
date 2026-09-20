@@ -6,6 +6,7 @@ import {
   KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
   KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
   selectKhonapolitProviderModels,
+  selectKhonapolitProviderModelsFromPlan,
   allocateKhonapolitAttemptTimeout
 } from '../server/khonapolit-quality.js';
 import {
@@ -31,6 +32,27 @@ test('independent Marrowline provider routing is frontier-only with bounded 3.x 
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 40000, index: 3, modelCount: 5, fairShare: true }), 30000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 10000, index: 4, modelCount: 5, fairShare: true }), 10000);
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 1, fairShare: true }), 50000);
+});
+
+test('frontier custody keeps healthy seats ahead of cooling and soft-absent current seats', () => {
+  const eligible = Object.freeze({ eligible: true, reasons: Object.freeze([]) });
+  const absent = Object.freeze({ eligible: false, reasons: Object.freeze(['provider-absent']) });
+  const available = Object.freeze({ mayCall: true, state: 'available' });
+  const cooling = Object.freeze({ mayCall: false, state: 'cooling_down', retryAfterSeconds: 20 });
+  const current = Object.freeze({ lifecycle: 'current' });
+  const plan = {
+    callableModels: ['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'],
+    rows: [
+      { model: 'gemini-3.8-flash', eligibility: eligible, state: cooling, metadata: current },
+      { model: 'gemini-3.7-flash', eligibility: eligible, state: available, metadata: current },
+      { model: 'gemini-3.6-flash', eligibility: eligible, state: available, metadata: current },
+      { model: 'gemini-3.5-flash', eligibility: eligible, state: available, metadata: current },
+      { model: 'gemini-3-flash-preview', eligibility: absent, state: available, metadata: current }
+    ]
+  };
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan(plan), [
+    'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3.8-flash', 'gemini-3-flash-preview'
+  ], 'healthy observed seats run first; cooling and one-snapshot provider absence cannot erase the frontier');
 });
 
 test('blank Marrowline exposes an ordinary unissued task lane before advanced custody settings', () => {
