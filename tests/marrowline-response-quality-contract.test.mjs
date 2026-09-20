@@ -91,7 +91,7 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
 
-test('mechanically cloned dense stacks are held even when scalar Zalgo counters are high', () => {
+test('mechanically cloned dense stacks are admitted as PARTIAL quality telemetry instead of taking the route down', () => {
   const cloned = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const counterfeit = [
     'Kʰonapolit',
@@ -102,16 +102,18 @@ test('mechanically cloned dense stacks are held even when scalar Zalgo counters 
     `${cloned.repeat(12)} THE SAME STACK RETURNS ON EVERY BEAT!`,
     `${cloned.repeat(12)} THIS CLEARS THE OLD COUNTERS AND STILL SAYS NOTHING WITH THE MARKS!`
   ].join('\n');
-  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.ok(held.combiningMarkCount >= 96, 'fixture clears the old scalar mark floor');
-  assert.ok(held.denseVerticalClusterCount >= 8, 'fixture clears the old dense-cluster count');
-  assert.equal(held.uniqueDenseStackSignatureCount, 1);
-  assert.equal(held.dominantDenseStackRatio, 1);
-  assert.equal(held.admissible, false);
-  assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+  const observed = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(observed.combiningMarkCount >= 96, 'fixture clears the old scalar mark floor');
+  assert.ok(observed.denseVerticalClusterCount >= 8, 'fixture clears the old dense-cluster count');
+  assert.equal(observed.uniqueDenseStackSignatureCount, 1);
+  assert.equal(observed.dominantDenseStackRatio, 1);
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'), false);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
 });
 
-test('sparse keyword explosions are held even when legacy density counters pass', () => {
+test('sparse keyword explosions remain visible as PARTIAL quality telemetry', () => {
   const sparsePeak = `${STACK.repeat(3)}`;
   const counterfeit = [
     'Kʰonapolit',
@@ -122,16 +124,18 @@ test('sparse keyword explosions are held even when legacy density counters pass'
     `${sparsePeak} ANOTHER VERY LONG UNMARKED CLAUSE MAKES THE OLD COUNTERS LOOK HEALTHY WHILE THE FIELD IS EMPTY`,
     `${sparsePeak} THE THIRD LINE REPEATS THE SAME KEYWORD TARGETING FAILURE ACROSS A LARGE CLEAN PHRASE`
   ].join('\n');
-  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.ok(held.combiningMarkCount >= 96);
-  assert.ok(held.denseVerticalClusterCount >= 8);
-  assert.ok(held.denseMarkedLineCount >= 3);
-  assert.ok(held.markedGraphemeCoverageRatio < 0.28, 'fixture passes peak counters while leaving most graphemes inert');
-  assert.equal(held.admissible, false);
-  assert.ok(held.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  const observed = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(observed.combiningMarkCount >= 96);
+  assert.ok(observed.denseVerticalClusterCount >= 8);
+  assert.ok(observed.denseMarkedLineCount >= 3);
+  assert.ok(observed.markedGraphemeCoverageRatio < 0.28, 'fixture passes peak counters while leaving most graphemes inert');
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('reordering one mark set cannot counterfeit dense-stack heterogeneity', () => {
+test('reordering one mark set still records one mechanical composition without becoming a structural hold', () => {
   const a = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const b = 'A\u0318\u0317\u0316\u0302\u0301\u0300';
   const c = 'R\u0302\u0316\u0300\u0318\u0301\u0317';
@@ -145,12 +149,27 @@ test('reordering one mark set cannot counterfeit dense-stack heterogeneity', () 
     `${c.repeat(4)}${d.repeat(4)} CHANGE THE ORDER, KEEP THE COSTUME!`,
     `${b.repeat(4)}${a.repeat(4)} THIS MUST STILL COUNT AS ONE COMPOSITION!`
   ].join('\n');
-  const held = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.ok(held.combiningMarkCount >= 96);
-  assert.ok(held.denseVerticalClusterCount >= 8);
-  assert.equal(held.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
+  const observed = assessIntegratedTransmission(counterfeit, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(observed.combiningMarkCount >= 96);
+  assert.ok(observed.denseVerticalClusterCount >= 8);
+  assert.equal(observed.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+});
+
+test('zero provider-authored marks remain a hard Tauric Diana channel failure', () => {
+  const plain = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    'THE RAW CHANNEL ARRIVED COMPLETELY PLAIN.'
+  ].join('\n');
+  const held = assessIntegratedTransmission(plain, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(held.admissible, false);
-  assert.ok(held.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.equal(held.quality, 'HELD');
+  assert.ok(held.reasons.includes('tauric-diana-zalgo-absent'));
 });
 
 test('Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning', () => {
