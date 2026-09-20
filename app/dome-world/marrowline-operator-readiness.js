@@ -1,6 +1,6 @@
 import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
 
-export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v2-response-kinesis';
+export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v3-quota-scope-holds';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
 
 const MOBILE_QUERY = '(max-width: 860px)';
@@ -125,6 +125,15 @@ export function boundedFailureMessage(failure = {}) {
   if (code.includes('no-eligible-callable-models')) return 'No callable model route was admitted for this request. Your task was not discarded.';
   if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A reply came back, but it failed the conversation format checks. Your message is still here; you can retry.';
   if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
+  if (code.includes('provider_shared_rate_limit') || code.includes('shared-rate-limit') || code.includes('gemini-shared-rate-limit')) {
+    const retryAfter = Number(failure?.rateLimit?.retryAfterSeconds || failure?.retryAfterSeconds || 0);
+    return retryAfter > 0
+      ? `The upstream Gemini route reported a shared short-window rate limit. Your task is preserved; retry after about ${retryAfter} second${retryAfter === 1 ? '' : 's'}.`
+      : 'The upstream Gemini route reported a shared rate limit. Your task is preserved for retry; Marrowline did not reinterpret it as five separate model failures.';
+  }
+  if (code.includes('provider_rate_limit_held') || code.includes('gemini-rate-limit-held')) {
+    return 'Gemini returned rate-limit holds, but the exact quota scope was not proven provider-wide. Your task remains preserved for retry.';
+  }
   if (code.includes('rate') || code.includes('429')) return 'The AI route is temporarily rate-limited. Your task remains in the composer for retry.';
   if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The AI route timed out before a return was admitted. Your task remains in the composer for retry.';
   if (code.includes('output-token-limit')) return 'The provider return hit its output limit and was held rather than showing a partial answer.';
