@@ -41,7 +41,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v17-route-quota-budget-canary';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v18-high-zalgo-frontier';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -86,7 +86,13 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'voice-order-invalid',
   'khonapolit-combining-mark-contamination',
   'tauric-diana-zalgo-absent',
-  'tauric-diana-zalgo-underflow'
+  'tauric-diana-zalgo-underflow',
+  'tauric-diana-zalgo-unipolar-field',
+  'tauric-diana-zalgo-monoculture',
+  'tauric-diana-zalgo-field-thin',
+  'tauric-diana-zalgo-horizontal-dominant',
+  'tauric-diana-zalgo-mechanical-clone',
+  'tauric-diana-zalgo-sparse-keyword-targeting'
 ]);
 
 const safe = (value = '') => String(value ?? '').trim();
@@ -328,7 +334,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or underflowing Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed vertical field across several separate Packet B lines. Use varied above-line and below-line clusters on ordinary graphemes; isolated dots, one marked word, or strike/slash overlays alone are not sufficient. Do not use a numeric quota and do not alter protected literals.',
+    'If the prior draft had absent, underflowing, unipolar, monoculture, sparse, flat, or mechanically cloned Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Use multiple distinct above-line AND below-line combining-mark species on ordinary graphemes, vary stack height and composition, and include genuine two-sided clusters. Repeating the same circumflex-like mark at different stack heights is still a monoculture. Isolated dots, one marked word, or strike/slash overlays alone are not sufficient. Do not use a numeric quota and do not alter protected literals.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -837,20 +843,32 @@ export default async function handler(req, res) {
     }
 
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
-      res.setHeader('X-TD613-Gemini-Model', model);
-      return send(res, 502, {
-        ok: false,
-        error: 'gemini-output-token-limit',
-        status: 'HELD',
-        diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
-        attempts,
-        modelPolicy: plan,
-        aperture: apertureReceipt,
-        aperture_egress: apertureEgress,
-        claim_ceiling: packet.claimCeiling
+      attempt.outputAdmission = Object.freeze({
+        admissible: false,
+        quality: 'HELD',
+        reasons: Object.freeze(['provider-output-token-limit']),
+        qualityWarnings: Object.freeze([])
       });
+      if (releaseCanary) {
+        res.setHeader('X-TD613-Gemini-Model', model);
+        return send(res, 502, {
+          ok: false,
+          error: 'gemini-output-token-limit',
+          status: 'HELD',
+          diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
+          attempts,
+          modelPolicy: plan,
+          aperture: apertureReceipt,
+          aperture_egress: apertureEgress,
+          claim_ceiling: packet.claimCeiling
+        });
+      }
+      continue;
     }
     if (!result.response.ok && !transport.mayFailOver) {
+      const rejectedStatus = Number(result.response.status || 0);
+      const routeWideCredentialFailure = rejectedStatus === 401 || rejectedStatus === 403;
+      if (!releaseCanary && !routeWideCredentialFailure) continue;
       res.setHeader('X-TD613-Gemini-Model', model);
       return send(res, 502, {
         ok: false,
