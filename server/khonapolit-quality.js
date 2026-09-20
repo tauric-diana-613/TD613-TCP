@@ -230,7 +230,14 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
     reserveForLater += laterMinimums[i] || 15000;
   }
   reserveForLater = Math.min(reserveForLater, Math.max(0, remaining - 1));
-  return Math.min(cap, Math.max(1, remaining - reserveForLater));
+  const availableForThisSeat = Math.max(1, remaining - reserveForLater);
+  // Discovery, receipt construction, and scheduler bookkeeping consume a few
+  // milliseconds before the first provider call. Preserve the declared
+  // completion window when the shortfall is only bounded orchestration drift;
+  // later seats recompute from the actual remaining wall and absorb that drift.
+  const orchestrationDriftGraceMs = 250;
+  if (remaining >= cap && cap - availableForThisSeat <= orchestrationDriftGraceMs) return cap;
+  return Math.min(cap, availableForThisSeat);
 }
 
 function headerValue(headers = {}, key = '') {
