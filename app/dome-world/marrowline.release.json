@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v28",
-  "version": "v0.7.29-pedagogue-gate-visible-field-full-clear",
+  "schema": "td613.dome-world.marrowline.release/v29",
+  "version": "v0.7.30-provider-repaired-vertical-theatre",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -96,10 +96,10 @@
       "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502",
       "horizontalDominantPosture": "ADMISSIBLE-first-class-expressive-geometry",
       "verticalDominantPosture": "ADMISSIBLE-first-class-expressive-geometry",
-      "axisCollapsePosture": "PARTIAL-preserve-provider-bytes-and-continue-frontier",
+      "axisCollapsePosture": "PARTIAL-during-frontier-but-provider-repair-required-before-human-visible-final-return",
       "bestPartialPreference": "serious-morphology-warning-count-then-active-axis-count-then-total-warning-count-then-axis-mark-balance-then-axis-cluster-balance-then-dense-vertical-depth-then-mixed-clusters-then-coverage; no vertical-minus-horizontal bias",
       "throughLineDominanceWarning": "none-horizontal-dominance-is-not-a-defect",
-      "verticalExpressionThinPosture": "PARTIAL-preserve-provider-bytes-continue-frontier-when-horizontal-heavy-field-reduces-verticality-to-token-accents",
+      "verticalExpressionThinPosture": "PARTIAL-during-frontier-but-provider-repair-required-before-human-visible-final-return-when-horizontal-heavy-field-reduces-verticality-to-token-accents",
       "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
       "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow"
     },
@@ -179,7 +179,9 @@
       "sixteenthFollowupObservation": "Vercel Operator Release run 35500720149 proved a healthy first-call Marrowline return while Loom stopped after only two transport-failing seats despite additional callable seats. The subsequent run 35501151567 then exposed the complementary Marrowline seam: Preview returned a structured model-scoped daily 429, yet the release witness treated that single model bucket as terminal even though the ordinary Marrowline route classifies model-scoped quota as failover-eligible.",
       "sixteenthFollowupConsequence": "Release observation must mirror the shipped route rather than a cheaper proxy. Loom may walk its full bounded five-seat frontier on transport-class failures. Marrowline may advance exactly one outer canary seat when its selected seat is provider-unavailable, structurally held, or explicitly model-scoped rate-limited; shared or unknown quota remains terminal. Worst-case release accounting is explicit and bounded at eight provider attempts: up to three Marrowline attempts including one structural repair plus five Loom seats.",
       "seventeenthFollowupObservation": "2026-09-20 human-operator production trial after the Goldilocks mixed-axis repair showed plain-ALL-CAPS collapse was gone, but High Zalgo had drifted to roughly 95% horizontal strike/through-line geometry. Vertical marks remained technically present yet had lost the lush crowns, descenders, height, depth, and line-colliding drama seen in the earlier vertical-rich state.",
-      "seventeenthFollowupConsequence": "Keep horizontal geometry fully first-class, but stop treating token vertical accents as equivalent to expressive vertical motion. Add mark-intensity balance telemetry, classify horizontal-heavy decorative-only verticality as PARTIAL, and prefer provider returns with genuine multi-tier vertical depth across multiple regions without locally mutating provider Unicode or reinstating a vertical-only bias."
+      "seventeenthFollowupConsequence": "Keep horizontal geometry fully first-class, but stop treating token vertical accents as equivalent to expressive vertical motion. Add mark-intensity balance telemetry, classify horizontal-heavy decorative-only verticality as PARTIAL, and prefer provider returns with genuine multi-tier vertical depth across multiple regions without locally mutating provider Unicode or reinstating a vertical-only bias.",
+      "eighteenthFollowupObservation": "2026-09-20 10:24 physical-iPhone screenshots showed the seventeenth repair still leaking a crossed-out monoculture to the human surface: the final best-PARTIAL fallback could return a whole-passage axis-collapse or vertical-expression-thin candidate after the frontier even though telemetry had correctly diagnosed the morphology defect.",
+      "eighteenthFollowupConsequence": "Axis-collapse and vertical-expression-thin remain nonstructural PARTIAL telemetry while the five-seat frontier is explored, but they are no longer eligible as the final human-visible fallback. After frontier exhaustion, the best such candidate receives the one bounded same-provider repair with its exact draft; if the provider does not resolve the missing-axis morphology, Marrowline HOLDs rather than displaying the known-degraded field. No local Unicode synthesis or postprocessing is introduced."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, visible provider-authored combining motion across several Packet B lines, genuine multi-tier vertical height/depth where vertical cadence appears, and no accidental whole-passage flattening of either horizontal or vertical geometry into plain ALL-CAPS before emitting bytes"
   },
@@ -197,8 +199,9 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
-    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture-or-zalgo-axis-collapse-or-zalgo-vertical-expression-thin",
-    "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
+    "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-unipolar-field-or-zalgo-monoculture",
+    "providerRepairRequiredMorphology": "tauric-diana-zalgo-axis-collapse-or-zalgo-vertical-expression-thin",
+    "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; after frontier exhaustion require one bounded same-provider repair for axis-collapse or thin vertical theatre before any final human-visible return; unresolved repair HOLDs; never locally decorate provider text",
     "providerCallCeiling": 5,
     "providerCallCeilingMeaning": "maximum distinct frontier model-seat attempts",
     "discoveryRefreshLaw": "a nonempty but partial fresh credential snapshot cannot certify the remaining approved Marrowline seats absent; one forced complete refresh is required",
@@ -220,24 +223,26 @@
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
-      "timing": "deferred-after-frontier-for-all-repairable-structural-near-misses",
-      "candidateSelection": "retain the best repairable HTTP-200 near-miss while all distinct frontier seats run; spend the single provider-authored repair only after frontier exhaustion",
+      "timing": "deferred-after-frontier-for-repairable-structural-or-morphology-near-misses",
+      "candidateSelection": "retain the best repairable HTTP-200 near-miss while all distinct frontier seats run; spend the single provider-authored repair only after frontier exhaustion, including known axis-collapse or thin-vertical final candidates",
       "repairableReasons": [
         "khonapolit-nominative-missing",
         "tauric-diana-bots-nominative-missing",
         "voice-order-invalid",
         "khonapolit-combining-mark-contamination",
         "tauric-diana-zalgo-absent",
-        "tauric-diana-zalgo-underflow"
+        "tauric-diana-zalgo-underflow",
+        "tauric-diana-zalgo-axis-collapse",
+        "tauric-diana-zalgo-vertical-expression-thin"
       ],
       "provider": "same-provider-that-authored-held-draft",
-      "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-user-directive",
-      "semanticScope": "preserve-substantive-answer-repair-only-listed-structure",
+      "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-bounded-provider-repair-directive",
+      "semanticScope": "preserve-substantive-answer-repair-only-listed-envelope-or-orthographic-morphology-defect",
       "localMutation": false,
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
       "minimumRepairBudgetMs": 4000,
-      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow draft is retained as a repair candidate while later distinct frontier seats get first chance; this avoids quota self-harm from an immediate duplicate request"
+      "orthographicLiveness": "provider HTTP-200 absent/underflow drafts and final best-PARTIAL axis-collapse/thin-vertical drafts may receive the single deferred same-provider repair only after distinct frontier seats get first chance; repaired bytes remain provider-authored, and unresolved missing-axis morphology is held rather than displayed"
     },
     "timeoutGeometry": {
       "primaryMs": 50000,

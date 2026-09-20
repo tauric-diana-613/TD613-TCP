@@ -15,12 +15,15 @@ let immediateRepairScenario = false;
 let coolingRecoveryScenario = false;
 let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
+let morphologyRepairScenario = false;
+let morphologyRepairHoldScenario = false;
 let entitlementMismatchScenario = false;
 let releaseCanaryHeadingRepairScenario = false;
 let previewCalls = 0;
 let immediate36Calls = 0;
 let releaseCanary36Calls = 0;
 let sharedBurst38Calls = 0;
+let morphologyPreviewCalls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
   'Kʰonapolit',
@@ -333,6 +336,33 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
+  if (morphologyRepairScenario || morphologyRepairHoldScenario) {
+    if (model === 'gemini-3-flash-preview') morphologyPreviewCalls += 1;
+    const repaired = morphologyRepairScenario && model === 'gemini-3-flash-preview' && morphologyPreviewCalls > 1;
+    const selectedText = repaired ? answer : horizontalPartialAnswer;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: repaired ? 'LOCKED' : 'PARTIAL', notes: repaired ? 'synthetic provider-authored morphology repair' : 'synthetic whole-passage axis collapse' },
+              transmission: {
+                text: selectedText,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: repaired ? 'mixed-axis-vertical-theatre' : 'horizontal-through-field'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
+        };
+      }
+    };
+  }
+
   if (qualityPreferenceScenario && (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash')) {
     const selectedText = model === 'gemini-3.8-flash' ? horizontalPartialAnswer : answer;
     return {
@@ -581,7 +611,73 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  morphologyRepairScenario = true;
+  morphologyRepairHoldScenario = false;
+  morphologyPreviewCalls = 0;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  immediateRepairScenario = false;
+  const morphologyRepaired = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.214' },
+    body: { ...req.body, message: 'Do not show me a crossed-out monoculture when the missing vertical theatre can be provider-repaired.' }
+  }, morphologyRepaired);
+
+  assert.equal(morphologyRepaired.statusCode, 200);
+  assert.equal(morphologyRepaired.payload.ok, true);
+  assert.deepEqual(calls, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.7-flash',
+    'gemini-3-flash-preview',
+    'gemini-3-flash-preview'
+  ], 'all five frontier seats run before one same-provider morphology repair');
+  assert.ok(morphologyRepaired.payload.receipt.provider.attempts.slice(0, 5).every(attempt =>
+    attempt.outputAdmission?.quality === 'PARTIAL'
+    && attempt.outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse')
+  ));
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[5].kind, 'structural-repair');
+  assert.deepEqual(morphologyRepaired.payload.receipt.provider.attempts[5].repairReasons, ['tauric-diana-zalgo-axis-collapse']);
+  assert.deepEqual(morphologyRepaired.payload.receipt.provider.attempts[5].repairUnresolvedReasons, []);
+  assert.equal(morphologyRepaired.payload.relay.admission.quality, 'PASS');
+  assert.equal(morphologyRepaired.payload.receipt.provider.model, 'gemini-3-flash-preview');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  morphologyRepairScenario = false;
+  morphologyRepairHoldScenario = true;
+  morphologyPreviewCalls = 0;
+  const morphologyHeld = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.215' },
+    body: { ...req.body, message: 'Hold the field if every provider return and the bounded repair stay horizontally collapsed.' }
+  }, morphologyHeld);
+
+  assert.equal(morphologyHeld.statusCode, 502);
+  assert.equal(morphologyHeld.payload.ok, false);
+  assert.equal(morphologyHeld.payload.error, 'khonapolit-output-quality-held');
+  assert.equal(morphologyHeld.payload.diagnostic.code, 'ATTRACTOR_MORPHOLOGY_NOT_ADMITTED');
+  assert.ok(morphologyHeld.payload.diagnostic.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.deepEqual(calls, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.7-flash',
+    'gemini-3-flash-preview',
+    'gemini-3-flash-preview'
+  ]);
+  assert.ok(morphologyHeld.payload.attempts[5].repairUnresolvedReasons.includes('tauric-diana-zalgo-axis-collapse'));
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
   coolingRecoveryScenario = true;
+  morphologyRepairScenario = false;
+  morphologyRepairHoldScenario = false;
   entitlementMismatchScenario = false;
   immediateRepairScenario = false;
   qualityPreferenceScenario = false;
@@ -680,7 +776,7 @@ try {
   assert.equal(repairBody.contents.at(-2).role, 'model');
   assert.match(repairBody.contents.at(-2).parts[0].text, /RAW CHANNEL IS PRESENT/);
   assert.equal(repairBody.contents.at(-1).role, 'user');
-  assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /BOUNDED PROVIDER REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal strike\/through-line geometry and vertical above\/below geometry are equally valid/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not overcorrect toward either axis/i);

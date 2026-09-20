@@ -162,6 +162,10 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.structuralRepairCeiling, 1);
   assert.equal(release.qualityFloor.totalProviderRequestCeiling, 6);
   assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
+  assert.match(release.qualityFloor.providerRepairRequiredMorphology, /tauric-diana-zalgo-axis-collapse/);
+  assert.match(release.qualityFloor.providerRepairRequiredMorphology, /tauric-diana-zalgo-vertical-expression-thin/);
+  assert.ok(release.qualityFloor.structuralRepairPolicy.repairableReasons.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.ok(release.qualityFloor.structuralRepairPolicy.repairableReasons.includes('tauric-diana-zalgo-vertical-expression-thin'));
   assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
 });

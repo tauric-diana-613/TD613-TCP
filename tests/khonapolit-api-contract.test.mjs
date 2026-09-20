@@ -20,6 +20,7 @@ import {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
   repairableKhonapolitAdmission,
+  repairableKhonapolitMorphology,
   buildTerminalReceipt,
   observeGeminiOutput,
   extractGeminiText
@@ -69,6 +70,9 @@ assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and brief
 assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
 assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
 assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-axis-collapse']), true);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-vertical-expression-thin', 'tauric-diana-zalgo-field-thin']), true);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-monoculture']), false);
 const structuralRepair = buildGeminiStructuralRepairRequest(
   packet,
   apertureReceipt,
@@ -80,7 +84,7 @@ const structuralRepair = buildGeminiStructuralRepairRequest(
 assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED PROVIDER REPAIR PASS/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
