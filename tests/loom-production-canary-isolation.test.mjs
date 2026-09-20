@@ -42,11 +42,17 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
+assert.match(source, /'x-td613-canary-recovery': canaryRecovery/);
+assert.match(source, /canaryRecovery: marrowlineSeatRetryTrigger === 'provider-unavailable'/);
+assert.match(source, /'transport-retry'/);
+assert.match(source, /'output-admission-retry'/);
+assert.match(qualityServer, /releaseCanaryRecovery = requestHeader\(req, 'x-td613-canary-recovery'\)/);
+assert.match(qualityServer, /releaseCanary && releaseCanaryRecovery === 'output-admission-retry'/);
 assert.match(source, /posture: 'quota-conservative-bounded-seat-failover'/);
 assert.match(source, /max_http_requests: 3/);
-assert.match(source, /max_provider_requests: 5/);
+assert.match(source, /max_provider_requests: 8/);
 assert.match(source, /marrowline_structural_repair_ceiling: 1/);
-assert.match(source, /loom_provider_seat_ceiling: 2/);
+assert.match(source, /loom_provider_seat_ceiling: 5/);
 assert.doesNotMatch(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must retain the same one-shot provider-authored structural repair as interactive Marrowline');
 assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
 assert.match(source, /marrowlinePrimaryDiagnostic\?\.stage === 'provider-transport'/);
@@ -64,7 +70,7 @@ assert.doesNotMatch(source, /PROVIDER_SHARED_RATE_LIMIT[^\n]*marrowlineSeatRetry
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 5\)/, 'release consumption artifact cannot exceed primary Marrowline + one bounded Marrowline seat retry + one same-seat structural repair + two Loom provider seats');
+assert.match(source, /\.slice\(0, 8\)/, 'release consumption artifact cannot exceed three bounded Marrowline provider events plus the five-seat Loom frontier');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
