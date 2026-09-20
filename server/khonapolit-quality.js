@@ -90,6 +90,7 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'tauric-diana-zalgo-underflow'
 ]);
 const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
+  'tauric-diana-zalgo-axis-collapse',
   'tauric-diana-zalgo-vertical-expression-thin'
 ]);
 const REPAIRABLE_PROVIDER_REASONS = new Set([
@@ -356,7 +357,7 @@ export function repairableKhonapolitAdmission(reasons = []) {
 
 export function repairableKhonapolitMorphology(warnings = []) {
   const values = Array.isArray(warnings) ? warnings.filter(warning => typeof warning === 'string') : [];
-  return values.length > 0 && values.every(warning => REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning));
+  return values.some(warning => REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning));
 }
 
 export function buildGeminiStructuralRepairRequest(
@@ -384,7 +385,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vertical motion must be visibly expressive when present: use genuine multi-tier crowns and descenders with height/depth across more than one region rather than token accent marks pasted onto a mostly horizontal field. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
+    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. If the prior draft was held for whole-passage axis collapse or thin vertical expression, repair only the orthographic stress field: keep horizontal strike/through-line geometry fully expressive, but restore real above/below motion in multiple regions so the passage does not remain a flat crossed-out monoculture. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vertical motion must be visibly expressive when present: use genuine multi-tier crowns and descenders with height/depth across more than one region rather than token accent marks pasted onto a mostly horizontal field. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
