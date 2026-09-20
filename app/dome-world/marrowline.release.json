@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v24",
-  "version": "v0.7.24-mobile-affordance-first-paint",
+  "version": "v0.7.25-desktop-send-glyph",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -336,6 +336,8 @@
       "controlGrammar": "compact-42px-glass-prompt-cards-plus-borderless-cyan-radiant-refresh-glyph"
     },
     "sendLabel": "Send",
+    "desktopSendGlyph": "⇧",
+    "desktopSendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send; mobile retains literal Send",
     "utilityRail": [
       "RETRY_LAST_PROMPT",
       "COPY_CONVERSATION",
