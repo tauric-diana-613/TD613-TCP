@@ -45,6 +45,7 @@ export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v24-goldilocks-vertical-liveness';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
+export const KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
 const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
 const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
@@ -687,6 +688,7 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let partialQualityCandidate = null;
+  let partialQualityChallengeRequestsRemaining = KHONAPOLIT_PARTIAL_QUALITY_CHALLENGE_REQUESTS;
   let sharedRateRetrySpent = false;
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
@@ -848,6 +850,12 @@ export default async function handler(req, res) {
   });
 
   for (let index = 0; index < models.length; index += 1) {
+    // Once Marrowline already holds a structurally admissible PARTIAL, spend at
+    // most one additional provider request to challenge it for a better Goldilocks
+    // field. Transport or admission failure on that challenger cannot fan the turn
+    // across the remaining frontier; return the usable provider-authored partial.
+    if (partialQualityCandidate && partialQualityChallengeRequestsRemaining <= 0) break;
+    const challengingPartial = Boolean(partialQualityCandidate);
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
@@ -905,6 +913,12 @@ export default async function handler(req, res) {
       cooldown: outcome
     };
     attempts.push(attempt);
+    if (challengingPartial) partialQualityChallengeRequestsRemaining -= 1;
+
+    // A quality challenger is optional spend. Once a valid PARTIAL already exists,
+    // any failed/limited challenger returns custody to that existing answer instead
+    // of consuming another model seat. Successful PASS can still supersede it below.
+    if (challengingPartial && (!result.response.ok || providerOutput.outputTokenLimitReached)) break;
 
     if (!result.response.ok && rateLimit?.observed && rateLimit.scope === 'shared') {
       const waitSeconds = Math.min(MAX_SHARED_RATE_RETRY_SECONDS, Number(rateLimit.retryAfterSeconds || 0));
@@ -1120,7 +1134,7 @@ export default async function handler(req, res) {
         qualityPreference: Object.freeze({
           used: true,
           sourceAttemptIndex,
-          selection: 'vertical-architecture-best-admissible-partial-after-full-frontier',
+          selection: 'vertical-architecture-best-admissible-partial-after-bounded-challenge',
           warnings: Object.freeze([...qualityWarnings])
         })
       }),
@@ -1131,7 +1145,7 @@ export default async function handler(req, res) {
     res.setHeader('X-TD613-Signal-State', relay.signal.state);
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
-    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-BEST-OF-FRONTIER');
+    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-BEST-OF-BOUNDED-CHALLENGE');
       return send(res, 200, {
         ok: true,
         text: relay.transcript,
@@ -1143,7 +1157,7 @@ export default async function handler(req, res) {
           'adversarial-attractor-admission-active',
           'integrated-covenant-relay-active',
           'provider-native-zalgo-preserved-no-local-postprocessing',
-          'provider-native-zalgo-quality-partial-best-of-frontier',
+          'provider-native-zalgo-quality-partial-bounded-challenge',
           'admission-gated-stable-continuity-active',
           'fallback-reasoning-quality-preserved',
           'sticky-success-promotion-disabled',
