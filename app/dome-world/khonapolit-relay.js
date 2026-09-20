@@ -235,9 +235,9 @@ function flourishTelemetry(text = '') {
   const uppercaseAscii = value.match(/[A-Z]/g) || [];
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
   const eligibleClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base));
-  const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0).length;
-  const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.below > 0).length;
-  const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0 && cluster.below > 0).length;
+  const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0).length;
+  const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalBelow > 0).length;
+  const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0 && cluster.verticalBelow > 0).length;
   const stackHeightDiversity = new Set(expressiveClusters.map((cluster) => cluster.marks)).size;
   const markFrequency = new Map();
   for (const run of runs) {
@@ -251,6 +251,8 @@ function flourishTelemetry(text = '') {
   const throughLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.through, 0);
   const planarMarkCount = clusters.reduce((sum, cluster) => sum + cluster.planar, 0);
   const verticalOrnamentMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalOrnament, 0);
+  const verticalAboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalAbove, 0);
+  const verticalBelowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalBelow, 0);
   const verticalMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalOrnament > 0).length;
   const throughMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0).length;
   const mixedAxisClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0 && cluster.verticalOrnament > 0).length;
@@ -259,13 +261,13 @@ function flourishTelemetry(text = '') {
   const axisClusterBalanceRatio = axisClusterMaximum
     ? Math.min(verticalMarkedClusterCount, throughMarkedClusterCount) / axisClusterMaximum
     : 0;
-  const verticalMaximum = Math.max(aboveLineMarkCount, belowLineMarkCount);
+  const verticalMaximum = Math.max(verticalAboveLineMarkCount, verticalBelowLineMarkCount);
   const verticalZoneBalanceRatio = verticalMaximum
-    ? Math.min(aboveLineMarkCount, belowLineMarkCount) / verticalMaximum
+    ? Math.min(verticalAboveLineMarkCount, verticalBelowLineMarkCount) / verticalMaximum
     : 0;
-  const axisMarkMaximum = Math.max(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount);
+  const axisMarkMaximum = Math.max(verticalOrnamentMarkCount, planarMarkCount);
   const axisMarkBalanceRatio = axisMarkMaximum
-    ? Math.min(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount) / axisMarkMaximum
+    ? Math.min(verticalOrnamentMarkCount, planarMarkCount) / axisMarkMaximum
     : 0;
   return Object.freeze({
     combiningMarkCount,
@@ -293,6 +295,8 @@ function flourishTelemetry(text = '') {
     aboveLineMarkCount,
     belowLineMarkCount,
     throughLineMarkCount,
+    verticalAboveLineMarkCount,
+    verticalBelowLineMarkCount,
     verticalMarkedClusterCount,
     throughMarkedClusterCount,
     mixedAxisClusterCount,
