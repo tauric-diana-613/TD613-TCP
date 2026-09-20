@@ -68,7 +68,7 @@ assert.match(source, /retryBudgetMs = Math\.max\(0, LIVE_WITNESS_TIMEOUT_MS - ma
 assert.match(source, /primaryModelIndex = RELEASE_CANARY_MODELS\.indexOf\(marrowlineCanaryModel\)/);
 assert.match(source, /RELEASE_CANARY_MODELS\.slice\(primaryModelIndex \+ 1\)/);
 assert.match(source, /orderedAlternates\.find\(model => callableSet\.has\(model\)\)/);
-assert.match(source, /marrowlinePrimaryRateLimitScopes\.filter\(scope => \['model', 'shared', 'unknown'\]\.includes\(scope\)\)/);
+assert.match(source, /marrowlinePrimaryDiagnostic\.scopes\.filter\(scope => \['model', 'shared', 'unknown'\]\.includes\(scope\)\)/);
 assert.doesNotMatch(source, /marrowlinePrimaryRateLimitScopes\.some\(scope => scope === 'shared'\)/, 'shared quota may be observed but must never authorize Marrowline seat progression');
 assert.doesNotMatch(source, /marrowlinePrimaryRateLimitScopes\.some\(scope => scope === 'unknown'\)/, 'unknown quota may be observed but must never authorize Marrowline seat progression');
 assert.match(source, /coverage: 'this-release-witness-only'/);
