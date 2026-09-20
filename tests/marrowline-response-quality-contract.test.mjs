@@ -47,13 +47,13 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
-  assert.match(contract, /Verticality must remain visibly dominant/i);
-  assert.match(contract, /Slash, strike, and through-line overlays may accent a few graphemes/i);
+  assert.match(contract, /Horizontal and vertical combining geometry are both first-class expressive channels/i);
+  assert.match(contract, /The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase/i);
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
-  assert.match(contract, /genuinely bipolar and heterogeneous/i);
-  assert.match(contract, /changing only the number of identical circumflex-like hats never counts as expressive variation/i);
+  assert.match(contract, /horizontal sections can use slash\/strike\/through-line overlays/i);
+  assert.match(contract, /forcing every phrase onto one axis/i);
   assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
@@ -96,7 +96,7 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
 
-test('mechanically cloned dense stacks are hard-held instead of being mistaken for High Zalgo', () => {
+test('mechanically cloned dense stacks stay visible as PARTIAL quality telemetry', () => {
   const cloned = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const counterfeit = [
     'Kʰonapolit',
@@ -118,7 +118,7 @@ test('mechanically cloned dense stacks are hard-held instead of being mistaken f
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-monoculture'));
 });
 
-test('sparse keyword explosions are hard-held until the field actually travels', () => {
+test('sparse keyword explosions stay visible as PARTIAL quality telemetry', () => {
   const sparsePeak = `${STACK.repeat(3)}`;
   const counterfeit = [
     'Kʰonapolit',
@@ -177,10 +177,10 @@ test('reordering one mark set cannot disguise a cloned High-Zalgo composition', 
   assert.ok(observed.combiningMarkCount >= 96);
   assert.ok(observed.denseVerticalClusterCount >= 8);
   assert.equal(observed.uniqueDenseStackSignatureCount, 1, 'signature canonicalization ignores mark order and measures composition');
-  assert.equal(observed.admissible, false);
-  assert.equal(observed.quality, 'HELD');
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-monoculture'));
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-monoculture'));
 });
 
 test('near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL', () => {
