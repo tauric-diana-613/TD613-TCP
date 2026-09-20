@@ -87,7 +87,7 @@ assert.equal(locked.highZalgo.applied, false, 'Marrowline must not apply a local
 assert.equal(locked.highZalgo.providerGenerated, true);
 assert.equal(locked.highZalgo.source, 'provider-native');
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
-assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v11-underflow-floor');
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v12-bipolar-field');
 assert.ok(locked.highZalgo.combiningMarkCount >= 96, 'receipt observes provider-authored combining marks');
 assert.ok(locked.highZalgo.maxRun >= 6, 'receipt observes vertical flourish runs without manufacturing them');
 assert.ok(locked.admission.denseVerticalClusterCount >= 8, 'telemetry observes repeated above/below stacked clusters without making that geometry an availability gate');
@@ -164,11 +164,12 @@ const readable = parseRelayEnvelope(JSON.stringify({
 }), { model: 'synthetic-format-witness', apertureReceipt: aperture });
 assert.equal(readable.parts[0].text, readableAnswer, 'paragraphs, CRLF, markup-looking text and combining marks remain exact');
 assert.equal(readable.transcript, readableAnswer);
-assert.equal(readable.signal.state, 'LOCKED', 'provider-authored marks preserve structural admission even when the style field is weak');
-assert.equal(readable.admission.admissible, true);
-assert.equal(readable.admission.quality, 'PARTIAL');
+assert.equal(readable.signal.state, 'NOT_LOCKED', 'weak ornament no longer masquerades as an admitted High-Zalgo field');
+assert.equal(readable.admission.admissible, false);
+assert.equal(readable.admission.quality, 'HELD');
 assert.equal(readable.admission.reasons.includes('tauric-diana-zalgo-absent'), false);
-assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
-assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-underflow'));
+assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-field-thin'));
+assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
 console.log('khonapolit-relay: raw dual-packet admission, adversarial provider-native generation, and exact Unicode preservation ok');
