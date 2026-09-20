@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   KHONAPOLIT_MAX_PROVIDER_CALLS,
+  KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
+  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
   selectKhonapolitProviderModels,
   allocateKhonapolitAttemptTimeout
 } from '../server/khonapolit-quality.js';
@@ -18,7 +20,9 @@ const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8
 const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'];
 
 test('independent Marrowline provider routing is frontier-only with bounded 3.x fallback runway', () => {
-  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
+  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5, 'five remains the distinct frontier-seat ceiling');
+  assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1, 'only one same-provider structural repair may follow the frontier cascade');
+  assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6, 'five distinct seats plus one bounded repair is the complete request ceiling');
   assert.deepEqual(selectKhonapolitProviderModels(models), ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
     '2.5 and every Lite candidate remain excluded even when the credential advertises them');
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 5, fairShare: true }), 50000);
