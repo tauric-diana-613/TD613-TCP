@@ -4,7 +4,7 @@ import handler, {
   KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
   KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
 } from '../server/khonapolit-quality.js';
-import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { clearGeminiModelState, recordGeminiModelOutcome } from '../server/gemini-model-policy.js';
 
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
@@ -12,6 +12,7 @@ const calls = [];
 const requestBodies = [];
 let repairScenario = false;
 let immediateRepairScenario = false;
+let coolingRecoveryScenario = false;
 let qualityPreferenceScenario = false;
 let previewCalls = 0;
 let immediate36Calls = 0;
@@ -77,6 +78,41 @@ globalThis.fetch = async (url, options = {}) => {
   const model = value.match(/models\/([^:]+):(?:streamGenerateContent|generateContent)/)?.[1] || 'unknown';
   calls.push(model);
   requestBodies.push(JSON.parse(options.body || '{}'));
+  if (coolingRecoveryScenario) {
+    if (model === 'gemini-3.8-flash') {
+      return {
+        ok: false,
+        status: 429,
+        headers: { get: () => '1' },
+        async json() { return { error: { status: 'RESOURCE_EXHAUSTED', message: 'synthetic fresh-seat rate limit' } }; }
+      };
+    }
+    if (model === 'gemini-3.5-flash') {
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => null },
+        async json() {
+          return {
+            candidates: [{
+              finishReason: 'STOP',
+              content: { parts: [{ text: JSON.stringify({
+                signal: { state: 'LOCKED', notes: 'synthetic cooled-seat recovery' },
+                transmission: {
+                  text: answer,
+                  voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                  flourishMode: 'vertical-stack'
+                }
+              }) }] }
+            }],
+            usageMetadata: { promptTokenCount: 800, candidatesTokenCount: 1200, thoughtsTokenCount: 150, totalTokenCount: 2150 }
+          };
+        }
+      };
+    }
+    throw new Error(`soft-cooldown recovery should reach cooled 3.5 before later seats: ${model}`);
+  }
+
   if (immediateRepairScenario) {
     if (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash') {
       return {
@@ -238,6 +274,37 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  coolingRecoveryScenario = true;
+  immediateRepairScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  previewCalls = 0;
+  immediate36Calls = 0;
+  const coolingAt = Date.now();
+  for (const model of ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
+    recordGeminiModelOutcome(model, { ok: false, status: 429, retryAfterSeconds: 120 }, coolingAt);
+  }
+  const cooled = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.209' },
+    body: { ...req.body, message: 'A new human turn must retain provider-listed cooling seats as bounded fallbacks.' }
+  }, cooled);
+
+  assert.equal(cooled.statusCode, 200);
+  assert.equal(cooled.payload.ok, true);
+  assert.deepEqual(calls, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash'
+  ], 'soft process-local cooldown must demote, not erase, provider-listed Marrowline seats');
+  assert.ok(cooled.payload.receipt.provider.attempts[0].cooldown?.state === 'cooling_down');
+  assert.equal(cooled.payload.receipt.provider.model, 'gemini-3.5-flash');
+  assert.equal(cooled.payload.relay.admission.admissible, true);
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  coolingRecoveryScenario = false;
   immediateRepairScenario = true;
   qualityPreferenceScenario = false;
   repairScenario = false;
