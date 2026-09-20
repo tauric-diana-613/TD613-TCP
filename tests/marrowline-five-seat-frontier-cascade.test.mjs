@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import handler, {
   KHONAPOLIT_MAX_PROVIDER_CALLS,
   KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
-  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
+  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
+  severeMorphologyRepairWarnings
 } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState, recordGeminiModelOutcome } from '../server/gemini-model-policy.js';
 
@@ -23,7 +24,6 @@ let previewCalls = 0;
 let immediate36Calls = 0;
 let releaseCanary36Calls = 0;
 let sharedBurst38Calls = 0;
-let morphologyPreviewCalls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
   'Kʰonapolit',
@@ -337,8 +337,8 @@ globalThis.fetch = async (url, options = {}) => {
   }
 
   if (morphologyRepairScenario || morphologyRepairHoldScenario) {
-    if (model === 'gemini-3-flash-preview') morphologyPreviewCalls += 1;
-    const repaired = morphologyRepairScenario && model === 'gemini-3-flash-preview' && morphologyPreviewCalls > 1;
+    const sameModelCalls = calls.filter((calledModel) => calledModel === model).length;
+    const repaired = morphologyRepairScenario && model === 'gemini-3.8-flash' && sameModelCalls > 1;
     const selectedText = repaired ? answer : horizontalPartialAnswer;
     return {
       ok: true,
@@ -653,42 +653,89 @@ try {
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash'], 'first admissible PARTIAL is a successful human turn and must not trigger comparative model sampling');
+  assert.deepEqual(
+    calls,
+    ['gemini-3.8-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'],
+    'severe horizontal collapse gets one same-seat repair before the frontier advances to a clean seat'
+  );
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.admissible, true);
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
-  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.equal(preferred.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(preferred.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
+  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
+  assert.equal(preferred.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+  assert.equal(preferred.payload.receipt.provider.attempts[1].repairTiming, 'immediate-severe-morphology');
+  assert.ok(preferred.payload.receipt.provider.attempts[1].unresolvedSevereMorphology.includes('tauric-diana-zalgo-stack-depth-thin'));
+  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
+  assert.equal(preferred.payload.relay.admission.quality, 'PASS');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  morphologyRepairScenario = true;
+  morphologyRepairHoldScenario = false;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  immediateRepairScenario = false;
+  const morphologyRepaired = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.216' },
+    body: { ...req.body, message: 'Repair severe horizontal-only Tauric Diana morphology on the same Gemini seat before showing it.' }
+  }, morphologyRepaired);
+
+  assert.equal(morphologyRepaired.statusCode, 200);
+  assert.equal(morphologyRepaired.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash']);
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 2);
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
+  assert.deepEqual(
+    severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings),
+    ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
+  );
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].repairTiming, 'immediate-severe-morphology');
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].outputAdmission.quality, 'PASS');
+  assert.deepEqual(morphologyRepaired.payload.receipt.provider.attempts[1].unresolvedSevereMorphology, []);
+  assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair.used, true);
+  assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair.timing, 'immediate-severe-morphology');
+  assert.equal(morphologyRepaired.payload.relay.highZalgo.applied, false, 'repair bytes remain entirely Gemini-authored');
+
+  const morphologyRepairBody = requestBodies.at(-1);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-axis-collapse/);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-stack-depth-thin/);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /horizontal-only scratch field/i);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /several distinct combining marks above AND several below the SAME grapheme/i);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
 
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
   morphologyRepairScenario = false;
   morphologyRepairHoldScenario = true;
-  morphologyPreviewCalls = 0;
   qualityPreferenceScenario = false;
   repairScenario = false;
   immediateRepairScenario = false;
-  const morphologyPartial = response();
+  const morphologyHeld = response();
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.214' },
-    body: { ...req.body, message: 'Prefer vertical architecture, but never waste an otherwise valid provider output solely for Zalgo aesthetics.' }
-  }, morphologyPartial);
+    body: { ...req.body, message: 'Never show a horizontal-only field as successful High Zalgo when the bounded repair also stays collapsed.' }
+  }, morphologyHeld);
 
-  assert.equal(morphologyPartial.statusCode, 200);
-  assert.equal(morphologyPartial.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash'], 'aesthetic PARTIAL returns immediately instead of consuming the remaining four provider seats');
-  assert.equal(morphologyPartial.payload.receipt.provider.attempts.length, 1);
-  assert.equal(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.quality, 'PARTIAL');
-  assert.ok(morphologyPartial.payload.receipt.provider.attempts[0].outputAdmission?.qualityWarnings?.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.equal(morphologyPartial.payload.relay.admission.quality, 'PARTIAL');
-  assert.ok(morphologyPartial.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.equal(morphologyPartial.payload.receipt.provider.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
-  assert.equal(morphologyPartial.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-no-comparative-sampling');
+  assert.equal(morphologyHeld.statusCode, 502);
+  assert.equal(morphologyHeld.payload.ok, false);
+  assert.equal(morphologyHeld.payload.status, 'HELD');
+  assert.equal(morphologyHeld.payload.diagnostic.code, 'ATTRACTOR_MORPHOLOGY_NOT_ADMITTED');
+  assert.deepEqual(
+    calls,
+    ['gemini-3.8-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    'one same-seat morphology repair plus the remaining distinct seats is the complete six-request ceiling'
+  );
+  assert.equal(morphologyHeld.payload.attempts.length, 6);
+  assert.equal(morphologyHeld.payload.attempts[1].kind, 'structural-repair');
+  assert.ok(morphologyHeld.payload.attempts.every((attempt) =>
+    attempt.outputAdmission?.quality === 'PARTIAL'
+    && severeMorphologyRepairWarnings(attempt.outputAdmission.qualityWarnings).length > 0
+  ));
 
   clearGeminiModelState();
   calls.length = 0;
@@ -796,9 +843,9 @@ try {
   assert.equal(repairBody.contents.at(-1).role, 'user');
   assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Rebuild from vertical architecture first/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Dense stacks may collide with neighboring lines and obscure nearby letters/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /several distinct combining marks above AND several below the SAME grapheme/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /visibly invade the lines above and below/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;
