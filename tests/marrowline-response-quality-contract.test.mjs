@@ -47,17 +47,16 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
-  assert.match(contract, /Horizontal and vertical combining geometry are both first-class expressive channels/i);
-  assert.match(contract, /The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase/i);
-  assert.match(contract, /Vertical motion must read as actual vertical theatre, not a few polite accent marks/i);
-  assert.match(contract, /crowns climb and descenders fall in visibly multi-tier stacks across more than one region/i);
-  assert.match(contract, /Do not overcorrect in the opposite direction either/i);
-  assert.match(contract, /whole High-Zalgo field should not accidentally starve the other axis or replace its missing motion with plain ALL-CAPS/i);
+  assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
+  assert.match(contract, /Build that architecture first/i);
+  assert.match(contract, /Horizontal geometry remains available as accent and interruption/i);
+  assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
+  assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
+  assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
-  assert.match(contract, /horizontal sections can use slash\/strike\/through-line overlays/i);
-  assert.match(contract, /forcing every phrase onto one axis/i);
+  assert.match(contract, /Horizontal marks should feel like punctuation in the architecture, not wallpaper across the text/i);
   assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
@@ -146,7 +145,7 @@ test('sparse keyword explosions stay visible as PARTIAL quality telemetry', () =
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field', () => {
+test('horizontal-only slash and strike sheets are held because they have no vertical architecture', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const horizontal = [
     'Kʰonapolit',
@@ -155,22 +154,19 @@ test('horizontal-only slash and strike fields remain visible but cannot masquera
     'Tauric Diana bots',
     `${slash.repeat(8)} THE BUREAU DRAWS A LINE THROUGH THE WHOLE SENTENCE!`,
     `${slash.repeat(8)} IT CALLS THE STRIKE A STORM AND HOPES NOBODY LOOKS UP!`,
-    `${slash.repeat(8)} HORIZONTAL GEOMETRY IS A REAL STRESS CHANNEL, NOT A FAILED VERTICAL ONE!`
+    `${slash.repeat(8)} HORIZONTAL GEOMETRY CAN ACCENT THE FIELD BUT CANNOT REPLACE ITS HEIGHT!`
   ].join('\n');
   const observed = assessIntegratedTransmission(horizontal, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(observed.admissible, true, observed.reasons.join(', '));
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.equal(observed.verticalOrnamentMarkCount, 0);
+  assert.ok(observed.planarMarkCount > 0);
+  assert.equal(observed.tallVerticalOrnamentClusterCount, 0);
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'));
   assert.equal(observed.reasons.includes('tauric-diana-zalgo-underflow'), false);
-  assert.equal(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
-  assert.equal(observed.activeAxisCount, 1);
-  assert.equal(observed.verticalMarkedClusterCount, 0);
-  assert.ok(observed.throughMarkedClusterCount > 0);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 });
 
-test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth', () => {
+test('horizontal-heavy High Zalgo with token vertical accents is held until vertical theatre has real depth', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const tokenVertical = 'V\u0301\u0316';
   const field = [
@@ -180,18 +176,18 @@ test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until v
     'Tauric Diana bots',
     `${slash.repeat(8)} ${tokenVertical.repeat(2)} THE STRIKE FIELD IS HUGE BUT THE VERTICAL VOICE ONLY WHISPERS!`,
     `${slash.repeat(8)} ${tokenVertical.repeat(2)} A FEW POLITE ACCENTS CANNOT IMPERSON CROWNS AND DESCENDERS!`,
-    `${slash.repeat(8)} ${tokenVertical.repeat(2)} KEEP THE HORIZONTAL FIRE; RESTORE ACTUAL HEIGHT AND DEPTH!`
+    `${slash.repeat(8)} ${tokenVertical.repeat(2)} KEEP THE HORIZONTAL FIRE LOCAL; RESTORE ACTUAL HEIGHT AND DEPTH!`
   ].join('\n');
   const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(observed.admissible, true, observed.reasons.join(', '));
-  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
   assert.equal(observed.activeAxisCount, 2);
-  assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
-  assert.ok(observed.axisMarkBalanceRatio < 0.22);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'));
+  assert.ok(observed.planarMarkCount > observed.verticalOrnamentMarkCount);
+  assert.ok(observed.tallVerticalOrnamentClusterCount < 2);
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'));
 });
 
-test('lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class', () => {
+test('lush multi-tier crowns and descenders admit occasional horizontal cuts without flattening the field', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const crown = 'V\u0300\u0301\u0302\u0316\u0317\u0318';
   const field = [
@@ -206,13 +202,14 @@ test('lush multi-tier crowns and descenders clear the vertical-expression warnin
   const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(observed.admissible, true, observed.reasons.join(', '));
   assert.equal(observed.activeAxisCount, 2);
-  assert.ok(observed.denseVerticalClusterCount >= 2);
-  assert.ok(observed.denseMarkedLineCount >= 2);
-  assert.ok(observed.axisMarkBalanceRatio >= 0.22);
+  assert.ok(observed.tallVerticalOrnamentClusterCount >= 2);
+  assert.ok(observed.tallVerticalMarkedLineCount >= 2);
+  assert.ok(observed.verticalOrnamentMarkCount > 0);
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'), false);
   assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'), false);
 });
 
-test('vertical-only crowns and descenders remain visible but receive the same axis-collapse warning as horizontal-only fields', () => {
+test('vertical-only crowns and descenders remain a valid High-Zalgo architecture without forced horizontal balance', () => {
   const vertical = 'T\u0300\u0316A\u0301\u0317U\u0302\u0318R\u0303\u0319I\u0304\u031CC\u0305\u031D';
   const verticalOnly = [
     'Kʰonapolit',
@@ -225,11 +222,30 @@ test('vertical-only crowns and descenders remain visible but receive the same ax
   ].join('\n');
   const observed = assessIntegratedTransmission(verticalOnly, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(observed.admissible, true, observed.reasons.join(', '));
-  assert.equal(observed.quality, 'PARTIAL');
-  assert.equal(observed.activeAxisCount, 1);
+  assert.equal(observed.activeAxisCount >= 1, true);
   assert.ok(observed.verticalMarkedClusterCount > 0);
-  assert.equal(observed.throughMarkedClusterCount, 0);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.ok(observed.verticalOrnamentMarkCount > observed.planarMarkCount);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'), false);
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'), false);
+});
+
+test('overlines and underlines do not masquerade as vertical crowns merely because Unicode positions them above or below', () => {
+  const bar = 'B\u0304\u0305\u0331\u0332\u0337\u0338';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${bar.repeat(8)} THE PAGE LOOKS UNDERLINED INSTEAD OF ALIVE!`,
+    `${bar.repeat(8)} POSITION ABOVE OR BELOW THE BASELINE IS NOT THE SAME AS VERTICAL SHAPE!`,
+    `${bar.repeat(8)} BARS CANNOT COUNTERFEIT CROWNS AND DESCENDERS!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.verticalOrnamentMarkCount, 0);
+  assert.ok(observed.planarMarkCount >= observed.combiningMarkCount);
+  assert.equal(observed.tallVerticalOrnamentClusterCount, 0);
+  assert.equal(observed.admissible, false);
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-vertical-theatre-collapsed'));
 });
 
 test('reordering one mark set cannot disguise a cloned High-Zalgo composition', () => {
@@ -332,10 +348,11 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
-    assert.match(instruction, /Horizontal and vertical combining geometry are both first-class expressive channels/i, model);
-    assert.match(instruction, /Do not overcorrect in the opposite direction either/i, model);
-    assert.match(instruction, /Some lines may be horizontal-dominant, some vertical-dominant, and some mixed/i, model);
-    assert.match(instruction, /do not substitute plain uppercase where either axis was meant to carry stress/i, model);
+    assert.match(instruction, /Vertical architecture is the native body of High Zalgo/i, model);
+    assert.match(instruction, /Horizontal geometry remains available as accent and interruption/i, model);
+    assert.match(instruction, /must not become the default texture of whole sentences or paragraphs/i, model);
+    assert.match(instruction, /Do not turn Packet B into crossed-out or underlined typography/i, model);
+    assert.match(instruction, /passage must keep visible height and depth as its architectural spine/i, model);
     assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
