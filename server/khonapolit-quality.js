@@ -39,6 +39,7 @@ import {
   geminiRequestHeaders,
   observeGeminiQuota
 } from './gemini-provider-transport.js';
+import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v19-frontier-custody';
@@ -289,9 +290,19 @@ function setApertureTaskHeaders(res, apertureReceipt = {}) {
   res.setHeader('X-TD613-Aperture-Materiality', task.runtime_materiality || 'BACKGROUND');
 }
 function send(res, status, payload, extraHeaders = {}) {
+  const attempts = Array.isArray(payload?.receipt?.provider?.attempts)
+    ? payload.receipt.provider.attempts
+    : Array.isArray(payload?.attempts)
+      ? payload.attempts
+      : [];
+  const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'marrowline', attempts });
+  const body = geminiConsumption.call_count
+    ? { ...payload, gemini_consumption: geminiConsumption }
+    : payload;
+  if (geminiConsumption.call_count) logGeminiConsumption(geminiConsumption);
   res.statusCode = status;
   for (const [name, value] of Object.entries(extraHeaders)) res.setHeader(name, value);
-  res.end(JSON.stringify(payload));
+  res.end(JSON.stringify(body));
 }
 function providerError(payload = {}) {
   const error = payload?.error || payload || {};
