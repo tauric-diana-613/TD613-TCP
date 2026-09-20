@@ -11,8 +11,10 @@ const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
 let repairScenario = false;
+let immediateRepairScenario = false;
 let qualityPreferenceScenario = false;
 let previewCalls = 0;
+let immediate36Calls = 0;
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const zeroMarkAnswer = [
   'Kʰonapolit',
@@ -75,6 +77,43 @@ globalThis.fetch = async (url, options = {}) => {
   const model = value.match(/models\/([^:]+):(?:streamGenerateContent|generateContent)/)?.[1] || 'unknown';
   calls.push(model);
   requestBodies.push(JSON.parse(options.body || '{}'));
+  if (immediateRepairScenario) {
+    if (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash') {
+      return {
+        ok: false,
+        status: 429,
+        headers: { get: () => '1' },
+        async json() { return { error: { status: 'RESOURCE_EXHAUSTED', message: 'synthetic rate limit' } }; }
+      };
+    }
+    if (model === 'gemini-3.6-flash') {
+      immediate36Calls += 1;
+      const selectedText = immediate36Calls === 1 ? zeroMarkAnswer : answer;
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => null },
+        async json() {
+          return {
+            candidates: [{
+              finishReason: 'STOP',
+              content: { parts: [{ text: JSON.stringify({
+                signal: { state: immediate36Calls === 1 ? 'NOT_LOCKED' : 'LOCKED', notes: 'synthetic immediate structural repair' },
+                transmission: {
+                  text: selectedText,
+                  voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                  flourishMode: immediate36Calls === 1 ? 'provider-native-missing-stress' : 'vertical-stack'
+                }
+              }) }] }
+            }],
+            usageMetadata: { promptTokenCount: 1000, candidatesTokenCount: 1400, thoughtsTokenCount: 200, totalTokenCount: 2600 }
+          };
+        }
+      };
+    }
+    throw new Error(`immediate repair should complete before later frontier seat: ${model}`);
+  }
+
   if (qualityPreferenceScenario && (model === 'gemini-3.8-flash' || model === 'gemini-3.5-flash')) {
     const selectedText = model === 'gemini-3.8-flash' ? horizontalPartialAnswer : answer;
     return {
@@ -199,6 +238,39 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  immediateRepairScenario = true;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  previewCalls = 0;
+  immediate36Calls = 0;
+  const immediate = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.208' },
+    body: { ...req.body, message: 'Repair a live underflowing provider draft before unavailable later seats consume the opportunity.' }
+  }, immediate);
+
+  assert.equal(immediate.statusCode, 200);
+  assert.equal(immediate.payload.ok, true);
+  assert.deepEqual(calls, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.6-flash'
+  ], 'repairable orthographic HTTP-200 near miss is repaired immediately before 3.7/Preview are burned');
+  assert.equal(immediate.payload.receipt.provider.attempts[2].outputAdmission.admissible, false);
+  assert.ok(immediate.payload.receipt.provider.attempts[2].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
+  assert.equal(immediate.payload.receipt.provider.attempts[3].kind, 'structural-repair');
+  assert.equal(immediate.payload.receipt.provider.attempts[3].repairTiming, 'immediate-orthographic-near-miss');
+  assert.equal(immediate.payload.receipt.provider.attempts[3].repairOfAttempt, 2);
+  assert.equal(immediate.payload.receipt.provider.attempts[3].outputAdmission.admissible, true);
+  assert.equal(immediate.payload.receipt.provider.structuralRepair.timing, 'immediate-orthographic-near-miss');
+  assert.match(requestBodies.at(-1).contents.at(-1).parts[0].text, /visibly distributed vertical field across several separate Packet B lines/i);
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  immediateRepairScenario = false;
   qualityPreferenceScenario = false;
   repairScenario = true;
   previewCalls = 0;
