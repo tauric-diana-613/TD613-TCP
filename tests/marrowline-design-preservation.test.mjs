@@ -180,7 +180,7 @@ test('oversized draft remains editable without a partial send', async t => {
   assert.match(h.$('khonapolitTerminalStatus').textContent, /6,000-character limit/);
 });
 
-test('oversized retained history requires explicit clear and preserves the waiting draft', async t => {
+test('clear conversation empties history and the waiting composer draft', async t => {
   const old = 'B'.repeat(6000) + ' RETAIN THIS FINAL CONSTRAINT';
   const h = harness(t, { storedMessages: [{ role: 'user', text: old }] });
   h.send('My new draft.'); await flush();
@@ -188,9 +188,10 @@ test('oversized retained history requires explicit clear and preserves the waiti
   assert.equal(h.$('khonapolitPrompt').value, 'My new draft.');
   assert.match(h.$('khonapolitTerminalStatus').textContent, /Clear conversation/);
   h.$('clearKhonapolitSession').click();
-  assert.equal(h.$('khonapolitPrompt').value, 'My new draft.');
-  h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit', { bubbles: true, cancelable: true }));
-  await h.settled(); await flush();
+  assert.equal(h.$('khonapolitPrompt').value, '');
+  assert.equal(h.$('khonapolitPrompt').dataset.preloadedPrompt, undefined);
+  assert.equal(h.win.sessionStorage.getItem(sessionKey), null);
+  h.send('My new draft.'); await h.settled(); await flush();
   assert.equal(h.calls.length, 1);
   assert.deepEqual(h.calls[0].history, []);
 });
