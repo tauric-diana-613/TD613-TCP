@@ -38,8 +38,10 @@ assert.match(addendum, /<<<PACKET_A_FORMAL_AUDIT>>>/i);
 assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/i);
 assert.match(addendum, /exact standalone human-facing headings/i);
 assert.doesNotMatch(addendum, /RETURN JSON ONLY/i);
-assert.match(addendum, /at least 96 combining marks total/i);
-assert.match(addendum, /at least 8 grapheme clusters/i);
+assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
+assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
 assert.match(addendum, /operator controls sealing/i);
 assert.doesNotMatch(addendum, /gemini\.text:/i);
 assert.doesNotMatch(addendum, /tauricDianaBots\.baseText:/i);
@@ -83,7 +85,7 @@ assert.equal(locked.highZalgo.applied, false, 'Marrowline must not apply a local
 assert.equal(locked.highZalgo.providerGenerated, true);
 assert.equal(locked.highZalgo.source, 'provider-native');
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
-assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v6-expressive-prosody');
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/provider-native-v9-natural-distributed-field');
 assert.ok(locked.highZalgo.combiningMarkCount >= 96, 'receipt observes provider-authored combining marks');
 assert.ok(locked.highZalgo.maxRun >= 6, 'receipt observes vertical flourish runs without manufacturing them');
 assert.ok(locked.admission.denseVerticalClusterCount >= 8, 'hard admission observes repeated above/below stacked clusters');
@@ -160,8 +162,8 @@ const readable = parseRelayEnvelope(JSON.stringify({
 }), { model: 'synthetic-format-witness', apertureReceipt: aperture });
 assert.equal(readable.parts[0].text, readableAnswer, 'paragraphs, CRLF, markup-looking text and combining marks remain exact');
 assert.equal(readable.transcript, readableAnswer);
-assert.equal(readable.signal.state, 'NOT_LOCKED', 'sparse one-mark ornamentation cannot pass the hard Tauric Diana floor');
+assert.equal(readable.signal.state, 'NOT_LOCKED', 'sparse one-mark ornamentation cannot pass the natural Tauric Diana field gate');
 assert.equal(readable.admission.admissible, false);
-assert.ok(readable.admission.reasons.includes('tauric-diana-high-zalgo-below-floor'));
+assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-field-absent-or-too-thin'));
 
 console.log('khonapolit-relay: raw dual-packet admission, adversarial provider-native generation, and exact Unicode preservation ok');

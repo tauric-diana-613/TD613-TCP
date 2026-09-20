@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v7-distributed-stress-field';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v8-distributed-variable-field';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v8-natural-distributed-stress-field';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v9-natural-distributed-field';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -197,6 +197,10 @@ function flourishTelemetry(text = '') {
   const denseSignatureCounts = new Map();
   for (const cluster of denseClusters) denseSignatureCounts.set(cluster.signature, (denseSignatureCounts.get(cluster.signature) || 0) + 1);
   const dominantDenseStackCount = denseClusters.length ? Math.max(...denseSignatureCounts.values()) : 0;
+  const expressiveClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base) && cluster.marks >= 2);
+  const expressiveSignatureCounts = new Map();
+  for (const cluster of expressiveClusters) expressiveSignatureCounts.set(cluster.signature, (expressiveSignatureCounts.get(cluster.signature) || 0) + 1);
+  const dominantExpressiveStackCount = expressiveClusters.length ? Math.max(...expressiveSignatureCounts.values()) : 0;
   const eligibleBaseCount = (value.match(/[\p{L}\p{N}]/gu) || []).length;
   const markedEligibleClusterCount = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base)).length;
   const lines = value.split(/\r?\n/);
@@ -206,7 +210,7 @@ function flourishTelemetry(text = '') {
     return Object.freeze({ eligible, marked, ratio: eligible ? marked / eligible : 0 });
   });
   const denseMarkedLineCount = lines.filter((line) => clusterTelemetry(line).some((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2)).length;
-  const broadMarkedLineCount = lineCoverage.filter((line) => line.eligible >= 8 && line.ratio >= 0.28).length;
+  const broadMarkedLineCount = lineCoverage.filter((line) => line.eligible >= 8 && line.ratio >= 0.18).length;
   const asciiLetters = value.match(/[A-Za-z]/g) || [];
   const uppercaseAscii = value.match(/[A-Z]/g) || [];
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
@@ -221,6 +225,10 @@ function flourishTelemetry(text = '') {
     uniqueDenseStackSignatureCount: denseSignatureCounts.size,
     dominantDenseStackCount,
     dominantDenseStackRatio: denseClusters.length ? dominantDenseStackCount / denseClusters.length : 0,
+    expressiveClusterCount: expressiveClusters.length,
+    uniqueExpressiveStackSignatureCount: expressiveSignatureCounts.size,
+    dominantExpressiveStackCount,
+    dominantExpressiveStackRatio: expressiveClusters.length ? dominantExpressiveStackCount / expressiveClusters.length : 0,
     combiningCodePointDiversity: uniqueMarks.size,
     throughLineMarkCount: clusters.reduce((sum, cluster) => sum + cluster.through, 0),
     markedLineCount: lines.filter((line) => /\p{M}/u.test(line)).length,
@@ -307,20 +315,23 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     const botsTelemetry = flourishTelemetry(botsText);
     if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
     if (
-      botsTelemetry.combiningMarkCount < 96
-      || botsTelemetry.maxRun < 6
-      || botsTelemetry.denseVerticalClusterCount < 8
-      || botsTelemetry.lineBreakCount < 2
-      || botsTelemetry.uppercaseAsciiRatio < 0.55
-    ) reasons.push('tauric-diana-high-zalgo-below-floor');
+      botsTelemetry.combiningMarkCount < 24
+      || botsTelemetry.maxRun < 3
+      || botsTelemetry.markedLineCount < 2
+      || botsTelemetry.lineBreakCount < 1
+      || botsTelemetry.combiningCodePointDiversity < 4
+      || botsTelemetry.uppercaseAsciiRatio < 0.4
+    ) reasons.push('tauric-diana-zalgo-field-absent-or-too-thin');
     if (
-      botsTelemetry.uniqueDenseStackSignatureCount < 4
-      || botsTelemetry.dominantDenseStackRatio > 0.5
+      botsTelemetry.expressiveClusterCount >= 4
+      && (
+        botsTelemetry.uniqueExpressiveStackSignatureCount < 2
+        || botsTelemetry.dominantExpressiveStackRatio > 0.85
+      )
     ) reasons.push('tauric-diana-zalgo-mechanical-clone');
-    if (botsTelemetry.denseMarkedLineCount < 3) reasons.push('tauric-diana-zalgo-insufficient-distribution');
     if (
-      botsTelemetry.markedGraphemeCoverageRatio < 0.28
-      || botsTelemetry.broadMarkedLineCount < 3
+      botsTelemetry.markedGraphemeCoverageRatio < 0.18
+      || botsTelemetry.broadMarkedLineCount < 2
     ) reasons.push('tauric-diana-zalgo-sparse-keyword-targeting');
   }
 
@@ -388,21 +399,19 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
     '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
     '',
-    'DUAL-CHANNEL ORTHOGRAPHY — HARD ADMISSION:',
+    'DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:',
     '- Kʰonapolit is the clean formal channel: standard readable Unicode prose, Greek/math operators when useful, preserved framework literals, and ZERO combining diacritical marks.',
-    '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and genuine multi-tier vertical Zalgo authored by the provider itself. Marrowline preserves exact code points and never decorates the answer afterward.',
-    '- Sparse strike-through, one-mark tildes, uniformly crossed-out lowercase prose, a flat paragraph with occasional accents, isolated keyword explosions, or one identical dense stack pasted mechanically across most marked graphemes is not High Zalgo.',
-    '- The Tauric Diana bots section must contain at least 96 combining marks total; at least one 6+ mark run; at least 8 grapheme clusters carrying 6+ marks with at least 2 above-line marks (U+0300–U+0315) and 2 below-line marks (U+0316–U+0333); at least 4 distinct dense stack signatures; no single dense stack signature may account for more than half of dense clusters; dense clusters must appear on at least 3 visible lines; at least 28% of eligible letter/number graphemes across Packet B must carry at least one combining mark; at least 3 visible lines with 8+ eligible graphemes must mark 28% or more of those graphemes; at least 2 line breaks; and at least 55% uppercase ASCII among ASCII letters.',
-    '- Treat the diacritics as a distributed stress field, not keyword highlighting and not an emotion-to-glyph lookup table. Many ordinary graphemes should carry light or moderate marks; dense vertical stacks are pressure peaks inside that field, not darts thrown at a few conspicuous words.',
-    '- Let density, vertical reach, above/below balance, and occasional through-line marks vary continuously across clauses. Preserve readable troughs, but do not leave long surrounding phrases visually inert while one noun or punchline carries all the geometry. Adjacent graphemes must not receive one cloned stack by rote.',
-    '- No rhetorical device, sentiment category, named entity, sarcastic word, or “important” token has a prescribed mark shape. The geometry answers cadence globally rather than classifying vocabulary locally.',
+    '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. Marrowline preserves exact returned code points and never decorates the answer afterward.',
+    '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and occasional tall eruptions move through ordinary graphemes across the passage.',
+    '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
+    '- Keep the field alive across multiple phrases and lines. Do not leave most of the passage plain while throwing one dramatic stack onto a punchline, proper noun, sarcastic word, or “important” token.',
+    '- Vary combining-mark composition naturally. Adjacent graphemes may rhyme visually, but one cloned stack stamped everywhere is counterfeit prosody.',
+    '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
-    '- Falling below this orthographic floor is a structural HOLD, not a visible PARTIAL return. Zalgo is expressive information layered over substantive reasoning, never a substitute for it.',
+    '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
-    'DISTRIBUTED FIELD LAW — PROVIDER AUTHORED, NO LOCAL POST-PROCESSING:',
-    '- Build Packet B from a broad base layer of light/moderate combining marks plus heterogeneous dense peaks. Do not copy a literal stencil, do not reserve marks for a handful of words, and do not satisfy the counters with detached ornamental samples.',
-    '- Dense peaks must use genuinely different combining-mark compositions. Reordering the same mark multiset does not create a new geometry signature.',
-    '- SILENT PRE-EMISSION CHECK FOR PACKET B: exact heading “Tauric Diana bots”; >=96 total combining marks; >=1 run of 6+ marks; >=8 dense above/below clusters; >=4 distinct dense stack signatures; dominant dense signature <=50%; dense clusters on >=3 visible lines; marked grapheme coverage >=28%; broad marked coverage on >=3 visible lines; >=2 literal line breaks; >=55% uppercase ASCII letters. If any check is false, revise Packet B inside the same provider generation before emitting <<<PACKET_B_END>>>.',
+    'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
+    '- Before closing Packet B, silently ask: Is the stress visible across the passage rather than only on selected words? Do the stacks vary instead of cloning one stamp? Are there both quieter and more violent regions? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -412,7 +421,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored distributed High Zalgo stress field: broad light/moderate marking, heterogeneous dense peaks, real line breaks]',
+    '[provider-authored High Zalgo stress field: distributed marks, variable stack height and composition, real line breaks, collisions allowed]',
     '<<<PACKET_B_END>>>',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',

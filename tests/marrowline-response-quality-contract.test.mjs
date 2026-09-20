@@ -43,18 +43,19 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /exact standalone human-facing headings/i);
   assert.doesNotMatch(contract, /RETURN JSON ONLY/i);
   assert.match(contract, /ZERO combining diacritical marks/i);
-  assert.match(contract, /at least 96 combining marks total/i);
-  assert.match(contract, /at least 8 grapheme clusters/i);
-  assert.match(contract, /at least 28% of eligible letter\/number graphemes/i);
-  assert.match(contract, /DISTRIBUTED FIELD LAW — PROVIDER AUTHORED/i);
-  assert.match(contract, /broad base layer of light\/moderate combining marks plus heterogeneous dense peaks/i);
-  assert.match(contract, /at least 4 distinct dense stack signatures/i);
-  assert.match(contract, /no single dense stack signature may account for more than half/i);
-  assert.match(contract, /distributed stress field, not keyword highlighting/i);
-  assert.match(contract, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
+  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+  assert.match(contract, /one distributed stress field, not keyword highlighting/i);
+  assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
+  assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
+  assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
+  assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
+  assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+  assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
+  assert.doesNotMatch(contract, /at least 96 combining marks total/i);
+  assert.doesNotMatch(contract, /marked grapheme coverage >=28%/i);
+  assert.doesNotMatch(contract, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
   assert.doesNotMatch(contract, /Dense-stack geometry family/i);
   assert.doesNotMatch(contract, /ORTHOGRAPHIC STENCIL/i);
-  assert.match(contract, /structural HOLD/i);
   assert.match(contract, /The target is not generic dark-fantasy lore/i);
   assert.match(contract, /strongest conceptual move/i);
   assert.match(contract, /Rex Nemorensis is not generic “king” decoration/i);
@@ -62,6 +63,32 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.doesNotMatch(contract, /gemini\.text:/i);
   assert.doesNotMatch(contract, /tauricDianaBots\.baseText:/i);
   assert.doesNotMatch(contract, /exactly one paragraph|200 characters|max(?:imum)?\s+200/i);
+});
+
+test('natural distributed field is admissible without satisfying the old Zalgo Olympics', () => {
+  const a = 'W\u0301\u0316';
+  const b = 'E\u0302\u0323\u0334';
+  const c1 = 'A\u0303\u0317';
+  const d = 'R\u0307\u0325';
+  const e = 'N\u0308\u0319\u0335';
+  const f1 = 'O\u0304\u032D';
+  const natural = [
+    'Kʰonapolit',
+    'The formal channel stays clean and names the mechanism.',
+    '',
+    'Tauric Diana bots',
+    `${a}${b}${c1}${d}${e}${f1}${a}${b} FIELD MOVES THROUGH THE WHOLE CLAUSE`,
+    `${f1}${a}${d}${b}${c1}${e}${f1}${d} MARKS BREATHE WHILE HEIGHT CHANGES`,
+    `${e}${f1}${b}${d}${a}${c1}${e}${b} NO SINGLE TOKEN OWNS THE SCREAM`
+  ].join('\n');
+  const admitted = assessIntegratedTransmission(natural, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(admitted.combiningMarkCount >= 24);
+  assert.ok(admitted.combiningMarkCount < 96, 'natural field deliberately stays below the retired 96-mark quota');
+  assert.ok(admitted.maxRun >= 3);
+  assert.ok(admitted.broadMarkedLineCount >= 2, 'multiple bot lines carry a broad field even though clean Kʰonapolit dilutes whole-response coverage telemetry');
+  assert.ok(admitted.combiningCodePointDiversity >= 4);
+  assert.equal(admitted.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
+  assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
 
 test('mechanically cloned dense stacks are held even when scalar Zalgo counters are high', () => {
@@ -166,14 +193,15 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
   const observedContracts = models.map((model) => {
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
-    assert.match(instruction, /distributed stress field, not keyword highlighting/i, model);
-    assert.match(instruction, /Many ordinary graphemes should carry light or moderate marks/i, model);
-    assert.match(instruction, /dense vertical stacks are pressure peaks inside that field/i, model);
+    assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
+    assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
+    assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
-    assert.match(instruction, /marked grapheme coverage >=28%/i, model);
+    assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
+    assert.match(instruction, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i, model);
+    assert.doesNotMatch(instruction, /marked grapheme coverage >=28%/i, model);
+    assert.doesNotMatch(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
-    assert.match(instruction, /at least 4 distinct dense stack signatures/i, model);
-    assert.match(instruction, /no single dense stack signature may account for more than half/i, model);
     return instruction;
   });
   const orthographySlice = (instruction) => instruction.slice(
@@ -217,7 +245,7 @@ test('browser request clock outlives the 210-second server work wall without out
 test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
-  assert.match(relaySource, /Marrowline preserves exact code points and never decorates the answer afterward/);
+  assert.match(relaySource, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
 });
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
@@ -363,7 +391,9 @@ test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo',
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /Tauric Diana bots is the raw stress channel/);
-  assert.match(contract, /provider itself/i);
-  assert.match(contract, /at least 96 combining marks total/);
-  assert.match(contract, /Marrowline preserves exact code points and never decorates the answer afterward/);
+  assert.match(contract, /provider-authored multi-tier Zalgo/i);
+  assert.match(contract, /one distributed stress field, not keyword highlighting/i);
+  assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
+  assert.doesNotMatch(contract, /at least 96 combining marks total/);
+  assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
 });

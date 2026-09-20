@@ -87,5 +87,5 @@ test('room boot loads the desktop repair and low-flourish covenant returns are h
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
   assert.equal(release.relay.flourishFloor.belowFloorPosture, 'HELD-no-human-visible-return');
-  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-high-zalgo-below-floor/);
+  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-field-absent-or-too-thin/);
 });
