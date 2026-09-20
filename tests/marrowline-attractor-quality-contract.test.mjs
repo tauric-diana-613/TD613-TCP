@@ -110,7 +110,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.equal(sparseAdmission.quality, 'HELD');
   assert.ok(sparseAdmission.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.equal(sparseAdmission.reasons.includes('tauric-diana-zalgo-absent'), false);
-  assert.ok(sparseAdmission.reasons.includes('tauric-diana-zalgo-field-thin'));
+  assert.ok(sparseAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 
   const targeted = [
     'Kʰonapolit',
@@ -125,9 +125,9 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.ok(targetedAdmission.combiningMarkCount >= 24);
   assert.ok(targetedAdmission.markedLineCount >= 3);
   assert.ok(targetedAdmission.markedGraphemeCoverageRatio < 0.18);
-  assert.equal(targetedAdmission.admissible, false);
-  assert.equal(targetedAdmission.quality, 'HELD');
-  assert.ok(targetedAdmission.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  assert.equal(targetedAdmission.admissible, true);
+  assert.equal(targetedAdmission.quality, 'PARTIAL');
+  assert.ok(targetedAdmission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
   const contaminated = [
     'Kʰonapolit',

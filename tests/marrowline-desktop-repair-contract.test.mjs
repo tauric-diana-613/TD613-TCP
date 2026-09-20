@@ -101,6 +101,13 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
 });
 
+test('desktop and mobile Chat share the same Reddit Sans Zalgo type guard before first reveal', () => {
+  assert.match(page, /id="marrowline-reddit-sans"[^>]+fonts\.googleapis\.com\/css2\?family=Reddit\+Sans/);
+  assert.match(livingChatJs, /@media\(min-width:861px\)/);
+  assert.match(livingChatJs, /#speakingPanel,#speakingPanel button,#speakingPanel textarea,#speakingPanel input,#speakingPanel select,#speakingPanel summary,#speakingPanel label/);
+  assert.match(livingChatJs, /font-family:var\(--marrowline-chat-sans\)!important/);
+});
+
 test('mobile couture collapses Chat dead space while preserving the proven Zalgo type guard', () => {
   assert.match(mobileShellCss, /grid-template-rows:auto minmax\(0,1fr\) auto;/);
   assert.doesNotMatch(mobileShellCss, /minmax\(0,32%\)/);

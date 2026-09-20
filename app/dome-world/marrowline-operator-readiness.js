@@ -123,7 +123,7 @@ export function boundedFailureMessage(failure = {}) {
   // distinct holds legitimately travel as 502/503 responses.
   if (code.includes('missing-gemini-api-key')) return 'The server AI credential is unavailable. Your task was not discarded.';
   if (code.includes('no-eligible-callable-models')) return 'No callable model route was admitted for this request. Your task was not discarded.';
-  if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A reply came back, but it failed the conversation format checks. Your message is still here; you can retry.';
+  if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A provider return arrived, then Marrowline held it locally after generation because the required conversation structure was not admitted. The provider did not reject your request. Your message is preserved for retry.';
   if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
   if (code.includes('provider_shared_rate_limit') || code.includes('shared-rate-limit') || code.includes('gemini-shared-rate-limit')) {
     const retryAfter = Number(failure?.rateLimit?.retryAfterSeconds || failure?.retryAfterSeconds || 0);
@@ -149,12 +149,14 @@ function installTerminalHoldNotice(doc = document, root = window) {
   let lastSignature = '';
   const inspect = () => {
     const text = safe(status.textContent);
+    const held = /TASK PRESERVED/i.test(text);
+    status.dataset.held = String(held);
     if (/RETURN OBSERVED/i.test(text)) {
       byId(doc, 'marrowlineTerminalHold')?.remove();
       lastSignature = '';
       return;
     }
-    if (!/TASK PRESERVED/i.test(text)) return;
+    if (!held) return;
     const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};
     const explanation = boundedFailureMessage(failure);
     const signature = `${safe(failure?.error || failure?.status || failure?.diagnostic?.code)}|${explanation}`;
@@ -170,7 +172,12 @@ function installTerminalHoldNotice(doc = document, root = window) {
     if (signature !== lastSignature) {
       card.replaceChildren();
       const title = doc.createElement('strong');
-      title.textContent = 'AI route held';
+      const localReturnHold = /output-quality-held|attractor_structure_not_admitted/i.test(signature);
+      title.textContent = localReturnHold ? 'Marrowline held this return' : 'AI route held';
+      const badge = doc.createElement('span');
+      badge.className = 'terminal-hold-badge';
+      badge.textContent = 'HELD';
+      title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;
       const help = doc.createElement('p');
