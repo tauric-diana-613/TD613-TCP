@@ -20,6 +20,7 @@ import {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
   repairableKhonapolitAdmission,
+  repairableKhonapolitMorphology,
   buildTerminalReceipt,
   observeGeminiOutput,
   extractGeminiText
@@ -69,6 +70,9 @@ assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and brief
 assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
 assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
 assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-axis-collapse']), true);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-vertical-expression-thin', 'tauric-diana-zalgo-field-thin']), true);
+assert.equal(repairableKhonapolitMorphology(['tauric-diana-zalgo-monoculture']), false);
 const structuralRepair = buildGeminiStructuralRepairRequest(
   packet,
   apertureReceipt,
