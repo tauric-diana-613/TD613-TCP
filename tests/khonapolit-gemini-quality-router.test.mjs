@@ -141,6 +141,12 @@ try {
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
+  assert.equal(res.payload.gemini_consumption.call_count, 2);
+  assert.equal(res.payload.gemini_consumption.provider_daily_total, null);
+  assert.deepEqual(res.payload.gemini_consumption.events.map(event => [event.route, event.model, event.status]), [
+    ['marrowline', 'gemini-3.8-flash', 200],
+    ['marrowline', 'gemini-3.6-flash', 200]
+  ]);
   assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;

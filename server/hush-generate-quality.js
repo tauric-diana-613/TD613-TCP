@@ -16,6 +16,7 @@ import {
   geminiGenerateContentUrl,
   geminiRequestHeaders
 } from './gemini-provider-transport.js';
+import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 import { canonicalJson } from '../app/dome-world/ash/canonical-json.js';
 
 const VERSION = 'hush-generate-quality/v1';
@@ -150,10 +151,16 @@ function quarantineAshKeepCandidateRows(candidates = []) {
 }
 
 function send(res, status, payload) {
+  const attempts = Array.isArray(payload?.attempts) ? payload.attempts : [];
+  const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'hush', attempts });
+  const body = geminiConsumption.call_count
+    ? { ...payload, gemini_consumption: geminiConsumption }
+    : payload;
+  if (geminiConsumption.call_count) logGeminiConsumption(geminiConsumption);
   for (const [key, value] of Object.entries(CORS)) res.setHeader(key, value);
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('X-TD613-Gemini-Policy', GEMINI_MODEL_POLICY_VERSION);
-  return res.status(status).json(payload);
+  return res.status(status).json(body);
 }
 
 function controls(contract = {}) { return contract.flightPacket?.flight_controls || {}; }

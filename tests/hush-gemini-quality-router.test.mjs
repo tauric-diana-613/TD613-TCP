@@ -76,6 +76,12 @@ try {
   }
   assert.equal(res.payload.requestReceipt.modelOrder[0], 'gemini-3.5-flash');
   assert.equal(res.payload.requestReceipt.modelPolicy.stickySuccessPromotion, false);
+  assert.equal(res.payload.gemini_consumption.call_count, 2);
+  assert.equal(res.payload.gemini_consumption.provider_daily_total, null);
+  assert.deepEqual(res.payload.gemini_consumption.events.map(event => [event.route, event.model, event.status]), [
+    ['hush', 'gemini-3.5-flash', 429],
+    ['hush', 'gemini-3-flash-preview', 200]
+  ]);
   assert.ok(res.payload.candidates.length >= 1);
 } finally {
   globalThis.fetch = originalFetch;

@@ -226,6 +226,25 @@ const marrowlineAttemptsSource = Array.isArray(marrowlineReceipt?.provider?.atte
   : Array.isArray(marrowlinePayload?.attempts)
     ? marrowlinePayload.attempts
     : [];
+const releaseConsumptionEvents = [
+  ...((marrowlinePayload?.gemini_consumption?.events || []).map(event => ({
+    ...event,
+    route: 'release-witness:marrowline',
+    release_witness: true
+  }))),
+  ...((observations?.gemini_consumption?.events || []).map(event => ({
+    ...event,
+    route: 'release-witness:loom',
+    release_witness: true
+  })))
+].slice(0, 2);
+const releaseGeminiConsumption = {
+  schema: 'td613.gemini-consumption-release-witness/v0.1',
+  coverage: 'this-release-witness-only',
+  provider_daily_total: null,
+  call_count: releaseConsumptionEvents.length,
+  events: releaseConsumptionEvents
+};
 const receipt = {
   schema: 'td613.loom.production-canary/v0.3-independent-live-routes',
   source_packet_commit: sourcePacketCommit || null,
@@ -259,6 +278,7 @@ const receipt = {
   used_document_ids: usedDocumentIds,
   missing_information_count: Array.isArray(payload?.missing_information) ? payload.missing_information.length : null,
   source_claims: observations.source_claims === 'model-reported-unverified' ? observations.source_claims : null,
+  gemini_consumption: releaseGeminiConsumption,
   marrowline_live_route: {
     request_id: marrowlineRequestId,
     canary_model: marrowlineCanaryModel,

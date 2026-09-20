@@ -26,6 +26,11 @@ test('real provider boundary builds structured generation from admitted input, p
   assert.equal(r.status, 200); assert.equal(r.body.schema, LOOM_TASK_RESULT_SCHEMA); assert.equal(r.body.status, 'completed');
   assert.equal(r.body.request_id, 'fixture-1'); assert.equal(r.body.observations.provider_calls, 1);
   assert.deepEqual(r.body.observations.provider_attempts, [{ model: 'gemini-test', status: 200 }]);
+  assert.equal(r.body.observations.gemini_consumption.call_count, 1);
+  assert.equal(r.body.observations.gemini_consumption.provider_daily_total, null);
+  assert.equal(r.body.observations.gemini_consumption.events[0].route, 'loom');
+  assert.equal(r.body.observations.gemini_consumption.events[0].model, 'gemini-test');
+  assert.equal(r.body.observations.gemini_consumption.events[0].status, 200);
   assert.deepEqual(r.body.observations.usage, { promptTokenCount: 120, candidatesTokenCount: 60, totalTokenCount: 180 });
   assert.equal(r.body.observations.source_claims, 'model-reported-unverified');
   const invocation = h.calls.find(row => row.kind === 'generate');

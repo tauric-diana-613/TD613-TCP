@@ -216,8 +216,10 @@ test('failed follow-up replaces current receipt and retains the previous receipt
   assert.deepEqual(current.failure.attempts, [{ model: 'SYNTHETIC_MODEL', status: 503 }]);
   assert.equal(current.provider, undefined);
   assert.equal(h.$('metricModel').textContent, '—');
-  assert.equal(h.$('metricModelAttempts').textContent, 'SYNTHETIC_MODEL 503', 'failed human turns expose the actual attempted route instead of blanking the metric');
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /ROUTE SYNTHETIC_MODEL 503/);
+  assert.equal(h.$('metricModelAttempts').textContent, 'SYNTHETIC_MODEL 503', 'failed human turns expose the actual attempted route inside Receipt');
+  assert.equal(h.$('receiptFrontierTrace').textContent, 'FRONTIER · SYNTHETIC_MODEL 503');
+  assert.doesNotMatch(h.$('khonapolitTerminalStatus').textContent, /ROUTE SYNTHETIC_MODEL 503/);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /^TASK PRESERVED/);
   h.$('copyKhonapolitReceipt').click(); await flush();
   assert.match(h.clipboard.at(-1), /CURRENT_REQUEST_FAILED/);
   assert.match(h.clipboard.at(-1), /SYNTHETIC_MODEL/);
