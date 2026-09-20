@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v26",
-  "version": "v0.7.27-inline-status-mobile-send-glyph",
+  "schema": "td613.dome-world.marrowline.release/v27",
+  "version": "v0.7.28-welcome-custody-mobile-arrow-centering",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -342,7 +342,9 @@
     "desktopSendGlyph": "⇧",
     "mobileSendGlyph": "⇧",
     "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
+    "mobileSendGlyphRendering": "text-presentation-variation-selector in a centered 24px glyph box with mobile optical baseline correction",
     "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
+    "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [
       "RETRY_LAST_PROMPT",
       "COPY_CONVERSATION",
