@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v22-zalgo-vertical-theatre';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v23-zalgo-vertical-architecture';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -267,6 +267,29 @@ export function consumeRateSlot(key = 'unknown', now = Date.now()) {
     resetAt: current.startedAt + WINDOW_MS
   };
 }
+function betterVerticalArchitecturePartial(candidate, current) {
+  if (!current) return true;
+  const candidateRatio = candidate.verticalOrnamentMarkCount / Math.max(1, candidate.planarMarkCount);
+  const currentRatio = current.verticalOrnamentMarkCount / Math.max(1, current.planarMarkCount);
+  const dimensions = [
+    [current.repairRequiredMorphologyCount, candidate.repairRequiredMorphologyCount],
+    [current.seriousMorphologyWarningCount, candidate.seriousMorphologyWarningCount],
+    [current.qualityWarnings.length, candidate.qualityWarnings.length],
+    [candidate.tallVerticalOrnamentClusterCount, current.tallVerticalOrnamentClusterCount],
+    [candidate.tallVerticalMarkedLineCount, current.tallVerticalMarkedLineCount],
+    [candidateRatio, currentRatio],
+    [candidate.verticalOrnamentMarkCount, current.verticalOrnamentMarkCount],
+    [candidate.denseVerticalClusterCount, current.denseVerticalClusterCount],
+    [candidate.denseMarkedLineCount, current.denseMarkedLineCount],
+    [candidate.markedGraphemeCoverageRatio, current.markedGraphemeCoverageRatio]
+  ];
+  for (const [preferred, baseline] of dimensions) {
+    if (preferred > baseline) return true;
+    if (preferred < baseline) return false;
+  }
+  return false;
+}
+
 function parseBody(req = {}) {
   if (req.body && typeof req.body === 'object') return req.body;
   if (typeof req.body === 'string') {
@@ -385,7 +408,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. If the prior draft was held for whole-passage axis collapse or thin vertical expression, repair only the orthographic stress field: keep horizontal strike/through-line geometry fully expressive, but restore real above/below motion in multiple regions so the passage does not remain a flat crossed-out monoculture. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vertical motion must be visibly expressive when present: use genuine multi-tier crowns and descenders with height/depth across more than one region rather than token accent marks pasted onto a mostly horizontal field. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
+    'If the prior draft had absent, severe-underflow, axis-collapsed, or thin-vertical Tauric Diana morphology, preserve its substantive prose while repairing only the orthographic stress field. Rebuild High Zalgo from vertical architecture first: varied crowns above the line, descenders below it, asymmetric multi-tier stacks, and visibly different heights/depths across several Packet B lines. Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents or interruptions, but they must not become the passage-wide base texture. Do not return a crossed-out or underlined sheet with token vertical accents and call it High Zalgo. Keep quiet regions intentional, preserve protected literals, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -975,10 +998,14 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
+        const repairRequiredMorphologyCount = qualityWarnings.filter((warning) =>
+          REPAIRABLE_MORPHOLOGY_WARNINGS.has(warning)
+        ).length;
         const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
           'tauric-diana-zalgo-mechanical-clone',
           'tauric-diana-zalgo-monoculture',
           'tauric-diana-zalgo-sparse-keyword-targeting',
+          'tauric-diana-zalgo-axis-collapse',
           'tauric-diana-zalgo-vertical-expression-thin'
         ].includes(warning)).length;
         const candidate = {
@@ -989,81 +1016,23 @@ export default async function handler(req, res) {
           providerStatus: result.response.status,
           providerOutput,
           qualityWarnings,
+          repairRequiredMorphologyCount,
           seriousMorphologyWarningCount,
           activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
           axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
           axisMarkBalanceRatio: Number(relay.admission?.axisMarkBalanceRatio || 0),
           denseVerticalClusterCount: Number(relay.admission?.denseVerticalClusterCount || 0),
+          tallVerticalOrnamentClusterCount: Number(relay.admission?.tallVerticalOrnamentClusterCount || 0),
+          tallVerticalMarkedLineCount: Number(relay.admission?.tallVerticalMarkedLineCount || 0),
+          verticalOrnamentMarkCount: Number(relay.admission?.verticalOrnamentMarkCount || 0),
+          planarMarkCount: Number(relay.admission?.planarMarkCount || 0),
           denseMarkedLineCount: Number(relay.admission?.denseMarkedLineCount || 0),
           mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
           markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
           sourceAttemptIndex: attempts.length - 1
         };
         const current = partialQualityCandidate;
-        if (
-          !current
-          || candidate.seriousMorphologyWarningCount < current.seriousMorphologyWarningCount
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount > current.activeAxisCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length < current.qualityWarnings.length
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio > current.axisMarkBalanceRatio
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio > current.axisClusterBalanceRatio
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount > current.denseVerticalClusterCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount > current.denseMarkedLineCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
-            && candidate.mixedAxisClusterCount > current.mixedAxisClusterCount
-          )
-          || (
-            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
-            && candidate.activeAxisCount === current.activeAxisCount
-            && candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
-            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
-            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
-            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
-            && candidate.mixedAxisClusterCount === current.mixedAxisClusterCount
-            && candidate.markedGraphemeCoverageRatio >= current.markedGraphemeCoverageRatio
-          )
-        ) partialQualityCandidate = candidate;
+        if (betterVerticalArchitecturePartial(candidate, current)) partialQualityCandidate = candidate;
         continue;
       }
 
@@ -1152,7 +1121,7 @@ export default async function handler(req, res) {
         qualityPreference: Object.freeze({
           used: true,
           sourceAttemptIndex,
-          selection: 'goldilocks-mixed-axis-best-admissible-partial-after-full-frontier',
+          selection: 'vertical-architecture-best-admissible-partial-after-full-frontier',
           warnings: Object.freeze([...qualityWarnings])
         })
       }),

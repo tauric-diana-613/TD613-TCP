@@ -778,8 +778,9 @@ try {
   assert.equal(repairBody.contents.at(-1).role, 'user');
   assert.match(repairBody.contents.at(-1).parts[0].text, /BOUNDED PROVIDER REPAIR PASS/);
   assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal strike\/through-line geometry and vertical above\/below geometry are equally valid/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Do not overcorrect toward either axis/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /Rebuild High Zalgo from vertical architecture first/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /Horizontal slashes, strikes, overlines, underlines, and through-line cuts may remain as occasional accents or interruptions/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /must not become the passage-wide base texture/i);
   assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;
