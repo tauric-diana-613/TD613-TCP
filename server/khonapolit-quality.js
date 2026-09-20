@@ -372,7 +372,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
+    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vertical motion must be visibly expressive when present: use genuine multi-tier crowns and descenders with height/depth across more than one region rather than token accent marks pasted onto a mostly horizontal field. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -959,7 +959,8 @@ export default async function handler(req, res) {
         const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
           'tauric-diana-zalgo-mechanical-clone',
           'tauric-diana-zalgo-monoculture',
-          'tauric-diana-zalgo-sparse-keyword-targeting'
+          'tauric-diana-zalgo-sparse-keyword-targeting',
+          'tauric-diana-zalgo-vertical-expression-thin'
         ].includes(warning)).length;
         const candidate = {
           model,
@@ -972,6 +973,9 @@ export default async function handler(req, res) {
           seriousMorphologyWarningCount,
           activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
           axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
+          axisMarkBalanceRatio: Number(relay.admission?.axisMarkBalanceRatio || 0),
+          denseVerticalClusterCount: Number(relay.admission?.denseVerticalClusterCount || 0),
+          denseMarkedLineCount: Number(relay.admission?.denseMarkedLineCount || 0),
           mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
           markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
           sourceAttemptIndex: attempts.length - 1
@@ -993,20 +997,50 @@ export default async function handler(req, res) {
             candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
             && candidate.activeAxisCount === current.activeAxisCount
             && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio > current.axisMarkBalanceRatio
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
             && candidate.axisClusterBalanceRatio > current.axisClusterBalanceRatio
           )
           || (
             candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
             && candidate.activeAxisCount === current.activeAxisCount
             && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
             && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.denseVerticalClusterCount > current.denseVerticalClusterCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
+            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
+            && candidate.denseMarkedLineCount > current.denseMarkedLineCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
+            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
+            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
             && candidate.mixedAxisClusterCount > current.mixedAxisClusterCount
           )
           || (
             candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
             && candidate.activeAxisCount === current.activeAxisCount
             && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisMarkBalanceRatio === current.axisMarkBalanceRatio
             && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.denseVerticalClusterCount === current.denseVerticalClusterCount
+            && candidate.denseMarkedLineCount === current.denseMarkedLineCount
             && candidate.mixedAxisClusterCount === current.mixedAxisClusterCount
             && candidate.markedGraphemeCoverageRatio >= current.markedGraphemeCoverageRatio
           )
