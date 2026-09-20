@@ -1,6 +1,7 @@
 import { GEMINI_MODEL_POLICY_VERSION, resolveGeminiProviderPlan, recordGeminiModelOutcome } from './gemini-model-policy.js';
 import { geminiGenerateContentUrl, geminiMayFailOver, geminiRequestHeaders } from './gemini-provider-transport.js';
 import { consumeRateSlot } from './khonapolit-quality.js';
+import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const LOOM_TASK_SCHEMA = 'td613.loom.ai-task/v0.1';
 export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
@@ -166,6 +167,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     let providerCalls = 0;
     let providerHttpStatus = null;
     let providerUsage = null;
+    let releaseCanary = false;
     const providerAttempts = [];
     const providerAttemptTimings = [];
     let stage = 'provider-plan';
@@ -179,9 +181,20 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
     const diagnostic = code => ({ schema: LOOM_TASK_DIAGNOSTIC_SCHEMA, stage, code });
     const observations = () => {
       const thinkingConfig = loomThinkingConfig(model, { fallback: providerFallback });
+      const consumptionAttempts = providerAttempts.map((attempt, index) => ({
+        ...attempt,
+        ...(providerAttemptTimings[index] || {})
+      }));
+      const geminiConsumption = buildGeminiConsumptionReceipt({
+        route: releaseCanary ? 'release-witness:loom' : 'loom',
+        attempts: consumptionAttempts,
+        requestId: input?.request_id || null,
+        releaseWitness: releaseCanary
+      });
       return ({ model, ...(providerHttpStatus === null ? {} : { http_status: providerHttpStatus }),
         ...(providerUsage === null ? {} : { usage: providerUsage }), ...(providerAttempts.length ? { provider_attempts: providerAttempts.map(attempt => ({ ...attempt })) } : {}),
         ...(providerAttemptTimings.length ? { provider_attempt_timings: providerAttemptTimings.map(attempt => ({ ...attempt })) } : {}),
+        gemini_consumption: geminiConsumption,
         elapsed_ms: Math.max(0, now() - started), provider_calls: providerCalls,
         deadline_ms: deadlineMs, stage_elapsed_ms: { ...stageDurations, [stage]: Math.max(0, now() - stageStarted) },
         output_token_budget: outputBudget(model),
@@ -192,12 +205,14 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         model_policy: GEMINI_MODEL_POLICY_VERSION, source_claims: 'model-reported-unverified' });
     };
     const send = (status, data) => {
+      const observed = observations();
+      if (observed.gemini_consumption?.call_count) logGeminiConsumption(observed.gemini_consumption);
       res.statusCode = status;
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.setHeader('Cache-Control', 'no-store, max-age=0');
       res.setHeader('X-Content-Type-Options', 'nosniff');
       return res.end(JSON.stringify({ schema: LOOM_TASK_RESULT_SCHEMA, request_id: input?.request_id || null,
-        status: 'held', answer: '', observations: observations(), ...data }));
+        status: 'held', answer: '', observations: observed, ...data }));
     };
     if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return send(405, { error: 'method-not-allowed' }); }
     if (!sameOrigin(req)) return send(403, { error: 'same-origin-required' });
@@ -228,7 +243,7 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const plan = await Promise.race([resolvePlan({ task: 'general-text', env, maxModels: 8 }), deadline]);
       if (controller.signal.aborted) throw new Error('request-aborted');
       const allModels = selectLoomProviderModels(plan.callableModels);
-      const releaseCanary = header(req, 'x-td613-release-canary') === '1';
+      releaseCanary = header(req, 'x-td613-release-canary') === '1';
       const requestedCanaryModel = normalizedModel(header(req, 'x-td613-canary-model'));
       const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
         ? requestedCanaryModel
