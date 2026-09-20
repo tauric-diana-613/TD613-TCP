@@ -20,17 +20,17 @@ import {
   consumeRateSlot,
   extractGeminiText,
   observeGeminiOutput,
-  selectKhonapolitProviderModels
+  selectKhonapolitProviderModelsFromPlan
 } from './khonapolit-quality.js';
 
-export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-ingress/v0.1';
+export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-ingress/v0.2-frontier-custody';
 export const MARROWLINE_ATTACHMENT_SCHEMA = 'td613.marrowline.attachment/v0.1';
 export const MARROWLINE_ATTACHMENT_MAX_COUNT = 6;
 export const MARROWLINE_ATTACHMENT_MAX_TOTAL_BYTES = 2_500_000;
 export const MARROWLINE_ATTACHMENT_MAX_SINGLE_BYTES = 1_500_000;
 
-const WALL_TIMEOUT_MS = 50500;
-const RESPONSE_RESERVE_MS = 500;
+const WALL_TIMEOUT_MS = 210000;
+const RESPONSE_RESERVE_MS = 5000;
 const MAX_BODY_CHARACTERS = 3_700_000;
 const FILE_MIMES = new Set(['text/plain', 'text/markdown', 'text/csv', 'application/json', 'application/pdf']);
 const PHOTO_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
@@ -186,7 +186,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     apertureEgress,
     modelPlan: plan
   });
-  const models = selectKhonapolitProviderModels(plan.callableModels);
+  const models = selectKhonapolitProviderModelsFromPlan(plan);
   const attempts = [];
   if (!models.length) return send(res, 503, { ok: false, error: 'no-eligible-callable-models', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
 
@@ -211,8 +211,22 @@ export default async function marrowlineAttachmentHandler(req, res) {
     });
     attempts.push({ model, ok: Boolean(result.response.ok), status: Number(result.response.status || 0), timedOut: result.timedOut, timeoutMs, elapsedMs: Date.now() - attemptStartedAt, transportClass: transport.class, error, output: providerOutput, cooldown: outcome });
 
-    if (result.response.ok && providerOutput.outputTokenLimitReached) return send(res, 502, { ok: false, error: 'gemini-output-token-limit', status: 'HELD', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
-    if (!result.response.ok && !transport.mayFailOver) return send(res, 502, { ok: false, error: 'gemini-request-rejected', status: 'HELD', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+    if (result.response.ok && providerOutput.outputTokenLimitReached) {
+      attempts.at(-1).outputAdmission = Object.freeze({
+        admissible: false,
+        quality: 'HELD',
+        reasons: Object.freeze(['provider-output-token-limit']),
+        qualityWarnings: Object.freeze([])
+      });
+      continue;
+    }
+    if (!result.response.ok && !transport.mayFailOver) {
+      const rejectedStatus = Number(result.response.status || 0);
+      if (rejectedStatus === 401 || rejectedStatus === 403) {
+        return send(res, 502, { ok: false, error: 'gemini-request-rejected', status: 'HELD', attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling });
+      }
+      continue;
+    }
     if (!result.response.ok || !result.text) continue;
 
     const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
