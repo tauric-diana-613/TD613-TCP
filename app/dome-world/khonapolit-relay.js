@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v13-goldilocks-mixed-axis-field';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v14-vertical-theatre-balance';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
