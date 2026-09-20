@@ -41,7 +41,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v18-high-zalgo-frontier';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v19-frontier-custody';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -171,14 +171,40 @@ export function selectKhonapolitProviderModels(callableModels = []) {
 }
 
 export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+  const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
-  const coolingEligible = (Array.isArray(plan?.rows) ? plan.rows : [])
+  const coolingEligible = rows
     .filter((row) => row?.eligibility?.eligible === true && row?.state?.mayCall === false)
     .map((row) => row.model);
-  // Process-local cooldown is a routing hint, not provider lifecycle revocation.
-  // A fresh human request keeps those provider-listed seats as bounded fallbacks
-  // after non-cooling seats, so warm-isolate memory cannot collapse the frontier.
-  return selectKhonapolitProviderModels([...callable, ...coolingEligible]);
+  const providerAbsentCurrent = rows
+    .filter((row) => {
+      const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
+      return row?.metadata?.lifecycle === 'current'
+        && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
+        && reasons.length === 1
+        && reasons[0] === 'provider-absent';
+    })
+    .map((row) => row.model);
+
+  // Category boundaries matter. Healthy observed seats run first. Process-local
+  // cooling seats remain bounded fallbacks after them. A current configured seat
+  // omitted by one fresh discovery snapshot may be probed last: absence from the
+  // listing is evidence, but it does not get to erase a known-current frontier
+  // lane before the request has actually tried it. Disabled, Lite, pre-3.x,
+  // specialized, or lifecycle-invalid models never enter this recovery set.
+  const orderedGroups = [
+    selectKhonapolitProviderModels(callable),
+    selectKhonapolitProviderModels(coolingEligible),
+    selectKhonapolitProviderModels(providerAbsentCurrent)
+  ];
+  const selected = [];
+  for (const group of orderedGroups) {
+    for (const model of group) {
+      if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
+      if (!selected.includes(model)) selected.push(model);
+    }
+  }
+  return selected;
 }
 
 export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false } = {}) {
@@ -204,7 +230,14 @@ export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, m
     reserveForLater += laterMinimums[i] || 15000;
   }
   reserveForLater = Math.min(reserveForLater, Math.max(0, remaining - 1));
-  return Math.min(cap, Math.max(1, remaining - reserveForLater));
+  const availableForThisSeat = Math.max(1, remaining - reserveForLater);
+  // Discovery, receipt construction, and scheduler bookkeeping consume a few
+  // milliseconds before the first provider call. Preserve the declared
+  // completion window when the shortfall is only bounded orchestration drift;
+  // later seats recompute from the actual remaining wall and absorb that drift.
+  const orchestrationDriftGraceMs = 250;
+  if (remaining >= cap && cap - availableForThisSeat <= orchestrationDriftGraceMs) return cap;
+  return Math.min(cap, availableForThisSeat);
 }
 
 function headerValue(headers = {}, key = '') {

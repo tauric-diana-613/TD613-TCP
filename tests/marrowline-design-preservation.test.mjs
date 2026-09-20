@@ -213,8 +213,14 @@ test('failed follow-up replaces current receipt and retains the previous receipt
   const current = JSON.parse(h.$('khonapolitReceipt').textContent);
   assert.equal(current.status, 'CURRENT_REQUEST_FAILED');
   assert.equal(current.failure.httpStatus, 503);
+  assert.deepEqual(current.failure.attempts, [{ model: 'SYNTHETIC_MODEL', status: 503 }]);
   assert.equal(current.provider, undefined);
   assert.equal(h.$('metricModel').textContent, '—');
+  assert.equal(h.$('metricModelAttempts').textContent, 'SYNTHETIC_MODEL 503', 'failed human turns expose the actual attempted route instead of blanking the metric');
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /ROUTE SYNTHETIC_MODEL 503/);
+  h.$('copyKhonapolitReceipt').click(); await flush();
+  assert.match(h.clipboard.at(-1), /CURRENT_REQUEST_FAILED/);
+  assert.match(h.clipboard.at(-1), /SYNTHETIC_MODEL/);
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_RECEIPT__, null);
   assert.deepEqual(JSON.parse(h.doc.querySelector('.turn-receipt pre').textContent), prior);
   assert.equal(h.$('khonapolitPrompt').value, 'What does that mean for a newcomer?');

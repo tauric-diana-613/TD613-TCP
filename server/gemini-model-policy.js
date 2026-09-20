@@ -1,4 +1,4 @@
-export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v10-provider-retry-window';
+export const GEMINI_MODEL_POLICY_VERSION = 'td613.gemini-model-policy/v11-khonapolit-frontier-custody';
 
 import { MODEL_CATALOG, assessGeminiEligibility } from './gemini-model-registry.js';
 import { listGeminiGenerateContentModels } from './gemini-model-discovery.js';
@@ -208,6 +208,7 @@ export { listGeminiGenerateContentModels };
 
 export async function resolveGeminiProviderPlan(options = {}) {
   const env = options.env || process.env;
+  const task = options.task || 'general-text';
   const listModels = typeof options.listModels === 'function'
     ? options.listModels
     : listGeminiGenerateContentModels;
@@ -216,13 +217,24 @@ export async function resolveGeminiProviderPlan(options = {}) {
 
   const listing = await listModels(env.GEMINI_API_KEY);
   let plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: listing });
-  if (plan.callableModels.length) return plan;
+  const khonapolitFrontierPartiallyObserved = task === 'khonapolit-dialogue'
+    && plan.rows.some((row) => (
+      KHONAPOLIT_QUALITY_ORDER.includes(row.model)
+      && row?.metadata?.lifecycle === 'current'
+      && Array.isArray(row?.eligibility?.reasons)
+      && row.eligibility.reasons.includes('provider-absent')
+    ));
+  if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved) return plan;
 
   // A serverless isolate may retain a fresh-but-narrow provider listing while its
-  // only visible model is locally cooling, or the first listing observation may
-  // fail transiently. Do not weaken lifecycle admission: force exactly one fresh,
-  // complete credential-scoped observation and recompute. If that still yields no
-  // callable model, preserve the hold.
+  // only visible model is locally cooling, or a credential-scoped observation may
+  // temporarily expose only part of the approved Marrowline frontier. Hush taught
+  // us not to promote one model's local condition into provider-wide exhaustion.
+  // Marrowline therefore earns exactly one forced complete re-observation when
+  // either no callable seat exists OR a current approved seat is missing from an
+  // otherwise successful discovery snapshot. The refreshed observation remains
+  // evidence, not global ontology: downstream frontier custody may still keep a
+  // current configured seat as a bounded last-resort probe.
   const refreshedListing = await listModels(env.GEMINI_API_KEY, { force: true });
   plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: refreshedListing });
   return plan;

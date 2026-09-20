@@ -26,7 +26,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v7-living-conversation-title';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v8-visible-frontier-failures';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -307,6 +307,26 @@ function shortGeminiModel(model = '') {
   return id.replace(/^gemini-/, '') || '—';
 }
 
+function routeReceiptFromFailure(failure = null) {
+  if (!failure || typeof failure !== 'object') return null;
+  return {
+    modelPolicy: failure.modelPolicy || null,
+    provider: { attempts: Array.isArray(failure.attempts) ? failure.attempts : [] }
+  };
+}
+function routeAttemptTrace(value = null) {
+  const attempts = Array.isArray(value?.provider?.attempts)
+    ? value.provider.attempts
+    : Array.isArray(value?.attempts)
+      ? value.attempts
+      : [];
+  return attempts.map((attempt) => {
+    const model = shortGeminiModel(attempt?.model);
+    const status = Number(attempt?.status || 0);
+    const suffix = attempt?.timedOut ? ' timeout' : status ? ' ' + status : '';
+    return model ? model + suffix : '';
+  }).filter(Boolean).join(' → ');
+}
 function renderModelRouteReceipt(doc, receipt = null) {
   const callable = Array.isArray(receipt?.modelPolicy?.callableModels) ? receipt.modelPolicy.callableModels : [];
   const attempts = Array.isArray(receipt?.provider?.attempts) ? receipt.provider.attempts : [];
@@ -321,7 +341,7 @@ function renderModelRouteReceipt(doc, receipt = null) {
     ? callable.map((model) => `${shortGeminiModel(model)} ✓`).join(' · ')
     : '—';
   if (attemptsNode) attemptsNode.textContent = attempts.length
-    ? attempts.map((attempt) => shortGeminiModel(attempt?.model)).filter(Boolean).join(' → ')
+    ? routeAttemptTrace(receipt)
     : '—';
   if (coolingNode) coolingNode.textContent = cooling.length
     ? cooling.map((row) => {
@@ -586,12 +606,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       state.lastFailure = failurePayload || { error: error?.name === 'AbortError' ? 'request-timeout' : 'network-request-failed' };
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
+      const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
+      if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
+      const attemptTrace = routeAttemptTrace(state.lastFailure);
+      const routeNote = attemptTrace ? ` · ROUTE ${attemptTrace}` : '';
       status.textContent = attachments.length
-        ? `TASK PRESERVED · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
-        : 'TASK PRESERVED · Your task is still here. Retry it, or copy/export it to another AI companion.';
+        ? `TASK PRESERVED${routeNote} · Your task and ${attachments.length} staged attachment${attachments.length === 1 ? '' : 's'} are still here. Retry it, or copy/export the text task to another AI companion.`
+        : `TASK PRESERVED${routeNote} · Your task is still here. Retry it, or copy/export it to another AI companion.`;
     } finally {
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
@@ -628,7 +652,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
-    try { await root.navigator.clipboard.writeText(state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : ''); byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED'; }
+    try {
+      const payload = state.lastFailure
+        ? { status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }
+        : state.lastReceipt || null;
+      await root.navigator.clipboard.writeText(payload ? JSON.stringify(payload, null, 2) : '');
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED';
+    }
     catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE'; }
   });
 

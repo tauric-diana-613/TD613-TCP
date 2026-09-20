@@ -204,6 +204,38 @@ clearGeminiModelState();
 }
 clearGeminiModelState();
 {
+  const now = Date.now();
+  let listingCalls = 0;
+  const narrowButNonempty = Object.freeze({
+    ok: true, status: 200, models: Object.freeze(['gemini-3.5-flash']), cached: true,
+    complete: true, observedAt: now - 1000, expiresAt: now + 599000, pageCount: 1, error: null
+  });
+  const fullFrontier = Object.freeze({
+    ok: true, status: 200,
+    models: Object.freeze(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
+    cached: false, complete: true, observedAt: now, expiresAt: now + 600000, pageCount: 1, error: null
+  });
+  const plan = await resolveGeminiProviderPlan({
+    task: 'khonapolit-dialogue',
+    env: { GEMINI_API_KEY: 'synthetic-key' },
+    maxModels: 8,
+    listModels: async (_key, options = {}) => {
+      listingCalls += 1;
+      if (listingCalls === 1) {
+        assert.equal(options.force, undefined);
+        return narrowButNonempty;
+      }
+      assert.equal(options.force, true, 'partial Marrowline frontier must earn one forced credential-scoped refresh');
+      return fullFrontier;
+    }
+  });
+  assert.equal(listingCalls, 2, 'one visible seat cannot certify the other four Marrowline seats absent');
+  assert.deepEqual(plan.callableModels.slice(0, 5), [
+    'gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'
+  ]);
+}
+clearGeminiModelState();
+{
   let listingCalls = 0;
   const failedListing = Object.freeze({
     ok: false, status: 408, models: Object.freeze([]), cached: false,

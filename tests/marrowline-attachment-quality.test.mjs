@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
-import {
+import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
   MARROWLINE_ATTACHMENT_SCHEMA,
   normalizeMarrowlineAttachments
@@ -43,4 +44,81 @@ test('Marrowline keeps file and photo MIME classes non-interchangeable', () => {
   assert.equal(normalizeMarrowlineAttachments([photo])[0].kind, 'photo');
   assert.throws(() => normalizeMarrowlineAttachments([{ ...photo, kind: 'file' }]), /unsupported-attachment-type/);
   assert.throws(() => normalizeMarrowlineAttachments([{ ...attachment(), kind: 'photo' }]), /unsupported-attachment-type/);
+});
+
+
+test('attachment turns walk the same five-seat frontier before waking the human', async t => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.GEMINI_API_KEY;
+  clearGeminiModelState();
+  process.env.GEMINI_API_KEY = 'synthetic-attachment-frontier-key';
+  const generationCalls = [];
+  t.after(() => {
+    clearGeminiModelState();
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  });
+
+  globalThis.fetch = async (url) => {
+    const value = String(url);
+    if (value.includes('/v1beta/models?')) {
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return {
+            models: [
+              'gemini-3.8-flash',
+              'gemini-3.7-flash',
+              'gemini-3.6-flash',
+              'gemini-3.5-flash',
+              'gemini-3-flash-preview'
+            ].map((id) => ({ name: 'models/' + id, supportedGenerationMethods: ['generateContent'] }))
+          };
+        }
+      };
+    }
+    const model = value.match(/models\/([^:]+):generateContent/)?.[1] || 'unknown';
+    generationCalls.push(model);
+    return {
+      ok: false,
+      status: 503,
+      headers: { get: () => null },
+      async json() { return { error: { status: 'UNAVAILABLE', message: 'synthetic seat unavailable' } }; }
+    };
+  };
+
+  const req = {
+    method: 'POST',
+    headers: { 'x-forwarded-for': '203.0.113.244' },
+    body: {
+      message: 'Read the attached operator note and keep walking the frontier if one seat is unavailable.',
+      history: [],
+      mode: 'issued-conjunction',
+      waiveIssuance: true,
+      attachments: [attachment()]
+    }
+  };
+  const res = {
+    statusCode: 200,
+    headers: {},
+    setHeader(name, value) { this.headers[name] = value; },
+    end(text) { this.text = text; this.payload = text ? JSON.parse(text) : null; }
+  };
+
+  await marrowlineAttachmentHandler(req, res);
+  assert.equal(res.statusCode, 502);
+  assert.equal(res.payload.error, 'gemini-provider-unavailable');
+  assert.deepEqual(generationCalls, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.7-flash',
+    'gemini-3-flash-preview'
+  ]);
+  assert.equal(res.payload.attempts.length, 5);
+  assert.ok(res.payload.attempts.every((attempt) => attempt.status === 503));
+  assert.ok(res.payload.attempts.every((attempt) => attempt.timeoutMs >= 10000),
+    'attachment seats receive completion windows rather than millisecond health probes');
 });
