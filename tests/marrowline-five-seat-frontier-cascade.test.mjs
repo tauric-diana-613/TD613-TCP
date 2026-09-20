@@ -554,6 +554,28 @@ try {
   clearGeminiModelState();
   calls.length = 0;
   requestBodies.length = 0;
+  releaseCanary36Calls = 0;
+  const outputAdmissionRetry = response();
+  await handler({
+    ...req,
+    headers: {
+      'x-forwarded-for': '203.0.113.214',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash',
+      'x-td613-canary-recovery': 'output-admission-retry'
+    },
+    body: { ...req.body, message: 'Do not spend a second structural-repair allowance after the primary release-canary HTTP invocation already had one.' }
+  }, outputAdmissionRetry);
+
+  assert.equal(outputAdmissionRetry.statusCode, 502);
+  assert.deepEqual(calls, ['gemini-3.6-flash'], 'output-admission outer retry may use its alternate model seat but cannot stack a second structural repair');
+  assert.equal(outputAdmissionRetry.payload.attempts.length, 1);
+  assert.deepEqual(outputAdmissionRetry.payload.attempts[0].outputAdmission.reasons, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(outputAdmissionRetry.payload.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
   releaseCanaryHeadingRepairScenario = false;
   sharedBurstScenario = false;
   entitlementMismatchScenario = false;
