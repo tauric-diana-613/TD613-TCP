@@ -114,7 +114,7 @@ function clientDailyQuotaHintModels(body = {}, at = Date.now()) {
   if (!hints || hints.schema !== 'td613.gemini-browser-daily-quota-hints/v0.1') return new Set();
   if (safe(hints.pacific_day) !== pacificDayKey(at)) return new Set();
   return new Set((Array.isArray(hints.models) ? hints.models : [])
-    .map((model) => safe(model).replace(/^models\\//, ''))
+    .map((model) => safe(model).replace(/^models\//, ''))
     .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)));
 }
 
