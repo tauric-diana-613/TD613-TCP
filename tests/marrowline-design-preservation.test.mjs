@@ -276,6 +276,9 @@ test('failure notice distinguishes unavailable service, rejected format and brow
   assert.match(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}), /service could not complete/);
   assert.match(boundedFailureMessage({error:'no-eligible-callable-models',httpStatus:503}), /No callable model route was admitted/,
     'typed route diagnostic takes precedence over the shared HTTP failure envelope');
-  assert.match(boundedFailureMessage({error:'khonapolit-output-quality-held'}), /reply came back.*format checks/);
+  const localHold = boundedFailureMessage({error:'khonapolit-output-quality-held'});
+  assert.match(localHold, /provider return arrived.*Marrowline held it locally after generation/i);
+  assert.match(localHold, /provider did not reject your request/i);
+  assert.doesNotMatch(localHold, /AI rejected|provider rejected/i);
   assert.match(boundedFailureMessage({error:'request-timeout'}), /timed out/);
 });
