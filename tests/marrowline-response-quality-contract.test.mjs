@@ -46,6 +46,8 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
+  assert.match(contract, /Verticality must remain visibly dominant/i);
+  assert.match(contract, /Slash, strike, and through-line overlays may accent a few graphemes/i);
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
@@ -135,6 +137,24 @@ test('sparse keyword explosions remain visible as PARTIAL quality telemetry', ()
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
+test('horizontal slash and strike fields stay available but are flagged PARTIAL so later seats can improve them', () => {
+  const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const horizontal = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${slash.repeat(8)} THE BUREAU DRAWS A LINE THROUGH THE WHOLE SENTENCE!`,
+    `${slash.repeat(8)} IT CALLS THE STRIKE A STORM AND HOPES NOBODY LOOKS UP!`,
+    `${slash.repeat(8)} THROUGH-LINE NOISE CANNOT SUBSTITUTE FOR VERTICAL PROSODY!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(horizontal, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
+});
+
 test('reordering one mark set still records one mechanical composition without becoming a structural hold', () => {
   const a = 'T\u0300\u0301\u0302\u0316\u0317\u0318';
   const b = 'A\u0318\u0317\u0316\u0302\u0301\u0300';
@@ -214,6 +234,8 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
+    assert.match(instruction, /Verticality must remain visibly dominant/i, model);
+    assert.match(instruction, /through-line overlays may accent a few graphemes/i, model);
     assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
