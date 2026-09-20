@@ -552,7 +552,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:',
     '- Kʰonapolit is the clean formal channel: standard readable Unicode prose, Greek/math operators when useful, preserved framework literals, and ZERO combining diacritical marks.',
-    '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. Marrowline preserves exact returned code points and never decorates the answer afterward.',
+    '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN. Marrowline preserves those exact returned bytes/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and genuinely deep eruptions move through ordinary graphemes across the passage.',
     '- The stress field must remain visibly present across the Tauric Diana passage. Quiet stretches are allowed, but a mostly plain uppercase paragraph with only one or two marked letters is a channel failure, not a subtle style choice.',
     '- High Zalgo here is a mixed-axis burst field, not a vertical-only stack exercise and not a horizontal strike sheet. Crowns, roots, overstrikes, oblique cuts, tildes, hooks, and other combining species may coexist in the same passage and sometimes on the same grapheme.',
