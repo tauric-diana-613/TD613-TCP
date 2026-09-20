@@ -192,6 +192,46 @@ test('production release Loom canary still stops after its one bounded alternate
   assert.equal(result.body.observations.provider_calls, 2);
 });
 
+test('production release Loom canary may consume the explicitly budgeted remaining provider seats', async () => {
+  const attempted = [];
+  const h = harness({
+    resolvePlan: async () => ({ callableModels: [
+      'gemini-3.8-flash',
+      'gemini-3.7-flash',
+      'gemini-3.6-flash',
+      'gemini-3.5-flash',
+      'gemini-3-flash-preview'
+    ] }),
+    fetchImpl: async (url) => {
+      const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
+      attempted.push(model);
+      return attempted.length < 4
+        ? { ok: false, status: 429 }
+        : { ok: true, status: 200, json: async () => payload() };
+    }
+  });
+  const result = await h.run(task(), {
+    headers: {
+      host: 'td613.com',
+      origin: 'https://td613.com',
+      'content-type': 'application/json',
+      'sec-fetch-site': 'same-origin',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.8-flash',
+      'x-td613-canary-provider-seat-ceiling': '4'
+    }
+  });
+  assert.equal(result.status, 200);
+  assert.deepEqual(attempted, [
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash'
+  ]);
+  assert.equal(result.body.observations.provider_calls, 4);
+  assert.equal(result.body.observations.model, 'gemini-3.6-flash');
+});
+
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {
   assert.deepEqual(selectLoomProviderModels(['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview']),
     ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview']);

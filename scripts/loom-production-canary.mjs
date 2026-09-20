@@ -5,6 +5,7 @@ const base = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/
 const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-production-canary';
 const LIVE_WITNESS_TIMEOUT_MS = 270000;
+const RELEASE_CANARY_MAX_PROVIDER_REQUESTS = 5;
 const fixturePath = 'docs/research/receipts/2026-09-10-loom-live-receiver/portable-aia.json';
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
@@ -45,7 +46,7 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 
 fs.mkdirSync(artifactDir, { recursive: true });
 
-async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '' } = {}) {
+async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '', canaryProviderSeatCeiling = null } = {}) {
   let httpStatus = 0;
   let payload = null;
   let transportError = null;
@@ -59,7 +60,10 @@ async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canary
         'sec-fetch-site': 'same-origin',
         'cache-control': 'no-cache',
         'x-td613-release-canary': '1',
-        ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {})
+        ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {}),
+        ...(Number.isSafeInteger(canaryProviderSeatCeiling) && canaryProviderSeatCeiling > 0
+          ? { 'x-td613-canary-provider-seat-ceiling': String(canaryProviderSeatCeiling) }
+          : {})
       },
       body: JSON.stringify(body),
       redirect: 'follow',
@@ -157,7 +161,30 @@ const marrowlineCheckpoint = {
 };
 fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json'), `${JSON.stringify(marrowlineCheckpoint, null, 2)}\n`);
 console.log(`[loom-production-canary] checkpoint ${JSON.stringify(marrowlineCheckpoint)}`);
-const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });
+
+const providerCallCount = providerPayload => {
+  const consumptionCount = providerPayload?.gemini_consumption?.call_count;
+  if (Number.isSafeInteger(consumptionCount) && consumptionCount >= 0) return consumptionCount;
+  const attempts = Array.isArray(providerPayload?.receipt?.provider?.attempts)
+    ? providerPayload.receipt.provider.attempts
+    : Array.isArray(providerPayload?.attempts)
+      ? providerPayload.attempts
+      : [];
+  return attempts.length;
+};
+const marrowlineProviderCallsSpent = providerCallCount(marrowlinePrimaryPayload)
+  + (marrowlineSeatRetry ? providerCallCount(marrowlineResult.payload) : 0);
+const loomProviderSeatCeiling = Math.max(
+  1,
+  Math.min(
+    RELEASE_CANARY_MODELS.length,
+    RELEASE_CANARY_MAX_PROVIDER_REQUESTS - marrowlineProviderCallsSpent
+  )
+);
+const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, {
+  canaryModel: loomCanaryModel,
+  canaryProviderSeatCeiling: loomProviderSeatCeiling
+});
 const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
 
@@ -327,12 +354,13 @@ const receipt = {
   release_canary_budget: {
     posture: 'quota-conservative-bounded-seat-failover',
     max_http_requests: 3,
-    max_provider_requests: 5,
+    max_provider_requests: RELEASE_CANARY_MAX_PROVIDER_REQUESTS,
     marrowline_model: marrowlineCanaryModel,
     marrowline_retry_model: marrowlineSeatRetry?.retry_model || null,
     loom_model: loomCanaryModel,
     marrowline_structural_repair_ceiling: 1,
-    loom_provider_seat_ceiling: 2
+    marrowline_provider_calls_spent: marrowlineProviderCallsSpent,
+    loom_provider_seat_ceiling: loomProviderSeatCeiling
   },
   request_order: marrowlineSeatRetry
     ? ['marrowline-primary', 'marrowline-seat-retry', 'loom']
