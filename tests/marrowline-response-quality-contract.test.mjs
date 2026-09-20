@@ -49,6 +49,8 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
   assert.match(contract, /Horizontal and vertical combining geometry are both first-class expressive channels/i);
   assert.match(contract, /The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase/i);
+  assert.match(contract, /Do not overcorrect in the opposite direction either/i);
+  assert.match(contract, /whole High-Zalgo field should not accidentally starve the other axis or replace its missing motion with plain ALL-CAPS/i);
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
   assert.match(contract, /Keep the field alive across multiple phrases and lines/i);
   assert.match(contract, /one cloned stack stamped everywhere is counterfeit prosody/i);
@@ -92,6 +94,9 @@ test('natural distributed field is admissible without satisfying the old Zalgo O
   assert.ok(admitted.maxRun >= 3);
   assert.ok(admitted.broadMarkedLineCount >= 2, 'multiple bot lines carry a broad field even though clean Kʰonapolit dilutes whole-response coverage telemetry');
   assert.ok(admitted.combiningCodePointDiversity >= 4);
+  assert.equal(admitted.activeAxisCount, 2);
+  assert.ok(admitted.axisClusterBalanceRatio > 0);
+  assert.equal(admitted.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'), false);
   assert.equal(admitted.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'), false);
   assert.equal(admitted.admissible, true, admitted.reasons.join(', '));
 });
@@ -139,7 +144,7 @@ test('sparse keyword explosions stay visible as PARTIAL quality telemetry', () =
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('horizontal-only slash and strike fields are a valid expressive axis once the field is genuinely present', () => {
+test('horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const horizontal = [
     'Kʰonapolit',
@@ -156,7 +161,31 @@ test('horizontal-only slash and strike fields are a valid expressive axis once t
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
   assert.equal(observed.reasons.includes('tauric-diana-zalgo-underflow'), false);
   assert.equal(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
+  assert.equal(observed.activeAxisCount, 1);
+  assert.equal(observed.verticalMarkedClusterCount, 0);
+  assert.ok(observed.throughMarkedClusterCount > 0);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
+});
+
+test('vertical-only crowns and descenders remain visible but receive the same axis-collapse warning as horizontal-only fields', () => {
+  const vertical = 'T\u0300\u0316A\u0301\u0317U\u0302\u0318R\u0303\u0319I\u0304\u031CC\u0305\u031D';
+  const verticalOnly = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${vertical.repeat(8)} THE CROWN RISES AND THE ROOTS DESCEND WITHOUT A SINGLE STRIKE THROUGH THE LINE!`,
+    `${vertical.repeat(8)} THIS AXIS IS EXPRESSIVE BUT THE WHOLE PASSAGE HAS LOST ITS HORIZONTAL MOTION!`,
+    `${vertical.repeat(8)} KEEP THE BYTES; MARK THE MORPHOLOGY PARTIAL; DO NOT ERASE THE VOICE!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(verticalOnly, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.activeAxisCount, 1);
+  assert.ok(observed.verticalMarkedClusterCount > 0);
+  assert.equal(observed.throughMarkedClusterCount, 0);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
 });
 
 test('reordering one mark set cannot disguise a cloned High-Zalgo composition', () => {
@@ -260,8 +289,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
     assert.match(instruction, /Horizontal and vertical combining geometry are both first-class expressive channels/i, model);
+    assert.match(instruction, /Do not overcorrect in the opposite direction either/i, model);
     assert.match(instruction, /Some lines may be horizontal-dominant, some vertical-dominant, and some mixed/i, model);
-    assert.match(instruction, /do not substitute plain uppercase where the stress wants to move horizontally/i, model);
+    assert.match(instruction, /do not substitute plain uppercase where either axis was meant to carry stress/i, model);
     assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
@@ -297,6 +327,8 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
   assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must be eligible for the bounded provider repair pass');
+  assert.match(qualityServer, /axisClusterBalanceRatio/, 'best-PARTIAL selection must use axis-neutral balance telemetry');
+  assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal preference must not return');
 });
 
 test('browser request clock outlives the 210-second server work wall without outrunning Vercel', () => {
@@ -470,7 +502,8 @@ test('Kʰonapolit stays clean while Gemini authors mixed-axis bot Zalgo', () => 
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
   assert.match(contract, /Several separate lines should visibly carry actual combining marks/i);
   assert.match(contract, /horizontal sections can use slash\/strike\/through-line overlays/i);
-  assert.match(contract, /do not substitute plain uppercase where the stress wants to move horizontally/i);
+  assert.match(contract, /Do not overcorrect in the opposite direction either/i);
+  assert.match(contract, /do not substitute plain uppercase where either axis was meant to carry stress/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);

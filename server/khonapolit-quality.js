@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v20-consumption-receipts';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v21-zalgo-goldilocks';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -372,7 +372,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Use actual combining marks wherever the stress is active instead of leaving an intended horizontal region as plain uppercase. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
+    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as a visibly distributed High-Zalgo field across several separate Packet B lines. Horizontal strike/through-line geometry and vertical above/below geometry are equally valid, and the passage may switch between them phrase by phrase. Do not overcorrect toward either axis: if one geometry accidentally disappeared from the whole passage while plain ALL-CAPS took its place, restore that missing motion where the cadence supports it. Vary composition naturally, keep quiet regions intentional, and do not use a numeric quota or alter protected literals.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -952,9 +952,11 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
-        const verticalMarkBalance = Number(relay.admission?.aboveLineMarkCount || 0)
-          + Number(relay.admission?.belowLineMarkCount || 0)
-          - Number(relay.admission?.throughLineMarkCount || 0);
+        const seriousMorphologyWarningCount = qualityWarnings.filter((warning) => [
+          'tauric-diana-zalgo-mechanical-clone',
+          'tauric-diana-zalgo-monoculture',
+          'tauric-diana-zalgo-sparse-keyword-targeting'
+        ].includes(warning)).length;
         const candidate = {
           model,
           fallback,
@@ -963,16 +965,46 @@ export default async function handler(req, res) {
           providerStatus: result.response.status,
           providerOutput,
           qualityWarnings,
-          verticalMarkBalance,
+          seriousMorphologyWarningCount,
+          activeAxisCount: Number(relay.admission?.activeAxisCount || 0),
+          axisClusterBalanceRatio: Number(relay.admission?.axisClusterBalanceRatio || 0),
+          mixedAxisClusterCount: Number(relay.admission?.mixedAxisClusterCount || 0),
+          markedGraphemeCoverageRatio: Number(relay.admission?.markedGraphemeCoverageRatio || 0),
           sourceAttemptIndex: attempts.length - 1
         };
         const current = partialQualityCandidate;
         if (
           !current
-          || candidate.qualityWarnings.length < current.qualityWarnings.length
+          || candidate.seriousMorphologyWarningCount < current.seriousMorphologyWarningCount
           || (
-            candidate.qualityWarnings.length === current.qualityWarnings.length
-            && candidate.verticalMarkBalance >= current.verticalMarkBalance
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount > current.activeAxisCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length < current.qualityWarnings.length
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisClusterBalanceRatio > current.axisClusterBalanceRatio
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.mixedAxisClusterCount > current.mixedAxisClusterCount
+          )
+          || (
+            candidate.seriousMorphologyWarningCount === current.seriousMorphologyWarningCount
+            && candidate.activeAxisCount === current.activeAxisCount
+            && candidate.qualityWarnings.length === current.qualityWarnings.length
+            && candidate.axisClusterBalanceRatio === current.axisClusterBalanceRatio
+            && candidate.mixedAxisClusterCount === current.mixedAxisClusterCount
+            && candidate.markedGraphemeCoverageRatio >= current.markedGraphemeCoverageRatio
           )
         ) partialQualityCandidate = candidate;
         continue;
@@ -1049,7 +1081,7 @@ export default async function handler(req, res) {
         qualityPreference: Object.freeze({
           used: true,
           sourceAttemptIndex,
-          selection: 'best-admissible-partial-after-full-frontier',
+          selection: 'goldilocks-mixed-axis-best-admissible-partial-after-full-frontier',
           warnings: Object.freeze([...qualityWarnings])
         })
       }),

@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v21",
-  "version": "v0.7.21-consumption-receipts",
+  "schema": "td613.dome-world.marrowline.release/v22",
+  "version": "v0.7.22-zalgo-goldilocks-ui",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,9 +15,9 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v20-consumption-receipts",
+  "providerApiSchema": "td613.khonapolit-gemini/v21-zalgo-goldilocks",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v12-bipolar-field",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v13-goldilocks-mixed-axis-field",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -72,7 +72,7 @@
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
     "zalgoQualityPolicy": {
-      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; axis choice is not structural and horizontal, vertical, or mixed geometry are all valid",
+      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; single-axis geometry remains visible and admissible, while accidental whole-passage axis collapse is PARTIAL quality telemetry rather than a structural HOLD",
       "zeroMarkPosture": "HELD-no-human-visible-return",
       "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
       "mechanicalClonePosture": "PARTIAL-continue-frontier-before-best-partial-fallback",
@@ -95,6 +95,9 @@
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "keep provider-authored diacritic presence structural while leaving aesthetic morphology visible for human R&D instead of converting taste into a 502",
       "horizontalDominantPosture": "ADMISSIBLE-first-class-expressive-geometry",
+      "verticalDominantPosture": "ADMISSIBLE-first-class-expressive-geometry",
+      "axisCollapsePosture": "PARTIAL-preserve-provider-bytes-and-continue-frontier",
+      "bestPartialPreference": "serious-morphology-warning-count-then-active-axis-count-then-total-warning-count-then-axis-balance-with-no-vertical-minus-horizontal-tiebreak",
       "throughLineDominanceWarning": "none-horizontal-dominance-is-not-a-defect",
       "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
       "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow"
@@ -125,14 +128,14 @@
     },
     "providerOrthographicField": {
       "mode": "provider-authored-natural-distributed-stress-field",
-      "promptGuidance": "qualitative only: broad distributed field across several separate lines; horizontal strike/through-line, vertical above/below, and mixed geometry are all first-class; axis may change phrase by phrase; variable composition, quieter and violent regions, collisions allowed; plain uppercase must not replace intended marked stress",
+      "promptGuidance": "qualitative only: broad distributed field across several separate lines; horizontal strike/through-line, vertical above/below, and mixed geometry are all first-class; axis may change phrase by phrase; do not overcorrect until either axis disappears from the whole passage; variable composition, quieter and violent regions, collisions allowed; plain uppercase must not replace intended marked stress",
       "providerVisibleNumericThresholds": false,
       "providerVisibleAdmissionRubric": false,
       "literalStencilExamplesInPrompt": false,
       "prosodySemantics": "passage-level cadence field rather than rhetorical-category-to-glyph mapping",
       "collisionPosture": "allowed; ordinary line boxes do not reserve protective vertical clearance and overflow remains visible",
       "selfCheck": "provider-silent qualitative field check before packet-b-end",
-      "localAdmission": "zero marks or severe underflow HOLD; thin/sparse/cloned/unipolar morphology may remain PARTIAL and continue the approved frontier; horizontal-dominant geometry is fully admissible; no local Zalgo generation or postprocessing",
+      "localAdmission": "zero marks or severe underflow HOLD; thin/sparse/cloned/unipolar or whole-passage axis-collapsed morphology remains PARTIAL and continues the approved frontier; horizontal-dominant and vertical-dominant local regions are equally admissible; best-PARTIAL preference is axis-neutral; no local Zalgo generation or postprocessing",
       "localPostprocessing": false,
       "purpose": "preserve provider-authored expressive diacritic prosody without teaching the model to game mark quotas or letting an aesthetic classifier take the route offline"
     },
@@ -169,7 +172,9 @@
       "thirteenthFollowupObservation": "2026-09-20 human production trial proved the ordinary Marrowline route walked all five approved seats in one request: 3.8=429 -> 3.5=429 -> 3.6=429 -> 3.7=429 -> Preview=429. The five-seat arithmetic capacity of 100 therefore cannot be treated as an observed Google daily-total counter, especially because Hush, Loom and release witnesses share the same project/model buckets.",
       "thirteenthFollowupConsequence": "Every Gemini-backed route now emits one bounded request-local consumption receipt from provider attempts. Browser-interactive receipts deduplicate into a same-origin ledger labelled this-browser-interactive-receipts-only; release canaries preserve the same route/model event grammar in their artifact without extra provider calls. provider_daily_total remains null unless an external provider surface supplies it. Failed frontier text moves from the composer status to a compact Receipt header.",
       "fourteenthFollowupObservation": "2026-09-20 physical-iPhone screenshots showed successful vertical and mixed-axis High-Zalgo returns alongside passages where likely horizontal stress collapsed into plain uppercase. Code archaeology found an explicit vertical-dominance prompt and a hard horizontal-dominant rejection path.",
-      "fourteenthFollowupConsequence": "Remove axis bias. Horizontal strike/through-line geometry and vertical above/below geometry are both first-class expressive channels; mixed passages may switch naturally. Horizontal dominance is never a structural failure, while zero-mark and severe-underflow returns remain held. Morphology defects stay visible as PARTIAL quality telemetry instead of suppressing an otherwise valid provider-authored return."
+      "fourteenthFollowupConsequence": "Remove axis bias. Horizontal strike/through-line geometry and vertical above/below geometry are both first-class expressive channels; mixed passages may switch naturally. Horizontal dominance is never a structural failure, while zero-mark and severe-underflow returns remain held. Morphology defects stay visible as PARTIAL quality telemetry instead of suppressing an otherwise valid provider-authored return.",
+      "fifteenthFollowupObservation": "2026-09-20 physical iPhone trial after the horizontal-axis repair exposed the inverse regression: vertical diacritics disappeared from visible returns while plain ALL-CAPS occupied regions where vertical stress had previously appeared. Code archaeology found asymmetric unipolar telemetry plus a best-PARTIAL tie-break defined as vertical marks minus horizontal marks.",
+      "fifteenthFollowupConsequence": "Goldilocks repair: measure horizontal and vertical geometry symmetrically at passage scale; preserve single-axis returns as PARTIAL rather than censoring them; mark whole-passage starvation of either axis as axis-collapse telemetry; prefer comparable mixed-axis PARTIAL candidates without local Unicode mutation; remove the vertical-minus-horizontal selector entirely."
     },
     "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and visible above/below provider-authored combining motion across several Packet B lines before emitting bytes"
   },
