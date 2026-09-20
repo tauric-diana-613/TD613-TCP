@@ -12,12 +12,12 @@
   "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v5-voice-scoped-flourish-layout",
   "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v5-centered-clear-modal",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
-  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
+  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v7-living-conversation-title",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v17-route-quota-budget-canary",
+  "providerApiSchema": "td613.khonapolit-gemini/v18-high-zalgo-frontier",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v11-underflow-floor",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v12-bipolar-field",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -260,7 +260,10 @@
       "modelCooldownAuthority": "only model-scoped 429 that does not contradict the operator-known daily entitlement may write model health cooldown; entitlement mismatch, shared, or unknown 429 does not poison per-model process-local state",
       "routeQuotaSemantics": "GenerateRequestsPerDayPerProjectPerModel-FreeTier is a per-model bucket; a 20-call bucket across five approved current Marrowline seats composes to a 100-call route budget and must not be narrated as a 20-call route ceiling",
       "releaseCanaryBudget": "full-product production release witness may spend at most one Marrowline provider request plus one distinct Loom provider request; no Marrowline failover, repair, or shared-rate retry is authorized by the release-canary header",
-      "providerRetryWindowAuthority": "when Gemini supplies Retry-After for HTTP 429, process-local cooldown follows that bounded window; exponential local quota backoff is reserved for 429 responses without a provider retry window"
+      "providerRetryWindowAuthority": "when Gemini supplies Retry-After for HTTP 429, process-local cooldown follows that bounded window; exponential local quota backoff is reserved for 429 responses without a provider retry window",
+      "highZalgoAdmission": "Packet B must carry a heterogeneous bipolar field: real above-line and below-line motion, multiple mark species, non-cloned stack geometry, broad travel across lines, and no circumflex monoculture disguised by stack-height changes",
+      "frontierFailureContinuity": "ordinary human turns continue across approved Gemini 3.x seats after token-limit and non-credential seat-local request rejection; 401/403 and explicit shared-project quota remain route-wide holds",
+      "conversationNaming": "the first admitted Kʰonapolit formal movement deterministically names the local conversation chamber from its own motifs; the title persists in browser session custody and resets on clear"
     },
     "streamingProgressReceipt": {
       "requested": true,
