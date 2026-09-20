@@ -51,7 +51,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
   assert.match(contract, /Build that architecture FIRST/i);
   assert.match(contract, /Visual reference only, NOT a stencil to copy/i);
-  assert.match(contract, /Literal ASCII \/, \\\\, \|, _, =/i);
+  assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(contract, /Through-line combining marks U\+0334–U\+0338/i);
   assert.match(contract, /First establish crown-and-descender stacks on several separate lines/i);
   assert.match(contract, /Horizontal geometry remains available only as accent and interruption/i);
@@ -642,7 +642,7 @@ test('structural repair repeats the vertical-scaffold law without authorizing lo
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
   assert.match(directive, /Build the vertical scaffold FIRST/i);
-  assert.match(directive, /literal ASCII \/, \\\\, \|, _, =/i);
+  assert.ok(directive.includes('literal ASCII /, \\, |, _, ='));
   assert.match(directive, /U\+0334–U\+0338 through-line marks/i);
   assert.match(directive, /accent-only after the vertical scaffold is already visibly alive/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
