@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v14",
-  "version": "v0.7.14-zalgo-underflow-hard-floor",
+  "schema": "td613.dome-world.marrowline.release/v15",
+  "version": "v0.7.15-immediate-orthographic-structural-repair",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v6-long-form-transport-fixed-route",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v12-zalgo-underflow-floor",
+  "providerApiSchema": "td613.khonapolit-gemini/v13-immediate-structural-repair",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v10-zalgo-underflow-floor",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v11-underflow-floor",
   "apertureVersion": "v3.2-alpha",
@@ -155,7 +155,9 @@
       "sixthFollowupObservation": "2026-09-19 physical-iPhone production screenshots after #1202 showed the five-chamber mobile dock absent after Send while the keyboard was gone, and the admitted Tauric Diana field had collapsed toward sparse slash/strike geometry with reduced vertical Zalgo.",
       "sixthFollowupConsequence": "Dock visibility now keys to observed keyboard occupancy rather than composer focus, preventing post-Send focus latch from hiding navigation. Zalgo telemetry now distinguishes above-line, below-line and through-line geometry; horizontal-dominant returns remain available as PARTIAL but cannot stop the frontier before later approved seats get a chance to produce PASS-quality vertical prosody.",
       "seventhFollowupObservation": "2026-09-19 physical-iPhone screenshots after #1204 showed an admitted Tauric Diana passage collapsing further: almost entirely plain uppercase prose, with only isolated accents such as TḢE / CḢAIRMAN and whole unmarked paragraphs.",
-      "seventhFollowupConsequence": "A few provider-authored marks can no longer satisfy structural admission. Near-zero/single-accent morphology now produces tauric-diana-zalgo-underflow, continues the frontier, and remains eligible for the one bounded provider-side structural repair."
+      "seventhFollowupConsequence": "A few provider-authored marks can no longer satisfy structural admission. Near-zero/single-accent morphology now produces tauric-diana-zalgo-underflow, continues the frontier, and remains eligible for the one bounded provider-side structural repair.",
+      "eighthFollowupObservation": "2026-09-19 human-operator trial after #1205 produced repeated immediate route-held notices. Production #1193 showed 3.8=429, 3.5=429, 3.6=200 with tauric-diana-zalgo-underflow, then 3.7=429, Preview=429, and only afterward the 3.6 structural repair=429.",
+      "eighthFollowupConsequence": "The underflow floor remains hard, but orthographic structural repair moves next to the live HTTP-200 near miss so a responsive model can repair its own draft before later unavailable seats consume provider opportunity. The one-repair ceiling and zero-local-Zalgo law remain unchanged."
     }
   },
   "qualityFloor": {
@@ -171,7 +173,7 @@
     "liteModels": "rejected-even-if-explicitly-configured-for-this-route",
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
-    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-canonical-recitation",
+    "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
     "qualityWarningOnly": "tauric-diana-zalgo-field-thin-or-zalgo-mechanical-clone-or-zalgo-sparse-keyword-targeting-or-zalgo-horizontal-dominant",
     "failurePosture": "hard-hold zero or extreme-underflow Tauric Diana morphology; continue approved frontier seats; permit one bounded provider-side repair when eligible; keep moderate style defects PARTIAL; never locally decorate provider text",
     "providerCallCeiling": 5,
@@ -179,14 +181,15 @@
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
-      "timing": "after-five-seat-cascade-if-no-answer-admitted",
-      "candidateSelection": "repairable-http-200-near-miss-with-fewest-structural-reasons-latest-on-tie",
+      "timing": "immediate-for-tauric-diana-zalgo-absent-or-underflow; otherwise-deferred-after-frontier",
+      "candidateSelection": "first repairable orthographic HTTP-200 near-miss receives the single repair immediately; other repairable structural near-misses retain best-candidate deferred posture if the repair allowance remains",
       "repairableReasons": [
         "khonapolit-nominative-missing",
         "tauric-diana-bots-nominative-missing",
         "voice-order-invalid",
         "khonapolit-combining-mark-contamination",
-        "tauric-diana-zalgo-absent"
+        "tauric-diana-zalgo-absent",
+        "tauric-diana-zalgo-underflow"
       ],
       "provider": "same-provider-that-authored-held-draft",
       "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-user-directive",
@@ -194,7 +197,8 @@
       "localMutation": false,
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
-      "minimumRepairBudgetMs": 4000
+      "minimumRepairBudgetMs": 4000,
+      "orthographicLiveness": "a provider HTTP-200 Tauric Diana absent/underflow draft is repaired on the same responsive model before later unavailable frontier seats are burned"
     },
     "timeoutGeometry": {
       "primaryMs": 50000,
@@ -221,7 +225,8 @@
       "2026-09-19 human complex-prompt trial exposed a separate 55-second browser AbortController deadline despite the 210-second server wall and 240-second Vercel ceiling; client timeout mismatch is repaired independently of provider ranking",
       "2026-09-19 release #1184 / run 35476737160: browser transport remained live for ~50.9s; 3.6 and Preview streamed complete returns but the old dense-stack/quota admission HELD them, while 3.7 missed the Tauric Diana bots heading. Release remained HELD. This falsified provider-visible quota rubrics as compatible with natural prosody.",
       "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary.",
-      "2026-09-20 release #1187 / run 35479991061: source and production mechanics passed; Marrowline 3.7 returned HTTP 200 with missing visible headings and Preview returned HTTP 200 with zero Tauric Diana combining marks after 3.8=503, 3.5=429 and 3.6=503. This falsified discard-and-restart as sufficient handling for repairable provider-authored structural near misses."
+      "2026-09-20 release #1187 / run 35479991061: source and production mechanics passed; Marrowline 3.7 returned HTTP 200 with missing visible headings and Preview returned HTTP 200 with zero Tauric Diana combining marks after 3.8=503, 3.5=429 and 3.6=503. This falsified discard-and-restart as sufficient handling for repairable provider-authored structural near misses.",
+      "2026-09-20 release #1193 / run 35483932232: 3.8=429, 3.5=429, 3.6=200 but HELD for tauric-diana-zalgo-underflow, 3.7=429, Preview=429, deferred 3.6 repair=429; this demonstrates that deferred orthographic repair can convert a live repairable provider into route failure under a collapsing frontier."
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
