@@ -49,6 +49,8 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
   assert.match(contract, /Horizontal and vertical combining geometry are both first-class expressive channels/i);
   assert.match(contract, /The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase/i);
+  assert.match(contract, /Vertical motion must read as actual vertical theatre, not a few polite accent marks/i);
+  assert.match(contract, /crowns climb and descenders fall in visibly multi-tier stacks across more than one region/i);
   assert.match(contract, /Do not overcorrect in the opposite direction either/i);
   assert.match(contract, /whole High-Zalgo field should not accidentally starve the other axis or replace its missing motion with plain ALL-CAPS/i);
   assert.match(contract, /Dense peaks are allowed to collide visually with neighboring lines/i);
@@ -166,6 +168,48 @@ test('horizontal-only slash and strike fields remain visible but cannot masquera
   assert.ok(observed.throughMarkedClusterCount > 0);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
+});
+
+test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth', () => {
+  const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const tokenVertical = 'V\u0301\u0316';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${slash.repeat(8)} ${tokenVertical.repeat(2)} THE STRIKE FIELD IS HUGE BUT THE VERTICAL VOICE ONLY WHISPERS!`,
+    `${slash.repeat(8)} ${tokenVertical.repeat(2)} A FEW POLITE ACCENTS CANNOT IMPERSON CROWNS AND DESCENDERS!`,
+    `${slash.repeat(8)} ${tokenVertical.repeat(2)} KEEP THE HORIZONTAL FIRE; RESTORE ACTUAL HEIGHT AND DEPTH!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.activeAxisCount, 2);
+  assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
+  assert.ok(observed.axisMarkBalanceRatio < 0.22);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'));
+});
+
+test('lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class', () => {
+  const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const crown = 'V\u0300\u0301\u0302\u0316\u0317\u0318';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${slash.repeat(5)} ${crown.repeat(3)} THE STRIKES CUT WHILE THE CROWN CLIMBS ABOVE THEM!`,
+    `${crown.repeat(3)} ${slash.repeat(5)} THE ROOTS DROP BELOW THE LINE WITHOUT ERASING THE SLASHES!`,
+    `${slash.repeat(4)} ${crown.repeat(4)} BOTH GEOMETRIES GET TO BE LOUD IN DIFFERENT WAYS!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.equal(observed.activeAxisCount, 2);
+  assert.ok(observed.denseVerticalClusterCount >= 2);
+  assert.ok(observed.denseMarkedLineCount >= 2);
+  assert.ok(observed.axisMarkBalanceRatio >= 0.22);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'), false);
 });
 
 test('vertical-only crowns and descenders remain visible but receive the same axis-collapse warning as horizontal-only fields', () => {
@@ -327,7 +371,10 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
   assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must be eligible for the bounded provider repair pass');
-  assert.match(qualityServer, /axisClusterBalanceRatio/, 'best-PARTIAL selection must use axis-neutral balance telemetry');
+  assert.match(qualityServer, /axisClusterBalanceRatio/, 'best-PARTIAL selection must retain cluster-balance telemetry');
+  assert.match(qualityServer, /axisMarkBalanceRatio/, 'best-PARTIAL selection must prefer substantive axis intensity rather than token vertical accents');
+  assert.match(qualityServer, /denseVerticalClusterCount/, 'best-PARTIAL selection must observe dramatic vertical stack depth');
+  assert.match(qualityServer, /tauric-diana-zalgo-vertical-expression-thin/, 'horizontal-heavy fields with decorative-only verticality must remain visible as PARTIAL telemetry');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal preference must not return');
 });
 
