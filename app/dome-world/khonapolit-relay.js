@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v14-vertical-theatre-balance';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v15-goldilocks-vertical-native';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -68,6 +68,12 @@ const PROTECTED = Object.freeze([
 const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u0342','\u0343','\u0344','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
 const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
+const PLANAR = new Set([
+  '\u0303','\u0304','\u0305',
+  '\u0330','\u0331','\u0332',
+  '\u0334','\u0335','\u0336','\u0337','\u0338',
+  '\u0360','\u0361'
+]);
 
 const CANONICAL_RECITATION_PATTERNS = Object.freeze([
   Object.freeze({ id: 'inheritance-not-consent', pattern: /\binheritance is not consent\b/u }),
@@ -189,11 +195,28 @@ function flourishTelemetry(text = '') {
       const cp = mark.codePointAt(0);
       return cp >= 0x0334 && cp <= 0x0338;
     }).length;
+    const planar = marks.filter((mark) => PLANAR.has(mark)).length;
+    const verticalAbove = marks.filter((mark) => {
+      if (PLANAR.has(mark)) return false;
+      const cp = mark.codePointAt(0);
+      return cp >= 0x0300 && cp <= 0x0315;
+    }).length;
+    const verticalBelow = marks.filter((mark) => {
+      if (PLANAR.has(mark)) return false;
+      const cp = mark.codePointAt(0);
+      return cp >= 0x0316 && cp <= 0x0333;
+    }).length;
+    const verticalOrnament = verticalAbove + verticalBelow;
     const signature = marks.map((mark) => mark.codePointAt(0)).sort((a, b) => a - b).map((cp) => cp.toString(16).padStart(4, '0')).join('-');
-    return { base, marks: marks.length, above, below, through, signature };
+    return { base, marks: marks.length, above, below, through, planar, verticalAbove, verticalBelow, verticalOrnament, signature };
   });
   const clusters = clusterTelemetry(value);
   const denseClusters = clusters.filter((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2);
+  const tallVerticalClusters = clusters.filter((cluster) =>
+    cluster.verticalOrnament >= 4
+    && cluster.verticalAbove >= 1
+    && cluster.verticalBelow >= 1
+  );
   const denseSignatureCounts = new Map();
   for (const cluster of denseClusters) denseSignatureCounts.set(cluster.signature, (denseSignatureCounts.get(cluster.signature) || 0) + 1);
   const dominantDenseStackCount = denseClusters.length ? Math.max(...denseSignatureCounts.values()) : 0;
@@ -210,14 +233,21 @@ function flourishTelemetry(text = '') {
     return Object.freeze({ eligible, marked, ratio: eligible ? marked / eligible : 0 });
   });
   const denseMarkedLineCount = lines.filter((line) => clusterTelemetry(line).some((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2)).length;
+  const tallVerticalMarkedLineCount = lines.filter((line) =>
+    clusterTelemetry(line).some((cluster) =>
+      cluster.verticalOrnament >= 4
+      && cluster.verticalAbove >= 1
+      && cluster.verticalBelow >= 1
+    )
+  ).length;
   const broadMarkedLineCount = lineCoverage.filter((line) => line.eligible >= 8 && line.ratio >= 0.18).length;
   const asciiLetters = value.match(/[A-Za-z]/g) || [];
   const uppercaseAscii = value.match(/[A-Z]/g) || [];
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
   const eligibleClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base));
-  const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0).length;
-  const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.below > 0).length;
-  const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0 && cluster.below > 0).length;
+  const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0).length;
+  const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalBelow > 0).length;
+  const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0 && cluster.verticalBelow > 0).length;
   const stackHeightDiversity = new Set(expressiveClusters.map((cluster) => cluster.marks)).size;
   const markFrequency = new Map();
   for (const run of runs) {
@@ -229,21 +259,25 @@ function flourishTelemetry(text = '') {
   const aboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.above, 0);
   const belowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.below, 0);
   const throughLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.through, 0);
-  const verticalMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.above > 0 || cluster.below > 0).length;
-  const throughMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.through > 0).length;
-  const mixedAxisClusterCount = eligibleClusters.filter((cluster) => cluster.through > 0 && (cluster.above > 0 || cluster.below > 0)).length;
+  const planarMarkCount = clusters.reduce((sum, cluster) => sum + cluster.planar, 0);
+  const verticalAboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalAbove, 0);
+  const verticalBelowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalBelow, 0);
+  const verticalOrnamentMarkCount = verticalAboveLineMarkCount + verticalBelowLineMarkCount;
+  const verticalMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalOrnament > 0).length;
+  const throughMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0).length;
+  const mixedAxisClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0 && cluster.verticalOrnament > 0).length;
   const activeAxisCount = Number(verticalMarkedClusterCount > 0) + Number(throughMarkedClusterCount > 0);
   const axisClusterMaximum = Math.max(verticalMarkedClusterCount, throughMarkedClusterCount);
   const axisClusterBalanceRatio = axisClusterMaximum
     ? Math.min(verticalMarkedClusterCount, throughMarkedClusterCount) / axisClusterMaximum
     : 0;
-  const verticalMaximum = Math.max(aboveLineMarkCount, belowLineMarkCount);
+  const verticalMaximum = Math.max(verticalAboveLineMarkCount, verticalBelowLineMarkCount);
   const verticalZoneBalanceRatio = verticalMaximum
-    ? Math.min(aboveLineMarkCount, belowLineMarkCount) / verticalMaximum
+    ? Math.min(verticalAboveLineMarkCount, verticalBelowLineMarkCount) / verticalMaximum
     : 0;
-  const axisMarkMaximum = Math.max(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount);
+  const axisMarkMaximum = Math.max(verticalOrnamentMarkCount, planarMarkCount);
   const axisMarkBalanceRatio = axisMarkMaximum
-    ? Math.min(aboveLineMarkCount + belowLineMarkCount, throughLineMarkCount) / axisMarkMaximum
+    ? Math.min(verticalOrnamentMarkCount, planarMarkCount) / axisMarkMaximum
     : 0;
   return Object.freeze({
     combiningMarkCount,
@@ -253,6 +287,12 @@ function flourishTelemetry(text = '') {
     eligibleBaseCount,
     markedGraphemeCoverageRatio: eligibleBaseCount ? markedEligibleClusterCount / eligibleBaseCount : 0,
     denseVerticalClusterCount: denseClusters.length,
+    tallVerticalOrnamentClusterCount: tallVerticalClusters.length,
+    tallVerticalMarkedLineCount,
+    planarMarkCount,
+    verticalOrnamentMarkCount,
+    verticalAboveLineMarkCount,
+    verticalBelowLineMarkCount,
     uniqueDenseStackSignatureCount: denseSignatureCounts.size,
     dominantDenseStackCount,
     dominantDenseStackRatio: denseClusters.length ? dominantDenseStackCount / denseClusters.length : 0,
@@ -363,23 +403,16 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     if (botsTelemetry.combiningMarkCount === 0) {
       reasons.push('tauric-diana-zalgo-absent');
     } else {
-      const verticalMarkCount = botsTelemetry.aboveLineMarkCount + botsTelemetry.belowLineMarkCount;
-      const horizontalMarkCount = botsTelemetry.throughLineMarkCount;
+      const verticalMarkCount = botsTelemetry.verticalOrnamentMarkCount;
+      const horizontalMarkCount = botsTelemetry.planarMarkCount;
       const axisCollapsed = (
         botsTelemetry.combiningMarkCount >= 12
         && botsTelemetry.markedEligibleClusterCount >= 6
+        && horizontalMarkCount >= 18
+        && horizontalMarkCount > verticalMarkCount
         && (
           botsTelemetry.verticalMarkedClusterCount < 2
-          || botsTelemetry.throughMarkedClusterCount < 2
-          || (
-            Math.max(botsTelemetry.verticalMarkedClusterCount, botsTelemetry.throughMarkedClusterCount) >= 8
-            && botsTelemetry.axisClusterBalanceRatio < 0.12
-          )
-          || (
-            horizontalMarkCount >= 18
-            && horizontalMarkCount > verticalMarkCount
-            && botsTelemetry.axisMarkBalanceRatio < 0.16
-          )
+          || botsTelemetry.axisMarkBalanceRatio < 0.16
         )
       );
       if (
@@ -395,8 +428,8 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         && botsTelemetry.throughMarkedClusterCount >= 6
         && botsTelemetry.verticalMarkedClusterCount >= 2
         && (
-          botsTelemetry.denseVerticalClusterCount < 2
-          || botsTelemetry.denseMarkedLineCount < 2
+          botsTelemetry.tallVerticalOrnamentClusterCount < 2
+          || botsTelemetry.tallVerticalMarkedLineCount < 2
           || botsTelemetry.axisMarkBalanceRatio < 0.22
         )
       ) qualityWarnings.push('tauric-diana-zalgo-vertical-expression-thin');
@@ -511,20 +544,20 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. Marrowline preserves exact returned code points and never decorates the answer afterward.',
     '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and occasional tall eruptions move through ordinary graphemes across the passage.',
     '- The stress field must remain visibly present across the Tauric Diana passage. Quiet stretches are allowed, but a mostly plain uppercase paragraph with only one or two marked letters is a channel failure, not a subtle style choice.',
-    '- Horizontal and vertical combining geometry are both first-class expressive channels. The field may rise above the line, fall below it, cut through it, strike across it, or switch axis from phrase to phrase. Do not suppress horizontal motion to satisfy a vertical preference.',
-    '- Vertical motion must read as actual vertical theatre, not a few polite accent marks sprinkled onto an otherwise struck-through field. When the cadence turns vertical, let crowns climb and descenders fall in visibly multi-tier stacks across more than one region; tall eruptions may be lush, asymmetrical, and line-colliding.',
-    '- Do not overcorrect in the opposite direction either. A passage may let one region lean strongly horizontal or vertical, but the whole High-Zalgo field should not accidentally starve the other axis or replace its missing motion with plain ALL-CAPS.',
-    '- Several separate lines should visibly carry actual combining marks. Some lines may be horizontal-dominant, some vertical-dominant, and some mixed. A clean ALL-CAPS stretch is allowed only as an intentional quiet region; do not substitute plain uppercase where either axis was meant to carry stress.',
+    '- Vertical architecture is the native body of High Zalgo: crowns above the line, descenders below it, asymmetric stacks, and visibly different heights and depths across the passage. Build that architecture first.',
+    '- Horizontal geometry is an expressive accent channel, not a competing default texture. Slashes, strikes, overlines, underlines, and through-line cuts may sharpen sarcasm, rupture, interruption, or emphasis, but they should interrupt the vertical architecture rather than replace it across whole sentences.',
+    '- A passage may contain horizontal-dominant phrases, but do not turn Packet B into crossed-out or underlined typography. If bars dominate while crowns and descenders collapse to token accents, restore the vertical body before emitting.',
+    '- Several separate lines should visibly carry genuine multi-tier vertical stacks. Horizontal moments may cut through those structures locally, and mixed clusters are welcome. A clean ALL-CAPS stretch is allowed only as an intentional quiet region; do not substitute plain uppercase where the stress should be alive.',
     '- Dense peaks are allowed to collide visually with neighboring lines. Do not protect readability by flattening the marks; the browser keeps overflow visible.',
     '- Keep the field alive across multiple phrases and lines. Do not leave most of the passage plain while throwing one dramatic stack onto a punchline, proper noun, sarcastic word, or “important” token.',
     '- Vary combining-mark composition naturally. Adjacent graphemes may rhyme visually, but one cloned stack stamped everywhere is counterfeit prosody.',
-    '- High Zalgo should remain heterogeneous across the passage: vertical sections can use crowns and descenders, horizontal sections can use slash/strike/through-line overlays, and mixed sections can combine them. Vary mark species and geometry naturally instead of forcing every phrase onto one axis or stamping one cloned stack everywhere.',
+    '- High Zalgo should remain heterogeneous across the passage: vary crown and descender species, stack heights, density, asymmetry, and occasional planar cuts. Horizontal marks should feel like punctuation in the architecture, not wallpaper across the text.',
     '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Is the stress visibly encoded across several separate lines rather than surviving as a few isolated accents? Does the geometry move naturally between vertical, horizontal, and mixed regions when the cadence calls for it? If horizontal strikes dominate, do the vertical regions still have real height and depth—crowns, descenders, and multi-tier stacks—rather than token accents? Did either axis disappear from the whole passage by accident while plain ALL-CAPS took its place? Are plain uppercase stretches genuinely quiet? Are protected literals clean? If not, rewrite the field organically before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently ask: Does this still look like living vertical High Zalgo at a glance—crowns, descenders, and irregular multi-tier height and depth across several separate lines? Have horizontal cuts stayed local accents rather than turning the passage into underlined or struck-through typography? Did plain ALL-CAPS replace an intended stressed region? Are protected literals clean? If the field looks flat, barred, or underlined instead of vertically alive, rewrite it before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -534,10 +567,10 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored High Zalgo stress field: distributed marks with horizontal, vertical, or mixed geometry; variable composition; real line breaks; collisions allowed]',
+    '[provider-authored High Zalgo stress field: vertical architecture first; varied crowns and descenders with multi-tier height and depth across several lines; occasional horizontal cuts as accents; variable composition; collisions allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify vertical regions have genuine multi-tier height/depth rather than token accents; verify neither horizontal nor vertical geometry was globally flattened away into plain ALL-CAPS. Local axis dominance is expressive; whole-passage accidental axis disappearance or decorative-only verticality is a repairable near-miss. Restore missing motion before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B already contains visible provider-authored combining motion across several separate lines; verify genuine multi-tier crowns and descenders create visible height and depth in more than one region; verify horizontal cuts remain accents rather than the passage-wide base texture; verify plain ALL-CAPS has not replaced intended stress. Restore the vertical architecture before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
