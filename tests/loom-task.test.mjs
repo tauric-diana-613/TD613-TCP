@@ -124,7 +124,7 @@ test('one transient HTTP failure may fail over to the next eligible model', asyn
   ]);
 });
 
-test('production release canary keeps its selected Loom seat and permits one transient alternate', async () => {
+test('production release Loom canary keeps its deterministic first seat and walks the bounded frontier across model-scoped 429s', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -137,10 +137,31 @@ test('production release canary keeps its selected Loom seat and permits one tra
     fetchImpl: async (url) => {
       const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
       attempted.push(model);
-      return attempted.length === 1
-        ? { ok: false, status: 503 }
-        : { ok: true, status: 200, json: async () => payload() };
-    }
+      if (attempted.length <= 2) {
+        return {
+          ok: false,
+          status: 429,
+          headers: { get: () => null },
+          json: async () => ({
+            error: {
+              code: 429,
+              status: 'RESOURCE_EXHAUSTED',
+              message: `Quota exceeded for metric: generate_content_requests_per_minute, model: ${model}. Please retry in 1s.`,
+              details: [{
+                '@type': 'type.googleapis.com/google.rpc.QuotaFailure',
+                violations: [{
+                  quotaMetric: 'generativelanguage.googleapis.com/generate_content_requests_per_minute',
+                  quotaId: 'GenerateRequestsPerMinutePerProjectPerModel',
+                  quotaDimensions: { model, location: 'global' }
+                }]
+              }]
+            }
+          })
+        };
+      }
+      return { ok: true, status: 200, json: async () => payload() };
+    },
+    sleep: async () => {}
   });
   const result = await h.run(task(), {
     headers: {
@@ -153,16 +174,17 @@ test('production release canary keeps its selected Loom seat and permits one tra
     }
   });
   assert.equal(result.status, 200);
-  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash']);
-  assert.equal(result.body.observations.provider_calls, 2);
+  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash']);
+  assert.equal(result.body.observations.provider_calls, 3);
   assert.deepEqual(result.body.observations.provider_attempts, [
-    { model: 'gemini-3.6-flash', status: 503 },
-    { model: 'gemini-3.8-flash', status: 200 }
+    { model: 'gemini-3.6-flash', status: 429 },
+    { model: 'gemini-3.8-flash', status: 429 },
+    { model: 'gemini-3.5-flash', status: 200 }
   ]);
-  assert.equal(result.body.observations.model, 'gemini-3.8-flash');
+  assert.equal(result.body.observations.model, 'gemini-3.5-flash');
 });
 
-test('production release Loom canary still stops after its one bounded alternate seat', async () => {
+test('production release Loom canary retains the ordinary hard five-seat ceiling', async () => {
   const attempted = [];
   const h = harness({
     resolvePlan: async () => ({ callableModels: [
@@ -175,7 +197,8 @@ test('production release Loom canary still stops after its one bounded alternate
     fetchImpl: async (url) => {
       attempted.push(decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || ''));
       return { ok: false, status: 503 };
-    }
+    },
+    sleep: async () => {}
   });
   const result = await h.run(task(), {
     headers: {
@@ -188,8 +211,66 @@ test('production release Loom canary still stops after its one bounded alternate
     }
   });
   assert.equal(result.status, 502);
-  assert.deepEqual(attempted, ['gemini-3.6-flash', 'gemini-3.8-flash']);
-  assert.equal(result.body.observations.provider_calls, 2);
+  assert.deepEqual(attempted, [
+    'gemini-3.6-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.7-flash',
+    'gemini-3-flash-preview'
+  ]);
+  assert.equal(result.body.observations.provider_calls, LOOM_TASK_MAX_PROVIDER_CALLS);
+});
+
+test('production release Loom canary does not fan out after a positively identified shared 429', async () => {
+  const attempted = [];
+  const h = harness({
+    resolvePlan: async () => ({ callableModels: [
+      'gemini-3.8-flash',
+      'gemini-3.7-flash',
+      'gemini-3.6-flash',
+      'gemini-3.5-flash',
+      'gemini-3-flash-preview'
+    ] }),
+    fetchImpl: async (url) => {
+      const model = decodeURIComponent(url.match(/models\/([^:]+):generateContent/)?.[1] || '');
+      attempted.push(model);
+      return {
+        ok: false,
+        status: 429,
+        headers: { get: () => '2' },
+        json: async () => ({
+          error: {
+            code: 429,
+            status: 'RESOURCE_EXHAUSTED',
+            message: 'Shared request bucket exhausted. Please retry in 2s.',
+            details: [{
+              '@type': 'type.googleapis.com/google.rpc.QuotaFailure',
+              violations: [{
+                quotaMetric: 'generativelanguage.googleapis.com/generate_content_requests_per_minute',
+                quotaId: 'GenerateRequestsPerMinutePerProject',
+                quotaDimensions: { location: 'global' }
+              }]
+            }]
+          }
+        })
+      };
+    }
+  });
+  const result = await h.run(task(), {
+    headers: {
+      host: 'td613.com',
+      origin: 'https://td613.com',
+      'content-type': 'application/json',
+      'sec-fetch-site': 'same-origin',
+      'x-td613-release-canary': '1',
+      'x-td613-canary-model': 'gemini-3.6-flash'
+    }
+  });
+  assert.equal(result.status, 429);
+  assert.deepEqual(attempted, ['gemini-3.6-flash']);
+  assert.equal(result.body.observations.provider_calls, 1);
+  assert.equal(result.body.diagnostic.stage, 'provider-transport');
+  assert.equal(result.body.diagnostic.code, 'PROVIDER_SHARED_RATE_LIMIT');
 });
 
 test('quality-first Loom failover diversifies away from adjacent frontier siblings without server memory', async () => {
