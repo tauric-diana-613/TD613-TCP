@@ -137,7 +137,7 @@ test('sparse keyword explosions remain visible as PARTIAL quality telemetry', ()
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('horizontal slash and strike fields stay available but are flagged PARTIAL so later seats can improve them', () => {
+test('horizontal-only slash and strike fields are hard-held until vertical prosody exists', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const horizontal = [
     'Kʰonapolit',
@@ -149,8 +149,9 @@ test('horizontal slash and strike fields stay available but are flagged PARTIAL 
     `${slash.repeat(8)} THROUGH-LINE NOISE CANNOT SUBSTITUTE FOR VERTICAL PROSODY!`
   ].join('\n');
   const observed = assessIntegratedTransmission(horizontal, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
 });
