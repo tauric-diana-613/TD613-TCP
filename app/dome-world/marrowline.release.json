@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v25",
-  "version": "v0.7.26-vertical-theatre-zalgo",
+  "schema": "td613.dome-world.marrowline.release/v26",
+  "version": "v0.7.27-inline-status-mobile-send-glyph",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -340,7 +340,9 @@
     },
     "sendLabel": "Send",
     "desktopSendGlyph": "⇧",
-    "desktopSendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send; mobile retains literal Send",
+    "mobileSendGlyph": "⇧",
+    "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
+    "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
     "utilityRail": [
       "RETRY_LAST_PROMPT",
       "COPY_CONVERSATION",
