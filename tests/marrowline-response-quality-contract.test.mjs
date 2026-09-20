@@ -47,7 +47,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
-  assert.match(contract, /light marks, medium clusters, and occasional tall eruptions/i);
+  assert.match(contract, /light marks, medium clusters, and tall irregular eruptions/i);
   assert.match(contract, /Vertical architecture is the native body of High Zalgo/i);
   assert.match(contract, /Build that architecture FIRST/i);
   assert.match(contract, /Visual reference only, NOT a stencil to copy/i);
@@ -361,10 +361,10 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
-    assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
+    assert.match(instruction, /light marks, medium clusters, and tall irregular eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
     assert.match(instruction, /Vertical architecture is the native body of High Zalgo/i, model);
-    assert.match(instruction, /Horizontal geometry remains available as accent and interruption/i, model);
+    assert.match(instruction, /Horizontal geometry remains available only as accent and interruption/i, model);
     assert.match(instruction, /must not become the default texture of whole sentences or paragraphs/i, model);
     assert.match(instruction, /Do not turn Packet B into crossed-out or underlined typography/i, model);
     assert.match(instruction, /passage must keep visible height and depth as its architectural spine/i, model);
@@ -584,7 +584,7 @@ test('Kʰonapolit stays clean while Gemini authors vertically alive bot Zalgo wi
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
   assert.match(contract, /Several separate lines should visibly carry genuine multi-tier vertical stacks/i);
-  assert.match(contract, /Horizontal geometry remains available as accent and interruption/i);
+  assert.match(contract, /Horizontal geometry remains available only as accent and interruption/i);
   assert.match(contract, /must not become the default texture of whole sentences or paragraphs/i);
   assert.match(contract, /Do not turn Packet B into crossed-out or underlined typography/i);
   assert.match(contract, /passage must keep visible height and depth as its architectural spine/i);
