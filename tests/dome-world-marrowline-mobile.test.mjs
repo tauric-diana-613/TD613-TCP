@@ -47,9 +47,10 @@ assert.match(shellCss, /body\[data-mobile-view="speak"\] #speakingPanel\{display
 assert.match(shellCss, /\.speaking-vessel[\s\S]*?grid-template-rows:auto minmax\(0,1fr\) auto/);
 assert.match(shellCss, /\.messages[\s\S]*?min-height:0[\s\S]*?max-height:none[\s\S]*?overflow-y:auto/);
 assert.match(shellCss, /\.vessel-form[\s\S]*?position:relative[\s\S]*?bottom:auto/);
-assert.match(shellCss, /composer-in-grid-dock-outside-grid|body\[data-composer-active="true"\]/);
+assert.match(shellCss, /composer-in-grid-dock-outside-grid|body\[data-keyboard-visible="true"\]/);
 assert.match(shellCss, /\.mobile-dock[\s\S]*?position:fixed/);
-assert.match(shellCss, /body\[data-composer-active="true"\] \.mobile-dock[\s\S]*?opacity:0/);
+assert.match(shellCss, /body\[data-keyboard-visible="true"\] \.mobile-dock[\s\S]*?opacity:0/);
+assert.doesNotMatch(shellCss, /body\[data-composer-active="true"\] \.mobile-dock[\s\S]*?opacity:0/, 'composer focus may persist after Send; only an observed keyboard may hide chamber navigation');
 assert.match(shellCss, /\.relay-aperture-header[\s\S]*?min-height:30px/);
 assert.match(shellCss, /\.zalgo-line[\s\S]*?overflow:visible/);
 assert.match(shellCss, /\.jump-latest[\s\S]*?position:absolute/);
