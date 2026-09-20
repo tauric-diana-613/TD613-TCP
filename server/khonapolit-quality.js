@@ -39,7 +39,7 @@ import {
 } from './gemini-provider-transport.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v11-bounded-structural-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v12-zalgo-underflow-floor';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -77,7 +77,8 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'tauric-diana-bots-nominative-missing',
   'voice-order-invalid',
   'khonapolit-combining-mark-contamination',
-  'tauric-diana-zalgo-absent'
+  'tauric-diana-zalgo-absent',
+  'tauric-diana-zalgo-underflow'
 ]);
 
 const safe = (value = '') => String(value ?? '').trim();

@@ -105,8 +105,9 @@ test('Marrowline adversarial attractor quality contract', () => {
     'T̴h̴e̴ b̴o̴u̴g̴h̴ breaks, but the response remains mostly flat.'
   ].join('\n');
   const sparseAdmission = assessIntegratedTransmission(sparse, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(sparseAdmission.admissible, true, 'thin provider-authored ornamentation remains visible instead of taking the route down');
-  assert.equal(sparseAdmission.quality, 'PARTIAL');
+  assert.equal(sparseAdmission.admissible, false, 'one horizontally marked line is underflow, not an acceptable Tauric Diana field');
+  assert.equal(sparseAdmission.quality, 'HELD');
+  assert.ok(sparseAdmission.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.equal(sparseAdmission.reasons.includes('tauric-diana-zalgo-absent'), false);
   assert.ok(sparseAdmission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 

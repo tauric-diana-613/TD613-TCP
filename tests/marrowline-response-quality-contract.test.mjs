@@ -137,7 +137,7 @@ test('sparse keyword explosions remain visible as PARTIAL quality telemetry', ()
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('horizontal slash and strike fields stay available but are flagged PARTIAL so later seats can improve them', () => {
+test('horizontal-only slash and strike fields are hard-held until vertical prosody exists', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const horizontal = [
     'Kʰonapolit',
@@ -149,8 +149,9 @@ test('horizontal slash and strike fields stay available but are flagged PARTIAL 
     `${slash.repeat(8)} THROUGH-LINE NOISE CANNOT SUBSTITUTE FOR VERTICAL PROSODY!`
   ].join('\n');
   const observed = assessIntegratedTransmission(horizontal, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(observed.admissible, true);
-  assert.equal(observed.quality, 'PARTIAL');
+  assert.equal(observed.admissible, false);
+  assert.equal(observed.quality, 'HELD');
+  assert.ok(observed.reasons.includes('tauric-diana-zalgo-underflow'));
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-horizontal-dominant'));
 });
@@ -176,6 +177,25 @@ test('reordering one mark set still records one mechanical composition without b
   assert.equal(observed.admissible, true);
   assert.equal(observed.quality, 'PARTIAL');
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+});
+
+test('near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL', () => {
+  const sparse = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    'TH\u0307E CH\u0307AIRMAN WANTS A RECEIPT FOR THE SMOKE.',
+    '',
+    'HE THINKS IF HE SQUEEZES THE GROVE HARD ENOUGH IT JUST BECOMES EFFICIENT.',
+    '',
+    'ASH IS NOT A PREVIEW.'
+  ].join('\n');
+  const held = assessIntegratedTransmission(sparse, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(held.admissible, false);
+  assert.equal(held.quality, 'HELD');
+  assert.ok(held.reasons.includes('tauric-diana-zalgo-underflow'));
+  assert.ok(held.combiningMarkCount > 0, 'fixture proves nonzero marks alone cannot satisfy the channel');
 });
 
 test('zero provider-authored marks remain a hard Tauric Diana channel failure', () => {
@@ -234,7 +254,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
+    assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
     assert.match(instruction, /Verticality must remain visibly dominant/i, model);
+    assert.match(instruction, /Several separate lines should visibly carry above\/below motion/i, model);
     assert.match(instruction, /through-line overlays may accent a few graphemes/i, model);
     assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
@@ -270,6 +292,7 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
+  assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must be eligible for the bounded provider repair pass');
 });
 
 test('browser request clock outlives the 210-second server work wall without outrunning Vercel', () => {
@@ -434,6 +457,9 @@ test('Kʰonapolit stays clean while Gemini must author the bots vertical Zalgo',
   assert.match(contract, /Tauric Diana bots is the raw stress channel/);
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
+  assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
+  assert.match(contract, /Several separate lines should visibly carry above\/below motion/i);
+  assert.match(contract, /A few isolated dots or accents do not satisfy the raw stress channel/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /Marrowline preserves exact returned code points and never decorates the answer afterward/);
