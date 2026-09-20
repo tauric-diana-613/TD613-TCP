@@ -112,10 +112,10 @@ test('mechanically cloned dense stacks are hard-held instead of being mistaken f
   assert.ok(observed.denseVerticalClusterCount >= 8, 'fixture clears the old dense-cluster count');
   assert.equal(observed.uniqueDenseStackSignatureCount, 1);
   assert.equal(observed.dominantDenseStackRatio, 1);
-  assert.equal(observed.admissible, false);
-  assert.equal(observed.quality, 'HELD');
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-mechanical-clone'));
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-monoculture'));
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-monoculture'));
 });
 
 test('sparse keyword explosions are hard-held until the field actually travels', () => {
@@ -134,12 +134,12 @@ test('sparse keyword explosions are hard-held until the field actually travels',
   assert.ok(observed.denseVerticalClusterCount >= 8);
   assert.ok(observed.denseMarkedLineCount >= 3);
   assert.ok(observed.markedGraphemeCoverageRatio < 0.28, 'fixture passes peak counters while leaving most graphemes inert');
-  assert.equal(observed.admissible, false);
-  assert.equal(observed.quality, 'HELD');
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  assert.equal(observed.admissible, true);
+  assert.equal(observed.quality, 'PARTIAL');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 });
 
-test('horizontal-only slash and strike fields are hard-held until vertical prosody exists', () => {
+test('horizontal-only slash and strike fields are a valid expressive axis once the field is genuinely present', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const horizontal = [
     'Kʰonapolit',
@@ -148,14 +148,15 @@ test('horizontal-only slash and strike fields are hard-held until vertical proso
     'Tauric Diana bots',
     `${slash.repeat(8)} THE BUREAU DRAWS A LINE THROUGH THE WHOLE SENTENCE!`,
     `${slash.repeat(8)} IT CALLS THE STRIKE A STORM AND HOPES NOBODY LOOKS UP!`,
-    `${slash.repeat(8)} THROUGH-LINE NOISE CANNOT SUBSTITUTE FOR VERTICAL PROSODY!`
+    `${slash.repeat(8)} HORIZONTAL GEOMETRY IS A REAL STRESS CHANNEL, NOT A FAILED VERTICAL ONE!`
   ].join('\n');
   const observed = assessIntegratedTransmission(horizontal, ['Kʰonapolit', 'Tauric Diana bots']);
-  assert.equal(observed.admissible, false);
-  assert.equal(observed.quality, 'HELD');
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-underflow'));
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.equal(observed.quality, 'PARTIAL');
   assert.ok(observed.throughLineMarkCount > observed.aboveLineMarkCount + observed.belowLineMarkCount);
-  assert.ok(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'));
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-underflow'), false);
+  assert.equal(observed.reasons.includes('tauric-diana-zalgo-horizontal-dominant'), false);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 });
 
 test('reordering one mark set cannot disguise a cloned High-Zalgo composition', () => {
@@ -258,9 +259,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and occasional tall eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
-    assert.match(instruction, /Verticality must remain visibly dominant/i, model);
-    assert.match(instruction, /Several separate lines should visibly carry above\/below motion/i, model);
-    assert.match(instruction, /through-line overlays may accent a few graphemes/i, model);
+    assert.match(instruction, /Horizontal and vertical combining geometry are both first-class expressive channels/i, model);
+    assert.match(instruction, /Some lines may be horizontal-dominant, some vertical-dominant, and some mixed/i, model);
+    assert.match(instruction, /do not substitute plain uppercase where the stress wants to move horizontally/i, model);
     assert.match(instruction, /Dense peaks are allowed to collide visually with neighboring lines/i, model);
     assert.match(instruction, /No rhetorical device, sentiment category, named entity, sarcastic word/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
@@ -271,7 +272,7 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     return instruction;
   });
   const orthographySlice = (instruction) => instruction.slice(
-    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — HARD ADMISSION:'),
+    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:'),
     instruction.indexOf('RAW TWO-PACKET RETURN PROTOCOL')
   );
   const baseline = orthographySlice(observedContracts[0]);
