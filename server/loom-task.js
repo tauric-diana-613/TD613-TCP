@@ -1,5 +1,5 @@
 import { GEMINI_MODEL_POLICY_VERSION, resolveGeminiProviderPlan, recordGeminiModelOutcome } from './gemini-model-policy.js';
-import { geminiGenerateContentUrl, geminiMayFailOver, geminiRequestHeaders } from './gemini-provider-transport.js';
+import { geminiGenerateContentUrl, geminiMayFailOver, geminiRequestHeaders, observeGeminiQuota } from './gemini-provider-transport.js';
 import { consumeRateSlot } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
@@ -248,16 +248,14 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
       const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
         ? requestedCanaryModel
         : allModels[0] || null;
-      const canaryFallbackModel = canaryModel
-        ? allModels.find(candidate => candidate !== canaryModel) || null
-        : null;
-      // A release witness keeps its deterministic primary seat but may exercise one
-      // route-native alternate only when the provider transport classifier permits
-      // failover. Output admission, request rejection, and source validation remain
-      // unchanged; this merely prevents one transient provider seat from falsifying
-      // Loom route liveness.
-      const models = releaseCanary
-        ? [canaryModel, canaryFallbackModel].filter(Boolean)
+      // The release witness keeps its deterministic first seat, then walks the same
+      // bounded callable frontier as ordinary Loom when transport permits failover.
+      // This remains capped by LOOM_TASK_MAX_PROVIDER_CALLS and the 50s route deadline.
+      // Output admission and request rejection stay terminal. A positively identified
+      // shared/project 429 is also terminal for the release witness; only model-scoped
+      // or unclassified 429s may move to another approved seat.
+      const models = releaseCanary && canaryModel
+        ? [canaryModel, ...allModels.filter(candidate => candidate !== canaryModel)]
         : allModels;
       if (!models.length) { model = null; return send(503, { error: 'no-eligible-provider-model', diagnostic: diagnostic('NO_ELIGIBLE_MODEL') }); }
       enterStage('provider-transport');
@@ -318,10 +316,28 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         const status = Number.isInteger(response.status) && response.status >= 100 && response.status <= 599 ? response.status : null;
         providerHttpStatus = status;
         const elapsedMs = Math.max(0, now() - attemptStartedAt);
+        let rateLimit = null;
+        if (!response.ok && status === 429 && typeof response.json === 'function') {
+          try {
+            const quotaPayload = await Promise.race([response.json(), deadline]);
+            rateLimit = observeGeminiQuota(quotaPayload, { model, response });
+          } catch {
+            rateLimit = null;
+          }
+        }
         if (status !== null) providerAttempts.push({ model, status });
         providerAttemptTimings.push({ model, ...(status === null ? {} : { status }), elapsed_ms: elapsedMs, timeout_ms: attemptTimeoutMs, timed_out: false });
-        recordOutcome(model, { ok: response.ok, status: response.status, reason: response.ok ? '' : 'loom-provider-response-failed' });
+        recordOutcome(model, {
+          ok: response.ok,
+          status: response.status,
+          retryAfterSeconds: Number(rateLimit?.retryAfterSeconds || 0),
+          healthBearing: !(releaseCanary && rateLimit?.observed && rateLimit.scope === 'shared'),
+          reason: response.ok ? '' : 'loom-provider-response-failed'
+        });
         if (response.ok) break;
+        if (releaseCanary && rateLimit?.observed && rateLimit.scope === 'shared') {
+          return send(429, { error: 'provider-shared-rate-limit', diagnostic: diagnostic('PROVIDER_SHARED_RATE_LIMIT') });
+        }
         const mayFailOver = geminiMayFailOver(status) && index + 1 < models.length;
         if (!mayFailOver) return send(502, { error: 'provider-request-failed', diagnostic: diagnostic('PROVIDER_HTTP_ERROR') });
         const backoffMs = LOOM_TASK_TRANSIENT_BACKOFF_MS[Math.min(index, LOOM_TASK_TRANSIENT_BACKOFF_MS.length - 1)];
