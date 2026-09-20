@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v9-zalgo-quality-telemetry';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v10-quality-telemetry';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v10-zalgo-presence-telemetry';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v11-presence-telemetry';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -315,7 +315,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
     const botsTelemetry = flourishTelemetry(botsText);
     if (khonaTelemetry.combiningMarkCount > 0) reasons.push('khonapolit-combining-mark-contamination');
     if (botsTelemetry.combiningMarkCount === 0) {
-      reasons.push('tauric-diana-zalgo-absent');
+      qualityWarnings.push('tauric-diana-zalgo-absent');
     } else {
       if (
         botsTelemetry.combiningMarkCount < 24
