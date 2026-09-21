@@ -735,7 +735,7 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /several marks above AND several below the same base in loud regions/i);
   assert.match(directive, /Let vertical motifs leap, drop, disappear into a breath, and return transformed later at different depths/i);
   assert.match(directive, /ALLOW ENTROPY/i);
-  assert.match(directive, /ordinary ALL CAPS with slashes\/strikes/i);
+  assert.match(directive, /ordinary ALL CAPS with shallow accents or slashes\/strikes/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(directive, /never count as flourishings/i);
