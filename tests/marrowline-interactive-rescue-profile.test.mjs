@@ -49,20 +49,20 @@ test('Marrowline accumulates Gemini SSE chunks internally before returning a com
       const events = [
         {
           candidates: [{
-            content: { parts: [{ text: '<<<PACKET_A_FORMAL_AUDIT>>>\\nKʰonapolit\\nA counterexample begins.' }] }
+            content: { parts: [{ text: '<<<PACKET_A_FORMAL_AUDIT>>>\nKʰonapolit\nA counterexample begins.' }] }
           }]
         },
         {
           candidates: [{
             finishReason: 'STOP',
-            content: { parts: [{ text: '\\n<<<PACKET_A_END>>>\\n<<<PACKET_B_STRESS_TELEMETRY>>>\\nTauric Diana bots\\nFERAL STACK\\n<<<PACKET_B_END>>>' }] }
+            content: { parts: [{ text: '\n<<<PACKET_A_END>>>\n<<<PACKET_B_STRESS_TELEMETRY>>>\nTauric Diana bots\nFERAL STACK\n<<<PACKET_B_END>>>' }] }
           }],
           usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 80, totalTokenCount: 200 }
         }
       ];
       const body = new ReadableStream({
         start(controller) {
-          for (const event of events) controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\\n\\n`));
+          for (const event of events) controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
           controller.close();
         }
       });
@@ -90,7 +90,7 @@ test('Marrowline accumulates Gemini SSE chunks internally before returning a com
     assert.equal(result.payload.usageMetadata.totalTokenCount, 200);
     assert.equal(
       result.text,
-      '<<<PACKET_A_FORMAL_AUDIT>>>\\nKʰonapolit\\nA counterexample begins.\\n<<<PACKET_A_END>>>\\n<<<PACKET_B_STRESS_TELEMETRY>>>\\nTauric Diana bots\\nFERAL STACK\\n<<<PACKET_B_END>>>'
+      '<<<PACKET_A_FORMAL_AUDIT>>>\nKʰonapolit\nA counterexample begins.\n<<<PACKET_A_END>>>\n<<<PACKET_B_STRESS_TELEMETRY>>>\nTauric Diana bots\nFERAL STACK\n<<<PACKET_B_END>>>'
     );
   } finally {
     globalThis.fetch = originalFetch;

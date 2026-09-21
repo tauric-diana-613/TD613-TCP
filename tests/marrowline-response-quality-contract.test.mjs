@@ -5,6 +5,7 @@ import {
   KHONAPOLIT_RAW_PACKET_PROTOCOL,
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
+  buildNativeProsodyGuidance,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import { COVENANT_KEY } from '../app/dome-world/khonapolit-covenant.js';
@@ -47,27 +48,13 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /exact standalone human-facing headings/i);
   assert.doesNotMatch(contract, /RETURN JSON ONLY/i);
   assert.match(contract, /ZERO combining diacritical marks/i);
-  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i);
-  assert.match(contract, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(contract, /DO NOT solve High Zalgo as a geometry assignment/i);
-  assert.match(contract, /silently map the argument’s rhetorical movement/i);
-  assert.match(contract, /Morphology is meaning-bearing prosody/i);
-  assert.match(contract, /DO NOT stamp a repeated diaeresis-like/i);
-  assert.match(contract, /DO NOT use Unicode enclosing-mark tricks or geometric replacement glyphs/i);
-  assert.match(contract, /underlying Latin graphemes present/i);
-  assert.match(contract, /Horizontal and oblique cuts remain available only as local counter-rhythm/i);
-  assert.match(contract, /ALLOW ENTROPY/i);
-  assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
-  assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
-  assert.match(contract, /Long vertical stacks are EVENTS, not the baseline texture/i);
-  assert.match(contract, /Neighboring graphemes may be clean, lightly touched, medium, or violently stacked/i);
-  assert.match(contract, /repeated diaeresis-like, dot-like, breve-like, macron-like, hook-like, or paired accent pattern/i);
-  assert.match(contract, /Dense peaks may collide with neighboring lines/i);
-  assert.match(contract, /vertical voice must return without operator prompting/i);
-  assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
-  assert.match(contract, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i);
-  assert.match(contract, /maximum-depth wallpaper/i);
-  assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
+  assert.ok(contract.includes(buildNativeProsodyGuidance()));
+  assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
+  assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
+  assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/);
+  assert.match(contract, /ALLOW ENTROPY/);
+  assert.match(contract, /overlap neighboring text/);
+  assert.match(contract, /Quiet passages can be clean/);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
   assert.doesNotMatch(contract, /marked grapheme coverage >=28%/i);
   assert.doesNotMatch(contract, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
@@ -211,9 +198,9 @@ test('maximum-depth tiling triggers dynamic-range collapse even when vertical st
     'The formal channel stays clean.',
     '',
     'Tauric Diana bots',
-    `${deep.repeat(10)} EVERY MARKED GRAPHEME IS SHOUTING AT THE SAME DEPTH!`,
-    `${deep.repeat(10)} A TOWER WALL IS STILL A WALLPAPER FILTER!`,
-    `${deep.repeat(10)} INTENSITY WITHOUT MODULATION LOSES THE VOICE!`
+    deep.repeat(100),
+    deep.repeat(100),
+    deep.repeat(100)
   ].join('\n');
   const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(observed.admissible, true, observed.reasons.join(', '));
@@ -406,27 +393,14 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
   const observedContracts = models.map((model) => {
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
-    assert.match(instruction, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i, model);
-    assert.match(instruction, /scream-sing the “fun and scary” relayed transmission/i, model);
-    assert.match(instruction, /DO NOT solve High Zalgo as a geometry assignment/i, model);
-    assert.match(instruction, /silently map the argument’s rhetorical movement/i, model);
-    assert.match(instruction, /Long vertical stacks are EVENTS, not the baseline texture/i, model);
-    assert.match(instruction, /DO NOT stamp a repeated diaeresis-like/i, model);
-    assert.match(instruction, /ALLOW ENTROPY/i, model);
-    assert.match(instruction, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i, model);
-    assert.match(instruction, /Horizontal and oblique cuts remain available only as local counter-rhythm/i, model);
-    assert.match(instruction, /vertical voice must return without operator prompting/i, model);
-    assert.match(instruction, /Dense peaks may collide with neighboring lines/i, model);
-    assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
-    assert.match(instruction, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i, model);
-    assert.match(instruction, /maximum-depth wallpaper/i, model);
+    assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
     assert.doesNotMatch(instruction, /marked grapheme coverage >=28%/i, model);
     assert.doesNotMatch(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
     return instruction;
   });
   const orthographySlice = (instruction) => instruction.slice(
-    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD:'),
+    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — NATIVE SEMANTIC PROSODY:'),
     instruction.indexOf('RAW TWO-PACKET RETURN PROTOCOL')
   );
   const baseline = orthographySlice(observedContracts[0]);
@@ -478,8 +452,8 @@ test('browser request clock outlives the 210-second server work wall without out
 test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
-  assert.match(relaySource, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
-  assert.match(relaySource, /Marrowline preserves those exact returned bytes\/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
+  assert.match(relaySource, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
+  assert.match(relaySource, /Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
@@ -630,23 +604,14 @@ test('human-facing integrated surface keeps provider identity in provenance only
 
 
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
-  const contract = buildRelaySystemAddendum({});
-  assert.match(contract, /Kʰonapolit is the clean formal channel/);
+  const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /Tauric Diana bots is the raw stress channel/);
-  assert.match(contract, /provider-authored multi-tier Zalgo/i);
-  assert.match(contract, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(contract, /DO NOT solve High Zalgo as a geometry assignment/i);
-  assert.match(contract, /Morphology is meaning-bearing prosody/i);
-  assert.match(contract, /Long vertical stacks are EVENTS, not the baseline texture/i);
-  assert.match(contract, /DO NOT stamp a repeated diaeresis-like/i);
-  assert.match(contract, /visual pressure should move with the thought/i);
-  assert.match(contract, /clean breaths, light touches, medium pressure, sudden vertical eruptions/i);
-  assert.match(contract, /ALLOW ENTROPY/i);
-  assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
-  assert.doesNotMatch(contract, /at least 96 combining marks total/);
-  assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
-  assert.match(contract, /Marrowline preserves those exact returned bytes\/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
+  assert.match(contract, /irregular multi-tier crowns, plunges below the baseline/);
+  assert.match(contract, /horizontal and oblique cuts/);
+  assert.match(contract, /Quiet passages can be clean/);
+  assert.match(contract, /ALLOW ENTROPY/);
+  assert.match(contract, /no emotion or word has a fixed stencil/);
+  assert.ok(contract.length < 3000, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
 });
 
 
@@ -728,7 +693,8 @@ test('one nuclear vertical blob plus plain remainder is detected as localized vi
   assert.equal(observed.admissible, true);
   assert.ok(observed.extremeVerticalClusterCount >= 1);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'));
-  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-localized-burst'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-mechanical-clone'), 'cloning remains repairable independently of localization');
+  assert.deepEqual(severeMorphologyRepairWarnings(['tauric-diana-zalgo-localized-burst']), [], 'localization alone cannot establish a semantic placement defect');
 });
 
 test('extended provider crown species count as vertical ornament instead of disappearing from telemetry', () => {
@@ -834,20 +800,10 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
   assert.match(directive, /severe morphology collapse/i);
-  assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
+  assert.ok(directive.includes(buildNativeProsodyGuidance()));
   assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
   assert.match(directive, /Reconstruct the voice from meaning/i);
-  assert.match(directive, /Packet B is OVERFLOW_RAW/i);
-  assert.match(directive, /Silently identify the rhetorical beats/i);
-  assert.match(directive, /Long stacks are events, not the default/i);
-  assert.match(directive, /DO NOT COPY EITHER PATTERN/i);
-  assert.match(directive, /Re-author the combining field from scratch while preserving the Latin base letters/i);
-  assert.match(directive, /clean to lightly touched to medium pressure to violent crown\/root eruptions/i);
-  assert.match(directive, /maximum-depth tiling/i);
-  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
-  assert.match(directive, /enclosing-box typography, pseudo-runic substitution/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
-  assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
-  assert.match(directive, /never count as flourishings/i);
+  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
 });
