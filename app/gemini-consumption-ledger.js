@@ -1,5 +1,6 @@
 export const GEMINI_BROWSER_LEDGER_SCHEMA = 'td613.gemini-browser-consumption-ledger/v0.1';
 export const GEMINI_BROWSER_LEDGER_KEY = 'TD613_GEMINI_CONSUMPTION_LEDGER_V1';
+export const GEMINI_BROWSER_DAILY_BUDGET_SCHEMA = 'td613.gemini-browser-daily-budget-hints/v0.1';
 const MAX_EVENTS = 500;
 const DEFAULT_MODEL_QUOTA_COOLDOWN_SECONDS = 120;
 const MAX_MODEL_QUOTA_COOLDOWN_SECONDS = 1800;
@@ -15,6 +16,27 @@ function quotaCooldownSeconds(quota = {}) {
     return Math.max(1, Math.min(MAX_MODEL_QUOTA_COOLDOWN_SECONDS, Math.ceil(observed)));
   }
   return DEFAULT_MODEL_QUOTA_COOLDOWN_SECONDS;
+}
+function pacificDayKey(value = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (!Number.isFinite(date.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(date);
+  const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return [byType.year, byType.month, byType.day].filter(Boolean).join('-');
+}
+
+function dailyModelQuotaLimit(event = {}) {
+  const quota = event?.quota && typeof event.quota === 'object' ? event.quota : null;
+  if (!quota || safe(quota.scope) !== 'model') return null;
+  const cadence = `${safe(quota.quota_id)} ${safe(quota.metric)}`;
+  if (!/(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|free_tier_requests)/i.test(cadence)) return null;
+  const limit = boundedNumber(quota.limit);
+  return limit !== null && limit > 0 ? Math.floor(limit) : null;
 }
 
 function candidateReceipt(payload = {}) {
@@ -94,6 +116,53 @@ export function summarizeGeminiBrowserLedger(root = globalThis) {
     by_route: byRoute,
     by_model: byModel,
     events: arr(ledger.events)
+  };
+}
+
+export function currentGeminiDailyBudgetHints(root = globalThis, at = new Date(), { reservePerModel = 2 } = {}) {
+  const ledger = readLedger(root);
+  const now = at instanceof Date ? at : new Date(at);
+  const day = pacificDayKey(now);
+  const reserve = Number.isFinite(Number(reservePerModel))
+    ? Math.max(0, Math.min(10, Math.floor(Number(reservePerModel))))
+    : 2;
+  const observedTodayByModel = {};
+  const knownDailyLimitByModel = {};
+  const dailyQuotaObservedModels = new Set();
+
+  for (const event of arr(ledger.events)) {
+    const model = safe(event?.model).replace(/^models\//, '');
+    if (!model) continue;
+
+    const limit = dailyModelQuotaLimit(event);
+    if (limit !== null) knownDailyLimitByModel[model] = limit;
+
+    if (pacificDayKey(event?.observed_at) !== day) continue;
+    observedTodayByModel[model] = (observedTodayByModel[model] || 0) + 1;
+    if (Number(event?.status) === 429 && limit !== null) dailyQuotaObservedModels.add(model);
+  }
+
+  const optionalRepairAllowedByModel = {};
+  const hardBudgetObservedModels = [];
+  for (const [model, limit] of Object.entries(knownDailyLimitByModel)) {
+    const observed = Number(observedTodayByModel[model] || 0);
+    optionalRepairAllowedByModel[model] = observed < Math.max(1, limit - reserve);
+    if (observed >= limit) hardBudgetObservedModels.push(model);
+  }
+
+  return {
+    schema: GEMINI_BROWSER_DAILY_BUDGET_SCHEMA,
+    coverage: 'this-browser-pacific-day-attempts-plus-last-observed-model-daily-limit',
+    observed_at: Number.isFinite(now.getTime()) ? now.toISOString() : null,
+    pacific_day: day || null,
+    reserve_per_model: reserve,
+    observed_today_by_model: observedTodayByModel,
+    known_daily_limit_by_model: knownDailyLimitByModel,
+    daily_quota_observed_models: [...dailyQuotaObservedModels],
+    hard_budget_observed_models: hardBudgetObservedModels,
+    optional_repair_allowed_by_model: optionalRepairAllowedByModel,
+    provider_daily_total: null,
+    claim_ceiling: 'browser-local-partial-budget-evidence-not-provider-accounting'
   };
 }
 
