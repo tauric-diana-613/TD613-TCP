@@ -235,7 +235,7 @@ jobs:
         if: failure()
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
-          RELEASE_RUN_ID: ${{ steps.authorize.outputs.held_run_id || 'unresolved' }}
+          RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id || 'unresolved' }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
