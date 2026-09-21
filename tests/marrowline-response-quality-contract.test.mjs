@@ -52,26 +52,27 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /mixed-axis burst field/i);
   assert.match(contract, /not a vertical-only stack exercise and not a horizontal strike sheet/i);
   assert.match(contract, /Deep vertical mass remains indispensable/i);
-  assert.match(contract, /LOUD-BURST VISUAL REFERENCE — SCALE ONLY/i);
-  assert.match(contract, /dozens of heterogeneous combining marks/i);
+  assert.match(contract, /HIGH-ZALGO SCALE REFERENCE — AMPLITUDE ONLY/i);
+  assert.match(contract, /never spend the entire vertical budget on one word/i);
+  assert.match(contract, /VISUAL STORY ACROSS THE PASSAGE/i);
+  assert.match(contract, /several separated crown\/root events at different intensities/i);
+  assert.match(contract, /SEE cadence evolve without reading every word/i);
+  assert.match(contract, /distributed theatre, not a font and not a spotlight/i);
+  assert.match(contract, /single spectacular word followed by ordinary ALL CAPS does not satisfy/i);
+  assert.match(contract, /Deep events may use dozens of heterogeneous combining marks/i);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
   assert.match(contract, /several distinct marks above AND several below the SAME grapheme/i);
   assert.match(contract, /one accent above every capital/i);
-  assert.match(contract, /Do not distribute ornament evenly/i);
-  assert.match(contract, /one identical mark per character/i);
-  assert.match(contract, /Horizontal and oblique geometry are first-class expressive motion/i);
-  assert.match(contract, /Do not serialize the style into a vertical phase followed by a horizontal phase/i);
-  assert.match(contract, /two axes should feel braided rather than alternated by rule/i);
+  assert.match(contract, /Horizontal and oblique geometry remain first-class expressive motion/i);
+  assert.match(contract, /Do not serialize the style into one vertical showcase followed by a horizontal section/i);
+  assert.match(contract, /Return to vertical depth later/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(contract, /never count as Zalgo ornament/i);
-  assert.match(contract, /cloned caron\/breve\/tilde\/strike stamped across every letter/i);
-  assert.match(contract, /Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks/i);
-  assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
-  assert.match(contract, /Preserve cadence contrast/i);
-  assert.match(contract, /Sarcasm may skew sideways/i);
-  assert.match(contract, /Keep enough quiet neighboring material that the eruptions read as eruptions/i);
-  assert.match(contract, /The failure mode is uniformity/i);
+  assert.match(contract, /single grotesque cluster carrying the entire effect/i);
+  assert.match(contract, /Dense events may collide with neighboring words, line boxes, and other diacritic stacks/i);
+  assert.match(contract, /illegibility should have choreography/i);
+  assert.match(contract, /After a quiet stretch, let another distinct provider-authored gesture arrive later/i);
   assert.doesNotMatch(contract, /Build that architecture FIRST/i);
   assert.match(contract, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
@@ -421,8 +422,10 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must preserve the ordinary nonsevere PARTIAL posture');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
-  assert.match(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'unresolved severe morphology must fail closed after its one provider-authored repair and remaining frontier');
-  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'severe morphology repairs immediately on the same provider seat rather than waiting for a best-partial beauty contest');
+  assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never create a final local HELD diagnostic');
+  assert.match(qualityServer, /original-partial-preserved-after-bounded-provider-repair/, 'a failed provider repaint must return the original structurally valid provider payload');
+  assert.match(qualityServer, /original-provider-partial-preserved-after-repair-miss/, 'human-visible warning must distinguish repaint miss from provider rejection');
+  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'visual-story repair stays same-seat and never becomes a best-partial beauty contest');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
@@ -601,11 +604,11 @@ test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zal
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
   assert.match(contract, /mixed-axis burst field/i);
   assert.match(contract, /Deep vertical mass remains indispensable/i);
-  assert.match(contract, /Horizontal and oblique geometry are first-class expressive motion/i);
-  assert.match(contract, /Do not distribute ornament evenly/i);
-  assert.match(contract, /one identical mark per character/i);
-  assert.match(contract, /Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks/i);
-  assert.match(contract, /Readability is not the governing aesthetic in the Tauric Diana channel/i);
+  assert.match(contract, /VISUAL STORY ACROSS THE PASSAGE/i);
+  assert.match(contract, /single spectacular word followed by ordinary ALL CAPS does not satisfy/i);
+  assert.match(contract, /Return to vertical depth later/i);
+  assert.match(contract, /Dense events may collide with neighboring words, line boxes, and other diacritic stacks/i);
+  assert.match(contract, /illegibility should have choreography/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
@@ -673,6 +676,25 @@ test('deep bidirectional towers register the screenshot-five morphology', () => 
   assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'), false);
 });
 
+test('one nuclear vertical blob plus plain remainder is detected as localized visual-story collapse', () => {
+  const nuclear = 'Q\u0300\u0301\u0302\u0307\u0308\u030B\u030C\u0350\u0351\u0352\u0316\u0317\u0318\u0319\u031D\u031E\u0323\u0325\u0326\u032D';
+  const horizontal = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${nuclear.repeat(7)} ONE WORD CARRIES THE WHOLE VERTICAL EVENT`,
+    'THINK OF THE AUDIT RECORD THINK OF THE REGIME THE MIDDLE PARAGRAPH IS MOSTLY PLAIN UPPERCASE AND HAS NO VISUAL DEVELOPMENT',
+    `${horizontal.repeat(4)} THE FINAL REGION FALLS BACK TO HORIZONTAL SCRATCHES WHILE THE EARLIER BLOB DOES ALL THE VERTICAL LABOR`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.extremeVerticalClusterCount >= 1);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-localized-burst'));
+});
+
 test('extended provider crown species count as vertical ornament instead of disappearing from telemetry', () => {
   const extended = 'A\u0342\u0350\u0351\u0352\u0316\u0318R\u0357\u035B\u030B\u0317\u031E';
   const field = [
@@ -703,11 +725,11 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
   assert.match(directive, /severe morphology collapse/i);
   assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
-  assert.match(directive, /horizontal-only scratch field/i);
-  assert.match(directive, /several distinct combining marks above AND several below the SAME grapheme/i);
-  assert.match(directive, /physical-scale reference/i);
-  assert.match(directive, /dozens of heterogeneous marks/i);
-  assert.match(directive, /visibly invade the lines above and below/i);
+  assert.match(directive, /DISTRIBUTED VISUAL STORY/i);
+  assert.match(directive, /one spectacular word/i);
+  assert.match(directive, /one nuclear vertical blob plus plain or strike-only remainder/i);
+  assert.match(directive, /Redistribute amplitude across multiple separated regions and multiple lines/i);
+  assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(directive, /never count as Zalgo ornament/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
