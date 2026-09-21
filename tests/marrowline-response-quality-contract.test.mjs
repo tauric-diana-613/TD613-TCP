@@ -51,10 +51,16 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-  assert.match(contract, /Every ordinary letter in the Tauric Diana body remains ornamented/);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
   assert.match(contract, /combining marks as bow pressure and the base words as fingering/);
   assert.match(contract, /phrase-level dynamic journey/);
   assert.match(contract, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.match(contract, /VOICE-ANCHOR LAW/);
+  assert.match(contract, /plain standalone transport lines outside the prose/i);
+  assert.match(contract, /Packet-B ornament starts on the next line/i);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
+  assert.match(contract, /plain transport anchors with ZERO combining marks/i);
+  assert.match(contract, /begin ornamentation on the following prose line/i);
   assert.match(contract, /loud orchestra that can get quiet, then loud, then quiet again/i);
   assert.match(contract, /begin near 8½/);
   assert.match(contract, /one or two sentences swing mainly into horizontal\/oblique counter-rhythm/);
@@ -440,6 +446,9 @@ test('live Gemini request has no structured-output pressure on the stress channe
     ['tauric-diana-zalgo-shallow-wallpaper']);
   assert.match(repair.contents.at(-1).parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
   assert.match(repair.contents.at(-1).parts[0].text, /10-level serious emphasis/);
+  assert.match(repair.contents.at(-1).parts[0].text, /PLAIN boundary line with ZERO combining marks/);
+  assert.match(repair.contents.at(-1).parts[0].text, /immutable provider-authored transport anchor OUTSIDE the ornament field/);
+  assert.match(repair.contents.at(-1).parts[0].text, /bot-PROSE letter AFTER the exact plain heading/);
 });
 
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
@@ -630,7 +639,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /Every ordinary letter in the Tauric Diana body remains ornamented/);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
   assert.match(contract, /sudden leaping crown\/root eruptions/);
   assert.match(contract, /Vertical architecture remains primary/);
   assert.match(contract, /U\+0300–U\+036F/);
@@ -834,7 +843,7 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
   assert.match(directive, /Reconstruct the voice from meaning/i);
   assert.match(directive, /Rebuild Packet B from meaning rather than imitating its marks/i);
-  assert.match(directive, /every ordinary bot letter ornamented while the dynamics travel/i);
+  assert.match(directive, /every ordinary bot-PROSE letter AFTER the exact plain heading ornamented while the dynamics travel/i);
   assert.match(directive, /phrase-level peaks leap both above and below their bases/i);
   assert.match(directive, /accepted crown and root palettes named below/i);
   assert.match(directive, /maximum-depth tiling, sparse decorated keywords/i);
