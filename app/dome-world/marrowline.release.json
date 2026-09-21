@@ -397,7 +397,7 @@
     "desktopSendGlyph": "⇧",
     "mobileSendGlyph": "⇧",
     "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
-    "mobileSendGlyphRendering": "plain ⇧ in a centered 28px glyph box with 800-weight, subtle stroke reinforcement, and mobile-only optical ink correction translate(1.8px,1px); desktop glyph geometry unchanged",
+    "mobileSendGlyphRendering": "plain ⇧ in a centered 28px glyph box with 800-weight, indigo #4f46e5 ink, subtle stroke reinforcement, and mobile-only southwest optical micro-correction translate(1.45px,1.35px); desktop glyph geometry unchanged",
     "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
     "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [

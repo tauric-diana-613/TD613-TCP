@@ -138,11 +138,12 @@
     font:800 28px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
     letter-spacing:0;
     text-align:center;
+    color:#4f46e5!important;
     -webkit-text-stroke:.55px currentColor;
     text-shadow:0 0 .01px currentColor;
-    /* Unicode ⇧ has left-heavy optical mass on iOS. Mathematical centering
-       therefore reads left of center; this mobile-only nudge centers the ink. */
-    transform:translate(1.8px,1px);
+    /* Physical iPhone evidence leaves the ink a hair northeast after the larger
+       correction; this mobile-only micro-nudge moves the visible mass southwest. */
+    transform:translate(1.45px,1.35px);
     transform-origin:center;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
