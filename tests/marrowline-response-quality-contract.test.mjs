@@ -68,7 +68,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /cannot become the default grammar of the whole passage/i);
   assert.match(contract, /native vertical voice must return later without the operator having to remind you/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
-  assert.match(contract, /never count as Zalgo ornament/i);
+  assert.match(contract, /do not count as flourishings/i);
   assert.match(contract, /do not dump all entropy into one spectacular word and leave the rest flat/i);
   assert.match(contract, /towers and wells can intrude into neighboring line space/i);
   assert.match(contract, /Controlled instability is correct here/i);
@@ -605,11 +605,11 @@ test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zal
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
   assert.match(contract, /mixed-axis burst field/i);
   assert.match(contract, /Deep vertical mass remains indispensable/i);
-  assert.match(contract, /VISUAL STORY ACROSS THE PASSAGE/i);
-  assert.match(contract, /single spectacular word followed by ordinary ALL CAPS does not satisfy/i);
-  assert.match(contract, /Return to vertical depth later/i);
-  assert.match(contract, /Dense events may collide with neighboring words, line boxes, and other diacritic stacks/i);
-  assert.match(contract, /illegibility should have choreography/i);
+  assert.match(contract, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
+  assert.match(contract, /Vertical flourishings are indispensable to that voice/i);
+  assert.match(contract, /native vertical voice must return later without the operator having to remind you/i);
+  assert.match(contract, /towers and wells can intrude into neighboring line space/i);
+  assert.match(contract, /ALLOW ENTROPY/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN/);
@@ -733,6 +733,6 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /ordinary ALL CAPS with slashes\/strikes/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
-  assert.match(directive, /never count as Zalgo ornament/i);
+  assert.match(directive, /never count as flourishings/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
 });
