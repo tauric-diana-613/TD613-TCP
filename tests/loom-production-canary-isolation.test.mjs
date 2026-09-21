@@ -83,14 +83,34 @@ assert.match(source, /count <= LIVE_WITNESS_TIMEOUT_MS/, 'long stage timing evid
 assert.match(source, /provider_stream:\s*attempt\?\.providerStream/, 'production receipts must preserve bounded provider stream progress');
 assert.match(source, /Array\.isArray\(marrowlinePayload\?\.attempts\)/, 'held Marrowline responses must preserve provider-attempt evidence');
 assert.match(source, /diagnostic:\s*boundedRouteDiagnostic\(marrowlinePayload\?\.diagnostic\)/, 'held Marrowline responses must preserve bounded diagnostic evidence');
-assert.match(source, /if \(!receipt\.marrowline_live_route\.relay_admitted\)/, 'serial isolation must not weaken relay admission');
+assert.doesNotMatch(
+  source,
+  /if \(!receipt\.marrowline_live_route\.relay_admitted\)/,
+  'explicit production observation must not reintroduce local admission as a human-surface veto'
+);
+assert.match(source, /marrowlineLocalAdmissionAuthority/);
+assert.match(source, /diagnostic-not-human-surface-veto/);
+assert.match(source, /local_admission_nonblocking:\s*marrowlineLocalAdmissionNonblocking/);
+assert.match(source, /human_surface_visible:\s*marrowlineHumanSurfaceVisible/);
+assert.match(source, /if \(!receipt\.marrowline_live_route\.local_admission_nonblocking\)/);
+assert.match(source, /if \(!receipt\.marrowline_live_route\.human_surface_visible\)/);
 assert.match(source, /if \(!receipt\.answer_nonempty\)/, 'serial isolation must not weaken Loom answer admission');
 assert.match(source, /const loomProviderLivenessHeld = !transportError/);
 assert.match(source, /attempt\.status === 429 \|\| attempt\.status === 503/);
 assert.match(source, /PROVIDER_LIVENESS_HELD_NONBLOCKING/);
 assert.match(source, /loom_provider_liveness_nonblocking: loomProviderLivenessHeld/);
 assert.match(reobserveWorkflow, /Classify bounded live AI observation/);
-assert.match(reobserveWorkflow, /marrowline_status=PASS/);
+assert.doesNotMatch(
+  reobserveWorkflow,
+  /marrowline\?\.relay_admitted !== true/,
+  'observation workflow must not require local admission when the runtime explicitly surfaced nonempty provider text'
+);
+assert.match(reobserveWorkflow, /marrowline\?\.answer_nonempty !== true/);
+assert.match(reobserveWorkflow, /marrowline\?\.human_surface_visible !== true/);
+assert.match(reobserveWorkflow, /marrowline\?\.local_admission_nonblocking !== true/);
+assert.match(reobserveWorkflow, /PASS_ADMITTED/);
+assert.match(reobserveWorkflow, /PASS_LOCAL_ADMISSION_NONBLOCKING/);
+assert.match(reobserveWorkflow, /marrowline_status=\$\{marrowlineStatus\}/);
 assert.match(reobserveWorkflow, /loom_status=\$\{loomStatus\}/);
 assert.match(reobserveWorkflow, /production_loom_demo1_canary = \$LOOM_STATUS/);
 assert.match(reobserveWorkflow, /marrowline_live_route = \$MARROWLINE_STATUS/);
