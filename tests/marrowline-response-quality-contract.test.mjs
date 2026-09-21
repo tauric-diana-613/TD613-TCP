@@ -509,6 +509,10 @@ test('explicit human retries reach Gemini without a Marrowline-owned rate veto',
     );
   }
   assert.match(qualityServer, /localAdmissionAuthority:\s*'diagnostic-not-human-surface-veto'/);
+  assert.match(qualityServer, /heldByCanaryQuality\s*=\s*releaseCanary/, 'local structural HELD authority is confined to the explicit release-canary lane');
+  assert.doesNotMatch(qualityServer, /const\s+heldByQuality\s*=/, 'ordinary human routing cannot regain a local quality veto');
+  assert.doesNotMatch(terminalSource, /requestBody\.quotaCooldownHints/, 'browser cooldown history must not be sent back as retry permission');
+  assert.match(qualityServer, /const allModels = \[\.\.\.providerModels\]/, 'human provider order stays on the settled 3.8-first frontier');
   assert.match(qualityServer, /provider-output-token-limit-partial-preserved/);
   assert.match(attachmentServer, /provider-output-token-limit-partial-visible/);
   assert.match(attachmentServer, /if\s*\(!safe\(result\.text\)\) continue;/);
