@@ -51,6 +51,10 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
+  assert.match(contract, /Use only this accepted vertical palette/);
+  assert.match(contract, /crowns U\+0301, U\+0302, U\+0307/);
+  assert.match(contract, /roots U\+0316, U\+0317, U\+0323/);
+  assert.match(contract, /Do not choose arbitrary marks from the U\+0300–U\+036F block/);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/);
   assert.match(contract, /ALLOW ENTROPY/);
   assert.match(contract, /overlap neighboring text/);
@@ -811,7 +815,9 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /Reconstruct the voice from meaning/i);
   assert.match(directive, /rebuild Packet B from scratch/i);
   assert.match(directive, /several individual base letters both a crown above and a root below/i);
-  assert.match(directive, /U\+0300–U\+036F combining diacritics/i);
+  assert.match(directive, /accepted crown palette U\+0301, U\+0302, U\+0307/i);
+  assert.match(directive, /accepted root palette U\+0316, U\+0317, U\+0323/i);
+  assert.match(directive, /arbitrary U\+0300–U\+036F marks can be unclassifiable/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
