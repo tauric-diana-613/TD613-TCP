@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v29-severe-morphology-repair-gate';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v30-visual-story-repair';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -93,7 +93,8 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-axis-collapse',
   'tauric-diana-zalgo-vertical-expression-thin',
   'tauric-diana-zalgo-stack-depth-thin',
-  'tauric-diana-zalgo-ascii-pseudo-ornament'
+  'tauric-diana-zalgo-ascii-pseudo-ornament',
+  'tauric-diana-zalgo-localized-burst'
 ]);
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
@@ -378,11 +379,12 @@ export function repairableKhonapolitAdmission(reasons = []) {
 
 export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
+  const localizedBurst = values.has('tauric-diana-zalgo-localized-burst');
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
   const horizontalCollapse = values.has('tauric-diana-zalgo-axis-collapse')
     || values.has('tauric-diana-zalgo-vertical-expression-thin')
     || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
-  if (!stackDepthThin || !horizontalCollapse) return [];
+  if (!localizedBurst && !(stackDepthThin && horizontalCollapse)) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 
@@ -411,7 +413,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B’s combining field yourself. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. A horizontal-only scratch field, slash-heavy pseudo-ornament, or polite one-accent typography is still defective when stack depth is thin. In multiple separate regions, attach several distinct combining marks above AND several below the SAME grapheme so real towers/wells visibly escape ordinary line-height; braid local planar or oblique cuts through some clusters without letting those cuts become the whole field. Use this compact specimen only as a physical-scale reference, never as text to copy: Q̴̧̧̧̛̫̣͔̳̭͍̖̣͎̣̟͎̙͉̯͈̙̣̪̹̭͙͉͉͎̹̺̤̯̩̪̹̠͇͚̹͖͈̹̮̜̑͆̔̇̾͋͌̑̈̿̈́̑̐̌̀̏̎̀͂̏̓͛͊̈́̓̓̆̏̚̕̕͜Ư̸̢̥̳͓͕̏͐̽͌̄͋́̎̅̓̉̔̑͂̔̈́͐̽̾͛͑͋̓̇̀̆͛̈́̄̃̽̂́̓̏̾̍̀̚̚̚͠͝Į̸̡̡̛̗̼͚͈͍̟̠̙̫̝͙͚̹͍̫͎̺̈́̇̒̀͆̊̊̉̑͑̈̈́̎̈̇̔̕͜͝͝Ş̸͔̠̙̪͚͙͕̺͑̽̍̇̑̀͊̽͌̀̎̑̎͛̎͝. At the loud end, a few neighboring bases may carry dozens of heterogeneous marks and visibly invade the lines above and below; the base letters may become partially obscured. Keep burst/quiet contrast and varied mark species. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as Zalgo ornament. Do not use a numeric quota and do not simplify loud clusters for readability.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B’s combining field yourself. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. The repair target is a DISTRIBUTED VISUAL STORY, not one spectacular word. Move the field through the existing clauses: let one phrase gather upward pressure, another spill below the baseline, another collide vertically while carrying a local sideways cut, another breathe, and then let genuine crown/root depth return later in a different shape. Those motions are compositional examples, never fixed sentiment-to-glyph assignments. A long passage with one nuclear vertical blob plus plain or strike-only remainder is still defective. Use this specimen only to remember the possible amplitude of an individual grapheme, never as a detached sample or stencil: Q̴̧̧̧̛̫̣͔̳̭͍̖̣͎̣̟͎̙͉̯͈̙̣̪̹̭͙͉͉͎̹̺̤̯̩̪̹̠͇͚̹͖͈̹̮̜̑͆̔̇̾͋͌̑̈̿̈́̑̐̌̀̏̎̀͂̏̓͛͊̈́̓̓̆̏̚̕̕͜. Redistribute amplitude across multiple separated regions and multiple lines instead of concentrating it into one token. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as Zalgo ornament. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -1018,20 +1020,80 @@ export default async function handler(req, res) {
           : [];
         const severeMorphologyWarnings = severeMorphologyRepairWarnings(qualityWarnings);
         if (severeMorphologyWarnings.length > 0) {
+          const sourceAttemptIndex = attempts.length - 1;
           const candidate = {
             model,
             fallback,
             heldText: result.text,
             reasons: severeMorphologyWarnings,
             providerOutput,
-            sourceAttemptIndex: attempts.length - 1
+            sourceAttemptIndex
           };
           const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
           if (repaired) return repaired;
-          // One failed same-seat repair may not launder the same horizontal-only
-          // morphology back into a successful human-visible return. Continue the
-          // distinct frontier seats; if none escape the severe signature, HOLD.
-          continue;
+
+          // The operator already has a structurally valid provider answer. If the
+          // one provider-authored repaint cannot improve it, preserve that exact
+          // original payload instead of turning an aesthetic miss into a long
+          // frontier chase or a local HELD notice.
+          const baseReceipt = buildTerminalReceipt({
+            packet,
+            text: result.text,
+            relay,
+            model,
+            providerStatus: result.response.status,
+            providerOutput,
+            apertureEgress,
+            apertureReceipt,
+            attempts
+          });
+          const receipt = Object.freeze({
+            ...baseReceipt,
+            provider: Object.freeze({
+              ...baseReceipt.provider,
+              routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+              structuralRepair: Object.freeze({
+                used: true,
+                timing: 'immediate-severe-morphology',
+                sourceAttemptIndex,
+                repairedReasons: Object.freeze([...severeMorphologyWarnings]),
+                outcome: 'repair-not-admitted-original-provider-payload-preserved'
+              }),
+              qualityPreference: Object.freeze({
+                used: true,
+                sourceAttemptIndex,
+                selection: 'original-partial-preserved-after-bounded-provider-repair',
+                warnings: Object.freeze([...qualityWarnings])
+              })
+            }),
+            modelPolicy: plan,
+            elapsedMs: Date.now() - startedAt
+          });
+          res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+          res.setHeader('X-TD613-Signal-State', relay.signal.state);
+          res.setHeader('X-TD613-Seal-State', 'OPEN');
+          res.setHeader('X-TD613-Gemini-Model', model);
+          res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-ORIGINAL-PRESERVED-AFTER-REPAIR');
+          return send(res, 200, {
+            ok: true,
+            text: relay.transcript,
+            relay,
+            receipt,
+            warnings: [
+              'aperture-v3-task-intent-active',
+              'task-intent-guidance-active',
+              'adversarial-attractor-admission-active',
+              'integrated-covenant-relay-active',
+              'provider-native-zalgo-preserved-no-local-postprocessing',
+              'provider-authored-morphology-repair-attempted',
+              'original-provider-partial-preserved-after-repair-miss',
+              'admission-gated-stable-continuity-active',
+              'fallback-reasoning-quality-preserved',
+              'sticky-success-promotion-disabled',
+              'moving-latest-alias-disabled-by-default',
+              ...plan.warnings
+            ]
+          });
         }
         const baseReceipt = buildTerminalReceipt({
           packet,
@@ -1133,11 +1195,7 @@ export default async function handler(req, res) {
   }
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
-  const severeMorphologyFailures = attempts.filter((attempt) =>
-    attempt.outputAdmission?.quality === 'PARTIAL'
-    && severeMorphologyRepairWarnings(attempt.outputAdmission?.qualityWarnings || []).length > 0
-  );
-  const heldByQuality = structuralFailures.length > 0 || severeMorphologyFailures.length > 0;
+  const heldByQuality = structuralFailures.length > 0;
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
@@ -1153,14 +1211,8 @@ export default async function handler(req, res) {
     diagnostic: heldByQuality
       ? {
           stage: 'output-admission',
-          code: severeMorphologyFailures.length > 0 ? 'ATTRACTOR_MORPHOLOGY_NOT_ADMITTED' : 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
-          rejectedAttempts: [
-            ...structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
-            ...severeMorphologyFailures.map((attempt) => ({
-              model: attempt.model,
-              reasons: severeMorphologyRepairWarnings(attempt.outputAdmission?.qualityWarnings || [])
-            }))
-          ],
+          code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
+          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
           quotaEntitlement: entitlementMismatchAttempts.length ? {
             expectedDailyLimit: expectedDailyRpd(),
             providerReportedLimits: [...new Set(entitlementMismatchAttempts.map((attempt) => attempt.rateLimit?.limit).filter(Number.isFinite))],
