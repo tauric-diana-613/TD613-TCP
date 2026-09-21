@@ -125,6 +125,8 @@ export function boundedFailureMessage(failure = {}) {
   if (code.includes('no-eligible-callable-models')) return 'No callable model route was admitted for this request. Your task was not discarded.';
   if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A provider return arrived, then Marrowline held it locally after generation because the required conversation structure was not admitted. The provider did not reject your request. Your message is preserved for retry.';
   if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
+  if (code.includes('response-body-failed')) return 'The server replied, but its response body could not be read. Your message is preserved for retry.';
+  if (code.includes('client-response-processing-failed')) return 'A reply arrived, but the browser could not finish processing or displaying it. Its receipt, when supplied, remains in the failure details. Your message is preserved.';
   if (code.includes('provider_shared_rate_limit') || code.includes('shared-rate-limit') || code.includes('gemini-shared-rate-limit')) {
     const retryAfter = Number(failure?.rateLimit?.retryAfterSeconds || failure?.retryAfterSeconds || 0);
     return retryAfter > 0

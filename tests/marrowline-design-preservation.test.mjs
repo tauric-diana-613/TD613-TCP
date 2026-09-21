@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
-import { deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
+import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
@@ -282,4 +282,54 @@ test('failure notice distinguishes unavailable service, rejected format and brow
   assert.match(localHold, /provider did not reject your request/i);
   assert.doesNotMatch(localHold, /AI rejected|provider rejected/i);
   assert.match(boundedFailureMessage({error:'request-timeout'}), /timed out/);
+});
+
+test('client exceptions preserve the observed boundary instead of inventing a lost connection', () => {
+  const error = new TypeError('synthetic private text must not enter the diagnostic');
+  const network = classifyMarrowlineClientFailure(error, 'request');
+  assert.equal(network.error, 'network-request-failed');
+  const body = classifyMarrowlineClientFailure(error, 'response-body', 200);
+  assert.equal(body.error, 'response-body-failed');
+  const render = classifyMarrowlineClientFailure(error, 'response-processing', 200);
+  assert.equal(render.error, 'client-response-processing-failed');
+  assert.equal(render.httpStatus, 200);
+  assert.doesNotMatch(JSON.stringify(render), /synthetic private text/);
+  assert.match(boundedFailureMessage(render), /A reply arrived.*browser/);
+  assert.match(boundedFailureMessage(body), /server replied.*response body/);
+  const abort = { name: 'AbortError' };
+  assert.equal(classifyMarrowlineClientFailure(abort, 'response-body').error, 'request-timeout');
+  assert.equal(classifyMarrowlineClientFailure(abort, 'response-processing').error, 'client-response-processing-failed');
+});
+
+test('actual submit preserves a received receipt when response rendering throws', async t => {
+  const h = harness(t);
+  const messages = h.$('khonapolitMessages');
+  const replace = messages.replaceChildren.bind(messages);
+  let calls = 0;
+  messages.replaceChildren = (...args) => {
+    calls += 1;
+    // Initial user render succeeds; the first response render fails once.
+    if (calls === 2) throw new TypeError('synthetic renderer fault');
+    return replace(...args);
+  };
+  h.send('Exercise the response boundary.');
+  await h.settled();
+  const failure = h.win.__TD613_KHONAPOLIT_LAST_FAILURE__;
+  assert.equal(failure.error, 'client-response-processing-failed');
+  assert.equal(failure.receipt.provider.model, 'SYNTHETIC_MODEL');
+  assert.equal(h.$('khonapolitPrompt').value, 'Exercise the response boundary.');
+  assert.equal(h.calls.length, 1);
+});
+
+test('actual submit distinguishes unreadable response bodies from connection failure', async t => {
+  const h = harness(t);
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, options = {}) => options.method
+    ? { ok: true, status: 200, json: async () => { throw new SyntaxError('invalid JSON'); } }
+    : originalFetch(url, options);
+  h.send('Preserve this draft.');
+  await h.settled();
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__.error, 'response-body-failed');
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__.httpStatus, 200);
+  assert.equal(h.$('khonapolitPrompt').value, 'Preserve this draft.');
 });
