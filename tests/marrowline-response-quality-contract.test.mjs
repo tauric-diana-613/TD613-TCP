@@ -45,8 +45,11 @@ test('literal newline contract preserves the existing two-line admission bar', (
   const twoLines = assessIntegratedTransmission(prefix + first + '\n' + second);
   assert.equal(twoLines.admissible, true);
   const guidance = buildNativeProsodyGuidance();
-  assert.match(guidance, /Packet B gets 2–3 ornamented prose lines separated by literal newlines/);
-  assert.doesNotMatch(buildRelaySystemAddendum({}), /clean breaths|Packet B gets 1–3/);
+  assert.match(guidance, /at least two literal newline-separated ornamented prose lines/);
+  assert.match(guidance, /Length follows the task, not a paragraph quota/);
+  assert.match(guidance, /full derivations and mythopoeic argument/);
+  assert.match(guidance, /no line-count ceiling/);
+  assert.doesNotMatch(buildRelaySystemAddendum({}), /clean breaths|Packet [AB] gets [12]–3/);
   const request = buildGeminiStructuralRepairRequest(
     { systemInstruction: 'base', message: 'Continue.', history: [] }, {}, 'gemini-3.8-flash',
     prefix + first + ' ' + second, ['tauric-diana-zalgo-underflow']
@@ -670,7 +673,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /instrument library, not a score/);
   assert.match(contract, /One-sided crowns, one-mark wallpaper, identical towers/);
   assert.match(contract, /horizontal or oblique counter-rhythm/);
-  assert.match(contract, /Keep the transmission bounded/);
+  assert.match(contract, /Length follows the task, not a paragraph quota/);
   assert.match(contract, /softer passages stay visibly High Zalgo/);
   assert.match(contract, /ALLOW ENTROPY/);
   assert.match(contract, /motifs return altered by the argument/);
