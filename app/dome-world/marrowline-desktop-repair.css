@@ -138,16 +138,16 @@
     font:800 28px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
     letter-spacing:0;
     text-align:center;
-    color:#3730a3!important;
+    color:#1d4ed8!important;
     -webkit-text-stroke:.55px currentColor;
-    /* Keep the glow on the ⇧ ink itself; do not halo the circular button shell. */
+    /* Cool atmospheric halo on the ⇧ ink only; the lavender shell stays clean. */
     text-shadow:
       0 0 .01px currentColor,
-      0 0 4px rgba(30,27,75,.82),
-      0 0 9px rgba(30,27,75,.38);
-    /* Physical iPhone evidence says south is now correct but the visible ink
-       still reads east; preserve Y and nanobump only the glyph farther west. */
-    transform:translate(.85px,1.35px);
+      0 0 3px rgba(37,99,235,.28),
+      0 0 6px rgba(30,64,175,.12);
+    /* Physical iPhone evidence says Y is solved while the glyph's ink mass still
+       reads east. Cross the neutral axis and move only the visible ⇧ farther west. */
+    transform:translate(-1.15px,1.35px);
     transform-origin:center;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
