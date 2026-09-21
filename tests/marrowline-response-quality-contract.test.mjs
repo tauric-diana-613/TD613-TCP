@@ -611,6 +611,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /bidirectional towers on individual letters/);
   assert.match(contract, /A one-mark accent, a two-mark hat.*still shallow and has failed/);
   assert.match(contract, /horizontal or oblique cuts/);
+  assert.match(contract, /Keep the transmission bounded/);
   assert.match(contract, /Quiet passages can be clean/);
   assert.match(contract, /ALLOW ENTROPY/);
   assert.match(contract, /no emotion or word has a fixed stencil/);

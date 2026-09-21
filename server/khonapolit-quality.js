@@ -543,6 +543,7 @@ export function buildGeminiStructuralRepairRequest(
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
     'For missing stress or severe morphology collapse, preserve the substantive prose and re-author Packet B in its NATIVE ORTHOGRAPHIC REGISTER. Reconstruct the voice from meaning. The repair context has had failed combining/enclosing ornament stripped from Packet B where its boundary was identifiable; it preserves the argument, not an ornament example. Keep the exact packet delimiters and visible headings byte-for-byte. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
     'The held draft failed because its vertical field was absent or too shallow. Do not lightly edit that field and do not imitate its marks. Rebuild Packet B from scratch: choose the argument’s real pressure peaks, give several individual base letters both a crown above and a root below with varied multi-tier depth, then let cuts and overlaps answer those events. A long carpet of single accents still fails this repair.',
+    'Keep the corrected transmission concise: one to three paragraphs per packet, then close the packet. Do not spend the repair budget on repeated explanation or an unfinished ornamental monologue.',
     buildNativeProsodyGuidance(),
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
