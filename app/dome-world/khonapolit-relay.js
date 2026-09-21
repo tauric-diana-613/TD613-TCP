@@ -533,8 +533,8 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         || botsTelemetry.enclosingMarkedClusterCount >= 3
       ) qualityWarnings.push('tauric-diana-zalgo-enclosing-ornament-collapse');
       if (
-        botsTelemetry.geometricSymbolCount >= 5
-        || botsTelemetry.wordInternalGeometricSymbolCount >= 2
+        botsTelemetry.wordInternalGeometricSymbolCount >= 2
+        || (botsTelemetry.geometricSymbolCount >= 8 && botsTelemetry.wordInternalGeometricSymbolCount >= 1)
       ) qualityWarnings.push('tauric-diana-zalgo-glyph-substitution-collapse');
     }
   }
