@@ -27,7 +27,6 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import {
   currentGeminiDailyBudgetHints,
-  currentGeminiQuotaCooldownHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
 } from '../gemini-consumption-ledger.js';
@@ -651,9 +650,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let receivedReceipt = null;
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
-      const quotaCooldownHints = currentGeminiQuotaCooldownHints(root);
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
-      if (quotaCooldownHints.models.length) requestBody.quotaCooldownHints = quotaCooldownHints;
+      // Browser history remains visible in the local ledger but no longer carries
+      // retry permission into the server. Explicit retries always reach live Gemini.
       requestBody.quotaBudgetHints = quotaBudgetHints;
       if (attachments.length) requestBody.attachments = attachments;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
