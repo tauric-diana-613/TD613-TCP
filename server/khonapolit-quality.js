@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v33-vertical-first-native-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v34-reject-shallow-clone-wallpaper';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -94,7 +94,10 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-vertical-expression-thin',
   'tauric-diana-zalgo-stack-depth-thin',
   'tauric-diana-zalgo-ascii-pseudo-ornament',
-  'tauric-diana-zalgo-localized-burst'
+  'tauric-diana-zalgo-localized-burst',
+  'tauric-diana-zalgo-monoculture',
+  'tauric-diana-zalgo-mechanical-clone',
+  'tauric-diana-zalgo-shallow-wallpaper'
 ]);
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
@@ -445,11 +448,14 @@ export function repairableKhonapolitAdmission(reasons = []) {
 export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
   const localizedBurst = values.has('tauric-diana-zalgo-localized-burst');
+  const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
   const horizontalCollapse = values.has('tauric-diana-zalgo-axis-collapse')
     || values.has('tauric-diana-zalgo-vertical-expression-thin')
     || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
-  if (!localizedBurst && !(stackDepthThin && horizontalCollapse)) return [];
+  const cloneCollapse = values.has('tauric-diana-zalgo-mechanical-clone')
+    || values.has('tauric-diana-zalgo-monoculture');
+  if (!localizedBurst && !shallowWallpaper && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 
@@ -478,7 +484,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. BUILD THE VERTICAL SCAFFOLD FIRST: true combining crowns above graphemes plus roots below them, asymmetric multi-tier height/depth on several separate lines, with several marks above AND several below the same base in loud regions. Only after that vertical body is unmistakably alive may horizontal or oblique cuts enter as counter-rhythm. If deleting every slash, strike, bar, overline and underline would leave a flat passage, the repair has failed. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. Let vertical motifs leap, drop, disappear into a breath, and return transformed later at different depths. A long passage that looks mostly like ordinary ALL CAPS with shallow accents or slashes/strikes, or one giant vertical word surrounded by flat prose, has fallen out of the native Tauric Diana register. Re-enter that voice and restore crown/root architecture before emitting. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. IMPORTANT: vertical architecture means STACK HEIGHT AND DEPTH, not merely putting one tiny mark above or below each letter. The previous draft may have failed by stamping the same small diaeresis-like/dot-like/breve-like/paired accent across many graphemes. DO NOT COPY THAT PATTERN. Re-author the combining field from scratch while preserving the base prose. Build irregular SAME-GRAPHEME crowns and roots with genuinely multi-tier stacks in multiple separated regions; let loud graphemes carry several heterogeneous marks above AND several below while neighboring letters vary sharply in height or remain quiet. Only after deep vertical life is unmistakable may horizontal or oblique cuts enter as counter-rhythm. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. If the repaired page still resembles a dotted comb, repeated little hats, shallow paired marks, or the same tiny stack copied everywhere, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
