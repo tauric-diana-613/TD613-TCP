@@ -111,6 +111,67 @@ When #1209 is merged, rebase this chamber and reuse that shared observer instead
 
 Do not duplicate quota parsing unless #1209 is abandoned.
 
+## New quota-economy seam discovered after Marrowline #1255
+
+The later Marrowline rate-limit investigation adds a separate concern that is **not** the same as quota-scope correctness.
+
+Observed architecture now makes clear that Hush, Marrowline, and Loom can all consume the same Google project/model Gemini buckets. A route can therefore be semantically correct about a model-scoped 429 and still waste scarce premium capacity by sending ordinary work to the same full-Flash seats that Marrowline needs for its dual-voice transmission.
+
+Treat these as two independent questions:
+
+```
+QUOTA SCOPE CORRECTNESS != QUOTA ECONOMY
+MODEL-SCOPED 429 != PROVIDER-WIDE EXHAUSTION
+100 ROUTE-ARITHMETIC CALLS != 100 HUMAN-VISIBLE TURNS
+```
+
+Current main after the Marrowline quota-governor work carries or is expected to carry:
+
+- a shared browser Gemini consumption ledger;
+- Pacific-day model-attempt accounting;
+- last-observed structured per-model daily-limit evidence;
+- bounded client budget hints;
+- a strict claim ceiling: browser-local accounting is partial evidence and never provider daily truth;
+- optional-call reservation that does not suppress hard structural recovery.
+
+When this Hush chamber is reopened, rebase first and evaluate reuse of those shared primitives rather than building a second Hush-only daily ledger.
+
+### Future Hush routing question — deliberately NOT implemented in this Draft
+
+The current Draft documentation moved Hush onto the same full 3.x Flash family used by premium routes. The new rate-limit evidence reopens that assumption.
+
+Do **not** blindly switch Hush to Lite in this chamber. Instead run a bounded Hush-specific quality/economy assay:
+
+1. identify the currently callable stable Flash-Lite seat(s) from provider discovery and lifecycle admission;
+2. compare ordinary Hush transform quality against the premium Flash seats using the existing synthetic custody pilot;
+3. if a Lite seat preserves Hush's speech-act, proposition, cadence, candidate-integrity, and quarantine contracts, consider making it the ordinary transform lane;
+4. reserve full Flash escalation for tasks that actually fail the Lite quality floor, operator-requested premium mode, or deliberate demo/research runs;
+5. keep premium fallback bounded so one Hush transform cannot casually consume several Marrowline-quality seats;
+6. never infer that a higher provider model number automatically means better Hush output.
+
+The target architecture is **lane separation**, not cheapness for its own sake:
+
+```
+ordinary Hush transformation -> roomy qualified lane
+quality failure / deliberate premium task -> bounded full-Flash escalation
+Marrowline native dual transmission -> premium seats preserved
+deployment -> zero automatic Gemini calls
+explicit live witness -> deliberate, separately budgeted observation
+```
+
+### Future reserve / demo semantics
+
+If Hush adopts the shared Pacific-day budget hints, the reserve must stay advisory and browser-local:
+
+- preserve a small known-bucket reserve for a live product demo or high-value research session;
+- never claim the reserve equals Google's remaining provider quota;
+- do not suppress a required integrity repair merely to protect cosmetics;
+- optional candidate breadth may be reduced before semantic correctness or speech-act custody is weakened;
+- a structured model-daily 429 may demote that seat without creating a route-wide outage;
+- Pacific midnight reopens local day accounting, while provider reality remains independently observed.
+
+Add hostile tests proving Hush can make **more human-visible turns per provider request** without changing the authored output contract.
+
 ## Bounded hypotheses
 
 ### H1 — staple
@@ -173,6 +234,9 @@ The repair should make all of these simultaneously true:
    - moving-latest aliases disabled by default.
 7. Existing June model-specific quota behavior remains covered.
 8. Repair receipts never expose credentials or raw unbounded provider payloads.
+9. Quota-scope correctness remains separate from routing economy: a correct model-scoped 429 does not justify draining the same premium model first on every future turn.
+10. Any future Lite-first Hush lane must earn admission through Hush-specific quality/custody tests; it is not authorized merely by a larger provider quota.
+11. Browser-local Pacific-day budget evidence may guide ordering/reserves but never becomes provider-accounting truth.
 
 ## Regression fixture
 
@@ -207,7 +271,9 @@ Do not:
 - rewrite authorship/cadence logic;
 - weaken candidate quarantine;
 - turn unknown quota into provider exhaustion merely because multiple calls return 429;
-- merge this Draft merely because the handoff tests are green.
+- merge this Draft merely because the handoff tests are green;
+- change Hush runtime routing to Lite before the future quality/economy assay earns that move;
+- let Hush, Marrowline, and Loom silently compete for the same premium seat without route-aware budgeting once shared primitives are available.
 
 ## Stop condition
 
