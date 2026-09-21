@@ -189,27 +189,16 @@ function clientQuotaBudgetHints(body = {}) {
 }
 
 export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}, { healthyModels = [] } = {}) {
-  const base = [...new Set((Array.isArray(models) ? models : []).filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)))];
-  const index = new Map(base.map((model, position) => [model, position]));
-  const explicitHealthy = new Set((Array.isArray(healthyModels) ? healthyModels : []).map((model) => safe(model).replace(/^models\//, '')));
-  const healthy = explicitHealthy.size ? explicitHealthy : new Set(base);
-  const dailyObserved = budget?.dailyQuotaObservedModels instanceof Set ? budget.dailyQuotaObservedModels : new Set();
-  const hardObserved = budget?.hardBudgetObservedModels instanceof Set ? budget.hardBudgetObservedModels : new Set();
-  const penalty = (model) => {
-    if (!healthy.has(model)) return 3;
-    if (hardObserved.has(model)) return 2;
-    if (dailyObserved.has(model)) return 1;
-    return 0;
-  };
-  return base.sort((a, b) => {
-    const aPenalty = penalty(a);
-    const bPenalty = penalty(b);
-    if (aPenalty !== bPenalty) return aPenalty - bPenalty;
-    // Preserve the provider-quality frontier exactly when no structured daily
-    // exhaustion evidence requires demotion. Browser call counts are accounting,
-    // not permission to route Marrowline away from its strongest proven seat.
-    return (index.get(a) || 0) - (index.get(b) || 0);
-  });
+  // Compatibility helper retained for receipts/tests only. Browser-local budget
+  // evidence can describe pressure, never change the settled provider-quality order.
+  // Live provider transport is the only authority that advances the human frontier.
+  void budget;
+  void healthyModels;
+  return [...new Set(
+    (Array.isArray(models) ? models : [])
+      .map((model) => safe(model).replace(/^models\//, ''))
+      .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))
+  )];
 }
 
 const ORDINARY_PROJECT_GUIDANCE = [
@@ -824,17 +813,18 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
-  // Browser-local cooldown receipts remain useful provenance, but an explicit
-  // human retry must not inherit permission from yesterday's or the previous
-  // turn's localStorage. Preserve the provider-quality order and let Gemini's
-  // live response decide whether a seat is currently rate-limited.
-  const allModels = orderKhonapolitModelsForBrowserBudget(
-    providerModels,
-    clientQuotaBudget,
-    { healthyModels: plan.callableModels }
-  );
+  // Browser-local quota/cooldown history is receipt evidence only. It cannot
+  // reorder or suppress the settled human provider frontier. 3.8 remains first;
+  // live Gemini transport decides whether that seat can answer this turn.
+  const allModels = [...providerModels];
   if (!releaseCanary && clientQuotaCooldown.models.size > 0) {
     res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-telemetry-only');
+  }
+  if (!releaseCanary && (
+    clientQuotaBudget.dailyQuotaObservedModels.size > 0
+    || clientQuotaBudget.hardBudgetObservedModels.size > 0
+  )) {
+    res.setHeader('X-TD613-Browser-Budget-Policy', 'advisory-telemetry-only');
   }
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
@@ -1469,20 +1459,20 @@ export default async function handler(req, res) {
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const morphologyFailures = attempts.filter((attempt) => attempt.morphologyHold);
-  const heldByQuality = structuralFailures.length > 0 || morphologyFailures.length > 0;
+  const heldByCanaryQuality = releaseCanary && (structuralFailures.length > 0 || morphologyFailures.length > 0);
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
     && attempts.every((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
-  return send(res, allTransportAttemptsRateLimited && !heldByQuality ? 429 : 502, {
+  return send(res, allTransportAttemptsRateLimited && !heldByCanaryQuality ? 429 : 502, {
     ok: false,
-    error: heldByQuality
-      ? 'khonapolit-output-quality-held'
+    error: heldByCanaryQuality
+      ? 'khonapolit-release-canary-output-quality-held'
       : allTransportAttemptsRateLimited
         ? 'gemini-rate-limit-held'
         : 'gemini-provider-unavailable',
     status: 'HELD',
-    diagnostic: heldByQuality
+    diagnostic: heldByCanaryQuality
       ? {
           stage: 'output-admission',
           code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
