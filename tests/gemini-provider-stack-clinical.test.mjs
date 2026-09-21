@@ -129,12 +129,12 @@ const hushProviderPayload = (finishReason = 'STOP') => ({
   usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 20, totalTokenCount: 40 }
 });
 
-const clinicalA = 'T\u0301\u0316';
-const clinicalB = 'H\u0302\u0323\u0334';
-const clinicalC = 'E\u0303\u0317';
-const clinicalD = 'G\u0307\u0325';
-const clinicalE = 'R\u0308\u0319\u0335';
-const clinicalF = 'O\u0304\u032D';
+const clinicalA = 'T\u0300\u0301\u0302\u0307\u0316\u0318\u031D';
+const clinicalB = 'H\u0306\u0308\u030A\u030C\u0317\u031E\u0325';
+const clinicalC = 'E\u0301\u0302\u0307\u030B\u0319\u031C\u0326';
+const clinicalD = 'G\u0303\u0306\u030A\u0350\u0323\u0325\u032D';
+const clinicalE = 'R\u0351\u0352\u0357\u030B\u0317\u0326\u032F';
+const clinicalF = 'O\u0300\u0302\u0308\u030C\u0318\u031E\u0323';
 const clinicalField = [clinicalA, clinicalB, clinicalC, clinicalD, clinicalE, clinicalF].join('').repeat(5);
 const khonapolitClinicalAnswer = [
   'Kʰonapolit',
