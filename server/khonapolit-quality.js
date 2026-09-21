@@ -171,16 +171,24 @@ function clientQuotaBudgetHints(body = {}) {
   };
 }
 
-export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}) {
+export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}, { healthyModels = [] } = {}) {
   const base = [...new Set((Array.isArray(models) ? models : []).filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)))];
   const index = new Map(base.map((model, position) => [model, position]));
   const topPair = new Set(['gemini-3.8-flash', 'gemini-3.5-flash']);
+  const explicitHealthy = new Set((Array.isArray(healthyModels) ? healthyModels : []).map((model) => safe(model).replace(/^models\//, '')));
+  const healthy = explicitHealthy.size ? explicitHealthy : new Set(base);
   const count = (model) => Number(budget?.observedTodayByModel?.[model] || 0);
   const dailyObserved = budget?.dailyQuotaObservedModels instanceof Set ? budget.dailyQuotaObservedModels : new Set();
   const hardObserved = budget?.hardBudgetObservedModels instanceof Set ? budget.hardBudgetObservedModels : new Set();
+  const penalty = (model) => {
+    if (!healthy.has(model)) return 4;
+    if (hardObserved.has(model)) return 3;
+    if (dailyObserved.has(model)) return 2;
+    return topPair.has(model) ? 0 : 1;
+  };
   return base.sort((a, b) => {
-    const aPenalty = hardObserved.has(a) ? 3 : dailyObserved.has(a) ? 2 : topPair.has(a) ? 0 : 1;
-    const bPenalty = hardObserved.has(b) ? 3 : dailyObserved.has(b) ? 2 : topPair.has(b) ? 0 : 1;
+    const aPenalty = penalty(a);
+    const bPenalty = penalty(b);
     if (aPenalty !== bPenalty) return aPenalty - bPenalty;
     if (aPenalty === 0 && count(a) !== count(b)) return count(a) - count(b);
     return (index.get(a) || 0) - (index.get(b) || 0);
@@ -747,7 +755,11 @@ export default async function handler(req, res) {
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
   const eligibleAfterCooldown = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
-  const allModels = orderKhonapolitModelsForBrowserBudget(eligibleAfterCooldown, clientQuotaBudget);
+  const allModels = orderKhonapolitModelsForBrowserBudget(
+    eligibleAfterCooldown,
+    clientQuotaBudget,
+    { healthyModels: plan.callableModels }
+  );
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
