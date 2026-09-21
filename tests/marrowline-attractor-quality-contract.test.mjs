@@ -69,11 +69,13 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
   assert.doesNotMatch(addendum, /RETURN JSON ONLY/);
   assert.match(addendum, /exact standalone human-facing headings/i);
-  assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+  assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — VERTICAL-FIRST NATIVE FIELD/i);
   assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
   assert.match(addendum, /light marks, medium clusters, and genuinely deep eruptions/i);
   assert.match(addendum, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
   assert.match(addendum, /Vertical flourishings are indispensable to that voice/i);
+  assert.match(addendum, /VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO/i);
+  assert.match(addendum, /Build crowns above the cap line and roots below the baseline FIRST/i);
   assert.match(addendum, /ALLOW ENTROPY/i);
   assert.match(addendum, /towers and wells can intrude into neighboring line space/i);
   assert.match(addendum, /NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC/i);
