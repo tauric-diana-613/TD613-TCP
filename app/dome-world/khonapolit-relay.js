@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v19-deep-stack-not-wallpaper';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v24-deep-stack-not-wallpaper';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v20-expressive-entropy-no-enclosing-ornament';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v25-expressive-entropy-no-enclosing-ornament';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -65,8 +65,8 @@ const PROTECTED = Object.freeze([
 
 /* Legacy helper retained only for archived fixtures/import compatibility. The
  * live parser never calls it. Provider-native marks are the runtime law. */
-const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u0342','\u0343','\u0344','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
-const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031C','\u031D','\u031E','\u031F','\u0320','\u0323','\u0324','\u0325','\u0326','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0345']);
+const ABOVE = Object.freeze(['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u030D','\u030E','\u030F','\u0310','\u0311','\u0312','\u0313','\u0314','\u0315','\u033D','\u033E','\u033F','\u0340','\u0341','\u0342','\u0343','\u0344','\u0346','\u034A','\u034B','\u034C','\u0350','\u0351','\u0352','\u0357','\u035B','\u0360','\u0361']);
+const BELOW = Object.freeze(['\u0316','\u0317','\u0318','\u0319','\u031A','\u031B','\u031C','\u031D','\u031E','\u031F','\u0320','\u0321','\u0322','\u0323','\u0324','\u0325','\u0326','\u0327','\u0328','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0333','\u0339','\u033A','\u033B','\u033C','\u0345','\u0347','\u0348','\u0349','\u034D','\u034E','\u0353','\u0354','\u0355','\u0356','\u0359','\u035A']);
 const THROUGH = Object.freeze(['\u0334','\u0335','\u0336','\u0337','\u0338']);
 const PLANAR = new Set([
   '\u0303','\u0304','\u0305',
@@ -77,6 +77,8 @@ const PLANAR = new Set([
 const ABOVE_SET = new Set(ABOVE);
 const BELOW_SET = new Set(BELOW);
 const THROUGH_SET = new Set(THROUGH);
+const ENCLOSING_MARK_PATTERN = /\p{Me}/u;
+const GEOMETRIC_SUBSTITUTION_PATTERN = /[\u2300-\u23FF\u25A0-\u25FF\u2B00-\u2BFF]/u;
 
 
 const CANONICAL_RECITATION_PATTERNS = Object.freeze([
@@ -191,11 +193,13 @@ function flourishTelemetry(text = '') {
     const below = marks.filter((mark) => BELOW_SET.has(mark)).length;
     const through = marks.filter((mark) => THROUGH_SET.has(mark)).length;
     const planar = marks.filter((mark) => PLANAR.has(mark)).length;
-    const verticalOrnament = marks.length - planar;
     const verticalAbove = marks.filter((mark) => ABOVE_SET.has(mark) && !PLANAR.has(mark)).length;
     const verticalBelow = marks.filter((mark) => BELOW_SET.has(mark) && !PLANAR.has(mark)).length;
+    const enclosing = marks.filter((mark) => ENCLOSING_MARK_PATTERN.test(mark)).length;
+    const verticalOrnament = verticalAbove + verticalBelow;
+    const unclassified = Math.max(0, marks.length - planar - verticalAbove - verticalBelow - enclosing);
     const signature = marks.map((mark) => mark.codePointAt(0)).sort((a, b) => a - b).map((cp) => cp.toString(16).padStart(4, '0')).join('-');
-    return { base, marks: marks.length, above, below, through, planar, verticalOrnament, verticalAbove, verticalBelow, signature };
+    return { base, marks: marks.length, above, below, through, planar, verticalOrnament, verticalAbove, verticalBelow, enclosing, unclassified, signature };
   });
   const clusters = clusterTelemetry(value);
   const denseClusters = clusters.filter((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2);
@@ -238,6 +242,17 @@ function flourishTelemetry(text = '') {
   const asciiLetters = value.match(/[A-Za-z]/g) || [];
   const uppercaseAscii = value.match(/[A-Z]/g) || [];
   const asciiPseudoOrnamentBridges = value.match(/[A-Za-z0-9][ 	]*[\\/|_=][ 	]*[A-Za-z0-9]/g) || [];
+  const geometricSymbols = Array.from(value).filter((char) => GEOMETRIC_SUBSTITUTION_PATTERN.test(char));
+  const strippedForSymbolCheck = value.replace(/\p{M}+/gu, '');
+  const strippedChars = Array.from(strippedForSymbolCheck);
+  let wordInternalGeometricSymbolCount = 0;
+  for (let index = 1; index < strippedChars.length - 1; index += 1) {
+    const char = strippedChars[index];
+    if (!GEOMETRIC_SUBSTITUTION_PATTERN.test(char)) continue;
+    if (/[\p{L}\p{N}]/u.test(strippedChars[index - 1]) && /[\p{L}\p{N}]/u.test(strippedChars[index + 1])) {
+      wordInternalGeometricSymbolCount += 1;
+    }
+  }
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
   const eligibleClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base));
   const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0).length;
@@ -258,6 +273,9 @@ function flourishTelemetry(text = '') {
   const verticalOrnamentMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalOrnament, 0);
   const verticalAboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalAbove, 0);
   const verticalBelowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.verticalBelow, 0);
+  const enclosingMarkCount = clusters.reduce((sum, cluster) => sum + cluster.enclosing, 0);
+  const enclosingMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.enclosing > 0).length;
+  const unclassifiedCombiningMarkCount = clusters.reduce((sum, cluster) => sum + cluster.unclassified, 0);
   const verticalMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalOrnament > 0).length;
   const throughMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0).length;
   const mixedAxisClusterCount = eligibleClusters.filter((cluster) => cluster.planar > 0 && cluster.verticalOrnament > 0).length;
@@ -305,6 +323,11 @@ function flourishTelemetry(text = '') {
     throughLineMarkCount,
     verticalAboveLineMarkCount,
     verticalBelowLineMarkCount,
+    enclosingMarkCount,
+    enclosingMarkedClusterCount,
+    unclassifiedCombiningMarkCount,
+    geometricSymbolCount: geometricSymbols.length,
+    wordInternalGeometricSymbolCount,
     verticalMarkedClusterCount,
     throughMarkedClusterCount,
     mixedAxisClusterCount,
@@ -505,6 +528,14 @@ export function assessIntegratedTransmission(text = '', voices = []) {
       if (botsTelemetry.asciiPseudoOrnamentBridgeCount >= 4) {
         qualityWarnings.push('tauric-diana-zalgo-ascii-pseudo-ornament');
       }
+      if (
+        botsTelemetry.enclosingMarkCount >= 3
+        || botsTelemetry.enclosingMarkedClusterCount >= 3
+      ) qualityWarnings.push('tauric-diana-zalgo-enclosing-ornament-collapse');
+      if (
+        botsTelemetry.geometricSymbolCount >= 5
+        || botsTelemetry.wordInternalGeometricSymbolCount >= 2
+      ) qualityWarnings.push('tauric-diana-zalgo-glyph-substitution-collapse');
     }
   }
 
@@ -580,6 +611,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Build living crowns above the cap line and roots below the baseline with irregular SAME-GRAPHEME multi-tier stacks. Loud regions need genuine towers and wells: multiple heterogeneous marks can accumulate above and below one base while neighboring graphemes may carry very different stack depths or none at all.',
     '- Several separate lines should visibly carry deep vertical events of different shapes. Some phrases may climb, some may sink, some may braid crowns and roots, some may quiet down, and later motifs may return transformed. Height, depth, species, density, asymmetry, and spacing must remain irregular.',
     '- DO NOT stamp a repeated diaeresis-like, dot-like, breve-like, macron-like, hook-like, or paired accent pattern across most letters. A field that looks like every glyph received the same small hat or the same shallow top/bottom pair is counterfeit prosody even if hundreds of combining marks are technically present.',
+    '- DO NOT use Unicode enclosing-mark tricks or geometric replacement glyphs to simulate intensity. No combining circles/squares/keycaps/enclosing slashes; no □ ▢ ◇ ◈ or other box/diamond symbols replacing letters inside words. High Zalgo keeps the underlying Latin graphemes present and attaches true above/below combining marks to them.',
     '- Horizontal and oblique cuts remain available only as local counter-rhythm, abrasion, interruption, or fracture after deep vertical life is already obvious. They must never become the passage-wide default texture.',
     '- ALLOW ENTROPY. Dense peaks may collide with neighboring lines and partially obscure letters. Readability is not the governing aesthetic in loud Tauric Diana passages; do not flatten the towers to keep the line boxes tidy.',
     '- Keep quiet stretches as breaths, but the vertical voice must return without operator prompting. Do not spend all depth on one spectacular word and leave the rest flat.',
@@ -589,7 +621,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATIVE-VOICE SELF-CHECK — DEEP STACK, NOT SHALLOW WALLPAPER:',
-    '- Before closing Packet B, look at the page as a picture. If most marked letters carry only the same one-or-two small accents, the return has FAILED even if the marks sit above or below the baseline. Deep High Zalgo must contain unmistakable multi-tier towers and wells on multiple separate lines, with varied stack heights and varied mark species. Mentally erase horizontal cuts: a vertical scream-sing field should still be visually dramatic. If it looks like a repeated little hat, dotted comb, accent carpet, shallow paired marks, neat typography, or plain caps with token accents, rewrite Packet B before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, look at the page as a picture. If most marked letters carry only the same one-or-two small accents, the return has FAILED even if the marks sit above or below the baseline. Deep High Zalgo must contain unmistakable multi-tier towers and wells on multiple separate lines, with varied stack heights and varied mark species. Mentally erase horizontal cuts: a vertical scream-sing field should still be visually dramatic. Then inspect the base stream: if letters have turned into boxes, diamonds, keycaps, enclosing shapes, pseudo-runic substitutions, or repeated geometric tiles, the return has FAILED. If it looks like a repeated little hat, dotted comb, accent carpet, shallow paired marks, glyph-substitution grid, neat typography, or plain caps with token accents, rewrite Packet B before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
