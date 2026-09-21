@@ -93,6 +93,7 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-axis-collapse',
   'tauric-diana-zalgo-vertical-expression-thin',
   'tauric-diana-zalgo-stack-depth-thin',
+  'tauric-diana-zalgo-eruption-depth-thin',
   'tauric-diana-zalgo-ascii-pseudo-ornament',
   'tauric-diana-zalgo-localized-burst',
   'tauric-diana-zalgo-monoculture',
@@ -104,6 +105,9 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
 const HARD_MORPHOLOGY_CORRUPTION_WARNINGS = new Set([
   'tauric-diana-zalgo-enclosing-ornament-collapse',
   'tauric-diana-zalgo-glyph-substitution-collapse'
+]);
+const MANDATORY_HIGH_ZALGO_WARNINGS = new Set([
+  'tauric-diana-zalgo-eruption-depth-thin'
 ]);
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
@@ -457,12 +461,13 @@ export function severeMorphologyRepairWarnings(warnings = []) {
   const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
   const hardGlyphCorruption = [...HARD_MORPHOLOGY_CORRUPTION_WARNINGS].some(reason => values.has(reason));
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
+  const eruptionDepthThin = values.has('tauric-diana-zalgo-eruption-depth-thin');
   const horizontalCollapse = values.has('tauric-diana-zalgo-axis-collapse')
     || values.has('tauric-diana-zalgo-vertical-expression-thin')
     || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
   const cloneCollapse = values.has('tauric-diana-zalgo-mechanical-clone')
     || values.has('tauric-diana-zalgo-monoculture');
-  if (!hardGlyphCorruption && !localizedBurst && !shallowWallpaper && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
+  if (!hardGlyphCorruption && !localizedBurst && !shallowWallpaper && !eruptionDepthThin && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 
@@ -516,7 +521,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. The model-role repair context has had failed combining/enclosing ornament stripped from Packet B when morphology was defective, specifically so you do not imitate a bad visual pattern. Preserve the readable base prose; do not hallucinate missing box/diamond symbols back into words. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. IMPORTANT: vertical architecture means STACK HEIGHT AND DEPTH, not merely putting one tiny mark above or below each letter. The previous draft may have failed by stamping the same small diaeresis-like/dot-like/breve-like/paired accent across many graphemes. DO NOT COPY THAT PATTERN. It may also have failed by using combining enclosing circles/squares/keycaps/slashes or □ ▢ ◇ ◈-like geometric substitutions inside words. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS. Re-author the combining field from scratch while preserving the Latin base letters. Build irregular SAME-GRAPHEME crowns and roots with genuinely multi-tier stacks in multiple separated regions; let loud graphemes carry several heterogeneous marks above AND several below while neighboring letters vary sharply in height or remain quiet. Only after deep vertical life is unmistakable may horizontal or oblique cuts enter as counter-rhythm. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. If the repaired page still resembles a dotted comb, repeated little hats, shallow paired marks, tiled ornament, enclosing-box typography, pseudo-runic substitution, or the same tiny stack copied everywhere, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. The model-role repair context has had failed combining/enclosing ornament stripped from Packet B when morphology was defective, specifically so you do not imitate a bad visual pattern. Preserve the readable base prose; do not hallucinate missing box/diamond symbols back into words. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. IMPORTANT: vertical architecture means STACK HEIGHT AND DEPTH, not merely putting one tiny mark above or below each letter. HIGH ZALGO MUST READ AS VERTICAL COMBUSTION: angry regions should throw irregular leaping crowns above the cap line and plunging roots below the baseline, with occasional dramatically hotter graphemes. Strike-throughs and slashes are only secondary sparks; crossed-out prose with polite vertical accents is not High Zalgo. The previous draft may have failed by stamping the same small diaeresis-like/dot-like/breve-like/paired accent across many graphemes. DO NOT COPY THAT PATTERN. It may also have failed by using combining enclosing circles/squares/keycaps/slashes or □ ▢ ◇ ◈-like geometric substitutions inside words. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS. Re-author the combining field from scratch while preserving the Latin base letters. Build irregular SAME-GRAPHEME crowns and roots with genuinely multi-tier stacks in multiple separated regions; let loud graphemes carry several heterogeneous marks above AND several below while neighboring letters vary sharply in height or remain quiet. Only after deep vertical life is unmistakable may horizontal or oblique cuts enter as counter-rhythm. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. If the repaired page still resembles a dotted comb, repeated little hats, shallow paired marks, tiled ornament, enclosing-box typography, pseudo-runic substitution, or the same tiny stack copied everywhere, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -1134,6 +1139,7 @@ export default async function handler(req, res) {
         const severeMorphologyWarnings = severeMorphologyRepairWarnings(qualityWarnings);
         if (severeMorphologyWarnings.length > 0) {
           const hardMorphologyCorruption = severeMorphologyWarnings.some(reason => HARD_MORPHOLOGY_CORRUPTION_WARNINGS.has(reason));
+          const mandatoryHighZalgoMiss = severeMorphologyWarnings.some(reason => MANDATORY_HIGH_ZALGO_WARNINGS.has(reason));
           const sourceAttemptIndex = attempts.length - 1;
           const candidate = {
             model,
@@ -1146,16 +1152,17 @@ export default async function handler(req, res) {
           const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
           if (repaired) return repaired;
 
-          if (hardMorphologyCorruption) {
+          if (hardMorphologyCorruption || mandatoryHighZalgoMiss) {
             attempt.morphologyHold = Object.freeze({
-              kind: 'hard-provider-authored-glyph-corruption',
+              kind: hardMorphologyCorruption
+                ? 'hard-provider-authored-glyph-corruption'
+                : 'mandatory-high-zalgo-eruption-depth-miss',
               reasons: Object.freeze([...severeMorphologyWarnings])
             });
-            // Enclosing-box / geometric-substitution collapse corrupts the visible
-            // alphabet rather than merely undershooting an aesthetic target. Do not
-            // show that payload after a failed repair: continue the bounded provider
-            // frontier and give the next healthy seat a chance to author a clean
-            // Tauric Diana transmission.
+            // Alphabet corruption and an undercooked High-Zalgo eruption both fail
+            // the requested visible register. After the single same-seat re-authoring
+            // pass misses, continue the bounded provider frontier instead of showing
+            // the defective morphology as a successful LOCKED return.
             continue;
           }
 

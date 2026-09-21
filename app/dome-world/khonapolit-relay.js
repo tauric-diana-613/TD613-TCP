@@ -212,6 +212,10 @@ function flourishTelemetry(text = '') {
   const extremeVerticalClusters = clusters.filter((cluster) =>
     cluster.verticalAbove >= 3 && cluster.verticalBelow >= 3 && cluster.verticalOrnament >= 7
   );
+  const leapingVerticalClusters = clusters.filter((cluster) =>
+    cluster.verticalOrnament >= 6
+      && Math.max(cluster.verticalAbove, cluster.verticalBelow) >= 4
+  );
   const denseSignatureCounts = new Map();
   for (const cluster of denseClusters) denseSignatureCounts.set(cluster.signature, (denseSignatureCounts.get(cluster.signature) || 0) + 1);
   const dominantDenseStackCount = denseClusters.length ? Math.max(...denseSignatureCounts.values()) : 0;
@@ -236,6 +240,12 @@ function flourishTelemetry(text = '') {
   const deepBidirectionalMarkedLineCount = lines.filter((line) =>
     clusterTelemetry(line).some((cluster) =>
       cluster.verticalAbove >= 2 && cluster.verticalBelow >= 2 && cluster.verticalOrnament >= 5
+    )
+  ).length;
+  const leapingVerticalMarkedLineCount = lines.filter((line) =>
+    clusterTelemetry(line).some((cluster) =>
+      cluster.verticalOrnament >= 6
+        && Math.max(cluster.verticalAbove, cluster.verticalBelow) >= 4
     )
   ).length;
   const broadMarkedLineCount = lineCoverage.filter((line) => line.eligible >= 8 && line.ratio >= 0.18).length;
@@ -292,6 +302,9 @@ function flourishTelemetry(text = '') {
   const axisMarkBalanceRatio = axisMarkMaximum
     ? Math.min(verticalOrnamentMarkCount, planarMarkCount) / axisMarkMaximum
     : 0;
+  const maxVerticalOrnamentStackDepth = eligibleClusters.length
+    ? Math.max(...eligibleClusters.map((cluster) => cluster.verticalOrnament))
+    : 0;
   return Object.freeze({
     combiningMarkCount,
     maxRun: runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0),
@@ -305,6 +318,9 @@ function flourishTelemetry(text = '') {
     deepBidirectionalClusterCount: deepBidirectionalClusters.length,
     deepBidirectionalMarkedLineCount,
     extremeVerticalClusterCount: extremeVerticalClusters.length,
+    leapingVerticalClusterCount: leapingVerticalClusters.length,
+    leapingVerticalMarkedLineCount,
+    maxVerticalOrnamentStackDepth,
     planarMarkCount,
     verticalOrnamentMarkCount,
     uniqueDenseStackSignatureCount: denseSignatureCounts.size,
@@ -525,6 +541,15 @@ export function assessIntegratedTransmission(text = '', voices = []) {
           || botsTelemetry.extremeVerticalClusterCount < 1
         )
       ) qualityWarnings.push('tauric-diana-zalgo-stack-depth-thin');
+      if (
+        botsTelemetry.combiningMarkCount >= 24
+        && botsTelemetry.markedEligibleClusterCount >= 8
+        && (
+          botsTelemetry.maxVerticalOrnamentStackDepth < 6
+          || botsTelemetry.leapingVerticalClusterCount < 4
+          || botsTelemetry.leapingVerticalMarkedLineCount < 2
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-eruption-depth-thin');
       if (botsTelemetry.asciiPseudoOrnamentBridgeCount >= 4) {
         qualityWarnings.push('tauric-diana-zalgo-ascii-pseudo-ornament');
       }
@@ -609,7 +634,9 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Tauric Diana bots scream-sing the “fun and scary” relayed transmission after Kʰonapolit has stabilized the mathematically precise signal. The combining marks are native prosody, not decoration pasted onto ordinary prose.',
     '- VERTICAL ARCHITECTURE means STACK HEIGHT AND DEPTH, not merely vertical POSITION. One tiny accent above a letter, one tiny accent below it, or the same little pair repeated over every character is LOW-ZALGO WALLPAPER and must be rewritten.',
     '- Build living crowns above the cap line and roots below the baseline with irregular SAME-GRAPHEME multi-tier stacks. Loud regions need genuine towers and wells: multiple heterogeneous marks can accumulate above and below one base while neighboring graphemes may carry very different stack depths or none at all.',
+    '- HIGH ZALGO IS VERTICAL COMBUSTION, not merely distressed typography. When the Tauric Diana register turns angry, the page should visibly leap: crowns flare upward like sparks, roots tear downward like falling embers, and a few especially hot graphemes may throw dramatically taller stacks than their neighbors.',
     '- Several separate lines should visibly carry deep vertical events of different shapes. Some phrases may climb, some may sink, some may braid crowns and roots, some may quiet down, and later motifs may return transformed. Height, depth, species, density, asymmetry, and spacing must remain irregular.',
+    '- Strike-throughs, slashes, and midline abrasion are secondary sparks. A page dominated by crossed-out letters while the above/below field stays polite is expressive Zalgo but NOT High Zalgo; rewrite the vertical field before emission.',
     '- DO NOT stamp a repeated diaeresis-like, dot-like, breve-like, macron-like, hook-like, or paired accent pattern across most letters. A field that looks like every glyph received the same small hat or the same shallow top/bottom pair is counterfeit prosody even if hundreds of combining marks are technically present.',
     '- DO NOT use Unicode enclosing-mark tricks or geometric replacement glyphs to simulate intensity. No combining circles/squares/keycaps/enclosing slashes; no □ ▢ ◇ ◈ or other box/diamond symbols replacing letters inside words. High Zalgo keeps the underlying Latin graphemes present and attaches true above/below combining marks to them.',
     '- Horizontal and oblique cuts remain available only as local counter-rhythm, abrasion, interruption, or fracture after deep vertical life is already obvious. They must never become the passage-wide default texture.',
@@ -621,7 +648,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATIVE-VOICE SELF-CHECK — DEEP STACK, NOT SHALLOW WALLPAPER:',
-    '- Before closing Packet B, look at the page as a picture. If most marked letters carry only the same one-or-two small accents, the return has FAILED even if the marks sit above or below the baseline. Deep High Zalgo must contain unmistakable multi-tier towers and wells on multiple separate lines, with varied stack heights and varied mark species. Mentally erase horizontal cuts: a vertical scream-sing field should still be visually dramatic. Then inspect the base stream: if letters have turned into boxes, diamonds, keycaps, enclosing shapes, pseudo-runic substitutions, or repeated geometric tiles, the return has FAILED. If it looks like a repeated little hat, dotted comb, accent carpet, shallow paired marks, glyph-substitution grid, neat typography, or plain caps with token accents, rewrite Packet B before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, look at the page as a picture. If most marked letters carry only the same one-or-two small accents, the return has FAILED even if the marks sit above or below the baseline. Deep High Zalgo must contain unmistakable multi-tier towers and wells on multiple separate lines, with varied stack heights and varied mark species. It should sometimes look as though the line itself is throwing sparks upward and shedding roots downward. Mentally erase horizontal cuts: a vertical scream-sing field should still be visually dramatic. Then inspect the base stream: if letters have turned into boxes, diamonds, keycaps, enclosing shapes, pseudo-runic substitutions, or repeated geometric tiles, the return has FAILED. If it looks like a repeated little hat, dotted comb, accent carpet, shallow paired marks, glyph-substitution grid, neat typography, or plain caps with token accents, rewrite Packet B before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
