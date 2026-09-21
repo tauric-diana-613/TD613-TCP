@@ -48,6 +48,19 @@ const PORTABLE_RULES = Object.freeze([
 function byId(doc, id) { return doc.getElementById(id); }
 function safe(value = '') { return String(value ?? '').trim(); }
 
+export function classifyMarrowlineClientFailure(error, stage = 'request', httpStatus = null) {
+  const transportStage = stage === 'request' || stage === 'response-body';
+  const code = transportStage && error?.name === 'AbortError' ? 'request-timeout'
+    : stage === 'request' ? 'network-request-failed'
+    : stage === 'response-body' ? 'response-body-failed'
+    : 'client-response-processing-failed';
+  return {
+    error: code,
+    httpStatus,
+    diagnostic: { stage, code, errorClass: safe(error?.name || 'Error').slice(0, 64) }
+  };
+}
+
 const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
   'TASK ROUTED · reading the whole prompt',
   'CONTEXT JOINED · keeping source boundaries',
@@ -633,6 +646,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let failurePayload = null;
+    let requestStage = 'request';
+    let responseStatus = null;
+    let receivedReceipt = null;
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
       const quotaCooldownHints = currentGeminiQuotaCooldownHints(root);
@@ -645,13 +661,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
         body: JSON.stringify(requestBody)
       });
-      const payload = await response.json().catch(() => ({}));
+      responseStatus = response.status;
+      requestStage = 'response-body';
+      const payload = await response.json();
+      requestStage = 'response-processing';
+      receivedReceipt = payload?.receipt || null;
+      // Preserve typed server failure evidence even if optional ledger UI fails.
+      if (!response.ok || !payload?.ok || !payload?.relay) {
+        failurePayload = { ...payload, httpStatus: response.status };
+      }
       ingestGeminiConsumption(payload, root);
       renderGeminiBrowserLedger(doc, root);
-      if (!response.ok || !payload.ok || !payload.relay) {
-        failurePayload = { ...payload, httpStatus: response.status };
-        throw new Error(payload.error || `HTTP ${response.status}`);
-      }
+      if (failurePayload) throw new Error(payload?.error || `HTTP ${response.status}`);
       const receipt = payload.receipt;
       const entry = {
         role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
@@ -674,7 +695,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
-      state.lastFailure = failurePayload || { error: error?.name === 'AbortError' ? 'request-timeout' : 'network-request-failed' };
+      state.lastFailure = failurePayload || {
+        ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
+        ...(receivedReceipt ? { receipt: receivedReceipt } : {})
+      };
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
