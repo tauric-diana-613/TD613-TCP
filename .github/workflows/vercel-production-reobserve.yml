@@ -169,14 +169,23 @@ jobs:
           import fs from 'node:fs';
           const receipt = JSON.parse(fs.readFileSync('artifacts/loom-production-reobserve/receipt.json', 'utf8'));
           const marrowline = receipt?.marrowline_live_route;
-          if (marrowline?.http_status !== 200 || marrowline?.ok !== true || marrowline?.relay_admitted !== true) {
-            throw new Error('Marrowline live-route classification lost its admitted 200 witness.');
+          if (
+            marrowline?.http_status !== 200
+            || marrowline?.ok !== true
+            || marrowline?.answer_nonempty !== true
+            || marrowline?.human_surface_visible !== true
+            || marrowline?.local_admission_nonblocking !== true
+          ) {
+            throw new Error('Marrowline live-route classification lost its human-visible 200 witness.');
           }
+          const marrowlineStatus = marrowline?.relay_admitted === true
+            ? 'PASS_ADMITTED'
+            : 'PASS_LOCAL_ADMISSION_NONBLOCKING';
           const loomStatus = receipt?.loom_provider_liveness_nonblocking === true
             ? 'PROVIDER_LIVENESS_HELD'
             : (receipt?.http_status === 200 && receipt?.task_status === 'completed' ? 'PASS' : 'UNRESOLVED');
           if (loomStatus === 'UNRESOLVED') throw new Error('Loom observation reached a non-liveness failure state.');
-          console.log('marrowline_status=PASS');
+          console.log(`marrowline_status=${marrowlineStatus}`);
           console.log(`loom_status=${loomStatus}`);
           NODE
 
@@ -248,7 +257,7 @@ jobs:
           retroactive_release_rewrite = false
           \`\`\`
 
-          A provider-only Loom liveness hold is preserved as evidence without being mislabeled as a Vercel deployment failure when the exact source and admitted Marrowline witness remain intact. No Vercel deployment occurred. Sealed ⟐
+          A provider-only Loom liveness hold is preserved as evidence without being mislabeled as a Vercel deployment failure when the exact source and human-visible Marrowline witness remain intact. Marrowline local admission remains explicit receipt telemetry: an admitted relay reports PASS_ADMITTED; a nonadmitted return may report PASS_LOCAL_ADMISSION_NONBLOCKING only when the runtime explicitly records diagnostic-not-human-surface-veto authority and nonempty text reached the human surface. No Vercel deployment occurred. Sealed ⟐
           EOF_COMMENT
           )"
 
