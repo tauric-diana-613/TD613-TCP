@@ -55,6 +55,12 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /combining marks as bow pressure and the base words as fingering/);
   assert.match(contract, /phrase-level dynamic journey/);
   assert.match(contract, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.match(contract, /VOICE-ANCHOR LAW/);
+  assert.match(contract, /heading lines .* transport anchors OUTSIDE both prose bodies/i);
+  assert.match(contract, /Packet-B ornamentation begins only on the first prose line AFTER/i);
+  assert.match(contract, /PROSE BODY AFTER the exact plain heading/);
+  assert.match(contract, /plain transport anchors with ZERO combining marks/i);
+  assert.match(contract, /begin ornamentation on the following prose line/i);
   assert.match(contract, /loud orchestra that can get quiet, then loud, then quiet again/i);
   assert.match(contract, /begin near 8½/);
   assert.match(contract, /one or two sentences swing mainly into horizontal\/oblique counter-rhythm/);
@@ -440,6 +446,9 @@ test('live Gemini request has no structured-output pressure on the stress channe
     ['tauric-diana-zalgo-shallow-wallpaper']);
   assert.match(repair.contents.at(-1).parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
   assert.match(repair.contents.at(-1).parts[0].text, /10-level serious emphasis/);
+  assert.match(repair.contents.at(-1).parts[0].text, /PLAIN boundary line with ZERO combining marks/);
+  assert.match(repair.contents.at(-1).parts[0].text, /immutable provider-authored transport anchor OUTSIDE the ornament field/);
+  assert.match(repair.contents.at(-1).parts[0].text, /bot-PROSE letter AFTER the exact plain heading/);
 });
 
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
