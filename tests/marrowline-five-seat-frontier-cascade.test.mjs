@@ -271,7 +271,7 @@ globalThis.fetch = async (url, options = {}) => {
     }
     if (model === 'gemini-3.6-flash') {
       immediate36Calls += 1;
-      if (immediate36Calls > 1) throw new Error('zero-Zalgo 3.6 near miss must not be repaired immediately');
+      if (immediate36Calls > 2) throw new Error('zero-Zalgo 3.6 near miss exceeded the single same-seat repair allowance');
       return {
         ok: true,
         status: 200,
@@ -688,11 +688,15 @@ try {
     }
   }, allCooling);
 
-  assert.equal(allCooling.statusCode, 429);
-  assert.equal(allCooling.payload.ok, false);
-  assert.equal(allCooling.payload.diagnostic.code, 'CLIENT_OBSERVED_MODEL_QUOTA_COOLING');
-  assert.deepEqual(calls, [], 'active browser cooldowns for every approved seat must not spend a provider request');
-  assert.ok(Number(allCooling.headers['Retry-After']) >= 1 && Number(allCooling.headers['Retry-After']) <= 45);
+  assert.equal(allCooling.statusCode, 200);
+  assert.equal(allCooling.payload.ok, true);
+  assert.equal(allCooling.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-human-retry-override');
+  assert.deepEqual(
+    calls,
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    'browser-local cooldown memory may schedule around individual seats but cannot suppress an explicit human retry when every seat is marked cooling'
+  );
+  assert.equal(allCooling.payload.receipt.provider.model, 'gemini-3-flash-preview');
 
   clearGeminiModelState();
   calls.length = 0;
@@ -811,18 +815,21 @@ try {
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.219' },
-    body: { ...req.body, message: 'Reject geometric alphabet substitution; repair once, then continue the bounded frontier rather than showing corrupted text.' }
+    body: { ...req.body, message: 'Observe geometric alphabet substitution; repair once, then preserve the provider return with diagnostic quality evidence if the repair misses.' }
   }, glyphRecovered);
 
   assert.equal(glyphRecovered.statusCode, 200);
   assert.equal(glyphRecovered.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'], 'hard glyph corruption gets one same-seat provider repair and then continues to the next healthy seat instead of surfacing the corrupt original');
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash'], 'hard glyph corruption gets one same-seat provider repair but local quality law cannot erase a nonempty Gemini return');
   assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
   assert.equal(glyphRecovered.payload.receipt.provider.attempts[1].kind, 'structural-repair');
   assert.ok(glyphRecovered.payload.receipt.provider.attempts[1].unresolvedSevereMorphology.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
   assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].morphologyHold.reasons.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
-  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.5-flash');
-  assert.equal(glyphRecovered.payload.relay.admission.quality, 'PASS');
+  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(glyphRecovered.payload.relay.admission.quality, 'PARTIAL');
+  assert.equal(glyphRecovered.payload.text, glyphCorruptAnswer);
+  assert.equal(glyphRecovered.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
+  assert.equal(glyphRecovered.payload.receipt.provider.humanSurfaceObservation.rendered, true);
   const glyphRepairBody = requestBodies[1];
   assert.doesNotMatch(glyphRepairBody.contents.at(-2).parts[0].text, /[□◇◈]/u, 'bad geometric ornament is stripped from repair context so Gemini is not primed to imitate it');
   assert.match(glyphRepairBody.contents.at(-2).parts[0].text, /BOX DIAMOND GRID/);
@@ -921,13 +928,17 @@ try {
     'gemini-3.8-flash',
     'gemini-3.5-flash',
     'gemini-3.6-flash',
-    'gemini-3.7-flash'
-  ], 'zero-Zalgo 3.6 near miss is retained for deferred repair while a later frontier PASS gets first chance');
+    'gemini-3.6-flash'
+  ], 'a nonempty structural near miss gets one same-seat provider repair and then remains visible instead of being erased by a local admission regime');
   assert.equal(immediate.payload.receipt.provider.attempts[2].outputAdmission.admissible, false);
   assert.ok(immediate.payload.receipt.provider.attempts[2].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
-  assert.equal(immediate36Calls, 1, 'the near-miss model must not consume an immediate repair request');
-  assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.7-flash');
-  assert.equal(immediate.payload.receipt.provider.structuralRepair, undefined);
+  assert.equal(immediate36Calls, 2, 'the near-miss model gets exactly one bounded same-seat repair request');
+  assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(immediate.payload.relay.admission.admissible, false);
+  assert.equal(immediate.payload.text, zeroMarkAnswer);
+  assert.equal(immediate.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
+  assert.equal(immediate.payload.receipt.provider.humanSurfaceObservation.rendered, true);
+  assert.equal(immediate.payload.receipt.provider.humanSurfaceObservation.localAdmissionAuthority, 'diagnostic-not-human-surface-veto');
 
   clearGeminiModelState();
   calls.length = 0;
