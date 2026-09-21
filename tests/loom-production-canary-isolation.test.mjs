@@ -10,7 +10,7 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.doesNotMatch(source, /Promise\.all\s*\(/, 'production AI witnesses must not be launched concurrently');
 
-const marrowlineProbe = source.indexOf('const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });');
+const marrowlineProbe = source.indexOf('const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { releaseCanary: false });');
 const marrowlineCheckpoint = source.indexOf("fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json')");
 const loomProbe = source.indexOf('const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });');
 assert.ok(marrowlineProbe >= 0, 'Marrowline live-route witness must remain present');
@@ -46,12 +46,13 @@ assert.ok(
 );
 assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Marrowline and Loom live routes under the streamed completion wall');
 
-assert.match(source, /'x-td613-release-canary': '1'/);
+assert.match(source, /releaseCanary \? \{ 'x-td613-release-canary': '1' \} : \{\}/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /posture: 'explicit-observation-only-one-seat-per-route'/);
+assert.match(source, /posture: 'explicit-observation-marrowline-operator-parity-plus-one-seat-loom'/);
 assert.match(source, /max_http_requests: 2/);
-assert.match(source, /max_provider_requests: 2/);
-assert.match(source, /marrowline_structural_repair_ceiling: 0/);
+assert.match(source, /max_provider_requests: 7/);
+assert.match(source, /marrowline_provider_seat_ceiling: 5/);
+assert.match(source, /marrowline_structural_repair_ceiling: 1/);
 assert.match(source, /loom_provider_seat_ceiling: 1/);
 assert.match(loomServer, /const canaryModels = canaryModel/);
 assert.doesNotMatch(loomServer, /\.\.\.allModels\.filter\(candidate => candidate !== canaryModel\)/, 'release canary cannot fan out across Loom seats');
@@ -59,18 +60,19 @@ assert.match(loomServer, /const canaryModels = canaryModel \? \[canaryModel\] : 
 assert.match(loomServer, /const models = releaseCanary \? canaryModels : allModels;/);
 assert.match(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must not spend an interactive structural-repair request');
 assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
-assert.match(source, /const marrowlineResult = await postJson\(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, \{ canaryModel: marrowlineCanaryModel \}\)/);
+assert.match(source, /const marrowlineResult = await postJson\(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, \{ releaseCanary: false \}\)/);
 assert.match(source, /schema: 'td613\.loom\.production-canary-route-checkpoint\/v0\.6-explicit-observation-only'/);
 assert.doesNotMatch(source, /marrowlineSeatRetry/);
 assert.doesNotMatch(source, /marrowlinePrimaryResult/);
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
-assert.match(source, /\.slice\(0, 2\)/, 'release consumption artifact cannot exceed one Marrowline call plus one Loom call');
-assert.match(source, /TD613_MARROWLINE_CANARY_MODEL \|\| 'gemini-3\.8-flash'/);
+assert.match(source, /\.slice\(0, 7\)/, 'release consumption artifact must preserve up to five Marrowline seats, one structural repair, and one Loom call');
+assert.doesNotMatch(source, /TD613_MARROWLINE_CANARY_MODEL/, 'Marrowline observation must never pin the human route to one provider seat');
 assert.match(source, /TD613_LOOM_CANARY_MODEL \|\| 'gemini-3\.5-flash'/);
 assert.doesNotMatch(source, /canarySeed/, 'explicit canaries must not hash-rotate deployments onto arbitrary model seats');
-assert.match(source, /marrowline_model: marrowlineCanaryModel/);
+assert.match(source, /marrowline_routing: 'interactive-five-seat-frontier'/);
+assert.match(source, /routing_mode: 'interactive-five-seat-frontier'/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
 assert.match(source, /request_order:\s*\['marrowline', 'loom'\]/);
