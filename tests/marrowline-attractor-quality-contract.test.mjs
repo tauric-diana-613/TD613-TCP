@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import {
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
+  buildNativeProsodyGuidance,
   repeatedTransmissionDetected
 } from '../app/dome-world/khonapolit-relay.js';
 import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
@@ -69,18 +70,12 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
   assert.doesNotMatch(addendum, /RETURN JSON ONLY/);
   assert.match(addendum, /exact standalone human-facing headings/i);
-  assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i);
-  assert.match(addendum, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(addendum, /DO NOT solve High Zalgo as a geometry assignment/i);
-  assert.match(addendum, /silently map the argument’s rhetorical movement/i);
-  assert.match(addendum, /Morphology is meaning-bearing prosody/i);
-  assert.match(addendum, /Long vertical stacks are EVENTS, not the baseline texture/i);
-  assert.match(addendum, /DO NOT stamp a repeated diaeresis-like/i);
-  assert.match(addendum, /ALLOW ENTROPY/i);
-  assert.match(addendum, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i);
-  assert.match(addendum, /maximum-depth wallpaper/i);
+  assert.ok(addendum.includes(buildNativeProsodyGuidance()));
+  assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
+  assert.match(addendum, /irregular multi-tier crowns, plunges below the baseline/);
+  assert.match(addendum, /ALLOW ENTROPY/);
+  assert.match(addendum, /Quiet passages can be clean/);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
-  assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
   assert.doesNotMatch(addendum, /SILENT PRE-EMISSION CHECK FOR PACKET B/i);
   assert.doesNotMatch(addendum, /ORTHOGRAPHIC STENCIL/i);
