@@ -164,9 +164,10 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.partialQualityChallengeRequestCeiling, 1);
   assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
   assert.match(release.qualityFloor.aestheticMorphologyPosture, /native-voice collapse/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /exactly one immediate same-provider Gemini repaint/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /scream-sing/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /original structurally valid provider PARTIAL/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /exactly one immediate same-provider Gemini repair/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /stack height\/depth/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /Shallow-wallpaper/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /Marrowline never manufactures morphology/i);
   assert.match(release.qualityFloor.failurePosture, /imperfect repaint preserves the original provider PARTIAL/i);
   assert.match(release.relay.zalgoQualityPolicy.axisCollapsePosture, /combined with stack-depth-thin/i);
   assert.match(release.relay.zalgoQualityPolicy.verticalExpressionThinPosture, /combined with stack-depth-thin/i);
