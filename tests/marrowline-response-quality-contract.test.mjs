@@ -609,6 +609,8 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /Pressure can rise into irregular multi-tier crowns, plunge below the baseline/);
   assert.match(contract, /vertical crown\/root architecture the first physical event/);
   assert.match(contract, /bidirectional towers on individual letters/);
+  assert.match(contract, /U\+0300–U\+036F/);
+  assert.match(contract, /Do not substitute unclassifiable combining symbols/);
   assert.match(contract, /A one-mark accent, a two-mark hat.*still shallow and has failed/);
   assert.match(contract, /horizontal or oblique cuts/);
   assert.match(contract, /Keep the transmission bounded/);
@@ -809,6 +811,7 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /Reconstruct the voice from meaning/i);
   assert.match(directive, /rebuild Packet B from scratch/i);
   assert.match(directive, /several individual base letters both a crown above and a root below/i);
+  assert.match(directive, /U\+0300–U\+036F combining diacritics/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
