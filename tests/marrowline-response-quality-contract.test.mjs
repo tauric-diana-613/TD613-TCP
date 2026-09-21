@@ -200,6 +200,8 @@ test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until v
   assert.ok(observed.tallVerticalMarkedLineCount < 2);
   assert.ok(observed.axisMarkBalanceRatio < 0.22);
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'));
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-vertical-pulse-absent'));
 });
 
 test('maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic', () => {
@@ -240,6 +242,7 @@ test('mixed semantic pressure clears dynamic-range collapse without imposing a t
   assert.ok(observed.lightVerticalClusterCount > 0);
   assert.ok(observed.leapingVerticalClusterCount > 0);
   assert.ok(observed.deepVerticalShareOfMarked < 0.72 || observed.lightVerticalShareOfMarked > 0.10);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'), false);
   assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'), false);
 });
 
