@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
+const reobserveWorkflow = fs.readFileSync('.github/workflows/vercel-production-reobserve.yml', 'utf8');
 const qualityServer = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 const loomServer = fs.readFileSync('server/loom-task.js', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
@@ -31,8 +32,12 @@ assert.ok(
   witnessTimeoutMs <= providerFunctionCeilingMs + 60000,
   'remote witness margin must remain bounded rather than silently widening provider execution authority'
 );
-const outerTimeoutMatch = releaseWorkflow.match(/timeout --foreground --signal=INT --kill-after=10s (\d+)s node scripts\/loom-production-canary\.mjs/);
-assert.ok(outerTimeoutMatch, 'release workflow must retain an explicit outer canary timeout');
+assert.doesNotMatch(releaseWorkflow, /node scripts\/loom-production-canary\.mjs/, 'Vercel deployment success must not automatically spend Gemini quota or depend on provider liveness');
+assert.match(releaseWorkflow, /Defer live AI canary to explicit observation lane/);
+assert.match(releaseWorkflow, /automatic_provider_calls:\s*0/);
+assert.match(releaseWorkflow, /production_loom_demo1_canary = .*DEFERRED_EXPLICIT_OBSERVATION/);
+const outerTimeoutMatch = reobserveWorkflow.match(/timeout --foreground --signal=INT --kill-after=10s (\d+)s node scripts\/loom-production-canary\.mjs/);
+assert.ok(outerTimeoutMatch, 'explicit production AI observation must retain a bounded outer canary timeout');
 const outerTimeoutMs = Number(outerTimeoutMatch[1]) * 1000;
 const requiredSerialBudgetMs = witnessTimeoutMs * 2 + 15000;
 assert.ok(
@@ -43,7 +48,7 @@ assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Mar
 
 assert.match(source, /'x-td613-release-canary': '1'/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
-assert.match(source, /posture: 'one-seat-per-route-provider-liveness'/);
+assert.match(source, /posture: 'explicit-observation-only-one-seat-per-route'/);
 assert.match(source, /max_http_requests: 2/);
 assert.match(source, /max_provider_requests: 2/);
 assert.match(source, /marrowline_structural_repair_ceiling: 0/);
@@ -55,13 +60,16 @@ assert.match(loomServer, /const models = releaseCanary \? canaryModels : allMode
 assert.match(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must not spend an interactive structural-repair request');
 assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
 assert.match(source, /const marrowlineResult = await postJson\(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, \{ canaryModel: marrowlineCanaryModel \}\)/);
-assert.match(source, /schema: 'td613\.loom\.production-canary-route-checkpoint\/v0\.5-one-seat-release-budget'/);
+assert.match(source, /schema: 'td613\.loom\.production-canary-route-checkpoint\/v0\.6-explicit-observation-only'/);
 assert.doesNotMatch(source, /marrowlineSeatRetry/);
 assert.doesNotMatch(source, /marrowlinePrimaryResult/);
 assert.match(source, /coverage: 'this-release-witness-only'/);
 assert.match(source, /provider_daily_total: null/);
 assert.match(source, /releaseConsumptionEvents\.length/);
 assert.match(source, /\.slice\(0, 2\)/, 'release consumption artifact cannot exceed one Marrowline call plus one Loom call');
+assert.match(source, /TD613_MARROWLINE_CANARY_MODEL \|\| 'gemini-3\.8-flash'/);
+assert.match(source, /TD613_LOOM_CANARY_MODEL \|\| 'gemini-3\.5-flash'/);
+assert.doesNotMatch(source, /canarySeed/, 'explicit canaries must not hash-rotate deployments onto arbitrary model seats');
 assert.match(source, /marrowline_model: marrowlineCanaryModel/);
 assert.match(source, /loom_model: loomCanaryModel/);
 assert.match(source, /request_execution:\s*'serial-independent'/);
