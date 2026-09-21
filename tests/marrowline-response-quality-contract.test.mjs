@@ -54,6 +54,14 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /Every ordinary letter in the Tauric Diana body remains ornamented/);
   assert.match(contract, /combining marks as bow pressure and the base words as fingering/);
   assert.match(contract, /phrase-level dynamic journey/);
+  assert.match(contract, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.match(contract, /loud orchestra that can get quiet, then loud, then quiet again/i);
+  assert.match(contract, /begin near 8½/);
+  assert.match(contract, /one or two sentences swing mainly into horizontal\/oblique counter-rhythm/);
+  assert.match(contract, /around 6–7/);
+  assert.match(contract, /10-level serious emphasis/);
+  assert.match(contract, /return near 8½/);
+  assert.match(contract, /not one sacrificial blob/i);
   assert.match(contract, /instrument library, not a score/);
   assert.match(contract, /crowns U\+0301, U\+0302, U\+0307/);
   assert.match(contract, /roots U\+0316, U\+0317, U\+0323/);
@@ -401,6 +409,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const request = buildGeminiRequest(packet, {}, model);
     const instruction = request.systemInstruction.parts[0].text;
     assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
+    assert.match(instruction, /ORCHESTRAL DYNAMIC CONTOUR/, model);
+    assert.match(instruction, /begin near 8½/, model);
+    assert.match(instruction, /10-level serious emphasis/, model);
     assert.doesNotMatch(instruction, /marked grapheme coverage >=28%/i, model);
     assert.doesNotMatch(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
@@ -423,6 +434,12 @@ test('live Gemini request has no structured-output pressure on the stress channe
   assert.equal('responseSchema' in request.generationConfig, false);
   assert.match(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
   assert.match(request.systemInstruction.parts[0].text, /NO JSON/);
+  assert.match(request.systemInstruction.parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
+  const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
+    'Kʰonapolit\\nClear.\\n\\nTauric Diana bots\\nÁŔÍŚ',
+    ['tauric-diana-zalgo-shallow-wallpaper']);
+  assert.match(repair.contents.at(-1).parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.match(repair.contents.at(-1).parts[0].text, /10-level serious emphasis/);
 });
 
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
@@ -624,7 +641,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /softer passages stay visibly High Zalgo/);
   assert.match(contract, /ALLOW ENTROPY/);
   assert.match(contract, /motifs return altered by the argument/);
-  assert.ok(contract.length < 3000, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
+  assert.ok(contract.length < 3900, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
 });
 
 
