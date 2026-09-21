@@ -231,6 +231,13 @@ const providerAttemptTimings = Array.isArray(observations.provider_attempt_timin
       timed_out: attempt?.timed_out === true
     }))
   : [];
+const loomProviderLivenessHeld = !transportError
+  && httpStatus === 502
+  && payload?.status === 'held'
+  && payload?.diagnostic?.stage === 'provider-transport'
+  && payload?.diagnostic?.code === 'PROVIDER_HTTP_ERROR'
+  && providerAttempts.length > 0
+  && providerAttempts.every(attempt => attempt.status === 429 || attempt.status === 503);
 const usedDocumentIds = Array.isArray(payload?.used_document_ids) ? payload.used_document_ids.filter(id => typeof id === 'string').slice(0, 8) : [];
 const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload.receipt === 'object' ? marrowlinePayload.receipt : {};
 const marrowlineAdmission = marrowlinePayload?.relay?.admission && typeof marrowlinePayload.relay.admission === 'object'
@@ -284,6 +291,10 @@ const receipt = {
   http_status: httpStatus || null,
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
+  observation_outcome: loomProviderLivenessHeld
+    ? 'marrowline-admitted-loom-provider-liveness-held'
+    : (httpStatus === 200 && payload?.status === 'completed' ? 'completed' : 'held'),
+  loom_provider_liveness_nonblocking: loomProviderLivenessHeld,
   diagnostic: boundedDiagnostic(payload?.diagnostic),
   provider_calls: Number.isSafeInteger(observations.provider_calls) ? observations.provider_calls : null,
   provider_attempts: providerAttempts,
@@ -333,16 +344,21 @@ if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
 if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
 if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
 
-if (transportError) throw new Error(`Loom production canary transport failed (${transportError}).`);
-if (httpStatus !== 200 || payload?.status !== 'completed') {
+if (loomProviderLivenessHeld) {
   const attempts = providerAttempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}`).join(',') || 'none';
-  const diagnostic = receipt.diagnostic ? `${receipt.diagnostic.stage}/${receipt.diagnostic.code}` : 'none';
-  throw new Error(`Loom production canary held: HTTP ${httpStatus || 'none'} status=${payload?.status || 'missing'} attempts=${attempts} diagnostic=${diagnostic}.`);
-}
-if (payload.request_id !== requestId) throw new Error('Loom production canary returned a mismatched request receipt.');
-if (!receipt.answer_nonempty) throw new Error('Loom production canary returned no admitted answer.');
-if (!usedDocumentIds.length || !usedDocumentIds.every(id => input.documents.some(document => document.id === id))) {
-  throw new Error('Loom production canary returned invalid selected-document claims.');
+  console.log(`[loom-production-canary] PROVIDER_LIVENESS_HELD_NONBLOCKING attempts=${attempts} marrowline=admitted`);
+} else {
+  if (transportError) throw new Error(`Loom production canary transport failed (${transportError}).`);
+  if (httpStatus !== 200 || payload?.status !== 'completed') {
+    const attempts = providerAttempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}`).join(',') || 'none';
+    const diagnostic = receipt.diagnostic ? `${receipt.diagnostic.stage}/${receipt.diagnostic.code}` : 'none';
+    throw new Error(`Loom production canary held: HTTP ${httpStatus || 'none'} status=${payload?.status || 'missing'} attempts=${attempts} diagnostic=${diagnostic}.`);
+  }
+  if (payload.request_id !== requestId) throw new Error('Loom production canary returned a mismatched request receipt.');
+  if (!receipt.answer_nonempty) throw new Error('Loom production canary returned no admitted answer.');
+  if (!usedDocumentIds.length || !usedDocumentIds.every(id => input.documents.some(document => document.id === id))) {
+    throw new Error('Loom production canary returned invalid selected-document claims.');
+  }
 }
 
-console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'} canary_elapsed_ms=${receipt.canary_elapsed_ms ?? 'unknown'}`);
+console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_status=${loomProviderLivenessHeld ? 'PROVIDER_LIVENESS_HELD' : 'PASS'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'} canary_elapsed_ms=${receipt.canary_elapsed_ms ?? 'unknown'}`);

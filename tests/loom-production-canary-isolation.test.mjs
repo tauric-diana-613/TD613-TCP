@@ -85,5 +85,15 @@ assert.match(source, /Array\.isArray\(marrowlinePayload\?\.attempts\)/, 'held Ma
 assert.match(source, /diagnostic:\s*boundedRouteDiagnostic\(marrowlinePayload\?\.diagnostic\)/, 'held Marrowline responses must preserve bounded diagnostic evidence');
 assert.match(source, /if \(!receipt\.marrowline_live_route\.relay_admitted\)/, 'serial isolation must not weaken relay admission');
 assert.match(source, /if \(!receipt\.answer_nonempty\)/, 'serial isolation must not weaken Loom answer admission');
+assert.match(source, /const loomProviderLivenessHeld = !transportError/);
+assert.match(source, /attempt\.status === 429 \|\| attempt\.status === 503/);
+assert.match(source, /PROVIDER_LIVENESS_HELD_NONBLOCKING/);
+assert.match(source, /loom_provider_liveness_nonblocking: loomProviderLivenessHeld/);
+assert.match(reobserveWorkflow, /Classify bounded live AI observation/);
+assert.match(reobserveWorkflow, /marrowline_status=PASS/);
+assert.match(reobserveWorkflow, /loom_status=\$\{loomStatus\}/);
+assert.match(reobserveWorkflow, /production_loom_demo1_canary = \$LOOM_STATUS/);
+assert.match(reobserveWorkflow, /marrowline_live_route = \$MARROWLINE_STATUS/);
+
 
 console.log('loom-production-canary-isolation.test.mjs passed');
