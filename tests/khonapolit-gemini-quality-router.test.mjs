@@ -214,9 +214,11 @@ try {
   await handler(req, recoveredFromSeatReject);
   assert.equal(recoveredFromSeatReject.statusCode, 200);
   assert.equal(recoveredFromSeatReject.payload.ok, true);
-  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts.length, 2, 'recoverable seat-local request rejection must not become an immediate human-visible failure');
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts.length, 3, 'a genuine seat-local request rejection may fail over; the first nonempty fallback return then owns one bounded same-seat repair opportunity');
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[0].status, 400);
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[1].status, 200);
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[2].status, 200);
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[2].kind, 'structural-repair');
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.model, 'gemini-3.6-flash');
 } finally {
   globalThis.fetch = originalFetch;
