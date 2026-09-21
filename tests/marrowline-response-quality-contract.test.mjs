@@ -49,9 +49,9 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ZERO combining diacritical marks/i);
   assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i);
   assert.match(contract, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(contract, /VERTICAL ARCHITECTURE means STACK HEIGHT AND DEPTH, not merely vertical POSITION/i);
-  assert.match(contract, /same little pair repeated over every character is LOW-ZALGO WALLPAPER/i);
-  assert.match(contract, /irregular SAME-GRAPHEME multi-tier stacks/i);
+  assert.match(contract, /DO NOT solve High Zalgo as a geometry assignment/i);
+  assert.match(contract, /silently map the argument’s rhetorical movement/i);
+  assert.match(contract, /Morphology is meaning-bearing prosody/i);
   assert.match(contract, /DO NOT stamp a repeated diaeresis-like/i);
   assert.match(contract, /DO NOT use Unicode enclosing-mark tricks or geometric replacement glyphs/i);
   assert.match(contract, /underlying Latin graphemes present/i);
@@ -59,13 +59,14 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /ALLOW ENTROPY/i);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
-  assert.match(contract, /multiple heterogeneous marks can accumulate above and below one base/i);
-  assert.match(contract, /Some phrases may climb, some may sink/i);
+  assert.match(contract, /Long vertical stacks are EVENTS, not the baseline texture/i);
+  assert.match(contract, /Neighboring graphemes may be clean, lightly touched, medium, or violently stacked/i);
   assert.match(contract, /repeated diaeresis-like, dot-like, breve-like, macron-like, hook-like, or paired accent pattern/i);
   assert.match(contract, /Dense peaks may collide with neighboring lines/i);
   assert.match(contract, /vertical voice must return without operator prompting/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
-  assert.match(contract, /NATIVE-VOICE SELF-CHECK — DEEP STACK, NOT SHALLOW WALLPAPER/i);
+  assert.match(contract, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i);
+  assert.match(contract, /maximum-depth wallpaper/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
   assert.doesNotMatch(contract, /marked grapheme coverage >=28%/i);
@@ -201,45 +202,45 @@ test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until v
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'));
 });
 
-test('strike-heavy expressive Zalgo cannot pass as High Zalgo without leaping vertical eruption depth', () => {
-  const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
-  const politeVertical = 'V\u0301\u0302\u0316';
+test('maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic', () => {
+  const deep = 'F\u0300\u0301\u0302\u0307\u0316\u0317\u031D';
   const field = [
     'Kʰonapolit',
     'The formal channel stays clean.',
     '',
     'Tauric Diana bots',
-    `${slash.repeat(6)} ${politeVertical.repeat(4)} THE PAGE IS ANGRY BUT IT NEVER LEAPS ABOVE THE LINE!`,
-    `${slash.repeat(6)} ${politeVertical.repeat(4)} STRIKES AND SCRATCHES CANNOT SUBSTITUTE FOR VERTICAL FIRE!`,
-    `${slash.repeat(6)} ${politeVertical.repeat(4)} HIGH ZALGO NEEDS CROWNS THAT FLARE AND ROOTS THAT DROP!`
+    `${deep.repeat(10)} EVERY MARKED GRAPHEME IS SHOUTING AT THE SAME DEPTH!`,
+    `${deep.repeat(10)} A TOWER WALL IS STILL A WALLPAPER FILTER!`,
+    `${deep.repeat(10)} INTENSITY WITHOUT MODULATION LOSES THE VOICE!`
   ].join('\n');
   const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(observed.admissible, true, observed.reasons.join(', '));
-  assert.ok(observed.combiningMarkCount >= 24);
-  assert.ok(observed.maxVerticalOrnamentStackDepth < 6);
-  assert.ok(observed.leapingVerticalClusterCount < 4);
-  assert.ok(observed.leapingVerticalMarkedLineCount < 2);
-  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-eruption-depth-thin'));
-  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-eruption-depth-thin'));
+  assert.ok(observed.leapingVerticalClusterCount >= 8);
+  assert.ok(observed.deepVerticalShareOfMarked >= 0.72);
+  assert.ok(observed.lightVerticalShareOfMarked <= 0.10);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-dynamic-range-collapse'));
 });
 
-test('fiery leaping crowns across separate lines clear the eruption-depth warning', () => {
-  const flame = 'F\u0300\u0301\u0302\u0307\u0316\u0317';
+test('mixed semantic pressure clears dynamic-range collapse without imposing a tower quota', () => {
+  const light = 'L\u0301';
+  const medium = 'M\u0301\u0302\u0316';
+  const deep = 'F\u0300\u0301\u0302\u0307\u0316\u0317\u031D';
   const field = [
     'Kʰonapolit',
     'The formal channel stays clean.',
     '',
     'Tauric Diana bots',
-    `${flame.repeat(5)} THE CROWN LEAPS ABOVE THE CAP LINE!`,
-    `${flame.repeat(5)} THE ROOTS DROP WHILE THE NEXT PHRASE CATCHES FIRE!`,
-    `${flame.repeat(5)} THE VERTICAL FIELD HAS HEAT, HEIGHT, AND RETURN!`
+    `${light.repeat(6)} ally voice clears and breathes before the joke lands`,
+    `${medium.repeat(6)} pressure gathers, bends, and changes register`,
+    `${deep.repeat(6)} NOW THE ACCUSATION ERUPTS! ${light.repeat(5)} and then it lets the line breathe again`
   ].join('\n');
   const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(observed.admissible, true, observed.reasons.join(', '));
-  assert.ok(observed.maxVerticalOrnamentStackDepth >= 6);
-  assert.ok(observed.leapingVerticalClusterCount >= 4);
-  assert.ok(observed.leapingVerticalMarkedLineCount >= 2);
-  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-eruption-depth-thin'), false);
+  assert.ok(observed.lightVerticalClusterCount > 0);
+  assert.ok(observed.leapingVerticalClusterCount > 0);
+  assert.ok(observed.deepVerticalShareOfMarked < 0.72 || observed.lightVerticalShareOfMarked > 0.10);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'), false);
 });
 
 test('lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class', () => {
@@ -404,9 +405,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     const instruction = request.systemInstruction.parts[0].text;
     assert.match(instruction, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i, model);
     assert.match(instruction, /scream-sing the “fun and scary” relayed transmission/i, model);
-    assert.match(instruction, /STACK HEIGHT AND DEPTH, not merely vertical POSITION/i, model);
-    assert.match(instruction, /LOW-ZALGO WALLPAPER/i, model);
-    assert.match(instruction, /irregular SAME-GRAPHEME multi-tier stacks/i, model);
+    assert.match(instruction, /DO NOT solve High Zalgo as a geometry assignment/i, model);
+    assert.match(instruction, /silently map the argument’s rhetorical movement/i, model);
+    assert.match(instruction, /Long vertical stacks are EVENTS, not the baseline texture/i, model);
     assert.match(instruction, /DO NOT stamp a repeated diaeresis-like/i, model);
     assert.match(instruction, /ALLOW ENTROPY/i, model);
     assert.match(instruction, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i, model);
@@ -414,7 +415,8 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /vertical voice must return without operator prompting/i, model);
     assert.match(instruction, /Dense peaks may collide with neighboring lines/i, model);
     assert.match(instruction, /Do not count marks, signatures, percentages, or lines/i, model);
-    assert.match(instruction, /NATIVE-VOICE SELF-CHECK — DEEP STACK, NOT SHALLOW WALLPAPER/i, model);
+    assert.match(instruction, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i, model);
+    assert.match(instruction, /maximum-depth wallpaper/i, model);
     assert.doesNotMatch(instruction, /marked grapheme coverage >=28%/i, model);
     assert.doesNotMatch(instruction, /at least 4 distinct dense stack signatures/i, model);
     assert.doesNotMatch(instruction, /sarcasm or ridicule may distort one emphasized word/i, model);
@@ -624,19 +626,19 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini authors deep-stack native High Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /Tauric Diana bots is the raw stress channel/);
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(contract, /STACK HEIGHT AND DEPTH, not merely vertical POSITION/i);
-  assert.match(contract, /LOW-ZALGO WALLPAPER/i);
-  assert.match(contract, /irregular SAME-GRAPHEME multi-tier stacks/i);
+  assert.match(contract, /DO NOT solve High Zalgo as a geometry assignment/i);
+  assert.match(contract, /Morphology is meaning-bearing prosody/i);
+  assert.match(contract, /Long vertical stacks are EVENTS, not the baseline texture/i);
   assert.match(contract, /DO NOT stamp a repeated diaeresis-like/i);
-  assert.match(contract, /vertical voice must return without operator prompting/i);
-  assert.match(contract, /Dense peaks may collide with neighboring lines/i);
+  assert.match(contract, /visual pressure should move with the thought/i);
+  assert.match(contract, /clean breaths, light touches, medium pressure, sudden vertical eruptions/i);
   assert.match(contract, /ALLOW ENTROPY/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/);
@@ -831,13 +833,14 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /severe morphology collapse/i);
   assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
   assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
-  assert.match(directive, /bots scream-sing the transmission/i);
-  assert.match(directive, /STACK HEIGHT AND DEPTH/i);
-  assert.match(directive, /same small diaeresis-like\/dot-like\/breve-like\/paired accent/i);
-  assert.match(directive, /DO NOT COPY THAT PATTERN/i);
+  assert.match(directive, /Reconstruct the voice from meaning/i);
+  assert.match(directive, /Packet B is OVERFLOW_RAW/i);
+  assert.match(directive, /Silently identify the rhetorical beats/i);
+  assert.match(directive, /Long stacks are events, not the default/i);
+  assert.match(directive, /DO NOT COPY EITHER PATTERN/i);
   assert.match(directive, /Re-author the combining field from scratch while preserving the Latin base letters/i);
-  assert.match(directive, /irregular SAME-GRAPHEME crowns and roots/i);
-  assert.match(directive, /dotted comb, repeated little hats, shallow paired marks/i);
+  assert.match(directive, /clean to lightly touched to medium pressure to violent crown\/root eruptions/i);
+  assert.match(directive, /maximum-depth tiling/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.match(directive, /enclosing-box typography, pseudo-runic substitution/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);

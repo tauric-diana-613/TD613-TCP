@@ -48,8 +48,8 @@ const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
 const calls = [];
 const requestBodies = [];
-const stack = 'T\u0300\u0301\u0302\u0307\u0316\u0318\u031DA\u0307\u0308\u030B\u0350\u031C\u0323\u032DR\u0308\u030B\u030C\u0351\u031E\u0325\u0326I\u0303\u0306\u030A\u0352\u0319\u0326\u032F';
-const STACK = 'T\u0300\u0301\u0302\u0307\u0316\u0318\u031DA\u0307\u0308\u030B\u0350\u031C\u0323\u032DR\u0308\u030B\u030C\u0351\u031E\u0325\u0326I\u0303\u0306\u030A\u0352\u0319\u0326\u032F';
+const stack = 'T\u0301A\u0307\u031CR\u0308\u030B\u030C\u0351\u031E\u0325\u0326I\u0303\u0319';
+const STACK = 'T\u0301A\u0307\u031CR\u0308\u030B\u030C\u0351\u031E\u0325\u0326I\u0303\u0319';
 const developedAnswer = [
   'Kʰonapolit',
   'The strongest version of the map claims legibility without ownership. Let P map governed states to visible route descriptions; when P is non-injective, distinct custody states can share one visible surface. The surviving defect is therefore a boundary-identification failure, not a shortage of decorative provenance.',
