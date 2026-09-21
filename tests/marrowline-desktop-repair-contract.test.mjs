@@ -97,8 +97,9 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
   const desktopBlock = css.split('@media (min-width:861px){')[1]?.split('/* Marrowline mobile couture')[0] || '';
   assert.match(desktopBlock, /#khonapolitSend::before/);
   const mobileArrowBlock = css.split('@media(max-width:860px){\n  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions')[1]?.split('@media (min-width:861px){')[0] || '';
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧︎"/);
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*transform:translateY\(1px\)/);
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧"/);
+  assert.doesNotMatch(mobileArrowBlock, /content:"⇧︎"/, 'mobile must not use the text-presentation variation selector that shifted the optical glyph box');
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*transform:translate\(1\.8px,1px\)/);
   assert.match(mobileArrowBlock, /#khonapolitSend\{[\s\S]*width:42px!important[\s\S]*font-size:0!important/);
   assert.equal(release.composer.desktopSendGlyph, '⇧');
   assert.equal(release.composer.mobileSendGlyph, '⇧');
@@ -108,11 +109,24 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
 test('status sits immediately to the right of Send inside the composer on desktop and mobile', () => {
   assert.match(page, /<div class="ritual-actions composer-actions">\s*<button class="primary" id="khonapolitSend" type="submit">Send<\/button>\s*<div class="vessel-status" id="khonapolitTerminalStatus">READY<\/div>/);
   assert.match(css, /\.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*margin:0 0 0 2px!important/s);
-  assert.match(css, /body\[data-mobile-view="speak"\] \.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*margin:0!important/s);
+  assert.match(css, /body\[data-mobile-view="speak"\] \.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*max-width:min\(52vw,250px\)!important[^}]*white-space:nowrap!important[^}]*overflow:hidden!important[^}]*text-overflow:ellipsis!important[^}]*margin:0!important/s);
   assert.match(css, /\.marrowline-conversation-utilities\{order:3/);
   assert.equal(release.composer.statusPlacement, 'inside-composer-immediately-right-of-send-on-desktop-and-mobile');
 });
 
+test('composer status teaches the route in compact Pedagogue phases instead of leaking internal mode strings', () => {
+  for (const phrase of [
+    'TASK ROUTED · reading the whole prompt',
+    'CONTEXT JOINED · keeping source boundaries',
+    'REASONING OPEN · testing the strongest path',
+    'RETURN FORMING · preserving both voices',
+    'RECEIPT NEXT · route + provenance stay attached'
+  ]) assert.match(terminalJs, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(terminalJs, /startPedagogueStatus\(status, root, attachments\.length\)/);
+  assert.match(terminalJs, /RETURN OBSERVED · SIGNAL .*receipt preserved/);
+  assert.doesNotMatch(terminalJs, /TASK ROUTED · AI IN FLIGHT · \$\{mode\}/);
+  assert.match(livingChatJs, /status\.dataset\.phase/);
+});
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
   assert.match(js, /legacyActions\.hidden = true/);
   assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
