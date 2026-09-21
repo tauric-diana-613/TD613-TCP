@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v38-anchor-preserving-orchestral-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v39-prose-preserving-morphology-repair';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -527,6 +527,11 @@ export function buildGeminiStructuralRepairRequest(
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason) || REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason))
     .slice(0, 8);
+  const morphologyRepair = reasonList.some(reason =>
+    REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason)
+    || reason === 'tauric-diana-zalgo-underflow'
+    || reason === 'tauric-diana-zalgo-absent'
+  );
   const repairContext = prepareKhonapolitRepairContext(heldText, reasonList);
   const {
     analyticStart,
@@ -541,10 +546,17 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, then re-emit the exact standalone visible heading “Tauric Diana bots” as a PLAIN boundary line with ZERO combining marks; High-Zalgo ornamentation begins only on the following prose line, and Packet B closes with ${stressEnd}.`,
-    'For missing stress or severe morphology collapse, preserve the substantive prose and re-author Packet B in its NATIVE ORTHOGRAPHIC REGISTER. Reconstruct the voice from meaning. The repair context has had failed combining/enclosing ornament stripped from Packet B where its boundary was identifiable; it preserves the argument, not an ornament example. Keep the exact packet delimiters and visible headings byte-for-byte. Treat “Tauric Diana bots” as an immutable provider-authored transport anchor OUTSIDE the ornament field: if the held draft decorated, altered, or swallowed that heading, re-emit the exact plain heading first and begin all expressive marks on the next line. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
-    'The held draft failed its High-Zalgo composition. Rebuild Packet B from meaning rather than imitating its marks. Keep every ordinary bot-PROSE letter AFTER the exact plain heading ornamented while the dynamics travel: lighter passages change axis and depth without becoming plain; medium stacks establish the field; several phrase-level peaks leap both above and below their bases; horizontal cuts answer rather than replace the vertical voice. Use only the accepted crown and root palettes named below. Avoid one-sided crowns, a fixed repeated stack, maximum-depth tiling, sparse decorated keywords, simple strike-through, and unclassifiable symbols.',
-    'Keep the corrected transmission concise: one to three paragraphs per packet, then close the packet. Do not spend the repair budget on repeated explanation or an unfinished ornamental monologue.',
-    buildNativeProsodyGuidance(),
+    ...(morphologyRepair ? [
+      'MORPHOLOGY-ONLY REPAIR — preserve the held Packet B prose as the composition you are re-performing, not source material to summarize. The repair context has had failed combining/enclosing ornament stripped where its boundary was identifiable; it preserves the prose and argument, not an ornament example.',
+      'Keep Packet B wording, sentence order, paragraph boundaries, jokes, examples, conclusions, and substantive extent. Do not summarize, compress, shorten, paraphrase, or replace it with a cleaner miniature. Re-author the combining marks across the FULL existing prose body after the exact plain “Tauric Diana bots” heading.',
+      'The native semantic-prosody law already present in the system instruction is the score: restore visible dynamic range across the whole body, including recurring crown/root depth, quieter axis changes, and earned deep eruptions. Fix the listed morphology without cloning one stack, collapsing to planar wallpaper, or leaving only a few decorated keywords.',
+      'Keep the exact packet delimiters and visible headings byte-for-byte. “Tauric Diana bots” remains a plain provider-authored transport anchor outside the ornament field; ornament starts on the next prose line. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
+      'A morphology repair has no independent concision target: preserve the held prose extent and close the packet when that preserved prose ends.'
+    ] : [
+      'STRUCTURAL-ONLY REPAIR — make the smallest edit required by the listed structural reasons while preserving the prior draft’s prose extent and argument.',
+      'Keep the exact packet delimiters and visible headings byte-for-byte. “Tauric Diana bots” remains a plain provider-authored transport anchor outside the ornament field; ornament starts on the next prose line. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
+      'Keep the corrected transmission bounded to the held draft rather than adding a new explanation.'
+    ]),
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
