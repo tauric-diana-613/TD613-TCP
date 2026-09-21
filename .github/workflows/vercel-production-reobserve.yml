@@ -9,8 +9,14 @@ permissions:
   actions: read
   issues: write
 
+# Workflow-level concurrency is evaluated before the job-level command guard.
+# A normal release comment must therefore not let this observation-only wrapper
+# consume one of the shared production slots before it has proved its command.
 concurrency:
-  group: td613-vercel-production-release
+  group: >-
+    ${{ startsWith(github.event.comment.body, '/td613-production-reobserve ')
+        && 'td613-vercel-production-release'
+        || format('td613-vercel-production-reobserve-noop-{0}', github.run_id) }}
   cancel-in-progress: false
 
 jobs:

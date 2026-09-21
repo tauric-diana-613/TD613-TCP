@@ -146,12 +146,18 @@ assert.match(relock, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel
   'the admitted relock job itself remains serialized against deployment');
 
 
-// Provider-held re-observation is deliberately a fifth authority surface because it
-// must share release serialization without inheriting deployment or contents-write authority.
+// Provider-held re-observation is deliberately a fifth authority surface. Its true
+// command still serializes on the production lane, while unrelated issue comments
+// must never consume a pending production slot before the job-level guard runs.
 assert.match(reobserve, /name:\s*Vercel Production Witness Re-observation/);
 assert.match(reobserve, /github\.event\.issue\.number == 405/);
 assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-production-reobserve '\)/);
-assert.match(reobserve, /group:\s*td613-vercel-production-release/);
+assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-production-reobserve '\)[\s\S]*?'td613-vercel-production-release'/,
+  'A true re-observation command must still serialize against release authority.');
+assert.match(reobserve, /td613-vercel-production-reobserve-noop-\{0\}/,
+  'Nonmatching issue-comment wrappers must receive a unique no-op concurrency lane instead of evicting a release.');
+assert.match(reobserve, /github\.run_id/,
+  'The no-op lane must be unique per workflow run so skipped wrappers cannot replace one another inside release authority.');
 assert.match(reobserve, /^\s{2}contents:\s*read$/m);
 assert.match(reobserve, /^\s{2}actions:\s*read$/m);
 assert.match(reobserve, /^\s{2}issues:\s*write$/m);
