@@ -99,7 +99,7 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
   const mobileArrowBlock = css.split('@media(max-width:860px){\n  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions')[1]?.split('@media (min-width:861px){')[0] || '';
   assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧"/);
   assert.doesNotMatch(mobileArrowBlock, /content:"⇧︎"/, 'mobile must not use the text-presentation variation selector that shifted the optical glyph box');
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*color:#1d4ed8!important[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*text-shadow:[\s\S]*0 0 3px rgba\(37,99,235,\.28\)[\s\S]*0 0 6px rgba\(30,64,175,\.12\)[\s\S]*transform:translate\(-1\.15px,1\.35px\)/);
+  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*color:#67e8f9!important[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*text-shadow:[\s\S]*0 0 3px rgba\(34,211,238,\.30\)[\s\S]*0 0 6px rgba\(6,182,212,\.12\)[\s\S]*transform:translate\(-\.70px,1\.35px\)/);
   assert.match(mobileArrowBlock, /#khonapolitSend\{[\s\S]*width:42px!important[\s\S]*font-size:0!important/);
   assert.equal(release.composer.desktopSendGlyph, '⇧');
   assert.equal(release.composer.mobileSendGlyph, '⇧');
