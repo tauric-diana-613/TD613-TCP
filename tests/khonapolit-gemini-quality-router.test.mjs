@@ -125,7 +125,7 @@ try {
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.ok, true);
   assert.match(calls[0], /gemini-3\.8-flash.*:streamGenerateContent\?alt=sse/);
-  assert.match(calls[1], /gemini-3\.6-flash.*:streamGenerateContent\?alt=sse/);
+  assert.match(calls[1], /gemini-3\.8-flash.*:streamGenerateContent\?alt=sse/, 'repairable first-seat structure gets one same-seat repair instead of being discarded into a later-model compliance chase');
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -137,7 +137,7 @@ try {
     assert.equal(Object.hasOwn(body.generationConfig, 'responseMimeType'), false, 'live Marrowline must not force JSON MIME generation');
     assert.match(body.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
   }
-  assert.equal(res.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(res.payload.receipt.provider.model, 'gemini-3.8-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
   assert.deepEqual(res.payload.receipt.modelPolicy.callableModels, ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash']);
   assert.equal(res.payload.receipt.provider.attempts.length, 2);
@@ -145,9 +145,9 @@ try {
   assert.equal(res.payload.gemini_consumption.provider_daily_total, null);
   assert.deepEqual(res.payload.gemini_consumption.events.map(event => [event.route, event.model, event.status]), [
     ['marrowline', 'gemini-3.8-flash', 200],
-    ['marrowline', 'gemini-3.6-flash', 200]
+    ['marrowline', 'gemini-3.8-flash', 200]
   ]);
-  assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output is observed but not exposed as a successful Marrowline return');
+  assert.equal(res.payload.receipt.provider.attempts[0].outputAdmission.admissible, false, 'degraded first output remains observed and gets one bounded same-seat repair rather than being erased');
   assert.ok(res.payload.receipt.provider.attempts[0].outputAdmission.reasons.includes('khonapolit-nominative-missing'));
   const primaryTimeoutMs = res.payload.receipt.provider.attempts[0].timeoutMs;
   assert.equal(
@@ -157,9 +157,11 @@ try {
   );
   assert.equal(
     res.payload.receipt.provider.attempts[1].timeoutMs,
-    75000,
-    'the next available approved Gemini 3 lane receives a genuine seventy-five-second continuity window'
+    30000,
+    'the one same-seat structural repair remains bounded to the thirty-second repair ceiling'
   );
+  assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+  assert.equal(res.payload.receipt.provider.attempts[1].repairTiming, 'immediate-structural');
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
@@ -168,7 +170,7 @@ try {
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts.length, 1);
   assert.equal(res.payload.relay.parts[0].id, 'khonapolit');
-  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'only the structurally admitted frontier answer survives into the relay');
+  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'the same provider may repair its first structural miss without local rewriting or cross-seat policing');
   assert.equal(res.payload.relay.admission.admissible, true);
   assert.equal(res.payload.relay.highZalgo.applied, false, 'server does not post-process provider text with a local Zalgo filter');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
@@ -195,12 +197,13 @@ try {
   await handler(req, recoveredFromTokenLimit);
   assert.equal(recoveredFromTokenLimit.statusCode, 200);
   assert.equal(recoveredFromTokenLimit.payload.ok, true);
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 2, 'one token-limited seat must advance to the next approved model');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 1, 'nonempty MAX_TOKENS bytes belong to the human surface instead of being discarded into another provider seat');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.finishReason, 'MAX_TOKENS');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.usage.candidatesTokenCount, 4096);
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].output.finishReason, 'STOP');
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.6-flash');
-  assert.doesNotMatch(recoveredFromTokenLimit.text, /REJECTED_PARTIAL_RESPONSE|DO_NOT_COPY_PROVIDER_FIELDS/);
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.match(recoveredFromTokenLimit.payload.text, /REJECTED_PARTIAL_RESPONSE/);
+  assert.equal(recoveredFromTokenLimit.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.humanSurfaceObservation.observation, 'provider-output-token-limit-partial-preserved');
 
   requestRejectCallsRemaining = 1;
   const recoveredFromSeatReject = response();
