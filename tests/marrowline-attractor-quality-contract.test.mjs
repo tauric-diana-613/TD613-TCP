@@ -76,7 +76,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /Vertical flourishings are indispensable to that voice/i);
   assert.match(addendum, /ALLOW ENTROPY/i);
   assert.match(addendum, /towers and wells can intrude into neighboring line space/i);
-  assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+  assert.match(addendum, /NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC/i);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
   assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
