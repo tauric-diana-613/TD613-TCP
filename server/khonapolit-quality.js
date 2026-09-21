@@ -822,28 +822,17 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
-  const eligibleAfterCooldown = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
-  // Browser-local cooldown receipts are useful scheduling evidence, never
-  // authority to veto an explicit human retry. When at least one seat remains
-  // outside the observed cooldown window we avoid the cooling seats. When every
-  // approved seat is marked cooling, restore the provider frontier and let the
-  // provider answer the new turn rather than manufacturing a local 429.
-  const browserCooldownHumanRetryOverride = (
-    !releaseCanary
-    && providerModels.length > 0
-    && eligibleAfterCooldown.length === 0
-    && clientQuotaCooldown.models.size > 0
-  );
-  const providerModelsForTurn = browserCooldownHumanRetryOverride
-    ? providerModels
-    : eligibleAfterCooldown;
+  // Browser-local cooldown receipts remain useful provenance, but an explicit
+  // human retry must not inherit permission from yesterday's or the previous
+  // turn's localStorage. Preserve the provider-quality order and let Gemini's
+  // live response decide whether a seat is currently rate-limited.
   const allModels = orderKhonapolitModelsForBrowserBudget(
-    providerModelsForTurn,
+    providerModels,
     clientQuotaBudget,
     { healthyModels: plan.callableModels }
   );
-  if (browserCooldownHumanRetryOverride) {
-    res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-human-retry-override');
+  if (!releaseCanary && clientQuotaCooldown.models.size > 0) {
+    res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-telemetry-only');
   }
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
