@@ -19,7 +19,9 @@ import {
 import {
   KHONAPOLIT_RAW_PACKET_PROTOCOL,
   KHONAPOLIT_RELAY_SCHEMA,
+  assessIntegratedTransmission,
   buildRelaySystemAddendum,
+  buildNativeProsodyGuidance,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import {
@@ -42,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v35-expressive-entropy-repair-context';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v36-native-prosody-consistency';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -418,7 +420,16 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 function geminiContents(packet = {}) {
-  const history = packet.history.map((entry) => ({ role: entry.role, parts: [{ text: entry.text }] }));
+  const history = packet.history.map((entry) => {
+    // Provider request projection only. Stored history, operator text, receipts
+    // and visible output remain byte-identical. Do not few-shot a known failed
+    // model ornament pattern into every subsequent turn.
+    const warnings = entry.role === 'model'
+      ? severeMorphologyRepairWarnings(assessIntegratedTransmission(entry.text).qualityWarnings)
+      : [];
+    const text = warnings.length ? prepareKhonapolitRepairContext(entry.text, warnings) : entry.text;
+    return { role: entry.role, parts: [{ text }] };
+  });
   return [...history, { role: 'user', parts: [{ text: packet.message }] }];
 }
 
@@ -459,7 +470,6 @@ export function repairableKhonapolitAdmission(reasons = []) {
 
 export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
-  const localizedBurst = values.has('tauric-diana-zalgo-localized-burst');
   const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
   const hardGlyphCorruption = [...HARD_MORPHOLOGY_CORRUPTION_WARNINGS].some(reason => values.has(reason));
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
@@ -470,7 +480,9 @@ export function severeMorphologyRepairWarnings(warnings = []) {
     || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
   const cloneCollapse = values.has('tauric-diana-zalgo-mechanical-clone')
     || values.has('tauric-diana-zalgo-monoculture');
-  if (!hardGlyphCorruption && !localizedBurst && !shallowWallpaper && !dynamicRangeCollapse && !verticalPulseAbsent && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
+  // Localized events/clean intervals are permitted by the native-prosody law.
+  // Coverage telemetry alone cannot establish that their placement is wrong.
+  if (!hardGlyphCorruption && !shallowWallpaper && !dynamicRangeCollapse && !verticalPulseAbsent && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 
@@ -493,7 +505,12 @@ export function prepareKhonapolitRepairContext(heldText = '', reasons = []) {
     }).join('');
   };
   const cleanStress = (value = '') => stripWordInternalGeometry(String(value).replace(/\p{M}+/gu, ''));
-  if (start < 0 || end <= start) return cleanStress(text);
+  if (start < 0 || end <= start) {
+    const heading = text.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[^\n]*(?:\n|$)/iu);
+    if (!heading) return text;
+    const bodyStart = heading.index + heading[0].length;
+    return text.slice(0, bodyStart) + cleanStress(text.slice(bodyStart));
+  }
   const bodyStart = start + stressStart.length;
   return text.slice(0, bodyStart) + cleanStress(text.slice(bodyStart, end)) + text.slice(end);
 }
@@ -524,7 +541,8 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. The model-role repair context has had failed combining/enclosing ornament stripped from Packet B when morphology was defective, specifically so you do not imitate a bad visual pattern. Preserve the readable base prose; do not hallucinate missing box/diamond symbols back into words. Do not think “apply more Zalgo.” Reconstruct the voice from meaning. Kʰonapolit has already stabilized the invariant; Packet B is OVERFLOW_RAW, where typography behaves like prosody rather than a decorative filter. Silently identify the rhetorical beats in the preserved base prose—confiding, alliance, sarcasm, irritation, accusation, anger, shock, joke, recoil, return—and let visual pressure change with those beats without printing labels. Anger may leap vertically; alliance may clear; sarcasm may locally kink or cross; a punchline may suddenly become legible; a motif may return transformed. If the argument contains a genuine pressure peak, let at least one earned moment leave the midline with unmistakable above/below motion; slash/crossbar abrasion alone cannot carry High Zalgo. Long stacks are events, not the default. The previous draft may have failed at either extreme: tiny repeated hats or maximum-depth towers tiled across the whole field. DO NOT COPY EITHER PATTERN. It may also have failed by using combining enclosing circles/squares/keycaps/slashes or □ ▢ ◇ ◈-like geometric substitutions inside words. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS. Re-author the combining field from scratch while preserving the Latin base letters. Let neighboring graphemes range from clean to lightly touched to medium pressure to violent crown/root eruptions when the narrative earns them. Horizontal or oblique cuts may enter as semantic counter-rhythm for mockery, interruption, cancellation, or fracture. The system must ALLOW ENTROPY and contrast instead of regularizing the passage into one intensity. If the repaired page resembles a dotted comb, repeated little hats, shallow paired marks, maximum-depth tiling, enclosing-box typography, pseudo-runic substitution, or any other deterministic ornament filter, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
+    'For missing stress or severe morphology collapse, preserve the substantive prose and re-author Packet B in its NATIVE ORTHOGRAPHIC REGISTER. Reconstruct the voice from meaning. The repair context has had failed combining/enclosing ornament stripped from Packet B where its boundary was identifiable; it preserves the argument, not an ornament example. Keep the exact packet delimiters and visible headings byte-for-byte. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
+    buildNativeProsodyGuidance(),
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {

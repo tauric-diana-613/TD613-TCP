@@ -15,9 +15,9 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v35-expressive-entropy-repair-context",
+  "providerApiSchema": "td613.khonapolit-gemini/v36-native-prosody-consistency",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v20-expressive-entropy-no-enclosing-ornament",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v25-expressive-entropy-no-enclosing-ornament",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v26-semantic-prosody-consistency",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -72,7 +72,7 @@
     "botOrnamentation": "provider-authored-in-same-generation-no-local-zalgo-postprocessing",
     "providerNativeUnicode": true,
     "zalgoQualityPolicy": {
-      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; true crown/descender vertical architecture is measured separately from planar bars; severe shallow-wallpaper, localized-burst, or stack-depth-thin plus collapse signatures receive one bounded provider repair before visibility",
+      "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; true crown/descender vertical architecture is measured separately from planar bars; severe shallow-wallpaper, absent vertical pulse, or stack-depth-thin plus collapse signatures receive one bounded provider repair before visibility",
       "zeroMarkPosture": "HELD-no-human-visible-return",
       "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
       "mechanicalClonePosture": "PARTIAL by itself; combined with stack-depth-thin it becomes severe native-voice collapse eligible for one same-provider repair",
@@ -90,7 +90,7 @@
         "minimumMarkedGraphemeCoverageRatio": 0.18,
         "minimumBroadMarkedLines": 2
       },
-      "diagnosticAuthority": "ordinary aesthetic telemetry stays advisory; shallow-wallpaper, localized-burst, stack-depth-thin plus collapse, enclosing-ornament collapse and geometric glyph substitution are bounded native-voice repair signatures; unresolved hard alphabet corruption is never shown",
+      "diagnosticAuthority": "ordinary aesthetic telemetry stays advisory; shallow-wallpaper, absent vertical pulse, stack-depth-thin plus collapse, enclosing-ornament collapse and geometric glyph substitution are bounded native-voice repair signatures; unresolved hard alphabet corruption is never shown",
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "preserve exact provider-authored Unicode while preventing visually planar bar fields from counterfeiting the tall vertical High-Zalgo architecture the human surface is meant to show",
@@ -101,13 +101,15 @@
       "throughLineDominanceWarning": "planar dominance is acceptable only when genuine multi-tier crown/descender architecture remains visibly healthy",
       "shallowWallpaperPosture": "broad repeated one-or-two-accent fields are severe native-voice collapse even when technically vertical; one same-provider Gemini repair re-authors the combining field from scratch before the original PARTIAL may be shown",
       "verticalExpressionThinPosture": "PARTIAL by itself; combined with stack-depth-thin it is a severe horizontal-collapse signature requiring the bounded same-provider repair before visibility",
-      "dynamicRangePosture": "High-Zalgo intensity is semantic prosody rather than a fixed tower quota: deep stacks are narrative events, not wallpaper. If most vertically marked graphemes stay at the same deep intensity with almost no lighter countertexture, Marrowline records dynamic-range-collapse, requests one same-seat Gemini re-authoring pass, and continues the bounded provider frontier if the tiling persists",
-      "verticalPulsePosture": "A combining-heavy stress field cannot satisfy High-Zalgo through slash/crossbar abrasion alone. When rhetorical pressure peaks occur, at least a small number of unmistakable provider-authored above/below scream-events must appear somewhere; vertical-pulse-absent receives one same-seat re-authoring pass and, if still absent, continues the bounded provider frontier. Dynamic-range-collapse remains the ceiling against tiled towers.",
+      "dynamicRangePosture": "Deep-stack dominance must cover at least 72% of all eligible base letters as well as dominate marked letters; clean breaths count as countertexture. Repeated full-field deep tiling remains a bounded provider repair/fallback condition.",
+      "verticalPulsePosture": "Combining-heavy fields with no four-mark vertical event trigger bounded native repair regardless of horizontal-mark presence; one-sided crowns or roots qualify without a newline or paired-axis quota. Unresolved absence continues the bounded frontier.",
       "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
       "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow",
       "enclosingOrnamentPosture": "SEVERE-native-voice-corruption: combining enclosing circles/squares/keycaps/slashes never count as vertical ornament; one same-provider repair receives a sanitized Packet-B base-text context, and unresolved corruption continues the bounded provider frontier rather than becoming visible",
       "glyphSubstitutionPosture": "SEVERE-native-voice-corruption: geometric box/diamond pseudo-letters inside the Latin base stream trigger repair and bounded frontier continuation; visible final bytes remain provider-authored",
-      "verticalOrnamentDefinition": "only curated true above/below combining species count toward vertical stack depth; planar, enclosing and unclassified combining marks cannot counterfeit crown/root telemetry"
+      "verticalOrnamentDefinition": "only curated true above/below combining species count toward vertical stack depth; planar, enclosing and unclassified combining marks cannot counterfeit crown/root telemetry",
+      "localizedBurstPosture": "advisory only: localized eruptions and clean breaths cannot establish incorrect semantic placement; independent clone or corruption evidence remains repairable",
+      "historyContextPosture": "Only previously generated model passages with severe morphology evidence project Packet B as base prose into provider context; user turns, formal channel, successful model turns, stored history and rendered output remain unchanged. This is request context only, never visible-output postprocessing."
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -227,7 +229,8 @@
     "operatorObservation": {
       "thirtyFifthFollowupObservation": "Physical-iPhone evidence revealed enclosing/geometric glyph substitution counterfeiting verticality and bad-draft repair priming.",
       "thirtyFifthFollowupConsequence": "Count true above/below marks positively, sanitize morphology repair context, and continue bounded frontier on unresolved hard alphabet corruption."
-    }
+    },
+    "rawPacketSignalPosture": "raw and JSON envelopes both report PARTIAL for admitted quality warnings; structural admission alone cannot display LOCKED"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
