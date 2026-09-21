@@ -12,16 +12,20 @@ const requestId = `release-canary-${Date.now()}`;
 const marrowlineRequestId = `marrowline-release-canary-${Date.now()}`;
 const RELEASE_CANARY_MODELS = Object.freeze([
   'gemini-3.8-flash',
-  'gemini-3.7-flash',
-  'gemini-3.6-flash',
   'gemini-3.5-flash',
+  'gemini-3.6-flash',
+  'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
-const canarySeed = sourcePacketCommit && /^[0-9a-f]{40}$/.test(sourcePacketCommit)
-  ? Number.parseInt(sourcePacketCommit.slice(-2), 16)
-  : 0;
-const marrowlineCanaryModel = RELEASE_CANARY_MODELS[canarySeed % RELEASE_CANARY_MODELS.length];
-const loomCanaryModel = RELEASE_CANARY_MODELS[(canarySeed + 1) % RELEASE_CANARY_MODELS.length];
+// The live AI canary is now an explicit observation surface rather than a deployment
+// success gate. Use stable task-aligned defaults instead of hash-rotating a release
+// onto an arbitrary model seat; callers may still override each seat deliberately.
+const requestedMarrowlineCanaryModel = String(process.env.TD613_MARROWLINE_CANARY_MODEL || 'gemini-3.8-flash').trim();
+const requestedLoomCanaryModel = String(process.env.TD613_LOOM_CANARY_MODEL || 'gemini-3.5-flash').trim();
+if (!RELEASE_CANARY_MODELS.includes(requestedMarrowlineCanaryModel)) throw new Error(`Unsupported Marrowline canary model: ${requestedMarrowlineCanaryModel}`);
+if (!RELEASE_CANARY_MODELS.includes(requestedLoomCanaryModel)) throw new Error(`Unsupported Loom canary model: ${requestedLoomCanaryModel}`);
+const marrowlineCanaryModel = requestedMarrowlineCanaryModel;
+const loomCanaryModel = requestedLoomCanaryModel;
 const input = {
   schema: 'td613.loom.ai-task/v0.1',
   request_id: requestId,
@@ -90,7 +94,7 @@ const marrowlineRateLimitScopes = Array.isArray(marrowlineDiagnostic?.scopes)
   ? marrowlineDiagnostic.scopes.filter(scope => ['model', 'shared', 'unknown'].includes(scope))
   : [];
 const marrowlineCheckpoint = {
-  schema: 'td613.loom.production-canary-route-checkpoint/v0.5-one-seat-release-budget',
+  schema: 'td613.loom.production-canary-route-checkpoint/v0.6-explicit-observation-only',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   route: 'marrowline',
@@ -256,7 +260,7 @@ const releaseGeminiConsumption = {
   events: releaseConsumptionEvents
 };
 const receipt = {
-  schema: 'td613.loom.production-canary/v0.3-independent-live-routes',
+  schema: 'td613.loom.production-canary/v0.4-explicit-observation-only',
   source_packet_commit: sourcePacketCommit || null,
   observed_at: new Date().toISOString(),
   target_origin: origin,
@@ -264,7 +268,7 @@ const receipt = {
   request_count: 2,
   request_execution: 'serial-independent',
   release_canary_budget: {
-    posture: 'one-seat-per-route-provider-liveness',
+    posture: 'explicit-observation-only-one-seat-per-route',
     max_http_requests: 2,
     max_provider_requests: 2,
     marrowline_model: marrowlineCanaryModel,
