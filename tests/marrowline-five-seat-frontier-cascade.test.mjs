@@ -487,8 +487,8 @@ try {
         hardBudgetObservedModels: new Set()
       }
     ),
-    ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.8-flash'],
-    'a structured daily-quota observation demotes one seat without declaring provider-wide exhaustion'
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash'],
+    'browser-local daily-quota evidence is telemetry only and cannot demote the settled 3.8-first human provider order'
   );
   const req = {
     method: 'POST',
