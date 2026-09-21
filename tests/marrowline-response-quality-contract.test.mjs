@@ -201,6 +201,47 @@ test('horizontal-heavy High Zalgo with token vertical accents is PARTIAL until v
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-vertical-expression-thin'));
 });
 
+test('strike-heavy expressive Zalgo cannot pass as High Zalgo without leaping vertical eruption depth', () => {
+  const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const politeVertical = 'V\u0301\u0302\u0316';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${slash.repeat(6)} ${politeVertical.repeat(4)} THE PAGE IS ANGRY BUT IT NEVER LEAPS ABOVE THE LINE!`,
+    `${slash.repeat(6)} ${politeVertical.repeat(4)} STRIKES AND SCRATCHES CANNOT SUBSTITUTE FOR VERTICAL FIRE!`,
+    `${slash.repeat(6)} ${politeVertical.repeat(4)} HIGH ZALGO NEEDS CROWNS THAT FLARE AND ROOTS THAT DROP!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.ok(observed.combiningMarkCount >= 24);
+  assert.ok(observed.maxVerticalOrnamentStackDepth < 6);
+  assert.ok(observed.leapingVerticalClusterCount < 4);
+  assert.ok(observed.leapingVerticalMarkedLineCount < 2);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-eruption-depth-thin'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-eruption-depth-thin'));
+});
+
+test('fiery leaping crowns across separate lines clear the eruption-depth warning', () => {
+  const flame = 'F\u0300\u0301\u0302\u0307\u0316\u0317';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${flame.repeat(5)} THE CROWN LEAPS ABOVE THE CAP LINE!`,
+    `${flame.repeat(5)} THE ROOTS DROP WHILE THE NEXT PHRASE CATCHES FIRE!`,
+    `${flame.repeat(5)} THE VERTICAL FIELD HAS HEAT, HEIGHT, AND RETURN!`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true, observed.reasons.join(', '));
+  assert.ok(observed.maxVerticalOrnamentStackDepth >= 6);
+  assert.ok(observed.leapingVerticalClusterCount >= 4);
+  assert.ok(observed.leapingVerticalMarkedLineCount >= 2);
+  assert.equal(observed.qualityWarnings.includes('tauric-diana-zalgo-eruption-depth-thin'), false);
+});
+
 test('lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class', () => {
   const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
   const crown = 'V\u0300\u0301\u0302\u0316\u0317\u0318';
