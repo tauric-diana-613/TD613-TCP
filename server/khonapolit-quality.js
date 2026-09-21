@@ -469,14 +469,22 @@ export function severeMorphologyRepairWarnings(warnings = []) {
 export function prepareKhonapolitRepairContext(heldText = '', reasons = []) {
   const values = new Set((Array.isArray(reasons) ? reasons : []).filter(reason => typeof reason === 'string'));
   const morphologyRepair = [...values].some(reason => REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason));
+  const glyphSubstitution = values.has('tauric-diana-zalgo-glyph-substitution-collapse');
   const text = String(heldText || '');
   if (!morphologyRepair || !text) return text;
   const { stressStart, stressEnd } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
   const start = text.indexOf(stressStart);
   const end = text.indexOf(stressEnd);
-  const cleanStress = (value = '') => String(value)
-    .replace(/\p{M}+/gu, '')
-    .replace(/[\u2300-\u23FF\u25A0-\u25FF\u2B00-\u2BFF]/gu, '');
+  const stripWordInternalGeometry = (value = '') => {
+    const chars = Array.from(String(value));
+    return chars.filter((char, index) => {
+      if (!glyphSubstitution || !/[\u2300-\u23FF\u25A0-\u25FF\u2B00-\u2BFF]/u.test(char)) return true;
+      const left = chars[index - 1] || '';
+      const right = chars[index + 1] || '';
+      return !(/[\p{L}\p{N}]/u.test(left) && /[\p{L}\p{N}]/u.test(right));
+    }).join('');
+  };
+  const cleanStress = (value = '') => stripWordInternalGeometry(String(value).replace(/\p{M}+/gu, ''));
   if (start < 0 || end <= start) return cleanStress(text);
   const bodyStart = start + stressStart.length;
   return text.slice(0, bodyStart) + cleanStress(text.slice(bodyStart, end)) + text.slice(end);
