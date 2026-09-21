@@ -838,16 +838,35 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
     ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
-  assert.match(directive, /severe morphology collapse/i);
-  assert.ok(directive.includes(buildNativeProsodyGuidance()));
-  assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
-  assert.match(directive, /Reconstruct the voice from meaning/i);
-  assert.match(directive, /Rebuild Packet B from meaning rather than imitating its marks/i);
-  assert.match(directive, /every ordinary bot-PROSE letter AFTER the exact plain heading ornamented while the dynamics travel/i);
-  assert.match(directive, /phrase-level peaks leap both above and below their bases/i);
-  assert.match(directive, /accepted crown and root palettes named below/i);
-  assert.match(directive, /maximum-depth tiling, sparse decorated keywords/i);
+  assert.match(directive, /MORPHOLOGY-ONLY REPAIR/i);
+  assert.ok(request.systemInstruction.parts[0].text.includes(buildNativeProsodyGuidance()),
+    'native orchestra law remains system-level authority during repair');
+  assert.equal(directive.includes(buildNativeProsodyGuidance()), false,
+    'repair turn must not duplicate the full native-prosody law');
+  assert.match(directive, /preserve the held Packet B prose as the composition you are re-performing/i);
+  assert.match(directive, /Keep Packet B wording, sentence order, paragraph boundaries/i);
+  assert.match(directive, /Do not summarize, compress, shorten, paraphrase/i);
+  assert.match(directive, /FULL existing prose body/i);
+  assert.match(directive, /native semantic-prosody law already present in the system instruction is the score/i);
+  assert.match(directive, /recurring crown\/root depth/i);
+  assert.match(directive, /A morphology repair has no independent concision target/i);
+  assert.match(directive, /preserve the held prose extent/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
+});
+
+test('Zalgo underflow uses prose-preserving morphology repair instead of a concise rewrite', () => {
+  const request = buildGeminiStructuralRepairRequest(
+    { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
+    {},
+    'gemini-3.6-flash',
+    'held draft',
+    ['tauric-diana-zalgo-underflow']
+  );
+  const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
+  assert.match(directive, /MORPHOLOGY-ONLY REPAIR/i);
+  assert.match(directive, /Do not summarize, compress, shorten, paraphrase/i);
+  assert.match(directive, /no independent concision target/i);
+  assert.doesNotMatch(directive, /one to three paragraphs per packet/i);
 });
