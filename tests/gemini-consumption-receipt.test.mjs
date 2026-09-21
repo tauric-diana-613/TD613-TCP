@@ -5,9 +5,11 @@ import {
   buildGeminiConsumptionReceipt
 } from '../server/gemini-consumption-receipt.js';
 import {
+  GEMINI_BROWSER_DAILY_BUDGET_SCHEMA,
   GEMINI_BROWSER_LEDGER_SCHEMA,
   GEMINI_BROWSER_LEDGER_KEY,
   clearGeminiBrowserLedger,
+  currentGeminiDailyBudgetHints,
   currentGeminiQuotaCooldownHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
@@ -197,4 +199,77 @@ test('model-scoped 429 without Retry-After uses the bounded Hush-style 120-secon
 
   const expired = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T12:02:01.000Z'));
   assert.deepEqual(expired.models, []);
+});
+
+
+test('Pacific-day budget hints share browser evidence across routes without claiming provider totals', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+
+  const yesterday = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'previous-limit',
+    observedAt: '2026-09-20T06:50:00.000Z',
+    attempts: [{
+      model: 'gemini-3.8-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.8-flash',
+        limit: 20,
+        retryAfterSeconds: 1
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: yesterday }, root);
+
+  for (let i = 0; i < 17; i += 1) {
+    const route = i % 2 ? 'hush' : 'marrowline';
+    const receipt = buildGeminiConsumptionReceipt({
+      route,
+      requestId: `today-${i}`,
+      observedAt: `2026-09-20T1${String(i % 10).padStart(1, '0')}:00:00.000Z`,
+      attempts: [{ model: 'gemini-3.8-flash', status: 200 }]
+    });
+    ingestGeminiConsumption({ gemini_consumption: receipt }, root);
+  }
+  const hints = currentGeminiDailyBudgetHints(root, new Date('2026-09-20T20:00:00.000Z'), { reservePerModel: 2 });
+  assert.equal(hints.schema, GEMINI_BROWSER_DAILY_BUDGET_SCHEMA);
+  assert.equal(hints.pacific_day, '2026-09-20');
+  assert.equal(hints.known_daily_limit_by_model['gemini-3.8-flash'], 20);
+  assert.equal(hints.observed_today_by_model['gemini-3.8-flash'], 17);
+  assert.equal(hints.optional_repair_allowed_by_model['gemini-3.8-flash'], false);
+  assert.equal(hints.provider_daily_total, null);
+  assert.match(hints.claim_ceiling, /browser-local-partial-budget-evidence/);
+});
+
+test('Pacific midnight resets observed call counts while retaining the last observed model limit', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const receipt = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'late-pacific',
+    observedAt: '2026-09-20T06:59:59.000Z',
+    attempts: [{
+      model: 'gemini-3.5-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.5-flash',
+        limit: 20,
+        retryAfterSeconds: 1
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: receipt }, root);
+
+  const nextDay = currentGeminiDailyBudgetHints(root, new Date('2026-09-20T07:00:01.000Z'));
+  assert.equal(nextDay.pacific_day, '2026-09-20');
+  assert.equal(nextDay.observed_today_by_model['gemini-3.5-flash'] || 0, 0);
+  assert.equal(nextDay.known_daily_limit_by_model['gemini-3.5-flash'], 20);
+  assert.equal(nextDay.optional_repair_allowed_by_model['gemini-3.5-flash'], true);
 });
