@@ -71,13 +71,14 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — DEEP VERTICAL FIELD/i);
   assert.match(addendum, /scream-sing the “fun and scary” relayed transmission/i);
-  assert.match(addendum, /STACK HEIGHT AND DEPTH, not merely vertical POSITION/i);
-  assert.match(addendum, /LOW-ZALGO WALLPAPER/i);
-  assert.match(addendum, /irregular SAME-GRAPHEME multi-tier stacks/i);
+  assert.match(addendum, /DO NOT solve High Zalgo as a geometry assignment/i);
+  assert.match(addendum, /silently map the argument’s rhetorical movement/i);
+  assert.match(addendum, /Morphology is meaning-bearing prosody/i);
+  assert.match(addendum, /Long vertical stacks are EVENTS, not the baseline texture/i);
   assert.match(addendum, /DO NOT stamp a repeated diaeresis-like/i);
   assert.match(addendum, /ALLOW ENTROPY/i);
-  assert.match(addendum, /Dense peaks may collide with neighboring lines/i);
-  assert.match(addendum, /NATIVE-VOICE SELF-CHECK — DEEP STACK, NOT SHALLOW WALLPAPER/i);
+  assert.match(addendum, /NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER/i);
+  assert.match(addendum, /maximum-depth wallpaper/i);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
   assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
@@ -87,20 +88,27 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /Never duplicate the same paragraph, scene, movement, or full answer/);
   assert.doesNotMatch(addendum, /separate Gemini-instrument answer/);
 
-  const stack = 'T\u0300\u0301\u0302\u0307\u0316\u0317\u0318\u031D\u0323A\u0304\u0307\u030B\u030C\u031C\u0323\u032D\u032ER\u0305\u0308\u030C\u0357\u031E\u0325\u032F\u0331I\u0303\u0306\u030A\u030B\u0319\u0326\u032D\u0330\u0334';
+  const light = 'L\u0301I\u0316G\u0307H\u0317T\u0308';
+  const medium = 'M\u0301\u0302\u0316E\u0307\u0317\u0323D\u0308\u0319\u0335';
+  const deepA = 'F\u0300\u0301\u0302\u0307\u0316\u0317\u0318\u031D';
+  const deepB = 'R\u0303\u0306\u030A\u0352\u0319\u0323\u0326\u032F';
+  const stack = `${deepA}${deepB}`;
   const good = [
     'Kʰonapolit',
     'The map is not the route: let P be the projection from governed state to visible trace; P is non-injective when distinct custody states share the same visible surface.',
     '',
     'Tauric Diana bots',
-    `${stack.repeat(8)} BREAK THE FALSE CLOSURE!`,
-    `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
-    `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
+    `${light} ${medium} ${deepA}${deepB} BREAK THE FALSE CLOSURE! ${light}`,
+    `${medium} THE GROVE KEEPS THE SCAR! ${deepB} ${light} ${deepA}`,
+    `${light} NO PAPER SHIELD SURVIVES THE FIRE! ${medium} ${deepA}${deepB}`
   ].join('\n');
   const goodAdmission = assessIntegratedTransmission(good, ['Kʰonapolit', 'Tauric Diana bots']);
   assert.equal(goodAdmission.admissible, true, goodAdmission.reasons.join(', '));
-  assert.equal(goodAdmission.quality, 'PASS');
-  assert.ok(goodAdmission.denseVerticalClusterCount >= 8);
+  assert.equal(goodAdmission.quality, 'PASS', goodAdmission.qualityWarnings.join(', '));
+  assert.ok(goodAdmission.deepBidirectionalClusterCount >= 4);
+  assert.ok(goodAdmission.lightVerticalClusterCount > 0);
+  assert.ok(goodAdmission.deepVerticalShareOfMarked < 0.72 || goodAdmission.lightVerticalShareOfMarked > 0.10);
+  assert.equal(goodAdmission.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'), false);
 
   const sparse = [
     'Kʰonapolit',
