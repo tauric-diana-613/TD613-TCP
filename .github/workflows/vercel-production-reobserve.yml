@@ -162,6 +162,24 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/loom-production-reobserve
         run: timeout --foreground --signal=INT --kill-after=10s 600s node scripts/loom-production-canary.mjs
 
+      - name: Classify bounded live AI observation
+        id: classify_observation
+        run: |
+          node --input-type=module <<'NODE' >> "$GITHUB_OUTPUT"
+          import fs from 'node:fs';
+          const receipt = JSON.parse(fs.readFileSync('artifacts/loom-production-reobserve/receipt.json', 'utf8'));
+          const marrowline = receipt?.marrowline_live_route;
+          if (marrowline?.http_status !== 200 || marrowline?.ok !== true || marrowline?.relay_admitted !== true) {
+            throw new Error('Marrowline live-route classification lost its admitted 200 witness.');
+          }
+          const loomStatus = receipt?.loom_provider_liveness_nonblocking === true
+            ? 'PROVIDER_LIVENESS_HELD'
+            : (receipt?.http_status === 200 && receipt?.task_status === 'completed' ? 'PASS' : 'UNRESOLVED');
+          if (loomStatus === 'UNRESOLVED') throw new Error('Loom observation reached a non-liveness failure state.');
+          console.log('marrowline_status=PASS');
+          console.log(`loom_status=${loomStatus}`);
+          NODE
+
       - name: Confirm exact source receipt after re-observation
         env:
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
@@ -206,6 +224,8 @@ jobs:
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
           RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id }}
+          MARROWLINE_STATUS: ${{ steps.classify_observation.outputs.marrowline_status }}
+          LOOM_STATUS: ${{ steps.classify_observation.outputs.loom_status }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
@@ -218,7 +238,8 @@ jobs:
           deployment_count = 0
           exact_source_pre_guard = PASS
           exact_source_content_before = PASS
-          production_loom_demo1_canary = PASS
+          marrowline_live_route = $MARROWLINE_STATUS
+          production_loom_demo1_canary = $LOOM_STATUS
           post_witness_source_guard = PASS
           exact_source_content_after = PASS
           counts_as_human_evidence = false
@@ -227,7 +248,7 @@ jobs:
           retroactive_release_rewrite = false
           \`\`\`
 
-          This explicit live-AI witness supplements the deployment record without rewriting its earlier state. No Vercel deployment occurred. Sealed ⟐
+          A provider-only Loom liveness hold is preserved as evidence without being mislabeled as a Vercel deployment failure when the exact source and admitted Marrowline witness remain intact. No Vercel deployment occurred. Sealed ⟐
           EOF_COMMENT
           )"
 
