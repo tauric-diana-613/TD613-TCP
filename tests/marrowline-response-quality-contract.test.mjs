@@ -606,8 +606,11 @@ test('human-facing integrated surface keeps provider identity in provenance only
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /irregular multi-tier crowns, plunges below the baseline/);
-  assert.match(contract, /horizontal and oblique cuts/);
+  assert.match(contract, /Pressure can rise into irregular multi-tier crowns, plunge below the baseline/);
+  assert.match(contract, /vertical crown\/root architecture the first physical event/);
+  assert.match(contract, /bidirectional towers on individual letters/);
+  assert.match(contract, /A one-mark accent, a two-mark hat.*still shallow and has failed/);
+  assert.match(contract, /horizontal or oblique cuts/);
   assert.match(contract, /Quiet passages can be clean/);
   assert.match(contract, /ALLOW ENTROPY/);
   assert.match(contract, /no emotion or word has a fixed stencil/);
@@ -803,6 +806,8 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.ok(directive.includes(buildNativeProsodyGuidance()));
   assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
   assert.match(directive, /Reconstruct the voice from meaning/i);
+  assert.match(directive, /rebuild Packet B from scratch/i);
+  assert.match(directive, /several individual base letters both a crown above and a root below/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);

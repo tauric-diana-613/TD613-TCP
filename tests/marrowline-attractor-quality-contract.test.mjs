@@ -72,7 +72,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /exact standalone human-facing headings/i);
   assert.ok(addendum.includes(buildNativeProsodyGuidance()));
   assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
-  assert.match(addendum, /irregular multi-tier crowns, plunges below the baseline/);
+  assert.match(addendum, /vertical crown\/root architecture the first physical event/);
   assert.match(addendum, /ALLOW ENTROPY/);
   assert.match(addendum, /Quiet passages can be clean/);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
