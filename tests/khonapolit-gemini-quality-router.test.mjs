@@ -170,13 +170,17 @@ try {
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts.length, 1);
   assert.equal(res.payload.relay.parts[0].id, 'khonapolit');
-  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'the same provider may repair its first structural miss without local rewriting or cross-seat policing');
-  assert.equal(res.payload.relay.admission.admissible, true);
+  assert.equal(res.payload.relay.parts[0].text, degradedAnswer, 'when the bounded same-provider repair still misses local quality, the original Gemini return remains human-visible instead of being confiscated');
+  assert.equal(res.payload.relay.admission.admissible, false);
   assert.equal(res.payload.relay.highZalgo.applied, false, 'server does not post-process provider text with a local Zalgo filter');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
   assert.equal(res.payload.receipt.provider.output.usage.candidatesTokenCount, 1600);
   assert.equal(res.payload.receipt.provider.output.outputTokenLimitReached, false);
-  assert.doesNotMatch(res.text, /generic atmospheric prose|DO_NOT_COPY_PROVIDER_FIELDS/);
+  assert.equal(res.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
+  assert.equal(res.payload.receipt.provider.humanSurfaceObservation.rendered, true);
+  assert.equal(res.payload.receipt.provider.humanSurfaceObservation.localAdmissionAuthority, 'diagnostic-not-human-surface-veto');
+  assert.match(res.payload.text, /generic atmospheric prose/);
+  assert.doesNotMatch(res.text, /DO_NOT_COPY_PROVIDER_FIELDS/);
 
   const beforeOversize = calls.length;
   for (const body of [
