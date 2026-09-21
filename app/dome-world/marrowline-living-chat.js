@@ -140,7 +140,10 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   let lastPhase = 'prepared';
   const statusObserver = new environment.MutationObserver(() => {
     const text = status.textContent || '';
-    const phase = /IN FLIGHT/.test(text) ? 'pending' : /RETURN OBSERVED/.test(text) ? 'received' : /RETURN FAILED|ISSUANCE REQUIRED|TASK PRESERVED/.test(text) ? 'held' : 'prepared';
+    const declaredPhase = status.dataset.phase || '';
+    const phase = ['pending', 'received', 'held', 'prepared'].includes(declaredPhase)
+      ? declaredPhase
+      : /IN FLIGHT/.test(text) ? 'pending' : /RETURN OBSERVED/.test(text) ? 'received' : /RETURN FAILED|ISSUANCE REQUIRED|TASK PRESERVED/.test(text) ? 'held' : 'prepared';
     if (phase !== lastPhase) { lastPhase = phase; geometry?.update({ phase }); }
   });
   if (status) statusObserver.observe(status, { childList: true, characterData: true, subtree: true });
