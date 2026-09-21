@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v15-extreme-reference-scale';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v20-extreme-reference-scale';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v16-visual-story-field';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v21-visual-story-field';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -39,7 +39,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
       properties: {
         text: {
           type: 'STRING',
-          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant provider-authored High-Zalgo stress payload with irregular burst topology, deep crown/root towers, mixed-axis clusters, preserved line breaks, and local planar or oblique cuts.'
+          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant provider-authored High-Zalgo visual-story field whose diacritics move through clauses and lines as expressive typography: distributed crown/root architecture, mixed-axis motion, variable density, preserved line breaks, and multiple distinct visual gestures rather than one isolated burst.'
         },
         voices: {
           type: 'ARRAY',
@@ -473,6 +473,15 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         || botsTelemetry.broadMarkedLineCount < 2
       ) qualityWarnings.push('tauric-diana-zalgo-sparse-keyword-targeting');
       if (
+        botsTelemetry.eligibleBaseCount >= 80
+        && botsTelemetry.extremeVerticalClusterCount >= 1
+        && (
+          botsTelemetry.markedGraphemeCoverageRatio < 0.24
+          || botsTelemetry.deepBidirectionalMarkedLineCount < 3
+          || botsTelemetry.broadMarkedLineCount < 3
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-localized-burst');
+      if (
         botsTelemetry.combiningMarkCount >= 12
         && (
           botsTelemetry.deepBidirectionalClusterCount < 4
@@ -558,26 +567,25 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- High Zalgo here is a mixed-axis burst field, not a vertical-only stack exercise and not a horizontal strike sheet. Crowns, roots, overstrikes, oblique cuts, tildes, hooks, and other combining species may coexist in the same passage and sometimes on the same grapheme.',
     '- Deep vertical mass remains indispensable. In multiple separate regions, put several distinct marks above AND several below the SAME grapheme so some letters grow real towers and wells that intrude into neighboring line space. One accent above every capital, or one above plus one below every capital, is shallow wallpaper rather than the target morphology.',
     '',
-    'LOUD-BURST VISUAL REFERENCE — SCALE ONLY, NEVER COPY THE WORD OR EXACT MARK SEQUENCE:',
+    'HIGH-ZALGO SCALE REFERENCE — AMPLITUDE ONLY, NEVER OUTPUT AS A DETACHED SAMPLE:',
     'Q̴̧̧̧̛̫̣͔̳̭͍̖̣͎̣̟͎̙͉̯͈̙̣̪̹̭͙͉͉͎̹̺̤̯̩̪̹̠͇͚̹͖͈̹̮̜̑͆̔̇̾͋͌̑̈̿̈́̑̐̌̀̏̎̀͂̏̓͛͊̈́̓̓̆̏̚̕̕͜Ư̸̢̥̳͓͕̏͐̽͌̄͋́̎̅̓̉̔̑͂̔̈́͐̽̾͛͑͋̓̇̀̆͛̈́̄̃̽̂́̓̏̾̍̀̚̚̚͠͝Į̸̡̡̛̗̼͚͈͍̟̠̙̫̝͙͚̹͍̫͎̺̈́̇̒̀͆̊̊̉̑͑̈̈́̎̈̇̔̕͜͝͝Ş̸͔̠̙̪͚͙͕̺͑̽̍̇̑̀͊̽͌̀̎̑̎͛̎͝',
-    '- The specimen above exists only to communicate physical scale. A genuinely loud eruption may carry dozens of heterogeneous combining marks on a few neighboring bases, producing towers and wells that climb through the line above and descend through the line below. The ordinary letter may become hard to see. That is intentional.',
-    '- Do NOT make every grapheme look like the specimen. Move between quiet glyphs, light flourishes, medium clusters, and a few grotesquely tall eruptions. Reduce intensity by thinning the number and diversity of attached marks, not by collapsing the whole channel back to one polite accent or one strike bar.',
-    '- If the loudest region in Packet B still reads visually like ordinary ALL CAPS with accents, macrons, or strike-through styling, it is too timid. At least some eruptions should look physically excessive at normal UI line-height and visibly trespass into neighboring text.',
-    '',
-    '- Do not distribute ornament evenly. The successful topology is bursty and spatially uneven: a few neighboring graphemes may become violently dense, nearby letters may carry only one light mark or stay clean, then another eruption can appear later. Avoid the “one identical mark per character” pattern even when every mark is legal Unicode.',
-    '- Horizontal and oblique geometry are first-class expressive motion inside that burst topology. A local phrase may become slashy, struck, wavering, or cut-through for sarcasm, rupture, speed, recoil, or emphasis, while other regions climb and descend vertically. Keep those planar/oblique episodes local enough that the whole paragraph never collapses into one continuous strike-through band.',
-    '- Do not serialize the style into a vertical phase followed by a horizontal phase. Compose locally. Some loud graphemes should mix crown/root depth with a through-line or oblique cut at once; other graphemes can remain plain. The two axes should feel braided rather than alternated by rule.',
+    '- The specimen above communicates how tall and deep an individual grapheme CAN become. It is not the composition. Never spend the entire vertical budget on one word, one first-line blob, or one nuclear cluster surrounded by plain prose.',
+    '- Compose Packet B as a VISUAL STORY ACROSS THE PASSAGE. The diacritic field should travel through clauses and lines, changing shape as the prose changes. Think in successive visual gestures rather than isolated decorated keywords.',
+    '- A successful long passage normally contains several separated crown/root events at different intensities: some two- or three-word phrases may rise together, another clause may descend below the baseline, another may braid vertical towers with a sideways cut, another may thin almost clean before pressure gathers again. These are examples of motion, not fixed semantic assignments.',
+    '- The reader should be able to SEE cadence evolve without reading every word: gathering, lift, collision, recoil, drag, fracture, suspension, return. Invent the actual sequence from the local prose. Do not map any named emotion or vocabulary class to one prescribed glyph pattern.',
+    '- High Zalgo is therefore distributed theatre, not a font and not a spotlight. At least several distinct regions of a multi-paragraph Tauric Diana passage should carry genuine bidirectional depth. A single spectacular word followed by ordinary ALL CAPS does not satisfy the visual-story field.',
+    '- Deep events may use dozens of heterogeneous combining marks and may trespass into neighboring lines; medium events should still have real crown/root architecture rather than only macrons or strikes; quiet material is useful as negative space between gestures.',
+    '- Horizontal and oblique geometry remain first-class expressive motion, but they should braid through the evolving field. A slashy or struck phrase can interrupt a rising passage; it must not become the default texture of the remaining paragraph.',
+    '- Do not serialize the style into one vertical showcase followed by a horizontal section. Recur. Return to vertical depth later with a different shape, density, or direction so the field has memory and development.',
     '- Literal ASCII /, \\, |, _, = and repeated hyphens may appear when they are ordinary punctuation or substantive text, but they never count as Zalgo ornament and must not be sprayed between words as a substitute for combining marks.',
-    '- Keep the field heterogeneous in species, stack height, density, direction, and spacing. Adjacent graphemes may rhyme visually, but a cloned caron/breve/tilde/strike stamped across every letter is counterfeit prosody.',
-    '- Dense eruptions are allowed to collide with neighboring words, line boxes, and other diacritic stacks. Readability is not the governing aesthetic in the Tauric Diana channel; do not flatten, shorten, regularize, or space out a loud burst merely to keep the text tidy.',
-    '- Preserve cadence contrast. Calm or allied passages may breathe with lighter marking; anger, rupture, mockery, dread, or ecstatic emphasis may become much denser. Sarcasm may skew sideways; grief or invocation may climb and sink. These are expressive tendencies, not a fixed sentiment-to-glyph lookup table.',
-    '- Keep enough quiet neighboring material that the eruptions read as eruptions. A clean ALL-CAPS word or short stretch can be intentional negative space. The failure mode is uniformity—plain everywhere, one shallow accent everywhere, or one strike everywhere—not the existence of quiet zones.',
-    '- No rhetorical device, sentiment category, named entity, sarcastic word, or lexical class has a prescribed mark shape. Geometry follows the passage-level cadence rather than classifying vocabulary.',
+    '- Keep the field heterogeneous in species, stack height, density, direction, and spacing. Adjacent graphemes may rhyme visually, but cloned accents, repeated strike bars, or a single grotesque cluster carrying the entire effect are counterfeit prosody.',
+    '- Dense events may collide with neighboring words, line boxes, and other diacritic stacks. Readability is not the governing aesthetic in the Tauric Diana channel; however, illegibility should have choreography rather than appearing once as an accidental ink blot.',
+    '- Quiet stretches remain welcome. Their job is to create contrast and timing, not to leave most of the passage undecorated. After a quiet stretch, let another distinct provider-authored gesture arrive later.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
-    '- Zalgo is expressive information layered over substantive reasoning, never a substitute for it. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
+    '- Zalgo is expressive information layered over substantive reasoning: typography becomes staging. Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC:',
-    '- Before closing Packet B, silently ask: Does this look like a living irregular field rather than a font effect? Are there real deep towers and wells in more than one region, plus genuinely different local motions elsewhere—some planar, oblique, wavering, sparse, or nearly clean? Does at least one loud eruption approach the physical excess of the scale specimen, with so much same-grapheme height/depth that ordinary line boxes stop containing it? Did any sentence turn into one repeated strike-through band? Did any sentence turn into one repeated shallow accent over every capital? Are some neighboring graphemes much denser than others, with visible burst/quiet contrast and at least a few mixed-axis clusters? Are protected literals clean? If the field looks evenly accented, uniformly crossed out, mechanically cloned, polite, or fully contained inside ordinary line-height, rewrite Packet B before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, silently read it as a picture from top to bottom. Does the field CHANGE over time, with multiple separated vertical events and at least two visibly different returns to crown/root depth? Did you accidentally put almost all extreme height into one token or one contiguous blob? Does the passage move through more than one gesture—rise, sink, collision, suspension, sideways fracture, recoil, renewed growth—without turning those examples into a fixed vocabulary code? Did a whole later paragraph fall back to plain ALL CAPS or strike-only typography? Are protected literals clean? If one spectacular word is doing all the visual labor, redistribute the composition across the passage before emitting <<<PACKET_B_END>>>.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -587,10 +595,10 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored High Zalgo stress field: irregular burst topology; deep crown/root towers plus local planar/oblique motion; mixed-axis clusters; quiet neighboring glyphs; variable composition; collisions and overlap with nearby text explicitly allowed]',
+    '[provider-authored High Zalgo visual-story field: several separated crown/root events evolving across clauses and lines; mixed-axis motion; variable density; quiet intervals; recurring but non-cloned vertical depth; collisions and overlap explicitly allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order; verify Packet A has zero combining marks; verify Packet B contains a heterogeneous provider-authored field across several lines; verify multiple graphemes carry deep bidirectional stacks with several marks above AND below; verify at least one loud cluster is physically excessive enough to escape ordinary line-height in the manner demonstrated by the scale specimen; verify some local clusters also carry planar or oblique motion; verify the field has burst/quiet contrast rather than one repeated mark on every character; verify no whole sentence has collapsed into a continuous strike-through sheet; verify literal ASCII separators are not being sprayed as fake ornament; verify protected literals remain clean. Do not reduce the field to preserve readability: overlap, collisions, and partially obscured letters are allowed. If the result resembles evenly accented capitals, macron typography, or one global strike effect, rewrite it before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order and never decorated; verify Packet A has zero combining marks; verify Packet B carries a heterogeneous provider-authored field across several lines; verify deep bidirectional stacks recur in multiple separated regions rather than concentrating into one word; verify later portions of the passage still contain genuine crown/root architecture after any quiet or horizontal episode; verify local planar/oblique motion remains only one movement among several; verify no whole sentence collapses into a continuous strike-through sheet; verify literal ASCII separators are not sprayed as fake ornament; verify protected literals remain clean. Do not reduce the field to preserve readability, but do not let one accidental-looking blob carry the whole composition. If the result reads as one extreme word + plain prose, or as a horizontal-only second half, redistribute the Gemini-authored field before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
