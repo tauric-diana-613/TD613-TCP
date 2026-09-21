@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v37",
-  "version": "v0.7.40-human-surface-preserving-retry",
+  "schema": "td613.dome-world.marrowline.release/v38",
+  "version": "v0.7.41-provider-first-human-surface",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -73,7 +73,7 @@
     "providerNativeUnicode": true,
     "zalgoQualityPolicy": {
       "hardStructuralRequirement": "provider-authored Tauric Diana field must clear the extreme-underflow floor; true crown/descender vertical architecture is measured separately from planar bars; severe shallow-wallpaper, absent vertical pulse, or stack-depth-thin plus collapse signatures receive one bounded provider repair before visibility",
-      "zeroMarkPosture": "HELD-no-human-visible-return",
+      "zeroMarkPosture": "ordinary human turn: one same-provider repair opportunity, then exact nonempty provider bytes remain visible with NOT_LOCKED/HELD diagnostic telemetry; release canary may remain strict",
       "thinOrSparsePosture": "PARTIAL-visible-with-quality-warning",
       "mechanicalClonePosture": "PARTIAL by itself; combined with stack-depth-thin it becomes severe native-voice collapse eligible for one same-provider repair",
       "providerVisibleAsChecklist": false,
@@ -90,23 +90,23 @@
         "minimumMarkedGraphemeCoverageRatio": 0.18,
         "minimumBroadMarkedLines": 2
       },
-      "diagnosticAuthority": "ordinary aesthetic telemetry stays advisory; shallow-wallpaper, absent vertical pulse, stack-depth-thin plus collapse, enclosing-ornament collapse and geometric glyph substitution are bounded native-voice repair signatures; unresolved hard alphabet corruption is never shown",
+      "diagnosticAuthority": "ordinary human-turn morphology and structure diagnostics cannot confiscate nonempty Gemini text. They may authorize one same-provider repair and annotate receipts; release-canary validation remains separately strict.",
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "preserve exact provider-authored Unicode while preventing visually planar bar fields from counterfeiting the tall vertical High-Zalgo architecture the human surface is meant to show",
       "horizontalDominantPosture": "ADMISSIBLE-with-PARTIAL-telemetry when deep vertical architecture remains present; stack-depth-thin plus axis-collapse or thin-vertical evidence escalates to one same-provider repair",
       "verticalDominantPosture": "ADMISSIBLE-native-high-zalgo-architecture",
-      "axisCollapsePosture": "PARTIAL by itself; when combined with stack-depth-thin it becomes severe morphology, receives one immediate same-provider repair, and is not shown while unresolved",
-      "bestPartialPreference": "first nonsevere admissible PARTIAL returns immediately; severe morphology is failure-driven repair/fallback rather than comparative aesthetic sampling",
+      "axisCollapsePosture": "PARTIAL diagnostic; severe combinations may receive one same-provider repair, after which the original nonempty provider return remains visible if repair misses",
+      "bestPartialPreference": "first nonempty provider return owns the human surface after at most one same-provider repair; later models are transport/provider fallbacks, not local-style judges",
       "throughLineDominanceWarning": "planar dominance is acceptable only when genuine multi-tier crown/descender architecture remains visibly healthy",
-      "shallowWallpaperPosture": "broad repeated one-or-two-accent fields are severe native-voice collapse even when technically vertical; one same-provider Gemini repair re-authors the combining field from scratch before the original PARTIAL may be shown",
-      "verticalExpressionThinPosture": "PARTIAL by itself; combined with stack-depth-thin it is a severe horizontal-collapse signature requiring the bounded same-provider repair before visibility",
+      "shallowWallpaperPosture": "diagnostic native-voice collapse eligible for one same-provider repair; unresolved ordinary human return remains visible rather than being discarded",
+      "verticalExpressionThinPosture": "diagnostic; severe combination may trigger one bounded same-provider repair but cannot erase the original nonempty human-turn return",
       "dynamicRangePosture": "Deep-stack dominance must cover at least 72% of all eligible base letters as well as dominate marked letters; clean breaths count as countertexture. Repeated full-field deep tiling remains a bounded provider repair/fallback condition.",
-      "verticalPulsePosture": "Combining-heavy fields with no four-mark vertical event trigger bounded native repair regardless of horizontal-mark presence; one-sided crowns or roots qualify without a newline or paired-axis quota. Unresolved absence continues the bounded frontier.",
-      "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
+      "verticalPulsePosture": "diagnostic repair signature on ordinary human turns; one bounded repair may run, and unresolved original provider bytes remain visible",
+      "extremeUnderflowPosture": "ordinary human turn: diagnostic plus one bounded same-provider repair; repair miss preserves the original nonempty provider return; strict HOLD reserved for release-canary validation",
       "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow",
-      "enclosingOrnamentPosture": "SEVERE-native-voice-corruption: combining enclosing circles/squares/keycaps/slashes never count as vertical ornament; one same-provider repair receives a sanitized Packet-B base-text context, and unresolved corruption continues the bounded provider frontier rather than becoming visible",
-      "glyphSubstitutionPosture": "SEVERE-native-voice-corruption: geometric box/diamond pseudo-letters inside the Latin base stream trigger repair and bounded frontier continuation; visible final bytes remain provider-authored",
+      "enclosingOrnamentPosture": "diagnostic provider-authored corruption signature; one same-provider repair may re-author the field, but a repair miss preserves the exact original nonempty provider bytes for the human",
+      "glyphSubstitutionPosture": "diagnostic provider-authored corruption signature; one same-provider repair may re-author the field, but a repair miss preserves the exact original nonempty provider bytes for the human",
       "verticalOrnamentDefinition": "only curated true above/below combining species count toward vertical stack depth; planar, enclosing and unclassified combining marks cannot counterfeit crown/root telemetry",
       "localizedBurstPosture": "advisory only: localized eruptions and clean breaths cannot establish incorrect semantic placement; independent clone or corruption evidence remains repairable",
       "historyContextPosture": "Only previously generated model passages with severe morphology evidence project Packet B as base prose into provider context; user turns, formal channel, successful model turns, stored history and rendered output remain unchanged. This is request context only, never visible-output postprocessing."
@@ -362,7 +362,7 @@
       "releaseCanaryBudget": "full-product production release witness may spend at most one Marrowline provider request plus one distinct Loom provider request; no Marrowline failover, repair, or shared-rate retry is authorized by the release-canary header",
       "providerRetryWindowAuthority": "when Gemini supplies Retry-After for HTTP 429, process-local cooldown follows that bounded window; exponential local quota backoff is reserved for 429 responses without a provider retry window",
       "highZalgoAdmission": "Packet B must carry provider-authored vertical High-Zalgo architecture: genuine non-planar crowns and descenders, varied multi-tier stack geometry and broad travel across lines; planar slash/strike/overline/underline marks may accent the field but cannot substitute for its vertical body",
-      "frontierFailureContinuity": "ordinary human turns continue across approved Gemini 3.x seats after token-limit and non-credential seat-local request rejection; 401/403 and explicit shared-project quota remain route-wide holds",
+      "frontierFailureContinuity": "ordinary human turns fail over only for actual transport/provider absence, empty provider text, credential failure, or current provider quota/unavailability. A nonempty MAX_TOKENS return is shown as partial rather than discarded.",
       "conversationNaming": "the first admitted Kʰonapolit formal movement deterministically names the local conversation chamber from its own motifs; the title persists in browser session custody and resets on clear"
     },
     "streamingProgressReceipt": {
@@ -377,13 +377,15 @@
       "authority": "transport-progress-only-not-output-admission"
     },
     "partialQualitySelection": {
-      "timing": "after-first-admissible-partial-spend-at-most-one-additional-provider-challenger",
-      "challengeRequestCeiling": 1,
-      "preference": "repair-required-warning-count-then-serious-warning-count-then-total-warning-count-then-tall-vertical-clusters-then-tall-vertical-lines-then-true-vertical-to-planar-ratio-then-vertical-ornament-count-then-dense-depth-then-coverage",
-      "challengerFailurePosture": "return-existing-admissible-partial-without-third-seat-fanout",
-      "availability": "hard-failure-frontier-remains-broad; aesthetic-partial-competition-is-bounded",
+      "timing": "first nonempty provider return owns the ordinary human surface after at most one same-provider repair opportunity",
+      "challengeRequestCeiling": 0,
+      "preference": "no later-seat aesthetic or structural shopping after nonempty provider text",
+      "challengerFailurePosture": "not-applicable-for-human-surface-provider-first-law",
+      "availability": "later seats remain transport/provider fallbacks only",
       "localMutation": false
-    }
+    },
+    "localRequestRatePolicy": "in-process IP request buckets remain telemetry-only on human Marrowline text and attachment ingress; they expose remaining/reset observations but never synthesize a local 429 or suppress an explicit retry",
+    "providerFirstSurfaceLaw": "for ordinary human turns, any Gemini HTTP-200 response with nonempty text is human-visible after at most one same-provider repair opportunity. Local structure, morphology, token-limit and packet-admission findings remain receipts, not censorship authority."
   },
   "composer": {
     "universalPlus": true,
@@ -581,6 +583,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-only-raw-dual-packet-hard-orthographic-admission-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure"
   }
 }
