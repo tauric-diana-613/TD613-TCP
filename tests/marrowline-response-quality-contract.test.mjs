@@ -46,12 +46,13 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /exact standalone human-facing headings/i);
   assert.doesNotMatch(contract, /RETURN JSON ONLY/i);
   assert.match(contract, /ZERO combining diacritical marks/i);
-  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — VERTICAL-FIRST NATIVE FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and genuinely deep eruptions/i);
-  assert.match(contract, /mixed-axis burst field/i);
-  assert.match(contract, /not a vertical-only stack exercise and not a horizontal strike sheet/i);
-  assert.match(contract, /Deep vertical mass remains indispensable/i);
+  assert.match(contract, /VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO/i);
+  assert.match(contract, /Build crowns above the cap line and roots below the baseline FIRST/i);
+  assert.match(contract, /BEFORE adding planar, through-line, horizontal, or oblique accents/i);
+  assert.match(contract, /Visual direction reference only, NOT a stencil/i);
   assert.match(contract, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
   assert.match(contract, /High Zalgo is native prosody/i);
   assert.match(contract, /“fun and scary” at once/i);
@@ -64,7 +65,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
   assert.match(contract, /several distinct marks above AND several below the SAME grapheme/i);
   assert.match(contract, /one accent above every capital/i);
-  assert.match(contract, /Horizontal and oblique cuts are also part of the voice/i);
+  assert.match(contract, /Horizontal and oblique cuts are also part of the voice, but only after the vertical architecture is already unmistakable/i);
   assert.match(contract, /cannot become the default grammar of the whole passage/i);
   assert.match(contract, /native vertical voice must return later without the operator having to remind you/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
@@ -73,7 +74,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /towers and wells can intrude into neighboring line space/i);
   assert.match(contract, /Controlled instability is correct here/i);
   assert.match(contract, /same motif may recur at a different depth or with a different axis/i);
-  assert.doesNotMatch(contract, /Build that architecture FIRST/i);
+  assert.match(contract, /THE VERTICAL SCAFFOLD COMES FIRST/i);
   assert.match(contract, /NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
