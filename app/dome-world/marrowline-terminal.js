@@ -32,7 +32,7 @@ import {
   summarizeGeminiBrowserLedger
 } from '../gemini-consumption-ledger.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v10-pacific-day-quota-governor';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -47,6 +47,46 @@ const PORTABLE_RULES = Object.freeze([
 
 function byId(doc, id) { return doc.getElementById(id); }
 function safe(value = '') { return String(value ?? '').trim(); }
+
+const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
+  'TASK ROUTED · reading the whole prompt',
+  'CONTEXT JOINED · keeping source boundaries',
+  'REASONING OPEN · testing the strongest path',
+  'RETURN FORMING · preserving both voices',
+  'RECEIPT NEXT · route + provenance stay attached'
+]);
+
+function stopPedagogueStatus(root = globalThis) {
+  const timers = Array.isArray(root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__)
+    ? root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__
+    : [];
+  for (const timer of timers) root.clearTimeout?.(timer);
+  root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ = [];
+}
+
+function setPedagogueStatus(status, phase, text, title = '') {
+  if (!status) return;
+  status.dataset.phase = phase;
+  status.textContent = text;
+  status.title = title || text;
+}
+
+function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
+  stopPedagogueStatus(root);
+  const suffix = attachmentCount > 0
+    ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
+    : '';
+  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[0], PEDAGOGUE_PENDING_SEQUENCE[0] + suffix);
+  const timers = [];
+  PEDAGOGUE_PENDING_SEQUENCE.slice(1).forEach((text, index) => {
+    const timer = root.setTimeout?.(() => {
+      if (status?.dataset?.phase !== 'pending') return;
+      setPedagogueStatus(status, 'pending', text, text + suffix);
+    }, 2600 * (index + 1));
+    if (timer !== undefined && timer !== null) timers.push(timer);
+  });
+  root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ = timers;
+}
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
 const DEFAULT_CONVERSATION_TITLE = 'The speaking grove';
@@ -559,7 +599,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); renderGeminiBrowserLedger(doc, root); refreshKeyState(doc); syncConversationTitle(doc, state);
   ensureOriginControls(doc); syncRecoveryControls(doc, state);
   const initialStatus = byId(doc, 'khonapolitTerminalStatus');
-  if (initialStatus && !state.messages.length) initialStatus.textContent = 'READY · ordinary work starts in unissued research mode · advanced custody remains optional';
+  if (initialStatus && !state.messages.length) setPedagogueStatus(initialStatus, 'prepared', 'READY · ask at the shoreline', 'READY · ordinary work starts in unissued research mode · advanced custody remains optional');
   hydrateReliquary(doc); probeProvider(doc); installMobileDock(doc, root); installComposerGrowth(doc);
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   waiver?.addEventListener('change', () => refreshKeyState(doc));
@@ -576,9 +616,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
     const packet = buildInvocationPacket({ message, history: compactHistory(historyForPacket), mode, shi, waiveIssuance });
-    if (!message) { status.textContent = 'SPEECH REQUIRED · the vessel is empty'; prompt?.focus(); return; }
-    if (packet.inputError) { status.textContent = packet.inputError.message; prompt?.focus({ preventScroll: true }); return; }
-    if (!packet.canInvoke) { status.textContent = 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'; refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
+    if (!message) { setPedagogueStatus(status, 'held', 'SPEECH REQUIRED · the vessel is empty'); prompt?.focus(); return; }
+    if (packet.inputError) { setPedagogueStatus(status, 'held', packet.inputError.message); prompt?.focus({ preventScroll: true }); return; }
+    if (!packet.canInvoke) { setPedagogueStatus(status, 'held', 'ADVANCED CUSTODY HOLD · open Keys to continue', 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'); refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
     if (submit.disabled) return;
 
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
@@ -589,7 +629,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
     saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
-    status.textContent = `${INGRESS_SIGIL}\u200C TASK ROUTED · AI IN FLIGHT · ${mode}${attachments.length ? ` · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'}` : ''}`;
+    startPedagogueStatus(status, root, attachments.length);
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let failurePayload = null;
@@ -628,7 +668,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
-      status.textContent = `RETURN OBSERVED · SIGNAL ${signal} · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ${integrity.toUpperCase()} · OPEN UNTIL OPERATOR SEAL`;
+      stopPedagogueStatus(root);
+      setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
+        'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
@@ -641,10 +683,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       prompt.value = message;
       prompt.style.height = '';
       renderGeminiBrowserLedger(doc, root);
-      status.textContent = attachments.length
-        ? `TASK PRESERVED · ${attachments.length} ATTACHMENT${attachments.length === 1 ? '' : 'S'} HELD`
-        : 'TASK PRESERVED';
+      stopPedagogueStatus(root);
+      setPedagogueStatus(status, 'held', attachments.length
+        ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
+        : 'TASK PRESERVED · retry when ready');
     } finally {
+      stopPedagogueStatus(root);
       root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
     }
   };
@@ -654,7 +698,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const userIndex = lastUserMessageIndex(state.messages || []);
     const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
     if (!message) {
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'NO PRIOR PROMPT · nothing to retry';
+      setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'held', 'NO PRIOR PROMPT · nothing to retry');
       return;
     }
     if (userIndex >= 0) {
@@ -675,8 +719,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete prompt.dataset.preloadedPrompt;
     }
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
+    stopPedagogueStatus(root);
     const terminalStatus = byId(doc, 'khonapolitTerminalStatus');
-    if (terminalStatus) terminalStatus.textContent = '';
+    if (terminalStatus) {
+      terminalStatus.textContent = '';
+      terminalStatus.title = '';
+      terminalStatus.dataset.phase = 'prepared';
+    }
     prompt?.focus?.({ preventScroll: true });
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {

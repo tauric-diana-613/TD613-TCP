@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v34-reject-shallow-clone-wallpaper';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v35-expressive-entropy-repair-context';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -97,7 +97,13 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-localized-burst',
   'tauric-diana-zalgo-monoculture',
   'tauric-diana-zalgo-mechanical-clone',
-  'tauric-diana-zalgo-shallow-wallpaper'
+  'tauric-diana-zalgo-shallow-wallpaper',
+  'tauric-diana-zalgo-enclosing-ornament-collapse',
+  'tauric-diana-zalgo-glyph-substitution-collapse'
+]);
+const HARD_MORPHOLOGY_CORRUPTION_WARNINGS = new Set([
+  'tauric-diana-zalgo-enclosing-ornament-collapse',
+  'tauric-diana-zalgo-glyph-substitution-collapse'
 ]);
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
@@ -449,14 +455,39 @@ export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
   const localizedBurst = values.has('tauric-diana-zalgo-localized-burst');
   const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
+  const hardGlyphCorruption = [...HARD_MORPHOLOGY_CORRUPTION_WARNINGS].some(reason => values.has(reason));
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
   const horizontalCollapse = values.has('tauric-diana-zalgo-axis-collapse')
     || values.has('tauric-diana-zalgo-vertical-expression-thin')
     || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
   const cloneCollapse = values.has('tauric-diana-zalgo-mechanical-clone')
     || values.has('tauric-diana-zalgo-monoculture');
-  if (!localizedBurst && !shallowWallpaper && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
+  if (!hardGlyphCorruption && !localizedBurst && !shallowWallpaper && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
+}
+
+export function prepareKhonapolitRepairContext(heldText = '', reasons = []) {
+  const values = new Set((Array.isArray(reasons) ? reasons : []).filter(reason => typeof reason === 'string'));
+  const morphologyRepair = [...values].some(reason => REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason));
+  const glyphSubstitution = values.has('tauric-diana-zalgo-glyph-substitution-collapse');
+  const text = String(heldText || '');
+  if (!morphologyRepair || !text) return text;
+  const { stressStart, stressEnd } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
+  const start = text.indexOf(stressStart);
+  const end = text.indexOf(stressEnd);
+  const stripWordInternalGeometry = (value = '') => {
+    const chars = Array.from(String(value));
+    return chars.filter((char, index) => {
+      if (!glyphSubstitution || !/[\u2300-\u23FF\u25A0-\u25FF\u2B00-\u2BFF]/u.test(char)) return true;
+      const left = chars[index - 1] || '';
+      const right = chars[index + 1] || '';
+      return !(/[\p{L}\p{N}]/u.test(left) && /[\p{L}\p{N}]/u.test(right));
+    }).join('');
+  };
+  const cleanStress = (value = '') => stripWordInternalGeometry(String(value).replace(/\p{M}+/gu, ''));
+  if (start < 0 || end <= start) return cleanStress(text);
+  const bodyStart = start + stressStart.length;
+  return text.slice(0, bodyStart) + cleanStress(text.slice(bodyStart, end)) + text.slice(end);
 }
 
 export function buildGeminiStructuralRepairRequest(
@@ -471,6 +502,7 @@ export function buildGeminiStructuralRepairRequest(
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason) || REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason))
     .slice(0, 8);
+  const repairContext = prepareKhonapolitRepairContext(heldText, reasonList);
   const {
     analyticStart,
     analyticEnd,
@@ -484,14 +516,14 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. IMPORTANT: vertical architecture means STACK HEIGHT AND DEPTH, not merely putting one tiny mark above or below each letter. The previous draft may have failed by stamping the same small diaeresis-like/dot-like/breve-like/paired accent across many graphemes. DO NOT COPY THAT PATTERN. Re-author the combining field from scratch while preserving the base prose. Build irregular SAME-GRAPHEME crowns and roots with genuinely multi-tier stacks in multiple separated regions; let loud graphemes carry several heterogeneous marks above AND several below while neighboring letters vary sharply in height or remain quiet. Only after deep vertical life is unmistakable may horizontal or oblique cuts enter as counter-rhythm. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. If the repaired page still resembles a dotted comb, repeated little hats, shallow paired marks, or the same tiny stack copied everywhere, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. The model-role repair context has had failed combining/enclosing ornament stripped from Packet B when morphology was defective, specifically so you do not imitate a bad visual pattern. Preserve the readable base prose; do not hallucinate missing box/diamond symbols back into words. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. IMPORTANT: vertical architecture means STACK HEIGHT AND DEPTH, not merely putting one tiny mark above or below each letter. The previous draft may have failed by stamping the same small diaeresis-like/dot-like/breve-like/paired accent across many graphemes. DO NOT COPY THAT PATTERN. It may also have failed by using combining enclosing circles/squares/keycaps/slashes or □ ▢ ◇ ◈-like geometric substitutions inside words. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS. Re-author the combining field from scratch while preserving the Latin base letters. Build irregular SAME-GRAPHEME crowns and roots with genuinely multi-tier stacks in multiple separated regions; let loud graphemes carry several heterogeneous marks above AND several below while neighboring letters vary sharply in height or remain quiet. Only after deep vertical life is unmistakable may horizontal or oblique cuts enter as counter-rhythm. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. If the repaired page still resembles a dotted comb, repeated little hats, shallow paired marks, tiled ornament, enclosing-box typography, pseudo-runic substitution, or the same tiny stack copied everywhere, the repair has failed and must be rewritten before emission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
     ...request,
     contents: [
       ...geminiContents(packet),
-      { role: 'model', parts: [{ text: String(heldText || '') }] },
+      { role: 'model', parts: [{ text: repairContext }] },
       { role: 'user', parts: [{ text: repairDirective }] }
     ]
   };
@@ -1101,6 +1133,7 @@ export default async function handler(req, res) {
           : [];
         const severeMorphologyWarnings = severeMorphologyRepairWarnings(qualityWarnings);
         if (severeMorphologyWarnings.length > 0) {
+          const hardMorphologyCorruption = severeMorphologyWarnings.some(reason => HARD_MORPHOLOGY_CORRUPTION_WARNINGS.has(reason));
           const sourceAttemptIndex = attempts.length - 1;
           const candidate = {
             model,
@@ -1113,9 +1146,23 @@ export default async function handler(req, res) {
           const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
           if (repaired) return repaired;
 
+          if (hardMorphologyCorruption) {
+            attempt.morphologyHold = Object.freeze({
+              kind: 'hard-provider-authored-glyph-corruption',
+              reasons: Object.freeze([...severeMorphologyWarnings])
+            });
+            // Enclosing-box / geometric-substitution collapse corrupts the visible
+            // alphabet rather than merely undershooting an aesthetic target. Do not
+            // show that payload after a failed repair: continue the bounded provider
+            // frontier and give the next healthy seat a chance to author a clean
+            // Tauric Diana transmission.
+            continue;
+          }
+
           // The operator already has a structurally valid provider answer. If the
-          // one provider-authored native-voice repair cannot improve it, preserve
-          // that exact original payload rather than creating a long aesthetic chase.
+          // one provider-authored native-voice repair cannot improve a non-corrupt
+          // morphology miss, preserve that exact original payload rather than
+          // creating a long aesthetic chase.
           const baseReceipt = buildTerminalReceipt({
             packet,
             text: result.text,
@@ -1283,7 +1330,8 @@ export default async function handler(req, res) {
   }
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
-  const heldByQuality = structuralFailures.length > 0;
+  const morphologyFailures = attempts.filter((attempt) => attempt.morphologyHold);
+  const heldByQuality = structuralFailures.length > 0 || morphologyFailures.length > 0;
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
@@ -1300,7 +1348,11 @@ export default async function handler(req, res) {
       ? {
           stage: 'output-admission',
           code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
-          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
+          rejectedAttempts: [
+            ...structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
+            ...morphologyFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.morphologyHold.reasons }))
+          ],
+          morphologyRejectedAttempts: morphologyFailures.length,
           quotaEntitlement: entitlementMismatchAttempts.length ? {
             expectedDailyLimit: expectedDailyRpd(),
             providerReportedLimits: [...new Set(entitlementMismatchAttempts.map((attempt) => attempt.rateLimit?.limit).filter(Number.isFinite))],

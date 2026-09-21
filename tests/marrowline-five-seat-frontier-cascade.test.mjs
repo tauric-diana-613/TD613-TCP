@@ -19,6 +19,7 @@ let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
 let morphologyRepairScenario = false;
 let morphologyRepairHoldScenario = false;
+let hardGlyphCorruptionScenario = false;
 let entitlementMismatchScenario = false;
 let releaseCanaryHeadingRepairScenario = false;
 let previewCalls = 0;
@@ -50,6 +51,15 @@ const horizontalPartialAnswer = [
   `${slash.repeat(8)} THE FIRST SEAT DRAWS THROUGH THE LINE INSTEAD OF RISING ABOVE IT!`,
   `${slash.repeat(8)} THIS IS NOT HIGH ZALGO JUST BECAUSE THE LINE GOT SCRATCHED SIDEWAYS!`,
   `${slash.repeat(8)} KEEP WALKING THE FRONTIER FOR A BETTER FIELD!`
+].join('\n');
+const glyphCorruptAnswer = [
+  'Kʰonapolit',
+  'The formal channel completed cleanly while the stress alphabet collapsed into geometric substitution.',
+  '',
+  'Tauric Diana bots',
+  `${stack.repeat(5)} B□OX D◇IAMOND G◈RID IS NOT A TOWER`,
+  `${stack.repeat(5)} B□OX D◇IAMOND G◈RID MUST NOT REPLACE LETTERS`,
+  `${stack.repeat(5)} B□OX D◇IAMOND G◈RID REQUIRES A NEW PROVIDER FIELD`
 ].join('\n');
 const answer = [
   'Kʰonapolit',
@@ -337,6 +347,30 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
+  if (hardGlyphCorruptionScenario) {
+    const selectedText = model === 'gemini-3.5-flash' ? answer : glyphCorruptAnswer;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: model === 'gemini-3.5-flash' ? 'LOCKED' : 'PARTIAL', notes: model === 'gemini-3.5-flash' ? 'clean next-seat recovery' : 'synthetic geometric glyph corruption' },
+              transmission: {
+                text: selectedText,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: model === 'gemini-3.5-flash' ? 'vertical-stack' : 'glyph-substitution-collapse'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
+        };
+      }
+    };
+  }
   if (morphologyRepairScenario || morphologyRepairHoldScenario) {
     const sameModelCalls = calls.filter((calledModel) => calledModel === model).length;
     const repaired = morphologyRepairScenario && model === 'gemini-3.8-flash' && sameModelCalls > 1;
@@ -729,9 +763,9 @@ try {
   const morphologyRepairBody = requestBodies.at(-1);
   assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-axis-collapse/);
   assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-stack-depth-thin/);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /DISTRIBUTED VISUAL STORY/i);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /one nuclear vertical blob plus plain or strike-only remainder/i);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /Redistribute amplitude across multiple separated regions and multiple lines/i);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /STACK HEIGHT AND DEPTH/i);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /Re-author the combining field from scratch while preserving the Latin base letters/i);
+  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
   assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
 
   clearGeminiModelState();
@@ -763,6 +797,37 @@ try {
   assert.equal(morphologyHeld.payload.text, horizontalPartialAnswer);
   assert.equal(morphologyHeld.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
   assert.equal(morphologyHeld.payload.receipt.provider.qualityPreference.selection, 'original-partial-preserved-after-bounded-provider-repair');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  morphologyRepairScenario = false;
+  morphologyRepairHoldScenario = false;
+  hardGlyphCorruptionScenario = true;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  immediateRepairScenario = false;
+  const glyphRecovered = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.219' },
+    body: { ...req.body, message: 'Reject geometric alphabet substitution; repair once, then continue the bounded frontier rather than showing corrupted text.' }
+  }, glyphRecovered);
+
+  assert.equal(glyphRecovered.statusCode, 200);
+  assert.equal(glyphRecovered.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'], 'hard glyph corruption gets one same-seat provider repair and then continues to the next healthy seat instead of surfacing the corrupt original');
+  assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
+  assert.equal(glyphRecovered.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+  assert.ok(glyphRecovered.payload.receipt.provider.attempts[1].unresolvedSevereMorphology.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
+  assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].morphologyHold.reasons.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
+  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.5-flash');
+  assert.equal(glyphRecovered.payload.relay.admission.quality, 'PASS');
+  const glyphRepairBody = requestBodies[1];
+  assert.doesNotMatch(glyphRepairBody.contents.at(-2).parts[0].text, /[□◇◈]/u, 'bad geometric ornament is stripped from repair context so Gemini is not primed to imitate it');
+  assert.match(glyphRepairBody.contents.at(-2).parts[0].text, /BOX DIAMOND GRID/);
+
+  hardGlyphCorruptionScenario = false;
 
   clearGeminiModelState();
   calls.length = 0;
@@ -806,6 +871,7 @@ try {
   coolingRecoveryScenario = true;
   morphologyRepairScenario = false;
   morphologyRepairHoldScenario = false;
+  hardGlyphCorruptionScenario = false;
   entitlementMismatchScenario = false;
   immediateRepairScenario = false;
   qualityPreferenceScenario = false;

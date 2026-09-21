@@ -1,6 +1,6 @@
 import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
 
-export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v3-quota-scope-holds';
+export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
 
 const MOBILE_QUERY = '(max-width: 860px)';
@@ -79,7 +79,7 @@ function installResponseKinesis(doc = document, root = window) {
     actions.insertBefore(mote, send);
   }
   const sync = () => {
-    const busy = /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
+    const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
     mote.hidden = !busy;
     form.setAttribute('aria-busy', busy ? 'true' : 'false');
   };

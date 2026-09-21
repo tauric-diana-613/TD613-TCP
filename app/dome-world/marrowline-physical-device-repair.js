@@ -1,4 +1,4 @@
-export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v6-voice-scoped-collision-layout';
+export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v7-pedagogue-status-phase';
 
 const MOBILE_QUERY = '(max-width: 860px)';
 const byId = (doc, id) => doc.getElementById(id);
@@ -52,7 +52,7 @@ function installInChatKinesis(doc = document, root = window) {
   let raf = null;
 
   const sync = () => {
-    const busy = /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
+    const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
     form.setAttribute('aria-busy', busy ? 'true' : 'false');
     if (busy) {
       if (!card.isConnected) messages.append(card);
