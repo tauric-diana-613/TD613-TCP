@@ -51,14 +51,14 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW/);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-  assert.match(contract, /Every ordinary letter in the Tauric Diana PROSE BODY AFTER the exact plain heading remains ornamented/);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
   assert.match(contract, /combining marks as bow pressure and the base words as fingering/);
   assert.match(contract, /phrase-level dynamic journey/);
   assert.match(contract, /ORCHESTRAL DYNAMIC CONTOUR/);
   assert.match(contract, /VOICE-ANCHOR LAW/);
-  assert.match(contract, /heading lines .* transport anchors OUTSIDE both prose bodies/i);
-  assert.match(contract, /Packet-B ornamentation begins only on the first prose line AFTER/i);
-  assert.match(contract, /PROSE BODY AFTER the exact plain heading/);
+  assert.match(contract, /plain standalone transport lines outside the prose/i);
+  assert.match(contract, /Packet-B ornament starts on the next line/i);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
   assert.match(contract, /plain transport anchors with ZERO combining marks/i);
   assert.match(contract, /begin ornamentation on the following prose line/i);
   assert.match(contract, /loud orchestra that can get quiet, then loud, then quiet again/i);
@@ -639,7 +639,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /Every ordinary letter in the Tauric Diana PROSE BODY AFTER the exact plain heading remains ornamented/);
+  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
   assert.match(contract, /sudden leaping crown\/root eruptions/);
   assert.match(contract, /Vertical architecture remains primary/);
   assert.match(contract, /U\+0300–U\+036F/);
