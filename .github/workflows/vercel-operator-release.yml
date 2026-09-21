@@ -466,13 +466,28 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/lifecycle-production
         run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-lifecycle-production-probe.mjs
 
-      - name: Confirm deployed Loom Demo 1 with one real AI submission
+      - name: Defer live AI canary to explicit observation lane
         if: steps.scope.outputs.validation_scope == 'full'
         env:
-          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_ARTIFACT_DIR: artifacts/loom-production-canary
-        run: timeout --foreground --signal=INT --kill-after=10s 600s node scripts/loom-production-canary.mjs
+        run: |
+          mkdir -p artifacts/loom-production-canary
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const source = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const receipt = {
+            schema: 'td613.production-ai-witness-deferred/v0.1',
+            source_packet_commit: source,
+            automatic_provider_calls: 0,
+            deployment_success_authority: false,
+            explicit_observation_command: '/td613-production-reobserve',
+            reason: 'Live provider liveness is independent of exact-source deployment success; 429/503 provider transport must not relabel a verified deployment as failed.',
+            counts_as_human_evidence: false,
+            recorded_at: new Date().toISOString()
+          };
+          fs.writeFileSync('artifacts/loom-production-canary/deferred.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          console.log(`[td613-release-ai-witness] deferred source=${source} automatic_provider_calls=0`);
+          NODE
 
       - name: Confirm authorized source still owns production after witness
         if: >-
@@ -543,7 +558,8 @@ jobs:
           production_a14_registry_archive = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           production_chromium_desktop_mobile = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
-          production_loom_demo1_canary = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_loom_demo1_canary = ${{ steps.scope.outputs.validation_scope == 'full' && 'DEFERRED_EXPLICIT_OBSERVATION' || 'NOT_APPLICABLE' }}
+          automatic_live_ai_provider_calls = 0
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
@@ -551,7 +567,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production confirmation follows the classified change scope, does not repeat the full pre-merge browser matrix, and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
+          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production confirmation follows the classified change scope and verifies the deployed source without spending Gemini quota. Live AI liveness is an explicit observation surface, not deployment-success authority; provider 429/503 cannot turn an exact-source deployment RED after the application has already passed its production checks. This receipt grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
           EOF_COMMENT
           )"
 

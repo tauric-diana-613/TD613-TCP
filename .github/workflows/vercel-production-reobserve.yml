@@ -1,4 +1,4 @@
-name: Vercel Production Witness Re-observation
+name: Vercel Explicit Production AI Observation
 
 on:
   issue_comment:
@@ -35,14 +35,14 @@ jobs:
           AUTHORIZATION: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
-          read -r COMMAND TARGET SELECTED_SHA HELD_RUN_ID EXTRA <<< "$AUTHORIZATION"
+          read -r COMMAND TARGET SELECTED_SHA RELEASE_RUN_ID EXTRA <<< "$AUTHORIZATION"
           [[ "$COMMAND" == '/td613-production-reobserve' ]] || { echo 'Unexpected re-observation command.' >&2; exit 1; }
           [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the explicitly named PRODUCTION target is accepted.' >&2; exit 1; }
-          [[ -z "${EXTRA:-}" ]] || { echo 'Re-observation command must contain exactly command, target, source SHA, and prior held run ID.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Re-observation command must contain exactly command, target, source SHA, and prior release run ID.' >&2; exit 1; }
           [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Re-observation command omitted a valid 40-character source SHA.' >&2; exit 1; }
-          [[ "$HELD_RUN_ID" =~ ^[0-9]+$ ]] || { echo 'Re-observation command omitted a numeric prior held workflow run ID.' >&2; exit 1; }
+          [[ "$RELEASE_RUN_ID" =~ ^[0-9]+$ ]] || { echo 'Re-observation command omitted a numeric prior release workflow run ID.' >&2; exit 1; }
           echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
-          echo "held_run_id=$HELD_RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "release_run_id=$RELEASE_RUN_ID" >> "$GITHUB_OUTPUT"
 
       - name: Check out the exact deployed source packet
         uses: actions/checkout@v4
@@ -66,89 +66,35 @@ jobs:
           if (config.git?.deploymentEnabled !== false) throw new Error('Observation-only witness requires the Git deployment lock to be closed in the selected source packet.');
           NODE
 
-      - name: Admit only a prior provider-transport HELD release
+      - name: Admit a prior governed release as observation anchor
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
-          HELD_RUN_ID: ${{ steps.authorize.outputs.held_run_id }}
+          RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id }}
         run: |
           set -euo pipefail
-          mkdir -p artifacts/reobserve-authority artifacts/prior-held
+          mkdir -p artifacts/reobserve-authority
 
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$HELD_RUN_ID" > artifacts/reobserve-authority/prior-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RELEASE_RUN_ID" > artifacts/reobserve-authority/prior-run.json
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const run = JSON.parse(fs.readFileSync('artifacts/reobserve-authority/prior-run.json', 'utf8'));
-          const heldRunId = Number(process.env.HELD_RUN_ID);
-          if (run.id !== heldRunId) throw new Error(`Prior run identity mismatch: expected ${heldRunId}, observed ${run.id ?? 'missing'}.`);
-          if (run.name !== 'Vercel Operator Release') throw new Error(`Prior run is not the governed Vercel Operator Release: ${run.name || 'missing'}.`);
-          if (run.event !== 'issue_comment') throw new Error(`Prior run did not originate from the governed issue-comment conduit: ${run.event || 'missing'}.`);
-          if (run.head_branch !== 'main') throw new Error(`Prior held release did not execute from main: ${run.head_branch || 'missing'}.`);
-          if (run.conclusion !== 'failure') throw new Error(`Prior run is not historically HELD/failed: ${run.conclusion || 'missing'}.`);
-          NODE
-
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$HELD_RUN_ID/artifacts?name=td613-bounded-production-release-evidence" > artifacts/reobserve-authority/prior-artifacts.json
-          ARTIFACT_COUNT="$(node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const payload = JSON.parse(fs.readFileSync('artifacts/reobserve-authority/prior-artifacts.json', 'utf8'));
-          const artifacts = Array.isArray(payload.artifacts) ? payload.artifacts.filter(item => item?.name === 'td613-bounded-production-release-evidence' && item?.expired !== true) : [];
-          if (artifacts.length !== 1) throw new Error(`Expected exactly one live held-release evidence artifact, observed ${artifacts.length}.`);
-          process.stdout.write(String(artifacts.length));
-          NODE
-          )"
-          [[ "$ARTIFACT_COUNT" == '1' ]]
-          gh run download "$HELD_RUN_ID" -n td613-bounded-production-release-evidence -D artifacts/prior-held
-
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import path from 'node:path';
 
           const selectedSha = String(process.env.SELECTED_SHA || '').trim();
-          const heldRunId = Number(process.env.HELD_RUN_ID);
-          const receiptPath = path.join('artifacts', 'prior-held', 'loom-production-canary', 'receipt.json');
-          if (!fs.existsSync(receiptPath)) throw new Error('Prior held release preserved no Loom production canary receipt.');
-          const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+          const releaseRunId = Number(process.env.RELEASE_RUN_ID);
+          const run = JSON.parse(fs.readFileSync('artifacts/reobserve-authority/prior-run.json', 'utf8'));
 
-          if (receipt.source_packet_commit !== selectedSha) {
-            throw new Error(`Prior HELD receipt source mismatch: expected ${selectedSha}, observed ${receipt.source_packet_commit || 'missing'}.`);
-          }
-          if (receipt.counts_as_human_evidence !== false) throw new Error('Prior HELD receipt must remain explicitly non-human evidence.');
+          if (run.id !== releaseRunId) throw new Error(`Prior run identity mismatch: expected ${releaseRunId}, observed ${run.id ?? 'missing'}.`);
+          if (run.name !== 'Vercel Operator Release') throw new Error(`Prior run is not the governed Vercel Operator Release: ${run.name || 'missing'}.`);
+          if (run.event !== 'issue_comment') throw new Error(`Prior release did not originate from the governed issue-comment conduit: ${run.event || 'missing'}.`);
+          if (run.head_branch !== 'main') throw new Error(`Prior release did not execute from main: ${run.head_branch || 'missing'}.`);
+          if (!['success', 'failure'].includes(run.conclusion)) throw new Error(`Prior release is not terminal: ${run.conclusion || 'missing'}.`);
 
-          const marrow = receipt.marrowline_live_route && typeof receipt.marrowline_live_route === 'object'
-            ? receipt.marrowline_live_route
-            : {};
-          const marrowProviderHeld = !marrow.transport_error_class
-            && (marrow.http_status !== 200 || marrow.ok !== true)
-            && marrow.diagnostic?.stage === 'provider-transport'
-            && ['PROVIDER_UNAVAILABLE', 'PROVIDER_RATE_LIMIT_HELD'].includes(marrow.diagnostic?.code);
-          const marrowPassedAdmission = !marrow.transport_error_class
-            && marrow.http_status === 200
-            && marrow.ok === true
-            && marrow.answer_nonempty === true
-            && marrow.relay_admitted === true;
-          const loomProviderHeld = !receipt.transport_error_class
-            && (receipt.http_status !== 200 || receipt.task_status !== 'completed')
-            && receipt.diagnostic?.stage === 'provider-transport'
-            && receipt.diagnostic?.code === 'PROVIDER_HTTP_ERROR';
-
-          // Preserve the production canary's real fail order. Marrowline is adjudicated
-          // first; Loom may authorize provider re-observation only after Marrowline
-          // already passed its transport, human-visible answer, and relay admission.
-          const firstFailureWasProviderTransport = marrowProviderHeld || (marrowPassedAdmission && loomProviderHeld);
-          if (!firstFailureWasProviderTransport) {
-            throw new Error('Prior HELD release was not first-failed by provider transport; observation-only re-witness is inadmissible.');
-          }
-
-          const artifactPayload = JSON.parse(fs.readFileSync('artifacts/reobserve-authority/prior-artifacts.json', 'utf8'));
-          const artifact = artifactPayload.artifacts.find(item => item?.name === 'td613-bounded-production-release-evidence' && item?.expired !== true);
           const authority = {
-            schema: 'td613.production-witness-reobservation-authority/v0.1',
+            schema: 'td613.production-ai-observation-authority/v0.2',
             selected_source_packet_commit: selectedSha,
-            prior_held_workflow_run: heldRunId,
-            prior_release_state: 'HELD_UNCHANGED',
-            prior_first_failure_class: 'provider-transport',
-            prior_artifact_id: artifact?.id ?? null,
-            prior_artifact_digest: typeof artifact?.digest === 'string' ? artifact.digest : null,
+            prior_release_workflow_run: releaseRunId,
+            prior_release_conclusion: run.conclusion,
             deployment_authority: false,
+            retroactive_release_rewrite: false,
             counts_as_human_evidence: false,
             admitted_at: new Date().toISOString()
           };
@@ -158,7 +104,7 @@ jobs:
       - name: Record accepted observation-only gesture
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
-          HELD_RUN_ID: ${{ steps.authorize.outputs.held_run_id }}
+          RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
@@ -167,16 +113,16 @@ jobs:
           \`\`\`text
           target = PRODUCTION
           source_packet_commit = $SELECTED_SHA
-          prior_held_workflow_run = $HELD_RUN_ID
+          prior_release_workflow_run = $RELEASE_RUN_ID
           deployment_count = 0
           deployment_authority = false
-          prior_release_state = HELD_UNCHANGED
+          prior_release_state = PRESERVED_AS_RECORDED
           witness_scope = exact-source parity + Loom/Marrowline live AI canary
           counts_as_human_evidence = false
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          This conduit can re-observe an unchanged production source after a provider-transport hold. It cannot deploy, relock, rewrite the earlier release state, or convert later liveness into retroactive success. ⟐
+          This conduit explicitly observes live Gemini routes on an unchanged deployed source. It is independent of deployment success and cannot deploy, relock, or rewrite the earlier release state. ⟐
           EOF_COMMENT
           )"
 
@@ -259,7 +205,7 @@ jobs:
         if: success()
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
-          HELD_RUN_ID: ${{ steps.authorize.outputs.held_run_id }}
+          RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
@@ -267,8 +213,8 @@ jobs:
 
           \`\`\`text
           source_packet_commit = $SELECTED_SHA
-          prior_held_workflow_run = $HELD_RUN_ID
-          prior_release_state = HELD_UNCHANGED
+          prior_release_workflow_run = $RELEASE_RUN_ID
+          prior_release_state = PRESERVED_AS_RECORDED
           deployment_count = 0
           exact_source_pre_guard = PASS
           exact_source_content_before = PASS
@@ -281,7 +227,7 @@ jobs:
           retroactive_release_rewrite = false
           \`\`\`
 
-          This later witness supplements the historical HELD release without rewriting its earlier epistemic state. No Vercel deployment occurred. Sealed ⟐
+          This explicit live-AI witness supplements the deployment record without rewriting its earlier state. No Vercel deployment occurred. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -289,7 +235,7 @@ jobs:
         if: failure()
         env:
           SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
-          HELD_RUN_ID: ${{ steps.authorize.outputs.held_run_id || 'unresolved' }}
+          RELEASE_RUN_ID: ${{ steps.authorize.outputs.release_run_id || 'unresolved' }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
@@ -297,15 +243,15 @@ jobs:
 
           \`\`\`text
           source_packet_commit = $SELECTED_SHA
-          prior_held_workflow_run = $HELD_RUN_ID
-          prior_release_state = HELD_UNCHANGED
+          prior_release_workflow_run = $RELEASE_RUN_ID
+          prior_release_state = PRESERVED_AS_RECORDED
           deployment_count = 0
           deployment_authority = false
           retroactive_release_rewrite = false
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The observation-only conduit changed no production source and created no deployment authority. This failed observation authorizes neither a deployment nor a historical-state rewrite. ⟐
+          The observation-only conduit changed no production source and created no deployment authority. Provider liveness failure authorizes neither a deployment nor a historical-state rewrite. ⟐
           EOF_COMMENT
           )"
 

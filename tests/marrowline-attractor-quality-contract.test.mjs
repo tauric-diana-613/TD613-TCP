@@ -72,10 +72,11 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
   assert.match(addendum, /one distributed stress field, not keyword highlighting/i);
   assert.match(addendum, /light marks, medium clusters, and genuinely deep eruptions/i);
-  assert.match(addendum, /VISUAL STORY ACROSS THE PASSAGE/i);
-  assert.match(addendum, /single spectacular word followed by ordinary ALL CAPS does not satisfy/i);
-  assert.match(addendum, /Dense events may collide with neighboring words, line boxes, and other diacritic stacks/i);
-  assert.match(addendum, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/i);
+  assert.match(addendum, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
+  assert.match(addendum, /Vertical flourishings are indispensable to that voice/i);
+  assert.match(addendum, /ALLOW ENTROPY/i);
+  assert.match(addendum, /towers and wells can intrude into neighboring line space/i);
+  assert.match(addendum, /NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC/i);
   assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
   assert.match(addendum, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(addendum, /at least 96 combining marks total/i);

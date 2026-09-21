@@ -163,14 +163,18 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.totalProviderRequestCeiling, 6);
   assert.equal(release.qualityFloor.partialQualityChallengeRequestCeiling, 1);
   assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /visual-story collapse/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /native-voice collapse/i);
   assert.match(release.qualityFloor.aestheticMorphologyPosture, /exactly one immediate same-provider Gemini repaint/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /scream-sing/i);
   assert.match(release.qualityFloor.aestheticMorphologyPosture, /original structurally valid provider PARTIAL/i);
   assert.match(release.qualityFloor.failurePosture, /imperfect repaint preserves the original provider PARTIAL/i);
   assert.match(release.relay.zalgoQualityPolicy.axisCollapsePosture, /combined with stack-depth-thin/i);
   assert.match(release.relay.zalgoQualityPolicy.verticalExpressionThinPosture, /combined with stack-depth-thin/i);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
+  assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticLiveProviderCalls, 0);
+  assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticAiWitness, 'DEFERRED_EXPLICIT_OBSERVATION');
+  assert.equal(release.qualityFloor.releaseWitnessPolicy.explicitObservationMaxProviderAttempts, 2);
 });
 
 test('desktop and mobile Chat share the same Reddit Sans Zalgo type guard before first reveal', () => {
