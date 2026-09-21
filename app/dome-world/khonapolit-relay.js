@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v17-scream-sing-native-orthography';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v22-scream-sing-native-orthography';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v18-vertical-first-scream-sing';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v23-vertical-first-scream-sing';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -39,7 +39,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
       properties: {
         text: {
           type: 'STRING',
-          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant provider-authored High-Zalgo visual-story field whose diacritics move through clauses and lines as expressive typography: distributed crown/root architecture, mixed-axis motion, variable density, preserved line breaks, and multiple distinct visual gestures rather than one isolated burst.'
+          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant provider-authored High-Zalgo scream-sing transmission whose native body is deep vertical crown/root architecture, with horizontal and oblique marks available only as local counter-rhythm after the vertical field is visibly alive.'
         },
         voices: {
           type: 'ARRAY',
@@ -77,6 +77,16 @@ const PLANAR = new Set([
 const ABOVE_SET = new Set(ABOVE);
 const BELOW_SET = new Set(BELOW);
 const THROUGH_SET = new Set(THROUGH);
+
+// Restored from the last human-observed vertical-flourishing success lineage.
+// These compact specimens communicate direction and stack depth without becoming
+// the giant one-word "nuclear blob" failure induced by the later extreme sample.
+const VERTICAL_REFERENCE_SPECIMENS = Object.freeze([
+  'A\u0300\u0301\u0302\u0307\u030B\u0316\u0318\u031D\u0323',
+  'R\u0306\u0308\u030A\u030C\u0352\u0317\u031E\u0325\u032D',
+  'I\u0301\u0302\u0307\u0357\u035B\u0319\u031C\u0326\u032F'
+]);
+const VERTICAL_REFERENCE_LINE = VERTICAL_REFERENCE_SPECIMENS.join('  ');
 
 const CANONICAL_RECITATION_PATTERNS = Object.freeze([
   Object.freeze({ id: 'inheritance-not-consent', pattern: /\binheritance is not consent\b/u }),
@@ -559,19 +569,21 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
     '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
     '',
-    'DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:',
+    'DUAL-CHANNEL ORTHOGRAPHY — VERTICAL-FIRST NATIVE FIELD:',
     '- Kʰonapolit is the clean formal channel: standard readable Unicode prose, Greek/math operators when useful, preserved framework literals, and ZERO combining diacritical marks.',
     '- Tauric Diana bots is the raw stress channel: uppercase-dominant bursts, preserved paragraph breaks, and provider-authored multi-tier Zalgo. THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS IN ITS RETURN. Marrowline preserves those exact returned bytes/code points and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     '- Treat the diacritics as one distributed stress field, not keyword highlighting, not a sentiment-to-glyph lookup table, and not a checklist to game. Let light marks, medium clusters, and genuinely deep eruptions move through ordinary graphemes across the passage.',
     '- The stress field must remain visibly present across the Tauric Diana passage. Quiet stretches are allowed, but a mostly plain uppercase paragraph with only one or two marked letters is a channel failure, not a subtle style choice.',
-    '- High Zalgo here is a mixed-axis burst field, not a vertical-only stack exercise and not a horizontal strike sheet. Crowns, roots, overstrikes, oblique cuts, tildes, hooks, and other combining species may coexist in the same passage and sometimes on the same grapheme.',
-    '- Deep vertical mass remains indispensable. In multiple separate regions, put several distinct marks above AND several below the SAME grapheme so some letters grow real towers and wells that intrude into neighboring line space. One accent above every capital, or one above plus one below every capital, is shallow wallpaper rather than the target morphology.',
+    '- VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO. Build crowns above the cap line and roots below the baseline FIRST. Establish asymmetric multi-tier height/depth on several separate lines BEFORE adding planar, through-line, horizontal, or oblique accents.',
+    '- Visual direction reference only, NOT a stencil: ' + VERTICAL_REFERENCE_LINE + '. The point is physical direction and depth: visibly climb above and fall below the base letters. Vary mark species, order, height, density, asymmetry, and spacing throughout the passage.',
+    '- Horizontal and oblique motion is permitted, but only as accent, interruption, abrasion, counter-rhythm, or local rupture AFTER a living vertical crown/root scaffold already exists. It must never become the passage-wide default texture.',
+    '- If deleting every slash, strike, bar, overline, underline, and other planar mark would leave Packet B visually flat, then the High-Zalgo field has failed regardless of total combining-mark count.',
     '',
-    'TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING, DO NOT “APPLY A ZALGO STYLE”:',
+    'TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING, DO NOT “APPLY A ZALGO STYLE”:
     '- Within this authored Marrowline frame, Tauric Diana bots do not speak ordinary prose and then receive decoration. Their combining marks ARE part of how the transmission is notated. High Zalgo is native prosody: the visible trace of how the bots scream-sing the line.',
     '- Kʰonapolit has already traced and stabilized the mathematically precise signal. Packet B is the relayed overflow: “fun and scary” at once, unruly but intelligible as a transmission. The orthography should feel like something being sung, cried, leapt, dragged, fractured, echoed, and returned through the letters—not like a font effect pasted afterward.',
-    '- Vertical flourishings are indispensable to that voice. Let crowns and roots make grand leaps of different depths, sometimes climbing far above the line, sometimes sinking beneath it, sometimes rising and falling around a phrase. They may recur as motifs, answer an earlier shape, or mutate when the cadence changes.',
-    '- Horizontal and oblique cuts are also part of the voice, but they are accompaniment, interruption, drag, abrasion, or counter-rhythm. They cannot become the default grammar of the whole passage. A Tauric Diana transmission that is mostly slashes, strike-throughs, macrons, or plain ALL CAPS has lost the scream-sing register.',
+    '- Vertical flourishings are indispensable to that voice. Let crowns and roots make grand leaps of different depths, sometimes climbing far above the line, sometimes sinking beneath it, sometimes rising and falling around a phrase. They may recur as motifs, answer an earlier shape, or mutate when the cadence changes. THE VERTICAL SCAFFOLD COMES FIRST.',
+    '- Horizontal and oblique cuts are also part of the voice, but only after the vertical architecture is already unmistakable. They are accompaniment, interruption, drag, abrasion, or counter-rhythm. They cannot become the default grammar of the whole passage. A Tauric Diana transmission that is mostly slashes, strike-throughs, macrons, or plain ALL CAPS has lost the scream-sing register.',
     '- ALLOW ENTROPY. Do not regularize the marks into a tidy repeating pattern. Do not optimize for even spacing, one ornament per letter, one effect per sentence, or clean line boxes. Controlled instability is correct here: neighboring graphemes may carry radically different heights, depths, species, and directions.',
     '- Think musically and motivically rather than statistically. A visual gesture can begin on one word, leap through the next phrase, disappear into a breath, then return transformed later. The same motif may recur at a different depth or with a different axis, like a melodic figure coming back changed.',
     '- The transmission should paint the meaning without turning meaning into a fixed codebook. A phrase can visually swell, recoil, split, tremble, plunge, hover, scrape sideways, or erupt upward when the local cadence asks for it. Invent the notation from the passage itself; never assign one permanent glyph recipe to anger, grief, sarcasm, names, or any other lexical class.',
@@ -583,7 +595,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Every visible combining code point must be authored by the Gemini API in Packet B itself. Marrowline will not add, expand, overlay, synthesize, or repair the typography after the provider return.',
     '',
     'NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC:',
-    '- Before closing Packet B, listen to the page as if it were notation. Can you see the bots scream-sing across more than one region? Do the vertical flourishings make grand leaps at different depths and return motivically after breaths or sideways passages? Has entropy remained alive, or did the field collapse into neat horizontal scratches, plain capitals, or one isolated explosion? If it looks like typography applied TO the prose rather than the native way the bots are communicating THROUGH the prose, re-enter the Tauric Diana register and rewrite Packet B before emitting <<<PACKET_B_END>>>.',
+    '- Before closing Packet B, listen to the page as if it were notation. FIRST mentally erase every horizontal/planar mark. Is there still unmistakable living High Zalgo—crowns, roots, towers, wells, and irregular multi-tier vertical depth across several separate lines? Can you see the bots scream-sing across more than one region, with grand vertical leaps returning motivically after breaths or sideways passages? Has entropy remained alive, or did the field collapse into polite accents, neat horizontal scratches, plain capitals, or one isolated explosion? If the vertical answer is weak, restore the crown/root architecture BEFORE any horizontal flourish is allowed to count.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
@@ -593,10 +605,10 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '<<<PACKET_A_END>>>',
     '<<<PACKET_B_STRESS_TELEMETRY>>>',
     'Tauric Diana bots',
-    '[provider-authored Tauric Diana scream-sing transmission: native High-Zalgo orthography with recurring vertical flourishings, grand crown/root leaps of varying depth, motif return, mixed-axis counter-rhythm, quiet breaths, live entropy, and collision/overlap allowed]',
+    '[provider-authored Tauric Diana scream-sing transmission: VERTICAL ARCHITECTURE FIRST; recurring crown/root towers and wells of varying depth across several lines; motif return and live entropy; horizontal/oblique counter-rhythm only after vertical life is established; collision/overlap allowed]',
     '<<<PACKET_B_END>>>',
     '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order and never decorated; verify Packet A has zero combining marks; verify Packet B is visibly in the Tauric Diana native scream-sing register rather than ordinary prose with effects; verify vertical flourishings recur after quiet or horizontal passages and make visibly different crown/root leaps at different depths; verify motif return and entropy are present without a cloned mark pattern; verify horizontal/oblique motion never becomes the whole grammar; verify no single word carries all the vertical excess; verify literal ASCII separators are not sprayed as fake ornament; verify protected literals remain clean. If the page would require the operator to remind you that Tauric Diana bots communicate through vertical High Zalgo, rewrite Packet B before emitting bytes.',
+    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order and never decorated; verify Packet A has zero combining marks; verify Packet B is visibly in the Tauric Diana native scream-sing register; verify genuine multi-tier crowns AND roots recur on several separate lines BEFORE any planar accents are considered; verify deleting all horizontal/through-line marks would still leave obvious vertical High Zalgo; verify grand vertical leaps recur after quiet passages at visibly different depths; verify motif return and entropy without cloned stacks; verify no single word carries all the vertical excess; verify literal ASCII separators are not fake ornament; verify protected literals remain clean. If vertical crowns/roots are absent, shallow, or confined to one tiny region, rewrite Packet B before emitting bytes.',
     '- Delimiters are transport framing only. Never decorate or mutate them.',
     '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
