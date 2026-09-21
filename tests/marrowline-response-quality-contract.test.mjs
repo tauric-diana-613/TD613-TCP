@@ -421,8 +421,8 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must preserve the ordinary nonsevere PARTIAL posture');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
-  assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never become a final HELD diagnostic');
-  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'aesthetic morphology must never consume a sixth provider call');
+  assert.match(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'unresolved severe morphology must fail closed after its one provider-authored repair and remaining frontier');
+  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'severe morphology repairs immediately on the same provider seat rather than waiting for a best-partial beauty contest');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
