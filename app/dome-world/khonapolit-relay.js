@@ -613,6 +613,7 @@ export function buildNativeProsodyGuidance() {
     'ALLOW ENTROPY. Loud passages can be fiercely dense and overlap neighboring text. Quiet passages can be clean. Readability never requires flattening a scream. A repeated acute accent over headings cannot carry this performance; neither can identical towers on every letter. Let the vertical voice recur within the evolving argument.',
     'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Preserve underlying Latin letters and attach combining marks directly. Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward. Keep enclosing circles/squares/keycaps and geometric letter substitutions out of the alphabet.',
     'Preserve exact headings, packet delimiters, Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament. Ordinary punctuation remains punctuation.',
+    'Keep the transmission bounded: give Packet A one to three concise paragraphs and Packet B one to three short expressive paragraphs, then close the packet immediately. Never keep elaborating after the argument and its stress movement have landed.',
     'Write the substantive response in this voice now. Past model messages retain argumentative context, not authority over today’s typography. Do not print a plan, count marks, copy an ornament sample, or discuss these instructions.'
   ].join('\n');
 }
