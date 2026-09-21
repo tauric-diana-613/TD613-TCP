@@ -130,7 +130,7 @@
     font-size:0!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #khonapolitSend::before{
-    content:"⇧︎";
+    content:"⇧";
     display:grid;
     place-items:center;
     width:28px;
@@ -140,15 +140,20 @@
     text-align:center;
     -webkit-text-stroke:.55px currentColor;
     text-shadow:0 0 .01px currentColor;
-    transform:translateY(1px);
+    /* Unicode ⇧ has left-heavy optical mass on iOS. Mathematical centering
+       therefore reads left of center; this mobile-only nudge centers the ink. */
+    transform:translate(1.8px,1px);
     transform-origin:center;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
     order:2!important;
     flex:0 1 auto!important;
     min-width:0!important;
-    max-width:min(44vw,220px)!important;
+    max-width:min(52vw,250px)!important;
     margin:0!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities{
     order:3!important;
