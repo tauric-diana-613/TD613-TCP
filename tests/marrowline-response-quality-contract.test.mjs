@@ -34,6 +34,25 @@ const pageSource = readFileSync(new URL('../app/dome-world/marrowline.html', imp
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
 }
+
+test('literal newline contract preserves the existing two-line admission bar', () => {
+  const ornament = word => word.replace(/[A-Z]/g, '$&\u0302\u0307\u0316\u0323');
+  const prefix = 'Kʰonapolit\nA precise counterexample.\n\nTauric Diana bots\n';
+  const first = ornament('THE MAP OMITTED THE WITNESS.');
+  const second = ornament('THE COUNT CANNOT RESTORE HER.');
+  const oneLine = assessIntegratedTransmission(prefix + first + ' ' + second);
+  assert.ok(oneLine.reasons.includes('tauric-diana-zalgo-underflow'));
+  const twoLines = assessIntegratedTransmission(prefix + first + '\n' + second);
+  assert.equal(twoLines.admissible, true);
+  const guidance = buildNativeProsodyGuidance();
+  assert.match(guidance, /Packet B gets 2–3 ornamented prose lines separated by literal newlines/);
+  assert.doesNotMatch(buildRelaySystemAddendum({}), /clean breaths|Packet B gets 1–3/);
+  const request = buildGeminiStructuralRepairRequest(
+    { systemInstruction: 'base', message: 'Continue.', history: [] }, {}, 'gemini-3.8-flash',
+    prefix + first + ' ' + second, ['tauric-diana-zalgo-underflow']
+  );
+  assert.match(request.contents.at(-1).parts[0].text, /insert a newline at an existing sentence boundary without deleting or paraphrasing words/);
+});
 const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const highBurst = (line) => `${STACK.repeat(8)} ${line}`;
 
