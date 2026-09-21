@@ -243,6 +243,21 @@ const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload
 const marrowlineAdmission = marrowlinePayload?.relay?.admission && typeof marrowlinePayload.relay.admission === 'object'
   ? marrowlinePayload.relay.admission
   : null;
+const marrowlineHumanSurfaceObservation = marrowlineReceipt?.provider?.humanSurfaceObservation
+  && typeof marrowlineReceipt.provider.humanSurfaceObservation === 'object'
+    ? marrowlineReceipt.provider.humanSurfaceObservation
+    : null;
+const marrowlineAnswerNonempty = typeof marrowlinePayload?.text === 'string'
+  && marrowlinePayload.text.trim().length > 0;
+const marrowlineLocalAdmissionAuthority = typeof marrowlineHumanSurfaceObservation?.localAdmissionAuthority === 'string'
+  ? marrowlineHumanSurfaceObservation.localAdmissionAuthority
+  : null;
+const marrowlineLocalAdmissionNonblocking = marrowlineAdmission?.admissible === true
+  || marrowlineLocalAdmissionAuthority === 'diagnostic-not-human-surface-veto';
+const marrowlineHumanSurfaceVisible = marrowlineResult.httpStatus === 200
+  && marrowlinePayload?.ok === true
+  && marrowlineAnswerNonempty
+  && marrowlineLocalAdmissionNonblocking;
 const marrowlineAttemptsSource = Array.isArray(marrowlineReceipt?.provider?.attempts)
   ? marrowlineReceipt.provider.attempts
   : Array.isArray(marrowlinePayload?.attempts)
@@ -292,7 +307,7 @@ const receipt = {
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
   observation_outcome: loomProviderLivenessHeld
-    ? 'marrowline-admitted-loom-provider-liveness-held'
+    ? 'marrowline-human-surface-visible-loom-provider-liveness-held'
     : (httpStatus === 200 && payload?.status === 'completed' ? 'completed' : 'held'),
   loom_provider_liveness_nonblocking: loomProviderLivenessHeld,
   diagnostic: boundedDiagnostic(payload?.diagnostic),
@@ -319,7 +334,11 @@ const receipt = {
     diagnostic: boundedRouteDiagnostic(marrowlinePayload?.diagnostic),
     rejected_attempts: boundedRejectedAttempts(marrowlinePayload?.diagnostic?.rejectedAttempts),
     error: typeof marrowlinePayload?.error === 'string' ? marrowlinePayload.error.slice(0, 120) : null,
-    answer_nonempty: typeof marrowlinePayload?.text === 'string' && marrowlinePayload.text.trim().length > 0,
+    answer_nonempty: marrowlineAnswerNonempty,
+    human_surface_visible: marrowlineHumanSurfaceVisible,
+    human_surface_rendered: marrowlineHumanSurfaceObservation?.rendered === true || marrowlineAdmission?.admissible === true,
+    local_admission_authority: marrowlineLocalAdmissionAuthority,
+    local_admission_nonblocking: marrowlineLocalAdmissionNonblocking,
     relay_admitted: marrowlineAdmission?.admissible === true,
     relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
     final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
@@ -342,11 +361,16 @@ if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
   throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic} admission_reasons=${admissionReasons}.`);
 }
 if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
-if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
+if (!receipt.marrowline_live_route.local_admission_nonblocking) {
+  throw new Error('Marrowline production canary returned nonempty text without an admitted relay or explicit diagnostic-only local-admission authority.');
+}
+if (!receipt.marrowline_live_route.human_surface_visible) {
+  throw new Error('Marrowline production canary lost the human-surface-visible 200 invariant.');
+}
 
 if (loomProviderLivenessHeld) {
   const attempts = providerAttempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}`).join(',') || 'none';
-  console.log(`[loom-production-canary] PROVIDER_LIVENESS_HELD_NONBLOCKING attempts=${attempts} marrowline=admitted`);
+  console.log(`[loom-production-canary] PROVIDER_LIVENESS_HELD_NONBLOCKING attempts=${attempts} marrowline=human-surface-visible admission=${receipt.marrowline_live_route.relay_quality || 'unclassified'}`);
 } else {
   if (transportError) throw new Error(`Loom production canary transport failed (${transportError}).`);
   if (httpStatus !== 200 || payload?.status !== 'completed') {
