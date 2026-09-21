@@ -665,7 +665,12 @@ try {
 
   assert.equal(hinted.statusCode, 200);
   assert.equal(hinted.payload.ok, true);
-  assert.equal(calls.includes('gemini-3.8-flash'), false, 'active browser-observed model cooldown must prevent a fresh isolate from immediately rediscovering the same cooling seat');
+  assert.equal(hinted.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-telemetry-only');
+  assert.deepEqual(
+    calls,
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    'browser-observed cooldown history must not suppress or reorder the live 3.8-first human retry frontier'
+  );
   assert.equal(hinted.payload.receipt.provider.model, 'gemini-3-flash-preview');
 
   clearGeminiModelState();
@@ -690,7 +695,7 @@ try {
 
   assert.equal(allCooling.statusCode, 200);
   assert.equal(allCooling.payload.ok, true);
-  assert.equal(allCooling.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-human-retry-override');
+  assert.equal(allCooling.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-telemetry-only');
   assert.deepEqual(
     calls,
     ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
