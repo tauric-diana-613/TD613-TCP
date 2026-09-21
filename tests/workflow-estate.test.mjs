@@ -184,6 +184,34 @@ assert.match(reobserve, /retroactive_release_rewrite = false/);
 assert.match(reobserve, /counts_as_human_evidence = false/);
 assert.match(reobserve, /No Vercel deployment occurred\. Sealed ⟐/);
 
+// A connector-authorized single skeptical-human trail may observe the unchanged
+// production source through normal Marrowline routing. This lane must remain one
+// unpinned request, preserve the complete provider payload, and carry zero release
+// authority. The release canary intentionally pins one model seat and therefore
+// cannot witness the interactive five-seat failover frontier.
+assert.match(reobserve, /name:\s*Marrowline single skeptical-human production trail/);
+assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-marrowline-single-trail '\)/);
+assert.match(reobserve, /github\.event\.comment\.performed_via_github_app\.slug == 'chatgpt-codex-connector'/);
+assert.match(reobserve, /Verify single trail has no release authority/);
+assert.match(reobserve, /run\.head_sha !== selectedSha/);
+assert.match(reobserve, /\/dome-world\/marrowline\.html/);
+assert.match(reobserve, /\/api\/dome-world\/khonapolit/);
+assert.match(reobserve, /request_count:\s*1/);
+assert.match(reobserve, /model_pin:\s*null/);
+assert.match(reobserve, /normal_human_failover:\s*true/);
+assert.match(reobserve, /route-payload\.json/);
+assert.match(reobserve, /td613-marrowline-single-trail-evidence/);
+assert.match(reobserve, /Confirm exact production source after single trail/);
+assert.match(reobserve, /No production mutation occurred\. ⟐/);
+const singleTrailJob = reobserve.match(/  marrowline_single_trail:[\s\S]*?(?=\n\n  marrowline_dollhouse_trial:)/)?.[0] || '';
+assert.ok(singleTrailJob, 'Single normal-route production trail job must remain present.');
+assert.doesNotMatch(singleTrailJob, /x-td613-canary-model|TD613_MARROWLINE_CANARY_MODEL/,
+  'Single trail must exercise ordinary Marrowline failover rather than pinning a model seat.');
+assert.doesNotMatch(singleTrailJob, /VERCEL_TOKEN|vercel@latest deploy|deploymentEnabled\s*=\s*true|git push|contents:\s*write/,
+  'Single trail must contain no deployment, lock-opening, or source-mutation authority.');
+assert.equal((singleTrailJob.match(/fetch\(routeUrl/g) || []).length, 1,
+  'Single trail must issue exactly one normal-routing Marrowline request.');
+
 assert.match(reobserve, /github\.event\.issue\.number == 1172/);
 assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-marrowline-dollhouse-trial '\)/);
 assert.match(reobserve, /github\.event\.comment\.user\.login == github\.repository_owner/);
