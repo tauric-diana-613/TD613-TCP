@@ -119,7 +119,7 @@ When the token bridge is absent, the gate may use the repository's **bounded Git
 7. observe exact application-content parity against the authorized source packet;
 8. require the source receipt to remain unchanged through the bounded stale-queue stability window;
 9. reconfirm exact application bytes after that window;
-10. run the scope-aligned production witness and perform one final source-receipt guard.
+10. run the scope-aligned non-provider production witness, record the live-AI canary as deferred explicit observation with zero automatic Gemini calls, and perform one final source-receipt guard.
 
 ```text
 direct token bridge OR bounded Git fallback
@@ -146,52 +146,65 @@ After production first matches the authorized source packet:
 ```text
 authorized source receipt = stable through bounded queue window
 → exact application bytes = reconfirmed
-→ scope-aligned production witness
+→ scope-aligned non-provider production witness
+→ live AI witness = deferred explicit observation (0 automatic Gemini calls)
 → post-witness source receipt = still authorized packet
 ```
 
 Any later stale deployment that replaces the authorized receipt holds the release. Production cannot be sealed from a momentary match that is displaced during the stability window.
 
-## Provider-held production re-observation
+## Explicit production AI observation
 
-A full-product release can reach the live AI canary only after exact-source acquisition, the stale-queue window, post-window byte parity, bounded Chromium production confirmation, and Ash lifecycle observation have already passed. If that canary then stops **first** at provider transport, the observation is HELD rather than product-failed.
+Live provider liveness is **not** deployment-success authority.
 
-The provider-held re-observation conduit exists for that narrow case. It is a distinct authority surface because observation authority and deployment authority must not collapse into one another.
+The Vercel Operator Release already establishes deployment success from the exact-source receipt, exact served application bytes, bounded stale-queue stability, scope-aligned Chromium production checks, and lifecycle observations. A later Gemini `429`, `503`, provider timeout, or other provider-transport event cannot invalidate those already-observed deployment facts.
 
-After a fresh explicit operator gesture in chat, the assistant/Codex may post to issue #405:
+Therefore the deployment workflow spends:
 
 ```text
-/td613-production-reobserve PRODUCTION <40-character-deployed-source-sha> <prior-held-release-run-id>
+automatic Gemini calls during Vercel deployment = 0
+live provider liveness = deferred explicit observation
+provider failure ≠ deployment failure
 ```
 
-The conduit accepts only:
+The live Loom/Marrowline canary remains available as a separate read-only authority surface. After a fresh explicit operator gesture in chat, the assistant/Codex may post to issue #405:
+
+```text
+/td613-production-reobserve PRODUCTION <40-character-deployed-source-sha> <prior-release-run-id>
+```
+
+The observation conduit accepts only:
 
 - issue #405;
 - the repository owner or the exact installed `chatgpt-codex-connector[bot]` carrying the operator gesture;
 - a 40-character source SHA;
-- the numeric workflow-run ID of the prior governed Vercel Operator Release;
-- a prior run whose preserved evidence proves that the **first failing canary condition** was provider transport;
+- the numeric workflow-run ID of a terminal governed Vercel Operator Release;
 - an unchanged production source receipt matching the named source packet;
 - the same release concurrency group used by deployment, preventing observation and deployment from overlapping.
 
-The re-observation workflow has `contents: read`, `actions: read`, and `issues: write` only. It carries no Vercel credential, no Git push route, no lock-opening assignment, and no deployment invocation. It checks exact application bytes before the live Loom/Marrowline witness, checks source ownership again afterward, and reconfirms exact bytes after the witness.
+The prior release may be GREEN or historically HELD. The prior run is an identity/custody anchor, not permission to rewrite its state.
+
+The observation workflow has `contents: read`, `actions: read`, and `issues: write` only. It carries no Vercel credential, no Git push route, no lock-opening assignment, and no deployment invocation. It checks exact application bytes before the live Loom/Marrowline witness, checks source ownership again afterward, and reconfirms exact bytes after the witness.
+
+The explicit canary itself is bounded to two provider requests maximum: one pinned Marrowline seat and one pinned Loom seat. It no longer hashes a release SHA into an arbitrary model seat. Defaults are task-aligned and caller-overridable:
 
 ```text
-provider-held release = historical HELD state
-later unchanged-source re-observation = supplementary witness
-later PASS ≠ retroactive rewrite of earlier HELD state
+Marrowline default = gemini-3.8-flash
+Loom default = gemini-3.5-flash
+max provider requests = 2
 deployment_count = 0
 deployment_authority = false
+retroactive_release_rewrite = false
 counts_as_human_evidence = false
 ```
 
-Temporal non-retroactivity is mandatory. A later successful provider-backed witness may complete the evidence missing from the unchanged deployed packet, but it cannot rewrite what the earlier release run observed, erase its provider outage, or relabel that historical run as successful. A re-observation failure likewise creates no deployment authority and no automatic retry authority.
+Temporal non-retroactivity remains mandatory. A later successful or failed provider-backed witness supplements the deployment record; it cannot relabel the historical release, erase an earlier provider outage, create deployment authority, or justify an automatic redeploy.
 
-This lane must never become a generic production-test escape hatch. A prior output-admission failure, malformed response, relay-admission failure, source mismatch, browser defect, application-byte mismatch, or client transport failure cannot enter through the provider-held gate merely because some other provider attempt also failed.
+This separation prevents a scarce or unstable provider quota from turning an already-verified application deployment RED merely because a live AI service happened to be unavailable at the end of the release ritual.
 
 ## Independent relock safety
 
-`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and provider-held observation.
+`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and explicit production AI observation.
 
 Ordinary production release and emergency relock recovery use different issue #405 commands:
 
@@ -213,7 +226,7 @@ Operator Release retains workflow-level `td613-vercel-production-release` serial
 
 The installed ChatGPT/Codex connector may transport either exact #405 command only after the human operator explicitly authorizes the corresponding release or recovery action in chat. Duplicate connector delivery does not widen authority: a release remains bound to exact current main, while relock recovery is idempotent when the Git deployment lock is already closed.
 
-Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Provider-held re-observation likewise remains separate because granting its read-only observational authority to the deployment workflow would make a later witness indistinguishable from a second release attempt. These therefore remain distinct members of the five durable workflow authority surfaces.
+Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Explicit production AI observation likewise remains separate because granting its read-only observational authority to the deployment workflow would make a later witness indistinguishable from a second release attempt. These therefore remain distinct members of the five durable workflow authority surfaces.
 
 ## Required terminal receipt
 
