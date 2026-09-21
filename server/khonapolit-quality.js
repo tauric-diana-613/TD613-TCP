@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v28-extreme-reference-scale';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v29-severe-morphology-repair-gate';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -88,6 +88,12 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'khonapolit-combining-mark-contamination',
   'tauric-diana-zalgo-absent',
   'tauric-diana-zalgo-underflow'
+]);
+const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
+  'tauric-diana-zalgo-axis-collapse',
+  'tauric-diana-zalgo-vertical-expression-thin',
+  'tauric-diana-zalgo-stack-depth-thin',
+  'tauric-diana-zalgo-ascii-pseudo-ornament'
 ]);
 const safe = (value = '') => String(value ?? '').trim();
 const requestHeader = (req = {}, name = '') => {
@@ -370,6 +376,16 @@ export function repairableKhonapolitAdmission(reasons = []) {
   return values.length > 0 && values.every(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason));
 }
 
+export function severeMorphologyRepairWarnings(warnings = []) {
+  const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
+  const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
+  const horizontalCollapse = values.has('tauric-diana-zalgo-axis-collapse')
+    || values.has('tauric-diana-zalgo-vertical-expression-thin')
+    || values.has('tauric-diana-zalgo-ascii-pseudo-ornament');
+  if (!stackDepthThin || !horizontalCollapse) return [];
+  return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
+}
+
 export function buildGeminiStructuralRepairRequest(
   packet = {},
   apertureReceipt = {},
@@ -380,7 +396,7 @@ export function buildGeminiStructuralRepairRequest(
 ) {
   const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
-    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
+    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason) || REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason))
     .slice(0, 8);
   const {
     analyticStart,
@@ -395,7 +411,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the prior draft had absent or severe-underflow Tauric Diana marks, preserve its substantive prose while authoring the missing stress yourself as an irregular provider-authored High-Zalgo burst field across several Packet B lines. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Do not solve the repair with one repeated visual trick. In multiple regions, put several distinct combining marks above AND several below the same grapheme so some letters form deep towers/wells that can collide with neighboring line space; elsewhere use local planar or oblique combining motion, including mixed-axis clusters, while allowing nearby glyphs to stay light or clean. Use this compact specimen only as a physical-scale reference, never as text to copy: Q̴̧̧̧̛̫̣͔̳̭͍̖̣͎̣̟͎̙͉̯͈̙̣̪̹̭͙͉͉͎̹̺̤̯̩̪̹̠͇͚̹͖͈̹̮̜̑͆̔̇̾͋͌̑̈̿̈́̑̐̌̀̏̎̀͂̏̓͛͊̈́̓̓̆̏̚̕̕͜Ư̸̢̥̳͓͕̏͐̽͌̄͋́̎̅̓̉̔̑͂̔̈́͐̽̾͛͑͋̓̇̀̆͛̈́̄̃̽̂́̓̏̾̍̀̚̚̚͠͝Į̸̡̡̛̗̼͚͈͍̟̠̙̫̝͙͚̹͍̫͎̺̈́̇̒̀͆̊̊̉̑͑̈̈́̎̈̇̔̕͜͝͝Ş̸͔̠̙̪͚͙͕̺͑̽̍̇̑̀͊̽͌̀̎̑̎͛̎͝. At the loud end, a few neighboring bases may carry dozens of heterogeneous marks and visibly escape ordinary line-height above and below; the base letters may become partially obscured. Never spread one shallow accent across every capital and never turn a whole sentence into one continuous strike-through sheet. Literal ASCII /, \\, |, _, = and repeated hyphens may remain when they are substantive punctuation, but they never count as Zalgo ornament and must not be sprayed between words as a substitute for combining marks. Preserve burst/quiet contrast, species diversity, and cadence-driven variation; do not simplify loud clusters for readability. Preserve protected literals and do not use a numeric quota.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B’s combining field yourself. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. A horizontal-only scratch field, slash-heavy pseudo-ornament, or polite one-accent typography is still defective when stack depth is thin. In multiple separate regions, attach several distinct combining marks above AND several below the SAME grapheme so real towers/wells visibly escape ordinary line-height; braid local planar or oblique cuts through some clusters without letting those cuts become the whole field. Use this compact specimen only as a physical-scale reference, never as text to copy: Q̴̧̧̧̛̫̣͔̳̭͍̖̣͎̣̟͎̙͉̯͈̙̣̪̹̭͙͉͉͎̹̺̤̯̩̪̹̠͇͚̹͖͈̹̮̜̑͆̔̇̾͋͌̑̈̿̈́̑̐̌̀̏̎̀͂̏̓͛͊̈́̓̓̆̏̚̕̕͜Ư̸̢̥̳͓͕̏͐̽͌̄͋́̎̅̓̉̔̑͂̔̈́͐̽̾͛͑͋̓̇̀̆͛̈́̄̃̽̂́̓̏̾̍̀̚̚̚͠͝Į̸̡̡̛̗̼͚͈͍̟̠̙̫̝͙͚̹͍̫͎̺̈́̇̒̀͆̊̊̉̑͑̈̈́̎̈̇̔̕͜͝͝Ş̸͔̠̙̪͚͙͕̺͑̽̍̇̑̀͊̽͌̀̎̑̎͛̎͝. At the loud end, a few neighboring bases may carry dozens of heterogeneous marks and visibly invade the lines above and below; the base letters may become partially obscured. Keep burst/quiet contrast and varied mark species. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as Zalgo ornament. Do not use a numeric quota and do not simplify loud clusters for readability.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -757,7 +773,9 @@ export default async function handler(req, res) {
     ) {
       const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
-      if (repairRelay.admission?.admissible) {
+      const unresolvedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
+      repairAttempt.unresolvedSevereMorphology = unresolvedMorphologyWarnings;
+      if (repairRelay.admission?.admissible && unresolvedMorphologyWarnings.length === 0) {
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: repairResult.text,
@@ -998,6 +1016,23 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
+        const severeMorphologyWarnings = severeMorphologyRepairWarnings(qualityWarnings);
+        if (severeMorphologyWarnings.length > 0) {
+          const candidate = {
+            model,
+            fallback,
+            heldText: result.text,
+            reasons: severeMorphologyWarnings,
+            providerOutput,
+            sourceAttemptIndex: attempts.length - 1
+          };
+          const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
+          if (repaired) return repaired;
+          // One failed same-seat repair may not launder the same horizontal-only
+          // morphology back into a successful human-visible return. Continue the
+          // distinct frontier seats; if none escape the severe signature, HOLD.
+          continue;
+        }
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: result.text,
@@ -1098,7 +1133,11 @@ export default async function handler(req, res) {
   }
 
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
-  const heldByQuality = structuralFailures.length > 0;
+  const severeMorphologyFailures = attempts.filter((attempt) =>
+    attempt.outputAdmission?.quality === 'PARTIAL'
+    && severeMorphologyRepairWarnings(attempt.outputAdmission?.qualityWarnings || []).length > 0
+  );
+  const heldByQuality = structuralFailures.length > 0 || severeMorphologyFailures.length > 0;
   const rateLimitedAttempts = attempts.filter((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
@@ -1114,8 +1153,14 @@ export default async function handler(req, res) {
     diagnostic: heldByQuality
       ? {
           stage: 'output-admission',
-          code: 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
-          rejectedAttempts: structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
+          code: severeMorphologyFailures.length > 0 ? 'ATTRACTOR_MORPHOLOGY_NOT_ADMITTED' : 'ATTRACTOR_STRUCTURE_NOT_ADMITTED',
+          rejectedAttempts: [
+            ...structuralFailures.map((attempt) => ({ model: attempt.model, reasons: attempt.outputAdmission.reasons })),
+            ...severeMorphologyFailures.map((attempt) => ({
+              model: attempt.model,
+              reasons: severeMorphologyRepairWarnings(attempt.outputAdmission?.qualityWarnings || [])
+            }))
+          ],
           quotaEntitlement: entitlementMismatchAttempts.length ? {
             expectedDailyLimit: expectedDailyRpd(),
             providerReportedLimits: [...new Set(entitlementMismatchAttempts.map((attempt) => attempt.rateLimit?.limit).filter(Number.isFinite))],
