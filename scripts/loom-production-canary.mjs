@@ -10,21 +10,20 @@ const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 const origin = new URL(base).origin;
 const requestId = `release-canary-${Date.now()}`;
 const marrowlineRequestId = `marrowline-release-canary-${Date.now()}`;
-const RELEASE_CANARY_MODELS = Object.freeze([
+const LOOM_CANARY_MODELS = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.5-flash',
   'gemini-3.6-flash',
   'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
-// The live AI canary is now an explicit observation surface rather than a deployment
-// success gate. Use stable task-aligned defaults instead of hash-rotating a release
-// onto an arbitrary model seat; callers may still override each seat deliberately.
-const requestedMarrowlineCanaryModel = String(process.env.TD613_MARROWLINE_CANARY_MODEL || 'gemini-3.8-flash').trim();
+// This explicit observation must exercise Marrowline exactly as a skeptical human
+// operator would: no canary pin, no one-seat shortcut, and no local morphology repair.
+// The production route itself owns its bounded five-seat failover plus its one
+// provider-authored structural repair. Loom remains a deliberately pinned one-seat
+// witness so the independent second route stays bounded and non-load-bearing.
 const requestedLoomCanaryModel = String(process.env.TD613_LOOM_CANARY_MODEL || 'gemini-3.5-flash').trim();
-if (!RELEASE_CANARY_MODELS.includes(requestedMarrowlineCanaryModel)) throw new Error(`Unsupported Marrowline canary model: ${requestedMarrowlineCanaryModel}`);
-if (!RELEASE_CANARY_MODELS.includes(requestedLoomCanaryModel)) throw new Error(`Unsupported Loom canary model: ${requestedLoomCanaryModel}`);
-const marrowlineCanaryModel = requestedMarrowlineCanaryModel;
+if (!LOOM_CANARY_MODELS.includes(requestedLoomCanaryModel)) throw new Error(`Unsupported Loom canary model: ${requestedLoomCanaryModel}`);
 const loomCanaryModel = requestedLoomCanaryModel;
 const input = {
   schema: 'td613.loom.ai-task/v0.1',
@@ -49,7 +48,7 @@ if (!Array.isArray(input.documents) || input.documents.length !== 3 || !Array.is
 
 fs.mkdirSync(artifactDir, { recursive: true });
 
-async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canaryModel = '' } = {}) {
+async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { releaseCanary = true, canaryModel = '' } = {}) {
   let httpStatus = 0;
   let payload = null;
   let transportError = null;
@@ -62,7 +61,7 @@ async function postJson(url, body, timeoutMs = LIVE_WITNESS_TIMEOUT_MS, { canary
         'origin': origin,
         'sec-fetch-site': 'same-origin',
         'cache-control': 'no-cache',
-        'x-td613-release-canary': '1',
+        ...(releaseCanary ? { 'x-td613-release-canary': '1' } : {}),
         ...(canaryModel ? { 'x-td613-canary-model': canaryModel } : {})
       },
       body: JSON.stringify(body),
@@ -83,9 +82,10 @@ const marrowlineUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
 // These are independent production witnesses, not a concurrency/load test. Running
 // both provider-backed routes at once can make the release probe itself contend for
 // the same provider budget and falsify interactive liveness. Observe Marrowline
-// first, then Loom, while preserving the full admission requirements for each.
+// first through its ordinary production routing, then Loom through one pinned seat,
+// while preserving the full admission requirements for each.
 const canaryStartedAt = Date.now();
-const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: marrowlineCanaryModel });
+const marrowlineResult = await postJson(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, { releaseCanary: false });
 const marrowlinePayload = marrowlineResult.payload;
 const marrowlineDiagnostic = marrowlinePayload?.diagnostic && typeof marrowlinePayload.diagnostic === 'object'
   ? marrowlinePayload.diagnostic
@@ -100,7 +100,8 @@ const marrowlineCheckpoint = {
   route: 'marrowline',
   request_id: marrowlineRequestId,
   witness_timeout_ms: LIVE_WITNESS_TIMEOUT_MS,
-  model: marrowlineCanaryModel,
+  routing_mode: 'interactive-five-seat-frontier',
+  model: null,
   http_status: marrowlineResult.httpStatus || null,
   diagnostic_stage: typeof marrowlineDiagnostic?.stage === 'string' ? marrowlineDiagnostic.stage : null,
   diagnostic_code: typeof marrowlineDiagnostic?.code === 'string' ? marrowlineDiagnostic.code : null,
@@ -110,7 +111,7 @@ const marrowlineCheckpoint = {
 };
 fs.writeFileSync(path.join(artifactDir, 'marrowline-transport-checkpoint.json'), `${JSON.stringify(marrowlineCheckpoint, null, 2)}\n`);
 console.log(`[loom-production-canary] checkpoint ${JSON.stringify(marrowlineCheckpoint)}`);
-const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { canaryModel: loomCanaryModel });
+const loomResult = await postJson(loomUrl, input, LIVE_WITNESS_TIMEOUT_MS, { releaseCanary: true, canaryModel: loomCanaryModel });
 const canaryElapsedMs = Date.now() - canaryStartedAt;
 const { httpStatus, payload, transportError } = loomResult;
 
@@ -251,7 +252,7 @@ const releaseConsumptionEvents = [
     route: 'release-witness:loom',
     release_witness: true
   })))
-].slice(0, 2);
+].slice(0, 7);
 const releaseGeminiConsumption = {
   schema: 'td613.gemini-consumption-release-witness/v0.1',
   coverage: 'this-release-witness-only',
@@ -268,12 +269,13 @@ const receipt = {
   request_count: 2,
   request_execution: 'serial-independent',
   release_canary_budget: {
-    posture: 'explicit-observation-only-one-seat-per-route',
+    posture: 'explicit-observation-marrowline-operator-parity-plus-one-seat-loom',
     max_http_requests: 2,
-    max_provider_requests: 2,
-    marrowline_model: marrowlineCanaryModel,
+    max_provider_requests: 7,
+    marrowline_routing: 'interactive-five-seat-frontier',
+    marrowline_provider_seat_ceiling: 5,
+    marrowline_structural_repair_ceiling: 1,
     loom_model: loomCanaryModel,
-    marrowline_structural_repair_ceiling: 0,
     loom_provider_seat_ceiling: 1
   },
   request_order: ['marrowline', 'loom'],
@@ -298,7 +300,7 @@ const receipt = {
   gemini_consumption: releaseGeminiConsumption,
   marrowline_live_route: {
     request_id: marrowlineRequestId,
-    canary_model: marrowlineCanaryModel,
+    routing_mode: 'interactive-five-seat-frontier',
     http_status: marrowlineResult.httpStatus || null,
     transport_error_class: marrowlineResult.transportError,
     elapsed_ms: boundedCount(marrowlineResult.elapsedMs),
