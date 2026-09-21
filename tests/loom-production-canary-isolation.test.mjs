@@ -83,7 +83,9 @@ assert.match(source, /count <= LIVE_WITNESS_TIMEOUT_MS/, 'long stage timing evid
 assert.match(source, /provider_stream:\s*attempt\?\.providerStream/, 'production receipts must preserve bounded provider stream progress');
 assert.match(source, /Array\.isArray\(marrowlinePayload\?\.attempts\)/, 'held Marrowline responses must preserve provider-attempt evidence');
 assert.match(source, /diagnostic:\s*boundedRouteDiagnostic\(marrowlinePayload\?\.diagnostic\)/, 'held Marrowline responses must preserve bounded diagnostic evidence');
-assert.match(source, /if \(!receipt\.marrowline_live_route\.relay_admitted\)/, 'serial isolation must not weaken relay admission');
+assert.doesNotMatch(source, /throw new Error\('Marrowline production canary returned a non-admitted relay\.'\)/, 'local admission cannot veto a nonempty human-surface Marrowline return');
+assert.match(source, /human_surface_returned:/, 'receipt must record the human-surface success boundary independently of local admission');
+assert.match(source, /LOCAL_ADMISSION_NONBLOCKING/, 'non-admitted local structure remains visible diagnostic evidence');
 assert.match(source, /if \(!receipt\.answer_nonempty\)/, 'serial isolation must not weaken Loom answer admission');
 assert.match(source, /const loomProviderLivenessHeld = !transportError/);
 assert.match(source, /attempt\.status === 429 \|\| attempt\.status === 503/);
@@ -91,9 +93,14 @@ assert.match(source, /PROVIDER_LIVENESS_HELD_NONBLOCKING/);
 assert.match(source, /loom_provider_liveness_nonblocking: loomProviderLivenessHeld/);
 assert.match(reobserveWorkflow, /Classify bounded live AI observation/);
 assert.match(reobserveWorkflow, /marrowline_status=PASS/);
+assert.match(reobserveWorkflow, /marrowline_local_admission=\$\{localAdmission\}/);
+assert.match(reobserveWorkflow, /marrowline\?\.answer_nonempty !== true/);
+assert.match(reobserveWorkflow, /marrowline\?\.human_surface_returned !== true/);
+assert.doesNotMatch(reobserveWorkflow, /marrowline\?\.relay_admitted !== true/);
 assert.match(reobserveWorkflow, /loom_status=\$\{loomStatus\}/);
 assert.match(reobserveWorkflow, /production_loom_demo1_canary = \$LOOM_STATUS/);
 assert.match(reobserveWorkflow, /marrowline_live_route = \$MARROWLINE_STATUS/);
+assert.match(reobserveWorkflow, /marrowline_local_admission = \$MARROWLINE_LOCAL_ADMISSION/);
 
 
 console.log('loom-production-canary-isolation.test.mjs passed');
