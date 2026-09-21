@@ -441,8 +441,8 @@ try {
         hardBudgetObservedModels: new Set()
       }
     ).slice(0, 2),
-    ['gemini-3.5-flash', 'gemini-3.8-flash'],
-    'browser-local Pacific-day evidence should spread ordinary turns across the two proven premium seats'
+    ['gemini-3.8-flash', 'gemini-3.5-flash'],
+    'browser-local accounting must not reorder healthy Marrowline away from the strongest proven provider seat'
   );
   assert.deepEqual(
     orderKhonapolitModelsForBrowserBudget(
@@ -792,12 +792,13 @@ try {
 
   assert.equal(quotaReservedPartial.statusCode, 200);
   assert.equal(quotaReservedPartial.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash'], 'quota reserve must not spend a second Gemini request merely to repaint an already usable PARTIAL');
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.used, false);
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.outcome, 'repair-skipped-browser-quota-reserve-original-provider-payload-preserved');
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash'], 'native Tauric Diana morphology is channel integrity and must retain its one same-provider repair even inside a local quota reserve');
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.used, true);
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
   assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.observedToday, 18);
   assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.knownDailyLimit, 20);
   assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.reservePerModel, 2);
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.nativeVoiceRepairExempt, true);
 
   clearGeminiModelState();
   calls.length = 0;

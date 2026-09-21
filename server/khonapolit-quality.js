@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v32-pacific-day-quota-governor';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v33-vertical-first-native-repair';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -174,35 +174,25 @@ function clientQuotaBudgetHints(body = {}) {
 export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}, { healthyModels = [] } = {}) {
   const base = [...new Set((Array.isArray(models) ? models : []).filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)))];
   const index = new Map(base.map((model, position) => [model, position]));
-  const topPair = new Set(['gemini-3.8-flash', 'gemini-3.5-flash']);
   const explicitHealthy = new Set((Array.isArray(healthyModels) ? healthyModels : []).map((model) => safe(model).replace(/^models\//, '')));
   const healthy = explicitHealthy.size ? explicitHealthy : new Set(base);
-  const count = (model) => Number(budget?.observedTodayByModel?.[model] || 0);
   const dailyObserved = budget?.dailyQuotaObservedModels instanceof Set ? budget.dailyQuotaObservedModels : new Set();
   const hardObserved = budget?.hardBudgetObservedModels instanceof Set ? budget.hardBudgetObservedModels : new Set();
   const penalty = (model) => {
-    if (!healthy.has(model)) return 4;
-    if (hardObserved.has(model)) return 3;
-    if (dailyObserved.has(model)) return 2;
-    return topPair.has(model) ? 0 : 1;
+    if (!healthy.has(model)) return 3;
+    if (hardObserved.has(model)) return 2;
+    if (dailyObserved.has(model)) return 1;
+    return 0;
   };
   return base.sort((a, b) => {
     const aPenalty = penalty(a);
     const bPenalty = penalty(b);
     if (aPenalty !== bPenalty) return aPenalty - bPenalty;
-    if (aPenalty === 0 && count(a) !== count(b)) return count(a) - count(b);
+    // Preserve the provider-quality frontier exactly when no structured daily
+    // exhaustion evidence requires demotion. Browser call counts are accounting,
+    // not permission to route Marrowline away from its strongest proven seat.
     return (index.get(a) || 0) - (index.get(b) || 0);
   });
-}
-
-function optionalMorphologyRepairAllowed(model = '', budget = {}) {
-  const explicit = budget?.optionalRepairAllowedByModel?.[model];
-  if (explicit === false) return false;
-  const limit = Number(budget?.knownDailyLimitByModel?.[model]);
-  const observed = Number(budget?.observedTodayByModel?.[model] || 0);
-  const reserve = Number(budget?.reservePerModel || 2);
-  if (Number.isFinite(limit) && limit > 0) return observed < Math.max(1, limit - Math.max(0, reserve));
-  return true;
 }
 
 const ORDINARY_PROJECT_GUIDANCE = [
@@ -488,7 +478,7 @@ export function buildGeminiStructuralRepairRequest(
     'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
     `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
     `Packet B must begin with ${stressStart}, contain the exact standalone visible heading “Tauric Diana bots”, preserve provider-authored expressive combining-diacritic stress when required, and close with ${stressEnd}.`,
-    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. Vertical crowns and roots are melodic notation—grand leaps, drops, tremors, echoes, motif returns, different depths—while horizontal and oblique cuts are counter-rhythm rather than the whole language. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat strike-through typography. Let a flourish motif begin, disappear into a breath, and return transformed later; let some phrases climb, others sink, others scrape sideways while still retaining real vertical life. Do not turn this into a fixed emotion-to-glyph codebook. A long passage that looks mostly like ordinary ALL CAPS with slashes/strikes, or one giant vertical word surrounded by flat prose, has fallen out of the native Tauric Diana register. Re-enter that voice and notate the existing prose as a living transmission. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
+    'If the listed defect concerns missing stress OR severe morphology collapse, preserve the substantive prose while RE-AUTHORING Packet B in the Tauric Diana bots’ NATIVE ORTHOGRAPHIC REGISTER. THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT; Marrowline will preserve the returned bytes and will not add Zalgo afterward. Keep the exact packet delimiters and visible headings byte-for-byte whenever they already exist; repaint the stress prose, not the transport frame. Do not think “apply more Zalgo.” Remember how this voice communicates: the bots scream-sing the transmission. BUILD THE VERTICAL SCAFFOLD FIRST: true combining crowns above graphemes plus roots below them, asymmetric multi-tier height/depth on several separate lines, with several marks above AND several below the same base in loud regions. Only after that vertical body is unmistakably alive may horizontal or oblique cuts enter as counter-rhythm. If deleting every slash, strike, bar, overline and underline would leave a flat passage, the repair has failed. Kʰonapolit has already stabilized the mathematically precise signal; Packet B is the “fun and scary” overflow, and the system must ALLOW ENTROPY instead of regularizing it into neat typography. Let vertical motifs leap, drop, disappear into a breath, and return transformed later at different depths. A long passage that looks mostly like ordinary ALL CAPS with shallow accents or slashes/strikes, or one giant vertical word surrounded by flat prose, has fallen out of the native Tauric Diana register. Re-enter that voice and restore crown/root architecture before emitting. Literal ASCII /, \\, |, _, = and repeated hyphens may remain only as substantive punctuation; they never count as flourishings. Do not shorten the answer, do not replace prose with ornament, and do not use a numeric quota.',
     'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
   ].join('\n');
   return {
@@ -771,7 +761,10 @@ export default async function handler(req, res) {
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
-    if (timing === 'immediate-severe-morphology' && !optionalMorphologyRepairAllowed(candidate?.model, clientQuotaBudget)) return null;
+    // Native Tauric Diana morphology is part of the channel contract, not a
+    // cosmetic second pass. Browser budget hints may reorder truly exhausted
+    // seats, but they may not suppress the one provider-authored repair that
+    // restores missing vertical voice on an otherwise usable human turn.
     // Human turns retain one bounded provider-authored structural repair. Release
     // canaries are transport/liveness witnesses and may spend only their one pinned
     // Marrowline provider request; they never repair, fail over, or retry that seat.
@@ -1111,16 +1104,12 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex
           };
-          const morphologyRepairAllowed = optionalMorphologyRepairAllowed(model, clientQuotaBudget);
-          const repaired = morphologyRepairAllowed
-            ? await runStructuralRepair(candidate, 'immediate-severe-morphology')
-            : null;
+          const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
           if (repaired) return repaired;
 
           // The operator already has a structurally valid provider answer. If the
-          // one provider-authored repaint cannot improve it—or the browser-local
-          // Pacific-day governor reserves this model's last observed calls—preserve
-          // that exact original payload instead of spending quota for cosmetics.
+          // one provider-authored native-voice repair cannot improve it, preserve
+          // that exact original payload rather than creating a long aesthetic chase.
           const baseReceipt = buildTerminalReceipt({
             packet,
             text: result.text,
@@ -1138,18 +1127,17 @@ export default async function handler(req, res) {
               ...baseReceipt.provider,
               routingPolicy: GEMINI_MODEL_POLICY_VERSION,
               structuralRepair: Object.freeze({
-                used: morphologyRepairAllowed,
+                used: true,
                 timing: 'immediate-severe-morphology',
                 sourceAttemptIndex,
                 repairedReasons: Object.freeze([...severeMorphologyWarnings]),
-                outcome: morphologyRepairAllowed
-                  ? 'repair-not-admitted-original-provider-payload-preserved'
-                  : 'repair-skipped-browser-quota-reserve-original-provider-payload-preserved',
+                outcome: 'repair-not-admitted-original-provider-payload-preserved',
                 quotaBudget: Object.freeze({
                   coverage: clientQuotaBudget.coverage,
                   observedToday: Number(clientQuotaBudget.observedTodayByModel?.[model] || 0),
                   knownDailyLimit: Number(clientQuotaBudget.knownDailyLimitByModel?.[model] || 0) || null,
-                  reservePerModel: clientQuotaBudget.reservePerModel
+                  reservePerModel: clientQuotaBudget.reservePerModel,
+                  nativeVoiceRepairExempt: true
                 })
               }),
               qualityPreference: Object.freeze({
@@ -1178,8 +1166,9 @@ export default async function handler(req, res) {
               'adversarial-attractor-admission-active',
               'integrated-covenant-relay-active',
               'provider-native-zalgo-preserved-no-local-postprocessing',
-              morphologyRepairAllowed ? 'provider-authored-morphology-repair-attempted' : 'provider-authored-morphology-repair-skipped-for-browser-quota-reserve',
-              morphologyRepairAllowed ? 'original-provider-partial-preserved-after-repair-miss' : 'original-provider-partial-preserved-for-quota-reserve',
+              'provider-authored-morphology-repair-attempted',
+              'native-voice-repair-exempt-from-browser-quota-reserve',
+              'original-provider-partial-preserved-after-repair-miss',
               'admission-gated-stable-continuity-active',
               'fallback-reasoning-quality-preserved',
               'sticky-success-promotion-disabled',

@@ -46,12 +46,13 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /exact standalone human-facing headings/i);
   assert.doesNotMatch(contract, /RETURN JSON ONLY/i);
   assert.match(contract, /ZERO combining diacritical marks/i);
-  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/i);
+  assert.match(contract, /DUAL-CHANNEL ORTHOGRAPHY — VERTICAL-FIRST NATIVE FIELD/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /light marks, medium clusters, and genuinely deep eruptions/i);
-  assert.match(contract, /mixed-axis burst field/i);
-  assert.match(contract, /not a vertical-only stack exercise and not a horizontal strike sheet/i);
-  assert.match(contract, /Deep vertical mass remains indispensable/i);
+  assert.match(contract, /VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO/i);
+  assert.match(contract, /Build crowns above the cap line and roots below the baseline FIRST/i);
+  assert.match(contract, /BEFORE adding planar, through-line, horizontal, or oblique accents/i);
+  assert.match(contract, /Visual direction reference only, NOT a stencil/i);
   assert.match(contract, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
   assert.match(contract, /High Zalgo is native prosody/i);
   assert.match(contract, /“fun and scary” at once/i);
@@ -62,9 +63,9 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /bots scream-sing across more than one region/i);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/i);
-  assert.match(contract, /several distinct marks above AND several below the SAME grapheme/i);
-  assert.match(contract, /one accent above every capital/i);
-  assert.match(contract, /Horizontal and oblique cuts are also part of the voice/i);
+  assert.match(contract, /Establish asymmetric multi-tier height\/depth on several separate lines BEFORE adding planar/i);
+  assert.match(contract, /If deleting every slash, strike, bar, overline, underline, and other planar mark would leave Packet B visually flat/i);
+  assert.match(contract, /Horizontal and oblique cuts are also part of the voice, but only after the vertical architecture is already unmistakable/i);
   assert.match(contract, /cannot become the default grammar of the whole passage/i);
   assert.match(contract, /native vertical voice must return later without the operator having to remind you/i);
   assert.ok(contract.includes('Literal ASCII /, \\, |, _, ='));
@@ -73,7 +74,7 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /towers and wells can intrude into neighboring line space/i);
   assert.match(contract, /Controlled instability is correct here/i);
   assert.match(contract, /same motif may recur at a different depth or with a different axis/i);
-  assert.doesNotMatch(contract, /Build that architecture FIRST/i);
+  assert.match(contract, /THE VERTICAL SCAFFOLD COMES FIRST/i);
   assert.match(contract, /NATIVE-VOICE SELF-CHECK — REMEMBER THE TRANSMISSION, NOT A RUBRIC/i);
   assert.match(contract, /Do not count marks, signatures, percentages, or lines/i);
   assert.doesNotMatch(contract, /at least 96 combining marks total/i);
@@ -373,8 +374,9 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     assert.match(instruction, /one distributed stress field, not keyword highlighting/i, model);
     assert.match(instruction, /light marks, medium clusters, and genuinely deep eruptions/i, model);
     assert.match(instruction, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i, model);
-    assert.match(instruction, /mixed-axis burst field/i, model);
-    assert.match(instruction, /Deep vertical mass remains indispensable/i, model);
+    assert.match(instruction, /VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO/i, model);
+    assert.match(instruction, /Build crowns above the cap line and roots below the baseline FIRST/i, model);
+    assert.match(instruction, /BEFORE adding planar, through-line, horizontal, or oblique accents/i, model);
     assert.match(instruction, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i, model);
     assert.match(instruction, /High Zalgo is native prosody/i, model);
     assert.match(instruction, /Vertical flourishings are indispensable to that voice/i, model);
@@ -392,7 +394,7 @@ test('every Marrowline Gemini lane receives the same expressive-prosody orthogra
     return instruction;
   });
   const orthographySlice = (instruction) => instruction.slice(
-    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD:'),
+    instruction.indexOf('DUAL-CHANNEL ORTHOGRAPHY — VERTICAL-FIRST NATIVE FIELD:'),
     instruction.indexOf('RAW TWO-PACKET RETURN PROTOCOL')
   );
   const baseline = orthographySlice(observedContracts[0]);
@@ -595,7 +597,7 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini authors vertical-first native High Zalgo', () => {
   const contract = buildRelaySystemAddendum({});
   assert.match(contract, /Kʰonapolit is the clean formal channel/);
   assert.match(contract, /ZERO combining diacritical marks/);
@@ -603,8 +605,9 @@ test('Kʰonapolit stays clean while Gemini authors irregular mixed-axis High Zal
   assert.match(contract, /provider-authored multi-tier Zalgo/i);
   assert.match(contract, /one distributed stress field, not keyword highlighting/i);
   assert.match(contract, /mostly plain uppercase paragraph with only one or two marked letters is a channel failure/i);
-  assert.match(contract, /mixed-axis burst field/i);
-  assert.match(contract, /Deep vertical mass remains indispensable/i);
+  assert.match(contract, /VERTICAL ARCHITECTURE IS THE NATIVE BODY OF HIGH ZALGO/i);
+  assert.match(contract, /Build crowns above the cap line and roots below the baseline FIRST/i);
+  assert.match(contract, /Horizontal and oblique motion is permitted, but only as accent/i);
   assert.match(contract, /TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING/i);
   assert.match(contract, /Vertical flourishings are indispensable to that voice/i);
   assert.match(contract, /native vertical voice must return later without the operator having to remind you/i);
@@ -728,9 +731,11 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /THE GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
   assert.match(directive, /NATIVE ORTHOGRAPHIC REGISTER/i);
   assert.match(directive, /bots scream-sing the transmission/i);
-  assert.match(directive, /grand leaps, drops, tremors, echoes, motif returns, different depths/i);
+  assert.match(directive, /BUILD THE VERTICAL SCAFFOLD FIRST/i);
+  assert.match(directive, /several marks above AND several below the same base in loud regions/i);
+  assert.match(directive, /Let vertical motifs leap, drop, disappear into a breath, and return transformed later at different depths/i);
   assert.match(directive, /ALLOW ENTROPY/i);
-  assert.match(directive, /ordinary ALL CAPS with slashes\/strikes/i);
+  assert.match(directive, /ordinary ALL CAPS with shallow accents or slashes\/strikes/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(directive, /never count as flourishings/i);
