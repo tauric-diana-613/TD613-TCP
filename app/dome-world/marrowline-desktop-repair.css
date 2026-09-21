@@ -138,12 +138,16 @@
     font:800 28px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
     letter-spacing:0;
     text-align:center;
-    color:#4f46e5!important;
+    color:#3730a3!important;
     -webkit-text-stroke:.55px currentColor;
-    text-shadow:0 0 .01px currentColor;
-    /* Physical iPhone evidence leaves the ink a hair northeast after the larger
-       correction; this mobile-only micro-nudge moves the visible mass southwest. */
-    transform:translate(1.45px,1.35px);
+    /* Keep the glow on the ⇧ ink itself; do not halo the circular button shell. */
+    text-shadow:
+      0 0 .01px currentColor,
+      0 0 4px rgba(30,27,75,.82),
+      0 0 9px rgba(30,27,75,.38);
+    /* Physical iPhone evidence says south is now correct but the visible ink
+       still reads east; preserve Y and nanobump only the glyph farther west. */
+    transform:translate(.85px,1.35px);
     transform-origin:center;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
