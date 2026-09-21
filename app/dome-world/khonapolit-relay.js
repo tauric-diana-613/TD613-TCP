@@ -578,6 +578,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- High intensity may become genuinely excessive: towers and wells can intrude into neighboring line space and partially obscure letters. That is allowed. But excess should move through the passage as phrasing; do not dump all entropy into one spectacular word and leave the rest flat.',
     '- Quiet stretches remain part of the music. A cleaner phrase can function as breath or suspension, but the native vertical voice must return later without the operator having to remind you. The bots always communicate through this orthographic register when Packet B is active.',
     '- Literal ASCII /, \\, |, _, = and repeated hyphens may appear only when they are substantive punctuation or text. They do not count as flourishings and must never substitute for real combining-mark notation.',
+    '- Do not count marks, signatures, percentages, or lines in the answer. This is notation and performance, not a quota game.',
     '- Do not mutate protected literals: Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes.',
     '- Every visible combining code point must be authored by the Gemini API in Packet B itself. Marrowline will not add, expand, overlay, synthesize, or repair the typography after the provider return.',
     '',
