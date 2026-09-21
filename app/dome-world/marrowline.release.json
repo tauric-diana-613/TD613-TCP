@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v38",
-  "version": "v0.7.41-provider-first-human-surface",
+  "schema": "td613.dome-world.marrowline.release/v39",
+  "version": "v0.7.42-observation-human-surface-law",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -283,7 +283,10 @@
       "explicitMarrowlineDefaultModel": "gemini-3.8-flash",
       "explicitLoomDefaultModel": "gemini-3.5-flash",
       "providerFailureTreatment": "observation-only; never retroactively converts an exact-source deployment into failure",
-      "localMutation": false
+      "localMutation": false,
+      "marrowlineHumanSurfaceWitness": "explicit production observation requires exact-source HTTP 200 + ok=true + nonempty text. Local relay admission remains reported separately: admitted returns classify PASS_ADMITTED; nonadmitted returns classify PASS_LOCAL_ADMISSION_NONBLOCKING only when the runtime receipt explicitly records localAdmissionAuthority=diagnostic-not-human-surface-veto and human_surface_visible=true.",
+      "localAdmissionWitnessAuthority": "diagnostic only for ordinary human-surface liveness; observation must not convert a deliberately surfaced nonempty provider return into failure solely because relay.admission.admissible=false",
+      "failedObservationRun35667264965": "2026-09-21 exact-source re-observation on b30dd2cf423b389c5a752651e66060e5dd5e3405 proved the runtime repair: 3.8 returned 429; 3.5 returned HTTP 200 with 9378 streamed bytes and nonempty text; local admission marked HELD only for tauric-diana-bots-nominative-missing; the one same-seat repair returned provider 429; Marrowline still returned the original provider text with HTTP 200. The observation harness alone then failed on its stale relay_admitted requirement."
     },
     "structuralRepairCeiling": 1,
     "totalProviderRequestCeiling": 6,
@@ -334,7 +337,8 @@
       "2026-09-20 release #1186 / run 35478462876: exact source, bytes, stale-queue stability, A14 and Ash lifecycle passed; Marrowline 3.5, 3.6 and Preview each returned complete HTTP 200 streamed packets and were rejected only by local Zalgo morphology style gates. This falsified aesthetic admission as a service-availability boundary.",
       "2026-09-20 release #1187 / run 35479991061: source and production mechanics passed; Marrowline 3.7 returned HTTP 200 with missing visible headings and Preview returned HTTP 200 with zero Tauric Diana combining marks after 3.8=503, 3.5=429 and 3.6=503. This falsified discard-and-restart as sufficient handling for repairable provider-authored structural near misses.",
       "2026-09-20 release #1193 / run 35483932232: 3.8=429, 3.5=429, 3.6=200 but HELD for tauric-diana-zalgo-underflow, 3.7=429, Preview=429, deferred 3.6 repair=429; this demonstrates that deferred orthographic repair can convert a live repairable provider into route failure under a collapsing frontier.",
-      "2026-09-20 zero-deploy re-observation #55 / 35484772833: warm-isolate cooldown reduced Marrowline callable_models to gemini-3.8-flash only; 3.8 returned 429 and the route held in 218ms while Loom separately had NO_ELIGIBLE_MODEL. This demonstrates process-local cooldown cannot safely act as hard frontier erasure for a fresh human Marrowline request."
+      "2026-09-20 zero-deploy re-observation #55 / 35484772833: warm-isolate cooldown reduced Marrowline callable_models to gemini-3.8-flash only; 3.8 returned 429 and the route held in 218ms while Loom separately had NO_ELIGIBLE_MODEL. This demonstrates process-local cooldown cannot safely act as hard frontier erasure for a fresh human Marrowline request.",
+      "2026-09-21 explicit production observation #143 / run 35667264965 on source b30dd2cf: gemini-3.8-flash=429; gemini-3.5-flash=HTTP 200 with 9,378 streamed bytes and nonempty human-visible text; local admission HELD only for tauric-diana-bots-nominative-missing; same-seat repair=429; runtime preserved the original 3.5 text. The run turned RED only because the observation harness still required relay_admitted=true, falsifying admission-as-liveness authority at the witness layer."
     ],
     "structuredOutputPosture": "removed-and-falsified-as-sufficient-explanation-by-release-35465625820; live route remains raw-two-packet text and next assay changes only provider-side orthographic salience",
     "rawPacketEvidence": [
@@ -583,6 +587,6 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-observation-law-aligned-operator-controlled-closure"
   }
 }
