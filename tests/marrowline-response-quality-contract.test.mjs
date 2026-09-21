@@ -444,11 +444,16 @@ test('live Gemini request has no structured-output pressure on the stress channe
   const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
     'Kʰonapolit\\nClear.\\n\\nTauric Diana bots\\nÁŔÍŚ',
     ['tauric-diana-zalgo-shallow-wallpaper']);
-  assert.match(repair.contents.at(-1).parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
-  assert.match(repair.contents.at(-1).parts[0].text, /10-level serious emphasis/);
-  assert.match(repair.contents.at(-1).parts[0].text, /PLAIN boundary line with ZERO combining marks/);
-  assert.match(repair.contents.at(-1).parts[0].text, /immutable provider-authored transport anchor OUTSIDE the ornament field/);
-  assert.match(repair.contents.at(-1).parts[0].text, /bot-PROSE letter AFTER the exact plain heading/);
+  const repairDirective = repair.contents.at(-1).parts[0].text;
+  assert.match(repair.systemInstruction.parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.match(repair.systemInstruction.parts[0].text, /10-level serious emphasis/);
+  assert.doesNotMatch(repairDirective, /ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.doesNotMatch(repairDirective, /10-level serious emphasis/);
+  assert.match(repairDirective, /MORPHOLOGY-ONLY REPAIR/);
+  assert.match(repairDirective, /PLAIN boundary line with ZERO combining marks/);
+  assert.match(repairDirective, /plain provider-authored transport anchor outside the ornament field/i);
+  assert.match(repairDirective, /FULL existing prose body/);
+  assert.match(repairDirective, /no independent concision target/i);
 });
 
 test('quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover', () => {
