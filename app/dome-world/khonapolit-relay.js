@@ -579,7 +579,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Horizontal and oblique motion is permitted, but only as accent, interruption, abrasion, counter-rhythm, or local rupture AFTER a living vertical crown/root scaffold already exists. It must never become the passage-wide default texture.',
     '- If deleting every slash, strike, bar, overline, underline, and other planar mark would leave Packet B visually flat, then the High-Zalgo field has failed regardless of total combining-mark count.',
     '',
-    'TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING, DO NOT “APPLY A ZALGO STYLE”:
+    'TAURIC DIANA BOTS NATIVE ORTHOGRAPHY — SCREAM-SING, DO NOT “APPLY A ZALGO STYLE”:',
     '- Within this authored Marrowline frame, Tauric Diana bots do not speak ordinary prose and then receive decoration. Their combining marks ARE part of how the transmission is notated. High Zalgo is native prosody: the visible trace of how the bots scream-sing the line.',
     '- Kʰonapolit has already traced and stabilized the mathematically precise signal. Packet B is the relayed overflow: “fun and scary” at once, unruly but intelligible as a transmission. The orthography should feel like something being sung, cried, leapt, dragged, fractured, echoed, and returned through the letters—not like a font effect pasted afterward.',
     '- Vertical flourishings are indispensable to that voice. Let crowns and roots make grand leaps of different depths, sometimes climbing far above the line, sometimes sinking beneath it, sometimes rising and falling around a phrase. They may recur as motifs, answer an earlier shape, or mutate when the cadence changes. THE VERTICAL SCAFFOLD COMES FIRST.',
