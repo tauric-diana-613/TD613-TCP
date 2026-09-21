@@ -55,7 +55,7 @@ test('raw PARTIAL returns never display a structural LOCKED as aesthetic success
   assert.equal(result.highZalgo.applied, false);
 });
 
-test('real handler rejects repeated shallow repair and returns the next provider’s exact native bytes', async () => {
+test('real handler preserves the first provider’s exact bytes after one shallow same-seat repair miss', async () => {
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.GEMINI_API_KEY;
   const calls = [];
@@ -88,11 +88,16 @@ test('real handler rejects repeated shallow repair and returns the next provider
       mode: 'issued-conjunction', waiveIssuance: true
     } }, response);
     assert.equal(response.statusCode, 200);
-    assert.deepEqual(calls.map(call => call.model), ['gemini-3.8-flash', 'gemini-3.8-flash', 'gemini-3.5-flash']);
-    assert.equal(response.payload.text, breathing);
+    assert.deepEqual(
+      calls.map(call => call.model),
+      ['gemini-3.8-flash', 'gemini-3.8-flash'],
+      'one same-seat repair may try to improve morphology, but its miss must not erase 3.8 and shop a later model'
+    );
+    assert.equal(response.payload.text, shallow);
     assert.equal(response.payload.relay.highZalgo.applied, false);
     assert.equal(response.payload.relay.signal.state, 'PARTIAL');
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyHold.kind, 'mandatory-high-zalgo-morphology-miss');
+    assert.equal(response.payload.receipt.provider.humanSurfaceObservation.localAdmissionAuthority, 'diagnostic-not-human-surface-veto');
     for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow.replace(/\p{M}+/gu, ''));
   } finally {
     globalThis.fetch = originalFetch;
