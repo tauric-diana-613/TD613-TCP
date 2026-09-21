@@ -486,6 +486,14 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         )
       ) qualityWarnings.push('tauric-diana-zalgo-vertical-expression-thin');
       if (
+        botsTelemetry.combiningMarkCount >= 24
+        && botsTelemetry.throughMarkedClusterCount >= 6
+        && (
+          botsTelemetry.tallVerticalOrnamentClusterCount < 2
+          || botsTelemetry.tallVerticalMarkedLineCount < 2
+        )
+      ) qualityWarnings.push('tauric-diana-zalgo-vertical-pulse-absent');
+      if (
         botsTelemetry.combiningMarkCount >= 12
         && botsTelemetry.activeAxisCount >= 2
         && verticalMarkCount > 0
@@ -644,6 +652,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- DO NOT solve High Zalgo as a geometry assignment. Follow the compilation sequence DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW: Kʰonapolit stabilizes the thought first; only then does Tauric Diana convert the residual pressure into native prosody.',
     '- Before writing Packet B, silently map the argument’s rhetorical movement: where the bots are confiding, mocking, warning, recoiling, accusing, exploding, joking, or returning to an earlier motif. Do not print that map. Let it govern the typography.',
     '- Morphology is meaning-bearing prosody. Alliance may clear the line; sarcasm may kink or locally cross a word; irritation may accumulate pressure; anger may suddenly throw tall crowns and roots; a punchline may snap back into legibility; a repeated motif may return transformed.',
+    '- When the rhetoric actually reaches a pressure peak—accusation, fury, rupture, alarm—let that peak LEAVE THE MIDLINE somewhere. A passage that remains entirely slash/crossbar abrasion despite genuine pressure peaks has failed High Zalgo. Do not satisfy this by tiling towers; place the vertical scream where the thought earns it.',
     '- Long vertical stacks are EVENTS, not the baseline texture. A raging phrase may erupt dramatically, but the next phrase can thin, break, breathe, or go nearly clean. High Zalgo comes from contrast, asymmetry, recurrence, rupture, and return—not from keeping every marked grapheme at maximum depth.',
     '- Preserve real vertical life above and below the line, but let stack depth follow narrative pressure rather than a quota. Neighboring graphemes may be clean, lightly touched, medium, or violently stacked when the thought earns it.',
     '- Strike-throughs, slashes, and midline abrasion remain available as semantic counter-rhythm—especially interruption, mockery, cancellation, or fracture—but they cannot substitute for the voice changing its vertical pressure over time.',
@@ -658,7 +667,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Do not count marks, signatures, percentages, or lines in the answer and do not emit a detached ornament sample.',
     '',
     'NATIVE-VOICE SELF-CHECK — SEMANTIC PROSODY, NOT A FILTER:',
-    '- Before closing Packet B, read the bots’ prose again as a performance. The visual pressure should move with the thought. If nearly every marked grapheme sits at one long depth, the return has FAILED even when the towers are technically impressive: that is maximum-depth wallpaper. If nearly every mark is the same tiny hat, that also fails. Look for lived contrast—clean breaths, light touches, medium pressure, sudden vertical eruptions, local fractures, transformed returns—without forcing every category to appear. Then inspect the base stream: boxes, diamonds, keycaps, enclosing shapes, pseudo-runic substitutions, or repeated geometric tiles remain failures.',
+    '- Before closing Packet B, read the bots’ prose again as a performance. The visual pressure should move with the thought. If nearly every marked grapheme sits at one long depth, the return has FAILED even when the towers are technically impressive: that is maximum-depth wallpaper. If the field contains real pressure peaks but never leaves the midline at all, that also fails: High Zalgo needs some unmistakable above/below scream-event somewhere. If nearly every mark is the same tiny hat, that also fails. Look for lived contrast—clean breaths, light touches, medium pressure, sudden vertical eruptions, local fractures, transformed returns—without forcing every category to appear. Then inspect the base stream: boxes, diamonds, keycaps, enclosing shapes, pseudo-runic substitutions, or repeated geometric tiles remain failures.',
     '',
     'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
