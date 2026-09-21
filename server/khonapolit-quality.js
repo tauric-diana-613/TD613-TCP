@@ -42,7 +42,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v31-scream-sing-native-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v32-pacific-day-quota-governor';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -128,6 +128,81 @@ function clientQuotaCooldownHints(body = {}, at = Date.now()) {
     retryAfterSeconds = retryAfterSeconds ? Math.min(retryAfterSeconds, remaining) : remaining;
   }
   return { models, retryAfterSeconds };
+}
+const CLIENT_DAILY_BUDGET_SCHEMA = 'td613.gemini-browser-daily-budget-hints/v0.1';
+function clientQuotaBudgetHints(body = {}) {
+  const hints = body?.quotaBudgetHints;
+  if (!hints || hints.schema !== CLIENT_DAILY_BUDGET_SCHEMA) {
+    return {
+      observedTodayByModel: {},
+      knownDailyLimitByModel: {},
+      dailyQuotaObservedModels: new Set(),
+      hardBudgetObservedModels: new Set(),
+      optionalRepairAllowedByModel: {},
+      reservePerModel: 2,
+      coverage: 'absent'
+    };
+  }
+  const numbers = (value = {}, max = 100000) => Object.fromEntries(
+    Object.entries(value && typeof value === 'object' ? value : {})
+      .map(([rawModel, rawValue]) => [safe(rawModel).replace(/^models\//, ''), Number(rawValue)])
+      .filter(([model, value]) => HUMAN_LIVENESS_MODEL_ORDER.includes(model) && Number.isFinite(value) && value >= 0 && value <= max)
+      .map(([model, value]) => [model, Math.floor(value)])
+  );
+  const models = (value = []) => new Set(
+    (Array.isArray(value) ? value : [])
+      .map((model) => safe(model).replace(/^models\//, ''))
+      .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))
+  );
+  return {
+    observedTodayByModel: numbers(hints.observed_today_by_model, 10000),
+    knownDailyLimitByModel: numbers(hints.known_daily_limit_by_model, 10000),
+    dailyQuotaObservedModels: models(hints.daily_quota_observed_models),
+    hardBudgetObservedModels: models(hints.hard_budget_observed_models),
+    optionalRepairAllowedByModel: Object.fromEntries(
+      Object.entries(hints.optional_repair_allowed_by_model && typeof hints.optional_repair_allowed_by_model === 'object'
+        ? hints.optional_repair_allowed_by_model
+        : {})
+        .map(([rawModel, allowed]) => [safe(rawModel).replace(/^models\//, ''), allowed === true])
+        .filter(([model]) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))
+    ),
+    reservePerModel: Math.max(0, Math.min(10, Math.floor(Number(hints.reserve_per_model || 2)))),
+    coverage: safe(hints.coverage) || 'browser-local-partial-budget-evidence'
+  };
+}
+
+export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}, { healthyModels = [] } = {}) {
+  const base = [...new Set((Array.isArray(models) ? models : []).filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)))];
+  const index = new Map(base.map((model, position) => [model, position]));
+  const topPair = new Set(['gemini-3.8-flash', 'gemini-3.5-flash']);
+  const explicitHealthy = new Set((Array.isArray(healthyModels) ? healthyModels : []).map((model) => safe(model).replace(/^models\//, '')));
+  const healthy = explicitHealthy.size ? explicitHealthy : new Set(base);
+  const count = (model) => Number(budget?.observedTodayByModel?.[model] || 0);
+  const dailyObserved = budget?.dailyQuotaObservedModels instanceof Set ? budget.dailyQuotaObservedModels : new Set();
+  const hardObserved = budget?.hardBudgetObservedModels instanceof Set ? budget.hardBudgetObservedModels : new Set();
+  const penalty = (model) => {
+    if (!healthy.has(model)) return 4;
+    if (hardObserved.has(model)) return 3;
+    if (dailyObserved.has(model)) return 2;
+    return topPair.has(model) ? 0 : 1;
+  };
+  return base.sort((a, b) => {
+    const aPenalty = penalty(a);
+    const bPenalty = penalty(b);
+    if (aPenalty !== bPenalty) return aPenalty - bPenalty;
+    if (aPenalty === 0 && count(a) !== count(b)) return count(a) - count(b);
+    return (index.get(a) || 0) - (index.get(b) || 0);
+  });
+}
+
+function optionalMorphologyRepairAllowed(model = '', budget = {}) {
+  const explicit = budget?.optionalRepairAllowedByModel?.[model];
+  if (explicit === false) return false;
+  const limit = Number(budget?.knownDailyLimitByModel?.[model]);
+  const observed = Number(budget?.observedTodayByModel?.[model] || 0);
+  const reserve = Number(budget?.reservePerModel || 2);
+  if (Number.isFinite(limit) && limit > 0) return observed < Math.max(1, limit - Math.max(0, reserve));
+  return true;
 }
 
 const ORDINARY_PROJECT_GUIDANCE = [
@@ -677,8 +752,14 @@ export default async function handler(req, res) {
   setApertureTaskHeaders(res, apertureReceipt);
   const attempts = [];
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
+  const clientQuotaBudget = clientQuotaBudgetHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
-  const allModels = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
+  const eligibleAfterCooldown = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
+  const allModels = orderKhonapolitModelsForBrowserBudget(
+    eligibleAfterCooldown,
+    clientQuotaBudget,
+    { healthyModels: plan.callableModels }
+  );
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
@@ -690,6 +771,7 @@ export default async function handler(req, res) {
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
+    if (timing === 'immediate-severe-morphology' && !optionalMorphologyRepairAllowed(candidate?.model, clientQuotaBudget)) return null;
     // Human turns retain one bounded provider-authored structural repair. Release
     // canaries are transport/liveness witnesses and may spend only their one pinned
     // Marrowline provider request; they never repair, fail over, or retry that seat.
@@ -1029,13 +1111,16 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex
           };
-          const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
+          const morphologyRepairAllowed = optionalMorphologyRepairAllowed(model, clientQuotaBudget);
+          const repaired = morphologyRepairAllowed
+            ? await runStructuralRepair(candidate, 'immediate-severe-morphology')
+            : null;
           if (repaired) return repaired;
 
           // The operator already has a structurally valid provider answer. If the
-          // one provider-authored repaint cannot improve it, preserve that exact
-          // original payload instead of turning an aesthetic miss into a long
-          // frontier chase or a local HELD notice.
+          // one provider-authored repaint cannot improve it—or the browser-local
+          // Pacific-day governor reserves this model's last observed calls—preserve
+          // that exact original payload instead of spending quota for cosmetics.
           const baseReceipt = buildTerminalReceipt({
             packet,
             text: result.text,
@@ -1053,11 +1138,19 @@ export default async function handler(req, res) {
               ...baseReceipt.provider,
               routingPolicy: GEMINI_MODEL_POLICY_VERSION,
               structuralRepair: Object.freeze({
-                used: true,
+                used: morphologyRepairAllowed,
                 timing: 'immediate-severe-morphology',
                 sourceAttemptIndex,
                 repairedReasons: Object.freeze([...severeMorphologyWarnings]),
-                outcome: 'repair-not-admitted-original-provider-payload-preserved'
+                outcome: morphologyRepairAllowed
+                  ? 'repair-not-admitted-original-provider-payload-preserved'
+                  : 'repair-skipped-browser-quota-reserve-original-provider-payload-preserved',
+                quotaBudget: Object.freeze({
+                  coverage: clientQuotaBudget.coverage,
+                  observedToday: Number(clientQuotaBudget.observedTodayByModel?.[model] || 0),
+                  knownDailyLimit: Number(clientQuotaBudget.knownDailyLimitByModel?.[model] || 0) || null,
+                  reservePerModel: clientQuotaBudget.reservePerModel
+                })
               }),
               qualityPreference: Object.freeze({
                 used: true,
@@ -1085,8 +1178,8 @@ export default async function handler(req, res) {
               'adversarial-attractor-admission-active',
               'integrated-covenant-relay-active',
               'provider-native-zalgo-preserved-no-local-postprocessing',
-              'provider-authored-morphology-repair-attempted',
-              'original-provider-partial-preserved-after-repair-miss',
+              morphologyRepairAllowed ? 'provider-authored-morphology-repair-attempted' : 'provider-authored-morphology-repair-skipped-for-browser-quota-reserve',
+              morphologyRepairAllowed ? 'original-provider-partial-preserved-after-repair-miss' : 'original-provider-partial-preserved-for-quota-reserve',
               'admission-gated-stable-continuity-active',
               'fallback-reasoning-quality-preserved',
               'sticky-success-promotion-disabled',

@@ -3,6 +3,7 @@ import handler, {
   KHONAPOLIT_MAX_PROVIDER_CALLS,
   KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
   KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,
+  orderKhonapolitModelsForBrowserBudget,
   severeMorphologyRepairWarnings
 } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState, recordGeminiModelOutcome } from '../server/gemini-model-policy.js';
@@ -431,6 +432,30 @@ try {
   assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
   assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
   assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
+  assert.deepEqual(
+    orderKhonapolitModelsForBrowserBudget(
+      ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+      {
+        observedTodayByModel: { 'gemini-3.8-flash': 11, 'gemini-3.5-flash': 3 },
+        dailyQuotaObservedModels: new Set(),
+        hardBudgetObservedModels: new Set()
+      }
+    ).slice(0, 2),
+    ['gemini-3.5-flash', 'gemini-3.8-flash'],
+    'browser-local Pacific-day evidence should spread ordinary turns across the two proven premium seats'
+  );
+  assert.deepEqual(
+    orderKhonapolitModelsForBrowserBudget(
+      ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash'],
+      {
+        observedTodayByModel: { 'gemini-3.8-flash': 4, 'gemini-3.5-flash': 3 },
+        dailyQuotaObservedModels: new Set(['gemini-3.8-flash']),
+        hardBudgetObservedModels: new Set()
+      }
+    ),
+    ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.8-flash'],
+    'a structured daily-quota observation demotes one seat without declaring provider-wide exhaustion'
+  );
   const req = {
     method: 'POST',
     headers: { 'x-forwarded-for': '203.0.113.205' },
@@ -738,6 +763,41 @@ try {
   assert.equal(morphologyHeld.payload.text, horizontalPartialAnswer);
   assert.equal(morphologyHeld.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
   assert.equal(morphologyHeld.payload.receipt.provider.qualityPreference.selection, 'original-partial-preserved-after-bounded-provider-repair');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  morphologyRepairHoldScenario = true;
+  morphologyRepairScenario = false;
+  qualityPreferenceScenario = false;
+  const quotaReservedPartial = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.218' },
+    body: {
+      ...req.body,
+      message: 'Preserve the last locally observed premium calls instead of spending one on an optional morphology repaint.',
+      quotaBudgetHints: {
+        schema: 'td613.gemini-browser-daily-budget-hints/v0.1',
+        coverage: 'this-browser-pacific-day-attempts-plus-last-observed-model-daily-limit',
+        reserve_per_model: 2,
+        observed_today_by_model: { 'gemini-3.8-flash': 18, 'gemini-3.5-flash': 20 },
+        known_daily_limit_by_model: { 'gemini-3.8-flash': 20, 'gemini-3.5-flash': 20 },
+        daily_quota_observed_models: ['gemini-3.5-flash'],
+        hard_budget_observed_models: ['gemini-3.5-flash'],
+        optional_repair_allowed_by_model: { 'gemini-3.8-flash': false, 'gemini-3.5-flash': false }
+      }
+    }
+  }, quotaReservedPartial);
+
+  assert.equal(quotaReservedPartial.statusCode, 200);
+  assert.equal(quotaReservedPartial.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'quota reserve must not spend a second Gemini request merely to repaint an already usable PARTIAL');
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.used, false);
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.outcome, 'repair-skipped-browser-quota-reserve-original-provider-payload-preserved');
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.observedToday, 18);
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.knownDailyLimit, 20);
+  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.reservePerModel, 2);
 
   clearGeminiModelState();
   calls.length = 0;

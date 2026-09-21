@@ -26,12 +26,13 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 import {
+  currentGeminiDailyBudgetHints,
   currentGeminiQuotaCooldownHints,
   ingestGeminiConsumption,
   summarizeGeminiBrowserLedger
 } from '../gemini-consumption-ledger.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v10-pacific-day-quota-governor';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -595,7 +596,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
       const quotaCooldownHints = currentGeminiQuotaCooldownHints(root);
+      const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       if (quotaCooldownHints.models.length) requestBody.quotaCooldownHints = quotaCooldownHints;
+      requestBody.quotaBudgetHints = quotaBudgetHints;
       if (attachments.length) requestBody.attachments = attachments;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
