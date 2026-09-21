@@ -189,27 +189,16 @@ function clientQuotaBudgetHints(body = {}) {
 }
 
 export function orderKhonapolitModelsForBrowserBudget(models = [], budget = {}, { healthyModels = [] } = {}) {
-  const base = [...new Set((Array.isArray(models) ? models : []).filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model)))];
-  const index = new Map(base.map((model, position) => [model, position]));
-  const explicitHealthy = new Set((Array.isArray(healthyModels) ? healthyModels : []).map((model) => safe(model).replace(/^models\//, '')));
-  const healthy = explicitHealthy.size ? explicitHealthy : new Set(base);
-  const dailyObserved = budget?.dailyQuotaObservedModels instanceof Set ? budget.dailyQuotaObservedModels : new Set();
-  const hardObserved = budget?.hardBudgetObservedModels instanceof Set ? budget.hardBudgetObservedModels : new Set();
-  const penalty = (model) => {
-    if (!healthy.has(model)) return 3;
-    if (hardObserved.has(model)) return 2;
-    if (dailyObserved.has(model)) return 1;
-    return 0;
-  };
-  return base.sort((a, b) => {
-    const aPenalty = penalty(a);
-    const bPenalty = penalty(b);
-    if (aPenalty !== bPenalty) return aPenalty - bPenalty;
-    // Preserve the provider-quality frontier exactly when no structured daily
-    // exhaustion evidence requires demotion. Browser call counts are accounting,
-    // not permission to route Marrowline away from its strongest proven seat.
-    return (index.get(a) || 0) - (index.get(b) || 0);
-  });
+  // Compatibility helper retained for receipts/tests only. Browser-local budget
+  // evidence can describe pressure, never change the settled provider-quality order.
+  // Live provider transport is the only authority that advances the human frontier.
+  void budget;
+  void healthyModels;
+  return [...new Set(
+    (Array.isArray(models) ? models : [])
+      .map((model) => safe(model).replace(/^models\//, ''))
+      .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))
+  )];
 }
 
 const ORDINARY_PROJECT_GUIDANCE = [
