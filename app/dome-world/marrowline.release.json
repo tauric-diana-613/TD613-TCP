@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v31",
-  "version": "v0.7.32-goldilocks-vertical-liveness",
+  "schema": "td613.dome-world.marrowline.release/v32",
+  "version": "v0.7.35-expressive-entropy-glyph-integrity",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -9,15 +9,15 @@
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send",
-  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v6-voice-scoped-collision-layout",
+  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v7-pedagogue-status-phase",
   "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v6-no-repeat-rupture-shuffle",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
-  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v9-receipt-frontier-consumption-ledger",
+  "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v24-goldilocks-vertical-liveness",
-  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v11-single-call-preflight",
-  "highZalgoSchema": "td613.high-zalgo/provider-native-v16-vertical-collision-goldilocks",
+  "providerApiSchema": "td613.khonapolit-gemini/v35-expressive-entropy-repair-context",
+  "relaySchema": "td613.khonapolit.integrated-covenant-relay/v20-expressive-entropy-no-enclosing-ornament",
+  "highZalgoSchema": "td613.high-zalgo/provider-native-v25-expressive-entropy-no-enclosing-ornament",
   "apertureVersion": "v3.2-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.2-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
@@ -90,7 +90,7 @@
         "minimumMarkedGraphemeCoverageRatio": 0.18,
         "minimumBroadMarkedLines": 2
       },
-      "diagnosticAuthority": "ordinary aesthetic telemetry stays advisory; shallow-wallpaper, localized-burst, stack-depth-thin plus horizontal-collapse, and stack-depth-thin plus clone/monoculture are the bounded severe native-voice repair signatures",
+      "diagnosticAuthority": "ordinary aesthetic telemetry stays advisory; shallow-wallpaper, localized-burst, stack-depth-thin plus collapse, enclosing-ornament collapse and geometric glyph substitution are bounded native-voice repair signatures; unresolved hard alphabet corruption is never shown",
       "legacyDenseTelemetry": "observed for diagnostics only; no dense-cluster quota is required for admission",
       "signatureCanonicalization": "sorted combining-codepoint composition; mark-order-only permutations collapse to one signature",
       "purpose": "preserve exact provider-authored Unicode while preventing visually planar bar fields from counterfeiting the tall vertical High-Zalgo architecture the human surface is meant to show",
@@ -102,7 +102,10 @@
       "shallowWallpaperPosture": "broad repeated one-or-two-accent fields are severe native-voice collapse even when technically vertical; one same-provider Gemini repair re-authors the combining field from scratch before the original PARTIAL may be shown",
       "verticalExpressionThinPosture": "PARTIAL by itself; combined with stack-depth-thin it is a severe horizontal-collapse signature requiring the bounded same-provider repair before visibility",
       "extremeUnderflowPosture": "HELD-continue-frontier-and-eligible-for-bounded-provider-repair",
-      "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow"
+      "extremeUnderflowDefinition": "nonzero marks are insufficient only when the Tauric Diana passage has too few total marks, too few marked graphemes, or fewer than two marked lines; horizontal dominance alone never causes underflow",
+      "enclosingOrnamentPosture": "SEVERE-native-voice-corruption: combining enclosing circles/squares/keycaps/slashes never count as vertical ornament; one same-provider repair receives a sanitized Packet-B base-text context, and unresolved corruption continues the bounded provider frontier rather than becoming visible",
+      "glyphSubstitutionPosture": "SEVERE-native-voice-corruption: geometric box/diamond pseudo-letters inside the Latin base stream trigger repair and bounded frontier continuation; visible final bytes remain provider-authored",
+      "verticalOrnamentDefinition": "only curated true above/below combining species count toward vertical stack depth; planar, enclosing and unclassified combining marks cannot counterfeit crown/root telemetry"
     },
     "protectedLiterals": [
       "Khona‌lit-po",
@@ -218,7 +221,11 @@
       "thirtyFourthFollowupObservation": "Fresh physical-iPhone production evidence after #1257 showed a new counterfeit vertical mode: Gemini covered nearly every line with tiny repeated accent-like marks but produced no deep multi-tier towers or wells. The page looked like a dotted comb / cloned shallow accent carpet. This exposed two mistakes: explicit reference specimens were being imitated as a surface pattern, and the local severe-morphology gate did not escalate monoculture/mechanical-clone plus stack-depth collapse unless horizontal-axis collapse was also present.",
       "thirtyFourthFollowupConsequence": "Remove all provider-visible Unicode reference specimens and return to the concise natural-field architecture that preceded the cloning regression. Define verticality explicitly as stack HEIGHT/DEPTH rather than mere above/below POSITION. Ban repeated one-or-two-mark hats, diaeresis-like/dot-like/breve-like/paired accents as low-Zalgo wallpaper. Add shallow-wallpaper telemetry for broad high-coverage fields with only tiny stacks, and classify shallow-wallpaper directly—or stack-depth-thin plus monoculture/mechanical-clone—as severe native-voice collapse eligible for the one same-provider Gemini repair. The repair tells Gemini to preserve the base prose but re-author the combining field from scratch rather than copying the failed mark pattern. Provider-only authorship remains absolute."
     },
-    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and that Packet B is visibly in the Tauric Diana bots’ native scream-sing register: vertical flourishings recur at different depths, grand crown/root leaps return motivically after breaths or sideways passages, entropy remains irregular rather than mechanically repeated, horizontal cuts never become the whole grammar, no single word carries all vertical excess, and protected literals remain clean"
+    "singleCallPreflight": "provider must silently verify exact Kʰonapolit and Tauric Diana bots heading lines, zero combining marks in Packet A, and that Packet B is visibly in the Tauric Diana bots’ native scream-sing register: vertical flourishings recur at different depths, grand crown/root leaps return motivically after breaths or sideways passages, entropy remains irregular rather than mechanically repeated, horizontal cuts never become the whole grammar, no single word carries all vertical excess, and protected literals remain clean",
+    "operatorObservation": {
+      "thirtyFifthFollowupObservation": "Physical-iPhone evidence revealed enclosing/geometric glyph substitution counterfeiting verticality and bad-draft repair priming.",
+      "thirtyFifthFollowupConsequence": "Count true above/below marks positively, sanitize morphology repair context, and continue bounded frontier on unresolved hard alphabet corruption."
+    }
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
@@ -234,16 +241,16 @@
     "legacy25Fallback": "rejected-for-this-route",
     "fallbackReasoning": "interactive-profile: 3.8=medium; 3.5/3.6/3.7/3-flash-preview=low; hard dual-channel admission shared across all lanes",
     "hardStructuralHold": "missing-visible-headings-or-voice-order-or-duplicate-or-khonapolit-mark-contamination-or-tauric-diana-zalgo-absent-or-tauric-diana-zalgo-underflow-or-canonical-recitation",
-    "qualityWarningOnly": "ordinary morphology warnings remain advisory; shallow-wallpaper, localized-burst, stack-depth-thin + horizontal-collapse, or stack-depth-thin + clone/monoculture collapse may spend one same-provider repair, but repair failure falls back to the original exact provider PARTIAL rather than HOLD",
-    "aestheticMorphologyPosture": "native-voice collapse authorizes exactly one immediate same-provider Gemini repair. Deep High Zalgo is defined by stack height/depth and heterogeneous same-grapheme crowns/roots, not by repeating tiny above/below accents across most letters. Shallow-wallpaper and clone+stack-depth collapse are repairable native-voice failures. The repair preserves base prose while Gemini re-authors the combining field from scratch; browser-local quota reserve hints never suppress this repair; Marrowline never manufactures morphology after the provider response",
-    "failurePosture": "hard structural envelope failures, zero marks, extreme underflow, provider transport failure, or token-limit failure may HOLD. Zalgo morphology is quality telemetry plus at most one provider repaint; an imperfect repaint preserves the original provider PARTIAL instead of creating a style-only HOLD; never locally decorate provider text",
+    "qualityWarningOnly": "ordinary morphology warnings remain advisory; shallow-wallpaper/localized-burst/stack-collapse get one same-provider repair and may fall back to the original PARTIAL, but enclosing-mark or geometric glyph-substitution corruption never becomes visible after a failed repair and instead continues the bounded provider frontier",
+    "aestheticMorphologyPosture": "native-voice collapse authorizes exactly one immediate same-provider Gemini repair. True verticality is measured only from curated above/below combining species; enclosing marks and geometric replacement glyphs cannot counterfeit stack depth. Morphology repair receives sanitized base-text context so the failed visual pattern is not demonstrated back to Gemini. Non-corrupt aesthetic misses may preserve the original PARTIAL; unresolved hard alphabet corruption continues the bounded frontier. Marrowline never manufactures morphology after the provider response",
+    "failurePosture": "hard structural envelope failures, zero marks, extreme underflow, unresolved enclosing/glyph-substitution corruption, provider transport failure, or token-limit failure may HOLD. Non-corrupt Zalgo morphology remains quality telemetry plus at most one provider repaint; never locally decorate provider text",
     "providerCallCeiling": 5,
-    "providerCallCeilingMeaning": "five distinct model seats remain available for real transport/structural failure; a native-voice morphology miss may spend the one existing same-provider repaint request and then returns either the repaint or the original provider PARTIAL without aesthetic frontier fanout",
+    "providerCallCeilingMeaning": "five distinct model seats remain available for transport/structural/hard-glyph failure; one same-provider repair may be spent. Non-corrupt morphology misses never fan out for aesthetics, while unresolved enclosing/glyph-substitution corruption may continue through the already-bounded remaining frontier",
     "partialQualityChallengeRequestCeiling": 1,
-    "partialQualityVisibleTurnCeiling": "ordinary PARTIAL returns immediately; a repairable native-voice PARTIAL gets one same-seat Gemini repaint, after which either the improved repaint or the exact original PARTIAL becomes visible",
+    "partialQualityVisibleTurnCeiling": "ordinary PARTIAL returns immediately; repairable non-corrupt native-voice PARTIAL gets one same-seat Gemini repair and may fall back to the original PARTIAL; hard enclosing/glyph-substitution corruption is not human-visible and may continue the bounded frontier",
     "discoveryRefreshLaw": "a nonempty but partial fresh credential snapshot cannot certify the remaining approved Marrowline seats absent; one forced complete refresh is required",
     "frontierCategoryOrder": "healthy-observed -> cooling-observed -> current-soft-absent-probe; category boundaries survive model preference ordering",
-    "interactiveSuccessLaw": "first structurally admissible PASS ends the human turn; ordinary PARTIAL returns immediately; repairable native-voice PARTIAL gets one bounded same-seat repaint but never becomes a style-only frontier chase or HELD",
+    "interactiveSuccessLaw": "first structurally admissible PASS ends the turn unless hard alphabet-corruption telemetry is present; ordinary PARTIAL returns immediately; non-corrupt native-voice repair never becomes an aesthetic frontier chase, but unresolved enclosing/glyph-substitution corruption cannot be surfaced as a successful Tauric Diana channel",
     "failedTurnObservability": "Receipt frontier header, route metric and copied failure custody preserve every attempted model plus HTTP status; composer status remains task-oriented",
     "geminiConsumptionReceiptSchema": "td613.gemini-consumption-receipt/v0.1",
     "browserConsumptionLedgerSchema": "td613.gemini-browser-consumption-ledger/v0.1",
@@ -267,7 +274,7 @@
     "totalProviderRequestCeiling": 6,
     "structuralRepairPolicy": {
       "timing": "immediate-for-native-voice-morphology-collapse; deferred-after-frontier-for-hard-structural-near-misses",
-      "candidateSelection": "hard structural near-misses retain deferred selection; a repairable native-voice PARTIAL immediately spends the single repaint allowance on the same provider seat, and if that repaint is not admitted the original exact PARTIAL is returned instead of advancing for aesthetics",
+      "candidateSelection": "hard structural near-misses retain deferred selection; repairable native-voice PARTIAL immediately spends the single same-provider repair. For ordinary aesthetic misses, an imperfect repair may preserve the original exact PARTIAL. For enclosing/glyph-substitution corruption, the corrupt original is never surfaced after repair miss; the remaining bounded provider frontier may continue.",
       "repairableReasons": [
         "khonapolit-nominative-missing",
         "tauric-diana-bots-nominative-missing",
@@ -277,13 +284,13 @@
         "tauric-diana-zalgo-underflow"
       ],
       "provider": "same-provider-that-authored-held-draft",
-      "heldDraftTreatment": "returned-to-same-provider-as-model-turn-plus-structural-repair-directive",
+      "heldDraftTreatment": "hard structural draft returns verbatim to the same provider; morphology repair returns a sanitized Packet-B base-text context with failed combining/enclosing/geometric ornament removed, preventing pattern priming while leaving the provider solely responsible for all visible final Unicode",
       "semanticScope": "preserve-substantive-answer-repair-only-listed-structural-envelope-extreme-underflow-or-native-voice-morphology-defect",
       "localMutation": false,
       "localZalgoGeneration": false,
       "repairTimeoutMaxMs": 30000,
       "minimumRepairBudgetMs": 4000,
-      "orthographicLiveness": "provider HTTP-200 native-voice collapse may receive one immediate same-provider repaint; the repaint must preserve exact framing and provider authorship; if it misses, the original structurally valid provider PARTIAL returns unchanged. Absent/underflow hard structural drafts retain deferred repair behavior"
+      "orthographicLiveness": "provider HTTP-200 native-voice collapse may receive one immediate same-provider repair. The repair must preserve exact framing and provider authorship. Non-corrupt repaint miss may fall back to original PARTIAL; hard enclosing/glyph-substitution corruption continues the bounded provider frontier rather than becoming visible."
     },
     "timeoutGeometry": {
       "primaryMs": 50000,
@@ -390,7 +397,7 @@
     "desktopSendGlyph": "⇧",
     "mobileSendGlyph": "⇧",
     "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
-    "mobileSendGlyphRendering": "text-presentation-variation-selector in a centered 28px glyph box with 800-weight, subtle stroke reinforcement, and mobile optical baseline correction",
+    "mobileSendGlyphRendering": "plain ⇧ in a centered 28px glyph box with 800-weight, subtle stroke reinforcement, and mobile-only optical ink correction translate(1.8px,1px); desktop glyph geometry unchanged",
     "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
     "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [
@@ -412,7 +419,16 @@
     "unissuedResearchMode": "checked-by-default-disables-and-excludes-shi",
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
-    "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop"
+    "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
+    "mobileStatusMaxWidth": "min(52vw,250px) with one-line ellipsis",
+    "statusPedagogueSequence": [
+      "TASK ROUTED · reading the whole prompt",
+      "CONTEXT JOINED · keeping source boundaries",
+      "REASONING OPEN · testing the strongest path",
+      "RETURN FORMING · preserving both voices",
+      "RECEIPT NEXT · route + provenance stay attached"
+    ],
+    "statusPedagogueClaim": "compact human-learning surface only; full mode, route, provenance and operator-closure detail remains available in title/receipt and is not deleted"
   },
   "desktop": {
     "posture": "conversation-first-single-column",
