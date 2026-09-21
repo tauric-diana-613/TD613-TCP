@@ -25,6 +25,7 @@ const mobileCss = readFileSync(new URL('../app/dome-world/marrowline-mobile-shel
 const physicalRepair = readFileSync(new URL('../app/dome-world/marrowline-physical-device-repair.js', import.meta.url), 'utf8');
 const readinessCss = readFileSync(new URL('../app/dome-world/marrowline-operator-readiness.css', import.meta.url), 'utf8');
 const qualityServer = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
+const attachmentServer = readFileSync(new URL('../server/marrowline-attachment-quality.js', import.meta.url), 'utf8');
 const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
 const relaySource = readFileSync(new URL('../app/dome-world/khonapolit-relay.js', import.meta.url), 'utf8');
 const terminalSource = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
@@ -496,6 +497,21 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /original-provider-partial-preserved-after-repair-miss/, 'human-visible warning must distinguish repaint miss from provider rejection');
   assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'visual-story repair stays same-seat and never becomes a best-partial beauty contest');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
+});
+
+test('explicit human retries reach Gemini without a Marrowline-owned rate veto', () => {
+  for (const source of [qualityServer, attachmentServer]) {
+    assert.match(source, /X-TD613-Local-Request-Rate-Policy', 'telemetry-only'/);
+    assert.doesNotMatch(
+      source,
+      /if\s*\(!rate\.allowed\)\s*return\s+send\(res,\s*429,[^;]*terminal-rate-limit/s,
+      'local request buckets may remain telemetry but cannot block an explicit human retry'
+    );
+  }
+  assert.match(qualityServer, /localAdmissionAuthority:\s*'diagnostic-not-human-surface-veto'/);
+  assert.match(qualityServer, /provider-output-token-limit-partial-preserved/);
+  assert.match(attachmentServer, /provider-output-token-limit-partial-visible/);
+  assert.match(attachmentServer, /if\s*\(!safe\(result\.text\)\) continue;/);
 });
 
 test('browser request clock outlives the 210-second server work wall without outrunning Vercel', () => {

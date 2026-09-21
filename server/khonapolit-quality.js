@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v39-prose-preserving-morphology-repair';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v40-human-surface-preserving-retry';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -61,10 +61,10 @@ function expectedDailyRpd(env = process.env) {
   return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : DEFAULT_EXPECTED_DAILY_RPD;
 }
 const LEGACY_OUTPUT_TOKENS = 4096;
-// Marrowline is a quality-gated frontier route. A lower-generation compatibility
-// answer is not an acceptable substitute for a failed covenant return. Spend the
-// bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
-// cannot produce an admitted answer.
+// Marrowline is a provider-first human surface. Preserve the strongest current
+// Gemini 3.x order and one bounded same-provider repair opportunity, while treating
+// local packet/morphology admission as diagnostic telemetry rather than authority
+// to erase nonempty provider text from an explicit human turn.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.5-flash',
@@ -795,8 +795,10 @@ export default async function handler(req, res) {
   const rate = consumeRateSlot(clientKey(req));
   res.setHeader('X-RateLimit-Remaining', String(rate.remaining));
   res.setHeader('X-RateLimit-Reset', String(Math.ceil(rate.resetAt / 1000)));
-  if (!rate.allowed) return send(res, 429, { ok: false, error: 'terminal-rate-limit', resetAt: rate.resetAt });
-
+  res.setHeader('X-TD613-Local-Request-Rate-Policy', 'telemetry-only');
+  // This bucket remains observability only. Provider quota and transport responses
+  // retain their own authority, but Marrowline must not invent a second retry veto
+  // in front of an explicit human turn.
   const body = parseBody(req);
   const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
@@ -822,12 +824,18 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
-  const eligibleAfterCooldown = providerModels.filter((model) => !clientQuotaCooldown.models.has(model));
+  // Browser-local cooldown receipts remain useful provenance, but an explicit
+  // human retry must not inherit permission from yesterday's or the previous
+  // turn's localStorage. Preserve the provider-quality order and let Gemini's
+  // live response decide whether a seat is currently rate-limited.
   const allModels = orderKhonapolitModelsForBrowserBudget(
-    eligibleAfterCooldown,
+    providerModels,
     clientQuotaBudget,
     { healthyModels: plan.callableModels }
   );
+  if (!releaseCanary && clientQuotaCooldown.models.size > 0) {
+    res.setHeader('X-TD613-Browser-Cooldown-Policy', 'advisory-telemetry-only');
+  }
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
@@ -987,17 +995,9 @@ export default async function handler(req, res) {
   };
 
   if (!models.length) {
-    const cooldownHeld = clientQuotaCooldown.models.size > 0;
-    if (cooldownHeld && clientQuotaCooldown.retryAfterSeconds > 0) {
-      res.setHeader('Retry-After', String(clientQuotaCooldown.retryAfterSeconds));
-    }
-    return send(res, cooldownHeld ? 429 : 503, {
+    return send(res, 503, {
       ok: false,
-      error: cooldownHeld ? 'client-observed-model-quota-cooling' : 'no-eligible-callable-models',
-      status: cooldownHeld ? 'HELD' : undefined,
-      diagnostic: cooldownHeld
-        ? { stage: 'provider-plan', code: 'CLIENT_OBSERVED_MODEL_QUOTA_COOLING', models: [...clientQuotaCooldown.models] }
-        : undefined,
+      error: 'no-eligible-callable-models',
       attempts,
       clientQuotaCooldownHints: [...clientQuotaCooldown.models],
       modelPolicy: plan,
@@ -1006,6 +1006,64 @@ export default async function handler(req, res) {
       claim_ceiling: packet.claimCeiling
     });
   }
+
+  const sendObservedProviderReturn = ({
+    model,
+    result,
+    relay,
+    providerOutput,
+    observation,
+    reasons = [],
+    qualityWarnings = []
+  } = {}) => {
+    const observedText = relay?.transcript || result?.text || '';
+    if (!safe(observedText)) return null;
+    const baseReceipt = buildTerminalReceipt({
+      packet,
+      text: result.text,
+      relay,
+      model,
+      providerStatus: result.response.status,
+      providerOutput,
+      apertureEgress,
+      apertureReceipt,
+      attempts
+    });
+    const receipt = Object.freeze({
+      ...baseReceipt,
+      provider: Object.freeze({
+        ...baseReceipt.provider,
+        routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        humanSurfaceObservation: Object.freeze({
+          rendered: true,
+          observation: safe(observation) || 'provider-return-observed',
+          localAdmission: relay?.admission?.quality || 'UNCLASSIFIED',
+          reasons: Object.freeze([...reasons]),
+          qualityWarnings: Object.freeze([...qualityWarnings]),
+          localAdmissionAuthority: 'diagnostic-not-human-surface-veto'
+        })
+      }),
+      modelPolicy: plan,
+      elapsedMs: Date.now() - startedAt
+    });
+    res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
+    res.setHeader('X-TD613-Signal-State', relay?.signal?.state || 'NOT_LOCKED');
+    res.setHeader('X-TD613-Seal-State', 'OPEN');
+    res.setHeader('X-TD613-Gemini-Model', model);
+    res.setHeader('X-TD613-Local-Admission', 'OBSERVED-NONBLOCKING');
+    return send(res, 200, {
+      ok: true,
+      text: observedText,
+      relay,
+      receipt,
+      warnings: [
+        'provider-return-rendered-without-local-text-mutation',
+        'local-admission-observed-not-human-surface-veto',
+        ...(providerOutput?.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        ...plan.warnings
+      ]
+    });
+  };
 
   for (let index = 0; index < models.length; index += 1) {
     const model = models[index];
@@ -1106,21 +1164,33 @@ export default async function handler(req, res) {
         reasons: Object.freeze(['provider-output-token-limit']),
         qualityWarnings: Object.freeze([])
       });
-      if (releaseCanary) {
-        res.setHeader('X-TD613-Gemini-Model', model);
-        return send(res, 502, {
-          ok: false,
-          error: 'gemini-output-token-limit',
-          status: 'HELD',
-          diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
-          attempts,
-          modelPolicy: plan,
-          aperture: apertureReceipt,
-          aperture_egress: apertureEgress,
-          claim_ceiling: packet.claimCeiling
-        });
+      if (releaseCanary || !safe(result.text)) {
+        if (releaseCanary) {
+          res.setHeader('X-TD613-Gemini-Model', model);
+          return send(res, 502, {
+            ok: false,
+            error: 'gemini-output-token-limit',
+            status: 'HELD',
+            diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
+            attempts,
+            modelPolicy: plan,
+            aperture: apertureReceipt,
+            aperture_egress: apertureEgress,
+            claim_ceiling: packet.claimCeiling
+          });
+        }
+        continue;
       }
-      continue;
+      const truncatedRelay = parseRelayEnvelope(result.text, { model, apertureReceipt });
+      return sendObservedProviderReturn({
+        model,
+        result,
+        relay: truncatedRelay,
+        providerOutput,
+        observation: 'provider-output-token-limit-partial-preserved',
+        reasons: ['provider-output-token-limit'],
+        qualityWarnings: truncatedRelay.admission?.qualityWarnings || []
+      });
     }
     if (!result.response.ok && !transport.mayFailOver) {
       const rejectedStatus = Number(result.response.status || 0);
@@ -1142,13 +1212,29 @@ export default async function handler(req, res) {
     if (result.response.ok && result.text) {
       const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
       attempt.outputAdmission = relay.admission || null;
-      // A transport-successful but structurally degraded answer is not a
-      // successful Marrowline return. Keep one bounded provider-side repair
-      // candidate, but continue the five-seat frontier cascade before spending
-      // the single repair allowance. This preserves breadth while allowing the
-      // best near-miss to repair its own structure without local text surgery.
+      // Local packet/voice morphology is diagnostic for a human turn. One
+      // same-provider repair may improve a repairable near miss, but a Gemini
+      // HTTP 200 with nonempty text already belongs to the human surface. Never
+      // erase it merely because the local dual-channel contract was missed.
       if (!relay.admission?.admissible) {
         const reasons = Array.isArray(relay.admission?.reasons) ? [...relay.admission.reasons] : [];
+        if (releaseCanary) {
+          if (repairableKhonapolitAdmission(reasons)) {
+            const candidate = {
+              model,
+              fallback,
+              heldText: result.text,
+              reasons,
+              providerOutput,
+              sourceAttemptIndex: attempts.length - 1
+            };
+            if (
+              !structuralRepairCandidate
+              || candidate.reasons.length <= structuralRepairCandidate.reasons.length
+            ) structuralRepairCandidate = candidate;
+          }
+          continue;
+        }
         if (repairableKhonapolitAdmission(reasons)) {
           const candidate = {
             model,
@@ -1158,13 +1244,18 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex: attempts.length - 1
           };
-          if (
-            !structuralRepairCandidate
-            || candidate.reasons.length <= structuralRepairCandidate.reasons.length
-          ) structuralRepairCandidate = candidate;
-
+          const repaired = await runStructuralRepair(candidate, 'immediate-structural');
+          if (repaired) return repaired;
         }
-        continue;
+        return sendObservedProviderReturn({
+          model,
+          result,
+          relay,
+          providerOutput,
+          observation: 'structurally-inadmissible-provider-return-preserved',
+          reasons,
+          qualityWarnings: relay.admission?.qualityWarnings || []
+        });
       }
 
       if (relay.admission?.quality === 'PARTIAL') {
@@ -1194,11 +1285,16 @@ export default async function handler(req, res) {
                 : 'mandatory-high-zalgo-morphology-miss',
               reasons: Object.freeze([...severeMorphologyWarnings])
             });
-            // Alphabet corruption, missing vertical pulse, and maximum-depth tiling all
-            // fail the requested visible register. After one same-seat re-authoring pass
-            // misses, continue the bounded frontier instead of showing defective morphology
-            // as a successful LOCKED return.
-            continue;
+            if (releaseCanary) continue;
+            return sendObservedProviderReturn({
+              model,
+              result,
+              relay,
+              providerOutput,
+              observation: 'severe-morphology-provider-return-preserved-after-repair-miss',
+              reasons: severeMorphologyWarnings,
+              qualityWarnings
+            });
           }
 
           // The operator already has a structurally valid provider answer. If the

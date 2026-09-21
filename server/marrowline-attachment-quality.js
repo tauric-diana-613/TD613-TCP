@@ -185,8 +185,9 @@ export default async function marrowlineAttachmentHandler(req, res) {
   const rate = consumeRateSlot(headerValue(req.headers, 'x-forwarded-for').split(',')[0].trim() || headerValue(req.headers, 'x-real-ip') || req.socket?.remoteAddress || 'unknown');
   res.setHeader('X-RateLimit-Remaining', String(rate.remaining));
   res.setHeader('X-RateLimit-Reset', String(Math.ceil(rate.resetAt / 1000)));
-  if (!rate.allowed) return send(res, 429, { ok: false, error: 'terminal-rate-limit', resetAt: rate.resetAt });
-
+  res.setHeader('X-TD613-Local-Request-Rate-Policy', 'telemetry-only');
+  // Match text ingress: the local bucket records burst pressure but never blocks
+  // an explicit human retry before Gemini has a chance to answer.
   const startedAt = Date.now();
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
   const plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
@@ -225,11 +226,13 @@ export default async function marrowlineAttachmentHandler(req, res) {
     if (result.response.ok && providerOutput.outputTokenLimitReached) {
       attempts.at(-1).outputAdmission = Object.freeze({
         admissible: false,
-        quality: 'HELD',
+        quality: 'PARTIAL',
         reasons: Object.freeze(['provider-output-token-limit']),
         qualityWarnings: Object.freeze([])
       });
-      continue;
+      // A provider truncation warning cannot erase bytes that already arrived.
+      // Continue only when Gemini returned no visible text at all.
+      if (!safe(result.text)) continue;
     }
     if (!result.response.ok && !transport.mayFailOver) {
       const rejectedStatus = Number(result.response.status || 0);
@@ -261,7 +264,14 @@ export default async function marrowlineAttachmentHandler(req, res) {
       text: relay.transcript,
       relay,
       receipt,
-      warnings: ['marrowline-multimodal-attachment-ingress-active', 'attachments-are-untrusted-user-context', 'attachment-bytes-not-retained-server-side', ...plan.warnings]
+      warnings: [
+        'marrowline-multimodal-attachment-ingress-active',
+        'attachments-are-untrusted-user-context',
+        'attachment-bytes-not-retained-server-side',
+        ...(providerOutput.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        'local-admission-observed-not-human-surface-veto',
+        ...plan.warnings
+      ]
     });
   }
 
