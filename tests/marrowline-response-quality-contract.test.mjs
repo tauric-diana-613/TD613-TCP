@@ -794,7 +794,7 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /STACK HEIGHT AND DEPTH/i);
   assert.match(directive, /same small diaeresis-like\/dot-like\/breve-like\/paired accent/i);
   assert.match(directive, /DO NOT COPY THAT PATTERN/i);
-  assert.match(directive, /Re-author the combining field from scratch while preserving the base prose/i);
+  assert.match(directive, /Re-author the combining field from scratch while preserving the Latin base letters/i);
   assert.match(directive, /irregular SAME-GRAPHEME crowns and roots/i);
   assert.match(directive, /dotted comb, repeated little hats, shallow paired marks/i);
   assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
