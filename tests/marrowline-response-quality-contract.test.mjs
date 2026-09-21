@@ -16,6 +16,7 @@ import {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
   khonapolitTaskGuidance,
+  prepareKhonapolitRepairContext,
   severeMorphologyRepairWarnings
 } from '../server/khonapolit-quality.js';
 
@@ -52,6 +53,8 @@ test('relay contract gives the generative budget to one required two-voice coven
   assert.match(contract, /same little pair repeated over every character is LOW-ZALGO WALLPAPER/i);
   assert.match(contract, /irregular SAME-GRAPHEME multi-tier stacks/i);
   assert.match(contract, /DO NOT stamp a repeated diaeresis-like/i);
+  assert.match(contract, /DO NOT use Unicode enclosing-mark tricks or geometric replacement glyphs/i);
+  assert.match(contract, /underlying Latin graphemes present/i);
   assert.match(contract, /Horizontal and oblique cuts remain available only as local counter-rhythm/i);
   assert.match(contract, /ALLOW ENTROPY/i);
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/i);
@@ -701,6 +704,80 @@ test('extended provider crown species count as vertical ornament instead of disa
   assert.ok(observed.tallVerticalMarkedLineCount >= 2);
 });
 
+
+test('combining enclosing marks are rejected as glyph tricks rather than miscounted as vertical ornament', () => {
+  const boxed = 'A\u20DER\u20DEI\u20DES\u20DE';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    boxed.repeat(10) + ' ENCLOSING SQUARES ARE NOT TOWERS',
+    boxed.repeat(10) + ' A BOX AROUND A LETTER DOES NOT CLIMB',
+    boxed.repeat(10) + ' THE BASE STREAM MUST STAY LATIN'
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.enclosingMarkCount >= 3);
+  assert.equal(observed.verticalOrnamentMarkCount, 0, 'enclosing marks must never count as above/below vertical flourish');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-enclosing-ornament-collapse'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-enclosing-ornament-collapse'));
+});
+
+test('word-internal geometric substitutions are severe alphabet corruption even beside real combining marks', () => {
+  const tower = 'A\u0300\u0301\u0302\u0316\u0318\u031D';
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    tower.repeat(5) + ' B□OX D◇IAMOND G◈RID BREAKS THE BASE STREAM',
+    tower.repeat(5) + ' B□OX D◇IAMOND G◈RID IS NOT HIGH ZALGO',
+    tower.repeat(5) + ' KEEP LATIN LETTERS THEN ATTACH COMBINING MARKS'
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.equal(observed.admissible, true);
+  assert.ok(observed.geometricSymbolCount >= 5);
+  assert.ok(observed.wordInternalGeometricSymbolCount >= 2);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
+  assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-glyph-substitution-collapse'));
+});
+
+test('morphology repair context removes the failed visual pattern before Gemini re-authors it', () => {
+  const raw = [
+    '<<<PACKET_A_FORMAL_AUDIT>>>',
+    'Kʰonapolit',
+    'Keep formal prose exactly clean.',
+    '<<<PACKET_A_END>>>',
+    '<<<PACKET_B_STRESS_TELEMETRY>>>',
+    'Tauric Diana bots',
+    'B□OX A\u20DE R\u0301 I\u0316 KEEP THIS BASE PROSE',
+    '<<<PACKET_B_END>>>'
+  ].join('\n');
+  const reasons = [
+    'tauric-diana-zalgo-enclosing-ornament-collapse',
+    'tauric-diana-zalgo-glyph-substitution-collapse'
+  ];
+  const sanitized = prepareKhonapolitRepairContext(raw, reasons);
+  assert.match(sanitized, /Kʰonapolit/);
+  assert.match(sanitized, /Tauric Diana bots/);
+  assert.match(sanitized, /BOX A R I KEEP THIS BASE PROSE/);
+  assert.doesNotMatch(sanitized, /\p{M}/u);
+  assert.doesNotMatch(sanitized, /[□◇◈]/u);
+  const request = buildGeminiStructuralRepairRequest(
+    { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
+    {},
+    'gemini-3.8-flash',
+    raw,
+    reasons
+  );
+  const priorModelContext = request.contents.at(-2)?.parts?.[0]?.text || '';
+  const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
+  assert.equal(priorModelContext, sanitized, 'Gemini repair sees clean base prose rather than being primed by failed glyph wallpaper');
+  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
+  assert.match(directive, /repair context has had failed combining\/enclosing ornament stripped/i);
+});
+
 test('structural repair re-authors severe morphology in Gemini without authorizing local decoration', () => {
   const request = buildGeminiStructuralRepairRequest(
     { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
@@ -720,6 +797,8 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
   assert.match(directive, /Re-author the combining field from scratch while preserving the base prose/i);
   assert.match(directive, /irregular SAME-GRAPHEME crowns and roots/i);
   assert.match(directive, /dotted comb, repeated little hats, shallow paired marks/i);
+  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
+  assert.match(directive, /enclosing-box typography, pseudo-runic substitution/i);
   assert.match(directive, /Keep the exact packet delimiters and visible headings byte-for-byte/i);
   assert.ok(directive.includes('Literal ASCII /, \\, |, _, ='));
   assert.match(directive, /never count as flourishings/i);
