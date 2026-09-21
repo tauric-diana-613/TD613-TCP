@@ -61,10 +61,10 @@ function expectedDailyRpd(env = process.env) {
   return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : DEFAULT_EXPECTED_DAILY_RPD;
 }
 const LEGACY_OUTPUT_TOKENS = 4096;
-// Marrowline is a quality-gated frontier route. A lower-generation compatibility
-// answer is not an acceptable substitute for a failed covenant return. Spend the
-// bounded wall-clock budget on callable Gemini 3.x models and HOLD when those lanes
-// cannot produce an admitted answer.
+// Marrowline is a provider-first human surface. Preserve the strongest current
+// Gemini 3.x order and one bounded same-provider repair opportunity, while treating
+// local packet/morphology admission as diagnostic telemetry rather than authority
+// to erase nonempty provider text from an explicit human turn.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-3.8-flash',
   'gemini-3.5-flash',
@@ -795,8 +795,10 @@ export default async function handler(req, res) {
   const rate = consumeRateSlot(clientKey(req));
   res.setHeader('X-RateLimit-Remaining', String(rate.remaining));
   res.setHeader('X-RateLimit-Reset', String(Math.ceil(rate.resetAt / 1000)));
-  if (!rate.allowed) return send(res, 429, { ok: false, error: 'terminal-rate-limit', resetAt: rate.resetAt });
-
+  res.setHeader('X-TD613-Local-Request-Rate-Policy', 'telemetry-only');
+  // This bucket remains observability only. Provider quota and transport responses
+  // retain their own authority, but Marrowline must not invent a second retry veto
+  // in front of an explicit human turn.
   const body = parseBody(req);
   const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
