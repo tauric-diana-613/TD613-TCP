@@ -128,6 +128,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.equal(targetedAdmission.admissible, true);
   assert.equal(targetedAdmission.quality, 'PARTIAL');
   assert.ok(targetedAdmission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
+  assert.ok(targetedAdmission.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'), 'a dense opening token cannot carry the entire visual-story field');
 
   const contaminated = [
     'Kʰonapolit',
