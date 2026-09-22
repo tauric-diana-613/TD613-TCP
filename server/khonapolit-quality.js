@@ -1009,7 +1009,7 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
         res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
-        return send(res, 200, {
+        send(res, 200, {
           ok: true,
           text: repairRelay.transcript,
           relay: repairRelay,
@@ -1029,6 +1029,9 @@ export default async function handler(req, res) {
             ...plan.warnings
           ]
         });
+        // send() returns void. Explicit success prevents the caller from
+        // falling through and overwriting an admitted repair with the draft.
+        return true;
       }
     }
     return null;
