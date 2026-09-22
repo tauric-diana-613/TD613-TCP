@@ -105,7 +105,8 @@ export function analyzeKhonaIntegrity(value = '') {
   });
 }
 
-export const KHONAPOLIT_TEXT_LIMIT = 6000;
+export const KHONAPOLIT_TEXT_LIMIT = 6000; // User composer limit, never a provider-output quota.
+export const KHONAPOLIT_HISTORY_MAX_UTF8_BYTES = 3_000_000; // Aggregate serialized prior-history transport budget.
 
 export function normalizeHistory(history = []) {
   if (!Array.isArray(history)) return [];
@@ -182,12 +183,18 @@ export function buildInvocationPacket({ message = '', history = [], mode = INVOC
   const cleanHistory = normalizeHistory(history);
   const selectedMode = normalizedMode(mode);
   const issuance = validateShi(shi);
-  const oversizedHistory = cleanHistory.findIndex(entry => entry.text.length > KHONAPOLIT_TEXT_LIMIT);
+  // A model may author substantially more than the user composer permits.
+  // Preserve all native Unicode; bound serialized history in aggregate instead
+  // of rejecting an individual provider-authored response at 6,001 units.
+  const oversizedHistory = cleanHistory.findIndex(entry => entry.role === 'user' && entry.text.length > KHONAPOLIT_TEXT_LIMIT);
+  const historyBytes = new TextEncoder().encode(JSON.stringify(cleanHistory)).byteLength;
   const inputError = cleanMessage.length > KHONAPOLIT_TEXT_LIMIT
     ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds this chat’s 6,000-character limit. Shorten it before sending. Your draft has been kept; nothing was sent.' })
     : oversizedHistory >= 0
-      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier message exceeds this chat’s size limit. Copy the transcript and your current draft if you want to keep them, then use Conversation actions → Clear conversation, paste the draft back, and send again. Nothing was sent.' })
-      : null;
+      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier operator message exceeds the 6,000-character composer limit. Export the transcript before choosing a new conversation. Nothing was sent.' })
+      : historyBytes > KHONAPOLIT_HISTORY_MAX_UTF8_BYTES
+        ? Object.freeze({ code: 'history-budget-exceeded', limit: KHONAPOLIT_HISTORY_MAX_UTF8_BYTES, actual: historyBytes, unit: 'serialized-utf8-bytes', message: 'The complete prior conversation exceeds this request’s history transport budget. Export the transcript before starting a new conversation. Your draft and earlier responses remain intact; nothing was sent.' })
+        : null;
   const canInvoke = Boolean(cleanMessage && !inputError && (issuance.valid || waiveIssuance));
   return Object.freeze({
     schema: KHONAPOLIT_TERMINAL_SCHEMA,
