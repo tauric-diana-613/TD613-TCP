@@ -71,6 +71,15 @@ node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-privat
   /private/wendbine/p0-reddit-source-capture "observability"
 ```
 
+**Private search verification gate.** `99-ADMIN/wendbine-private-custody-audit.mjs` now requires exactly one acquisition report for a private originals directory. Every search-loaded title and body must match the correct source ID, canonical URL, account, declared capture method, rights basis, exact title/body SHA-256 and file receipt. For OAuth captures, the original JSON response must also match its receipt hash and decoded source fields. A bare `source-*.json` file is refused. An invalid or tampered record fails the whole query, rather than silently returning a plausible but unaudited match. The audit CLI prints IDs and verification status only, never original texts.
+
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-custody-audit.mjs \
+  /private/wendbine/p0-reddit-source-capture
+```
+
+`QUERY_HIT != VERIFIED_ORIGINAL` · `VERIFIED_FIELD_HASH != INDEPENDENT_AUTHOR_IDENTITY_PROOF` · `UNSIGNED_JSON_FILE != SOURCE_CUSTODY`.
+
 A failed OAuth attempt or a chat-export candidate never upgrades `0/33` in the public Atelier. The next authorized, successful receipt must identify exactly which source IDs acquired which title/body fields, with hashes and version/freshness distinctions.
 
 ## Completeness gate before topological reconstruction
