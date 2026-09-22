@@ -578,13 +578,14 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
   assert.match(relaySource, /Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
-test('integrated relay prose never inherits whole-stage flourish spacing', () => {
-  assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
+test('integrated relay preserves exact native Unicode while spacing actual stacks', () => {
+  assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'native return remains independent of the operator-composer flourish code');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(\(node\) => \{/);
   assert.match(livingChat, /if \(node\.closest\?\.\('\.relay-message'\)\) \{/);
   assert.match(livingChat, /markFlourishes\(node\);/);
-  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1!important/, 'High Zalgo stays inline in collision-prone line boxes so provider-authored vertical stacks can overlap without synthesized spacing');
+  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain separately identifiable');
+  assert.match(physicalRepair, /--provider-native-leading/, 'native line boxes are based on observed runs, not glyph synthesis');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'bot lines inherit the raw reply’s vertical line box without any mark mutation');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
