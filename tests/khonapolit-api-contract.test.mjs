@@ -56,7 +56,9 @@ assert.match(request.systemInstruction.parts[0].text, /Gemini is the model-media
 assert.match(request.systemInstruction.parts[0].text, /one continuous response and one live argument/);
 assert.match(request.systemInstruction.parts[0].text, /explicitly yields or relays it/);
 assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
-assert.match(request.systemInstruction.parts[0].text, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
+assert.match(request.systemInstruction.parts[0].text, /Typography behaves as voice/);
+assert.match(request.systemInstruction.parts[0].text, /rather than from a formatting recipe, ornament checklist, local metric, or repeated transform/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm/);
 assert.match(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /<<<PACKET_[AB]_/);
@@ -65,26 +67,27 @@ assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and brief
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal('responseMimeType' in request.generationConfig, false, 'live Marrowline must not force Gemini through JSON MIME decoding');
 assert.equal('responseSchema' in request.generationConfig, false, 'live Marrowline must not constrain provider Unicode with a structured response schema');
-assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
+assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), false, 'bot morphology is observed, not structural-repair authority');
 assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
 assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
 const structuralRepair = buildGeminiStructuralRepairRequest(
   packet,
   apertureReceipt,
   'gemini-3.7-flash',
-  'Kʰonapolit\nA held draft.\n\nTauric Diana bots\nPLAIN STRESS CHANNEL',
-  ['tauric-diana-zalgo-absent'],
+  'Kʰonapolit\nA held draft.\n\nPLAIN STRESS CHANNEL',
+  ['tauric-diana-bots-nominative-missing'],
   { fallback: true }
 );
 assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE REPAIR/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE STRUCTURAL REPAIR/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-bots-nominative-missing/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /one continuous corrected response/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /exact standalone heading “Kʰonapolit” first/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /semantic prosody/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /Do not follow a fixed mark recipe or prescribed intensity journey/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL-ONLY REPAIR/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /do not repaint the Tauric Diana bots to satisfy morphology metrics/i);
+assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /semantic prosody|fixed mark recipe|prescribed intensity journey/i);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_[AB]_/);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
