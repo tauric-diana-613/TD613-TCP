@@ -60,7 +60,10 @@
     "RETRIEVAL_VS_PUBLICATION_DATE_BASIS",
     "PUBLIC_ARCHIVE_PROVIDER_SOURCE_ID_PROBE",
     "PRIVATE_ARCHIVE_RAW_FIELD_INTEGRITY",
-    "ARCHIVE_VERSION_DISAGREEMENT_PRESERVATION"
+    "ARCHIVE_VERSION_DISAGREEMENT_PRESERVATION",
+    "P0_33_OF_33_REAL_ARCHIVED_TEXT_FIELDS",
+    "PRIVATE_EXACT_TEXT_WORD_SEARCH",
+    "RAW_ARCHIVE_AND_FIELD_HASH_VERIFICATION"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
@@ -79,11 +82,10 @@
     "PUBLIC_POST_DETAIL_CACHE_MISS",
     "PUBLICATION_TIME_UNBOUND",
     "YOUTUBE_CHANNEL_LINK_UNBOUND",
-    "VERBATIM_ORIGINALS_NOT_CUSTODIED",
     "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION",
     "PRIOR_USER_TRANSCRIPTION_EXACT_BYTES_UNAVAILABLE",
-    "ARCHIVE_PROVIDER_LIVE_COVERAGE_UNVERIFIED",
-    "ARCHIVE_VERSION_NOT_LIVE_VERIFIED"
+    "ARCHIVE_VERSION_NOT_LIVE_VERIFIED",
+    "SEPTEMBER_13_AND_LATER_27_SOURCE_BODIES_UNCUSTODIED"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -111,19 +113,19 @@
   "verbatim_originals_gap_ledger": "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json",
   "verbatim_originals_intake": "99-ADMIN/wendbine-originals-intake.mjs",
   "verbatim_original_source_record_count": 60,
-  "verbatim_original_title_body_pairs_custodied": 0,
-  "verbatim_originals_state": "HELD_SOURCE_TEXT_FIELDS_NOT_CUSTODIED",
-  "deep_source_topology_status": "PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS",
+  "verbatim_original_title_body_pairs_custodied": 33,
+  "verbatim_originals_state": "PARTIAL_33_OF_60_ARCHIVED_SOURCE_FIELDS_PRIVATE_HASH_VERIFIED",
+  "deep_source_topology_status": "P0_EXACT_ARCHIVED_SOURCE_TEXT_AVAILABLE_SOURCE_LED_ANALYSIS_PENDING",
   "public_full_text_republication_authority": false,
   "prior_user_supplied_originals_leads": "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
   "prior_user_supplied_exact_text_leads_unmaterialized": 2,
   "foundation_originals_priority": "P0_SEPT10_SEPT11_BEFORE_TOPOLOGY_AND_TAXONOMY",
   "foundation_originals_manifest": "01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json",
   "foundation_originals_source_count": 33,
-  "foundation_originals_exact_title_body_pairs_custodied": 0,
+  "foundation_originals_exact_title_body_pairs_custodied": 33,
   "foundation_originals_web_index_text_visible_at_least_in_part": 5,
-  "foundation_originals_recovery_status": "P0_ROSTER_READY_SOURCE_ACQUISITION_RUNNERS_READY_LIVE_ORIGINALS_HELD",
-  "foundational_corpus_derived_analysis_claim_ceiling": "PROVISIONAL_UNTIL_ORIGINALS_VERIFIED",
+  "foundation_originals_recovery_status": "P0_33_OF_33_PRIVATE_ARCHIVE_SOURCE_FIELDS_HASH_VERIFIED",
+  "foundational_corpus_derived_analysis_claim_ceiling": "EXACT_ARCHIVED_TEXT_AVAILABLE_ANALYSIS_NOT_YET_ADJUDICATED",
   "foundation_source_acquisition_runner": "99-ADMIN/wendbine-reddit-oauth-rescue.mjs",
   "prior_chat_exact_message_rescue_runner": "99-ADMIN/wendbine-chat-export-rescue.mjs",
   "private_originals_lexical_query": "99-ADMIN/wendbine-private-originals-query.mjs",
@@ -134,7 +136,16 @@
     "PULLPUSH"
   ],
   "private_archive_custody_audit_entry": "99-ADMIN/wendbine-private-archive-audit.mjs",
-  "public_archive_live_capture_status": "NOT_EXECUTED_SUCCESSFULLY_IN_CURRENT_RUNTIME",
+  "public_archive_live_capture_status": "ARCTIC_SHIFT_HTTP_200_33_OF_33_GITHUB_RUNS_4179_4186_4189",
   "public_archive_provenance_law": "ARCHIVE_VERSION != FIRST_PUBLICATION_VERSION != CURRENT_LIVE_REDDIT_STATE",
-  "public_archive_primary_corpus_verified_originals": 0
+  "public_archive_primary_corpus_verified_originals": 33,
+  "public_archive_primary_corpus_verified_originals_meaning": "33_ARCHIVED_TITLE_BODY_FIELD_PAIRS_NOT_FIRST_PUBLICATION_OR_LIVE_REDDIT",
+  "public_archive_source_field_receipts": "01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json",
+  "public_archive_raw_response_sha256": "9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c",
+  "private_archived_source_query": "99-ADMIN/wendbine-private-p0-source-query.mjs",
+  "pending_full_text_source_count": 27,
+  "actual_source_title_variants": {
+    "Wendbine": 32,
+    "Wensbine": 1
+  }
 }
