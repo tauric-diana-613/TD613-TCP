@@ -112,8 +112,8 @@ export function normalizeHistory(history = []) {
   if (!Array.isArray(history)) return [];
   return history.slice(-10).map((entry) => ({
     role: entry?.role === 'model' ? 'model' : 'user',
-    text: safe(entry?.text)
-  })).filter((entry) => entry.text);
+    text: entry?.role === 'model' ? String(entry?.text ?? '') : safe(entry?.text)
+  })).filter((entry) => entry.text.trim());
 }
 
 function issuanceBlock({ shi = '', waiveIssuance = false } = {}) {
