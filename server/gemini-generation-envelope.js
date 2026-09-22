@@ -1,8 +1,10 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.4-matched-interactive-low-20260919';
+export const GEMINI_GENERATION_ENVELOPE_VERSION = 'td613.gemini-generation-envelope/v0.5-full-native-output-budget-20260922';
 export const GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE = 'khonapolit-interactive';
-export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 16384;
+// Full native Unicode consumes the provider output budget, including every combining mark.
+// Match the Marrowline route's declared ceiling instead of silently quartering it.
+export const KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS = 65536;
 
 const THINKING_LEVELS = new Set(['minimal', 'low', 'medium', 'high']);
 const GENERATION_PROFILE_STORAGE = new AsyncLocalStorage();
