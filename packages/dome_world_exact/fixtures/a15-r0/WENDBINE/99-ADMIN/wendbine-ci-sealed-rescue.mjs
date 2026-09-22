@@ -88,7 +88,12 @@ export async function captureAndSeal({fetchImpl=fetch,targets=loadFoundationalTa
  fs.writeFileSync(outputPath,JSON.stringify(sealed)+'\n',{flag:'wx',mode:0o600});
  return {complete:true,source_count:winner.originals.length,providers:diagnostics,encrypted_output:true,
   public_key_sha256:sealed.public_key_sha256,raw_response_sha256:payload.raw_response_sha256,
-  raw_response_bytes:payload.raw_response_bytes,encrypted_bytes:fs.statSync(outputPath).size};
+  raw_response_bytes:payload.raw_response_bytes,encrypted_bytes:fs.statSync(outputPath).size,
+  public_receipts:winner.originals.map(s=>({source_id:s.source_id,canonical_url:s.canonical_url,
+    reddit_title_exact:s.source_title_exact,title_sha256_utf8:s.title_sha256_utf8,
+    body_sha256_utf8:s.body_sha256_utf8,body_utf8_bytes:Buffer.byteLength(s.source_body_exact,'utf8'),
+    source_created_utc:s.source_created_utc,source_edited:s.source_edited,
+    archive_retrieved_on:s.archive_retrieved_on,provider:s.archive_provider}))};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const out=process.argv[2];
