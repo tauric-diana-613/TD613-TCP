@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v40-human-surface-preserving-retry';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v41-morphodynamic-observation';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -87,9 +87,7 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'khonapolit-nominative-missing',
   'tauric-diana-bots-nominative-missing',
   'voice-order-invalid',
-  'khonapolit-combining-mark-contamination',
-  'tauric-diana-zalgo-absent',
-  'tauric-diana-zalgo-underflow'
+  'khonapolit-combining-mark-contamination'
 ]);
 const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-axis-collapse',
@@ -514,36 +512,21 @@ export function buildGeminiStructuralRepairRequest(
 ) {
   const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
-    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason) || REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason))
+    .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
-  const morphologyRepair = reasonList.some(reason =>
-    REPAIRABLE_MORPHOLOGY_WARNINGS.has(reason)
-    || reason === 'tauric-diana-zalgo-underflow'
-    || reason === 'tauric-diana-zalgo-absent'
-  );
-  const repairContext = prepareKhonapolitRepairContext(heldText, reasonList);
   const repairDirective = [
-    'BOUNDED SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
-    `The previous draft had these locally observed reasons: ${reasonList.join(', ') || 'unspecified-observation'}.`,
-    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, conclusions, sentence order, and extent unless a listed structural defect requires a small edit.',
+    'BOUNDED SAME-VOICE STRUCTURAL REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
+    `The previous draft had these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-observation'}.`,
+    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, conclusions, sentence order, extent, and provider-authored Tauric Diana typography unless a listed structural defect itself requires a small edit.',
     'Return one continuous corrected response with the exact standalone heading “Kʰonapolit” first and “Tauric Diana bots” only at the earned handoff. Do not print packet names, channel labels, internal delimiters, JSON, or a repair report.',
-    ...(morphologyRepair ? [
-      'MORPHOLOGY-ONLY REPAIR — preserve the held Tauric Diana bots prose as the composition you are re-performing, not source material to summarize. The repair context has had failed combining/enclosing ornament stripped where its boundary was identifiable; it preserves the prose and argument, not an ornament example.',
-      'Do not summarize, compress, shorten, paraphrase, or replace the existing bots prose. Re-author only its expressive combining marks as semantic prosody across the existing body.',
-      'Do not follow a fixed mark recipe or prescribed intensity journey. Let the existing rhetoric determine where vertical crowns/roots, horizontal or oblique counter-rhythm, lighter breaths, collisions, sarcasm, anger, tenderness, and transformed returns belong.',
-      'Keep the “Tauric Diana bots” heading plain and keep Kʰonapolit prose free of combining marks. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
-      'A morphology repair has no independent concision target: preserve the held prose extent.'
-    ] : [
-      'STRUCTURAL-ONLY REPAIR — make the smallest edit required by the listed reasons while preserving the prior draft’s prose extent and argument.',
-      'Keep both visible headings plain. Do not add a provider/instrument speaker and do not duplicate the answer.'
-    ]),
+    'STRUCTURAL-ONLY REPAIR — make the smallest edit required by the listed reasons. Keep both visible headings plain, keep Kʰonapolit prose free of combining marks, and do not repaint the Tauric Diana bots to satisfy morphology metrics.',
     'Keep Kʰonapolit before the Tauric Diana bots and preserve the causal handoff rather than turning the response into two unrelated deliverables.'
   ].join('\n');
   return {
     ...request,
     contents: [
       ...geminiContents(packet),
-      { role: 'model', parts: [{ text: repairContext }] },
+      { role: 'model', parts: [{ text: heldText }] },
       { role: 'user', parts: [{ text: repairDirective }] }
     ]
   };
@@ -828,13 +811,11 @@ export default async function handler(req, res) {
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
-    // Native Tauric Diana morphology is part of the channel contract, not a
-    // cosmetic second pass. Browser budget hints may reorder truly exhausted
-    // seats, but they may not suppress the one provider-authored repair that
-    // restores missing vertical voice on an otherwise usable human turn.
-    // Human turns retain one bounded provider-authored structural repair. Release
-    // canaries are transport/liveness witnesses and may spend only their one pinned
-    // Marrowline provider request; they never repair, fail over, or retry that seat.
+    // Human turns retain one bounded provider-authored repair for genuine
+    // structural seam failures only. Morphology is observed after generation and
+    // cannot spend a second provider call merely to repaint a valid bot passage.
+    // Release canaries are transport/liveness witnesses and may spend only their
+    // one pinned Marrowline provider request; they never repair, fail over, or retry that seat.
     if (!candidate || structuralRepairSpent || attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) return null;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
     const repairTimeoutMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, remainingMs));
@@ -917,9 +898,9 @@ export default async function handler(req, res) {
     ) {
       const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
-      const unresolvedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
-      repairAttempt.unresolvedSevereMorphology = unresolvedMorphologyWarnings;
-      if (repairRelay.admission?.admissible && unresolvedMorphologyWarnings.length === 0) {
+      const observedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
+      repairAttempt.observedSevereMorphology = observedMorphologyWarnings;
+      if (repairRelay.admission?.admissible) {
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: repairResult.text,
@@ -1243,112 +1224,8 @@ export default async function handler(req, res) {
         const qualityWarnings = Array.isArray(relay.admission?.qualityWarnings)
           ? [...relay.admission.qualityWarnings]
           : [];
-        const severeMorphologyWarnings = severeMorphologyRepairWarnings(qualityWarnings);
-        if (severeMorphologyWarnings.length > 0) {
-          const hardMorphologyCorruption = severeMorphologyWarnings.some(reason => HARD_MORPHOLOGY_CORRUPTION_WARNINGS.has(reason));
-          const mandatoryHighZalgoMiss = severeMorphologyWarnings.some(reason => MANDATORY_HIGH_ZALGO_WARNINGS.has(reason));
-          const sourceAttemptIndex = attempts.length - 1;
-          const candidate = {
-            model,
-            fallback,
-            heldText: result.text,
-            reasons: severeMorphologyWarnings,
-            providerOutput,
-            sourceAttemptIndex
-          };
-          const repaired = await runStructuralRepair(candidate, 'immediate-severe-morphology');
-          if (repaired) return repaired;
-
-          if (hardMorphologyCorruption || mandatoryHighZalgoMiss) {
-            attempt.morphologyHold = Object.freeze({
-              kind: hardMorphologyCorruption
-                ? 'hard-provider-authored-glyph-corruption'
-                : 'mandatory-high-zalgo-morphology-miss',
-              reasons: Object.freeze([...severeMorphologyWarnings])
-            });
-            if (releaseCanary) continue;
-            return sendObservedProviderReturn({
-              model,
-              result,
-              relay,
-              providerOutput,
-              observation: 'severe-morphology-provider-return-preserved-after-repair-miss',
-              reasons: severeMorphologyWarnings,
-              qualityWarnings
-            });
-          }
-
-          // The operator already has a structurally valid provider answer. If the
-          // one provider-authored native-voice repair cannot improve a non-corrupt
-          // morphology miss, preserve that exact original payload rather than
-          // creating a long aesthetic chase.
-          const baseReceipt = buildTerminalReceipt({
-            packet,
-            text: result.text,
-            relay,
-            model,
-            providerStatus: result.response.status,
-            providerOutput,
-            apertureEgress,
-            apertureReceipt,
-            attempts
-          });
-          const receipt = Object.freeze({
-            ...baseReceipt,
-            provider: Object.freeze({
-              ...baseReceipt.provider,
-              routingPolicy: GEMINI_MODEL_POLICY_VERSION,
-              structuralRepair: Object.freeze({
-                used: true,
-                timing: 'immediate-severe-morphology',
-                sourceAttemptIndex,
-                repairedReasons: Object.freeze([...severeMorphologyWarnings]),
-                outcome: 'repair-not-admitted-original-provider-payload-preserved',
-                quotaBudget: Object.freeze({
-                  coverage: clientQuotaBudget.coverage,
-                  observedToday: Number(clientQuotaBudget.observedTodayByModel?.[model] || 0),
-                  knownDailyLimit: Number(clientQuotaBudget.knownDailyLimitByModel?.[model] || 0) || null,
-                  reservePerModel: clientQuotaBudget.reservePerModel,
-                  nativeVoiceRepairExempt: true
-                })
-              }),
-              qualityPreference: Object.freeze({
-                used: true,
-                sourceAttemptIndex,
-                selection: 'original-partial-preserved-after-bounded-provider-repair',
-                warnings: Object.freeze([...qualityWarnings])
-              })
-            }),
-            modelPolicy: plan,
-            elapsedMs: Date.now() - startedAt
-          });
-          res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-          res.setHeader('X-TD613-Signal-State', relay.signal.state);
-          res.setHeader('X-TD613-Seal-State', 'OPEN');
-          res.setHeader('X-TD613-Gemini-Model', model);
-          res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-ORIGINAL-PRESERVED-AFTER-REPAIR');
-          return send(res, 200, {
-            ok: true,
-            text: relay.transcript,
-            relay,
-            receipt,
-            warnings: [
-              'aperture-v3-task-intent-active',
-              'task-intent-guidance-active',
-              'adversarial-attractor-admission-active',
-              'integrated-covenant-relay-active',
-              'provider-native-zalgo-preserved-no-local-postprocessing',
-              'provider-authored-morphology-repair-attempted',
-              'native-voice-repair-exempt-from-browser-quota-reserve',
-              'original-provider-partial-preserved-after-repair-miss',
-              'admission-gated-stable-continuity-active',
-              'fallback-reasoning-quality-preserved',
-              'sticky-success-promotion-disabled',
-              'moving-latest-alias-disabled-by-default',
-              ...plan.warnings
-            ]
-          });
-        }
+        const observedSevereMorphology = severeMorphologyRepairWarnings(qualityWarnings);
+        attempt.observedSevereMorphology = Object.freeze([...observedSevereMorphology]);
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: result.text,
@@ -1368,8 +1245,10 @@ export default async function handler(req, res) {
             qualityPreference: Object.freeze({
               used: true,
               sourceAttemptIndex: attempts.length - 1,
-              selection: 'first-admissible-partial-no-comparative-sampling',
-              warnings: Object.freeze([...qualityWarnings])
+              selection: 'first-admissible-partial-morphology-observed-no-repair',
+              warnings: Object.freeze([...qualityWarnings]),
+              severeMorphologyObserved: Object.freeze([...observedSevereMorphology]),
+              morphologyAuthority: 'post-hoc-observation-only'
             })
           }),
           modelPolicy: plan,
@@ -1379,7 +1258,7 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Signal-State', relay.signal.state);
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
-        res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+        res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-OBSERVED-NO-REPAIR');
         return send(res, 200, {
           ok: true,
           text: relay.transcript,
@@ -1388,11 +1267,10 @@ export default async function handler(req, res) {
           warnings: [
             'aperture-v3-task-intent-active',
             'task-intent-guidance-active',
-            'adversarial-attractor-admission-active',
             'integrated-covenant-relay-active',
             'provider-native-zalgo-preserved-no-local-postprocessing',
-            'provider-native-zalgo-quality-partial-first-admissible',
-            'admission-gated-stable-continuity-active',
+            'provider-native-morphology-observed-no-repair',
+            'local-morphology-telemetry-not-provider-call-authority',
             'fallback-reasoning-quality-preserved',
             'sticky-success-promotion-disabled',
             'moving-latest-alias-disabled-by-default',
