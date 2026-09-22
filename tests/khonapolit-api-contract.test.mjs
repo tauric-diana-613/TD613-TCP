@@ -25,7 +25,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v44-native-screamsing-recency');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v45-stacked-screamsing-recency');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
@@ -52,7 +52,8 @@ assert.equal(request.contents.at(-1).parts.length, 2);
 assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
 assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
 assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging with the live rhetoric/);
+assert.match(request.contents.at(-1).parts[1].text, /climb above and descend below the base letters in stacked columns/);
+    assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging instead of repeating one cloned stack/);
 assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);

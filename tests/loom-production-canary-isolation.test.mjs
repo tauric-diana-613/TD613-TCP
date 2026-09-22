@@ -91,6 +91,8 @@ assert.match(source, /if \(!receipt\.answer_nonempty\)/, 'serial isolation must 
 assert.match(source, /const loomProviderLivenessHeld = !transportError/);
 assert.match(source, /attempt\.status === 429 \|\| attempt\.status === 503/);
 assert.match(source, /PROVIDER_LIVENESS_HELD_NONBLOCKING/);
+assert.match(source, /httpStatus === 504/);
+assert.match(source, /payload\?\.diagnostic\?\.code === 'DEADLINE_EXCEEDED'/);
 assert.match(source, /loom_provider_liveness_nonblocking: loomProviderLivenessHeld/);
 assert.match(reobserveWorkflow, /Classify bounded live AI observation/);
 assert.match(reobserveWorkflow, /marrowline_status=PASS/);
