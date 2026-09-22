@@ -88,8 +88,17 @@ function installInChatKinesis(doc = document, root = window) {
 
 export function prepareProviderNativeLines(stage) {
   const text = stage?.querySelector('.relay-stage-text');
-  if (!text || text.dataset.providerNativeLines === 'true') return false;
+  if (!text) return false;
   const raw = String(text.textContent ?? '');
+  // Another presentation preparer may already have split the exact same text.
+  // Its completed DOM still needs observation telemetry, never a second rewrite.
+  if (text.dataset.providerNativeLines === 'true') {
+    if (!text.dataset.providerNativeMaxRun) {
+      const runs = raw.match(/\p{M}+/gu) || [];
+      text.dataset.providerNativeMaxRun = String(runs.reduce((max, run) => Math.max(max, Array.from(run).length), 0));
+    }
+    return false;
+  }
   // Observation-only: retain native run depth for QA, never use it to
   // separate lines. Their intentional visual collisions belong to the voice.
   const maxRun = (raw.match(/\p{M}+/gu) || []).reduce((max, run) => Math.max(max, Array.from(run).length), 0);

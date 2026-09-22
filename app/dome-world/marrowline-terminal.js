@@ -316,7 +316,8 @@ function renderMessage(doc, entry) {
   return entry.role === 'model' ? renderModelMessage(doc, entry) : renderUserMessage(doc, entry);
 }
 function entryText(entry = {}) {
-  if (entry.role !== 'model' || !entry.relay) return safe(entry.text);
+  if (entry.role !== 'model') return safe(entry.text);
+  if (!entry.relay) return String(entry.text ?? ''); // Provider prose is custody data, including outer whitespace.
   return asArray(entry.relay.parts).filter((part) => part?.present).map((part) => `${part.label || part.id}\n${part.text}`).join('\n\n');
 }
 function transcriptText(messages = []) {
@@ -532,7 +533,9 @@ function installComposerGrowth(doc) {
   const resize = () => { prompt.style.height = 'auto'; prompt.style.height = `${Math.min(Math.max(prompt.scrollHeight, 90), Math.round(window.innerHeight * .34))}px`; };
   prompt.addEventListener('input', resize);
 }
-function compactHistory(messages = []) {
+export function compactMarrowlineHistory(messages = []) {
+  // The same presentation-backed serialization used by browser preflight and
+  // the actual request; model part labels count toward the aggregate budget.
   return messages.slice(-10).map((entry) => ({ role: entry.role, text: entryText(entry) })).filter((entry) => entry.text);
 }
 function ensureOriginControls(doc) {
@@ -627,7 +630,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
-    const packet = buildInvocationPacket({ message, history: compactHistory(historyForPacket), mode, shi, waiveIssuance });
+    const packet = buildInvocationPacket({ message, history: compactMarrowlineHistory(historyForPacket), mode, shi, waiveIssuance });
     if (!message) { setPedagogueStatus(status, 'held', 'SPEECH REQUIRED · the vessel is empty'); prompt?.focus(); return; }
     if (packet.inputError) { setPedagogueStatus(status, 'held', packet.inputError.message); prompt?.focus({ preventScroll: true }); return; }
     if (!packet.canInvoke) { setPedagogueStatus(status, 'held', 'ADVANCED CUSTODY HOLD · open Keys to continue', 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'); refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
@@ -649,7 +652,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let responseStatus = null;
     let receivedReceipt = null;
     try {
-      const requestBody = { message, mode, shi, waiveIssuance, history: compactHistory(state.messages.slice(0, -1)) };
+      const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
       // retry permission into the server. Explicit retries always reach live Gemini.

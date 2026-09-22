@@ -200,6 +200,26 @@ try {
     assert.equal(invalid.payload.relay, undefined);
   }
 
+  // A long native model return must survive both the server validator and the
+  // assembled Gemini wire request. This uses the existing mocked provider only.
+  const nativeHistory = [
+    'Kʰonapolit',
+    'The committee must defend the inference rather than applaud its plaque.',
+    '',
+    'Tauric Diana bots',
+    'W\u0301\u0316A\u0302\u0317'.repeat(4200)
+  ].join('\n');
+  assert.ok(nativeHistory.length > 6000);
+  const beforeLongHistory = requestBodies.length;
+  const longHistoryResponse = response();
+  await handler({ ...req, body: { ...req.body, history: [{ role: 'model', text: nativeHistory }] } }, longHistoryResponse);
+  assert.equal(longHistoryResponse.statusCode, 200, 'prior model prose over the composer limit can reach the backend');
+  assert.equal(longHistoryResponse.payload.ok, true);
+  assert.equal(requestBodies[beforeLongHistory].contents[0].role, 'model');
+  assert.equal(requestBodies[beforeLongHistory].contents[0].parts[0].text, nativeHistory, 'wire preserves every native combining mark');
+  assert.equal(requestBodies[beforeLongHistory].generationConfig.maxOutputTokens, 65536);
+  assert.equal(requestBodies[beforeLongHistory].generationConfig.thinkingConfig.thinkingLevel, 'high');
+
   tokenLimitCallsRemaining = 1;
   const recoveredFromTokenLimit = response();
   await handler(req, recoveredFromTokenLimit);

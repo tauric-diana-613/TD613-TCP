@@ -9,6 +9,7 @@ import {
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import { COVENANT_KEY, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { compactMarrowlineHistory } from '../app/dome-world/marrowline-terminal.js';
 import {
   buildApertureV3InvocationReceipt,
   classifyApertureDiscourseMode
@@ -80,6 +81,26 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
+});
+
+test('browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance', () => {
+  const authored = 'Kʰonapolit\n' + 'The inference survives its strongest counterexample. '.repeat(100) +
+    '\n\nTauric Diana bots\n' + 'W\u0301\u0316A\u0302\u0317'.repeat(6500);
+  const label = 'Kʰonapolit ∴ Tauric Diana bots';
+  const browserHistory = compactMarrowlineHistory([
+    { role: 'user', text: 'A previous committee question.' },
+    { role: 'model', text: authored, relay: { parts: [{ id: 'khonapolit', label, present: true, text: authored }] } }
+  ]);
+  assert.equal(browserHistory.length, 2);
+  assert.ok(browserHistory[1].text.length > 6000);
+  assert.equal(browserHistory[1].text, label + '\n' + authored, 'actual browser history includes its presentation label AND intact model prose');
+  const packet = buildInvocationPacket({ message: 'Continue with the next consequence.', history: browserHistory, waiveIssuance: true });
+  assert.equal(packet.canInvoke, true, packet.inputError?.code);
+  const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  assert.equal(request.contents[1].role, 'model');
+  assert.equal(request.contents[1].parts[0].text, browserHistory[1].text, 'wire request keeps original combining marks and final characters');
+  assert.equal(request.generationConfig.maxOutputTokens, 65536, 'history budget must never become a generation cap');
+  assert.equal((request.contents[1].parts[0].text.match(/\p{M}/gu) || []).length, (browserHistory[1].text.match(/\p{M}/gu) || []).length);
 });
 
 test('deficient marked history is preserved exactly while the system labels history non-templatic', () => {
