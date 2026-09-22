@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v41-morphology-observation';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v42-history-evidence-preserved';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -407,16 +407,15 @@ function retryAfterSeconds(response) {
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
 function geminiContents(packet = {}) {
-  const history = packet.history.map((entry) => {
-    // Provider request projection only. Stored history, operator text, receipts
-    // and visible output remain byte-identical. Do not few-shot a known failed
-    // model ornament pattern into every subsequent turn.
-    const warnings = entry.role === 'model'
-      ? severeMorphologyRepairWarnings(assessIntegratedTransmission(entry.text).qualityWarnings)
-      : [];
-    const text = warnings.length ? prepareKhonapolitRepairContext(entry.text, warnings) : entry.text;
-    return { role: entry.role, parts: [{ text }] };
-  });
+  // Conversation history is evidence, not a local style-training surface.
+  // Never rewrite a prior model turn before returning it to Gemini. In
+  // particular, stripping combining marks from a weak Tauric Diana reply would
+  // fabricate a plain-text model exemplar that never existed on the human
+  // surface and can recursively reinforce the failure on later turns.
+  const history = packet.history.map((entry) => ({
+    role: entry.role,
+    parts: [{ text: entry.text }]
+  }));
   return [...history, { role: 'user', parts: [{ text: packet.message }] }];
 }
 
