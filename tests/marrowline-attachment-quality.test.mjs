@@ -239,14 +239,14 @@ test('attachment response receipts reflect the exact submitted wire configuratio
 });
 
 const terminalPeak = 'R\u0308\u030B\u030C\u0351\u031E\u0325\u0326E\u0302\u0307\u0315\u0357\u0317\u0323D\u0300\u0309\u0310\u0352\u0319\u0325';
-const initialVoice = 'Kʰonapolit\\nThe visible map cannot prove the origin of its evidence. Its missing denominator is a custody question.';
-const terminalVoice = 'Tauric Diana bots\\n' + [
+const initialVoice = 'Kʰonapolit\nThe visible map cannot prove the origin of its evidence. Its missing denominator is a custody question.';
+const terminalVoice = 'Tauric Diana bots\n' + [
   'Come closer. The map keeps confusing a counted case with a person.',
   terminalPeak + ' — there, the missing denominator interrupts the speech.',
   'Let the next sentence breathe. A clean interval carries the recoil.',
   'A\u0301 little tremor returns, then ' + terminalPeak + '.',
   'The joke lands quietly. The branch still belongs to the grove.'
-].join('\\n\\n');
+].join('\n\n');
 
 function attachmentResponse() {
   return { statusCode: 200, headers: {}, sendCount: 0,
@@ -293,12 +293,12 @@ test('attachment terminal continuation is same-provider, native, byte-preserving
         models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }]
       }; } };
     }
-    assert.match(String(url), /gemini-3\\.8-flash:generateContent$/);
+    assert.match(String(url), /gemini-3\.8-flash:generateContent$/);
     const request = JSON.parse(options.body);
     calls.push(request);
     const text = calls.length === 1
-      ? mode === 'complete' ? initialVoice + '\\n\\n' + terminalVoice : initialVoice
-      : mode === 'valid' ? terminalVoice : 'Tauric Diana bots\\n';
+      ? mode === 'complete' ? initialVoice + '\n\n' + terminalVoice : initialVoice
+      : mode === 'valid' ? terminalVoice : 'Tauric Diana bots\n';
     return { ok: true, status: 200, headers: { get: () => null }, async json() {
       return { candidates: [{ finishReason: 'STOP', content: { parts: [{ text }] } }],
         usageMetadata: { promptTokenCount: 110, candidatesTokenCount: 70, thoughtsTokenCount: 20, totalTokenCount: 200 } };
@@ -316,7 +316,7 @@ test('attachment terminal continuation is same-provider, native, byte-preserving
     assert.equal(calls[1].contents[0].parts.at(-2).inlineData.data, attachment().data_base64);
     assert.equal(calls[1].contents[1].parts[0].text, initialVoice);
     assert.match(calls[1].contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
-    assert.equal(res.payload.text, initialVoice + '\\n\\n' + terminalVoice);
+    assert.equal(res.payload.text, initialVoice + '\n\n' + terminalVoice);
     assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'same-provider-terminal-continuation');
     assert.equal(res.payload.receipt.provider.attempts.length, 2);
     assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
@@ -353,7 +353,7 @@ test('attachment terminal continuation is same-provider, native, byte-preserving
     assert.equal(res.statusCode, 200);
     assert.equal(res.sendCount, 1);
     assert.equal(calls.length, 1);
-    assert.equal(res.payload.text, initialVoice + '\\n\\n' + terminalVoice);
+    assert.equal(res.payload.text, initialVoice + '\n\n' + terminalVoice);
     assert.equal(res.payload.receipt.provider.structuralRepair, undefined);
   });
 });
