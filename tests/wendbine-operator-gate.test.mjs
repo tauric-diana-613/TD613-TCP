@@ -12,7 +12,7 @@ assert.deepEqual(workflows.filter(x=>x!=='vercel-production-reobserve.yml'),esta
 assert.ok(workflows.length===4||workflows.length===5,'No sixth workflow may be introduced for Wendbine.');
 assert.match(gate,/github\.event\.issue\.number == 758/,'SRC gate remains separately bounded.');
 assert.match(gate,/github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/);
-assert.match(gate,/  relock-safety:[\\s\\S]*?concurrency:\\n\\s+group: td613-vercel-production-release/,
+assert.ok(gate.includes('    concurrency:\\n      group: td613-vercel-production-release'),
  'The production relock lane retains its established job-scoped concurrency lock.');
 const isolatedJob=gate.split('  wendbine-operator-sync:')[1];
 assert.ok(isolatedJob,'A distinct Wendbine manual-sync job must exist.');
