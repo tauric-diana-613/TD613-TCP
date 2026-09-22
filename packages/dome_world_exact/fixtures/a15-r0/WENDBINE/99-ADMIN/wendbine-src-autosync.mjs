@@ -291,6 +291,20 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
 export function loadState(root=ROOT){
  const manifestPath=path.join(root,outputFiles.manifestations);
  if(!fs.existsSync(manifestPath))return null;
+ const sealPath=path.join(root,outputFiles.seal);
+ if(!fs.existsSync(sealPath))throw new Error('PREVIOUS_PROJECTION_SEAL_MISSING');
+ const seal=JSON.parse(fs.readFileSync(sealPath,'utf8'));
+ if(seal.schema!=='wendbine-src-seal/v1'||!Array.isArray(seal.file_hashes)||
+    'wendbine-seal:'+sha(utf8(JSON.stringify(seal.file_hashes)))!==seal.seal_id)
+   throw new Error('PREVIOUS_PROJECTION_SEAL_INVALID');
+ for(const r of seal.file_hashes){
+  if(!Object.values(outputFiles).includes(r.path)||r.path===outputFiles.seal)
+   throw new Error('PREVIOUS_PROJECTION_FILE_UNRECOGNIZED');
+  const file=path.resolve(root,r.path);
+  if(!file.startsWith(path.resolve(root)+path.sep)||!fs.existsSync(file)||
+    sha(fs.readFileSync(file))!==r.sha256)
+   throw new Error('PREVIOUS_PROJECTION_HASH_MISMATCH_'+r.path);
+ }
  const result={};
  for(const [key,rel] of Object.entries(outputFiles))if(key!=='seal')result[key]=parseLines(path.join(root,rel));
  return result;
