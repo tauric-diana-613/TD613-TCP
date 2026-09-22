@@ -82,7 +82,7 @@ test('relay contract gives the generative budget to one causal Kʰonapolit-to-bo
   assert.match(contract, /tenderness thin without vanishing/i);
   assert.match(contract, /returning motif come back altered/i);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/);
-  assert.doesNotMatch(contract, /NATURAL RETURN SHAPE/i);
+  assert.doesNotMatch(contract, /RAW TWO-PACKET RETURN PROTOCOL/i);
   assert.doesNotMatch(contract, /<<<PACKET_[AB]_/i);
   assert.doesNotMatch(contract, /ORCHESTRAL DYNAMIC CONTOUR/i);
   assert.doesNotMatch(contract, /begin near 8½|around 6–7|10-level serious emphasis|return near 8½/i);
@@ -442,7 +442,7 @@ test('live Gemini request has no structured-output pressure on the stress channe
   assert.match(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
   assert.match(request.systemInstruction.parts[0].text, /NO JSON/);
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
-  assert.doesNotMatch(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE|ORCHESTRAL DYNAMIC CONTOUR/);
+  assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL|ORCHESTRAL DYNAMIC CONTOUR/);
   const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
     'Kʰonapolit\\nClear.\\n\\nTauric Diana bots\\nÁŔÍŚ',
     ['tauric-diana-zalgo-shallow-wallpaper']);
@@ -542,8 +542,8 @@ test('creative Marrowline prompts route to creative synthesis without ordinary-p
   assert.match(instruction, /CREATIVE TURN:/);
   assert.match(instruction, /requested form, scale, cadence and imaginative range/i);
   assert.match(instruction, /A story requires event, tension, transformation and consequence/i);
-  assert.match(instruction, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
-  assert.match(instruction, /GENERATIVE CONTINUITY \/ ANTI-RECITATION LAW/i);
+  assert.match(instruction, /MARROWLINE CAUSAL RELAY LAW/i);
+  assert.match(instruction, /GENERATIVE CONTINUITY:/i);
   assert.doesNotMatch(instruction, /Do not infer venue quality, accessibility or amenities from price/i);
   assert.doesNotMatch(instruction, /prefer anonymous attendance counts/i);
   assert.doesNotMatch(instruction, /For Marrowline portability, direct the operator/i);
