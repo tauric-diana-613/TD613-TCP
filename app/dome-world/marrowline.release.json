@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v46",
-  "version": "v0.7.49-native-overprint",
+  "schema": "td613.dome-world.marrowline.release/v47",
+  "version": "v0.7.50-terminal-continuation-overprint-120",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v46-native-visual-reference",
+  "providerApiSchema": "td613.khonapolit-gemini/v47-bounded-terminal-continuation",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v23-causal-prosody-observation",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v29-observed-prosody",
   "apertureVersion": "v3.2-alpha",
@@ -263,7 +263,9 @@
       "fortySeventhFollowupObservation": "After #1292 production the operator still reports absent expressive vertical High Zalgo. Static path inspection shows the native return is preserved with textContent, but the renderer forces 1.02 line-height on the integrated text and 1.0 on expressive spans. Provider prompts repeatedly name the strike failure while giving no literal native visual reference.",
       "fortySeventhFollowupConsequence": "Separate source generation from display: add a tiny contrastive quiet/eruption native visual reference at the current-turn edge, remove negative failure priming, and allocate a bounded native line box from actual returned combining-run depth. The provider still authors all output marks; no local synthesis, added call, model-order change, morphology retry or architecture restart. Actual production phenotype remains a distinct human observation.",
       "fortyEighthFollowupObservation": "Operator clarification after #1293: tall provider-authored High Zalgo is supposed to overlap and collide with adjacent text, not receive depth-proportional clearance. The #1293 renderer introduced line-height up to 3.35 and padding up to 52px based on max combining run, making the field unnaturally separated even when the provider supplied deep marks.",
-      "fortyEighthFollowupConsequence": "Preserve #1293's provider-facing literal quiet/eruption contrastive calibration. Undo only its display-side depth-to-spacing transform. Keep max-run as observation-only telemetry, set tight 1.04 expressive line boxes with overflow visible and modest outer padding, and preserve native textContent byte-for-byte. No local Zalgo synthesis, repaint, extra Gemini call, morphology retry, or routing change."
+      "fortyEighthFollowupConsequence": "Preserve #1293's provider-facing literal quiet/eruption contrastive calibration. Undo only its display-side depth-to-spacing transform. Keep max-run as observation-only telemetry, set tight 1.04 expressive line boxes with overflow visible and modest outer padding, and preserve native textContent byte-for-byte. No local Zalgo synthesis, repaint, extra Gemini call, morphology retry, or routing change.",
+      "fortyNinthFollowupObservation": "Operator confirms #1294 production restores the intended High-Zalgo collision phenotype. Some independent provider turns still end after Kʰonapolit despite the existing full-rewrite structural repair. Operator requests a bot-specific 1.2 line-height without depth-driven expansion.",
+      "fortyNinthFollowupConsequence": "Keep the known-good collision renderer and contrastive provider examples. Require a standalone bot heading rather than mistaking a name at the start of a sentence for a voice boundary. Spend the existing one bounded same-provider structural repair on terminal-only continuation when the only fault is a missing bot movement, preserving the original provider bytes and separately recording original, continuation and joined hashes. A full corrected provider return remains valid; failure leaves the original visible. No local synthetic bot prose, morphology-only retries or extra provider calls beyond the existing repair ceiling."
     },
     "rawPacketSignalPosture": "raw and JSON envelopes both report PARTIAL for admitted quality warnings; structural admission alone cannot display LOCKED",
     "productionObservationLaw": "exact-source production observation distinguishes human-surface return from local admission: HTTP 200 + ok=true + nonempty provider text establishes the Marrowline surface witness; local relay admission remains diagnostic-only and is recorded separately",
