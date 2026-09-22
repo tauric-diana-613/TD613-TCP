@@ -57,8 +57,10 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
     assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-    assert.match(request.contents.at(-1).parts[1].text, /climb above and descend below the base letters in stacked columns/);
-    assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging instead of repeating one cloned stack/);
+    assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
+    assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
+    assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
+    assert.ok((request.contents.at(-1).parts[1].text.match(/\p{M}/gu) || []).length >= 20, 'provider sees literal quiet and eruptive combining examples');
     assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
