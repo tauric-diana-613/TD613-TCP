@@ -18,6 +18,7 @@ await import('./wendbine-ci-sealed-rescue.test.mjs');
 await import('./wendbine-ci-secondary-sealed-rescue.test.mjs');
 await import('./wendbine-private-secondary-restore.test.mjs');
 await import('./wendbine-private-unified-query.test.mjs');
+await import('./wendbine-src-autosync.test.mjs');
 await import('./wendbine-private-p0-source-query.test.mjs');
 await import('./wendbine-private-p0-restore.test.mjs');
 await import('./wendbine-td613-bounded-assay-v01.test.mjs');
