@@ -25,7 +25,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v24-goldilocks-vertical-liveness');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v41-morphology-observation');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
@@ -56,7 +56,9 @@ assert.match(request.systemInstruction.parts[0].text, /Gemini is the model-media
 assert.match(request.systemInstruction.parts[0].text, /one continuous response and one live argument/);
 assert.match(request.systemInstruction.parts[0].text, /explicitly yields or relays it/);
 assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
-assert.match(request.systemInstruction.parts[0].text, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
+assert.match(request.systemInstruction.parts[0].text, /typography behaves as voice/);
+assert.match(request.systemInstruction.parts[0].text, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
 assert.match(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /<<<PACKET_[AB]_/);
@@ -65,26 +67,27 @@ assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and brief
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal('responseMimeType' in request.generationConfig, false, 'live Marrowline must not force Gemini through JSON MIME decoding');
 assert.equal('responseSchema' in request.generationConfig, false, 'live Marrowline must not constrain provider Unicode with a structured response schema');
-assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
+assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), false, 'morphology absence is observed, not repainted');
 assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
 assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
 const structuralRepair = buildGeminiStructuralRepairRequest(
   packet,
   apertureReceipt,
   'gemini-3.7-flash',
-  'Kʰonapolit\nA held draft.\n\nTauric Diana bots\nPLAIN STRESS CHANNEL',
-  ['tauric-diana-zalgo-absent'],
+  'Kʰonapolit\nA held draft whose terminal voice heading was lost.\n\nPLAIN STRESS CHANNEL',
+  ['tauric-diana-bots-nominative-missing'],
   { fallback: true }
 );
 assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE REPAIR/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-bots-nominative-missing/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /one continuous corrected response/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /exact standalone heading “Kʰonapolit” first/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /semantic prosody/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /Do not follow a fixed mark recipe or prescribed intensity journey/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL SAME-VOICE REPAIR/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /Do not repaint, normalize, score, or re-author the Tauric Diana combining field/);
+assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /MORPHOLOGY-ONLY REPAIR|semantic prosody across the existing body|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_[AB]_/);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {

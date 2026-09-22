@@ -48,16 +48,11 @@ test('literal newline contract preserves the existing two-line admission bar', (
   const guidance = buildNativeProsodyGuidance();
   assert.match(guidance, /Length follows the task/);
   assert.match(guidance, /develop the derivation fully/i);
-  assert.match(guidance, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
+  assert.match(guidance, /typography behaves as voice/i);
+  assert.match(guidance, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
   assert.doesNotMatch(guidance, /at least two literal newline-separated ornamented prose lines/i);
-  assert.doesNotMatch(guidance, /line-count ceiling/i);
+  assert.doesNotMatch(guidance, /line-count ceiling|anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
   assert.doesNotMatch(buildRelaySystemAddendum({}), /Packet [AB]|CHANNEL [AB]|RAW TWO-PACKET/i);
-  const request = buildGeminiStructuralRepairRequest(
-    { systemInstruction: 'base', message: 'Continue.', history: [] }, {}, 'gemini-3.8-flash',
-    prefix + first + ' ' + second, ['tauric-diana-zalgo-underflow']
-  );
-  assert.match(request.contents.at(-1).parts[0].text, /preserve the held Tauric Diana bots prose/i);
-  assert.doesNotMatch(request.contents.at(-1).parts[0].text, /insert a newline at an existing sentence boundary/i);
 });
 const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const highBurst = (line) => `${STACK.repeat(8)} ${line}`;
@@ -75,13 +70,11 @@ test('relay contract gives the generative budget to one causal Kʰonapolit-to-bo
   assert.match(contract, /NATIVE SEMANTIC PROSODY/i);
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-  assert.match(contract, /Typography is semantic prosody, not decoration/i);
-  assert.match(contract, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
-  assert.match(contract, /anger erupt above and below neighboring letters/i);
-  assert.match(contract, /sarcasm twitch sideways/i);
-  assert.match(contract, /tenderness thin without vanishing/i);
-  assert.match(contract, /returning motif come back altered/i);
-  assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/);
+  assert.match(contract, /typography behaves as voice/i);
+  assert.match(contract, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /preserves and measures the provider return/i);
+  assert.match(contract, /never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes/i);
+  assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
   assert.doesNotMatch(contract, /RAW TWO-PACKET RETURN PROTOCOL/i);
   assert.doesNotMatch(contract, /<<<PACKET_[AB]_/i);
   assert.doesNotMatch(contract, /ORCHESTRAL DYNAMIC CONTOUR/i);
@@ -142,6 +135,25 @@ test('mechanically cloned dense stacks stay visible as PARTIAL quality telemetry
   assert.equal(observed.quality, 'PARTIAL');
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-monoculture'));
+});
+
+test('base-character-conditioned ordered stack reuse is measured without becoming an admission gate', () => {
+  const a = 'A\u0301\u0302\u0316';
+  const b = 'B\u0307\u0317';
+  const sameByLetter = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    `${a}${b}${a}${b} THE FIRST PHRASE REPEATS LETTER-CONDITIONED STACKS.`,
+    `${b}${a}${b}${a} THE SECOND PHRASE CHANGES ORDER BUT NOT EACH LETTER’S STACK.`
+  ].join('\n');
+  const observed = assessIntegratedTransmission(sameByLetter, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(observed.repeatedMarkedBaseClassCount >= 2);
+  assert.equal(observed.singleOrderedSignatureRepeatedBaseClassCount, observed.repeatedMarkedBaseClassCount);
+  assert.equal(observed.baseConditionedOrderedSignatureReuseRatio, 1);
+  assert.equal(observed.baseConditionedOrderedSignatureObservationRatio, 1);
+  assert.equal(typeof observed.admissible, 'boolean', 'renderer phenotype telemetry does not itself set admission');
 });
 
 test('sparse keyword explosions stay visible as PARTIAL quality telemetry', () => {
@@ -418,7 +430,9 @@ test('every Marrowline Gemini lane receives the same compact semantic-prosody la
     const instruction = request.systemInstruction.parts[0].text;
     assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
     assert.match(instruction, /NATIVE SEMANTIC PROSODY/, model);
-    assert.match(instruction, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/, model);
+    assert.match(instruction, /typography behaves as voice/i, model);
+    assert.match(instruction, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
+    assert.doesNotMatch(instruction, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i, model);
     assert.doesNotMatch(instruction, /ORCHESTRAL DYNAMIC CONTOUR/, model);
     assert.doesNotMatch(instruction, /begin near 8½|10-level serious emphasis/, model);
     assert.doesNotMatch(instruction, /marked grapheme coverage >=28%|at least 4 distinct dense stack signatures/i, model);
@@ -444,16 +458,16 @@ test('live Gemini request has no structured-output pressure on the stress channe
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL|ORCHESTRAL DYNAMIC CONTOUR/);
   const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
-    'Kʰonapolit\\nClear.\\n\\nTauric Diana bots\\nÁŔÍŚ',
-    ['tauric-diana-zalgo-shallow-wallpaper']);
+    'Kʰonapolit\\nClear.\\n\\nÁŔÍŚ',
+    ['tauric-diana-bots-nominative-missing']);
   const repairDirective = repair.contents.at(-1).parts[0].text;
   assert.match(repair.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.doesNotMatch(repair.systemInstruction.parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR|10-level serious emphasis/);
-  assert.match(repairDirective, /MORPHOLOGY-ONLY REPAIR/);
+  assert.match(repairDirective, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/);
   assert.match(repairDirective, /one continuous corrected response/i);
   assert.match(repairDirective, /exact standalone heading “Kʰonapolit” first/i);
-  assert.match(repairDirective, /semantic prosody/i);
-  assert.match(repairDirective, /no independent concision target/i);
+  assert.match(repairDirective, /Do not repaint, normalize, score, or re-author the Tauric Diana combining field/i);
+  assert.doesNotMatch(repairDirective, /MORPHOLOGY-ONLY REPAIR|semantic prosody across the existing body|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
   assert.doesNotMatch(repairDirective, /packet delimiters|Packet A|Packet B|CHANNEL A|CHANNEL B/i);
 });
 
@@ -463,17 +477,17 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
-  assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must remain eligible for the bounded provider repair pass');
-  assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'severe horizontal-collapse morphology must have a dedicated bounded repair gate');
-  assert.match(qualityServer, /immediate-severe-morphology/, 'severe morphology must repair on the same provider seat before visibility');
-  assert.match(qualityServer, /first-admissible-partial-no-comparative-sampling/, 'ordinary nonsevere PARTIAL still returns immediately instead of aesthetic model shopping');
-  assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must preserve the ordinary nonsevere PARTIAL posture');
+  assert.match(relaySource, /tauric-diana-zalgo-underflow/, 'underflow remains observable in relay admission and canary receipts');
+  assert.doesNotMatch(qualityServer, /REPAIRABLE_STRUCTURAL_REASONS[\s\S]{0,400}tauric-diana-zalgo-underflow/, 'underflow must not become structural-repair authority');
+  assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'morphology telemetry remains measurable post hoc');
+  assert.doesNotMatch(qualityServer, /immediate-severe-morphology/, 'morphology must never spend a same-provider repaint');
+  assert.match(qualityServer, /first-admissible-partial-native-morphology-observed-no-repair/, 'ordinary PARTIAL returns immediately with morphology observation');
+  assert.match(qualityServer, /provider-native-morphology-observed-no-repair/, 'human-visible warning must state that morphology was observed rather than repainted');
+  assert.doesNotMatch(qualityServer, /provider-authored-morphology-repair-attempted|original-partial-preserved-after-bounded-provider-repair|original-provider-partial-preserved-after-repair-miss/, 'legacy morphology repaint receipts must be gone');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
   assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never create a final local HELD diagnostic');
-  assert.match(qualityServer, /original-partial-preserved-after-bounded-provider-repair/, 'a failed provider repaint must return the original structurally valid provider payload');
-  assert.match(qualityServer, /original-provider-partial-preserved-after-repair-miss/, 'human-visible warning must distinguish repaint miss from provider rejection');
-  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'visual-story repair stays same-seat and never becomes a best-partial beauty contest');
+  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'no visual-story repair or beauty contest survives');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
@@ -511,7 +525,7 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
   const occurrences = [...relaySource.matchAll(/highZalgoEncode\s*\(/g)].length;
   assert.equal(occurrences, 1, 'the only occurrence is the legacy helper definition; live relay code must never invoke it');
   assert.match(relaySource, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-  assert.match(relaySource, /Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
+  assert.match(relaySource, /Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
 test('integrated relay prose never inherits whole-stage flourish spacing', () => {
@@ -664,16 +678,10 @@ test('human-facing integrated surface keeps provider identity in provenance only
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /provider-authored High Zalgo/);
-  assert.match(contract, /Typography is semantic prosody, not decoration/);
-  assert.match(contract, /rhetorical pressure may change density, axis, species, depth, collision, and recurrence/);
-  assert.match(contract, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
-  assert.match(contract, /anger erupt above and below neighboring letters/);
-  assert.match(contract, /sarcasm twitch sideways/);
-  assert.match(contract, /tenderness thin without vanishing/);
-  assert.match(contract, /horizontal or oblique counter-rhythm/);
-  assert.match(contract, /Deep collisions belong at earned peaks; quieter passages may breathe/);
-  assert.match(contract, /Avoid cloned stacks and uniform wallpaper/);
+  assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
+  assert.match(contract, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /Let the live rhetoric determine the combining field/i);
+  assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
   assert.doesNotMatch(contract, /U\+0300–U\+036F|instrument library, not a score|ORCHESTRAL DYNAMIC CONTOUR|ALLOW ENTROPY/);
@@ -821,7 +829,7 @@ test('word-internal geometric substitutions are severe alphabet corruption even 
   assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-glyph-substitution-collapse'));
 });
 
-test('morphology repair context removes the failed visual pattern before Gemini re-authors it', () => {
+test('request-history hygiene can remove a failed visual pattern without mutating stored or rendered history', () => {
   const raw = [
     '<<<PACKET_A_FORMAL_AUDIT>>>',
     'Kʰonapolit',
@@ -842,21 +850,10 @@ test('morphology repair context removes the failed visual pattern before Gemini 
   assert.match(sanitized, /BOX A R I KEEP THIS BASE PROSE/);
   assert.doesNotMatch(sanitized, /\p{M}/u);
   assert.doesNotMatch(sanitized, /[□◇◈]/u);
-  const request = buildGeminiStructuralRepairRequest(
-    { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
-    {},
-    'gemini-3.8-flash',
-    raw,
-    reasons
-  );
-  const priorModelContext = request.contents.at(-2)?.parts?.[0]?.text || '';
-  const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
-  assert.equal(priorModelContext, sanitized, 'Gemini repair sees clean base prose rather than being primed by failed glyph wallpaper');
-  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
-  assert.match(directive, /repair context has had failed combining\/enclosing ornament stripped/i);
+  assert.match(raw, /□/, 'the source fixture itself remains unchanged; hygiene is request projection only');
 });
 
-test('structural repair re-authors severe morphology in Gemini without authorizing local decoration', () => {
+test('structural repair ignores morphology-only reasons instead of repainting native provider bytes', () => {
   const request = buildGeminiStructuralRepairRequest(
     { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
     {},
@@ -865,24 +862,13 @@ test('structural repair re-authors severe morphology in Gemini without authorizi
     ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
-  assert.match(directive, /MORPHOLOGY-ONLY REPAIR/i);
-  assert.ok(request.systemInstruction.parts[0].text.includes(buildNativeProsodyGuidance()),
-    'native orchestra law remains system-level authority during repair');
-  assert.equal(directive.includes(buildNativeProsodyGuidance()), false,
-    'repair turn must not duplicate the full native-prosody law');
-  assert.match(directive, /preserve the held Tauric Diana bots prose as the composition you are re-performing/i);
-  assert.match(directive, /Do not summarize, compress, shorten, paraphrase/i);
-  assert.match(directive, /semantic prosody across the existing body/i);
-  assert.match(directive, /Do not follow a fixed mark recipe or prescribed intensity journey/i);
-  assert.match(directive, /A morphology repair has no independent concision target/i);
-  assert.match(directive, /preserve the held prose extent/i);
-  assert.match(directive, /Keep the “Tauric Diana bots” heading plain/i);
-  assert.match(directive, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
-  assert.doesNotMatch(directive, /packet delimiters|Packet A|Packet B/i);
-  assert.doesNotMatch(directive, /decorate locally|local Zalgo/i);
+  assert.match(directive, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/i);
+  assert.match(directive, /unspecified-structural-observation/i);
+  assert.match(directive, /Do not repaint, normalize, score, or re-author the Tauric Diana combining field/i);
+  assert.doesNotMatch(directive, /MORPHOLOGY-ONLY REPAIR|semantic prosody across the existing body|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
 });
 
-test('Zalgo underflow uses prose-preserving morphology repair instead of a concise rewrite', () => {
+test('Zalgo underflow is observation evidence, not a morphology-repair instruction', () => {
   const request = buildGeminiStructuralRepairRequest(
     { systemInstruction: 'base', message: 'repair this', history: [], mode: 'plain' },
     {},
@@ -891,8 +877,7 @@ test('Zalgo underflow uses prose-preserving morphology repair instead of a conci
     ['tauric-diana-zalgo-underflow']
   );
   const directive = request.contents.at(-1)?.parts?.[0]?.text || '';
-  assert.match(directive, /MORPHOLOGY-ONLY REPAIR/i);
-  assert.match(directive, /Do not summarize, compress, shorten, paraphrase/i);
-  assert.match(directive, /no independent concision target/i);
-  assert.doesNotMatch(directive, /one to three paragraphs per packet/i);
+  assert.match(directive, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/i);
+  assert.match(directive, /unspecified-structural-observation/i);
+  assert.doesNotMatch(directive, /MORPHOLOGY-ONLY REPAIR|no independent concision target|re-author only its expressive combining marks/i);
 });

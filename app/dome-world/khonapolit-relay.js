@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v22-anchor-safe-orchestral-contour';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v28-anchor-safe-orchestral-contour';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v23-causal-prosody-observation';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v29-observed-prosody';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -39,7 +39,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
       properties: {
         text: {
           type: 'STRING',
-          description: 'Two sequential unmerged visible streams with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. The first stream is clean formal prose with zero combining marks; the second is an uppercase-dominant provider-authored High-Zalgo scream-sing transmission whose native body is deep vertical crown/root architecture. For vertical architecture, use the named accepted above/below combining-diacritic palette from the system instruction; do not choose arbitrary marks merely because they are combining marks. Horizontal and oblique marks are local counter-rhythm only after the vertical field is visibly alive.'
+          description: 'One continuous causal relay with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. Kʰonapolit develops the clean formal derivation; after an earned handoff, the bots finish that same argument in provider-authored High-Zalgo whose typography behaves as voice. No fixed axis, palette, contour, depth, density, or per-character morphology is specified here.'
         },
         voices: {
           type: 'ARRAY',
@@ -198,8 +198,9 @@ function flourishTelemetry(text = '') {
     const enclosing = marks.filter((mark) => ENCLOSING_MARK_PATTERN.test(mark)).length;
     const verticalOrnament = verticalAbove + verticalBelow;
     const unclassified = Math.max(0, marks.length - planar - verticalAbove - verticalBelow - enclosing);
+    const orderedSignature = marks.map((mark) => mark.codePointAt(0)).map((cp) => cp.toString(16).padStart(4, '0')).join('-');
     const signature = marks.map((mark) => mark.codePointAt(0)).sort((a, b) => a - b).map((cp) => cp.toString(16).padStart(4, '0')).join('-');
-    return { base, marks: marks.length, above, below, through, planar, verticalOrnament, verticalAbove, verticalBelow, enclosing, unclassified, signature };
+    return { base, marks: marks.length, above, below, through, planar, verticalOrnament, verticalAbove, verticalBelow, enclosing, unclassified, signature, orderedSignature };
   });
   const clusters = clusterTelemetry(value);
   const denseClusters = clusters.filter((cluster) => cluster.marks >= 6 && cluster.above >= 2 && cluster.below >= 2);
@@ -268,6 +269,20 @@ function flourishTelemetry(text = '') {
   }
   const uniqueMarks = new Set(runs.flatMap((run) => Array.from(run)));
   const eligibleClusters = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base));
+  // Observation only: measure whether repeated base characters reuse the exact
+  // combining-codepoint order. This is a renderer phenotype receipt, never an
+  // admission gate and never evidence of hidden provider implementation.
+  const baseConditionedOrderedStacks = new Map();
+  for (const cluster of eligibleClusters) {
+    const baseKey = cluster.base.normalize('NFC').toLocaleUpperCase('en-US');
+    const bucket = baseConditionedOrderedStacks.get(baseKey) || [];
+    bucket.push(cluster.orderedSignature);
+    baseConditionedOrderedStacks.set(baseKey, bucket);
+  }
+  const repeatedMarkedBaseGroups = [...baseConditionedOrderedStacks.values()].filter((values) => values.length >= 2);
+  const singleOrderedSignatureRepeatedBaseGroups = repeatedMarkedBaseGroups.filter((values) => new Set(values).size === 1);
+  const repeatedMarkedBaseObservationCount = repeatedMarkedBaseGroups.reduce((sum, values) => sum + values.length, 0);
+  const observationsInSingleSignatureRepeatedBaseGroups = singleOrderedSignatureRepeatedBaseGroups.reduce((sum, values) => sum + values.length, 0);
   const aboveMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0).length;
   const belowMarkedClusterCount = eligibleClusters.filter((cluster) => cluster.verticalBelow > 0).length;
   const bidirectionalClusterCount = eligibleClusters.filter((cluster) => cluster.verticalAbove > 0 && cluster.verticalBelow > 0).length;
@@ -321,6 +336,16 @@ function flourishTelemetry(text = '') {
     markedEligibleClusterCount,
     eligibleBaseCount,
     markedGraphemeCoverageRatio: eligibleBaseCount ? markedEligibleClusterCount / eligibleBaseCount : 0,
+    repeatedMarkedBaseClassCount: repeatedMarkedBaseGroups.length,
+    singleOrderedSignatureRepeatedBaseClassCount: singleOrderedSignatureRepeatedBaseGroups.length,
+    baseConditionedOrderedSignatureReuseRatio: repeatedMarkedBaseGroups.length
+      ? singleOrderedSignatureRepeatedBaseGroups.length / repeatedMarkedBaseGroups.length
+      : 0,
+    repeatedMarkedBaseObservationCount,
+    observationsInSingleSignatureRepeatedBaseClasses: observationsInSingleSignatureRepeatedBaseGroups,
+    baseConditionedOrderedSignatureObservationRatio: repeatedMarkedBaseObservationCount
+      ? observationsInSingleSignatureRepeatedBaseGroups / repeatedMarkedBaseObservationCount
+      : 0,
     denseVerticalClusterCount: denseClusters.length,
     tallVerticalOrnamentClusterCount: tallVerticalClusters.length,
     tallVerticalMarkedLineCount,
@@ -609,10 +634,9 @@ export function buildNativeProsodyGuidance() {
     'NATIVE SEMANTIC PROSODY:',
     'Kʰonapolit writes clean formal prose with ZERO combining diacritical marks. Preserve mathematics and framework literals.',
     'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
-    'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument in provider-authored High Zalgo. Typography is semantic prosody, not decoration: rhetorical pressure may change density, axis, species, depth, collision, and recurrence.',
-    'Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter. Let anger erupt above and below neighboring letters, sarcasm twitch sideways, tenderness thin without vanishing, an ally-facing phrase become more legible, and a returning motif come back altered.',
-    'High Zalgo may mix vertical crowns/roots with horizontal or oblique counter-rhythm. Deep collisions belong at earned peaks; quieter passages may breathe. Avoid cloned stacks and uniform wallpaper because repetition should arise from rhetoric, not a transform.',
-    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
+    'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument. Their provider-authored High-Zalgo typography behaves as voice, not decoration or a character transform.',
+    'Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter. Let the live rhetoric determine the combining field.',
+    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
     'Length follows the task. Develop the derivation fully, let the handoff happen only when earned, and do not print a plan or discuss these instructions.'
   ].join('\n');
