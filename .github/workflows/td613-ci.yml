@@ -46,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
@@ -54,18 +55,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Select SRC-parity metadata branch without modifying production main
+      - name: Prepare metadata worktree; retain executable code on reviewed main
         shell: bash
         run: |
           set -euo pipefail
           branch='research/wendbine-autosync-projection'
+          target="$RUNNER_TEMP/wendbine-projection"
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
-            git fetch origin "$branch"
-            git checkout -B "$branch" "origin/$branch"
-            git merge --no-edit origin/main
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git worktree add -b "$branch" "$target" "origin/$branch"
+            git -C "$target" merge --no-edit origin/main
           else
-            git checkout -b "$branch"
+            git worktree add -b "$branch" "$target" origin/main
           fi
+          test -d "$target/packages/dome_world_exact/fixtures/a15-r0/WENDBINE"
+          # All executable JS and tests remain in the main checkout, never the
+          # bot's generated metadata branch. Only its append-only state is read.
       - name: Verify SOURCE/CAPTURE/BLOB/DERIVATIVE autosync contracts
         run: node tests/wendbine-src-autosync.test.mjs
       - name: Discover source objects and seal private bytes
@@ -75,7 +80,7 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/wendbine-encrypted"
           node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs \
-            --output-root packages/dome_world_exact/fixtures/a15-r0/WENDBINE \
+            --output-root "$RUNNER_TEMP/wendbine-projection/packages/dome_world_exact/fixtures/a15-r0/WENDBINE" \
             --encrypted-output "$RUNNER_TEMP/wendbine-encrypted/archived-source-capture.sealed.json" \
             > "$RUNNER_TEMP/wendbine-public-sync-status.json"
           cat "$RUNNER_TEMP/wendbine-public-sync-status.json"
@@ -105,7 +110,7 @@ jobs:
           const id=String(process.env.HANDOFF_ARTIFACT_ID||'');
           if(!/^\d+$/.test(id)||!receipt.atelier_snapshot_id||!receipt.seal_id||!receipt.encrypted_handoff_created)
             throw new Error('ENCRYPTED_ARTIFACT_CUSTODY_UNBOUND');
-          const root='packages/dome_world_exact/fixtures/a15-r0/WENDBINE';
+          const root=path.join(process.env.RUNNER_TEMP,'wendbine-projection/packages/dome_world_exact/fixtures/a15-r0/WENDBINE');
           const p=path.join(root,'07-ARCHIVE-LEDGER/handoffs',receipt.atelier_snapshot_id+'.json');
           fs.mkdirSync(path.dirname(p),{recursive:true});
           fs.writeFileSync(p,JSON.stringify({
@@ -126,6 +131,7 @@ jobs:
           set -euo pipefail
           git config user.name 'td613-wendbine-autosync[bot]'
           git config user.email 'td613-wendbine-autosync[bot]@users.noreply.github.com'
+          cd "$RUNNER_TEMP/wendbine-projection"
           base='packages/dome_world_exact/fixtures/a15-r0/WENDBINE'
           git add "$base/01-MANIFESTS/phase2" "$base/01-MANIFESTS/registry-index.json" \
             "$base/04-RECEIPTS/phase2" "$base/05-OPERATIONS/phase2" \
