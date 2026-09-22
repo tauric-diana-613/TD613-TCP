@@ -6,6 +6,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -20,12 +22,13 @@ on:
           - calibration
           - gemini-observation
           - gemini-quality-pilot
+          - wendbine-autosync
 
 permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.mode == 'gemini-quality-pilot' && github.run_id || inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.event_name == 'schedule' && 'wendbine-autosync' || inputs.mode == 'wendbine-autosync' && 'wendbine-autosync' || inputs.mode == 'gemini-quality-pilot' && github.run_id || inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
   cancel-in-progress: true
 
 env:
@@ -34,9 +37,69 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  wendbine_autosync:
+    name: Wendbine SRC six-hour read-only archival capture
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'wendbine-autosync'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore prior sealed portable epoch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/wendbine-projection/WENDBINE"
+          mkdir -p "$RUNNER_TEMP/wendbine-projection"
+          cp -a packages/dome_world_exact/fixtures/a15-r0/WENDBINE "$root"
+          previous="$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/artifacts" -F per_page=100 -f name=wendbine-src-public-projection --jq '[.artifacts[] | select(.name == "wendbine-src-public-projection" and .expired == false)] | sort_by(.created_at) | reverse | .[0].workflow_run.id // empty')"
+          if [[ -n "$previous" ]]; then
+            gh run download "$previous" --name wendbine-src-public-projection --dir "$root"
+            echo 'PREVIOUS_SRC_EPOCH_RESTORED'
+          else
+            echo 'SRC_BOOTSTRAP_FROM_VERIFIED_60_RECEIPTS'
+          fi
+      - name: Validate SRC preservation contracts
+        run: node tests/wendbine-src-autosync.test.mjs
+      - name: Acquire archive, compile portable registries, encrypt source bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/wendbine-ciphertext"
+          node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs --output-root "$RUNNER_TEMP/wendbine-projection/WENDBINE" --encrypted-output "$RUNNER_TEMP/wendbine-ciphertext/source-capture.sealed.json" > "$RUNNER_TEMP/wendbine-status.json"
+          cat "$RUNNER_TEMP/wendbine-status.json"
+          test -s "$RUNNER_TEMP/wendbine-ciphertext/source-capture.sealed.json"
+      - name: Preserve ciphertext before portable projection
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-src-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/wendbine-ciphertext/source-capture.sealed.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Preserve portable SRC metadata and seal without repository mutation
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-src-public-projection
+          path: |
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/01-MANIFESTS/phase2/
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/01-MANIFESTS/registry-index.json
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/04-RECEIPTS/phase2/
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/05-OPERATIONS/phase2/
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/05-OPERATIONS/relations/typed-edges.jsonl
+            ${{ runner.temp }}/wendbine-projection/WENDBINE/07-ARCHIVE-LEDGER/syncs/
+          retention-days: 90
+          if-no-files-found: error
+
   scope:
     name: Classify exact-head browser witness scope
-    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
+    if: github.event_name != 'schedule' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot' && inputs.mode != 'wendbine-autosync')
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
