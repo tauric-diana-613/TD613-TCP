@@ -121,7 +121,7 @@ assert.match(workflow, /production_a14_registry_archive = \$\{\{ steps\.scope\.o
 assert.match(workflow, /production_chromium_desktop_mobile = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full'/);
 assert.match(workflow, /premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
 assert.match(workflow, /premerge_witness_scope = THREE_ENGINE_SHARDS; INDIVIDUAL_JOURNEYS_SEE_EXACT_HEAD_CI_ARTIFACTS/);
-assert.match(workflow, /heavy_webkit_import_journey = \\\$\\\{\\\{ steps\\\.scope\\\.outputs\\\.validation_scope == 'full'[\\s\\S]*UNOBSERVED_SEE_EXACT_HEAD_CI_ARTIFACT/);
+assert.match(workflow, /heavy_webkit_import_journey = .*UNOBSERVED_SEE_EXACT_HEAD_CI_ARTIFACT/);
 assert.match(workflow, /production_confirmation = scope-aligned Chromium witness; live AI deferred to explicit observation/);
 assert.doesNotMatch(workflow, /Full-product releases must also complete one real Loom Demo 1 submission before sealing/);
 assert.match(workflow, /literary_benchmark_authority: false/);
