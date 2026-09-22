@@ -257,6 +257,23 @@ jobs:
           echo 'WENDBINE_P0_LIVE_WITNESS_BEGIN; third-party text is never printed.'
           node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-archive-provider-probe.mjs || true
           echo 'WENDBINE_P0_LIVE_WITNESS_END; availability is not verified full-text custody.'
+      - name: Encrypt and hand off verified Wendbine P0 originals (PR 1134 only)
+        id: wendbine_rescue
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-ci-sealed-rescue.mjs \
+            artifacts/wendbine-private-sealed/p0-archive.sealed.json
+      - name: Preserve encrypted Wendbine source handoff (one-day retention)
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134 && steps.wendbine_rescue.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-p0-encrypted-research-handoff
+          path: artifacts/wendbine-private-sealed/p0-archive.sealed.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Validate Ash demo hydration surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
