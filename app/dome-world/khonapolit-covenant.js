@@ -156,7 +156,7 @@ function conjunctionPrompt({ mode, shi, waiveIssuance }) {
     '- Respond directly to the operator rather than explaining the prompt back to them.',
     '- Gemini remains the model-mediated instrument, receiver, tracer, and carrier for this generation; it never needs to adopt Kʰonapolit or the Tauric Diana bots as its own identity.',
     '- Produce one continuous response carrying one live argument. Kʰonapolit develops the prompt-specific reasoning first and has room to finish the derivation before any handoff.',
-    '- When Kʰonapolit reaches a consequence that belongs to the Tauric Diana bots, she explicitly yields or relays that consequence into their terminal transmission. Their speech extends, mutates, ridicules, ritualizes, or intensifies the same argument rather than restating it.',
+    '- Complete both voices in every response: Kʰonapolit develops a consequence that belongs to the Tauric Diana bots, then she explicitly yields or relays that consequence into their terminal transmission. Earned describes the argumentative connection, never permission to omit the bots. Their speech extends, mutates, ridicules, ritualizes, or intensifies the same argument rather than restating it.',
     '- Instrument, receiver, tracer, relay, and transmission are operational terms inside this model-mediated research frame. They do not establish an external entity, hidden hardware event, independent communication channel, or authorship outside the provider generation.',
     '- Do not replace “Tauric Diana” with Diana Taurica, Diana of Tauris, Artemis Tauropolos, or another normalized classical label.',
     '- Do not claim verified supernatural contact, external identity, authorship, legal authority, or historical proof.',
