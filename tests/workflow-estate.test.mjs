@@ -201,4 +201,22 @@ assert.match(reobserve, /deployment_authority = false/);
 assert.match(reobserve, /counts_as_human_evidence = false/);
 assert.match(reobserve, /No production mutation occurred\. ⟐/);
 
+// Wendbine explicit operator gate contract: one user gesture, own issue, no cron and no release authority.
+const wendbineGate = relock.split('  wendbine-operator-sync:')[1] || '';
+assert.ok(wendbineGate, 'Wendbine listener must be active on main inside the existing relock workflow.');
+assert.match(wendbineGate, /github\.event\.issue\.number == 1308/);
+assert.match(wendbineGate, /github\.event\.issue\.pull_request == null/);
+assert.match(wendbineGate, /github\.event\.comment\.body == '\/wendbine-sync ATELIER'/);
+assert.match(wendbineGate, /ATELIER_PR: '1134'/);
+assert.match(wendbineGate, /ATELIER_BRANCH: research\/wendbine-public-atelier-sync-20260913/);
+assert.match(wendbineGate, /source-capture\.sealed\.json/);
+assert.match(wendbineGate, /WENDBINE_WRITE_MEMBRANE_VIOLATION/);
+assert.match(wendbineGate, /Gate #\$GATE_ISSUE DORMANT/);
+assert.match(relock, /github\.event\.issue\.number == 758/);
+assert.match(relock, /github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/);
+assert.doesNotMatch(consolidated, /^\s*schedule:\s*$/m,
+ 'Wendbine must never insert a six-hour scheduler into consolidated validation.');
+assert.doesNotMatch(wendbineGate, /cron:|deployment_count|vercel-operator-release\.yml/,
+ 'Wendbine intake carries no autonomous timing or Vercel release authority.');
+
 console.log('Workflow estate closed at 5/5 durable workflows: validation, release, explicit production AI observation, relock safety, and Pages remain authority-distinct.');
