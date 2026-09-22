@@ -81,7 +81,46 @@ jobs:
           cat "$RUNNER_TEMP/wendbine-public-sync-status.json"
           test -s "$RUNNER_TEMP/wendbine-encrypted/archived-source-capture.sealed.json"
           echo 'ciphertext_ready=true' >> "$GITHUB_OUTPUT"
-      - name: Persist append-only public SRC metadata and current seal on research branch
+      - name: Preserve encrypted original-source handoff before any public projection push
+        id: private_handoff
+        if: steps.capture.outputs.ciphertext_ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-src-private-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/wendbine-encrypted/archived-source-capture.sealed.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Receipt encrypted handoff and seal SRC metadata
+        if: steps.private_handoff.outputs.artifact-id != ''
+        shell: bash
+        env:
+          HANDOFF_ARTIFACT_ID: ${{ steps.private_handoff.outputs.artifact-id }}
+          HANDOFF_ARTIFACT_URL: ${{ steps.private_handoff.outputs.artifact-url }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const receipt=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/wendbine-public-sync-status.json','utf8'));
+          const id=String(process.env.HANDOFF_ARTIFACT_ID||'');
+          if(!/^\d+$/.test(id)||!receipt.atelier_snapshot_id||!receipt.seal_id||!receipt.encrypted_handoff_created)
+            throw new Error('ENCRYPTED_ARTIFACT_CUSTODY_UNBOUND');
+          const root='packages/dome_world_exact/fixtures/a15-r0/WENDBINE';
+          const p=path.join(root,'07-ARCHIVE-LEDGER/handoffs',receipt.atelier_snapshot_id+'.json');
+          fs.mkdirSync(path.dirname(p),{recursive:true});
+          fs.writeFileSync(p,JSON.stringify({
+            schema:'wendbine-private-handoff-receipt/v1',
+            atelier_snapshot_id:receipt.atelier_snapshot_id,seal_id:receipt.seal_id,
+            workflow_run_id:process.env.GITHUB_RUN_ID,artifact_id:id,
+            artifact_url:process.env.HANDOFF_ARTIFACT_URL,
+            retention_days:90,archive_body_publication:false,
+            rights_state:'PRIVATE_ONLY',
+            durability_limit:'ACTIONS_ARTIFACT_EXPIRY_REQUIRES_PRIVATE_VAULT_BACKUP',
+            source_ceiling:'ARCHIVE_SNAPSHOT_NOT_FIRST_PUBLICATION_OR_CURRENT_LIVE_REDDIT'
+          },null,2)+'\n',{flag:'wx'});
+          JS
+      - name: Persist SRC manifests, handoff receipt and current seal on research branch
+        if: steps.private_handoff.outputs.artifact-id != ''
         shell: bash
         run: |
           set -euo pipefail
@@ -90,21 +129,27 @@ jobs:
           base='packages/dome_world_exact/fixtures/a15-r0/WENDBINE'
           git add "$base/01-MANIFESTS/phase2" "$base/01-MANIFESTS/registry-index.json" \
             "$base/04-RECEIPTS/phase2" "$base/05-OPERATIONS/phase2" \
-            "$base/05-OPERATIONS/relations/typed-edges.jsonl" "$base/07-ARCHIVE-LEDGER/syncs"
+            "$base/05-OPERATIONS/relations/typed-edges.jsonl" "$base/07-ARCHIVE-LEDGER/syncs" \
+            "$base/07-ARCHIVE-LEDGER/handoffs"
           if git diff --cached --quiet; then
             echo 'WENDBINE_SRC_PROJECTION_ALREADY_CURRENT'
           else
             git commit -m '𝌋 Wendbine SRC public projection: append source observations and reseal'
             git push origin HEAD:refs/heads/research/wendbine-autosync-projection
           fi
-      - name: Preserve encrypted original-source handoff (90-day limited retention)
-        if: always() && steps.capture.outputs.ciphertext_ready == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: wendbine-src-private-encrypted-${{ github.run_id }}
-          path: ${{ runner.temp }}/wendbine-encrypted/archived-source-capture.sealed.json
-          retention-days: 90
-          if-no-files-found: error
+      - name: Open human-review PR for sealed metadata, never auto-merge
+        if: steps.private_handoff.outputs.artifact-id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh pr list --head research/wendbine-autosync-projection --base main --json number --jq 'length' | grep -qx 0; then
+            gh pr create --draft --head research/wendbine-autosync-projection --base main \
+              --title '𝌋 Wendbine SRC: autosync public source receipts ⟐' \
+              --body 'Scheduled source observations, manifest/capture/blob/derivative/rights ledgers and seal. All third-party bodies remain encrypted outside public Git. Review required; never auto-merge. Encrypted Actions artifacts expire after 90 days; preserve in authorized private vault.'
+          fi
+
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'schedule' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot' && inputs.mode != 'wendbine-autosync')
