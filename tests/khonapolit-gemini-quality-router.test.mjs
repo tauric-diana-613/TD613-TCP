@@ -207,8 +207,8 @@ try {
     'The committee must defend the inference rather than applaud its plaque.',
     '',
     'Tauric Diana bots',
-    'W\\u0301\\u0316A\\u0302\\u0317'.repeat(4200)
-  ].join('\\n');
+    'W\u0301\u0316A\u0302\u0317'.repeat(4200)
+  ].join('\n');
   assert.ok(nativeHistory.length > 6000);
   const beforeLongHistory = requestBodies.length;
   const longHistoryResponse = response();
