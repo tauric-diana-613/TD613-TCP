@@ -4,7 +4,6 @@ import {
   buildInvocationPacket
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
-  KHONAPOLIT_RAW_PACKET_PROTOCOL,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import {
@@ -50,22 +49,22 @@ const request = buildGeminiRequest(packet, apertureReceipt);
 assert.equal(request.contents.length, 2);
 assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant field.');
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
-assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: foreground Kʰonapolit Channel A/);
+assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
-assert.match(request.systemInstruction.parts[0].text, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
-assert.match(request.systemInstruction.parts[0].text, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/);
-assert.match(request.systemInstruction.parts[0].text, /OVERFLOW_RAW maps to Tauric Diana bots/);
-assert.match(request.systemInstruction.parts[0].text, /DUAL-CHANNEL ORTHOGRAPHY — NATURAL FIELD/);
-assert.match(request.systemInstruction.parts[0].text, /NATURAL FIELD SELF-CHECK — QUALITATIVE, NOT A RUBRIC/);
-assert.match(request.systemInstruction.parts[0].text, /Do not count marks, signatures, percentages, or lines/);
-assert.doesNotMatch(request.systemInstruction.parts[0].text, /at least 96 combining marks total/);
+assert.match(request.systemInstruction.parts[0].text, /MARROWLINE CAUSAL RELAY LAW/);
+assert.match(request.systemInstruction.parts[0].text, /Gemini is the model-mediated instrument\/carrier only/);
+assert.match(request.systemInstruction.parts[0].text, /one continuous response and one live argument/);
+assert.match(request.systemInstruction.parts[0].text, /explicitly yields or relays it/);
+assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
+assert.match(request.systemInstruction.parts[0].text, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
+assert.match(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /<<<PACKET_[AB]_/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
 assert.equal(request.generationConfig.maxOutputTokens, 4096);
 assert.equal('responseMimeType' in request.generationConfig, false, 'live Marrowline must not force Gemini through JSON MIME decoding');
 assert.equal('responseSchema' in request.generationConfig, false, 'live Marrowline must not constrain provider Unicode with a structured response schema');
-assert.match(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
-assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
-assert.match(request.systemInstruction.parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
-assert.doesNotMatch(request.systemInstruction.parts[0].text, /directly and briefly/);
 assert.equal(repairableKhonapolitAdmission(['tauric-diana-zalgo-absent']), true);
 assert.equal(repairableKhonapolitAdmission(['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing']), true);
 assert.equal(repairableKhonapolitAdmission(['canonical-recitation-detected']), false);
@@ -80,12 +79,13 @@ const structuralRepair = buildGeminiStructuralRepairRequest(
 assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE REPAIR/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_A_FORMAL_AUDIT>>>/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_B_STRESS_TELEMETRY>>>/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /multiple distinct above-line AND below-line combining-mark species/i);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /circumflex-like mark at different stack heights is still a monoculture/i);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /one continuous corrected response/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /exact standalone heading “Kʰonapolit” first/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /semantic prosody/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /Do not follow a fixed mark recipe or prescribed intensity journey/);
+assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_[AB]_/);
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
@@ -101,20 +101,13 @@ const providerText = [
   `${stack.repeat(8)} THE GROVE BITES BACK WHEN THE PREDICATE EATS ITSELF!`,
   `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
-const rawPacketText = [
-  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart,
-  ...providerText.split('\n').slice(0, 3),
-  KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticEnd,
-  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressStart,
-  ...providerText.split('\n').slice(3),
-  KHONAPOLIT_RAW_PACKET_PROTOCOL.stressEnd
-].join('\n');
 const providerPayload = {
-  candidates: [{ content: { parts: [{ text: rawPacketText }] } }]
+  candidates: [{ content: { parts: [{ text: providerText }] } }]
 };
 const rawText = extractGeminiText(providerPayload);
-assert.equal(rawText, rawPacketText);
+assert.equal(rawText, providerText);
 const relay = parseRelayEnvelope(rawText, { model: 'gemini-test', apertureReceipt });
+assert.equal(relay.signal.source, 'provider-natural-causal-handoff-plus-local-observation');
 assert.equal(relay.parts.length, 1);
 assert.equal(relay.parts[0].id, 'khonapolit');
 assert.equal(relay.parts[0].text, providerText);
@@ -152,4 +145,4 @@ assert.equal(receipt.relay.highZalgo.source, 'provider-native');
 assert.equal(receipt.seal.state, 'OPEN');
 assert.equal(receipt.storage.serverConversationStorage, false);
 
-console.log('khonapolit-api-contract: seeded two-voice adversarial provider-native relay, receipt, and operator-open seal contract ok');
+console.log('khonapolit-api-contract: causal one-generation relay, receipt, and operator-open seal contract ok');
