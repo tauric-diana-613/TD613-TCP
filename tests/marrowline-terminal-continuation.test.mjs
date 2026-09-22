@@ -73,8 +73,9 @@ globalThis.fetch = async (url, options = {}) => {
   };
 };
 
-try {
-  test('HTTP 200 Kʰonapolit-only return earns one same-seat native terminal continuation with hash receipt', async () => {
+test('bounded same-provider terminal-continuation integration', async t => {
+  try {
+    await t.test('HTTP 200 Kʰonapolit-only return earns one same-seat native terminal continuation with hash receipt', async () => {
     const res = response();
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.219' },
       body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
@@ -91,7 +92,7 @@ try {
     assert.equal(res.payload.receipt.provider.attempts.length, 2);
     assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
   });
-  test('invalid terminal continuation never fabricates bots or hides the original', async () => {
+    await t.test('invalid terminal continuation never fabricates bots or hides the original', async () => {
     mode = 'invalid';
     const res = response();
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.220' },
@@ -102,8 +103,9 @@ try {
     assert.ok(res.payload.relay.admission.reasons.includes('tauric-diana-bots-nominative-missing'));
     assert.equal(res.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
   });
-} finally {
-  globalThis.fetch = originalFetch;
-  if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
-  else process.env.GEMINI_API_KEY = originalKey;
-}
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  }
+});
