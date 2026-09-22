@@ -32,6 +32,14 @@ assert.equal(first.audit.new_source_ids.length,1);
 assert.equal(first.audit.changed_source_ids.length,1);
 assert.equal(first.audit.not_seen_prior_source_ids.length,59);
 assert.equal(first.audit.unexplained_remainder,0);
+const heldSource=checkPost({...old,selftext:'[removed]'});
+const heldPass=compileSync({observed:[heldSource],observedAt:'2026-09-22T22:05:00Z'});
+assert.equal(heldPass.audit.held,1);
+assert.equal(heldPass.audit.held_observations.length,1,'A removed body must leave a source-bound observation, not just a total.');
+assert.equal(heldPass.audit.held_observations[0].source_id,heldSource.source_id);
+assert.equal(heldPass.audit.held_observations[0].promoted_original,false);
+assert.equal(heldPass.audit.capture_added,0,'A removal placeholder must not become an admitted original capture.');
+
 assert.ok(first.state.relations.some(e=>e.graph==='NAVIGATIONAL'&&e.origin==='EXACT_SOURCE_URL_SPAN'));
 assert.ok(first.state.relations.every(e=>e.author_intent_claim===false));
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'wendbine-src-parity-'));
