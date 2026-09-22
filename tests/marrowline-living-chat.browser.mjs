@@ -164,8 +164,8 @@ try{
    const glyphLayout=await integrated.evaluate(el=>({ leading:parseFloat(getComputedStyle(el).lineHeight), base:parseFloat(getComputedStyle(el).fontSize), maxRun:Number(el.dataset.providerNativeMaxRun), raw:el.textContent, botLeading:parseFloat(getComputedStyle(el.querySelector('[data-voice="tauric-diana-bots"].zalgo-line')).lineHeight) }));
    assert.ok(glyphLayout.maxRun>=4,'fixture carries native stacked marks');
    assert.ok(glyphLayout.leading<=glyphLayout.base*1.15,'native stacks retain tight overprint line boxes');
-   assert.ok(glyphLayout.botLeading<=glyphLayout.base*1.15,'expressive glyphs may collide across adjacent lines');
-   assert.ok(glyphLayout.botLeading>=glyphLayout.base*.95,'line boxes remain present rather than collapsing');
+   assert.ok(glyphLayout.botLeading<=glyphLayout.base*1.205,'bot line-height never exceeds 1.2');
+   assert.ok(glyphLayout.botLeading>=glyphLayout.base*1.19,'1.2 spacing slightly improves legibility while the native stacks still collide');
    assert.equal(glyphLayout.raw,text,'overprinting leaves provider codepoints unchanged');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
    await page.locator('.return-details > summary').click();
