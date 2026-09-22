@@ -508,7 +508,7 @@ test('live Gemini request has no structured-output pressure on the stress channe
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL|ORCHESTRAL DYNAMIC CONTOUR/);
   const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
-    'Kʰonapolit\\nClear.\\n\\nÁŔÍŚ',
+    ['Kʰonapolit', 'Clear.', '', 'ÁŔÍŚ'].join('\n'),
     ['tauric-diana-bots-nominative-missing']);
   const repairDirective = repair.contents.at(-1).parts[0].text;
   assert.match(repair.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
