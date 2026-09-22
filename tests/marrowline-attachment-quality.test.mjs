@@ -5,6 +5,7 @@ import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
   MARROWLINE_ATTACHMENT_SCHEMA,
+  buildAttachmentGeminiRequest,
   normalizeMarrowlineAttachments
 } from '../server/marrowline-attachment-quality.js';
 
@@ -21,6 +22,24 @@ function attachment(overrides = {}) {
     ...Object.fromEntries(Object.entries(overrides).filter(([key]) => key !== 'bytes'))
   };
 }
+
+test('attachment payload stays inside the operator task while the compact relay cue remains last', () => {
+  const exact = attachment();
+  const packet = {
+    systemInstruction: 'Synthetic system.',
+    mode: 'issued-conjunction',
+    message: 'Inspect the attachment without rewriting this operator text.',
+    history: []
+  };
+  const request = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [exact]);
+  const parts = request.contents.at(-1).parts;
+  assert.equal(parts[0].text, packet.message);
+  assert.match(parts[1].text, /Operator attachment att_fixture_613: operator-note\.txt/);
+  assert.equal(parts[2].inlineData.mimeType, 'text/plain');
+  assert.equal(parts[2].inlineData.data, exact.data_base64);
+  assert.match(parts.at(-1).text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+  assert.match(parts.at(-1).text, /both mandatory visible registers/);
+});
 
 test('Marrowline attachment normalizer admits exact declared bytes and strips no custody fields', () => {
   const input = attachment();

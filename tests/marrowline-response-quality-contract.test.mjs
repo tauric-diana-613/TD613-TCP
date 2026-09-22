@@ -53,6 +53,12 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
     assert.equal(request.contents.at(-1).parts[0].text, packet.message);
+    assert.equal(request.contents.at(-1).parts.length, 2);
+    assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+    assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
+    assert.match(request.contents.at(-1).parts[1].text, /genuine provider-authored High Zalgo combining-mark typography/);
+    assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
+    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
@@ -71,6 +77,8 @@ test('deficient marked history is preserved exactly while the system labels hist
   assert.equal(request.contents[0].parts[0].text, prior);
   assert.equal(countMarks(request.contents[0].parts[0].text), countMarks(prior));
   assert.equal(request.contents.at(-1).parts[0].text, packet.message);
+  assert.equal(request.contents.at(-1).parts.length, 2);
+  assert.match(request.contents.at(-1).parts[1].text, /CURRENT-TURN RELAY EXECUTION/);
 });
 
 test('literal newline contract preserves the existing two-line admission bar', () => {

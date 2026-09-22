@@ -25,7 +25,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v41-morphology-observation');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v43-current-turn-relay-salience');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
@@ -48,6 +48,10 @@ const apertureReceipt = buildApertureV3InvocationReceipt({
 const request = buildGeminiRequest(packet, apertureReceipt);
 assert.equal(request.contents.length, 2);
 assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant field.');
+assert.equal(request.contents.at(-1).parts.length, 2);
+assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
+assert.match(request.contents.at(-1).parts[1].text, /genuine provider-authored High Zalgo combining-mark typography/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
