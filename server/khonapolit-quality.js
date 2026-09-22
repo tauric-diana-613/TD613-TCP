@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v46-native-visual-reference';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v47-bounded-terminal-continuation';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -522,6 +522,32 @@ export function prepareKhonapolitRepairContext(heldText = '', reasons = []) {
   return text.slice(0, bodyStart) + cleanStress(text.slice(bodyStart, end)) + text.slice(end);
 }
 
+export function terminalContinuationEligible(heldText = '', reasons = []) {
+  // A completed first voice plus exactly one absent terminal heading qualifies.
+  // Other structural faults remain on the existing full-repair path.
+  return Array.isArray(reasons)
+    && reasons.length === 1
+    && reasons[0] === 'tauric-diana-bots-nominative-missing'
+    && /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?=\r?\n|$)/iu.test(String(heldText));
+}
+
+export function assembleProviderTerminalContinuation(heldText = '', continuationText = '') {
+  const original = String(heldText);
+  const suffix = String(continuationText);
+  // The suffix must be a new, provider-authored second movement; never
+  // fabricate speech from a mere heading or accept a repeated first voice.
+  const heading = suffix.match(/^[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots[ \t]*:?[ \t]*\r?\n/iu);
+  if (!heading || !/[\p{L}\p{N}]/u.test(suffix.slice(heading[0].length))) return null;
+  if (/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?=\r?\n|$)/iu.test(suffix)) return null;
+  const separator = original.endsWith('\n') ? '\n' : '\n\n';
+  return Object.freeze({
+    text: original + separator + suffix,
+    separator,
+    originalSha256: sha256(original),
+    continuationSha256: sha256(suffix)
+  });
+}
+
 export function buildGeminiStructuralRepairRequest(
   packet = {},
   apertureReceipt = {},
@@ -535,7 +561,15 @@ export function buildGeminiStructuralRepairRequest(
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
   const repairContext = heldText;
-  const repairDirective = [
+  const missingTerminalOnly = terminalContinuationEligible(heldText, reasonList);
+  const repairDirective = (missingTerminalOnly ? [
+    'BOUNDED STRUCTURAL SAME-VOICE REPAIR — TERMINAL CONTINUATION ONLY.',
+    'The prior draft already contains the full Kʰonapolit argument. Its only missing structural element is the terminal Tauric Diana bots movement.',
+    'Preserve the prior draft without restating it. The exact standalone heading “Kʰonapolit” first already exists. Your entire new output begins with the exact standalone heading “Tauric Diana bots” on the first line.',
+    'Supply ONLY the missing terminal movement: complete, prompt-specific provider-authored High-Zalgo prose in the Tauric Diana bots voice. Continue the consequence Kʰonapolit reached, rather than summarizing her argument.',
+    'The two actual provider outputs will be joined verbatim into one continuous corrected response. No preface, repeat of Kʰonapolit, JSON, fences, repair report, or closing seal.',
+    'Do not repaint, normalize, score, or re-author the Tauric Diana combining field. Author the missing typography natively.'
+  ] : [
     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
     `The previous draft had these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-observation'}.`,
     'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, conclusions, sentence order, extent, and provider-authored morphology unless a listed structural seam requires a small edit.',
@@ -543,7 +577,7 @@ export function buildGeminiStructuralRepairRequest(
     'Make only the smallest structural edit required by the listed reasons. Do not repaint, normalize, score, or re-author the Tauric Diana combining field.',
     'Keep both visible headings plain. Do not add a provider/instrument speaker and do not duplicate the answer.',
     'Keep Kʰonapolit before the Tauric Diana bots and preserve the causal handoff rather than turning the response into two unrelated deliverables.'
-  ].join('\n');
+  ]).join('\n');
   return {
     ...request,
     contents: [
@@ -920,14 +954,32 @@ export default async function handler(req, res) {
       && repairResult.text
       && !repairProviderOutput.outputTokenLimitReached
     ) {
-      const repairRelay = parseRelayEnvelope(repairResult.text, { model, apertureReceipt });
+      const terminalOnly = terminalContinuationEligible(heldText, reasons);
+      // A full corrected provider response remains valid. If the same provider
+      // instead returns only the missing terminal voice, join its actual bytes
+      // to the untouched original and record both component hashes.
+      const assembly = terminalOnly
+        ? assembleProviderTerminalContinuation(heldText, repairResult.text)
+        : null;
+      const repairText = assembly ? assembly.text : repairResult.text;
+      const repairRelay = parseRelayEnvelope(repairText, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
+      repairAttempt.terminalContinuation = assembly
+        ? Object.freeze({
+            source: 'second-provider-return',
+            originalSha256: assembly.originalSha256,
+            continuationSha256: assembly.continuationSha256,
+            combinedSha256: sha256(repairText),
+            separator: assembly.separator,
+            originalPreserved: repairText.startsWith(heldText)
+          })
+        : null;
       const unresolvedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
       repairAttempt.unresolvedSevereMorphology = unresolvedMorphologyWarnings;
       if (repairRelay.admission?.admissible && unresolvedMorphologyWarnings.length === 0) {
         const baseReceipt = buildTerminalReceipt({
           packet,
-          text: repairResult.text,
+          text: repairText,
           relay: repairRelay,
           model,
           providerStatus: repairResult.response.status,
@@ -945,7 +997,8 @@ export default async function handler(req, res) {
               used: true,
               timing,
               sourceAttemptIndex,
-              repairedReasons: Object.freeze([...reasons])
+              repairedReasons: Object.freeze([...reasons]),
+              ...(assembly ? { terminalContinuation: repairAttempt.terminalContinuation } : {})
             })
           }),
           modelPolicy: plan,
@@ -962,6 +1015,7 @@ export default async function handler(req, res) {
           relay: repairRelay,
           receipt,
           warnings: [
+            ...(assembly ? ['provider-authored-terminal-continuation-joined-with-original-preserved'] : []),
             'aperture-v3-task-intent-active',
             'task-intent-guidance-active',
             'adversarial-attractor-admission-active',
