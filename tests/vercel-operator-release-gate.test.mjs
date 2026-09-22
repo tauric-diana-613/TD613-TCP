@@ -120,6 +120,14 @@ assert.match(workflow, /production_practice_fixture = \$\{\{ steps\.scope\.outpu
 assert.match(workflow, /production_a14_registry_archive = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full'/);
 assert.match(workflow, /production_chromium_desktop_mobile = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full'/);
 assert.match(workflow, /premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
+assert.match(workflow, /premerge_witness_scope = THREE_ENGINE_SHARDS; INDIVIDUAL_JOURNEYS_SEE_EXACT_HEAD_CI_ARTIFACTS/);
+assert.match(workflow, /heavy_webkit_import_journey = .*UNOBSERVED_SEE_EXACT_HEAD_CI_ARTIFACT/);
+assert.match(workflow, /production_confirmation = scope-aligned Chromium witness; live AI deferred to explicit observation/);
+assert.doesNotMatch(workflow, /Full-product releases must also complete one real Loom Demo 1 submission before sealing/);
+assert.match(workflow, /literary_benchmark_authority: false/);
+assert.match(workflow, /literary_benchmark = NOT_ESTABLISHED_BY_DEPLOYMENT/);
+assert.match(workflow, /model_output_length_and_voice_quality = UNMEASURED_BY_DEPLOYMENT/);
+assert.match(workflow, /Browser shard completion does not convert an explicitly UNOBSERVED journey into a PASS/);
 assert.match(workflow, /exact_source_content = PASS/);
 assert.match(workflow, /source_packet_commit = \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
 assert.match(workflow, /counts_as_human_evidence = false/);

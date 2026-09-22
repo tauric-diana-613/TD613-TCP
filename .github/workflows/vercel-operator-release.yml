@@ -86,12 +86,13 @@ jobs:
           deployment_ceiling = 1
           validation_scope = ${{ steps.scope.outputs.validation_scope }}
           premerge_browser_authority = scope-aligned Chromium + Firefox + WebKit witness
-          production_confirmation = scope-aligned Chromium witness + one full-scope Loom AI canary
+          production_confirmation = scope-aligned Chromium witness; live AI deferred to explicit observation
           git_auto_deploy = disabled
+          live_provider_benchmark_authority = none
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, require bounded Vercel adoption of that exact transient commit, relock immediately after adoption, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases must also complete one real Loom Demo 1 submission before sealing. ⟐
+          The gate will recheck release law, admit exactly one deployable commit when fallback is needed, require bounded Vercel adoption of that exact transient commit, relock immediately after adoption, await the authorized source receipt, verify exact application bytes, hold that acquired source stable against stale queued rollbacks, and run one bounded production confirmation. Full-product releases defer provider-backed Loom/Marrowline observation to its separately authorized read-only lane; deployment sealing requires exact-source and scope-aligned non-provider witnesses. CI artifacts retain any explicitly unobserved browser journey. ⟐
           EOF_COMMENT
           )"
 
@@ -480,6 +481,7 @@ jobs:
             source_packet_commit: source,
             automatic_provider_calls: 0,
             deployment_success_authority: false,
+            literary_benchmark_authority: false,
             explicit_observation_command: '/td613-production-reobserve',
             reason: 'Live provider liveness is independent of exact-source deployment success; 429/503 provider transport must not relabel a verified deployment as failed.',
             counts_as_human_evidence: false,
@@ -553,6 +555,8 @@ jobs:
           stale_queue_stability_window = PASS
           post_witness_source_guard = PASS
           premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+          premerge_witness_scope = THREE_ENGINE_SHARDS; INDIVIDUAL_JOURNEYS_SEE_EXACT_HEAD_CI_ARTIFACTS
+          heavy_webkit_import_journey = ${{ steps.scope.outputs.validation_scope == 'full' && 'UNOBSERVED_SEE_EXACT_HEAD_CI_ARTIFACT' || 'NOT_APPLICABLE' }}
           production_giving_history = ${{ steps.scope.outputs.validation_scope == 'giving' && 'PASS' || 'NOT_APPLICABLE' }}
           production_practice_fixture = ${{ steps.scope.outputs.validation_scope == 'practice' && 'PASS' || 'NOT_APPLICABLE' }}
           production_a14_registry_archive = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
@@ -560,6 +564,8 @@ jobs:
           ash_lifecycle_deployed_observation = ${{ steps.scope.outputs.validation_scope == 'full' && 'PASS' || 'NOT_APPLICABLE' }}
           production_loom_demo1_canary = ${{ steps.scope.outputs.validation_scope == 'full' && 'DEFERRED_EXPLICIT_OBSERVATION' || 'NOT_APPLICABLE' }}
           automatic_live_ai_provider_calls = 0
+          literary_benchmark = NOT_ESTABLISHED_BY_DEPLOYMENT
+          model_output_length_and_voice_quality = UNMEASURED_BY_DEPLOYMENT
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
@@ -567,7 +573,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production confirmation follows the classified change scope and verifies the deployed source without spending Gemini quota. Live AI liveness is an explicit observation surface, not deployment-success authority; provider 429/503 cannot turn an exact-source deployment RED after the application has already passed its production checks. This receipt grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
+          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production confirmation follows the classified change scope and verifies the deployed source without spending Gemini quota. Browser shard completion does not convert an explicitly UNOBSERVED journey into a PASS. Literary quality, sustained Kʰonapolit development, and native-bot morphology require separate source-bound observation and human review. Live AI liveness is an explicit observation surface, not deployment-success authority; provider 429/503 cannot turn an exact-source deployment RED after the application has already passed its production checks. This receipt grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
           EOF_COMMENT
           )"
 
