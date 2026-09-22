@@ -193,7 +193,16 @@ try {
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles(textUpload);
       }
-      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
+      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1).catch(async error => {
+        const observation = await page.evaluate(() => ({
+          terminalStatus: document.querySelector('#khonapolitTerminalStatus')?.textContent,
+          trayText: document.querySelector('#marrowlineAttachmentTray')?.textContent,
+          fileInput: [...(document.querySelector('#marrowlineComposerFileInput')?.files || [])].map(file => ({ name: file.name, size: file.size, type: file.type, hasArrayBuffer: typeof file.arrayBuffer })),
+          photoInputAttached: Boolean(document.querySelector('#marrowlineComposerPhotoInput')),
+          browserAttachmentCount: window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.()?.count ?? null
+        }));
+        throw new Error(`WebKit/attachment stage did not complete: ${JSON.stringify(observation)}; ${error.message}`);
+      });
       await activate(page.locator('#marrowlineComposerPlus'));
       if (engine === 'webkit') {
         await page.locator('#marrowlineComposerPhotoInput').setInputFiles(photoUpload);
