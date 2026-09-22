@@ -37,6 +37,11 @@ def verify_index(db_path, p0_path=P0, secondary_path=P12):
     con.row_factory=sqlite3.Row
     if con.execute("pragma integrity_check").fetchone()[0]!="ok":
         raise ValueError("SQLITE_INTEGRITY_ERROR")
+    columns={r[1] for r in con.execute("pragma table_info(sources)").fetchall()}
+    required={"source_id","canonical_url","title","selftext","body_state"}
+    if not required.issubset(columns) or not ({"created_utc","source_created_utc"}&columns):
+        raise ValueError("PRIVATE_INDEX_SOURCE_SCHEMA_MISMATCH")
+    date_field="source_created_utc" if "source_created_utc" in columns else "created_utc"
     rows=con.execute("select rowid,* from sources").fetchall()
     if len(rows)!=60 or con.execute("select count(*) from source_fts").fetchone()[0]!=60:
         raise ValueError("PRIVATE_INDEX_60_SOURCE_CARDINALITY_MISMATCH")
@@ -50,7 +55,7 @@ def verify_index(db_path, p0_path=P0, secondary_path=P12):
             raise ValueError("SOURCE_FIELD_HASH_MISMATCH")
         if "body_utf8_bytes" in r and len(row["selftext"].encode("utf8"))!=r["body_utf8_bytes"]:
             raise ValueError("SOURCE_BODY_BYTE_LENGTH_MISMATCH")
-        if int(row["source_created_utc"])!=int(r["source_created_utc"]):
+        if int(row[date_field])!=int(r["source_created_utc"]):
             raise ValueError("SOURCE_PUBLICATION_TIMESTAMP_MISMATCH")
         if row["body_state"] != r["body_state"]:
             raise ValueError("SOURCE_BODY_STATE_MISMATCH")
@@ -73,7 +78,8 @@ def query(con, phrase, mode="exact", limit=30):
                            where source_fts match ? order by bm25(source_fts) limit ?""",
                          (match,limit)).fetchall()
     elif mode=="exact":
-        rows=con.execute("select * from sources order by source_created_utc,source_id").fetchall()
+        date_field="source_created_utc" if "source_created_utc" in {r[1] for r in con.execute("pragma table_info(sources)").fetchall()} else "created_utc"
+        rows=con.execute(f"select * from sources order by {date_field},source_id").fetchall()
     else: raise ValueError("UNKNOWN_QUERY_MODE")
     pattern=re.compile(re.escape(phrase),re.IGNORECASE)
     for row in rows:
