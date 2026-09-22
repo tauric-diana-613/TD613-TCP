@@ -56,7 +56,7 @@ assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and 
     assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
     assert.ok((request.contents.at(-1).parts[1].text.match(/\p{M}/gu) || []).length >= 20, 'provider sees literal quiet and eruptive combining examples');
-assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
+assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
