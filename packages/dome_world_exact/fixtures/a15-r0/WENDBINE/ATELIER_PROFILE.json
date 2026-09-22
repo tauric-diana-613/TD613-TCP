@@ -117,6 +117,10 @@
   "foundation_originals_source_count": 33,
   "foundation_originals_exact_title_body_pairs_custodied": 0,
   "foundation_originals_web_index_text_visible_at_least_in_part": 5,
-  "foundation_originals_recovery_status": "SOURCE_DISCOVERY_PARTIAL_ORIGINALS_UNCUSTODIED",
-  "foundational_corpus_derived_analysis_claim_ceiling": "PROVISIONAL_UNTIL_ORIGINALS_VERIFIED"
+  "foundation_originals_recovery_status": "P0_ROSTER_READY_SOURCE_ACQUISITION_RUNNERS_READY_LIVE_ORIGINALS_HELD",
+  "foundational_corpus_derived_analysis_claim_ceiling": "PROVISIONAL_UNTIL_ORIGINALS_VERIFIED",
+  "foundation_source_acquisition_runner": "99-ADMIN/wendbine-reddit-oauth-rescue.mjs",
+  "prior_chat_exact_message_rescue_runner": "99-ADMIN/wendbine-chat-export-rescue.mjs",
+  "private_originals_lexical_query": "99-ADMIN/wendbine-private-originals-query.mjs",
+  "foundation_live_authenticated_source_capture": "NOT_EXECUTED_APPROVED_TOKEN_UNAVAILABLE"
 }
