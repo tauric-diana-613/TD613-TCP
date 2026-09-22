@@ -316,7 +316,8 @@ function renderMessage(doc, entry) {
   return entry.role === 'model' ? renderModelMessage(doc, entry) : renderUserMessage(doc, entry);
 }
 function entryText(entry = {}) {
-  if (entry.role !== 'model' || !entry.relay) return safe(entry.text);
+  if (entry.role !== 'model') return safe(entry.text);
+  if (!entry.relay) return String(entry.text ?? ''); // Provider prose is custody data, including outer whitespace.
   return asArray(entry.relay.parts).filter((part) => part?.present).map((part) => `${part.label || part.id}\n${part.text}`).join('\n\n');
 }
 function transcriptText(messages = []) {
