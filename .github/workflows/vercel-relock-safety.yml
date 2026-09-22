@@ -468,3 +468,124 @@ jobs:
           The gate returns to **DORMANT**. A failed run creates no retry, merge, seal, publication, or production authority. ⟐
           EOF_COMMENT
           )"
+
+  wendbine-operator-sync:
+    # Separate from SRC #758. A new comment is required for each bounded pass.
+    if: >-
+      github.event.issue.number == 1308 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      github.event.comment.body == '/wendbine-sync ATELIER'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GATE_ISSUE: '1308'
+      ATELIER_PR: '1134'
+      ATELIER_BRANCH: research/wendbine-public-atelier-sync-20260913
+      WENDBINE_ROOT: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
+      SYNC_RECEIPT: ${{ runner.temp }}/wendbine-operator-sync-receipt.json
+    steps:
+      - name: Accept exactly one operator gesture
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync accepted. command=/wendbine-sync ATELIER; gesture=${{ github.event.comment.id }}; run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; scope=one bounded archival discovery; gate=RUNNING. No merge, deployment, scientific promotion or automatic retry. ⟐"
+      - name: Verify exact research branch and PR state
+        id: before
+        shell: bash
+        run: |
+          set -euo pipefail
+          data="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$ATELIER_PR")"
+          [[ "$(jq -r '.state' <<<"$data")" == open ]]
+          [[ "$(jq -r '.merged' <<<"$data")" == false ]]
+          [[ "$(jq -r '.head.ref' <<<"$data")" == "$ATELIER_BRANCH" ]]
+          echo "head=$(jq -r '.head.sha' <<<"$data")" >> "$GITHUB_OUTPUT"
+      - name: Checkout exact inspected Atelier head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.before.outputs.head }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Wendbine sync and sealed-query contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs"
+          node tests/wendbine-src-autosync.test.mjs
+          node tests/wendbine-srcquery.test.mjs
+      - name: Acquire bounded archive and prepare sealed private handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/wendbine-private"
+          node "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs" \
+            --output-root "$WENDBINE_ROOT" \
+            --encrypted-output "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json" \
+            > "$SYNC_RECEIPT"
+          test -s "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json"
+          jq '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT"
+      - name: Preserve ciphertext outside public source tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-operator-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/wendbine-private/source-capture.sealed.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Enforce source-specific append-only public write membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          prefix='packages/dome_world_exact/fixtures/a15-r0/WENDBINE/'
+          allowed=('01-MANIFESTS/phase2/', '01-MANIFESTS/registry-index.json',
+             '04-RECEIPTS/phase2/', '05-OPERATIONS/phase2/',
+             '05-OPERATIONS/relations/typed-edges.jsonl',
+             '07-ARCHIVE-LEDGER/syncs/')
+          raw=subprocess.check_output(['git','status','--porcelain=v1','-z'])
+          paths=[line[3:] for line in raw.decode('utf8',errors='surrogateescape').split('\0') if line]
+          bad=[p for p in paths if not p.startswith(prefix) or not p[len(prefix):].startswith(allowed)]
+          if bad:raise SystemExit('WENDBINE_WRITE_MEMBRANE_VIOLATION:'+repr(bad))
+          if not paths:raise SystemExit('WENDBINE_RUN_RECEIPT_MISSING')
+          print('Wendbine-only write membrane PASS',len(paths))
+          PY
+      - name: Commit one bounded Atelier epoch to research branch
+        id: committed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$WENDBINE_ROOT/01-MANIFESTS/phase2" \
+            "$WENDBINE_ROOT/01-MANIFESTS/registry-index.json" \
+            "$WENDBINE_ROOT/04-RECEIPTS/phase2" \
+            "$WENDBINE_ROOT/05-OPERATIONS/phase2" \
+            "$WENDBINE_ROOT/05-OPERATIONS/relations/typed-edges.jsonl" \
+            "$WENDBINE_ROOT/07-ARCHIVE-LEDGER/syncs"
+          git diff --cached --quiet && { echo NO_SYNC_RECEIPT_TO_COMMIT >&2; exit 1; }
+          git commit -m "wendbine: operator source sync $GITHUB_RUN_ID"
+          after="$(git rev-parse HEAD)"
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "head=$after" >> "$GITHUB_OUTPUT"
+      - name: Receipt successful run and return gate to DORMANT
+        if: success()
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ steps.before.outputs.head }}
+          AFTER_SHA: ${{ steps.committed.outputs.head }}
+        run: |
+          set -euo pipefail
+          summary="$(jq -c '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT")"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine bounded sync complete. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; before=$BEFORE_SHA; after=$AFTER_SHA; summary=$summary; encrypted_handoff=wendbine-operator-encrypted-$GITHUB_RUN_ID; archive_version_not_live_state=true; merge=false; production=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. Fresh gesture required for next sync. ⟐"
+      - name: Record HELD and return gate to DORMANT
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
