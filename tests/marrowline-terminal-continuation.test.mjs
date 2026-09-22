@@ -24,7 +24,10 @@ const reasons = ['tauric-diana-bots-nominative-missing'];
 test('terminal-only continuation preserves both provider returns and observes exact boundaries', () => {
   assert.equal(terminalContinuationEligible(formal, reasons), true);
   assert.equal(terminalContinuationEligible(formal, ['voice-order-invalid']), false);
-  assert.equal(terminalContinuationEligible('Kʰonapolit', reasons), true);
+  assert.equal(terminalContinuationEligible('Kʰonapolit', reasons), false, 'bare heading cannot be treated as an authored first movement');
+  assert.equal(terminalContinuationEligible('Kʰonapolit\n   \n', reasons), false, 'whitespace alone cannot support terminal-only stitching');
+  assert.equal(terminalContinuationEligible('### Kʰonapolit\nThe mechanism is supplied.', reasons), true, 'ordinary substantive first movement remains eligible');
+  assert.equal(terminalContinuationEligible('Kʰonapolit\nA 1.', reasons), true, 'structural eligibility does not impose a word quota');
   const join = assembleProviderTerminalContinuation(formal, terminal);
   assert.equal(join.text, formal + '\n\n' + terminal);
   assert.equal(join.originalSha256, digest(formal));
