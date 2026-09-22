@@ -9,7 +9,9 @@ permissions:
   issues: write
 
 concurrency:
-  group: td613-vercel-production-release
+  # Preserve the production lock for every existing release/SRC operation;
+  # Wendbine's independent manual research gate must not occupy that lock.
+  group: ${{ github.event.issue.number == 1308 && github.event.comment.body == '/wendbine-sync ATELIER' && 'td613-wendbine-operator-sync' || 'td613-vercel-production-release' }}
   cancel-in-progress: false
 
 jobs:
