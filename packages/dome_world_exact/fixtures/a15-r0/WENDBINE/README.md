@@ -10,9 +10,26 @@ Its core research question remains:
 
 Operationally, Wendbine now carries the SRC lesson all the way through: **capture, custody, deterministic compilation, and deterministic retrieval are separate but equally required surfaces.**
 
-## September 22 primary-source rescue — CURRENT authoritative state
+## PRIMARY-SOURCE ACQUISITION — CURRENT 60/60
 
-**P0 September 10–11: 33/33 archived source-title and body fields recovered, privately captured, and hash verified.** This supersedes the historical 0/33 source-acquisition statements below. The first 33 of the 60 indexed source IDs now have exact archived source fields; **27/60 remain without verified full text** (two September 13 source-bound summaries and 25 later card-level observations). This is an archived September 22 source version, neither independently certified first-publication text nor current Reddit state.
+**All 60 individually indexed Reddit source objects have been recovered from Arctic Shift, privately restored, and checked against the actual raw archive responses and exact title/self-text hashes.** The original September 10–11 P0 cohort contributes 33 nonempty text bodies; the September 13 pair contributes two; the later 25 cards contribute 23 nonempty text bodies and **two verified empty-self-text media/link posts**. Thus the **private word-search corpus has 58 text bodies and two media/link source records**. The media files themselves remain separately unacquired. No full third-party source bodies are committed to public GitHub.
+
+- P0 public source/hash witness: `01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json` (GitHub run #4189; 33/33; raw SHA-256 `9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c`).
+- P1/P2 public source/hash witness: `01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json` (GitHub run #4212; 27/27; raw SHA-256 `819a3610fe4846f79489ca084793e7d7322658f0cdf3be2af62e99e5f34c1b85`).
+- Exact archived Reddit titles: `Wendbine` in 59 source objects and `Wensbine` in one; the old technical headers remain expressly editorial descriptors.
+- In the private research runtime, raw P0 and P1/P2 responses and verified title/body fields are joined in a **60-source SQLite FTS5 index**. The public `wendbine-query.mjs` still searches bounded derivatives, not full original bodies.
+- The original 0/60 gap ledger, P0 33/60 intermediate status, and September 16 unrecoverable original per-card observation loss are **historical receipts**. Their old counts must never override the current v06/v07 source-acquisition receipts. The later 25 IDs do not retroactively repair September 16's distinct lost observation set.
+
+```text
+60 SOURCE OBJECTS != 60 NONEMPTY TEXT BODIES
+EMPTY MEDIA SELF-TEXT != MEDIA CONTENT RECOVERED
+ARCHIVED VERSION != UNEDITED FIRST PUBLICATION != CURRENT REDDIT STATE
+RAW/HASH VERIFIED SOURCE != PROOF OF AUTHOR INTENT OR HIDDEN PLATFORM PROCESS
+```
+
+## September 22 P0 rescue lineage — historical intermediate state
+
+**P0 September 10–11: 33/33 archived source-title and body fields recovered, privately captured, and hash verified.** This supersedes the historical 0/33 source-acquisition statements below. The P0 33/60 figure describes the earlier intermediate state; all remaining 27 post objects were later acquired and privately verified as documented above. This is an archived September 22 source version, neither independently certified first-publication text nor current Reddit state.
 
 GitHub Actions run **#4179** obtained Arctic Shift HTTP 200, with 33 matched post IDs/account/subreddit and 587,232 raw response bytes; PullPush returned 403. Runs **#4186** and **#4189** repeated the capture and encrypted the source fields before artifact upload. Both returned raw payload SHA-256 `9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c`. The encrypted artifact was downloaded and decrypted in the private research runtime, and all 33 records were checked against raw response and field hashes. The recovered corpus contains 492,909 source-body characters.
 
@@ -317,13 +334,13 @@ Additional exact-text recovery leads are cataloged in `04-RECEIPTS/2026-09-22-pr
 
 
 
-**Historical gap at initial audit: 0/60 source originals. Current recovery: 33/60 exact archived title/body pairs privately custodied and verified; 27/60 remain to be acquired.** The full-text gap is enumerated individually in `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. A search-indexed example does not constitute exact original custody, and sampled direct Reddit permalink fetches were cache-missing.
+**Historical initial gap: 0/60. Historical P0 intermediate recovery: 33/60. Current v06/v07 acquisition: 60/60 post title/self-text fields, including 58 nonempty bodies and two source-verified empty media/link self-text fields.** The full-text gap is enumerated individually in `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. A search-indexed example does not constitute exact original custody, and sampled direct Reddit permalink fetches were cache-missing.
 
 `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` describes authorized recapture. `99-ADMIN/wendbine-originals-intake.mjs` validates author-supplied or otherwise authorized original fields, preserves their exact decoded text/whitespace in a **private location outside GitHub**, hashes titles and self-text independently, refuses duplicate or mismatched source IDs, and reports partial coverage transparently. The public repository stores only a source audit and non-infringing metadata pending source rights.
 
 `INDEXED_PARAPHRASE != VERBATIM_ORIGINAL` · `FULL_TEXT_CUSTODY != FULL_MEDIA_CUSTODY` · `PRIVATE_RESEARCH_COPY != PUBLIC_REPUBLICATION_PERMISSION`.
 
-The SRC-style deep topological reconstruction and TD613 vocabulary transfer remain HELD pending adequate source-text acquisition; prior topology maps are explicitly provisional derivatives.
+Source-text acquisition is complete for these 60 source IDs; source-led reconstruction and TD613 terminology transfer remain separate scientific reviews; prior topology maps are explicitly provisional derivatives.
 
 ## Authority
 
