@@ -191,9 +191,9 @@ export function buildInvocationPacket({ message = '', history = [], mode = INVOC
   const inputError = cleanMessage.length > KHONAPOLIT_TEXT_LIMIT
     ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds this chat’s 6,000-character limit. Shorten it before sending. Your draft has been kept; nothing was sent.' })
     : oversizedHistory >= 0
-      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier operator message exceeds the 6,000-character composer limit. Export the transcript before choosing a new conversation. Nothing was sent.' })
+      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier operator message exceeds the 6,000-character composer limit. Export the transcript and your current draft, then use Conversation actions → Clear conversation before sending again. Nothing was sent.' })
       : historyBytes > KHONAPOLIT_HISTORY_MAX_UTF8_BYTES
-        ? Object.freeze({ code: 'history-budget-exceeded', limit: KHONAPOLIT_HISTORY_MAX_UTF8_BYTES, actual: historyBytes, unit: 'serialized-utf8-bytes', message: 'The complete prior conversation exceeds this request’s history transport budget. Export the transcript before starting a new conversation. Your draft and earlier responses remain intact; nothing was sent.' })
+        ? Object.freeze({ code: 'history-budget-exceeded', limit: KHONAPOLIT_HISTORY_MAX_UTF8_BYTES, actual: historyBytes, unit: 'serialized-utf8-bytes', message: 'The complete prior conversation exceeds this request’s history transport budget. Export the transcript and your current draft, then use Conversation actions → Clear conversation before sending again. Your draft and earlier responses remain intact; nothing was sent.' })
         : null;
   const canInvoke = Boolean(cleanMessage && !inputError && (issuance.valid || waiveIssuance));
   return Object.freeze({
