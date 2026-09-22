@@ -9,7 +9,7 @@ try{
  assert.deepEqual(loadPrivateOriginals(path.join(tmp,'missing')),[]);
  assert.throws(()=>queryPrivateOriginals([],' '),/NONEMPTY_SOURCE_QUERY_REQUIRED/);
  const item={source_id:'reddit:t3_1wc66e4',canonical_url:'https://www.reddit.com/r/Wendbine/comments/1wc66e4/wendbine/',title:'Exact ∴ source title',selftext:'Line one\r\n  Provenance and Recovery  ⟐\nLast line',author:'Upset-Ratio502',subreddit:'Wendbine',post_kind:'self',rights_basis:'AUTHOR_PERMISSION',source_capture_method:'AUTHOR_SUPPLIED_FILE'};
- fs.writeFileSync(path.join(tmp,'source-1wc66e4.json'),JSON.stringify(item));
+ fs.writeFileSync(path.join(tmp,'1wc66e4.json'),JSON.stringify(item));
  fs.writeFileSync(path.join(tmp,'not-an-original.json'),JSON.stringify({source_id:'reddit:t3_fake',title:'Fake',selftext:'Fake'}));
 
  assert.throws(()=>loadPrivateOriginals(tmp),/EXACTLY_ONE_PRIVATE_CAPTURE_REPORT_REQUIRED/,
@@ -17,7 +17,7 @@ try{
  fs.writeFileSync(path.join(tmp,'intake-report.json'),JSON.stringify({
   schema:'wendbine-private-originals-intake-report/v0.1',
   imported_originals:1,records:[{source_id:item.source_id,canonical_url:item.canonical_url,
-   private_original_file:path.join(tmp,'source-1wc66e4.json'),
+   private_original_file:path.join(tmp,'1wc66e4.json'),
    title_sha256_utf8:sha256Utf8(item.title),selftext_sha256_utf8:sha256Utf8(item.selftext)}]
  }));
 
@@ -38,7 +38,7 @@ try{
 
  assert.equal(queryPrivateOriginals(originals,'provenance and recovery',{caseSensitive:true}).length,0);
  assert.equal(queryPrivateOriginals(originals,'Provenance and Recovery',{caseSensitive:true}).length,1);
- fs.writeFileSync(path.join(tmp,'source-1wc66e4.json'),JSON.stringify({...item,selftext:'TAMPERED source text'}));
+ fs.writeFileSync(path.join(tmp,'1wc66e4.json'),JSON.stringify({...item,selftext:'TAMPERED source text'}));
  assert.throws(()=>loadPrivateOriginals(tmp),/SOURCE_TEXT_HASH_MISMATCH/,
   'A substituted body must be rejected before it enters the source-text query surface.');
 
