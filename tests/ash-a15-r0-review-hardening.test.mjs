@@ -14,6 +14,7 @@ await import('./wendbine-p0-reddit-oauth-rescue.test.mjs');
 await import('./wendbine-chat-export-rescue.test.mjs');
 await import('./wendbine-private-originals-query.test.mjs');
 await import('./wendbine-archive-provider-probe.test.mjs');
+await import('./wendbine-ci-sealed-rescue.test.mjs');
 await import('./wendbine-td613-bounded-assay-v01.test.mjs');
 await import('./td613-residual-literature-sieve-v02.test.mjs');
 await import('./td613-devastate-repair-sieve-v03.test.mjs');
