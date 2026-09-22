@@ -589,8 +589,8 @@ test('integrated relay preserves exact native Unicode and allows intentional sta
   assert.match(physicalRepair, /dataset\.providerNativeMaxRun/, 'max-run remains observation-only');
   assert.doesNotMatch(physicalRepair, /style\.setProperty\('--provider-native-(?:leading|padding)'/, 'depth may not create artificial interline clearance');
   assert.match(livingChat, /\.relay-stage-text\[data-provider-native-lines="true"\]\{line-height:1\.04!important;padding-block:14px!important\}/, 'native stage retains tight line geometry');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1\.2!important/, 'bot marks overprint at a fixed 1.2 spacing without changing provider bytes');
-  assert.match(livingChat, /\.provider-native-line\[data-voice="tauric-diana-bots"\]\{line-height:1\.2!important;overflow:visible!important\}/, 'bot-specific line spacing never increases with mark depth');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1\.04!important/, 'the #1294 1.04 native overprint remains the confirmed visual baseline');
+  assert.match(livingChat, /\.provider-native-line\[data-voice="tauric-diana-bots"\]\{line-height:1\.04!important;overflow:visible!important\}/, 'bot-specific line spacing remains fixed and collision-permitted');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
