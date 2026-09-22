@@ -63,7 +63,10 @@
     "ARCHIVE_VERSION_DISAGREEMENT_PRESERVATION",
     "P0_33_OF_33_REAL_ARCHIVED_TEXT_FIELDS",
     "PRIVATE_EXACT_TEXT_WORD_SEARCH",
-    "RAW_ARCHIVE_AND_FIELD_HASH_VERIFICATION"
+    "RAW_ARCHIVE_AND_FIELD_HASH_VERIFICATION",
+    "ALL_60_ARCHIVED_TITLE_BODY_FIELDS_RAW_VERIFIED",
+    "58_NONEMPTY_SOURCE_BODIES_AND_2_VERIFIED_EMPTY_MEDIA_SELF_TEXT",
+    "PRIVATE_UNIFIED_60_SOURCE_FULLTEXT_INDEX"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
@@ -85,7 +88,7 @@
     "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION",
     "PRIOR_USER_TRANSCRIPTION_EXACT_BYTES_UNAVAILABLE",
     "ARCHIVE_VERSION_NOT_LIVE_VERIFIED",
-    "SEPTEMBER_13_AND_LATER_27_SOURCE_BODIES_UNCUSTODIED"
+    "TWO_MEDIA_ATTACHMENT_BINARIES_NOT_CUSTODIED"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -106,16 +109,16 @@
   "current_card_observation_count": 25,
   "current_card_observation_source_registry": "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl",
   "current_card_observation_receipt": "04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json",
-  "current_card_observation_class": "CACHED_ACCOUNT_LISTING_CARD_BOUND_POST_DETAIL_UNAVAILABLE",
-  "current_card_observation_date_basis": "RETRIEVAL_DAY_NOT_PUBLICATION_DAY",
+  "current_card_observation_class": "HISTORICAL_CACHED_CARD_LEVEL_OBSERVATION_LATER_POST_OBJECTS_ARCHIVE_HYDRATED",
+  "current_card_observation_date_basis": "HISTORICAL_RETRIEVAL_DAY_ARCHIVED_CREATED_UTC_NOW_SEPARATELY_AVAILABLE",
   "linked_audiovisual_discovery_receipt": "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json",
   "linked_audiovisual_admitted_video_count": 0,
   "verbatim_originals_gap_ledger": "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json",
   "verbatim_originals_intake": "99-ADMIN/wendbine-originals-intake.mjs",
   "verbatim_original_source_record_count": 60,
-  "verbatim_original_title_body_pairs_custodied": 33,
-  "verbatim_originals_state": "PARTIAL_33_OF_60_ARCHIVED_SOURCE_FIELDS_PRIVATE_HASH_VERIFIED",
-  "deep_source_topology_status": "P0_EXACT_ARCHIVED_SOURCE_TEXT_AVAILABLE_SOURCE_LED_ANALYSIS_PENDING",
+  "verbatim_original_title_body_pairs_custodied": 60,
+  "verbatim_originals_state": "ALL_60_OF_60_ARCHIVED_TITLE_AND_SELFTEXT_FIELDS_PRIVATE_HASH_VERIFIED_58_TEXT_2_EMPTY_MEDIA",
+  "deep_source_topology_status": "ALL_60_ARCHIVED_SOURCE_FIELDS_RECOVERED_SOURCE_LED_ANALYSIS_PENDING",
   "public_full_text_republication_authority": false,
   "prior_user_supplied_originals_leads": "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
   "prior_user_supplied_exact_text_leads_unmaterialized": 2,
@@ -136,16 +139,25 @@
     "PULLPUSH"
   ],
   "private_archive_custody_audit_entry": "99-ADMIN/wendbine-private-archive-audit.mjs",
-  "public_archive_live_capture_status": "ARCTIC_SHIFT_HTTP_200_33_OF_33_GITHUB_RUNS_4179_4186_4189",
+  "public_archive_live_capture_status": "ARCTIC_SHIFT_HTTP_200_P0_33_AND_P1P2_27_SOURCE_ID_MATCHED",
   "public_archive_provenance_law": "ARCHIVE_VERSION != FIRST_PUBLICATION_VERSION != CURRENT_LIVE_REDDIT_STATE",
   "public_archive_primary_corpus_verified_originals": 33,
   "public_archive_primary_corpus_verified_originals_meaning": "33_ARCHIVED_TITLE_BODY_FIELD_PAIRS_NOT_FIRST_PUBLICATION_OR_LIVE_REDDIT",
   "public_archive_source_field_receipts": "01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json",
   "public_archive_raw_response_sha256": "9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c",
   "private_archived_source_query": "99-ADMIN/wendbine-private-p0-source-query.mjs",
-  "pending_full_text_source_count": 27,
+  "pending_full_text_source_count": 0,
   "actual_source_title_variants": {
-    "Wendbine": 32,
+    "Wendbine": 59,
     "Wensbine": 1
-  }
+  },
+  "pending_media_attachment_source_count": 2,
+  "total_individually_source_bound_post_ids": 60,
+  "archive_verified_post_object_count": 60,
+  "archive_verified_nonempty_body_count": 58,
+  "archive_verified_empty_media_or_link_body_count": 2,
+  "secondary_archive_source_field_receipts": "01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json",
+  "secondary_archive_raw_response_sha256": "819a3610fe4846f79489ca084793e7d7322658f0cdf3be2af62e99e5f34c1b85",
+  "private_secondary_restore_entry": "99-ADMIN/wendbine-private-secondary-restore.mjs",
+  "unified_private_fulltext_index": "PRIVATE_RUNTIME_SQLITE_60_SOURCE_IDS_NOT_PUBLIC_GITHUB"
 }
