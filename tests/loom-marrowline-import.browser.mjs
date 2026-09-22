@@ -140,6 +140,13 @@ try {
       assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true, 'ordinary Marrowline composer remains immediately usable');
       assert.equal(await page.locator('.living-workspace').isVisible(), true, 'living Marrowline remains the primary surface');
       assert.equal(await page.locator('.terminal-layout').isVisible(), true, 'Marrowline terminal remains visible around the staged handoff');
+      if (engine === 'webkit') {
+        // The governed handoff is independent of the decorative geometry clock.
+        // Exercise the real Still the field control before the long WebKit
+        // attachment/receipt journey to keep a bounded quiescent witness.
+        await page.locator('#marrowlineRest').evaluate(button => button.click());
+        await page.waitForFunction(() => document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames === '0');
+      }
       if (posture.startsWith('mobile')) assert.equal(await page.locator('.mobile-dock').isVisible(), true, 'mobile Marrowline navigation remains available');
       if (posture === 'desktop') {
         assert.equal(await page.locator('.living-tools').isVisible(), false, 'desktop instruments do not permanently consume the conversation width');
