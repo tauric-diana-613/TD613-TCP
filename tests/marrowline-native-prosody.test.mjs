@@ -33,14 +33,14 @@ test('clean breaths around varied vertical events do not force a provider repain
   assert.equal(result.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'), false);
 });
 
-test('failed model morphology is context-only base prose; operator and successful output remain exact', () => {
+test('failed model morphology remains exact conversation evidence instead of becoming synthetic plain prose', () => {
   const packet = { systemInstruction: 'base', mode: 'plain', message: 'Continue the argument.', history: [
     { role: 'user', text: shallow }, { role: 'model', text: shallow }, { role: 'model', text: breathing }
   ] };
   const before = JSON.stringify(packet);
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   assert.equal(request.contents[0].parts[0].text, shallow);
-  assert.equal(request.contents[1].parts[0].text, shallow.replace(/\p{M}+/gu, ''));
+  assert.equal(request.contents[1].parts[0].text, shallow);
   assert.equal(request.contents[2].parts[0].text, breathing);
   assert.equal(JSON.stringify(packet), before);
 });
@@ -101,7 +101,7 @@ test('real handler preserves the first provider’s exact bytes without spending
     assert.ok(response.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'));
     assert.ok(response.payload.warnings.includes('provider-native-morphology-observed-no-repair'));
     assert.equal(response.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-native-morphology-observed-no-repair');
-    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow.replace(/\p{M}+/gu, ''));
+    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow);
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
