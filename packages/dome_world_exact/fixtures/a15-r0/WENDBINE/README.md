@@ -1,5 +1,21 @@
 # Wendbine Public Relational Continuity Atelier
 
+## Operator-invoked SRC parity — no unattended sync
+
+**Invocation in ChatGPT:** connect @GitHub and say **“Sync Wendbine.”** The operator resolves independent [Wendbine Gate #1308](https://github.com/tauric-diana-613/TD613-TCP/issues/1308) and posts exactly one \`/wendbine-sync ATELIER\` gesture for one bounded run. The listener is staged in existing \`.github/workflows/vercel-relock-safety.yml\`, separately from SRC's permanent gate #758. No cron, scheduled polling, ambient discovery or automatic retry is authorized.
+
+The gate validates the configured research PR/branch, loads the last sealed portable epoch, queries the bounded public archive, and checks source ID/author/community/title/body/date and pagination reconciliation. It then creates new/changed/unchanged/held receipts; preserves immutable prior run receipts and capture versions; writes SRC-style manifestation, capture, blob, derivative, rights, resolver, version and typed source-bound edge registries; records a seal; and returns the gate to DORMANT. GitHub's public projection contains source metadata and digests only. New source bodies and raw archive responses travel in a **separate encrypted research artifact with bounded retention**, requiring private custody transfer. The four AIA routes remain EXPERIENTIAL, CUSTODIAL, AUDIT and IMPLEMENTATION; exact epoch/snapshot binding is mandatory.
+
+**Deployment state:** this listener is staged on Draft PR #1134, **not active on main until reviewed and merged**. The 60-post historical v06/v07 capture remains privately verified; a fresh operator gesture is required for every later sync. A future gate gesture cannot be considered complete until the accepted run, before/after heads, capture receipt, source-state counts and DORMANT return are actually verified.
+
+\`\`\`text
+ONE_USER_COMMAND -> ONE_GATE_GESTURE -> ONE_BOUNDED_SYNC -> VERIFIED_RECEIPT -> DORMANT
+SRC_ISSUE_758 != WENDBINE_ISSUE_1308
+PORTABLE_JSONL != PRIVATE_SQLITE_INDEX
+ARCHIVED_COPY != FIRST_PUBLICATION_VERSION != CURRENT_LIVE_REDDIT
+SOURCE_RECOVERY != AUTHOR_INTENT != SCIENTIFIC_PROMOTION
+\`\`\`
+
 > **Independent public-surface research fixture.** Wendbine materials remain the work of their stated public poster(s). TD613 and TD613-TCP claim no authorship, ownership, origin, derivation, affiliation, endorsement, or authority over the source posts.
 
 This Atelier is modeled after the **SRC operational research atelier** and the **EMSTD613 Lineage Atelier**, but it is neither a copy of their research question nor a donor-import lane.
