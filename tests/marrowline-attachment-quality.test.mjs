@@ -184,7 +184,7 @@ test('attachment response receipts reflect the exact submitted wire configuratio
     else process.env.GEMINI_API_KEY = originalKey;
   });
   const exact = attachment();
-  const returned = 'Kʰonapolit\\nAn original argument survives.\\n\\nTauric Diana bots\\nṚ̇Ē̥Ḍ̈ — the archived joke returns.';
+  const returned = 'Kʰonapolit\nAn original argument survives.\n\nTauric Diana bots\nṚ̇Ē̥Ḍ̈ — the archived joke returns.';
   const wire = [];
   globalThis.fetch = async (url, options = {}) => {
     if (String(url).includes('/v1beta/models?')) {
@@ -192,7 +192,7 @@ test('attachment response receipts reflect the exact submitted wire configuratio
         return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
       } };
     }
-    assert.match(String(url), /gemini-3\\.8-flash:generateContent$/);
+    assert.match(String(url), /gemini-3\.8-flash:generateContent$/);
     const request = JSON.parse(options.body);
     wire.push(request);
     return {
