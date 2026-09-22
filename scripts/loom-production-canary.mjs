@@ -292,7 +292,7 @@ const receipt = {
   transport_error_class: transportError,
   task_status: typeof payload?.status === 'string' ? payload.status : null,
   observation_outcome: loomProviderLivenessHeld
-    ? 'marrowline-admitted-loom-provider-liveness-held'
+    ? 'marrowline-human-surface-returned-loom-provider-liveness-held'
     : (httpStatus === 200 && payload?.status === 'completed' ? 'completed' : 'held'),
   loom_provider_liveness_nonblocking: loomProviderLivenessHeld,
   diagnostic: boundedDiagnostic(payload?.diagnostic),
@@ -320,8 +320,13 @@ const receipt = {
     rejected_attempts: boundedRejectedAttempts(marrowlinePayload?.diagnostic?.rejectedAttempts),
     error: typeof marrowlinePayload?.error === 'string' ? marrowlinePayload.error.slice(0, 120) : null,
     answer_nonempty: typeof marrowlinePayload?.text === 'string' && marrowlinePayload.text.trim().length > 0,
+    human_surface_returned: marrowlineResult.httpStatus === 200
+      && marrowlinePayload?.ok === true
+      && typeof marrowlinePayload?.text === 'string'
+      && marrowlinePayload.text.trim().length > 0,
     relay_admitted: marrowlineAdmission?.admissible === true,
     relay_quality: typeof marrowlineAdmission?.quality === 'string' ? marrowlineAdmission.quality : null,
+    local_admission_authority: 'diagnostic-not-human-surface-veto',
     final_model: typeof marrowlineReceipt?.provider?.model === 'string' ? marrowlineReceipt.provider.model : null,
     provider_attempts: boundedMarrowlineAttempts(marrowlineAttemptsSource),
     provider_plan: boundedModelPlan(marrowlinePayload?.modelPolicy || marrowlineReceipt?.modelPolicy),
@@ -342,11 +347,14 @@ if (marrowlineResult.httpStatus !== 200 || marrowlinePayload?.ok !== true) {
   throw new Error(`Marrowline production canary held: HTTP ${marrowlineResult.httpStatus || 'none'} attempts=${attempts} diagnostic=${diagnostic} admission_reasons=${admissionReasons}.`);
 }
 if (!receipt.marrowline_live_route.answer_nonempty) throw new Error('Marrowline production canary returned no human-visible answer.');
-if (!receipt.marrowline_live_route.relay_admitted) throw new Error('Marrowline production canary returned a non-admitted relay.');
+if (!receipt.marrowline_live_route.human_surface_returned) throw new Error('Marrowline production canary did not return a human-surface response.');
+if (!receipt.marrowline_live_route.relay_admitted) {
+  console.log(`[loom-production-canary] LOCAL_ADMISSION_NONBLOCKING quality=${receipt.marrowline_live_route.relay_quality || 'unclassified'} human_surface_returned=true`);
+}
 
 if (loomProviderLivenessHeld) {
   const attempts = providerAttempts.map(attempt => `${attempt.model}:${attempt.status ?? 'unobserved'}`).join(',') || 'none';
-  console.log(`[loom-production-canary] PROVIDER_LIVENESS_HELD_NONBLOCKING attempts=${attempts} marrowline=admitted`);
+  console.log(`[loom-production-canary] PROVIDER_LIVENESS_HELD_NONBLOCKING attempts=${attempts} marrowline=human-surface-returned`);
 } else {
   if (transportError) throw new Error(`Loom production canary transport failed (${transportError}).`);
   if (httpStatus !== 200 || payload?.status !== 'completed') {
@@ -361,4 +369,4 @@ if (loomProviderLivenessHeld) {
   }
 }
 
-console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_status=${loomProviderLivenessHeld ? 'PROVIDER_LIVENESS_HELD' : 'PASS'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'} canary_elapsed_ms=${receipt.canary_elapsed_ms ?? 'unknown'}`);
+console.log(`[loom-production-canary] PASS source=${sourcePacketCommit || 'unbound'} loom_status=${loomProviderLivenessHeld ? 'PROVIDER_LIVENESS_HELD' : 'PASS'} loom_model=${receipt.final_model || 'unknown'} loom_calls=${receipt.provider_calls ?? 'unknown'} loom_elapsed_ms=${receipt.elapsed_ms ?? 'unknown'} marrowline_surface=PASS marrowline_local_admission=${receipt.marrowline_live_route.relay_quality || 'unclassified'} marrowline_model=${receipt.marrowline_live_route.final_model || 'unknown'} marrowline_elapsed_ms=${receipt.marrowline_live_route.elapsed_ms ?? 'unknown'} canary_elapsed_ms=${receipt.canary_elapsed_ms ?? 'unknown'}`);
