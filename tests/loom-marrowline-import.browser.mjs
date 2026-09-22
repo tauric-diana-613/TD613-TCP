@@ -178,13 +178,15 @@ try {
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Loom/, 'third universal action is Loom');
       assert.equal(await page.locator('#marrowlineAiaToggle').isVisible(), false, 'legacy Loom-only plus is not human-facing');
       assert.equal(calls.length, 0, 'opening the universal plus makes zero provider requests');
+      assert.equal(await page.locator('#marrowlineComposerFileInput').count(), 1, 'file input is attached under a stable selector');
+      assert.equal(await page.locator('#marrowlineComposerPhotoInput').count(), 1, 'photo input is attached under a stable selector');
 
       const textUpload = { name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) };
       const photoUpload = { name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng };
       if (engine === 'webkit') {
         // Other engines cover the native chooser; WebKit covers the same hidden
         // input/change pipeline without waiting on the continuously moving menu.
-        await page.locator('input[type="file"][accept*=".txt"]').setInputFiles(textUpload);
+        await page.locator('#marrowlineComposerFileInput').setInputFiles(textUpload);
       } else {
         const fileChooserPromise = page.waitForEvent('filechooser');
         await page.locator('#marrowlineContextFile').click();
@@ -194,7 +196,7 @@ try {
       await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
       await activate(page.locator('#marrowlineComposerPlus'));
       if (engine === 'webkit') {
-        await page.locator('input[type="file"][accept="image/*"]').setInputFiles(photoUpload);
+        await page.locator('#marrowlineComposerPhotoInput').setInputFiles(photoUpload);
       } else {
         const photoChooserPromise = page.waitForEvent('filechooser');
         await page.locator('#marrowlineContextPhoto').click();
