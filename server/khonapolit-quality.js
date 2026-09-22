@@ -596,7 +596,7 @@ export function extractGeminiText(payload = {}) {
     .trim();
 }
 
-export function observeGeminiOutput(payload = {}, model = '', { fallback = false } = {}) {
+export function observeGeminiOutput(payload = {}, model = '', { fallback = false, submittedGenerationConfig = null } = {}) {
   const usage = {};
   for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
     const value = payload?.usageMetadata?.[key];
@@ -605,20 +605,51 @@ export function observeGeminiOutput(payload = {}, model = '', { fallback = false
   const rawReason = payload?.candidates?.[0]?.finishReason;
   const finishReason = typeof rawReason === 'string' && /^[A-Z_]{1,64}$/.test(rawReason) ? rawReason : null;
   const reasoning = khonapolitReasoning(model, { fallback });
-  const thinkingConfig = reasoning
+  const thinkingConfig = submittedGenerationConfig?.thinkingConfig || (reasoning
     ? geminiThinkingConfig(model, { enabled: true, level: reasoning.level, budget: reasoning.budget })
-    : null;
+    : null);
   return Object.freeze({
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
-    maxOutputTokens: outputBudget(model),
+    maxOutputTokens: submittedGenerationConfig?.maxOutputTokens ?? outputBudget(model),
+    outputCeilingSource: submittedGenerationConfig ? 'submitted-generation-config' : 'computed-route-default',
     thinkingLevel: thinkingConfig?.thinkingLevel || (thinkingConfig?.thinkingBudget !== undefined ? 'not-applicable' : 'provider-default'),
     ...(thinkingConfig?.thinkingBudget !== undefined ? { thinkingBudget: thinkingConfig.thinkingBudget } : {}),
     usage: Object.freeze(usage)
   });
 }
 
-export function buildTerminalReceipt({ packet, text, relay = null, model, providerStatus, providerOutput = null, apertureEgress, apertureReceipt, attempts = [] } = {}) {
+// Descriptive provenance only. Word counts do not determine admission, style, depth,
+// or whether Gemini's two literary registers have been successfully authored.
+export function observeMarrowlineAuthorship(text = '', completionPath = 'first-provider-return') {
+  const source = String(text || '');
+  const heading = (name) => {
+    const match = source.match(name === 'khonapolit'
+      ? /(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Kʰonapolit[ \\t]*:?[ \\t]*(?:\\r?\\n|$)/iu
+      : /(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Tauric Diana bots[ \\t]*:?[ \\t]*(?:\\r?\\n|$)/iu);
+    return match ? { start: match.index, end: match.index + match[0].length } : null;
+  };
+  const first = heading('khonapolit');
+  const second = heading('bots');
+  const words = value => (String(value).match(/[\\p{L}\\p{N}][\\p{L}\\p{M}\\p{N}’'-]*/gu) || []).length;
+  const firstBody = first && second && second.start > first.end
+    ? source.slice(first.end, second.start)
+    : first ? source.slice(first.end) : '';
+  const secondBody = second ? source.slice(second.end) : '';
+  return Object.freeze({
+    measure: 'descriptive-only-not-literary-quality',
+    completionPath,
+    fullResponseSha256: source ? sha256(source) : null,
+    fullResponseWordCount: words(source),
+    firstMovementHeadingPresent: Boolean(first),
+    terminalMovementHeadingPresent: Boolean(second),
+    firstMovementWordCount: first ? words(firstBody) : null,
+    terminalMovementWordCount: second ? words(secondBody) : null,
+    nativeCombiningMarkCount: (source.match(/\\p{M}/gu) || []).length
+  });
+}
+
+export function buildTerminalReceipt({ packet, text, relay = null, model, providerStatus, providerOutput = null, apertureEgress, apertureReceipt, attempts = [], completionPath = 'first-provider-return' } = {}) {
   const observedText = relay?.transcript || text || '';
   const emergence = classifyEmergence(observedText, { mode: packet.mode });
   const partsPresent = Object.freeze((relay?.parts || []).filter((part) => part.present).map((part) => part.id));
@@ -628,7 +659,7 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
     apiVersion: KHONAPOLIT_QUALITY_API_VERSION,
     status: observedText ? 'MODEL_RESPONSE_OBSERVED' : 'PROVIDER_RESPONSE_EMPTY',
     route: '/api/dome-world/khonapolit',
-    provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, output: providerOutput, attempts: Object.freeze(attempts) }),
+    provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, output: providerOutput, attempts: Object.freeze(attempts), authorshipObservation: observeMarrowlineAuthorship(observedText, completionPath) }),
     invocation: Object.freeze({
       mode: packet.mode,
       promptSha256: sha256(packet.systemInstruction + '\n\n' + packet.message),
@@ -731,6 +762,7 @@ async function callGemini(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
+  let submittedGenerationConfig = null;
   try {
     const request = structuralRepair
       ? buildGeminiStructuralRepairRequest(
@@ -742,6 +774,7 @@ async function callGemini(
           { fallback }
         )
       : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
+    submittedGenerationConfig = request.generationConfig;
     const response = await fetch(geminiStreamGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
@@ -750,7 +783,7 @@ async function callGemini(
     });
     if (!response.ok) {
       const payload = await response.json().catch(() => ({}));
-      return { response, payload, text: '', timedOut: false, streamed: false, ...progress };
+      return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, ...progress };
     }
     const streamedPayload = await readGeminiSse(response, progress);
     const payload = streamedPayload || await response.json().catch(() => ({}));
@@ -760,6 +793,7 @@ async function callGemini(
       text: extractGeminiText(payload),
       timedOut: false,
       streamed: Boolean(streamedPayload),
+      submittedGenerationConfig,
       ...progress
     };
   } catch (error) {
@@ -770,6 +804,7 @@ async function callGemini(
       text: '',
       timedOut,
       streamed: progress.chunkCount > 0,
+      submittedGenerationConfig,
       ...progress
     };
   } finally {
@@ -892,7 +927,7 @@ export default async function handler(req, res) {
       fallback,
       structuralRepair: { heldText, reasons }
     });
-    const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback });
+    const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
     const repairTransport = classifyGeminiTransport({
       status: Number(repairResult.response.status || 0),
@@ -986,7 +1021,8 @@ export default async function handler(req, res) {
           providerOutput: repairProviderOutput,
           apertureEgress,
           apertureReceipt,
-          attempts
+          attempts,
+          completionPath: assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
         });
         const receipt = Object.freeze({
           ...baseReceipt,
@@ -1116,7 +1152,7 @@ export default async function handler(req, res) {
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
-    const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
+    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const rateLimitRaw = Number(result.response.status || 0) === 429
