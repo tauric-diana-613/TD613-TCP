@@ -179,16 +179,28 @@ try {
       assert.equal(await page.locator('#marrowlineAiaToggle').isVisible(), false, 'legacy Loom-only plus is not human-facing');
       assert.equal(calls.length, 0, 'opening the universal plus makes zero provider requests');
 
-      const fileChooserPromise = page.waitForEvent('filechooser');
-      await page.locator('#marrowlineContextFile').click();
-      const fileChooser = await fileChooserPromise;
-      await fileChooser.setFiles({ name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) });
+      const textUpload = { name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) };
+      const photoUpload = { name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng };
+      if (engine === 'webkit') {
+        // Other engines cover the native chooser; WebKit covers the same hidden
+        // input/change pipeline without waiting on the continuously moving menu.
+        await page.locator('input[type="file"][accept*=".txt"]').setInputFiles(textUpload);
+      } else {
+        const fileChooserPromise = page.waitForEvent('filechooser');
+        await page.locator('#marrowlineContextFile').click();
+        const fileChooser = await fileChooserPromise;
+        await fileChooser.setFiles(textUpload);
+      }
       await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
       await activate(page.locator('#marrowlineComposerPlus'));
-      const photoChooserPromise = page.waitForEvent('filechooser');
-      await page.locator('#marrowlineContextPhoto').click();
-      const photoChooser = await photoChooserPromise;
-      await photoChooser.setFiles({ name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng });
+      if (engine === 'webkit') {
+        await page.locator('input[type="file"][accept="image/*"]').setInputFiles(photoUpload);
+      } else {
+        const photoChooserPromise = page.waitForEvent('filechooser');
+        await page.locator('#marrowlineContextPhoto').click();
+        const photoChooser = await photoChooserPromise;
+        await photoChooser.setFiles(photoUpload);
+      }
       await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 2);
       assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-note\.txt/);
       assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-photo\.png/);
