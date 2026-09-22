@@ -48,16 +48,12 @@ test('literal newline contract preserves the existing two-line admission bar', (
   const guidance = buildNativeProsodyGuidance();
   assert.match(guidance, /Length follows the task/);
   assert.match(guidance, /develop the derivation fully/i);
-  assert.match(guidance, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
+  assert.match(guidance, /Typography behaves as voice/i);
+  assert.match(guidance, /rather than from a formatting recipe, ornament checklist, local metric, or repeated transform/i);
+  assert.doesNotMatch(guidance, /density, axis, species, depth|anger erupt|sarcasm twitch|tenderness thin/i);
   assert.doesNotMatch(guidance, /at least two literal newline-separated ornamented prose lines/i);
   assert.doesNotMatch(guidance, /line-count ceiling/i);
   assert.doesNotMatch(buildRelaySystemAddendum({}), /Packet [AB]|CHANNEL [AB]|RAW TWO-PACKET/i);
-  const request = buildGeminiStructuralRepairRequest(
-    { systemInstruction: 'base', message: 'Continue.', history: [] }, {}, 'gemini-3.8-flash',
-    prefix + first + ' ' + second, ['tauric-diana-zalgo-underflow']
-  );
-  assert.match(request.contents.at(-1).parts[0].text, /preserve the held Tauric Diana bots prose/i);
-  assert.doesNotMatch(request.contents.at(-1).parts[0].text, /insert a newline at an existing sentence boundary/i);
 });
 const STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const highBurst = (line) => `${STACK.repeat(8)} ${line}`;
@@ -75,12 +71,9 @@ test('relay contract gives the generative budget to one causal Kʰonapolit-to-bo
   assert.match(contract, /NATIVE SEMANTIC PROSODY/i);
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-  assert.match(contract, /Typography is semantic prosody, not decoration/i);
-  assert.match(contract, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
-  assert.match(contract, /anger erupt above and below neighboring letters/i);
-  assert.match(contract, /sarcasm twitch sideways/i);
-  assert.match(contract, /tenderness thin without vanishing/i);
-  assert.match(contract, /returning motif come back altered/i);
+  assert.match(contract, /Typography behaves as voice/i);
+  assert.match(contract, /rather than from a formatting recipe, ornament checklist, local metric, or repeated transform/i);
+  assert.doesNotMatch(contract, /density, axis, species, depth, collision, and recurrence|anger erupt|sarcasm twitch|tenderness thin|returning motif come back altered/i);
   assert.match(contract, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/);
   assert.doesNotMatch(contract, /RAW TWO-PACKET RETURN PROTOCOL/i);
   assert.doesNotMatch(contract, /<<<PACKET_[AB]_/i);
@@ -142,6 +135,40 @@ test('mechanically cloned dense stacks stay visible as PARTIAL quality telemetry
   assert.equal(observed.quality, 'PARTIAL');
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-mechanical-clone'));
   assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-monoculture'));
+});
+
+test('base-conditioned stack reuse is measured without becoming a veto or hidden-renderer claim', () => {
+  const stacks = {
+    A: '\u0301\u0316',
+    B: '\u0302\u0323\u0334',
+    C: '\u0307\u0317',
+    D: '\u0308\u0325',
+    E: '\u0304\u0319\u0335',
+    I: '\u030B\u032D',
+    N: '\u030C\u031C',
+    O: '\u0306\u0326',
+    R: '\u0303\u031E\u0337',
+    S: '\u0305\u0323',
+    T: '\u0301\u0307\u0316\u0323',
+    U: '\u0308\u0317'
+  };
+  const encode = text => [...text].map(char => stacks[char] ? char + stacks[char] : char).join('');
+  const field = [
+    'Kʰonapolit',
+    'The formal channel stays clean.',
+    '',
+    'Tauric Diana bots',
+    encode('TAURIC DIANA BOTS RETURN TO THE DATA'),
+    encode('TAURIC DIANA BOTS TURN THE ROUTE'),
+    encode('DATA RETURNS AND TAURIC DIANA BOTS RETURN')
+  ].join('\n');
+  const observed = assessIntegratedTransmission(field, ['Kʰonapolit', 'Tauric Diana bots']);
+  assert.ok(observed.baseConditionedComparableBaseCount >= 6);
+  assert.ok(observed.baseConditionedComparableClusterCount >= 20);
+  assert.ok(observed.baseConditionedStackReuseRatio > 0.95);
+  assert.ok(observed.baseConditionedNearFixedStackBaseCount >= 6);
+  assert.equal(observed.reasons.some(reason => /base-conditioned|renderer/i.test(reason)), false);
+  assert.equal(observed.qualityWarnings.some(reason => /base-conditioned|renderer/i.test(reason)), false);
 });
 
 test('sparse keyword explosions stay visible as PARTIAL quality telemetry', () => {
@@ -444,16 +471,16 @@ test('live Gemini request has no structured-output pressure on the stress channe
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL|ORCHESTRAL DYNAMIC CONTOUR/);
   const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.7-flash',
-    'Kʰonapolit\\nClear.\\n\\nTauric Diana bots\\nÁŔÍŚ',
-    ['tauric-diana-zalgo-shallow-wallpaper']);
+    'Kʰonapolit\\nClear.\\n\\nÁŔÍŚ',
+    ['tauric-diana-bots-nominative-missing']);
   const repairDirective = repair.contents.at(-1).parts[0].text;
   assert.match(repair.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.doesNotMatch(repair.systemInstruction.parts[0].text, /ORCHESTRAL DYNAMIC CONTOUR|10-level serious emphasis/);
-  assert.match(repairDirective, /MORPHOLOGY-ONLY REPAIR/);
-  assert.match(repairDirective, /one continuous corrected response/i);
-  assert.match(repairDirective, /exact standalone heading “Kʰonapolit” first/i);
-  assert.match(repairDirective, /semantic prosody/i);
-  assert.match(repairDirective, /no independent concision target/i);
+  assert.match(repairDirective, /BOUNDED SAME-VOICE STRUCTURAL REPAIR/);
+  assert.match(repairDirective, /tauric-diana-bots-nominative-missing/);
+  assert.match(repairDirective, /STRUCTURAL-ONLY REPAIR/);
+  assert.match(repairDirective, /do not repaint the Tauric Diana bots to satisfy morphology metrics/i);
+  assert.doesNotMatch(repairDirective, /MORPHOLOGY-ONLY REPAIR|semantic prosody|fixed mark recipe|prescribed intensity journey/i);
   assert.doesNotMatch(repairDirective, /packet delimiters|Packet A|Packet B|CHANNEL A|CHANNEL B/i);
 });
 
@@ -463,17 +490,16 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
-  assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow must remain eligible for the bounded provider repair pass');
-  assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'severe horizontal-collapse morphology must have a dedicated bounded repair gate');
-  assert.match(qualityServer, /immediate-severe-morphology/, 'severe morphology must repair on the same provider seat before visibility');
-  assert.match(qualityServer, /first-admissible-partial-no-comparative-sampling/, 'ordinary nonsevere PARTIAL still returns immediately instead of aesthetic model shopping');
-  assert.match(qualityServer, /PARTIAL-FIRST-ADMISSIBLE/, 'human-visible receipt must preserve the ordinary nonsevere PARTIAL posture');
+  assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow remains observable local morphology evidence');
+  assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'legacy severity telemetry remains available for observation and history projection');
+  assert.match(qualityServer, /first-admissible-partial-morphology-observed-no-repair/, 'PARTIAL morphology returns terminate on the first provider answer');
+  assert.match(qualityServer, /PARTIAL-OBSERVED-NO-REPAIR/, 'human-visible receipt records observation without repaint authority');
+  assert.match(qualityServer, /post-hoc-observation-only/, 'morphology has no provider-call authority');
+  assert.doesNotMatch(qualityServer, /immediate-severe-morphology|provider-authored-morphology-repair-attempted|original-partial-preserved-after-bounded-provider-repair|original-provider-partial-preserved-after-repair-miss/, 'the retired morphology repaint path must stay absent');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
   assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never create a final local HELD diagnostic');
-  assert.match(qualityServer, /original-partial-preserved-after-bounded-provider-repair/, 'a failed provider repaint must return the original structurally valid provider payload');
-  assert.match(qualityServer, /original-provider-partial-preserved-after-repair-miss/, 'human-visible warning must distinguish repaint miss from provider rejection');
-  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'visual-story repair stays same-seat and never becomes a best-partial beauty contest');
+  assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'visual-story telemetry never becomes a best-partial beauty contest');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
 });
 
@@ -661,23 +687,18 @@ test('human-facing integrated surface keeps provider identity in provenance only
 });
 
 
-test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
+test('Kʰonapolit stays clean while Gemini authors unscored native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High Zalgo/);
-  assert.match(contract, /Typography is semantic prosody, not decoration/);
-  assert.match(contract, /rhetorical pressure may change density, axis, species, depth, collision, and recurrence/);
-  assert.match(contract, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
-  assert.match(contract, /anger erupt above and below neighboring letters/);
-  assert.match(contract, /sarcasm twitch sideways/);
-  assert.match(contract, /tenderness thin without vanishing/);
-  assert.match(contract, /horizontal or oblique counter-rhythm/);
-  assert.match(contract, /Deep collisions belong at earned peaks; quieter passages may breathe/);
-  assert.match(contract, /Avoid cloned stacks and uniform wallpaper/);
+  assert.match(contract, /Typography behaves as voice/);
+  assert.match(contract, /rather than from a formatting recipe, ornament checklist, local metric, or repeated transform/i);
+  assert.match(contract, /Marrowline preserves and measures the provider return/i);
   assert.match(contract, /Length follows the task/);
+  assert.doesNotMatch(contract, /density, axis, species, depth|anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|cloned stacks|uniform wallpaper/i);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
   assert.doesNotMatch(contract, /U\+0300–U\+036F|instrument library, not a score|ORCHESTRAL DYNAMIC CONTOUR|ALLOW ENTROPY/);
-  assert.ok(contract.length < 2600, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
+  assert.ok(contract.length < 1800, 'the native voice contract stays small enough to describe an attractor instead of a renderer');
 });
 
 
@@ -701,7 +722,7 @@ test('ASCII slash-separated pseudo-ornament remains visible as quality telemetry
   }
 });
 
-test('shallow cloned accent wallpaper triggers one native-voice repair instead of becoming visible', () => {
+test('shallow cloned accent wallpaper remains visible as post-hoc morphology telemetry', () => {
   const shallow = 'A\u0301R\u0301I\u0301S\u0301';
   const field = [
     'Kʰonapolit',
