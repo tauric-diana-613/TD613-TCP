@@ -60,7 +60,10 @@ function prepareProviderNativeStage(card) {
   // Separate line spans preserve voice boundaries while the CSS deliberately
   // allows provider-authored vertical flourishes to collide across adjacent lines.
   // Literal separators preserve textContent and synthesize no combining marks.
-  const fragments = String(text.textContent ?? '').split(/(\r\n|\r|\n)/);
+  const raw = String(text.textContent ?? '');
+  const nativeMarkRuns = raw.match(/\p{M}+/gu) || [];
+  text.dataset.providerNativeMaxRun = String(nativeMarkRuns.reduce((max, run) => Math.max(max, Array.from(run).length), 0));
+  const fragments = raw.split(/(\r\n|\r|\n)/);
   let botsStarted = false;
   text.dataset.providerNativeLines = 'true';
   delete text.dataset.flourished;
