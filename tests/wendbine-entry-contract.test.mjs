@@ -46,4 +46,17 @@ for (const surface of [readme, connector]) {
   assert.match(surface, /WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1/, 'Future sessions must see the authentic-originals recovery route.');
 }
 
+
+assert.equal(profile.foundation_source_acquisition_runner, '99-ADMIN/wendbine-reddit-oauth-rescue.mjs');
+assert.equal(profile.prior_chat_exact_message_rescue_runner, '99-ADMIN/wendbine-chat-export-rescue.mjs');
+assert.equal(profile.private_originals_lexical_query, '99-ADMIN/wendbine-private-originals-query.mjs');
+assert.equal(profile.foundation_originals_exact_title_body_pairs_custodied, 0);
+assert.match(profile.foundation_live_authenticated_source_capture, /^NOT_EXECUTED/);
+for (const surface of [readme, connector]) {
+  assert.match(surface, /wendbine-reddit-oauth-rescue\.mjs/, 'Future sessions must find executable 33-source authorized acquisition.');
+  assert.match(surface, /wendbine-chat-export-rescue\.mjs/, 'Future sessions must find private old-chat source rescue.');
+  assert.match(surface, /wendbine-private-originals-query\.mjs/, 'Future sessions must distinguish source text search from derivative search.');
+  assert.match(surface, /SOURCE_FETCHER_READY != SOURCE_FETCH_SUCCEEDED/, 'Green implementation must not be confused with live original-text capture.');
+}
+
 console.log('Wendbine README, connector entry, and Atelier profile current-state contract passed.');
