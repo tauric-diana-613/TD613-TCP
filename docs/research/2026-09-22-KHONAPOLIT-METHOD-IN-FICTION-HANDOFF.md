@@ -86,3 +86,13 @@ Only after the prompt question is evaluated should a separate chamber vary think
 The main agent and independent notebook agent append facts, source findings, hypotheses, changes, verification and next actions to #1304. No private reasoning trace is recorded. Subagents have no guaranteed survival across usage exhaustion or session end; committed branch contents and saved issue comments are the recovery mechanism. If a witness exceeds the operator's 128-second wait boundary, record its exact run URL, head, pending status and next check before stopping. Do not imply monitoring continues after the active turn.
 
 𝌋 ⟐
+
+## Final checkpoint: operator length follow-up
+
+The operator explicitly asked whether the approximately 5,000-character answer reflects a creativity-restricting cap. No 5,000-character output cap was identified in inspected generation, browser response storage or display sources. The 6,000-unit history seam is now traced through marrowline-terminal.js: compactHistory uses entryText, which reconstructs model relay parts with labels; submit validates that history before fetch. It is not necessarily byte-identical to payload.text, and labels can increase the count. The earlier browser-untraced note is superseded.
+
+Executable Node reproduction with the unmodified covenant module: synthetic previous model texts of 5000, 5432 and 6000 UTF-16 units pass canInvoke; 6001 and 12000 fail with history-entry-too-long. All input strings remain intact. No provider call. This confirms the validator defect for longer conversations; it does not identify the finish cause of this sample.
+
+Prioritize a separate engineering follow-up that distinguishes composer input limits from model-history/aggregate request capacity. Test realistic long Unicode relay history through actual browser serialization and backend validation; preserve response text and explicit recovery. Do not simply remove every bound or silently truncate the prose. Keep length an explicit human acceptance dimension in the prompt trial; a soft per-first-movement word-range experiment can be isolated later if sustained-development instructions remain too weak.
+
+Draft PR: #1305. Latest notebook #1304 contains independent agent checkpoints and executable boundary results. No long-running witness was launched, and no watcher remains promised after this turn. ⟐
