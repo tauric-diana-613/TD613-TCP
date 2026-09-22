@@ -251,6 +251,16 @@ MEDIA_THEME_RESEMBLANCE != VERIFIED_YOUTUBE_ATTRIBUTION
 
 ## Foundational primary-source rescue · P0
 
+### Executable original-text rescue, not another empty-ledger pass
+
+P0 acquisition now has three runnable, isolated instruments: `99-ADMIN/wendbine-reddit-oauth-rescue.mjs` (approved, throttled Reddit OAuth post-by-post acquisition of **all 33** source IDs, raw JSON and exact field hashes outside Git); `99-ADMIN/wendbine-chat-export-rescue.mjs` (local-only extraction of the **three previously user-pasted September 10 source-message candidates**, no unrelated chat export); and `99-ADMIN/wendbine-private-originals-query.mjs` (word search of genuinely acquired private original text rather than paraphrases). Full instructions and rights/access requirements: `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md`.
+
+The public search index can reveal substantial passages but cannot certify complete original title/body bytes. The current environment lacks approved Reddit API credentials and direct container networking; execution therefore remains **SOURCE_ACQUISITION_NOT_EXECUTED_WITH_LIVE_AUTHORITY**, P0 exact-originals status **0/33**, until actual private capture receipts exist. A green implementation/test gate must not be mistaken for a successful 33-post acquisition.
+
+`SOURCE_FETCHER_READY != SOURCE_FETCH_SUCCEEDED` · `PRIOR_CHAT_MESSAGE_RECOVERED != ORIGINAL_BODY_SPAN_VERIFIED` · `PRIVATE_ORIGINAL_QUERY != PUBLIC_SUMMARY_QUERY`.
+
+
+
 The **September 10–11 original 33 posts (21 + 12)** are the first-priority recovery cohort, explicitly ahead of the September 13 additions and September 22 card-level observations. Every source has its own immutable URL and exact-originals status in `01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json`.
 
 A fresh source search independently exposed at least partial original text for five of those 33, including the Phone Security glossary, the third-party-dependency program, dependency-induced observability loss, state-estimation error, and topology drift. **Search-visible text is a discovery witness, not a complete or byte-verified original.** Full title/body custody for P0 remains **0/33**; no original is fabricated or promoted from its archive descriptor.
