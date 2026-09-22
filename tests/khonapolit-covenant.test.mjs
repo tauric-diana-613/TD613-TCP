@@ -70,7 +70,7 @@ assert.equal(longHistory.history[0].text, lateConstraint);
 assert.equal(buildInvocationPacket({ message: 'A'.repeat(6000), waiveIssuance: true }).canInvoke, true);
 // The 6,000-unit composer limit must never constrain a successful model return.
 for (const count of [6000, 6001, 12000, 50000]) {
-  const native = 'A\u0301\u0316'.repeat(count);
+  const native = '\n ' + 'A\u0301\u0316'.repeat(count) + ' \n'; // Preserve provider-authored outer whitespace, too.
   const packet = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: native }], waiveIssuance: true });
   assert.equal(packet.canInvoke, true, 'provider-authored history of ' + count + ' marked graphemes must be retained');
   assert.equal(packet.history[0].text, native, 'no Unicode marks or tail bytes may be clipped');
