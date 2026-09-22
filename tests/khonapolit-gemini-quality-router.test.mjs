@@ -135,7 +135,10 @@ try {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
     assert.equal(Object.hasOwn(body.generationConfig, 'responseSchema'), false, 'live Marrowline must not constrain provider Unicode with structured decoding');
     assert.equal(Object.hasOwn(body.generationConfig, 'responseMimeType'), false, 'live Marrowline must not force JSON MIME generation');
-    assert.match(body.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
+    assert.match(body.systemInstruction.parts[0].text, /MARROWLINE CAUSAL RELAY LAW/);
+    assert.match(body.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
+    assert.doesNotMatch(body.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
+    assert.doesNotMatch(body.systemInstruction.parts[0].text, /<<<PACKET_[AB]_/);
   }
   assert.equal(res.payload.receipt.provider.model, 'gemini-3.8-flash');
   assert.equal(res.payload.receipt.modelPolicy.stickySuccessPromotion, false);
