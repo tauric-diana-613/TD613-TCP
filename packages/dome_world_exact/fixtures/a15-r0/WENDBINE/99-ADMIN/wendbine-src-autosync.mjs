@@ -70,8 +70,10 @@ export async function discover({fetchImpl=fetch,start=DATE_FLOOR,maxPages=30,pag
   if(!Array.isArray(objs))throw new Error('ARCHIVE_UNRECOGNIZED_RESPONSE_SHAPE');
   if(page===0&&objs.length===0)throw new Error('ARCHIVE_ZERO_RESULTS_NOT_EVIDENCE_OF_AUTHOR_ABSENCE');
   const before=seen.size;
-  for(const item of objs){
+  const responseHash=sha(raw);
+  for(const [sourceObjectIndex,item] of objs.entries()){
    const checked=checkPost(item);
+   if(checked.source_id){checked.archive_response_sha256=responseHash;checked.archive_response_bytes=raw.length;checked.source_object_index=sourceObjectIndex;}
    if(!checked.source_id){errors.push({page,id:checked.id??null,state:checked.state});continue}
    const current=seen.get(checked.source_id);
    if(current&&(current.title_sha256_utf8!==checked.title_sha256_utf8||current.body_sha256_utf8!==checked.body_sha256_utf8))
@@ -105,7 +107,9 @@ function receiptBaseline(root=ROOT){
     body_sha256_utf8:copy.body_sha256_utf8,body_utf8_bytes:copy.body_utf8_bytes,
     body_state:copy.body_state??'ARCHIVED_TEXT_BODY_PRESENT',provider:'ARCTIC_SHIFT',
     archive_retrieved_on:copy.archive_retrieved_on??null,
-   title:r.reddit_title_exact??null,bootstrap_receipt:'01-MANIFESTS/'+filename});
+    archive_response_sha256:manifest.raw_http_payload_sha256??null,
+    archive_response_bytes:manifest.raw_http_payload_bytes??null,
+    title:r.reddit_title_exact??null,bootstrap_receipt:'01-MANIFESTS/'+filename});
   }
  }
  if(rows.length!==60||new Set(rows.map(r=>r.source_id)).size!==60)throw new Error('BASELINE_60_SOURCE_RECEIPTS_REQUIRED');
@@ -149,6 +153,8 @@ function addVersion(s,r,event,observedAt){
  s.captures.push({schema:'capture/v2',capture_id:capture,manifestation_id:manifest,source_id:r.source_id,
   observed_at:observedAt,source_created_utc:r.source_created_utc,source_edited:r.source_edited,
   archive_retrieved_on:r.archive_retrieved_on??null,provider:r.provider??'ARCTIC_SHIFT',
+  archive_response_sha256:r.archive_response_sha256??null,archive_response_bytes:r.archive_response_bytes??null,
+  source_object_index:r.source_object_index??null,bootstrap_receipt:r.bootstrap_receipt??null,
   title_sha256_utf8:r.title_sha256_utf8,body_sha256_utf8:r.body_sha256_utf8,
   body_utf8_bytes:r.body_utf8_bytes,body_state:r.body_state,
   source_version:'ARCHIVE_OBSERVED_NOT_VERIFIED_FIRST_PUBLICATION_OR_CURRENT_LIVE',
