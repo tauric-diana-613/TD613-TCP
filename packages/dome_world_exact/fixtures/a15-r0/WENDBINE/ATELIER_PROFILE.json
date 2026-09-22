@@ -36,7 +36,12 @@
     "S5_CONVERGENCE_DIVERGENCE_LINEAGE": "HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY",
     "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK"
   },
-  "aia_routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
+  "aia_routes": [
+    "EXPERIENTIAL",
+    "CUSTODIAL",
+    "AUDIT",
+    "IMPLEMENTATION"
+  ],
   "distinctive_strengths": [
     "SERIALIZED_PUBLIC_TOPOLOGY",
     "SOURCE_EXPLICIT_VERSION_CORRECTION",
@@ -50,7 +55,9 @@
     "READ_ONLY_UNIFIED_QUERY_SURFACE",
     "LEXICAL_AND_CONCEPT_RELATIONAL_RETRIEVAL",
     "OBSERVED_CARD_CAPTURE_RECONCILIATION",
-    "QUERYABLE_ARCHIVAL_DEBT"
+    "QUERYABLE_ARCHIVAL_DEBT",
+    "CACHED_ACCOUNT_CARD_INDIVIDUAL_RECORDS",
+    "RETRIEVAL_VS_PUBLICATION_DATE_BASIS"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
@@ -65,7 +72,10 @@
     "HELD_CANONICAL_URL_NOT_SUPPLIED",
     "PUBLIC_PROFILE_FIRST_PAGE_BOUNDED_NOT_EXHAUSTIVE",
     "ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED",
-    "FAILED_CAPTURE_RECONCILIATION"
+    "FAILED_CAPTURE_RECONCILIATION",
+    "PUBLIC_POST_DETAIL_CACHE_MISS",
+    "PUBLICATION_TIME_UNBOUND",
+    "YOUTUBE_CHANNEL_LINK_UNBOUND"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -81,5 +91,13 @@
   "private_group_intake": false,
   "historical_expansion_before_current_snapshot_inspection": false,
   "human_closure_required": true,
-  "scientific_promotion_authority": false
+  "scientific_promotion_authority": false,
+  "current_card_observation_snapshot": "wendbine-public-reddit-account-card-sync-20260922-v05",
+  "current_card_observation_count": 25,
+  "current_card_observation_source_registry": "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl",
+  "current_card_observation_receipt": "04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json",
+  "current_card_observation_class": "CACHED_ACCOUNT_LISTING_CARD_BOUND_POST_DETAIL_UNAVAILABLE",
+  "current_card_observation_date_basis": "RETRIEVAL_DAY_NOT_PUBLICATION_DAY",
+  "linked_audiovisual_discovery_receipt": "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json",
+  "linked_audiovisual_admitted_video_count": 0
 }
