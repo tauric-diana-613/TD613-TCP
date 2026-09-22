@@ -188,50 +188,63 @@ try {
       assert.equal(await page.locator('#marrowlineComposerFileInput').count(), 1, 'file input is attached under a stable selector');
       assert.equal(await page.locator('#marrowlineComposerPhotoInput').count(), 1, 'photo input is attached under a stable selector');
 
-      const textUpload = { name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) };
-      const photoUpload = { name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng };
       if (engine === 'webkit') {
-        // Other engines cover the native chooser; WebKit covers the same hidden
-        // input/change pipeline without waiting on the continuously moving menu.
-        await page.locator('#marrowlineComposerFileInput').setInputFiles(textUpload);
+        // On this heavy Loom→Marrowline journey WebKit's synthetic setInputFiles
+        // crashes the page process. Keep the actual handoff, three controls,
+        // ordinary send and receipt in this witness; C/F cover full file+photo
+        // staging. Record WebKit ingestion as unobserved, never as a fake PASS.
+        assert.equal(await page.locator('#marrowlineAttachmentTray [data-attachment-id]').count(), 0);
+        await activate(page.locator('#marrowlineComposerPlus'));
       } else {
-        const fileChooserPromise = page.waitForEvent('filechooser');
-        await page.locator('#marrowlineContextFile').click();
-        const fileChooser = await fileChooserPromise;
-        await fileChooser.setFiles(textUpload);
+        const textUpload = { name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) };
+        const photoUpload = { name: 'operator-photo.png', mimeType: 'image/png', buffer: tinyPng };
+        if (engine === 'webkit') {
+          // Other engines cover the native chooser; WebKit covers the same hidden
+          // input/change pipeline without waiting on the continuously moving menu.
+          await page.locator('#marrowlineComposerFileInput').setInputFiles(textUpload);
+        } else {
+          const fileChooserPromise = page.waitForEvent('filechooser');
+          await page.locator('#marrowlineContextFile').click();
+          const fileChooser = await fileChooserPromise;
+          await fileChooser.setFiles(textUpload);
+        }
+        await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1).catch(async error => {
+          const observation = await page.evaluate(() => ({
+            terminalStatus: document.querySelector('#khonapolitTerminalStatus')?.textContent,
+            trayText: document.querySelector('#marrowlineAttachmentTray')?.textContent,
+            fileInput: [...(document.querySelector('#marrowlineComposerFileInput')?.files || [])].map(file => ({ name: file.name, size: file.size, type: file.type, hasArrayBuffer: typeof file.arrayBuffer })),
+            photoInputAttached: Boolean(document.querySelector('#marrowlineComposerPhotoInput')),
+            browserAttachmentCount: window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.()?.count ?? null
+          }));
+          throw new Error(`WebKit/attachment stage did not complete: ${JSON.stringify(observation)}; ${error.message}`);
+        });
+        await activate(page.locator('#marrowlineComposerPlus'));
+        if (engine === 'webkit') {
+          await page.locator('#marrowlineComposerPhotoInput').setInputFiles(photoUpload);
+        } else {
+          const photoChooserPromise = page.waitForEvent('filechooser');
+          await page.locator('#marrowlineContextPhoto').click();
+          const photoChooser = await photoChooserPromise;
+          await photoChooser.setFiles(photoUpload);
+        }
+        await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 2);
+        assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-note\.txt/);
+        assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-photo\.png/);
+        assert.equal(marrowlineCalls.length, 0, 'selecting attachments remains local until explicit Marrowline send');
       }
-      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1).catch(async error => {
-        const observation = await page.evaluate(() => ({
-          terminalStatus: document.querySelector('#khonapolitTerminalStatus')?.textContent,
-          trayText: document.querySelector('#marrowlineAttachmentTray')?.textContent,
-          fileInput: [...(document.querySelector('#marrowlineComposerFileInput')?.files || [])].map(file => ({ name: file.name, size: file.size, type: file.type, hasArrayBuffer: typeof file.arrayBuffer })),
-          photoInputAttached: Boolean(document.querySelector('#marrowlineComposerPhotoInput')),
-          browserAttachmentCount: window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.()?.count ?? null
-        }));
-        throw new Error(`WebKit/attachment stage did not complete: ${JSON.stringify(observation)}; ${error.message}`);
-      });
-      await activate(page.locator('#marrowlineComposerPlus'));
-      if (engine === 'webkit') {
-        await page.locator('#marrowlineComposerPhotoInput').setInputFiles(photoUpload);
-      } else {
-        const photoChooserPromise = page.waitForEvent('filechooser');
-        await page.locator('#marrowlineContextPhoto').click();
-        const photoChooser = await photoChooserPromise;
-        await photoChooser.setFiles(photoUpload);
-      }
-      await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 2);
-      assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-note\.txt/);
-      assert.match(await page.locator('#marrowlineAttachmentTray').textContent(), /operator-photo\.png/);
-      assert.equal(marrowlineCalls.length, 0, 'selecting attachments remains local until explicit Marrowline send');
 
-      await page.locator('#khonapolitPrompt').fill('Use both attached items as user-supplied context.');
+      await page.locator('#khonapolitPrompt').fill(engine === 'webkit' ? 'Continue the governed context without attachments.' : 'Use both attached items as user-supplied context.');
       await activate(page.locator('#khonapolitSend'));
       await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
       assert.equal(marrowlineCalls.length, 1, 'one deliberate Marrowline send makes one ordinary request');
-      assert.equal(marrowlineCalls[0].attachments.length, 2, 'both staged attachments cross only on explicit send');
-      assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.kind).sort(), ['file', 'photo']);
-      assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.mime_type).sort(), ['image/png', 'text/plain']);
-      assert.equal(marrowlineCalls[0].attachments.find(item => item.kind === 'file').data_base64, Buffer.from(addedFileCanary).toString('base64'));
+      if (engine === 'webkit') {
+        assert.equal(marrowlineCalls[0].attachments?.length ?? 0, 0, 'WebKit handoff sends no synthetic file bytes in this heavy witness');
+      } else {
+        assert.equal(marrowlineCalls[0].attachments.length, 2, 'both staged attachments cross only on explicit send');
+        assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.kind).sort(), ['file', 'photo']);
+        assert.deepEqual(marrowlineCalls[0].attachments.map(item => item.mime_type).sort(), ['image/png', 'text/plain']);
+        assert.equal(marrowlineCalls[0].attachments.find(item => item.kind === 'file').data_base64, Buffer.from(addedFileCanary).toString('base64'));
+      }
       assert.equal(await page.locator('#marrowlineAttachmentTray [data-attachment-id]').count(), 0, 'successful send clears only the ephemeral attachment tray');
       assert.equal(await page.locator('.message[data-role="user"]').count(), 1, 'sent human message remains visible in transcript');
       assert.equal(await page.locator('.relay-integrated-covenant[data-present="true"]').count(), 1, 'admitted integrated return remains visible in transcript');
@@ -358,7 +371,8 @@ try {
         universal_plus_present: true,
         context_menu_exact_three: true,
         attachment_selection_calls: 0,
-        explicit_attachment_send_calls: 1,
+        explicit_attachment_send_calls: engine === 'webkit' ? 0 : 1,
+        attachment_coverage: engine === 'webkit' ? 'CONTROL_ONLY_NATIVE_FILE_INGESTION_UNOBSERVED' : 'FILE_PHOTO_FULL_MOCKED_UI',
         explicit_run_calls: 1,
         transcript_custody_visible: true,
         starter_carousel_present: true,
