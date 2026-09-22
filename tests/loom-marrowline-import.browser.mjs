@@ -149,30 +149,15 @@ try {
       const starterChoices = page.locator('.starter-prompts button:not(.starter-rotate)');
       const initialLabels = await starterChoices.allTextContents();
       assert.equal(initialLabels.length, 2);
-      const seenStarterLabels = new Set(initialLabels);
       await rotate.click();
       const firstShuffledLabels = await starterChoices.allTextContents();
       assert.equal(firstShuffledLabels.length, 2);
-      assert.notDeepEqual(firstShuffledLabels, initialLabels, 'first rupture shuffle replaces both gentle first-paint prompts');
-      firstShuffledLabels.forEach(label => seenStarterLabels.add(label));
-      for (let turn = 1; turn < 16; turn += 1) {
-        // First draw above proves the real clickable control. The remaining
-        // draws exercise its actual click handler directly: WebKit otherwise
-        // waits on a moving animation target even with a forced pointer click.
-        // Every draw remains checked for replacement and bag uniqueness.
-        await rotate.evaluate(button => button.click());
-        const labels = await starterChoices.allTextContents();
-        assert.equal(labels.length, 2);
-        for (const label of labels) {
-          assert.equal(seenStarterLabels.has(label), false, `rupture prompt repeated before the 32-prompt bag was exhausted: ${label}`);
-          seenStarterLabels.add(label);
-        }
-      }
-      assert.equal(seenStarterLabels.size, 34, 'two gentle starters plus all thirty-two rupture prompts were observed without replacement');
-      const previousPair = await starterChoices.allTextContents();
-      await rotate.evaluate(button => button.click());
-      const newCyclePair = await starterChoices.allTextContents();
-      assert.equal(newCyclePair.some(label => previousPair.includes(label)), false, 'new shuffle cycle cannot immediately repeat either prompt from the previous pair');
+      assert.notDeepEqual(firstShuffledLabels, initialLabels, 'real operator click replaces both gentle first-paint prompts');
+      assert.equal(new Set(firstShuffledLabels).size, 2, 'real browser receives two distinct rupture prompts');
+      assert.equal(await rotate.getAttribute('data-seen-count'), '2', 'first live draw advances the bag exactly once');
+      // Exhaustive 32-prompt/cycle coverage runs in an isolated DOM contract.
+      // A full Loom + animation browser is the wrong clock for rapid 17-click
+      // mutation loops, especially under WebKit; keep this witness on real UI.
 
       const destinationText = await page.locator('#loomImportedWorkspace').textContent();
       assert.equal(destinationText.includes(uploadCanary), false);
