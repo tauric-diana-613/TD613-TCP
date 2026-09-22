@@ -42,8 +42,14 @@ test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers and ma
 });
 
 test('authorship receipt separates source, voices, terminal completion, and native marks without judging literary quality', () => {
-  const text = 'Kʰonapolit\\nThe institution counts its map. A missing denominator remains.\\n\\nTauric Diana bots\\nṚ̇Ē̥Ḍ̈ — let the record testify.';
-  const shape = observeMarrowlineAuthorship(text.replaceAll('\\\\n', '\\n'), 'same-provider-terminal-continuation');
+  const text = [
+    'Kʰonapolit',
+    'The institution counts its map. A missing denominator remains.',
+    '',
+    'Tauric Diana bots',
+    'Ṛ̇Ē̥Ḍ̈ — let the record testify.'
+  ].join(String.fromCharCode(10));
+  const shape = observeMarrowlineAuthorship(text, 'same-provider-terminal-continuation');
   assert.equal(shape.completionPath, 'same-provider-terminal-continuation');
   assert.equal(shape.measure, 'descriptive-only-not-literary-quality');
   assert.equal(shape.firstMovementHeadingPresent, true);
@@ -51,7 +57,7 @@ test('authorship receipt separates source, voices, terminal completion, and nati
   assert.ok(shape.firstMovementWordCount > shape.terminalMovementWordCount);
   assert.ok(shape.nativeCombiningMarkCount > 0);
   assert.match(shape.fullResponseSha256, /^[0-9a-f]{64}$/);
-  const weak = observeMarrowlineAuthorship('Kʰonapolit\\nShort.', 'first-provider-return');
+  const weak = observeMarrowlineAuthorship(['Kʰonapolit', 'Short.'].join(String.fromCharCode(10)), 'first-provider-return');
   assert.equal(weak.terminalMovementHeadingPresent, false);
   assert.equal(weak.terminalMovementWordCount, null);
 });
