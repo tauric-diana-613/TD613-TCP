@@ -18,6 +18,14 @@ try{
  assert.equal(hits[0].source_id,item.source_id);
  assert.equal(hits[0].field,'selftext');
  assert.equal(hits[0].exact_field_sha256_utf8,sha256Utf8(item.selftext));
+ assert.equal(hits[0].offset_units,'UTF16_CODE_UNITS');
+ assert.equal(hits[0].utf8_byte_offset,Buffer.byteLength(item.selftext.slice(0,hits[0].character_offset),'utf8'));
+ const varied={...item,selftext:'İ🔥 ∴ Provenance and Recovery'};
+ const unicodeHit=queryPrivateOriginals([varied],'Provenance and Recovery')[0];
+ assert.equal(unicodeHit.character_offset,varied.selftext.indexOf('Provenance'));
+ assert.equal(unicodeHit.utf8_byte_offset,Buffer.byteLength(varied.selftext.slice(0,unicodeHit.character_offset),'utf8'));
+ assert.equal(queryPrivateOriginals([varied],'[does not occur]').length,0,'Regex metacharacters must be treated literally.');
+
  assert.equal(queryPrivateOriginals(originals,'provenance and recovery',{caseSensitive:true}).length,0);
  assert.equal(queryPrivateOriginals(originals,'Provenance and Recovery',{caseSensitive:true}).length,1);
 }finally{fs.rmSync(tmp,{recursive:true,force:true});}
