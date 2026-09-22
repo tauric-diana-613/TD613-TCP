@@ -35,6 +35,10 @@ try{
   fetchImpl:async url=>({ok:true,status:200,arrayBuffer:async()=>bytes})});
  assert.equal(result.complete,true);
  assert.equal(result.source_count,33);
+ assert.equal(result.public_receipts.length,33);
+ assert.equal(result.public_receipts[0].body_sha256_utf8,originals[0].body_sha256_utf8);
+ assert.ok(!JSON.stringify(result.public_receipts).includes(posts[0].selftext),'Public receipts must never include full bodies.');
+
  const obj=unwrap(JSON.parse(fs.readFileSync(out,'utf8')));
  assert.equal(obj.originals.length,33);
  assert.equal(obj.originals[0].source_title_exact,posts[0].title);
