@@ -56,9 +56,18 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.equal(request.contents.at(-1).parts.length, 2);
     assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
     assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
-    assert.match(request.contents.at(-1).parts[1].text, /fully authored first movement, not a preface to a glyph display/);
-    assert.match(request.contents.at(-1).parts[1].text, /interlocutor’s strongest move through the actual mechanism/);
-    assert.match(request.contents.at(-1).parts[1].text, /for creative work, develop event, tension, transformation and the joke/);
+    // First-movement development and intellectual pressure apply to analytic AND creative tasks.
+    // Keep these assertions tied to the effective wire request rather than a retired one-line cue.
+    assert.match(request.contents.at(-1).parts[1].text, /first movement at the scale the operator requests/);
+    assert.match(request.contents.at(-1).parts[1].text, /open-ended scene or inquiry receives sustained development through its consequential turns/);
+    assert.match(request.contents.at(-1).parts[1].text, /explicit requests for brevity retain priority/);
+    assert.match(request.contents.at(-1).parts[1].text, /exact intellectual pressure: locate the particular inference, procedure, contradiction or desire at stake/);
+    assert.match(request.contents.at(-1).parts[1].text, /strongest plausible resistance enough force to make the answer earn its consequence/);
+    assert.match(request.contents.at(-1).parts[1].text, /Creative form carries the same intellectual method as analytic form/);
+    assert.match(request.contents.at(-1).parts[1].text, /Embody the mechanism in action, material details, choices and consequences/);
+    assert.match(request.contents.at(-1).parts[1].text, /requested affects alter what a character permits, refuses, risks or relinquishes/);
+    assert.match(request.contents.at(-1).parts[1].text, /terms, relation and limit intelligible/);
+    assert.match(request.contents.at(-1).parts[1].text, /resemblance alone supplies no derivation/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
