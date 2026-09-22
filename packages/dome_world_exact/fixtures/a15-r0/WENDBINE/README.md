@@ -18,6 +18,13 @@ GitHub Actions run **#4179** obtained Arctic Shift HTTP 200, with 33 matched pos
 
 **Public source audit:** `01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json` has one row per post: source ID, canonical URL, *actual Reddit title*, title/body SHA-256, body bytes, source creation/edit metadata, provider, encrypted handoff provenance. Actual Reddit titles: `Wendbine` (32) and `Wensbine` (1); the old `technical_header` values are editorial descriptors, and substantive headings appear inside the source bodies.
 
+**Durable encrypted handoff and restore:** GitHub Actions publishes only ciphertext `wendbine-p0-encrypted-research-handoff` (one-day retention); the RSA private key remains outside GitHub. `99-ADMIN/wendbine-private-p0-restore.mjs` decrypts a saved `p0-archive.sealed.json` with that private key into an out-of-repository directory, verifies the raw archive SHA-256 and all 33 public v06 title/body receipts before making originals searchable. Preserve the ciphertext and private key separately in authorized private storage if source continuity across chat/container sessions is required. The public repository contains neither the RSA private key nor the full third-party post bodies.
+
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-p0-restore.mjs \
+  /private/backup/p0-archive.sealed.json /private/backup/private.pem /private/wendbine-restored
+```
+
 **Real private word search:** `99-ADMIN/wendbine-private-p0-source-query.mjs` verifies the raw response against the public digest, reconciles all 33 exact source fields and hashes, then returns literal source-text matches with offsets and bounded snippets. Run:
 ```bash
 node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-p0-source-query.mjs \
