@@ -8,20 +8,17 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {sha256Utf8} from './wendbine-originals-intake.mjs';
 
+import { auditPrivateOriginals } from './wendbine-private-custody-audit.mjs';
+
 export function loadPrivateOriginals(destination){
  const dir=path.resolve(destination);
  if(!fs.existsSync(dir))return [];
- const entries=fs.readdirSync(dir).filter(x=>/^(?:source-)?[a-z0-9]+\.json$/.test(x));
- const results=[];
- for(const file of entries){
-  const item=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));
-  if(!/^reddit:t3_[a-z0-9]+$/.test(item.source_id||''))continue;
-  if(typeof item.title!=='string'||typeof item.selftext!=='string')continue;
-  if(!item.rights_basis||!item.source_capture_method)continue;
-  results.push({source_id:item.source_id,canonical_url:item.canonical_url,title:item.title,selftext:item.selftext,source_capture_method:item.source_capture_method,publication_timestamp:item.publication_timestamp??null});
- }
- return results.sort((a,b)=>a.source_id.localeCompare(b.source_id));
+ // The report is part of the evidence, not optional decoration.
+ // Every returned source must pass its matching receipt and exact field hash;
+ // OAuth sources must also match the preserved raw Reddit payload.
+ return auditPrivateOriginals(dir).records.sort((a,b)=>a.source_id.localeCompare(b.source_id));
 }
+
 export function queryPrivateOriginals(originals,query,{caseSensitive=false,limit=30}={}){
  if(typeof query!=='string'||!query.trim())throw new Error('NONEMPTY_SOURCE_QUERY_REQUIRED');
  const meta = new Set(['\\','^','$','.','|','?','*','+','(',')','[',']','{','}']);
