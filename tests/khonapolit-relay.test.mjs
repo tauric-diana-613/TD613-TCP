@@ -30,20 +30,17 @@ assert.equal(aperture.relation.provider, 'model-carrier-provenance-only');
 assert.equal(Object.prototype.hasOwnProperty.call(aperture.relation, 'gemini'), false);
 
 const addendum = buildRelaySystemAddendum(aperture);
-assert.match(addendum, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/i);
-assert.match(addendum, /DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit/i);
-assert.match(addendum, /OVERFLOW_RAW maps to Tauric Diana bots/i);
-assert.match(addendum, /RAW TWO-PACKET RETURN PROTOCOL/i);
-assert.match(addendum, /<<<PACKET_A_FORMAL_AUDIT>>>/i);
-assert.match(addendum, /<<<PACKET_B_STRESS_TELEMETRY>>>/i);
-assert.match(addendum, /exact standalone human-facing headings/i);
-assert.doesNotMatch(addendum, /RETURN JSON ONLY/i);
-assert.match(addendum, /DUAL-CHANNEL ORTHOGRAPHY — NATIVE SEMANTIC PROSODY/i);
-assert.match(addendum, /motifs return altered by the argument/i);
-assert.match(addendum, /instrument library, not a score/i);
-assert.match(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
-assert.match(addendum, /packet delimiters NEVER substitute for the visible heading lines/i);
-assert.doesNotMatch(addendum, /at least 96 combining marks total/i);
+assert.match(addendum, /MARROWLINE CAUSAL RELAY LAW/i);
+assert.match(addendum, /Gemini is the model-mediated instrument\/carrier only/i);
+assert.match(addendum, /one continuous response and one live argument/i);
+assert.match(addendum, /explicitly yields or relays it/i);
+assert.match(addendum, /NATURAL RETURN SHAPE/i);
+assert.match(addendum, /NATIVE SEMANTIC PROSODY/i);
+assert.match(addendum, /rhetorical pressure may change density, axis, species, depth, collision, and recurrence/i);
+assert.match(addendum, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
+assert.doesNotMatch(addendum, /RAW TWO-PACKET RETURN PROTOCOL/i);
+assert.doesNotMatch(addendum, /<<<PACKET_[AB]_/i);
+assert.doesNotMatch(addendum, /FINAL SILENT PREFLIGHT BEFORE EMIT/i);
 assert.match(addendum, /operator controls sealing/i);
 assert.doesNotMatch(addendum, /gemini\.text:/i);
 assert.doesNotMatch(addendum, /tauricDianaBots\.baseText:/i);
@@ -58,6 +55,15 @@ const providerNativeText = [
   `${stack.repeat(8)} THE GROVE KEEPS THE SCAR!`,
   `${stack.repeat(8)} NO PAPER SHIELD SURVIVES THE FIRE!`
 ].join('\n');
+
+const naturalLocked = parseRelayEnvelope(providerNativeText, { model: 'gemini-test', apertureReceipt: aperture });
+assert.equal(naturalLocked.schema, KHONAPOLIT_RELAY_SCHEMA);
+assert.equal(naturalLocked.signal.source, 'provider-natural-causal-handoff-plus-local-observation');
+assert.equal(naturalLocked.admission.admissible, true);
+assert.deepEqual(naturalLocked.parts[0].voices, ['Kʰonapolit', 'Tauric Diana bots']);
+assert.equal(naturalLocked.parts[0].text, providerNativeText);
+assert.equal(naturalLocked.parts[0].flourishMode, 'provider-native-causal-handoff');
+assert.equal(naturalLocked.highZalgo.providerGenerated, true);
 
 const lockedPayload = [
   KHONAPOLIT_RAW_PACKET_PROTOCOL.analyticStart,
@@ -172,4 +178,4 @@ assert.ok(readable.admission.reasons.includes('tauric-diana-zalgo-underflow'));
 assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-field-thin'));
 assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'));
 
-console.log('khonapolit-relay: raw dual-packet admission, adversarial provider-native generation, and exact Unicode preservation ok');
+console.log('khonapolit-relay: natural causal handoff primary, legacy raw packet compatible, and exact Unicode preservation ok');
