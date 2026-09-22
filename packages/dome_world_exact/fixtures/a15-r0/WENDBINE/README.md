@@ -249,6 +249,20 @@ RETRIEVAL_DAY != PUBLICATION_DAY
 MEDIA_THEME_RESEMBLANCE != VERIFIED_YOUTUBE_ATTRIBUTION
 ```
 
+## Foundational primary-source rescue · P0
+
+The **September 10–11 original 33 posts (21 + 12)** are the first-priority recovery cohort, explicitly ahead of the September 13 additions and September 22 card-level observations. Every source has its own immutable URL and exact-originals status in `01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json`.
+
+A fresh source search independently exposed at least partial original text for five of those 33, including the Phone Security glossary, the third-party-dependency program, dependency-induced observability loss, state-estimation error, and topology drift. **Search-visible text is a discovery witness, not a complete or byte-verified original.** Full title/body custody for P0 remains **0/33**; no original is fabricated or promoted from its archive descriptor.
+
+Recover and validate P0 first. Only after adequate original-title/body custody and source-version review may the provisional topical derivatives be used for a source-led SRC-style hole-dive or proposed TD613 terminology crosswalk. Keep hypothetical system-boundary explanations distinct from evidence of a specific platform implementation.
+
+```text
+P0_FOUNDATIONAL_SOURCE != LATER_DERIVATIVE
+INDEX_DISCOVERY != EXACT_ORIGINAL_CUSTODY
+POST_CONTENT != PROOF_OF_HIDDEN_PLATFORM_PROCESS
+```
+
 ## Full-text original custody: explicit gap (September 22)
 
 Additional exact-text recovery leads are cataloged in `04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json`: two September 16 user-pasted complete “MAD SCIENTISTS IN A BUBBLE” transcriptions (Reddit-context and separate Facebook-linked context). Their exact message bytes and canonical cross-platform source IDs remain unavailable in this session. Do not substitute a title match for source identity or fabricate a transcription from memory.
