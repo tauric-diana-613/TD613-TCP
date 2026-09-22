@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, withGeminiGenerationProfile } from '../server/gemini-generation-envelope.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
   MARROWLINE_ATTACHMENT_SCHEMA,
@@ -143,4 +144,94 @@ test('attachment turns walk the same five-seat frontier before waking the human'
   assert.ok(res.payload.attempts.every((attempt) => attempt.status === 503));
   assert.ok(res.payload.attempts.every((attempt) => attempt.timeoutMs >= 10000),
     'attachment seats receive completion windows rather than millisecond health probes');
+});
+
+test('text/attachment generation envelopes remain explicitly distinguishable without silently changing production thinking', () => {
+  const packet = { systemInstruction: 'Synthetic system.', mode: 'issued-conjunction', message: 'Compare one fixed argument.', history: [] };
+  const attachmentRequest = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [attachment()]);
+  const interactiveRequest = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [attachment()])
+  );
+  assert.equal(attachmentRequest.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(attachmentRequest.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.equal(interactiveRequest.generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(interactiveRequest.generationConfig.thinkingConfig, { thinkingLevel: 'medium' });
+  assert.equal(attachmentRequest.contents.at(-1).parts[0].text, packet.message);
+  assert.equal(interactiveRequest.contents.at(-1).parts[0].text, packet.message);
+  assert.deepEqual(attachmentRequest.contents.at(-1).parts.slice(1), interactiveRequest.contents.at(-1).parts.slice(1));
+  for (const fallback of ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
+    const unprofiled = buildAttachmentGeminiRequest(packet, {}, fallback, [attachment()]);
+    const profiled = withGeminiGenerationProfile(
+      GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+      () => buildAttachmentGeminiRequest(packet, {}, fallback, [attachment()])
+    );
+    assert.deepEqual(unprofiled.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+    assert.deepEqual(profiled.generationConfig.thinkingConfig, { thinkingLevel: 'low' });
+    assert.equal(profiled.generationConfig.maxOutputTokens, 65536);
+  }
+});
+
+test('attachment response receipts reflect the exact submitted wire configuration and preserve provider Unicode', async t => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.GEMINI_API_KEY;
+  clearGeminiModelState();
+  process.env.GEMINI_API_KEY = 'synthetic-attachment-wire-key';
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    clearGeminiModelState();
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  });
+  const exact = attachment();
+  const returned = 'Kʰonapolit\\nAn original argument survives.\\n\\nTauric Diana bots\\nṚ̇Ē̥Ḍ̈ — the archived joke returns.';
+  const wire = [];
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('/v1beta/models?')) {
+      return { ok: true, status: 200, async json() {
+        return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
+      } };
+    }
+    assert.match(String(url), /gemini-3\\.8-flash:generateContent$/);
+    const request = JSON.parse(options.body);
+    wire.push(request);
+    return {
+      ok: true, status: 200, headers: { get: () => null },
+      async json() { return {
+        candidates: [{ finishReason: 'STOP', content: { parts: [{ text: returned }] } }],
+        usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 63, thoughtsTokenCount: 21, totalTokenCount: 184 }
+      }; }
+    };
+  };
+  const res = {
+    statusCode: 200, headers: {},
+    setHeader(name, value) { this.headers[name] = value; },
+    end(value) { this.payload = JSON.parse(value); }
+  };
+  await marrowlineAttachmentHandler({
+    method: 'POST', headers: { 'x-forwarded-for': '203.0.113.245' },
+    body: {
+      message: 'Explain the attached record and follow the argument.',
+      history: [], mode: 'issued-conjunction', waiveIssuance: true,
+      attachments: [exact]
+    }
+  }, res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(wire.length, 1);
+  assert.equal(wire[0].contents.at(-1).parts[0].text, 'Explain the attached record and follow the argument.');
+  assert.equal(wire[0].contents.at(-1).parts.at(-2).inlineData.data, exact.data_base64);
+  assert.equal(wire[0].generationConfig.maxOutputTokens, 65536);
+  assert.deepEqual(wire[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.equal(res.payload.text, returned, 'native provider text, including combining marks, stays byte-for-byte unchanged');
+  const output = res.payload.receipt.provider.output;
+  assert.equal(output.outputCeilingSource, 'submitted-generation-config');
+  assert.equal(output.maxOutputTokens, wire[0].generationConfig.maxOutputTokens);
+  assert.equal(output.thinkingLevel, wire[0].generationConfig.thinkingConfig.thinkingLevel);
+  assert.equal(output.finishReason, 'STOP');
+  assert.equal(output.usage.candidatesTokenCount, 63);
+  assert.deepEqual(res.payload.receipt.provider.attempts[0].output, output);
+  assert.equal(res.payload.receipt.provider.authorshipObservation.firstMovementHeadingPresent, true);
+  assert.equal(res.payload.receipt.provider.authorshipObservation.terminalMovementHeadingPresent, true);
+  assert.ok(res.payload.receipt.provider.authorshipObservation.nativeCombiningMarkCount > 0);
+  assert.equal(res.payload.receipt.attachments[0].size_bytes, exact.size_bytes);
 });
