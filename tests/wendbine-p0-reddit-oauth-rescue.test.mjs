@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { loadFoundationalTargets, sourceEndpoint, parseRedditPostBytes, acquireP0 } from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-reddit-oauth-rescue.mjs';
 import { assertPrivateDestination, sha256Utf8 } from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-originals-intake.mjs';
+import {loadPrivateOriginals} from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-originals-query.mjs';
 
 const p0=loadFoundationalTargets();
 assert.equal(p0.length,33);
@@ -61,6 +62,16 @@ try{
  assert.equal(original.title,mockPost.title);
  assert.equal(original.selftext,sourceText);
  assert.equal(r.records[0].exact_selftext_sha256_utf8,sha256Utf8(sourceText));
+ const audited=loadPrivateOriginals(dest);
+ assert.equal(audited.length,1);
+ assert.equal(audited[0].original_text_state,'OAUTH_RAW_AND_FIELDS_HASH_VERIFIED');
+ assert.equal(audited[0].selftext,sourceText);
+ const rawFile=path.join(dest,'raw-'+id+'.json');
+ fs.writeFileSync(rawFile,Buffer.from('{"tampered":true}'));
+ assert.throws(()=>loadPrivateOriginals(dest),/RAW_RESPONSE_HASH_MISMATCH/,
+  'A replaced raw Reddit response invalidates the entire private query result.');
+ fs.writeFileSync(rawFile,bytes);
+
  assert.throws(()=>assertPrivateDestination(actualRepo),/PRIVATE_ORIGINALS_DESTINATION_MUST_BE_OUTSIDE_REPOSITORY/);
  await assert.rejects(()=>acquireP0({token:'x',rightsBasis:'AUTHOR_PERMISSION',destination:dest,targets:[target],fetchImpl:successFetch}),/REFUSE_OVERWRITE_EXISTING_CAPTURE_DIR/);
  const holdDest=path.join(tmp,'denied');
