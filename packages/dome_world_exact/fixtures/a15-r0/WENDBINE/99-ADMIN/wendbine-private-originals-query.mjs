@@ -24,7 +24,7 @@ export function loadPrivateOriginals(destination){
 }
 export function queryPrivateOriginals(originals,query,{caseSensitive=false,limit=30}={}){
  if(typeof query!=='string'||!query.trim())throw new Error('NONEMPTY_SOURCE_QUERY_REQUIRED');
- const needle=caseSensitive?query:query.toLocaleLowerCase();
+ const literalCaseInsensitive=caseSensitive?null:new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g,'\\ const needle=caseSensitive?query:query.toLocaleLowerCase();
  const hits=[];
  for(const source of originals){
   const fields=[['title',source.title],['selftext',source.selftext]];
@@ -34,6 +34,19 @@ export function queryPrivateOriginals(originals,query,{caseSensitive=false,limit
    if(offset<0)continue;
    hits.push({source_id:source.source_id,canonical_url:source.canonical_url,field,
     character_offset:offset,exact_field_sha256_utf8:sha256Utf8(sourceText),
+    snippet:sourceText.slice(Math.max(0,offset-55),Math.min(sourceText.length,offset+query.length+55)),'),'iu');
+ const hits=[];
+ for(const source of originals){
+  const fields=[['title',source.title],['selftext',source.selftext]];
+  for(const [field,sourceText] of fields){
+   // Match in the original string, never in a transformed copy whose
+   // Unicode case fold may change lengths and corrupt source locators.
+   const offset=caseSensitive?sourceText.indexOf(query):(literalCaseInsensitive.exec(sourceText)?.index??-1);
+   if(offset<0)continue;
+   hits.push({source_id:source.source_id,canonical_url:source.canonical_url,field,
+    character_offset:offset,offset_units:'UTF16_CODE_UNITS',
+    utf8_byte_offset:Buffer.byteLength(sourceText.slice(0,offset),'utf8'),
+    exact_field_sha256_utf8:sha256Utf8(sourceText),
     snippet:sourceText.slice(Math.max(0,offset-55),Math.min(sourceText.length,offset+query.length+55)),
     original_text_state:'PRIVATE_CUSTODIED_SOURCE_FIELD',
     publication_timestamp:source.publication_timestamp});
