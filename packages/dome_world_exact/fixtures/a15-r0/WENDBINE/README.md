@@ -228,8 +228,26 @@ See:
 - `tests/wendbine-query-surface.test.mjs`
 - `tests/wendbine-capture-reconciliation.test.mjs`
 - `tests/wendbine-entry-contract.test.mjs`
+- `tests/wendbine-account-card-sync-v05.test.mjs`
 
 These are imported by `tests/ash-a15-r0-review-hardening.test.mjs` into consolidated validation.
+
+## September 22 account-card sync — individually queryable
+
+The current cached public `r/Wendbine/new` listing yielded **25 distinct post cards** displaying `u/Upset-Ratio502`. Every visible card URL now has its own JSONL observation; two media-only cards remain indexed without invented content. Individual post pages were cache-missing, so these are card-level observations, with publication day/time and full post detail unbound. The cached listing does not establish an exhaustive current account census.
+
+- `01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl` — all 25 records.
+- `01-MANIFESTS/public-reddit-account-card-sync-20260922-v05.json` — coverage and limits.
+- `04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json` — 25 observed, 25 persisted, zero unexplained.
+- `04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json` — separate Suno/YouTube lane, presently HELD pending account-to-channel/video binding.
+
+The **35 older fully hydrated sources** remain a separate evidence class. This pass does not retroactively reconstruct the 25 missing Sept. 16 card identities. Read-only query results expose `date_basis`: `RETRIEVAL_DAY` for these new card observations, never an invented `PUBLICATION_DAY`.
+
+```text
+CARD_LEVEL_SOURCE_OBSERVATION != FULL_POST_HYDRATION
+RETRIEVAL_DAY != PUBLICATION_DAY
+MEDIA_THEME_RESEMBLANCE != VERIFIED_YOUTUBE_ATTRIBUTION
+```
 
 ## Authority
 
