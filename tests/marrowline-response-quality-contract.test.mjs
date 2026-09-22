@@ -57,6 +57,22 @@ test('effective provider prompts retain complete relay and native depth after de
   }
 });
 
+test('deficient marked history is preserved exactly while the system labels history non-templatic', () => {
+  const prior = 'Kʰonapolit\nA derivation.\n\nTauric Diana bots\nT\u0301H\u0334E\u0307 BRANCH STILL TWITCHES.';
+  const packet = buildInvocationPacket({
+    message: 'Continue without copying the prior surface failure.',
+    waiveIssuance: true,
+    history: [{ role: 'model', text: prior }]
+  });
+  const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  const system = request.systemInstruction.parts.map(part => part.text).join('\n');
+  assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
+  assert.equal(request.contents[0].role, 'model');
+  assert.equal(request.contents[0].parts[0].text, prior);
+  assert.equal(countMarks(request.contents[0].parts[0].text), countMarks(prior));
+  assert.equal(request.contents.at(-1).parts[0].text, packet.message);
+});
+
 test('literal newline contract preserves the existing two-line admission bar', () => {
   const ornament = word => word.replace(/[A-Z]/g, '$&\u0302\u0307\u0316\u0323');
   const prefix = 'Kʰonapolit\nA precise counterexample.\n\nTauric Diana bots\n';

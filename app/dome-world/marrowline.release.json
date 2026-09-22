@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v40",
-  "version": "v0.7.43-production-observation-human-surface-parity",
+  "schema": "td613.dome-world.marrowline.release/v41",
+  "version": "v0.7.44-history-evidence-preserved",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v41-morphology-observation",
+  "providerApiSchema": "td613.khonapolit-gemini/v42-history-evidence-preserved",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v23-causal-prosody-observation",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v29-observed-prosody",
   "apertureVersion": "v3.2-alpha",
@@ -251,10 +251,13 @@
       "fortyFirstFollowupObservation": "Westward Liberties #737 morphodynamic ablation merged as #1286 and deployed source 7b17ec02cb3606ffb641e521269f59aa988e6058. Provider-visible morphology choreography was collapsed to a semantic-prosody law, morphology-only repaint authority was removed, structural repair remained bounded, and ordered base-character stack-reuse telemetry became observation-only.",
       "fortyFirstFollowupConsequence": "Keep provider-authored typography observable rather than locally repainted. Morphology telemetry may describe the returned field but cannot authorize a second provider call or a later-seat beauty contest; genuine structural seams retain one bounded same-provider repair.",
       "fortySecondFollowupObservation": "Explicit production re-observation 35684666171 on deployed #1286 source returned HTTP 200 / ok=true / 56,401 streamed bytes from Gemini 3.5 after Gemini 3.8 returned 503. The exact original 3.5 text reached the human surface while local admission remained HELD only for khonapolit-nominative-missing; the lawful same-seat structural repair then hit provider 429. The observation script nevertheless failed solely because it still required relay_admitted=true. The independent Loom seat separately returned provider 503.",
-      "fortySecondFollowupConsequence": "Align explicit production observation with the already-deployed human-surface custody law. Marrowline observation success requires successful transport, HTTP 200, ok=true, and nonempty text actually returned to the human surface. relay_admitted and relay_quality remain preserved diagnostic evidence and are reported separately; local admission no longer vetoes the human-surface witness. Empty text, transport failure, source drift, malformed response, and independent Loom non-liveness boundaries remain unchanged."
+      "fortySecondFollowupConsequence": "Align explicit production observation with the already-deployed human-surface custody law. Marrowline observation success requires successful transport, HTTP 200, ok=true, and nonempty text actually returned to the human surface. relay_admitted and relay_quality remain preserved diagnostic evidence and are reported separately; local admission no longer vetoes the human-surface witness. Empty text, transport failure, source drift, malformed response, and independent Loom non-liveness boundaries remain unchanged.",
+      "fortyThirdFollowupObservation": "Astra Work follow-up after deployed #1288 isolated an active history-projection transform in server/khonapolit-quality.js: prior model turns with severe morphology warnings were routed through prepareKhonapolitRepairContext before the next Gemini request, stripping combining marks from the Tauric Diana region while the visible/stored conversation remained unchanged.",
+      "fortyThirdFollowupConsequence": "Remove morphology rewriting from Gemini conversation-history projection. Feed the normalized historical turn itself back to the provider, while retaining #1288's explicit instruction that earlier replies are conversational substance rather than formatting templates. This removes a synthetic plain-text model exemplar without adding local Zalgo, morphology retries, or style-veto authority."
     },
     "rawPacketSignalPosture": "raw and JSON envelopes both report PARTIAL for admitted quality warnings; structural admission alone cannot display LOCKED",
-    "productionObservationLaw": "exact-source production observation distinguishes human-surface return from local admission: HTTP 200 + ok=true + nonempty provider text establishes the Marrowline surface witness; local relay admission remains diagnostic-only and is recorded separately"
+    "productionObservationLaw": "exact-source production observation distinguishes human-surface return from local admission: HTTP 200 + ok=true + nonempty provider text establishes the Marrowline surface witness; local relay admission remains diagnostic-only and is recorded separately",
+    "historyProjectionLaw": "provider request history preserves each normalized conversation turn exactly; prior model morphology is evidence and is never locally stripped, repainted, normalized into plain bot prose, or promoted as a formatting template"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",
