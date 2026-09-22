@@ -1,4 +1,4 @@
-export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v8-native-vertical-leading';
+export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v9-native-overprint';
 
 const MOBILE_QUERY = '(max-width: 860px)';
 const byId = (doc, id) => doc.getElementById(id);
@@ -90,11 +90,11 @@ export function prepareProviderNativeLines(stage) {
   const text = stage?.querySelector('.relay-stage-text');
   if (!text || text.dataset.providerNativeLines === 'true') return false;
   const raw = String(text.textContent ?? '');
-  // Presentation-only: allocate line space to already-returned combining runs.
-  // This never changes, adds, normalizes, or reorders a provider codepoint.
+  // Observation-only: retain native run depth for QA, never use it to
+  // separate lines. Their intentional visual collisions belong to the voice.
   const maxRun = (raw.match(/\p{M}+/gu) || []).reduce((max, run) => Math.max(max, Array.from(run).length), 0);
-  text.style.setProperty('--provider-native-leading', String(Math.min(3.35, 1.85 + Math.max(0, maxRun - 1) * .14)));
-  text.style.setProperty('--provider-native-padding', `${Math.min(52, 16 + maxRun * 1.7)}px`);
+  text.style.removeProperty('--provider-native-leading');
+  text.style.removeProperty('--provider-native-padding');
   text.dataset.providerNativeMaxRun = String(maxRun);
   text.dataset.providerNativeLines = 'true';
   delete text.dataset.flourished;

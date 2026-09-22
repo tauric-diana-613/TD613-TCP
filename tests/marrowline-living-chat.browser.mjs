@@ -163,9 +163,10 @@ try{
    assert.ok(await providerLines.count()>=3,'provider-native line preparation gives extreme vertical flourishes room without rewriting bytes');
    const glyphLayout=await integrated.evaluate(el=>({ leading:parseFloat(getComputedStyle(el).lineHeight), base:parseFloat(getComputedStyle(el).fontSize), maxRun:Number(el.dataset.providerNativeMaxRun), raw:el.textContent, botLeading:parseFloat(getComputedStyle(el.querySelector('[data-voice="tauric-diana-bots"].zalgo-line')).lineHeight) }));
    assert.ok(glyphLayout.maxRun>=4,'fixture carries native stacked marks');
-   assert.ok(glyphLayout.leading>glyphLayout.base*1.5,'native marks receive vertical line space');
-   assert.ok(glyphLayout.botLeading>glyphLayout.base*1.5,'expressive span inherits vertical spacing');
-   assert.equal(glyphLayout.raw,text,'typesetting leaves provider codepoints unchanged');
+   assert.ok(glyphLayout.leading<=glyphLayout.base*1.15,'native stacks retain tight overprint line boxes');
+   assert.ok(glyphLayout.botLeading<=glyphLayout.base*1.15,'expressive glyphs may collide across adjacent lines');
+   assert.ok(glyphLayout.botLeading>=glyphLayout.base*.95,'line boxes remain present rather than collapsing');
+   assert.equal(glyphLayout.raw,text,'overprinting leaves provider codepoints unchanged');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
    await page.locator('.return-details > summary').click();
    assert.match(await page.locator('.relay-aperture-header').last().textContent(),/TECHNICAL_RUNTIME_REVIEW/);
