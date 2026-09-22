@@ -250,28 +250,10 @@ jobs:
           node tests/ash-a15-transition-trace-contract.test.mjs
       # The immutable P0 33/33 research rescue has already been hash-verified;
       # do not repeatedly refetch it on each PR synchronization.
-      - name: Seal additional Wendbine P1/P2 records (PR 1134 only)
-        id: wendbine_secondary
-        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134
-        timeout-minutes: 3
-        shell: bash
-        run: |
-          set -uo pipefail
-          node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-ci-secondary-sealed-rescue.mjs \
-            artifacts/wendbine-private-sealed/p1p2-archive.sealed.json || true
-          if [[ -s artifacts/wendbine-private-sealed/p1p2-archive.sealed.json ]]; then
-            echo 'artifact_exists=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'artifact_exists=false' >> "$GITHUB_OUTPUT"
-          fi
-      - name: Preserve encrypted P1/P2 source handoff (one-day retention)
-        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134 && steps.wendbine_secondary.outputs.artifact_exists == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: wendbine-p1p2-encrypted-research-handoff
-          path: artifacts/wendbine-private-sealed/p1p2-archive.sealed.json
-          if-no-files-found: error
-          retention-days: 1
+      # Wendbine research PR #1134: P0 33 and secondary 27 were retrieved,
+      # sealed, downloaded, privately restored and hash-verified (runs #4189,
+      #4212). Archive acquisition is now explicit/manual, not a network request
+      # on each unrelated PR synchronization. Static custody contracts stay gated.
       - name: Validate Ash demo hydration surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
