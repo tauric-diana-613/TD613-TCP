@@ -31,8 +31,8 @@ function installConversationTypeface(doc) {
          Do not translate native combining-run depth into extra line-height or padding. */
       .relay-integrated-covenant .relay-stage-text[data-provider-native-lines="true"]{line-height:1.04!important;padding-block:14px!important}
       .relay-integrated-covenant .provider-native-line[data-voice="khonapolit"]{line-height:1.38!important}
-      .relay-integrated-covenant .provider-native-line[data-voice="tauric-diana-bots"]{line-height:1.04!important;overflow:visible!important}
-      .zalgo-line{display:inline!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:1.04!important}
+      .relay-integrated-covenant .provider-native-line[data-voice="tauric-diana-bots"]{line-height:1.2!important;overflow:visible!important}
+      .zalgo-line{display:inline!important;min-height:0!important;padding:0!important;overflow:visible!important;white-space:pre-wrap!important;line-height:1.2!important}
       #khonapolitShi:disabled{opacity:.42!important;cursor:default!important}
       .issuance-help{margin:.55rem 0 0;color:#91a69b;font:500 10px/1.45 var(--marrowline-chat-sans)!important}
       .issuance-help a{color:#8ce0c4;text-decoration:none;border-bottom:1px solid rgba(140,224,196,.35)}
