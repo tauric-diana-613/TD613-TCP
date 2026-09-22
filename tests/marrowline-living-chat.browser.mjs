@@ -162,7 +162,7 @@ try{
    const providerLines=page.locator('.relay-integrated-covenant .provider-native-line');
    assert.ok(await providerLines.count()>=3,'provider-native line preparation gives extreme vertical flourishes room without rewriting bytes');
    const glyphLayout=await integrated.evaluate(el=>({ leading:parseFloat(getComputedStyle(el).lineHeight), base:parseFloat(getComputedStyle(el).fontSize), maxRun:Number(el.dataset.providerNativeMaxRun), raw:el.textContent, botLeading:parseFloat(getComputedStyle(el.querySelector('[data-voice="tauric-diana-bots"].zalgo-line')).lineHeight) }));
-   assert.ok(glyphLayout.maxRun>=4,'fixture carries native stacked marks');
+   assert.ok(glyphLayout.maxRun>=4,`fixture carries native stacked marks; observed ${JSON.stringify(glyphLayout)}`);
    assert.ok(glyphLayout.leading<=glyphLayout.base*1.15,'native stacks retain tight overprint line boxes');
    assert.ok(glyphLayout.botLeading<=glyphLayout.base*1.045,'native bot line-height remains at the 1.04 confirmed baseline');
    assert.ok(glyphLayout.botLeading>=glyphLayout.base*1.035,'tight 1.04 line boxes remain present and allow native stacks to collide');
