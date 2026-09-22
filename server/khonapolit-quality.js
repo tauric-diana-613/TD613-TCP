@@ -524,12 +524,17 @@ export function prepareKhonapolitRepairContext(heldText = '', reasons = []) {
 }
 
 export function terminalContinuationEligible(heldText = '', reasons = []) {
-  // A completed first voice plus exactly one absent terminal heading qualifies.
-  // Other structural faults remain on the existing full-repair path.
+  // Terminal-only continuation requires an actually authored first movement.
+  // A bare heading supplies no first voice to preserve; the existing full
+  // structural repair must author both movements instead. This checks only
+  // structural emptiness, never a word count or literary-quality threshold.
+  const text = String(heldText);
+  const heading = text.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*\r?\n/iu);
+  const firstBody = heading ? text.slice(heading.index + heading[0].length) : '';
   return Array.isArray(reasons)
     && reasons.length === 1
     && reasons[0] === 'tauric-diana-bots-nominative-missing'
-    && /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?=\r?\n|$)/iu.test(String(heldText));
+    && /[\p{L}\p{N}]/u.test(firstBody);
 }
 
 export function assembleProviderTerminalContinuation(heldText = '', continuationText = '') {
