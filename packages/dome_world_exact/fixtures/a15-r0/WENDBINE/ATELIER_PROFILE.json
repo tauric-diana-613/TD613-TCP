@@ -176,5 +176,11 @@
   "operator_gate_activation_pr": 1310,
   "operator_gate_loader_repair_pr": 1311,
   "operator_end_to_end_live_sync_state": "UNOBSERVED_REQUIRES_FRESH_USER_GESTURE",
-  "research_pr_state": "PR_1134_DRAFT_OPEN_UNMERGED"
+  "research_pr_state": "PR_1134_DRAFT_OPEN_UNMERGED",
+  "latest_live_archive_discovery_state": "772_POST_OBJECTS_8_PAGES_ZERO_ERRORS_WITNESSED_NOT_772_PRIVATE_CUSTODY",
+  "latest_live_archive_discovery_receipt": "04-RECEIPTS/2026-09-22-live-author-search-witness-v01.json",
+  "live_discovery_observed_post_objects": 772,
+  "live_discovery_page_count": 8,
+  "live_discovery_full_text_private_custody_state": "NOT_CAPTURED_BY_ONE_TIME_PUBLIC_METADATA_WITNESS",
+  "historical_60_private_archive_custody": "V06_V07_INDEPENDENTLY_HASH_VERIFIED"
 }
