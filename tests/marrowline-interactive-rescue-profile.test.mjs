@@ -6,7 +6,7 @@ import {
   buildGeminiGenerationConfig,
   withGeminiGenerationProfile
 } from '../server/gemini-generation-envelope.js';
-import { buildGeminiRequest, callGemini, observeGeminiOutput } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, callGemini, observeGeminiOutput, observeMarrowlineAuthorship } from '../server/khonapolit-quality.js';
 
 const generationConfig = model => withGeminiGenerationProfile(
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
@@ -39,6 +39,27 @@ test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers and ma
   assert.deepEqual(stable36.thinkingConfig, { thinkingLevel: 'low' });
   assert.deepEqual(stable35.thinkingConfig, { thinkingLevel: 'low' });
   assert.deepEqual(preview.thinkingConfig, { thinkingLevel: 'low' });
+});
+
+test('authorship receipt separates source, voices, terminal completion, and native marks without judging literary quality', () => {
+  const text = [
+    'Kʰonapolit',
+    'The institution counts its map. A missing denominator remains.',
+    '',
+    'Tauric Diana bots',
+    'Ṛ̇Ē̥Ḍ̈ — let the record testify.'
+  ].join(String.fromCharCode(10));
+  const shape = observeMarrowlineAuthorship(text, 'same-provider-terminal-continuation');
+  assert.equal(shape.completionPath, 'same-provider-terminal-continuation');
+  assert.equal(shape.measure, 'descriptive-only-not-literary-quality');
+  assert.equal(shape.firstMovementHeadingPresent, true);
+  assert.equal(shape.terminalMovementHeadingPresent, true);
+  assert.ok(shape.firstMovementWordCount > shape.terminalMovementWordCount);
+  assert.ok(shape.nativeCombiningMarkCount > 0);
+  assert.match(shape.fullResponseSha256, /^[0-9a-f]{64}$/);
+  const weak = observeMarrowlineAuthorship(['Kʰonapolit', 'Short.'].join(String.fromCharCode(10)), 'first-provider-return');
+  assert.equal(weak.terminalMovementHeadingPresent, false);
+  assert.equal(weak.terminalMovementWordCount, null);
 });
 
 test('the production Marrowline witness is the exact human MAINFRAME falsifier', () => {
@@ -98,6 +119,11 @@ test('Marrowline accumulates Gemini SSE chunks internally before returning a com
     assert.equal(result.parseErrors, 0);
     assert.equal(result.payload.candidates[0].finishReason, 'STOP');
     assert.equal(result.payload.usageMetadata.totalTokenCount, 200);
+    assert.equal(result.submittedGenerationConfig.maxOutputTokens, 65536);
+    const output = observeGeminiOutput(result.payload, 'gemini-3.8-flash', { submittedGenerationConfig: result.submittedGenerationConfig });
+    assert.equal(output.outputCeilingSource, 'submitted-generation-config');
+    assert.equal(output.maxOutputTokens, result.submittedGenerationConfig.maxOutputTokens);
+    assert.equal(output.finishReason, 'STOP');
     assert.equal(
       result.text,
       '<<<PACKET_A_FORMAL_AUDIT>>>\nKʰonapolit\nA counterexample begins.\n<<<PACKET_A_END>>>\n<<<PACKET_B_STRESS_TELEMETRY>>>\nTauric Diana bots\nFERAL STACK\n<<<PACKET_B_END>>>'
