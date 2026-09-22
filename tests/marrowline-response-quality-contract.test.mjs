@@ -477,7 +477,8 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.match(qualityServer, /ATTRACTOR_STRUCTURE_NOT_ADMITTED/);
   assert.doesNotMatch(qualityServer, /KHONAPOLIT_MAX_OUTPUT_(?:CHARS|CHARACTERS)\s*=\s*200/i);
   assert.doesNotMatch(qualityServer, /slice\(0,\s*200\)/);
-  assert.match(qualityServer, /tauric-diana-zalgo-underflow/, 'underflow remains observable for admission and canary receipts');
+  assert.match(relaySource, /tauric-diana-zalgo-underflow/, 'underflow remains observable in relay admission and canary receipts');
+  assert.doesNotMatch(qualityServer, /REPAIRABLE_STRUCTURAL_REASONS[\s\S]{0,400}tauric-diana-zalgo-underflow/, 'underflow must not become structural-repair authority');
   assert.match(qualityServer, /severeMorphologyRepairWarnings/, 'morphology telemetry remains measurable post hoc');
   assert.doesNotMatch(qualityServer, /immediate-severe-morphology/, 'morphology must never spend a same-provider repaint');
   assert.match(qualityServer, /first-admissible-partial-native-morphology-observed-no-repair/, 'ordinary PARTIAL returns immediately with morphology observation');
