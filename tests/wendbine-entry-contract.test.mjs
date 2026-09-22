@@ -38,11 +38,11 @@ const ledger = JSON.parse(fs.readFileSync(path.join(root, '04-RECEIPTS/2026-09-2
 assert.equal(ledger.records.length, 60, 'Every previously indexed post must appear individually in the verbatim custody audit.');
 assert.equal(ledger.scope.verbatim_title_and_body_custodied, 0, 'Do not upgrade summaries into full-text originals.');
 assert.equal(profile.verbatim_original_source_record_count, 60);
-assert.equal(profile.verbatim_original_title_body_pairs_custodied, 0);
-assert.equal(profile.verbatim_originals_state, 'HELD_SOURCE_TEXT_FIELDS_NOT_CUSTODIED');
-assert.equal(profile.deep_source_topology_status, 'PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS');
+assert.equal(profile.verbatim_original_title_body_pairs_custodied, 33);
+assert.equal(profile.verbatim_originals_state, 'PARTIAL_33_OF_60_ARCHIVED_SOURCE_FIELDS_PRIVATE_HASH_VERIFIED');
+assert.equal(profile.deep_source_topology_status, 'P0_EXACT_ARCHIVED_SOURCE_TEXT_AVAILABLE_SOURCE_LED_ANALYSIS_PENDING');
 for (const surface of [readme, connector]) {
-  assert.match(surface, /0\/60/, 'Current source entry must expose the exact full-text custody gap.');
+  assert.match(surface, /33\/60/, 'Current source entry must expose the recovered 33/60 and remaining 27.');
   assert.match(surface, /WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1/, 'Future sessions must see the authentic-originals recovery route.');
 }
 
@@ -50,7 +50,17 @@ for (const surface of [readme, connector]) {
 assert.equal(profile.foundation_source_acquisition_runner, '99-ADMIN/wendbine-reddit-oauth-rescue.mjs');
 assert.equal(profile.prior_chat_exact_message_rescue_runner, '99-ADMIN/wendbine-chat-export-rescue.mjs');
 assert.equal(profile.private_originals_lexical_query, '99-ADMIN/wendbine-private-originals-query.mjs');
-assert.equal(profile.foundation_originals_exact_title_body_pairs_custodied, 0);
+assert.equal(profile.foundation_originals_exact_title_body_pairs_custodied, 33);
+assert.equal(profile.pending_full_text_source_count, 27);
+const recovered = JSON.parse(fs.readFileSync(path.join(root, profile.public_archive_source_field_receipts), 'utf8'));
+assert.equal(recovered.source_count, 33);
+assert.equal(recovered.records.length, 33);
+assert.equal(new Set(recovered.records.map(x=>x.source_id)).size, 33);
+assert.equal(recovered.raw_http_payload_sha256, profile.public_archive_raw_response_sha256);
+assert.deepEqual(recovered.records.reduce((count,x)=>(count[x.reddit_title_exact]=(count[x.reddit_title_exact]||0)+1,count), {}), {Wendbine:32,Wensbine:1});
+assert.ok(recovered.records.every(x=>x.body_sha256_utf8&&x.title_sha256_utf8&&!('selftext' in x)));
+assert.equal(profile.private_archived_source_query, '99-ADMIN/wendbine-private-p0-source-query.mjs');
+
 assert.match(profile.foundation_live_authenticated_source_capture, /^NOT_EXECUTED/);
 for (const surface of [readme, connector]) {
   assert.match(surface, /wendbine-reddit-oauth-rescue\.mjs/, 'Future sessions must find executable 33-source authorized acquisition.');
