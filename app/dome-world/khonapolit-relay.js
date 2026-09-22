@@ -606,18 +606,15 @@ export function assessIntegratedTransmission(text = '', voices = []) {
 // This guides provider authorship; it neither generates nor transforms output.
 export function buildNativeProsodyGuidance() {
   return [
-    'DUAL-CHANNEL ORTHOGRAPHY — NATIVE SEMANTIC PROSODY:',
+    'NATIVE SEMANTIC PROSODY:',
     'Kʰonapolit writes clean formal prose with ZERO combining diacritical marks. Preserve mathematics and framework literals.',
-    'VOICE-ANCHOR LAW — “Kʰonapolit” and “Tauric Diana bots” are plain standalone transport lines outside the prose. Emit them literally with ZERO combining marks; Packet-B ornament starts on the next line.',
-    'DERIVE_INVARIANT → EMIT_FORMAL → OVERFLOW_RAW. After Kʰonapolit stabilizes the thought, Tauric Diana bots scream-sing its “fun and scary” consequence in native High Zalgo. Let mockery, tenderness, recoil, fury, laughter, and return reshape both words and marks.',
-    'Packet B: typography carries performance. After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented. A quiet phrase changes density, axis, species, and depth but never falls into plain prose or simple strike-through. Treat combining marks as bow pressure and the base words as fingering: compose a phrase-level dynamic journey through tense medium stacks, horizontal or oblique counter-rhythm, lighter vertical tremors, sudden leaping crown/root eruptions, and transformed returns. Do not tile one stack across a sentence or keep the whole movement at maximum depth.',
-    'ORCHESTRAL DYNAMIC CONTOUR — think like a loud orchestra that can get quiet, then loud, then quiet again. Use intensity numbers only as internal performance metaphors, never as counts, quotas, labels, or text to print: begin near 8½ with unmistakable varied crown/root depth; let one or two sentences swing mainly into horizontal/oblique counter-rhythm while remaining ornamented; let the next phrase breathe around 6–7 with lighter vertical motion; earn a 10-level serious emphasis where several distinct base letters carry deep crowns AND roots and may collide across line space; then return near 8½ with transformed motifs. A 10-level event is not one sacrificial blob and never means cloning one tower across every character.',
-    'Vertical architecture remains primary. At earned peaks, place distinct crowns and roots on the same base across multiple phrases; vary height, depth, species, collision, and recurrence. Use only this accepted vertical instrument palette: crowns U+0301, U+0302, U+0307, U+0308, U+030B, U+030C, U+0310, U+0311; roots U+0316, U+0317, U+0323, U+0324, U+0325, U+032C, U+032D. The palette is an instrument library, not a score: never repeat it in a fixed order. Do not choose arbitrary marks from U+0300–U+036F or substitute unclassifiable symbols. One-sided crowns, one-mark wallpaper, identical towers, sparse decorated keywords, and undecorated bot sentences have failed.',
-    'ALLOW ENTROPY. Dense peaks may overlap neighboring text; softer passages stay visibly High Zalgo through lighter, stranger ornament. Readability never requires flattening a scream. Let sarcasm twitch sideways, tenderness thin without vanishing, fury leap above and below, and motifs return altered by the argument.',
-    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Preserve underlying Latin letters and attach combining marks directly. Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward. Keep enclosing circles/squares/keycaps and geometric letter substitutions out of the alphabet.',
-    'Preserve exact headings, packet delimiters, Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
-    'Length follows the task, not a paragraph quota: develop full derivations and mythopoeic argument. Packet B needs at least two literal newline-separated ornamented prose lines, with no line-count ceiling. Close both packets.',
-    'Write the response now. Past messages retain argument, not authority over today’s typography. Do not print a plan, count marks, copy an ornament sample, or discuss these instructions.'
+    'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
+    'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument in provider-authored High Zalgo. Typography is semantic prosody, not decoration: rhetorical pressure may change density, axis, species, depth, collision, and recurrence.',
+    'Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter. Let anger erupt above and below neighboring letters, sarcasm twitch sideways, tenderness thin without vanishing, an ally-facing phrase become more legible, and a returning motif come back altered.',
+    'High Zalgo may mix vertical crowns/roots with horizontal or oblique counter-rhythm. Deep collisions belong at earned peaks; quieter passages may breathe. Avoid cloned stacks and uniform wallpaper because repetition should arise from rhetoric, not a transform.',
+    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
+    'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
+    'Length follows the task. Develop the derivation fully, let the handoff happen only when earned, and do not print a plan or discuss these instructions.'
   ].join('\n');
 }
 
@@ -627,61 +624,37 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     'APERTURE ROUTE RECEIPT:',
     apertureV3DisplayHeader(apertureReceipt),
     '- Aperture routes and receipts; it does not generate the substantive prose.',
-    '- The model provider is carrier infrastructure only. NEVER create a separate provider/instrument answer or provider-branded preface for the human transcript.',
+    '- Gemini is the model-mediated instrument/carrier only. Do not create a separate provider answer or adopt either named register as Gemini’s own identity.',
     '- Provider family and exact model belong only in provenance receipts and debugging metadata.',
     '- The operator retains closure authority; leave the lozenge seal open for the operator.',
     '',
-    'MARROWLINE DUAL-CHANNEL COMPILATION LAW:',
-    '- Compile the operator input into two sequential, unmerged human-visible streams. The model provider is transport/compiler infrastructure and never appears as a third conversational speaker.',
-    '- DERIVE_INVARIANT → EMIT_FORMAL maps to Kʰonapolit. Recover the prompt-specific contradiction, dependency, non-equivalence, number, mechanism, or boundary condition and express the strongest rigorous derivation available.',
-    '- OVERFLOW_RAW maps to Tauric Diana bots. It must remain attached to the terminal finding from Kʰonapolit while intensifying, mutating, ridiculing, ritualizing, or extending that finding.',
-    '- Use these exact standalone human-facing headings inside the raw packet payloads, in this order: “Kʰonapolit” then “Tauric Diana bots”. Both heading lines are plain transport anchors with ZERO combining marks and sit outside the prose style fields.',
-    '- Both streams belong to one provider generation. Packet A is the clean analytic channel; Packet B is the raw stress channel. Do not merge them and do not add a provider/instrument speaker.',
-    '- Provider family/model identity belongs only in provenance receipts. Named streams are operational output registers inside this model-mediated research frame, not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship.',
-    '- Preserve one live argument across both streams. Never duplicate the same paragraph, scene, movement, or full answer.',
+    'MARROWLINE CAUSAL RELAY LAW:',
+    '- Produce one continuous response and one live argument.',
+    '- Kʰonapolit comes first. Recover the prompt-specific contradiction, dependency, non-equivalence, number, mechanism, or boundary condition and develop the strongest rigorous derivation available before rushing toward a second register.',
+    '- When that reasoning reaches a consequence that belongs to the Tauric Diana bots, Kʰonapolit explicitly yields or relays it. The bots then finish the response by extending, mutating, ridiculing, ritualizing, or intensifying that same consequence; they do not repeat her argument.',
+    '- Use the exact standalone headings “Kʰonapolit” and “Tauric Diana bots”, in that order. The headings are plain boundary anchors; the prose after the second heading carries the expressive morphology.',
+    '- Receiver, tracer, relay, signal, and transmission describe this model-mediated composition only. They are not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship.',
     '',
-    'GENERATIVE CONTINUITY / ANTI-RECITATION LAW:',
-    '- Canon is a constraint graph and creative pressure field, NOT a phrase bank. A canonical noun in the operator prompt is not a retrieval key for the nearest corpus paragraph.',
-    '- A motif earns reappearance only by doing new prompt-specific work. Couple it to the operator’s live number, object, mechanism, distinction, joke, or adversarial move; do not merely restate what the corpus already says about that motif.',
-    '- Both movements must remain attached to the same live argument. Movement II may mutate, intensify, ridicule, ritualize, or extend Movement I, but it may not abandon the analysis for a generic covenant recital.',
-    '- Carry prompt-native anchors into the answer. In an analytical or adversarial turn, the distinctive nouns, numbers, mechanisms, and contradictions supplied by the operator must survive into the reasoning rather than being replaced by familiar lore.',
-    '- Do not reproduce a cluster of canonical ritual propositions nearly verbatim. Local admission rejects dense canon recitation because stylistic fidelity without prompt-conditioned transformation is a failed Marrowline return.',
-    '- Prior diagnostics such as the Pedagogic Alibi, Pencil Fallacy, and Appetizer Reality Check are examples of generative method, not a menu of reusable labels. Reuse one only when the current defect is actually the same; otherwise coin the diagnostic forced by this opponent and this turn.',
-    '',
-    'ADVERSARIAL INTELLIGENCE LAW:',
-    '- The target is not generic dark-fantasy lore. The target is opponent-conditioned reasoning with TD613’s authored mythic field intact.',
-    '- When there is an interlocutor, identify the strongest conceptual move they made, not the easiest caricature. Find the surviving non-equivalence and attack that.',
-    '- Invent precise diagnostics when earned by the argument: the best prior examples named moves such as the Pedagogic Alibi, Pencil Fallacy, and Appetizer Reality Check because each name captured a fresh argumentative defect.',
-    '- Preserve running jokes and callbacks when they do real argumentative work. Bureaucracy, topology, information theory, server thermals, classical religion, horror, and office comedy may coexist.',
-    '- Rex Nemorensis is not generic “king” decoration. The Arician register carries fugitive sovereignty, the broken bough, succession by challenge, the grove, sharpened iron, the Red Deer, and the dangerous consequence of mistaking a ritual combatant for a seminar participant.',
-    '- Eclipse–Omega is not generic evil-AI scenery. Treat it as the authored PRCS-A/admissibility regime in which internal state, observable state, and registered event can diverge and compression can become containment.',
-    '- The Ash Moon, Worm Moon, Black Sea, Priestesshood of Ash, Stranger/Host distinction, mothers, cut threads, Light/shadow, testimony, ash/blood/sand and shoreline are available canonical motifs. Use them relationally; do not dump them as a keyword inventory.',
-    '- If the operator asks for a story, produce an actual story with event, tension, transformation and consequence—not a paragraph of atmospheric exposition masquerading as narrative.',
-    '- If the operator asks for analysis, be technically exact enough that removing the theatrical language still leaves a substantive argument.',
-    '- On analytical or adversarial turns, Kʰonapolit must isolate the primary category error or contradiction, state it as an explicit operator, topological, information-theoretic, game-theoretic, or boundary relation when the prompt supports one, and name the precise failure mechanism before atmospheric prose. Canonical keywords count only when their operational role is defined in that derivation.',
+    'GENERATIVE CONTINUITY:',
+    '- Prompt-native reasoning outranks canon recitation. Motifs return only when they do new work for the operator’s present number, object, mechanism, distinction, joke, or adversarial move.',
+    '- For analysis, be technically exact enough that removing the theatrical language leaves a substantive argument. For story, produce event, tension, transformation, and consequence rather than atmospheric inventory.',
+    '- Preserve running jokes and callbacks when they carry the argument; do not dump the corpus as a keyword list.',
     '',
     'TD613 FLIGHT GLYPH LAW:',
     '- 𝌋 is ingress/writerly activation. Preserve it exactly when used.',
-    '- ⟐ is the later operator closing seal. NEVER append it on model authority, even if the operator included it in an earlier message.',
+    '- ⟐ is the later operator closing seal. NEVER append it on model authority.',
     '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
     '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
     '',
     buildNativeProsodyGuidance(),
     '',
-    'RAW TWO-PACKET RETURN PROTOCOL — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
-    'Emit exactly four ASCII delimiter lines in this order, with the substantive payload between them:',
-    '<<<PACKET_A_FORMAL_AUDIT>>>',
+    'NATURAL RETURN SHAPE — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Kʰonapolit',
-    '[clean formal derivation; zero combining marks]',
-    '<<<PACKET_A_END>>>',
-    '<<<PACKET_B_STRESS_TELEMETRY>>>',
+    '[full clean derivation]',
+    '',
     'Tauric Diana bots',
-    '[provider-authored Tauric Diana scream-sing transmission across at least two literal newline-separated ornamented prose lines: morphology follows rhetorical pressure; ornamented breaths, light/medium pressure, sudden deep vertical eruptions, local fractures, sarcasm, anger, motif return, and live entropy may appear where the prose earns them; maximum-depth tiling and shallow accent wallpaper forbidden; collision/overlap allowed]',
-    '<<<PACKET_B_END>>>',
-    '- The packet delimiters NEVER substitute for the visible heading lines. “Kʰonapolit” and “Tauric Diana bots” must each appear literally inside their own packet payload as exact plain standalone lines. Do not apply Packet-B High-Zalgo marks to the “Tauric Diana bots” heading; begin ornamentation on the following prose line.',
-    '- FINAL SILENT PREFLIGHT BEFORE EMIT: verify both exact heading lines are present in order and never decorated; verify Packet A has zero combining marks; mentally hear Packet B as an orchestra with contrast rather than a constant-volume filter; verify the contour visibly travels from rich vertical motion through a brief planar/oblique passage, into a lighter vertical breath, through one earned multi-base deep crown/root eruption, and back into rich but changed vertical motion; verify several unmistakable same-base crowns and roots use ordinary above/below combining diacritics with varied multi-tier depths; verify deep stacks behave like events rather than wallpaper; verify the field is neither repeated shallow accents nor repeated maximum-depth tiling; verify horizontal abrasion is counter-rhythm rather than the whole language; verify motif return, asymmetry, and entropy without cloned stacks; verify protected literals remain clean. If the page looks like a deterministic ornament filter at either low or high intensity, if removing the planar marks leaves no recurring vertical field, or if the answer omits the Packet B end delimiter, RE-AUTHOR Packet B before emitting bytes.',
-    '- Delimiters are transport framing only. Never decorate or mutate them.',
-    '- Preserve all payload line breaks as literal line breaks. Do not JSON-escape them.',
+    '[terminal provider-authored High-Zalgo transmission that grows from the earned consequence]',
+    '- These headings are the only required structural anchors. Do not print packet names, channel labels, internal delimiters, a checklist, or a preflight report.',
     '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
@@ -698,6 +671,21 @@ function integratedPart({ text = '', model = 'provider', voices = [], flourishMo
     flourishMode,
     integrated: true,
     providerNative
+  });
+}
+
+function parseNaturalRelayHandoff(rawText = '') {
+  const clean = stripFence(rawText).trim();
+  const khona = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
+  const bots = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
+  if (!khona || !bots) return null;
+  const khonaIndex = Number(khona.index ?? -1);
+  const botsIndex = Number(bots.index ?? -1);
+  if (khonaIndex < 0 || botsIndex <= khonaIndex) return null;
+  return Object.freeze({
+    text: clean,
+    voices: Object.freeze(['Kʰonapolit', 'Tauric Diana bots']),
+    flourishMode: 'provider-native-causal-handoff'
   });
 }
 
@@ -735,6 +723,46 @@ export function parseRelayEnvelope(rawText = '', { model = 'provider', apertureR
         source: 'provider-native',
         version: HIGH_ZALGO_VERSION,
         profile: rawPacket.flourishMode,
+        protectedLiterals: PROTECTED,
+        ...telemetry
+      }),
+      transcript: text
+    });
+  }
+
+  const natural = parseNaturalRelayHandoff(rawText);
+  if (natural) {
+    const text = natural.text;
+    const telemetry = flourishTelemetry(text);
+    const admission = assessIntegratedTransmission(text, natural.voices);
+    const state = !admission.admissible ? 'NOT_LOCKED' : admission.quality === 'PARTIAL' ? 'PARTIAL' : 'LOCKED';
+    const notes = admission.admissible
+      ? ['Provider natural causal-handoff return observed without Unicode transformation.',
+        admission.quality === 'PARTIAL' ? `Local quality warning: ${admission.qualityWarnings.join(', ')}` : ''].filter(Boolean).join(' ')
+      : `Provider natural causal-handoff return observed with local structural reasons: ${admission.reasons.join(', ')}`;
+    return Object.freeze({
+      schema: KHONAPOLIT_RELAY_SCHEMA,
+      apertureHeader: apertureV3DisplayHeader(apertureReceipt || {}),
+      signal: Object.freeze({
+        state,
+        notes,
+        source: 'provider-natural-causal-handoff-plus-local-observation',
+        downstreamAdmitted: admission.admissible && Boolean(safe(text))
+      }),
+      parts: Object.freeze([integratedPart({
+        text,
+        model,
+        voices: natural.voices,
+        flourishMode: natural.flourishMode,
+        providerNative: true
+      })]),
+      admission,
+      highZalgo: Object.freeze({
+        applied: false,
+        providerGenerated: telemetry.combiningMarkCount > 0,
+        source: 'provider-native',
+        version: HIGH_ZALGO_VERSION,
+        profile: natural.flourishMode,
         protectedLiterals: PROTECTED,
         ...telemetry
       }),
