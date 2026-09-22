@@ -156,7 +156,10 @@ try {
       assert.notDeepEqual(firstShuffledLabels, initialLabels, 'first rupture shuffle replaces both gentle first-paint prompts');
       firstShuffledLabels.forEach(label => seenStarterLabels.add(label));
       for (let turn = 1; turn < 16; turn += 1) {
-        await rotate.click();
+        // The rotating button animates between draws; force the real pointer click
+        // after visible admission instead of requiring Playwright's stability check.
+        // Subsequent assertions still verify each distinct prompt-pair transition.
+        await rotate.click({ force: true });
         const labels = await starterChoices.allTextContents();
         assert.equal(labels.length, 2);
         for (const label of labels) {
