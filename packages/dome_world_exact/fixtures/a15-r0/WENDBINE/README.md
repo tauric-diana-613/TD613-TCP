@@ -10,6 +10,29 @@ Its core research question remains:
 
 Operationally, Wendbine now carries the SRC lesson all the way through: **capture, custody, deterministic compilation, and deterministic retrieval are separate but equally required surfaces.**
 
+## September 22 primary-source rescue — CURRENT authoritative state
+
+**P0 September 10–11: 33/33 archived source-title and body fields recovered, privately captured, and hash verified.** This supersedes the historical 0/33 source-acquisition statements below. The first 33 of the 60 indexed source IDs now have exact archived source fields; **27/60 remain without verified full text** (two September 13 source-bound summaries and 25 later card-level observations). This is an archived September 22 source version, neither independently certified first-publication text nor current Reddit state.
+
+GitHub Actions run **#4179** obtained Arctic Shift HTTP 200, with 33 matched post IDs/account/subreddit and 587,232 raw response bytes; PullPush returned 403. Runs **#4186** and **#4189** repeated the capture and encrypted the source fields before artifact upload. Both returned raw payload SHA-256 `9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c`. The encrypted artifact was downloaded and decrypted in the private research runtime, and all 33 records were checked against raw response and field hashes. The recovered corpus contains 492,909 source-body characters.
+
+**Public source audit:** `01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json` has one row per post: source ID, canonical URL, *actual Reddit title*, title/body SHA-256, body bytes, source creation/edit metadata, provider, encrypted handoff provenance. Actual Reddit titles: `Wendbine` (32) and `Wensbine` (1); the old `technical_header` values are editorial descriptors, and substantive headings appear inside the source bodies.
+
+**Real private word search:** `99-ADMIN/wendbine-private-p0-source-query.mjs` verifies the raw response against the public digest, reconciles all 33 exact source fields and hashes, then returns literal source-text matches with offsets and bounded snippets. Run:
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-p0-source-query.mjs \
+  /private/wendbine/p0-originals-private.jsonl \
+  /private/wendbine/p0-raw-provider-private.json \
+  "observability"
+```
+Full bodies remain outside this public GitHub repository; the public unified `wendbine-query.mjs` still searches its bounded derivatives, while this private query searches the recovered actual text. The original gap ledger v0.1 records **the historical pre-recovery state** and must not be used as the latest state.
+
+```text
+ARCHIVED_EXACT_FIELDS != FIRST_PUBLICATION_VERSION != CURRENT_LIVE_REDDIT_STATE
+REDDIT_TITLE != BODY_INTERNAL_HEADING != ARCHIVE_EDITORIAL_DESCRIPTOR
+PRIVATE_EXACT_TEXT_QUERY != PUBLIC_DERIVATIVE_QUERY
+```
+
 ## Official status
 
 This branch contains the first repository-resident Wendbine Atelier and remains **Draft / open / unmerged**.
@@ -253,7 +276,7 @@ MEDIA_THEME_RESEMBLANCE != VERIFIED_YOUTUBE_ATTRIBUTION
 
 A source-ID-first fallback is implemented in `99-ADMIN/wendbine-archive-provider-probe.mjs`: query the **33 known P0 Reddit IDs** through Arctic Shift (`/api/posts/ids?ids=...`) and PullPush (`/reddit/search/submission/?ids=...`). Return explicit per-ID source binding, archive retrieval metadata, content digests and disagreement, without reporting full third-party text in public GitHub or terminal summaries. `99-ADMIN/wendbine-private-archive-audit.mjs` validates privately captured raw provider replies before original-text query; differing source versions remain distinct.
 
-This fallback is **implemented and synthetic-tested, not a verified live 33-post recovery**: this chat's direct API requests could not reach the hosts. The primary-source custody number remains 0/33 for September 10–11 until an authorized private capture succeeds and produces a verifiable receipt. Provider availability, text completeness, source version and current Reddit removal status remain separate questions.
+**Historical pre-recovery observation (superseded by v06 above):** the chat's direct API could not reach the hosts, but GitHub Actions independently retrieved and privately captured 33/33 via Arctic Shift. The earlier 0/33 figure described the state before run #4179; consult v06 for current custody.
 
 See `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` for documented endpoints, private acquisition command and exact claim ceilings.
 
@@ -263,7 +286,7 @@ See `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` for documen
 
 P0 acquisition now has three runnable, isolated instruments: `99-ADMIN/wendbine-reddit-oauth-rescue.mjs` (approved, throttled Reddit OAuth post-by-post acquisition of **all 33** source IDs, raw JSON and exact field hashes outside Git); `99-ADMIN/wendbine-chat-export-rescue.mjs` (local-only extraction of the **three previously user-pasted September 10 source-message candidates**, no unrelated chat export); and `99-ADMIN/wendbine-private-originals-query.mjs` (word search of genuinely acquired private original text rather than paraphrases). Full instructions and rights/access requirements: `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md`.
 
-The public search index can reveal substantial passages but cannot certify complete original title/body bytes. The current environment lacks approved Reddit API credentials and direct container networking; execution therefore remains **SOURCE_ACQUISITION_NOT_EXECUTED_WITH_LIVE_AUTHORITY**, P0 exact-originals status **0/33**, until actual private capture receipts exist. A green implementation/test gate must not be mistaken for a successful 33-post acquisition.
+**Historical pre-recovery constraint (superseded):** chat-side public search and missing Reddit OAuth could not provide complete bodies. GitHub Actions archive acquisition has since recovered 33/33 exact archived source fields, with raw and field hashes in v06. The official Reddit OAuth route remains separately unexecuted.
 
 `SOURCE_FETCHER_READY != SOURCE_FETCH_SUCCEEDED` · `PRIOR_CHAT_MESSAGE_RECOVERED != ORIGINAL_BODY_SPAN_VERIFIED` · `PRIVATE_ORIGINAL_QUERY != PUBLIC_SUMMARY_QUERY`.
 
@@ -271,7 +294,7 @@ The public search index can reveal substantial passages but cannot certify compl
 
 The **September 10–11 original 33 posts (21 + 12)** are the first-priority recovery cohort, explicitly ahead of the September 13 additions and September 22 card-level observations. Every source has its own immutable URL and exact-originals status in `01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json`.
 
-A fresh source search independently exposed at least partial original text for five of those 33, including the Phone Security glossary, the third-party-dependency program, dependency-induced observability loss, state-estimation error, and topology drift. **Search-visible text is a discovery witness, not a complete or byte-verified original.** Full title/body custody for P0 remains **0/33**; no original is fabricated or promoted from its archive descriptor.
+**Historical discovery stage (superseded):** public search first exposed five partial posts; the later GitHub runner recovered 33/33 complete archived title/body fields. The first-publication version and live Reddit state remain unverified.
 
 Recover and validate P0 first. Only after adequate original-title/body custody and source-version review may the provisional topical derivatives be used for a source-led SRC-style hole-dive or proposed TD613 terminology crosswalk. Keep hypothetical system-boundary explanations distinct from evidence of a specific platform implementation.
 
@@ -287,7 +310,7 @@ Additional exact-text recovery leads are cataloged in `04-RECEIPTS/2026-09-22-pr
 
 
 
-**The existing 60 source IDs are searchable derivatives or card observations, not 60 word-for-word originals.** Source title/body pairs currently verified and stored: **0/60**. The full-text gap is enumerated individually in `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. A search-indexed example does not constitute exact original custody, and sampled direct Reddit permalink fetches were cache-missing.
+**Historical gap at initial audit: 0/60 source originals. Current recovery: 33/60 exact archived title/body pairs privately custodied and verified; 27/60 remain to be acquired.** The full-text gap is enumerated individually in `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. A search-indexed example does not constitute exact original custody, and sampled direct Reddit permalink fetches were cache-missing.
 
 `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` describes authorized recapture. `99-ADMIN/wendbine-originals-intake.mjs` validates author-supplied or otherwise authorized original fields, preserves their exact decoded text/whitespace in a **private location outside GitHub**, hashes titles and self-text independently, refuses duplicate or mismatched source IDs, and reports partial coverage transparently. The public repository stores only a source audit and non-infringing metadata pending source rights.
 
