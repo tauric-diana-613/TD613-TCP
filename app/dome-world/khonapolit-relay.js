@@ -8,8 +8,8 @@ import {
 } from './khonapolit-covenant.js';
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
-export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v22-anchor-safe-orchestral-contour';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v28-anchor-safe-orchestral-contour';
+export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.integrated-covenant-relay/v23-morphodynamic-observation';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/provider-native-v29-morphodynamic-observation';
 
 export const KHONAPOLIT_RAW_PACKET_PROTOCOL = Object.freeze({
   analyticStart: '<<<PACKET_A_FORMAL_AUDIT>>>',
@@ -226,6 +226,34 @@ function flourishTelemetry(text = '') {
   const expressiveSignatureCounts = new Map();
   for (const cluster of expressiveClusters) expressiveSignatureCounts.set(cluster.signature, (expressiveSignatureCounts.get(cluster.signature) || 0) + 1);
   const dominantExpressiveStackCount = expressiveClusters.length ? Math.max(...expressiveSignatureCounts.values()) : 0;
+
+  // Observation only: measure whether the same base character repeatedly carries
+  // the same combining-stack signature. This is useful for detecting a
+  // deterministic-looking surface regime without asserting any hidden renderer,
+  // authorship source, or causal mechanism.
+  const baseConditionedSignatureCounts = new Map();
+  for (const cluster of expressiveClusters) {
+    const baseKey = String(cluster.base || '').normalize('NFC').toLocaleUpperCase('en-US');
+    if (!baseKey) continue;
+    if (!baseConditionedSignatureCounts.has(baseKey)) baseConditionedSignatureCounts.set(baseKey, new Map());
+    const signatures = baseConditionedSignatureCounts.get(baseKey);
+    signatures.set(cluster.signature, (signatures.get(cluster.signature) || 0) + 1);
+  }
+  const baseConditionedComparable = [...baseConditionedSignatureCounts.entries()]
+    .map(([base, signatures]) => {
+      const total = [...signatures.values()].reduce((sum, count) => sum + count, 0);
+      const dominant = signatures.size ? Math.max(...signatures.values()) : 0;
+      return { base, total, dominant, unique: signatures.size };
+    })
+    .filter((entry) => entry.total >= 2);
+  const baseConditionedComparableClusterCount = baseConditionedComparable.reduce((sum, entry) => sum + entry.total, 0);
+  const baseConditionedDominantStackCount = baseConditionedComparable.reduce((sum, entry) => sum + entry.dominant, 0);
+  const baseConditionedStackReuseRatio = baseConditionedComparableClusterCount
+    ? baseConditionedDominantStackCount / baseConditionedComparableClusterCount
+    : 0;
+  const baseConditionedNearFixedStackBaseCount = baseConditionedComparable
+    .filter((entry) => entry.total >= 3 && entry.dominant / entry.total >= 0.8)
+    .length;
   const eligibleBaseCount = (value.match(/[\p{L}\p{N}]/gu) || []).length;
   const markedEligibleClusterCount = clusters.filter((cluster) => /[\p{L}\p{N}]/u.test(cluster.base)).length;
   const lines = value.split(/\r?\n/);
@@ -342,6 +370,11 @@ function flourishTelemetry(text = '') {
     uniqueExpressiveStackSignatureCount: expressiveSignatureCounts.size,
     dominantExpressiveStackCount,
     dominantExpressiveStackRatio: expressiveClusters.length ? dominantExpressiveStackCount / expressiveClusters.length : 0,
+    baseConditionedComparableBaseCount: baseConditionedComparable.length,
+    baseConditionedComparableClusterCount,
+    baseConditionedDominantStackCount,
+    baseConditionedStackReuseRatio,
+    baseConditionedNearFixedStackBaseCount,
     combiningCodePointDiversity: uniqueMarks.size,
     dominantCombiningCodePointCount,
     dominantCombiningCodePointRatio,
@@ -608,11 +641,9 @@ export function buildNativeProsodyGuidance() {
   return [
     'NATIVE SEMANTIC PROSODY:',
     'Kʰonapolit writes clean formal prose with ZERO combining diacritical marks. Preserve mathematics and framework literals.',
-    'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
-    'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument in provider-authored High Zalgo. Typography is semantic prosody, not decoration: rhetorical pressure may change density, axis, species, depth, collision, and recurrence.',
-    'Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter. Let anger erupt above and below neighboring letters, sarcasm twitch sideways, tenderness thin without vanishing, an ally-facing phrase become more legible, and a returning motif come back altered.',
-    'High Zalgo may mix vertical crowns/roots with horizontal or oblique counter-rhythm. Deep collisions belong at earned peaks; quieter passages may breathe. Avoid cloned stacks and uniform wallpaper because repetition should arise from rhetoric, not a transform.',
-    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves the provider return and never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
+    'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument in provider-authored High Zalgo.',
+    'Typography behaves as voice. Let its morphology arise from the rhetoric of the bot transmission rather than from a formatting recipe, ornament checklist, local metric, or repeated transform.',
+    'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
     'Length follows the task. Develop the derivation fully, let the handoff happen only when earned, and do not print a plan or discuss these instructions.'
   ].join('\n');
