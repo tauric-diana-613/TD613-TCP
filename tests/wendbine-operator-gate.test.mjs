@@ -5,7 +5,11 @@ const gate=fs.readFileSync('.github/workflows/vercel-relock-safety.yml','utf8');
 const root='packages/dome_world_exact/fixtures/a15-r0/WENDBINE';
 assert.doesNotMatch(ci,/^\s*schedule:\s*$/m,'The SRC-style operator sync must never run on a cron.');
 assert.doesNotMatch(ci,/wendbine-autosync/,'The ordinary CI validation workflow must never own Wendbine acquisition.');
-assert.equal((fs.readdirSync('.github/workflows').filter(x=>/\.ya?ml$/.test(x))).length,4);
+const workflows=fs.readdirSync('.github/workflows').filter(x=>/\\.ya?ml$/.test(x)).sort();
+const established=['pages.yml','td613-ci.yml','vercel-operator-release.yml','vercel-relock-safety.yml'].sort();
+assert.deepEqual(workflows.filter(x=>x!=='vercel-production-reobserve.yml'),established,
+ 'Wendbine must respect both the historical four-lane estate and the current main fifth production re-observation lane.');
+assert.ok(workflows.length===4||workflows.length===5,'No sixth workflow may be introduced for Wendbine.');
 assert.match(gate,/github\.event\.issue\.number == 758/,'SRC gate remains separately bounded.');
 assert.match(gate,/github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/);
 assert.match(gate,/  wendbine-operator-sync:\s*\n/);
