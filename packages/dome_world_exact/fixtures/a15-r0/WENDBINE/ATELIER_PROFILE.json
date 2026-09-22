@@ -77,7 +77,8 @@
     "PUBLICATION_TIME_UNBOUND",
     "YOUTUBE_CHANNEL_LINK_UNBOUND",
     "VERBATIM_ORIGINALS_NOT_CUSTODIED",
-    "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION"
+    "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION",
+    "PRIOR_USER_TRANSCRIPTION_EXACT_BYTES_UNAVAILABLE"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -108,5 +109,7 @@
   "verbatim_original_title_body_pairs_custodied": 0,
   "verbatim_originals_state": "HELD_SOURCE_TEXT_FIELDS_NOT_CUSTODIED",
   "deep_source_topology_status": "PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS",
-  "public_full_text_republication_authority": false
+  "public_full_text_republication_authority": false,
+  "prior_user_supplied_originals_leads": "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
+  "prior_user_supplied_exact_text_leads_unmaterialized": 2
 }
