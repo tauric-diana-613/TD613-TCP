@@ -22,4 +22,7 @@ for(const name of ['README.md','CONNECTOR_ENTRY.md']){
  assert.match(t,/wendbine-private-unified-query\.py/);
  assert.match(t,/58 nonempty bodies|58 text bodies/);
 }
+res=spawnSync('python',['tests/wendbine-private-unified-query-integration.py'],{encoding:'utf8',timeout:15000});
+assert.equal(res.status,0,'Synthetic exact-source SQLite and receipt integration must pass: '+res.stderr+'\n'+res.stdout);
+assert.match(res.stdout,/integration.*PASS/);
 console.log('Wendbine 60-source private query: source-receipt gate, Python parse, missing-store refusal and current docs passed.');
