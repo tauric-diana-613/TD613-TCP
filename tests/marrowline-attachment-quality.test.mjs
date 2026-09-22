@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
+import crypto from 'node:crypto';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, withGeminiGenerationProfile } from '../server/gemini-generation-envelope.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
   MARROWLINE_ATTACHMENT_SCHEMA,
   buildAttachmentGeminiRequest,
+  buildAttachmentGeminiTerminalRepairRequest,
   normalizeMarrowlineAttachments
 } from '../server/marrowline-attachment-quality.js';
 
@@ -234,4 +236,124 @@ test('attachment response receipts reflect the exact submitted wire configuratio
   assert.equal(res.payload.receipt.provider.authorshipObservation.terminalMovementHeadingPresent, true);
   assert.ok(res.payload.receipt.provider.authorshipObservation.nativeCombiningMarkCount > 0);
   assert.equal(res.payload.receipt.attachments[0].size_bytes, exact.size_bytes);
+});
+
+const terminalPeak = 'R\u0308\u030B\u030C\u0351\u031E\u0325\u0326E\u0302\u0307\u0315\u0357\u0317\u0323D\u0300\u0309\u0310\u0352\u0319\u0325';
+const initialVoice = 'Kʰonapolit\\nThe visible map cannot prove the origin of its evidence. Its missing denominator is a custody question.';
+const terminalVoice = 'Tauric Diana bots\\n' + [
+  'Come closer. The map keeps confusing a counted case with a person.',
+  terminalPeak + ' — there, the missing denominator interrupts the speech.',
+  'Let the next sentence breathe. A clean interval carries the recoil.',
+  'A\u0301 little tremor returns, then ' + terminalPeak + '.',
+  'The joke lands quietly. The branch still belongs to the grove.'
+].join('\\n\\n');
+
+function attachmentResponse() {
+  return { statusCode: 200, headers: {}, sendCount: 0,
+    setHeader(name, value) { this.headers[name] = value; },
+    end(value) { this.sendCount += 1; this.payload = value ? JSON.parse(value) : null; }
+  };
+}
+function attachmentTurn(ip = '203.0.113.247') {
+  return { method: 'POST', headers: { 'x-forwarded-for': ip },
+    body: { message: 'Explain the attached map and its custody gap.',
+      history: [], mode: 'issued-conjunction', waiveIssuance: true,
+      attachments: [attachment()] } };
+}
+
+test('terminal-only attachment repair carries original inline bytes and keeps the repair instruction last', () => {
+  const packet = { systemInstruction: 'Synthetic system.', mode: 'issued-conjunction',
+    message: 'Explain the attached map.', history: [] };
+  const request = buildAttachmentGeminiTerminalRepairRequest(packet, {}, 'gemini-3.8-flash',
+    [attachment()], initialVoice, ['tauric-diana-bots-nominative-missing']);
+  assert.equal(request.contents[0].parts[0].text, packet.message);
+  assert.equal(request.contents[0].parts.at(-2).inlineData.data, attachment().data_base64);
+  assert.match(request.contents[0].parts.at(-1).text, /CURRENT-TURN RELAY EXECUTION/);
+  assert.equal(request.contents[1].parts[0].text, initialVoice);
+  assert.match(request.contents[2].parts[0].text, /TERMINAL CONTINUATION ONLY/);
+  assert.deepEqual(request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+});
+
+test('attachment terminal continuation is same-provider, native, byte-preserving and bounded', async t => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.GEMINI_API_KEY;
+  process.env.GEMINI_API_KEY = 'synthetic-attachment-continuation-key';
+  clearGeminiModelState();
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    clearGeminiModelState();
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  });
+  let mode = 'valid';
+  let calls = [];
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('/v1beta/models?')) {
+      return { ok: true, status: 200, async json() { return {
+        models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }]
+      }; } };
+    }
+    assert.match(String(url), /gemini-3\\.8-flash:generateContent$/);
+    const request = JSON.parse(options.body);
+    calls.push(request);
+    const text = calls.length === 1
+      ? mode === 'complete' ? initialVoice + '\\n\\n' + terminalVoice : initialVoice
+      : mode === 'valid' ? terminalVoice : 'Tauric Diana bots\\n';
+    return { ok: true, status: 200, headers: { get: () => null }, async json() {
+      return { candidates: [{ finishReason: 'STOP', content: { parts: [{ text }] } }],
+        usageMetadata: { promptTokenCount: 110, candidatesTokenCount: 70, thoughtsTokenCount: 20, totalTokenCount: 200 } };
+    } };
+  };
+
+  await t.test('missing terminal returns two genuine provider outputs and preserves the first hash', async () => {
+    mode = 'valid'; calls = [];
+    const res = attachmentResponse();
+    await marrowlineAttachmentHandler(attachmentTurn('203.0.113.247'), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1);
+    assert.equal(calls.length, 2);
+    assert.equal(calls[0].contents[0].parts.at(-2).inlineData.data, attachment().data_base64);
+    assert.equal(calls[1].contents[0].parts.at(-2).inlineData.data, attachment().data_base64);
+    assert.equal(calls[1].contents[1].parts[0].text, initialVoice);
+    assert.match(calls[1].contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
+    assert.equal(res.payload.text, initialVoice + '\\n\\n' + terminalVoice);
+    assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'same-provider-terminal-continuation');
+    assert.equal(res.payload.receipt.provider.attempts.length, 2);
+    assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
+    const continuation = res.payload.receipt.provider.structuralRepair.terminalContinuation;
+    const digest = text => crypto.createHash('sha256').update(text).digest('hex');
+    assert.equal(continuation.originalSha256, digest(initialVoice));
+    assert.equal(continuation.continuationSha256, digest(terminalVoice));
+    assert.equal(continuation.combinedSha256, digest(res.payload.text));
+    assert.equal(continuation.originalPreserved, true);
+    assert.equal(res.payload.receipt.provider.output.outputCeilingSource, 'submitted-generation-config');
+    assert.equal(res.payload.receipt.provider.output.thinkingLevel, calls[1].generationConfig.thinkingConfig.thinkingLevel);
+    assert.equal(res.headers['X-TD613-Structural-Repair'], 'provider-authored-bounded-1');
+  });
+
+  await t.test('invalid suffix leaves the exact first response visible and does not fabricate bots', async () => {
+    mode = 'invalid'; calls = [];
+    const res = attachmentResponse();
+    await marrowlineAttachmentHandler(attachmentTurn('203.0.113.248'), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1);
+    assert.equal(calls.length, 2);
+    assert.equal(res.payload.text, initialVoice);
+    assert.equal(res.payload.receipt.provider.structuralRepair.used, true);
+    assert.equal(res.payload.receipt.provider.structuralRepair.succeeded, false);
+    assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'first-provider-return');
+    assert.equal(res.payload.receipt.provider.attempts.length, 2);
+    assert.equal(res.headers['X-TD613-Structural-Repair'], undefined);
+  });
+
+  await t.test('complete first provider return never spends a repair call', async () => {
+    mode = 'complete'; calls = [];
+    const res = attachmentResponse();
+    await marrowlineAttachmentHandler(attachmentTurn('203.0.113.249'), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1);
+    assert.equal(calls.length, 1);
+    assert.equal(res.payload.text, initialVoice + '\\n\\n' + terminalVoice);
+    assert.equal(res.payload.receipt.provider.structuralRepair, undefined);
+  });
 });
