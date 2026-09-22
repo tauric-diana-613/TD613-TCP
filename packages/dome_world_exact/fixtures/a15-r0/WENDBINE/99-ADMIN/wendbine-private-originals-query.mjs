@@ -36,7 +36,7 @@ export function queryPrivateOriginals(originals,query,{caseSensitive=false,limit
     utf8_byte_offset:Buffer.byteLength(sourceText.slice(0,offset),'utf8'),
     exact_field_sha256_utf8:sha256Utf8(sourceText),
     snippet:sourceText.slice(Math.max(0,offset-55),Math.min(sourceText.length,offset+query.length+55)),
-    original_text_state:'PRIVATE_CUSTODIED_SOURCE_FIELD',
+    original_text_state:source.original_text_state || 'SOURCE_FIELDS_PASSED_IN_MEMORY_NOT_CUSTODY_VERIFIED',
     publication_timestamp:source.publication_timestamp});
    if(hits.length>=limit)return hits;
   }
