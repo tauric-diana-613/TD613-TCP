@@ -86,7 +86,7 @@ assert.match(boot, /dockOcclusion: false/);
 const prepped = document.createElement('section');
 const preppedText = document.createElement('div');
 preppedText.className = 'relay-stage-text';
-const nativeText = 'Kʰonapolit\\nTauric Diana bots\\nA\\u0301\\u0316\\u0307\\u0317';
+const nativeText = 'Kʰonapolit\nTauric Diana bots\nA\u0301\u0316\u0307\u0317';
 preppedText.textContent = nativeText;
 preppedText.dataset.providerNativeLines = 'true';
 prepped.append(preppedText);
