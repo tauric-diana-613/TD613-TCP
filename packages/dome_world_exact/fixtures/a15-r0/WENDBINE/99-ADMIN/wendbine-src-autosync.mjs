@@ -275,6 +275,8 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
  fs.writeFileSync(runFile,json(receipt));
  const sealData={schema:'wendbine-src-seal/v1',atelier_snapshot_id:snapshot,seal_id:'wendbine-seal:'+seal,
   path:runPath,created_at:observedAt,projection:'PUBLIC_METADATA_ONLY',file_hashes:created,
+  interface_registry_sha256:sha(fs.readFileSync(interfacePath)),
+  registry_index_sha256:sha(fs.readFileSync(path.join(outRoot,'01-MANIFESTS/registry-index.json'))),
   private_source_fields_available_to_public_connector:false,
   source_count:s.manifestations.length,capture_count:s.captures.length};
  const sealFile=path.join(outRoot,outputFiles.seal);
