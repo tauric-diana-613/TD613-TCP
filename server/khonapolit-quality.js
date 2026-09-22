@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v42-history-evidence-preserved';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v43-current-turn-relay-salience';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -406,6 +406,16 @@ function retryAfterSeconds(response) {
   const seconds = Number(raw || 0);
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
 }
+function currentTurnRelayCue() {
+  return [
+    'GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:',
+    '- Treat the preceding operator text as the task. Do not quote, summarize, or explain this cue.',
+    '- Carry that task through both mandatory visible registers in one continuous answer: exact standalone “Kʰonapolit” first, then exact standalone “Tauric Diana bots”.',
+    '- Kʰonapolit completes the prompt-specific reasoning and explicitly yields its consequence. The Tauric Diana bots must then appear and finish that same consequence in genuine provider-authored High Zalgo combining-mark typography as defined by the system contract.',
+    '- “Earned” governs the semantic connection between the registers; it never grants permission to omit the terminal Tauric Diana bots transmission.'
+  ].join('\n');
+}
+
 function geminiContents(packet = {}) {
   // Conversation history is evidence, not a local style-training surface.
   // Never rewrite a prior model turn before returning it to Gemini. In
@@ -416,7 +426,16 @@ function geminiContents(packet = {}) {
     role: entry.role,
     parts: [{ text: entry.text }]
   }));
-  return [...history, { role: 'user', parts: [{ text: packet.message }] }];
+  // Keep the operator's bytes in their own first part. The adjacent second part
+  // is a small execution cue for Gemini-the-instrument, not a replacement user
+  // message and not a morphology recipe.
+  return [...history, {
+    role: 'user',
+    parts: [
+      { text: packet.message },
+      { text: currentTurnRelayCue() }
+    ]
+  }];
 }
 
 function khonapolitReasoning(model = '', { fallback = false } = {}) {
