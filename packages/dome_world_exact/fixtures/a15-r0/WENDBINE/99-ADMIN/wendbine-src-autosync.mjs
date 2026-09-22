@@ -103,7 +103,8 @@ function receiptBaseline(root=ROOT){
     source_edited:copy.source_edited??null,title_sha256_utf8:copy.title_sha256_utf8,
     body_sha256_utf8:copy.body_sha256_utf8,body_utf8_bytes:copy.body_utf8_bytes,
     body_state:copy.body_state??'ARCHIVED_TEXT_BODY_PRESENT',provider:'ARCTIC_SHIFT',
-    archive_retrieved_on:copy.archive_retrieved_on??null,bootstrap_receipt:'01-MANIFESTS/'+filename});
+    archive_retrieved_on:copy.archive_retrieved_on??null,
+   title:r.reddit_title_exact??null,bootstrap_receipt:'01-MANIFESTS/'+filename});
   }
  }
  if(rows.length!==60||new Set(rows.map(r=>r.source_id)).size!==60)throw new Error('BASELINE_60_SOURCE_RECEIPTS_REQUIRED');
@@ -134,7 +135,9 @@ function addVersion(s,r,event,observedAt){
  if(!s.manifestations.some(x=>x.manifestation_id===manifest))s.manifestations.push({
   schema:'wendbine-manifestation/v1',manifestation_id:manifest,source_id:r.source_id,
   canonical_url:r.canonical_url,platform:'reddit',platform_account:AUTHOR,subreddit:SUBREDDIT,
-  platform_title_status:'TITLE_HASH_ONLY_PUBLIC_RESEARCH_PROJECTION',published_at:new Date(r.source_created_utc*1000).toISOString(),
+  platform_title:r.title??null,
+  platform_title_status:r.title?'EXACT_ARCHIVE_OBSERVED_TITLE':'TITLE_HASH_ONLY_PUBLIC_RESEARCH_PROJECTION',
+  published_at:new Date(r.source_created_utc*1000).toISOString(),
   work_id:null,edition_id:null,work_identity_status:'UNADJUDICATED'});
  if(!s.rights.some(x=>x.manifestation_id===manifest))s.rights.push({
   schema:'rights-decision/v1',decision_id:stable('rights',manifest),manifestation_id:manifest,
@@ -147,7 +150,8 @@ function addVersion(s,r,event,observedAt){
   body_utf8_bytes:r.body_utf8_bytes,body_state:r.body_state,
   source_version:'ARCHIVE_OBSERVED_NOT_VERIFIED_FIRST_PUBLICATION_OR_CURRENT_LIVE',
   private_locator:stable('wendbine-private-locator',capture),
-  private_custody_status:'REQUIRES_ENCRYPTED_ARTIFACT_OR_PRIVATE_VAULT'});
+  private_custody_status:event==='HISTORICAL_BOOTSTRAP_FROM_VERIFIED_PUBLIC_RECEIPT'?
+   'PRIOR_PRIVATE_ARCHIVE_CUSTODY_VERIFIED_BY_V06_V07':'REQUIRES_ENCRYPTED_ARTIFACT_OR_PRIVATE_VAULT'});
  if(!s.blobs.some(x=>x.blob_id===blob))s.blobs.push({schema:'blob/v1',blob_id:blob,
   sha256:r.body_sha256_utf8,byte_length:r.body_utf8_bytes,
   custody_locator:stable('wendbine-private-locator',capture),local_path:null,rights_state:'PRIVATE_ONLY'});
@@ -165,7 +169,11 @@ function addVersion(s,r,event,observedAt){
 export function compileSync({observed,previous=null,root=ROOT,observedAt=stamp(),rawHashes=[]}){
  if(!Array.isArray(observed))throw new Error('OBSERVED_POSTS_REQUIRED');
  const s=previous?structuredClone(previous):initialState(root);
- const old=new Map(s.captures.map(r=>[r.source_id,r]));
+ const old=new Map();
+ for(const r of s.captures){
+  const current=old.get(r.source_id);
+  if(!current||String(r.observed_at||'')>String(current.observed_at||''))old.set(r.source_id,r);
+ }
  const previouslyKnown=new Set(s.manifestations.map(x=>x.source_id));
  const valid=[],held=[],seen=new Set(),newIds=[],changedIds=[],unchangedIds=[];
  for(const obj of observed){
@@ -179,6 +187,31 @@ export function compileSync({observed,previous=null,root=ROOT,observedAt=stamp()
   else unchangedIds.push(r.source_id);
   const result=addVersion(s,r,!previouslyKnown.has(r.source_id)?'NEW_SOURCE':
    !prior||prior.title_sha256_utf8!==r.title_sha256_utf8||prior.body_sha256_utf8!==r.body_sha256_utf8?'ARCHIVED_VERSION_CHANGE':'ALREADY_CURRENT',observedAt);
+  // Manifestation graph edges are facts about archived source objects, never
+  // hypotheses about hidden memory, lineage, or semantic identity.
+  const sourceManifest='reddit:manifestation:'+r.source_id.slice('reddit:t3_'.length);
+  const manifestEdge=stable('wendbine:edge',sourceManifest,'HAS_CAPTURE',result.capture_id);
+  if(!s.relations.some(e=>e.edge_id===manifestEdge))s.relations.push({
+   schema:'relation-assertion/v2',edge_id:manifestEdge,graph:'MANIFESTATION',
+   source_entity_id:sourceManifest,target_entity_id:result.capture_id,
+   relation:'HAS_CAPTURE',origin:'ARCHIVE_OBSERVED_FIELD_HASH',
+   temporal_provenance:'CONTEMPORANEOUS',capture_id:result.capture_id,
+   evidence_locator:{source_id:r.source_id,field_sha256_utf8:r.body_sha256_utf8},
+   reviewer_status:'MACHINE_VERIFIABLE_PLATFORM_LINK',author_intent_claim:false});
+  // Only exact, source-bound URLs may establish a navigational edge.
+  // Mere lexical recurrence never creates an intellectual or causal relation.
+  const re=/(?:https?:\\/\\/(?:www\\.|old\\.)?reddit\\.com)?\\/r\\/Wendbine\\/comments\\/([a-z0-9]+)/ig;
+  for(const m of r.selftext.matchAll(re)){
+   const target='reddit:t3_'+m[1].toLowerCase();
+   if(!previouslyKnown.has(target)&&!observed.some(o=>o.source_id===target))continue;
+   const edgeId=stable('wendbine:edge',result.capture_id,'NAVIGATES_TO',target,String(m.index));
+   if(!s.relations.some(e=>e.edge_id===edgeId))s.relations.push({
+    schema:'relation-assertion/v2',edge_id:edgeId,graph:'NAVIGATIONAL',
+    source_entity_id:sourceManifest,target_entity_id:'reddit:manifestation:'+m[1].toLowerCase(),
+    relation:'NAVIGATES_TO',origin:'EXACT_SOURCE_URL_SPAN',temporal_provenance:'CONTEMPORANEOUS',
+    capture_id:result.capture_id,evidence_locator:{field:'selftext',start_utf16:m.index,end_utf16:m.index+m[0].length,body_sha256_utf8:r.body_sha256_utf8},
+    reviewer_status:'SOURCE_LITERAL_ONLY',author_intent_claim:false});
+  }
   valid.push({source_id:r.source_id,capture_id:result.capture_id,new_capture:result.new_capture});
  }
  const absent=[...previouslyKnown].filter(id=>!seen.has(id)).sort();
@@ -222,6 +255,19 @@ export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=nu
  const seal=sha(utf8(JSON.stringify(created)));
  const snapshot='wendbine-'+observedAt.replace(/[^0-9]/g,'').slice(0,14)+'-'+seal.slice(0,12);
  const runPath='07-ARCHIVE-LEDGER/syncs/'+snapshot+'.json';
+ const registry={schema_version:'wendbine-src-interface-registry/v1',portable_source_of_truth:'JSONL_AND_MARKDOWN',
+   sqlite_role:'RESUMABLE_WORK_JOURNAL_OR_PRIVATE_DERIVATIVE_ONLY',
+   src_reference:'SRC/01-MANIFESTS/phase2/interface-registry.json',
+   interfaces:created.map(x=>({path:x.path,count:x.count,sha256:x.sha256})),
+   epoch_path:outputFiles.seal,
+   non_collapse:'work != edition != manifestation != capture != blob != derivative != authority'};
+ const interfacePath=path.join(outRoot,'01-MANIFESTS/phase2/interface-registry.json');
+ fs.writeFileSync(interfacePath,json(registry));
+ const index={schema_version:'connector-registry-index/v1',atelier:'WENDBINE',snapshot_id:snapshot,
+   current_seal:outputFiles.seal,entity_resolver:outputFiles.resolver,
+   evidence_resolver:outputFiles.captures,
+   registries:created.map(x=>({path:x.path,count:x.count,sha256:x.sha256}))};
+ fs.writeFileSync(path.join(outRoot,'01-MANIFESTS/registry-index.json'),json(index));
  const receipt={...a,atelier_snapshot_id:snapshot,seal_id:'wendbine-seal:'+seal,
   public_projection_files:created,encrypted_handoff_created:!!encryptedPayload};
  const runFile=path.join(outRoot,runPath);fs.mkdirSync(path.dirname(runFile),{recursive:true});
