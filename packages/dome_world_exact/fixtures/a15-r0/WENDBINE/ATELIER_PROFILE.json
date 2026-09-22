@@ -57,7 +57,10 @@
     "OBSERVED_CARD_CAPTURE_RECONCILIATION",
     "QUERYABLE_ARCHIVAL_DEBT",
     "CACHED_ACCOUNT_CARD_INDIVIDUAL_RECORDS",
-    "RETRIEVAL_VS_PUBLICATION_DATE_BASIS"
+    "RETRIEVAL_VS_PUBLICATION_DATE_BASIS",
+    "PUBLIC_ARCHIVE_PROVIDER_SOURCE_ID_PROBE",
+    "PRIVATE_ARCHIVE_RAW_FIELD_INTEGRITY",
+    "ARCHIVE_VERSION_DISAGREEMENT_PRESERVATION"
   ],
   "identity_law": "PUBLIC_POST != CONCEPT != PRIVATE_STATE != PERSON_IDENTITY",
   "temporal_authority_law": "PUBLICATION_DAY_BUCKET != SAME_DAY_SEQUENCE != CAUSAL_SEQUENCE",
@@ -78,7 +81,9 @@
     "YOUTUBE_CHANNEL_LINK_UNBOUND",
     "VERBATIM_ORIGINALS_NOT_CUSTODIED",
     "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION",
-    "PRIOR_USER_TRANSCRIPTION_EXACT_BYTES_UNAVAILABLE"
+    "PRIOR_USER_TRANSCRIPTION_EXACT_BYTES_UNAVAILABLE",
+    "ARCHIVE_PROVIDER_LIVE_COVERAGE_UNVERIFIED",
+    "ARCHIVE_VERSION_NOT_LIVE_VERIFIED"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -122,5 +127,14 @@
   "foundation_source_acquisition_runner": "99-ADMIN/wendbine-reddit-oauth-rescue.mjs",
   "prior_chat_exact_message_rescue_runner": "99-ADMIN/wendbine-chat-export-rescue.mjs",
   "private_originals_lexical_query": "99-ADMIN/wendbine-private-originals-query.mjs",
-  "foundation_live_authenticated_source_capture": "NOT_EXECUTED_APPROVED_TOKEN_UNAVAILABLE"
+  "foundation_live_authenticated_source_capture": "NOT_EXECUTED_APPROVED_TOKEN_UNAVAILABLE",
+  "public_archive_probe_entry": "99-ADMIN/wendbine-archive-provider-probe.mjs",
+  "public_archive_providers": [
+    "ARCTIC_SHIFT",
+    "PULLPUSH"
+  ],
+  "private_archive_custody_audit_entry": "99-ADMIN/wendbine-private-archive-audit.mjs",
+  "public_archive_live_capture_status": "NOT_EXECUTED_SUCCESSFULLY_IN_CURRENT_RUNTIME",
+  "public_archive_provenance_law": "ARCHIVE_VERSION != FIRST_PUBLICATION_VERSION != CURRENT_LIVE_REDDIT_STATE",
+  "public_archive_primary_corpus_verified_originals": 0
 }
