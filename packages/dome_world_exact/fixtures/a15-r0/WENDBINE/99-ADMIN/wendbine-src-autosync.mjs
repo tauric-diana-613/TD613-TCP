@@ -189,7 +189,13 @@ export function compileSync({observed,previous=null,root=ROOT,observedAt=stamp()
   const r=obj?.source_id?obj:checkPost(obj);
   if(!r.source_id||seen.has(r.source_id)){held.push({source_id:r.source_id??null,state:'INVALID_OR_DUPLICATE'});continue}
   seen.add(r.source_id);
-  if(r.body_state.startsWith('HELD_')){held.push({source_id:r.source_id,state:r.body_state});continue}
+  if(r.body_state.startsWith('HELD_')){
+   held.push({source_id:r.source_id,canonical_url:r.canonical_url,state:r.body_state,
+    source_created_utc:r.source_created_utc,archive_response_sha256:r.archive_response_sha256??null,
+    source_object_index:r.source_object_index??null,title_sha256_utf8:r.title_sha256_utf8,
+    body_sha256_utf8:r.body_sha256_utf8,promoted_original:false});
+   continue;
+  }
   const prior=old.get(r.source_id);
   if(!prior)newIds.push(r.source_id);
   else if(prior.title_sha256_utf8!==r.title_sha256_utf8||prior.body_sha256_utf8!==r.body_sha256_utf8)changedIds.push(r.source_id);
@@ -225,7 +231,7 @@ export function compileSync({observed,previous=null,root=ROOT,observedAt=stamp()
  }
  const absent=[...previouslyKnown].filter(id=>!seen.has(id)).sort();
  const audit={schema:SCHEMA,observed_at:observedAt,discovery_total:observed.length,
-  accepted:valid.length,held:held.length,unexplained_remainder:observed.length-valid.length-held.length,
+  accepted:valid.length,held:held.length,held_observations:held,unexplained_remainder:observed.length-valid.length-held.length,
   existing_manifestations:previouslyKnown.size,new_source_ids:newIds.sort(),changed_source_ids:changedIds.sort(),
   unchanged_source_ids:unchangedIds.sort(),not_seen_prior_source_ids:absent,
   capture_added:valid.filter(x=>x.new_capture).length,raw_provider_hashes:rawHashes,
