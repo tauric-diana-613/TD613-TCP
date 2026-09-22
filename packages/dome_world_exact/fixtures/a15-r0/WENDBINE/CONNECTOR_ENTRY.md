@@ -106,6 +106,16 @@ ACCOUNT_CARD != ACCOUNT_CENSUS
 MEDIA_MOTIF != VIDEO_OWNERSHIP
 ```
 
+## Full-text original custody: explicit gap (September 22)
+
+**The existing 60 source IDs are searchable derivatives or card observations, not 60 word-for-word originals.** Source title/body pairs currently verified and stored: **0/60**. The full-text gap is enumerated individually in `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. A search-indexed example does not constitute exact original custody, and sampled direct Reddit permalink fetches were cache-missing.
+
+`06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` describes authorized recapture. `99-ADMIN/wendbine-originals-intake.mjs` validates author-supplied or otherwise authorized original fields, preserves their exact decoded text/whitespace in a **private location outside GitHub**, hashes titles and self-text independently, refuses duplicate or mismatched source IDs, and reports partial coverage transparently. The public repository stores only a source audit and non-infringing metadata pending source rights.
+
+`INDEXED_PARAPHRASE != VERBATIM_ORIGINAL` · `FULL_TEXT_CUSTODY != FULL_MEDIA_CUSTODY` · `PRIVATE_RESEARCH_COPY != PUBLIC_REPUBLICATION_PERMISSION`.
+
+The SRC-style deep topological reconstruction and TD613 vocabulary transfer remain HELD pending adequate source-text acquisition; prior topology maps are explicitly provisional derivatives.
+
 ## Required non-collapse
 
 ```text
