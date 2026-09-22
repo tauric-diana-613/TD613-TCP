@@ -159,5 +159,18 @@
   "secondary_archive_source_field_receipts": "01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json",
   "secondary_archive_raw_response_sha256": "819a3610fe4846f79489ca084793e7d7322658f0cdf3be2af62e99e5f34c1b85",
   "private_secondary_restore_entry": "99-ADMIN/wendbine-private-secondary-restore.mjs",
-  "unified_private_fulltext_index": "PRIVATE_RUNTIME_SQLITE_60_SOURCE_IDS_NOT_PUBLIC_GITHUB"
+  "unified_private_fulltext_index": "PRIVATE_RUNTIME_SQLITE_60_SOURCE_IDS_NOT_PUBLIC_GITHUB",
+  "sync_mode": "OPERATOR_INVOKED_ONE_BOUNDED_RUN",
+  "operator_chat_invocation": "Sync Wendbine",
+  "operator_gate_issue": 1308,
+  "operator_gate_command": "/wendbine-sync ATELIER",
+  "operator_gate_status": "STAGED_ON_DRAFT_PR_1134_NOT_ACTIVE_ON_MAIN",
+  "existing_src_gate_preserved": 758,
+  "automatic_schedule": null,
+  "automatic_retry": false,
+  "portable_atelier_implementation": "99-ADMIN/wendbine-src-autosync.mjs",
+  "sealed_query_implementation": "99-ADMIN/wendbine-srcquery.mjs",
+  "portable_source_of_truth": "SRC_STYLE_JSONL_MARKDOWN_WITH_IMMUTABLE_SYNC_RECEIPTS",
+  "private_fulltext_index_role": "LOCAL_DERIVATIVE_NOT_CANONICAL_SOURCE",
+  "default_sync_authority": "SOURCE_CAPTURE_AND_PUBLIC_METADATA_RESEARCH_BRANCH_ONLY_NO_MERGE_NO_DEPLOY_NO_TAXONOMY_PROMOTION"
 }
