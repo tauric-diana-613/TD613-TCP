@@ -26,7 +26,7 @@ export function loadFoundationalTargets(root=ROOT){
   for(const r of obj.records){
     if(!/^reddit:t3_[a-z0-9]+$/.test(r.source_id)||ids.has(r.source_id))throw new Error('P0_INVALID_OR_DUPLICATE_ID');
     const id=r.source_id.slice('reddit:t3_'.length);
-    if(new URL(r.canonical_url).pathname.split('/')[3]!==id)throw new Error('P0_URL_ID_MISMATCH');
+    if(new URL(r.canonical_url).pathname.split('/')[4]!==id)throw new Error('P0_URL_ID_MISMATCH');
     ids.add(r.source_id);
   }
   return obj.records.map(r=>({source_id:r.source_id,canonical_url:r.canonical_url,publication_day_as_catalogued:r.publication_day_as_catalogued}));
