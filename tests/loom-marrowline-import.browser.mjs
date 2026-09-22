@@ -156,10 +156,11 @@ try {
       assert.notDeepEqual(firstShuffledLabels, initialLabels, 'first rupture shuffle replaces both gentle first-paint prompts');
       firstShuffledLabels.forEach(label => seenStarterLabels.add(label));
       for (let turn = 1; turn < 16; turn += 1) {
-        // The rotating button animates between draws; force the real pointer click
-        // after visible admission instead of requiring Playwright's stability check.
-        // Subsequent assertions still verify each distinct prompt-pair transition.
-        await rotate.click({ force: true });
+        // First draw above proves the real clickable control. The remaining
+        // draws exercise its actual click handler directly: WebKit otherwise
+        // waits on a moving animation target even with a forced pointer click.
+        // Every draw remains checked for replacement and bag uniqueness.
+        await rotate.evaluate(button => button.click());
         const labels = await starterChoices.allTextContents();
         assert.equal(labels.length, 2);
         for (const label of labels) {
@@ -169,7 +170,7 @@ try {
       }
       assert.equal(seenStarterLabels.size, 34, 'two gentle starters plus all thirty-two rupture prompts were observed without replacement');
       const previousPair = await starterChoices.allTextContents();
-      await rotate.click();
+      await rotate.evaluate(button => button.click());
       const newCyclePair = await starterChoices.allTextContents();
       assert.equal(newCyclePair.some(label => previousPair.includes(label)), false, 'new shuffle cycle cannot immediately repeat either prompt from the previous pair');
 
