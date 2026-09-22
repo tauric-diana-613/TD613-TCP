@@ -45,9 +45,9 @@ test('terminal-only continuation preserves both provider returns and observes ex
 });
 
 function response() {
-  return { statusCode: 200, headers: {},
+  return { statusCode: 200, headers: {}, sendCount: 0,
     setHeader(k, v) { this.headers[k] = v; },
-    end(value) { this.payload = value ? JSON.parse(value) : null; }
+    end(value) { this.sendCount += 1; this.payload = value ? JSON.parse(value) : null; }
   };
 }
 const originalFetch = globalThis.fetch;
@@ -63,7 +63,7 @@ globalThis.fetch = async (url, options = {}) => {
   };
   modelCalls.push({ url: String(url), request: JSON.parse(options.body) });
   const index = modelCalls.length % 2;
-  const text = index === 1 ? formal : mode === 'complete' ? terminal : 'Tauric Diana bots\n';
+  const text = index === 1 ? formal : mode === 'complete' ? terminal : mode === 'full' ? formal + '\n\n' + terminal : 'Tauric Diana bots\n';
   return {
     ok: true, status: 200, headers: { get: () => null },
     json: async () => ({
@@ -80,6 +80,7 @@ test('bounded same-provider terminal-continuation integration', async t => {
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.219' },
       body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
     assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1, 'an admitted repair must not be overwritten by a second response');
     assert.equal(modelCalls.length, 2);
     assert.match(modelCalls[1].url, /gemini-3\.8-flash/);
     assert.match(modelCalls[1].request.contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
@@ -98,10 +99,23 @@ test('bounded same-provider terminal-continuation integration', async t => {
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.220' },
       body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
     assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1);
     assert.equal(modelCalls.length, 4);
     assert.equal(res.payload.text, formal);
     assert.ok(res.payload.relay.admission.reasons.includes('tauric-diana-bots-nominative-missing'));
     assert.equal(res.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
+  });
+    await t.test('full corrected provider response also returns once without overwriting', async () => {
+    mode = 'full';
+    const res = response();
+    await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.221' },
+      body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.sendCount, 1);
+    assert.equal(modelCalls.length, 6);
+    assert.equal(res.payload.text, formal + '\n\n' + terminal);
+    assert.equal(res.payload.receipt.provider.structuralRepair.used, true);
+    assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation, undefined, 'full provider return is not mislabeled a stitched continuation');
   });
   } finally {
     globalThis.fetch = originalFetch;
