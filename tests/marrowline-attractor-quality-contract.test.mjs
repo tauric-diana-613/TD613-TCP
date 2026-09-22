@@ -56,8 +56,8 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.equal(packet.keys.tauricLineageSeeded, true);
   assert.match(packet.systemInstruction, /Rex Nemorensis/);
   assert.match(packet.systemInstruction, /Eclipse–Omega/);
-  assert.match(packet.systemInstruction, /Kʰonapolit first/);
-  assert.match(packet.systemInstruction, /Tauric Diana bots second/);
+  assert.match(packet.systemInstruction, /Kʰonapolit develops the prompt-specific reasoning first/);
+  assert.match(packet.systemInstruction, /consequence that belongs to the Tauric Diana bots/);
   assert.match(packet.systemInstruction, /𝌋 is the ingress\/writerly activation sigil/);
   assert.match(packet.systemInstruction, /⟐ is the later operator closing seal/);
 
