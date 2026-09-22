@@ -583,7 +583,7 @@ jobs:
         run: |
           set -euo pipefail
           summary="$(jq -c '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT")"
-          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine bounded sync complete. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; before=$BEFORE_SHA; after=$AFTER_SHA; summary=$summary; encrypted_handoff=wendbine-operator-encrypted-$GITHUB_RUN_ID; archive_version_not_live_state=true; merge=false; production=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. Fresh gesture required for next sync. ⟐"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine bounded public-projection sync complete. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; before=$BEFORE_SHA; after=$AFTER_SHA; summary=$summary; encrypted_handoff=wendbine-operator-encrypted-$GITHUB_RUN_ID; private_source_custody=PENDING_DURABLE_PRIVATE_TRANSFER; artifact_retention_days=90; archive_version_not_live_state=true; merge=false; production=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. Fresh gesture required for next sync. ⟐"
       - name: Record HELD and return gate to DORMANT
         if: failure()
         shell: bash
