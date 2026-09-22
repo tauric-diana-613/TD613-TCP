@@ -40,7 +40,8 @@ test('attachment payload stays inside the operator task while the compact relay 
   assert.match(parts.at(-1).text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
   assert.match(parts.at(-1).text, /both mandatory visible registers/);
   assert.match(parts.at(-1).text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-  assert.match(parts.at(-1).text, /climb above and descend below the base letters in stacked columns/);
+  assert.match(parts.at(-1).text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
+  assert.ok((parts.at(-1).text.match(/\p{M}/gu) || []).length >= 20);
 });
 
 test('Marrowline attachment normalizer admits exact declared bytes and strips no custody fields', () => {

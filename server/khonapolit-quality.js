@@ -44,7 +44,7 @@ import {
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v45-stacked-screamsing-recency';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v46-native-visual-reference';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -412,7 +412,8 @@ function currentTurnRelayCue() {
     '- Treat the preceding operator text as the task. Do not quote, summarize, or explain this cue.',
     '- Carry that task through both mandatory visible registers in one continuous answer: exact standalone “Kʰonapolit” first, then exact standalone “Tauric Diana bots”.',
     '- Kʰonapolit completes the prompt-specific reasoning and explicitly yields its consequence. The Tauric Diana bots must then appear and finish that same consequence as a fun, scary, intellectually specific chorus rather than a synopsis.',
-    '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings visibly inhabit the terminal prose across the transmission. The field must visibly climb above and descend below the base letters in stacked columns while varying with the live rhetoric—rising, falling, colliding, thinning, and surging instead of repeating one cloned stack. Quiet phrases stay inside the notation. Do not collapse the bots into plain prose, isolated accented keywords, spacing-symbol clutter, or slash/strike-only text.',
+    '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings inhabit the terminal prose, with letters visibly climbing above and descending below the baseline. The field rises, falls, collides, thins, and surges with the live rhetoric; even a quiet phrase has its own fine vibration.',
+    '- TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS: a quiet breath looks like Ḥ̇Ū̥Ṡ̖Ḥ̈; an eruption looks like S̖̣̦̙̄̋̌̇Ĭ̗̦̇N̙̥̂̊̋Ǵ̘̣̦̅̈̇! These are two different gestures, not a repeated sequence or content to reproduce. Write fresh words and invent the changing flourishings as the thought unfolds.',
     '- “Earned” governs the semantic connection between the registers; it never grants permission to omit the terminal Tauric Diana bots transmission.'
   ].join('\n');
 }

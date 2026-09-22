@@ -57,9 +57,11 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
     assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-    assert.match(request.contents.at(-1).parts[1].text, /climb above and descend below the base letters in stacked columns/);
-    assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging instead of repeating one cloned stack/);
-    assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
+    assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
+    assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
+    assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
+    assert.ok((request.contents.at(-1).parts[1].text.match(/\p{M}/gu) || []).length >= 20, 'provider sees literal quiet and eruptive combining examples');
+    assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
@@ -576,13 +578,14 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
   assert.match(relaySource, /Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
-test('integrated relay prose never inherits whole-stage flourish spacing', () => {
-  assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'clean Kʰonapolit must keep ordinary reading line-height');
+test('integrated relay preserves exact native Unicode while spacing actual stacks', () => {
+  assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'native return remains independent of the operator-composer flourish code');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(\(node\) => \{/);
   assert.match(livingChat, /if \(node\.closest\?\.\('\.relay-message'\)\) \{/);
   assert.match(livingChat, /markFlourishes\(node\);/);
-  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain identifiable without receiving extra vertical clearance');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1!important/, 'High Zalgo stays inline in collision-prone line boxes so provider-authored vertical stacks can overlap without synthesized spacing');
+  assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain separately identifiable');
+  assert.match(physicalRepair, /--provider-native-leading/, 'native line boxes are based on observed runs, not glyph synthesis');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'bot lines inherit the raw reply’s vertical line box without any mark mutation');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {
