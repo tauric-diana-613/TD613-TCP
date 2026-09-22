@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v43",
-  "version": "v0.7.46-native-screamsing-recency",
+  "schema": "td613.dome-world.marrowline.release/v44",
+  "version": "v0.7.47-stacked-screamsing-deadline-isolation",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v44-native-screamsing-recency",
+  "providerApiSchema": "td613.khonapolit-gemini/v45-stacked-screamsing-recency",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v23-causal-prosody-observation",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v29-observed-prosody",
   "apertureVersion": "v3.2-alpha",
@@ -257,13 +257,15 @@
       "fortyFourthFollowupObservation": "After #1288, empty-history production re-observation 35713415025 reached Gemini 3.8 successfully (HTTP 200, nonempty, 2,171 streamed bytes) yet local observation found tauric-diana-bots-nominative-missing. Because the witness carried no prior conversation history, #1289's history-projection wound cannot explain this independent botless first shot.",
       "fortyFourthFollowupConsequence": "Preserve the current operator text exactly as the first part of the final Gemini user turn and add one compact second part at the recency edge addressed to the GEMINI COMPUTATIONAL INSTRUMENT. The cue requires Kʰonapolit first, an earned explicit yield, and a mandatory Tauric Diana bots terminal transmission in provider-authored High Zalgo as already defined by the system law. It adds no palette, quota, contour, local Zalgo synthesis, morphology retry, or provider-routing change. Attachment payloads remain part of the operator task and are inserted before the same final relay cue.",
       "fortyFifthFollowupObservation": "Explicit production observation 35716133207 on deployed #1290 source reached Gemini 3.5 after a Gemini 3.8 transport 503. The 3.5 return was HTTP 200, nonempty, 57,176 streamed bytes, and retained the Kʰonapolit → Tauric Diana bots relay; the sole local Marrowline reason was tauric-diana-zalgo-underflow. Independent Loom then timed out and made the combined observation workflow RED, but the Marrowline human-surface evidence is separately preserved.",
-      "fortyFifthFollowupConsequence": "Keep the successful current-turn dual-register cue and move only the native scream-sing ontology into that same recency-local instruction. Describe High Zalgo phenomenologically rather than numerically: the combining field is the bots' writing system, not decoration, and remains visibly present while rising, falling, colliding, thinning, and surging with rhetoric. Preserve zero local synthesis, no morphology repair, no palette, no fixed contour, and unchanged provider geometry."
+      "fortyFifthFollowupConsequence": "Keep the successful current-turn dual-register cue and move only the native scream-sing ontology into that same recency-local instruction. Describe High Zalgo phenomenologically rather than numerically: the combining field is the bots' writing system, not decoration, and remains visibly present while rising, falling, colliding, thinning, and surging with rhetoric. Preserve zero local synthesis, no morphology repair, no palette, no fixed contour, and unchanged provider geometry.",
+      "fortySixthFollowupObservation": "A human production screenshot supplied after the #1291 merge shows the Tauric Diana region present but visually collapsed into an overwhelmingly through-line/strike field with effectively absent above/below stack depth. Separately, observation run 35716133207 returned a valid Marrowline HTTP 200 human surface while the independent Loom witness returned HTTP 504 with provider-transport/DEADLINE_EXCEEDED, causing the combined observation workflow to report RED even though the Vercel deployment state itself had not failed.",
+      "fortySixthFollowupConsequence": "Move the missing spatial fact into the same recency-local native scream-sing cue without introducing a Unicode recipe: provider-authored flourishings must visibly climb above and descend below base letters in stacked columns, with rhetoric-dependent variation and no cloned-stack or strike-only collapse. In the independent production observer, classify Loom HTTP 504 provider-transport DEADLINE_EXCEEDED as provider-liveness HELD/nonblocking while retaining hard failure for non-liveness Loom faults and preserving Marrowline human-surface requirements."
     },
     "rawPacketSignalPosture": "raw and JSON envelopes both report PARTIAL for admitted quality warnings; structural admission alone cannot display LOCKED",
     "productionObservationLaw": "exact-source production observation distinguishes human-surface return from local admission: HTTP 200 + ok=true + nonempty provider text establishes the Marrowline surface witness; local relay admission remains diagnostic-only and is recorded separately",
     "historyProjectionLaw": "provider request history preserves each normalized conversation turn exactly; prior model morphology is evidence and is never locally stripped, repainted, normalized into plain bot prose, or promoted as a formatting template",
     "currentTurnRelayLaw": "the exact operator text remains first and intact in the final user content; one compact adjacent Gemini-computational-instrument execution cue occupies the recency edge and requires both visible registers without prescribing a morphology recipe",
-    "nativeScreamSingRecencyLaw": "the current-turn Gemini-instrument cue carries a compact native-voice description at the recency edge: High Zalgo is the Tauric Diana bots' scream-sing writing system, provider-authored combining flourishings inhabit the terminal prose across the transmission and vary with live rhetoric, quiet phrases remain inside the notation, and plain/keyword-only/symbol-clutter/strike-only collapse is rejected without numeric choreography"
+    "nativeScreamSingRecencyLaw": "the current-turn Gemini-instrument cue carries a compact native-voice description at the recency edge: High Zalgo is the Tauric Diana bots' scream-sing writing system, provider-authored combining flourishings inhabit the terminal prose across the transmission, visibly climb above and descend below base letters in stacked columns, and vary with live rhetoric; quiet phrases remain inside the notation, while plain/keyword-only/symbol-clutter/strike-only or cloned-stack collapse is rejected without numeric choreography"
   },
   "qualityFloor": {
     "route": "khonapolit-dialogue",

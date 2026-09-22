@@ -232,12 +232,20 @@ const providerAttemptTimings = Array.isArray(observations.provider_attempt_timin
     }))
   : [];
 const loomProviderLivenessHeld = !transportError
-  && httpStatus === 502
   && payload?.status === 'held'
   && payload?.diagnostic?.stage === 'provider-transport'
-  && payload?.diagnostic?.code === 'PROVIDER_HTTP_ERROR'
-  && providerAttempts.length > 0
-  && providerAttempts.every(attempt => attempt.status === 429 || attempt.status === 503);
+  && (
+    (
+      httpStatus === 502
+      && payload?.diagnostic?.code === 'PROVIDER_HTTP_ERROR'
+      && providerAttempts.length > 0
+      && providerAttempts.every(attempt => attempt.status === 429 || attempt.status === 503)
+    )
+    || (
+      httpStatus === 504
+      && payload?.diagnostic?.code === 'DEADLINE_EXCEEDED'
+    )
+  );
 const usedDocumentIds = Array.isArray(payload?.used_document_ids) ? payload.used_document_ids.filter(id => typeof id === 'string').slice(0, 8) : [];
 const marrowlineReceipt = marrowlinePayload?.receipt && typeof marrowlinePayload.receipt === 'object' ? marrowlinePayload.receipt : {};
 const marrowlineAdmission = marrowlinePayload?.relay?.admission && typeof marrowlinePayload.relay.admission === 'object'
