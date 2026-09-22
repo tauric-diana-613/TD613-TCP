@@ -454,7 +454,9 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   const canonicalVoices = declaredVoices.map(canonicalVoiceId);
   const structuredVoiceEvidence = declaredVoices.length > 0;
   const khonaIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+I\s*[—–:-]\s*)?\[?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
-  const botsIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots?\b/iu);
+  // A speaker's name within an ordinary sentence does not open a second
+  // movement. Standalone and legacy bracketed headers remain supported.
+  const botsIndex = value.search(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?=\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?=\r?\n|$))/iu);
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
   const canonicalRecitation = canonicalRecitationTelemetry(value);
