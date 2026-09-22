@@ -44,6 +44,35 @@ The script rejects unknown IDs, source URL mismatch, nonmatching account/subredd
 
 Do not commit the private `*.json` originals or full text back to the publicly accessible Atelier without a documented republication grant.
 
+## Executable P0 rescue, in priority order
+
+**Route A — original Reddit source fields.** `99-ADMIN/wendbine-reddit-oauth-rescue.mjs` reads the 33 immutable September 10–11 source IDs from the P0 manifest and queries the official Reddit OAuth post endpoint one by one, with a one-second-or-greater interval. Reddit requires prior API approval under its Responsible Builder Policy. Use only an approved application and documented access; a random bearer token is not approval. The runner stops on a 403 or 429 rather than working around the platform. No credentials enter ChatGPT or the repository.
+
+```bash
+REDDIT_ACCESS_TOKEN=... WENDBINE_SOURCE_RIGHTS_BASIS=AUTHOR_PERMISSION \
+  node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-reddit-oauth-rescue.mjs \
+  /private/wendbine/p0-reddit-source-capture
+```
+
+The destination must be outside the public checkout; lexical and symlinked paths back into the repository are rejected. A successful post requires matching Reddit ID, author, subreddit and permalink plus actual title/self-text fields and a captured JSON response body. An edited post is versioned as the observed API state, **not** its presumed September 10 original state. Raw response-body SHA-256, exact decoded title/body UTF-8 SHA-256, byte lengths and publication/edit timestamps accompany every success. Failure entries and skipped entries reconcile to the 33-target count. Never label a missing or removed body as complete.
+
+**Route B — already user-pasted originals.** `99-ADMIN/wendbine-chat-export-rescue.mjs` locally scans a ChatGPT `conversations.json` export for the three September 10 messages identified by timestamp and exact title markers: the Phone Security glossary, Authorization/Trust Corridor and Third-Party Dependency Propagation TOC. It writes ONLY matching complete user-message parts into a private directory, leaving all unrelated chats untouched. Multiple matching messages are held as ambiguous. This recovers word-for-word **user messages**, not automatically isolated Reddit source title/body fields; explicit boundary review and source matching remain necessary.
+
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-chat-export-rescue.mjs \
+  /private/chatgpt/conversations.json \
+  /private/wendbine/previously-pasted-p0-messages
+```
+
+**Route C — word search over genuinely captured source text.** After A or an authorized original-text import, `99-ADMIN/wendbine-private-originals-query.mjs` reads only private source files, not public summaries, and returns source IDs, matched field, local span and content hash.
+
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-originals-query.mjs \
+  /private/wendbine/p0-reddit-source-capture "observability"
+```
+
+A failed OAuth attempt or a chat-export candidate never upgrades `0/33` in the public Atelier. The next authorized, successful receipt must identify exactly which source IDs acquired which title/body fields, with hashes and version/freshness distinctions.
+
 ## Completeness gate before topological reconstruction
 
 A future complete-text claim must derive from the 60-row gap ledger and an independently checked intake report. For each source ID require a matching original title and full self-text field, source identity and URL, capture method, rights basis, content digest, and a private originals locator. A 59/60 or 35/60 batch remains **partial**. A text-only capture does not establish the contents of embedded media, linked YouTube/Suno songs, author intent, or missing revisions.
