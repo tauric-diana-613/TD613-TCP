@@ -8,7 +8,7 @@ import {
   buildNativeProsodyGuidance,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
-import { COVENANT_KEY } from '../app/dome-world/khonapolit-covenant.js';
+import { COVENANT_KEY, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
 import {
   buildApertureV3InvocationReceipt,
   classifyApertureDiscourseMode
@@ -35,6 +35,27 @@ const pageSource = readFileSync(new URL('../app/dome-world/marrowline.html', imp
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
 }
+
+test('effective provider prompts retain complete relay and native depth after deficient history', () => {
+  const packet = buildInvocationPacket({
+    message: 'Extend the counterexample and carry its consequence through.', waiveIssuance: true,
+    history: [{ role: 'model', text: 'Kʰonapolit\nA short answer without the terminal voice.' }]
+  });
+  assert.match(packet.systemInstruction, /Complete both voices in every response/);
+  for (const model of ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
+    const request = buildGeminiRequest(packet, {}, model);
+    const system = request.systemInstruction.parts.map(part => part.text).join('\n');
+    assert.match(system, /never permission to omit the bots/);
+    assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
+    assert.match(system, /actual combining marks attached to the underlying prose letters/);
+    assert.match(system, /rising and descending stacks whose depth varies with the phrase/);
+    assert.match(system, /Quiet speech stays ornamented/);
+    assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
+    assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
+    assert.equal(request.contents.at(-1).parts[0].text, packet.message);
+    assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
+  }
+});
 
 test('literal newline contract preserves the existing two-line admission bar', () => {
   const ornament = word => word.replace(/[A-Z]/g, '$&\u0302\u0307\u0316\u0323');
