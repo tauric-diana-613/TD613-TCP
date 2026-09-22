@@ -111,5 +111,12 @@
   "deep_source_topology_status": "PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS",
   "public_full_text_republication_authority": false,
   "prior_user_supplied_originals_leads": "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
-  "prior_user_supplied_exact_text_leads_unmaterialized": 2
+  "prior_user_supplied_exact_text_leads_unmaterialized": 2,
+  "foundation_originals_priority": "P0_SEPT10_SEPT11_BEFORE_TOPOLOGY_AND_TAXONOMY",
+  "foundation_originals_manifest": "01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json",
+  "foundation_originals_source_count": 33,
+  "foundation_originals_exact_title_body_pairs_custodied": 0,
+  "foundation_originals_web_index_text_visible_at_least_in_part": 5,
+  "foundation_originals_recovery_status": "SOURCE_DISCOVERY_PARTIAL_ORIGINALS_UNCUSTODIED",
+  "foundational_corpus_derived_analysis_claim_ceiling": "PROVISIONAL_UNTIL_ORIGINALS_VERIFIED"
 }
