@@ -578,14 +578,16 @@ test('live Marrowline never locally Zalgo-encodes provider text', () => {
   assert.match(relaySource, /Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward/);
 });
 
-test('integrated relay preserves exact native Unicode while spacing actual stacks', () => {
+test('integrated relay preserves exact native Unicode and allows intentional stacked collisions', () => {
   assert.doesNotMatch(livingChat, /\.relay-stage-text\[data-flourished="true"\]/, 'native return remains independent of the operator-composer flourish code');
   assert.match(livingChat, /messages\.querySelectorAll\('\.message-body'\)\.forEach\(\(node\) => \{/);
   assert.match(livingChat, /if \(node\.closest\?\.\('\.relay-message'\)\) \{/);
   assert.match(livingChat, /markFlourishes\(node\);/);
   assert.match(physicalRepair, /expressiveLine = botsStarted && \/\\p\{M\}\/u\.test\(fragment\)/, 'marked bot lines remain separately identifiable');
-  assert.match(physicalRepair, /--provider-native-leading/, 'native line boxes are based on observed runs, not glyph synthesis');
-  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:inherit!important/, 'bot lines inherit the raw reply’s vertical line box without any mark mutation');
+  assert.match(physicalRepair, /dataset\.providerNativeMaxRun/, 'max-run remains observation-only');
+  assert.doesNotMatch(physicalRepair, /style\.setProperty\('--provider-native-(?:leading|padding)'/, 'depth may not create artificial interline clearance');
+  assert.match(livingChat, /\.relay-stage-text\[data-provider-native-lines="true"\]\{line-height:1\.04!important;padding-block:14px!important\}/, 'native stage retains tight line geometry');
+  assert.match(livingChat, /\.zalgo-line\{[^}]*display:inline!important;[^}]*min-height:0!important;[^}]*padding:0!important;[^}]*overflow:visible!important;[^}]*line-height:1\.04!important/, 'bot marks may overprint neighboring lines without changing provider bytes');
 });
 
 test('creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate', () => {

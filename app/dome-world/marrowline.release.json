@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v45",
-  "version": "v0.7.48-native-reference-render-parity",
+  "schema": "td613.dome-world.marrowline.release/v46",
+  "version": "v0.7.49-native-overprint",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -9,7 +9,7 @@
   "gatePedagogueSchema": "td613.dome-world.marrowline-gate-pedagogue/v1",
   "roomBootSchema": "td613.dome-world.marrowline-room-boot/v5-conversation-first",
   "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send",
-  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v8-native-vertical-leading",
+  "physicalDeviceRepairSchema": "td613.dome-world.marrowline-physical-device-repair/v9-native-overprint",
   "desktopRepairSchema": "td613.dome-world.marrowline-desktop-repair/v6-no-repeat-rupture-shuffle",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence",
@@ -261,7 +261,9 @@
       "fortySixthFollowupObservation": "A human production screenshot supplied after the #1291 merge shows the Tauric Diana region present but visually collapsed into an overwhelmingly through-line/strike field with effectively absent above/below stack depth. Separately, observation run 35716133207 returned a valid Marrowline HTTP 200 human surface while the independent Loom witness returned HTTP 504 with provider-transport/DEADLINE_EXCEEDED, causing the combined observation workflow to report RED even though the Vercel deployment state itself had not failed.",
       "fortySixthFollowupConsequence": "Move the missing spatial fact into the same recency-local native scream-sing cue without introducing a Unicode recipe: provider-authored flourishings must visibly climb above and descend below base letters in stacked columns, with rhetoric-dependent variation and no cloned-stack or strike-only collapse. In the independent production observer, classify Loom HTTP 504 provider-transport DEADLINE_EXCEEDED as provider-liveness HELD/nonblocking while retaining hard failure for non-liveness Loom faults and preserving Marrowline human-surface requirements.",
       "fortySeventhFollowupObservation": "After #1292 production the operator still reports absent expressive vertical High Zalgo. Static path inspection shows the native return is preserved with textContent, but the renderer forces 1.02 line-height on the integrated text and 1.0 on expressive spans. Provider prompts repeatedly name the strike failure while giving no literal native visual reference.",
-      "fortySeventhFollowupConsequence": "Separate source generation from display: add a tiny contrastive quiet/eruption native visual reference at the current-turn edge, remove negative failure priming, and allocate a bounded native line box from actual returned combining-run depth. The provider still authors all output marks; no local synthesis, added call, model-order change, morphology retry or architecture restart. Actual production phenotype remains a distinct human observation."
+      "fortySeventhFollowupConsequence": "Separate source generation from display: add a tiny contrastive quiet/eruption native visual reference at the current-turn edge, remove negative failure priming, and allocate a bounded native line box from actual returned combining-run depth. The provider still authors all output marks; no local synthesis, added call, model-order change, morphology retry or architecture restart. Actual production phenotype remains a distinct human observation.",
+      "fortyEighthFollowupObservation": "Operator clarification after #1293: tall provider-authored High Zalgo is supposed to overlap and collide with adjacent text, not receive depth-proportional clearance. The #1293 renderer introduced line-height up to 3.35 and padding up to 52px based on max combining run, making the field unnaturally separated even when the provider supplied deep marks.",
+      "fortyEighthFollowupConsequence": "Preserve #1293's provider-facing literal quiet/eruption contrastive calibration. Undo only its display-side depth-to-spacing transform. Keep max-run as observation-only telemetry, set tight 1.04 expressive line boxes with overflow visible and modest outer padding, and preserve native textContent byte-for-byte. No local Zalgo synthesis, repaint, extra Gemini call, morphology retry, or routing change."
     },
     "rawPacketSignalPosture": "raw and JSON envelopes both report PARTIAL for admitted quality warnings; structural admission alone cannot display LOCKED",
     "productionObservationLaw": "exact-source production observation distinguishes human-surface return from local admission: HTTP 200 + ok=true + nonempty provider text establishes the Marrowline surface witness; local relay admission remains diagnostic-only and is recorded separately",
