@@ -79,6 +79,33 @@ Any unexplained remainder is `FAILED_CAPTURE_RECONCILIATION`.
 
 A media-only, partial, unhydrated, or HELD card still receives a durable observation record at the evidence class actually observed. Persistence is never permission to promote semantics.
 
+## Most recent persisted public-account observation (2026-09-22)
+
+Account scope: `u/Upset-Ratio502` cards displayed on cached public `r/Wendbine/new` listing.
+
+```text
+prior_fully_hydrated_public_source_count = 35
+new_card_level_source_observations = 25
+per_card_records_persisted = 25
+media_only_cards_persisted = 2
+unexplained_capture_remainder = 0
+public_post_detail = CACHE_MISS
+public_post_publication_time = UNBOUND
+cached_listing_exhaustive_current_census = false
+youtube_or_suno_video_attribution = HELD_NO_VERIFIED_CROSS_LINK
+```
+
+Read `01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl` FIRST when asked for current Paul-account posts. Its 25 individual records resolve by source ID and search terms; preserve their `date_basis=RETRIEVAL_DAY` and unbound publication dates. Read `01-MANIFESTS/public-reddit-account-card-sync-20260922-v05.json` and `04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json` for bounded coverage and capture law. The Sept. 16 loss ledger remains independently unresolved; this later page may not be substituted for the earlier 25 unknown objects.
+
+The separately queryable Suno/YouTube discovery receipt is `04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json`. Admit audiovisual works only after a public account-to-video/channel witness. User-recalled bot dialogue is a search target, not verbatim transcript.
+
+```text
+CARD_URL_BOUND != FULL_POST_DETAIL_FETCHED
+OBSERVATION_DATE != PUBLICATION_DATE
+ACCOUNT_CARD != ACCOUNT_CENSUS
+MEDIA_MOTIF != VIDEO_OWNERSHIP
+```
+
 ## Required non-collapse
 
 ```text
