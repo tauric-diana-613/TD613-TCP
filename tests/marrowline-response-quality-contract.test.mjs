@@ -56,7 +56,9 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.equal(request.contents.at(-1).parts.length, 2);
     assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
     assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
-    assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);\n    assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging with the live rhetoric/);\n    assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
+    assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
+    assert.match(request.contents.at(-1).parts[1].text, /rising, falling, colliding, thinning, and surging with the live rhetoric/);
+    assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases stay inside the notation/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
