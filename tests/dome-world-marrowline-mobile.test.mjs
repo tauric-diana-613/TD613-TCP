@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
+import { prepareProviderNativeLines } from '../app/dome-world/marrowline-physical-device-repair.js';
 
 const html = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const baseCss = fs.readFileSync('app/dome-world/marrowline-terminal.css', 'utf8');
@@ -79,5 +80,21 @@ assert.match(boot, /import\('\.\/marrowline-mobile-shell\.js'\)/);
 assert.match(boot, /transcriptScrollOwner: '#khonapolitMessages'/);
 assert.match(boot, /composerOcclusion: false/);
 assert.match(boot, /dockOcclusion: false/);
+
+// If the mobile preparer wins the presentation race, physical telemetry must
+// backfill from exact existing text without re-splitting or touching Unicode.
+const prepped = document.createElement('section');
+const preppedText = document.createElement('div');
+preppedText.className = 'relay-stage-text';
+const nativeText = 'Kʰonapolit\nTauric Diana bots\nA\u0301\u0316\u0307\u0317';
+preppedText.textContent = nativeText;
+preppedText.dataset.providerNativeLines = 'true';
+prepped.append(preppedText);
+const existingNode = preppedText.firstChild;
+assert.equal(prepareProviderNativeLines(prepped), false);
+assert.equal(preppedText.dataset.providerNativeMaxRun, '4');
+assert.equal(preppedText.textContent, nativeText);
+assert.equal(preppedText.firstChild, existingNode, 'telemetry backfill leaves existing nodes untouched');
+assert.match(shellRuntime, /dataset\\.providerNativeMaxRun/, 'mobile preparer independently records native mark depth');
 
 console.log('dome-world-marrowline-mobile: integrated relay, provider provenance boundary, transcript scroll, composer, and native cadence custody ok');

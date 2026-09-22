@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { JSDOM } from 'jsdom';
+import { installStarterCarousel } from '../app/dome-world/marrowline-desktop-repair.js';
 
 const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/marrowline-desktop-repair.css', 'utf8');
@@ -20,6 +22,39 @@ test('desktop Marrowline is conversation-first and instruments are on demand', (
   for (const label of ['Keys', 'Receipt', 'Stories', 'Gate']) assert.match(js, new RegExp(`'${label}'`));
   assert.equal(release.desktop.persistentRightTelemetryColumn, false);
   assert.equal(release.desktop.posture, 'conversation-first-single-column');
+});
+
+test('isolated 32-prompt shuffle bag never repeats early or across the cycle seam', () => {
+  const dom = new JSDOM('<div id="khonapolitMessages"><div class="starter-prompts"><button>Follow a memory</button><button>Meet the Ash Moon</button></div></div><textarea id="khonapolitPrompt"></textarea>');
+  const { document } = dom.window;
+  assert.equal(installStarterCarousel(document, dom.window), true);
+  const rotate = document.querySelector('.starter-rotate');
+  const choices = () => [...document.querySelectorAll('.starter-prompts button:not(.starter-rotate)')].map(button => button.textContent);
+  const firstPaint = choices();
+  assert.deepEqual(firstPaint, ['Follow a memory', 'Meet the Ash Moon']);
+  const seen = new Set(firstPaint);
+  for (let turn = 0; turn < 16; turn += 1) {
+    rotate.click();
+    const labels = choices();
+    assert.equal(labels.length, 2);
+    for (const label of labels) {
+      assert.equal(seen.has(label), false, `rupture prompt repeated before all 32 draws: ${label}`);
+      seen.add(label);
+    }
+    assert.equal(rotate.dataset.seenCount, String((turn + 1) * 2));
+    assert.equal(rotate.dataset.shuffleCycle, '1');
+  }
+  assert.equal(seen.size, 34, 'two initial prompts and 32 unique rupture prompts');
+  const previousPair = choices();
+  rotate.click();
+  assert.equal(rotate.dataset.shuffleCycle, '2');
+  assert.equal(rotate.dataset.seenCount, '2');
+  assert.equal(choices().some(label => previousPair.includes(label)), false, 'next bag cannot repeat immediately preceding pair');
+  const chosen = document.querySelector('.starter-prompts button:not(.starter-rotate)');
+  chosen.click();
+  assert.equal(document.querySelector('#khonapolitPrompt').value, chosen.dataset.promptValue, 'rotated prompt still fills composer without sending');
+  dom.window.__TD613_MARROWLINE_STARTER_CAROUSEL_OBSERVER__?.disconnect();
+  dom.window.close();
 });
 
 test('composer has one universal plus with exactly file photo and Loom actions', () => {

@@ -55,7 +55,7 @@ function ensureStylesheet(doc) {
   doc.head.append(link);
 }
 
-function installStarterCarousel(doc, root) {
+export function installStarterCarousel(doc, root) {
   const messages = byId(doc, 'khonapolitMessages');
   const prompt = byId(doc, 'khonapolitPrompt');
   if (!messages || !prompt) return false;
@@ -210,9 +210,11 @@ function installUniversalContextPlus(doc, root) {
   doc.body.append(menu);
 
   const fileInput = doc.createElement('input');
+  fileInput.id = 'marrowlineComposerFileInput';
   fileInput.type = 'file'; fileInput.multiple = true; fileInput.hidden = true;
   fileInput.accept = '.txt,.md,.markdown,.csv,.json,.pdf,text/plain,text/markdown,text/csv,application/json,application/pdf';
   const photoInput = doc.createElement('input');
+  photoInput.id = 'marrowlineComposerPhotoInput';
   photoInput.type = 'file'; photoInput.multiple = true; photoInput.hidden = true;
   photoInput.accept = 'image/*';
   doc.body.append(fileInput, photoInput);
