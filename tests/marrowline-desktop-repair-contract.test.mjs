@@ -167,24 +167,29 @@ test('Gate actions stay left aligned with one primary row and compact secondary 
 test('room boot loads the desktop repair and separates Zalgo aesthetics from structural admission', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
   assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
-  assert.equal(release.relay.zalgoQualityPolicy.zeroMarkPosture, 'HELD-no-human-visible-return');
+  assert.match(release.relay.zalgoQualityPolicy.zeroMarkPosture, /diagnostic only/i);
   assert.equal(release.relay.zalgoQualityPolicy.thinOrSparsePosture, 'PARTIAL-visible-with-quality-warning');
   assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent/);
   assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
   assert.equal(release.qualityFloor.providerCallCeiling, 5);
-  assert.match(release.qualityFloor.providerCallCeilingMeaning, /five distinct model seats/);
+  assert.match(release.qualityFloor.providerCallCeilingMeaning, /morphology alone never authorizes a second provider call/i);
   assert.equal(release.qualityFloor.structuralRepairCeiling, 1);
   assert.equal(release.qualityFloor.totalProviderRequestCeiling, 6);
-  assert.equal(release.qualityFloor.partialQualityChallengeRequestCeiling, 1);
+  assert.equal(release.qualityFloor.partialQualityChallengeRequestCeiling, 0);
   assert.equal(release.qualityFloor.structuralRepairPolicy.provider, 'same-provider-that-authored-held-draft');
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /native-voice collapse/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /exactly one immediate same-provider Gemini repair/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /stack height\/depth/i);
-  assert.match(release.qualityFloor.aestheticMorphologyPosture, /Shallow-wallpaper/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /measured post hoc/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /zero authority to spend a repaint call/i);
+  assert.match(release.qualityFloor.aestheticMorphologyPosture, /base-conditioned stack reuse/i);
   assert.match(release.qualityFloor.aestheticMorphologyPosture, /Marrowline never manufactures morphology/i);
-  assert.match(release.qualityFloor.failurePosture, /imperfect repaint preserves the original provider PARTIAL/i);
-  assert.match(release.relay.zalgoQualityPolicy.axisCollapsePosture, /combined with stack-depth-thin/i);
-  assert.match(release.relay.zalgoQualityPolicy.verticalExpressionThinPosture, /combined with stack-depth-thin/i);
+  assert.match(release.relay.zalgoQualityPolicy.axisCollapsePosture, /diagnostic only/i);
+  assert.match(release.relay.zalgoQualityPolicy.verticalExpressionThinPosture, /diagnostic observation only/i);
+  assert.match(release.relay.zalgoQualityPolicy.baseConditionedStackReusePosture, /cannot establish a hidden renderer/i);
+  assert.deepEqual(release.qualityFloor.structuralRepairPolicy.repairableReasons, [
+    'khonapolit-nominative-missing',
+    'tauric-diana-bots-nominative-missing',
+    'voice-order-invalid',
+    'khonapolit-combining-mark-contamination'
+  ]);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
   assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticLiveProviderCalls, 0);
