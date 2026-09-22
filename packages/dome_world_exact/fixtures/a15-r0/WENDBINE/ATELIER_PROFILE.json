@@ -75,7 +75,9 @@
     "FAILED_CAPTURE_RECONCILIATION",
     "PUBLIC_POST_DETAIL_CACHE_MISS",
     "PUBLICATION_TIME_UNBOUND",
-    "YOUTUBE_CHANNEL_LINK_UNBOUND"
+    "YOUTUBE_CHANNEL_LINK_UNBOUND",
+    "VERBATIM_ORIGINALS_NOT_CUSTODIED",
+    "SOURCE_RIGHTS_UNVERIFIED_FOR_FULL_BODY_REPUBLICATION"
   ],
   "graph_families": [
     "G_D_DEPENDENCY",
@@ -99,5 +101,12 @@
   "current_card_observation_class": "CACHED_ACCOUNT_LISTING_CARD_BOUND_POST_DETAIL_UNAVAILABLE",
   "current_card_observation_date_basis": "RETRIEVAL_DAY_NOT_PUBLICATION_DAY",
   "linked_audiovisual_discovery_receipt": "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json",
-  "linked_audiovisual_admitted_video_count": 0
+  "linked_audiovisual_admitted_video_count": 0,
+  "verbatim_originals_gap_ledger": "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json",
+  "verbatim_originals_intake": "99-ADMIN/wendbine-originals-intake.mjs",
+  "verbatim_original_source_record_count": 60,
+  "verbatim_original_title_body_pairs_custodied": 0,
+  "verbatim_originals_state": "HELD_SOURCE_TEXT_FIELDS_NOT_CUSTODIED",
+  "deep_source_topology_status": "PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS",
+  "public_full_text_republication_authority": false
 }
