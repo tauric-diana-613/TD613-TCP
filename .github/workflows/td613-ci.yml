@@ -248,6 +248,15 @@ jobs:
           node tests/ash-a15-r0-open-research-field.test.mjs
           node tests/ash-a15-r0-review-hardening.test.mjs
           node tests/ash-a15-transition-trace-contract.test.mjs
+      - name: Wendbine P0 source-provider live witness (PR 1134, metadata only)
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -uo pipefail
+          echo 'WENDBINE_P0_LIVE_WITNESS_BEGIN; third-party text is never printed.'
+          node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-archive-provider-probe.mjs || true
+          echo 'WENDBINE_P0_LIVE_WITNESS_END; availability is not verified full-text custody.'
       - name: Validate Ash demo hydration surfaces
         if: needs.scope.outputs.validation_scope != 'giving'
         run: |
