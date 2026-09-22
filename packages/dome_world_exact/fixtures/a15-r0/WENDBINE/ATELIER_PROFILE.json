@@ -164,7 +164,7 @@
   "operator_chat_invocation": "Sync Wendbine",
   "operator_gate_issue": 1308,
   "operator_gate_command": "/wendbine-sync ATELIER",
-  "operator_gate_status": "STAGED_ON_DRAFT_PR_1134_NOT_ACTIVE_ON_MAIN",
+  "operator_gate_status": "ACTIVE_ON_MAIN_ISSUE_1308_DORMANT_NO_GESTURE_EXECUTED",
   "existing_src_gate_preserved": 758,
   "automatic_schedule": null,
   "automatic_retry": false,
@@ -172,5 +172,9 @@
   "sealed_query_implementation": "99-ADMIN/wendbine-srcquery.mjs",
   "portable_source_of_truth": "SRC_STYLE_JSONL_MARKDOWN_WITH_IMMUTABLE_SYNC_RECEIPTS",
   "private_fulltext_index_role": "LOCAL_DERIVATIVE_NOT_CANONICAL_SOURCE",
-  "default_sync_authority": "SOURCE_CAPTURE_AND_PUBLIC_METADATA_RESEARCH_BRANCH_ONLY_NO_MERGE_NO_DEPLOY_NO_TAXONOMY_PROMOTION"
+  "default_sync_authority": "SOURCE_CAPTURE_AND_PUBLIC_METADATA_RESEARCH_BRANCH_ONLY_NO_MERGE_NO_DEPLOY_NO_TAXONOMY_PROMOTION",
+  "operator_gate_activation_pr": 1310,
+  "operator_gate_loader_repair_pr": 1311,
+  "operator_end_to_end_live_sync_state": "UNOBSERVED_REQUIRES_FRESH_USER_GESTURE",
+  "research_pr_state": "PR_1134_DRAFT_OPEN_UNMERGED"
 }
