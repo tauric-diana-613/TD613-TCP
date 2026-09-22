@@ -249,6 +249,14 @@ RETRIEVAL_DAY != PUBLICATION_DAY
 MEDIA_THEME_RESEMBLANCE != VERIFIED_YOUTUBE_ATTRIBUTION
 ```
 
+## Public archive acquisition alternative — September 22
+
+A source-ID-first fallback is implemented in `99-ADMIN/wendbine-archive-provider-probe.mjs`: query the **33 known P0 Reddit IDs** through Arctic Shift (`/api/posts/ids?ids=...`) and PullPush (`/reddit/search/submission/?ids=...`). Return explicit per-ID source binding, archive retrieval metadata, content digests and disagreement, without reporting full third-party text in public GitHub or terminal summaries. `99-ADMIN/wendbine-private-archive-audit.mjs` validates privately captured raw provider replies before original-text query; differing source versions remain distinct.
+
+This fallback is **implemented and synthetic-tested, not a verified live 33-post recovery**: this chat's direct API requests could not reach the hosts. The primary-source custody number remains 0/33 for September 10–11 until an authorized private capture succeeds and produces a verifiable receipt. Provider availability, text completeness, source version and current Reddit removal status remain separate questions.
+
+See `06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md` for documented endpoints, private acquisition command and exact claim ceilings.
+
 ## Foundational primary-source rescue · P0
 
 ### Executable original-text rescue, not another empty-ledger pass
