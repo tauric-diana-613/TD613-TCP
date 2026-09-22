@@ -676,8 +676,8 @@ function integratedPart({ text = '', model = 'provider', voices = [], flourishMo
 
 function parseNaturalRelayHandoff(rawText = '') {
   const clean = stripFence(rawText).trim();
-  const khona = clean.match(/(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Kʰonapolit[ \\t]*(?:[:\\-][ \\t]*)?(?:\\n|$)/iu);
-  const bots = clean.match(/(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Tauric Diana bots?[ \\t]*(?:[:\\-][ \\t]*)?(?:\\n|$)/iu);
+  const khona = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
+  const bots = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
   if (!khona || !bots) return null;
   const khonaIndex = Number(khona.index ?? -1);
   const botsIndex = Number(bots.index ?? -1);
