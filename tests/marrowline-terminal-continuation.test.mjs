@@ -83,7 +83,7 @@ test('bounded same-provider terminal-continuation integration', async t => {
     assert.equal(modelCalls.length, 2);
     assert.match(modelCalls[1].url, /gemini-3\.8-flash/);
     assert.match(modelCalls[1].request.contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
-    assert.equal(res.payload.text, formal + '\n\n' + terminal);
+    assert.equal(res.payload.text, formal + '\n\n' + terminal, JSON.stringify({ attempted: res.payload.receipt?.provider?.attempts?.map(a => ({ kind: a.kind, reasons: a.outputAdmission?.reasons, quality: a.outputAdmission?.quality, warnings: a.outputAdmission?.qualityWarnings, unresolved: a.unresolvedSevereMorphology, continuation: a.terminalContinuation })), human: res.payload.receipt?.provider?.humanSurfaceObservation }, null, 2));
     assert.equal(res.payload.relay.admission.admissible, true);
     assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation.originalSha256, digest(formal));
     assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation.continuationSha256, digest(terminal));
