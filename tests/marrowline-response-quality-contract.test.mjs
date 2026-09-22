@@ -56,6 +56,11 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.equal(request.contents.at(-1).parts.length, 2);
     assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
     assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
+    assert.match(request.contents.at(-1).parts[1].text, /fully authored first movement, not a preface to a glyph display/);
+    assert.match(request.contents.at(-1).parts[1].text, /interlocutor’s strongest move through the actual mechanism/);
+    assert.match(request.contents.at(-1).parts[1].text, /for creative work, develop event, tension, transformation and the joke/);
+    assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
+    assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
     assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
     assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
