@@ -522,31 +522,22 @@ export function buildGeminiStructuralRepairRequest(
     || reason === 'tauric-diana-zalgo-absent'
   );
   const repairContext = prepareKhonapolitRepairContext(heldText, reasonList);
-  const {
-    analyticStart,
-    analyticEnd,
-    stressStart,
-    stressEnd
-  } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
   const repairDirective = [
-    'STRUCTURAL REPAIR PASS — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
-    `The previous draft was held only for these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-hold'}.`,
-    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, and conclusions unless a listed structural defect requires a small edit.',
-    'Return only the corrected raw dual-packet envelope. Do not discuss this repair pass, the admission gate, or the held draft.',
-    `Packet A must begin with ${analyticStart}, contain the exact standalone visible heading “Kʰonapolit”, remain free of combining diacritics, and close with ${analyticEnd}.`,
-    `Packet B must begin with ${stressStart}, then re-emit the exact standalone visible heading “Tauric Diana bots” as a PLAIN boundary line with ZERO combining marks; High-Zalgo ornamentation begins only on the following prose line, and Packet B closes with ${stressEnd}.`,
+    'BOUNDED SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
+    `The previous draft had these locally observed reasons: ${reasonList.join(', ') || 'unspecified-observation'}.`,
+    'Preserve the prior draft’s substantive reasoning, prompt-specific mathematics, examples, jokes, conclusions, sentence order, and extent unless a listed structural defect requires a small edit.',
+    'Return one continuous corrected response with the exact standalone heading “Kʰonapolit” first and “Tauric Diana bots” only at the earned handoff. Do not print packet names, channel labels, internal delimiters, JSON, or a repair report.',
     ...(morphologyRepair ? [
-      'MORPHOLOGY-ONLY REPAIR — preserve the held Packet B prose as the composition you are re-performing, not source material to summarize. The repair context has had failed combining/enclosing ornament stripped where its boundary was identifiable; it preserves the prose and argument, not an ornament example.',
-      'Keep Packet B wording, sentence order, paragraph boundaries, jokes, examples, conclusions, and substantive extent. If fewer than two literal prose lines carry ornament, insert a newline at an existing sentence boundary without deleting or paraphrasing words; visual wrapping does not count. Do not summarize, compress, shorten, paraphrase, or replace it with a cleaner miniature. Re-author the combining marks across the FULL existing prose body after the exact plain “Tauric Diana bots” heading.',
-      'The native semantic-prosody law already present in the system instruction is the score: restore visible dynamic range across the whole body, including recurring crown/root depth, quieter axis changes, and earned deep eruptions. Fix the listed morphology without cloning one stack, collapsing to planar wallpaper, or leaving only a few decorated keywords.',
-      'Keep the exact packet delimiters and visible headings byte-for-byte. “Tauric Diana bots” remains a plain provider-authored transport anchor outside the ornament field; ornament starts on the next prose line. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
-      'A morphology repair has no independent concision target: preserve the held prose extent and close the packet when that preserved prose ends.'
+      'MORPHOLOGY-ONLY REPAIR — preserve the held Tauric Diana bots prose as the composition you are re-performing, not source material to summarize. The repair context has had failed combining/enclosing ornament stripped where its boundary was identifiable; it preserves the prose and argument, not an ornament example.',
+      'Do not summarize, compress, shorten, paraphrase, or replace the existing bots prose. Re-author only its expressive combining marks as semantic prosody across the existing body.',
+      'Do not follow a fixed mark recipe or prescribed intensity journey. Let the existing rhetoric determine where vertical crowns/roots, horizontal or oblique counter-rhythm, lighter breaths, collisions, sarcasm, anger, tenderness, and transformed returns belong.',
+      'Keep the “Tauric Diana bots” heading plain and keep Kʰonapolit prose free of combining marks. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
+      'A morphology repair has no independent concision target: preserve the held prose extent.'
     ] : [
-      'STRUCTURAL-ONLY REPAIR — make the smallest edit required by the listed structural reasons while preserving the prior draft’s prose extent and argument.',
-      'Keep the exact packet delimiters and visible headings byte-for-byte. “Tauric Diana bots” remains a plain provider-authored transport anchor outside the ornament field; ornament starts on the next prose line. DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS.',
-      'Keep the corrected transmission bounded to the held draft rather than adding a new explanation.'
+      'STRUCTURAL-ONLY REPAIR — make the smallest edit required by the listed reasons while preserving the prior draft’s prose extent and argument.',
+      'Keep both visible headings plain. Do not add a provider/instrument speaker and do not duplicate the answer.'
     ]),
-    'Keep Packet A before Packet B. Do not add any provider/instrument speaker and do not duplicate the answer.'
+    'Keep Kʰonapolit before the Tauric Diana bots and preserve the causal handoff rather than turning the response into two unrelated deliverables.'
   ].join('\n');
   return {
     ...request,
