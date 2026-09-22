@@ -487,7 +487,7 @@ jobs:
       ATELIER_PR: '1134'
       ATELIER_BRANCH: research/wendbine-public-atelier-sync-20260913
       WENDBINE_ROOT: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
-      SYNC_RECEIPT: ${{ runner.temp }}/wendbine-operator-sync-receipt.json
+      SYNC_RECEIPT: /tmp/wendbine-operator-sync-receipt.json
     steps:
       - name: Accept exactly one operator gesture
         shell: bash
