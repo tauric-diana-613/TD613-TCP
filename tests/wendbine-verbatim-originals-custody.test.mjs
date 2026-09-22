@@ -6,6 +6,16 @@ import { loadGapLedger, validateOriginal, ingestAuthorizedOriginals, sha256Utf8 
 
 const ledger = loadGapLedger();
 assert.equal(ledger.records.length, 60);
+const foundational = JSON.parse(fs.readFileSync(path.resolve('packages/dome_world_exact/fixtures/a15-r0/WENDBINE/01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json'), 'utf8'));
+assert.equal(foundational.records.length, 33, 'The earliest 33 sources must be a complete P0 recovery cohort.');
+assert.equal(foundational.counts.sept10, 21);
+assert.equal(foundational.counts.sept11, 12);
+assert.equal(foundational.counts.full_title_body_originals_custodied, 0, 'Index visibility cannot become original custody.');
+assert.equal(foundational.counts.source_specific_fulltext_completeness_verified, 0);
+assert.deepEqual(new Set(foundational.records.map(r => r.source_id)), new Set(ledger.records.slice(0,33).map(r=>r.source_id)), 'P0 must cover all and only the September 10-11 base registry IDs.');
+assert.ok(foundational.records.every(r => r.priority === 'P0_FOUNDATIONAL_SEPTEMBER_10_11' && r.verbatim_body_custodied === false && r.private_original_ref === null));
+assert.ok(foundational.records.some(r => r.source_id === 'reddit:t3_1wc66e4' && r.public_retrieval_status.startsWith('SEARCH_INDEX_')));
+
 assert.equal(new Set(ledger.records.map(x=>x.source_id)).size, 60);
 assert.equal(ledger.scope.older_source_bound_summary_records, 35);
 assert.equal(ledger.scope.newer_card_level_observations, 25);
