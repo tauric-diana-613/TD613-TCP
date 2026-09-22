@@ -12,6 +12,8 @@ assert.deepEqual(workflows.filter(x=>x!=='vercel-production-reobserve.yml'),esta
 assert.ok(workflows.length===4||workflows.length===5,'No sixth workflow may be introduced for Wendbine.');
 assert.match(gate,/github\.event\.issue\.number == 758/,'SRC gate remains separately bounded.');
 assert.match(gate,/github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/);
+assert.match(gate,/td613-wendbine-operator-sync/,'Independent Wendbine gate must not seize the Vercel production concurrency lock.');
+assert.match(gate,/\|\| 'td613-vercel-production-release'/,'All existing release and SRC actions preserve their established lock.');
 assert.match(gate,/  wendbine-operator-sync:\s*\n/);
 const job=gate.split('  wendbine-operator-sync:')[1];
 assert.ok(job,'The independent Wendbine gate exists.');
