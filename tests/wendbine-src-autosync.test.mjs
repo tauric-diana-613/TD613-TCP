@@ -66,4 +66,6 @@ try{
 
 } finally{fs.rmSync(tmp,{recursive:true,force:true});}
 await assert.rejects(()=>discover({fetchImpl:async()=>({ok:false,status:403})}),/ARCHIVE_DISCOVERY_HTTP_403/);
+await assert.rejects(()=>discover({fetchImpl:async()=>({ok:true,status:200,arrayBuffer:async()=>Buffer.from('{"data":[]}')})}),/ARCHIVE_ZERO_RESULTS_NOT_EVIDENCE_OF_AUTHOR_ABSENCE/,
+ 'An empty archive result must hold, not mark 60 known sources absent or imply there were no new posts.');
 console.log('Wendbine SRC parity autosync: seeded 60, new/changed/unchanged, custody tuple, literal edges, seal, private/public separation and failure gates PASS.');
