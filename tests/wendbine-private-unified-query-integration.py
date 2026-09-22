@@ -51,4 +51,4 @@ CREATE VIRTUAL TABLE source_fts USING fts5(source_id UNINDEXED,title,selftext,to
         assert "SOURCE_FIELD_HASH_MISMATCH" in str(exc)
     else:
         raise AssertionError("Tampered source must fail before query.")
-print("Wendbine unified private 60-source synthetic SQLite and source receipt test PASS")
+print("Wendbine unified private 60-source synthetic integration PASS")
