@@ -9,6 +9,7 @@ import {fileURLToPath} from 'node:url';
 import {sha256Utf8} from './wendbine-originals-intake.mjs';
 
 import { auditPrivateOriginals } from './wendbine-private-custody-audit.mjs';
+import { auditPrivateArchive } from './wendbine-private-archive-audit.mjs';
 
 export function loadPrivateOriginals(destination){
  const dir=path.resolve(destination);
@@ -16,6 +17,8 @@ export function loadPrivateOriginals(destination){
  // The report is part of the evidence, not optional decoration.
  // Every returned source must pass its matching receipt and exact field hash;
  // OAuth sources must also match the preserved raw Reddit payload.
+ if(fs.existsSync(path.join(dir,'coverage-report.json')))
+  return auditPrivateArchive(dir).records.sort((a,b)=>a.source_id.localeCompare(b.source_id));
  return auditPrivateOriginals(dir).records.sort((a,b)=>a.source_id.localeCompare(b.source_id));
 }
 
