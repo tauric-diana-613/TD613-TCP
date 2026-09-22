@@ -68,6 +68,7 @@ export async function discover({fetchImpl=fetch,start=DATE_FLOOR,maxPages=30,pag
   try{parsed=JSON.parse(raw.toString('utf8'))}catch{throw new Error('ARCHIVE_NON_JSON_RESPONSE')}
   const objs=Array.isArray(parsed)?parsed:parsed?.data;
   if(!Array.isArray(objs))throw new Error('ARCHIVE_UNRECOGNIZED_RESPONSE_SHAPE');
+  if(page===0&&objs.length===0)throw new Error('ARCHIVE_ZERO_RESULTS_NOT_EVIDENCE_OF_AUTHOR_ABSENCE');
   const before=seen.size;
   for(const item of objs){
    const checked=checkPost(item);
