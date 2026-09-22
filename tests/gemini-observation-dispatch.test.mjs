@@ -17,7 +17,7 @@ assert.deepEqual([...job.matchAll(/^        run: (.*)$/gm)].map(m => m[1]),
 assert.match(job, /path: gemini-observation.json\n/);
 assert.match(job, /name: gemini-observation-\$\{\{ github.sha \}\}-\$\{\{ github.run_id \}\}-\$\{\{ github.run_attempt \}\}/);
 assert.doesNotMatch(job, /write|generateContent|npm |vercel|deploy|pull_request/);
-assert.match(workflow, /scope:\n    name: Classify exact-head browser witness scope\n    if: github.event_name != 'workflow_dispatch' \|\| inputs.mode != 'gemini-observation'/);
+assert.match(workflow, /scope:\n    name: Classify exact-head browser witness scope\n    if: github.event_name != 'schedule' && \(github.event_name != 'workflow_dispatch' \|\| inputs.mode != 'gemini-observation'/);
 assert.match(workflow, /inputs.mode == 'gemini-observation' && github.run_id \|\| 'validation'/);
 
 const baseEnv = {
