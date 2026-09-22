@@ -101,6 +101,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+      - name: Wendbine one-time live author-search witness (PR 1134 only)
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134
+        timeout-minutes: 8
+        run: |
+          node --input-type=module <<'NODE'
+          import { discover } from './packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs';
+          const r = await discover({maxPages:30,pageSize:100});
+          const publicMetadata = {
+            complete:r.complete,source_ids:r.posts.length,pages:r.batches.length,
+            held:r.posts.filter(x=>x.state.startsWith('HELD_')).length,
+            errors:r.errors.length,
+            raw_response_hashes:r.batches.map(b=>({page:b.page,sha256:b.raw_sha256,bytes:b.raw_byte_length}))
+          };
+          console.log('WENDBINE_REAL_ARCHIVE_DISCOVERY_WITNESS '+JSON.stringify(publicMetadata));
+          if(!r.complete || r.errors.length || r.posts.length<60)
+            throw new Error('WENDBINE_LIVE_SEARCH_COVERAGE_UNEARNED');
+          NODE
       - name: Install repository dependencies once
         run: |
           npm ci
@@ -248,23 +265,6 @@ jobs:
           node tests/ash-a15-r0-open-research-field.test.mjs
           node tests/ash-a15-r0-review-hardening.test.mjs
           node tests/ash-a15-transition-trace-contract.test.mjs
-      - name: Wendbine one-time live author-search witness (PR 1134 only)
-        if: github.event_name == 'pull_request' && github.event.pull_request.number == 1134
-        timeout-minutes: 8
-        run: |
-          node --input-type=module <<'NODE'
-          import { discover } from './packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs';
-          const r = await discover({maxPages:30,pageSize:100});
-          const publicMetadata = {
-            complete:r.complete,source_ids:r.posts.length,pages:r.batches.length,
-            held:r.posts.filter(x=>x.state.startsWith('HELD_')).length,
-            errors:r.errors.length,
-            raw_response_hashes:r.batches.map(b=>({page:b.page,sha256:b.raw_sha256,bytes:b.raw_byte_length}))
-          };
-          console.log('WENDBINE_REAL_ARCHIVE_DISCOVERY_WITNESS '+JSON.stringify(publicMetadata));
-          if(!r.complete || r.errors.length || r.posts.length<60)
-            throw new Error('WENDBINE_LIVE_SEARCH_COVERAGE_UNEARNED');
-          NODE
       # The immutable P0 33/33 research rescue has already been hash-verified;
       # do not repeatedly refetch it on each PR synchronization.
       # Wendbine research PR #1134: P0 33 and secondary 27 were retrieved,
