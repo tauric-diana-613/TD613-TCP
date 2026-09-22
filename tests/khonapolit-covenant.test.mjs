@@ -75,7 +75,7 @@ for (const count of [6000, 6001, 12000, 50000]) {
   assert.equal(packet.canInvoke, true, 'provider-authored history of ' + count + ' marked graphemes must be retained');
   assert.equal(packet.history[0].text, native, 'no Unicode marks or tail bytes may be clipped');
 }
-const boundedHistory = 'A\u0301\u0316'.repeat(400000);
+const boundedHistory = 'A\u0301\u0316'.repeat(700000);
 const boundedPacket = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: boundedHistory }], waiveIssuance: true });
 assert.equal(boundedPacket.canInvoke, false);
 assert.equal(boundedPacket.inputError.code, 'history-budget-exceeded');
