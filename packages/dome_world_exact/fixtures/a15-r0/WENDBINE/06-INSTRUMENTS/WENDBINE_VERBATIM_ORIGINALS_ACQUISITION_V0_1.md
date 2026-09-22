@@ -1,12 +1,14 @@
 # Wendbine verbatim originals acquisition v0.1
 
-**Stage:** P0_33_OF_33_ARCHIVED_SOURCE_FIELDS_PRIVATELY_CUSTODIED · 27_ADDITIONAL_SOURCE_BODIES_HELD · descriptive research only.
+**Stage:** ALL_60_ARCHIVED_POST_OBJECT_FIELDS_PRIVATELY_CUSTODIED · 58_NONEMPTY_TEXT_BODIES · TWO_MEDIA_LINK_POSTS_WITH_VERIFIED_EMPTY_SELFTEXT · MEDIA_BINARIES_HELD · descriptive research only.
 
 **CURRENT STATUS (2026-09-22, supersedes initial gap below):** Arctic Shift supplied all 33 September 10–11 sources through GitHub Actions (HTTP 200). Encrypted-only artifact #10722676070 was privately decrypted and the raw response / exact source fields verified. Public per-source digest receipts: `01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json`. Current recovery is **33/60 archived title/body field pairs**, with the two Sept13 and 25 later card observations still requiring full text. Source archived snapshot != unedited first-publication != current live Reddit. Actual source Reddit titles: 32 `Wendbine`, one `Wensbine`; editorial technical headers are not titles. Full bodies remain private.
 
 Exact real-source query: `99-ADMIN/wendbine-private-p0-source-query.mjs` receives the privately recovered source JSONL, raw provider JSON and search phrase; it validates raw HTTP payload SHA256 `9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c`, all 33 source IDs, per-source title/body hashes and byte lengths before returning literal matches/offsets. The original 0/60 audit ledger records **historical pre-recovery state only**.
 
 
+
+**CURRENT ADDENDUM (September 22; supersedes P0-only intermediate status):** The secondary 27-ID source-first Arctic Shift capture succeeded on GitHub Actions #4212, and its ciphertext was privately decrypted and checked against the raw source response and individual field hashes. Public v07 receipts: `01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json`. Together with P0 v06, the archive now has **60/60 source objects with title/self-text fields, including 58 nonempty text bodies and two source-verified empty media/link self-text fields**. All 60 are in a private SQLite FTS5 index; the public GitHub repository contains metadata and hashes, not the full third-party text. The 0/60 initial ledger and 33/60 P0 status below are historical states. The two media attachments themselves remain unacquired; an archived copy does not establish unedited first-publication or current live Reddit content.
 
 ## The gap
 
