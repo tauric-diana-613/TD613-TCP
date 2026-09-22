@@ -6,6 +6,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -20,12 +22,13 @@ on:
           - calibration
           - gemini-observation
           - gemini-quality-pilot
+          - wendbine-autosync
 
 permissions:
   contents: read
 
 concurrency:
-  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.mode == 'gemini-quality-pilot' && github.run_id || inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.event_name == 'schedule' && 'wendbine-autosync' || inputs.mode == 'wendbine-autosync' && 'wendbine-autosync' || inputs.mode == 'gemini-quality-pilot' && github.run_id || inputs.mode == 'gemini-observation' && github.run_id || 'validation' }}
   cancel-in-progress: true
 
 env:
@@ -34,9 +37,77 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  wendbine_autosync:
+    name: Wendbine SRC six-hour archive-to-seal autosync
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'workflow_dispatch' && inputs.mode == 'wendbine-autosync'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Select SRC-parity metadata branch without modifying production main
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch='research/wendbine-autosync-projection'
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+            git fetch origin "$branch"
+            git checkout -B "$branch" "origin/$branch"
+            git merge --no-edit origin/main
+          else
+            git checkout -b "$branch"
+          fi
+      - name: Verify SOURCE/CAPTURE/BLOB/DERIVATIVE autosync contracts
+        run: node tests/wendbine-src-autosync.test.mjs
+      - name: Discover source objects and seal private bytes
+        id: capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/wendbine-encrypted"
+          node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-src-autosync.mjs \
+            --output-root packages/dome_world_exact/fixtures/a15-r0/WENDBINE \
+            --encrypted-output "$RUNNER_TEMP/wendbine-encrypted/archived-source-capture.sealed.json" \
+            > "$RUNNER_TEMP/wendbine-public-sync-status.json"
+          cat "$RUNNER_TEMP/wendbine-public-sync-status.json"
+          test -s "$RUNNER_TEMP/wendbine-encrypted/archived-source-capture.sealed.json"
+          echo 'ciphertext_ready=true' >> "$GITHUB_OUTPUT"
+      - name: Persist append-only public SRC metadata and current seal on research branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'td613-wendbine-autosync[bot]'
+          git config user.email 'td613-wendbine-autosync[bot]@users.noreply.github.com'
+          base='packages/dome_world_exact/fixtures/a15-r0/WENDBINE'
+          git add "$base/01-MANIFESTS/phase2" "$base/01-MANIFESTS/registry-index.json" \
+            "$base/04-RECEIPTS/phase2" "$base/05-OPERATIONS/phase2" \
+            "$base/05-OPERATIONS/relations/typed-edges.jsonl" "$base/07-ARCHIVE-LEDGER/syncs"
+          if git diff --cached --quiet; then
+            echo 'WENDBINE_SRC_PROJECTION_ALREADY_CURRENT'
+          else
+            git commit -m '𝌋 Wendbine SRC public projection: append source observations and reseal'
+            git push origin HEAD:refs/heads/research/wendbine-autosync-projection
+          fi
+      - name: Preserve encrypted original-source handoff (90-day limited retention)
+        if: always() && steps.capture.outputs.ciphertext_ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-src-private-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/wendbine-encrypted/archived-source-capture.sealed.json
+          retention-days: 90
+          if-no-files-found: error
   scope:
     name: Classify exact-head browser witness scope
-    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
+    if: github.event_name != 'schedule' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot' && inputs.mode != 'wendbine-autosync')
     runs-on: ubuntu-latest
     outputs:
       validation_scope: ${{ steps.classify.outputs.validation_scope }}
