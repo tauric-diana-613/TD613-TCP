@@ -55,7 +55,7 @@ function ensureStylesheet(doc) {
   doc.head.append(link);
 }
 
-function installStarterCarousel(doc, root) {
+export function installStarterCarousel(doc, root) {
   const messages = byId(doc, 'khonapolitMessages');
   const prompt = byId(doc, 'khonapolitPrompt');
   if (!messages || !prompt) return false;
