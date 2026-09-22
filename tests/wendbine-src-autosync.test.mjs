@@ -25,6 +25,8 @@ const scan=await discover({fetchImpl:async(url)=>{requests++;return {ok:true,sta
 assert.equal(requests,1);
 assert.equal(scan.posts.length,2);
 assert.equal(scan.complete,true);
+assert.equal(scan.posts[0].archive_response_sha256,scan.batches[0].raw_sha256,'Every observed post must bind to its raw provider response.');
+assert.equal(scan.posts[0].source_object_index,0,'Source object positions remain recoverable within preserved raw batches.');
 const first=compileSync({observed:scan.posts,observedAt:'2026-09-22T22:00:00Z',
  rawHashes:scan.batches.map(b=>({raw_sha256:b.raw_sha256,bytes:b.raw_byte_length}))});
 assert.equal(first.state.manifestations.length,61,'Bootstrapped P0/P1/P2 source universe is 60 + 1.');
@@ -76,7 +78,7 @@ try{
  const tampered=path.join(tmp,'01-MANIFESTS/phase2/capture-v2.jsonl');
  fs.appendFileSync(tampered,'\\n');
  assert.throws(()=>loadState(tmp),/PREVIOUS_PROJECTION_HASH_MISMATCH/,
-  'A substituted prior epoch may never seed a later scheduled sync.');
+  'A substituted prior epoch may never seed a later operator-invoked sync.');
 
 } finally{fs.rmSync(tmp,{recursive:true,force:true});}
 await assert.rejects(()=>discover({fetchImpl:async()=>({ok:false,status:403})}),/ARCHIVE_DISCOVERY_HTTP_403/);
