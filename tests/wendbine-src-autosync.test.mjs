@@ -59,6 +59,11 @@ try{
  assert.notEqual(reread.snapshot,written.snapshot);
  assert.ok(fs.existsSync(path.join(tmp,'07-ARCHIVE-LEDGER/syncs/'+written.snapshot+'.json')));
  assert.ok(fs.existsSync(path.join(tmp,'07-ARCHIVE-LEDGER/syncs/'+reread.snapshot+'.json')));
+ const tampered=path.join(tmp,'01-MANIFESTS/phase2/capture-v2.jsonl');
+ fs.appendFileSync(tampered,'\\n');
+ assert.throws(()=>loadState(tmp),/PREVIOUS_PROJECTION_HASH_MISMATCH/,
+  'A substituted prior epoch may never seed a later scheduled sync.');
+
 } finally{fs.rmSync(tmp,{recursive:true,force:true});}
 await assert.rejects(()=>discover({fetchImpl:async()=>({ok:false,status:403})}),/ARCHIVE_DISCOVERY_HTTP_403/);
 console.log('Wendbine SRC parity autosync: seeded 60, new/changed/unchanged, custody tuple, literal edges, seal, private/public separation and failure gates PASS.');
