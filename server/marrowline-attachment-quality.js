@@ -150,22 +150,29 @@ function retryAfterSeconds(response) {
 async function callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  // Preserve the exact submitted provider envelope as receipt provenance.
+  // Attachment turns currently use the unprofiled HIGH request; changing that
+  // thinking policy belongs to a separate, paired quality/latency experiment.
+  let submittedGenerationConfig = null;
   try {
+    const request = buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback });
+    submittedGenerationConfig = request.generationConfig;
     const response = await fetch(geminiGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
-      body: JSON.stringify(buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback })),
+      body: JSON.stringify(request),
       signal: controller.signal
     });
     const payload = await response.json().catch(() => ({}));
-    return { response, payload, text: extractGeminiText(payload), timedOut: false };
+    return { response, payload, text: extractGeminiText(payload), timedOut: false, submittedGenerationConfig };
   } catch (error) {
     const timedOut = error?.name === 'AbortError';
     return {
       response: { ok: false, status: timedOut ? 408 : 599, headers: { get: () => null } },
       payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
       text: '',
-      timedOut
+      timedOut,
+      submittedGenerationConfig
     };
   } finally {
     clearTimeout(timer);
@@ -215,7 +222,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
-    const providerOutput = observeGeminiOutput(result.payload, model, { fallback });
+    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const outcome = recordGeminiModelOutcome(model, {
