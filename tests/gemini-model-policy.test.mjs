@@ -118,6 +118,7 @@ const interactive38 = await withGeminiGenerationProfile(
     });
   }
 );
+assert.equal(KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS, 65536, 'the interactive profile must not silently quarter the declared native-Unicode budget');
 assert.equal(interactive38.maxOutputTokens, KHONAPOLIT_INTERACTIVE_MAX_OUTPUT_TOKENS);
 assert.deepEqual(interactive38.thinkingConfig, { thinkingLevel: 'medium' });
 assert.equal(currentGeminiGenerationProfile(), null, 'request-scoped profile must not leak after the callback');

@@ -6,7 +6,7 @@ import {
   buildGeminiGenerationConfig,
   withGeminiGenerationProfile
 } from '../server/gemini-generation-envelope.js';
-import { callGemini } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, callGemini, observeGeminiOutput } from '../server/khonapolit-quality.js';
 
 const generationConfig = model => withGeminiGenerationProfile(
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
@@ -23,6 +23,16 @@ test('Marrowline interactive profile keeps deliberate 3.x reasoning tiers and ma
   const stable36 = generationConfig('gemini-3.6-flash');
   const stable35 = generationConfig('gemini-3.5-flash');
   const preview = generationConfig('gemini-3-flash-preview');
+  for (const [model, config] of [['gemini-3.8-flash', frontier], ['gemini-3.5-flash', stable35], ['gemini-3-flash-preview', preview]]) {
+    assert.equal(config.maxOutputTokens, 65536, `${model} keeps the full provider-native output budget`);
+  }
+  const interactiveRequest = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiRequest({ systemInstruction: 'Synthetic system.', history: [], message: 'Sustain both movements.', mode: 'issued-conjunction' }, {}, 'gemini-3.8-flash')
+  );
+  assert.equal(interactiveRequest.generationConfig.maxOutputTokens, 65536, 'the actual API-bound request uses the full budget');
+  assert.deepEqual(interactiveRequest.generationConfig.thinkingConfig, { thinkingLevel: 'medium' }, 'the established thinking tier remains unchanged');
+  assert.equal(observeGeminiOutput({}, 'gemini-3.8-flash').maxOutputTokens, interactiveRequest.generationConfig.maxOutputTokens, 'receipt ceiling agrees with the actual API-bound request');
 
   assert.deepEqual(frontier.thinkingConfig, { thinkingLevel: 'medium' });
   assert.deepEqual(stable37.thinkingConfig, { thinkingLevel: 'low' });
