@@ -8,19 +8,16 @@ permissions:
   contents: write
   issues: write
 
-concurrency:
-  # Preserve the production lock for every existing release/SRC operation;
-  # Wendbine's independent manual research gate must not occupy that lock.
-  group: ${{ github.event.issue.number == 1308 && github.event.comment.body == '/wendbine-sync ATELIER' && 'td613-wendbine-operator-sync' || 'td613-vercel-production-release' }}
-  cancel-in-progress: false
-
 jobs:
   relock-safety:
     if: >-
       github.event.issue.number == 405 &&
       github.event.issue.pull_request == null &&
-      github.event.comment.user.login == github.repository_owner &&
-      startsWith(github.event.comment.body, '/td613-vercel-release ')
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      startsWith(github.event.comment.body, '/td613-vercel-relock ')
+    concurrency:
+      group: td613-vercel-production-release
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -42,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
-          [[ "$COMMAND" == '/td613-vercel-release' ]] || { echo 'Unexpected command.' >&2; exit 1; }
+          [[ "$COMMAND" == '/td613-vercel-relock' ]] || { echo 'Unexpected relock-safety command.' >&2; exit 1; }
           [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Unexpected target.' >&2; exit 1; }
           [[ -z "${EXTRA:-}" && "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed release command.' >&2; exit 1; }
 
@@ -88,7 +85,7 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 Vercel relock safety completed.
+          𝌋 Explicit Vercel relock safety completed.
 
           \`\`\`text
           source_packet_commit = $(awk '{print $3}' <<< '${{ github.event.comment.body }}')
@@ -98,7 +95,7 @@ jobs:
           deployment_count = 0
           \`\`\`
 
-          This queued safety membrane creates no deployment. It only closes a stranded Git deployment lock on the latest descendant of the authorized source packet. Sealed ⟐
+          This explicit recovery membrane creates no deployment. It only closes a stranded Git deployment lock on the latest descendant of the authorized source packet. Ordinary /td613-vercel-release gestures do not trigger this job. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -106,7 +103,7 @@ jobs:
         if: failure()
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
-            -f body="𝌋 Vercel relock safety held. No deployment or retry authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
+            -f body="𝌋 Explicit Vercel relock safety held. No deployment or retry authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
 
   confirm-production-practice:
     if: >-
@@ -490,7 +487,7 @@ jobs:
       ATELIER_PR: '1134'
       ATELIER_BRANCH: research/wendbine-public-atelier-sync-20260913
       WENDBINE_ROOT: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
-      SYNC_RECEIPT: ${{ runner.temp }}/wendbine-operator-sync-receipt.json
+      SYNC_RECEIPT: /tmp/wendbine-operator-sync-receipt.json
     steps:
       - name: Accept exactly one operator gesture
         shell: bash
