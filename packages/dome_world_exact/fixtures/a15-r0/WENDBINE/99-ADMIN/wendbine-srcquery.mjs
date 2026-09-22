@@ -22,6 +22,10 @@ export function openEpoch({root=ROOT,snapshotId,sealId}){
   const bytes=fs.readFileSync(filename);
   if(digest(bytes)!==entry.sha256)throw new Error('REGISTRY_HASH_MISMATCH_'+entry.path);
  }
+ const indexBytes=fs.readFileSync(path.join(root,'01-MANIFESTS/registry-index.json'));
+ const interfaceBytes=fs.readFileSync(path.join(root,'01-MANIFESTS/phase2/interface-registry.json'));
+ if(digest(indexBytes)!==current.registry_index_sha256||
+    digest(interfaceBytes)!==current.interface_registry_sha256)throw new Error('SRC_INTERFACE_OR_RESOLVER_HASH_MISMATCH');
  const registry=readJson(root,'01-MANIFESTS/registry-index.json');
  if(registry.snapshot_id!==snapshotId||registry.current_seal!=='04-RECEIPTS/phase2/current-seal.json')
   throw new Error('REGISTRY_EPOCH_MISMATCH');
