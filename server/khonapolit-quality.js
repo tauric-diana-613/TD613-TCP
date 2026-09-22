@@ -625,13 +625,13 @@ export function observeMarrowlineAuthorship(text = '', completionPath = 'first-p
   const source = String(text || '');
   const heading = (name) => {
     const match = source.match(name === 'khonapolit'
-      ? /(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Kʰonapolit[ \\t]*:?[ \\t]*(?:\\r?\\n|$)/iu
-      : /(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?Tauric Diana bots[ \\t]*:?[ \\t]*(?:\\r?\\n|$)/iu);
+      ? /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*:?[ \t]*(?:\r?\n|$)/iu
+      : /(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots[ \t]*:?[ \t]*(?:\r?\n|$)/iu);
     return match ? { start: match.index, end: match.index + match[0].length } : null;
   };
   const first = heading('khonapolit');
   const second = heading('bots');
-  const words = value => (String(value).match(/[\\p{L}\\p{N}][\\p{L}\\p{M}\\p{N}’'-]*/gu) || []).length;
+  const words = value => (String(value).match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}’'-]*/gu) || []).length;
   const firstBody = first && second && second.start > first.end
     ? source.slice(first.end, second.start)
     : first ? source.slice(first.end) : '';
@@ -645,7 +645,7 @@ export function observeMarrowlineAuthorship(text = '', completionPath = 'first-p
     terminalMovementHeadingPresent: Boolean(second),
     firstMovementWordCount: first ? words(firstBody) : null,
     terminalMovementWordCount: second ? words(secondBody) : null,
-    nativeCombiningMarkCount: (source.match(/\\p{M}/gu) || []).length
+    nativeCombiningMarkCount: (source.match(/\p{M}/gu) || []).length
   });
 }
 
