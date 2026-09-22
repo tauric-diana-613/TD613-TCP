@@ -46,6 +46,10 @@ try {
   for (const [posture, viewport, reducedMotion] of [['desktop', { width: 1280, height: 900 }, 'no-preference'], ['mobile-reduced', { width: 390, height: 844 }, 'reduce']]) {
     const page = await browser.newPage({ viewport, reducedMotion, acceptDownloads: true });
     page.setDefaultTimeout(12000);
+    // One real click on the starter proves pointer affordance. WebKit's continuously
+    // animated Marrowline surface can keep later element rects unstable; dispatch
+    // the same registered click handler directly, then assert its visible effects.
+    const activate = async locator => engine === 'webkit' ? locator.evaluate(element => element.click()) : locator.click();
     const calls = [], marrowlineCalls = [], errors = [], unexpected = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => {
@@ -164,7 +168,7 @@ try {
       for (const term of project.protectedTerms) assert.equal(destinationText.includes(term), false, 'private term omitted from destination');
       for (const document of shared) assert.equal(destinationText.includes(document.text), true, 'selected documents arrive intact');
 
-      await page.locator('#marrowlineComposerPlus').click();
+      await activate(page.locator('#marrowlineComposerPlus'));
       const contextMenu = page.locator('#marrowlineContextMenu');
       assert.equal(await contextMenu.isVisible(), true, 'universal plus opens the requested context menu');
       const contextItems = contextMenu.locator('[role="menuitem"]');
@@ -180,7 +184,7 @@ try {
       const fileChooser = await fileChooserPromise;
       await fileChooser.setFiles({ name: 'operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from(addedFileCanary) });
       await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
-      await page.locator('#marrowlineComposerPlus').click();
+      await activate(page.locator('#marrowlineComposerPlus'));
       const photoChooserPromise = page.waitForEvent('filechooser');
       await page.locator('#marrowlineContextPhoto').click();
       const photoChooser = await photoChooserPromise;
@@ -191,7 +195,7 @@ try {
       assert.equal(marrowlineCalls.length, 0, 'selecting attachments remains local until explicit Marrowline send');
 
       await page.locator('#khonapolitPrompt').fill('Use both attached items as user-supplied context.');
-      await page.locator('#khonapolitSend').click();
+      await activate(page.locator('#khonapolitSend'));
       await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
       assert.equal(marrowlineCalls.length, 1, 'one deliberate Marrowline send makes one ordinary request');
       assert.equal(marrowlineCalls[0].attachments.length, 2, 'both staged attachments cross only on explicit send');
@@ -217,29 +221,29 @@ try {
       if (posture === 'desktop') {
         receiptTab = page.locator('#marrowlineDesktopToolTabs button[data-target="receiptPanel"]');
         assert.equal(await receiptTab.isVisible(), true, 'desktop Receipt instrument has a visible tab');
-        await receiptTab.click();
+        await activate(receiptTab);
       } else {
         await page.locator('#khonapolitPrompt').evaluate(element => element.blur());
         await page.waitForFunction(() => document.body.dataset.composerActive !== 'true');
         const receiptDock = page.locator('[data-mobile-target="receiptPanel"]');
         assert.equal(await receiptDock.isVisible(), true, 'mobile Receipt instrument returns after composer focus is dismissed');
-        await receiptDock.click();
+        await activate(receiptDock);
       }
       await page.locator('#receiptPanel[open]').waitFor();
       assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal is visible inside the Receipt custody instrument');
       if (posture.startsWith('mobile')) {
-        await page.locator('[data-mobile-target="speakingPanel"]').click();
+        await activate(page.locator('[data-mobile-target="speakingPanel"]'));
       } else {
         const desktopClose = page.locator('.desktop-tools-close');
         assert.equal(await desktopClose.isVisible(), true, 'desktop Receipt instrument exposes a dedicated close control');
-        await desktopClose.click();
+        await activate(desktopClose);
         await page.waitForFunction(() => document.querySelector('.living-tools')?.dataset.desktopOpen === 'false');
       }
       assert.equal((await page.locator('#khonapolitTerminalStatus').textContent()).includes('OPEN UNTIL OPERATOR SEAL'), false, 'ordinary status does not demand an invisible Seal action');
       assert.equal(await page.evaluate(() => typeof window.TD613_KHONAPOLIT_TERMINAL?.sealLast), 'function', 'advanced operator seal remains available programmatically');
 
       const userMessagesBeforeCancelledClear = await page.locator('.message[data-role="user"]').count();
-      await sessionClear.click();
+      await activate(sessionClear);
       const clearConfirmation = page.locator('#marrowlineClearConfirmation');
       assert.equal(await clearConfirmation.isVisible(), true, 'destructive clear opens the centered modal confirmation');
       assert.equal(await page.locator('#marrowlineClearBackdrop').isVisible(), true, 'modal backdrop separates destructive confirmation from composer controls');
@@ -248,14 +252,14 @@ try {
       assert.ok(confirmBox && viewport);
       assert.ok(Math.abs((confirmBox.x + confirmBox.width / 2) - viewport.width / 2) < 4, 'clear modal is horizontally centered');
       assert.ok(Math.abs((confirmBox.y + confirmBox.height / 2) - viewport.height / 2) < 4, 'clear modal is vertically centered');
-      await clearConfirmation.getByRole('button', { name: 'No, keep conversation' }).click();
+      await activate(clearConfirmation.getByRole('button', { name: 'No, keep conversation' }));
       assert.equal(await clearConfirmation.isVisible(), false, 'No closes the centered confirmation');
       assert.equal(await page.locator('#marrowlineClearBackdrop').isVisible(), false, 'backdrop leaves with the modal');
       assert.equal(await page.locator('.message[data-role="user"]').count(), userMessagesBeforeCancelledClear, 'cancelled minimalist clear preserves the transcript');
 
-      await page.locator('#marrowlineComposerPlus').click();
+      await activate(page.locator('#marrowlineComposerPlus'));
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Continue the Loom handoff already staged here/);
-      await page.locator('#marrowlineContextLoom').click();
+      await activate(page.locator('#marrowlineContextLoom'));
       await page.locator('#loomImportedTask').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#loomImportedTask').inputValue(), project.task);
       assert.equal(await page.locator('#loomImportedTask').getAttribute('readonly'), '', 'governed task stays bound at receiver');
@@ -266,15 +270,15 @@ try {
       const closeImported = page.getByRole('button', { name: 'Back to Marrowline chat', exact: true });
       assert.equal(await closeImported.isVisible(), true, 'staged context exposes an explicit return to ordinary Marrowline');
       assert.equal(await page.getByRole('link', { name: 'Return to Loom', exact: true }).isVisible(), true, 'Loom return route remains explicit inside imported workspace');
-      await closeImported.click();
+      await activate(closeImported);
       assert.equal(await page.locator('#loomImportedWorkspace').isVisible(), false, 'operator can dismiss only the imported context');
       assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'staged');
       assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true, 'ordinary Marrowline survives Loom-context dismissal');
 
-      await page.locator('#marrowlineComposerPlus').click();
-      await page.locator('#marrowlineContextLoom').click();
+      await activate(page.locator('#marrowlineComposerPlus'));
+      await activate(page.locator('#marrowlineContextLoom'));
       await page.locator('#loomImportedTask').waitFor({ state: 'visible' });
-      await page.locator('#loomImportedRun').click();
+      await activate(page.locator('#loomImportedRun'));
       await page.waitForFunction(expected => document.querySelector('#loomImportedAnswer')?.textContent.includes(expected), mockAnswer);
       assert.equal(calls.length, 1, 'one deliberate imported Run makes one POST');
       assert.deepEqual(Object.keys(calls[0]).sort(), ['schema', 'request_id', 'task', 'documents', 'rules'].sort());
@@ -296,18 +300,18 @@ try {
       await page.locator('#loomImportedWorkspace').screenshot({ path: path.join(dir, `${posture}-mock-response-admitted.png`) });
       await page.locator('#loomImportedRest').click();
       await page.waitForFunction(() => document.querySelector('#loomImportedRest')?.textContent.includes('Resume'));
-      await page.locator('#loomImportedRun').click();
+      await activate(page.locator('#loomImportedRun'));
       await page.waitForFunction(() => !document.querySelector('#loomImportedRun')?.disabled && /held/i.test(document.querySelector('#loomImportedWorkspace [role=status]')?.textContent || ''));
       assert.equal(calls.length, 1, 'REST prevents another provider request');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'destination fits viewport');
       assert.deepEqual(errors, [], 'no page runtime errors');
       assert.deepEqual(unexpected, [], 'no unrelated mutations or direct provider calls');
 
-      await closeImported.click();
+      await activate(closeImported);
       await page.goto(`${base}/dome-world/marrowline.html`, { waitUntil: 'networkidle' });
       await page.locator('#marrowlineComposerPlus').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#marrowlineComposerPlus').getAttribute('data-loom-awake'), 'false', 'Loom option is asleep on direct Marrowline visit without a consumed handoff');
-      await page.locator('#marrowlineComposerPlus').click();
+      await activate(page.locator('#marrowlineComposerPlus'));
       assert.equal(await page.locator('#marrowlineContextMenu [role="menuitem"]').count(), 3, 'dead/asleep universal plus still exposes exactly file, photo, and Loom');
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Open Loom in a new tab/);
       assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true);
