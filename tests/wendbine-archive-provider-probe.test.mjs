@@ -5,6 +5,8 @@ import path from 'node:path';
 import {loadFoundationalTargets} from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-reddit-oauth-rescue.mjs';
 import {PROVIDERS,providerUrl,parseArchiveEnvelope,assessArchiveObject,probeP0Archives}
  from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-archive-provider-probe.mjs';
+import {auditPrivateArchive} from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-archive-audit.mjs';
+import {loadPrivateOriginals,queryPrivateOriginals} from '../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-originals-query.mjs';
 const roster=loadFoundationalTargets();
 assert.equal(roster.length,33);
 assert.ok(providerUrl(PROVIDERS[0],roster).includes('/api/posts/ids?ids='));
@@ -42,6 +44,19 @@ try{
  const stored=JSON.parse(fs.readFileSync(path.join(privateDir,'coverage-report.json')));
  assert.equal(stored.records[0].provider_copies.length,2);
  assert.ok(!JSON.stringify(report).includes(item.selftext),'Public coverage report must not repeat full source text.');
+ const audited=auditPrivateArchive(privateDir);
+ assert.equal(audited.verified_versions,2);
+ assert.equal(audited.distinct_source_ids,1);
+ const originals=loadPrivateOriginals(privateDir);
+ assert.equal(originals.length,2);
+ assert.ok(originals.every(o=>o.original_text_state==='ARCHIVE_RAW_AND_FIELDS_HASH_VERIFIED_LIVE_STATUS_UNBOUND'));
+ assert.equal(queryPrivateOriginals(originals,'Exact')[0].source_id,target.source_id);
+ const rawPath=path.join(privateDir,'raw-arctic_shift.json');
+ fs.writeFileSync(rawPath,Buffer.from('{"tampered":true}'));
+ assert.throws(()=>loadPrivateOriginals(privateDir),/ARCHIVE_RAW_RESPONSE_HASH_MISMATCH/,
+  'An archive snapshot substitution must fail closed before text search.');
+ fs.writeFileSync(rawPath,raw0);
+
  assert.equal(fs.statSync(path.join(privateDir,'raw-arctic_shift.json')).mode&0o777,0o600);
  await assert.rejects(()=>probeP0Archives({fetchImpl,targets:roster,saveRaw:true,destination:privateDir,rightsBasis:'AUTHOR_PERMISSION'}),/REFUSE_OVERWRITE_PRIVATE_ARCHIVE/);
  const denied=await probeP0Archives({targets:roster,fetchImpl:async()=>({status:403,ok:false})});
