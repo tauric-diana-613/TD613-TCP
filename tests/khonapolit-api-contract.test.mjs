@@ -25,7 +25,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v46-native-visual-reference');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v47-bounded-terminal-continuation');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
@@ -90,9 +90,11 @@ const structuralRepair = buildGeminiStructuralRepairRequest(
 assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE REPAIR/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-bots-nominative-missing/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /one continuous corrected response/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /Supply ONLY the missing terminal movement/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /exact standalone heading “Kʰonapolit” first/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /STRUCTURAL SAME-VOICE REPAIR/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /Do not repaint, normalize, score, or re-author the Tauric Diana combining field/);

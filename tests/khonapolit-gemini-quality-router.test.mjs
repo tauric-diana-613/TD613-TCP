@@ -173,16 +173,17 @@ try {
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
   assert.equal(res.payload.relay.parts.length, 1);
   assert.equal(res.payload.relay.parts[0].id, 'khonapolit');
-  assert.equal(res.payload.relay.parts[0].text, degradedAnswer, 'when the bounded same-provider repair still misses local quality, the original Gemini return remains human-visible instead of being confiscated');
-  assert.equal(res.payload.relay.admission.admissible, false);
+  assert.equal(res.payload.relay.parts[0].text, developedAnswer, 'an admissible provider-authored same-seat repair must reach the human surface, not be overwritten by the incomplete draft');
+  assert.equal(res.payload.relay.admission.admissible, true);
   assert.equal(res.payload.relay.highZalgo.applied, false, 'server does not post-process provider text with a local Zalgo filter');
   assert.equal(res.payload.receipt.provider.output.finishReason, 'STOP');
   assert.equal(res.payload.receipt.provider.output.usage.candidatesTokenCount, 1600);
   assert.equal(res.payload.receipt.provider.output.outputTokenLimitReached, false);
-  assert.equal(res.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
-  assert.equal(res.payload.receipt.provider.humanSurfaceObservation.rendered, true);
-  assert.equal(res.payload.receipt.provider.humanSurfaceObservation.localAdmissionAuthority, 'diagnostic-not-human-surface-veto');
-  assert.match(res.payload.text, /generic atmospheric prose/);
+  assert.equal(res.headers['X-TD613-Structural-Repair'], 'provider-authored-bounded-1');
+  assert.equal(res.payload.receipt.provider.structuralRepair.used, true);
+  assert.equal(res.payload.receipt.provider.structuralRepair.sourceAttemptIndex, 0);
+  assert.equal(res.payload.receipt.provider.humanSurfaceObservation, undefined, 'the successful repair does not falsely report the incomplete draft as rendered');
+  assert.match(res.payload.text, /THE RED DEER HAS READ THE MENU/);
   assert.doesNotMatch(res.text, /DO_NOT_COPY_PROVIDER_FIELDS/);
 
   const beforeOversize = calls.length;
