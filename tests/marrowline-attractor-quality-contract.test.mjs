@@ -70,8 +70,9 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /bots then finish the response/i);
   assert.match(addendum, /NATURAL RETURN SHAPE/);
   assert.match(addendum, /NATIVE SEMANTIC PROSODY/);
-  assert.match(addendum, /rhetorical pressure may change density, axis, species, depth, collision, and recurrence/i);
-  assert.match(addendum, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/i);
+  assert.match(addendum, /Typography behaves as voice/i);
+  assert.match(addendum, /rather than from a formatting recipe, ornament checklist, local metric, or repeated transform/i);
+  assert.doesNotMatch(addendum, /density, axis, species, depth, collision, and recurrence|anger erupt|sarcasm twitch|tenderness thin/i);
   assert.match(addendum, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
   assert.match(addendum, /never decorates, expands, synthesizes, overlays, or Zalgo-encodes/i);
   assert.doesNotMatch(addendum, /RAW TWO-PACKET RETURN PROTOCOL/);
