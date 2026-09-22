@@ -8,6 +8,18 @@
 - P1/P2 public source/hash witness: `01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json` (GitHub run #4212; 27/27; raw SHA-256 `819a3610fe4846f79489ca084793e7d7322658f0cdf3be2af62e99e5f34c1b85`).
 - Exact archived Reddit titles: `Wendbine` in 59 source objects and `Wensbine` in one; the old technical headers remain expressly editorial descriptors.
 - In the private research runtime, raw P0 and P1/P2 responses and verified title/body fields are joined in a **60-source SQLite FTS5 index**. The public `wendbine-query.mjs` still searches bounded derivatives, not full original bodies.
+
+**Portable private original-text retrieval** (source-field hashes checked against both public manifests before any result):
+
+```bash
+python packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-unified-query.py \
+  --db /private/wendbine/unified/wendbine-60-fts.sqlite status
+python packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-private-unified-query.py \
+  --db /private/wendbine/unified/wendbine-60-fts.sqlite search "observability" --mode exact
+```
+
+The private query returns bounded source snippets, canonical post links, UTF-8 offsets and source hashes; whole bodies remain outside GitHub. `--mode fts` is tokenized full-text search, while the public `wendbine-query.mjs --mode semantic` provides the separately evidenced deterministic concept-relational view. Neither is a license to infer hidden state.
+
 - The original 0/60 gap ledger, P0 33/60 intermediate status, and September 16 unrecoverable original per-card observation loss are **historical receipts**. Their old counts must never override the current v06/v07 source-acquisition receipts. The later 25 IDs do not retroactively repair September 16's distinct lost observation set.
 
 ```text
