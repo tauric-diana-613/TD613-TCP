@@ -82,6 +82,39 @@ node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-privat
 
 A failed OAuth attempt or a chat-export candidate never upgrades `0/33` in the public Atelier. The next authorized, successful receipt must identify exactly which source IDs acquired which title/body fields, with hashes and version/freshness distinctions.
 
+## Route D — public archive ID lookup, not a stale-index guess
+
+The September 22 public-source research identified two documented independent archive services:
+
+- [Arctic Shift API](https://github.com/ArthurHeitmann/arctic_shift/blob/master/api/README.md): `https://arctic-shift.photon-reddit.com/api/posts/ids?ids=1wc66e4,1wc7p1y,1wc8o05`, public ID lookup (up to 500 IDs).
+- [PullPush API](https://pullpush.io/): `https://api.pullpush.io/reddit/search/submission/?ids=1wc66e4,1wc7p1y,1wc8o05`, ID-based submission lookup.
+
+`99-ADMIN/wendbine-archive-provider-probe.mjs` reads all 33 existing P0 IDs from the manifest, calls both providers, and checks that each returned object has the matching post ID, `Upset-Ratio502` author, `Wendbine` subreddit, exact `title`/`selftext` fields, and a publication day consistent with the catalogued record. It reports per-provider availability and source-version hash conflicts without exposing any original text to public logs.
+
+```bash
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-archive-provider-probe.mjs
+```
+
+A documented authorized copy can additionally preserve the **raw provider responses outside the public repository**:
+
+```bash
+WENDBINE_SOURCE_RIGHTS_BASIS=AUTHOR_PERMISSION \
+node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-archive-provider-probe.mjs \
+  --save-private-raw /private/wendbine/p0-archive-captures
+```
+
+`99-ADMIN/wendbine-private-archive-audit.mjs` verifies the saved provider responses against the private coverage receipt and each title/body SHA-256. `wendbine-private-originals-query.mjs` accepts the verified archive directory and exposes matching source text locally, but explicitly labels it `ARCHIVE_RAW_AND_FIELDS_HASH_VERIFIED_LIVE_STATUS_UNBOUND`. If two providers return different title/body hashes, **both versions are retained** with provenance. A provider snapshot cannot certify the post's first-publication text or current removal status.
+
+The hosted archive endpoints were documented and identified on September 22, but direct requests from this chat environment failed at its network/retrieval layer. Synthetic tests validate endpoint construction, provider response envelopes, per-ID adjudication, archive conflict handling, private raw-field hash consistency and tamper rejection. They do not claim real P0 originals have been recovered.
+
+```text
+ARCHIVE_HTTP_200 != SEPTEMBER_2026_COVERAGE
+ARCHIVE_COPY != CURRENT_REDDIT_STATE
+ARCHIVE_SNAPSHOT != FIRST_PUBLICATION_VERSION
+TWO_PROVIDER_MATCH != INDEPENDENT_SOURCE_ORIGIN
+REMOVED_OR_DELETED_SOURCE != AUTOMATIC_ARCHIVE_ADMISSION
+```
+
 ## Completeness gate before topological reconstruction
 
 A future complete-text claim must derive from the 60-row gap ledger and an independently checked intake report. For each source ID require a matching original title and full self-text field, source identity and URL, capture method, rights basis, content digest, and a private originals locator. A 59/60 or 35/60 batch remains **partial**. A text-only capture does not establish the contents of embedded media, linked YouTube/Suno songs, author intent, or missing revisions.
