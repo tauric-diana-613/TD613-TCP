@@ -1,10 +1,16 @@
 # Wendbine verbatim originals acquisition v0.1
 
-**Stage:** VERBATIM_ORIGINALS_NOT_YET_CUSTODIED · descriptive research only.
+**Stage:** P0_33_OF_33_ARCHIVED_SOURCE_FIELDS_PRIVATELY_CUSTODIED · 27_ADDITIONAL_SOURCE_BODIES_HELD · descriptive research only.
+
+**CURRENT STATUS (2026-09-22, supersedes initial gap below):** Arctic Shift supplied all 33 September 10–11 sources through GitHub Actions (HTTP 200). Encrypted-only artifact #10722676070 was privately decrypted and the raw response / exact source fields verified. Public per-source digest receipts: `01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json`. Current recovery is **33/60 archived title/body field pairs**, with the two Sept13 and 25 later card observations still requiring full text. Source archived snapshot != unedited first-publication != current live Reddit. Actual source Reddit titles: 32 `Wendbine`, one `Wensbine`; editorial technical headers are not titles. Full bodies remain private.
+
+Exact real-source query: `99-ADMIN/wendbine-private-p0-source-query.mjs` receives the privately recovered source JSONL, raw provider JSON and search phrase; it validates raw HTTP payload SHA256 `9657dd03c00a2285a4496b7f42a18075835d8e55110a0513ebd4af0e8f211a2c`, all 33 source IDs, per-source title/body hashes and byte lengths before returning literal matches/offsets. The original 0/60 audit ledger records **historical pre-recovery state only**.
+
+
 
 ## The gap
 
-The Atelier currently has **60 unique Reddit source IDs**: 35 earlier source-bound, bounded-summary records and 25 later per-card observations. None of their complete original title/body pairs have been stored in this repository. Its lexical and concept search is a search over derivatives and observation records, not a verified full-text scholarly concordance.
+The Atelier currently has **60 unique Reddit source IDs**: 35 earlier source-bound, bounded-summary records and 25 later per-card observations. Their full bodies remain outside this public repository, while the exact archived September 10–11 fields have been privately captured and hash verified. Its lexical and concept search is a search over derivatives and observation records, not a verified full-text scholarly concordance.
 
 Audit: `04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json`. It contains one unique row per source and refuses to silently relabel editorial descriptors as source titles.
 
@@ -80,7 +86,7 @@ node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-privat
 
 `QUERY_HIT != VERIFIED_ORIGINAL` · `VERIFIED_FIELD_HASH != INDEPENDENT_AUTHOR_IDENTITY_PROOF` · `UNSIGNED_JSON_FILE != SOURCE_CUSTODY`.
 
-A failed OAuth attempt or a chat-export candidate never upgrades `0/33` in the public Atelier. The next authorized, successful receipt must identify exactly which source IDs acquired which title/body fields, with hashes and version/freshness distinctions.
+A failed OAuth attempt or chat-export candidate cannot independently upgrade a source; the actual source-approved archived capture has now produced 33 per-source v06 receipts. The next authorized, successful receipt must identify exactly which source IDs acquired which title/body fields, with hashes and version/freshness distinctions.
 
 ## Route D — public archive ID lookup, not a stale-index guess
 
