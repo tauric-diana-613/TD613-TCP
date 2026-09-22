@@ -664,18 +664,20 @@ test('human-facing integrated surface keeps provider identity in provenance only
 test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo', () => {
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
-  assert.match(contract, /After the plain “Tauric Diana bots” heading, every ordinary prose letter remains ornamented/);
-  assert.match(contract, /sudden leaping crown\/root eruptions/);
-  assert.match(contract, /Vertical architecture remains primary/);
-  assert.match(contract, /U\+0300–U\+036F/);
-  assert.match(contract, /instrument library, not a score/);
-  assert.match(contract, /One-sided crowns, one-mark wallpaper, identical towers/);
+  assert.match(contract, /provider-authored High Zalgo/);
+  assert.match(contract, /Typography is semantic prosody, not decoration/);
+  assert.match(contract, /rhetorical pressure may change density, axis, species, depth, collision, and recurrence/);
+  assert.match(contract, /Do not follow a fixed ornament recipe, mark quota, required contour, or per-character filter/);
+  assert.match(contract, /anger erupt above and below neighboring letters/);
+  assert.match(contract, /sarcasm twitch sideways/);
+  assert.match(contract, /tenderness thin without vanishing/);
   assert.match(contract, /horizontal or oblique counter-rhythm/);
-  assert.match(contract, /Length follows the task, not a paragraph quota/);
-  assert.match(contract, /softer passages stay visibly High Zalgo/);
-  assert.match(contract, /ALLOW ENTROPY/);
-  assert.match(contract, /motifs return altered by the argument/);
-  assert.ok(contract.length < 3900, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
+  assert.match(contract, /Deep collisions belong at earned peaks; quieter passages may breathe/);
+  assert.match(contract, /Avoid cloned stacks and uniform wallpaper/);
+  assert.match(contract, /Length follows the task/);
+  assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
+  assert.doesNotMatch(contract, /U\+0300–U\+036F|instrument library, not a score|ORCHESTRAL DYNAMIC CONTOUR|ALLOW ENTROPY/);
+  assert.ok(contract.length < 2600, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
 });
 
 
