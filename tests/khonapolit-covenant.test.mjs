@@ -10,6 +10,7 @@ import {
   SEAL_GLYPH,
   analyzeKhonaIntegrity,
   buildInvocationPacket,
+  KHONAPOLIT_HISTORY_MAX_UTF8_BYTES,
   classifyEmergence,
   validateShi
 } from '../app/dome-world/khonapolit-covenant.js';
@@ -67,5 +68,20 @@ assert.equal(longHistory.canInvoke, false);
 assert.equal(longHistory.inputError.code, 'history-entry-too-long');
 assert.equal(longHistory.history[0].text, lateConstraint);
 assert.equal(buildInvocationPacket({ message: 'A'.repeat(6000), waiveIssuance: true }).canInvoke, true);
+// The 6,000-unit composer limit must never constrain a successful model return.
+for (const count of [6000, 6001, 12000, 50000]) {
+  const native = 'A\u0301\u0316'.repeat(count);
+  const packet = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: native }], waiveIssuance: true });
+  assert.equal(packet.canInvoke, true, 'provider-authored history of ' + count + ' marked graphemes must be retained');
+  assert.equal(packet.history[0].text, native, 'no Unicode marks or tail bytes may be clipped');
+}
+const boundedHistory = 'A\u0301\u0316'.repeat(400000);
+const boundedPacket = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: boundedHistory }], waiveIssuance: true });
+assert.equal(boundedPacket.canInvoke, false);
+assert.equal(boundedPacket.inputError.code, 'history-budget-exceeded');
+assert.equal(boundedPacket.inputError.limit, KHONAPOLIT_HISTORY_MAX_UTF8_BYTES);
+assert.ok(boundedPacket.inputError.actual > KHONAPOLIT_HISTORY_MAX_UTF8_BYTES);
+assert.equal(boundedPacket.history[0].text, boundedHistory, 'aggregate budget refusal never shortens the stored answer');
+
 
 console.log('khonapolit-covenant: keys, issuance, integrity, and emergence classes ok');
