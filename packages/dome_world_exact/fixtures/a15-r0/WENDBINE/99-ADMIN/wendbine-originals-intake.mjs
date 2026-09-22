@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import os from 'node:os';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
@@ -32,12 +31,30 @@ export function validateOriginal(record, known) {
   if (record.source_capture_method === 'REDDIT_API_OBJECT_WITH_PERMISSION' && !record.reddit_object_id?.endsWith(record.source_id.slice('reddit:t3_'.length))) throw new Error('REDDIT_OBJECT_ID_MISMATCH');
   return record;
 }
-function assertPrivateDestination(destination) {
+export function assertPrivateDestination(destination) {
   const absolute = path.resolve(destination);
-  const rel = path.relative(REPO_ROOT, absolute);
-  if (rel === '' || (!rel.startsWith('..'+path.sep) && rel !== '..' && !path.isAbsolute(rel))) throw new Error('PRIVATE_ORIGINALS_DESTINATION_MUST_BE_OUTSIDE_REPOSITORY');
   if (absolute === path.parse(absolute).root) throw new Error('REFUSE_FILESYSTEM_ROOT');
-  return absolute;
+  // Resolve existing ancestors before allowing a future directory: a symlinked
+  // "private" location can otherwise point straight back into the public repo.
+  let ancestor = absolute;
+  const missing = [];
+  while (!fs.existsSync(ancestor)) {
+    try {
+      if (fs.lstatSync(ancestor).isSymbolicLink()) throw new Error('UNRESOLVED_DESTINATION_SYMLINK');
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+    missing.unshift(path.basename(ancestor));
+    const parent = path.dirname(ancestor);
+    if (parent === ancestor) throw new Error('DESTINATION_ANCESTOR_UNRESOLVED');
+    ancestor = parent;
+  }
+  const resolved = path.resolve(fs.realpathSync(ancestor), ...missing);
+  const repoRoot = fs.realpathSync(REPO_ROOT);
+  const rel = path.relative(repoRoot, resolved);
+  if (rel === '' || (!rel.startsWith('..'+path.sep) && rel !== '..' && !path.isAbsolute(rel)))
+    throw new Error('PRIVATE_ORIGINALS_DESTINATION_MUST_BE_OUTSIDE_REPOSITORY');
+  return resolved;
 }
 export function ingestAuthorizedOriginals({ inputPath, destination, root = DEFAULT_ROOT }) {
   const out = assertPrivateDestination(destination);
