@@ -83,7 +83,7 @@ assert.equal(boundedPacket.inputError.limit, KHONAPOLIT_HISTORY_MAX_UTF8_BYTES);
 assert.ok(boundedPacket.inputError.actual > KHONAPOLIT_HISTORY_MAX_UTF8_BYTES);
 assert.equal(boundedPacket.history[0].text, boundedHistory, 'aggregate budget refusal never shortens the stored answer');
 // Two individually admissible model turns can exceed the aggregate budget together.
-const oneLongModelTurn = 'A\\u0301\\u0316'.repeat(320000);
+const oneLongModelTurn = 'A\u0301\u0316'.repeat(320000);
 assert.equal(buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: oneLongModelTurn }], waiveIssuance: true }).canInvoke, true);
 const joinedHistory = buildInvocationPacket({ message: 'Continue.', history: [
   { role: 'model', text: oneLongModelTurn },
