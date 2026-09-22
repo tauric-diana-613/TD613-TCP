@@ -33,4 +33,17 @@ assert.deepEqual(profile.known_archival_debt, [{
   state: 'ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED'
 }]);
 
+
+const ledger = JSON.parse(fs.readFileSync(path.join(root, '04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json'), 'utf8'));
+assert.equal(ledger.records.length, 60, 'Every previously indexed post must appear individually in the verbatim custody audit.');
+assert.equal(ledger.scope.verbatim_title_and_body_custodied, 0, 'Do not upgrade summaries into full-text originals.');
+assert.equal(profile.verbatim_original_source_record_count, 60);
+assert.equal(profile.verbatim_original_title_body_pairs_custodied, 0);
+assert.equal(profile.verbatim_originals_state, 'HELD_SOURCE_TEXT_FIELDS_NOT_CUSTODIED');
+assert.equal(profile.deep_source_topology_status, 'PROVISIONAL_DERIVATIVES_PENDING_VERBATIM_ORIGINALS');
+for (const surface of [readme, connector]) {
+  assert.match(surface, /0\/60/, 'Current source entry must expose the exact full-text custody gap.');
+  assert.match(surface, /WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1/, 'Future sessions must see the authentic-originals recovery route.');
+}
+
 console.log('Wendbine README, connector entry, and Atelier profile current-state contract passed.');
