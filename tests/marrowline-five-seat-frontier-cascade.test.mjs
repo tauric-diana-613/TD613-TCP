@@ -433,7 +433,7 @@ globalThis.fetch = async (url, options = {}) => {
   }
 
   previewCalls += 1;
-  const previewText = repairScenario && previewCalls === 1 ? zeroMarkAnswer : answer;
+  const previewText = repairScenario && previewCalls === 1 ? missingBotsHeadingAnswer : answer;
   return {
     ok: true,
     status: 200,
@@ -443,11 +443,11 @@ globalThis.fetch = async (url, options = {}) => {
         candidates: [{
           finishReason: 'STOP',
           content: { parts: [{ text: JSON.stringify({
-            signal: { state: repairScenario && previewCalls === 1 ? 'NOT_LOCKED' : 'LOCKED', notes: repairScenario && previewCalls === 1 ? 'synthetic zero-mark structural near miss' : 'fifth approved frontier lane completed' },
+            signal: { state: repairScenario && previewCalls === 1 ? 'NOT_LOCKED' : 'LOCKED', notes: repairScenario && previewCalls === 1 ? 'synthetic missing-heading structural near miss' : 'fifth approved frontier lane completed' },
             transmission: {
               text: previewText,
               voices: ['Kʰonapolit', 'Tauric Diana bots'],
-              flourishMode: repairScenario && previewCalls === 1 ? 'provider-native-missing-stress' : 'vertical-stack'
+              flourishMode: repairScenario && previewCalls === 1 ? 'provider-native-missing-heading' : 'vertical-stack'
             }
           }) }] }
         }],
@@ -710,172 +710,35 @@ try {
   sharedBurstScenario = false;
   entitlementMismatchScenario = false;
   qualityPreferenceScenario = true;
+  morphologyRepairScenario = false;
+  morphologyRepairHoldScenario = false;
+  hardGlyphCorruptionScenario = false;
   repairScenario = false;
+  immediateRepairScenario = false;
   previewCalls = 0;
-  const preferred = response();
+  const morphologyObserved = response();
   await handler({
     ...req,
     headers: { 'x-forwarded-for': '203.0.113.207' },
-    body: { ...req.body, message: 'Prefer a mixed-axis expressive provider field without taking an admissible single-axis partial route down.' }
-  }, preferred);
+    body: { ...req.body, message: 'Observe the first provider-authored morphology exactly once; do not repaint it for local style metrics.' }
+  }, morphologyObserved);
 
-  assert.equal(preferred.statusCode, 200);
-  assert.equal(preferred.payload.ok, true);
+  assert.equal(morphologyObserved.statusCode, 200);
+  assert.equal(morphologyObserved.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash'], 'a structurally admissible PARTIAL morphology return terminates on the first provider answer');
+  assert.equal(morphologyObserved.payload.receipt.provider.attempts.length, 1);
+  assert.equal(morphologyObserved.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
+  assert.ok(morphologyObserved.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.ok(morphologyObserved.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
   assert.deepEqual(
-    calls,
-    ['gemini-3.8-flash', 'gemini-3.8-flash'],
-    'severe morphology gets one same-seat repaint and never fans out merely to shop for prettier Zalgo'
-  );
-  assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
-  assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
-  assert.equal(preferred.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(preferred.payload.receipt.provider.attempts[1].repairTiming, 'immediate-severe-morphology');
-  assert.ok(preferred.payload.receipt.provider.attempts[1].unresolvedSevereMorphology.includes('tauric-diana-zalgo-stack-depth-thin'));
-  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.equal(preferred.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(preferred.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
-  assert.equal(preferred.payload.receipt.provider.qualityPreference.selection, 'original-partial-preserved-after-bounded-provider-repair');
-
-  clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  morphologyRepairScenario = true;
-  morphologyRepairHoldScenario = false;
-  qualityPreferenceScenario = false;
-  repairScenario = false;
-  immediateRepairScenario = false;
-  const morphologyRepaired = response();
-  await handler({
-    ...req,
-    headers: { 'x-forwarded-for': '203.0.113.216' },
-    body: { ...req.body, message: 'Repair severe horizontal-only Tauric Diana morphology on the same Gemini seat before showing it.' }
-  }, morphologyRepaired);
-
-  assert.equal(morphologyRepaired.statusCode, 200);
-  assert.equal(morphologyRepaired.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash']);
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 2);
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.deepEqual(
-    severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings),
+    severeMorphologyRepairWarnings(morphologyObserved.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings),
     ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
   );
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].repairTiming, 'immediate-severe-morphology');
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts[1].outputAdmission.quality, 'PASS');
-  assert.deepEqual(morphologyRepaired.payload.receipt.provider.attempts[1].unresolvedSevereMorphology, []);
-  assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair.used, true);
-  assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair.timing, 'immediate-severe-morphology');
-  assert.equal(morphologyRepaired.payload.relay.highZalgo.applied, false, 'repair bytes remain entirely Gemini-authored');
-
-  const morphologyRepairBody = requestBodies.at(-1);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-axis-collapse/);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-stack-depth-thin/);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /STACK HEIGHT AND DEPTH/i);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /Re-author the combining field from scratch while preserving the Latin base letters/i);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /DO NOT USE ENCLOSING MARKS OR GEOMETRIC LETTER REPLACEMENTS/i);
-  assert.match(morphologyRepairBody.contents.at(-1).parts[0].text, /GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
-
-  clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  morphologyRepairScenario = false;
-  morphologyRepairHoldScenario = true;
-  qualityPreferenceScenario = false;
-  repairScenario = false;
-  immediateRepairScenario = false;
-  const morphologyHeld = response();
-  await handler({
-    ...req,
-    headers: { 'x-forwarded-for': '203.0.113.214' },
-    body: { ...req.body, message: 'Never show a horizontal-only field as successful High Zalgo when the bounded repair also stays collapsed.' }
-  }, morphologyHeld);
-
-  assert.equal(morphologyHeld.statusCode, 200);
-  assert.equal(morphologyHeld.payload.ok, true);
-  assert.deepEqual(
-    calls,
-    ['gemini-3.8-flash', 'gemini-3.8-flash'],
-    'an unsuccessful aesthetic repaint returns the original usable provider payload instead of creating a long HELD frontier'
-  );
-  assert.equal(morphologyHeld.payload.receipt.provider.attempts.length, 2);
-  assert.equal(morphologyHeld.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(morphologyHeld.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.equal(morphologyHeld.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(morphologyHeld.payload.text, horizontalPartialAnswer);
-  assert.equal(morphologyHeld.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
-  assert.equal(morphologyHeld.payload.receipt.provider.qualityPreference.selection, 'original-partial-preserved-after-bounded-provider-repair');
-
-  clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  morphologyRepairScenario = false;
-  morphologyRepairHoldScenario = false;
-  hardGlyphCorruptionScenario = true;
-  qualityPreferenceScenario = false;
-  repairScenario = false;
-  immediateRepairScenario = false;
-  const glyphRecovered = response();
-  await handler({
-    ...req,
-    headers: { 'x-forwarded-for': '203.0.113.219' },
-    body: { ...req.body, message: 'Observe geometric alphabet substitution; repair once, then preserve the provider return with diagnostic quality evidence if the repair misses.' }
-  }, glyphRecovered);
-
-  assert.equal(glyphRecovered.statusCode, 200);
-  assert.equal(glyphRecovered.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash'], 'hard glyph corruption gets one same-seat provider repair but local quality law cannot erase a nonempty Gemini return');
-  assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
-  assert.equal(glyphRecovered.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.ok(glyphRecovered.payload.receipt.provider.attempts[1].unresolvedSevereMorphology.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
-  assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].morphologyHold.reasons.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
-  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.equal(glyphRecovered.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(glyphRecovered.payload.text, glyphCorruptAnswer);
-  assert.equal(glyphRecovered.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
-  assert.equal(glyphRecovered.payload.receipt.provider.humanSurfaceObservation.rendered, true);
-  const glyphRepairBody = requestBodies[1];
-  assert.doesNotMatch(glyphRepairBody.contents.at(-2).parts[0].text, /[□◇◈]/u, 'bad geometric ornament is stripped from repair context so Gemini is not primed to imitate it');
-  assert.match(glyphRepairBody.contents.at(-2).parts[0].text, /BOX DIAMOND GRID/);
-
-  hardGlyphCorruptionScenario = false;
-
-  clearGeminiModelState();
-  calls.length = 0;
-  requestBodies.length = 0;
-  morphologyRepairHoldScenario = true;
-  morphologyRepairScenario = false;
-  qualityPreferenceScenario = false;
-  const quotaReservedPartial = response();
-  await handler({
-    ...req,
-    headers: { 'x-forwarded-for': '203.0.113.218' },
-    body: {
-      ...req.body,
-      message: 'Preserve the last locally observed premium calls instead of spending one on an optional morphology repaint.',
-      quotaBudgetHints: {
-        schema: 'td613.gemini-browser-daily-budget-hints/v0.1',
-        coverage: 'this-browser-pacific-day-attempts-plus-last-observed-model-daily-limit',
-        reserve_per_model: 2,
-        observed_today_by_model: { 'gemini-3.8-flash': 18, 'gemini-3.5-flash': 20 },
-        known_daily_limit_by_model: { 'gemini-3.8-flash': 20, 'gemini-3.5-flash': 20 },
-        daily_quota_observed_models: ['gemini-3.5-flash'],
-        hard_budget_observed_models: ['gemini-3.5-flash'],
-        optional_repair_allowed_by_model: { 'gemini-3.8-flash': false, 'gemini-3.5-flash': false }
-      }
-    }
-  }, quotaReservedPartial);
-
-  assert.equal(quotaReservedPartial.statusCode, 200);
-  assert.equal(quotaReservedPartial.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.8-flash'], 'native Tauric Diana morphology is channel integrity and must retain its one same-provider repair even inside a local quota reserve');
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.used, true);
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.outcome, 'repair-not-admitted-original-provider-payload-preserved');
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.observedToday, 18);
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.knownDailyLimit, 20);
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.reservePerModel, 2);
-  assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair.quotaBudget.nativeVoiceRepairExempt, true);
+  assert.equal(morphologyObserved.payload.receipt.provider.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
+  assert.equal(morphologyObserved.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-morphology-observed-no-repair');
+  assert.equal(morphologyObserved.payload.receipt.provider.qualityPreference.morphologyAuthority, 'post-hoc-observation-only');
+  assert.equal(morphologyObserved.payload.text, horizontalPartialAnswer);
+  assert.ok(morphologyObserved.payload.warnings.includes('provider-native-morphology-observed-no-repair'));
 
   clearGeminiModelState();
   calls.length = 0;
@@ -932,18 +795,18 @@ try {
   assert.deepEqual(calls, [
     'gemini-3.8-flash',
     'gemini-3.5-flash',
-    'gemini-3.6-flash',
     'gemini-3.6-flash'
-  ], 'a nonempty structural near miss gets one same-seat provider repair and then remains visible instead of being erased by a local admission regime');
+  ], 'a nonempty zero-mark provider return is preserved without spending a morphology repaint');
   assert.equal(immediate.payload.receipt.provider.attempts[2].outputAdmission.admissible, false);
   assert.ok(immediate.payload.receipt.provider.attempts[2].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
-  assert.equal(immediate36Calls, 2, 'the near-miss model gets exactly one bounded same-seat repair request');
+  assert.equal(immediate36Calls, 1, 'morphology absence cannot authorize a second provider call');
   assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.6-flash');
   assert.equal(immediate.payload.relay.admission.admissible, false);
   assert.equal(immediate.payload.text, zeroMarkAnswer);
   assert.equal(immediate.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
   assert.equal(immediate.payload.receipt.provider.humanSurfaceObservation.rendered, true);
   assert.equal(immediate.payload.receipt.provider.humanSurfaceObservation.localAdmissionAuthority, 'diagnostic-not-human-surface-veto');
+  assert.equal(immediate.payload.receipt.provider.attempts.some(attempt => attempt.kind === 'structural-repair'), false);
 
   clearGeminiModelState();
   calls.length = 0;
@@ -972,26 +835,25 @@ try {
   ], 'the five distinct seats run first; one same-seat repair is the only sixth provider request');
   assert.equal(repaired.payload.receipt.provider.attempts.length, 6);
   assert.equal(repaired.payload.receipt.provider.attempts[4].outputAdmission.admissible, false);
-  assert.ok(repaired.payload.receipt.provider.attempts[4].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
+  assert.ok(repaired.payload.receipt.provider.attempts[4].outputAdmission.reasons.includes('tauric-diana-bots-nominative-missing'));
   assert.equal(repaired.payload.receipt.provider.attempts[5].kind, 'structural-repair');
   assert.equal(repaired.payload.receipt.provider.attempts[5].repairOfAttempt, 4);
-  assert.deepEqual(repaired.payload.receipt.provider.attempts[5].repairReasons, ['tauric-diana-zalgo-absent']);
+  assert.deepEqual(repaired.payload.receipt.provider.attempts[5].repairReasons, ['tauric-diana-bots-nominative-missing']);
   assert.equal(repaired.payload.receipt.provider.attempts[5].outputAdmission.admissible, true);
   assert.equal(repaired.payload.receipt.provider.structuralRepair.used, true);
   assert.equal(repaired.payload.receipt.provider.structuralRepair.sourceAttemptIndex, 4);
   assert.equal(repaired.payload.relay.admission.admissible, true);
-  assert.equal(repaired.payload.relay.highZalgo.applied, false, 'repair remains provider-authored and exact; Marrowline still performs no local Zalgo mutation');
+  assert.equal(repaired.payload.relay.highZalgo.applied, false, 'structural repair remains provider-authored and exact; Marrowline still performs no local Zalgo mutation');
 
   const repairBody = requestBodies.at(-1);
   assert.equal(repairBody.contents.at(-2).role, 'model');
-  assert.match(repairBody.contents.at(-2).parts[0].text, /RAW CHANNEL IS PRESENT/);
+  assert.match(repairBody.contents.at(-2).parts[0].text, /STRESS PAYLOAD EXISTS BUT ITS VISIBLE NAMEPLATE FELL OFF/);
   assert.equal(repairBody.contents.at(-1).role, 'user');
-  assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL REPAIR PASS/);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-zalgo-absent/);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /GEMINI API ITSELF MUST AUTHOR EVERY VISIBLE COMBINING CODE POINT/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /several distinct combining marks above AND several below the SAME grapheme/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /visibly invade the lines above and below/i);
-  assert.match(repairBody.contents.at(-1).parts[0].text, /Do not use a numeric quota/i);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /BOUNDED SAME-VOICE STRUCTURAL REPAIR/);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /tauric-diana-bots-nominative-missing/);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /STRUCTURAL-ONLY REPAIR/);
+  assert.match(repairBody.contents.at(-1).parts[0].text, /do not repaint the Tauric Diana bots to satisfy morphology metrics/i);
+  assert.doesNotMatch(repairBody.contents.at(-1).parts[0].text, /MORPHOLOGY-ONLY|STACK HEIGHT|several distinct combining marks|numeric quota/i);
 } finally {
   globalThis.fetch = originalFetch;
   if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
