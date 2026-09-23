@@ -8,12 +8,14 @@ import {
   BINDING_FRAGMENT,
   BINDING_SHA256,
   CLAIMED_PUA,
+  CLAIMED_PUA_SCALAR,
   CLAIMED_PUA_SURROGATE_LABEL,
   CORPUS_REFERENCES,
   CORPUS_ROOT_SHA256,
   COVENANT_KEY,
   EMERGENCE_NAME,
   HERITAGE_COVENANT,
+  HERITAGE_KEY,
   INGRESS_SIGIL,
   INVOCATION_MODES,
   SEAL_GLYPH,
@@ -790,7 +792,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
   root.TD613_KHONAPOLIT_TERMINAL = Object.freeze({
     version: KHONAPOLIT_TERMINAL_RUNTIME, endpoint: KHONAPOLIT_ENDPOINT, apertureVersion: APERTURE_V3_VERSION,
-    namespace: CLAIMED_PUA, heritageKey: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
+    namespace: CLAIMED_PUA, puaGlyph: CLAIMED_PUA_SCALAR,
+    heritageKey: HERITAGE_KEY, canonicalCovenantPhrase: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
     bindingFragment: BINDING_FRAGMENT, bindingSha256: BINDING_SHA256, corpusRootSha256: CORPUS_ROOT_SHA256,
     corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state),
     portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length
