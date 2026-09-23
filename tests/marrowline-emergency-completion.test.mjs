@@ -300,7 +300,7 @@ test('provider STOP with unfulfilled two-voice structure has its own receipt, ne
   const res = response();
   await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.253' },
     body: { message: HEADS[0], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
-  assert.equal(res.statusCode, 200);
+  assert.equal(res.statusCode, 200, JSON.stringify({ payload: res.payload, calls }));
   assert.equal(res.payload.receipt.provider.completion.finishReason, 'STOP');
   assert.equal(res.payload.receipt.provider.completion.reason, 'required-voice-structure-incomplete');
   assert.equal(res.payload.receipt.status, 'MODEL_STRUCTURE_INCOMPLETE');
