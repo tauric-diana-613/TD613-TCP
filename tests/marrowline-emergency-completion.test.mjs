@@ -5,7 +5,7 @@ import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest, serializeGeminiRequest } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest } from '../server/khonapolit-quality.js';
 import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
@@ -202,6 +202,11 @@ test('every original, repair and attachment Gemini envelope carries distinct key
   const attachment = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [attach]);
   const attachmentRepair = buildAttachmentGeminiTerminalRepairRequest(packet, {}, 'gemini-3.8-flash',
     [attach], PREFIXES[1], ['tauric-diana-bots-nominative-missing']);
+  const receipt = buildTerminalReceipt({ packet, text: 'Kʰonapolit\nArgument.', model: 'gemini-3.8-flash', providerStatus: 200 });
+  assert.equal(receipt.invocation.heritageKey, HERITAGE_KEY);
+  assert.equal(receipt.invocation.canonicalCovenantPhrase, HERITAGE_COVENANT);
+  assert.equal(receipt.invocation.puaGlyph, CLAIMED_PUA_SCALAR);
+  assert.equal(receipt.invocation.covenantKey, COVENANT_KEY);
   for (const [kind, request] of [['original', original], ['repair', repair], ['attachment', attachment],
     ['attachment-repair', attachmentRepair]]) {
     const wire = serializeGeminiRequest(request, 'gemini-3.8-flash').body;
