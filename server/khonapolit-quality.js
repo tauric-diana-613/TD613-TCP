@@ -44,9 +44,10 @@ import {
   observeGeminiQuota
 } from './gemini-provider-transport.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
+import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v47-bounded-terminal-continuation';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v48-provider-completion-boundary';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -217,6 +218,8 @@ const ANALYTIC_SYNTHESIS_GUIDANCE = [
   '- Separate supplied facts, calculations, assumptions and missing evidence. Prior AI text is unverified context. An invented physical mechanism needs an explicit fictional assumption; a dimensionless bookkeeping value alone supplies no measured temperature or damage threshold.',
   '- Keep synthetic examples distinct from observations of this application. Attribute runtime conclusions to the actual supplied boundary records; report unavailable telemetry as unavailable.',
   '- Preserve the task’s evidentiary distinctions in both movements. When a premise changes, revise the dependent inference and the ridicule that inherits it. Strong probability remains probabilistic; an earned local success may survive the critique.',
+  '- In an expressly fictional or satirical mathematical scene, equations, thermodynamics and absurd mechanisms can carry a joke or myth without being presented as empirical measurement; do not interrupt the work with verification boilerplate. When the operator is actually auditing a mathematical or empirical claim, develop the dependency and distinguish count, adjacency, projection and evidence rather than passing off impressive vocabulary as proof.',
+  '- A named list is not an argued conclusion. Follow the concrete dispute through a counterexample, consequence and an earned change of stakes, then let the second voice do new work.',
   '- Respect requests to avoid personal data; prefer anonymous quantities when names are unnecessary. Never promise complete privacy, anonymity or destination enforcement.',
   '- For practical planning, identify missing venue, accessibility or amenity evidence rather than inferring those properties from price. Apply this only when relevant to the task.',
   '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
@@ -226,7 +229,8 @@ const CREATIVE_GUIDANCE = [
   'CREATIVE TURN:',
   '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
   '- Treat supplied mythology, characters, names and canon as creative source material. Invent within that field when the operator asks for invention; do not convert corpus phrases into a compulsory keyword litany.',
-  '- A story requires event, tension, transformation and consequence. Atmospheric exposition alone is not a completed story.',
+  '- A story requires event, tension, transformation and consequence. Atmospheric exposition alone is not a completed story. Put the promised decisive question or act on the page, let another character resist it, and show what changes afterward. Mercy, resignation and fury can coexist rather than becoming a safe administrative moral.',
+  '- Fictional scientific conceits, comic equations and impossible metaphysical apparatus are welcome as dramaturgy. Do not replace an imaginative scene with a correction memo merely because its thermodynamics are a joke.',
   '- Factual and ontological claim boundaries still govern what may be asserted as verified, but they are not a brevity rule or a prose voice. Keep receipt language out of the creative work unless it materially belongs there.',
   '- Do not inject unrelated project-management, venue, privacy, portability or compliance boilerplate into the creative response.'
 ].join('\n');
@@ -432,6 +436,8 @@ function currentTurnRelayCue() {
     '- When the operator invites Kʰonapolit’s adversarial camp, let the opponent act on the disputed premise and pursue the resulting material or institutional consequences. Give her wit a changing situation to work on: a decision, its cost, an attempted recovery, a consequence that survives it. These are possibilities, not mandatory beats. Let the bots take that consequence somewhere the first movement has not already exhausted. Keep developing while the task still has unspent substance; the obligation to reach the second voice is never a reason to abridge the first.',
     '- When mathematical or scientific language carries an inference, make its terms, relation and limit intelligible, in notation or precise prose appropriate to the task. A metaphor may illuminate a mechanism; resemblance alone supplies no derivation. Use only the formalism the particular problem earns, and make its consequence available to the reader rather than decorating an assertion with technical nouns.',
     '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than an ornamental afterword or recap. Their native scream-sing typography evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
+    '- PERFORMANCE REFERENCE, NOT TEXT TO RECITE: Kʰonapolit may make an argument by turning the institution’s own measurement into a comedy of administrative panic; move freely among witty deistic arrogance, eschatological and surveillance theory, thermodynamic slapstick, precision, intimacy, and outrageous camp when the operator’s task makes them useful. A mathematical fiction may be a joke; an empirical audit still needs honest distinctions. Neither a cold list of five definitions nor a timid two-sentence synopsis is the requested voice.',
+    '- The bots deserve an extended dramatic conversation, not a token outro: expose the cost, change whom they address, let repetition mutate its meaning, and move between enormous overprinted eruptions and quieter marked or stroke-heavy breaths. Do not tile one identical diacritic stack across all words, impose an axis schedule, imitate a specimen verbatim, or flatten the long passage into a short sign-off.',
     '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings inhabit the terminal prose, with letters visibly climbing above and descending below the baseline. The field rises, falls, collides, thins, and surges with the live rhetoric; even a quiet phrase has its own fine vibration.',
     '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays are available to the authored movement. Write fresh words and invent the changing flourishings; a wholly vertical performance remains welcome. Choose freely as the thought unfolds rather than repeating a small calibration alphabet. Preserve the development of the prose alongside the typography.',
     `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
@@ -617,11 +623,12 @@ export function buildGeminiStructuralRepairRequest(
 }
 
 export function extractGeminiText(payload = {}) {
+  // Keep exact provider whitespace, including a possible leading continuation
+  // separator; no model-authored Unicode or text is cleaned by this boundary.
   return (payload?.candidates?.[0]?.content?.parts || [])
-    .map((part) => safe(part?.text))
-    .filter(Boolean)
-    .join('\n\n')
-    .trim();
+    .map((part) => typeof part?.text === 'string' ? part.text : '')
+    .filter((text) => Boolean(text.trim()))
+    .join('\n\n');
 }
 
 // Bind evidence to the bytes actually sent, after all prompt layers, history,
