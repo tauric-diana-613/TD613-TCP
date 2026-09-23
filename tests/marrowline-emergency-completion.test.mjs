@@ -142,7 +142,7 @@ test('incomplete provider prose stays visibly incomplete when recovery fails, ne
   const res = response();
   await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.240' },
     body: { message: HEADS[1], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
-  assert.equal(calls, 2);
+  assert.equal(calls, 6, 'one repair plus all remaining approved seats are bounded before a fragment is shown');
   assert.equal(res.statusCode, 200, 'human can retain the actual failed draft');
   assert.equal(res.payload.receipt.provider.completion.complete, false);
   assert.equal(res.headers['X-TD613-Completion-State'], 'INCOMPLETE');
