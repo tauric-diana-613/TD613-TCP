@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EMSTD613 source file row",
+  "type": "object",
+  "required": ["source_file_id", "relative_path", "original_filename", "byte_length", "sha256", "imported_at", "provenance_basis"],
+  "properties": {
+    "source_file_id": {"type": "string"},
+    "relative_path": {"type": "string"},
+    "original_filename": {"type": "string"},
+    "extension": {"type": ["string", "null"]},
+    "byte_length": {"type": "integer", "minimum": 0},
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "imported_at": {"type": "string"},
+    "source_clock_if_known": {"type": ["string", "null"]},
+    "author_attribution_raw": {"type": ["string", "null"]},
+    "provenance_basis": {"type": "string"},
+    "media_type": {"type": ["string", "null"]},
+    "duplicate_of_source_file_id": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

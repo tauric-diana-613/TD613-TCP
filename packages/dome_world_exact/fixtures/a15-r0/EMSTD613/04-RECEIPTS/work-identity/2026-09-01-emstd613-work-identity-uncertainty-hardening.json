@@ -1,0 +1,119 @@
+{
+  "schema": "emstd613-work-identity-uncertainty-hardening-receipt/v1",
+  "receipt_date": "2026-09-01",
+  "recorded_at": "2026-09-02T01:10:46.888Z",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "amari/em-td613-lineage-atelier",
+  "input_head": "2e9d375a317ec1a35db2543a5c488f23ec5f0fc4",
+  "amendment_scope": "POST_PASS_SEMANTIC_AND_STATISTICAL_UNCERTAINTY_HARDENING_ONLY",
+  "original_work_identity_receipt": {
+    "path": "04-RECEIPTS/work-identity/2026-09-01-emstd613-work-identity.json",
+    "sha256": "76aefe542dd46fdf1f7bcc4f713f5a3ee321a9e87b3988d3a757554fb2eecb9a",
+    "state": "PRESERVED_UNMODIFIED"
+  },
+  "work_index_transition": {
+    "path": "01-MANIFESTS/work-index.jsonl",
+    "pre_hardening_sha256": "e7d008b710eb8ff12ed7d63aeacf9a9d64af38587817e38dc940a85d33c7d678",
+    "post_hardening_sha256": "e3448b04b0fbe00ac159f2f29e1bfc07f7ae6880bfe435990ed1599b1e0209ec",
+    "work_id_assignments_changed": false,
+    "identity_statuses_changed": false,
+    "supported_groups_promoted_or_demoted": false,
+    "uncertainty_fields_added": true
+  },
+  "manifestation_map": {
+    "path": "01-MANIFESTS/work-manifestations.jsonl",
+    "sha256": "6fa6dbaefb2a352b1728461e9adc7a3f5f00ec63c1cb4ad03799e3b60691853b",
+    "state": "PRESERVED_UNMODIFIED"
+  },
+  "independent_work_count_envelope": {
+    "operational_work_entity_count": 32,
+    "confirmed_or_singleton_base_work_count": 24,
+    "supported_identity_group_count": 8,
+    "independent_work_count_lower_bound": 32,
+    "independent_work_count_upper_bound": 40,
+    "independent_work_count_exact": "UNRESOLVED",
+    "lower_bound_derivation": {
+      "confirmed_multi_manifestation_works": 13,
+      "supported_groups_provisionally_collapsed": 8,
+      "singleton_works": 11,
+      "total": 32
+    },
+    "upper_bound_derivation": {
+      "confirmed_multi_manifestation_works": 13,
+      "manifestations_from_supported_pairs": 16,
+      "singleton_works": 11,
+      "total": 40
+    }
+  },
+  "uncertainty_class_assignments": {
+    "CONFIRMED_COLLAPSE": {
+      "work_count": 13,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 1
+    },
+    "HUMAN_GATED_SUPPORTED_BUNDLE": {
+      "work_count": 8,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 2
+    },
+    "SINGLETON": {
+      "work_count": 11,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 1
+    }
+  },
+  "identity_firewall": [
+    "SUPPORTED_IDENTITY != CONFIRMED_IDENTITY",
+    "OPERATIONAL_GROUPING != UNIQUE_INDEPENDENT_WORK_IDENTIFICATION",
+    "OPERATIONAL_WORK_ENTITY_COUNT = 32 != UNIQUELY_IDENTIFIED_INDEPENDENT_WORK_COUNT = 32"
+  ],
+  "downstream_identity_sensitivity_rule": {
+    "identity_sensitivity_required_downstream": true,
+    "confirmed_manifestation_duplicates": "COLLAPSE_TO_ONE_WORK_VOTE",
+    "singleton_works": "ONE_WORK_VOTE",
+    "same_work_supported_groups": "SENSITIVITY_BEARING_UNTIL_HUMAN_ADJUDICATION",
+    "applies_to": [
+      "claim frequency",
+      "motif frequency",
+      "mechanism frequency",
+      "citation frequency",
+      "convergence frequency",
+      "cluster support",
+      "recurrence counts",
+      "prevalence estimates",
+      "edge multiplicity",
+      "emergence-support counts"
+    ],
+    "permitted_methods": [
+      "RUN_SUPPORTED_COLLAPSE_AND_SUPPORTED_SPLIT_HYPOTHESES",
+      "REPORT_LOWER_AND_UPPER_SENSITIVITY_INTERVAL",
+      "DEMONSTRATE_RESULT_INVARIANCE_UNDER_SUPPORTED_GROUP_SPLITTING"
+    ],
+    "identity_robust_result_requirement": "Result must remain stable under SUPPORTED_COLLAPSE versus SUPPORTED_SPLIT unless the relevant supported identities have been human-resolved.",
+    "cherry_pick_prohibition": "No later result may silently choose the identity treatment that makes convergence or recurrence appear stronger."
+  },
+  "future_claim_atom_preparation_rule": {
+    "claim_extraction_performed_now": false,
+    "source_file_id_preservation": "ClaimAtom.source_file_id MUST remain preserved after Work assignment.",
+    "supported_group_claim_non_equivalence": "Claim present in manifestation A != automatically claim present in manifestation B.",
+    "future_work_level_aggregation_states": [
+      "CROSS_MANIFESTATION_SHARED_CLAIM",
+      "VERSION_OR_MANIFESTATION_SPECIFIC_CLAIM",
+      "MANIFESTATION_PRESENCE_UNRESOLVED"
+    ],
+    "one_manifestation_only_claim_treatment": "A claim found in only one supported manifestation must remain manifestation-specific and must not disappear through provisional Work aggregation."
+  },
+  "custody_and_analysis_state": {
+    "original_work_identity_receipt_mutated": false,
+    "originals_mutated": false,
+    "derivatives_mutated": false,
+    "archaeological_control_sources_mutated": false,
+    "claim_analysis_performed": false,
+    "motif_analysis_performed": false,
+    "mechanism_analysis_performed": false,
+    "lineage_analysis_performed": false,
+    "td613_comparison_performed": false,
+    "external_science_comparison_performed": false,
+    "causation_adjudicated": false
+  }
+}
