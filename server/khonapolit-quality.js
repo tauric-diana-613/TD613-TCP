@@ -1186,10 +1186,15 @@ export default async function handler(req, res) {
   } = {}) => {
     const observedText = relay?.transcript || result?.text || '';
     if (!safe(observedText)) return null;
+    const incomplete = completion?.complete === false;
+    const observedRelay = incomplete ? Object.freeze({ ...relay,
+      signal: Object.freeze({ ...relay.signal, state: 'NOT_LOCKED', downstreamAdmitted: false,
+        notes: [relay.signal?.notes, 'Provider completion not witnessed; preserved fragment only.'].filter(Boolean).join(' ') })
+    }) : relay;
     const baseReceipt = buildTerminalReceipt({
       packet,
       text: result.text,
-      relay,
+      relay: observedRelay,
       model,
       providerStatus: result.response.status,
       providerOutput,
@@ -1199,6 +1204,7 @@ export default async function handler(req, res) {
     });
     const receipt = Object.freeze({
       ...baseReceipt,
+      ...(incomplete ? { status: 'MODEL_RESPONSE_INCOMPLETE' } : {}),
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
@@ -1206,7 +1212,7 @@ export default async function handler(req, res) {
         humanSurfaceObservation: Object.freeze({
           rendered: true,
           observation: safe(observation) || 'provider-return-observed',
-          localAdmission: relay?.admission?.quality || 'UNCLASSIFIED',
+          localAdmission: observedRelay?.admission?.quality || 'UNCLASSIFIED',
           reasons: Object.freeze([...reasons]),
           qualityWarnings: Object.freeze([...qualityWarnings]),
           localAdmissionAuthority: 'diagnostic-not-human-surface-veto'
@@ -1216,7 +1222,7 @@ export default async function handler(req, res) {
       elapsedMs: Date.now() - startedAt
     });
     res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-    res.setHeader('X-TD613-Signal-State', relay?.signal?.state || 'NOT_LOCKED');
+    res.setHeader('X-TD613-Signal-State', observedRelay?.signal?.state || 'NOT_LOCKED');
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Local-Admission', 'OBSERVED-NONBLOCKING');
@@ -1224,7 +1230,7 @@ export default async function handler(req, res) {
     return send(res, 200, {
       ok: true,
       text: observedText,
-      relay,
+      relay: observedRelay,
       receipt,
       warnings: [
         'provider-return-rendered-without-local-text-mutation',
