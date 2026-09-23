@@ -1327,7 +1327,9 @@ export default async function handler(req, res) {
     const structuralOnly = incomplete && completion?.reason === 'required-voice-structure-incomplete';
     const observedRelay = incomplete ? Object.freeze({ ...relay,
       signal: Object.freeze({ ...relay.signal, state: 'NOT_LOCKED', downstreamAdmitted: false,
-        notes: [relay.signal?.notes, 'Provider completion not witnessed; preserved fragment only.'].filter(Boolean).join(' ') })
+        notes: [relay.signal?.notes, structuralOnly
+          ? 'Provider STOP witnessed; mandatory two-voice structure remains incomplete.'
+          : 'Provider completion not witnessed; preserved fragment only.'].filter(Boolean).join(' ') })
     }) : relay;
     const baseReceipt = buildTerminalReceipt({
       packet,
@@ -1342,7 +1344,7 @@ export default async function handler(req, res) {
     });
     const receipt = Object.freeze({
       ...baseReceipt,
-      ...(incomplete ? { status: 'MODEL_RESPONSE_INCOMPLETE' } : {}),
+      ...(incomplete ? { status: structuralOnly ? 'MODEL_STRUCTURE_INCOMPLETE' : 'MODEL_RESPONSE_INCOMPLETE' } : {}),
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
