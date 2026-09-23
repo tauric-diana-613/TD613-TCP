@@ -1,0 +1,91 @@
+{
+  "schema": "td613.blinded-preregistered-defect-localization/v0.12",
+  "date": "2026-09-15",
+  "state": "GREEN_PREREGISTERED_REPEATED_AUTHORED_MATRIX_WITH_CLUSTERING_CAVEAT",
+  "preregistration": {
+    "path": "01-MANIFESTS/2026-09-15-held-out-defect-localization-v012-preregistration.json",
+    "commit_sha": "f62b62a25e19de7c6646376c8c23f3ccbc31970f",
+    "classifier_path": "tests/helpers/phase5-role-typed-adjudicator-v011.mjs",
+    "classifier_blob_sha": "43467c059a29527bedd9e39ddd5f03bb70d12f56",
+    "classifier_commit_sha": "81469b0360c7c8b2d1587708a3ed8eba5eca6f65",
+    "evaluator_commit_after_preregistration": "9f16586248eb0f7785de53105437df74856c6f02"
+  },
+  "exact_head_validation": {
+    "head_sha": "9ce545eab66b9eee0d5c0ec3bc1742d708b5a2fa",
+    "run_number": 3329,
+    "run_id": 34916155023,
+    "native_phase5_phase4_passed": true,
+    "independent_a15_passed": true,
+    "downstream_flowcore_passed": true
+  },
+  "schedule": {
+    "condition_count": 6,
+    "replicates_per_condition": 12,
+    "total_instances": 72,
+    "defect_instances": 60,
+    "valid_instances": 12,
+    "adjudicator_received_condition_code": false,
+    "adjudicator_received_expected_labels": false,
+    "expected_labels_joined_after_prediction": true
+  },
+  "observed_scores": {
+    "collapsed_binary_correct": 72,
+    "role_typed_binary_correct": 72,
+    "collapsed_localization_correct": 0,
+    "role_typed_localization_correct": 60,
+    "collapsed_binary_accuracy": 1.0,
+    "role_typed_binary_accuracy": 1.0,
+    "binary_accuracy_absolute_delta": 0.0,
+    "collapsed_localization_accuracy": 0.0,
+    "role_typed_localization_accuracy": 1.0,
+    "collapsed_binary_wilson_95": {
+      "lower": 0.9493488274035422,
+      "upper": 1.0
+    },
+    "role_typed_binary_wilson_95": {
+      "lower": 0.9493488274035422,
+      "upper": 1.0
+    },
+    "collapsed_localization_wilson_95": {
+      "lower": 0.0,
+      "upper": 0.06017185214208986
+    },
+    "role_typed_localization_wilson_95": {
+      "lower": 0.93982814785791,
+      "upper": 1.0
+    },
+    "preregistered_wilson_separation_passed": true
+  },
+  "critical_caveat": {
+    "row_level_interval_is_descriptive": true,
+    "iid_population_confidence_claim_authorized": false,
+    "reason": "The 12 replicates per condition are deterministic suffix/route variations of six authored mutation recipes, so rows are clustered by recipe family and do not constitute independent draws from a defined external defect population.",
+    "pseudo_replication_risk": true,
+    "effective_independent_recipe_families": 6
+  },
+  "bounded_result": "PREREGISTERED_BLIND_INPUT_SEPARATION_AND_REPEATED_AUTHORED_MUTATIONS_PRESERVE_ROLE_TYPED_LOCALIZATION_ADVANTAGE_WITHOUT_BINARY_ACCURACY_GAIN",
+  "laws": [
+    "PREREGISTRATION_PRECEDES_EVALUATOR != EXTERNAL_VALIDATION",
+    "BLINDED_ADJUDICATOR_INPUT != BLINDED_RESEARCH_PROGRAM",
+    "REPEATED_MUTATION_ROWS != INDEPENDENT_POPULATION_DRAWS",
+    "ROW_LEVEL_WILSON_INTERVAL != POPULATION_CONFIDENCE_WITH_CLUSTERED_AUTHORED_RECIPES",
+    "BINARY_ACCURACY_PARITY_CAN_COEXIST_WITH_LOCALIZATION_SEPARATION",
+    "LOCALIZATION_ADVANTAGE != TRUTH_GAIN",
+    "LOCALIZATION_ADVANTAGE != SCIENTIFIC_OPERATOR_PROMOTION",
+    "FROZEN_CLASSIFIER != INDEPENDENT_EXTERNAL_CLASSIFIER"
+  ],
+  "next_test": "Replace suffix-level replication with multiple structurally distinct mutation recipes per stage, include unseen defect subtypes and multi-defect collisions, and score hierarchical stage localization separately from exact-subtype localization under leave-one-recipe-family-out evaluation. Treat recipe family, not row count, as the primary independence unit.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "external_empirical_validation": false,
+    "iid_population_inference": false,
+    "deployed_llm_architecture_inference": false,
+    "externality_inference": false,
+    "monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}

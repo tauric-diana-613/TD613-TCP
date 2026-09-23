@@ -1,0 +1,132 @@
+{
+  "schema": "td613.eclipse-omega-source-bound-stage-collapse/v0.8",
+  "date": "2026-09-14",
+  "state": "SOURCE_BOUND_REPOSITORY_EPISODE_ASSAY_ZERO_NOVELTY_PROMOTION",
+  "question": "Which repository stage boundaries earn independent operator status under source-bound intervention, observability, localization, held-out consequence, or formal-invariant tests, and which collapse to implementation or receipt scaffolding?",
+  "source_ref": "PR_1125_BRANCH_AT_V08_AUTHORING",
+  "source_surfaces": [
+    "app/engine/aperture-v32-typed-epistemic-deficit.js",
+    "app/dome-world/previews/a15-r0/aperture-pedagogue-conditioning-widening.js",
+    "app/dome-world/previews/a15-r0/aperture-pedagogue-correlated-noise-geometry.js",
+    "app/dome-world/previews/a15-r0/aperture-pedagogue-replay-envelope-consequence.js"
+  ],
+  "retention_criteria": [
+    "TYPE_SAFETY",
+    "INDEPENDENT_INTERVENTION",
+    "INTERMEDIATE_OBSERVABILITY",
+    "HELD_OUT_PREDICTION_OR_CONSEQUENCE",
+    "DIAGNOSTIC_LOCALIZATION",
+    "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE"
+  ],
+  "boundary_scores": [
+    {
+      "id": "TYPED_DEFICIT_CLASSIFIER_TO_AUDIT_RECEIPT",
+      "from": "classifyTypedEpistemicDeficit",
+      "to": "auditTypedEpistemicDeficit",
+      "source_surface": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "terminal_behavior_equal_across_declared_fixture_family": true,
+      "criteria": {
+        "TYPE_SAFETY": false,
+        "INDEPENDENT_INTERVENTION": false,
+        "INTERMEDIATE_OBSERVABILITY": false,
+        "HELD_OUT_PREDICTION_OR_CONSEQUENCE": false,
+        "DIAGNOSTIC_LOCALIZATION": false,
+        "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE": false
+      },
+      "earned_scientific_boundary_score": 0,
+      "status": "COLLAPSE_AS_INDEPENDENT_SCIENTIFIC_OPERATOR_RETAIN_AS_AUDIT_RECEIPT_BOUNDARY",
+      "bounded_result": "The audit wrapper adds provenance, policy, and presentation metadata but preserves the classifier's deficit class and disposition across the declared fixture family; receipt scaffolding is not a second epistemic operator."
+    },
+    {
+      "id": "SINGULAR_VALUE_POSTURE_TO_TYPED_DEFICIT_AUDIT",
+      "from": "singularValuePosture2",
+      "to": "auditTypedEpistemicDeficit",
+      "source_surfaces": [
+        "app/dome-world/previews/a15-r0/aperture-pedagogue-conditioning-widening.js",
+        "app/engine/aperture-v32-typed-epistemic-deficit.js"
+      ],
+      "terminal_behavior_equal_under_threshold_intervention": false,
+      "stage_local_witness": "sigma_min_and_condition_number_remain_fixed_while_declared_threshold_intervention_changes_deficit_class_and_disposition",
+      "criteria": {
+        "TYPE_SAFETY": false,
+        "INDEPENDENT_INTERVENTION": true,
+        "INTERMEDIATE_OBSERVABILITY": true,
+        "HELD_OUT_PREDICTION_OR_CONSEQUENCE": false,
+        "DIAGNOSTIC_LOCALIZATION": true,
+        "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE": false
+      },
+      "earned_scientific_boundary_score": 3,
+      "status": "RETAIN_BOUNDED_STAGE_BOUNDARY",
+      "bounded_result": "Measurement geometry and threshold policy remain independently manipulable and observable; collapsing them would erase whether a changed disposition came from the operator posture or the declared audit threshold."
+    },
+    {
+      "id": "NOISE_GEOMETRY_VALIDITY_TO_WIDENING_SELECTION",
+      "from": "classifyCovariance2/evaluateCorrelatedNoiseCandidate",
+      "to": "selectCorrelatedNoiseWidening",
+      "source_surface": "app/dome-world/previews/a15-r0/aperture-pedagogue-correlated-noise-geometry.js",
+      "terminal_null_selection_equal_across_failure_worlds": true,
+      "stage_local_witness": "invalid_covariance_and_missing_covariance_worlds_both_select_null_but_emit_distinct_status_and_probe_localization",
+      "criteria": {
+        "TYPE_SAFETY": true,
+        "INDEPENDENT_INTERVENTION": false,
+        "INTERMEDIATE_OBSERVABILITY": true,
+        "HELD_OUT_PREDICTION_OR_CONSEQUENCE": false,
+        "DIAGNOSTIC_LOCALIZATION": true,
+        "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE": false
+      },
+      "earned_scientific_boundary_score": 3,
+      "status": "RETAIN_BOUNDED_STAGE_BOUNDARY",
+      "bounded_result": "A null selection terminal cannot identify whether joint-noise geometry was invalid or merely unresolved; typed stage-local geometry status preserves the fault class."
+    },
+    {
+      "id": "QUESTION_SELECTION_TO_HELD_OUT_CONSEQUENCE_AUDIT",
+      "from": "selectCorrelatedNoiseWidening",
+      "to": "runAperturePedagogueReplayEnvelopeConsequenceAssay/held_out_consequence",
+      "source_surfaces": [
+        "app/dome-world/previews/a15-r0/aperture-pedagogue-correlated-noise-geometry.js",
+        "app/dome-world/previews/a15-r0/aperture-pedagogue-replay-envelope-consequence.js"
+      ],
+      "selection_is_held_out_validation": false,
+      "stage_local_witness": "selection_flips_at_a_bounded_policy_boundary_while_candidate_consequence_surfaces_remain_locally_smooth_and_held_out_functionals_have_mixed_winners",
+      "criteria": {
+        "TYPE_SAFETY": false,
+        "INDEPENDENT_INTERVENTION": false,
+        "INTERMEDIATE_OBSERVABILITY": true,
+        "HELD_OUT_PREDICTION_OR_CONSEQUENCE": true,
+        "DIAGNOSTIC_LOCALIZATION": true,
+        "FORMAL_INVARIANT_LOST_UNDER_COLLAPSE": false
+      },
+      "earned_scientific_boundary_score": 3,
+      "status": "RETAIN_BOUNDED_STAGE_BOUNDARY",
+      "bounded_result": "The selection criterion and downstream consequence audit answer different questions; collapsing them would launder one local selection rule into a universal validation claim."
+    }
+  ],
+  "counts": {
+    "boundaries_examined": 4,
+    "retained_bounded_stage_boundaries": 3,
+    "collapsed_independent_scientific_operators": 1,
+    "audit_or_receipt_boundaries_retained_without_operator_promotion": 1
+  },
+  "laws": [
+    "AUDIT_WRAPPER != INDEPENDENT_EPISTEMIC_OPERATOR",
+    "RECEIPT_BOUNDARY != SCIENTIFIC_STAGE_BOUNDARY",
+    "FIXED_OPERATOR_POSTURE + THRESHOLD_INTERVENTION_CAN_CHANGE_DISPOSITION",
+    "NULL_SELECTION != UNIQUE_FAILURE_CAUSE",
+    "INVALID_GEOMETRY != MISSING_GEOMETRY",
+    "QUESTION_SELECTION != HELD_OUT_VALIDATION",
+    "POLICY_BOUNDARY != PERFORMANCE_CLIFF",
+    "SOURCE_BOUND_STAGE_VALUE != FIELD_NOVELTY"
+  ],
+  "verdict": "SOURCE_BOUND_REPOSITORY_EPISODES_SUPPORT_SELECTIVE_STAGE_RETENTION_NOT_NAMED_STAGE_PRESUMPTION",
+  "next_test": "Repeat the same collapse/retention scoring on a second independent repository family or a source-bound retrieval episode. Do not generalize the A15-R0 synthetic instrumentation result into deployed-LLM architecture without an independent empirical witness.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "deployed_llm_architecture_inferred": false,
+    "external_monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}
