@@ -552,7 +552,7 @@ jobs:
              '04-RECEIPTS/phase2/', '05-OPERATIONS/phase2/',
              '05-OPERATIONS/relations/typed-edges.jsonl',
              '07-ARCHIVE-LEDGER/syncs/')
-          raw=subprocess.check_output(['git','status','--porcelain=v1','-z'])
+          raw=subprocess.check_output(['git','status','--porcelain=v1','-z','--untracked-files=all'])
           paths=[line[3:] for line in raw.decode('utf8',errors='surrogateescape').split('\0') if line]
           bad=[p for p in paths if not p.startswith(prefix) or not p[len(prefix):].startswith(allowed)]
           if bad:raise SystemExit('WENDBINE_WRITE_MEMBRANE_VIOLATION:'+repr(bad))
