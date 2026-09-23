@@ -974,10 +974,13 @@ export default async function handler(req, res) {
   let structuralRepairSpent = false;
   let sharedRateRetrySpent = false;
   let incompleteFallback = null;
-  const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(text, output, {
-    streamed: result.streamed, parseErrors: result.parseErrors,
-    creative: discourseMode === 'CREATIVE'
-  });
+  const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
+    // Natural text and legacy JSON envelopes must use the same visible response.
+    // JSON's closing brace is NOT a completion witness for its contained prose.
+    parseRelayEnvelope(text, { apertureReceipt }).transcript,
+    output, { streamed: result.streamed, parseErrors: result.parseErrors,
+      creative: discourseMode === 'CREATIVE' }
+  );
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
