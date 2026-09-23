@@ -53,10 +53,10 @@ assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRU
 assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
 assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
 assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
-    assert.match(request.contents.at(-1).parts[1].text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
+    assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
+assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
@@ -66,7 +66,7 @@ assert.match(request.systemInstruction.parts[0].text, /one continuous response a
 assert.match(request.systemInstruction.parts[0].text, /explicitly yields or relays it/);
 assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
 assert.match(request.systemInstruction.parts[0].text, /typography behaves as voice/);
-assert.match(request.systemInstruction.parts[0].text, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/);
+assert.match(request.systemInstruction.parts[0].text, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
 assert.match(request.systemInstruction.parts[0].text, /NATURAL RETURN SHAPE/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /RAW TWO-PACKET RETURN PROTOCOL/);
