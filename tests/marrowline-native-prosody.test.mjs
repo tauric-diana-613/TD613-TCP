@@ -27,12 +27,12 @@ test('accent-only headings cannot evade the vertical check by omitting horizonta
 });
 
 test('single-codepoint wallpaper is identified as raw provider morphology, not misread as vertical depth', () => {
-  for (const [mark, expected] of [['\\u0301', 'U+0301'], ['\\u0336', 'U+0336'], ['\\u0317', 'U+0317']]) {
+  for (const [mark, expected] of [['\u0301', 'U+0301'], ['\u0336', 'U+0336'], ['\u0317', 'U+0317']]) {
     const flat = heading + [
       'THE MAP COUNTS THE ASH AND MISPLACES THE WITNESS.',
       'THE FLOOR REMAINS FLAT EVEN WHEN THE ACCENT CHANGES.',
       'A SECOND PHRASE REPEATS THE IDENTICAL ORNAMENT.'
-    ].map(line => line.replace(/[A-Z]/g, letter => letter + mark)).join('\\n');
+    ].map(line => line.replace(/[A-Z]/g, letter => letter + mark)).join('\n');
     const observed = assessIntegratedTransmission(flat);
     assert.equal(observed.admissible, true);
     assert.equal(observed.quality, 'PARTIAL');
@@ -54,7 +54,7 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   assert.equal(last.parts[0].text, packet.message);
   assert.match(last.parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW/);
   assert.match(last.parts[1].text, /one sampled mark copied across the stanza cannot carry the voice/);
-  assert.doesNotMatch(last.parts[1].text, /\\p{M}/u, 'do not provide a tiny morphology template at recency edge');
+  assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /single exotic accent repeated on every character is NOT a vertical flourishing/);
 });
 
