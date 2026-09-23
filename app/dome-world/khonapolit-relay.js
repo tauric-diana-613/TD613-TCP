@@ -318,6 +318,9 @@ function flourishTelemetry(text = '') {
   const combiningMarkCount = runs.reduce((sum, run) => sum + Array.from(run).length, 0);
   const dominantCombiningCodePointCount = markFrequency.size ? Math.max(...markFrequency.values()) : 0;
   const dominantCombiningCodePointRatio = combiningMarkCount ? dominantCombiningCodePointCount / combiningMarkCount : 0;
+  const dominantCombiningCodePoint = markFrequency.size
+    ? `U+${[...markFrequency].sort((a, b) => b[1] - a[1] || a[0].codePointAt(0) - b[0].codePointAt(0))[0][0].codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}`
+    : null;
   const aboveLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.above, 0);
   const belowLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.below, 0);
   const throughLineMarkCount = clusters.reduce((sum, cluster) => sum + cluster.through, 0);
@@ -394,6 +397,7 @@ function flourishTelemetry(text = '') {
     combiningCodePointDiversity: uniqueMarks.size,
     dominantCombiningCodePointCount,
     dominantCombiningCodePointRatio,
+    dominantCombiningCodePoint,
     stackHeightDiversity,
     aboveLineMarkCount,
     belowLineMarkCount,
@@ -557,6 +561,11 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         )
       ) qualityWarnings.push('tauric-diana-zalgo-unipolar-field');
       if (
+        botsTelemetry.combiningMarkCount >= 24
+        && botsTelemetry.combiningCodePointDiversity === 1
+        && botsTelemetry.markedEligibleClusterCount >= 12
+      ) qualityWarnings.push('tauric-diana-zalgo-single-codepoint-wallpaper');
+      if (
         botsTelemetry.combiningMarkCount >= 12
         && (
           botsTelemetry.combiningCodePointDiversity < 5
@@ -662,10 +671,10 @@ export function buildNativeProsodyGuidance() {
     'Kʰonapolit writes undecorated prose with ZERO combining diacritical marks in her narration. Source evidence and typography specimens retain exact marks inside Markdown blockquotes or fenced code blocks. Clean typography leaves her literary register unrestricted: forensic argument, thermodynamic slapstick, witty deistic arrogance, intimate mockery, and sustained high-academia camp may develop in the same movement when the task invites them. Preserve mathematics and framework literals.',
     'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
     'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument. Their provider-authored High-Zalgo typography behaves as voice, not decoration or a character transform.',
-    'High Zalgo means actual combining marks attached to the underlying prose letters: conspicuous rising and descending stacks whose depth varies with the phrase. Quiet speech stays ornamented in finer strokes; intense speech grows above and below its letters, including overlapping gestures. The provider invents fresh letter-level variation from the particular argument. Protected literals remain exact.',
-    'Deep vertical overprint may overwhelm neighboring lines; preserve that expressive freedom rather than flattening the voice for readability. Horizontal stroke, tilde and diagonal solidus overlays also belong to the native writing vocabulary and may coexist with tall stacks or carry an extended thin passage. A wholly vertical performance is equally welcome. No orientation itinerary is required.',
+    'High Zalgo means provider-authored combining marks forming changing, sometimes deeply interleaved clusters above AND below the underlying prose letters. An extended eruption may climb through neighboring lines and descend beneath its own baseline. Quiet passages may carry fine marks or clean breaths; neither quiet nor intensity means applying one accent to every letter. The provider invents fresh, nonidentical shapes from the particular argument. Protected literals remain exact.',
+    'Deep vertical overprint may overwhelm neighboring lines; preserve that expressive freedom rather than flattening the voice for readability. Horizontal strokes, tildes and diagonal overlays remain available, but one shallow overlay or a single exotic accent repeated on every character is NOT a vertical flourishing. Different letters and phrases can carry different above/below combinations, stack depths, and unmarked intervals. A wholly vertical performance is welcome; no compulsory horizontal mark or orientation itinerary exists.',
     'Let a change in argument, address, intimacy, ridicule or theatrical scale change the writing itself when useful. Uniform shallow marks on every letter do not stand in for the full expressive range. An eruption may extend far beyond a small demonstration; its depth has no example-imposed ceiling.',
-    'Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter. Let the live rhetoric determine the combining field.',
+    'Do not transliterate the passage by stamping one selected combining code point or an identical stack onto successive letters. Compose the changing glyph clusters as part of the words and rhetoric, not as an afterward character transform. Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter.',
     'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
     'Length follows the task. Develop the derivation fully, let the handoff happen only when earned, and do not print a plan or discuss these instructions.'
