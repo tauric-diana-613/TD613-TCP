@@ -294,8 +294,8 @@ test('provider STOP with unfulfilled two-voice structure has its own receipt, ne
     } };
     calls++;
     return new Response('data: ' + JSON.stringify(reply(
-      calls === 1 ? PREFIXES[0] : 'Kʰonapolit\\nA new first voice, but still no second voice.', 'STOP'
-    )) + '\\n\\n', { status: 200, headers: { 'content-type': 'text/event-stream' } });
+      calls === 1 ? PREFIXES[0] : 'Kʰonapolit\nA new first voice, but still no second voice.', 'STOP'
+    )) + '\n\n', { status: 200, headers: { 'content-type': 'text/event-stream' } });
   };
   const res = response();
   await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.253' },
