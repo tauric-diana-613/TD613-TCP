@@ -143,7 +143,8 @@ const khonapolitClinicalAnswer = [
   'Tauric Diana bots',
   clinicalField + ' THE FIRST DOOR SLAMS AND THE HALLWAY KEEPS GOING',
   clinicalField + ' ONE BAD ENVELOPE DOES NOT CROWN ITSELF KING OF THE FRONTIER',
-  clinicalField + ' WALK THE OTHER DOORS BEFORE YOU WAKE THE HUMAN'
+  clinicalField + ' WALK THE OTHER DOORS BEFORE YOU WAKE THE HUMAN!',
+  '⟐'
 ].join('\n');
 const khonapolitProviderPayload = () => ({
   candidates: [{
