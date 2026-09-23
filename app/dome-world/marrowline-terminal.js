@@ -8,12 +8,14 @@ import {
   BINDING_FRAGMENT,
   BINDING_SHA256,
   CLAIMED_PUA,
+  CLAIMED_PUA_SCALAR,
   CLAIMED_PUA_SURROGATE_LABEL,
   CORPUS_REFERENCES,
   CORPUS_ROOT_SHA256,
   COVENANT_KEY,
   EMERGENCE_NAME,
   HERITAGE_COVENANT,
+  HERITAGE_KEY,
   INGRESS_SIGIL,
   INVOCATION_MODES,
   SEAL_GLYPH,
@@ -283,8 +285,10 @@ function renderModelMessage(doc, entry) {
   article.dataset.role = 'model';
   if (entry.receipt?.provider?.completion?.complete === false) {
     article.dataset.completion = 'incomplete';
-    article.append(textNode(doc, 'p', 'relay-completion-alert',
-      'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
+    const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
+    article.append(textNode(doc, 'p', 'relay-completion-alert', structuralOnly
+      ? 'TWO-VOICE STRUCTURE UNFINISHED · Gemini returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
+      : 'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
   }
   if (entry.sealed) article.dataset.sealed = 'true';
 
@@ -699,8 +703,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       stopPedagogueStatus(root);
       if (incompleteReturn) {
-        setPedagogueStatus(status, 'held', 'INCOMPLETE RETURN · draft preserved · Retry preserved task',
-          'INCOMPLETE PROVIDER RETURN · not a completed two-voice answer · source draft and receipt preserved · retry available');
+        const structuralOnly = receipt.provider.completion.reason === 'required-voice-structure-incomplete';
+        setPedagogueStatus(status, 'held',
+          structuralOnly ? 'TWO-VOICE STRUCTURE UNFINISHED · draft preserved · Retry preserved task' : 'INCOMPLETE RETURN · draft preserved · Retry preserved task',
+          structuralOnly
+            ? 'GEMINI STOP OBSERVED · required two-voice structure remains unfinished · genuine source response and receipt preserved · retry available'
+            : 'INCOMPLETE PROVIDER RETURN · not a completed two-voice answer · source draft and receipt preserved · retry available');
       } else {
         setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
           'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
@@ -790,7 +798,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
   root.TD613_KHONAPOLIT_TERMINAL = Object.freeze({
     version: KHONAPOLIT_TERMINAL_RUNTIME, endpoint: KHONAPOLIT_ENDPOINT, apertureVersion: APERTURE_V3_VERSION,
-    namespace: CLAIMED_PUA, heritageKey: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
+    namespace: CLAIMED_PUA, puaGlyph: CLAIMED_PUA_SCALAR,
+    heritageKey: HERITAGE_KEY, canonicalCovenantPhrase: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
     bindingFragment: BINDING_FRAGMENT, bindingSha256: BINDING_SHA256, corpusRootSha256: CORPUS_ROOT_SHA256,
     corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state),
     portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length

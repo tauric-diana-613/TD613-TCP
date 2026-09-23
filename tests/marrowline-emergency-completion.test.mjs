@@ -4,6 +4,9 @@ import { readFileSync } from 'node:fs';
 import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest } from '../server/khonapolit-quality.js';
+import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
 } from '../server/marrowline-completion.js';
@@ -55,6 +58,8 @@ test('incomplete-return warning is a visible mobile-and-desktop surface without 
   const css = readFileSync(new URL('../app/dome-world/marrowline-mobile-shell.css', import.meta.url), 'utf8');
   assert.match(terminal, /relay-completion-alert/);
   assert.match(terminal, /INCOMPLETE PROVIDER RETURN/);
+  assert.match(terminal, /TWO-VOICE STRUCTURE UNFINISHED/);
+  assert.match(terminal, /required-voice-structure-incomplete/);
   assert.match(terminal, /state\.pendingTask = incompleteReturn \? message : ''/);
   assert.match(css, /\.relay-message\[data-completion="incomplete"\] \.relay-completion-alert/);
   assert.doesNotMatch(css, /relay-completion-alert\{[^}]*overflow:\s*hidden/s);
@@ -171,7 +176,9 @@ test('incomplete provider prose stays visibly incomplete when recovery fails, ne
   assert.equal(res.statusCode, 200, 'human can retain the actual failed draft');
   assert.equal(res.payload.receipt.provider.completion.complete, false);
   assert.equal(res.headers['X-TD613-Completion-State'], 'INCOMPLETE');
-  assert.equal(res.payload.text, PREFIXES[1]);
+  assert.ok(res.payload.text.startsWith(PREFIXES[1]));
+  assert.ok(res.payload.text.length > PREFIXES[1].length, 'even failed recovered tails stay visible rather than reverting to the earliest fragment');
+  assert.equal(res.payload.receipt.provider.attempts.length, 6);
   assert.ok(res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
 });
 
@@ -185,4 +192,121 @@ test('the artistic reference is not reduced to a word quota or pasted Unicode fi
   assert.match(source, /no.*identical stack per letter/i);
   assert.doesNotMatch(source, /return .*\.slice\(0,\s*(?:5000|6000)\)/);
   assert.doesNotMatch(source, /3\.1.pro|runProProbe/i);
+});
+
+test('every original, repair and attachment Gemini envelope carries distinct keys and rendered PUA', () => {
+  const packet = buildInvocationPacket({ message: 'Trace this question without replacing my words.', waiveIssuance: true });
+  const attach = { id: 'anchor_note', name: 'note.txt', kind: 'file', mime_type: 'text/plain',
+    size_bytes: 4, data_base64: Buffer.from('note').toString('base64') };
+  const original = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.8-flash',
+    PREFIXES[1], ['provider-return-unfinished']);
+  const attachment = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [attach]);
+  const attachmentRepair = buildAttachmentGeminiTerminalRepairRequest(packet, {}, 'gemini-3.8-flash',
+    [attach], PREFIXES[1], ['tauric-diana-bots-nominative-missing']);
+  const receipt = buildTerminalReceipt({ packet, text: 'Kʰonapolit\nArgument.', model: 'gemini-3.8-flash', providerStatus: 200 });
+  assert.equal(receipt.invocation.heritageKey, HERITAGE_KEY);
+  assert.equal(receipt.invocation.canonicalCovenantPhrase, HERITAGE_COVENANT);
+  assert.equal(receipt.invocation.puaGlyph, CLAIMED_PUA_SCALAR);
+  assert.equal(receipt.invocation.covenantKey, COVENANT_KEY);
+  for (const [kind, request] of [['original', original], ['repair', repair], ['attachment', attachment],
+    ['attachment-repair', attachmentRepair]]) {
+    const wire = serializeGeminiRequest(request, 'gemini-3.8-flash').body;
+    const admitted = JSON.parse(wire);
+    const system = admitted.systemInstruction.parts[0].text;
+    const cue = admitted.contents[0].parts.at(-1).text;
+    assert.ok(system.includes('HERITAGE KEY: ' + HERITAGE_KEY), kind);
+    assert.ok(system.includes('CANONICAL COVENANT PHRASE: ' + HERITAGE_COVENANT), kind);
+    assert.ok(system.includes('COVENANT KEY: ' + COVENANT_KEY), kind);
+    assert.ok(system.includes('NAMESPACE: U+10D613'), kind);
+    assert.ok(system.includes('UTF-16 REFERENCE: \\uDBF5\\uDE13'), kind);
+    assert.ok(system.includes('PUA GLYPH: ' + CLAIMED_PUA_SCALAR), kind);
+    assert.ok(cue.includes('HERITAGE KEY ' + HERITAGE_KEY), kind);
+    assert.ok(cue.includes('COVENANT KEY ' + COVENANT_KEY), kind);
+    assert.ok(cue.includes('RENDERED PUA GLYPH ' + CLAIMED_PUA_SCALAR), kind);
+    assert.ok(wire.includes(CLAIMED_PUA_SCALAR), kind + ': actual glyph survives UTF-8 wire serialization');
+    assert.equal(admitted.contents[0].parts[0].text, packet.message, kind + ': operator text remains unchanged');
+  }
+});
+
+test('two genuinely truncated same-seat tails retain each byte and complete after the third STOP', async t => {
+  const originalFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    clearGeminiModelState();
+  });
+  process.env.GEMINI_API_KEY = 'synthetic-tail-chain-test-key';
+  clearGeminiModelState();
+  const seen = [];
+  const first = PREFIXES[1];
+  const second = ' the ledger';
+  const third = ' has no defined denominator.\n\n' + CHORUS;
+  const steps = [
+    { text: first, finishReason: 'MAX_TOKENS' },
+    { text: second, finishReason: 'MAX_TOKENS' },
+    { text: third, finishReason: 'STOP' }
+  ];
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('/models?')) return { ok: true, status: 200, async json() {
+      return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
+    } };
+    seen.push(JSON.parse(options.body));
+    const next = steps.shift();
+    assert.ok(next, 'bounded provider recovery cannot spend an unexpected call');
+    return new Response('data: ' + JSON.stringify(reply(next.text, next.finishReason)) + '\n\n',
+      { status: 200, headers: { 'content-type': 'text/event-stream' } });
+  };
+  const res = response();
+  await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.251' },
+    body: { message: HEADS[1], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(steps.length, 0);
+  assert.equal(seen.length, 3);
+  assert.equal(seen[1].contents.at(-2).parts[0].text, first);
+  assert.equal(seen[2].contents.at(-2).parts[0].text, first + second);
+  assert.equal(res.payload.text, first + second + third);
+  assert.equal(res.payload.receipt.provider.completion.complete, true);
+  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments.length, 2);
+  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments[1].originalPreserved, true);
+  assert.equal(res.payload.receipt.provider.attempts[1].completion.complete, false);
+  assert.equal(res.payload.receipt.provider.attempts[2].completion.complete, true);
+  assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
+});
+
+test('provider STOP with unfulfilled two-voice structure has its own receipt, never a false transport truncation', async t => {
+  const priorFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  t.after(() => {
+    globalThis.fetch = priorFetch;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    clearGeminiModelState();
+  });
+  process.env.GEMINI_API_KEY = 'synthetic-structure-test-key';
+  clearGeminiModelState();
+  let calls = 0;
+  globalThis.fetch = async url => {
+    if (String(url).includes('/models?')) return { ok: true, status: 200, async json() {
+      return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
+    } };
+    calls++;
+    return new Response('data: ' + JSON.stringify(reply(
+      calls === 1 ? PREFIXES[0] : 'Kʰonapolit\nA new first voice, but still no second voice.', 'STOP'
+    )) + '\n\n', { status: 200, headers: { 'content-type': 'text/event-stream' } });
+  };
+  const res = response();
+  await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.253' },
+    body: { message: HEADS[0], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
+  assert.equal(res.statusCode, 200, JSON.stringify({ payload: res.payload, calls }));
+  assert.equal(res.payload.receipt.provider.completion.finishReason, 'STOP');
+  assert.equal(res.payload.receipt.provider.completion.reason, 'required-voice-structure-incomplete');
+  assert.equal(res.payload.receipt.status, 'MODEL_STRUCTURE_INCOMPLETE');
+  assert.match(res.payload.relay.signal.notes, /Provider STOP witnessed; mandatory two-voice structure remains incomplete/);
+  assert.equal(res.headers['X-TD613-Completion-State'], 'STRUCTURE-INCOMPLETE');
+  assert.ok(res.payload.warnings.includes('two-voice-structure-incomplete-provider-stop-observed'));
+  assert.ok(!res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
+  assert.equal(res.payload.text, PREFIXES[0]);
 });
