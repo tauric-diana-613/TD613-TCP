@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "td613-amari-patch/v1",
+  "patchId": "src-connector-readability-v1",
+  "intent": "Make SRC corpus content resolution archive-first and connector-readable without exposing private body paths or weakening rights/custody boundaries.",
+  "scope": "SRC query and connector interface only on amari/src-codex-spine-next-session; no source-body mutation, no canon promotion, no merge.",
+  "risk": "medium",
+  "files": [
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/CONNECTOR_ENTRY.md",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/phase2/interface-registry.json",
+    "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py",
+    "tests/src-connector-readability.test.mjs"
+  ],
+  "operations": [
+    {
+      "type": "manual-diff",
+      "path": "packages/dome_world_exact/fixtures/a15-r0/SRC/CONNECTOR_ENTRY.md",
+      "summary": "Add an archive-first connector readability contract with direct-derivative, DOI-linked, exact-title, and explicit blocker states; forbid search-engine fallback before archive resolution."
+    },
+    {
+      "type": "manual-diff",
+      "path": "packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/phase2/interface-registry.json",
+      "summary": "Register connector-readability as a first-class interface with typed readability states."
+    },
+    {
+      "type": "manual-diff",
+      "path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py",
+      "summary": "Add a seal-pinned read command that resolves direct derivatives first, then explicit Substack DOI links, then normalized-title-exact sibling derivatives, otherwise returns an exact human-gated or missing-derivative blocker."
+    },
+    {
+      "type": "note",
+      "summary": "Add a targeted boundary test for connector readability semantics and Python syntax."
+    }
+  ],
+  "tests": [
+    "node --test tests/src-connector-readability.test.mjs",
+    "python3 -m py_compile packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py",
+    "node --test tests/src-atelier-boundary.test.mjs"
+  ],
+  "anchors": [
+    "SRC/CONNECTOR_ENTRY.md :: Resolution path",
+    "SRC/99-ADMIN/srcquery.py :: resolve/trace query surface",
+    "SRC/01-MANIFESTS/phase2/interface-registry.json :: interfaces"
+  ],
+  "evidenceIds": [
+    "capture:630d6de9f39d854f58fb54b1",
+    "src-private-locator:0e6dffda5dc4fb73d926e097",
+    "capture:cb7f0af583ff9eaa3dedd894",
+    "src-private-locator:aa53e03a7cc7c26b0c4daf92"
+  ],
+  "claimCeiling": "This patch improves retrieval and typed blocker reporting. It does not disclose private capture paths, grant redistribution rights, establish fuzzy work identity, prove search-engine suppression, establish CODEX_B ordinals, or promote any SRC claim into TD613 science.",
+  "rollbackConditions": [
+    "Any private body path becomes publicly disclosed.",
+    "Fuzzy-title matching is used as an automatic body substitution.",
+    "Seal epoch checks are bypassed.",
+    "A public formal capture without a derivative silently falls back to metadata or web search.",
+    "Targeted readability or boundary tests fail."
+  ]
+}

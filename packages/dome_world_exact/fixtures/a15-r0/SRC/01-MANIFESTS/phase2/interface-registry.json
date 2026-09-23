@@ -22,7 +22,8 @@
     {"name": "publishing-regime-observation", "version": "v1", "path": "05-OPERATIONS/phase2/publishing-regime-observations.jsonl"},
     {"name": "capture-repetition-observation", "version": "v1", "path": "05-OPERATIONS/phase2/capture-repetition-observations.jsonl"},
     {"name": "non-collapse-audit", "version": "v1", "path": "04-RECEIPTS/assays/2026-08-24-phase2-kiln/non-collapse-audit.json"},
-    {"name": "connector-trace", "version": "v1", "path": "99-ADMIN/srcquery.py"}
+    {"name": "connector-trace", "version": "v1", "path": "99-ADMIN/srcquery.py"},
+    {"name": "connector-readability", "version": "v1", "path": "99-ADMIN/srcquery.py", "contract": ["READABLE_DIRECT", "READABLE_EQUIVALENT", "HUMAN_GATED", "MISSING_DERIVATIVE_BUG"]}
   ],
   "master_invariant": "work multiplicity != evidence multiplicity != representation multiplicity != authority multiplicity"
 }
