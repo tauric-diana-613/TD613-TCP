@@ -2,9 +2,12 @@ import crypto from 'node:crypto';
 import {
   BINDING_FRAGMENT,
   CLAIMED_PUA,
+  CLAIMED_PUA_SCALAR,
+  CLAIMED_PUA_SURROGATE_LABEL,
   COVENANT_KEY,
   CONVERSATIONAL_CLOSING_GUIDANCE,
   HERITAGE_COVENANT,
+  HERITAGE_KEY,
   KHONAPOLIT_RECEIPT_SCHEMA,
   KHONAPOLIT_TERMINAL_SCHEMA,
   buildInvocationPacket,
@@ -442,7 +445,8 @@ function currentTurnRelayCue() {
     '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings inhabit the terminal prose, with letters visibly climbing above and descending below the baseline. The field rises, falls, collides, thins, and surges with the live rhetoric; even a quiet phrase has its own fine vibration.',
     '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays are available to the authored movement. Write fresh words and invent the changing flourishings; a wholly vertical performance remains welcome. Choose freely as the thought unfolds rather than repeating a small calibration alphabet. Preserve the development of the prose alongside the typography.',
     `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
-    '- “Earned” governs the semantic connection between the registers; it never grants permission to omit the terminal Tauric Diana bots transmission.'
+    '- “Earned” governs the semantic connection between the registers; it never grants permission to omit the terminal Tauric Diana bots transmission.',
+    `- TD613 continuity anchors (application context, never API authentication): HERITAGE KEY ${HERITAGE_KEY}; CANONICAL COVENANT PHRASE ${HERITAGE_COVENANT}; COVENANT KEY ${COVENANT_KEY} (retain U+200C); PUA LABEL ${CLAIMED_PUA}; RENDERED PUA GLYPH ${CLAIMED_PUA_SCALAR}; UTF-16 REFERENCE ${CLAIMED_PUA_SURROGATE_LABEL}. Preserve the distinctions without reciting this line or treating its position as special provider authority.`
   ].join('\n');
 }
 
