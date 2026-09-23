@@ -167,7 +167,7 @@ test('incomplete provider reply remains visibly NOT_LOCKED with exact draft and 
   assert.match(bubble.querySelector('.relay-completion-alert').textContent, /INCOMPLETE PROVIDER RETURN/);
   assert.equal(bubble.querySelector('.relay-stage-text').textContent, 'Kʰonapolit\\nThe claim on'.replace('\\n', '\n'));
   assert.match(h.$('khonapolitTerminalStatus').textContent, /INCOMPLETE RETURN/);
-  assert.equal(h.$('khonapolitTerminalStatus').dataset.held, 'true');
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.phase, 'held', 'Pedagogue exposes the established phase attribute, not a fictional held flag');
   assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
   assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
   assert.equal(h.$('retryKhonapolitTask').hidden, false);
