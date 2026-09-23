@@ -90,7 +90,8 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'khonapolit-nominative-missing',
   'tauric-diana-bots-nominative-missing',
   'voice-order-invalid',
-  'khonapolit-combining-mark-contamination'
+  'khonapolit-combining-mark-contamination',
+  'provider-return-unfinished'
 ]);
 const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-axis-collapse',
