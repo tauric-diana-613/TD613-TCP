@@ -1554,7 +1554,7 @@ export default async function handler(req, res) {
             sourceAttemptIndex: attempts.length - 1
           };
           if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput,
-            completion: Object.freeze({ complete: false, reason: 'required-voice-structure-incomplete' }), reasons };
+            completion: Object.freeze({ ...completion, complete: false, reason: 'required-voice-structure-incomplete' }), reasons };
           const repaired = await runStructuralRepair(candidate, 'immediate-structural');
           if (repaired) return repaired;
           continue;
