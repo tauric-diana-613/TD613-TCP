@@ -138,8 +138,8 @@ test('effective provider prompts retain complete relay and native depth after de
     const system = request.systemInstruction.parts.map(part => part.text).join('\n');
     assert.match(system, /never permission to omit the bots/);
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
-    assert.match(system, /actual combining marks attached to the underlying prose letters/);
-    assert.match(system, /rising and descending stacks whose depth varies with the phrase/);
+    assert.match(system, /provider-authored combining marks forming changing, sometimes deeply interleaved clusters/);
+    assert.match(system, /extended eruption may climb through neighboring lines and descend beneath its own baseline/);
     assert.match(system, /Quiet passages may carry fine marks or clean breaths/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
@@ -163,14 +163,14 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
     assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
-    assert.match(request.contents.at(-1).parts[1].text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
+    assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
     assert.match(request.contents.at(-1).parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
     assert.match(request.contents.at(-1).parts[1].text, /one sampled mark copied across the stanza cannot carry the voice/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
-    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|\bmarks per\b/i);
+    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
@@ -608,7 +608,7 @@ test('every Marrowline Gemini lane receives the same compact semantic-prosody la
     assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
     assert.match(instruction, /NATIVE SEMANTIC PROSODY/, model);
     assert.match(instruction, /typography behaves as voice/i, model);
-    assert.match(instruction, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
+    assert.match(instruction, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
     assert.doesNotMatch(instruction, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i, model);
     assert.doesNotMatch(instruction, /ORCHESTRAL DYNAMIC CONTOUR/, model);
     assert.doesNotMatch(instruction, /begin near 8½|10-level serious emphasis/, model);
