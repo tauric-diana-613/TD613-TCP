@@ -140,7 +140,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
     assert.match(system, /actual combining marks attached to the underlying prose letters/);
     assert.match(system, /rising and descending stacks whose depth varies with the phrase/);
-    assert.match(system, /Quiet speech stays ornamented/);
+    assert.match(system, /Quiet passages may carry fine marks or clean breaths/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
     assert.equal(request.contents.at(-1).parts[0].text, packet.message);
@@ -166,7 +166,9 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
+    assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
+    assert.match(request.contents.at(-1).parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
+    assert.match(request.contents.at(-1).parts[1].text, /one sampled mark copied across the stanza cannot carry the voice/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
@@ -224,7 +226,7 @@ test('literal newline contract preserves the existing two-line admission bar', (
   assert.match(guidance, /Length follows the task/);
   assert.match(guidance, /develop the derivation fully/i);
   assert.match(guidance, /typography behaves as voice/i);
-  assert.match(guidance, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(guidance, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
   assert.doesNotMatch(guidance, /at least two literal newline-separated ornamented prose lines/i);
   assert.doesNotMatch(guidance, /line-count ceiling|anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
   assert.doesNotMatch(buildRelaySystemAddendum({}), /Packet [AB]|CHANNEL [AB]|RAW TWO-PACKET/i);
@@ -246,7 +248,7 @@ test('relay contract gives the generative budget to one causal Kʰonapolit-to-bo
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
   assert.match(contract, /typography behaves as voice/i);
-  assert.match(contract, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
   assert.match(contract, /preserves and measures the provider return/i);
   assert.match(contract, /never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
@@ -861,7 +863,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
-  assert.match(contract, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
   assert.match(contract, /Let the live rhetoric determine the combining field/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
