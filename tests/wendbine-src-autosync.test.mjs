@@ -9,7 +9,7 @@ const original=(id,body,{title='Wendbine',is_self=true}={})=>({
  id,author:'Upset-Ratio502',subreddit:'Wendbine',title,selftext:body,is_self,
  created_utc:1789007267,edited:false,retrieved_on:1789007281
 });
-const old=original('1wc66e4','Literal link r/Wendbine/comments/1wc7p1y/wendbine/ and ∴ text');
+const old=original('1wc66e4','Literal link https://www.reddit.com/r/Wendbine/comments/1wc7p1y/wendbine/ and ∴ text');
 const fresh=original('1zzzzzz','A new source ∴');
 assert.equal(checkPost(old).state,'ARCHIVED_TEXT_BODY_PRESENT');
 assert.equal(checkPost({...old,author:'other'}).state,'AUTHOR_MISMATCH');
@@ -44,6 +44,12 @@ assert.equal(heldPass.audit.capture_added,0,'A removal placeholder must not beco
 
 assert.ok(first.state.relations.some(e=>e.graph==='NAVIGATIONAL'&&e.origin==='EXACT_SOURCE_URL_SPAN'));
 assert.ok(first.state.relations.every(e=>e.author_intent_claim===false));
+const hostile=checkPost(original('1wc66e4',
+ 'Foreign host https://evil.example/r/Wendbine/comments/1wc7p1y/wendbine/ and bare r/Wendbine/comments/1wc7p1y/wendbine/ are not source links.'));
+const hostilePass=compileSync({observed:[hostile],observedAt:'2026-09-22T22:03:00Z'});
+assert.equal(hostilePass.state.relations.filter(e=>e.graph==='NAVIGATIONAL').length,0,
+ 'A foreign-host path or bare prose path cannot gain EXACT_SOURCE_URL_SPAN authority.');
+
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'wendbine-src-parity-'));
 try{
  const written=writeProjection({compiled:first,outRoot:tmp,observedAt:'2026-09-22T22:00:00Z'});
