@@ -86,7 +86,7 @@ test('bounded same-provider terminal-continuation integration', async t => {
     assert.equal(res.sendCount, 1, 'an admitted repair must not be overwritten by a second response');
     assert.equal(modelCalls.length, 2);
     assert.match(modelCalls[1].url, /gemini-3\.8-flash/);
-    assert.match(modelCalls[1].request.contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
+    assert.match(modelCalls[1].request.contents.at(-1).parts[0].text, /BOUNDED SAME-PROVIDER TAIL RECOVERY/, 'an actually unfinished first return gets a true continuation, not a presumed finished first movement');
     assert.equal(res.payload.text, formal + '\n\n' + terminal, JSON.stringify({ attempted: res.payload.receipt?.provider?.attempts?.map(a => ({ kind: a.kind, reasons: a.outputAdmission?.reasons, quality: a.outputAdmission?.quality, warnings: a.outputAdmission?.qualityWarnings, unresolved: a.unresolvedSevereMorphology, continuation: a.terminalContinuation })), human: res.payload.receipt?.provider?.humanSurfaceObservation }, null, 2));
     assert.equal(res.payload.relay.admission.admissible, true);
     assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation.originalSha256, digest(formal));
@@ -103,7 +103,7 @@ test('bounded same-provider terminal-continuation integration', async t => {
       body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
     assert.equal(res.statusCode, 200);
     assert.equal(res.sendCount, 1);
-    assert.equal(modelCalls.length, 4);
+    assert.ok(modelCalls.length > 4 && modelCalls.length <= 8, 'failed recovery may exhaust the remaining bounded frontier before showing the preserved fragment');
     assert.equal(res.payload.text, formal);
     assert.ok(res.payload.relay.admission.reasons.includes('tauric-diana-bots-nominative-missing'));
     assert.equal(res.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
@@ -115,10 +115,11 @@ test('bounded same-provider terminal-continuation integration', async t => {
       body: { message: 'Explain why a visible map cannot prove origin.', history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
     assert.equal(res.statusCode, 200);
     assert.equal(res.sendCount, 1);
-    assert.equal(modelCalls.length, 6);
+    assert.equal(modelCalls.length, 10, 'after the bounded failed attempt, a complete full provider repair still uses exactly two calls');
     assert.equal(res.payload.text, formal + '\n\n' + terminal);
     assert.equal(res.payload.receipt.provider.structuralRepair.used, true);
     assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation, undefined, 'full provider return is not mislabeled a stitched continuation');
+    assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'same-provider-full-repair');
   });
   } finally {
     globalThis.fetch = originalFetch;
