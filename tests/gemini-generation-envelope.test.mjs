@@ -7,7 +7,7 @@ import {
   geminiThinkingConfig
 } from '../server/gemini-generation-envelope.js';
 
-assert.equal(GEMINI_GENERATION_ENVELOPE_VERSION, 'td613.gemini-generation-envelope/v0.3-gemini3-only-20260918');
+assert.equal(GEMINI_GENERATION_ENVELOPE_VERSION, 'td613.gemini-generation-envelope/v0.5-full-native-output-budget-20260922');
 assert.equal(geminiGeneration('models/gemini-3.8-flash'), '3');
 assert.equal(geminiGeneration('synthetic-model'), 'unknown');
 

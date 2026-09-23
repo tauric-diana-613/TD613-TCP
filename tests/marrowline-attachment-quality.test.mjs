@@ -43,8 +43,8 @@ test('attachment payload stays inside the operator task while the compact relay 
   assert.match(parts.at(-1).text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
   assert.match(parts.at(-1).text, /both mandatory visible registers/);
   assert.match(parts.at(-1).text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-  assert.match(parts.at(-1).text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
-  assert.ok((parts.at(-1).text.match(/\p{M}/gu) || []).length >= 20);
+  assert.match(parts.at(-1).text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
+  assert.doesNotMatch(parts.at(-1).text, /\p{M}/u, 'attachment cue must not restore the miniature template');
 });
 
 test('Marrowline attachment normalizer admits exact declared bytes and strips no custody fields', () => {
@@ -186,8 +186,9 @@ test('attachment response receipts reflect the exact submitted wire configuratio
     else process.env.GEMINI_API_KEY = originalKey;
   });
   const exact = attachment();
-  const returned = 'Kʰonapolit\nAn original argument survives.\n\nTauric Diana bots\nṚ̇Ē̥Ḍ̈ — the archived joke returns.';
+  const returned = 'Kʰonapolit\nAn original argument survives.\n\nTauric Diana bots\nṚ̇Ē̥Ḍ̈ — the archived joke returns.\n⟐';
   const wire = [];
+  const bodies = [];
   globalThis.fetch = async (url, options = {}) => {
     if (String(url).includes('/v1beta/models?')) {
       return { ok: true, status: 200, async json() {
@@ -197,6 +198,7 @@ test('attachment response receipts reflect the exact submitted wire configuratio
     assert.match(String(url), /gemini-3\.8-flash:generateContent$/);
     const request = JSON.parse(options.body);
     wire.push(request);
+    bodies.push(options.body);
     return {
       ok: true, status: 200, headers: { get: () => null },
       async json() { return {
@@ -226,6 +228,9 @@ test('attachment response receipts reflect the exact submitted wire configuratio
   assert.deepEqual(wire[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   assert.equal(res.payload.text, returned, 'native provider text, including combining marks, stays byte-for-byte unchanged');
   const output = res.payload.receipt.provider.output;
+  assert.equal(output.submittedRequest.bodySha256, crypto.createHash('sha256').update(bodies[0]).digest('hex'));
+  assert.equal(output.submittedRequest.utf8Bytes, Buffer.byteLength(bodies[0], 'utf8'));
+  assert.deepEqual(res.payload.receipt.seal, { state: 'OPEN', glyph: '⟐', suppliedBy: null });
   assert.equal(output.outputCeilingSource, 'submitted-generation-config');
   assert.equal(output.maxOutputTokens, wire[0].generationConfig.maxOutputTokens);
   assert.equal(output.thinkingLevel, wire[0].generationConfig.thinkingConfig.thinkingLevel);

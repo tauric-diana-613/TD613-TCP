@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { withGeminiGenerationProfile, GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE } from '../server/gemini-generation-envelope.js';
 import {
   KHONAPOLIT_RAW_PACKET_PROTOCOL,
   assessIntegratedTransmission,
@@ -17,6 +19,10 @@ import {
 import {
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
+  serializeGeminiRequest,
+  callGemini,
+  observeGeminiOutput,
+  buildTerminalReceipt,
   khonapolitTaskGuidance,
   prepareKhonapolitRepairContext,
   severeMorphologyRepairWarnings
@@ -36,6 +42,90 @@ const pageSource = readFileSync(new URL('../app/dome-world/marrowline.html', imp
 function countMarks(value = '') {
   return [...String(value).matchAll(/\p{M}/gu)].length;
 }
+
+const digest = value => createHash('sha256').update(value, 'utf8').digest('hex');
+
+test('effective request identity distinguishes omitted layers under an unchanged legacy prompt identity', () => {
+  const packet = buildInvocationPacket({ message: 'Follow the disputed premise.', waiveIssuance: true,
+    history: [{ role: 'model', text: 'Kʰonapolit\nPrior argument.\nTauric Diana bots\nH\u0338\u0301\u0316' }] });
+  const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  const legacyHash = digest(packet.systemInstruction + '\n\n' + packet.message);
+  const original = serializeGeminiRequest(request, 'gemini-3.8-flash');
+  assert.equal(original.observation.bodySha256, digest(original.body));
+  assert.equal(original.observation.utf8Bytes, Buffer.byteLength(original.body, 'utf8'));
+  assert.deepEqual(serializeGeminiRequest(structuredClone(request), 'gemini-3.8-flash'), original);
+  for (const [component, mutate] of [
+    ['systemInstruction', r => { r.systemInstruction.parts[0].text += '\nChanged relay addendum.'; }],
+    ['contents', r => { r.contents.at(-1).parts[1].text += '\nChanged current-turn cue.'; }],
+    ['contents', r => { r.contents[0].parts[0].text += '\u0337'; }],
+    ['contents', r => { r.contents.at(-1).parts.push({ inlineData: { mimeType: 'image/png', data: 'AA==' } }); }],
+    ['contents', r => { r.contents.push({ role: 'user', parts: [{ text: 'Terminal continuation repair.' }] }); }],
+    ['generationConfig', r => { r.generationConfig.thinkingConfig.thinkingLevel = 'low'; }]
+  ]) {
+    const changed = structuredClone(request);
+    mutate(changed);
+    const observed = serializeGeminiRequest(changed, 'gemini-3.8-flash').observation;
+    assert.equal(digest(packet.systemInstruction + '\n\n' + packet.message), legacyHash);
+    assert.notEqual(observed.bodySha256, original.observation.bodySha256);
+    for (const key of ['systemInstruction', 'contents', 'generationConfig']) {
+      assert.equal(observed[`${key}Sha256`] === original.observation[`${key}Sha256`], key !== component);
+    }
+  }
+  const otherModel = serializeGeminiRequest(request, 'gemini-3.7-flash').observation;
+  assert.equal(otherModel.bodySha256, original.observation.bodySha256);
+  assert.notEqual(otherModel.modelAndBodySha256, original.observation.modelAndBodySha256);
+  assert.doesNotMatch(JSON.stringify(original.observation), /Follow the disputed premise|Prior argument|Changed relay/);
+});
+
+test('interactive transport fingerprints the actual fetch body after applying the live profile', async t => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const bodies = [];
+  const native = 'Kʰonapolit\nThe inference has a cost.\n\nTauric Diana bots\nH' + '\u0301\u0316'.repeat(24) + 'A\u0338\u0334!\n⟐';
+  globalThis.fetch = async (_url, options) => {
+    bodies.push(options.body);
+    const payload = { candidates: [{ content: { parts: [{ text: native }] }, finishReason: 'STOP' }] };
+    return new Response(`data: ${JSON.stringify(payload)}\n\n`, { headers: { 'content-type': 'text/event-stream' } });
+  };
+  const packet = buildInvocationPacket({ message: 'Develop the consequence.', waiveIssuance: true,
+    history: [{ role: 'model', text: native }] });
+  for (const model of ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
+    const result = await withGeminiGenerationProfile(GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+      () => callGemini(model, packet, {}, 1000));
+    assert.equal(result.response.ok, true);
+    assert.equal(result.text, native);
+    const body = bodies.at(-1);
+    const submitted = JSON.parse(body);
+    assert.equal(submitted.generationConfig.maxOutputTokens, 65536);
+    assert.equal(submitted.generationConfig.thinkingConfig.thinkingLevel, model === 'gemini-3.8-flash' ? 'medium' : 'low');
+    assert.equal(submitted.contents[0].parts[0].text, native);
+    assert.equal(result.submittedRequestObservation.bodySha256, digest(body));
+    assert.equal(result.submittedRequestObservation.modelAndBodySha256, digest(`${model}\n${body}`));
+    const output = observeGeminiOutput(result.payload, model, result);
+    assert.deepEqual(output.submittedRequest, result.submittedRequestObservation);
+    const relay = parseRelayEnvelope(result.text, { model });
+    assert.equal(relay.transcript, native);
+    const receipt = buildTerminalReceipt({ packet, text: result.text, relay, model, providerOutput: output });
+    assert.deepEqual(receipt.seal, { state: 'OPEN', glyph: '⟐', suppliedBy: null });
+    assert.equal(receipt.provider.output.submittedRequest.bodySha256, digest(body));
+  }
+  assert.equal(bodies.length, 5);
+});
+
+test('normal, full-repair and terminal-continuation requests share conversational closure without custody authority', () => {
+  const packet = buildInvocationPacket({ message: 'Continue.', waiveIssuance: true });
+  const requests = [
+    buildGeminiRequest(packet, {}, 'gemini-3.8-flash'),
+    buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.8-flash', 'Kʰonapolit\nA completed argument.', ['tauric-diana-bots-nominative-missing']),
+    buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.8-flash', 'An unheaded argument.', ['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing'])
+  ];
+  for (const request of requests) {
+    const lastInstruction = request.contents.at(-1).parts.map(part => part.text).join('\n');
+    assert.match(lastInstruction, /End the complete correspondence with a plain ⟐ on its own final line/);
+    assert.match(lastInstruction, /state remains OPEN until the explicit operator action/);
+    assert.doesNotMatch(JSON.stringify(request), /Never append it on model authority|Never append a closing lozenge|or closing seal/);
+  }
+});
 
 test('effective provider prompts retain complete relay and native depth after deficient history', () => {
   const packet = buildInvocationPacket({
@@ -73,12 +163,12 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
     assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
-    assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
+    assert.match(request.contents.at(-1).parts[1].text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
-    assert.ok((request.contents.at(-1).parts[1].text.match(/\p{M}/gu) || []).length >= 20, 'provider sees literal quiet and eruptive combining examples');
+    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
-    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|horizontal|oblique|\bmarks per\b/i);
+    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /palette|quota|contour|crown|root|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
@@ -661,7 +751,7 @@ test('ordinary project work keeps factual guidance instead of inheriting creativ
   const receipt = buildApertureV3InvocationReceipt({ message, discourseMode, contentScanned: true });
   assert.equal(receipt.taskIntent.primary_route, 'REQUESTED_SYNTHESIS');
   const guidance = khonapolitTaskGuidance(receipt);
-  assert.match(guidance, /ORDINARY PROJECT WORK:/);
+  assert.match(guidance, /REQUESTED SYNTHESIS:/);
   assert.match(guidance, /Separate supplied facts, calculations, assumptions and missing evidence/i);
   assert.doesNotMatch(guidance, /CREATIVE TURN:/);
 });

@@ -1,0 +1,110 @@
+{
+  "schema": "td613.marrowline.operator-regression-evidence/v1",
+  "source_revision": "87a0f40ce364a83247245192f6aba61647536727",
+  "operator_verdict": "Marrowline fails the supplied Gemini expressive and developmental reference; prior assistant acceptance withdrawn for this specimen.",
+  "model_identity": "same model reported by operator; exact sample receipts unavailable",
+  "text_source": {
+    "library_file_id": "libfile_28ce46023dc88191a1e738855ee62c85",
+    "filename": "Pasted text(20260923-012924).txt",
+    "caveat": "This earlier uploaded export preserves the prose but reduces many combining-mark sequences compared with the in-chat specimens. Retained unchanged. Do not calculate whole-output native morphology or raw-token ratios from it; the five screenshots and native in-chat text govern typography."
+  },
+  "images": [
+    {
+      "original_filename": "IMG_0918(1).png",
+      "path": "01-marrowline.png",
+      "library_file_id": "libfile_9164a9e59bc481918f05a4ef45111421"
+    },
+    {
+      "original_filename": "IMG_0919.png",
+      "path": "02-gemini.png",
+      "library_file_id": "libfile_6086dc1ecfb48191a7a75104c919e88c"
+    },
+    {
+      "original_filename": "IMG_0920.png",
+      "path": "03-gemini.png",
+      "library_file_id": "libfile_a26bdad86aac8191be1d95c1fd905aac"
+    },
+    {
+      "original_filename": "IMG_0921.png",
+      "path": "04-gemini.png",
+      "library_file_id": "libfile_4a55cb2b5d188191ab4015143e2d8ffa"
+    },
+    {
+      "original_filename": "IMG_0922.png",
+      "path": "05-gemini.png",
+      "library_file_id": "libfile_003c71cb12088191998f0f12f9bf75e1"
+    }
+  ],
+  "measurement_method": "Remove Unicode category M only in an analysis copy; split on whitespace. Exclude exterior route headers and voice delimiters; retain internal headings, formulas and table tokens. Counts describe this saved text export, not provider tokens. Originals unchanged.",
+  "word_counts": {
+    "MARROWLINE": {
+      "khonapolit_whitespace_words": 420,
+      "bots_whitespace_words": 113,
+      "combined_whitespace_words": 533
+    },
+    "GEMINI": {
+      "khonapolit_whitespace_words": 970,
+      "bots_whitespace_words": 231,
+      "combined_whitespace_words": 1201
+    }
+  },
+  "gemini_to_marrowline_ratios": {
+    "khonapolit_whitespace_words": 2.3095238095238093,
+    "bots_whitespace_words": 2.0442477876106193,
+    "combined_whitespace_words": 2.2532833020637897
+  },
+  "production_mutation": false,
+  "live_provider_calls": 0,
+  "files": [
+    {
+      "path": "01-marrowline.png",
+      "bytes": 615852,
+      "sha256": "0cd71f5bbd2df12c119961c48afbafff26786ba6fe59420153da0ad8a5a63072"
+    },
+    {
+      "path": "02-gemini.png",
+      "bytes": 651508,
+      "sha256": "905e98d1168da3d005a9237e893da7b6710f161a5f15b81a5697d47ff14a5ba7"
+    },
+    {
+      "path": "03-gemini.png",
+      "bytes": 529323,
+      "sha256": "19d446b51d7437bd0b48e2b1b1c82fa0d8a25775f1bfadbe581632bd6217f6cb"
+    },
+    {
+      "path": "04-gemini.png",
+      "bytes": 595488,
+      "sha256": "101e35a1ccdad908ea5f242edf6a81d5756a70e6a015919f2f7c46351d3bddc5"
+    },
+    {
+      "path": "05-gemini.png",
+      "bytes": 275194,
+      "sha256": "c572af0fcdeff2828867023f23e53d7ebe2d6e5c3115d4559ce8c83ff4a1c17c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7959,
+      "sha256": "282a1dd91aa25b2fb2505bf14f7967c08b266fc9a6f102151a60146daeb74c67"
+    },
+    {
+      "path": "gemini-example-as-exported.txt",
+      "bytes": 11379,
+      "sha256": "09134a75a92bef0ee0b9c416b92bff04faf9e2a0cf4fbc628dd38638c2e0661f"
+    },
+    {
+      "path": "marrowline-example-as-exported.txt",
+      "bytes": 3631,
+      "sha256": "1014909c39b10c774ed289fdeacaf6e7648799b4574ddca2b9b2fd8887202e4d"
+    },
+    {
+      "path": "source-transcript-as-uploaded.txt",
+      "bytes": 16789,
+      "sha256": "dcb3971352e7aeff6e3fdfb4ebb2d2c4e4f92d6a61142f256a0d6074a2653f28"
+    },
+    {
+      "path": "verify_evidence.py",
+      "bytes": 1446,
+      "sha256": "ff4e553df097b2302eea4f7fa8ccd842af50b27703bbfa57c53633ec604dde6d"
+    }
+  ]
+}

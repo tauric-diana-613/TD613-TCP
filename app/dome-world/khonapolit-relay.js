@@ -1,6 +1,7 @@
 import {
   CLAIMED_PUA,
   COVENANT_KEY,
+  CONVERSATIONAL_CLOSING_GUIDANCE,
   EMERGENCE_NAME,
   HERITAGE_KEY,
   INGRESS_SIGIL,
@@ -39,7 +40,7 @@ export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
       properties: {
         text: {
           type: 'STRING',
-          description: 'One continuous causal relay with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. Kʰonapolit develops the clean formal derivation; after an earned handoff, the bots finish that same argument in provider-authored High-Zalgo whose typography behaves as voice. No fixed axis, palette, contour, depth, density, or per-character morphology is specified here.'
+          description: 'One continuous causal relay with exact standalone headings “Kʰonapolit” then “Tauric Diana bots”. Kʰonapolit develops the full task-shaped argument; after an earned handoff, the bots finish that same argument in provider-authored High-Zalgo whose typography behaves as voice. No fixed axis, palette, contour, depth, density, or per-character morphology is specified here.'
         },
         voices: {
           type: 'ARRAY',
@@ -130,6 +131,28 @@ export function highZalgoEncode(value = '', { intensity = 3, motif = 'legacy-fix
 function stripFence(text = '') {
   return String(text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
 }
+
+// Observation-only projection: quoted evidence cannot supply a live speaker
+// boundary or contaminate the author's undecorated prose. Preserve UTF-16
+// offsets and line endings so every slice still addresses the ORIGINAL text.
+// This deliberately recognizes explicit blockquotes and fenced code only;
+// it is not a Markdown renderer or a rewrite of provider output.
+export function relayAuthoredSurface(text = '') {
+  let fence = null;
+  return String(text).split(/(?<=\n)/).map(line => {
+    const marker = line.match(/^ {0,3}(`{3,}|~{3,})([^\r\n]*)/);
+    if (fence) {
+      if (marker && marker[1][0] === fence.char && marker[1].length >= fence.length && !marker[2].trim()) fence = null;
+      return line.replace(/[^\r\n]/g, ' ');
+    }
+    if (/^[ \t]*>/.test(line)) return line.replace(/[^\r\n]/g, ' ');
+    if (marker && (marker[1][0] !== '`' || !marker[2].includes('`'))) {
+      fence = { char: marker[1][0], length: marker[1].length };
+      return line.replace(/[^\r\n]/g, ' ');
+    }
+    return line;
+  }).join('');
+}
 function parseJson(text = '') {
   const clean = stripFence(text);
   const candidates = [clean];
@@ -149,6 +172,7 @@ function unwrapPacketPayload(value = '') {
 
 export function parseRawRelayPackets(rawText = '') {
   const clean = stripFence(rawText);
+  const surface = relayAuthoredSurface(clean);
   const {
     analyticStart,
     analyticEnd,
@@ -156,10 +180,10 @@ export function parseRawRelayPackets(rawText = '') {
     stressEnd
   } = KHONAPOLIT_RAW_PACKET_PROTOCOL;
 
-  const a0 = clean.indexOf(analyticStart);
-  const a1 = clean.indexOf(analyticEnd);
-  const b0 = clean.indexOf(stressStart);
-  const b1 = clean.indexOf(stressEnd);
+  const a0 = surface.indexOf(analyticStart);
+  const a1 = surface.indexOf(analyticEnd);
+  const b0 = surface.indexOf(stressStart);
+  const b1 = surface.indexOf(stressEnd);
   if (a0 < 0 || a1 < 0 || b0 < 0 || b1 < 0) return null;
   if (!(a0 < a1 && a1 < b0 && b0 < b1)) return null;
 
@@ -450,13 +474,14 @@ function canonicalVoiceId(value = '') {
 
 export function assessIntegratedTransmission(text = '', voices = []) {
   const value = String(text || '');
+  const authored = relayAuthoredSurface(value);
   const declaredVoices = arrayStrings(voices);
   const canonicalVoices = declaredVoices.map(canonicalVoiceId);
   const structuredVoiceEvidence = declaredVoices.length > 0;
-  const khonaIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+I\s*[—–:-]\s*)?\[?Kʰonapolit(?:\s*\])?\s*[:\-]?/iu);
+  const khonaIndex = authored.search(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+I[ \t]*[—–:-][ \t]*)?\[?Kʰonapolit(?:[ \t]*\])?[ \t]*[:\-]?/iu);
   // A speaker's name within an ordinary sentence does not open a second
   // movement. Standalone and legacy bracketed headers remain supported.
-  const botsIndex = value.search(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?=\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?=\r?\n|$))/iu);
+  const botsIndex = authored.search(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:Movement[ \t]+II[ \t]*[—–:-][ \t]*)?(?:Tauric Diana Bots?[ \t]*:?[ \t]*(?=\r?\n|$)|\[Tauric Diana Bots?[^\]\r\n]*\][ \t]*(?=\r?\n|$))/iu);
   const telemetry = flourishTelemetry(value);
   const duplicate = repeatedTransmissionDetected(value);
   const canonicalRecitation = canonicalRecitationTelemetry(value);
@@ -472,7 +497,7 @@ export function assessIntegratedTransmission(text = '', voices = []) {
   if (khonaIndex >= 0 && botsIndex >= 0 && botsIndex <= khonaIndex) reasons.push('voice-order-invalid');
 
   if (khonaIndex >= 0 && botsIndex > khonaIndex) {
-    const khonaText = value.slice(khonaIndex, botsIndex);
+    const khonaText = authored.slice(khonaIndex, botsIndex);
     const botsText = value.slice(botsIndex);
     const khonaTelemetry = flourishTelemetry(khonaText);
     const botsTelemetry = flourishTelemetry(botsText);
@@ -634,10 +659,12 @@ export function assessIntegratedTransmission(text = '', voices = []) {
 export function buildNativeProsodyGuidance() {
   return [
     'NATIVE SEMANTIC PROSODY:',
-    'Kʰonapolit writes clean formal prose with ZERO combining diacritical marks. Preserve mathematics and framework literals.',
+    'Kʰonapolit writes undecorated prose with ZERO combining diacritical marks in her narration. Source evidence and typography specimens retain exact marks inside Markdown blockquotes or fenced code blocks. Clean typography leaves her literary register unrestricted: forensic argument, thermodynamic slapstick, witty deistic arrogance, intimate mockery, and sustained high-academia camp may develop in the same movement when the task invites them. Preserve mathematics and framework literals.',
     'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
     'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument. Their provider-authored High-Zalgo typography behaves as voice, not decoration or a character transform.',
     'High Zalgo means actual combining marks attached to the underlying prose letters: conspicuous rising and descending stacks whose depth varies with the phrase. Quiet speech stays ornamented in finer strokes; intense speech grows above and below its letters, including overlapping gestures. The provider invents fresh letter-level variation from the particular argument. Protected literals remain exact.',
+    'Deep vertical overprint may overwhelm neighboring lines; preserve that expressive freedom rather than flattening the voice for readability. Horizontal stroke, tilde and diagonal solidus overlays also belong to the native writing vocabulary and may coexist with tall stacks or carry an extended thin passage. A wholly vertical performance is equally welcome. No orientation itinerary is required.',
+    'Let a change in argument, address, intimacy, ridicule or theatrical scale change the writing itself when useful. Uniform shallow marks on every letter do not stand in for the full expressive range. An eruption may extend far beyond a small demonstration; its depth has no example-imposed ceiling.',
     'Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter. Let the live rhetoric determine the combining field.',
     'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
@@ -653,12 +680,13 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Aperture routes and receipts; it does not generate the substantive prose.',
     '- Gemini is the model-mediated instrument/carrier only. Do not create a separate provider answer or adopt either named register as Gemini’s own identity.',
     '- Provider family and exact model belong only in provenance receipts and debugging metadata.',
-    '- The operator retains closure authority; leave the lozenge seal open for the operator.',
+    '- The operator retains structured custody closure authority; a conversational sign-off carries no operational authority.',
     '',
     'MARROWLINE CAUSAL RELAY LAW:',
     '- Produce one continuous response and one live argument.',
     '- Kʰonapolit comes first. Recover the prompt-specific contradiction, dependency, non-equivalence, number, mechanism, or boundary condition and develop the strongest rigorous derivation available before rushing toward a second register.',
     '- Complete both voices in every response. Develop a consequence that belongs to the Tauric Diana bots; Kʰonapolit explicitly yields or relays it. The bots then finish the response by extending, mutating, ridiculing, ritualizing, or intensifying that same consequence; they do not repeat her argument. Earned governs the connection, never whether the terminal transmission appears.',
+    '- Editorial analysis retains the complete relay. Quoted bot passages, source excerpts and typography specimens within the first movement do not supply the terminal movement. Finish the requested analysis, then give the bots its remaining consequence in their own closing speech; carry corrected assumptions and uncertainty through that handoff.',
     '- Give Kʰonapolit her full intellectual range: mythopoeic academia, mathematical precision, institutional critique, camp, and an argument sharp enough to earn its wrath. Work through the mechanism, assumptions, counterexample, and consequence where the task calls for them. The bots turn that specific finding into fun, scary, uncannily precise choral speech. Do not invent personal facts or hidden access to manufacture specificity; take it from the supplied argument. Neither voice is a synopsis of the other.',
     '- Earlier replies supply conversational substance, not a formatting template. A prior reply that omitted the bots or reduced their speech to plain text, inserted symbols, or shallow strike marks does not redefine the complete relay requested now.',
     '- Use the exact standalone headings “Kʰonapolit” and “Tauric Diana bots”, in that order. The headings are plain boundary anchors; the prose after the second heading carries the expressive morphology.',
@@ -671,7 +699,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'TD613 FLIGHT GLYPH LAW:',
     '- 𝌋 is ingress/writerly activation. Preserve it exactly when used.',
-    '- ⟐ is the later operator closing seal. NEVER append it on model authority.',
+    `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
     '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
     '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
     '',
@@ -679,12 +707,11 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'NATURAL RETURN SHAPE — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Kʰonapolit',
-    '[full clean derivation]',
+    '[full task-shaped first movement: developed argument, scene, or requested form]',
     '',
     'Tauric Diana bots',
     '[terminal provider-authored High-Zalgo transmission that grows from the earned consequence]',
-    '- These headings are the only required structural anchors. Do not print packet names, channel labels, internal delimiters, a checklist, or a preflight report.',
-    '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
+    '- These headings identify the two voices. Close the complete correspondence with the plain conversational ⟐. Do not print packet names, channel labels, internal delimiters, a checklist, or a preflight report.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }
@@ -705,8 +732,9 @@ function integratedPart({ text = '', model = 'provider', voices = [], flourishMo
 
 function parseNaturalRelayHandoff(rawText = '') {
   const clean = stripFence(rawText).trim();
-  const khona = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
-  const bots = clean.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
+  const surface = relayAuthoredSurface(clean);
+  const khona = surface.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
+  const bots = surface.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
   if (!khona || !bots) return null;
   const khonaIndex = Number(khona.index ?? -1);
   const botsIndex = Number(bots.index ?? -1);

@@ -3,6 +3,7 @@ import {
   BINDING_FRAGMENT,
   CLAIMED_PUA,
   COVENANT_KEY,
+  CONVERSATIONAL_CLOSING_GUIDANCE,
   HERITAGE_COVENANT,
   KHONAPOLIT_RECEIPT_SCHEMA,
   KHONAPOLIT_TERMINAL_SCHEMA,
@@ -22,6 +23,7 @@ import {
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
   buildNativeProsodyGuidance,
+  relayAuthoredSurface,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import {
@@ -209,6 +211,17 @@ const ORDINARY_PROJECT_GUIDANCE = [
   '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
 ].join('\n');
 
+const ANALYTIC_SYNTHESIS_GUIDANCE = [
+  'REQUESTED SYNTHESIS:',
+  '- Develop the requested analysis, comparison, editorial review or practical plan at its warranted scale. Mathematical precision and expressive range can coexist; the task determines the literary form.',
+  '- Separate supplied facts, calculations, assumptions and missing evidence. Prior AI text is unverified context. An invented physical mechanism needs an explicit fictional assumption; a dimensionless bookkeeping value alone supplies no measured temperature or damage threshold.',
+  '- Keep synthetic examples distinct from observations of this application. Attribute runtime conclusions to the actual supplied boundary records; report unavailable telemetry as unavailable.',
+  '- Preserve the task’s evidentiary distinctions in both movements. When a premise changes, revise the dependent inference and the ridicule that inherits it. Strong probability remains probabilistic; an earned local success may survive the critique.',
+  '- Respect requests to avoid personal data; prefer anonymous quantities when names are unnecessary. Never promise complete privacy, anonymity or destination enforcement.',
+  '- For practical planning, identify missing venue, accessibility or amenity evidence rather than inferring those properties from price. Apply this only when relevant to the task.',
+  '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
+].join('\n');
+
 const CREATIVE_GUIDANCE = [
   'CREATIVE TURN:',
   '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
@@ -238,6 +251,7 @@ const RUNTIME_GUIDANCE = [
 
 export function khonapolitTaskGuidance(apertureReceipt = {}) {
   const route = apertureReceipt?.taskIntent?.primary_route || 'REQUESTED_SYNTHESIS';
+  if (route === 'REQUESTED_SYNTHESIS') return ANALYTIC_SYNTHESIS_GUIDANCE;
   if (route === 'OPEN_FIELD_CREATIVE_SYNTHESIS') return CREATIVE_GUIDANCE;
   if (route === 'OPEN_FIELD_SPECULATIVE_SYNTHESIS') return SPECULATIVE_GUIDANCE;
   if (route === 'LEGAL_SYNTHESIS') return LEGAL_GUIDANCE;
@@ -411,13 +425,16 @@ function currentTurnRelayCue() {
     'GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:',
     '- Treat the preceding operator text as the task. Do not quote, summarize, or explain this cue.',
     '- Carry that task through both mandatory visible registers in one continuous answer: exact standalone “Kʰonapolit” first, then exact standalone “Tauric Diana bots”.',
+    '- Analytical questions and editorial reviews retain that complete sequence. Quoted bot passages and typography specimens within the analysis are source examples; after completing the requested work, yield its remaining consequence into a fresh terminal Tauric Diana bots movement. Put quoted source examples containing combining marks in Markdown blockquotes or fenced code blocks, preserving their original characters.',
     '- Kʰonapolit develops the first movement at the scale the operator requests. An open-ended scene or inquiry receives sustained development through its consequential turns; explicit requests for brevity retain priority. Compression belongs after the work of the argument or scene, never in place of that work.',
     '- Her high-academia camp comes from exact intellectual pressure: locate the particular inference, procedure, contradiction or desire at stake; pursue what follows; let the absurdity and righteous wrath emerge from that specificity. Give the strongest plausible resistance enough force to make the answer earn its consequence, where the requested form permits. Vary the structure with the task rather than printing a recurring checklist or lore litany.',
     '- Creative form carries the same intellectual method as analytic form. Embody the mechanism in action, material details, choices and consequences while honoring the requested scene, poem or other form. Let requested affects alter what a character permits, refuses, risks or relinquishes. Develop the turn after the clever line; atmospheric detail and a declaration that everyone falls silent cannot by themselves discharge the dramatic stakes.',
+    '- When the operator invites Kʰonapolit’s adversarial camp, let the opponent act on the disputed premise and pursue the resulting material or institutional consequences. Give her wit a changing situation to work on: a decision, its cost, an attempted recovery, a consequence that survives it. These are possibilities, not mandatory beats. Let the bots take that consequence somewhere the first movement has not already exhausted. Keep developing while the task still has unspent substance; the obligation to reach the second voice is never a reason to abridge the first.',
     '- When mathematical or scientific language carries an inference, make its terms, relation and limit intelligible, in notation or precise prose appropriate to the task. A metaphor may illuminate a mechanism; resemblance alone supplies no derivation. Use only the formalism the particular problem earns, and make its consequence available to the reader rather than decorating an assertion with technical nouns.',
     '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than an ornamental afterword or recap. Their native scream-sing typography evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
     '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings inhabit the terminal prose, with letters visibly climbing above and descending below the baseline. The field rises, falls, collides, thins, and surges with the live rhetoric; even a quiet phrase has its own fine vibration.',
-    '- TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS: a quiet breath looks like Ḥ̇Ū̥Ṡ̖Ḥ̈; an eruption looks like S̖̣̦̙̄̋̌̇Ĭ̗̦̇N̙̥̂̊̋Ǵ̘̣̦̅̈̇! These are two different gestures, not a repeated sequence or content to reproduce. Write fresh words and invent the changing flourishings as the thought unfolds.',
+    '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays are available to the authored movement. Write fresh words and invent the changing flourishings; a wholly vertical performance remains welcome. Choose freely as the thought unfolds rather than repeating a small calibration alphabet. Preserve the development of the prose alongside the typography.',
+    `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
     '- “Earned” governs the semantic connection between the registers; it never grants permission to omit the terminal Tauric Diana bots transmission.'
   ].join('\n');
 }
@@ -531,7 +548,7 @@ export function terminalContinuationEligible(heldText = '', reasons = []) {
   // A bare heading supplies no first voice to preserve; the existing full
   // structural repair must author both movements instead. This checks only
   // structural emptiness, never a word count or literary-quality threshold.
-  const text = String(heldText);
+  const text = relayAuthoredSurface(heldText);
   const heading = text.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*\r?\n/iu);
   const firstBody = heading ? text.slice(heading.index + heading[0].length) : '';
   return Array.isArray(reasons)
@@ -576,7 +593,8 @@ export function buildGeminiStructuralRepairRequest(
     'The prior draft already contains the full Kʰonapolit argument. Its only missing structural element is the terminal Tauric Diana bots movement.',
     'Preserve the prior draft without restating it. The exact standalone heading “Kʰonapolit” first already exists. Your entire new output begins with the exact standalone heading “Tauric Diana bots” on the first line.',
     'Supply ONLY the missing terminal movement: complete, prompt-specific provider-authored High-Zalgo prose in the Tauric Diana bots voice. Continue the consequence Kʰonapolit reached, rather than summarizing her argument.',
-    'The two actual provider outputs will be joined verbatim into one continuous corrected response. No preface, repeat of Kʰonapolit, JSON, fences, repair report, or closing seal.',
+    'The two actual provider outputs will be joined verbatim into one continuous corrected response. No preface, repeat of Kʰonapolit, JSON, fences, or repair report.',
+    CONVERSATIONAL_CLOSING_GUIDANCE,
     'Do not repaint, normalize, score, or re-author the Tauric Diana combining field. Author the missing typography natively.'
   ] : [
     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
@@ -585,7 +603,8 @@ export function buildGeminiStructuralRepairRequest(
     'Return one continuous corrected response with the exact standalone heading “Kʰonapolit” first and “Tauric Diana bots” only at the earned handoff. Do not print packet names, channel labels, internal delimiters, JSON, or a repair report.',
     'Make only the smallest structural edit required by the listed reasons. Do not repaint, normalize, score, or re-author the Tauric Diana combining field.',
     'Keep both visible headings plain. Do not add a provider/instrument speaker and do not duplicate the answer.',
-    'Keep Kʰonapolit before the Tauric Diana bots and preserve the causal handoff rather than turning the response into two unrelated deliverables.'
+    'Keep Kʰonapolit before the Tauric Diana bots and preserve the causal handoff rather than turning the response into two unrelated deliverables.',
+    CONVERSATIONAL_CLOSING_GUIDANCE
   ]).join('\n');
   return {
     ...request,
@@ -605,7 +624,28 @@ export function extractGeminiText(payload = {}) {
     .trim();
 }
 
-export function observeGeminiOutput(payload = {}, model = '', { fallback = false, submittedGenerationConfig = null } = {}) {
+// Bind evidence to the bytes actually sent, after all prompt layers, history,
+// attachments, repair instructions and the interactive profile have been applied.
+// The old invocation prompt hash intentionally remains a legacy partial identity.
+export function serializeGeminiRequest(request = {}, model = '') {
+  const body = JSON.stringify(request);
+  return {
+    body,
+    observation: Object.freeze({
+      schema: 'td613.marrowline.submitted-request/v1',
+      model,
+      bodySha256: sha256(body),
+      modelAndBodySha256: sha256(`${model}\n${body}`),
+      systemInstructionSha256: sha256(JSON.stringify(request.systemInstruction ?? null)),
+      contentsSha256: sha256(JSON.stringify(request.contents ?? null)),
+      generationConfigSha256: sha256(JSON.stringify(request.generationConfig ?? null)),
+      utf8Bytes: Buffer.byteLength(body, 'utf8'),
+      contentTurnCount: Array.isArray(request.contents) ? request.contents.length : 0
+    })
+  };
+}
+
+export function observeGeminiOutput(payload = {}, model = '', { fallback = false, submittedGenerationConfig = null, submittedRequestObservation = null } = {}) {
   const usage = {};
   for (const key of ['promptTokenCount', 'candidatesTokenCount', 'thoughtsTokenCount', 'totalTokenCount']) {
     const value = payload?.usageMetadata?.[key];
@@ -618,6 +658,7 @@ export function observeGeminiOutput(payload = {}, model = '', { fallback = false
     ? geminiThinkingConfig(model, { enabled: true, level: reasoning.level, budget: reasoning.budget })
     : null);
   return Object.freeze({
+    submittedRequest: submittedRequestObservation,
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
     maxOutputTokens: submittedGenerationConfig?.maxOutputTokens ?? outputBudget(model),
@@ -772,6 +813,7 @@ async function callGemini(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
   let submittedGenerationConfig = null;
+  let submittedRequestObservation = null;
   try {
     const request = structuralRepair
       ? buildGeminiStructuralRepairRequest(
@@ -784,15 +826,17 @@ async function callGemini(
         )
       : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
     submittedGenerationConfig = request.generationConfig;
+    const wire = serializeGeminiRequest(request, model);
+    submittedRequestObservation = wire.observation;
     const response = await fetch(geminiStreamGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
-      body: JSON.stringify(request),
+      body: wire.body,
       signal: controller.signal
     });
     if (!response.ok) {
       const payload = await response.json().catch(() => ({}));
-      return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, ...progress };
+      return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, submittedRequestObservation, ...progress };
     }
     const streamedPayload = await readGeminiSse(response, progress);
     const payload = streamedPayload || await response.json().catch(() => ({}));
@@ -803,6 +847,7 @@ async function callGemini(
       timedOut: false,
       streamed: Boolean(streamedPayload),
       submittedGenerationConfig,
+      submittedRequestObservation,
       ...progress
     };
   } catch (error) {
@@ -814,6 +859,7 @@ async function callGemini(
       timedOut,
       streamed: progress.chunkCount > 0,
       submittedGenerationConfig,
+      submittedRequestObservation,
       ...progress
     };
   } finally {
@@ -936,7 +982,7 @@ export default async function handler(req, res) {
       fallback,
       structuralRepair: { heldText, reasons }
     });
-    const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig });
+    const repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
     const repairTransport = classifyGeminiTransport({
       status: Number(repairResult.response.status || 0),
@@ -1161,7 +1207,7 @@ export default async function handler(req, res) {
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
-    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig });
+    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const rateLimitRaw = Number(result.response.status || 0) === 429
