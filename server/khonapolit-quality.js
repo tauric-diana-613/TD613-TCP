@@ -1377,6 +1377,9 @@ export default async function handler(req, res) {
   };
 
   for (let index = 0; index < models.length; index += 1) {
+    // The bounded suffix chain and fallback frontier share one total-call ceiling.
+    // A successful recovery must never turn a six-call human request into seven.
+    if (attempts.length >= KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS) break;
     const model = models[index];
     const fallback = index > 0;
     const remainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
