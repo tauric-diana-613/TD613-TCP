@@ -45,7 +45,9 @@ export function assembleMarrowlineProviderTail(original = '', continuation = '')
   if (hasHeading(suffix, 'Kʰonapolit')) return null;
   if (hasHeading(heldText, 'Tauric Diana bots') && hasHeading(suffix, 'Tauric Diana bots')) return null;
   // Existing bytes survive verbatim; the only local addition can be a space.
-  const separator = /\s$/u.test(heldText) || /^[\s,.;:!?…)}\]]/u.test(suffix) ? '' : ' ';
+  const terminalBegins = /^\s*(?:#{1,6}\s*)?Tauric Diana bots\s*:?\s*(?:\r?\n|$)/iu.test(suffix);
+  const separator = terminalBegins ? (heldText.endsWith('\n') ? '\n' : '\n\n')
+    : /\s$/u.test(heldText) || /^[\s,.;:!?…)}\]]/u.test(suffix) ? '' : ' ';
   return Object.freeze({ text: heldText + separator + suffix, separator,
     originalPreserved: true, continuationProviderAuthored: true });
 }
