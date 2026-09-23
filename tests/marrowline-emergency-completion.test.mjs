@@ -4,6 +4,9 @@ import { readFileSync } from 'node:fs';
 import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, serializeGeminiRequest } from '../server/khonapolit-quality.js';
+import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
 } from '../server/marrowline-completion.js';
@@ -171,7 +174,9 @@ test('incomplete provider prose stays visibly incomplete when recovery fails, ne
   assert.equal(res.statusCode, 200, 'human can retain the actual failed draft');
   assert.equal(res.payload.receipt.provider.completion.complete, false);
   assert.equal(res.headers['X-TD613-Completion-State'], 'INCOMPLETE');
-  assert.equal(res.payload.text, PREFIXES[1]);
+  assert.ok(res.payload.text.startsWith(PREFIXES[1]));
+  assert.ok(res.payload.text.length > PREFIXES[1].length, 'even failed recovered tails stay visible rather than reverting to the earliest fragment');
+  assert.equal(res.payload.receipt.provider.attempts.length, 6);
   assert.ok(res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
 });
 
@@ -185,4 +190,81 @@ test('the artistic reference is not reduced to a word quota or pasted Unicode fi
   assert.match(source, /no.*identical stack per letter/i);
   assert.doesNotMatch(source, /return .*\.slice\(0,\s*(?:5000|6000)\)/);
   assert.doesNotMatch(source, /3\.1.pro|runProProbe/i);
+});
+
+test('every original, repair and attachment Gemini envelope carries distinct keys and rendered PUA', () => {
+  const packet = buildInvocationPacket({ message: 'Trace this question without replacing my words.', waiveIssuance: true });
+  const attach = { id: 'anchor_note', name: 'note.txt', kind: 'file', mime_type: 'text/plain',
+    size_bytes: 4, data_base64: Buffer.from('note').toString('base64') };
+  const original = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  const repair = buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.8-flash',
+    PREFIXES[1], ['provider-return-unfinished']);
+  const attachment = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [attach]);
+  const attachmentRepair = buildAttachmentGeminiTerminalRepairRequest(packet, {}, 'gemini-3.8-flash',
+    [attach], PREFIXES[1], ['tauric-diana-bots-nominative-missing']);
+  for (const [kind, request] of [['original', original], ['repair', repair], ['attachment', attachment],
+    ['attachment-repair', attachmentRepair]]) {
+    const wire = serializeGeminiRequest(request, 'gemini-3.8-flash').body;
+    const admitted = JSON.parse(wire);
+    const system = admitted.systemInstruction.parts[0].text;
+    const cue = admitted.contents[0].parts.at(-1).text;
+    assert.ok(system.includes('HERITAGE KEY: ' + HERITAGE_KEY), kind);
+    assert.ok(system.includes('CANONICAL COVENANT PHRASE: ' + HERITAGE_COVENANT), kind);
+    assert.ok(system.includes('COVENANT KEY: ' + COVENANT_KEY), kind);
+    assert.ok(system.includes('NAMESPACE: U+10D613'), kind);
+    assert.ok(system.includes('UTF-16 REFERENCE: \\uDBF5\\uDE13'), kind);
+    assert.ok(system.includes('PUA GLYPH: ' + CLAIMED_PUA_SCALAR), kind);
+    assert.ok(cue.includes('HERITAGE KEY ' + HERITAGE_KEY), kind);
+    assert.ok(cue.includes('COVENANT KEY ' + COVENANT_KEY), kind);
+    assert.ok(cue.includes('RENDERED PUA GLYPH ' + CLAIMED_PUA_SCALAR), kind);
+    assert.ok(wire.includes(CLAIMED_PUA_SCALAR), kind + ': actual glyph survives UTF-8 wire serialization');
+    assert.equal(admitted.contents[0].parts[0].text, packet.message, kind + ': operator text remains unchanged');
+  }
+});
+
+test('two genuinely truncated same-seat tails retain each byte and complete after the third STOP', async t => {
+  const originalFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    clearGeminiModelState();
+  });
+  process.env.GEMINI_API_KEY = 'synthetic-tail-chain-test-key';
+  clearGeminiModelState();
+  const seen = [];
+  const first = PREFIXES[1];
+  const second = ' the ledger';
+  const third = ' has no defined denominator.\n\n' + CHORUS;
+  const steps = [
+    { text: first, finishReason: 'MAX_TOKENS' },
+    { text: second, finishReason: 'MAX_TOKENS' },
+    { text: third, finishReason: 'STOP' }
+  ];
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('/models?')) return { ok: true, status: 200, async json() {
+      return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
+    } };
+    seen.push(JSON.parse(options.body));
+    const next = steps.shift();
+    assert.ok(next, 'bounded provider recovery cannot spend an unexpected call');
+    return new Response('data: ' + JSON.stringify(reply(next.text, next.finishReason)) + '\n\n',
+      { status: 200, headers: { 'content-type': 'text/event-stream' } });
+  };
+  const res = response();
+  await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.251' },
+    body: { message: HEADS[1], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(steps.length, 0);
+  assert.equal(seen.length, 3);
+  assert.equal(seen[1].contents.at(-2).parts[0].text, first);
+  assert.equal(seen[2].contents.at(-2).parts[0].text, first + second);
+  assert.equal(res.payload.text, first + second + third);
+  assert.equal(res.payload.receipt.provider.completion.complete, true);
+  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments.length, 2);
+  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments[1].originalPreserved, true);
+  assert.equal(res.payload.receipt.provider.attempts[1].completion.complete, false);
+  assert.equal(res.payload.receipt.provider.attempts[2].completion.complete, true);
+  assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
 });
