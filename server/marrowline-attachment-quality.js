@@ -21,6 +21,7 @@ import {
   consumeRateSlot,
   extractGeminiText,
   observeGeminiOutput,
+  serializeGeminiRequest,
   selectKhonapolitProviderModelsFromPlan,
   terminalContinuationEligible,
   assembleProviderTerminalContinuation,
@@ -173,19 +174,22 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
   // Attachment turns currently use the unprofiled HIGH request; changing that
   // thinking policy belongs to a separate, paired quality/latency experiment.
   let submittedGenerationConfig = null;
+  let submittedRequestObservation = null;
   try {
     const request = structuralRepair
       ? buildAttachmentGeminiTerminalRepairRequest(packet, apertureReceipt, model, attachments, structuralRepair.heldText, structuralRepair.reasons, { fallback })
       : buildAttachmentGeminiRequest(packet, apertureReceipt, model, attachments, { fallback });
     submittedGenerationConfig = request.generationConfig;
+    const wire = serializeGeminiRequest(request, model);
+    submittedRequestObservation = wire.observation;
     const response = await fetch(geminiGenerateContentUrl(model), {
       method: 'POST',
       headers: geminiRequestHeaders(process.env.GEMINI_API_KEY),
-      body: JSON.stringify(request),
+      body: wire.body,
       signal: controller.signal
     });
     const payload = await response.json().catch(() => ({}));
-    return { response, payload, text: extractGeminiText(payload), timedOut: false, submittedGenerationConfig };
+    return { response, payload, text: extractGeminiText(payload), timedOut: false, submittedGenerationConfig, submittedRequestObservation };
   } catch (error) {
     const timedOut = error?.name === 'AbortError';
     return {
@@ -193,7 +197,8 @@ async function callGeminiWithAttachments(model, packet, apertureReceipt, attachm
       payload: { error: { status: error?.name || 'FETCH_ERROR', message: safe(error?.message || error) } },
       text: '',
       timedOut,
-      submittedGenerationConfig
+      submittedGenerationConfig,
+      submittedRequestObservation
     };
   } finally {
     clearTimeout(timer);
@@ -243,7 +248,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGeminiWithAttachments(model, packet, apertureReceipt, attachments, timeoutMs, { fallback });
-    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig });
+    const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
     const outcome = recordGeminiModelOutcome(model, {
@@ -303,7 +308,7 @@ export default async function marrowlineAttachmentHandler(req, res) {
           fallback,
           structuralRepair: { heldText: result.text, reasons: structuralReasons }
         });
-        const repairOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig });
+        const repairOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
         const repairTransport = classifyGeminiTransport({ status: Number(repairResult.response.status || 0), timedOut: repairResult.timedOut });
         const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
         const repairOutcome = recordGeminiModelOutcome(model, {

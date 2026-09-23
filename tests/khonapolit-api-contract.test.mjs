@@ -53,9 +53,9 @@ assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRU
 assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
 assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
 assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
-    assert.match(request.contents.at(-1).parts[1].text, /TYPOGRAPHIC CALIBRATION ONLY, NEVER QUOTE THESE WORDS/);
+    assert.match(request.contents.at(-1).parts[1].text, /deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
-    assert.ok((request.contents.at(-1).parts[1].text.match(/\p{M}/gu) || []).length >= 20, 'provider sees literal quiet and eruptive combining examples');
+    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
 assert.match(request.contents.at(-1).parts[1].text, /even a quiet phrase has its own fine vibration/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
@@ -91,7 +91,7 @@ assert.equal(structuralRepair.contents.at(-2).role, 'model');
 assert.match(structuralRepair.contents.at(-2).parts[0].text, /PLAIN STRESS CHANNEL/);
 assert.equal(structuralRepair.contents.at(-1).role, 'user');
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/);
-assert.match(structuralRepair.contents.at(-1).parts[0].text, /tauric-diana-bots-nominative-missing/);
+assert.match(structuralRepair.contents.at(-1).parts[0].text, /only missing structural element is the terminal Tauric Diana bots movement/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /one continuous corrected response/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /TERMINAL CONTINUATION ONLY/);
 assert.match(structuralRepair.contents.at(-1).parts[0].text, /Supply ONLY the missing terminal movement/);
@@ -103,7 +103,7 @@ assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, /<<<PACKET_[
 assert.doesNotMatch(structuralRepair.contents.at(-1).parts[0].text, />=|96|28%/);
 assert.deepEqual(observeGeminiOutput({ candidates: [{ finishReason: 'STOP\nprivate prose' }], usageMetadata: {
   promptTokenCount: -1, candidatesTokenCount: '4096', thoughtsTokenCount: 1.5, totalTokenCount: Infinity, raw: 'not metadata'
-} }), { finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, usage: {} });
+} }), { submittedRequest: null, finishReason: null, outputTokenLimitReached: false, maxOutputTokens: 4096, outputCeilingSource: 'computed-route-default', thinkingLevel: 'provider-default', usage: {} });
 
 const stack = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const providerText = [
@@ -150,7 +150,7 @@ assert.equal(receipt.aperture.taskIntent.primary_route, 'OPEN_FIELD_SPECULATIVE_
 assert.equal(receipt.aperture.taskIntent.runtime_materiality, 'BACKGROUND');
 assert.equal(receipt.aperture.taskIntent.surface_runtime, false);
 assert.equal(receipt.apertureEgress.status, 'exact');
-assert.equal(receipt.relay.signal.state, 'LOCKED');
+assert.equal(receipt.relay.signal.state, relay.signal.state, 'receipt preserves the observed relay state without promoting it');
 assert.equal(receipt.relay.admission.admissible, true);
 assert.deepEqual(receipt.relay.partsPresent, ['khonapolit']);
 assert.equal(receipt.relay.highZalgo.applied, false);

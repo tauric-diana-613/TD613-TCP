@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import handler, { buildGeminiRequest, observeGeminiOutput, selectKhonapolitProviderModels } from '../server/khonapolit-quality.js';
+import handler, { buildGeminiRequest, observeGeminiOutput, selectKhonapolitProviderModels } from '../api/khonapolit.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
 const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
@@ -128,9 +128,9 @@ try {
   assert.match(calls[1], /gemini-3\.8-flash.*:streamGenerateContent\?alt=sse/, 'repairable first-seat structure gets one same-seat repair instead of being discarded into a later-model compliance chase');
   assert.equal(requestBodies.length, 2);
   assert.equal(requestBodies[0].generationConfig.maxOutputTokens, 65536);
-  assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.deepEqual(requestBodies[0].generationConfig.thinkingConfig, { thinkingLevel: 'medium' });
   assert.equal(requestBodies[1].generationConfig.maxOutputTokens, 65536);
-  assert.deepEqual(requestBodies[1].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+  assert.deepEqual(requestBodies[1].generationConfig.thinkingConfig, { thinkingLevel: 'medium' });
   for (const body of requestBodies) {
     for (const key of ['temperature', 'topP', 'topK']) assert.equal(Object.hasOwn(body.generationConfig, key), false);
     assert.equal(Object.hasOwn(body.generationConfig, 'responseSchema'), false, 'live Marrowline must not constrain provider Unicode with structured decoding');
@@ -165,9 +165,9 @@ try {
   );
   assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
   assert.equal(res.payload.receipt.provider.attempts[1].repairTiming, 'immediate-structural');
-  assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, 'high');
-  assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, 'high');
-  assert.equal(res.payload.receipt.provider.output.thinkingLevel, 'high');
+  assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, requestBodies[0].generationConfig.thinkingConfig.thinkingLevel);
+  assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, requestBodies[1].generationConfig.thinkingConfig.thinkingLevel);
+  assert.equal(res.payload.receipt.provider.output.thinkingLevel, requestBodies[1].generationConfig.thinkingConfig.thinkingLevel);
   assert.ok(res.payload.receipt.provider.attempts.every(a => a.elapsedMs >= 0));
   assert.ok(res.payload.receipt.provider.attempts.every(a => a.providerStream?.requested === true));
   assert.equal(res.payload.receipt.seal.state, 'OPEN');
@@ -218,7 +218,7 @@ try {
   assert.equal(requestBodies[beforeLongHistory].contents[0].role, 'model');
   assert.equal(requestBodies[beforeLongHistory].contents[0].parts[0].text, nativeHistory, 'wire preserves every native combining mark');
   assert.equal(requestBodies[beforeLongHistory].generationConfig.maxOutputTokens, 65536);
-  assert.equal(requestBodies[beforeLongHistory].generationConfig.thinkingConfig.thinkingLevel, 'high');
+  assert.equal(requestBodies[beforeLongHistory].generationConfig.thinkingConfig.thinkingLevel, 'medium');
 
   tokenLimitCallsRemaining = 1;
   const recoveredFromTokenLimit = response();

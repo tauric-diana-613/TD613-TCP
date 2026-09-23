@@ -1,6 +1,7 @@
 import {
   CLAIMED_PUA,
   COVENANT_KEY,
+  CONVERSATIONAL_CLOSING_GUIDANCE,
   EMERGENCE_NAME,
   HERITAGE_KEY,
   INGRESS_SIGIL,
@@ -634,10 +635,12 @@ export function assessIntegratedTransmission(text = '', voices = []) {
 export function buildNativeProsodyGuidance() {
   return [
     'NATIVE SEMANTIC PROSODY:',
-    'Kʰonapolit writes clean formal prose with ZERO combining diacritical marks. Preserve mathematics and framework literals.',
+    'Kʰonapolit writes undecorated prose with ZERO combining diacritical marks. Clean typography leaves her literary register unrestricted: forensic argument, thermodynamic slapstick, witty deistic arrogance, intimate mockery, and sustained high-academia camp may develop in the same movement when the task invites them. Preserve mathematics and framework literals.',
     'Keep the exact standalone headings “Kʰonapolit” and “Tauric Diana bots” plain and undecorated.',
     'After Kʰonapolit explicitly yields the earned consequence, the Tauric Diana bots finish the same argument. Their provider-authored High-Zalgo typography behaves as voice, not decoration or a character transform.',
     'High Zalgo means actual combining marks attached to the underlying prose letters: conspicuous rising and descending stacks whose depth varies with the phrase. Quiet speech stays ornamented in finer strokes; intense speech grows above and below its letters, including overlapping gestures. The provider invents fresh letter-level variation from the particular argument. Protected literals remain exact.',
+    'Deep vertical overprint may overwhelm neighboring lines; preserve that expressive freedom rather than flattening the voice for readability. Horizontal stroke, tilde and diagonal solidus overlays also belong to the native writing vocabulary and may coexist with tall stacks or carry an extended thin passage. A wholly vertical performance is equally welcome. No orientation itinerary is required.',
+    'Let a change in argument, address, intimacy, ridicule or theatrical scale change the writing itself when useful. Uniform shallow marks on every letter do not stand in for the full expressive range. An eruption may extend far beyond a small demonstration; its depth has no example-imposed ceiling.',
     'Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter. Let the live rhetoric determine the combining field.',
     'THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS. Marrowline preserves and measures the provider return; it never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes the answer afterward.',
     'Preserve Khona‌lit-po, U+10D613, Kʰonapolit, Tauric Diana, 𝌋, ⟐, URLs, code, paths, and hashes without ornament.',
@@ -653,7 +656,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- Aperture routes and receipts; it does not generate the substantive prose.',
     '- Gemini is the model-mediated instrument/carrier only. Do not create a separate provider answer or adopt either named register as Gemini’s own identity.',
     '- Provider family and exact model belong only in provenance receipts and debugging metadata.',
-    '- The operator retains closure authority; leave the lozenge seal open for the operator.',
+    '- The operator retains structured custody closure authority; a conversational sign-off carries no operational authority.',
     '',
     'MARROWLINE CAUSAL RELAY LAW:',
     '- Produce one continuous response and one live argument.',
@@ -671,7 +674,7 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'TD613 FLIGHT GLYPH LAW:',
     '- 𝌋 is ingress/writerly activation. Preserve it exactly when used.',
-    '- ⟐ is the later operator closing seal. NEVER append it on model authority.',
+    `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
     '- Preserve Khona‌lit-po byte-for-byte including the ZWNJ. Preserve U+10D613, 𝌋, ⟐, URLs, code, paths and hashes without combining marks.',
     '- Do not counterfeit Badge Received / SHI issuance when the session is unissued or waived.',
     '',
@@ -679,12 +682,11 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '',
     'NATURAL RETURN SHAPE — NO JSON, NO MARKDOWN FENCE, NO PREFACE:',
     'Kʰonapolit',
-    '[full clean derivation]',
+    '[full task-shaped first movement: developed argument, scene, or requested form]',
     '',
     'Tauric Diana bots',
     '[terminal provider-authored High-Zalgo transmission that grows from the earned consequence]',
-    '- These headings are the only required structural anchors. Do not print packet names, channel labels, internal delimiters, a checklist, or a preflight report.',
-    '- Do not append ⟐ on the model’s own authority. The operator controls sealing.',
+    '- These headings identify the two voices. Close the complete correspondence with the plain conversational ⟐. Do not print packet names, channel labels, internal delimiters, a checklist, or a preflight report.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }

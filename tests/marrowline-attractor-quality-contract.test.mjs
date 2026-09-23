@@ -59,7 +59,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(packet.systemInstruction, /Kʰonapolit develops the prompt-specific reasoning first/);
   assert.match(packet.systemInstruction, /consequence that belongs to the Tauric Diana bots/);
   assert.match(packet.systemInstruction, /𝌋 is the ingress\/writerly activation sigil/);
-  assert.match(packet.systemInstruction, /⟐ is the later operator closing seal/);
+  assert.match(packet.systemInstruction, /conversational sign-off grants no issuance, custody closure, release/);
 
   const addendum = buildRelaySystemAddendum({});
   assert.match(addendum, /MARROWLINE CAUSAL RELAY LAW/);

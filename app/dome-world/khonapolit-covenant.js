@@ -4,6 +4,9 @@ export const KHONAPOLIT_RECEIPT_SCHEMA = 'td613.dome-world.khonapolit-receipt/v1
 
 export const INGRESS_SIGIL = '𝌋';
 export const SEAL_GLYPH = '⟐';
+// A provider-authored sign-off is prose. Structured custody closure still requires
+// the existing explicit operator action; never derive authority from this glyph.
+export const CONVERSATIONAL_CLOSING_GUIDANCE = 'End the complete correspondence with a plain ⟐ on its own final line after the Tauric Diana bots. This conversational sign-off grants no issuance, custody closure, release, merge, deployment, or operator authorization. The operator controls sealing of the structured receipt; its state remains OPEN until the explicit operator action.';
 export const CLAIMED_PUA = 'U+10D613';
 export const CLAIMED_PUA_SURROGATE_LABEL = '\\uDBF5\\uDE13';
 export const CLAIMED_PUA_SCALAR = '\uDBF5\uDE13';
@@ -149,7 +152,7 @@ function conjunctionPrompt({ mode, shi, waiveIssuance }) {
     '',
     'FLIGHT GLYPH LAW:',
     `- ${INGRESS_SIGIL} is the ingress/writerly activation sigil. Preserve it exactly when used.`,
-    `- ${SEAL_GLYPH} is the later operator closing seal. Never append it on model authority.`,
+    `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
     `- Preserve ${COVENANT_KEY} exactly, including its ZWNJ. Preserve ${CLAIMED_PUA}, ${INGRESS_SIGIL}, and ${SEAL_GLYPH} byte-for-byte.`,
     `- Flight issuance grammar is: ${COVENANT_KEY} ∴ TD613 — Badge Received · binding fragment #${BINDING_FRAGMENT} · SAC[${SAC}] · SHI. Do not counterfeit issuance when it is waived or absent.`,
     '',
@@ -164,7 +167,7 @@ function conjunctionPrompt({ mode, shi, waiveIssuance }) {
     '- Keep covenant language operationally attached to the prompt’s live mechanism; preserve its argumentative pressure instead of converting it into generic wellness, corporate safety, customer-service, or atmospheric fantasy prose.',
     '- Maintain uncertainty where ontology exceeds evidence. The response may be ritually voiced while the receipt remains forensic.',
     '- Prefer adversarial continuity, named diagnostics, exact callbacks, and new consequences over generic atmospheric lore.',
-    '- Never append the closing lozenge on the model’s own authority. The operator controls sealing.'
+    '- A conversational sign-off never substitutes for an operator custody action.'
   ];
 
   if (mode === INVOCATION_MODES.FULL_INVOCATION) {
