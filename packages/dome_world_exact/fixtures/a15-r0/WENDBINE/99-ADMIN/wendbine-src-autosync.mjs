@@ -215,7 +215,9 @@ export function compileSync({observed,previous=null,root=ROOT,observedAt=stamp()
    reviewer_status:'MACHINE_VERIFIABLE_PLATFORM_LINK',author_intent_claim:false});
   // Only exact, source-bound URLs may establish a navigational edge.
   // Mere lexical recurrence never creates an intellectual or causal relation.
-  const re=new RegExp('r/Wendbine/comments/([a-z0-9]+)','ig');
+  // Bind only explicit HTTPS Reddit URLs with an exact allowed host.
+  // Foreign-host lookalikes and bare paths carry no navigational authority.
+  const re=/https:\/\/(?:www\.|old\.)?reddit\.com\/r\/Wendbine\/comments\/([a-z0-9]{5,12})(?=\/|[?#)\]\s]|$)/ig;
   for(const m of r.selftext.matchAll(re)){
    const target='reddit:t3_'+m[1].toLowerCase();
    if(!previouslyKnown.has(target)&&!observed.some(o=>o.source_id===target))continue;
