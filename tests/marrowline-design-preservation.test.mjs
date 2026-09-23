@@ -19,7 +19,7 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, incomplete = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
@@ -32,15 +32,16 @@ function harness(t, { mobile = false, failure = false, transcriptHeight = 0, sto
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
+    const observed = incomplete ? 'Kʰonapolit\nThe claim on' : integratedText;
     const relay = {
       schema: 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor',
       apertureHeader: exactHeader,
-      signal: { state: 'LOCKED', downstreamAdmitted: true },
+      signal: { state: incomplete ? 'NOT_LOCKED' : 'LOCKED', downstreamAdmitted: !incomplete },
       admission: { admissible: true, reasons: [], combiningMarkCount: 32, maxRun: 2, duplicate: false },
-      parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: integratedText, integrated: true, providerNative: true, voices: ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'forensic-to-eruption' }],
+      parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: observed, integrated: true, providerNative: true, voices: incomplete ? ['Kʰonapolit'] : ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'forensic-to-eruption' }],
       highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 32, maxRun: 2, runCount: 31 }
     };
-    return { ok: true, json: async () => ({ ok: true, text: integratedText, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL' }, relay, seal: { state: 'OPEN' } } }) };
+    return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) }, relay, seal: { state: 'OPEN' } } }) };
   };
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
   for (const [key, value] of Object.entries(globals)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
@@ -154,6 +155,26 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   assert.equal(h.calls.length, 2);
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1, 'retry reuses the preserved turn instead of duplicating it');
   assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
+});
+
+
+test('incomplete provider reply remains visibly NOT_LOCKED with exact draft and an explicit reusable retry', async t => {
+  const h = harness(t, { incomplete: true });
+  const task = 'SYNTHETIC INCOMPLETE DENOMINATOR TEST';
+  h.send(task); await h.settled(); await flush();
+  const bubble = h.doc.querySelector('.relay-message[data-completion="incomplete"]');
+  assert.ok(bubble, 'the incomplete return is not displayed as ordinary completed prose');
+  assert.match(bubble.querySelector('.relay-completion-alert').textContent, /INCOMPLETE PROVIDER RETURN/);
+  assert.equal(bubble.querySelector('.relay-stage-text').textContent, 'Kʰonapolit\\nThe claim on'.replace('\\n', '\n'));
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /INCOMPLETE RETURN/);
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.held, 'true');
+  assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
+  assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
+  assert.equal(h.$('retryKhonapolitTask').hidden, false);
+  h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 2, 'operator gesture, not automatic client retry');
+  assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1, 'retry reuses the single preserved user turn');
+  assert.equal(h.doc.querySelectorAll('.relay-message').length, 1, 'failed assistant draft is replaced, not appended as a second completed turn');
 });
 
 test('mobile decoration preserves provider-native Unicode and all five chamber routes', async t => {
