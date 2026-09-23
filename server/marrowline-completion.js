@@ -1,7 +1,10 @@
 // Observable provider completion and provider-authored recovery boundaries.
 // Character count, mark count and section count cannot establish literary merit.
-// A formal STOP also cannot establish that the argument or scene was good.
-export const MARROWLINE_COMPLETION_SCHEMA = 'td613.marrowline.provider-completion/v1';
+// Provider transport completion is deliberately distinct from Marrowline's
+// structural/artistic admission: local punctuation or heading heuristics may
+// diagnose a response, but they cannot rewrite a witnessed provider STOP into
+// a transport truncation.
+export const MARROWLINE_COMPLETION_SCHEMA = 'td613.marrowline.provider-completion/v2';
 
 const hasHeading = (text, heading) => new RegExp(
   '(?:^|\\n)[ \\t]*(?:#{1,6}[ \\t]*)?' + heading + '[ \\t]*:?[ \\t]*(?=\\r?\\n|$)', 'iu'
@@ -16,24 +19,36 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
   const terminalHeadingPresent = hasHeading(original, 'Tauric Diana bots');
   const hasPlainClosingGlyph = original.trimEnd().endsWith('⟐');
   const trimmed = original.trimEnd().replace(/\p{M}+$/gu, '');
-  // Unfinished textual edge, not a word count or artistic-quality threshold.
+  // Surface diagnostics only. A prose response may validly end without one of
+  // these characters, and heading presence belongs to relay admission rather
+  // than provider-transport completion.
   const closedChars = new Set(['.', '!', '?', '…', '⟐', '”', '"', "'", '’', ')', '}', ']', '—']);
   const openTail = Boolean(trimmed) && !closedChars.has(trimmed.at(-1));
-  let reason = 'provider-stop-and-terminal-surface-observed';
+  const structuralObservations = Object.freeze([
+    ...(openTail ? ['surface-tail-open'] : []),
+    ...(!firstHeadingPresent ? ['khonapolit-heading-missing'] : []),
+    ...(!terminalHeadingPresent ? ['terminal-voice-missing'] : [])
+  ]);
+
+  let reason = 'provider-stop-observed';
   if (!original.trim()) reason = 'provider-return-empty';
   else if (finishReason === 'MAX_TOKENS') reason = 'provider-output-token-limit';
   else if (streamed && finishReason !== 'STOP') reason = 'provider-stream-finish-unwitnessed';
   else if (finishReason && finishReason !== 'STOP') reason = 'provider-finish-nonstop';
   else if (parseErrors > 0) reason = 'provider-stream-parse-error';
-  else if (openTail) reason = 'provider-tail-open';
-  else if (!firstHeadingPresent) reason = 'khonapolit-heading-missing';
-  else if (!terminalHeadingPresent) reason = 'terminal-voice-missing';
-  const complete = reason === 'provider-stop-and-terminal-surface-observed';
+  // A non-streamed legacy payload can lack finishReason. Preserve the old
+  // conservative posture there, but never let text shape override an explicit
+  // provider STOP.
+  else if (!finishReason) reason = 'provider-finish-unwitnessed';
+
+  const complete = reason === 'provider-stop-observed';
   return Object.freeze({
     schema: MARROWLINE_COMPLETION_SCHEMA, complete, reason, finishReason,
     streamed: Boolean(streamed), parseErrors: Math.max(0, Number(parseErrors) || 0),
     firstHeadingPresent, terminalHeadingPresent, hasPlainClosingGlyph,
-    openTail, creative: Boolean(creative),
+    openTail, structuralObservations, creative: Boolean(creative),
+    completionAuthority: 'provider-transport-only',
+    structuralAdmissionAuthority: 'relay-parser-separate',
     literaryQuality: 'NOT_ESTABLISHED_BY_STRUCTURAL_COMPLETION'
   });
 }
