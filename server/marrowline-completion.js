@@ -15,11 +15,11 @@ export function observeMarrowlineCompletion(text = '', output = {}, {
   const finishReason = typeof output.finishReason === 'string' ? output.finishReason : null;
   const firstHeadingPresent = hasHeading(original, 'Kʰonapolit');
   const terminalHeadingPresent = hasHeading(original, 'Tauric Diana bots');
-  const hasPlainClosingGlyph = /(?:^|\\n|[.!?…])[ \\t]*⟐[ \\t]*$/u.test(original);
-  const trimmed = original.replace(/\\s+$/u, '').replace(/\\p{M}+$/gu, '');
-  // A missing closing punctuation is an observable edge, not a word-count veto.
-  // The conversational ⟐ is strong evidence of an intentional closure.
-  const openTail = Boolean(trimmed) && !/[.!?…⟐"”'’)}\\]—]$/u.test(trimmed);
+  const hasPlainClosingGlyph = original.trimEnd().endsWith('⟐');
+  const trimmed = original.trimEnd().replace(/\\p{M}+$/gu, '');
+  // This tests an unfinished textual edge, not the number of words or marks.
+  const closedChars = new Set(['.', '!', '?', '…', '⟐', '”', '"', "'", '’', ')', '}', ']', '—']);
+  const openTail = Boolean(trimmed) && !closedChars.has(trimmed.at(-1));
   let reason = 'provider-stop-and-terminal-surface-observed';
   if (!original.trim()) reason = 'provider-return-empty';
   else if (finishReason === 'MAX_TOKENS') reason = 'provider-output-token-limit';
