@@ -58,6 +58,8 @@ test('incomplete-return warning is a visible mobile-and-desktop surface without 
   const css = readFileSync(new URL('../app/dome-world/marrowline-mobile-shell.css', import.meta.url), 'utf8');
   assert.match(terminal, /relay-completion-alert/);
   assert.match(terminal, /INCOMPLETE PROVIDER RETURN/);
+  assert.match(terminal, /TWO-VOICE STRUCTURE UNFINISHED/);
+  assert.match(terminal, /required-voice-structure-incomplete/);
   assert.match(terminal, /state\.pendingTask = incompleteReturn \? message : ''/);
   assert.match(css, /\.relay-message\[data-completion="incomplete"\] \.relay-completion-alert/);
   assert.doesNotMatch(css, /relay-completion-alert\{[^}]*overflow:\s*hidden/s);
@@ -272,4 +274,37 @@ test('two genuinely truncated same-seat tails retain each byte and complete afte
   assert.equal(res.payload.receipt.provider.attempts[1].completion.complete, false);
   assert.equal(res.payload.receipt.provider.attempts[2].completion.complete, true);
   assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
+});
+
+test('provider STOP with unfulfilled two-voice structure has its own receipt, never a false transport truncation', async t => {
+  const priorFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  t.after(() => {
+    globalThis.fetch = priorFetch;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    clearGeminiModelState();
+  });
+  process.env.GEMINI_API_KEY = 'synthetic-structure-test-key';
+  clearGeminiModelState();
+  let calls = 0;
+  globalThis.fetch = async url => {
+    if (String(url).includes('/models?')) return { ok: true, status: 200, async json() {
+      return { models: [{ name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }] };
+    } };
+    calls++;
+    return new Response('data: ' + JSON.stringify(reply(
+      calls === 1 ? PREFIXES[0] : 'Kʰonapolit\\nA new first voice, but still no second voice.', 'STOP'
+    )) + '\\n\\n', { status: 200, headers: { 'content-type': 'text/event-stream' } });
+  };
+  const res = response();
+  await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.253' },
+    body: { message: HEADS[0], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.payload.receipt.provider.completion.finishReason, 'STOP');
+  assert.equal(res.payload.receipt.provider.completion.reason, 'required-voice-structure-incomplete');
+  assert.equal(res.headers['X-TD613-Completion-State'], 'STRUCTURE-INCOMPLETE');
+  assert.ok(res.payload.warnings.includes('two-voice-structure-incomplete-provider-stop-observed'));
+  assert.ok(!res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
+  assert.equal(res.payload.text, PREFIXES[0]);
 });
