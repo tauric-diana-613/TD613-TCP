@@ -164,7 +164,7 @@ try {
     'the one same-seat structural repair remains bounded to the thirty-second repair ceiling'
   );
   assert.equal(res.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(res.payload.receipt.provider.attempts[1].repairTiming, 'immediate-unfinished-return', 'missing first-voice and terminal structure is now diagnosed as incomplete before repair');
+  assert.equal(res.payload.receipt.provider.attempts[1].repairTiming, 'immediate-structural', 'witnessed provider STOP stays transport-complete while missing required voice structure routes through structural repair');
   assert.equal(res.payload.receipt.provider.attempts[0].output.thinkingLevel, requestBodies[0].generationConfig.thinkingConfig.thinkingLevel);
   assert.equal(res.payload.receipt.provider.attempts[1].output.thinkingLevel, requestBodies[1].generationConfig.thinkingConfig.thinkingLevel);
   assert.equal(res.payload.receipt.provider.output.thinkingLevel, requestBodies[1].generationConfig.thinkingConfig.thinkingLevel);

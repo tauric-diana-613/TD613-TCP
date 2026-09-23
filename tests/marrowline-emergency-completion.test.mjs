@@ -60,13 +60,18 @@ test('incomplete-return warning is a visible mobile-and-desktop surface without 
   assert.doesNotMatch(css, /relay-completion-alert\{[^}]*overflow:\s*hidden/s);
 });
 
-test('the THREE emergency returns are incomplete for different observed reasons; length is not artistic merit', () => {
+test('provider STOP has transport authority; surface heuristics remain diagnostics only', () => {
   const a = PREFIXES.map(text => observeMarrowlineCompletion(text, { finishReason: 'STOP' }, { streamed: true }));
-  assert.equal(a[0].reason, 'terminal-voice-missing', 'a finished sentence in an opening scene is not the completed two-voice response');
-  assert.equal(a[1].reason, 'provider-tail-open', 'the denominator inquiry ends mid-clause');
-  assert.equal(a[2].reason, 'provider-tail-open', 'a named terminal voice ending in the middle of a phrase is not complete');
-  assert.ok(a.every(x => !x.complete));
-  for (const x of a) assert.equal(x.literaryQuality, 'NOT_ESTABLISHED_BY_STRUCTURAL_COMPLETION');
+  assert.ok(a.every(x => x.complete), 'a witnessed STOP is a completed provider transport');
+  assert.ok(a[0].structuralObservations.includes('terminal-voice-missing'));
+  assert.ok(a[1].structuralObservations.includes('surface-tail-open'));
+  assert.ok(a[2].structuralObservations.includes('surface-tail-open'));
+  for (const x of a) {
+    assert.equal(x.reason, 'provider-stop-observed');
+    assert.equal(x.completionAuthority, 'provider-transport-only');
+    assert.equal(x.structuralAdmissionAuthority, 'relay-parser-separate');
+    assert.equal(x.literaryQuality, 'NOT_ESTABLISHED_BY_STRUCTURAL_COMPLETION');
+  }
   assert.equal(observeMarrowlineCompletion('Kʰonapolit\nArgument.\n\n' + CHORUS, { finishReason: 'STOP' }, { streamed: true }).complete, true);
   assert.equal(observeMarrowlineCompletion('Kʰonapolit\nArgument.\n\n' + CHORUS, {}, { streamed: true }).reason, 'provider-stream-finish-unwitnessed');
   assert.equal(observeMarrowlineCompletion('Kʰonapolit\nArgument.\n\n' + CHORUS, { finishReason: 'MAX_TOKENS' }).reason, 'provider-output-token-limit');
@@ -86,7 +91,7 @@ test('bounded authored tails keep every original character, two distinct voice b
   assert.equal(assembleMarrowlineProviderTail(PREFIXES[0], 'Kʰonapolit\nRestart.'), null);
 });
 
-test('first incomplete human turn gets ONE same-provider authored recovery and a witnessed full response for EACH example', async t => {
+test('genuinely truncated human turn gets ONE same-provider authored recovery and a witnessed full response for EACH example', async t => {
   const originalFetch = globalThis.fetch;
   const priorKey = process.env.GEMINI_API_KEY;
   t.after(() => {
@@ -112,7 +117,7 @@ test('first incomplete human turn gets ONE same-provider authored recovery and a
   };
 
   for (let i = 0; i < 3; i++) {
-    sequence = [{ text: PREFIXES[i], finishReason: 'STOP' }, { text: TAILS[i], finishReason: 'STOP' }];
+    sequence = [{ text: PREFIXES[i], finishReason: 'MAX_TOKENS' }, { text: TAILS[i], finishReason: 'STOP' }];
     const begin = requests.length;
     const res = response();
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.241' },
