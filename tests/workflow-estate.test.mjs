@@ -211,6 +211,36 @@ assert.match(wendbineGate, /ATELIER_PR: '1134'/);
 assert.match(wendbineGate, /ATELIER_BRANCH: research\/wendbine-public-atelier-sync-20260913/);
 assert.match(wendbineGate, /source-capture\.sealed\.json/);
 assert.match(wendbineGate, /WENDBINE_WRITE_MEMBRANE_VIOLATION/);
+assert.ok(wendbineGate.includes("['git','status','--porcelain=v1','-z','--untracked-files=all']"),
+ 'Untracked nested relations must be enumerated as files, not collapsed into a directory placeholder.');
+// Regression for the first real issue #1308 gesture: an untracked
+// relations/typed-edges.jsonl file must satisfy the strict write membrane,
+// while any unapproved sibling remains rejected.
+{
+  const {execFileSync} = await import('node:child_process');
+  const {mkdtempSync,mkdirSync,writeFileSync,rmSync} = await import('node:fs');
+  const {tmpdir} = await import('node:os');
+  const tmp = mkdtempSync(join(tmpdir(),'wendbine-membrane-'));
+  try {
+    execFileSync('git',['init','-q'],{cwd:tmp});
+    const root='packages/dome_world_exact/fixtures/a15-r0/WENDBINE/';
+    const edge=root+'05-OPERATIONS/relations/typed-edges.jsonl';
+    mkdirSync(join(tmp,root,'05-OPERATIONS/relations'),{recursive:true});
+    writeFileSync(join(tmp,edge),'{}\\n');
+    const read=()=>execFileSync('git',['status','--porcelain=v1','-z','--untracked-files=all'],{cwd:tmp,encoding:'utf8'})
+      .split('\\0').filter(Boolean).map(row=>row.slice(3));
+    const allow=['01-MANIFESTS/phase2/','01-MANIFESTS/registry-index.json',
+      '04-RECEIPTS/phase2/','05-OPERATIONS/phase2/',
+      '05-OPERATIONS/relations/typed-edges.jsonl','07-ARCHIVE-LEDGER/syncs/'];
+    const valid=path=>path.startsWith(root)&&allow.some(p=>path.slice(root.length).startsWith(p));
+    assert.deepEqual(read(),[edge],'Git must report the leaf file, not the untracked relations directory.');
+    assert.ok(read().every(valid),'Valid typed-edge leaf file must pass the source-only membrane.');
+    const foreign=root+'05-OPERATIONS/relations/unapproved-source.txt';
+    writeFileSync(join(tmp,foreign),'not allowed\\n');
+    assert.ok(read().some(p=>!valid(p)),'Unexpected sibling file must still fail closed.');
+  } finally {rmSync(tmp,{recursive:true,force:true});}
+}
+
 assert.ok(wendbineGate.includes('      group: wendbine-operator-sync-${{ github.repository }}-${{ github.event.issue.number }}'),
  'Wendbine gate must own an isolated branch serialization group.');
 assert.match(wendbineGate, /cancel-in-progress: false/,
