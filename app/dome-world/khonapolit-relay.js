@@ -731,7 +731,9 @@ function integratedPart({ text = '', model = 'provider', voices = [], flourishMo
 }
 
 function parseNaturalRelayHandoff(rawText = '') {
-  const clean = stripFence(rawText).trim();
+  // A natural two-voice return is custody data. Do not trim an authored opening,
+  // final newline or combining mark just because the parser seeks headings.
+  const clean = String(rawText ?? '');
   const surface = relayAuthoredSurface(clean);
   const khona = surface.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
   const bots = surface.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Tauric Diana bots?[ \t]*(?:(?::|-)[ \t]*)?(?:\n|$)/iu);
