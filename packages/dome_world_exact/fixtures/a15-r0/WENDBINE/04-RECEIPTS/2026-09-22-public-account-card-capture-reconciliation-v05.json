@@ -1,0 +1,47 @@
+{
+  "schema": "wendbine-public-capture-reconciliation-receipt/v0.5",
+  "receipt_id": "wendbine-20260922-account-card-capture-v05",
+  "atelier_id": "WENDBINE",
+  "observation_day_utc": "2026-09-22",
+  "snapshot_id": "wendbine-public-reddit-account-card-sync-20260922-v05",
+  "registry": "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl",
+  "observed": {
+    "account_cards": 25,
+    "text_discussion_cards": 23,
+    "media_only_cards": 2
+  },
+  "persisted": {
+    "unique_source_ids": 25,
+    "unique_canonical_urls": 25,
+    "individual_card_rows": 25,
+    "full_post_details": 0
+  },
+  "reconciliation": {
+    "observedCount": 25,
+    "persistedCount": 25,
+    "explicitFailureCount": 0,
+    "unexplained_remainder": 0,
+    "state": "RECONCILED_FULL_PER_CARD_CUSTODY_AT_LISTING_CARD_LEVEL"
+  },
+  "external_retrieval": {
+    "listing": "CACHED_PUBLIC_R_WENDBINE_NEW_RENDERED",
+    "per_post_detail": "CACHE_MISS",
+    "reddit_json_listing": "STALE_INCOMPATIBLE_WINDOW",
+    "next_page": "NOT_RETRIEVED",
+    "exact_publication_timestamps": "UNBOUND"
+  },
+  "existing_sept16_scar": {
+    "receipt": "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+    "state": "UNCHANGED_NOT_RETROACTIVELY_RECONSTRUCTED"
+  },
+  "non_equivalence": [
+    "CARD_CAPTURE_COMPLETENESS != ACCOUNT_CENSUS_COMPLETENESS",
+    "CARD_SOURCE_BINDING != POST_DETAIL_HYDRATION",
+    "CURRENT_RETRIEVAL != CURRENT_PUBLICATION",
+    "RECONCILED_THIS_PASS != REPAIRED_20260916_LOSS"
+  ],
+  "merge_authority": false,
+  "deployment_authority": false,
+  "scientific_promotion_authority": false,
+  "seal": "⟐"
+}

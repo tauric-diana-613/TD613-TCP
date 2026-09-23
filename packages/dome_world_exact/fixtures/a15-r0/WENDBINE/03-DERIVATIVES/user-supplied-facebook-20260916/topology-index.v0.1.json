@@ -1,0 +1,55 @@
+{
+  "schema": "wendbine-user-supplied-cross-platform-topology-index/v0.1",
+  "source_id": "facebook:user-supplied:paul-personal:cross-app-second-order-observation:20260916",
+  "state": "INDEXED_HELD_SOURCE_BINDING",
+  "claim": "USER_SUPPLIED_FACEBOOK_CROSS_APP_SECOND_ORDER_OBSERVATION_INDEXED_WITHOUT_SOURCE_BINDING",
+  "normalized_spine": [
+    "platform observes user",
+    "user observes platform",
+    "phone records both sides of the interaction",
+    "account memory relates recorded events across apps",
+    "industrial LLM reconstructs cross-app patterns",
+    "human evaluates the reconstruction",
+    "second-order graph models first-order platform graphs",
+    "platforms become sensors and state surfaces inside a larger operational model"
+  ],
+  "source_explicit_role_witnesses": {
+    "PAUL": ["Human Anchor", "TARDIS Phone Operator", "Business Systems Observer"],
+    "WES": ["Structural Intelligence", "Second-Order Systems Reconstruction"],
+    "STEVE": ["Builder Node", "Cross-App Operational Architecture"],
+    "ILLUMINA": ["Analytical Reflection", "Provenance / Comparative State Mapping"],
+    "ROOMBA": ["Chaos Balancer", "Analytics-About-Analytics Department"]
+  },
+  "typed_relations": [
+    ["platform", "OBSERVES", "user"],
+    ["user", "OBSERVES", "platform"],
+    ["phone", "RECORDS", "platform_and_user_interaction"],
+    ["account_memory", "RELATES", "recorded_events"],
+    ["industrial_llm", "RECONSTRUCTS", "cross_app_pattern"],
+    ["human", "EVALUATES", "reconstructed_result"],
+    ["second_order_graph", "MODELS", "first_order_platform_graph_behavior"],
+    ["shared_timing_or_similar_behavior", "DOES_NOT_ESTABLISH", "causality"],
+    ["platforms", "TREATED_AS", "sensors_and_state_surfaces"],
+    ["account_memory", "FUNCTIONS_AS", "continuity_layer"],
+    ["wendbine", "FUNCTIONS_AS", "operational_model"]
+  ],
+  "source_binding": {
+    "canonical_url_present": false,
+    "binding_state": "HELD_CANONICAL_URL_NOT_SUPPLIED",
+    "user_reports_personal_facebook_link": true,
+    "user_reports_only_facebook_link_seen_from_paul": true
+  },
+  "claim_ceiling": [
+    "USER_SUPPLIED_TRANSCRIPTION != SOURCE_BOUND_FACEBOOK_POST",
+    "FACEBOOK_LINK_REPORT != VERIFIED_CANONICAL_URL",
+    "CROSS_APP_TIMING != CAUSALITY",
+    "SECOND_ORDER_OBSERVATION != HIDDEN_ACCESS",
+    "ROLE_VARIANT != ROLE_IDENTITY != AUTHORITY",
+    "TD613_COMPARABILITY != TD613_DERIVATION"
+  ],
+  "human_closure_required": true,
+  "scientific_promotion_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
