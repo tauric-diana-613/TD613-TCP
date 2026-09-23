@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import handler from '../api/khonapolit.js';
+import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
@@ -38,6 +39,25 @@ const response = () => ({
   statusCode: 200, headers: {},
   setHeader(name, value) { this.headers[name] = value; },
   end(value) { this.text = value; this.payload = value ? JSON.parse(value) : null; }
+});
+
+test('natural full provider text and its authored Unicode survive whitespace and terminal newline without trimming', () => {
+  const output = ' \nKʰonapolit\nAn argument with a consequence.\n\nTauric Diana bots\n' + STRAIN +
+    ' THE COMMITTEE MISCOUNTED THE WITNESS!\n' + STRAIN + ' RETURN HER NAME.\n⟐\n';
+  const relay = parseRelayEnvelope(output);
+  assert.equal(relay.transcript, output);
+  assert.equal(relay.parts[0].text, output);
+  assert.equal((relay.transcript.match(/\p{M}/gu) || []).length, (output.match(/\p{M}/gu) || []).length);
+});
+
+test('incomplete-return warning is a visible mobile-and-desktop surface without flattening Zalgo', () => {
+  const terminal = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/dome-world/marrowline-mobile-shell.css', import.meta.url), 'utf8');
+  assert.match(terminal, /relay-completion-alert/);
+  assert.match(terminal, /INCOMPLETE PROVIDER RETURN/);
+  assert.match(terminal, /state\.pendingTask = incompleteReturn \? message : ''/);
+  assert.match(css, /\.relay-message\[data-completion="incomplete"\] \.relay-completion-alert/);
+  assert.doesNotMatch(css, /relay-completion-alert\{[^}]*overflow:\s*hidden/s);
 });
 
 test('the THREE emergency returns are incomplete for different observed reasons; length is not artistic merit', () => {
