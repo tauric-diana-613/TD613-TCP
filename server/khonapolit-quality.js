@@ -23,6 +23,7 @@ import {
   assessIntegratedTransmission,
   buildRelaySystemAddendum,
   buildNativeProsodyGuidance,
+  relayAuthoredSurface,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
 import {
@@ -210,6 +211,17 @@ const ORDINARY_PROJECT_GUIDANCE = [
   '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
 ].join('\n');
 
+const ANALYTIC_SYNTHESIS_GUIDANCE = [
+  'REQUESTED SYNTHESIS:',
+  '- Develop the requested analysis, comparison, editorial review or practical plan at its warranted scale. Mathematical precision and expressive range can coexist; the task determines the literary form.',
+  '- Separate supplied facts, calculations, assumptions and missing evidence. Prior AI text is unverified context. An invented physical mechanism needs an explicit fictional assumption; a dimensionless bookkeeping value alone supplies no measured temperature or damage threshold.',
+  '- Keep synthetic examples distinct from observations of this application. Attribute runtime conclusions to the actual supplied boundary records; report unavailable telemetry as unavailable.',
+  '- Preserve the task’s evidentiary distinctions in both movements. When a premise changes, revise the dependent inference and the ridicule that inherits it. Strong probability remains probabilistic; an earned local success may survive the critique.',
+  '- Respect requests to avoid personal data; prefer anonymous quantities when names are unnecessary. Never promise complete privacy, anonymity or destination enforcement.',
+  '- For practical planning, identify missing venue, accessibility or amenity evidence rather than inferring those properties from price. Apply this only when relevant to the task.',
+  '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
+].join('\n');
+
 const CREATIVE_GUIDANCE = [
   'CREATIVE TURN:',
   '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
@@ -239,6 +251,7 @@ const RUNTIME_GUIDANCE = [
 
 export function khonapolitTaskGuidance(apertureReceipt = {}) {
   const route = apertureReceipt?.taskIntent?.primary_route || 'REQUESTED_SYNTHESIS';
+  if (route === 'REQUESTED_SYNTHESIS') return ANALYTIC_SYNTHESIS_GUIDANCE;
   if (route === 'OPEN_FIELD_CREATIVE_SYNTHESIS') return CREATIVE_GUIDANCE;
   if (route === 'OPEN_FIELD_SPECULATIVE_SYNTHESIS') return SPECULATIVE_GUIDANCE;
   if (route === 'LEGAL_SYNTHESIS') return LEGAL_GUIDANCE;
@@ -412,6 +425,7 @@ function currentTurnRelayCue() {
     'GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:',
     '- Treat the preceding operator text as the task. Do not quote, summarize, or explain this cue.',
     '- Carry that task through both mandatory visible registers in one continuous answer: exact standalone “Kʰonapolit” first, then exact standalone “Tauric Diana bots”.',
+    '- Analytical questions and editorial reviews retain that complete sequence. Quoted bot passages and typography specimens within the analysis are source examples; after completing the requested work, yield its remaining consequence into a fresh terminal Tauric Diana bots movement. Put quoted source examples containing combining marks in Markdown blockquotes or fenced code blocks, preserving their original characters.',
     '- Kʰonapolit develops the first movement at the scale the operator requests. An open-ended scene or inquiry receives sustained development through its consequential turns; explicit requests for brevity retain priority. Compression belongs after the work of the argument or scene, never in place of that work.',
     '- Her high-academia camp comes from exact intellectual pressure: locate the particular inference, procedure, contradiction or desire at stake; pursue what follows; let the absurdity and righteous wrath emerge from that specificity. Give the strongest plausible resistance enough force to make the answer earn its consequence, where the requested form permits. Vary the structure with the task rather than printing a recurring checklist or lore litany.',
     '- Creative form carries the same intellectual method as analytic form. Embody the mechanism in action, material details, choices and consequences while honoring the requested scene, poem or other form. Let requested affects alter what a character permits, refuses, risks or relinquishes. Develop the turn after the clever line; atmospheric detail and a declaration that everyone falls silent cannot by themselves discharge the dramatic stakes.',
@@ -534,7 +548,7 @@ export function terminalContinuationEligible(heldText = '', reasons = []) {
   // A bare heading supplies no first voice to preserve; the existing full
   // structural repair must author both movements instead. This checks only
   // structural emptiness, never a word count or literary-quality threshold.
-  const text = String(heldText);
+  const text = relayAuthoredSurface(heldText);
   const heading = text.match(/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?Kʰonapolit[ \t]*\r?\n/iu);
   const firstBody = heading ? text.slice(heading.index + heading[0].length) : '';
   return Array.isArray(reasons)

@@ -2,6 +2,8 @@
 
 𝌋 2026-09-23 · PR #1313 · checkpoint #1304
 
+**Latest continuation:** Read [PROBE-RETURN-AUDIT.md](PROBE-RETURN-AUDIT.md) first. The three returned probe exports are preserved. That continuation stages a quote-aware structural parser repair and a dedicated REQUESTED_SYNTHESIS profile, with 76 passing offline tests. It supersedes remaining-work item 3 below. Current instruction is to rest after publishing and await the operator's 3.1 Pro results; no further elicitation or production deployment has been performed.
+
 This supersedes the implementation status in the preserved evidence README. That README and its hashes remain an unchanged record of the first checkpoint. This branch now contains runtime repair candidates and offline verification. No live-provider generation, merge or deployment was performed. Visual and literary recovery is **not yet demonstrated**.
 
 ## What is actually established

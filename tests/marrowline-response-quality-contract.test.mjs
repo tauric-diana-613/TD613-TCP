@@ -751,7 +751,7 @@ test('ordinary project work keeps factual guidance instead of inheriting creativ
   const receipt = buildApertureV3InvocationReceipt({ message, discourseMode, contentScanned: true });
   assert.equal(receipt.taskIntent.primary_route, 'REQUESTED_SYNTHESIS');
   const guidance = khonapolitTaskGuidance(receipt);
-  assert.match(guidance, /ORDINARY PROJECT WORK:/);
+  assert.match(guidance, /REQUESTED SYNTHESIS:/);
   assert.match(guidance, /Separate supplied facts, calculations, assumptions and missing evidence/i);
   assert.doesNotMatch(guidance, /CREATIVE TURN:/);
 });
