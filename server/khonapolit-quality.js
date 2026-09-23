@@ -44,9 +44,10 @@ import {
   observeGeminiQuota
 } from './gemini-provider-transport.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
+import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
-export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v47-bounded-terminal-continuation';
+export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v48-provider-completion-boundary';
 export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
 export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
@@ -89,7 +90,8 @@ const REPAIRABLE_STRUCTURAL_REASONS = new Set([
   'khonapolit-nominative-missing',
   'tauric-diana-bots-nominative-missing',
   'voice-order-invalid',
-  'khonapolit-combining-mark-contamination'
+  'khonapolit-combining-mark-contamination',
+  'provider-return-unfinished'
 ]);
 const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-axis-collapse',
@@ -217,6 +219,8 @@ const ANALYTIC_SYNTHESIS_GUIDANCE = [
   '- Separate supplied facts, calculations, assumptions and missing evidence. Prior AI text is unverified context. An invented physical mechanism needs an explicit fictional assumption; a dimensionless bookkeeping value alone supplies no measured temperature or damage threshold.',
   '- Keep synthetic examples distinct from observations of this application. Attribute runtime conclusions to the actual supplied boundary records; report unavailable telemetry as unavailable.',
   '- Preserve the task’s evidentiary distinctions in both movements. When a premise changes, revise the dependent inference and the ridicule that inherits it. Strong probability remains probabilistic; an earned local success may survive the critique.',
+  '- In an expressly fictional or satirical mathematical scene, equations, thermodynamics and absurd mechanisms can carry a joke or myth without being presented as empirical measurement; do not interrupt the work with verification boilerplate. When the operator is actually auditing a mathematical or empirical claim, develop the dependency and distinguish count, adjacency, projection and evidence rather than passing off impressive vocabulary as proof.',
+  '- A named list is not an argued conclusion. Follow the concrete dispute through a counterexample, consequence and an earned change of stakes, then let the second voice do new work.',
   '- Respect requests to avoid personal data; prefer anonymous quantities when names are unnecessary. Never promise complete privacy, anonymity or destination enforcement.',
   '- For practical planning, identify missing venue, accessibility or amenity evidence rather than inferring those properties from price. Apply this only when relevant to the task.',
   '- Do not inject portability or handoff instructions unless the operator explicitly asks for them.'
@@ -226,7 +230,8 @@ const CREATIVE_GUIDANCE = [
   'CREATIVE TURN:',
   '- Follow the operator’s requested form, scale, cadence and imaginative range rather than collapsing the work into a synopsis.',
   '- Treat supplied mythology, characters, names and canon as creative source material. Invent within that field when the operator asks for invention; do not convert corpus phrases into a compulsory keyword litany.',
-  '- A story requires event, tension, transformation and consequence. Atmospheric exposition alone is not a completed story.',
+  '- A story requires event, tension, transformation and consequence. Atmospheric exposition alone is not a completed story. Put the promised decisive question or act on the page, let another character resist it, and show what changes afterward. Mercy, resignation and fury can coexist rather than becoming a safe administrative moral.',
+  '- Fictional scientific conceits, comic equations and impossible metaphysical apparatus are welcome as dramaturgy. Do not replace an imaginative scene with a correction memo merely because its thermodynamics are a joke.',
   '- Factual and ontological claim boundaries still govern what may be asserted as verified, but they are not a brevity rule or a prose voice. Keep receipt language out of the creative work unless it materially belongs there.',
   '- Do not inject unrelated project-management, venue, privacy, portability or compliance boilerplate into the creative response.'
 ].join('\n');
@@ -432,6 +437,8 @@ function currentTurnRelayCue() {
     '- When the operator invites Kʰonapolit’s adversarial camp, let the opponent act on the disputed premise and pursue the resulting material or institutional consequences. Give her wit a changing situation to work on: a decision, its cost, an attempted recovery, a consequence that survives it. These are possibilities, not mandatory beats. Let the bots take that consequence somewhere the first movement has not already exhausted. Keep developing while the task still has unspent substance; the obligation to reach the second voice is never a reason to abridge the first.',
     '- When mathematical or scientific language carries an inference, make its terms, relation and limit intelligible, in notation or precise prose appropriate to the task. A metaphor may illuminate a mechanism; resemblance alone supplies no derivation. Use only the formalism the particular problem earns, and make its consequence available to the reader rather than decorating an assertion with technical nouns.',
     '- Kʰonapolit yields only after developing the prompt-specific consequence. The Tauric Diana bots inherit its unspent implication and develop a sustained, new choral movement: scary, funny, intellectually specific, and theatrically inventive rather than an ornamental afterword or recap. Their native scream-sing typography evolves with that movement; never substitute a heading and a few decorated words for authored prose.',
+    '- PERFORMANCE REFERENCE, NOT TEXT TO RECITE: Kʰonapolit may make an argument by turning the institution’s own measurement into a comedy of administrative panic; move freely among witty deistic arrogance, eschatological and surveillance theory, thermodynamic slapstick, precision, intimacy, and outrageous camp when the operator’s task makes them useful. A mathematical fiction may be a joke; an empirical audit still needs honest distinctions. Neither a cold list of five definitions nor a timid two-sentence synopsis is the requested voice.',
+    '- The bots deserve an extended dramatic conversation, not a token outro: expose the cost, change whom they address, let repetition mutate its meaning, and move between enormous overprinted eruptions and quieter marked or stroke-heavy breaths. Do not tile one identical diacritic stack across all words, impose an axis schedule, imitate a specimen verbatim, or flatten the long passage into a short sign-off.',
     '- HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION: provider-authored combining-mark flourishings inhabit the terminal prose, with letters visibly climbing above and descending below the baseline. The field rises, falls, collides, thins, and surges with the live rhetoric; even a quiet phrase has its own fine vibration.',
     '- Follow the full NATIVE SEMANTIC PROSODY vocabulary: deep overlapping vertical flourishes, horizontal strokes, tilde and diagonal solidus overlays are available to the authored movement. Write fresh words and invent the changing flourishings; a wholly vertical performance remains welcome. Choose freely as the thought unfolds rather than repeating a small calibration alphabet. Preserve the development of the prose alongside the typography.',
     `- ${CONVERSATIONAL_CLOSING_GUIDANCE}`,
@@ -587,8 +594,18 @@ export function buildGeminiStructuralRepairRequest(
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
   const repairContext = heldText;
-  const missingTerminalOnly = terminalContinuationEligible(heldText, reasonList);
-  const repairDirective = (missingTerminalOnly ? [
+  const firstVoiceStarted = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText);
+  const boundedTail = firstVoiceStarted && reasonList.includes('provider-return-unfinished');
+  const missingTerminalOnly = !boundedTail && terminalContinuationEligible(heldText, reasonList);
+  const repairDirective = (boundedTail ? [
+    'BOUNDED SAME-PROVIDER TAIL RECOVERY — THE PREVIOUS OUTPUT IS INCOMPLETE.',
+    'The preceding model turn is the exact prefix of the response. Author ONLY its missing continuation. Do not repeat the prefix, restart Kʰonapolit, add a preface or discuss this repair.',
+    'If the first voice has only opened the scene or argument, keep developing it: the decisive event, resistance, cost, justified inference, changing stakes and full imaginative form must happen before any earned handoff. Do not treat the mere presence of an opening paragraph as a completed first movement.',
+    'Complete the Tauric Diana bots in a sustained new choral movement. If the terminal heading is not yet in the prefix, give it as an exact standalone heading; if it already exists, continue its prose without repeating the heading.',
+    'Their provider-authored Unicode is native voice: dynamic full-height overprint at dramatic peaks, fine marked breaths, horizontal/diagonal strokes where earned, novel motifs and changing amplitude. No pasted or identical stack per letter. Preserve all existing Unicode bytes.',
+    'Finish the actual dramatic or intellectual consequence and the conversational closing. No JSON, packet delimiters, template echo or commentary about the repair.',
+    CONVERSATIONAL_CLOSING_GUIDANCE
+  ] : missingTerminalOnly ? [
     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — TERMINAL CONTINUATION ONLY.',
     'The prior draft already contains the full Kʰonapolit argument. Its only missing structural element is the terminal Tauric Diana bots movement.',
     'Preserve the prior draft without restating it. The exact standalone heading “Kʰonapolit” first already exists. Your entire new output begins with the exact standalone heading “Tauric Diana bots” on the first line.',
@@ -617,11 +634,12 @@ export function buildGeminiStructuralRepairRequest(
 }
 
 export function extractGeminiText(payload = {}) {
+  // Keep exact provider whitespace, including a possible leading continuation
+  // separator; no model-authored Unicode or text is cleaned by this boundary.
   return (payload?.candidates?.[0]?.content?.parts || [])
-    .map((part) => safe(part?.text))
-    .filter(Boolean)
-    .join('\n\n')
-    .trim();
+    .map((part) => typeof part?.text === 'string' ? part.text : '')
+    .filter((text) => Boolean(text.trim()))
+    .join('\n\n');
 }
 
 // Bind evidence to the bytes actually sent, after all prompt layers, history,
@@ -954,6 +972,14 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let sharedRateRetrySpent = false;
+  let incompleteFallback = null;
+  const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
+    // Natural text and legacy JSON envelopes must use the same visible response.
+    // JSON's closing brace is NOT a completion witness for its contained prose.
+    parseRelayEnvelope(text, { apertureReceipt }).transcript,
+    output, { streamed: result.streamed, parseErrors: result.parseErrors,
+      creative: discourseMode === 'CREATIVE' }
+  );
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
@@ -1044,21 +1070,30 @@ export default async function handler(req, res) {
       && repairResult.text
       && !repairProviderOutput.outputTokenLimitReached
     ) {
-      const terminalOnly = terminalContinuationEligible(heldText, reasons);
-      // A full corrected provider response remains valid. If the same provider
-      // instead returns only the missing terminal voice, join its actual bytes
-      // to the untouched original and record both component hashes.
-      const assembly = terminalOnly
-        ? assembleProviderTerminalContinuation(heldText, repairResult.text)
-        : null;
+      const tailOnly = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText)
+        && reasons.includes('provider-return-unfinished');
+      const terminalOnly = !tailOnly && terminalContinuationEligible(heldText, reasons);
+      // A second Gemini return may continue the exact first draft; its actual
+      // bytes are appended verbatim, not copied from examples or locally Zalgo-encoded.
+      const assembly = tailOnly
+        ? assembleMarrowlineProviderTail(heldText, repairResult.text)
+        : terminalOnly ? assembleProviderTerminalContinuation(heldText, repairResult.text) : null;
+      // If a provider declines tail-only instruction but writes a valid complete
+      // full reply, keep it as provider-authored full repair, never mislabel it as
+      // a byte-preserving continuation.
+      const providerFullRepair = tailOnly && !assembly && completionOf(repairResult, repairProviderOutput).complete;
+      if (tailOnly && !assembly && !providerFullRepair) return null;
       const repairText = assembly ? assembly.text : repairResult.text;
+      const repairedCompletion = completionOf(repairResult, repairProviderOutput, repairText);
+      repairAttempt.completion = repairedCompletion;
+      if (!repairedCompletion.complete) return null;
       const repairRelay = parseRelayEnvelope(repairText, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
       repairAttempt.terminalContinuation = assembly
         ? Object.freeze({
             source: 'second-provider-return',
-            originalSha256: assembly.originalSha256,
-            continuationSha256: assembly.continuationSha256,
+            originalSha256: assembly.originalSha256 || sha256(heldText),
+            continuationSha256: assembly.continuationSha256 || sha256(repairResult.text),
             combinedSha256: sha256(repairText),
             separator: assembly.separator,
             originalPreserved: repairText.startsWith(heldText)
@@ -1066,7 +1101,7 @@ export default async function handler(req, res) {
         : null;
       const unresolvedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
       repairAttempt.unresolvedSevereMorphology = unresolvedMorphologyWarnings;
-      if (repairRelay.admission?.admissible && unresolvedMorphologyWarnings.length === 0) {
+      if (repairRelay.admission?.admissible) {
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: repairText,
@@ -1077,13 +1112,15 @@ export default async function handler(req, res) {
           apertureEgress,
           apertureReceipt,
           attempts,
-          completionPath: assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
+          completionPath: tailOnly && assembly ? 'same-provider-bounded-tail-continuation'
+            : assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
         });
         const receipt = Object.freeze({
           ...baseReceipt,
           provider: Object.freeze({
             ...baseReceipt.provider,
             routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            completion: repairedCompletion,
             structuralRepair: Object.freeze({
               used: true,
               timing,
@@ -1100,13 +1137,14 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
         res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
+        res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
         send(res, 200, {
           ok: true,
           text: repairRelay.transcript,
           relay: repairRelay,
           receipt,
           warnings: [
-            ...(assembly ? ['provider-authored-terminal-continuation-joined-with-original-preserved'] : []),
+            ...(assembly ? [tailOnly ? 'provider-authored-bounded-tail-joined-with-original-preserved' : 'provider-authored-terminal-continuation-joined-with-original-preserved'] : []),
             'aperture-v3-task-intent-active',
             'task-intent-guidance-active',
             'adversarial-attractor-admission-active',
@@ -1148,14 +1186,20 @@ export default async function handler(req, res) {
     providerOutput,
     observation,
     reasons = [],
-    qualityWarnings = []
+    qualityWarnings = [],
+    completion = null
   } = {}) => {
     const observedText = relay?.transcript || result?.text || '';
     if (!safe(observedText)) return null;
+    const incomplete = completion?.complete === false;
+    const observedRelay = incomplete ? Object.freeze({ ...relay,
+      signal: Object.freeze({ ...relay.signal, state: 'NOT_LOCKED', downstreamAdmitted: false,
+        notes: [relay.signal?.notes, 'Provider completion not witnessed; preserved fragment only.'].filter(Boolean).join(' ') })
+    }) : relay;
     const baseReceipt = buildTerminalReceipt({
       packet,
       text: result.text,
-      relay,
+      relay: observedRelay,
       model,
       providerStatus: result.response.status,
       providerOutput,
@@ -1165,13 +1209,15 @@ export default async function handler(req, res) {
     });
     const receipt = Object.freeze({
       ...baseReceipt,
+      ...(incomplete ? { status: 'MODEL_RESPONSE_INCOMPLETE' } : {}),
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        ...(completion ? { completion } : {}),
         humanSurfaceObservation: Object.freeze({
           rendered: true,
           observation: safe(observation) || 'provider-return-observed',
-          localAdmission: relay?.admission?.quality || 'UNCLASSIFIED',
+          localAdmission: observedRelay?.admission?.quality || 'UNCLASSIFIED',
           reasons: Object.freeze([...reasons]),
           qualityWarnings: Object.freeze([...qualityWarnings]),
           localAdmissionAuthority: 'diagnostic-not-human-surface-veto'
@@ -1181,19 +1227,21 @@ export default async function handler(req, res) {
       elapsedMs: Date.now() - startedAt
     });
     res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
-    res.setHeader('X-TD613-Signal-State', relay?.signal?.state || 'NOT_LOCKED');
+    res.setHeader('X-TD613-Signal-State', observedRelay?.signal?.state || 'NOT_LOCKED');
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Local-Admission', 'OBSERVED-NONBLOCKING');
+    res.setHeader('X-TD613-Completion-State', completion && !completion.complete ? 'INCOMPLETE' : 'OBSERVED');
     return send(res, 200, {
       ok: true,
       text: observedText,
-      relay,
+      relay: observedRelay,
       receipt,
       warnings: [
         'provider-return-rendered-without-local-text-mutation',
         'local-admission-observed-not-human-surface-veto',
         ...(providerOutput?.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        ...(completion && !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
         ...plan.warnings
       ]
     });
@@ -1291,40 +1339,27 @@ export default async function handler(req, res) {
       });
     }
 
-    if (result.response.ok && providerOutput.outputTokenLimitReached) {
-      attempt.outputAdmission = Object.freeze({
-        admissible: false,
-        quality: 'HELD',
-        reasons: Object.freeze(['provider-output-token-limit']),
-        qualityWarnings: Object.freeze([])
-      });
-      if (releaseCanary || !safe(result.text)) {
-        if (releaseCanary) {
-          res.setHeader('X-TD613-Gemini-Model', model);
-          return send(res, 502, {
-            ok: false,
-            error: 'gemini-output-token-limit',
-            status: 'HELD',
-            diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
-            attempts,
-            modelPolicy: plan,
-            aperture: apertureReceipt,
-            aperture_egress: apertureEgress,
-            claim_ceiling: packet.claimCeiling
-          });
-        }
-        continue;
+    const completion = result.response.ok && result.text ? completionOf(result, providerOutput) : null;
+    attempt.completion = completion;
+    if (result.response.ok && result.text && !completion.complete) {
+      const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
+      const reasons = ['provider-return-unfinished', ...(relay.admission?.reasons || [])];
+      attempt.outputAdmission = relay.admission || null;
+      if (releaseCanary) {
+        res.setHeader('X-TD613-Gemini-Model', model);
+        return send(res, 502, { ok: false,
+          error: completion.reason === 'provider-output-token-limit' ? 'gemini-output-token-limit' : 'gemini-incomplete-provider-return',
+          status: 'HELD', diagnostic: { stage: 'provider-termination', code: completion.reason === 'provider-output-token-limit' ? 'OUTPUT_TOKEN_LIMIT' : 'PROVIDER_INCOMPLETE', completion },
+          attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress,
+          claim_ceiling: packet.claimCeiling });
       }
-      const truncatedRelay = parseRelayEnvelope(result.text, { model, apertureReceipt });
-      return sendObservedProviderReturn({
-        model,
-        result,
-        relay: truncatedRelay,
-        providerOutput,
-        observation: 'provider-output-token-limit-partial-preserved',
-        reasons: ['provider-output-token-limit'],
-        qualityWarnings: truncatedRelay.admission?.qualityWarnings || []
-      });
+      if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput, completion, reasons };
+      const repaired = await runStructuralRepair({ model, fallback, heldText: result.text, reasons,
+        providerOutput, sourceAttemptIndex: attempts.length - 1 }, 'immediate-unfinished-return');
+      if (repaired) return repaired;
+      // Do not spend a human's full response on a returned fragment merely because
+      // Gemini sent 200. Try the remaining approved seats within the same bounded turn.
+      continue;
     }
     if (!result.response.ok && !transport.mayFailOver) {
       const rejectedStatus = Number(result.response.status || 0);
@@ -1378,8 +1413,11 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex: attempts.length - 1
           };
+          if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput,
+            completion: Object.freeze({ complete: false, reason: 'required-voice-structure-incomplete' }), reasons };
           const repaired = await runStructuralRepair(candidate, 'immediate-structural');
           if (repaired) return repaired;
+          continue;
         }
         return sendObservedProviderReturn({
           model,
@@ -1421,6 +1459,7 @@ export default async function handler(req, res) {
           provider: Object.freeze({
             ...baseReceipt.provider,
             routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            completion,
             qualityPreference: Object.freeze({
               used: true,
               sourceAttemptIndex: attempts.length - 1,
@@ -1436,6 +1475,7 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
         res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+        res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
         return send(res, 200, {
           ok: true,
           text: relay.transcript,
@@ -1470,7 +1510,7 @@ export default async function handler(req, res) {
       });
       const receipt = Object.freeze({
         ...baseReceipt,
-        provider: Object.freeze({ ...baseReceipt.provider, routingPolicy: GEMINI_MODEL_POLICY_VERSION }),
+        provider: Object.freeze({ ...baseReceipt.provider, routingPolicy: GEMINI_MODEL_POLICY_VERSION, completion }),
         modelPolicy: plan,
         elapsedMs: Date.now() - startedAt
       });
@@ -1478,6 +1518,7 @@ export default async function handler(req, res) {
       res.setHeader('X-TD613-Signal-State', relay.signal.state);
       res.setHeader('X-TD613-Seal-State', 'OPEN');
       res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
       return send(res, 200, {
         ok: true,
         text: relay.transcript,
@@ -1504,6 +1545,11 @@ export default async function handler(req, res) {
     if (repaired) return repaired;
   }
 
+  if (!releaseCanary && incompleteFallback) {
+    return sendObservedProviderReturn({ ...incompleteFallback,
+      observation: 'provider-incomplete-after-bounded-recovery-exhausted',
+      qualityWarnings: incompleteFallback.relay.admission?.qualityWarnings || [] });
+  }
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const morphologyFailures = attempts.filter((attempt) => attempt.morphologyHold);
   const heldByCanaryQuality = releaseCanary && (structuralFailures.length > 0 || morphologyFailures.length > 0);

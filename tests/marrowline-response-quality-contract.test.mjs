@@ -682,7 +682,8 @@ test('explicit human retries reach Gemini without a Marrowline-owned rate veto',
   assert.doesNotMatch(qualityServer, /const\s+heldByQuality\s*=/, 'ordinary human routing cannot regain a local quality veto');
   assert.doesNotMatch(terminalSource, /requestBody\.quotaCooldownHints/, 'browser cooldown history must not be sent back as retry permission');
   assert.match(qualityServer, /const allModels = \[\.\.\.providerModels\]/, 'human provider order stays on the settled 3.8-first frontier');
-  assert.match(qualityServer, /provider-output-token-limit-partial-preserved/);
+  assert.match(qualityServer, /provider-return-incomplete-visible-retry-available/, 'provider fragments retain custody but cannot masquerade as complete');
+  assert.match(qualityServer, /X-TD613-Completion-State/, 'completion state is explicitly visible to the client');
   assert.match(attachmentServer, /provider-output-token-limit-partial-visible/);
   assert.match(attachmentServer, /if\s*\(!safe\(result\.text\)\) continue;/);
 });
