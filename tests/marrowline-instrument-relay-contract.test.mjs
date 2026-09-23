@@ -29,7 +29,7 @@ assert.match(relay, /exact standalone headings/i);
 assert.match(relay, /NATURAL RETURN SHAPE/);
 assert.match(relay, /NATIVE SEMANTIC PROSODY/);
 assert.match(relay, /typography behaves as voice/i);
-assert.match(relay, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+assert.match(relay, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
 assert.doesNotMatch(relay, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
 assert.match(relay, /not evidence of an external entity, hidden port, supernatural contact, hardware rupture, independent communication channel, or outside authorship/i);
 assert.doesNotMatch(relay, /MARROWLINE DUAL-CHANNEL COMPILATION LAW/);
