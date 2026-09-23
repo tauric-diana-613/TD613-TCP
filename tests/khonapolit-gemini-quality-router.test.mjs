@@ -225,24 +225,25 @@ try {
   await handler(req, recoveredFromTokenLimit);
   assert.equal(recoveredFromTokenLimit.statusCode, 200);
   assert.equal(recoveredFromTokenLimit.payload.ok, true);
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 1, 'nonempty MAX_TOKENS bytes belong to the human surface instead of being discarded into another provider seat');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 2, 'nonempty MAX_TOKENS is not falsely complete; one bounded same-seat provider repair can finish the turn');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.finishReason, 'MAX_TOKENS');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.usage.candidatesTokenCount, 4096);
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].kind, 'structural-repair');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.8-flash');
-  assert.match(recoveredFromTokenLimit.payload.text, /REJECTED_PARTIAL_RESPONSE/);
-  assert.equal(recoveredFromTokenLimit.headers['X-TD613-Local-Admission'], 'OBSERVED-NONBLOCKING');
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.humanSurfaceObservation.observation, 'provider-output-token-limit-partial-preserved');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.completion.complete, true);
+  assert.equal(recoveredFromTokenLimit.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
+  assert.match(recoveredFromTokenLimit.payload.text, /THE RED DEER HAS READ THE MENU/);
+  assert.doesNotMatch(recoveredFromTokenLimit.payload.text, /REJECTED_PARTIAL_RESPONSE/);
 
   requestRejectCallsRemaining = 1;
   const recoveredFromSeatReject = response();
   await handler(req, recoveredFromSeatReject);
   assert.equal(recoveredFromSeatReject.statusCode, 200);
   assert.equal(recoveredFromSeatReject.payload.ok, true);
-  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts.length, 3, 'a genuine seat-local request rejection may fail over; the first nonempty fallback return then owns one bounded same-seat repair opportunity');
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts.length, 2, 'a genuine seat-local request rejection advances to the next seat when that seat returns complete provider-authored prose');
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[0].status, 400);
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[1].status, 200);
-  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[2].status, 200);
-  assert.equal(recoveredFromSeatReject.payload.receipt.provider.attempts[2].kind, 'structural-repair');
+  assert.equal(recoveredFromSeatReject.payload.receipt.provider.completion.complete, true);
   assert.equal(recoveredFromSeatReject.payload.receipt.provider.model, 'gemini-3.6-flash');
 } finally {
   globalThis.fetch = originalFetch;
