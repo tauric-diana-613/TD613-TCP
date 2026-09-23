@@ -211,6 +211,14 @@ assert.match(wendbineGate, /ATELIER_PR: '1134'/);
 assert.match(wendbineGate, /ATELIER_BRANCH: research\/wendbine-public-atelier-sync-20260913/);
 assert.match(wendbineGate, /source-capture\.sealed\.json/);
 assert.match(wendbineGate, /WENDBINE_WRITE_MEMBRANE_VIOLATION/);
+assert.ok(wendbineGate.includes('      group: wendbine-operator-sync-${{ github.repository }}-${{ github.event.issue.number }}'),
+ 'Wendbine gate must own an isolated branch serialization group.');
+assert.match(wendbineGate, /cancel-in-progress: false/,
+ 'A second command cannot cancel the current operator run.');
+assert.doesNotMatch(wendbineGate, /td613-vercel-production-release/,
+ 'Wendbine must never inherit the production release lock.');
+assert.match(wendbineGate, /exact_head_validation=PENDING_CI/,
+ 'A committed projection must not claim a post-commit CI success ahead of validation.');
 assert.match(wendbineGate, /Gate #\$GATE_ISSUE DORMANT/);
 assert.match(relock, /github\.event\.issue\.number == 758/);
 assert.match(relock, /github\.event\.comment\.body == '\/src-zenodo-sync ATELIER'/);
