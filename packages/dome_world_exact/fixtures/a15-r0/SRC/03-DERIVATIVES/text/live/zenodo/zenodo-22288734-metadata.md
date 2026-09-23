@@ -1,0 +1,142 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22288734"
+source_title: "ATLAS V DOMESTIC VALUE RETENTION: From Gross Exports to the Distribution of Gains"
+metadata_blob_sha256: f0dc495f64c939e75190ccbef87299cd201977ea1a554dfb3ad336cdead20aa8
+metadata_blob_path: 02-ORIGINALS/live/blobs/f0/f0dc495f64c939e75190ccbef87299cd201977ea1a554dfb3ad336cdead20aa8.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22288733",
+  "conceptrecid": "22288733",
+  "created": "2026-09-03T23:36:15.551025+00:00",
+  "doi": "10.5281/zenodo.22288734",
+  "doi_url": "https://doi.org/10.5281/zenodo.22288734",
+  "files": [
+    {
+      "checksum": "md5:3021194977d590322a1f4fe06522034a",
+      "id": "483e48de-f3eb-499a-b6b1-16ea5706d8e6",
+      "key": "ATLAS V — DOMESTIC VALUE RETENTION.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22288734/files/ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/content"
+      },
+      "size": 162564
+    }
+  ],
+  "id": 22288734,
+  "links": {
+    "access": "https://zenodo.org/api/records/22288734/access",
+    "access_grants": "https://zenodo.org/api/records/22288734/access/grants",
+    "access_links": "https://zenodo.org/api/records/22288734/access/links",
+    "access_request": "https://zenodo.org/api/records/22288734/access/request",
+    "access_users": "https://zenodo.org/api/records/22288734/access/users",
+    "archive": "https://zenodo.org/api/records/22288734/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22288734/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22288734/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22288734/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22288734",
+    "draft": "https://zenodo.org/api/records/22288734/draft",
+    "file_modification": "https://zenodo.org/api/records/22288734/file-modification",
+    "files": "https://zenodo.org/api/records/22288734/files",
+    "latest": "https://zenodo.org/api/records/22288734/versions/latest",
+    "latest_html": "https://zenodo.org/records/22288734/latest",
+    "media_files": "https://zenodo.org/api/records/22288734/media-files",
+    "parent": "https://zenodo.org/api/records/22288733",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22288733",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22288733",
+    "parent_html": "https://zenodo.org/records/22288733",
+    "preview_html": "https://zenodo.org/records/22288734?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22288734/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22288734/request-deletion",
+    "requests": "https://zenodo.org/api/records/22288734/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22288734/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22288734",
+    "self_doi": "https://doi.org/10.5281/zenodo.22288734",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22288734",
+    "self_html": "https://zenodo.org/records/22288734",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22288734/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22288734/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22288734:ATLAS%20V%20%E2%80%94%20DOMESTIC%20VALUE%20RETENTION.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22288734/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS V &mdash; Domestic Value Retention</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS V</em> establishes the <strong>retention layer</strong> of the ATLAS universe: the diagnostic architecture that distinguishes <strong>gross export earnings</strong> from <strong>domestically retained developmental gain</strong>. As the manuscript states, <em>&ldquo;Gross export earnings are not equivalent to domestically retained developmental gain. Retention must be decomposed among labour, domestic firms, foreign firms, the state, creditors, and reinvestment.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions retention as a <strong>distributional and capability measure</strong>, not a simple macroeconomic statistic.</p>\n<p>ATLAS V decomposes domestic value retention (R) into labour share, domestic operating surplus, foreign operating surplus, effective tax contribution, reinvested versus repatriated earnings, and natural‑capital depletion. It extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how retention interacts with burdens (B), substitution capacity (S), external dependence (D), and bargaining agency (A).</p>\n<p>The manuscript introduces a measurement architecture using TiVA, national accounts, ownership data, tax records, labour statistics, and balance‑of‑payments flows. It sets strict empirical design rules, falsification gates, restoration criteria, and reproducibility protocols. It positions domestic value retention as the <strong>first gate</strong> in determining whether export activity produces real developmental capability or reproduces dependency.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS V provides the <strong>value‑retention foundation</strong> of the ATLAS universe. It operationalizes <strong>Domestic Value Retention</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable distributional account of who actually captures value along global chains.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how low retention weakens capability formation, increases burdens, and raises dependence on external earnings structures. It strengthens <strong>Society as a Pressure Ecology</strong> by demonstrating how value capture and burden placement interact across borders.</p>\n<p>The migration‑retention audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing how human capability, publicly financed education, care capacity, and tax base move between origin and destination economies.</p>\n<p>ATLAS V also provides the empirical substrate for evaluating <strong>restoration</strong> through beneficial‑ownership transparency, supplier linkages, reinvestment incentives, labour and fiscal capture, and natural‑capital accounting.</p>\n<p>Ultimately, ATLAS V contributes the <strong>retention grammar</strong> required to evaluate whether societies can retain gains, build domestic capability, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22288734",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Economics",
+      "Society",
+      "World",
+      "Governance"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22288733"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS V DOMESTIC VALUE RETENTION: From Gross Exports to the Distribution of Gains",
+    "version": "1.0"
+  },
+  "modified": "2026-09-03T23:36:15.914371+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22288734",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS V DOMESTIC VALUE RETENTION: From Gross Exports to the Distribution of Gains",
+  "updated": "2026-09-03T23:36:15.914371+00:00"
+}
+```

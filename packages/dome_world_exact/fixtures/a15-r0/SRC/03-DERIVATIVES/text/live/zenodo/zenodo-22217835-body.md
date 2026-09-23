@@ -1,0 +1,17 @@
+---
+schema: src-live-zenodo-body-derivative/v1
+record_id: "22217835"
+source_title: "PLANETARY SR XXVIII — SAUDI ARABIA: Hydrocarbon Fiscal Buffering, State-Led Diversification, Migrant-Labour Dependence, and Logistics Reorganization"
+authority: LIVE_POST_SEAL_TEXT_DERIVATIVE
+---
+
+# PLANETARY SR XXVIII — SAUDI ARABIA: Hydrocarbon Fiscal Buffering, State-Led Diversification, Migrant-Labour Dependence, and Logistics Reorganization
+
+## Zenodo description
+
+PLANETARY SR XXVIII — SAUDI ARABIA 
+ Description 
+ Planetary SR XXVIII — Saudi Arabia analyzes Saudi Arabia as a coupled institutional–population system defined by hydrocarbon fiscal buffering, state‑led diversification, migrant‑labour dependence, and logistics reorganization . The study documents a continuity architecture built on large hydrocarbon revenue, sovereign assets, extensive subsidies, and rapidly expanding non‑oil infrastructure. IMF’s 2026 consultation reported “GDP growth of 4.6% in 2025, non‑oil growth of 4.2%, inflation of 2.0%, public debt of 31.8%, overall unemployment of 3.2% and Saudi‑national unemployment of 7.0%,” highlighting substantial external and financial buffers. Effective access diverges from formal provision across 13 administrative regions, where citizen and non‑citizen institutional pathways differ sharply in wages, housing, insurance, and social protection. Migrant labour supplies a large share of private‑sector and construction capacity, making population composition a structural variable rather than a marginal one. Oil remains the fiscal backbone while gas, solar, logistics, and mega‑project investment expand non‑oil capacity. Extreme heat, water scarcity, cooling demand, and desalination form persistent structural requirements that tightly couple energy and basic services. The central SR question is whether large fiscal buffers and project‑intensive diversification can produce durable domestic value retention rather than contingent hydrocarbon‑linked continuity.
+
+ How it Contributes 
+ This study contributes a distinct continuity topology to the Planetary SR comparative series by demonstrating how a centralized monarchy maintains continuity through hydrocarbon‑funded state buffering and rapid non‑oil diversification , while unresolved pressure propagates into migrant‑labour dependence, regional access gaps, energy‑water coupling, and project‑pipeline fiscal exposure . Saudi Arabia strengthens SR fields such as Systems Propagation Science , Infrastructural Political Economy , Institutional Cognition , and Drift Collapse Field by showing how oil revenue → fiscal/project/social capacity, migrant labour → construction/services and remittances, mega‑project pipeline → fiscal/implementation capacity, and diversification → private productivity/value retention operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how very large fiscal buffers can sustain continuity while still leaving conversion gaps, providing a decisive test of surface–substrate divergence and unequal insulation . Saudi Arabia’s mechanism is empirically distinguishable through its blend of “hydrocarbon‑funded state buffering with large fiscal/external assets, rapid non‑oil diversification, migrant‑labour dependence and project‑intensive reorganization,” adding a new structural configuration to the planetary series and supplying a critical case for reorganization vs restoration and agency‑conditioned response .

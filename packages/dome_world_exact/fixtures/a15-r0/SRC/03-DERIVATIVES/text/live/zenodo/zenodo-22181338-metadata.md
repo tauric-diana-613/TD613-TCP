@@ -1,0 +1,140 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22181338"
+source_title: "PLANETARY SR V — FRANCE: Centralized Institutional Buffering, Nuclear-Electric Backbone, Fiscal Pressure, and Adaptive Reorganization"
+metadata_blob_sha256: 19e8faa73f40991dc8a47efcbc0a95c9c8fc630fea8469567062751c19b3c5ac
+metadata_blob_path: 02-ORIGINALS/live/blobs/19/19e8faa73f40991dc8a47efcbc0a95c9c8fc630fea8469567062751c19b3c5ac.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22181337",
+  "conceptrecid": "22181337",
+  "created": "2026-08-30T21:23:43.894912+00:00",
+  "doi": "10.5281/zenodo.22181338",
+  "doi_url": "https://doi.org/10.5281/zenodo.22181338",
+  "files": [
+    {
+      "checksum": "md5:30d7edf5a54fa97b788344f9e5e1e83a",
+      "id": "ca8933b0-5f4f-47cf-a6f5-a7e11c0bca0c",
+      "key": "PLANETARY SR V — FRANCE.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22181338/files/PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/content"
+      },
+      "size": 376837
+    }
+  ],
+  "id": 22181338,
+  "links": {
+    "access": "https://zenodo.org/api/records/22181338/access",
+    "access_grants": "https://zenodo.org/api/records/22181338/access/grants",
+    "access_links": "https://zenodo.org/api/records/22181338/access/links",
+    "access_request": "https://zenodo.org/api/records/22181338/access/request",
+    "access_users": "https://zenodo.org/api/records/22181338/access/users",
+    "archive": "https://zenodo.org/api/records/22181338/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22181338/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22181338/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22181338/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22181338",
+    "draft": "https://zenodo.org/api/records/22181338/draft",
+    "file_modification": "https://zenodo.org/api/records/22181338/file-modification",
+    "files": "https://zenodo.org/api/records/22181338/files",
+    "latest": "https://zenodo.org/api/records/22181338/versions/latest",
+    "latest_html": "https://zenodo.org/records/22181338/latest",
+    "media_files": "https://zenodo.org/api/records/22181338/media-files",
+    "parent": "https://zenodo.org/api/records/22181337",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22181337",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22181337",
+    "parent_html": "https://zenodo.org/records/22181337",
+    "preview_html": "https://zenodo.org/records/22181338?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22181338/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22181338/request-deletion",
+    "requests": "https://zenodo.org/api/records/22181338/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22181338/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22181338",
+    "self_doi": "https://doi.org/10.5281/zenodo.22181338",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22181338",
+    "self_html": "https://zenodo.org/records/22181338",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22181338/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22181338/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22181338:PLANETARY%20SR%20V%20%E2%80%94%20FRANCE.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22181338/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR V &mdash; FRANCE</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR V &mdash; France</em> provides a structural diagnostic of France within the Planetary SR framework. It examines how pressure, drift, institutional reflex, and collapse vectors interact inside France&rsquo;s national system, positioning the country as a high‑signal institutional environment within Europe. The paper maps France&rsquo;s structural behavior through SR&rsquo;s planetary grammar, offering a systems‑level analysis of how historical governance patterns, societal pressures, and institutional dynamics shape France&rsquo;s current trajectory.</p>\n<h2><strong>Contribution</strong></h2>\n<p>This paper serves as the European baseline within the SR and ATLAS architecture. France&rsquo;s pressure ecology, drift mechanics, and institutional reflex patterns calibrate the European Atlas and support emerging SR fields such as <strong>Institutional Reflex Science</strong>, <strong>Planetary Drift Mechanics</strong>, and <strong>Planetary Collapse Sociology</strong>. By outlining France&rsquo;s restoration potential and structural constraints, the paper strengthens <strong>Planetary Restoration Governance</strong> and provides a reference model for understanding advanced‑state dynamics within global systems.</p>",
+    "doi": "10.5281/zenodo.22181338",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "France",
+      "Society"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-30",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22181337"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR V — FRANCE: Centralized Institutional Buffering, Nuclear-Electric Backbone, Fiscal Pressure, and Adaptive Reorganization",
+    "version": "1.0"
+  },
+  "modified": "2026-08-30T21:23:44.318235+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22181338",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR V — FRANCE: Centralized Institutional Buffering, Nuclear-Electric Backbone, Fiscal Pressure, and Adaptive Reorganization",
+  "updated": "2026-08-30T21:23:44.318235+00:00"
+}
+```
