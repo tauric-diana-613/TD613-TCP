@@ -593,8 +593,19 @@ export function buildGeminiStructuralRepairRequest(
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
   const repairContext = heldText;
-  const missingTerminalOnly = terminalContinuationEligible(heldText, reasonList);
-  const repairDirective = (missingTerminalOnly ? [
+  const boundedTail = reasonList.includes('provider-return-unfinished')
+    || (reasonList.length === 1 && reasonList[0] === 'tauric-diana-bots-nominative-missing'
+      && /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText));
+  const missingTerminalOnly = !boundedTail && terminalContinuationEligible(heldText, reasonList);
+  const repairDirective = (boundedTail ? [
+    'BOUNDED SAME-PROVIDER TAIL RECOVERY — THE PREVIOUS OUTPUT IS INCOMPLETE.',
+    'The preceding model turn is the exact prefix of the response. Author ONLY its missing continuation. Do not repeat the prefix, restart Kʰonapolit, add a preface or discuss this repair.',
+    'If the first voice has only opened the scene or argument, keep developing it: the decisive event, resistance, cost, justified inference, changing stakes and full imaginative form must happen before any earned handoff. Do not treat the mere presence of an opening paragraph as a completed first movement.',
+    'Complete the Tauric Diana bots in a sustained new choral movement. If the terminal heading is not yet in the prefix, give it as an exact standalone heading; if it already exists, continue its prose without repeating the heading.',
+    'Their provider-authored Unicode is native voice: dynamic full-height overprint at dramatic peaks, fine marked breaths, horizontal/diagonal strokes where earned, novel motifs and changing amplitude. No pasted or identical stack per letter. Preserve all existing Unicode bytes.',
+    'Finish the actual dramatic or intellectual consequence and the conversational closing. No JSON, packet delimiters, template echo or commentary about the repair.',
+    CONVERSATIONAL_CLOSING_GUIDANCE
+  ] : missingTerminalOnly ? [
     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — TERMINAL CONTINUATION ONLY.',
     'The prior draft already contains the full Kʰonapolit argument. Its only missing structural element is the terminal Tauric Diana bots movement.',
     'Preserve the prior draft without restating it. The exact standalone heading “Kʰonapolit” first already exists. Your entire new output begins with the exact standalone heading “Tauric Diana bots” on the first line.',
@@ -961,6 +972,11 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let sharedRateRetrySpent = false;
+  let incompleteFallback = null;
+  const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(text, output, {
+    streamed: result.streamed, parseErrors: result.parseErrors,
+    creative: discourseMode === 'creative'
+  });
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
     if (releaseCanary) return null;
@@ -1051,21 +1067,27 @@ export default async function handler(req, res) {
       && repairResult.text
       && !repairProviderOutput.outputTokenLimitReached
     ) {
-      const terminalOnly = terminalContinuationEligible(heldText, reasons);
-      // A full corrected provider response remains valid. If the same provider
-      // instead returns only the missing terminal voice, join its actual bytes
-      // to the untouched original and record both component hashes.
-      const assembly = terminalOnly
-        ? assembleProviderTerminalContinuation(heldText, repairResult.text)
-        : null;
+      const tailOnly = reasons.includes('provider-return-unfinished')
+        || (reasons.length === 1 && reasons[0] === 'tauric-diana-bots-nominative-missing'
+          && /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText));
+      const terminalOnly = !tailOnly && terminalContinuationEligible(heldText, reasons);
+      // A second Gemini return may continue the exact first draft; its actual
+      // bytes are appended verbatim, not copied from examples or locally Zalgo-encoded.
+      const assembly = tailOnly
+        ? assembleMarrowlineProviderTail(heldText, repairResult.text)
+        : terminalOnly ? assembleProviderTerminalContinuation(heldText, repairResult.text) : null;
+      if (tailOnly && !assembly) return null;
       const repairText = assembly ? assembly.text : repairResult.text;
+      const repairedCompletion = completionOf(repairResult, repairProviderOutput, repairText);
+      repairAttempt.completion = repairedCompletion;
+      if (!repairedCompletion.complete) return null;
       const repairRelay = parseRelayEnvelope(repairText, { model, apertureReceipt });
       repairAttempt.outputAdmission = repairRelay.admission || null;
       repairAttempt.terminalContinuation = assembly
         ? Object.freeze({
             source: 'second-provider-return',
-            originalSha256: assembly.originalSha256,
-            continuationSha256: assembly.continuationSha256,
+            originalSha256: assembly.originalSha256 || sha256(heldText),
+            continuationSha256: assembly.continuationSha256 || sha256(repairResult.text),
             combinedSha256: sha256(repairText),
             separator: assembly.separator,
             originalPreserved: repairText.startsWith(heldText)
@@ -1073,7 +1095,7 @@ export default async function handler(req, res) {
         : null;
       const unresolvedMorphologyWarnings = severeMorphologyRepairWarnings(repairRelay.admission?.qualityWarnings || []);
       repairAttempt.unresolvedSevereMorphology = unresolvedMorphologyWarnings;
-      if (repairRelay.admission?.admissible && unresolvedMorphologyWarnings.length === 0) {
+      if (repairRelay.admission?.admissible) {
         const baseReceipt = buildTerminalReceipt({
           packet,
           text: repairText,
@@ -1084,13 +1106,15 @@ export default async function handler(req, res) {
           apertureEgress,
           apertureReceipt,
           attempts,
-          completionPath: assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
+          completionPath: tailOnly ? 'same-provider-bounded-tail-continuation'
+            : assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
         });
         const receipt = Object.freeze({
           ...baseReceipt,
           provider: Object.freeze({
             ...baseReceipt.provider,
             routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            completion: repairedCompletion,
             structuralRepair: Object.freeze({
               used: true,
               timing,
@@ -1107,13 +1131,14 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
         res.setHeader('X-TD613-Structural-Repair', 'provider-authored-bounded-1');
+        res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
         send(res, 200, {
           ok: true,
           text: repairRelay.transcript,
           relay: repairRelay,
           receipt,
           warnings: [
-            ...(assembly ? ['provider-authored-terminal-continuation-joined-with-original-preserved'] : []),
+            ...(assembly ? [tailOnly ? 'provider-authored-bounded-tail-joined-with-original-preserved' : 'provider-authored-terminal-continuation-joined-with-original-preserved'] : []),
             'aperture-v3-task-intent-active',
             'task-intent-guidance-active',
             'adversarial-attractor-admission-active',
@@ -1155,7 +1180,8 @@ export default async function handler(req, res) {
     providerOutput,
     observation,
     reasons = [],
-    qualityWarnings = []
+    qualityWarnings = [],
+    completion = null
   } = {}) => {
     const observedText = relay?.transcript || result?.text || '';
     if (!safe(observedText)) return null;
@@ -1175,6 +1201,7 @@ export default async function handler(req, res) {
       provider: Object.freeze({
         ...baseReceipt.provider,
         routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+        ...(completion ? { completion } : {}),
         humanSurfaceObservation: Object.freeze({
           rendered: true,
           observation: safe(observation) || 'provider-return-observed',
@@ -1192,6 +1219,7 @@ export default async function handler(req, res) {
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Local-Admission', 'OBSERVED-NONBLOCKING');
+    res.setHeader('X-TD613-Completion-State', completion && !completion.complete ? 'INCOMPLETE' : 'OBSERVED');
     return send(res, 200, {
       ok: true,
       text: observedText,
@@ -1201,6 +1229,7 @@ export default async function handler(req, res) {
         'provider-return-rendered-without-local-text-mutation',
         'local-admission-observed-not-human-surface-veto',
         ...(providerOutput?.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
+        ...(completion && !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
         ...plan.warnings
       ]
     });
@@ -1298,40 +1327,27 @@ export default async function handler(req, res) {
       });
     }
 
-    if (result.response.ok && providerOutput.outputTokenLimitReached) {
-      attempt.outputAdmission = Object.freeze({
-        admissible: false,
-        quality: 'HELD',
-        reasons: Object.freeze(['provider-output-token-limit']),
-        qualityWarnings: Object.freeze([])
-      });
-      if (releaseCanary || !safe(result.text)) {
-        if (releaseCanary) {
-          res.setHeader('X-TD613-Gemini-Model', model);
-          return send(res, 502, {
-            ok: false,
-            error: 'gemini-output-token-limit',
-            status: 'HELD',
-            diagnostic: { stage: 'output-admission', code: 'OUTPUT_TOKEN_LIMIT' },
-            attempts,
-            modelPolicy: plan,
-            aperture: apertureReceipt,
-            aperture_egress: apertureEgress,
-            claim_ceiling: packet.claimCeiling
-          });
-        }
-        continue;
+    const completion = result.response.ok && result.text ? completionOf(result, providerOutput) : null;
+    attempt.completion = completion;
+    if (result.response.ok && result.text && !completion.complete) {
+      const relay = parseRelayEnvelope(result.text, { model, apertureReceipt });
+      const reasons = ['provider-return-unfinished', ...(relay.admission?.reasons || [])];
+      attempt.outputAdmission = relay.admission || null;
+      if (releaseCanary) {
+        res.setHeader('X-TD613-Gemini-Model', model);
+        return send(res, 502, { ok: false,
+          error: completion.reason === 'provider-output-token-limit' ? 'gemini-output-token-limit' : 'gemini-incomplete-provider-return',
+          status: 'HELD', diagnostic: { stage: 'provider-termination', code: completion.reason === 'provider-output-token-limit' ? 'OUTPUT_TOKEN_LIMIT' : 'PROVIDER_INCOMPLETE', completion },
+          attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress,
+          claim_ceiling: packet.claimCeiling });
       }
-      const truncatedRelay = parseRelayEnvelope(result.text, { model, apertureReceipt });
-      return sendObservedProviderReturn({
-        model,
-        result,
-        relay: truncatedRelay,
-        providerOutput,
-        observation: 'provider-output-token-limit-partial-preserved',
-        reasons: ['provider-output-token-limit'],
-        qualityWarnings: truncatedRelay.admission?.qualityWarnings || []
-      });
+      if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput, completion, reasons };
+      const repaired = await runStructuralRepair({ model, fallback, heldText: result.text, reasons,
+        providerOutput, sourceAttemptIndex: attempts.length - 1 }, 'immediate-unfinished-return');
+      if (repaired) return repaired;
+      // Do not spend a human's full response on a returned fragment merely because
+      // Gemini sent 200. Try the remaining approved seats within the same bounded turn.
+      continue;
     }
     if (!result.response.ok && !transport.mayFailOver) {
       const rejectedStatus = Number(result.response.status || 0);
@@ -1385,8 +1401,11 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex: attempts.length - 1
           };
+          if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput,
+            completion: Object.freeze({ complete: false, reason: 'required-voice-structure-incomplete' }), reasons };
           const repaired = await runStructuralRepair(candidate, 'immediate-structural');
           if (repaired) return repaired;
+          continue;
         }
         return sendObservedProviderReturn({
           model,
@@ -1428,6 +1447,7 @@ export default async function handler(req, res) {
           provider: Object.freeze({
             ...baseReceipt.provider,
             routingPolicy: GEMINI_MODEL_POLICY_VERSION,
+            completion,
             qualityPreference: Object.freeze({
               used: true,
               sourceAttemptIndex: attempts.length - 1,
@@ -1443,6 +1463,7 @@ export default async function handler(req, res) {
         res.setHeader('X-TD613-Seal-State', 'OPEN');
         res.setHeader('X-TD613-Gemini-Model', model);
         res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
+        res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
         return send(res, 200, {
           ok: true,
           text: relay.transcript,
@@ -1477,7 +1498,7 @@ export default async function handler(req, res) {
       });
       const receipt = Object.freeze({
         ...baseReceipt,
-        provider: Object.freeze({ ...baseReceipt.provider, routingPolicy: GEMINI_MODEL_POLICY_VERSION }),
+        provider: Object.freeze({ ...baseReceipt.provider, routingPolicy: GEMINI_MODEL_POLICY_VERSION, completion }),
         modelPolicy: plan,
         elapsedMs: Date.now() - startedAt
       });
@@ -1485,6 +1506,7 @@ export default async function handler(req, res) {
       res.setHeader('X-TD613-Signal-State', relay.signal.state);
       res.setHeader('X-TD613-Seal-State', 'OPEN');
       res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
       return send(res, 200, {
         ok: true,
         text: relay.transcript,
@@ -1511,6 +1533,11 @@ export default async function handler(req, res) {
     if (repaired) return repaired;
   }
 
+  if (!releaseCanary && incompleteFallback) {
+    return sendObservedProviderReturn({ ...incompleteFallback,
+      observation: 'provider-incomplete-after-bounded-recovery-exhausted',
+      qualityWarnings: incompleteFallback.relay.admission?.qualityWarnings || [] });
+  }
   const structuralFailures = attempts.filter((attempt) => attempt.outputAdmission?.admissible === false);
   const morphologyFailures = attempts.filter((attempt) => attempt.morphologyHold);
   const heldByCanaryQuality = releaseCanary && (structuralFailures.length > 0 || morphologyFailures.length > 0);
