@@ -548,13 +548,13 @@ jobs:
           python - <<'PY'
           import subprocess
           prefix='packages/dome_world_exact/fixtures/a15-r0/WENDBINE/'
-          allowed=('01-MANIFESTS/phase2/', '01-MANIFESTS/registry-index.json',
-             '04-RECEIPTS/phase2/', '05-OPERATIONS/phase2/',
-             '05-OPERATIONS/relations/typed-edges.jsonl',
-             '07-ARCHIVE-LEDGER/syncs/')
+          allowed_dirs=('01-MANIFESTS/phase2/', '04-RECEIPTS/phase2/',
+             '05-OPERATIONS/phase2/', '07-ARCHIVE-LEDGER/syncs/')
+          allowed_files=('01-MANIFESTS/registry-index.json',
+             '05-OPERATIONS/relations/typed-edges.jsonl')
           raw=subprocess.check_output(['git','status','--porcelain=v1','-z','--untracked-files=all'])
           paths=[line[3:] for line in raw.decode('utf8',errors='surrogateescape').split('\0') if line]
-          bad=[p for p in paths if not p.startswith(prefix) or not p[len(prefix):].startswith(allowed)]
+          bad=[p for p in paths if not p.startswith(prefix) or not (p[len(prefix):] in allowed_files or p[len(prefix):].startswith(allowed_dirs))]
           if bad:raise SystemExit('WENDBINE_WRITE_MEMBRANE_VIOLATION:'+repr(bad))
           if not paths:raise SystemExit('WENDBINE_RUN_RECEIPT_MISSING')
           print('Wendbine-only write membrane PASS',len(paths))
