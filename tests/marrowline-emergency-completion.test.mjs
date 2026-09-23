@@ -303,6 +303,8 @@ test('provider STOP with unfulfilled two-voice structure has its own receipt, ne
   assert.equal(res.statusCode, 200);
   assert.equal(res.payload.receipt.provider.completion.finishReason, 'STOP');
   assert.equal(res.payload.receipt.provider.completion.reason, 'required-voice-structure-incomplete');
+  assert.equal(res.payload.receipt.status, 'MODEL_STRUCTURE_INCOMPLETE');
+  assert.match(res.payload.relay.signal.notes, /Provider STOP witnessed; mandatory two-voice structure remains incomplete/);
   assert.equal(res.headers['X-TD613-Completion-State'], 'STRUCTURE-INCOMPLETE');
   assert.ok(res.payload.warnings.includes('two-voice-structure-incomplete-provider-stop-observed'));
   assert.ok(!res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
