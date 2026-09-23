@@ -281,6 +281,11 @@ function renderModelMessage(doc, entry) {
   const article = doc.createElement('article');
   article.className = 'relay-message';
   article.dataset.role = 'model';
+  if (entry.receipt?.provider?.completion?.complete === false) {
+    article.dataset.completion = 'incomplete';
+    article.append(textNode(doc, 'p', 'relay-completion-alert',
+      'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
+  }
   if (entry.sealed) article.dataset.sealed = 'true';
 
   const header = doc.createElement('div');
@@ -682,7 +687,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
       };
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
-      state.messages.push(entry); state.pendingTask = ''; state.lastReceipt = receipt;
+      const incompleteReturn = receipt?.provider?.completion?.complete === false;
+      state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
@@ -692,8 +698,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       stopPedagogueStatus(root);
-      setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
-        'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
+      if (incompleteReturn) {
+        setPedagogueStatus(status, 'held', 'INCOMPLETE RETURN · draft preserved · Retry preserved task',
+          'INCOMPLETE PROVIDER RETURN · not a completed two-voice answer · source draft and receipt preserved · retry available');
+      } else {
+        setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
+          'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
+      }
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
