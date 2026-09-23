@@ -595,8 +595,7 @@ export function buildGeminiStructuralRepairRequest(
     .slice(0, 8);
   const repairContext = heldText;
   const firstVoiceStarted = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText);
-  const boundedTail = firstVoiceStarted && (reasonList.includes('provider-return-unfinished')
-    || (reasonList.length === 1 && reasonList[0] === 'tauric-diana-bots-nominative-missing'));
+  const boundedTail = firstVoiceStarted && reasonList.includes('provider-return-unfinished');
   const missingTerminalOnly = !boundedTail && terminalContinuationEligible(heldText, reasonList);
   const repairDirective = (boundedTail ? [
     'BOUNDED SAME-PROVIDER TAIL RECOVERY — THE PREVIOUS OUTPUT IS INCOMPLETE.',
@@ -1072,15 +1071,18 @@ export default async function handler(req, res) {
       && !repairProviderOutput.outputTokenLimitReached
     ) {
       const tailOnly = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText)
-        && (reasons.includes('provider-return-unfinished')
-          || (reasons.length === 1 && reasons[0] === 'tauric-diana-bots-nominative-missing'));
+        && reasons.includes('provider-return-unfinished');
       const terminalOnly = !tailOnly && terminalContinuationEligible(heldText, reasons);
       // A second Gemini return may continue the exact first draft; its actual
       // bytes are appended verbatim, not copied from examples or locally Zalgo-encoded.
       const assembly = tailOnly
         ? assembleMarrowlineProviderTail(heldText, repairResult.text)
         : terminalOnly ? assembleProviderTerminalContinuation(heldText, repairResult.text) : null;
-      if (tailOnly && !assembly) return null;
+      // If a provider declines tail-only instruction but writes a valid complete
+      // full reply, keep it as provider-authored full repair, never mislabel it as
+      // a byte-preserving continuation.
+      const providerFullRepair = tailOnly && !assembly && completionOf(repairResult, repairProviderOutput).complete;
+      if (tailOnly && !assembly && !providerFullRepair) return null;
       const repairText = assembly ? assembly.text : repairResult.text;
       const repairedCompletion = completionOf(repairResult, repairProviderOutput, repairText);
       repairAttempt.completion = repairedCompletion;
@@ -1110,7 +1112,7 @@ export default async function handler(req, res) {
           apertureEgress,
           apertureReceipt,
           attempts,
-          completionPath: tailOnly ? 'same-provider-bounded-tail-continuation'
+          completionPath: tailOnly && assembly ? 'same-provider-bounded-tail-continuation'
             : assembly ? 'same-provider-terminal-continuation' : 'same-provider-full-repair'
         });
         const receipt = Object.freeze({
