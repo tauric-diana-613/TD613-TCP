@@ -1324,6 +1324,7 @@ export default async function handler(req, res) {
     const observedText = relay?.transcript || result?.text || '';
     if (!safe(observedText)) return null;
     const incomplete = completion?.complete === false;
+    const structuralOnly = incomplete && completion?.reason === 'required-voice-structure-incomplete';
     const observedRelay = incomplete ? Object.freeze({ ...relay,
       signal: Object.freeze({ ...relay.signal, state: 'NOT_LOCKED', downstreamAdmitted: false,
         notes: [relay.signal?.notes, 'Provider completion not witnessed; preserved fragment only.'].filter(Boolean).join(' ') })
@@ -1363,7 +1364,8 @@ export default async function handler(req, res) {
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
     res.setHeader('X-TD613-Local-Admission', 'OBSERVED-NONBLOCKING');
-    res.setHeader('X-TD613-Completion-State', completion && !completion.complete ? 'INCOMPLETE' : 'OBSERVED');
+    res.setHeader('X-TD613-Completion-State', structuralOnly ? 'STRUCTURE-INCOMPLETE'
+      : completion && !completion.complete ? 'INCOMPLETE' : 'OBSERVED');
     return send(res, 200, {
       ok: true,
       text: observedText,
@@ -1373,7 +1375,8 @@ export default async function handler(req, res) {
         'provider-return-rendered-without-local-text-mutation',
         'local-admission-observed-not-human-surface-veto',
         ...(providerOutput?.outputTokenLimitReached ? ['provider-output-token-limit-partial-visible'] : []),
-        ...(completion && !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
+        ...(structuralOnly ? ['two-voice-structure-incomplete-provider-stop-observed']
+          : completion && !completion.complete ? ['provider-return-incomplete-visible-retry-available'] : []),
         ...plan.warnings
       ]
     });
