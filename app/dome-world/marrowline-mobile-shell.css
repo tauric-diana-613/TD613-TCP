@@ -1,6 +1,19 @@
 /* First-paint custody: the static stylesheet is render-blocking, so hold the
    application surface until the room boot has installed its final geometry.
    This prevents the browser from flashing historical desktop/mobile postures. */
+/* A fragment must look like a fragment on both desktop and mobile; native
+   diacritic overflow remains untouched and the receipt remains inspectable. */
+.relay-message[data-completion="incomplete"] .relay-completion-alert{
+  margin:10px 12px 4px;
+  padding:10px 12px;
+  border:1px solid rgba(241,171,108,.6);
+  border-radius:10px;
+  background:rgba(77,37,31,.65);
+  color:#ffdfb8;
+  font:600 .74rem/1.45 var(--mono, monospace);
+  letter-spacing:.015em;
+  overflow-wrap:anywhere;
+}
 html:not(.marrowline-room-ready){background:#08061b;color-scheme:dark}
 html:not(.marrowline-room-ready) body{visibility:hidden!important}
 html:not(.marrowline-room-ready)::before{
