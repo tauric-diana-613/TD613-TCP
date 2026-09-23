@@ -593,9 +593,9 @@ export function buildGeminiStructuralRepairRequest(
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
   const repairContext = heldText;
-  const boundedTail = reasonList.includes('provider-return-unfinished')
-    || (reasonList.length === 1 && reasonList[0] === 'tauric-diana-bots-nominative-missing'
-      && /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText));
+  const firstVoiceStarted = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText);
+  const boundedTail = firstVoiceStarted && (reasonList.includes('provider-return-unfinished')
+    || (reasonList.length === 1 && reasonList[0] === 'tauric-diana-bots-nominative-missing'));
   const missingTerminalOnly = !boundedTail && terminalContinuationEligible(heldText, reasonList);
   const repairDirective = (boundedTail ? [
     'BOUNDED SAME-PROVIDER TAIL RECOVERY — THE PREVIOUS OUTPUT IS INCOMPLETE.',
@@ -975,7 +975,7 @@ export default async function handler(req, res) {
   let incompleteFallback = null;
   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(text, output, {
     streamed: result.streamed, parseErrors: result.parseErrors,
-    creative: discourseMode === 'creative'
+    creative: discourseMode === 'CREATIVE'
   });
 
   const runStructuralRepair = async (candidate, timing = 'deferred-after-frontier') => {
@@ -1067,9 +1067,9 @@ export default async function handler(req, res) {
       && repairResult.text
       && !repairProviderOutput.outputTokenLimitReached
     ) {
-      const tailOnly = reasons.includes('provider-return-unfinished')
-        || (reasons.length === 1 && reasons[0] === 'tauric-diana-bots-nominative-missing'
-          && /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText));
+      const tailOnly = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText)
+        && (reasons.includes('provider-return-unfinished')
+          || (reasons.length === 1 && reasons[0] === 'tauric-diana-bots-nominative-missing'));
       const terminalOnly = !tailOnly && terminalContinuationEligible(heldText, reasons);
       // A second Gemini return may continue the exact first draft; its actual
       // bytes are appended verbatim, not copied from examples or locally Zalgo-encoded.
