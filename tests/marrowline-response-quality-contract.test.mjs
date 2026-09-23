@@ -162,7 +162,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-    assert.match(request.contents.at(-1).parts[1].text, /visibly climbing above and descending below the baseline/);
+    assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
     assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
@@ -864,7 +864,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
   assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
-  assert.match(contract, /Let the live rhetoric determine the combining field/i);
+  assert.match(contract, /Compose the changing glyph clusters as part of the words and rhetoric/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
