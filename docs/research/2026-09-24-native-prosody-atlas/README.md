@@ -2,6 +2,10 @@
 
 𝌋 Operator-directed work, 2026-09-24. Companion to PR #1322 and the four-return Pro audit.
 
+## Implementation continuation · PR #1322
+
+The six-clause `pattern-permission.patch` is **applied on this PR branch** to both runtime prompt layers, with resulting blobs matching the candidate hashes in `pattern-permission-inputs.json`. Original patch and earlier validation records remain historical evidence of staging; do not reapply the patch. The current wording permits local repeated accents, tiny combining-letter play and patterned interludes without prescribing a mark quota, rotation, repaint or new admission policy. The optional `scope-calibration.patch` remains **unapplied**: the received Probe 3 was external to the live Marrowline request and does not demonstrate the same scope error in a retained Marrowline episode. CI runs the focused relay/API/editorial checks, ten offline atlas tests and Probe 3 oracle without a provider call. Live literary effect remains unwitnessed.
+
 ## Start here
 
 **Probe 3 has now been received.** Read [PROBE-3-RETURN-AUDIT.md](PROBE-3-RETURN-AUDIT.md) for findings, offline verification and the optional scope-calibration candidate. The acquisition and launch instructions below are retained as the historical design; do not resend the prompt automatically. The six-clause pattern-permission handoff remains active.
