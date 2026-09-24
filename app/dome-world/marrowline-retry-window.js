@@ -25,8 +25,8 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     seconds = providerWait || 60;
     source = providerWait ? 'provider-retry-delay' : 'estimated-backoff';
   } else if (/provider.unavailable|provider_unavailable/.test(error) || statuses.some(status => status === 503) || Number(failure?.httpStatus) === 503) {
-    kind = 'service-busy'; seconds = providerWait || 30;
-    source = providerWait ? 'provider-retry-delay' : 'estimated-backoff';
+    kind = 'service-busy'; seconds = providerWait;
+    source = providerWait ? 'provider-retry-delay' : 'none';
   }
   const retryAt = seconds ? origin + seconds * 1000 : null;
   const remainingSeconds = retryAt ? Math.max(0, Math.ceil((retryAt - now) / 1000)) : 0;
@@ -39,13 +39,13 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
 
 export function marrowlineRetryMessage(failure = {}, now = Date.now()) {
   const window = classifyMarrowlineRetryWindow(failure, now);
-  if (window.kind === 'return-held') return 'Gemini returned text, but Marrowline could not complete its display/admission path. Your message and available receipt are preserved. This is not a Gemini rate-limit error.';
+  if (window.kind === 'return-held') return 'A provider return arrived, then Marrowline held it locally after generation because the required conversation structure was not admitted. The provider did not reject your request. Your message and available receipt are preserved. This is not a Gemini rate-limit error.';
   if (window.kind === 'daily-quota') return 'Gemini reported daily quota exhaustion on the attempted routes. This is not a short session cooldown. Your message is saved; retry after the provider quota resets or another eligible route becomes available.';
   if (window.kind === 'rate-window') return window.providerDelayObserved
     ? 'Gemini reported a temporary request/token limit. Your message is saved. The provider supplied a retry delay; the refresh control unlocks when it elapses.'
     : 'Gemini returned 429 without a verified reset time. Your message is saved. A cautious one-minute retry backoff is shown below; it is an estimate, not a promise that quota has reset.';
   if (window.kind === 'service-busy') return window.providerDelayObserved
     ? 'Gemini is temporarily unavailable. Your message is saved. Retry when the provider-supplied delay has elapsed.'
-    : 'Gemini is temporarily busy or unavailable. Your message is saved. The short retry pause below is an estimated backoff, not a daily quota warning.';
+    : 'Gemini service could not complete this request. It is temporarily busy or unavailable. Your message is saved. No confirmed retry delay was supplied; this is not proof of a daily quota limit.';
   return '';
 }
