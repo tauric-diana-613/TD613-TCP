@@ -340,7 +340,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
 export function preferMarrowlineIncompleteReturn(current = null, candidate = null) {
   const source = value => String(value?.relay?.transcript || value?.result?.text || '');
   const observedBaseLength = value => Array.from(source(value).normalize('NFD'))
-    .filter(character => !/\\p{M}/u.test(character)).length;
+    .filter(character => !/\p{M}/u.test(character)).length;
   if (!source(candidate).trim()) return current;
   if (!source(current).trim()) return candidate;
   return observedBaseLength(candidate) > observedBaseLength(current) ? candidate : current;
