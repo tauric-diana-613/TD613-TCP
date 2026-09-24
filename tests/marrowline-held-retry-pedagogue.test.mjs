@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from '../app/dome-world/marrowline-retry-window.js';
+import { classifyMarrowlineRetryWindow, marrowlineRetryMessage, nextPublishedPacificDailyReset } from '../app/dome-world/marrowline-retry-window.js';
 import { boundedFailureMessage } from '../app/dome-world/marrowline-operator-readiness.js';
 import { callGemini } from '../server/khonapolit-quality.js';
 import { observeMarrowlineCompletion } from '../server/marrowline-completion.js';
@@ -77,6 +77,17 @@ test('mixed per-minute and per-day violations retain their daily classification 
   }] };
   assert.equal(classifyMarrowlineRetryWindow(failure, now).kind, 'daily-report');
   assert.equal(classifyMarrowlineRetryWindow(failure, now).retryAt, null);
+});
+
+test('published midnight Pacific reset is DST-safe but only receipt evidence', () => {
+  assert.equal(nextPublishedPacificDailyReset(Date.parse('2026-09-24T04:00:00Z')),
+    '2026-09-24T07:00:00.000Z'); // 00:00 PDT = 03:00 EDT
+  assert.equal(nextPublishedPacificDailyReset(Date.parse('2026-01-24T04:00:00Z')),
+    '2026-01-24T08:00:00.000Z'); // 00:00 PST = 03:00 EST
+  assert.equal(nextPublishedPacificDailyReset(Date.parse('2026-03-08T07:00:00Z')),
+    '2026-03-08T08:00:00.000Z'); // spring transition at 02:00, after midnight
+  assert.equal(nextPublishedPacificDailyReset(Date.parse('2026-11-01T06:00:00Z')),
+    '2026-11-01T07:00:00.000Z'); // fall transition at 02:00, after midnight
 });
 
 test('post-generation hold cannot be called quota or assigned an invented timer', () => {
