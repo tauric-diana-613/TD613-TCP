@@ -340,7 +340,8 @@ function transcriptText(messages = []) {
 function updateReceipt(doc, root, state) {
   const node = byId(doc, 'khonapolitReceipt');
   if (node) node.textContent = state.lastFailure
-    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure }, null, 2)
+    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure,
+        transportInterpretation: classifyMarrowlineRetryWindow(state.lastFailure) }, null, 2)
     : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
   root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
 }
@@ -631,7 +632,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   waiver?.addEventListener('change', () => refreshKeyState(doc));
 
-  const submitTask = async (messageOverride = '') => {
+  const submitTask = async (messageOverride = '', { independentRetry = false } = {}) => {
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
@@ -639,6 +640,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const shi = waiveIssuance ? '' : safe(shiInput?.value);
     const status = byId(doc, 'khonapolitTerminalStatus');
     const submit = byId(doc, 'khonapolitSend');
+    // A fresh human gesture can override an advisory short-window timer, but
+    // never double-submit while another request is already in flight.
+    if (status?.dataset?.phase === 'pending') return;
     const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
@@ -647,12 +651,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (packet.inputError) { setPedagogueStatus(status, 'held', packet.inputError.message); prompt?.focus({ preventScroll: true }); return; }
     if (!packet.canInvoke) { setPedagogueStatus(status, 'held', 'ADVANCED CUSTODY HOLD · open Keys to continue', 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'); refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
     const retryWindow = classifyMarrowlineRetryWindow(state.lastFailure || {});
-    if (retryWindow.remainingSeconds > 0) {
-      setPedagogueStatus(status, 'held', `TASK PRESERVED · Gemini retry window · ${retryWindow.remainingSeconds}s remaining`,
-        'The retry pause belongs to a prior provider error; this is not a new Gemini request.');
+    if (retryWindow.remainingSeconds > 0 && !independentRetry) {
+      setPedagogueStatus(status, 'held', `TASK PRESERVED · short retry pause · ${retryWindow.remainingSeconds}s remaining`,
+        'An earlier request reported a short retry delay. Your saved message remains available.');
       return;
     }
-    if (submit.disabled) return;
+    if (submit.disabled && !independentRetry) return;
 
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
     state.pendingTask = '';
@@ -717,7 +721,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         setPedagogueStatus(status, 'held',
           structuralOnly ? 'TWO-VOICE STRUCTURE UNFINISHED · draft preserved · Retry preserved task' : 'INCOMPLETE RETURN · draft preserved · Retry preserved task',
           structuralOnly
-            ? 'GEMINI STOP OBSERVED · required two-voice structure remains unfinished · genuine source response and receipt preserved · retry available'
+            ? 'MODEL STOP OBSERVED · required two-voice structure remains unfinished · genuine source response and receipt preserved · retry available'
             : 'INCOMPLETE PROVIDER RETURN · not a completed two-voice answer · source draft and receipt preserved · retry available');
       } else {
         setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
@@ -751,7 +755,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
 
   form.addEventListener('submit', async (event) => { event.preventDefault(); await submitTask(); });
-  byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => {
+  const retryLastPrompt = ({ independentRetry = false } = {}) => {
+    if (byId(doc, 'khonapolitTerminalStatus')?.dataset?.phase === 'pending') return;
     const userIndex = lastUserMessageIndex(state.messages || []);
     const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
     if (!message) {
@@ -764,8 +769,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       saveSession(root, state);
       renderMessages(doc, state);
     }
-    submitTask(message);
-  });
+    submitTask(message, { independentRetry });
+  };
+  byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => retryLastPrompt());
+  // Corner ↻ is a separate human retry gesture: it never delegates to a
+  // disabled in-card retry control, and cannot bypass an in-flight request.
+  doc.addEventListener('td613:marrowline:retry-independent', () => retryLastPrompt({ independentRetry: true }));
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
     state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}

@@ -294,15 +294,18 @@ test('mobile preloaded starter submits on the first touch before keyboard blur c
 });
 
 
-test('failure notice distinguishes unavailable service, rejected format and browser timeout', () => {
-  assert.match(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}), /service could not complete/);
-  assert.match(boundedFailureMessage({error:'no-eligible-callable-models',httpStatus:503}), /No callable model route was admitted/,
-    'typed route diagnostic takes precedence over the shared HTTP failure envelope');
-  const localHold = boundedFailureMessage({error:'khonapolit-output-quality-held'});
-  assert.match(localHold, /provider return arrived.*Marrowline held it locally after generation/i);
-  assert.match(localHold, /provider did not reject your request/i);
-  assert.doesNotMatch(localHold, /AI rejected|provider rejected/i);
-  assert.match(boundedFailureMessage({error:'request-timeout'}), /timed out/);
+test('child-facing failure notices stay distinct, concise and provider-neutral', () => {
+  assert.equal(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}),
+    'The service could not answer just now. Your message is saved; try again.');
+  assert.equal(boundedFailureMessage({error:'no-eligible-callable-models',httpStatus:503}),
+    'The connection is not ready. Your message is saved.');
+  assert.equal(boundedFailureMessage({error:'khonapolit-output-quality-held'}),
+    'The reply was unfinished. Your message is saved.');
+  assert.equal(boundedFailureMessage({error:'request-timeout'}),
+    'The reply took too long. Your message is saved.');
+  for (const error of ['gemini-provider-unavailable','no-eligible-callable-models','khonapolit-output-quality-held','request-timeout']) {
+    assert.doesNotMatch(boundedFailureMessage({ error }), /Gemini|Tauric Diana|QuotaFailure|RetryInfo/);
+  }
 });
 
 test('client exceptions preserve the observed boundary instead of inventing a lost connection', () => {
@@ -315,8 +318,8 @@ test('client exceptions preserve the observed boundary instead of inventing a lo
   assert.equal(render.error, 'client-response-processing-failed');
   assert.equal(render.httpStatus, 200);
   assert.doesNotMatch(JSON.stringify(render), /synthetic private text/);
-  assert.match(boundedFailureMessage(render), /A reply arrived.*browser/);
-  assert.match(boundedFailureMessage(body), /server replied.*response body/);
+  assert.equal(boundedFailureMessage(render), 'The reply could not be shown. Your message is saved.');
+  assert.equal(boundedFailureMessage(body), 'The connection was interrupted. Your message is saved.');
   const abort = { name: 'AbortError' };
   assert.equal(classifyMarrowlineClientFailure(abort, 'response-body').error, 'request-timeout');
   assert.equal(classifyMarrowlineClientFailure(abort, 'response-processing').error, 'client-response-processing-failed');

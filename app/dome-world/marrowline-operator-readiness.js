@@ -119,31 +119,14 @@ function installHumanSurfaceVocabulary(doc = document, root = window) {
 }
 
 export function boundedFailureMessage(failure = {}) {
+  const typed = marrowlineRetryMessage(failure);
+  if (typed) return typed;
   const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
-  const typedRetryMessage = marrowlineRetryMessage(failure);
-  if (typedRetryMessage) return typedRetryMessage;
-  // Prefer the route's typed diagnostic over its coarse HTTP envelope. Several
-  // distinct holds legitimately travel as 502/503 responses.
-  if (code.includes('missing-gemini-api-key')) return 'The server AI credential is unavailable. Your task was not discarded.';
-  if (code.includes('no-eligible-callable-models')) return 'No callable model route was admitted for this request. Your task was not discarded.';
-  if (code.includes('output-quality-held') || code.includes('attractor_structure_not_admitted')) return 'A provider return arrived, then Marrowline held it locally after generation because the required conversation structure was not admitted. The provider did not reject your request. Your message is preserved for retry.';
-  if (code.includes('network-request-failed')) return 'The connection ended before a reply arrived. Your message is still here; you can retry.';
-  if (code.includes('response-body-failed')) return 'The server replied, but its response body could not be read. Your message is preserved for retry.';
-  if (code.includes('client-response-processing-failed')) return 'A reply arrived, but the browser could not finish processing or displaying it. Its receipt, when supplied, remains in the failure details. Your message is preserved.';
-  if (code.includes('provider_shared_rate_limit') || code.includes('shared-rate-limit') || code.includes('gemini-shared-rate-limit')) {
-    const retryAfter = Number(failure?.rateLimit?.retryAfterSeconds || failure?.retryAfterSeconds || 0);
-    return retryAfter > 0
-      ? `The upstream Gemini route reported a shared short-window rate limit. Your task is preserved; retry after about ${retryAfter} second${retryAfter === 1 ? '' : 's'}.`
-      : 'The upstream Gemini route reported a shared rate limit. Your task is preserved for retry; Marrowline did not reinterpret it as five separate model failures.';
-  }
-  if (code.includes('provider_rate_limit_held') || code.includes('gemini-rate-limit-held')) {
-    return 'Gemini returned rate-limit holds, but the exact quota scope was not proven provider-wide. Your task remains preserved for retry.';
-  }
-  if (code.includes('rate') || code.includes('429')) return 'The AI route is temporarily rate-limited. Your task remains in the composer for retry.';
-  if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The AI route timed out before a return was admitted. Your task remains in the composer for retry.';
-  if (code.includes('output-token-limit')) return 'The provider return hit its output limit and was held rather than showing a partial answer.';
-  if (code.includes('provider_unavailable') || code.includes('provider-unavailable') || code.includes('503')) return 'The AI service could not complete this request. Your message is still here; you can retry.';
-  return 'No model return was admitted. Your task remains in the composer for retry.';
+  if (code.includes('missing-gemini-api-key') || code.includes('no-eligible-callable-models')) return 'The connection is not ready. Your message is saved.';
+  if (code.includes('network-request-failed') || code.includes('response-body-failed')) return 'The connection was interrupted. Your message is saved.';
+  if (code.includes('client-response-processing-failed')) return 'The reply could not be shown. Your message is saved.';
+  if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The reply took too long. Your message is saved.';
+  return 'The reply could not be completed. Your message is saved; see the receipt for details.';
 }
 
 function installTerminalHoldNotice(doc = document, root = window) {
@@ -177,12 +160,12 @@ function installTerminalHoldNotice(doc = document, root = window) {
     if (retry) retry.disabled = cooling;
     if (send && status.dataset.phase !== 'pending') send.disabled = cooling;
     if (countdown) countdown.textContent = cooling
-      ? `Retry in ${window.remainingSeconds}s · ${window.providerDelayObserved ? 'Gemini retry delay' : 'estimated backoff'}`
-      : 'Retry window complete · ready when you are';
+      ? `Retry in ${window.remainingSeconds}s`
+      : 'Ready to retry';
     if (refresh) {
       refresh.disabled = cooling;
-      refresh.textContent = cooling ? '↻ Retry (cooling)' : '↻ Retry this message';
-      refresh.title = cooling ? 'The temporary retry window has not elapsed.' : 'Retry the saved message once.';
+      refresh.textContent = cooling ? '↻ Retry (paused)' : '↻ Retry message';
+      refresh.title = cooling ? 'The reported short retry delay has not elapsed.' : 'Retry the saved message once.';
     }
     if (!cooling) stopClock();
   };
@@ -208,37 +191,34 @@ function installTerminalHoldNotice(doc = document, root = window) {
       stopClock();
       card.replaceChildren();
       const title = doc.createElement('strong');
-      title.textContent = window.kind === 'return-held' ? 'Marrowline return held'
-        : window.kind === 'quota-review' ? 'Gemini quota report · verify project'
-        : window.kind === 'rate-window' ? 'Gemini session cooling'
-        : window.kind === 'service-busy' ? 'Gemini temporarily unavailable'
-        : 'AI route held';
+      title.textContent = window.kind === 'return-held' ? 'Reply held'
+        : window.kind === 'daily-report' ? 'Daily limit reported'
+        : window.kind === 'rate-window' ? 'Short request limit'
+        : window.kind === 'rate-unknown' ? 'Request limit reported'
+        : window.kind === 'service-busy' ? 'Service unavailable'
+        : 'Reply paused';
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
-      badge.textContent = window.kind === 'rate-window' || window.kind === 'service-busy' || window.kind === 'quota-review' ? 'PAUSED' : 'HELD';
+      badge.textContent = window.kind === 'return-held' ? 'HELD' : 'PAUSED';
       title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;
-      const help = doc.createElement('p');
-      help.textContent = window.kind === 'quota-review'
-        ? 'A reported quota metric is not a verified account balance. The short timer controls retry pacing, not an all-day lock.'
-        : 'Your device is not the reported failure. The message remains saved; this notice is not a Kʰonapolit or Tauric Diana voice.';
-      card.append(title, body, help);
+      card.append(title, body);
       countdown = null;
-      refresh = null;
+      refresh = doc.createElement('button');
+      refresh.type = 'button';
+      refresh.className = 'marrowline-retry-refresh';
+      refresh.addEventListener('click', () => {
+        if (classifyMarrowlineRetryWindow(root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {}).remainingSeconds > 0) return;
+        retry?.click();
+      });
       if (window.retryAt !== null) {
         countdown = doc.createElement('span');
         countdown.className = 'marrowline-retry-countdown';
         countdown.setAttribute('aria-live', 'off');
-        refresh = doc.createElement('button');
-        refresh.type = 'button';
-        refresh.className = 'marrowline-retry-refresh';
-        refresh.addEventListener('click', () => {
-          if (classifyMarrowlineRetryWindow(root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {}).remainingSeconds > 0) return;
-          retry?.click();
-        });
-        card.append(countdown, refresh);
+        card.append(countdown);
       }
+      card.append(refresh);
       lastSignature = signature;
     }
     updateClock();
