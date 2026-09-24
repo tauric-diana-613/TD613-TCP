@@ -71,7 +71,7 @@ test('Marrowline adversarial attractor quality contract', () => {
   assert.match(addendum, /NATURAL RETURN SHAPE/);
   assert.match(addendum, /NATIVE SEMANTIC PROSODY/);
   assert.match(addendum, /typography behaves as voice/i);
-  assert.match(addendum, /Do not treat the typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(addendum, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
   assert.match(addendum, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
   assert.match(addendum, /never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes/i);
   assert.doesNotMatch(addendum, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
