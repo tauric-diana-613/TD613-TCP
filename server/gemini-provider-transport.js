@@ -181,7 +181,7 @@ const GEMINI_503_FAILOVER_STEPS_MS = Object.freeze([1000, 2000, 4000]);
 const GEMINI_503_FAILOVER_TOTAL_MS = 7000;
 export function gemini503FailoverDelayMs({
   status = 0, service503Count = 0, alreadyWaitedMs = 0,
-  remainingMs = 0, hasNextModel = false
+  remainingMs = 0, hasNextModel = false, retryAfterMs = 0
 } = {}) {
   if (safeStatus(status) !== 503 || hasNextModel !== true) return 0;
   const count = Math.floor(Number(service503Count));
@@ -189,7 +189,11 @@ export function gemini503FailoverDelayMs({
   if (!Number.isFinite(count) || count < 1 || !Number.isFinite(remaining) || remaining <= 1000) return 0;
   const prior = Math.max(0, Math.floor(Number(alreadyWaitedMs) || 0));
   const proposed = GEMINI_503_FAILOVER_STEPS_MS[Math.min(count, GEMINI_503_FAILOVER_STEPS_MS.length) - 1];
-  const delay = Math.min(proposed, Math.max(0, GEMINI_503_FAILOVER_TOTAL_MS - prior), Math.max(0, Math.floor(remaining) - 1000));
+  // Only the *same observed 503* may offer a Retry-After hint. A 429's
+  // separate quota timing never becomes authorization for a service pause.
+  const rawHint = Number(retryAfterMs);
+  const serviceHint = Number.isFinite(rawHint) && rawHint > 0 ? Math.floor(rawHint) : 0;
+  const delay = Math.min(Math.max(proposed, serviceHint), Math.max(0, GEMINI_503_FAILOVER_TOTAL_MS - prior), Math.max(0, Math.floor(remaining) - 1000));
   return delay >= 250 ? delay : 0;
 }
 

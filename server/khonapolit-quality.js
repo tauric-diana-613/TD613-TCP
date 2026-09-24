@@ -819,7 +819,7 @@ function mergeGeminiStreamPayload(chunks = []) {
   };
 }
 
-function consumeGeminiSseEvent(rawEvent = '', chunks = [], progress = {}) {
+function consumeGeminiSseEvent(rawEvent = '', chunks = [], progress = {}, onAuthoredText = null) {
   const data = String(rawEvent || '')
     .split(/\r?\n/)
     .filter((line) => /^data:/.test(line))
@@ -832,12 +832,26 @@ function consumeGeminiSseEvent(rawEvent = '', chunks = [], progress = {}) {
     chunks.push(payload);
     progress.chunkCount += 1;
     if (progress.firstChunkMs === null) progress.firstChunkMs = Date.now() - progress.startedAt;
+    if ((payload?.candidates?.[0]?.content?.parts || []).some(part => part?.thought !== true && typeof part?.text === 'string' && part.text.length > 0)) {
+      progress.authoredTextChunkCount += 1;
+      onAuthoredText?.();
+    }
   } catch {
     progress.parseErrors += 1;
   }
 }
 
-async function readGeminiSse(response, progress) {
+export function marrowlineAuthoredStreamDeadlineMs({ initialTimeoutMs = 0, elapsedMs = 0, wallRemainingMs = 0, graceMs = 0 } = {}) {
+  const initial = Math.max(0, Math.floor(Number(initialTimeoutMs) || 0));
+  const elapsed = Math.max(0, Math.floor(Number(elapsedMs) || 0));
+  const remaining = Math.max(0, Math.floor(Number(wallRemainingMs) || 0));
+  const grace = Math.max(0, Math.min(40000, Math.floor(Number(graceMs) || 0)));
+  // Only extend an actively authored stream, never a silent pending request.
+  // The caller separately requires at least one real provider text chunk.
+  return Math.max(initial, Math.min(initial + grace, elapsed + remaining));
+}
+
+async function readGeminiSse(response, progress, onAuthoredText = null) {
   const reader = response?.body?.getReader?.();
   if (!reader) return null;
   const decoder = new TextDecoder();
@@ -851,7 +865,7 @@ async function readGeminiSse(response, progress) {
       buffer += decoder.decode(value, { stream: true });
       const events = buffer.split(/\r?\n\r?\n/);
       buffer = events.pop() || '';
-      for (const event of events) consumeGeminiSseEvent(event, chunks, progress);
+      for (const event of events) consumeGeminiSseEvent(event, chunks, progress, onAuthoredText);
     }
   } catch (error) {
     // A late stream abort must not erase provider-authored chunks already received.
@@ -861,7 +875,7 @@ async function readGeminiSse(response, progress) {
     if (!chunks.length) throw error;
   }
   buffer += decoder.decode();
-  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress);
+  if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress, onAuthoredText);
   return mergeGeminiStreamPayload(chunks);
 }
 
@@ -870,11 +884,25 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null } = {}
 ) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  const progress = { startedAt: Date.now(), chunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0 };
+  const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
+  let timer = setTimeout(() => controller.abort(), timeoutMs);
+  let graceSpent = false;
+  const onAuthoredText = () => {
+    if (graceSpent || controller.signal.aborted || streamGraceMs <= 0 || !Number.isFinite(wallDeadlineAt)) return;
+    graceSpent = true;
+    const elapsedMs = Date.now() - progress.startedAt;
+    const effectiveTimeoutMs = marrowlineAuthoredStreamDeadlineMs({
+      initialTimeoutMs: timeoutMs, elapsedMs,
+      wallRemainingMs: wallDeadlineAt - Date.now(), graceMs: streamGraceMs
+    });
+    if (effectiveTimeoutMs <= timeoutMs) return;
+    clearTimeout(timer);
+    timer = setTimeout(() => controller.abort(), Math.max(1, effectiveTimeoutMs - elapsedMs));
+    progress.streamGraceMs = effectiveTimeoutMs - timeoutMs;
+  };
   let submittedGenerationConfig = null;
   let submittedRequestObservation = null;
   try {
@@ -901,7 +929,7 @@ async function callGemini(
       const payload = await response.json().catch(() => ({}));
       return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, submittedRequestObservation, ...progress };
     }
-    const streamedPayload = await readGeminiSse(response, progress);
+    const streamedPayload = await readGeminiSse(response, progress, onAuthoredText);
     const payload = streamedPayload || await response.json().catch(() => ({}));
     return {
       response,
@@ -1020,6 +1048,7 @@ export default async function handler(req, res) {
   let service503Count = 0;
   let service503WaitedMs = 0;
   let incompleteFallback = null;
+  const providerWallDeadlineAt = startedAt + WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
     // Natural text and legacy JSON envelopes must use the same visible response.
     // JSON's closing brace is NOT a completion witness for its contained prose.
@@ -1053,7 +1082,8 @@ export default async function handler(req, res) {
     const repairStartedAt = Date.now();
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
       fallback,
-      structuralRepair: { heldText, reasons }
+      structuralRepair: { heldText, reasons },
+      streamGraceMs: 15000, wallDeadlineAt: providerWallDeadlineAt
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1158,7 +1188,8 @@ export default async function handler(req, res) {
               : ['provider-return-unfinished', ...(firstRelay.admission?.reasons || [])];
             const secondStartedAt = Date.now();
             const secondResult = await callGemini(model, packet, apertureReceipt, secondBudgetMs, {
-              fallback, structuralRepair: { heldText: firstJoined, reasons: secondReasons }
+              fallback, structuralRepair: { heldText: firstJoined, reasons: secondReasons },
+              streamGraceMs: 15000, wallDeadlineAt: providerWallDeadlineAt
             });
             const secondOutput = observeGeminiOutput(secondResult.payload, model, {
               fallback, submittedGenerationConfig: secondResult.submittedGenerationConfig,
@@ -1434,7 +1465,10 @@ export default async function handler(req, res) {
     if (remainingMs <= 0) break;
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
-    const result = await callGemini(model, packet, apertureReceipt, timeoutMs, { fallback });
+    const result = await callGemini(model, packet, apertureReceipt, timeoutMs, {
+      fallback, streamGraceMs: fallback ? 20000 : 40000,
+      wallDeadlineAt: providerWallDeadlineAt
+    });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
     const error = result.response.ok ? null : providerError(result.payload);
     const transport = classifyGeminiTransport({ status: Number(result.response.status || 0), timedOut: result.timedOut });
@@ -1478,6 +1512,8 @@ export default async function handler(req, res) {
         chunkCount: Number.isInteger(result.chunkCount) ? result.chunkCount : 0,
         byteCount: Number.isInteger(result.byteCount) ? result.byteCount : 0,
         parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0,
+        authoredTextChunkCount: result.authoredTextChunkCount || 0,
+        streamGraceMs: result.streamGraceMs || 0,
         interrupted: result.streamInterrupted === true,
         interruptionClass: result.streamErrorClass || null
       },
@@ -1499,7 +1535,8 @@ export default async function handler(req, res) {
         service503Count,
         alreadyWaitedMs: service503WaitedMs,
         remainingMs: WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS,
-        hasNextModel: !releaseCanary && index < models.length - 1
+        hasNextModel: !releaseCanary && index < models.length - 1,
+        retryAfterMs: retryAfterSeconds(result.response) * 1000
       });
       if (paceMs > 0) {
         attempt.serviceFailoverPace = Object.freeze({ waitMs: paceMs, reason: 'upstream-503-next-approved-seat' });

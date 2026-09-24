@@ -129,6 +129,11 @@ test('a provider project-wide daily 100 receipt remains a route-wide 100 budget'
 test('503-only inter-seat backoff is bounded, never adds calls or borrows a 429 timer', () => {
   const options = { status: 503, remainingMs: 180000, hasNextModel: true };
   assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 1 }), 1000);
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 1, retryAfterMs: 5000 }), 5000, 'only this 503 response may extend the existing finite next-seat pace');
+  assert.equal(gemini503FailoverDelayMs({ ...options, status: 429, service503Count: 1, retryAfterMs: 5000 }), 0, '429 quota hint cannot pace a 503 frontier');
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 1, retryAfterMs: 50000 }), 7000, '503 header cannot exceed one-turn service budget');
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 2, alreadyWaitedMs: 6000, retryAfterMs: 5000 }), 1000, 'subsequent 503 inherits only the unspent service pacing budget');
+  assert.equal(gemini503FailoverDelayMs({ ...options, remainingMs: 2500, service503Count: 1, retryAfterMs: 6000 }), 1500, 'response wall always takes priority');
   assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 2, alreadyWaitedMs: 1000 }), 2000);
   assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 3, alreadyWaitedMs: 3000 }), 4000);
   assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 4, alreadyWaitedMs: 7000 }), 0);

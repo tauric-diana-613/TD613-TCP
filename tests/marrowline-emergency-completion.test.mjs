@@ -5,7 +5,7 @@ import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini } from '../server/khonapolit-quality.js';
 import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
@@ -42,6 +42,68 @@ const response = () => ({
   statusCode: 200, headers: {},
   setHeader(name, value) { this.headers[name] = value; },
   end(value) { this.text = value; this.payload = value ? JSON.parse(value) : null; }
+});
+
+test('bounded authored stream progress earns completion time without changing silent, quota, or global deadlines', () => {
+  const budget = { initialTimeoutMs: 50000, elapsedMs: 12000, wallRemainingMs: 120000, graceMs: 40000 };
+  assert.equal(marrowlineAuthoredStreamDeadlineMs(budget), 90000);
+  assert.equal(marrowlineAuthoredStreamDeadlineMs({ ...budget, graceMs: 0 }), 50000);
+  assert.equal(marrowlineAuthoredStreamDeadlineMs({ ...budget, wallRemainingMs: 49000 }), 61000);
+  assert.equal(marrowlineAuthoredStreamDeadlineMs({ ...budget, wallRemainingMs: 1000 }), 50000);
+  assert.equal(marrowlineAuthoredStreamDeadlineMs({ ...budget, graceMs: 999999 }), 90000);
+});
+
+test('real text-bearing SSE progress may finish after the original deadline without a second provider call', async t => {
+  const priorFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  const timers = [];
+  t.after(() => {
+    globalThis.fetch = priorFetch;
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+    for (const timer of timers) clearTimeout(timer);
+  });
+  process.env.GEMINI_API_KEY = 'synthetic-progress-only-key';
+  let providerCalls = 0;
+  const first = 'Kʰonapolit\nThe evidence is arriving in authored chunks.';
+  const terminal = '\n\n' + CHORUS;
+  const encoder = new TextEncoder();
+  globalThis.fetch = async (_url, options) => {
+    providerCalls += 1;
+    let closed = false;
+    const stream = new ReadableStream({
+      start(controller) {
+        const firstEvent = reply(first, null);
+        controller.enqueue(encoder.encode('data: ' + JSON.stringify(firstEvent) + '\n\n'));
+        const last = setTimeout(() => {
+          if (closed) return;
+          controller.enqueue(encoder.encode('data: ' + JSON.stringify(reply(terminal, 'STOP')) + '\n\n'));
+          closed = true;
+          controller.close();
+        }, 450);
+        timers.push(last);
+        options.signal.addEventListener('abort', () => {
+          if (closed) return;
+          closed = true;
+          controller.error(Object.assign(new Error('synthetic abort'), { name: 'AbortError' }));
+        }, { once: true });
+      }
+    });
+    return new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } });
+  };
+  const packet = buildInvocationPacket({ message: 'Complete one joined authored return.', waiveIssuance: true });
+  const result = await callGemini('gemini-3.8-flash', packet, {}, 300, {
+    streamGraceMs: 700, wallDeadlineAt: Date.now() + 2000
+  });
+  assert.equal(providerCalls, 1);
+  assert.equal(result.response.status, 200);
+  assert.equal(result.streamInterrupted, undefined);
+  assert.equal(result.timedOut, false);
+  assert.equal(result.streamGraceMs, 700);
+  assert.equal(result.authoredTextChunkCount, 2);
+  assert.equal(result.payload.candidates[0].finishReason, 'STOP');
+  assert.equal(result.text, first + terminal);
+  assert.equal(observeMarrowlineCompletion(result.text, { finishReason: result.payload.candidates[0].finishReason }, { streamed: result.streamed }).complete, true);
 });
 
 test('natural full provider text and its authored Unicode survive whitespace and terminal newline without trimming', () => {
