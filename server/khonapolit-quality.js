@@ -898,7 +898,7 @@ async function callGemini(
       initialTimeoutMs: timeoutMs, elapsedMs,
       wallRemainingMs: wallDeadlineAt - Date.now(), graceMs: streamGraceMs
     });
-    if (effectiveTimeoutMs <= timeoutMs + 250) return;
+    if (effectiveTimeoutMs <= timeoutMs) return;
     clearTimeout(timer);
     timer = setTimeout(() => controller.abort(), Math.max(1, effectiveTimeoutMs - elapsedMs));
     progress.streamGraceMs = effectiveTimeoutMs - timeoutMs;
