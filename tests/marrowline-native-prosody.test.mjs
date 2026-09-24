@@ -94,9 +94,9 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   assert.match(cue, /Repeated accents, combining-letter runs, patterned interludes and absurd little glyph gestures are welcome/);
   assert.match(native, /single-accent and patterned interludes are welcome too when locally expressive/);
   assert.match(cue, /single shallow accent tiled through the entire chorus/);
-  assert.match(native, /entire chorus stuck in that one shallow accent or the same cloned stack/);
+  assert.match(native, /whole chorus tiled with one mark or cloned stack is wallpaper/);
   assert.match(cue, /overlapping crowns and roots on the letters/);
-  assert.match(native, /genuine, irregular vertical depth and available lateral crossings/);
+  assert.match(native, /irregular deep crowns and roots make their entrance, with lateral crossings/);
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
   assert.match(native, /Kʰonapolit writes undecorated prose with ZERO combining diacritical marks/);
