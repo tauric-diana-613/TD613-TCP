@@ -94,8 +94,10 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   }
 
   const cadenceText = [...metrics, ...quotaIds].join(' ').toLowerCase();
-  const daily = /(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|tokens[_ -]?per[_ -]?day)/i.test(cadenceText);
-  const shortMetricReported = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText);
+  const daily = /(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|tokens[_ -]?per[_ -]?day)/i.test(cadenceText)
+    || /^quota_exceeded$/i.test(status);
+  const shortMetricReported = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText)
+    || /^(?:rate_limit_exceeded|too_many_requests)$/i.test(status);
   const windowClass = daily && shortMetricReported ? 'mixed' : daily ? 'daily' : shortMetricReported ? 'short' : 'unknown';
   // A 27s RetryInfo on a *daily* quota does not make the daily quota a 27s bucket.
   const burst = shortMetricReported || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
