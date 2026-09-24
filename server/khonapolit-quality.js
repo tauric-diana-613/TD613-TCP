@@ -1480,7 +1480,13 @@ export default async function handler(req, res) {
         ok: false,
         error: 'gemini-shared-rate-limit',
         status: 'HELD',
-        diagnostic: { stage: 'provider-transport', code: 'PROVIDER_SHARED_RATE_LIMIT' },
+        diagnostic: { stage: 'provider-transport',
+          code: rateLimit.windowClass === 'short' ? 'PROVIDER_SHARED_SHORT_WINDOW_RATE_LIMIT'
+            : rateLimit.windowClass === 'daily' || rateLimit.windowClass === 'mixed'
+              ? 'PROVIDER_SHARED_DAILY_QUOTA_METRIC_REPORTED' : 'PROVIDER_SHARED_QUOTA_SCOPE_UNRESOLVED',
+          providerErrorStatus: rateLimit.errorStatus || null,
+          reportedQuotaWindow: rateLimit.windowClass || 'unknown',
+          publishedDailyResetPolicy: rateLimit.publishedDailyResetPolicy || null },
         rateLimit,
         attempts,
         modelPolicy: plan,
@@ -1713,6 +1719,10 @@ export default async function handler(req, res) {
   const entitlementMismatchAttempts = rateLimitedAttempts.filter((attempt) => attempt.rateLimit?.entitlement?.mismatch === true);
   const allTransportAttemptsRateLimited = attempts.length > 0
     && attempts.every((attempt) => attempt.status === 429 && attempt.rateLimit?.observed);
+  const rateWindowClasses = [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.windowClass || 'unknown'))];
+  const dailyMetricReported = rateLimitedAttempts.some((attempt) => attempt.rateLimit?.daily === true);
+  const allShortWindow = rateLimitedAttempts.length > 0
+    && rateLimitedAttempts.every((attempt) => attempt.rateLimit?.windowClass === 'short');
   return send(res, allTransportAttemptsRateLimited && !heldByCanaryQuality ? 429 : 502, {
     ok: false,
     error: heldByCanaryQuality
@@ -1740,10 +1750,19 @@ export default async function handler(req, res) {
       : allTransportAttemptsRateLimited
         ? {
             stage: 'provider-transport',
-            code: 'PROVIDER_RATE_LIMIT_HELD',
-            scopes: [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.scope || 'unknown'))]
+            code: dailyMetricReported ? 'PROVIDER_DAILY_QUOTA_METRIC_REPORTED'
+              : allShortWindow ? 'PROVIDER_SHORT_WINDOW_RATE_LIMIT'
+              : 'PROVIDER_RATE_LIMIT_SCOPE_UNRESOLVED',
+            scopes: [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.scope || 'unknown'))],
+            reportedQuotaWindows: rateWindowClasses,
+            providerErrorStatuses: [...new Set(rateLimitedAttempts.map((attempt) => attempt.rateLimit?.errorStatus || 'unknown'))],
+            publishedDailyResetPolicy: dailyMetricReported
+              ? 'midnight America/Los_Angeles; not an observed project balance' : null
           }
-        : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE' },
+        : { stage: 'provider-transport', code: 'PROVIDER_UNAVAILABLE',
+            observedStatuses: [...new Set(attempts.map((attempt) => attempt.status || 0))],
+            rateLimitWindowsOnPriorAttempts: rateWindowClasses,
+            note: 'A prior 429 RetryInfo cannot supply a cooldown for a separate 503 or mixed route failure.' },
     attempts,
     modelPolicy: plan,
     aperture: apertureReceipt,

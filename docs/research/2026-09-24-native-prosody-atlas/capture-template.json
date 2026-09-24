@@ -1,0 +1,36 @@
+{
+  "schema": "td613.operator-probe-capture/v1",
+  "episode_id": null,
+  "attempt_id": null,
+  "commission_file": "PROBE-3.txt",
+  "commission_file_utf8_sha256": "183f32bee60b5b30dccc32f16c82f026482093be4f13306e279d6aec816a2a43",
+  "requested_model_label": "3.8 Flash",
+  "displayed_model_label": null,
+  "provider_model_id_observed": null,
+  "displayed_mode": null,
+  "thread_choice": "existing_successful_flash_thread",
+  "history_export_ref": null,
+  "sent_at": null,
+  "received_at": null,
+  "extension_or_regeneration_requested": false,
+  "first_return_capture_kind": null,
+  "first_return_text_ref": null,
+  "screenshot_ref": null,
+  "outcome": null,
+  "effective_thinking_configuration": null,
+  "actual_request_digest": null,
+  "finish_reason": null,
+  "usage": null,
+  "billed_cost": null,
+  "boundaries": {
+    "provider_ingress": null,
+    "application_return": null,
+    "stored_history": null,
+    "dom_text": null
+  },
+  "notes": [
+    "Fill with operator/application observations. Null means unavailable.",
+    "Do not insert model-authored pseudo-telemetry. Text references are not inline boundary strings.",
+    "Clipboard text is not guaranteed to equal provider-return text."
+  ]
+}

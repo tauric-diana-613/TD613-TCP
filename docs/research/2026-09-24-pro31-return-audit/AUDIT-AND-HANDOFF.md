@@ -2,6 +2,10 @@
 
 𝌋 2026-09-24 · operator-directed successor to merged PR #1313
 
+## Operator continuation
+
+The subsequent operator request authorizes one targeted performance probe and a ten-image machine-readable reference atlas. Read [the continuation handoff](../2026-09-24-native-prosody-atlas/README.md) first. Its launch decision supersedes this historical audit's no-further-questionnaire instruction. The source SHA below records the original audit snapshot, not the latest main.
+
 ## Decision and custody
 
 The operator supplied both exact elicitation prompts and four responses labeled 3.1 Pro Regular/Longer for prompts 1/2. This audit uses those pasted exports as behavioral evidence. Provider identity, hidden instructions, request bytes, mode implementation, token usage and rendering pixels remain unverified. No paid generations were made. No production route, model order, Unicode bytes, hold criteria or deployment was changed by this audit.

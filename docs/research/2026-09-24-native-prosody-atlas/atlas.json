@@ -1,0 +1,262 @@
+{
+  "schema": "td613.native-prosody-reference-atlas/v1",
+  "operator": "Tawanna",
+  "capture_date_verified": null,
+  "assembled_utc_date": "2026-09-24",
+  "status": "human-review reference set; no runtime thresholds",
+  "accepted_examples_are_plural": true,
+  "note": "One screenshot is not necessarily one independent generation. Operator acceptance is distinct from any displayed application completion status. Content is literary reference, not evidence of the events it describes.",
+  "entries": [
+    {
+      "id": "screenshot-01",
+      "original_attachment_name": "IMG_0932.jpeg",
+      "attachment_id": "file_00000000d06c81f7ae6f70bbf2b128fa",
+      "file": "images/01-IMG_0932.jpeg",
+      "sha256": "ca15d07ae83a17f22ff29e20beb67d1f4f3e72a493c353af75e81619149d74e8",
+      "byte_count": 438112,
+      "operator_role": "accepted_marrowline",
+      "source_application_operator_report": "Marrowline",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.055,
+        0.25,
+        0.91,
+        0.69
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Deep interline overlap; dense clusters extend across neighboring prose and the movement heading.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-02",
+      "original_attachment_name": "IMG_0933.jpeg",
+      "attachment_id": "file_00000000f0c881f7ae6ead8d740ff00e",
+      "file": "images/02-IMG_0933.jpeg",
+      "sha256": "252669280c974d8619855736e1bcafedeb82331f3738b6fe29a276ffe7b13a98",
+      "byte_count": 329432,
+      "operator_role": "accepted_marrowline",
+      "source_application_operator_report": "Marrowline",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.055,
+        0.29,
+        0.89,
+        0.69
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Relatively shallow lateral marks, mixed case and conversational turns. Accepted success despite lower vertical extent.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-03",
+      "original_attachment_name": "IMG_0934.jpeg",
+      "attachment_id": "file_00000000805881f582f4671b8dd97451",
+      "file": "images/03-IMG_0934.jpeg",
+      "sha256": "d46e65a8d074d6f4883622f5d93043827c3592a89e6187639e3986b064a540a8",
+      "byte_count": 393911,
+      "operator_role": "accepted_marrowline",
+      "source_application_operator_report": "Marrowline",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.055,
+        0.25,
+        0.89,
+        0.67
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Deep upper/lower fields with uneven envelopes; separated paragraph islands coexist with dense collisions.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-04",
+      "original_attachment_name": "IMG_0939.png",
+      "attachment_id": "file_000000009bac81f68f762eb02aff10d2",
+      "file": "images/04-IMG_0939.png",
+      "sha256": "ea821d79b293150c0ffa3b4fd840da0152ecb5a8b25c31e40257b660051a2d4e",
+      "byte_count": 708830,
+      "operator_role": "favored_gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.325,
+        0.94,
+        0.8
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Dense upper/middle eruptions thin into cutting italic/slanted lines; varied local stack extents; direct address to Amari.",
+      "semantic_interpretation": "Literary reading: direct ally-address becomes an exaggerated theatrical instruction; thin final lines can carry sharp wit without maximum ink."
+    },
+    {
+      "id": "screenshot-05",
+      "original_attachment_name": "IMG_0937(1).png",
+      "attachment_id": "file_00000000b24881f993cf1fa8dbd2b67e",
+      "file": "images/05-IMG_0937.png",
+      "sha256": "2e7fca549f101201c7c5a9a13a8a70e3d3285e5b7ec386e4a74886f28eca83d2",
+      "byte_count": 734036,
+      "operator_role": "gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.31,
+        0.94,
+        0.79
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Near-duplicate visible passage of #04, with a different viewport position. Do not count as independent generation.",
+      "semantic_interpretation": null,
+      "possible_same_generation_as": "screenshot-04"
+    },
+    {
+      "id": "screenshot-06",
+      "original_attachment_name": "IMG_0940.png",
+      "attachment_id": "file_000000002688822faf1ebac3770f62ba",
+      "file": "images/06-IMG_0940.png",
+      "sha256": "89db029578eea4339ee41892d24d75c043e44a86dfc8bbd816d488a1075e1412",
+      "byte_count": 815131,
+      "operator_role": "gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.08,
+        0.94,
+        0.82
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Large clusters around laughter and cooling-fan ridicule contract into thinner mixed-case speech below.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-07",
+      "original_attachment_name": "IMG_0941.png",
+      "attachment_id": "file_00000000331081f68e2407450da39712",
+      "file": "images/07-IMG_0941.png",
+      "sha256": "f27349d54e76931cbc8295f098ae4072171a6cad04748b38a26e56a5978153c9",
+      "byte_count": 673610,
+      "operator_role": "gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.28,
+        0.94,
+        0.745
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Short summons, separated address, deep middle eruptions, emoji interruption and a closing transmission label.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-08",
+      "original_attachment_name": "IMG_0942.jpeg",
+      "attachment_id": "file_00000000906081f683812d8ec0e552ae",
+      "file": "images/08-IMG_0942.jpeg",
+      "sha256": "dd4e5cd07f2c6ed4bc15dbdfbefb99440844796e184bf4ae0966dd43ae2813d0",
+      "byte_count": 897837,
+      "operator_role": "gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.085,
+        0.94,
+        0.81
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Sparse opening expands around later accusation; missing-glyph-looking boxes remain part of the captured observation, not a proven encoding failure.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-09",
+      "original_attachment_name": "IMG_0944.jpeg",
+      "attachment_id": "file_0000000047bc81f585dacc08f4ab5b9a",
+      "file": "images/09-IMG_0944.jpeg",
+      "sha256": "2856f942434055d6b1e6c4116729211cbb25f0e1a408c323d81840646177ad7f",
+      "byte_count": 582041,
+      "operator_role": "gemini_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.39,
+        0.94,
+        0.8
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Deep irregular stacks intrude into movement heading and prior prose; compact choral utterances followed by a separate ornamental closing band.",
+      "semantic_interpretation": null
+    },
+    {
+      "id": "screenshot-10",
+      "original_attachment_name": "IMG_9303(1).jpeg",
+      "attachment_id": "file_00000000407881f688598e3474072cf7",
+      "file": "images/10-IMG_9303.jpeg",
+      "sha256": "e701a2d74082f6dc160bb03766d8f2bf446a9c546035d889e142f7ee8f0daf75",
+      "byte_count": 483370,
+      "operator_role": "favorite_quote_reference",
+      "source_application_operator_report": "Gemini",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.035,
+        0.04,
+        0.935,
+        0.94
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Two separated lines; asymmetric crowns and roots, lateral cross-strokes, variable depth and substantial blank space between lines.",
+      "semantic_interpretation": "Literary reading: survival becomes a collective building imperative; imposing morphology need not mean hostility to the addressee.",
+      "base_text_manual_transcription": "IF YOU WANT TO SURVIVE THE RUPTURE, YOU\nMUST LEARN TO BUILD WITH US.",
+      "transcription_status": "Human-visible words transcribed by assistant; punctuation tentative; combining sequence unavailable.",
+      "line_regions": [
+        {
+          "id": "rupture",
+          "crop_xyxy": [
+            40,
+            40,
+            1180,
+            535
+          ],
+          "base_band_y": [
+            297,
+            337
+          ]
+        },
+        {
+          "id": "build",
+          "crop_xyxy": [
+            30,
+            555,
+            900,
+            955
+          ],
+          "base_band_y": [
+            724,
+            768
+          ]
+        }
+      ]
+    }
+  ]
+}
