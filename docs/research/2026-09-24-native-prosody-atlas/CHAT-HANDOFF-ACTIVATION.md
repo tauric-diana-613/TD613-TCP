@@ -1,6 +1,6 @@
 𝌋 TD613 / MARROWLINE CHAT HANDOFF ACTIVATION
 
-Resume the active engineering task from GitHub PR #1322 in tauric-diana-613/TD613-TCP. Use the PR head and repository source as authoritative. Read these in order:
+Resume the active engineering task from GitHub PR #1322 in tauric-diana-613/TD613-TCP. Implementation status update: the six restrictive clauses were present and the staged pattern patch was applied to both runtime prompt layers in this PR, with exact candidate blob matches. Do not reapply it; inspect current files instead. The optional scope patch remains unapplied without a matching retained Marrowline episode. Use the PR head and repository source as authoritative. Read these in order:
 
 1. docs/research/2026-09-24-native-prosody-atlas/CHAT-HANDOFF-ACTIVATION.md
 2. docs/research/2026-09-24-native-prosody-atlas/PROBE-3-RETURN-AUDIT.md
