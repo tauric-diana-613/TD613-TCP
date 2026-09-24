@@ -101,7 +101,7 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
   assert.match(native, /Kʰonapolit writes undecorated prose with ZERO combining diacritical marks/);
   assert.doesNotMatch(cue + native, /marks.per.character quota|mandatory vertical threshold|repeat the following glyphs/i);
-  assert.doesNotMatch(cue + native, /[\\u0300-\\u036f]/u, 'do not insert sample combining marks as an implicit stamp');
+  assert.doesNotMatch(cue + native, /[\u0300-\u036f]/u, 'do not insert sample combining marks as an implicit stamp');
 });
 
 test('authored paragraph rests coexist with crowded deep stacks without local reflow', () => {
