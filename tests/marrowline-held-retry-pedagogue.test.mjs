@@ -113,6 +113,13 @@ test('chat preserves raw response fallback and guards immediate retries without 
   assert.match(readiness, /↻ Retry message/);
   assert.match(readiness, /refresh\.disabled = cooling/);
   assert.doesNotMatch(readiness, /not a Kʰonapolit or Tauric Diana voice/);
+  const corner = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
+  assert.match(corner, /td613:marrowline:retry-independent/);
+  assert.doesNotMatch(corner, /retry\.addEventListener\('click', \(\) => retryLegacy\.click\(\)\)/);
+  assert.match(terminal, /doc\.addEventListener\('td613:marrowline:retry-independent', \(\) => retryLastPrompt\(\{ independentRetry: true \}\)\)/);
+  assert.match(terminal, /if \(status\?\.dataset\?\.phase === 'pending'\) return/);
+  assert.match(terminal, /if \(retryWindow\.remainingSeconds > 0 && !independentRetry\)/);
+  assert.match(terminal, /transportInterpretation: classifyMarrowlineRetryWindow/);
   assert.match(native, /Author actual blank-line paragraph rests/);
   assert.doesNotMatch(readiness, /highZalgoEncode\(/);
 });
