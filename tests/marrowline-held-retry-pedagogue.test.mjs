@@ -9,69 +9,74 @@ import { observeMarrowlineCompletion } from '../server/marrowline-completion.js'
 const now = Date.parse('2026-09-24T01:00:00.000Z');
 const event = { observedAt: now, httpStatus: 429 };
 
-test('provider-observed short window honors RetryInfo and counts down without inventing a model schedule', () => {
+test('a documented short per-minute metric may use an explicit RetryInfo countdown', () => {
   const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [
-    { status: 429, rateLimit: { scope: 'model', daily: false, burst: true, retryAfterSeconds: 42 } },
-    { status: 429, rateLimit: { scope: 'model', daily: false, burst: true, retryAfterSeconds: 65 } }
+    { status: 429, rateLimit: { scope: 'model', daily: false, shortMetricReported: true,
+      quotaId: 'GenerateRequestsPerMinutePerModel', retryAfterSeconds: 42 } },
+    { status: 429, rateLimit: { scope: 'model', daily: false, shortMetricReported: true,
+      quotaId: 'GenerateRequestsPerMinutePerModel', retryAfterSeconds: 65 } }
   ] };
-  const start = classifyMarrowlineRetryWindow(failure, now);
-  assert.equal(start.kind, 'rate-window');
-  assert.equal(start.source, 'provider-retry-delay');
-  assert.equal(start.remainingSeconds, 42);
-  assert.equal(classifyMarrowlineRetryWindow(failure, now + 41000).remainingSeconds, 1);
-  assert.equal(classifyMarrowlineRetryWindow(failure, now + 42000).retryReady, true);
-  assert.match(boundedFailureMessage(failure), /provider supplied a retry delay/i);
-});
-
-test('unknown 429 gets an explicitly estimated bounded pause, not a false daily quota message', () => {
-  const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [{ status: 429, rateLimit: { scope: 'unknown', daily: false, retryAfterSeconds: 0 } }] };
   const window = classifyMarrowlineRetryWindow(failure, now);
-  assert.equal(window.seconds, 60);
-  assert.equal(window.source, 'estimated-backoff');
-  assert.match(marrowlineRetryMessage(failure), /estimate, not a promise/i);
+  assert.equal(window.kind, 'rate-window');
+  assert.equal(window.source, 'provider-retry-delay');
+  assert.equal(window.remainingSeconds, 42);
+  assert.equal(classifyMarrowlineRetryWindow(failure, now + 42000).retryReady, true);
+  assert.equal(boundedFailureMessage(failure), 'A short request limit was reached. Your message is saved.');
 });
 
-test('daily QuotaFailure metric remains unverified against project usage and retains a short provider retry delay', () => {
-  const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [
-    { status: 429, rateLimit: {
-      daily: true, scope: 'model', retryAfterSeconds: 24,
+test('an unknown 429 receives no fabricated one-minute or daily reset timer', () => {
+  const failure = { ...event, error: 'gemini-rate-limit-held',
+    attempts: [{ status: 429, rateLimit: { scope: 'unknown', retryAfterSeconds: 0 } }] };
+  const window = classifyMarrowlineRetryWindow(failure, now);
+  assert.equal(window.kind, 'rate-unknown');
+  assert.equal(window.retryAt, null);
+  assert.equal(window.seconds, 0);
+});
+
+test('daily per-model quota error with 24s RetryInfo NEVER pretends the day renews in 24s', () => {
+  const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [{
+    status: 429, rateLimit: { daily: true, scope: 'model', retryAfterSeconds: 24,
       quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
       metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
-      entitlement: { mismatch: true }
-    } }
-  ] };
+      entitlement: { mismatch: true } }
+  }] };
   const window = classifyMarrowlineRetryWindow(failure, now);
-  assert.equal(window.kind, 'quota-review');
-  assert.equal(window.retryAt, now + 24000);
-  assert.equal(window.source, 'provider-retry-delay');
-  assert.equal(window.observedDaily, true);
+  assert.equal(window.kind, 'daily-report');
+  assert.equal(window.retryAt, null);
+  assert.equal(window.remainingSeconds, 0);
+  assert.equal(window.providerHintSeconds, 24);
+  assert.match(window.publishedDailyResetPolicy, /midnight America\/Los_Angeles/);
   assert.equal(window.providerDailyExhaustionVerified, false);
-  assert.equal(window.freeTierMetricReported, true);
-  assert.equal(window.entitlementMismatchReported, true);
-  assert.match(boundedFailureMessage(failure), /NOT verify.*daily allowance/i);
-  assert.doesNotMatch(boundedFailureMessage(failure), /daily quota exhaustion|quota resets/i);
-  assert.equal(classifyMarrowlineRetryWindow(failure, now + 24000).retryReady, true);
+  assert.equal(boundedFailureMessage(failure), 'A daily request limit was reported. Your message is saved; see the receipt for details.');
 });
 
-test('per-day metric without RetryInfo gets an estimated bounded pause, never a fake all-day lock', () => {
-  const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [
-    { status: 429, rateLimit: { daily: true, scope: 'model', retryAfterSeconds: 0 } }
-  ] };
+test('503 never inherits an earlier 429 retry hint, even when mixed and delayed', () => {
+  const failure = { ...event, httpStatus: 502, error: 'gemini-provider-unavailable',
+    attempts: [{ status: 429, rateLimit: { shortMetricReported: true,
+      quotaId: 'GenerateRequestsPerMinutePerModel', retryAfterSeconds: 180 } },
+      { status: 503, cooldown: { retryAfterSeconds: 70 } }] };
   const window = classifyMarrowlineRetryWindow(failure, now);
-  assert.equal(window.kind, 'quota-review');
-  assert.equal(window.seconds, 60);
-  assert.equal(window.source, 'estimated-backoff');
-  assert.match(boundedFailureMessage(failure), /No verified reset time was supplied/);
+  assert.equal(window.kind, 'service-busy');
+  assert.equal(window.retryAt, null);
+  assert.equal(window.seconds, 0);
+  assert.equal(window.remainingSeconds, 0);
+  assert.equal(boundedFailureMessage(failure), 'The service could not answer just now. Your message is saved; try again.');
 });
 
-test('mixed failures are not relabeled as universal 429 and temporary capacity uses estimated backoff', () => {
-  const failure = { ...event, httpStatus: 502, error: 'gemini-provider-unavailable', attempts: [
-    { status: 429, rateLimit: { daily: false, retryAfterSeconds: 40 } }, { status: 503 }
-  ] };
+test('even a standalone 503 Retry-After stays a receipt hint rather than an in-chat quota countdown', () => {
+  const failure = { httpStatus: 503, retryAfterSeconds: 36, observedAt: now,
+    error: 'gemini-provider-unavailable', attempts: [{ status: 503 }] };
   assert.equal(classifyMarrowlineRetryWindow(failure, now).kind, 'service-busy');
-  assert.equal(classifyMarrowlineRetryWindow(failure, now).source, 'none');
   assert.equal(classifyMarrowlineRetryWindow(failure, now).retryAt, null);
-  assert.match(boundedFailureMessage(failure), /temporarily busy or unavailable/i);
+});
+
+test('mixed per-minute and per-day violations retain their daily classification and no fake short timer', () => {
+  const failure = { ...event, error: 'gemini-rate-limit-held', attempts: [{
+    status: 429, rateLimit: { daily: true, shortMetricReported: true,
+      windowClass: 'mixed', retryAfterSeconds: 15 }
+  }] };
+  assert.equal(classifyMarrowlineRetryWindow(failure, now).kind, 'daily-report');
+  assert.equal(classifyMarrowlineRetryWindow(failure, now).retryAt, null);
 });
 
 test('post-generation hold cannot be called quota or assigned an invented timer', () => {
@@ -80,7 +85,7 @@ test('post-generation hold cannot be called quota or assigned an invented timer'
   const window = classifyMarrowlineRetryWindow(failure, now);
   assert.equal(window.kind, 'return-held');
   assert.equal(window.retryAt, null);
-  assert.match(boundedFailureMessage(failure), /not a Gemini rate-limit error/i);
+  assert.equal(boundedFailureMessage(failure), 'The reply was unfinished. Your message is saved.');
 });
 
 test('chat preserves raw response fallback and guards immediate retries without editing model prosody', () => {
@@ -91,10 +96,12 @@ test('chat preserves raw response fallback and guards immediate retries without 
   assert.match(terminal, /observedAt: Date\.now\(\)/);
   assert.match(terminal, /part: integrated\?\.present \? integrated/);
   assert.match(readiness, /marrowline-retry-countdown/);
-  assert.match(readiness, /Gemini quota report · verify project/);
-  assert.doesNotMatch(readiness, /Gemini daily quota/);
-  assert.match(readiness, /↻ Retry this message/);
+  assert.match(readiness, /Daily limit reported/);
+  assert.match(readiness, /Service unavailable/);
+  assert.doesNotMatch(readiness, /Gemini (?:quota|session|temporarily)/);
+  assert.match(readiness, /↻ Retry message/);
   assert.match(readiness, /refresh\.disabled = cooling/);
+  assert.doesNotMatch(readiness, /not a Kʰonapolit or Tauric Diana voice/);
   assert.match(native, /Author actual blank-line paragraph rests/);
   assert.doesNotMatch(readiness, /highZalgoEncode\(/);
 });
