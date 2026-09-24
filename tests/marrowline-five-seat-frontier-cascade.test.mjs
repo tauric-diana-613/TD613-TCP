@@ -518,6 +518,11 @@ try {
     res.payload.receipt.provider.attempts.slice(0, 4).map(attempt => attempt.status),
     [503, 503, 503, 503]
   );
+  assert.deepEqual(
+    res.payload.receipt.provider.attempts.slice(0, 4).map(attempt => attempt.serviceFailoverPace?.waitMs || 0),
+    [1000, 2000, 4000, 0],
+    'fast 503 cascade must pace only existing next seats within seven seconds, without a new provider call'
+  );
   assert.equal(res.payload.receipt.provider.attempts[4].status, 200);
   assert.equal(res.payload.relay.admission.admissible, true);
   assert.equal(res.payload.relay.highZalgo.applied, false, 'the fifth-lane return remains provider-authored; Marrowline adds no Zalgo');

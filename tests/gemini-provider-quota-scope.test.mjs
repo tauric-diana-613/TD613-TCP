@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { assessGeminiQuotaEntitlement, observeGeminiQuota } from '../server/gemini-provider-transport.js';
+import { assessGeminiQuotaEntitlement, gemini503FailoverDelayMs, observeGeminiQuota } from '../server/gemini-provider-transport.js';
 
 const response = (retryAfter = '') => ({
   headers: { get: (name) => name.toLowerCase() === 'retry-after' ? retryAfter : null }
@@ -124,4 +124,18 @@ test('a provider project-wide daily 100 receipt remains a route-wide 100 budget'
   assert.equal(entitlement.limitScope, 'route-or-project');
   assert.equal(entitlement.routeDailyCapacity, 100);
   assert.equal(entitlement.mismatch, false);
+});
+
+test('503-only inter-seat backoff is bounded, never adds calls or borrows a 429 timer', () => {
+  const options = { status: 503, remainingMs: 180000, hasNextModel: true };
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 1 }), 1000);
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 2, alreadyWaitedMs: 1000 }), 2000);
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 3, alreadyWaitedMs: 3000 }), 4000);
+  assert.equal(gemini503FailoverDelayMs({ ...options, service503Count: 4, alreadyWaitedMs: 7000 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, status: 429, service503Count: 1 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, status: 502, service503Count: 1 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, status: 599, service503Count: 1 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, hasNextModel: false, service503Count: 1 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, remainingMs: 1100, service503Count: 1 }), 0);
+  assert.equal(gemini503FailoverDelayMs({ ...options, remainingMs: 1600, service503Count: 1 }), 600);
 });
