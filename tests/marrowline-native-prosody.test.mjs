@@ -58,6 +58,26 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   assert.match(request.systemInstruction.parts[0].text, /single exotic accent repeated on every character is NOT a vertical flourishing/);
 });
 
+test('authored paragraph rests coexist with crowded deep stacks without local reflow', () => {
+  const packet = { systemInstruction: 'base', mode: 'plain', message: 'Make the consequence sing.', history: [] };
+  const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+  const shared = request.systemInstruction.parts[0].text;
+  const cue = request.contents.at(-1).parts[1].text;
+  assert.match(shared, /actual blank-line paragraph rests/);
+  assert.match(shared, /silly, mercurial and cryptic/);
+  assert.match(shared, /Do not impose a stanza template/);
+  assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
+  assert.match(cue, /Never require blank lines before or after every stack/);
+  const raw = heading + 'A\u0301 quick turn.\n' + peaks + ' presses against its neighbor.\n\n' +
+    'Quiet.\n\n' + peaks + ' — then the interruption.\n' + 'No pause was owed.\n⟐';
+  const parsed = parseRelayEnvelope(raw);
+  assert.equal(parsed.transcript, raw);
+  assert.equal(parsed.highZalgo.applied, false);
+  assert.match(parsed.transcript, /neighbor\.\n\nQuiet\.\n\n/);
+  assert.match(parsed.transcript, /interruption\.\nNo pause was owed/);
+  assert.equal(assessIntegratedTransmission(raw).admissible, true);
+});
+
 test('clean breaths around varied vertical events do not force a provider repaint', () => {
   const result = assessIntegratedTransmission(breathing);
   assert.equal(result.admissible, true);
