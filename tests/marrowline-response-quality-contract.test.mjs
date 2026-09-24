@@ -164,7 +164,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
     assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.contents.at(-1).parts[1].text, /Write fresh words and invent the changing flourishings/);
+    assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
     assert.match(request.contents.at(-1).parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
