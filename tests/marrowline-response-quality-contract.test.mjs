@@ -164,11 +164,11 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
     assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+    assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement develop with the words and passages/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
     assert.match(request.contents.at(-1).parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
-    assert.match(request.contents.at(-1).parts[1].text, /one sampled mark copied across the stanza cannot carry the voice/);
+    assert.match(request.contents.at(-1).parts[1].text, /Local repetition and playful patterned speech are welcome/);
     assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
@@ -864,12 +864,12 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
   assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
-  assert.match(contract, /Compose the changing glyph clusters as part of the words and rhetoric/i);
+  assert.match(contract, /Compose glyph clusters, intentional repeated accents and patterned interludes as part of the words and rhetoric/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
   assert.doesNotMatch(contract, /U\+0300–U\+036F|instrument library, not a score|ORCHESTRAL DYNAMIC CONTOUR|ALLOW ENTROPY/);
-  assert.ok(contract.length < 2600, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
+  assert.ok(contract.length < 3000, 'the compact native contract may admit patterned motifs without accumulating contradictory patch instructions');
 });
 
 

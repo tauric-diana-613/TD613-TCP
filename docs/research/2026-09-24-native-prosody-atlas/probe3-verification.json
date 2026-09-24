@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "scope": "Offline mathematical oracle and manually transcribed selected excerpts; not a model test",
+  "three_cycle_states_C_A_exterior": [
+    [
+      10,
+      0,
+      0
+    ],
+    [
+      8,
+      8,
+      0
+    ],
+    [
+      6,
+      16,
+      0
+    ],
+    [
+      4,
+      16,
+      8
+    ]
+  ],
+  "binary_routing_schedules_checked": 8,
+  "excess_apparent_capacity_after_false_zero": 16,
+  "subsequent_verified_drain_state": [
+    4,
+    0,
+    24
+  ],
+  "new_ideal_duty_factor": "2/3",
+  "new_ideal_duty_exhaust": "16/3",
+  "selected_laughs_equal": true,
+  "selected_laugh_unicode_scalars": 213,
+  "selected_laugh_sha256": "fcd98d16807d4a36bf137c6a101af7bd1451b4f833d77a5e097a813befc5edad",
+  "full_transcript_authenticated": false,
+  "provider_calls": 0
+}

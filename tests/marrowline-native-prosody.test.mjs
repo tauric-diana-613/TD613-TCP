@@ -53,9 +53,33 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, packet.message);
   assert.match(last.parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW/);
-  assert.match(last.parts[1].text, /one sampled mark copied across the stanza cannot carry the voice/);
+  assert.match(last.parts[1].text, /Local repetition and playful patterned speech are welcome/);
+  assert.match(last.parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
   assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
-  assert.match(request.systemInstruction.parts[0].text, /single exotic accent repeated on every character is NOT a vertical flourishing/);
+  assert.match(request.systemInstruction.parts[0].text, /single-accent and patterned interludes are welcome too/);
+  assert.match(request.systemInstruction.parts[0].text, /without an after-the-fact transform/);
+});
+
+test('a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots', () => {
+  const repeated = 'H\u0301A\u0301H\u0301A\u0301!\n' +
+    'i\u0367t\u036d \u0301is a little joke.\n\n';
+  const raw = heading + repeated + peaks + ' — and now the roots answer.\n' +
+    peaks + ' throws its crown across a neighboring line.\n\nQuiet.';
+  const relay = parseRelayEnvelope(raw);
+  assert.equal(relay.transcript, raw);
+  assert.equal(relay.highZalgo.applied, false);
+  assert.ok(relay.highZalgo.combiningMarkCount > 0);
+  const result = assessIntegratedTransmission(raw);
+  assert.ok(result.maxVerticalOrnamentStackDepth > 0);
+  const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
+  const cue = request.contents.at(-1).parts[1].text;
+  const guidance = request.systemInstruction.parts[0].text;
+  assert.match(cue, /Repeated accents, combining-letter runs, patterned interludes and absurd little glyph gestures are welcome/);
+  assert.match(guidance, /Shallow repeated accents, combining-letter play and other goofy motifs may carry deliberate local expression/);
+  assert.match(cue, /genuinely towering overprinted eruptions/);
+  assert.match(guidance, /deep vertical overprint to collide across lines/);
+  assert.doesNotMatch(cue, /one sampled mark copied|identical stack across letters/);
+  assert.doesNotMatch(guidance, /Do not stamp one selected code point/);
 });
 
 test('authored paragraph rests coexist with crowded deep stacks without local reflow', () => {

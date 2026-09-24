@@ -1,0 +1,29 @@
+{
+  "status": "APPLIED_TO_PR_1322_RUNTIME; candidate blob identities verified",
+  "source_ref": "40f66308a8783dc24111c1a1fda78796354e050a",
+  "inputs": [
+    {
+      "path": "server/khonapolit-quality.js",
+      "source_git_blob_sha1": "4faaeea6112216627ae96d78cafa4436b9290978",
+      "candidate_git_blob_sha1": "f7bfb9df40964dc8ff0cdeee2cd78bb40ccfe8eb",
+      "replacements": 3
+    },
+    {
+      "path": "app/dome-world/khonapolit-relay.js",
+      "source_git_blob_sha1": "56ccfc973be2bd3430f6ae6e319d8b3a21d7974a",
+      "candidate_git_blob_sha1": "d68081272f1804fb976ae40cd6b84ee79ed3ff0d",
+      "replacements": 3
+    }
+  ],
+  "application": {
+    "branch": "handoff/pro31-four-return-audit-20260924",
+    "sourceMain": "40f66308a8783dc24111c1a1fda78796354e050a",
+    "changedPaths": [
+      "server/khonapolit-quality.js",
+      "app/dome-world/khonapolit-relay.js"
+    ],
+    "clauseReplacements": 6,
+    "scopePatch": "UNAPPLIED_NO_MATCHED_RETAINED_MARROWLINE_EPISODE",
+    "providerEffect": "UNOBSERVED"
+  }
+}

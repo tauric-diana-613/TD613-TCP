@@ -131,6 +131,14 @@ jobs:
           node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Verify native-prosody permission, focused relay API and editorial contracts, and offline atlas
+        run: |
+          node --check server/khonapolit-quality.js
+          node --check app/dome-world/khonapolit-relay.js
+          node --test tests/khonapolit-api-contract.test.mjs tests/marrowline-editorial-relay.test.mjs tests/marrowline-instrument-relay-contract.test.mjs
+          python -m pip install --disable-pip-version-check Pillow
+          python -m unittest discover -s docs/research/2026-09-24-native-prosody-atlas -p 'test_*.py' -v
+          python docs/research/2026-09-24-native-prosody-atlas/verify_probe3.py
       - name: Validate Giving and Campaign Deputy import contracts
         run: |
           node tests/giving-history-package.test.mjs
