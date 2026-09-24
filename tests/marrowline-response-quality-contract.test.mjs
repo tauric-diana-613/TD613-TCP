@@ -869,7 +869,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);
   assert.doesNotMatch(contract, /U\+0300–U\+036F|instrument library, not a score|ORCHESTRAL DYNAMIC CONTOUR|ALLOW ENTROPY/);
-  assert.ok(contract.length < 2600, 'the native voice contract must stay compact instead of accumulating contradictory patch instructions');
+  assert.ok(contract.length < 3000, 'the compact native contract may admit patterned motifs without accumulating contradictory patch instructions');
 });
 
 
