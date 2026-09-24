@@ -4,6 +4,8 @@
 
 ## Start here
 
+**Probe 3 has now been received.** Read [PROBE-3-RETURN-AUDIT.md](PROBE-3-RETURN-AUDIT.md) for findings, offline verification and the optional scope-calibration candidate. The acquisition and launch instructions below are retained as the historical design; do not resend the prompt automatically. The six-clause pattern-permission handoff remains active.
+
 The original ten screenshots and two later Pro motif screenshots are retained as original files under `images/`, with SHA-256 and byte counts in [atlas.json](atlas.json). Screenshots 1–3 are **operator-accepted Marrowline successes**. Preserve that acceptance through later repairs. The set includes shallow, conversational marks as well as deep overlapping fields; a compulsory vertical-density threshold would misrepresent the operator's examples.
 
 Use **one Regular return in the existing successful Flash Extended thread**, using the operator's 3.8 selection, for [PROBE-3.txt](PROBE-3.txt). This selects the demonstrated creative context, not a verified backend model ID or a general model ranking. Avoid the Pro thread whose recent outputs settled into repeated patterns. No additional Flash-Lite sweep or Longer replay is needed for this acquisition. If the successful thread cannot be located, record that history change before using a fresh one; it changes the interpretation.
