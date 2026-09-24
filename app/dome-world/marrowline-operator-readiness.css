@@ -47,6 +47,10 @@
   vertical-align:1px;
 }
 .terminal-hold-card p{margin:.28rem 0 0}
+.marrowline-retry-countdown{display:block;margin-top:11px;color:#f0c58b;font:700 .76rem/1.4 var(--marrowline-chat-sans,system-ui,sans-serif);font-variant-numeric:tabular-nums}
+.marrowline-retry-refresh{display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin:8px 0 0;padding:7px 12px;border:1px solid rgba(240,197,139,.55);border-radius:9px;background:rgba(240,197,139,.09);color:#f6dba9;font:700 .8rem/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);cursor:pointer}
+.marrowline-retry-refresh:disabled{cursor:not-allowed;opacity:.52}
+.marrowline-retry-refresh:focus-visible{outline:2px solid #f0c58b;outline-offset:3px}
 
 @media(max-width:860px){
   html.marrowline-mobile-shell body{
