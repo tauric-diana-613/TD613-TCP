@@ -814,14 +814,22 @@ async function readGeminiSse(response, progress) {
   const decoder = new TextDecoder();
   let buffer = '';
   const chunks = [];
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    progress.byteCount += value?.byteLength || 0;
-    buffer += decoder.decode(value, { stream: true });
-    const events = buffer.split(/\r?\n\r?\n/);
-    buffer = events.pop() || '';
-    for (const event of events) consumeGeminiSseEvent(event, chunks, progress);
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      progress.byteCount += value?.byteLength || 0;
+      buffer += decoder.decode(value, { stream: true });
+      const events = buffer.split(/\r?\n\r?\n/);
+      buffer = events.pop() || '';
+      for (const event of events) consumeGeminiSseEvent(event, chunks, progress);
+    }
+  } catch (error) {
+    // A late stream abort must not erase provider-authored chunks already received.
+    // The absent finish witness remains a provider-incomplete observation.
+    progress.streamInterrupted = true;
+    progress.streamErrorClass = safe(error?.name || 'STREAM_READ_ERROR').slice(0, 64);
+    if (!chunks.length) throw error;
   }
   buffer += decoder.decode();
   if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress);
@@ -870,7 +878,7 @@ async function callGemini(
       response,
       payload,
       text: extractGeminiText(payload),
-      timedOut: false,
+      timedOut: Boolean(progress.streamInterrupted && controller.signal.aborted),
       streamed: Boolean(streamedPayload),
       submittedGenerationConfig,
       submittedRequestObservation,
@@ -1438,7 +1446,9 @@ export default async function handler(req, res) {
         firstChunkMs: Number.isInteger(result.firstChunkMs) ? result.firstChunkMs : null,
         chunkCount: Number.isInteger(result.chunkCount) ? result.chunkCount : 0,
         byteCount: Number.isInteger(result.byteCount) ? result.byteCount : 0,
-        parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0
+        parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0,
+        interrupted: result.streamInterrupted === true,
+        interruptionClass: result.streamErrorClass || null
       },
       error,
       rateLimit,

@@ -1,4 +1,5 @@
 import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
+import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from './marrowline-retry-window.js';
 
 export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
@@ -119,6 +120,8 @@ function installHumanSurfaceVocabulary(doc = document, root = window) {
 
 export function boundedFailureMessage(failure = {}) {
   const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
+  const typedRetryMessage = marrowlineRetryMessage(failure);
+  if (typedRetryMessage) return typedRetryMessage;
   // Prefer the route's typed diagnostic over its coarse HTTP envelope. Several
   // distinct holds legitimately travel as 502/503 responses.
   if (code.includes('missing-gemini-api-key')) return 'The server AI credential is unavailable. Your task was not discarded.';
@@ -149,19 +152,49 @@ function installTerminalHoldNotice(doc = document, root = window) {
   if (!status || !messages || status.dataset.holdNoticeInstalled === 'true') return false;
   status.dataset.holdNoticeInstalled = 'true';
   let lastSignature = '';
+  let clock = null;
+  let countdown = null;
+  let refresh = null;
+  const retry = byId(doc, 'retryKhonapolitTask');
+  const send = byId(doc, 'khonapolitSend');
+  const stopClock = () => {
+    if (clock !== null) root.clearInterval?.(clock);
+    clock = null;
+  };
+  const clear = () => {
+    stopClock();
+    byId(doc, 'marrowlineTerminalHold')?.remove();
+    if (retry) retry.disabled = false;
+    if (send && status.dataset.phase !== 'pending') send.disabled = false;
+    lastSignature = '';
+    countdown = null;
+    refresh = null;
+  };
+  const updateClock = () => {
+    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};
+    const window = classifyMarrowlineRetryWindow(failure, Date.now());
+    const cooling = window.remainingSeconds > 0;
+    if (retry) retry.disabled = cooling;
+    if (send && status.dataset.phase !== 'pending') send.disabled = cooling;
+    if (countdown) countdown.textContent = cooling
+      ? `Retry in ${window.remainingSeconds}s · ${window.providerDelayObserved ? 'Gemini retry delay' : 'estimated backoff'}`
+      : 'Retry window complete · ready when you are';
+    if (refresh) {
+      refresh.disabled = cooling;
+      refresh.textContent = cooling ? '↻ Retry (cooling)' : '↻ Retry this message';
+      refresh.title = cooling ? 'The temporary retry window has not elapsed.' : 'Retry the saved message once.';
+    }
+    if (!cooling) stopClock();
+  };
   const inspect = () => {
     const text = safe(status.textContent);
     const held = /TASK PRESERVED/i.test(text);
     status.dataset.held = String(held);
-    if (/RETURN OBSERVED/i.test(text)) {
-      byId(doc, 'marrowlineTerminalHold')?.remove();
-      lastSignature = '';
-      return;
-    }
-    if (!held) return;
+    if (!held) { clear(); return; }
     const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};
+    const window = classifyMarrowlineRetryWindow(failure, Date.now());
     const explanation = boundedFailureMessage(failure);
-    const signature = `${safe(failure?.error || failure?.status || failure?.diagnostic?.code)}|${explanation}`;
+    const signature = `${safe(failure?.error || failure?.status || failure?.diagnostic?.code)}|${explanation}|${window.kind}|${window.retryAt || ''}`;
     let card = byId(doc, 'marrowlineTerminalHold');
     if (!card) {
       card = doc.createElement('section');
@@ -172,21 +205,44 @@ function installTerminalHoldNotice(doc = document, root = window) {
       messages.append(card);
     }
     if (signature !== lastSignature) {
+      stopClock();
       card.replaceChildren();
       const title = doc.createElement('strong');
-      const localReturnHold = /output-quality-held|attractor_structure_not_admitted/i.test(signature);
-      title.textContent = localReturnHold ? 'Marrowline held this return' : 'AI route held';
+      title.textContent = window.kind === 'return-held' ? 'Marrowline return held'
+        : window.kind === 'daily-quota' ? 'Gemini daily quota'
+        : window.kind === 'rate-window' ? 'Gemini session cooling'
+        : window.kind === 'service-busy' ? 'Gemini temporarily unavailable'
+        : 'AI route held';
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
-      badge.textContent = 'HELD';
+      badge.textContent = window.kind === 'rate-window' || window.kind === 'service-busy' ? 'PAUSED' : 'HELD';
       title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;
       const help = doc.createElement('p');
-      help.textContent = 'Retry the preserved task. This notice reports route status, not a Kʰonapolit or Tauric Diana voice.';
+      help.textContent = window.kind === 'daily-quota'
+        ? 'A countdown would imply a reset that Gemini has not supplied. The preserved task remains available.'
+        : 'Your device is not the reported failure. The message remains saved; this notice is not a Kʰonapolit or Tauric Diana voice.';
       card.append(title, body, help);
+      countdown = null;
+      refresh = null;
+      if (window.retryAt !== null) {
+        countdown = doc.createElement('span');
+        countdown.className = 'marrowline-retry-countdown';
+        countdown.setAttribute('aria-live', 'off');
+        refresh = doc.createElement('button');
+        refresh.type = 'button';
+        refresh.className = 'marrowline-retry-refresh';
+        refresh.addEventListener('click', () => {
+          if (classifyMarrowlineRetryWindow(root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {}).remainingSeconds > 0) return;
+          retry?.click();
+        });
+        card.append(countdown, refresh);
+      }
       lastSignature = signature;
     }
+    updateClock();
+    if (window.remainingSeconds > 0 && clock === null) clock = root.setInterval?.(updateClock, 1000) ?? null;
     messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
   };
   const Observer = root.MutationObserver;
