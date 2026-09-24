@@ -574,8 +574,8 @@ try {
   assert.equal(mismatchAttempt.rateLimit.entitlement.expectedDailyLimit, 100);
   assert.equal(mismatchAttempt.rateLimit.entitlement.limitScope, 'per-model');
   assert.equal(mismatchAttempt.rateLimit.entitlement.routeModelCount, 5);
-  assert.equal(mismatchAttempt.rateLimit.entitlement.routeDailyCapacity, 100);
-  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, false);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.routeDailyCapacity, null);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, null);
   assert.equal(mismatchAttempt.cooldown?.state, 'cooling_down');
   assert.equal(mismatchAttempt.cooldown?.retryAfterSeconds, 27, 'provider Retry-After stays authoritative instead of inflating to 120/240/480 seconds');
   assert.equal(entitlement.payload.receipt.provider.model, 'gemini-3.5-flash');
