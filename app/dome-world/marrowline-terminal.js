@@ -28,6 +28,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
+import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -612,10 +613,34 @@ function exportPortable(doc, root, state) {
   return packet;
 }
 
+async function readMarrowlineSourceWindow(root) {
+  let status = null;
+  try {
+    const response = await root.fetch('/giving/history/release-source.json', {
+      cache: 'no-store', headers: { 'cache-control': 'no-cache' },
+      signal: root.AbortSignal?.timeout?.(12000)
+    });
+    status = response.status;
+    if (!response.ok) return { observed: false, http_status: status, source_packet_commit: null };
+    const body = await response.json();
+    const sha = typeof body?.source_packet_commit === 'string' && /^[a-f0-9]{40}$/.test(body.source_packet_commit)
+      ? body.source_packet_commit : null;
+    return { observed: Boolean(sha), http_status: status, source_packet_commit: sha };
+  } catch (error) {
+    return { observed: false, http_status: status, source_packet_commit: null,
+      error_class: String(error?.name || 'SOURCE_WINDOW_UNAVAILABLE') };
+  }
+}
+
 export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
   const state = loadSession(root);
+  // A deliberate, single-use browser-local observation; not restored as if an
+  // old stored reply were its original HTTP response body.
+  let episodeArmed = false;
+  let lastEpisodeWitness = null;
+  root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
   root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure || null;
   const shiInput = byId(doc, 'khonapolitShi');
   if (shiInput && !shiInput.value) shiInput.value = readStoredShi(root);
@@ -658,6 +683,19 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
     if (submit.disabled && !independentRetry) return;
 
+    const witnessThisTurn = episodeArmed;
+    episodeArmed = false;
+    const witnessArm = byId(doc, 'armMarrowlineEpisodeWitness');
+    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Witness next reply'; }
+    const witnessRequestId = witnessThisTurn
+      ? (root.crypto?.randomUUID?.() || 'marrowline-local-' + Date.now()) : null;
+    const witnessStartedAt = witnessThisTurn ? new Date().toISOString() : null;
+    let sourceBefore = null;
+    let witnessResponseBody = null;
+    let witnessRelayText = null;
+    let witnessSavedText = null;
+    let witnessResponseObservedAt = null;
+
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
     state.pendingTask = '';
     state.lastReceipt = null; state.lastFailure = null;
@@ -667,6 +705,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
     startPedagogueStatus(status, root, attachments.length);
+    if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let failurePayload = null;
@@ -680,6 +719,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // retry permission into the server. Explicit retries always reach live Gemini.
       requestBody.quotaBudgetHints = quotaBudgetHints;
       if (attachments.length) requestBody.attachments = attachments;
+      // Client correlator only; server/provider identifiers remain separate.
+      if (witnessRequestId) requestBody.request_id = witnessRequestId;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
@@ -690,6 +731,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const payload = await response.json();
       requestStage = 'response-processing';
       receivedReceipt = payload?.receipt || null;
+      if (witnessThisTurn) {
+        witnessResponseObservedAt = new Date().toISOString();
+        witnessResponseBody = typeof payload?.text === 'string' ? payload.text : null;
+        witnessRelayText = typeof payload?.relay?.transcript === 'string' ? payload.relay.transcript : null;
+      }
       // Preserve typed server failure evidence even if optional ledger UI fails.
       if (!response.ok || !payload?.ok || !payload?.relay) {
         failurePayload = { ...payload, httpStatus: response.status, observedAt: Date.now(),
@@ -707,6 +753,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       const incompleteReturn = receipt?.provider?.completion?.complete === false;
       state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
+      if (witnessThisTurn) witnessSavedText = entry.text;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
@@ -747,6 +794,49 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
         : 'TASK PRESERVED · retry when ready');
     } finally {
+      if (witnessThisTurn) {
+        // Measure the displayed TEXT of this very turn, not the receipt header
+        // or a reconstructed transcript. Pixel geometry needs a separate image.
+        const modelNodes = doc.querySelectorAll('#khonapolitMessages article.relay-message .relay-stage-text');
+        const modelNode = modelNodes.length ? modelNodes[modelNodes.length - 1] : null;
+        const domText = state.lastFailure ? null : modelNode?.textContent ?? null;
+        const computed = modelNode && root.getComputedStyle?.(modelNode);
+        const display = computed ? {
+          font_family: computed.fontFamily || null, font_size: computed.fontSize || null,
+          line_height: computed.lineHeight || null, letter_spacing: computed.letterSpacing || null,
+          viewport_width: Number.isFinite(root.innerWidth) ? root.innerWidth : null,
+          viewport_height: Number.isFinite(root.innerHeight) ? root.innerHeight : null
+        } : null;
+        const sourceAfter = await readMarrowlineSourceWindow(root);
+        try {
+          lastEpisodeWitness = await buildMarrowlineEpisodeWitness({
+            requestId: witnessRequestId, requestStartedAt: witnessStartedAt,
+            responseObservedAt: witnessResponseObservedAt, prompt: message,
+            historyCount: historyForPacket.length, httpStatus: responseStatus,
+            transportError: state.lastFailure?.error || null,
+            responseBodyText: witnessResponseBody, relayText: witnessRelayText,
+            savedHistoryText: state.lastFailure ? null : witnessSavedText,
+            domText, receipt: receivedReceipt || state.lastReceipt,
+            failure: state.lastFailure, sourceBefore, sourceAfter, display
+          }, root.crypto);
+          root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = lastEpisodeWitness;
+          const copyWitness = byId(doc, 'copyMarrowlineEpisodeWitness');
+          if (copyWitness) copyWitness.disabled = false;
+        } catch (error) {
+          // Instrument failure is recorded independently; it must never make
+          // a completed user answer disappear or cause a second provider call.
+          lastEpisodeWitness = {
+            schema: 'td613.marrowline.same-turn-boundary-witness/v0.1',
+            request_id: witnessRequestId, capture_status: 'instrument-failed',
+            error_class: String(error?.name || 'WITNESS_CAPTURE_FAILED'),
+            response_body: 'not retained by instrument',
+            source_window: { before: sourceBefore, after: sourceAfter }
+          };
+          root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = lastEpisodeWitness;
+          const copyWitness = byId(doc, 'copyMarrowlineEpisodeWitness');
+          if (copyWitness) copyWitness.disabled = false;
+        }
+      }
       stopPedagogueStatus(root);
       root.clearTimeout(requestDeadline);
       submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
@@ -775,8 +865,32 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   // Corner ↻ is a separate human retry gesture: it never delegates to a
   // disabled in-card retry control, and cannot bypass an in-flight request.
   doc.addEventListener('td613:marrowline:retry-independent', () => retryLastPrompt({ independentRetry: true }));
+  byId(doc, 'armMarrowlineEpisodeWitness')?.addEventListener('click', () => {
+    episodeArmed = !episodeArmed;
+    const arm = byId(doc, 'armMarrowlineEpisodeWitness');
+    if (arm) {
+      arm.setAttribute('aria-pressed', String(episodeArmed));
+      arm.textContent = episodeArmed ? 'Witness armed · next reply' : 'Witness next reply';
+    }
+  });
+  byId(doc, 'copyMarrowlineEpisodeWitness')?.addEventListener('click', async () => {
+    if (!lastEpisodeWitness) return;
+    try {
+      // Local clipboard export only on operator gesture. Never upload a
+      // person's prompt/return or auto-classify the literary performance.
+      await root.navigator.clipboard.writeText(JSON.stringify(lastEpisodeWitness, null, 2));
+      showEphemeralNotice(doc, root, 'Copied!');
+    } catch {
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+    }
+  });
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
+    episodeArmed = false; lastEpisodeWitness = null; root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
+    const witnessArm = byId(doc, 'armMarrowlineEpisodeWitness');
+    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Witness next reply'; }
+    const witnessCopy = byId(doc, 'copyMarrowlineEpisodeWitness');
+    if (witnessCopy) witnessCopy.disabled = true;
     state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
     const prompt = byId(doc, 'khonapolitPrompt');
     if (prompt) {

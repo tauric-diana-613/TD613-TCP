@@ -120,6 +120,8 @@ jobs:
           node tests/gemini-lifecycle-admission.test.mjs
           node tests/hush-gemini-quality-router.test.mjs
           node tests/khonapolit-gemini-quality-router.test.mjs
+          node --check app/dome-world/marrowline-episode-witness.js
+          node --test tests/marrowline-episode-witness.test.mjs
           node --test tests/marrowline-native-prosody.test.mjs tests/marrowline-response-quality-contract.test.mjs tests/khonapolit-relay.test.mjs tests/marrowline-terminal-continuation.test.mjs tests/marrowline-attachment-quality.test.mjs tests/marrowline-emergency-completion.test.mjs
           node tests/hush-routing-authority.test.mjs
           node tests/hush-speech-act-custody.test.mjs

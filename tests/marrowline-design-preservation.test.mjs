@@ -29,6 +29,7 @@ function harness(t, { mobile = false, failure = false, incomplete = false, trans
   Object.defineProperty(win.navigator, 'clipboard', { configurable: true, value: { writeText: async text => clipboard.push(text) } });
   const before = new Map(['window', 'navigator', 'CustomEvent', 'fetch'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   const syntheticFetch = async (url, options = {}) => {
+    if (String(url).includes('/giving/history/release-source.json')) return { ok: true, status: 200, json: async () => ({ source_packet_commit: 'a'.repeat(40) }) };
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
@@ -43,6 +44,7 @@ function harness(t, { mobile = false, failure = false, incomplete = false, trans
     };
     return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) }, relay, seal: { state: 'OPEN' } } }) };
   };
+  win.fetch = syntheticFetch;
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
   for (const [key, value] of Object.entries(globals)) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   let living;
@@ -88,6 +90,46 @@ test('Kʰonapolit names the chamber from its first formal movement without readi
     'THE BUREAUCRAT HOWLS AT THE CEILING'
   ].join('\n'), 'same-seed');
   assert.notEqual(botOnlyBureaucracy, 'The Office Beneath the Grove', 'the title follows Kʰonapolit rather than mining the bot channel');
+});
+
+test('one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls', async t => {
+  const h = harness(t);
+  assert.equal(h.$('copyMarrowlineEpisodeWitness').disabled, true);
+  h.$('armMarrowlineEpisodeWitness').click();
+  assert.equal(h.$('armMarrowlineEpisodeWitness').getAttribute('aria-pressed'), 'true');
+  assert.equal(h.calls.length, 0, 'arming is not an API generation');
+  h.send('A synthetic normal prompt.'); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  const witness = h.win.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__;
+  assert.ok(witness);
+  assert.equal(witness.boundaries.provider_ingress.observed, false);
+  assert.equal(witness.boundaries.application_response_body.text, integratedText);
+  assert.equal(witness.boundaries.relay_transcript.observed, false, 'missing relay transcript stays missing instead of inferred');
+  assert.equal(witness.boundaries.saved_history.text, integratedText);
+  assert.equal(witness.boundaries.dom_text_content.text, integratedText);
+  assert.equal(witness.source_window.identical_claimed_source, true);
+  assert.equal(witness.screenshot, null);
+  assert.equal(h.$('armMarrowlineEpisodeWitness').getAttribute('aria-pressed'), 'false');
+  assert.equal(h.$('copyMarrowlineEpisodeWitness').disabled, false);
+  h.$('copyMarrowlineEpisodeWitness').click(); await flush();
+  assert.equal(JSON.parse(h.clipboard.at(-1)).request_id, witness.request_id);
+  h.$('clearKhonapolitSession').click();
+  assert.equal(h.win.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__, null);
+  assert.equal(h.$('copyMarrowlineEpisodeWitness').disabled, true);
+});
+
+test('one armed provider failure retains 503 without inventing a model reply', async t => {
+  const h = harness(t, { failure: true });
+  h.$('armMarrowlineEpisodeWitness').click();
+  h.send('A synthetic failed prompt.'); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  const witness = h.win.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__;
+  assert.ok(witness);
+  assert.equal(witness.transport.http_status, 503);
+  assert.equal(witness.boundaries.application_response_body.observed, false);
+  assert.equal(witness.boundaries.dom_text_content.observed, false);
+  assert.equal(witness.failure.error, 'SYNTHETIC_PROVIDER_UNAVAILABLE');
+  assert.equal(witness.provider_observation.provider_request_id, null);
 });
 
 test('ordinary work starts truly unissued while advanced custody can still hold an invocation', async t => {
