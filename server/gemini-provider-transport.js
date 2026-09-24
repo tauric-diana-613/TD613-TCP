@@ -97,7 +97,8 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   const daily = /(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|tokens[_ -]?per[_ -]?day)/i.test(cadenceText);
   const burst = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText)
     || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
-  const limit = Number(limitFromMessage);
+  // An absent limit is UNKNOWN, not the numeric value zero (Number('') === 0).
+  const limit = limitFromMessage !== '' ? Number(limitFromMessage) : null;
 
   return Object.freeze({
     observed: code === 429 || status === 'RESOURCE_EXHAUSTED' || Boolean(violations.length) || /quota|rate limit|resource exhausted/i.test(message),
@@ -106,8 +107,12 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
     quotaId: quotaIds[0] || null,
     model: observedModels[0] || currentModel || null,
     retryAfterSeconds,
-    limit: Number.isFinite(limit) && limit >= 0 ? limit : null,
+    limit: limit !== null && Number.isFinite(limit) && limit >= 0 ? limit : null,
     daily,
+    // Per-day is the named rejected quota metric, NOT evidence of project usage.
+    dailyMetricReported: daily,
+    dailyExhaustionVerified: false,
+    freeTierMetricReported: /free.?tier/i.test(cadenceText),
     burst,
     structured: violations.length > 0,
     violationCount: violations.length,
@@ -117,7 +122,8 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
 
 export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimit = 0, routeModelCount = 1 } = {}) {
   const expected = Number(expectedDailyLimit || 0);
-  const observed = Number(rateLimit?.limit);
+  const observed = rateLimit?.limit === null || rateLimit?.limit === undefined || rateLimit?.limit === ''
+    ? null : Number(rateLimit.limit);
   const quotaId = safeText(rateLimit?.quotaId, 240);
   const metric = safeText(rateLimit?.metric, 240);
   const model = normalizedModel(rateLimit?.model || '');
@@ -131,7 +137,7 @@ export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimi
     /PerModel/i.test(quotaId)
     || rateLimit?.scope === 'model'
   );
-  const providerReportedDailyLimit = Number.isFinite(observed) && observed >= 0 ? observed : null;
+  const providerReportedDailyLimit = observed !== null && Number.isFinite(observed) && observed >= 0 ? observed : null;
   const routeDailyCapacity = providerReportedDailyLimit === null
     ? null
     : perModel
