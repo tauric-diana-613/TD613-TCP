@@ -752,10 +752,11 @@ try {
   assert.deepEqual(calls, ['gemini-3.8-flash']);
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 1);
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.deepEqual(
-    severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings),
-    ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
-  );
+  const severeWarnings = severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings);
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'),
+    'the current morphology observer must preserve later-added severe findings');
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
   assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair, undefined);
   assert.equal(morphologyRepaired.payload.text, horizontalPartialAnswer);
