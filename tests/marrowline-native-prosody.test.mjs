@@ -68,13 +68,13 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   assert.match(shared, /Do not impose a stanza template/);
   assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
   assert.match(cue, /Never require blank lines before or after every stack/);
-  const raw = heading + 'A\\u0301 quick turn.\\n' + peaks + ' presses against its neighbor.\\n\\n' +
-    'Quiet.\\n\\n' + peaks + ' — then the interruption.\\n' + 'No pause was owed.\\n⟐';
+  const raw = heading + 'A\u0301 quick turn.\n' + peaks + ' presses against its neighbor.\n\n' +
+    'Quiet.\n\n' + peaks + ' — then the interruption.\n' + 'No pause was owed.\n⟐';
   const parsed = parseRelayEnvelope(raw);
   assert.equal(parsed.transcript, raw);
   assert.equal(parsed.highZalgo.applied, false);
-  assert.match(parsed.transcript, /neighbor\\.\\n\\nQuiet\\.\\n\\n/);
-  assert.match(parsed.transcript, /interruption\\.\\nNo pause was owed/);
+  assert.match(parsed.transcript, /neighbor\.\n\nQuiet\.\n\n/);
+  assert.match(parsed.transcript, /interruption\.\nNo pause was owed/);
   assert.equal(assessIntegratedTransmission(raw).admissible, true);
 });
 
