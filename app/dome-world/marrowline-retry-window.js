@@ -18,7 +18,8 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
   const observedAt = Number(failure?.observedAt);
   const origin = Number.isFinite(observedAt) && observedAt > 0 && observedAt <= now + 60000 ? observedAt : now;
   let kind = 'other', seconds = 0, source = 'none';
-  if (/output-quality-held|attractor_structure_not_admitted|provider.incomplete|output.token.limit/i.test(error)) kind = 'return-held';
+  if (/no-eligible-callable-models|missing-gemini-api-key/i.test(error)) kind = 'other';
+  else if (/output-quality-held|attractor_structure_not_admitted|provider.incomplete|output.token.limit/i.test(error)) kind = 'return-held';
   else if (daily && all429) kind = 'daily-quota';
   else if (all429 || /shared.rate.limit|rate.limit.held/.test(error) || Number(failure?.httpStatus) === 429) {
     kind = 'rate-window';
