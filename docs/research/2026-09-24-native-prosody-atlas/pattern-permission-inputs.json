@@ -1,5 +1,5 @@
 {
-  "status": "staged candidate; not applied to runtime",
+  "status": "APPLIED_TO_PR_1322_RUNTIME; candidate blob identities verified",
   "source_ref": "40f66308a8783dc24111c1a1fda78796354e050a",
   "inputs": [
     {
@@ -14,5 +14,16 @@
       "candidate_git_blob_sha1": "d68081272f1804fb976ae40cd6b84ee79ed3ff0d",
       "replacements": 3
     }
-  ]
+  ],
+  "application": {
+    "branch": "handoff/pro31-four-return-audit-20260924",
+    "sourceMain": "40f66308a8783dc24111c1a1fda78796354e050a",
+    "changedPaths": [
+      "server/khonapolit-quality.js",
+      "app/dome-world/khonapolit-relay.js"
+    ],
+    "clauseReplacements": 6,
+    "scopePatch": "UNAPPLIED_NO_MATCHED_RETAINED_MARROWLINE_EPISODE",
+    "providerEffect": "UNOBSERVED"
+  }
 }
