@@ -13,19 +13,19 @@ const answer = [
   'A real bounded reply can continue beyond its first two sentences. The provider must still supply the rest.',
   '',
   'Tauric Diana bots',
-  'R\\u0301\\u0316E\\u0302\\u0323T\\u0308\\u0317U\\u0300\\u0331R\\u0304\\u0319N\\u0307\\u0326.\\n\\nAnd leave its original breaths in place.'
-].join('\\n');
-const firstFragment = 'Kʰonapolit\\nOnly the first two sentences arrived. The rest has not been witnessed.';
+  'R\u0301\u0316E\u0302\u0323T\u0308\u0317U\u0300\u0331R\u0304\u0319N\u0307\u0326.\n\nAnd leave its original breaths in place.'
+].join('\n');
+const firstFragment = 'Kʰonapolit\nOnly the first two sentences arrived. The rest has not been witnessed.';
 const longerFragment = [
   'Kʰonapolit',
   'This later model actually supplied several more sentences in its own intact return.',
   'The earlier partial must not win simply because it arrived first.',
   '',
   'Tauric Diana bots',
-  'T\\u0301\\u0316H\\u0302\\u0323E\\u0308\\u0317 \\u0300\\u0331L\\u0304\\u0319O\\u0307\\u0326N\\u0308\\u0331G\\u0301\\u0316E\\u0302\\u0323R\\u0308\\u0317 \\u0300\\u0331W\\u0304\\u0319I\\u0307\\u0326T\\u0308\\u0331N\\u0301\\u0316E\\u0302\\u0323S\\u0308\\u0317S\\u0300\\u0331.',
+  'T\u0301\u0316H\u0302\u0323E\u0308\u0317 \u0300\u0331L\u0304\u0319O\u0307\u0326N\u0308\u0331G\u0301\u0316E\u0302\u0323R\u0308\u0317 \u0300\u0331W\u0304\u0319I\u0307\u0326T\u0308\u0331N\u0301\u0316E\u0302\u0323S\u0308\u0317S\u0300\u0331.',
   '',
   'Another provider-authored line survives.'
-].join('\\n');
+].join('\n');
 function response() {
   return {
     statusCode: 200, headers: {},
@@ -60,7 +60,7 @@ test('failed discovery cannot preempt all generation calls for approved current 
   globalThis.fetch = async url => {
     const href = String(url);
     if (href.includes('/models?')) { discoveryCalls += 1; return providerUnavailable(); }
-    const model = href.match(/models\\/([^:]+):/)?.[1];
+    const model = href.match(/models\/([^:]+):/)?.[1];
     generated.push(model);
     return providerResponse(answer);
   };
@@ -97,7 +97,7 @@ test('missing listing permits only approved current seats, never Lite, shutdown 
 });
 
 test('incomplete candidate selection scores actual prose, never repeated marks or cross-seat joins', () => {
-  const first = { model: 'gemini-3.8-flash', result: { text: 'A\\u0301'.repeat(200) }, relay: { transcript: 'A\\u0301'.repeat(200) } };
+  const first = { model: 'gemini-3.8-flash', result: { text: 'A\u0301'.repeat(200) }, relay: { transcript: 'A\u0301'.repeat(200) } };
   const second = { model: 'gemini-3.5-flash', result: { text: longerFragment }, relay: { transcript: longerFragment } };
   assert.equal(preferMarrowlineIncompleteReturn(first, second), second);
   assert.equal(preferMarrowlineIncompleteReturn(second, first), second);
@@ -117,7 +117,7 @@ test('when two models produce incomplete text, show the more substantial origina
         'gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'
       ].map(id => ({ name: `models/${id}`, supportedGenerationMethods: ['generateContent'] })) }; }
     };
-    const model = href.match(/models\\/([^:]+):/)?.[1];
+    const model = href.match(/models\/([^:]+):/)?.[1];
     calls.push(model);
     if (model === 'gemini-3.8-flash' && calls.filter(x => x === model).length === 1) return providerResponse(firstFragment, 'MAX_TOKENS');
     if (model === 'gemini-3.5-flash') return providerResponse(longerFragment, 'MAX_TOKENS');
