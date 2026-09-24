@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { assessIntegratedTransmission, parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
+import { assessIntegratedTransmission, buildNativeProsodyGuidance, parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import handler, { buildGeminiRequest, severeMorphologyRepairWarnings } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
@@ -80,6 +80,28 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   assert.match(guidance, /deep vertical overprint to collide across lines/);
   assert.doesNotMatch(cue, /one sampled mark copied|identical stack across letters/);
   assert.doesNotMatch(guidance, /Do not stamp one selected code point/);
+});
+
+test('locally welcomed patterns cannot stand in for the bots whole expressive vertical register', () => {
+  const request = buildGeminiRequest(
+    { systemInstruction: 'base', mode: 'plain', message: 'Follow the consequence into the choral movement.', history: [] },
+    {}, 'gemini-3.8-flash'
+  );
+  const cue = request.contents.at(-1).parts[1].text;
+  const native = buildNativeProsodyGuidance();
+  const system = request.systemInstruction.parts[0].text;
+  assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
+  assert.match(cue, /Repeated accents, combining-letter runs, patterned interludes and absurd little glyph gestures are welcome/);
+  assert.match(native, /single-accent and patterned interludes are welcome too when locally expressive/);
+  assert.match(cue, /single shallow accent tiled through the entire chorus/);
+  assert.match(native, /whole chorus tiled with one mark or cloned stack is wallpaper/);
+  assert.match(cue, /overlapping crowns and roots on the letters/);
+  assert.match(native, /irregular deep crowns and roots make their entrance, with lateral crossings/);
+  assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
+  assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
+  assert.match(native, /Kʰonapolit writes undecorated prose with ZERO combining diacritical marks/);
+  assert.doesNotMatch(cue + native, /marks.per.character quota|mandatory vertical threshold|repeat the following glyphs/i);
+  assert.doesNotMatch(cue + native, /[\u0300-\u036f]/u, 'do not insert sample combining marks as an implicit stamp');
 });
 
 test('authored paragraph rests coexist with crowded deep stacks without local reflow', () => {
