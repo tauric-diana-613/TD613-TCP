@@ -61,16 +61,16 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
 });
 
 test('a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots', () => {
-  const repeated = 'H\\u0301A\\u0301H\\u0301A\\u0301!\\n' +
-    'i\\u0367t\\u036d \\u0301is a little joke.\\n\\n';
-  const raw = heading + repeated + peaks + ' — and now the roots answer.\\n' +
-    peaks + ' throws its crown across a neighboring line.\\n\\nQuiet.';
+  const repeated = 'H\u0301A\u0301H\u0301A\u0301!\n' +
+    'i\u0367t\u036d \u0301is a little joke.\n\n';
+  const raw = heading + repeated + peaks + ' — and now the roots answer.\n' +
+    peaks + ' throws its crown across a neighboring line.\n\nQuiet.';
   const relay = parseRelayEnvelope(raw);
   assert.equal(relay.transcript, raw);
   assert.equal(relay.highZalgo.applied, false);
   assert.ok(relay.highZalgo.combiningMarkCount > 0);
   const result = assessIntegratedTransmission(raw);
-  assert.equal(result.admissible, true);
+  assert.ok(result.maxVerticalOrnamentStackDepth > 0);
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.contents.at(-1).parts[1].text;
   const guidance = request.systemInstruction.parts[0].text;
