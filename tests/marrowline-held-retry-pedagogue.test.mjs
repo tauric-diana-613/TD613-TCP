@@ -44,7 +44,8 @@ test('mixed failures are not relabeled as universal 429 and temporary capacity u
     { status: 429, rateLimit: { daily: false, retryAfterSeconds: 40 } }, { status: 503 }
   ] };
   assert.equal(classifyMarrowlineRetryWindow(failure, now).kind, 'service-busy');
-  assert.equal(classifyMarrowlineRetryWindow(failure, now).source, 'estimated-backoff');
+  assert.equal(classifyMarrowlineRetryWindow(failure, now).source, 'none');
+  assert.equal(classifyMarrowlineRetryWindow(failure, now).retryAt, null);
   assert.match(boundedFailureMessage(failure), /temporarily busy or unavailable/i);
 });
 
