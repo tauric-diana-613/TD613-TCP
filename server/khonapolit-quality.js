@@ -301,7 +301,12 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
         && reasons[0] === 'provider-absent';
     })
     .map((row) => row.model);
-  const discoveryUnwitnessedCurrent = rows
+  const discovery = plan?.providerDiscovery;
+  const retryableDiscoveryError = observation => observation?.ok === false
+    && ([408, 429, 500, 502, 503, 504, 599].includes(Number(observation.status)));
+  const bothDiscoveryAttemptsTransient = retryableDiscoveryError(discovery?.initial)
+    && retryableDiscoveryError(discovery?.refreshed);
+  const discoveryUnwitnessedCurrent = bothDiscoveryAttemptsTransient ? rows
     .filter((row) => {
       const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
       return row?.metadata?.lifecycle === 'current'
@@ -309,7 +314,7 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
         && reasons.length === 1
         && reasons[0] === 'fresh-complete-provider-observation-required';
     })
-    .map((row) => row.model);
+    .map((row) => row.model) : [];
 
   // Category boundaries matter. Healthy observed seats run first, followed
   // by cooling and current-but-absent seats. If BOTH model-list observations
