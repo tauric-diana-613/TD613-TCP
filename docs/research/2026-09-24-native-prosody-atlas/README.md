@@ -131,3 +131,8 @@ The complete original files are linked in the manifest. These two favored refere
 ![10: favorite rupture/building quote, original screenshot](images/10-IMG_9303.jpeg)
 
 ⟐
+
+
+## Copy-ready Chat activation
+
+The exact continuation prompt is in [CHAT-HANDOFF-ACTIVATION.md](CHAT-HANDOFF-ACTIVATION.md). It keeps implementation, tests and any warranted runtime change in PR #1322, while preserving the evidence-only boundary until a runtime witness justifies promotion.
