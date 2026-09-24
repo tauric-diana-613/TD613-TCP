@@ -246,6 +246,13 @@ export async function resolveGeminiProviderPlan(options = {}) {
   // evidence, not global ontology: downstream frontier custody may still keep a
   // current configured seat as a bounded last-resort probe.
   const refreshedListing = await listModels(env.GEMINI_API_KEY, { force: true });
+  // A failed refresh cannot retroactively erase a still-fresh complete first
+  // observation. Keep the first listing with both observations in its receipt.
+  if (listing?.ok === true && listing?.complete === true
+    && refreshedListing?.ok !== true
+    && Number.isFinite(listing.expiresAt) && listing.expiresAt > Date.now()) {
+    return withDiscovery(plan, listing, refreshedListing);
+  }
   plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: refreshedListing });
   return withDiscovery(plan, listing, refreshedListing);
 }
