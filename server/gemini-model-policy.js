@@ -216,6 +216,16 @@ export async function resolveGeminiProviderPlan(options = {}) {
   delete planOptions.listModels;
 
   const listing = await listModels(env.GEMINI_API_KEY);
+  const discoveryReceipt = (initial, refreshed = null) => Object.freeze({
+    initial: Object.freeze({ ok: initial?.ok === true && initial?.complete === true,
+      status: Number(initial?.status || 0), error: safe(initial?.error) || null }),
+    refreshed: refreshed ? Object.freeze({ ok: refreshed?.ok === true && refreshed?.complete === true,
+      status: Number(refreshed?.status || 0), error: safe(refreshed?.error) || null }) : null,
+    scope: 'current-credential-model-list-only-not-generation-availability'
+  });
+  const withDiscovery = (resolved, initial, refreshed = null) => task === 'khonapolit-dialogue'
+    ? Object.freeze({ ...resolved, providerDiscovery: discoveryReceipt(initial, refreshed) })
+    : resolved;
   let plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: listing });
   const khonapolitFrontierPartiallyObserved = task === 'khonapolit-dialogue'
     && plan.rows.some((row) => (
@@ -224,7 +234,7 @@ export async function resolveGeminiProviderPlan(options = {}) {
       && Array.isArray(row?.eligibility?.reasons)
       && row.eligibility.reasons.includes('provider-absent')
     ));
-  if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved) return plan;
+  if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved) return withDiscovery(plan, listing);
 
   // A serverless isolate may retain a fresh-but-narrow provider listing while its
   // only visible model is locally cooling, or a credential-scoped observation may
@@ -236,8 +246,15 @@ export async function resolveGeminiProviderPlan(options = {}) {
   // evidence, not global ontology: downstream frontier custody may still keep a
   // current configured seat as a bounded last-resort probe.
   const refreshedListing = await listModels(env.GEMINI_API_KEY, { force: true });
+  // A failed refresh cannot retroactively erase a still-fresh complete first
+  // observation. Keep the first listing with both observations in its receipt.
+  if (listing?.ok === true && listing?.complete === true
+    && refreshedListing?.ok !== true
+    && Number.isFinite(listing.expiresAt) && listing.expiresAt > Date.now()) {
+    return withDiscovery(plan, listing, refreshedListing);
+  }
   plan = resolveGeminiModelPlan({ ...planOptions, env, at: Date.now(), providerListing: refreshedListing });
-  return plan;
+  return withDiscovery(plan, listing, refreshedListing);
 }
 
 export function geminiModelCatalog() {

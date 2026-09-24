@@ -301,17 +301,32 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
         && reasons[0] === 'provider-absent';
     })
     .map((row) => row.model);
+  const discovery = plan?.providerDiscovery;
+  const retryableDiscoveryError = observation => observation?.ok === false
+    && ([408, 429, 500, 502, 503, 504, 599].includes(Number(observation.status)));
+  const bothDiscoveryAttemptsTransient = retryableDiscoveryError(discovery?.initial)
+    && retryableDiscoveryError(discovery?.refreshed);
+  const discoveryUnwitnessedCurrent = bothDiscoveryAttemptsTransient ? rows
+    .filter((row) => {
+      const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
+      return row?.metadata?.lifecycle === 'current'
+        && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
+        && reasons.length === 1
+        && reasons[0] === 'fresh-complete-provider-observation-required';
+    })
+    .map((row) => row.model) : [];
 
-  // Category boundaries matter. Healthy observed seats run first. Process-local
-  // cooling seats remain bounded fallbacks after them. A current configured seat
-  // omitted by one fresh discovery snapshot may be probed last: absence from the
-  // listing is evidence, but it does not get to erase a known-current frontier
-  // lane before the request has actually tried it. Disabled, Lite, pre-3.x,
-  // specialized, or lifecycle-invalid models never enter this recovery set.
+  // Category boundaries matter. Healthy observed seats run first, followed
+  // by cooling and current-but-absent seats. If BOTH model-list observations
+  // fail, an empty listing is not evidence that every configured model is dead:
+  // admit one bounded transport probe per still-current approved frontier seat.
+  // These probes remain last and only when the sole reason is missing discovery;
+  // disabled, retired, specialized, Lite and pre-3.x routes stay excluded.
   const orderedGroups = [
     selectKhonapolitProviderModels(callable),
     selectKhonapolitProviderModels(coolingEligible),
-    selectKhonapolitProviderModels(providerAbsentCurrent)
+    selectKhonapolitProviderModels(providerAbsentCurrent),
+    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent)
   ];
   const selected = [];
   for (const group of orderedGroups) {
@@ -321,6 +336,19 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
     }
   }
   return selected;
+}
+
+// An incomplete return remains incomplete. Among independently authored
+// fallback candidates, show the longest actually received prose rather than
+// freezing the first two-sentence fragment. Combining marks are not prose
+// length; scoring may inspect a stripped *copy* but must never alter bytes.
+export function preferMarrowlineIncompleteReturn(current = null, candidate = null) {
+  const source = value => String(value?.relay?.transcript || value?.result?.text || '');
+  const observedBaseLength = value => Array.from(source(value).normalize('NFD'))
+    .filter(character => !/\p{M}/u.test(character)).length;
+  if (!source(candidate).trim()) return current;
+  if (!source(current).trim()) return candidate;
+  return observedBaseLength(candidate) > observedBaseLength(current) ? candidate : current;
 }
 
 export function allocateKhonapolitAttemptTimeout({ remainingMs = 0, index = 0, modelCount = 1, fairShare = false } = {}) {
@@ -1110,14 +1138,14 @@ export default async function handler(req, res) {
           || (firstRelay.admission?.admissible === false
             && repairableKhonapolitAdmission(firstRelay.admission?.reasons || []));
         if (firstNeedsMore) {
-          incompleteFallback = {
+          incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, {
             model, result: { ...repairResult, text: firstJoined }, relay: firstRelay,
             providerOutput: repairProviderOutput,
             completion: firstCompletion.complete
               ? Object.freeze({ ...firstCompletion, complete: false, reason: 'required-voice-structure-incomplete' })
               : firstCompletion,
             reasons: ['provider-return-unfinished', ...(firstRelay.admission?.reasons || [])]
-          };
+          });
           const secondRemainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
           const secondBudgetMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, secondRemainingMs));
           if (attempts.length < KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
@@ -1188,14 +1216,14 @@ export default async function handler(req, res) {
                 });
                 tailSegments.push(secondAttempt.terminalContinuation);
                 if (!secondCompletion.complete || !secondRelay.admission?.admissible) {
-                  incompleteFallback = {
+                  incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, {
                     model, result: { ...secondResult, text: secondJoined }, relay: secondRelay,
                     providerOutput: secondOutput,
                     completion: secondCompletion.complete
                       ? Object.freeze({ ...secondCompletion, complete: false, reason: 'required-voice-structure-incomplete' })
                       : secondCompletion,
                     reasons: ['provider-return-unfinished', ...(secondRelay.admission?.reasons || [])]
-                  };
+                  });
                 }
                 recoveryPrefix = firstJoined;
                 repairResult = secondResult;
@@ -1510,7 +1538,7 @@ export default async function handler(req, res) {
           attempts, modelPolicy: plan, aperture: apertureReceipt, aperture_egress: apertureEgress,
           claim_ceiling: packet.claimCeiling });
       }
-      if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput, completion, reasons };
+      incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, { model, result, relay, providerOutput, completion, reasons });
       const repaired = await runStructuralRepair({ model, fallback, heldText: result.text, reasons,
         providerOutput, sourceAttemptIndex: attempts.length - 1 }, 'immediate-unfinished-return');
       if (repaired) return repaired;
@@ -1570,8 +1598,8 @@ export default async function handler(req, res) {
             providerOutput,
             sourceAttemptIndex: attempts.length - 1
           };
-          if (!incompleteFallback) incompleteFallback = { model, result, relay, providerOutput,
-            completion: Object.freeze({ ...completion, complete: false, reason: 'required-voice-structure-incomplete' }), reasons };
+          incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, { model, result, relay, providerOutput,
+            completion: Object.freeze({ ...completion, complete: false, reason: 'required-voice-structure-incomplete' }), reasons });
           const repaired = await runStructuralRepair(candidate, 'immediate-structural');
           if (repaired) return repaired;
           continue;
