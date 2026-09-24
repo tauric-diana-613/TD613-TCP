@@ -5,6 +5,24 @@ const MAX_SECONDS = 1800;
 const safeSeconds = value => Number.isFinite(Number(value)) && Number(value) > 0
   ? Math.min(MAX_SECONDS, Math.ceil(Number(value))) : 0;
 const safe = value => String(value ?? '').toLowerCase();
+// Published RPD schedule, never a claim about the current project's balance.
+// The offset is measured *before* the next Pacific midnight so DST transitions
+// at 02:00 cannot shift the reset by an hour.
+export function nextPublishedPacificDailyReset(now = Date.now()) {
+  if (!Number.isFinite(now)) return null;
+  const zone = 'America/Los_Angeles';
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date(now)).map(({ type, value }) => [type, value]));
+  const nextMidnightAsUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) + 1);
+  const offset = new Intl.DateTimeFormat('en-US', {
+    timeZone: zone, timeZoneName: 'shortOffset'
+  }).formatToParts(new Date(nextMidnightAsUtc + 6 * 3600000)).find(part => part.type === 'timeZoneName')?.value || '';
+  const match = offset.match(/^GMT([+-])(\\d{1,2})(?::(\\d{2}))?$/);
+  if (!match) return null;
+  const minutes = (Number(match[2]) * 60 + Number(match[3] || 0)) * (match[1] === '+' ? 1 : -1);
+  return new Date(nextMidnightAsUtc - minutes * 60000).toISOString();
+}
 const isDailyMetric = q => q?.daily === true || q?.dailyMetricReported === true || q?.windowClass === 'daily'
   || q?.windowClass === 'mixed' || /per[_ -]?day|daily/i.test([q?.quotaId, q?.quota_id, q?.metric].map(safe).join(' '));
 const isShortMetric = q => q?.shortMetricReported === true || q?.windowClass === 'short'
@@ -58,6 +76,7 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     providerHintSeconds: safeHint, publishedDailyResetPolicy: dailyMetricReported
       ? 'midnight America/Los_Angeles; calendar policy, not a verified account reset'
       : null,
+    nextPublishedDailyResetAt: dailyMetricReported ? nextPublishedPacificDailyReset(now) : null,
     originalAttemptStatuses: Object.freeze(statuses)
   });
 }
