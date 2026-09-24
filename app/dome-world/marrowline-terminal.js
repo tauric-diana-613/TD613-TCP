@@ -625,7 +625,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); renderGeminiBrowserLedger(doc, root); refreshKeyState(doc); syncConversationTitle(doc, state);
   ensureOriginControls(doc); syncRecoveryControls(doc, state);
   const initialStatus = byId(doc, 'khonapolitTerminalStatus');
-  if (initialStatus && !state.messages.length) setPedagogueStatus(initialStatus, 'prepared', 'READY · ask at the shoreline', 'READY · ordinary work starts in unissued research mode · advanced custody remains optional');
+  if (initialStatus && state.lastFailure && state.pendingTask) setPedagogueStatus(initialStatus, 'held', 'TASK PRESERVED · retry when ready');
+  else if (initialStatus && !state.messages.length) setPedagogueStatus(initialStatus, 'prepared', 'READY · ask at the shoreline', 'READY · ordinary work starts in unissued research mode · advanced custody remains optional');
   hydrateReliquary(doc); probeProvider(doc); installMobileDock(doc, root); installComposerGrowth(doc);
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   waiver?.addEventListener('change', () => refreshKeyState(doc));
@@ -743,7 +744,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         : 'TASK PRESERVED · retry when ready');
     } finally {
       stopPedagogueStatus(root);
-      root.clearTimeout(requestDeadline); submit.disabled = false; prompt?.focus({ preventScroll: true });
+      root.clearTimeout(requestDeadline);
+      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
+      prompt?.focus({ preventScroll: true });
     }
   };
 
