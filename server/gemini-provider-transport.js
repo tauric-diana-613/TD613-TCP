@@ -95,8 +95,10 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
 
   const cadenceText = [...metrics, ...quotaIds].join(' ').toLowerCase();
   const daily = /(?:per[_ -]?day|daily|requests[_ -]?per[_ -]?day|tokens[_ -]?per[_ -]?day)/i.test(cadenceText);
-  const burst = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText)
-    || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
+  const shortMetricReported = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText);
+  const windowClass = daily && shortMetricReported ? 'mixed' : daily ? 'daily' : shortMetricReported ? 'short' : 'unknown';
+  // A 27s RetryInfo on a *daily* quota does not make the daily quota a 27s bucket.
+  const burst = shortMetricReported || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
   // An absent limit is UNKNOWN, not the numeric value zero (Number('') === 0).
   const limit = limitFromMessage !== '' ? Number(limitFromMessage) : null;
 
@@ -113,6 +115,13 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
     dailyMetricReported: daily,
     dailyExhaustionVerified: false,
     freeTierMetricReported: /free.?tier/i.test(cadenceText),
+    shortMetricReported,
+    windowClass,
+    // Preserve every reported quota dimension; never merge per-day and
+    // per-minute violations into an imaginary single reset window.
+    quotaViolations: Object.freeze(violations.map(violation => Object.freeze(violation))),
+    errorStatus: status || null,
+    publishedDailyResetPolicy: daily ? 'midnight America/Los_Angeles; account usage unverified' : null,
     burst,
     structured: violations.length > 0,
     violationCount: violations.length,
