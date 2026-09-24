@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from '../app/dome-world/marrowline-retry-window.js';
 import { boundedFailureMessage } from '../app/dome-world/marrowline-operator-readiness.js';
+import { callGemini } from '../server/khonapolit-quality.js';
+import { observeMarrowlineCompletion } from '../server/marrowline-completion.js';
 
 const now = Date.parse('2026-09-24T01:00:00.000Z');
 const event = { observedAt: now, httpStatus: 429 };
@@ -70,4 +72,38 @@ test('chat preserves raw response fallback and guards immediate retries without 
   assert.match(readiness, /refresh\.disabled = cooling/);
   assert.match(native, /Author actual blank-line paragraph rests/);
   assert.doesNotMatch(readiness, /highZalgoEncode\(/);
+});
+
+test('late stream interruption preserves actual Gemini text, newlines and marks rather than reporting an empty HELD', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalKey = process.env.GEMINI_API_KEY;
+  process.env.GEMINI_API_KEY = 'synthetic-only';
+  const source = 'Kʰonapolit\\nThe consequence is intact.\\n\\nTauric Diana bots\\nẠ̇ scream.\\n\\nB̯̋ returns.';
+  const encoder = new TextEncoder();
+  let reads = 0;
+  try {
+    globalThis.fetch = async () => ({
+      ok: true, status: 200, headers: { get: () => 'text/event-stream' },
+      body: { getReader: () => ({ read: async () => {
+        reads += 1;
+        if (reads === 1) return { value: encoder.encode('data: ' + JSON.stringify({ candidates: [{ content: { parts: [{ text: source }] } }] }) + '\\n\\n'), done: false };
+        throw Object.assign(new Error('synthetic midstream termination'), { name: 'AbortError' });
+      } }) },
+      json: async () => { throw new Error('should not read unary after partial SSE'); }
+    });
+    const result = await callGemini('gemini-3.8-flash',
+      { systemInstruction: 'Synthetic.', history: [], message: 'Preserve exactly.', mode: 'full-invocation' }, {}, 2000);
+    assert.equal(result.response.status, 200);
+    assert.equal(result.streamInterrupted, true);
+    assert.equal(result.streamErrorClass, 'AbortError');
+    assert.equal(result.text, source);
+    assert.equal(result.chunkCount, 1);
+    const completion = observeMarrowlineCompletion(result.text, { finishReason: null }, { streamed: result.streamed, parseErrors: result.parseErrors });
+    assert.equal(completion.complete, false);
+    assert.equal(completion.reason, 'provider-stream-finish-unwitnessed');
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  }
 });
