@@ -301,17 +301,27 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
         && reasons[0] === 'provider-absent';
     })
     .map((row) => row.model);
+  const discoveryUnwitnessedCurrent = rows
+    .filter((row) => {
+      const reasons = Array.isArray(row?.eligibility?.reasons) ? row.eligibility.reasons : [];
+      return row?.metadata?.lifecycle === 'current'
+        && HUMAN_LIVENESS_MODEL_ORDER.includes(row?.model)
+        && reasons.length === 1
+        && reasons[0] === 'fresh-complete-provider-observation-required';
+    })
+    .map((row) => row.model);
 
-  // Category boundaries matter. Healthy observed seats run first. Process-local
-  // cooling seats remain bounded fallbacks after them. A current configured seat
-  // omitted by one fresh discovery snapshot may be probed last: absence from the
-  // listing is evidence, but it does not get to erase a known-current frontier
-  // lane before the request has actually tried it. Disabled, Lite, pre-3.x,
-  // specialized, or lifecycle-invalid models never enter this recovery set.
+  // Category boundaries matter. Healthy observed seats run first, followed
+  // by cooling and current-but-absent seats. If BOTH model-list observations
+  // fail, an empty listing is not evidence that every configured model is dead:
+  // admit one bounded transport probe per still-current approved frontier seat.
+  // These probes remain last and only when the sole reason is missing discovery;
+  // disabled, retired, specialized, Lite and pre-3.x routes stay excluded.
   const orderedGroups = [
     selectKhonapolitProviderModels(callable),
     selectKhonapolitProviderModels(coolingEligible),
-    selectKhonapolitProviderModels(providerAbsentCurrent)
+    selectKhonapolitProviderModels(providerAbsentCurrent),
+    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent)
   ];
   const selected = [];
   for (const group of orderedGroups) {
