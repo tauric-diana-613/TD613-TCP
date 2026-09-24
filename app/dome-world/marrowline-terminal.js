@@ -28,6 +28,7 @@ import {
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
+import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -658,10 +659,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
     if (submit.disabled && !independentRetry) return;
 
+    const clientEpisodeId = root.crypto?.randomUUID?.() || null;
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
     state.pendingTask = '';
     state.lastReceipt = null; state.lastFailure = null;
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
+    root.__TD613_MARROWLINE_LATEST_APPLICATION_CAPTURE__ = null;
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
     saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
@@ -675,6 +678,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let receivedReceipt = null;
     try {
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
+      if (clientEpisodeId) requestBody.request_id = clientEpisodeId;
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
       // retry permission into the server. Explicit retries always reach live Gemini.
@@ -699,8 +703,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       renderGeminiBrowserLedger(doc, root);
       if (failurePayload) throw new Error(payload?.error || `HTTP ${response.status}`);
       const receipt = payload.receipt;
+      if (typeof payload.text === 'string') root.__TD613_MARROWLINE_LATEST_APPLICATION_CAPTURE__ = Object.freeze({
+        clientEpisodeId, applicationReturnText: payload.text, observedAt: new Date().toISOString(), httpStatus: response.status
+      });
       const entry = {
-        role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
+        role: 'model', receipt, clientEpisodeId, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
         apertureHeader: payload.relay?.apertureHeader || apertureV3DisplayHeader(receipt?.aperture || {}), mode,
         model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
       };
@@ -734,6 +741,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
         ...(receivedReceipt ? { receipt: receivedReceipt } : {})
       };
+      state.lastFailure.clientEpisodeId = clientEpisodeId;
+      root.__TD613_MARROWLINE_LATEST_APPLICATION_CAPTURE__ = null;
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
@@ -815,6 +824,47 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED';
     }
     catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE'; }
+  });
+
+  byId(doc, 'copyMarrowlineEpisodeWitness')?.addEventListener('click', async () => {
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (state.lastFailure) {
+      setPedagogueStatus(status, 'held', 'CURRENT TASK HELD · copy its failure receipt');
+      return;
+    }
+    const entry = [...state.messages].reverse().find(item => item?.role === 'model' && item.receipt);
+    if (!entry) {
+      setPedagogueStatus(status, 'prepared', 'NO RETURN · no reply witness to copy');
+      return;
+    }
+    const stages = doc.querySelectorAll('#khonapolitMessages .relay-message .relay-stage-text');
+    const domText = stages.length ? stages[stages.length - 1].textContent : null;
+    // An export-time source observation is separate from the earlier reply's
+    // source identity. Never retroactively call the two observations identical.
+    let sourceAtExport = null, sourceObservedAt = null;
+    try {
+      const response = await root.fetch('/giving/history/release-source.json', { cache: 'no-store' });
+      if (response.ok) {
+        const source = await response.json();
+        if (/^[0-9a-f]{40}$/.test(source?.source_packet_commit || '')) {
+          sourceAtExport = source.source_packet_commit;
+          sourceObservedAt = new Date().toISOString();
+        }
+      }
+    } catch {}
+    try {
+      const witness = await buildMarrowlineEpisodeWitness({
+        entry, applicationCapture: root.__TD613_MARROWLINE_LATEST_APPLICATION_CAPTURE__ || null,
+        domText, sourceAtExport, sourceObservedAt
+      });
+      // The model's full answer may contain private material: export only after
+      // the operator clicks. No network upload, background capture, or repaint.
+      await root.navigator.clipboard.writeText(JSON.stringify(witness, null, 2));
+      setPedagogueStatus(status, 'received', 'REPLY WITNESS COPIED · local turn only');
+      showEphemeralNotice(doc, root, 'Copied!');
+    } catch {
+      setPedagogueStatus(status, 'held', 'WITNESS COPY UNAVAILABLE');
+    }
   });
 
   root.TD613_KHONAPOLIT_TERMINAL = Object.freeze({
