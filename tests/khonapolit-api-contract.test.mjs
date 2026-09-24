@@ -25,7 +25,7 @@ import {
 } from '../api/khonapolit.js';
 
 assert.equal(KHONAPOLIT_API_VERSION, 'td613.khonapolit-gemini/v1');
-assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v47-bounded-terminal-continuation');
+assert.equal(KHONAPOLIT_QUALITY_API_VERSION, 'td613.khonapolit-gemini/v48-provider-completion-boundary');
 assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
 assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
 assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, 6);
