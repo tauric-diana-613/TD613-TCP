@@ -173,6 +173,26 @@ export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimi
   });
 }
 
+// Pace already-approved *next* seats after fast upstream 503 replies. This is
+// not a repeat request, quota clock, global hold, or permission to change order.
+// A brief transient overload must not collapse the five-seat frontier into one
+// near-simultaneous burst. Never borrow a 429 RetryInfo for this delay.
+const GEMINI_503_FAILOVER_STEPS_MS = Object.freeze([1000, 2000, 4000]);
+const GEMINI_503_FAILOVER_TOTAL_MS = 7000;
+export function gemini503FailoverDelayMs({
+  status = 0, service503Count = 0, alreadyWaitedMs = 0,
+  remainingMs = 0, hasNextModel = false
+} = {}) {
+  if (safeStatus(status) !== 503 || hasNextModel !== true) return 0;
+  const count = Math.floor(Number(service503Count));
+  const remaining = Number(remainingMs);
+  if (!Number.isFinite(count) || count < 1 || !Number.isFinite(remaining) || remaining <= 1000) return 0;
+  const prior = Math.max(0, Math.floor(Number(alreadyWaitedMs) || 0));
+  const proposed = GEMINI_503_FAILOVER_STEPS_MS[Math.min(count, GEMINI_503_FAILOVER_STEPS_MS.length) - 1];
+  const delay = Math.min(proposed, Math.max(0, GEMINI_503_FAILOVER_TOTAL_MS - prior), Math.max(0, Math.floor(remaining) - 1000));
+  return delay >= 250 ? delay : 0;
+}
+
 export function classifyGeminiTransport({ status = 0, timedOut = false } = {}) {
   const httpStatus = safeStatus(status);
   if (timedOut || httpStatus === 408) return Object.freeze({ class: 'timeout', mayFailOver: true, healthBearing: true });
