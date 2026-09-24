@@ -428,7 +428,7 @@ globalThis.fetch = async (url, options = {}) => {
       ok: false,
       status: 503,
       headers: { get: () => null },
-      async text() { return 'synthetic provider unavailable'; }
+      async json() { return { error: { status: 'UNAVAILABLE', message: 'synthetic provider unavailable' } }; }
     };
   }
 
@@ -574,8 +574,8 @@ try {
   assert.equal(mismatchAttempt.rateLimit.entitlement.expectedDailyLimit, 100);
   assert.equal(mismatchAttempt.rateLimit.entitlement.limitScope, 'per-model');
   assert.equal(mismatchAttempt.rateLimit.entitlement.routeModelCount, 5);
-  assert.equal(mismatchAttempt.rateLimit.entitlement.routeDailyCapacity, 100);
-  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, false);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.routeDailyCapacity, null);
+  assert.equal(mismatchAttempt.rateLimit.entitlement.mismatch, null);
   assert.equal(mismatchAttempt.cooldown?.state, 'cooling_down');
   assert.equal(mismatchAttempt.cooldown?.retryAfterSeconds, 27, 'provider Retry-After stays authoritative instead of inflating to 120/240/480 seconds');
   assert.equal(entitlement.payload.receipt.provider.model, 'gemini-3.5-flash');
@@ -752,10 +752,11 @@ try {
   assert.deepEqual(calls, ['gemini-3.8-flash']);
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 1);
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
-  assert.deepEqual(
-    severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings),
-    ['tauric-diana-zalgo-axis-collapse', 'tauric-diana-zalgo-stack-depth-thin']
-  );
+  const severeWarnings = severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings);
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-axis-collapse'));
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
+  assert.ok(severeWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'),
+    'the current morphology observer must preserve later-added severe findings');
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
   assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair, undefined);
   assert.equal(morphologyRepaired.payload.text, horizontalPartialAnswer);

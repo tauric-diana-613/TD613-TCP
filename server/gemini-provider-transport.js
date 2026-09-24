@@ -67,7 +67,8 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
 
   const metricFromMessage = (message.match(/Quota exceeded for metric:\s*([^,\n*]+)/i) || [])[1] || '';
   const limitFromMessage = (message.match(/limit:\s*([0-9.]+)/i) || [])[1] || '';
-  const modelFromMessage = (message.match(/model:\s*([a-z0-9_.-]+)/i) || [])[1] || '';
+  // Sentence punctuation after a model ID is prose, not a second quota dimension.
+  const modelFromMessage = (message.match(/model:\s*([a-z0-9_]+(?:[.-][a-z0-9_]+)*)/i) || [])[1] || '';
   const retryFromMessage = Number((message.match(/retry\s+in\s+([\d.]+)s/i) || [])[1] || 0);
   const retryAfterSeconds = Math.max(
     headerRetryAfterSeconds(response),
@@ -149,14 +150,14 @@ export function assessGeminiQuotaEntitlement(rateLimit = {}, { expectedDailyLimi
     || rateLimit?.scope === 'model'
   );
   const providerReportedDailyLimit = observed !== null && Number.isFinite(observed) && observed >= 0 ? observed : null;
-  const routeDailyCapacity = providerReportedDailyLimit === null
-    ? null
-    : perModel
-      ? providerReportedDailyLimit * models
-      : providerReportedDailyLimit;
-  const mismatch = Number.isFinite(expected) && expected > 0
-    && Number.isFinite(routeDailyCapacity)
-    && routeDailyCapacity < expected;
+  // A limit reported for one named model cannot be multiplied across unobserved
+  // seats. Even a complete model listing proves only discovery, not the other
+  // models' quotas, usage or live generation availability. Keep aggregate capacity
+  // unknown unless the provider explicitly reports a shared route/project limit.
+  const routeDailyCapacity = freeTierDaily && !perModel ? providerReportedDailyLimit : null;
+  const mismatch = routeDailyCapacity !== null && Number.isFinite(expected) && expected > 0
+    ? routeDailyCapacity < expected
+    : null;
 
   return Object.freeze({
     expectedDailyLimit: Number.isFinite(expected) && expected > 0 ? expected : null,

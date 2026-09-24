@@ -65,7 +65,7 @@ test('ambiguous 429 remains unknown rather than becoming provider exhaustion', (
 });
 
 
-test('FreeTier daily 20 per model composes to the five-seat Marrowline route budget 100', () => {
+test('FreeTier daily 20 for one model cannot establish five-seat route capacity', () => {
   const payload = {
     error: {
       code: 429,
@@ -90,14 +90,14 @@ test('FreeTier daily 20 per model composes to the five-seat Marrowline route bud
   assert.equal(observed.limit, 20);
   assert.equal(entitlement.limitScope, 'per-model');
   assert.equal(entitlement.routeModelCount, 5);
-  assert.equal(entitlement.routeDailyCapacity, 100);
-  assert.equal(entitlement.mismatch, false);
+  assert.equal(entitlement.routeDailyCapacity, null);
+  assert.equal(entitlement.mismatch, null);
   assert.equal(entitlement.expectedDailyLimit, 100);
   assert.equal(entitlement.providerReportedDailyLimit, 20);
   assert.equal(entitlement.reason, null);
 });
 
-test('the same per-model 20 receipt is a route-budget mismatch if only four seats exist', () => {
+test('per-model 20 receipt cannot establish four-seat aggregate capacity or entitlement mismatch', () => {
   const entitlement = assessGeminiQuotaEntitlement({
     scope: 'model',
     daily: true,
@@ -107,9 +107,9 @@ test('the same per-model 20 receipt is a route-budget mismatch if only four seat
     model: 'gemini-3.8-flash'
   }, { expectedDailyLimit: 100, routeModelCount: 4 });
   assert.equal(entitlement.limitScope, 'per-model');
-  assert.equal(entitlement.routeDailyCapacity, 80);
-  assert.equal(entitlement.mismatch, true);
-  assert.equal(entitlement.reason, 'provider-route-daily-capacity-below-operator-entitlement');
+  assert.equal(entitlement.routeDailyCapacity, null);
+  assert.equal(entitlement.mismatch, null);
+  assert.equal(entitlement.reason, null);
 });
 
 test('a provider project-wide daily 100 receipt remains a route-wide 100 budget', () => {
