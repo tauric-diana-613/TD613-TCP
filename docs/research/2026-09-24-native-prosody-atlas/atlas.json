@@ -257,6 +257,52 @@
           ]
         }
       ]
+    },
+    {
+      "id": "screenshot-11",
+      "original_attachment_name": "IMG_0946.png",
+      "attachment_id": "file_0000000000e482468dcb26362bb68065",
+      "file": "images/11-IMG_0946.png",
+      "sha256": "c206ba96c40f88419e63e5321603224e8271ab2ebcd93ef16e41746d9f9c1a49",
+      "byte_count": 583601,
+      "operator_role": "welcomed_motif_reference",
+      "source_application_operator_report": "Gemini 3.1 Pro",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.18,
+        0.94,
+        0.735
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "Combining-letter-like rows, slanted/lateral marks and widely spaced clean lines alternate within one performance.",
+      "semantic_interpretation": null,
+      "operator_scope": "Welcomes goofy patterned interludes; not blanket acceptance of all factual claims or recurring full-answer format."
+    },
+    {
+      "id": "screenshot-12",
+      "original_attachment_name": "IMG_0947.png",
+      "attachment_id": "file_00000000db1081fa80224487ae8c9042",
+      "file": "images/12-IMG_0947.png",
+      "sha256": "9f943d31db69c35acd99071ace652d4e7f462c0e73b1b6e72b8e8a1a1c48932f",
+      "byte_count": 576522,
+      "operator_role": "welcomed_motif_reference",
+      "source_application_operator_report": "Gemini 3.1 Pro",
+      "generation_id": null,
+      "model_id_verified": null,
+      "exact_unicode_source": null,
+      "roi_normalized_xyxy": [
+        0.045,
+        0.18,
+        0.94,
+        0.735
+      ],
+      "annotation_basis": "assistant visual inspection; manually selected coarse region",
+      "visual_observation": "A repeated arch-like pattern frames an utterance; compact combining-letter-like rows and spaced clean speech remain available.",
+      "semantic_interpretation": null,
+      "operator_scope": "Welcomes goofy patterned interludes; not blanket acceptance of all factual claims or recurring full-answer format."
     }
   ]
 }
