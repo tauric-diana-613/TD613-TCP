@@ -44,12 +44,15 @@ test('paid project reporting FreeTier per-day metric is quota-reconciliation, no
   const failure = { error: 'gemini-rate-limit-held', httpStatus: 429, observedAt: now,
     attempts: [{ model: 'gemini-3.8-flash', status: 429, rateLimit: rate }] };
   const window = classifyMarrowlineRetryWindow(failure, now);
-  assert.equal(window.kind, 'quota-review');
-  assert.equal(window.remainingSeconds, 27);
+  assert.equal(window.kind, 'daily-report');
+  assert.equal(window.remainingSeconds, 0);
+  assert.equal(window.retryAt, null);
+  assert.equal(window.providerHintSeconds, 27);
+  assert.match(window.publishedDailyResetPolicy, /midnight America\/Los_Angeles/);
   assert.equal(window.providerDailyExhaustionVerified, false);
   assert.equal(window.freeTierMetricReported, true);
-  assert.match(marrowlineRetryMessage(failure, now), /does NOT verify.*daily allowance/i);
-  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /wait until midnight|daily quota exhausted/i);
+  assert.equal(marrowlineRetryMessage(failure, now), 'A daily request limit was reported. Your message is saved; see the receipt for details.');
+  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /Gemini|Google|Free Tier|midnight|27s/i);
 });
 
 test('browser ledger does not turn a 429 daily metric or a stale FreeTier limit into actual exhausted project quota', () => {
