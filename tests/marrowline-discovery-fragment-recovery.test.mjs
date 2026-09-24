@@ -4,7 +4,7 @@ import handler, {
   preferMarrowlineIncompleteReturn,
   selectKhonapolitProviderModelsFromPlan
 } from '../server/khonapolit-quality.js';
-import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { clearGeminiModelState, resolveGeminiProviderPlan } from '../server/gemini-model-policy.js';
 
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.GEMINI_API_KEY;
@@ -86,7 +86,8 @@ test('failed discovery cannot preempt all generation calls for approved current 
 test('missing listing permits only approved current seats, never Lite, shutdown or disabled', () => {
   const missing = Object.freeze({ eligible: false, reasons: Object.freeze(['fresh-complete-provider-observation-required']) });
   const invalid = Object.freeze({ eligible: false, reasons: Object.freeze(['documented-shutdown']) });
-  const plan = { callableModels: [], rows: [
+  const transient = { ok: false, status: 503, error: 'model-list-http-failure' };
+  const plan = { providerDiscovery: { initial: transient, refreshed: transient }, callableModels: [], rows: [
     { model: 'gemini-3.8-flash', eligibility: missing, metadata: { lifecycle: 'current' } },
     { model: 'gemini-3.5-flash', eligibility: missing, metadata: { lifecycle: 'current' } },
     { model: 'gemini-3.1-flash-lite', eligibility: missing, metadata: { lifecycle: 'current' } },
@@ -94,6 +95,42 @@ test('missing listing permits only approved current seats, never Lite, shutdown 
     { model: 'gemini-3.6-flash', eligibility: { eligible: false, reasons: ['fresh-complete-provider-observation-required','specialized-route-required'] }, metadata: { lifecycle: 'current' } }
   ] };
   assert.deepEqual(selectKhonapolitProviderModelsFromPlan(plan), ['gemini-3.8-flash','gemini-3.5-flash']);
+});
+
+test('a failed listing caused by 401 cannot authorize blind generation probes', () => {
+  const failure = { ok: false, status: 401, error: 'model-list-http-failure' };
+  const transient = { ok: false, status: 503, error: 'model-list-http-failure' };
+  const row = { model: 'gemini-3.8-flash',
+    eligibility: { eligible: false, reasons: ['fresh-complete-provider-observation-required'] },
+    metadata: { lifecycle: 'current' } };
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan({
+    callableModels: [], providerDiscovery: { initial: failure, refreshed: transient }, rows: [row]
+  }), []);
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan({
+    callableModels: [], providerDiscovery: { initial: transient, refreshed: failure }, rows: [row]
+  }), []);
+});
+
+test('a failed forced refresh cannot erase the still-fresh complete first model listing', async () => {
+  clearGeminiModelState();
+  const now = Date.now();
+  let calls = 0;
+  const plan = await resolveGeminiProviderPlan({
+    task: 'khonapolit-dialogue', env: { GEMINI_API_KEY: 'synthetic-key' },
+    listModels: async (_key, options = {}) => {
+      calls += 1;
+      if (options.force) return { ok: false, status: 503, error: 'model-list-http-failure' };
+      return { ok: true, complete: true, models: ['gemini-3.8-flash'], observedAt: now,
+        expiresAt: now + 600000, status: 200, cached: false };
+    }
+  });
+  assert.equal(calls, 2);
+  assert.deepEqual(plan.callableModels, ['gemini-3.8-flash']);
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan(plan), [
+    'gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'
+  ]);
+  assert.equal(plan.providerDiscovery.initial.ok, true);
+  assert.equal(plan.providerDiscovery.refreshed.status, 503);
 });
 
 test('incomplete candidate selection scores actual prose, never repeated marks or cross-seat joins', () => {
