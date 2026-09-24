@@ -370,7 +370,11 @@ function installConversationUtilityRail(doc, root) {
   clear.setAttribute('aria-expanded', 'false');
   clear.setAttribute('aria-controls', confirm.id);
 
-  retry.addEventListener('click', () => retryLegacy.click());
+  retry.addEventListener('click', () => {
+    // Corner ↻ is an independent operator gesture, not the cooldown-gated
+    // in-card action. Only the terminal's in-flight guard can decline it.
+    doc.dispatchEvent(new CustomEvent('td613:marrowline:retry-independent'));
+  });
   copy.addEventListener('click', () => copyLegacy.click());
   clear.addEventListener('click', () => confirm.hidden ? openConfirm() : closeConfirm({ focus: true }));
   yes.addEventListener('click', () => {
