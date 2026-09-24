@@ -318,8 +318,8 @@ test('client exceptions preserve the observed boundary instead of inventing a lo
   assert.equal(render.error, 'client-response-processing-failed');
   assert.equal(render.httpStatus, 200);
   assert.doesNotMatch(JSON.stringify(render), /synthetic private text/);
-  assert.match(boundedFailureMessage(render), /A reply arrived.*browser/);
-  assert.match(boundedFailureMessage(body), /server replied.*response body/);
+  assert.equal(boundedFailureMessage(render), 'The reply could not be shown. Your message is saved.');
+  assert.equal(boundedFailureMessage(body), 'The connection was interrupted. Your message is saved.');
   const abort = { name: 'AbortError' };
   assert.equal(classifyMarrowlineClientFailure(abort, 'response-body').error, 'request-timeout');
   assert.equal(classifyMarrowlineClientFailure(abort, 'response-processing').error, 'client-response-processing-failed');
