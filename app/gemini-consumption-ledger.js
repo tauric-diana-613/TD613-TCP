@@ -128,7 +128,8 @@ export function currentGeminiDailyBudgetHints(root = globalThis, at = new Date()
     : 2;
   const observedTodayByModel = {};
   const knownDailyLimitByModel = {};
-  const dailyQuotaObservedModels = new Set();
+  // A 429 naming a daily metric cannot establish Google's actual account usage.
+  const reportedDailyMetric429Models = new Set();
 
   for (const event of arr(ledger.events)) {
     const model = safe(event?.model).replace(/^models\//, '');
@@ -139,7 +140,7 @@ export function currentGeminiDailyBudgetHints(root = globalThis, at = new Date()
 
     if (pacificDayKey(event?.observed_at) !== day) continue;
     observedTodayByModel[model] = (observedTodayByModel[model] || 0) + 1;
-    if (Number(event?.status) === 429 && limit !== null) dailyQuotaObservedModels.add(model);
+    if (Number(event?.status) === 429 && limit !== null) reportedDailyMetric429Models.add(model);
   }
 
   const optionalRepairAllowedByModel = {};
@@ -147,7 +148,8 @@ export function currentGeminiDailyBudgetHints(root = globalThis, at = new Date()
   for (const [model, limit] of Object.entries(knownDailyLimitByModel)) {
     const observed = Number(observedTodayByModel[model] || 0);
     optionalRepairAllowedByModel[model] = observed < Math.max(1, limit - reserve);
-    if (observed >= limit) hardBudgetObservedModels.push(model);
+    // This browser observes only some calls and can include failed attempts.
+    // Neither its local count nor a stale FreeTier limit can prove quota exhaustion.
   }
 
   return {
@@ -158,7 +160,8 @@ export function currentGeminiDailyBudgetHints(root = globalThis, at = new Date()
     reserve_per_model: reserve,
     observed_today_by_model: observedTodayByModel,
     known_daily_limit_by_model: knownDailyLimitByModel,
-    daily_quota_observed_models: [...dailyQuotaObservedModels],
+    daily_quota_observed_models: [], // legacy field: no provider accounting was observed
+    reported_daily_metric_429_models: [...reportedDailyMetric429Models],
     hard_budget_observed_models: hardBudgetObservedModels,
     optional_repair_allowed_by_model: optionalRepairAllowedByModel,
     provider_daily_total: null,

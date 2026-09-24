@@ -209,19 +209,19 @@ function installTerminalHoldNotice(doc = document, root = window) {
       card.replaceChildren();
       const title = doc.createElement('strong');
       title.textContent = window.kind === 'return-held' ? 'Marrowline return held'
-        : window.kind === 'daily-quota' ? 'Gemini daily quota'
+        : window.kind === 'quota-review' ? 'Gemini quota report · verify project'
         : window.kind === 'rate-window' ? 'Gemini session cooling'
         : window.kind === 'service-busy' ? 'Gemini temporarily unavailable'
         : 'AI route held';
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
-      badge.textContent = window.kind === 'rate-window' || window.kind === 'service-busy' ? 'PAUSED' : 'HELD';
+      badge.textContent = window.kind === 'rate-window' || window.kind === 'service-busy' || window.kind === 'quota-review' ? 'PAUSED' : 'HELD';
       title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;
       const help = doc.createElement('p');
-      help.textContent = window.kind === 'daily-quota'
-        ? 'A countdown would imply a reset that Gemini has not supplied. The preserved task remains available.'
+      help.textContent = window.kind === 'quota-review'
+        ? 'A reported quota metric is not a verified account balance. The short timer controls retry pacing, not an all-day lock.'
         : 'Your device is not the reported failure. The message remains saved; this notice is not a Kʰonapolit or Tauric Diana voice.';
       card.append(title, body, help);
       countdown = null;
