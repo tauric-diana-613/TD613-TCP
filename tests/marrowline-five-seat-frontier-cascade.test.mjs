@@ -428,7 +428,7 @@ globalThis.fetch = async (url, options = {}) => {
       ok: false,
       status: 503,
       headers: { get: () => null },
-      async text() { return 'synthetic provider unavailable'; }
+      async json() { return { error: { status: 'UNAVAILABLE', message: 'synthetic provider unavailable' } }; }
     };
   }
 
