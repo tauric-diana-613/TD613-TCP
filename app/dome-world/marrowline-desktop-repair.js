@@ -373,7 +373,7 @@ function installConversationUtilityRail(doc, root) {
   retry.addEventListener('click', () => {
     // Corner ↻ is an independent operator gesture, not the cooldown-gated
     // in-card action. Only the terminal's in-flight guard can decline it.
-    doc.dispatchEvent(new CustomEvent('td613:marrowline:retry-independent'));
+    doc.dispatchEvent(new (root.CustomEvent || doc.defaultView.CustomEvent)('td613:marrowline:retry-independent'));
   });
   copy.addEventListener('click', () => copyLegacy.click());
   clear.addEventListener('click', () => confirm.hidden ? openConfirm() : closeConfirm({ focus: true }));
