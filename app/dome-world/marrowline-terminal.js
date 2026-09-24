@@ -27,6 +27,7 @@ import {
   APERTURE_V3_VERSION,
   apertureV3DisplayHeader
 } from '../engine/aperture-v3-task-intent.js';
+import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -305,7 +306,7 @@ function renderModelMessage(doc, entry) {
     renderRelayStage(doc, {
       id: 'khonapolit',
       label: 'Kʰonapolit ∴ Tauric Diana bots',
-      part: integrated,
+      part: integrated?.present ? integrated : (String(entry.text || '').trim() ? { present: true, text: entry.text } : integrated),
       absentText: 'Integrated covenant transmission held. The required two-voice structure was not admitted.',
       meta: 'integrated transmission'
     })
@@ -614,6 +615,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
   const state = loadSession(root);
+  root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure || null;
   const shiInput = byId(doc, 'khonapolitShi');
   if (shiInput && !shiInput.value) shiInput.value = readStoredShi(root);
   const waiver = byId(doc, 'khonapolitWaive');
@@ -643,6 +645,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (!message) { setPedagogueStatus(status, 'held', 'SPEECH REQUIRED · the vessel is empty'); prompt?.focus(); return; }
     if (packet.inputError) { setPedagogueStatus(status, 'held', packet.inputError.message); prompt?.focus({ preventScroll: true }); return; }
     if (!packet.canInvoke) { setPedagogueStatus(status, 'held', 'ADVANCED CUSTODY HOLD · open Keys to continue', 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'); refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
+    const retryWindow = classifyMarrowlineRetryWindow(state.lastFailure || {});
+    if (retryWindow.remainingSeconds > 0) {
+      setPedagogueStatus(status, 'held', `TASK PRESERVED · Gemini retry window · ${retryWindow.remainingSeconds}s remaining`,
+        'The retry pause belongs to a prior provider error; this is not a new Gemini request.');
+      return;
+    }
     if (submit.disabled) return;
 
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
@@ -679,7 +687,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       receivedReceipt = payload?.receipt || null;
       // Preserve typed server failure evidence even if optional ledger UI fails.
       if (!response.ok || !payload?.ok || !payload?.relay) {
-        failurePayload = { ...payload, httpStatus: response.status };
+        failurePayload = { ...payload, httpStatus: response.status, observedAt: Date.now(),
+          retryAfterSeconds: Number(payload?.retryAfterSeconds || response.headers?.get?.('retry-after') || 0) || 0 };
       }
       ingestGeminiConsumption(payload, root);
       renderGeminiBrowserLedger(doc, root);
@@ -756,7 +765,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
-    state.messages = []; state.lastReceipt = null; state.lastFailure = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root); try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
     const prompt = byId(doc, 'khonapolitPrompt');
     if (prompt) {
       prompt.value = '';
