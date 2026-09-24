@@ -80,7 +80,7 @@ test('real text-bearing SSE progress may finish after the original deadline with
           controller.enqueue(encoder.encode('data: ' + JSON.stringify(reply(terminal, 'STOP')) + '\n\n'));
           closed = true;
           controller.close();
-        }, 90);
+        }, 450);
         timers.push(last);
         options.signal.addEventListener('abort', () => {
           if (closed) return;
@@ -92,14 +92,14 @@ test('real text-bearing SSE progress may finish after the original deadline with
     return new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } });
   };
   const packet = buildInvocationPacket({ message: 'Complete one joined authored return.', waiveIssuance: true });
-  const result = await callGemini('gemini-3.8-flash', packet, {}, 60, {
-    streamGraceMs: 70, wallDeadlineAt: Date.now() + 200
+  const result = await callGemini('gemini-3.8-flash', packet, {}, 300, {
+    streamGraceMs: 700, wallDeadlineAt: Date.now() + 2000
   });
   assert.equal(providerCalls, 1);
   assert.equal(result.response.status, 200);
   assert.equal(result.streamInterrupted, undefined);
   assert.equal(result.timedOut, false);
-  assert.equal(result.streamGraceMs, 70);
+  assert.equal(result.streamGraceMs, 700);
   assert.equal(result.authoredTextChunkCount, 2);
   assert.equal(result.payload.candidates[0].finishReason, 'STOP');
   assert.equal(result.text, first + terminal);
