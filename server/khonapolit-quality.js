@@ -42,6 +42,7 @@ import {
 import {
   assessGeminiQuotaEntitlement,
   classifyGeminiTransport,
+  gemini503FailoverDelayMs,
   geminiStreamGenerateContentUrl,
   geminiRequestHeaders,
   observeGeminiQuota
@@ -1016,6 +1017,8 @@ export default async function handler(req, res) {
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
   let sharedRateRetrySpent = false;
+  let service503Count = 0;
+  let service503WaitedMs = 0;
   let incompleteFallback = null;
   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
     // Natural text and legacy JSON envelopes must use the same visible response.
@@ -1484,6 +1487,26 @@ export default async function handler(req, res) {
       cooldown: outcome
     };
     attempts.push(attempt);
+
+    if (attempt.status === 503) {
+      service503Count += 1;
+      // Deliberately pace the *next* existing seat, never re-call this seat.
+      // This only follows an observed 503, never a 429 quota receipt. Keep one
+      // finite seven-second budget for the entire human turn and preserve the
+      // remaining response wall for the next provider attempt.
+      const paceMs = gemini503FailoverDelayMs({
+        status: attempt.status,
+        service503Count,
+        alreadyWaitedMs: service503WaitedMs,
+        remainingMs: WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS,
+        hasNextModel: !releaseCanary && index < models.length - 1
+      });
+      if (paceMs > 0) {
+        attempt.serviceFailoverPace = Object.freeze({ waitMs: paceMs, reason: 'upstream-503-next-approved-seat' });
+        service503WaitedMs += paceMs;
+        await new Promise((resolve) => setTimeout(resolve, paceMs));
+      }
+    }
 
     if (!result.response.ok && rateLimit?.observed && rateLimit.scope === 'shared') {
       const waitSeconds = Math.min(MAX_SHARED_RATE_RETRY_SECONDS, Number(rateLimit.retryAfterSeconds || 0));
