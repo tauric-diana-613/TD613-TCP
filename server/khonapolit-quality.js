@@ -732,6 +732,19 @@ export function buildTerminalReceipt({ packet, text, relay = null, model, provid
     apiVersion: KHONAPOLIT_QUALITY_API_VERSION,
     status: observedText ? 'MODEL_RESPONSE_OBSERVED' : 'PROVIDER_RESPONSE_EMPTY',
     route: '/api/dome-world/khonapolit',
+    responseBoundary: Object.freeze({
+      schema: 'td613.marrowline.response-boundary/v0.1',
+      clientEpisodeId: packet.clientEpisodeId || null,
+      // text is the assembled candidate or provider-authored repair/continuation
+      // input to the relay, NOT an authenticated raw provider HTTP response.
+      providerCandidateTextSha256: typeof text === 'string' ? sha256(text) : null,
+      providerCandidateBasis: completionPath === 'first-provider-return'
+        ? 'assembled-provider-candidate-text'
+        : 'provider-authored-repair-or-continuation-assembly',
+      applicationReturnTextSha256: observedText ? sha256(observedText) : null,
+      rawProviderHttpBodySha256: null,
+      claimCeiling: 'source-text digests only; not raw provider bytes or proof of origin'
+    }),
     provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, output: providerOutput, attempts: Object.freeze(attempts), authorshipObservation: observeMarrowlineAuthorship(observedText, completionPath) }),
     invocation: Object.freeze({
       mode: packet.mode,
@@ -943,7 +956,12 @@ export default async function handler(req, res) {
   // retain their own authority, but Marrowline must not invent a second retry veto
   // in front of an explicit human turn.
   const body = parseBody(req);
-  const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
+  const clientEpisodeId = typeof body.request_id === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(body.request_id)
+    ? body.request_id : null;
+  const packet = Object.freeze({
+    ...buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true }),
+    clientEpisodeId
+  });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
   if (packet.inputError) return send(res, 400, { ok: false, error: packet.inputError.code, validation: packet.inputError });
   if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
