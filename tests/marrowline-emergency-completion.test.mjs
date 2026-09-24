@@ -65,8 +65,8 @@ test('real text-bearing SSE progress may finish after the original deadline with
   });
   process.env.GEMINI_API_KEY = 'synthetic-progress-only-key';
   let providerCalls = 0;
-  const first = 'Kʰonapolit\\nThe evidence is arriving in authored chunks.';
-  const terminal = '\\n\\n' + CHORUS;
+  const first = 'Kʰonapolit\nThe evidence is arriving in authored chunks.';
+  const terminal = '\n\n' + CHORUS;
   const encoder = new TextEncoder();
   globalThis.fetch = async (_url, options) => {
     providerCalls += 1;
@@ -74,10 +74,10 @@ test('real text-bearing SSE progress may finish after the original deadline with
     const stream = new ReadableStream({
       start(controller) {
         const firstEvent = reply(first, null);
-        controller.enqueue(encoder.encode('data: ' + JSON.stringify(firstEvent) + '\\n\\n'));
+        controller.enqueue(encoder.encode('data: ' + JSON.stringify(firstEvent) + '\n\n'));
         const last = setTimeout(() => {
           if (closed) return;
-          controller.enqueue(encoder.encode('data: ' + JSON.stringify(reply(terminal, 'STOP')) + '\\n\\n'));
+          controller.enqueue(encoder.encode('data: ' + JSON.stringify(reply(terminal, 'STOP')) + '\n\n'));
           closed = true;
           controller.close();
         }, 90);
