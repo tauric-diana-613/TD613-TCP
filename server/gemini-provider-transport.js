@@ -67,7 +67,8 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
 
   const metricFromMessage = (message.match(/Quota exceeded for metric:\s*([^,\n*]+)/i) || [])[1] || '';
   const limitFromMessage = (message.match(/limit:\s*([0-9.]+)/i) || [])[1] || '';
-  const modelFromMessage = (message.match(/model:\s*([a-z0-9_.-]+)/i) || [])[1] || '';
+  // Sentence punctuation after a model ID is prose, not a second quota dimension.
+  const modelFromMessage = (message.match(/model:\s*([a-z0-9_]+(?:[.-][a-z0-9_]+)*)/i) || [])[1] || '';
   const retryFromMessage = Number((message.match(/retry\s+in\s+([\d.]+)s/i) || [])[1] || 0);
   const retryAfterSeconds = Math.max(
     headerRetryAfterSeconds(response),
