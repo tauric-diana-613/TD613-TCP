@@ -1580,10 +1580,8 @@ export default async function handler(req, res) {
           };
           incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, { model, result, relay, providerOutput,
             completion: Object.freeze({ ...completion, complete: false, reason: 'required-voice-structure-incomplete' }), reasons });
-          if (!structuralRepairCandidate
-            || candidate.reasons.length <= structuralRepairCandidate.reasons.length) {
-            structuralRepairCandidate = candidate;
-          }
+          const repaired = await runStructuralRepair(candidate, 'immediate-structural');
+          if (repaired) return repaired;
           continue;
         }
         return sendObservedProviderReturn({
