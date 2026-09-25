@@ -73,12 +73,12 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     node.style.setProperty('--flourish-padding', `${Math.min(76, 16 + marks * 2.2)}px`);
   };
   // The preloaded first-tap affordance belongs only to the untouched starter.
-  // Programmatic fill and native editing both invalidate it on a value change;
-  // event.isTrusted alone misses browser-driver and accessibility input paths.
+  // Programmatic fill and native editing invalidate only on a value change;
+  // event provenance never overrides the actual untouched-starter snapshot.
   let preloadedValue = null;
   prompt.addEventListener('input', (event) => {
     markFlourishes(prompt);
-    if (event.isTrusted || (prompt.dataset.preloadedPrompt === 'true' && prompt.value !== preloadedValue)) {
+    if (prompt.dataset.preloadedPrompt === 'true' && prompt.value !== preloadedValue) {
       delete prompt.dataset.preloadedPrompt;
       preloadedValue = null;
     }
