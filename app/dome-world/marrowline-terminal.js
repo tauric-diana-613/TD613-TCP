@@ -897,6 +897,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       prompt.value = '';
       prompt.style.height = '';
       delete prompt.dataset.preloadedPrompt;
+      delete prompt.dataset.preloadedPromptValue;
     }
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     stopPedagogueStatus(root);
