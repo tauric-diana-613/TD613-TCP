@@ -52,9 +52,9 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, packet.message);
-  assert.match(last.parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW/);
-  assert.match(last.parts[1].text, /Local repetition and playful patterned speech are welcome/);
-  assert.match(last.parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
+  assert.match(last.parts[1].text, /crowns ABOVE and roots BELOW the letters/);
+  assert.match(last.parts[1].text, /Local repetition and patterned play are welcome/);
+  assert.match(last.parts[1].text, /sometimes simultaneously deep and asymmetric enough to cross adjacent lines/);
   assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /single-accent and patterned interludes are welcome too/);
   assert.match(request.systemInstruction.parts[0].text, /without an after-the-fact transform/);
@@ -74,9 +74,9 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.contents.at(-1).parts[1].text;
   const guidance = request.systemInstruction.parts[0].text;
-  assert.match(cue, /Repeated accents, combining-letter runs, patterned interludes and absurd little glyph gestures are welcome/);
-  assert.match(guidance, /Shallow repeated accents, combining-letter play and other goofy motifs may carry deliberate local expression/);
-  assert.match(cue, /genuinely towering overprinted eruptions/);
+  assert.match(cue, /Fine-marked passages, repeated accents, combining-letter play, patterned interludes/);
+  assert.match(guidance, /Repeated accents and goofy motifs may be local turns/);
+  assert.match(cue, /Towering interleaved overprint belongs to HER NORMAL SPEECH/);
   assert.match(guidance, /deep vertical overprint to collide across lines/);
   assert.doesNotMatch(cue, /one sampled mark copied|identical stack across letters/);
   assert.doesNotMatch(guidance, /Do not stamp one selected code point/);
@@ -91,11 +91,11 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   const native = buildNativeProsodyGuidance();
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
-  assert.match(cue, /Repeated accents, combining-letter runs, patterned interludes and absurd little glyph gestures are welcome/);
+  assert.match(cue, /Fine-marked passages, repeated accents, combining-letter play, patterned interludes/);
   assert.match(native, /single-accent and patterned interludes are welcome too when locally expressive/);
-  assert.match(cue, /single shallow accent tiled through the entire chorus/);
+  assert.match(cue, /whole chorus tiled with one shallow accent/);
   assert.match(native, /whole chorus tiled with one mark or cloned stack is wallpaper/);
-  assert.match(cue, /overlapping crowns and roots on the letters/);
+  assert.match(cue, /crowns ABOVE and roots BELOW the letters/);
   assert.match(native, /irregular deep crowns and roots make their entrance, with lateral crossings/);
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
@@ -217,11 +217,41 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.contents.at(-1).parts[1].text;
   const shared = request.systemInstruction.parts[0].text;
-  assert.match(cue, /Every operator-authored message has the same creative latitude as a suggested starter/);
-  assert.match(cue, /Anger is a dramatic and ethical response to the subject, not an unconditional mood switch/);
-  assert.match(shared, /Typed prompts may earn fury; use selective bold/);
+  assert.match(cue, /Every operator-authored message, including a plain greeting, quiet question or tender exchange/);
+  assert.match(cue, /Anger may change what she says; it never authorizes or withholds her alphabet/);
+  assert.match(shared, /Typed prompts get the same full High-Zalgo voice as starters; fury is optional/);
   assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
   assert.match(cue, /Use Markdown bold only for specific terms, sharp pivots or selective emphasis/);
   assert.match(shared, /selective bold/);
   assert.match(request.contents.at(-1).parts[0].text, /Could we look at the consequences of this rule/);
+});
+
+
+test('ordinary, tender and adversarial typed requests all retain the full native High-Zalgo vocabulary', () => {
+  const prompts = [
+    'Hi! How is the evening going?',
+    'Tell me a gentle story about the red deer.',
+    'Please explain a spreadsheet column.',
+    'Challenge this institution with all your indignation.'
+  ];
+  const shared = buildNativeProsodyGuidance();
+  assert.match(shared, /native handwriting for EVERY prompt, including ordinary and tender ones/);
+  assert.match(shared, /full deep, interleaved ABOVE\/BELOW repertoire needs no anger or inflammatory premise/);
+  assert.match(shared, /fury is optional, amplitude is not gated by it/);
+  assert.doesNotMatch(shared, /at an earned rupture|Typed prompts may earn fury/);
+  for (const message of prompts) {
+    const packet = { systemInstruction: 'base', mode: 'plain', message, history: [] };
+    const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
+    const cue = request.contents.at(-1).parts[1].text;
+    const actual = request.contents.at(-1).parts[0].text;
+    assert.equal(actual, message);
+    assert.ok(request.systemInstruction.parts[0].text.includes(shared));
+    assert.match(cue, /SAME FULL Tauric Diana bots High-Zalgo writing system/);
+    assert.match(cue, /High Zalgo is their everyday scream-sing writing system/i);
+    assert.match(cue, /Do not postpone the full vertical repertoire until an earned rupture or provocative prompt/);
+    assert.match(cue, /Anger may change what she says; it never authorizes or withholds her alphabet/);
+    assert.doesNotMatch(cue, /When the subject earns indignation|at an earned rupture the same speech can carry/);
+    assert.doesNotMatch(cue + shared, /marks.per.character quota|automatic rage mode|repeat the following glyphs/i);
+    assert.doesNotMatch(cue + shared, /\p{M}/u, 'do not introduce a fixed mark specimen into provider guidance');
+  }
 });

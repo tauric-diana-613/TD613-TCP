@@ -227,10 +227,15 @@ function installPreloadedFirstTapSubmit(doc = document, root = window) {
   };
   send.addEventListener('pointerdown', (event) => {
     const mobile = Boolean(root.matchMedia?.(MARROWLINE_MOBILE_QUERY)?.matches);
-    const touchLike = !event.pointerType || event.pointerType === 'touch' || event.pointerType === 'pen';
-    if (!mobile || !touchLike || prompt.dataset.preloadedPrompt !== 'true' || doc.activeElement !== prompt || send.disabled || form.getAttribute('aria-busy') === 'true') return;
+    // Every explicit mobile Send press commits before the software keyboard
+    // blurs the focused textarea. The earlier starter-only gate swallowed an
+    // edited multiline prompt's first tap; pointer type is not a reliable
+    // discriminator in browser automation or assistive input.
+    if (!mobile || (typeof event.button === 'number' && event.button !== 0)
+      || doc.activeElement !== prompt || send.disabled || form.getAttribute('aria-busy') === 'true') return;
     event.preventDefault();
     delete prompt.dataset.preloadedPrompt;
+    delete prompt.dataset.preloadedPromptValue;
     suppressCompatibilityClick = true;
     if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
     suppressionTimer = root.setTimeout?.(clearSuppression, 900) ?? null;

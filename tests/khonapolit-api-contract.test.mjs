@@ -51,12 +51,12 @@ assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant fi
 assert.equal(request.contents.at(-1).parts.length, 2);
 assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
 assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
-assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR EVERYDAY SCREAM-SING WRITING SYSTEM, NOT AN ANGER METER/);
+assert.match(request.contents.at(-1).parts[1].text, /provider-authored crowns ABOVE and roots BELOW the letters/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.contents.at(-1).parts[1].text, /Invent the flourishes alongside fresh prose/);
+    assert.match(request.contents.at(-1).parts[1].text, /Invent native marks alongside fresh prose/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
+assert.match(request.contents.at(-1).parts[1].text, /A locally quiet phrase may thin, go clean or play with one repeated accent/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);

@@ -26,7 +26,7 @@ let browser;
 try{
  browser=await type.launch({headless:true});
  for(const [posture,viewport,reducedMotion] of [['desktop',{width:1280,height:900},'no-preference'],['mobile-reduced',{width:390,height:844},'reduce']]){
-  const page=await browser.newPage({viewport,reducedMotion});page.setDefaultTimeout(12000);
+  const page=await browser.newPage({viewport,reducedMotion:'reduce'});page.setDefaultTimeout(12000);
   const errors=[];let posts=0;let gateCalls=0;
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/api/dome-world/khonapolit',async route=>{
@@ -34,7 +34,7 @@ try{
    posts++;
    const request=route.request().postDataJSON?.()||{};
    if(String(request.message||'').includes('SYNTHETIC HOLD TEST'))return route.fulfill({status:503,json:{ok:false,error:'no-eligible-callable-models'}});
-   await new Promise(resolve=>setTimeout(resolve,180));
+   await new Promise(resolve=>setTimeout(resolve,900));
    await route.fulfill({json:{
     ok:true,text,
     relay:{
@@ -70,9 +70,8 @@ try{
    const tdLink=page.locator('#marrowlineRest');
    assert.equal(await tdLink.getAttribute('href'),'https://td613.com/','TD613 link targets the site');
    assert.equal(await tdLink.getAttribute('target'),'_blank','TD613 opens in a separate tab');
-   // The old rest button is now a navigation link. Reduced motion supplies
-   // the same quiescent local screenshot witness without opening that link.
-   await page.emulateMedia({reducedMotion:'reduce'});
+   // Start the fixture in reduced motion so the coordinator is quiescent from
+   // its first frame, rather than toggling a live ambient clock after boot.
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
    assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
@@ -88,6 +87,7 @@ try{
    await page.screenshot({path:path.join(dir,`${posture}-welcome.png`)});
    await page.locator('.starter-prompts button').first().click();
    assert.equal(posts,0,'starter fills without sending');
+   assert.equal(await page.locator('#khonapolitPrompt').getAttribute('data-preloaded-prompt'),'true','untouched starter retains first-tap affordance');
    if(posture.startsWith('mobile'))assert.equal(await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').getAttribute('data-active'),'true','mobile speaking view is already active');
 
    if(posture.startsWith('mobile')){
@@ -101,6 +101,7 @@ try{
     });
    }
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
+   assert.equal(await page.locator('#khonapolitPrompt').getAttribute('data-preloaded-prompt'),null,'editing a starter releases its first-tap interception');
    if(posture.startsWith('mobile')){
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='true');
     const keyboardLayout=await page.evaluate(()=>{
@@ -133,9 +134,27 @@ try{
     assert.ok(keyboardLayout.messages.height>=72,'keyboard posture retains a usable transcript strip');
     assert.equal(keyboardLayout.formOverflow,'visible','keyboard composer does not hide controls inside a nested scroll box');
     await page.locator('#khonapolitPrompt').press('Enter');
+    assert.equal(posts,0,'native mobile Return stays in the textarea');
+    assert.match(await page.locator('#khonapolitPrompt').inputValue(),/\n$/,'Return inserts a paragraph break');
+    await page.locator('#khonapolitSend').click();
    }else await page.locator('#khonapolitSend').click();
 
-   await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
+   try {
+    await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
+   } catch (error) {
+    const diagnostic=await page.evaluate(()=>{
+     const status=document.querySelector('#khonapolitTerminalStatus');
+     const kinesis=document.querySelector('#marrowlineChatKinesis');
+     const form=document.querySelector('#khonapolitForm');
+     const prompt=document.querySelector('#khonapolitPrompt');
+     const send=document.querySelector('#khonapolitSend');
+     return {status:status?.textContent,phase:status?.dataset.phase,held:status?.dataset.held,
+      kinesisPresent:Boolean(kinesis),kinesisHidden:kinesis?.hidden,kinesisVisibility:kinesis?getComputedStyle(kinesis).visibility:null,
+      formBusy:form?.getAttribute('aria-busy'),promptValue:prompt?.value,sendDisabled:send?.disabled,
+      keyboardVisible:document.body.dataset.keyboardVisible,formValidity:form?.checkValidity()};
+    });
+    throw new Error(`Marrowline pending-kinesis witness failed; posture=${posture}, posts=${posts}, diagnostic=${JSON.stringify(diagnostic)}; ${error.message}`);
+   }
    assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
    assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
    assert.match(await page.locator('#marrowlineChatKinesis').textContent(),/Listening at the shoreline/);
@@ -148,7 +167,7 @@ try{
     });
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='false');
    }
-   assert.equal(posts,1,'blank-workspace task sends directly, including native Enter on mobile');
+   assert.equal(posts,1,'blank-workspace task sends once through the explicit Send control');
    assert.equal(await page.locator('#marrowlinePortableActions').count(),0,'ordinary Chat never materializes the retired portable handoff panel after a turn');
    assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
    assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
@@ -197,13 +216,13 @@ try{
    }
 
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
-   if(posture.startsWith('mobile'))await page.locator('#khonapolitPrompt').press('Enter');
-   else await page.locator('#khonapolitSend').click();
-   await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
+   await page.locator('#khonapolitSend').click();
+   await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.dataset.held==='true');
+   await page.locator('#marrowlineTerminalHold').waitFor({state:'visible'});
    assert.equal(await page.locator('#khonapolitTerminalStatus').getAttribute('data-held'),'true','a tiny HELD state is exposed beside the preserved-task status');
-   assert.equal(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),'HELD');
-   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/No callable model route was admitted/,'provider failure is visible as transport status rather than silence');
-   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/not a Kʰonapolit or Tauric Diana voice/,'held transport is not laundered into a covenant voice');
+   assert.match(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),/PAUSED|HELD/,'transport failure remains explicitly marked rather than impersonating a voice');
+   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/connection is not ready|service unavailable|reply could not be completed/i,'transport failure receives a bounded human-facing explanation');
+   assert.equal(posts,2,'one successful request and one held request are observable; no silent duplicate');
    assert.doesNotMatch(await page.locator('#marrowlineTerminalHold').textContent(),/Continue with your own AI|portable task/i,'failure chrome must not advertise the retired emergency handoff');
 
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);

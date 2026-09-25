@@ -72,7 +72,18 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     node.style.setProperty('--flourish-leading', String(Math.min(4.7, 1.75 + Math.max(0, marks - 1) * .13)));
     node.style.setProperty('--flourish-padding', `${Math.min(76, 16 + marks * 2.2)}px`);
   };
-  prompt.addEventListener('input', (event) => { markFlourishes(prompt); if (event.isTrusted) delete prompt.dataset.preloadedPrompt; });
+  // The preloaded first-tap affordance belongs only to the untouched starter.
+  // Programmatic fill and native editing invalidate only on a value change;
+  // event provenance never overrides the actual untouched-starter snapshot.
+  prompt.addEventListener('input', () => {
+    markFlourishes(prompt);
+    // Both the initial two prompts and the rotating carousel own the same
+    // snapshot contract; the first real edit invalidates first-tap interception.
+    if (prompt.dataset.preloadedPrompt === 'true' && prompt.value !== prompt.dataset.preloadedPromptValue) {
+      delete prompt.dataset.preloadedPrompt;
+      delete prompt.dataset.preloadedPromptValue;
+    }
+  });
   markFlourishes(prompt);
 
   const decorate = () => {
@@ -99,6 +110,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         button.type = 'button'; button.textContent = label;
         button.addEventListener('click', () => {
           prompt.value = value;
+          prompt.dataset.preloadedPromptValue = value;
           prompt.dataset.preloadedPrompt = 'true';
           prompt.dispatchEvent(new environment.Event('input', { bubbles: true }));
           prompt.focus({ preventScroll: true });

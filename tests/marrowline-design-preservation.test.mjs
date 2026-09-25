@@ -336,6 +336,28 @@ test('mobile preloaded starter submits on the first touch before keyboard blur c
 });
 
 
+test('edited mobile starter keeps Return and submits on first deliberate Send press', async t => {
+  const h = harness(t, { mobile: true });
+  h.doc.querySelector('.starter-prompts button').click();
+  await flush();
+  const prompt = h.$('khonapolitPrompt');
+  const send = h.$('khonapolitSend');
+  assert.equal(prompt.dataset.preloadedPrompt, 'true');
+  const authored = 'Could you tell me a quiet story?\\nWith a second paragraph.';
+  prompt.value = authored;
+  prompt.dispatchEvent(new h.win.Event('input', { bubbles: true }));
+  assert.equal(prompt.dataset.preloadedPrompt, undefined, 'editing releases starter-only state');
+  const down = new h.win.Event('pointerdown', { bubbles: true, cancelable: true });
+  Object.defineProperty(down, 'pointerType', { configurable: true, value: 'mouse' });
+  send.dispatchEvent(down);
+  await h.settled(); await flush();
+  assert.equal(h.calls.length, 1, 'first mobile Send press delivers edited multiline prompt');
+  assert.equal(h.calls[0].message, authored);
+  send.click();
+  await flush();
+  assert.equal(h.calls.length, 1, 'compatibility click cannot duplicate the submission');
+});
+
 test('child-facing failure notices stay distinct, concise and provider-neutral', () => {
   assert.equal(boundedFailureMessage({error:'gemini-provider-unavailable',httpStatus:502}),
     'The service could not answer just now. Your message is saved; try again.');
