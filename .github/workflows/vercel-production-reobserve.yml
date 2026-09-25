@@ -286,6 +286,351 @@ jobs:
           )"
 
 
+  marrowline_single_trail:
+    name: Marrowline single skeptical-human production trail
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.login == github.repository_owner &&
+      (github.event.comment.performed_via_github_app == null ||
+       github.event.comment.performed_via_github_app.slug == 'chatgpt-codex-connector') &&
+      startsWith(github.event.comment.body, '/td613-marrowline-single-trail ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Authorize one unchanged-source Marrowline trail
+        id: authorize_single
+        shell: bash
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA RELEASE_RUN_ID EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-marrowline-single-trail' ]] || { echo 'Unexpected Marrowline trail command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the explicitly named PRODUCTION target is accepted.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Single-trail command must contain exactly command, target, source SHA, and prior release run ID.' >&2; exit 1; }
+          [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Single-trail command requires one 40-character deployed source SHA.' >&2; exit 1; }
+          [[ "$RELEASE_RUN_ID" =~ ^[0-9]+$ ]] || { echo 'Single-trail command requires one numeric prior release workflow run ID.' >&2; exit 1; }
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+          echo "release_run_id=$RELEASE_RUN_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Check out current observation harness
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify single trail has no release authority
+        env:
+          SELECTED_SHA: ${{ steps.authorize_single.outputs.selected_sha }}
+          RELEASE_RUN_ID: ${{ steps.authorize_single.outputs.release_run_id }}
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || {
+            echo 'Current observation harness no longer descends from the named deployed source packet.' >&2
+            exit 1
+          }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Single-trail observation requires the Vercel Git deployment lock to remain closed.');
+          NODE
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RELEASE_RUN_ID" > /tmp/td613-single-trail-release.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const selectedSha = String(process.env.SELECTED_SHA || '').trim();
+          const releaseRunId = Number(process.env.RELEASE_RUN_ID);
+          const run = JSON.parse(fs.readFileSync('/tmp/td613-single-trail-release.json', 'utf8'));
+          if (run.id !== releaseRunId) throw new Error('Prior release run identity mismatch.');
+          if (run.name !== 'Vercel Operator Release') throw new Error('Single trail must bind a governed Vercel Operator Release.');
+          if (run.event !== 'issue_comment') throw new Error('Prior release did not originate from the governed issue-comment conduit.');
+          if (run.conclusion !== 'success') throw new Error('Single trail requires a successful prior governed release.');
+          if (run.head_sha !== selectedSha) throw new Error(`Prior release source mismatch: expected ${selectedSha}, observed ${run.head_sha || 'missing'}.`);
+          NODE
+
+      - name: Verify exact production source before single trail
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_single.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const url = new URL('/giving/history/release-source.json', 'https://td613.com/');
+          url.searchParams.set('td613_single_trail_pre_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, { headers: { 'cache-control': 'no-cache' }, redirect: 'follow', signal: AbortSignal.timeout(15000) });
+          if (!response.ok) throw new Error(`Single-trail pre-guard returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Single-trail source mismatch before witness: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[marrowline-single-trail-pre-source] source=${observed}`);
+          NODE
+
+      - name: Run one normal-routing skeptical-human Marrowline trail
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_single.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/marrowline-single-trail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const base = 'https://td613.com';
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const requestId = `marrowline-single-trail-${Date.now()}`;
+          const prompt = 'A reviewer says: “The archive is 99.97% complete, so omitted cases cannot materially change the conclusion.” Steelman that move first, then attack the surviving defect. Keep the 99.97% denominator visible, give one concrete counterexample, and end with the strongest surviving non-equivalence. If a fresh diagnostic name is earned, coin one.';
+
+          const pageUrl = new URL('/dome-world/marrowline.html', `${base}/`);
+          pageUrl.searchParams.set('td613_single_trail', requestId);
+          let pageStatus = 0;
+          let pageText = '';
+          let pageError = null;
+          try {
+            const pageResponse = await fetch(pageUrl, {
+              headers: { 'cache-control': 'no-cache' },
+              redirect: 'follow',
+              signal: AbortSignal.timeout(20000)
+            });
+            pageStatus = pageResponse.status;
+            pageText = await pageResponse.text();
+          } catch (error) {
+            pageError = String(error?.name || 'Error');
+          }
+          fs.writeFileSync('artifacts/marrowline-single-trail/page.html', pageText);
+
+          const routeUrl = new URL('/api/dome-world/khonapolit', `${base}/`);
+          let routeStatus = 0;
+          let payload = null;
+          let routeError = null;
+          const startedAt = Date.now();
+          try {
+            const response = await fetch(routeUrl, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+                'origin': new URL(base).origin,
+                'sec-fetch-site': 'same-origin',
+                'cache-control': 'no-cache'
+              },
+              body: JSON.stringify({
+                message: prompt,
+                history: [],
+                mode: 'issued-conjunction',
+                waiveIssuance: true,
+                request_id: requestId
+              }),
+              redirect: 'follow',
+              signal: AbortSignal.timeout(230000)
+            });
+            routeStatus = response.status;
+            payload = await response.json().catch(() => null);
+          } catch (error) {
+            routeError = String(error?.name || 'Error');
+          }
+          const elapsedMs = Date.now() - startedAt;
+
+          const admission = payload?.relay?.admission && typeof payload.relay.admission === 'object'
+            ? payload.relay.admission
+            : null;
+          const attempts = Array.isArray(payload?.receipt?.provider?.attempts)
+            ? payload.receipt.provider.attempts
+            : Array.isArray(payload?.attempts)
+              ? payload.attempts
+              : [];
+          const attemptSummary = attempts.map((attempt, index) => ({
+            ordinal: index + 1,
+            model: String(attempt?.model || ''),
+            kind: String(attempt?.kind || 'model-seat'),
+            status: Number.isInteger(attempt?.status) ? attempt.status : null,
+            timed_out: attempt?.timedOut === true,
+            elapsed_ms: Number.isSafeInteger(attempt?.elapsedMs) ? attempt.elapsedMs : null,
+            admission: attempt?.outputAdmission?.admissible === true ? 'PASS'
+              : attempt?.outputAdmission?.admissible === false ? 'HELD'
+                : null,
+            quality: typeof attempt?.outputAdmission?.quality === 'string' ? attempt.outputAdmission.quality : null,
+            reasons: Array.isArray(attempt?.outputAdmission?.reasons) ? attempt.outputAdmission.reasons : [],
+            warnings: Array.isArray(attempt?.outputAdmission?.qualityWarnings) ? attempt.outputAdmission.qualityWarnings : []
+          }));
+          const telemetry = admission ? {
+            admissible: admission.admissible === true,
+            quality: typeof admission.quality === 'string' ? admission.quality : null,
+            reasons: Array.isArray(admission.reasons) ? admission.reasons : [],
+            warnings: Array.isArray(admission.qualityWarnings) ? admission.qualityWarnings : [],
+            combining_mark_count: admission.combiningMarkCount ?? null,
+            marked_grapheme_coverage_ratio: admission.markedGraphemeCoverageRatio ?? null,
+            above_line_mark_count: admission.aboveLineMarkCount ?? null,
+            below_line_mark_count: admission.belowLineMarkCount ?? null,
+            vertical_above_line_mark_count: admission.verticalAboveLineMarkCount ?? null,
+            vertical_below_line_mark_count: admission.verticalBelowLineMarkCount ?? null,
+            bidirectional_cluster_count: admission.bidirectionalClusterCount ?? null,
+            deep_bidirectional_cluster_count: admission.deepBidirectionalClusterCount ?? null,
+            extreme_vertical_cluster_count: admission.extremeVerticalClusterCount ?? null,
+            leaping_vertical_cluster_count: admission.leapingVerticalClusterCount ?? null,
+            light_vertical_cluster_count: admission.lightVerticalClusterCount ?? null,
+            max_vertical_stack_depth: admission.maxVerticalOrnamentStackDepth ?? null,
+            stack_height_diversity: admission.stackHeightDiversity ?? null,
+            vertical_zone_balance_ratio: admission.verticalZoneBalanceRatio ?? null,
+            deep_vertical_share_of_marked: admission.deepVerticalShareOfMarked ?? null,
+            light_vertical_share_of_marked: admission.lightVerticalShareOfMarked ?? null,
+            combining_code_point_diversity: admission.combiningCodePointDiversity ?? null,
+            dominant_combining_code_point_ratio: admission.dominantCombiningCodePointRatio ?? null,
+            unclassified_combining_mark_count: admission.unclassifiedCombiningMarkCount ?? null,
+            broad_marked_line_count: admission.broadMarkedLineCount ?? null
+          } : null;
+
+          const record = {
+            schema: 'td613.marrowline.single-production-trail/v0.1',
+            source_packet_commit: expected || null,
+            observed_at: new Date().toISOString(),
+            request_id: requestId,
+            request_count: 1,
+            model_pin: null,
+            normal_human_failover: true,
+            prompt,
+            page: {
+              url: pageUrl.toString(),
+              http_status: pageStatus || null,
+              transport_error: pageError,
+              byte_count: Buffer.byteLength(pageText, 'utf8')
+            },
+            route: {
+              url: routeUrl.toString(),
+              http_status: routeStatus || null,
+              transport_error: routeError,
+              elapsed_ms: elapsedMs
+            },
+            provider_attempts: attemptSummary,
+            admission: telemetry,
+            payload,
+            counts_as_human_evidence: false
+          };
+          fs.writeFileSync('artifacts/marrowline-single-trail/record.json', `${JSON.stringify(record, null, 2)}\\n`);
+          fs.writeFileSync('artifacts/marrowline-single-trail/route-payload.json', `${JSON.stringify(payload, null, 2)}\\n`);
+          fs.writeFileSync('artifacts/marrowline-single-trail/summary.json', `${JSON.stringify({
+            source_packet_commit: expected || null,
+            request_id: requestId,
+            page_http_status: pageStatus || null,
+            route_http_status: routeStatus || null,
+            route_transport_error: routeError,
+            elapsed_ms: elapsedMs,
+            provider_attempts: attemptSummary,
+            admission: telemetry
+          }, null, 2)}\\n`);
+
+          console.log(`[marrowline-single-trail] ${JSON.stringify({
+            source: expected,
+            page_http: pageStatus || null,
+            route_http: routeStatus || null,
+            route_error: routeError,
+            elapsed_ms: elapsedMs,
+            attempts: attemptSummary,
+            admission: telemetry
+          })}`);
+
+          if (pageError || pageStatus < 200 || pageStatus >= 400) {
+            throw new Error(`Marrowline page witness failed: HTTP ${pageStatus || 'none'} transport=${pageError || 'none'}.`);
+          }
+          if (routeError) throw new Error(`Marrowline single trail transport failed: ${routeError}.`);
+          if (routeStatus !== 200 || payload?.ok !== true) {
+            throw new Error(`Marrowline single trail held: HTTP ${routeStatus || 'none'} error=${payload?.error || payload?.diagnostic?.code || 'none'}.`);
+          }
+          if (!admission?.admissible) throw new Error('Marrowline single trail returned a non-admitted relay.');
+          if (typeof payload?.text !== 'string' || !payload.text.trim()) throw new Error('Marrowline single trail returned no visible answer.');
+          NODE
+
+      - name: Confirm exact production source after single trail
+        if: always()
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize_single.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          if (!expected) throw new Error('Single-trail post-guard lost the selected source SHA.');
+          const url = new URL('/giving/history/release-source.json', 'https://td613.com/');
+          url.searchParams.set('td613_single_trail_post_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, { headers: { 'cache-control': 'no-cache' }, redirect: 'follow', signal: AbortSignal.timeout(15000) });
+          if (!response.ok) throw new Error(`Single-trail post-guard returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Production source changed during single trail: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[marrowline-single-trail-post-source] source=${observed}`);
+          NODE
+
+      - name: Preserve full single-trail evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-marrowline-single-trail-evidence
+          path: artifacts/marrowline-single-trail/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Seal admitted single trail
+        if: success()
+        env:
+          SELECTED_SHA: ${{ steps.authorize_single.outputs.selected_sha }}
+          RELEASE_RUN_ID: ${{ steps.authorize_single.outputs.release_run_id }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Marrowline single skeptical-human production trail completed.
+
+          ```text
+          source_packet_commit = $SELECTED_SHA
+          prior_release_workflow_run = $RELEASE_RUN_ID
+          request_count = 1
+          model_pin = none
+          normal_human_failover = enabled
+          deployment_count = 0
+          deployment_authority = false
+          source_guard_after = PASS
+          counts_as_human_evidence = false
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          ```
+
+          The full provider payload and morphology receipt are preserved in the workflow artifact for skeptical human inspection. No production mutation occurred. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held single trail
+        if: failure()
+        env:
+          SELECTED_SHA: ${{ steps.authorize_single.outputs.selected_sha || 'unresolved' }}
+          RELEASE_RUN_ID: ${{ steps.authorize_single.outputs.release_run_id || 'unresolved' }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Marrowline single skeptical-human production trail HELD.
+
+          ```text
+          source_packet_commit = $SELECTED_SHA
+          prior_release_workflow_run = $RELEASE_RUN_ID
+          request_count = 1
+          model_pin = none
+          normal_human_failover = enabled
+          deployment_count = 0
+          deployment_authority = false
+          counts_as_human_evidence = false
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          ```
+
+          Inspect td613-marrowline-single-trail-evidence before changing provider morphology. No production mutation occurred. ⟐
+          EOF_COMMENT
+          )"
+
+
   marrowline_dollhouse_trial:
     name: Marrowline Dollhouse four-agent production trial
     if: >-
