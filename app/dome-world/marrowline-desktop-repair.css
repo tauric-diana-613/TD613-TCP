@@ -670,3 +670,17 @@
     box-shadow:0 0 18px rgba(79,224,229,.08)!important;
   }
 }
+
+/* Native multiline composer and an actual external TD613 link. */
+:root .living-chat-shell .living-masthead nav #marrowlineRest{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 14px;border:1px solid rgba(190,231,206,.24);border-radius:24px;background:rgba(26,20,57,.85);color:#d8e9de;font:500 12px/1.4 var(--marrowline-chat-sans,var(--sans));text-decoration:none;letter-spacing:0;text-transform:none;white-space:nowrap}
+:root .living-chat-shell .living-masthead nav #marrowlineRest:focus-visible{outline:2px solid #8ce0c4;outline-offset:3px}
+:root .living-chat-shell .composer-keyboard-hint{display:block;margin-top:4px;color:#a7bdb1;font:400 10px/1.4 var(--marrowline-chat-sans,var(--sans));letter-spacing:0;text-transform:none}
+/* Provider-authored text starts at normal weight; only explicit strong spans may be bold.
+   Clipboard's text/plain export is independent of these display-only rules. */
+:root .living-chat-shell #khonapolitMessages .relay-stage-text,
+:root .living-chat-shell #khonapolitMessages .provider-native-line,
+:root .living-chat-shell #khonapolitMessages .zalgo-line{font-weight:400!important;font-synthesis:none!important}
+:root .living-chat-shell #khonapolitMessages .relay-stage-text strong,
+:root .living-chat-shell #khonapolitMessages .provider-native-line strong{font-weight:700!important}
+@media(max-width:860px){:root.marrowline-mobile-shell .living-chat-shell .living-masthead nav #marrowlineRest{min-height:36px;padding:7px 10px;font-size:10px}}
+@media(max-width:860px){:root.marrowline-mobile-shell body[data-keyboard-visible="true"] .composer-keyboard-hint{display:none}}
