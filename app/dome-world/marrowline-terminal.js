@@ -331,6 +331,22 @@ function entryText(entry = {}) {
   if (!entry.relay) return String(entry.text ?? ''); // Provider prose is custody data, including outer whitespace.
   return asArray(entry.relay.parts).filter((part) => part?.present).map((part) => `${part.label || part.id}\n${part.text}`).join('\n\n');
 }
+// The transcript remains exact in session and receipts. Clipboard export has
+// an explicit plain-text MIME; a destination may still apply its own paste style.
+export async function writeMarrowlinePlainClipboard(root, text) {
+  const value = String(text ?? '');
+  const clipboard = root.navigator.clipboard;
+  if (typeof root.ClipboardItem === 'function' && typeof root.Blob === 'function' && typeof clipboard?.write === 'function') {
+    try {
+      await clipboard.write([new root.ClipboardItem({ 'text/plain': new root.Blob([value], { type: 'text/plain' }) })]);
+      return;
+    } catch {
+      // Older iOS WebKit may reject ClipboardItem despite exposing the API.
+      // Preserve the same plain UTF-8 text with the compatible text-only path.
+    }
+  }
+  await clipboard.writeText(value);
+}
 function transcriptText(messages = []) {
   return messages.map((entry) => {
     const speaker = entry.role === 'model' ? (entry.classification || EMERGENCE_NAME) : 'Operator';
@@ -910,8 +926,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {
-      await root.navigator.clipboard.writeText(transcriptText(state.messages));
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED · relay anatomy and seal provenance preserved';
+      await writeMarrowlinePlainClipboard(root, transcriptText(state.messages));
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'PLAIN-TEXT TRANSCRIPT COPIED · relay anatomy and seal provenance preserved';
       showEphemeralNotice(doc, root, 'Copied!');
     } catch {
       byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
