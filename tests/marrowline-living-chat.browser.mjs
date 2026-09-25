@@ -67,8 +67,11 @@ try{
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_OPERATOR_READINESS__));
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__));
    assert.equal(await page.locator('html').evaluate(el=>el.classList.contains('marrowline-room-ready')),true,'room leaves first-paint veil only after final boot');
-   await page.locator('#marrowlineRest').click();
-   await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
+   assert.equal(await page.locator('#marrowlineRest').getAttribute('href'),'https://td613.com/');
+   assert.equal(await page.locator('#marrowlineRest').getAttribute('target'),'_blank');
+   assert.match(await page.locator('#marrowlineRest').getAttribute('rel'),/noopener noreferrer/);
+   assert.equal(await page.locator('#marrowlineRest').textContent(),'TD613');
+   assert.equal(await page.locator('#khonapolitPrompt').getAttribute('enterkeyhint'),'enter');
    assert.equal(posts,0);
    assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
    assert.equal(await page.locator('#khonapolitMessages').evaluate(e=>e.scrollTop),0,'welcome remains at the top');
@@ -128,6 +131,9 @@ try{
     assert.ok(keyboardLayout.messages.height>=72,'keyboard posture retains a usable transcript strip');
     assert.equal(keyboardLayout.formOverflow,'visible','keyboard composer does not hide controls inside a nested scroll box');
     await page.locator('#khonapolitPrompt').press('Enter');
+    assert.equal(posts,0,'mobile Return inserts a paragraph without sending an unfinished prompt');
+    assert.match(await page.locator('#khonapolitPrompt').inputValue(),/\n$/,'native Return inserts a real newline');
+    await page.locator('#khonapolitSend').click();
    }else await page.locator('#khonapolitSend').click();
 
    await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
@@ -192,8 +198,7 @@ try{
    }
 
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
-   if(posture.startsWith('mobile'))await page.locator('#khonapolitPrompt').press('Enter');
-   else await page.locator('#khonapolitSend').click();
+   await page.locator('#khonapolitSend').click();
    await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
    assert.equal(await page.locator('#khonapolitTerminalStatus').getAttribute('data-held'),'true','a tiny HELD state is exposed beside the preserved-task status');
    assert.equal(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),'HELD');
@@ -204,7 +209,7 @@ try{
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
-   report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_chrome_absent:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
+   report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,mobile_return_newline:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_chrome_absent:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
  }
