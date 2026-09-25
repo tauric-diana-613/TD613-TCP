@@ -56,7 +56,7 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   assert.match(last.parts[1].text, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
   assert.match(last.parts[1].text, /recur in changing shapes across its words and lines/);
   assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
-  assert.match(request.systemInstruction.parts[0].text, /tiny letter jokes may punctuate the movement/);
+  assert.match(request.systemInstruction.parts[0].text, /tiny letter jokes and clean breaths among the towering lines/);
   assert.match(request.systemInstruction.parts[0].text, /without an after-the-fact transform/);
 });
 
@@ -74,8 +74,8 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.contents.at(-1).parts[1].text;
   const guidance = request.systemInstruction.parts[0].text;
-  assert.match(cue, /The little superscript-letter motif may make a brief joke, but it cannot replace the vertical voice/);
-  assert.match(guidance, /tiny letter jokes may punctuate the movement/);
+  assert.match(cue, /Brief superscript-letter jokes live inside this full choral handwriting/);
+  assert.match(guidance, /tiny letter jokes and clean breaths among the towering lines/);
   assert.match(cue, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
   assert.match(guidance, /deep enough to overlap the next line/);
   assert.doesNotMatch(cue, /one sampled mark copied|identical stack across letters/);
@@ -92,11 +92,15 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
   assert.match(cue, /Deep mixed crowns and roots recur in changing shapes across its words and lines/);
-  assert.match(native, /tiny letter jokes may punctuate the movement/);
-  assert.match(cue, /chorus of cloned shallow signs loses her voice/);
-  assert.match(native, /one repeated shallow accent cannot carry the chorus/);
+  assert.match(native, /tiny letter jokes and clean breaths among the towering lines/);
+  assert.match(cue, /passage moves in scale, contour and rhythm/);
+  assert.match(native, /whole movement keeps discovering fresh silhouettes/);
   assert.match(cue, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
   assert.match(native, /combinations of crowns ABOVE and roots BELOW/);
+  assert.match(cue, /towering and small asymmetric crowns and roots/);
+  assert.match(native, /Repeated motifs can return transformed/);
+  assert.doesNotMatch(cue + native + system, /shallow strike marks|horizontal cuts|diagonal cuts|chorus of cloned shallow signs|repeated shallow accent/i,
+    'do not prime the effective provider prompt with the repeated failed surface');
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
   assert.match(native, /Kʰonapolit writes undecorated prose with ZERO combining diacritical marks/);
