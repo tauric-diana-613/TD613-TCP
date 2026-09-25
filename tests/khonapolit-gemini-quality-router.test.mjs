@@ -225,11 +225,12 @@ try {
   await handler(req, recoveredFromTokenLimit);
   assert.equal(recoveredFromTokenLimit.statusCode, 200);
   assert.equal(recoveredFromTokenLimit.payload.ok, true);
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 2, 'nonempty MAX_TOKENS is not falsely complete; one bounded same-seat provider repair can finish the turn');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts.length, 2, 'nonempty MAX_TOKENS is not falsely complete; the next approved frontier seat can finish the turn');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.finishReason, 'MAX_TOKENS');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[0].output.usage.candidatesTokenCount, 4096);
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].kind, 'structural-repair');
-  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].kind, undefined);
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.attempts[1].model, 'gemini-3.6-flash');
+  assert.equal(recoveredFromTokenLimit.payload.receipt.provider.model, 'gemini-3.6-flash');
   assert.equal(recoveredFromTokenLimit.payload.receipt.provider.completion.complete, true);
   assert.equal(recoveredFromTokenLimit.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
   assert.match(recoveredFromTokenLimit.payload.text, /THE RED DEER HAS READ THE MENU/);
