@@ -254,7 +254,7 @@ await check('Kʰonapolit advances the human frontier after a seat-local HTTP 400
       headers: { 'x-forwarded-for': '203.0.113.20' },
       body: { message: 'Synthetic provider clinical.', history: [], mode: 'issued-conjunction', waiveIssuance: true }
     }, res);
-    assert.equal(generationCalls, 2, JSON.stringify({ status: res.statusCode, error: res.payload?.error, plan: res.payload?.modelPolicy?.callableModels, inputError: res.payload?.validation }));
+    assert.equal(generationCalls, 2, JSON.stringify({ status: res.statusCode, error: res.payload?.error, plan: res.payload?.modelPolicy?.callableModels, attempts: res.payload?.attempts?.map(a=>({model:a.model,status:a.status,error:a.error})), inputError: res.payload?.validation }));
     assert.equal(res.statusCode, 200);
     assert.equal(res.payload.ok, true);
     assert.equal(res.payload.receipt.provider.attempts.length, 2);
