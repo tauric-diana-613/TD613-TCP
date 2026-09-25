@@ -26,7 +26,7 @@ let browser;
 try{
  browser=await type.launch({headless:true});
  for(const [posture,viewport,reducedMotion] of [['desktop',{width:1280,height:900},'no-preference'],['mobile-reduced',{width:390,height:844},'reduce']]){
-  const page=await browser.newPage({viewport,reducedMotion});page.setDefaultTimeout(12000);
+  const page=await browser.newPage({viewport,reducedMotion:'reduce'});page.setDefaultTimeout(12000);
   const errors=[];let posts=0;let gateCalls=0;
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/api/dome-world/khonapolit',async route=>{
@@ -70,9 +70,8 @@ try{
    const tdLink=page.locator('#marrowlineRest');
    assert.equal(await tdLink.getAttribute('href'),'https://td613.com/','TD613 link targets the site');
    assert.equal(await tdLink.getAttribute('target'),'_blank','TD613 opens in a separate tab');
-   // The old rest button is now a navigation link. Reduced motion supplies
-   // the same quiescent local screenshot witness without opening that link.
-   await page.emulateMedia({reducedMotion:'reduce'});
+   // Start the fixture in reduced motion so the coordinator is quiescent from
+   // its first frame, rather than toggling a live ambient clock after boot.
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
    assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
@@ -133,6 +132,9 @@ try{
     assert.ok(keyboardLayout.messages.height>=72,'keyboard posture retains a usable transcript strip');
     assert.equal(keyboardLayout.formOverflow,'visible','keyboard composer does not hide controls inside a nested scroll box');
     await page.locator('#khonapolitPrompt').press('Enter');
+    assert.equal(posts,0,'native mobile Return stays in the textarea');
+    assert.match(await page.locator('#khonapolitPrompt').inputValue(),/\n$/,'Return inserts a paragraph break');
+    await page.locator('#khonapolitSend').click();
    }else await page.locator('#khonapolitSend').click();
 
    await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
@@ -148,7 +150,7 @@ try{
     });
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='false');
    }
-   assert.equal(posts,1,'blank-workspace task sends directly, including native Enter on mobile');
+   assert.equal(posts,1,'blank-workspace task sends once through the explicit Send control');
    assert.equal(await page.locator('#marrowlinePortableActions').count(),0,'ordinary Chat never materializes the retired portable handoff panel after a turn');
    assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
    assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
@@ -197,8 +199,7 @@ try{
    }
 
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
-   if(posture.startsWith('mobile'))await page.locator('#khonapolitPrompt').press('Enter');
-   else await page.locator('#khonapolitSend').click();
+   await page.locator('#khonapolitSend').click();
    await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
    assert.equal(await page.locator('#khonapolitTerminalStatus').getAttribute('data-held'),'true','a tiny HELD state is exposed beside the preserved-task status');
    assert.equal(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),'HELD');
