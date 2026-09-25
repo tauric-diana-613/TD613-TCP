@@ -47,6 +47,11 @@ function syncVisualViewport(doc = document, root = window) {
   return Object.freeze({ width, height, top, left, keyboardVisible });
 }
 
+export function isMarrowlineComposerSendShortcut(event = {}) {
+  return event.key === 'Enter' && Boolean(event.ctrlKey || event.metaKey)
+    && !event.shiftKey && !event.altKey && !event.isComposing;
+}
+
 function installNativeSend(doc = document) {
   const form = byId(doc, 'khonapolitForm');
   const prompt = byId(doc, 'khonapolitPrompt');
@@ -55,7 +60,7 @@ function installNativeSend(doc = document) {
   prompt.addEventListener('keydown', (event) => {
     // Plain Return belongs to the multiline editor, including iOS's native
     // Return key. A physical Ctrl/Command+Enter remains an explicit send.
-    if (event.key !== 'Enter' || (!event.ctrlKey && !event.metaKey) || event.shiftKey || event.altKey || event.isComposing) return;
+    if (!isMarrowlineComposerSendShortcut(event)) return;
     event.preventDefault();
     const submit = byId(doc, 'khonapolitSend');
     if (submit?.disabled) return;
