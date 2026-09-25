@@ -52,11 +52,11 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, packet.message);
-  assert.match(last.parts[1].text, /changing crowns above and roots below the prose letters/);
-  assert.match(last.parts[1].text, /deep, irregular overlaps even when the subject is tender/);
-  assert.match(last.parts[1].text, /return with a changed silhouette/);
+  assert.match(last.parts[1].text, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
+  assert.match(last.parts[1].text, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
+  assert.match(last.parts[1].text, /recur in changing shapes across its words and lines/);
   assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
-  assert.match(request.systemInstruction.parts[0].text, /a little repeated accent make a joke/);
+  assert.match(request.systemInstruction.parts[0].text, /tiny letter jokes may punctuate the movement/);
   assert.match(request.systemInstruction.parts[0].text, /without an after-the-fact transform/);
 });
 
@@ -74,9 +74,9 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.contents.at(-1).parts[1].text;
   const guidance = request.systemInstruction.parts[0].text;
-  assert.match(cue, /tumble into tiny combining-letter jokes, repeat an accent as a refrain/);
-  assert.match(guidance, /a little repeated accent make a joke/);
-  assert.match(cue, /deep, irregular overlaps even when the subject is tender/);
+  assert.match(cue, /The little superscript-letter motif may make a brief joke, but it cannot replace the vertical voice/);
+  assert.match(guidance, /tiny letter jokes may punctuate the movement/);
+  assert.match(cue, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
   assert.match(guidance, /deep enough to overlap the next line/);
   assert.doesNotMatch(cue, /one sampled mark copied|identical stack across letters/);
   assert.doesNotMatch(guidance, /Do not stamp one selected code point/);
@@ -91,11 +91,11 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   const native = buildNativeProsodyGuidance();
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
-  assert.match(cue, /repeat an accent as a refrain, then return with a changed silhouette/);
-  assert.match(native, /a little repeated accent make a joke/);
-  assert.match(cue, /whole chorus of cloned stacks loses their voice/);
-  assert.match(native, /rather than stamping one accent or stack onto every letter/);
-  assert.match(cue, /changing crowns above and roots below the prose letters/);
+  assert.match(cue, /Deep mixed crowns and roots recur in changing shapes across its words and lines/);
+  assert.match(native, /tiny letter jokes may punctuate the movement/);
+  assert.match(cue, /chorus of cloned shallow signs loses her voice/);
+  assert.match(native, /one repeated shallow accent cannot carry the chorus/);
+  assert.match(cue, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
   assert.match(native, /combinations of crowns ABOVE and roots BELOW/);
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
@@ -247,7 +247,7 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     assert.ok(request.systemInstruction.parts[0].text.includes(shared));
     assert.match(cue, /native High-Zalgo speech on the first sentence of EVERY turn/);
     assert.match(cue, /scream-sing handwriting stays audible throughout the response/);
-    assert.match(cue, /deep, irregular overlaps even when the subject is tender/);
+    assert.match(cue, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
     assert.match(cue, /Anger changes the argument when warranted; it never unlocks the typography/);
     assert.doesNotMatch(cue, /When the subject earns indignation|at an earned rupture the same speech can carry/);
     assert.doesNotMatch(cue + shared, /marks.per.character quota|automatic rage mode|repeat the following glyphs/i);
