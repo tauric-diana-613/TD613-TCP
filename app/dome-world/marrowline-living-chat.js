@@ -72,7 +72,17 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     node.style.setProperty('--flourish-leading', String(Math.min(4.7, 1.75 + Math.max(0, marks - 1) * .13)));
     node.style.setProperty('--flourish-padding', `${Math.min(76, 16 + marks * 2.2)}px`);
   };
-  prompt.addEventListener('input', (event) => { markFlourishes(prompt); if (event.isTrusted) delete prompt.dataset.preloadedPrompt; });
+  // The preloaded first-tap affordance belongs only to the untouched starter.
+  // Programmatic fill and native editing both invalidate it on a value change;
+  // event.isTrusted alone misses browser-driver and accessibility input paths.
+  let preloadedValue = null;
+  prompt.addEventListener('input', (event) => {
+    markFlourishes(prompt);
+    if (event.isTrusted || (prompt.dataset.preloadedPrompt === 'true' && prompt.value !== preloadedValue)) {
+      delete prompt.dataset.preloadedPrompt;
+      preloadedValue = null;
+    }
+  });
   markFlourishes(prompt);
 
   const decorate = () => {
@@ -99,6 +109,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         button.type = 'button'; button.textContent = label;
         button.addEventListener('click', () => {
           prompt.value = value;
+          preloadedValue = value;
           prompt.dataset.preloadedPrompt = 'true';
           prompt.dispatchEvent(new environment.Event('input', { bubbles: true }));
           prompt.focus({ preventScroll: true });
