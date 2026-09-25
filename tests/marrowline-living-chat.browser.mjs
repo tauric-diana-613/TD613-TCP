@@ -137,7 +137,22 @@ try{
     await page.locator('#khonapolitSend').click();
    }else await page.locator('#khonapolitSend').click();
 
-   await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
+   try {
+    await page.locator('#marrowlineChatKinesis').waitFor({state:'visible'});
+   } catch (error) {
+    const diagnostic=await page.evaluate(()=>{
+     const status=document.querySelector('#khonapolitTerminalStatus');
+     const kinesis=document.querySelector('#marrowlineChatKinesis');
+     const form=document.querySelector('#khonapolitForm');
+     const prompt=document.querySelector('#khonapolitPrompt');
+     const send=document.querySelector('#khonapolitSend');
+     return {status:status?.textContent,phase:status?.dataset.phase,held:status?.dataset.held,
+      kinesisPresent:Boolean(kinesis),kinesisHidden:kinesis?.hidden,kinesisVisibility:kinesis?getComputedStyle(kinesis).visibility:null,
+      formBusy:form?.getAttribute('aria-busy'),promptValue:prompt?.value,sendDisabled:send?.disabled,
+      keyboardVisible:document.body.dataset.keyboardVisible,formValidity:form?.checkValidity()};
+    });
+    throw new Error(`Marrowline pending-kinesis witness failed; posture=${posture}, posts=${posts}, diagnostic=${JSON.stringify(diagnostic)}; ${error.message}`);
+   }
    assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
    assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
    assert.match(await page.locator('#marrowlineChatKinesis').textContent(),/Listening at the shoreline/);
