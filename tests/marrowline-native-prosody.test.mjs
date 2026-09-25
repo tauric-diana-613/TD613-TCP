@@ -53,7 +53,7 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, packet.message);
   assert.match(last.parts[1].text, /crowns ABOVE and roots BELOW the letters/);
-  assert.match(last.parts[1].text, /Local repetition and playful patterned speech are welcome/);
+  assert.match(last.parts[1].text, /Local repetition and patterned play are welcome/);
   assert.match(last.parts[1].text, /sometimes simultaneously deep and asymmetric enough to cross adjacent lines/);
   assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /single-accent and patterned interludes are welcome too/);
@@ -252,6 +252,6 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     assert.match(cue, /Anger may change what she says; it never authorizes or withholds her alphabet/);
     assert.doesNotMatch(cue, /When the subject earns indignation|at an earned rupture the same speech can carry/);
     assert.doesNotMatch(cue + shared, /marks.per.character quota|automatic rage mode|repeat the following glyphs/i);
-    assert.doesNotMatch(cue + shared, /[\\u0300-\\u036f]/u, 'do not introduce a fixed sample as the provider vocabulary');
+    assert.doesNotMatch(cue + shared, /\p{M}/u, 'do not introduce a fixed mark specimen into provider guidance');
   }
 });
