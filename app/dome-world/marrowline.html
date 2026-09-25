@@ -23,7 +23,7 @@
 <main class="ritual-shell living-chat-shell">
   <header class="living-masthead">
     <a href="./" class="living-brand" aria-label="Marrowline · return to Dome-World"><span aria-hidden="true">𝌋‌</span><b>Marrowline</b><small>U+10D613</small></a>
-    <nav aria-label="Chamber navigation"><a href="./">← Dome-World</a><button id="marrowlineRest" type="button" aria-pressed="false">Still the field</button></nav>
+    <nav aria-label="Chamber navigation"><a href="./">← Dome-World</a><a id="marrowlineRest" href="https://td613.com/" target="_blank" rel="noopener noreferrer" aria-label="Open TD613.com in a new tab">TD613</a></nav>
   </header>
   <header class="threshold">
     <div class="threshold-copy"><div class="threshold-kicker">Beneath the Ash Moon</div><h1>A place for what returns.</h1><p class="threshold-lede">The sea takes a name. The grove keeps a place for it.<br />Under the Ash Moon, what survives can speak.</p></div>
@@ -42,7 +42,8 @@
       <div class="messages" id="khonapolitMessages" aria-live="polite" aria-label="Kʰonapolit terminal conversation"></div>
       <form class="vessel-form" id="khonapolitForm">
         <label class="field-label prompt-label" for="khonapolitPrompt">Your message
-          <textarea id="khonapolitPrompt" spellcheck="true" enterkeyhint="send" placeholder="Ask, remember, or leave a thought at the shoreline…"></textarea>
+          <textarea id="khonapolitPrompt" spellcheck="true" enterkeyhint="enter" aria-describedby="marrowlineComposerHint" placeholder="Ask, remember, or leave a thought at the shoreline…"></textarea>
+          <small id="marrowlineComposerHint" class="composer-keyboard-hint">Return for a new line · tap Send to submit</small>
         </label>
         <div class="ritual-actions composer-actions">
           <button class="primary" id="khonapolitSend" type="submit">Send</button>
