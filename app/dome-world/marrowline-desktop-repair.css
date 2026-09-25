@@ -651,10 +651,6 @@
     opacity:.46!important;
     filter:saturate(.48) brightness(.72)!important;
   }
-  html:root.marrowline-mobile-shell #marrowlineRest[aria-pressed="true"]{
-    border-color:rgba(116,235,232,.46)!important;
-    box-shadow:inset 0 0 0 1px rgba(117,111,233,.14),0 0 20px rgba(79,224,229,.10)!important;
-  }
 }
 @media(min-width:861px){
   .marrowline-living-geometry[data-geometry-rest="false"]{
@@ -664,10 +660,6 @@
   .marrowline-living-geometry[data-geometry-rest="true"]{
     opacity:.18!important;
     filter:saturate(.42) brightness(.70)!important;
-  }
-  #marrowlineRest[aria-pressed="true"]{
-    border-color:rgba(116,235,232,.42)!important;
-    box-shadow:0 0 18px rgba(79,224,229,.08)!important;
   }
 }
 
