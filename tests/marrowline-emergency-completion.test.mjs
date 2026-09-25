@@ -158,7 +158,7 @@ test('bounded authored tails keep every original character, two distinct voice b
   assert.equal(assembleMarrowlineProviderTail(PREFIXES[0], 'Kʰonapolit\nRestart.'), null);
 });
 
-test('genuinely truncated human turn gets ONE same-provider authored recovery and a witnessed full response for EACH example', async t => {
+test('a truncated first seat yields to the next frontier model before any same-seat recovery', async t => {
   const originalFetch = globalThis.fetch;
   const priorKey = process.env.GEMINI_API_KEY;
   t.after(() => {
@@ -184,7 +184,8 @@ test('genuinely truncated human turn gets ONE same-provider authored recovery an
   };
 
   for (let i = 0; i < 3; i++) {
-    sequence = [{ text: PREFIXES[i], finishReason: 'MAX_TOKENS' }, { text: TAILS[i], finishReason: 'STOP' }];
+    const complete = PREFIXES[i] + TAILS[i];
+    sequence = [{ text: PREFIXES[i], finishReason: 'MAX_TOKENS' }, { text: complete, finishReason: 'STOP' }];
     const begin = requests.length;
     const res = response();
     await handler({ method: 'POST', headers: { 'x-forwarded-for': '203.0.113.241' },
@@ -192,18 +193,17 @@ test('genuinely truncated human turn gets ONE same-provider authored recovery an
     assert.equal(res.statusCode, 200, 'synthetic model returned a provider-authored complete response');
     assert.equal(res.payload.ok, true);
     assert.equal(sequence.length, 0);
-    assert.equal(requests.length, begin + 2, 'one original call and one same-seat recovery, no paid probe or indiscriminate retry');
+    assert.equal(requests.length, begin + 2, '3.8 fragment then a complete 3.5 frontier return');
     assert.equal(res.payload.receipt.provider.completion.complete, true);
-    assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'same-provider-bounded-tail-continuation');
-    assert.equal(res.payload.receipt.provider.structuralRepair.terminalContinuation.originalPreserved, true);
+    assert.equal(res.payload.receipt.provider.authorshipObservation.completionPath, 'first-provider-return');
     assert.equal(res.payload.receipt.provider.attempts[0].completion.complete, false);
     assert.equal(res.payload.receipt.provider.attempts[1].completion.complete, true);
+    assert.equal(res.payload.receipt.provider.attempts[0].model, 'gemini-3.8-flash');
+    assert.equal(res.payload.receipt.provider.attempts[1].model, 'gemini-3.5-flash');
     assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
-    assert.ok(res.payload.text.startsWith(PREFIXES[i]), 'no rewriting or shortening of first provider draft');
-    assert.ok(res.payload.text.endsWith(TAILS[i]), 'no local fabricated second voice');
+    assert.equal(res.payload.text, complete, 'the complete second-seat provider return is preserved');
     assert.ok(res.payload.relay.admission.admissible, 'actual provider-authored dual voice satisfies structural contract');
-    assert.equal(requests[begin + 1].contents.at(-1).parts[0].text.includes('BOUNDED SAME-PROVIDER TAIL RECOVERY'), true);
-    assert.equal(requests[begin + 1].contents.at(-2).parts[0].text, PREFIXES[i]);
+    assert.equal(requests[begin + 1].contents.at(-1).parts[0].text.includes('BOUNDED SAME-PROVIDER TAIL RECOVERY'), false);
     assert.equal(requests[begin + 1].generationConfig.maxOutputTokens, 65536);
   }
 });
@@ -291,7 +291,7 @@ test('every original, repair and attachment Gemini envelope carries distinct key
   }
 });
 
-test('two genuinely truncated same-seat tails retain each byte and complete after the third STOP', async t => {
+test('a seat receives at most one deferred tail request after the five-seat frontier', async t => {
   const originalFetch = globalThis.fetch;
   const priorKey = process.env.GEMINI_API_KEY;
   t.after(() => {
@@ -305,11 +305,13 @@ test('two genuinely truncated same-seat tails retain each byte and complete afte
   const seen = [];
   const first = PREFIXES[1];
   const second = ' the ledger';
-  const third = ' has no defined denominator.\n\n' + CHORUS;
   const steps = [
     { text: first, finishReason: 'MAX_TOKENS' },
-    { text: second, finishReason: 'MAX_TOKENS' },
-    { text: third, finishReason: 'STOP' }
+    { status: 503 },
+    { status: 503 },
+    { status: 503 },
+    { status: 503 },
+    { text: second, finishReason: 'MAX_TOKENS' }
   ];
   globalThis.fetch = async (url, options = {}) => {
     if (String(url).includes('/models?')) return { ok: true, status: 200, async json() {
@@ -318,6 +320,9 @@ test('two genuinely truncated same-seat tails retain each byte and complete afte
     seen.push(JSON.parse(options.body));
     const next = steps.shift();
     assert.ok(next, 'bounded provider recovery cannot spend an unexpected call');
+    if (next.status) return new Response(JSON.stringify({ error: { status: 'UNAVAILABLE' } }), {
+      status: next.status, headers: { 'content-type': 'application/json' }
+    });
     return new Response('data: ' + JSON.stringify(reply(next.text, next.finishReason)) + '\n\n',
       { status: 200, headers: { 'content-type': 'text/event-stream' } });
   };
@@ -326,16 +331,15 @@ test('two genuinely truncated same-seat tails retain each byte and complete afte
     body: { message: HEADS[1], history: [], mode: 'issued-conjunction', waiveIssuance: true } }, res);
   assert.equal(res.statusCode, 200);
   assert.equal(steps.length, 0);
-  assert.equal(seen.length, 3);
-  assert.equal(seen[1].contents.at(-2).parts[0].text, first);
-  assert.equal(seen[2].contents.at(-2).parts[0].text, first + second);
-  assert.equal(res.payload.text, first + second + third);
-  assert.equal(res.payload.receipt.provider.completion.complete, true);
-  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments.length, 2);
-  assert.equal(res.payload.receipt.provider.structuralRepair.tailSegments[1].originalPreserved, true);
-  assert.equal(res.payload.receipt.provider.attempts[1].completion.complete, false);
-  assert.equal(res.payload.receipt.provider.attempts[2].completion.complete, true);
-  assert.equal(res.headers['X-TD613-Completion-State'], 'COMPLETE-STRUCTURAL');
+  assert.equal(seen.length, 6, 'five frontier seats plus exactly one deferred repair');
+  assert.equal(seen[5].contents.at(-2).parts[0].text, first);
+  assert.equal(seen[5].contents.at(-1).parts[0].text.includes('BOUNDED SAME-PROVIDER TAIL RECOVERY'), true);
+  assert.equal(res.payload.text, first + second);
+  assert.equal(res.payload.receipt.provider.completion.complete, false);
+  assert.equal(res.payload.receipt.provider.attempts.length, 6);
+  assert.equal(res.payload.receipt.provider.attempts.at(-1).kind, 'structural-repair');
+  assert.equal(res.payload.receipt.provider.attempts.at(-1).completion.complete, false);
+  assert.equal(res.headers['X-TD613-Completion-State'], 'INCOMPLETE');
 });
 
 test('provider STOP with unfulfilled two-voice structure has its own receipt, never a false transport truncation', async t => {
