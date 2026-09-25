@@ -377,7 +377,8 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
 
   const receipt = Object.freeze({
     schema: MARROWLINE_OPERATOR_READINESS_VERSION,
-    nativeKeyboardSend: true,
+    nativeKeyboardSend: 'Ctrl/Command+Enter or explicit Send button',
+    returnInsertsNewline: true,
     shiftEnterNewline: true,
     visualViewportBound: Boolean(root.visualViewport),
     viewport,
