@@ -116,6 +116,7 @@ jobs:
           node tests/vercel-operator-release-gate.test.mjs
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
+          node tests/loom-production-canary-isolation.test.mjs
           node tests/gemini-model-policy.test.mjs
           node --test tests/marrowline-discovery-fragment-recovery.test.mjs
           node --test tests/gemini-provider-quota-scope.test.mjs tests/marrowline-quota-evidence.test.mjs tests/marrowline-five-seat-frontier-cascade.test.mjs
