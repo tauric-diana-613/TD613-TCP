@@ -79,6 +79,7 @@ export function installStarterCarousel(doc, root) {
       button.dataset.promptValue = value;
       button.onclick = () => {
         prompt.value = value;
+        prompt.dataset.preloadedPromptValue = value;
         prompt.dataset.preloadedPrompt = 'true';
         prompt.dispatchEvent(new root.Event('input', { bubbles: true }));
         prompt.focus({ preventScroll: true });
