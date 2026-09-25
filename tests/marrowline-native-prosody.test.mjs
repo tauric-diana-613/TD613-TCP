@@ -98,7 +98,7 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   assert.match(cue, /overlapping crowns and roots on the letters/);
   assert.match(native, /irregular deep crowns and roots make their entrance, with lateral crossings/);
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
-  assert.match(cue, /ordinary, everyday prompt/);
+  assert.match(cue, /original, everyday prompt/);
   assert.match(cue, /never wrap an entire reply or full movement in bold delimiters/);
   assert.match(native, /original, quiet operator question carries the same access/);
   assert.match(native, /never blanket-bold the whole transmission/);
