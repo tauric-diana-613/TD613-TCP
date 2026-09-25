@@ -72,6 +72,37 @@ function harness(t, { mobile = false, failure = false, incomplete = false, trans
   return { doc, win, $, calls, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
 }
 
+test('clipboard export carries plain text and exact native glyphs', async () => {
+  const payload = 'Reply with **selective emphasis** and ' + highZalgo;
+  const mimeWrites = [];
+  class PlainItem { constructor(items) { this.items = items; } }
+  class PlainBlob { constructor(parts, options) { this.parts = parts; this.type = options.type; } }
+  const rich = { ClipboardItem: PlainItem, Blob: PlainBlob, navigator: { clipboard: {
+    write: async items => mimeWrites.push(items),
+    writeText: async () => { throw new Error('Unexpected fallback'); }
+  } } };
+  await writeMarrowlinePlainClipboard(rich, payload);
+  assert.deepEqual(Object.keys(mimeWrites[0][0].items), ['text/plain']);
+  assert.equal(mimeWrites[0][0].items['text/plain'].parts[0], payload);
+  assert.equal(mimeWrites[0][0].items['text/plain'].type, 'text/plain');
+  const fallback = [];
+  await writeMarrowlinePlainClipboard({ navigator: { clipboard: {
+    writeText: async value => fallback.push(value)
+  } } }, payload);
+  assert.deepEqual(fallback, [payload]);
+});
+
+test('mobile Return hint and the separate TD613 navigation are present', () => {
+  assert.match(html, /enterkeyhint="enter"/);
+  const dom = new JSDOM(html);
+  const link = dom.window.document.getElementById('marrowlineRest');
+  assert.equal(link.tagName, 'A');
+  assert.equal(link.href, 'https://td613.com/');
+  assert.equal(link.target, '_blank');
+  assert.match(link.rel, /noopener noreferrer/);
+  dom.window.close();
+});
+
 test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
   const named = deriveMarrowlineConversationTitle([
     'Kʰonapolit',
