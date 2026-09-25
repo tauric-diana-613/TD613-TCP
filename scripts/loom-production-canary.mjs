@@ -178,6 +178,15 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
       admission: attempt?.outputAdmission?.admissible === true ? 'PASS' : attempt?.outputAdmission?.admissible === false ? 'HELD' : null,
       admission_reasons: boundedAdmissionReasons(attempt?.outputAdmission?.reasons),
       rate_limit: boundedRateLimit(attempt?.rateLimit),
+      // Preserve the observed reason a paid 200 needed another provider call.
+      // Transport completion is separate from local literary/relay quality.
+      completion: attempt?.completion && typeof attempt.completion === 'object' ? {
+        complete: attempt.completion.complete === true,
+        reason: typeof attempt.completion.reason === 'string' && /^[a-z0-9-]{1,96}$/.test(attempt.completion.reason)
+          ? attempt.completion.reason : null,
+        finish_reason: typeof attempt.completion.finishReason === 'string' && /^[A-Z_]{1,64}$/.test(attempt.completion.finishReason)
+          ? attempt.completion.finishReason : null
+      } : null,
       provider_stream: attempt?.providerStream && typeof attempt.providerStream === 'object'
         ? {
             requested: attempt.providerStream.requested === true,
@@ -185,7 +194,13 @@ const boundedMarrowlineAttempts = value => Array.isArray(value)
             first_chunk_ms: boundedCount(attempt.providerStream.firstChunkMs),
             chunk_count: boundedCount(attempt.providerStream.chunkCount),
             byte_count: boundedCount(attempt.providerStream.byteCount),
-            parse_errors: boundedCount(attempt.providerStream.parseErrors)
+            parse_errors: boundedCount(attempt.providerStream.parseErrors),
+            authored_text_chunk_count: boundedCount(attempt.providerStream.authoredTextChunkCount),
+            stream_grace_ms: boundedCount(attempt.providerStream.streamGraceMs),
+            interrupted: attempt.providerStream.interrupted === true,
+            interruption_class: typeof attempt.providerStream.interruptionClass === 'string'
+              && /^[A-Za-z_]{1,64}$/.test(attempt.providerStream.interruptionClass)
+              ? attempt.providerStream.interruptionClass : null
           }
         : null
     }))
