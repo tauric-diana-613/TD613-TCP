@@ -87,6 +87,7 @@ try{
    await page.screenshot({path:path.join(dir,`${posture}-welcome.png`)});
    await page.locator('.starter-prompts button').first().click();
    assert.equal(posts,0,'starter fills without sending');
+   assert.equal(await page.locator('#khonapolitPrompt').getAttribute('data-preloaded-prompt'),'true','untouched starter retains first-tap affordance');
    if(posture.startsWith('mobile'))assert.equal(await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').getAttribute('data-active'),'true','mobile speaking view is already active');
 
    if(posture.startsWith('mobile')){
@@ -100,6 +101,7 @@ try{
     });
    }
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC UI TEST: return the supplied Unicode fixture.');
+   assert.equal(await page.locator('#khonapolitPrompt').getAttribute('data-preloaded-prompt'),null,'editing a starter releases its first-tap interception');
    if(posture.startsWith('mobile')){
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='true');
     const keyboardLayout=await page.evaluate(()=>{
