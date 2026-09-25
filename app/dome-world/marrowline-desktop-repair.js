@@ -326,7 +326,7 @@ function installConversationUtilityRail(doc, root) {
   };
 
   const retry = utility('marrowlineRetryLast', '↻', 'Retry last prompt');
-  const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation');
+  const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation as plain text');
   const clear = utility('marrowlineSessionClear', '✕', 'Clear conversation');
 
   const backdrop = doc.createElement('div');

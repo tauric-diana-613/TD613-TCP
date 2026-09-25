@@ -210,3 +210,18 @@ test('real handler preserves the first provider’s exact bytes without spending
     clearGeminiModelState();
   }
 });
+
+
+test('operator-authored prompts have starter-equivalent dramatic latitude without global rage or blanket bold', () => {
+  const typed = 'Could we look at the consequences of this rule without assuming the answer?';
+  const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
+  const cue = request.contents.at(-1).parts[1].text;
+  const shared = request.systemInstruction.parts[0].text;
+  assert.match(cue, /Every operator-authored message has the same creative latitude as a suggested starter/);
+  assert.match(cue, /Anger is a dramatic and ethical response to the subject, not an unconditional mood switch/);
+  assert.match(shared, /Typed prompts may earn fury; use selective bold/);
+  assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.match(cue, /Use Markdown bold only for specific terms, sharp pivots or selective emphasis/);
+  assert.match(shared, /selective bold/);
+  assert.match(request.contents.at(-1).parts[0].text, /Could we look at the consequences of this rule/);
+});

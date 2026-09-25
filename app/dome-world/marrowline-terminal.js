@@ -911,8 +911,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {
       await root.navigator.clipboard.writeText(transcriptText(state.messages));
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED · relay anatomy and seal provenance preserved';
-      showEphemeralNotice(doc, root, 'Copied!');
+      byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED AS PLAIN TEXT · relay anatomy and seal provenance preserved';
+      showEphemeralNotice(doc, root, 'Copied as plain text');
     } catch {
       byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
     }

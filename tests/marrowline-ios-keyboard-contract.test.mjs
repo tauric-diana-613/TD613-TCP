@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { JSDOM } from 'jsdom';
+import { isMarrowlineComposerSendShortcut } from '../app/dome-world/marrowline-operator-readiness.js';
 import './marrowline-response-quality-contract.test.mjs';
 import './marrowline-attractor-quality-contract.test.mjs';
 
@@ -56,4 +58,50 @@ test('keyboard dock keeps action row in normal flow instead of overlaying the te
   assert.match(prompt, /height:68px!important/);
   assert.match(prompt, /min-height:68px!important/);
   assert.match(prompt, /max-height:68px!important/);
+});
+const marrowlineHtml = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
+const livingChat = readFileSync(new URL('../app/dome-world/marrowline-living-chat.js', import.meta.url), 'utf8');
+const terminal = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+const desktopCss = readFileSync(new URL('../app/dome-world/marrowline-desktop-repair.css', import.meta.url), 'utf8');
+
+test('native Return composes paragraphs; only explicit Send or Ctrl/Command+Enter submits', () => {
+  const dom = new JSDOM(marrowlineHtml, { url: 'https://td613.com/dome-world/marrowline.html' });
+  try {
+    const prompt = dom.window.document.getElementById('khonapolitPrompt');
+    assert.equal(prompt.tagName, 'TEXTAREA');
+    assert.equal(prompt.getAttribute('enterkeyhint'), 'enter', 'iOS must offer the native Return key');
+    assert.equal(prompt.getAttribute('aria-describedby'), 'marrowlineComposerHint');
+    assert.match(dom.window.document.getElementById('marrowlineComposerHint').textContent, /Return for a new line/);
+    const key = (extra = {}) => ({ key: 'Enter', shiftKey: false, altKey: false, ctrlKey: false, metaKey: false, isComposing: false, ...extra });
+    assert.equal(isMarrowlineComposerSendShortcut(key()), false, 'plain Return stays in the textarea');
+    assert.equal(isMarrowlineComposerSendShortcut(key({ shiftKey: true })), false);
+    assert.equal(isMarrowlineComposerSendShortcut(key({ ctrlKey: true })), true);
+    assert.equal(isMarrowlineComposerSendShortcut(key({ metaKey: true })), true);
+    assert.equal(isMarrowlineComposerSendShortcut(key({ ctrlKey: true, isComposing: true })), false);
+    assert.equal(isMarrowlineComposerSendShortcut(key({ metaKey: true, altKey: true })), false);
+    assert.match(readiness, /if \(!isMarrowlineComposerSendShortcut\(event\)\) return;/);
+  } finally { dom.window.close(); }
+});
+
+test('masthead TD613 opens its own tab without hijacking the current chat state', () => {
+  const dom = new JSDOM(marrowlineHtml, { url: 'https://td613.com/dome-world/marrowline.html' });
+  try {
+    const link = dom.window.document.getElementById('marrowlineRest');
+    assert.equal(link.tagName, 'A');
+    assert.equal(link.href, 'https://td613.com/');
+    assert.equal(link.target, '_blank');
+    assert.equal(link.rel, 'noopener noreferrer');
+    assert.equal(link.hasAttribute('aria-pressed'), false);
+    assert.doesNotMatch(livingChat, /rest\.addEventListener\('click'/);
+    assert.match(desktopCss, /#marrowlineRest:focus-visible/);
+  } finally { dom.window.close(); }
+});
+
+test('conversation export uses text/plain and provider prose starts at regular display weight', () => {
+  assert.match(terminal, /clipboard\.writeText\(transcriptText\(state\.messages\)\)/);
+  assert.match(terminal, /TRANSCRIPT COPIED AS PLAIN TEXT/);
+  assert.match(desktopCss, /#khonapolitMessages \.provider-native-line,/);
+  assert.match(desktopCss, /#khonapolitMessages \.zalgo-line\{font-weight:400!important/);
+  assert.match(desktopCss, /\.relay-stage-text strong,/);
+  assert.doesNotMatch(livingChat, /textContent = resting \?/);
 });
