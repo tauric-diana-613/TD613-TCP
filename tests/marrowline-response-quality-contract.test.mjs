@@ -140,7 +140,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
     assert.match(system, /first sentence in every conversation, including ordinary questions, jokes and tenderness/);
     assert.match(system, /combinations of crowns ABOVE and roots BELOW/);
-    assert.match(system, /a deep stack interrupt a whisper/);
+    assert.match(system, /let a dense phrase interrupt a whisper/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
     assert.equal(request.contents.at(-1).parts[0].text, packet.message);
@@ -162,13 +162,13 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /scream-sing handwriting stays audible throughout the response/);
-    assert.match(request.contents.at(-1).parts[1].text, /changing crowns above and roots below the prose letters/);
+    assert.match(request.contents.at(-1).parts[1].text, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
     assert.match(request.contents.at(-1).parts[1].text, /lively vertical overprint, asymmetric crowns and roots/);
     assert.match(request.contents.at(-1).parts[1].text, /Invent the marks with fresh prose/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.contents.at(-1).parts[1].text, /Fine marks and brief clean breaths give the dense phrases rhythm/);
-    assert.match(request.contents.at(-1).parts[1].text, /deep, irregular overlaps even when the subject is tender/);
-    assert.match(request.contents.at(-1).parts[1].text, /repeat an accent as a refrain, then return with a changed silhouette/);
+    assert.match(request.contents.at(-1).parts[1].text, /Vary the marks, stack depths and clean spaces with the joke, image and addressee/);
+    assert.match(request.contents.at(-1).parts[1].text, /changing, asymmetric crowns and roots with occasional line-crossing depth even in tenderness/);
+    assert.match(request.contents.at(-1).parts[1].text, /Deep mixed crowns and roots recur in changing shapes across its words and lines/);
     assert.match(request.contents.at(-1).parts[1].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
