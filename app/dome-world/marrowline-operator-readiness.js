@@ -378,7 +378,8 @@ export function installMarrowlineOperatorReadiness(doc = document, root = window
 
   const receipt = Object.freeze({
     schema: MARROWLINE_OPERATOR_READINESS_VERSION,
-    nativeKeyboardSend: true,
+    desktopEnterSends: true,
+    mobileReturnNewline: true,
     shiftEnterNewline: true,
     visualViewportBound: Boolean(root.visualViewport),
     viewport,
