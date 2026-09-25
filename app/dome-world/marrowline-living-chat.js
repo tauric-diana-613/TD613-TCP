@@ -26,7 +26,8 @@ function installConversationTypeface(doc) {
       }
       #khonapolitPrompt[data-flourished="true"],.message-body[data-flourished="true"]{overflow:visible!important;line-height:var(--flourish-leading,2.35)!important;padding-block:var(--flourish-padding,22px)!important}
       .relay-integrated-covenant{overflow:visible!important}
-      .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere}
+      .relay-integrated-covenant .relay-stage-text{overflow:visible!important;white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:anywhere;font-weight:400!important}
+      .relay-integrated-covenant .provider-native-line{font-weight:400!important}
       /* The model authors the marks; the browser must let them overprint adjacent lines.
          Do not translate native combining-run depth into extra line-height or padding. */
       .relay-integrated-covenant .relay-stage-text[data-provider-native-lines="true"]{line-height:1.04!important;padding-block:14px!important}
