@@ -231,6 +231,7 @@ function installPreloadedFirstTapSubmit(doc = document, root = window) {
     if (!mobile || !touchLike || prompt.dataset.preloadedPrompt !== 'true' || doc.activeElement !== prompt || send.disabled || form.getAttribute('aria-busy') === 'true') return;
     event.preventDefault();
     delete prompt.dataset.preloadedPrompt;
+    delete prompt.dataset.preloadedPromptValue;
     suppressCompatibilityClick = true;
     if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
     suppressionTimer = root.setTimeout?.(clearSuppression, 900) ?? null;
