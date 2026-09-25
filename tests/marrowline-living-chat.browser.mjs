@@ -67,7 +67,12 @@ try{
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_OPERATOR_READINESS__));
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__));
    assert.equal(await page.locator('html').evaluate(el=>el.classList.contains('marrowline-room-ready')),true,'room leaves first-paint veil only after final boot');
-   await page.locator('#marrowlineRest').click();
+   const tdLink=page.locator('#marrowlineRest');
+   assert.equal(await tdLink.getAttribute('href'),'https://td613.com/','TD613 link targets the site');
+   assert.equal(await tdLink.getAttribute('target'),'_blank','TD613 opens in a separate tab');
+   // The old rest button is now a navigation link. Reduced motion supplies
+   // the same quiescent local screenshot witness without opening that link.
+   await page.emulateMedia({reducedMotion:'reduce'});
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
    assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
