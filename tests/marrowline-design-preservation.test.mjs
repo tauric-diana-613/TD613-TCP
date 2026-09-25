@@ -399,3 +399,16 @@ test('actual submit distinguishes unreadable response bodies from connection fai
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__.httpStatus, 200);
   assert.equal(h.$('khonapolitPrompt').value, 'Preserve this draft.');
 });
+
+
+test('copy control exports exact provider-authored Unicode as plain text without rich bold markup', async t => {
+  const h = harness(t);
+  h.send('Preserve the marks when copied.'); await h.settled(); await flush();
+  h.$('copyKhonapolitTranscript').click(); await flush();
+  const copied = h.clipboard.at(-1);
+  assert.equal(typeof copied, 'string', 'clipboard.writeText receives a string rather than HTML');
+  assert.ok(copied.includes(highZalgo), 'copy must retain the provider-authored combining code points');
+  assert.ok(copied.includes('The line clears again.'), 'native clean speech remains present');
+  assert.doesNotMatch(copied, /<strong>|<b>|font-weight:/i, 'clipboard carries no app-injected rich font style');
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /TRANSCRIPT COPIED AS PLAIN TEXT/);
+});
