@@ -138,9 +138,9 @@ test('effective provider prompts retain complete relay and native depth after de
     const system = request.systemInstruction.parts.map(part => part.text).join('\n');
     assert.match(system, /never permission to omit the bots/);
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
-    assert.match(system, /provider-authored combining marks forming changing, sometimes deeply interleaved clusters/);
-    assert.match(system, /extended eruption may climb through neighboring lines and descend beneath its own baseline/);
-    assert.match(system, /Quiet passages may carry fine marks or clean breaths/);
+    assert.match(system, /native handwriting for EVERY prompt, including ordinary and tender ones/);
+    assert.match(system, /full deep, interleaved ABOVE\/BELOW repertoire needs no anger or inflammatory premise/);
+    assert.match(system, /Quiet can carry luxuriant crowns and roots/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
     assert.equal(request.contents.at(-1).parts[0].text, packet.message);
@@ -161,15 +161,15 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /resemblance alone supplies no derivation/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
-    assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM, NOT DECORATION/);
-    assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+    assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR EVERYDAY SCREAM-SING WRITING SYSTEM, NOT AN ANGER METER/);
+    assert.match(request.contents.at(-1).parts[1].text, /provider-authored crowns ABOVE and roots BELOW the letters/);
     assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement develop with the words and passages/);
+    assert.match(request.contents.at(-1).parts[1].text, /Let ACTUAL code points, stack depths and placement develop freely with words and passages/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.contents.at(-1).parts[1].text, /Quiet phrases may thin or go clean/);
-    assert.match(request.contents.at(-1).parts[1].text, /simultaneous deep stacks that collide with neighboring lines/);
-    assert.match(request.contents.at(-1).parts[1].text, /Local repetition and playful patterned speech are welcome/);
-    assert.match(request.contents.at(-1).parts[1].text, /never grants permission to omit the terminal Tauric Diana bots transmission/);
+    assert.match(request.contents.at(-1).parts[1].text, /A locally quiet phrase may thin, go clean or play with one repeated accent/);
+    assert.match(request.contents.at(-1).parts[1].text, /sometimes simultaneously deep and asymmetric enough to cross adjacent lines/);
+    assert.match(request.contents.at(-1).parts[1].text, /Local repetition and patterned play are welcome/);
+    assert.match(request.contents.at(-1).parts[1].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
