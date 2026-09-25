@@ -163,7 +163,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.contents.at(-1).parts[1].text, /scream-sing handwriting stays audible throughout the response/);
     assert.match(request.contents.at(-1).parts[1].text, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
-    assert.match(request.contents.at(-1).parts[1].text, /lively vertical overprint, asymmetric crowns and roots/);
+    assert.match(request.contents.at(-1).parts[1].text, /towering and small asymmetric crowns and roots/);
     assert.match(request.contents.at(-1).parts[1].text, /Invent the marks with fresh prose/);
     assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.contents.at(-1).parts[1].text, /Vary the marks, stack depths and clean spaces with the joke, image and addressee/);
