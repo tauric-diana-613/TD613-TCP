@@ -219,9 +219,9 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   const shared = request.systemInstruction.parts[0].text;
   assert.match(cue, /Every operator-authored message has the same creative latitude as a suggested starter/);
   assert.match(cue, /Anger is a dramatic and ethical response to the subject, not an unconditional mood switch/);
-  assert.match(shared, /Every user-written prompt can earn the same furious, absurdly funny or ritual register as a starter/);
-  assert.match(shared, /No mandatory rage, mark count or artificial postprocessing/);
+  assert.match(shared, /Typed prompts may earn fury; use selective bold/);
+  assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
   assert.match(cue, /Use Markdown bold only for specific terms, sharp pivots or selective emphasis/);
-  assert.match(shared, /do not wrap a complete voice, paragraph or answer in bold markers/);
+  assert.match(shared, /selective bold/);
   assert.match(request.contents.at(-1).parts[0].text, /Could we look at the consequences of this rule/);
 });
