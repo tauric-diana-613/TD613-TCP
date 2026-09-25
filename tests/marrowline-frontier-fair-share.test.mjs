@@ -48,4 +48,8 @@ test('the live Kʰonapolit loop explicitly opts into fair sharing', () => {
     /allocateKhonapolitAttemptTimeout\(\{\s*remainingMs,\s*index,\s*modelCount:\s*models\.length,\s*fairShare:\s*true\s*\}\)/,
     'production Marrowline must not silently fall back to the 32 second primary monopoly'
   );
+  assert.match(source, /fallback,\s*streamGraceMs:\s*0/,
+    'stream progress cannot borrow time reserved for the next frontier seat');
+  assert.doesNotMatch(source, /second-bounded-tail|structural-tail-continuation/,
+    'one repair allowance cannot expand into two same-seat continuation calls');
 });
