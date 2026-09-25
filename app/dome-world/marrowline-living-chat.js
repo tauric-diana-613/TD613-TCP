@@ -149,13 +149,8 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     if (phase !== lastPhase) { lastPhase = phase; geometry?.update({ phase }); }
   });
   if (status) statusObserver.observe(status, { childList: true, characterData: true, subtree: true });
-  const rest = doc.getElementById('marrowlineRest');
-  rest?.addEventListener('click', () => {
-    const resting = rest.getAttribute('aria-pressed') !== 'true';
-    rest.setAttribute('aria-pressed', String(resting));
-    rest.textContent = resting ? 'Let the field move' : 'Still the field';
-    geometry?.update({ rest: resting });
-  });
+  // The masthead now links to TD613 in a separate tab. Keep the current
+  // conversation and animation state untouched when that link is activated.
   const onView = event => geometry?.update({ view: event.detail?.view || 'speak' });
   environment.addEventListener('td613:marrowline:mobile-view', onView);
   const importObserver = new environment.MutationObserver(() => geometry?.setVisible(doc.documentElement.dataset.loomTaskImport !== 'active'));
