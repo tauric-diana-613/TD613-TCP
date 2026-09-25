@@ -1084,7 +1084,7 @@ export default async function handler(req, res) {
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
       fallback,
       structuralRepair: { heldText, reasons },
-      streamGraceMs: 15000, wallDeadlineAt: providerWallDeadlineAt
+      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1149,9 +1149,9 @@ export default async function handler(req, res) {
     const tailSegments = [];
     let tailChainStarted = false;
 
-    // If the first authored suffix is itself truncated, preserve it as part
-    // of the human-visible fallback. A second bounded same-seat continuation
-    // receives the actual accumulated prefix; it never starts the task over.
+    // If the one authored suffix is itself truncated, preserve it as part of
+    // the human-visible fallback. The route-wide repair allowance is exactly
+    // one provider request; a single seat may not consume the later frontier.
     if (tailOnly && repairResult.response.ok && repairResult.text) {
       const firstAssembly = assembleMarrowlineProviderTail(heldText, repairResult.text);
       if (firstAssembly) {
@@ -1180,93 +1180,6 @@ export default async function handler(req, res) {
               : firstCompletion,
             reasons: ['provider-return-unfinished', ...(firstRelay.admission?.reasons || [])]
           });
-          const secondRemainingMs = WALL_TIMEOUT_MS - (Date.now() - startedAt) - RESPONSE_RESERVE_MS;
-          const secondBudgetMs = Math.min(STRUCTURAL_REPAIR_TIMEOUT_MS, Math.max(0, secondRemainingMs));
-          if (attempts.length < KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
-            && secondBudgetMs >= MIN_STRUCTURAL_REPAIR_BUDGET_MS) {
-            const secondReasons = firstCompletion.complete
-              ? [...(firstRelay.admission?.reasons || [])]
-              : ['provider-return-unfinished', ...(firstRelay.admission?.reasons || [])];
-            const secondStartedAt = Date.now();
-            const secondResult = await callGemini(model, packet, apertureReceipt, secondBudgetMs, {
-              fallback, structuralRepair: { heldText: firstJoined, reasons: secondReasons },
-              streamGraceMs: 15000, wallDeadlineAt: providerWallDeadlineAt
-            });
-            const secondOutput = observeGeminiOutput(secondResult.payload, model, {
-              fallback, submittedGenerationConfig: secondResult.submittedGenerationConfig,
-              submittedRequestObservation: secondResult.submittedRequestObservation
-            });
-            const secondError = secondResult.response.ok ? null : providerError(secondResult.payload);
-            const secondTransport = classifyGeminiTransport({
-              status: Number(secondResult.response.status || 0), timedOut: secondResult.timedOut
-            });
-            const secondRateLimitRaw = Number(secondResult.response.status || 0) === 429
-              ? observeGeminiQuota(secondResult.payload, { model, response: secondResult.response })
-              : null;
-            const secondEntitlement = secondRateLimitRaw?.observed
-              ? assessGeminiQuotaEntitlement(secondRateLimitRaw, { expectedDailyLimit: expectedDailyRpd(), routeModelCount })
-              : null;
-            const secondRateLimit = secondRateLimitRaw
-              ? Object.freeze({ ...secondRateLimitRaw, entitlement: secondEntitlement }) : null;
-            const secondHealthBearing = secondRateLimit?.observed
-              && (secondRateLimit.scope !== 'model' || secondEntitlement?.mismatch === true)
-              ? false : secondTransport.healthBearing;
-            const secondOutcome = recordGeminiModelOutcome(model, {
-              ok: Boolean(secondResult.response.ok), status: Number(secondResult.response.status || 0),
-              timedOut: secondResult.timedOut,
-              retryAfterSeconds: secondRateLimit?.retryAfterSeconds || retryAfterSeconds(secondResult.response),
-              healthBearing: secondHealthBearing, reason: secondError?.status || secondError?.message || ''
-            });
-            const secondAttempt = {
-              model, kind: 'structural-tail-continuation', repairTiming: 'second-bounded-tail',
-              repairOfAttempt: attempts.length - 1, repairReasons: secondReasons,
-              role: plan.rows.find((row) => row.model === model)?.metadata?.role || 'operator-supplied',
-              ok: Boolean(secondResult.response.ok), status: Number(secondResult.response.status || 0),
-              timedOut: secondResult.timedOut, timeoutMs: secondBudgetMs,
-              elapsedMs: Date.now() - secondStartedAt, transportClass: secondTransport.class,
-              providerStream: {
-                requested: true, observed: secondResult.streamed === true,
-                firstChunkMs: Number.isInteger(secondResult.firstChunkMs) ? secondResult.firstChunkMs : null,
-                chunkCount: Number.isInteger(secondResult.chunkCount) ? secondResult.chunkCount : 0,
-                byteCount: Number.isInteger(secondResult.byteCount) ? secondResult.byteCount : 0,
-                parseErrors: Number.isInteger(secondResult.parseErrors) ? secondResult.parseErrors : 0
-              },
-              error: secondError, rateLimit: secondRateLimit, output: secondOutput,
-              cooldown: secondOutcome
-            };
-            attempts.push(secondAttempt);
-            if (secondResult.response.ok && secondResult.text) {
-              const secondAssembly = assembleMarrowlineProviderTail(firstJoined, secondResult.text);
-              if (secondAssembly) {
-                const secondJoined = secondAssembly.text;
-                const secondCompletion = completionOf(secondResult, secondOutput, secondJoined);
-                const secondRelay = parseRelayEnvelope(secondJoined, { model, apertureReceipt });
-                secondAttempt.completion = secondCompletion;
-                secondAttempt.outputAdmission = secondRelay.admission || null;
-                secondAttempt.terminalContinuation = Object.freeze({
-                  source: 'third-provider-return', originalSha256: sha256(firstJoined),
-                  continuationSha256: sha256(secondResult.text),
-                  combinedSha256: sha256(secondJoined), separator: secondAssembly.separator,
-                  originalPreserved: secondJoined.startsWith(firstJoined)
-                });
-                tailSegments.push(secondAttempt.terminalContinuation);
-                if (!secondCompletion.complete || !secondRelay.admission?.admissible) {
-                  incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, {
-                    model, result: { ...secondResult, text: secondJoined }, relay: secondRelay,
-                    providerOutput: secondOutput,
-                    completion: secondCompletion.complete
-                      ? Object.freeze({ ...secondCompletion, complete: false, reason: 'required-voice-structure-incomplete' })
-                      : secondCompletion,
-                    reasons: ['provider-return-unfinished', ...(secondRelay.admission?.reasons || [])]
-                  });
-                }
-                recoveryPrefix = firstJoined;
-                repairResult = secondResult;
-                repairProviderOutput = secondOutput;
-                repairAttempt = secondAttempt;
-              }
-            }
-          }
         }
       }
     }
@@ -1467,7 +1380,10 @@ export default async function handler(req, res) {
     const timeoutMs = allocateKhonapolitAttemptTimeout({ remainingMs, index, modelCount: models.length, fairShare: true });
     const attemptStartedAt = Date.now();
     const result = await callGemini(model, packet, apertureReceipt, timeoutMs, {
-      fallback, streamGraceMs: fallback ? 20000 : 40000,
+      // Fair-share timeouts are hard seat boundaries. Streaming progress is
+      // preserved as a fallback fragment, but cannot silently borrow the next
+      // approved model's completion window.
+      fallback, streamGraceMs: 0,
       wallDeadlineAt: providerWallDeadlineAt
     });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
@@ -1600,9 +1516,12 @@ export default async function handler(req, res) {
           claim_ceiling: packet.claimCeiling });
       }
       incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, { model, result, relay, providerOutput, completion, reasons });
-      const repaired = await runStructuralRepair({ model, fallback, heldText: result.text, reasons,
-        providerOutput, sourceAttemptIndex: attempts.length - 1 }, 'immediate-unfinished-return');
-      if (repaired) return repaired;
+      const candidate = { model, fallback, heldText: result.text, reasons,
+        providerOutput, sourceAttemptIndex: attempts.length - 1 };
+      if (!structuralRepairCandidate
+        || candidate.reasons.length <= structuralRepairCandidate.reasons.length) {
+        structuralRepairCandidate = candidate;
+      }
       // Do not spend a human's full response on a returned fragment merely because
       // Gemini sent 200. Try the remaining approved seats within the same bounded turn.
       continue;
@@ -1661,8 +1580,10 @@ export default async function handler(req, res) {
           };
           incompleteFallback = preferMarrowlineIncompleteReturn(incompleteFallback, { model, result, relay, providerOutput,
             completion: Object.freeze({ ...completion, complete: false, reason: 'required-voice-structure-incomplete' }), reasons });
-          const repaired = await runStructuralRepair(candidate, 'immediate-structural');
-          if (repaired) return repaired;
+          if (!structuralRepairCandidate
+            || candidate.reasons.length <= structuralRepairCandidate.reasons.length) {
+            structuralRepairCandidate = candidate;
+          }
           continue;
         }
         return sendObservedProviderReturn({
