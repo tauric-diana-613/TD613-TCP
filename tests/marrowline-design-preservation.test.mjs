@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
-import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
+import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, installKhonapolitTerminal, writeMarrowlinePlainClipboard } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
