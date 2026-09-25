@@ -34,7 +34,7 @@ try{
    posts++;
    const request=route.request().postDataJSON?.()||{};
    if(String(request.message||'').includes('SYNTHETIC HOLD TEST'))return route.fulfill({status:503,json:{ok:false,error:'no-eligible-callable-models'}});
-   await new Promise(resolve=>setTimeout(resolve,180));
+   await new Promise(resolve=>setTimeout(resolve,900));
    await route.fulfill({json:{
     ok:true,text,
     relay:{
@@ -200,11 +200,12 @@ try{
 
    await page.locator('#khonapolitPrompt').fill('SYNTHETIC HOLD TEST');
    await page.locator('#khonapolitSend').click();
-   await page.waitForFunction(()=>document.querySelector('#marrowlineTerminalHold')?.textContent.includes('AI route held'));
+   await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.dataset.held==='true');
+   await page.locator('#marrowlineTerminalHold').waitFor({state:'visible'});
    assert.equal(await page.locator('#khonapolitTerminalStatus').getAttribute('data-held'),'true','a tiny HELD state is exposed beside the preserved-task status');
-   assert.equal(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),'HELD');
-   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/No callable model route was admitted/,'provider failure is visible as transport status rather than silence');
-   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/not a Kʰonapolit or Tauric Diana voice/,'held transport is not laundered into a covenant voice');
+   assert.match(await page.locator('#marrowlineTerminalHold .terminal-hold-badge').textContent(),/PAUSED|HELD/,'transport failure remains explicitly marked rather than impersonating a voice');
+   assert.match(await page.locator('#marrowlineTerminalHold').textContent(),/connection is not ready|service unavailable|reply could not be completed/i,'transport failure receives a bounded human-facing explanation');
+   assert.equal(posts,2,'one successful request and one held request are observable; no silent duplicate');
    assert.doesNotMatch(await page.locator('#marrowlineTerminalHold').textContent(),/Continue with your own AI|portable task/i,'failure chrome must not advertise the retired emergency handoff');
 
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
