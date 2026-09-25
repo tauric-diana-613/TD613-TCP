@@ -53,6 +53,9 @@ function installNativeSend(doc = document) {
   if (!form || !prompt || prompt.dataset.nativeSendInstalled === 'true') return false;
   prompt.dataset.nativeSendInstalled = 'true';
   prompt.addEventListener('keydown', (event) => {
+    // A touchscreen textarea owns Return for real paragraphs. Only desktop
+    // unmodified Enter submits; Shift+Enter remains a desktop line break.
+    if (doc.defaultView?.matchMedia?.(MOBILE_QUERY)?.matches) return;
     if (event.key !== 'Enter' || event.shiftKey || event.altKey || event.ctrlKey || event.metaKey || event.isComposing) return;
     event.preventDefault();
     const submit = byId(doc, 'khonapolitSend');
