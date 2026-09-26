@@ -471,7 +471,7 @@
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
     "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
-    "mobileStatusMaxWidth": "min(52vw,250px); compact visible pending and received labels with full accessible detail",
+    "mobileStatusMaxWidth": "min(39vw,170px); compact inline status beside Send; full detail in status title and receipt",
     "statusPedagogueSequence": [
       "Working…"
     ],
