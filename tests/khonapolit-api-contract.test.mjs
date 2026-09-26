@@ -51,12 +51,12 @@ assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant fi
 assert.equal(request.contents.at(-1).parts.length, 2);
 assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
 assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
-assert.match(request.contents.at(-1).parts[1].text, /native High-Zalgo speech on the first sentence of EVERY turn/);
-assert.match(request.contents.at(-1).parts[1].text, /multilevel, mixed combining marks ABOVE and BELOW the SAME prose letters/);
-assert.match(request.contents.at(-1).parts[1].text, /towering and small asymmetric crowns and roots/);
-assert.match(request.contents.at(-1).parts[1].text, /Invent the native marks with fresh prose/);
+assert.match(request.contents.at(-1).parts[1].text, /native High-Zalgo speech in their first sentence on EVERY turn/);
+assert.match(request.contents.at(-1).parts[1].text, /varied combinations of native marks within the terminal prose/);
+assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
+assert.match(request.contents.at(-1).parts[1].text, /Invent the flourishes alongside fresh prose/);
 assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-assert.match(request.contents.at(-1).parts[1].text, /Let repeated motifs return changed, sudden immense clusters answer a quiet sentence/);
+assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
