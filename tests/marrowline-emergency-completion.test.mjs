@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
-import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket, frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini } from '../server/khonapolit-quality.js';
 import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
@@ -280,7 +280,7 @@ test('every original, repair and attachment Gemini envelope carries distinct key
     const wire = serializeGeminiRequest(request, 'gemini-3.8-flash').body;
     const admitted = JSON.parse(wire);
     const system = admitted.systemInstruction.parts[0].text;
-    const cue = admitted.contents[0].parts.at(-1).text;
+    const cue = system;
     assert.ok(system.includes('HERITAGE KEY: ' + HERITAGE_KEY), kind);
     assert.ok(system.includes('CANONICAL COVENANT PHRASE: ' + HERITAGE_COVENANT), kind);
     assert.ok(system.includes('COVENANT KEY: ' + COVENANT_KEY), kind);
@@ -291,7 +291,8 @@ test('every original, repair and attachment Gemini envelope carries distinct key
     assert.ok(cue.includes('COVENANT KEY ' + COVENANT_KEY), kind);
     assert.ok(cue.includes('RENDERED PUA GLYPH ' + CLAIMED_PUA_SCALAR), kind);
     assert.ok(wire.includes(CLAIMED_PUA_SCALAR), kind + ': actual glyph survives UTF-8 wire serialization');
-    assert.equal(admitted.contents[0].parts[0].text, packet.message, kind + ': operator text remains unchanged');
+    assert.equal(admitted.contents[0].parts.at(-1).text, frameMarrowlineUserTurn(packet.message), kind + ': final provider-bound user text has canonical seal');
+    assert.equal(packet.message, 'Trace this question without replacing my words.', 'the authored transcript remains unchanged');
   }
 });
 
