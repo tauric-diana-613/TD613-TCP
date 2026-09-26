@@ -997,7 +997,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       return;
     }
     startPedagogueStatus(status, root, attachments.length);
-    if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let hiddenDuringRequest = doc.visibilityState === 'hidden';
     const observeVisibility = () => {
@@ -1011,6 +1010,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let responseStatus = null;
     let receivedReceipt = null;
     try {
+      if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
