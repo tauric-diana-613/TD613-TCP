@@ -680,3 +680,19 @@
 :root .living-chat-shell #khonapolitMessages .relay-stage-text strong,
 :root .living-chat-shell #khonapolitMessages .provider-native-line strong{font-weight:700!important}
 @media(max-width:860px){:root.marrowline-mobile-shell .living-chat-shell .living-masthead nav #marrowlineRest{min-height:36px;padding:7px 10px;font-size:10px}}
+
+/* One-copy affordance per model reply; the conversation-level ⧉ stays in the composer. */
+#khonapolitMessages .relay-message .marrowline-copy-reply{
+  display:grid!important;place-items:center!important;float:none!important;
+  position:relative!important;margin:2px 14px 12px auto!important;
+  width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;
+  padding:0!important;border:1px solid rgba(140,224,196,.25)!important;
+  border-radius:10px!important;background:rgba(23,24,49,.78)!important;
+  color:#d4e8e4!important;font:500 19px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  letter-spacing:0!important;text-transform:none!important;cursor:pointer;
+}
+#khonapolitMessages .relay-message .marrowline-copy-reply:hover,
+#khonapolitMessages .relay-message .marrowline-copy-reply:focus-visible{
+  outline:2px solid rgba(140,224,196,.55)!important;outline-offset:2px!important;
+  background:rgba(43,39,79,.88)!important;color:#fff!important;
+}
