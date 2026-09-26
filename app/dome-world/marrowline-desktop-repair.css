@@ -149,15 +149,21 @@
     transform:translate(-.70px,1.35px);
     transform-origin:center;
   }
+  /* Keep the complete live status readable on narrow iPhones: actions above,
+     full-width status below, without clipping route/provenance information. */
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
-    order:2!important;
-    flex:0 1 auto!important;
+    order:4!important;
+    flex:1 0 100%!important;
+    box-sizing:border-box;
     min-width:0!important;
-    max-width:min(52vw,250px)!important;
+    max-width:100%!important;
+    max-height:none!important;
     margin:0!important;
-    white-space:nowrap!important;
-    overflow:hidden!important;
-    text-overflow:ellipsis!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    overflow-wrap:anywhere;
+    text-overflow:clip!important;
+    line-height:1.35!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities{
     order:3!important;
@@ -666,7 +672,6 @@
 /* Native multiline composer and an actual external TD613 link. */
 :root .living-chat-shell .living-masthead nav #marrowlineRest{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 14px;border:1px solid rgba(190,231,206,.24);border-radius:24px;background:rgba(26,20,57,.85);color:#d8e9de;font:500 12px/1.4 var(--marrowline-chat-sans,var(--sans));text-decoration:none;letter-spacing:0;text-transform:none;white-space:nowrap}
 :root .living-chat-shell .living-masthead nav #marrowlineRest:focus-visible{outline:2px solid #8ce0c4;outline-offset:3px}
-:root .living-chat-shell .composer-keyboard-hint{display:block;margin-top:4px;color:#a7bdb1;font:400 10px/1.4 var(--marrowline-chat-sans,var(--sans));letter-spacing:0;text-transform:none}
 /* Provider-authored text starts at normal weight; only explicit strong spans may be bold.
    Clipboard's text/plain export is independent of these display-only rules. */
 :root .living-chat-shell #khonapolitMessages .relay-stage-text,
@@ -675,4 +680,3 @@
 :root .living-chat-shell #khonapolitMessages .relay-stage-text strong,
 :root .living-chat-shell #khonapolitMessages .provider-native-line strong{font-weight:700!important}
 @media(max-width:860px){:root.marrowline-mobile-shell .living-chat-shell .living-masthead nav #marrowlineRest{min-height:36px;padding:7px 10px;font-size:10px}}
-@media(max-width:860px){:root.marrowline-mobile-shell body[data-keyboard-visible="true"] .composer-keyboard-hint{display:none}}
