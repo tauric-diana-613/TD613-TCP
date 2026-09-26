@@ -127,13 +127,47 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       const details = doc.createElement('details');
       details.className = 'return-details';
       const summary = doc.createElement('summary');
-      summary.textContent = 'Return details · route and receipt';
+      summary.textContent = 'Take this further';
       details.append(summary);
+      const hint = doc.createElement('p');
+      hint.className = 'reply-action-hint';
+      hint.textContent = 'Choose a starting point, then edit your message before sending.';
+      const actions = doc.createElement('div');
+      actions.className = 'reply-next-actions';
+      const replyText = card.querySelector('.relay-khonapolit .relay-stage-text')?.textContent || '';
+      for (const [label, instruction] of [
+        ['Check the claims', 'Review the reply quoted below. Separate supported claims from assumptions, identify missing evidence, and explain what would verify or change the conclusion.'],
+        ['Make a plan', 'Turn the reply quoted below into practical next steps. Identify the first action, prerequisites, and decisions I need to make.']
+      ]) {
+        const button = doc.createElement('button');
+        button.type = 'button'; button.textContent = label;
+        button.addEventListener('click', () => {
+          const input = doc.getElementById('khonapolitPrompt');
+          // Never overwrite an unfinished draft or submit a provider request.
+          if (input.value.trim()) {
+            hint.textContent = 'Your draft is still in the composer. Send it or clear it before choosing a starting point.';
+            input.focus({ preventScroll: true }); return;
+          }
+          input.value = `${instruction}\n\nReply to examine:\n${replyText}`;
+          input.dispatchEvent(new environment.Event('input', { bubbles: true }));
+          input.focus({ preventScroll: true });
+        });
+        actions.append(button);
+      }
+      details.append(hint, actions);
+      const technical = doc.createElement('details');
+      technical.className = 'reply-technical-record';
+      const technicalSummary = doc.createElement('summary');
+      technicalSummary.textContent = 'Technical record';
+      technical.append(technicalSummary);
       const header = card.querySelector('.relay-aperture-header');
-      if (header) details.append(header);
+      if (header) technical.append(header);
+      const receipt = card.querySelector('.turn-receipt');
+      if (receipt) technical.append(receipt);
+      details.append(technical);
 
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
-      card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => details.append(stage));
+      card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => technical.append(stage));
 
       if (integrated) {
         integrated.classList.add('relay-integrated-covenant');

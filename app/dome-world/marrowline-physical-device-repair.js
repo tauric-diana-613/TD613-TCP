@@ -71,12 +71,7 @@ function installInChatKinesis(doc = document, root = window) {
       card.dataset.phase = 'pending';
       if (!card.isConnected) messages.append(card);
       card.hidden = false;
-      messages.dataset.forceFollow = 'true';
-      if (raf !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(raf);
-      raf = root.requestAnimationFrame?.(() => {
-        raf = null;
-        if (form.getAttribute('aria-busy') === 'true') messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
-      }) ?? null;
+      // Progress updates never take the reader away from the reply's beginning.
     } else if (hadPending && (phase === 'received' || phase === 'held')) {
       hadPending = false;
       clearCompletionTimer();

@@ -420,21 +420,18 @@ function installTranscriptCustody(doc, root) {
   const form = byId(doc, 'khonapolitForm');
   if (!messages || !form || messages.dataset.desktopCustodyInstalled === 'true') return false;
   messages.dataset.desktopCustodyInstalled = 'true';
-  const bottom = () => {
-    const latest = messages.querySelector('.relay-message:last-child');
-    messages.scrollTop = latest
-      ? Math.max(0, messages.scrollTop + latest.getBoundingClientRect().top - messages.getBoundingClientRect().top - 24)
-      : Math.max(0, messages.scrollHeight - messages.clientHeight);
+  const revealBeginning = () => {
+    const latest = [...messages.querySelectorAll('.relay-message, .message')].at(-1);
+    if (latest) messages.scrollTop = Math.max(0, messages.scrollTop + latest.getBoundingClientRect().top - messages.getBoundingClientRect().top - 24);
   };
   const nextFrame = callback => {
     if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
     else (root.setTimeout ?? setTimeout)(callback, 0);
   };
-  form.addEventListener('submit', () => { nextFrame(bottom); root.setTimeout?.(bottom, 80); });
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(records => {
-      if (records.some(record => record.addedNodes?.length)) nextFrame(bottom);
+      if (records.some(record => [...record.addedNodes].some(node => node.nodeType === 1 && node.matches('.relay-message, .message')))) nextFrame(revealBeginning);
     });
     observer.observe(messages, { childList: true, subtree: false });
     root.__TD613_MARROWLINE_TRANSCRIPT_CUSTODY_OBSERVER__ = observer;

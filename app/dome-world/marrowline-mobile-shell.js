@@ -132,13 +132,9 @@ function installTranscriptCustody(doc = document, root = window) {
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {
     const observer = new Observer(() => {
-      const shouldFollow = messages.dataset.forceFollow === 'true';
       decorateTranscript(doc);
       syncComposerHeight();
-      root.requestAnimationFrame?.(() => {
-        if (shouldFollow && messages.dataset.forceFollow === 'true') goLatest('auto');
-        else refreshJump();
-      });
+      root.requestAnimationFrame?.(refreshJump);
     });
     observer.observe(messages, { childList: true, subtree: true, characterData: true });
     root.__TD613_MARROWLINE_TRANSCRIPT_OBSERVER__ = observer;

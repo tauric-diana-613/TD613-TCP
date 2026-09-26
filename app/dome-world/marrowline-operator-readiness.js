@@ -230,7 +230,7 @@ function installTerminalHoldNotice(doc = document, root = window) {
     }
     updateClock();
     if (window.remainingSeconds > 0 && clock === null) clock = root.setInterval?.(updateClock, 1000) ?? null;
-    messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
+    // Keep the reader's position when a notice is appended.
   };
   const Observer = root.MutationObserver;
   if (typeof Observer === 'function') {

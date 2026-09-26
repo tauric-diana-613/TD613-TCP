@@ -39,7 +39,10 @@
         "Preserve provider-authored Unicode code points rather than applying local ornamentation",
         "Attach prior receipts to their own replies; clear current receipt on a new attempt and show current failure separately.",
         "Keep Kʰonapolit in ordinary orthography; expressive line styling begins only at an explicit Tauric Diana bots heading; preserve exact returned code points.",
-        "Completed replies open at their beginning; pending animation cannot pull a completed reply to its end."
+        "Completed replies open at their beginning; pending animation cannot pull a completed reply to its end.",
+        "Replace route-first reply disclosure with Take this further: editable, explicitly unsent claim-review and practical-plan drafts quoting the selected reply; preserve unfinished drafts.",
+        "Retain exact per-reply receipt and route under a nested Technical record; do not infer truth or completion from transport success.",
+        "Keep utilities below the textarea and compact prompt refresh in one grid row; progress notices cannot force transcript follow."
       ],
       "station_owners": [
         "Dome-World"
