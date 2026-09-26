@@ -162,12 +162,21 @@ test('desktop and mobile visually render Send as an up-arrow while the DOM keeps
   assert.match(release.composer.sendGlyphPresentation, /desktop and mobile/);
 });
 
-test('status sits immediately to the right of Send inside the composer on desktop and mobile', () => {
+test('desktop status stays next to Send; mobile wraps complete route status below the utility row', () => {
   assert.match(page, /<div class="ritual-actions composer-actions">\s*<button class="primary" id="khonapolitSend" type="submit">Send<\/button>\s*<div class="vessel-status" id="khonapolitTerminalStatus">READY<\/div>/);
   assert.match(css, /\.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*margin:0 0 0 2px!important/s);
-  assert.match(css, /body\[data-mobile-view="speak"\] \.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*max-width:min\(52vw,250px\)!important[^}]*white-space:nowrap!important[^}]*overflow:hidden!important[^}]*text-overflow:ellipsis!important[^}]*margin:0!important/s);
+  const mobileStatus = css.split('/* Keep the complete live status readable on narrow iPhones:')[1]?.split('html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities')[0] || '';
+  assert.match(mobileStatus, /order:4!important/);
+  assert.match(mobileStatus, /flex:1 0 100%!important/);
+  assert.match(mobileStatus, /max-width:100%!important/);
+  assert.match(mobileStatus, /max-height:none!important/);
+  assert.match(mobileStatus, /white-space:normal!important/);
+  assert.match(mobileStatus, /overflow:visible!important/);
+  assert.match(mobileStatus, /text-overflow:clip!important/);
   assert.match(css, /\.marrowline-conversation-utilities\{order:3/);
-  assert.equal(release.composer.statusPlacement, 'inside-composer-immediately-right-of-send-on-desktop-and-mobile');
+  assert.doesNotMatch(page, /marrowlineComposerHint|Return for a new line · tap Send to submit/);
+  assert.doesNotMatch(css, /composer-keyboard-hint/);
+  assert.equal(release.composer.statusPlacement, 'inside-composer-right-of-send-on-desktop-full-width-wrapped-below-actions-on-mobile');
 });
 
 test('composer status teaches the route in compact Pedagogue phases instead of leaking internal mode strings', () => {
