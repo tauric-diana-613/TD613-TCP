@@ -471,15 +471,11 @@
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
     "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
-    "mobileStatusMaxWidth": "min(52vw,250px) with one-line ellipsis",
+    "mobileStatusMaxWidth": "min(52vw,250px); compact visible pending and received labels with full accessible detail",
     "statusPedagogueSequence": [
-      "TASK ROUTED · reading the whole prompt",
-      "CONTEXT JOINED · keeping source boundaries",
-      "REASONING OPEN · testing the strongest path",
-      "RETURN FORMING · preserving both voices",
-      "RECEIPT NEXT · route + provenance stay attached"
+      "Working…"
     ],
-    "statusPedagogueClaim": "compact human-learning surface only; full mode, route, provenance and operator-closure detail remains available in title/receipt and is not deleted"
+    "statusPedagogueClaim": "truthful pending state without elapsed-time stage theater; detailed route, provenance and operator closure remain in accessible description and receipt"
   },
   "desktop": {
     "posture": "conversation-first-single-column",
