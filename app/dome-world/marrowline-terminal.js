@@ -279,12 +279,37 @@ function renderRelayStage(doc, { id, label, part, absentText, meta = '' }) {
   return section;
 }
 
+function createReplyCopyControl(doc, entry) {
+  const copy = doc.createElement('button');
+  copy.type = 'button';
+  copy.className = 'marrowline-copy-reply';
+  copy.textContent = '⧉';
+  copy.setAttribute('aria-label', 'Copy this reply');
+  copy.title = 'Copy this reply as plain text';
+  copy.addEventListener('click', async () => {
+    const root = doc.defaultView;
+    // One exact provider return only. No receipt, surrounding turns, DOM
+    // normalization, added headings, or local alteration of combining marks.
+    const text = entry.text != null ? String(entry.text)
+      : asArray(entry.relay?.parts).filter(part => part?.present)
+        .map(part => String(part.text ?? '')).join('\n\n');
+    try {
+      await root.navigator.clipboard.writeText(text);
+      showEphemeralNotice(doc, root, 'Reply copied');
+    } catch {
+      showEphemeralNotice(doc, root, 'Copy failed');
+    }
+  });
+  return copy;
+}
+
 function renderModelMessage(doc, entry) {
   if (!entry.relay) {
     const legacy = { ...entry, role: 'user' };
     const article = renderUserMessage(doc, legacy);
     article.dataset.role = 'model';
     article.querySelector('.message-mark').textContent = 'Kʰ';
+    article.append(createReplyCopyControl(doc, entry));
     return article;
   }
 
@@ -325,32 +350,8 @@ function renderModelMessage(doc, entry) {
     details.append(textNode(doc, 'summary', '', 'Inspect this reply’s receipt'), textNode(doc, 'pre', '', JSON.stringify(entry.receipt, null, 2)));
     article.append(details);
   }
-  const copy = doc.createElement('button');
-  copy.type = 'button';
-  copy.className = 'marrowline-copy-reply';
-  copy.textContent = '⧉';
-  copy.setAttribute('aria-label', 'Copy this reply');
-  copy.title = 'Copy this reply as plain text';
-  // The handler captures its own exact model turn, never the full conversation.
-  // Provider-authored characters (including combining marks) are left untouched.
-  copy.addEventListener('click', async () => {
-    try {
-      await doc.defaultView.navigator.clipboard.writeText(entryText(entry));
-      copy.title = 'Reply copied';
-      copy.setAttribute('aria-label', 'Reply copied');
-      const notice = doc.getElementById('marrowlineEphemeralNotice');
-      if (notice) {
-        notice.textContent = 'Reply copied';
-        notice.dataset.visible = 'true';
-        doc.defaultView.setTimeout?.(() => { notice.dataset.visible = 'false'; }, 1500);
-      }
-    } catch {
-      copy.title = 'Clipboard unavailable';
-      copy.setAttribute('aria-label', 'Clipboard unavailable');
-    }
-  });
-  article.append(copy);
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
+  article.append(createReplyCopyControl(doc, entry));
   return article;
 }
 
@@ -984,10 +985,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {
       await root.navigator.clipboard.writeText(transcriptText(state.messages));
-      setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'received', 'Copied conversation', 'Full conversation copied as plain text with route and provenance.');
+      const status = byId(doc, 'khonapolitTerminalStatus');
+      if (status?.dataset.phase !== 'pending') setPedagogueStatus(status, 'notice', 'Copied chat',
+        'Full conversation copied as plain text with route and provenance.');
       showEphemeralNotice(doc, root, 'Copied as plain text');
     } catch {
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+      const status = byId(doc, 'khonapolitTerminalStatus');
+      if (status?.dataset.phase !== 'pending') setPedagogueStatus(status, 'notice', 'Copy failed', 'Clipboard unavailable.');
+      showEphemeralNotice(doc, root, 'Copy failed');
     }
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {
