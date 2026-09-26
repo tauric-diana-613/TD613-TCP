@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { installStarterCarousel } from '../app/dome-world/marrowline-desktop-repair.js';
+import { MARROWLINE_MISSION_ASSAYS } from '../app/dome-world/marrowline-mission-assays.js';
 
 const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/marrowline-desktop-repair.css', 'utf8');
@@ -24,7 +25,7 @@ test('desktop Marrowline is conversation-first and instruments are on demand', (
   assert.equal(release.desktop.posture, 'conversation-first-single-column');
 });
 
-test('isolated 32-prompt shuffle bag never repeats early or across the cycle seam', () => {
+test('isolated 56-prompt shuffle bag never repeats early or across the cycle seam', () => {
   const dom = new JSDOM('<div id="khonapolitMessages"><div class="starter-prompts"><button>Follow a memory</button><button>Meet the Ash Moon</button></div></div><textarea id="khonapolitPrompt"></textarea>');
   const { document } = dom.window;
   assert.equal(installStarterCarousel(document, dom.window), true);
@@ -33,18 +34,18 @@ test('isolated 32-prompt shuffle bag never repeats early or across the cycle sea
   const firstPaint = choices();
   assert.deepEqual(firstPaint, ['Follow a memory', 'Meet the Ash Moon']);
   const seen = new Set(firstPaint);
-  for (let turn = 0; turn < 16; turn += 1) {
+  for (let turn = 0; turn < 28; turn += 1) {
     rotate.click();
     const labels = choices();
     assert.equal(labels.length, 2);
     for (const label of labels) {
-      assert.equal(seen.has(label), false, `rupture prompt repeated before all 32 draws: ${label}`);
+      assert.equal(seen.has(label), false, `rupture prompt repeated before all 56 draws: ${label}`);
       seen.add(label);
     }
     assert.equal(rotate.dataset.seenCount, String((turn + 1) * 2));
     assert.equal(rotate.dataset.shuffleCycle, '1');
   }
-  assert.equal(seen.size, 34, 'two initial prompts and 32 unique rupture prompts');
+  assert.equal(seen.size, 58, 'two initial prompts and 56 unique prompts');
   const previousPair = choices();
   rotate.click();
   assert.equal(rotate.dataset.shuffleCycle, '2');
@@ -55,6 +56,26 @@ test('isolated 32-prompt shuffle bag never repeats early or across the cycle sea
   assert.equal(document.querySelector('#khonapolitPrompt').value, chosen.dataset.promptValue, 'rotated prompt still fills composer without sending');
   dom.window.__TD613_MARROWLINE_STARTER_CAROUSEL_OBSERVER__?.disconnect();
   dom.window.close();
+});
+
+
+test('24 additional mission prompts preserve varied affect and the existing nonrepeating carousel', () => {
+  assert.equal(MARROWLINE_MISSION_ASSAYS.length, 24);
+  const labels = MARROWLINE_MISSION_ASSAYS.map(([label]) => label);
+  assert.equal(new Set(labels).size, 24);
+  for (const [label, prompt] of MARROWLINE_MISSION_ASSAYS) {
+    assert.ok(label.length > 3 && label.length <= 45, label);
+    assert.ok(prompt.length > 100 && prompt.length < 900, label);
+    assert.equal(prompt.includes('\\u0301'), false, 'no Unicode template');
+  }
+  const all = MARROWLINE_MISSION_ASSAYS.map(row => row[1]).join(' ');
+  for (const motif of ['Red Deer', 'Chairman', 'Orestes–kerykeion', 'Black feminist epistemology',
+    'grief', 'hornani', 'consenting adult', 'blue–orange', 'swarm', 'demiurge', 'Rex Nemorensis',
+    'stylometric', 'same-episode', 'surveillance', 'grandmother']) {
+    assert.ok(all.toLowerCase().includes(motif.toLowerCase()), motif);
+  }
+  assert.match(js, /\.\.\.MARROWLINE_MISSION_ASSAYS/);
+  assert.match(js, /Shuffle \$\{STARTER_ASSAYS\.length\} Marrowline prompts without repeats/);
 });
 
 test('composer has one universal plus with exactly file photo and Loom actions', () => {
@@ -72,7 +93,7 @@ test('composer has one universal plus with exactly file photo and Loom actions',
 
 test('starter carousel keeps its left rail while using one compact glass control grammar', () => {
   const assayRows = js.match(/^  \['[^\n]+$/gm) || [];
-  assert.equal(assayRows.length, release.composer.starterCarousel.assayPrompts);
+  assert.equal(assayRows.length + MARROWLINE_MISSION_ASSAYS.length, release.composer.starterCarousel.assayPrompts);
   assert.match(js, /rotate\.textContent = '🗘'/);
   assert.match(css, /\.starter-prompts\{[\s\S]*justify-content:flex-start!important/);
   assert.match(css, /\.starter-prompts>button:not\(\.starter-rotate\)\{[\s\S]*height:42px!important/);
@@ -87,9 +108,9 @@ test('starter carousel keeps its left rail while using one compact glass control
   assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*width:42px!important/);
   assert.match(css, /marrowline-mobile-shell \.starter-prompts \.starter-rotate\{[^}]*border-radius:0!important/);
   assert.equal(release.composer.starterCarousel.control, '🗘');
-  assert.equal(release.composer.starterCarousel.assayPrompts, 32);
+  assert.equal(release.composer.starterCarousel.assayPrompts, 56);
   assert.equal(release.composer.starterCarousel.selectionPolicy, 'shuffle-bag-without-replacement-two-at-a-time');
-  assert.equal(release.composer.starterCarousel.cyclePolicy, 'all-32-prompts-must-be-seen-before-any-repeat');
+  assert.equal(release.composer.starterCarousel.cyclePolicy, 'all-56-prompts-must-be-seen-before-any-repeat');
   assert.equal(release.composer.starterCarousel.seamPolicy, 'new-cycle-first-pair-excludes-the-immediately-previous-pair');
   assert.match(js, /let bag = \[\]/);
   assert.match(js, /let seen = new Set\(\)/);
