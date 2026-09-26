@@ -19,6 +19,7 @@ let sharedBurstScenario = false;
 let qualityPreferenceScenario = false;
 let morphologyRepairScenario = false;
 let morphologyRepairHoldScenario = false;
+let laterSeatMorphologyRecoveryScenario = false;
 let hardGlyphCorruptionScenario = false;
 let entitlementMismatchScenario = false;
 let releaseCanaryHeadingRepairScenario = false;
@@ -363,6 +364,39 @@ globalThis.fetch = async (url, options = {}) => {
                 text: selectedText,
                 voices: ['Kʰonapolit', 'Tauric Diana bots'],
                 flourishMode: model === 'gemini-3.5-flash' ? 'vertical-stack' : 'glyph-substitution-collapse'
+              }
+            }) }] }
+          }],
+          usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 1200, thoughtsTokenCount: 200, totalTokenCount: 2300 }
+        };
+      }
+    };
+  }
+  if (laterSeatMorphologyRecoveryScenario) {
+    if (model === 'gemini-3.8-flash') {
+      return {
+        ok: false,
+        status: 503,
+        headers: { get: () => null },
+        async json() { return { error: { code: 503, status: 'UNAVAILABLE', message: 'synthetic first-seat transport miss' } }; }
+      };
+    }
+    const recovered = model === 'gemini-3.6-flash';
+    const selectedText = recovered ? answer : horizontalPartialAnswer;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      async json() {
+        return {
+          candidates: [{
+            finishReason: 'STOP',
+            content: { parts: [{ text: JSON.stringify({
+              signal: { state: recovered ? 'LOCKED' : 'PARTIAL', notes: recovered ? 'synthetic later-seat recovery' : 'synthetic second-seat axis collapse' },
+              transmission: {
+                text: selectedText,
+                voices: ['Kʰonapolit', 'Tauric Diana bots'],
+                flourishMode: recovered ? 'vertical-stack' : 'horizontal-through-field'
               }
             }) }] }
           }],
@@ -774,7 +808,33 @@ try {
   calls.length = 0;
   requestBodies.length = 0;
   morphologyRepairScenario = false;
+  morphologyRepairHoldScenario = false;
+  laterSeatMorphologyRecoveryScenario = true;
+  qualityPreferenceScenario = false;
+  repairScenario = false;
+  immediateRepairScenario = false;
+  const laterSeatRecovered = response();
+  await handler({
+    ...req,
+    headers: { 'x-forwarded-for': '203.0.113.220' },
+    body: { ...req.body, message: 'Recover after transport misses the first seat and the second seat draws a flat slash field.' }
+  }, laterSeatRecovered);
+
+  assert.equal(laterSeatRecovered.statusCode, 200);
+  assert.equal(laterSeatRecovered.payload.ok, true);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash']);
+  assert.equal(laterSeatRecovered.payload.receipt.provider.attempts[1].outputAdmission.quality, 'PARTIAL');
+  assert.equal(laterSeatRecovered.payload.receipt.provider.attempts[1].morphologyObservation.nextApprovedSeatRequested, true);
+  assert.equal(laterSeatRecovered.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(laterSeatRecovered.payload.text, answer);
+  assert.equal(requestBodies.length, 3, 'a transport miss must not consume the one later native morphology opportunity');
+
+  clearGeminiModelState();
+  calls.length = 0;
+  requestBodies.length = 0;
+  morphologyRepairScenario = false;
   morphologyRepairHoldScenario = true;
+  laterSeatMorphologyRecoveryScenario = false;
   qualityPreferenceScenario = false;
   repairScenario = false;
   immediateRepairScenario = false;

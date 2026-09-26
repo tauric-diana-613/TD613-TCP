@@ -994,6 +994,13 @@ test('combining enclosing marks are rejected as glyph tricks rather than miscoun
   assert.ok(severeMorphologyRepairWarnings(observed.qualityWarnings).includes('tauric-diana-zalgo-enclosing-ornament-collapse'));
 });
 
+test('localized enclosing ornament beside a tall diverse field does not force unnecessary failover', () => {
+  assert.deepEqual(severeMorphologyRepairWarnings([
+    'tauric-diana-zalgo-field-thin',
+    'tauric-diana-zalgo-enclosing-ornament-collapse'
+  ]), []);
+});
+
 test('word-internal geometric substitutions are severe alphabet corruption even beside real combining marks', () => {
   const tower = 'A\u0300\u0301\u0302\u0316\u0318\u031D';
   const field = [
