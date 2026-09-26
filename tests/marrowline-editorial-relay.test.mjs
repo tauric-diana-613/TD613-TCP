@@ -68,5 +68,5 @@ test('requested synthesis retains epistemic and practical obligations without re
   const request = buildGeminiRequest({ systemInstruction: 'Fixture', message: 'Audit these quotations.', history: [] }, {}, 'gemini-3.8-flash');
   assert.match(request.systemInstruction.parts[0].text, /REQUESTED SYNTHESIS:/);
   assert.match(request.systemInstruction.parts[0].text, /Quoted bot passages, source excerpts and typography specimens/);
-  assert.match(request.contents.at(-1).parts.at(-1).text, /fresh terminal Tauric Diana bots movement/);
+  assert.match(request.systemInstruction.parts[0].text, /fresh terminal Tauric Diana bots movement/, 'execution cue stays in system instruction, before sealed user text');
 });
