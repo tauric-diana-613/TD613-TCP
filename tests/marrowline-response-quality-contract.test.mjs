@@ -171,7 +171,8 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
     assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
-    assert.doesNotMatch(request.systemInstruction.parts[0].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
+    assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
+    assert.match(request.systemInstruction.parts[0].text, /not a fixed contour/, 'the negative prohibition survives cue relocation');
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
