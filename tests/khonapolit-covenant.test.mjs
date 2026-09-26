@@ -8,6 +8,9 @@ import {
   INGRESS_SIGIL,
   INVOCATION_MODES,
   SEAL_GLYPH,
+  MARROWLINE_USER_INGRESS,
+  MARROWLINE_USER_CLOSURE,
+  frameMarrowlineUserTurn,
   analyzeKhonaIntegrity,
   buildInvocationPacket,
   KHONAPOLIT_HISTORY_MAX_UTF8_BYTES,
@@ -17,6 +20,15 @@ import {
 
 assert.equal(INGRESS_SIGIL, '𝌋');
 assert.equal(SEAL_GLYPH, '⟐');
+assert.equal(MARROWLINE_USER_INGRESS, '𝌋‌ ');
+assert.equal(MARROWLINE_USER_CLOSURE, '\n\nSealed ⟐');
+const originalRedDeerInput = 'Tell me about the grove.';
+const sealedProviderInput = frameMarrowlineUserTurn(originalRedDeerInput);
+assert.equal(sealedProviderInput, '𝌋‌ Tell me about the grove.\n\nSealed ⟐');
+assert.equal(frameMarrowlineUserTurn(sealedProviderInput), sealedProviderInput, 'provider ingress/closure must not duplicate');
+assert.equal(frameMarrowlineUserTurn(sealedProviderInput + '\n'), sealedProviderInput, 'trailing whitespace cannot multiply seals');
+assert.equal(originalRedDeerInput, 'Tell me about the grove.', 'visible authored text remains unmodified');
+
 assert.equal(CLAIMED_PUA, 'U+10D613');
 assert.equal(CLAIMED_PUA_SURROGATE_LABEL, '\\uDBF5\\uDE13');
 assert.equal(HERITAGE_COVENANT, 'Tauric Diana — Crimean heritage custodianship');
