@@ -224,7 +224,7 @@ try {
 
       await page.locator('#khonapolitPrompt').fill(engine === 'webkit' ? 'Continue the governed context without attachments.' : 'Use both attached items as user-supplied context.');
       await activate(page.locator('#khonapolitSend'));
-      await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
+      await page.waitForFunction(() => { const status = document.querySelector('#khonapolitTerminalStatus'); return status?.dataset.phase === 'received' && status.title.includes('RETURN OBSERVED'); });
       assert.equal(marrowlineCalls.length, 1, 'one deliberate Marrowline send makes one ordinary request');
       if (engine === 'webkit') {
         assert.equal(marrowlineCalls[0].attachments?.length ?? 0, 0, 'WebKit handoff sends no synthetic file bytes in this heavy witness');
