@@ -480,7 +480,18 @@
     "statusPedagogueClaim": "short rotating browser-pending labels show continued activity without claiming provider stages; detailed route, provenance and operator closure remain in status title and receipt",
     "inChatKinesis": "Listening at the shoreline…; after 60s pending, Crossing into the grove…; reset and clear timer on completion or disposal",
     "replyCopy": "⧉ at bottom-right of each model turn copies exact single provider-authored text only; composer ⧉ retains full-conversation export",
-    "copyFeedbackCompactStatus": "Copied chat in the compact composer status; Reply copied as a transient notice"
+    "copyFeedbackCompactStatus": "Copied chat in the compact composer status; Reply copied as a transient notice",
+    "humanChatLabel": "Red Deer; technical operator role and receipt provenance unchanged",
+    "threadLibrary": {
+      "schema": "td613.marrowline.local-threads/v1",
+      "primaryStorage": "browser IndexedDB; localStorage fallback only when IndexedDB unavailable",
+      "migration": "one-time per-tab import of prior sessionStorage conversation; exact records preserved",
+      "branch": "first complete Marrowline answer only; copy first exchange and original receipt; parent remains unchanged",
+      "controls": "Conversations picker; new, rename and individually delete; old conversation selected after reload",
+      "requestBinding": "switch/create/delete/branch blocked while provider request is in flight or attachments are staged",
+      "history": "full archive preserved locally; provider request context retains existing bounded recent-history behavior",
+      "scope": "same-browser, same-device; no account or cross-device synchronization"
+    }
   },
   "desktop": {
     "posture": "conversation-first-single-column",
