@@ -449,7 +449,7 @@
     "mobileSendGlyph": "⇧",
     "sendGlyphPresentation": "visual-only; DOM text and accessible semantics remain Send on desktop and mobile",
     "mobileSendGlyphRendering": "plain ⇧ in a centered 28px glyph box with 800-weight, deep-graphite #111827 ink, subtle stroke reinforcement, a tiny cold-silver glyph-only halo, and mobile-only optical correction translate(-.70px,1.35px) with Y preserved; desktop glyph geometry unchanged",
-    "statusPlacement": "inside-composer-immediately-right-of-send-on-desktop-and-mobile",
+    "statusPlacement": "inside-composer-right-of-send-on-desktop-full-width-wrapped-below-actions-on-mobile",
     "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [
       "RETRY_LAST_PROMPT",

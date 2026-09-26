@@ -70,8 +70,8 @@ test('native Return composes paragraphs; only explicit Send or Ctrl/Command+Ente
     const prompt = dom.window.document.getElementById('khonapolitPrompt');
     assert.equal(prompt.tagName, 'TEXTAREA');
     assert.equal(prompt.getAttribute('enterkeyhint'), 'enter', 'iOS must offer the native Return key');
-    assert.equal(prompt.getAttribute('aria-describedby'), 'marrowlineComposerHint');
-    assert.match(dom.window.document.getElementById('marrowlineComposerHint').textContent, /Return for a new line/);
+    assert.equal(prompt.hasAttribute('aria-describedby'), false, 'removed keyboard helper must not leave a dangling accessibility reference');
+    assert.equal(dom.window.document.getElementById('marrowlineComposerHint'), null, 'redundant helper no longer occupies the mobile composer');
     const key = (extra = {}) => ({ key: 'Enter', shiftKey: false, altKey: false, ctrlKey: false, metaKey: false, isComposing: false, ...extra });
     assert.equal(isMarrowlineComposerSendShortcut(key()), false, 'plain Return stays in the textarea');
     assert.equal(isMarrowlineComposerSendShortcut(key({ shiftKey: true })), false);
