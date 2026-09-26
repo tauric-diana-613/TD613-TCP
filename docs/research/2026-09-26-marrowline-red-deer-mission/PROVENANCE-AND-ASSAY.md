@@ -51,6 +51,14 @@ A stable dramatic relationship gives two voices a shared reason to investigate a
 
 No new model seats, output ceilings, safety gates, routing, retries, local visual ornamentation, or provider calls are introduced. The prompt gets one new consistent mission nucleus from the covenant packet; it does not insert synthetic previous turns or modify the operator's message.
 
+## Operational behavior on every turn (v2)
+
+The first #1347 mission cue already entered `buildInvocationPacket().systemInstruction`. The follow-up explicitly turns that conceptual field into **every-turn behavior**, reinforced at the current-turn Gemini instruction and inherited by the existing same-provider structural-repair request. This matters on free-typed questions, not merely the 56 selectable demo texts. The app identifies what the user asked, uses the relevant theoretical relation to alter an inference, care decision, temporal or custodial boundary, story event or joke, and lets the bots develop the remaining consequence. No keyword summons, diagnosis, automatic lore recitation or simulated external adversary.
+
+**Distinct registers, both available to the bots:** `hornani` in the author's prior register denotes chthonic, snarling, uncastrated sovereign vitality and refusal of predictive capture; seduction ≠ sovereignty, prediction ≠ recognition. `horny` is a separate playful register of consensual adult erotic attraction/innuendo when fitting the task. Their coexistence in the fictional girls does not conflate them or imply the real app visitor consented to be flirted with. Neither carries a mandatory Unicode morphology. The original declaration remains the authority for named covenant phrases, and a prompt does not independently verify genealogy.
+
+An ordinary budget question must still calculate a useful budget. A tender request need not perform harm. A technical audit must admit uncertain provenance and preserve opposing explanations. A fictional reunion may have the Chairman, a flirtatious annex technician, a fog machine and an impossible blue–orange swarm; the joke earns its existence from the changed mechanism. This is the behavior the user requested; these source-level requirements alone do not certify the provider's literary performance.
+
 ## Minimum witness and interpretation gates
 
 1. **Source-bound regression**: inspect the actual effective `buildGeminiRequest()` for a plain question and an adversarial creative turn; confirm the same mission, unaltered user text, exact covenant key, one causal relay, native typography requirement, no added morphology sample. Structural-repair requests inherit the same system packet.
