@@ -99,7 +99,7 @@ test('masthead TD613 opens its own tab without hijacking the current chat state'
 
 test('conversation export uses text/plain and provider prose starts at regular display weight', () => {
   assert.match(terminal, /clipboard\.writeText\(transcriptText\(state\.messages\)\)/);
-  assert.match(terminal, /TRANSCRIPT COPIED AS PLAIN TEXT/);
+  assert.match(terminal, /Copied conversation/);
   assert.match(desktopCss, /#khonapolitMessages \.provider-native-line,/);
   assert.match(desktopCss, /#khonapolitMessages \.zalgo-line\{font-weight:400!important/);
   assert.match(desktopCss, /\.relay-stage-text strong,/);
