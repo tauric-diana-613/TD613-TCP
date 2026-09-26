@@ -150,11 +150,12 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
 test('Send retains its accessible label and gains moonlit amethyst/cyan radiance with reduced-motion rest', () => {
   assert.match(page, /<button class="primary" id="khonapolitSend" type="submit">Send<\/button>/);
   assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend::before/);
-  assert.match(css, /content:"⇧"!important/);
-  assert.match(css, /#6253a9/);
-  assert.match(css, /rgba\(78,227,224/);
-  assert.match(css, /@keyframes marrowline-send-halo/);
-  assert.match(css, /@keyframes marrowline-arrow-shimmer/);
+  assert.match(css, /content:"↑"!important/);
+  assert.match(css, /background:#5d49a7!important/);
+  assert.match(css, /border:2px solid #7ce6ec!important/);
+  assert.match(css, /#khonapolitSend::after\\{content:none!important;display:none!important\\}/);
+  assert.doesNotMatch(css, /@keyframes marrowline-send-halo/);
+  assert.doesNotMatch(css, /@keyframes marrowline-arrow-shimmer/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.equal(release.composer.mobileSendGlyph, '↑');
   assert.match(css, /\[data-transmission-state="generating"\]::before/);
@@ -165,9 +166,11 @@ test('Send retains its accessible label and gains moonlit amethyst/cyan radiance
 });
 
 test('a compact Send/attachment row retains right utilities and one visually presented in-chat progress surface', () => {
-  assert.match(js, /actionRow\.insertBefore\(plus, sendButton\)/);
-  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-composer-plus/);
-  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend/);
+  assert.match(js, /controlStack\.className = 'marrowline-composer-control-stack'/);
+  assert.match(js, /controlStack\.append\(plus, sendButton\)/);
+  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-composer-control-stack/);
+  assert.match(css, /grid-template-rows:43px 45px!important/);
+  assert.match(css, /margin-top:-51px!important/);
   assert.match(css, /#khonapolitForm \.composer-actions #khonapolitTerminalStatus\{/);
   assert.match(css, /clip-path:inset\(50%\)!important/);
   assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-conversation-utilities/);
