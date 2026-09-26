@@ -212,7 +212,7 @@ test('a severe completed PARTIAL yields to the next approved seat without repain
     assert.equal(response.payload.receipt.provider.qualityPreference.sourceAttemptIndex, 1);
     assert.equal(response.payload.receipt.provider.model, 'gemini-3.5-flash');
     assert.equal(response.payload.receipt.provider.attempts[1].morphologyObservation.severeWarnings.length, 0);
-    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, frameMarrowlineUserTurn(shallow));
+    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow, 'model-authored history is never framed or repainted');
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
