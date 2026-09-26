@@ -63,18 +63,15 @@ export async function createMarrowlineThreadLibrary(root = window) {
     await transaction(db, STORE, 'readwrite', tx => tx.objectStore(STORE).put(value));
     return value;
   };
-  const get = threadId => transaction(db, STORE, 'readonly', tx => {
-    const req = tx.objectStore(STORE).get(threadId);
-    return request(req);
-  }).then(x => x);
+  const get = threadId => request(db.transaction(STORE, 'readonly').objectStore(STORE).get(threadId));
   const all = async () => {
-    const values = await transaction(db, STORE, 'readonly', tx => request(tx.objectStore(STORE).getAll()));
+    const values = await request(db.transaction(STORE, 'readonly').objectStore(STORE).getAll());
     return values.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   };
   const remove = async threadId => {
     await transaction(db, STORE, 'readwrite', tx => tx.objectStore(STORE).delete(threadId));
   };
-  const getMeta = key => transaction(db, META, 'readonly', tx => request(tx.objectStore(META).get(key)));
+  const getMeta = key => request(db.transaction(META, 'readonly').objectStore(META).get(key));
   const setMeta = (key, value) => transaction(db, META, 'readwrite', tx => tx.objectStore(META).put(value, key));
   const create = async (state = initial(), args = {}) => put(threadFromState(root, state, args));
   const branch = async (parent, responseIndex) => {
