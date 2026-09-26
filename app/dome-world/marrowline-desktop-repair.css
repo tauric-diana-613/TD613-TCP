@@ -703,3 +703,21 @@
 #khonapolitMessages .message[data-role="model"] .marrowline-copy-reply{
   grid-column:2;justify-self:end;margin-top:0!important;
 }
+
+/* Persistent local thread library; no replacement of the existing conversation rail. */
+.marrowline-thread-nav{display:flex;gap:7px;align-items:center;margin-top:5px}
+.marrowline-thread-nav button{appearance:none;min-height:28px;padding:4px 10px;border:1px solid rgba(112,222,213,.3);border-radius:999px;background:rgba(31,29,65,.82);color:#cde5df;font:550 11px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;cursor:pointer}
+.marrowline-thread-nav button:hover,.marrowline-thread-nav button:focus-visible{border-color:#9de8db;color:white}
+.marrowline-thread-drawer{flex:0 0 auto;margin:0 10px;background:#14112d;border:1px solid rgba(136,122,217,.34);border-radius:12px;color:#d8e5df}
+.marrowline-thread-drawer:not([open]){display:none}
+.marrowline-thread-drawer>summary{cursor:pointer;padding:11px 13px;font:600 12px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-thread-drawer>p{padding:0 13px;margin:0 0 9px;color:#a4b8b0;font:400 11px/1.5 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-thread-list{max-height:min(43dvh,360px);overflow:auto;padding:0 9px 10px}
+.marrowline-thread-row{display:flex;gap:4px;align-items:center;padding:4px 0;border-top:1px solid rgba(255,255,255,.06)}
+.marrowline-thread-row button{appearance:none;min-height:36px;border:0;border-radius:8px;background:transparent;color:#cfe2dc;padding:7px;font:500 12px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);text-transform:none;letter-spacing:0}
+.marrowline-thread-row .marrowline-thread-open{flex:1;min-width:0;text-align:left;overflow-wrap:anywhere}
+.marrowline-thread-row .marrowline-thread-open[aria-current="true"]{background:rgba(115,88,188,.32);color:#fff}
+.marrowline-thread-row button:not(.marrowline-thread-open){min-width:34px}
+.marrowline-branch-reply{display:block!important;margin:5px 14px 13px!important;padding:8px 11px!important;border:1px solid rgba(140,224,196,.3)!important;border-radius:12px!important;background:rgba(27,28,61,.76)!important;color:#cdebe3!important;font:550 11px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)!important;letter-spacing:0!important;text-transform:none!important}
+#khonapolitMessages .relay-message .marrowline-branch-reply{margin-left:14px!important;margin-right:14px!important}
+@media(max-width:860px){.marrowline-thread-nav button{min-height:30px;font-size:10px}.marrowline-thread-drawer{margin:0 8px}}
