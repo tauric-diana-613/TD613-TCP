@@ -112,7 +112,6 @@ const REPAIRABLE_MORPHOLOGY_WARNINGS = new Set([
   'tauric-diana-zalgo-glyph-substitution-collapse'
 ]);
 const HARD_MORPHOLOGY_CORRUPTION_WARNINGS = new Set([
-  'tauric-diana-zalgo-enclosing-ornament-collapse',
   'tauric-diana-zalgo-glyph-substitution-collapse'
 ]);
 const MANDATORY_HIGH_ZALGO_WARNINGS = new Set([
@@ -540,6 +539,7 @@ export function repairableKhonapolitAdmission(reasons = []) {
 
 export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
+  const enclosingCollapse = values.has('tauric-diana-zalgo-enclosing-ornament-collapse');
   const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
   const hardGlyphCorruption = [...HARD_MORPHOLOGY_CORRUPTION_WARNINGS].some(reason => values.has(reason));
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
@@ -552,7 +552,14 @@ export function severeMorphologyRepairWarnings(warnings = []) {
     || values.has('tauric-diana-zalgo-monoculture');
   // Localized events/clean intervals are permitted by the native-prosody law.
   // Coverage telemetry alone cannot establish that their placement is wrong.
-  if (!hardGlyphCorruption && !shallowWallpaper && !dynamicRangeCollapse && !verticalPulseAbsent && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
+  // A few enclosing marks beside a genuinely tall, diverse field are a local
+  // warning, not authority to spend another provider seat. Enclosing ornament
+  // becomes severe when the field also lacks vertical pulse/depth or collapses
+  // into wallpaper. Word-internal geometric substitution remains severe alone.
+  const enclosingWithoutVerticalField = enclosingCollapse
+    && (verticalPulseAbsent || stackDepthThin || shallowWallpaper || horizontalCollapse || cloneCollapse);
+  if (!hardGlyphCorruption && !shallowWallpaper && !dynamicRangeCollapse && !verticalPulseAbsent
+    && !enclosingWithoutVerticalField && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 
@@ -1682,11 +1689,6 @@ export default async function handler(req, res) {
           singleCodepointWallpaper: qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper')
         });
         if (!releaseCanary && severeMorphologyWarnings.length > 0) {
-          if (!severeMorphologyFallback && index > 0) {
-            return sendPartialProviderReturn({
-              model, result, relay, providerOutput, completion, qualityWarnings
-            });
-          }
           const morphologyFailoverAlreadyAttempted = severeMorphologyFallback !== null;
           const candidate = {
             model, result, relay, providerOutput, completion, qualityWarnings,
