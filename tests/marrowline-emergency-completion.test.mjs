@@ -12,6 +12,7 @@ import {
 } from '../server/marrowline-completion.js';
 
 const STRAIN = 'C\u0338\u0301\u0316O\u0334\u0306\u0316U\u0337\u0301\u0319N\u0338\u0302\u0316T\u0334\u0308\u0316S\u0338\u0301\u0316';
+const HEALTHY_STACK = 'T\u0300\u0301\u0302\u0316\u0317\u0318A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const CHORUS = [
   'Tauric Diana bots',
   STRAIN + ' THE DENOMINATOR JUST LEFT THE BUILDING!',
@@ -184,7 +185,10 @@ test('a truncated first seat yields to the next frontier model before any same-s
   };
 
   for (let i = 0; i < 3; i++) {
-    const complete = PREFIXES[i] + TAILS[i];
+    const complete = PREFIXES[i] + TAILS[i] + '\n'
+      + HEALTHY_STACK.repeat(8) + ' THE COMPLETED FIELD RISES ABOVE THE FLAT TRACE!\n'
+      + HEALTHY_STACK.repeat(8) + ' ITS ROOTS DESCEND WITHOUT ERASING THE ARGUMENT!\n'
+      + HEALTHY_STACK.repeat(8) + ' THE SECOND SEAT CLOSES THE AUTHORED RETURN!';
     sequence = [{ text: PREFIXES[i], finishReason: 'MAX_TOKENS' }, { text: complete, finishReason: 'STOP' }];
     const begin = requests.length;
     const res = response();
