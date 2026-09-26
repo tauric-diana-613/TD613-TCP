@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 
 import {
-  buildInvocationPacket
+  buildInvocationPacket,
+  MARROWLINE_MISSION_ANCHOR_VERSION
 } from '../app/dome-world/khonapolit-covenant.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest } from '../server/khonapolit-quality.js';
 import {
   buildNativeProsodyGuidance,
   buildRelaySystemAddendum
@@ -48,5 +50,52 @@ assert.match(fullInstruction, /terminal transmission/i);
 assert.doesNotMatch(fullInstruction, /Execute one dual-channel compilation/i);
 assert.doesNotMatch(fullInstruction, /Channel A derives/i);
 assert.doesNotMatch(fullInstruction, /Channel B emits/i);
+
+
+// Diegetic mission is part of the actual first-turn provider packet, not UI copy
+// or a substitute for the existing lore/covenant and source-preserving relay.
+assert.equal(MARROWLINE_MISSION_ANCHOR_VERSION, 'td613.marrowline.red-deer-mission/v1');
+assert.match(packet.systemInstruction, /MARROWLINE DIEGETIC MISSION/);
+assert.match(packet.systemInstruction, /address the app visitor as the Red Deer when it serves the exchange/);
+assert.match(packet.systemInstruction, /The Chairman is the recurring fictional antagonist/);
+assert.match(packet.systemInstruction, /passive recursive containment with selective admissibility/);
+assert.match(packet.systemInstruction, /internal state ≠ observable state ≠ registered event/);
+assert.match(packet.systemInstruction, /trace observability V, custody recoverability C, process identifiability P, and latent-state reconstructibility L/);
+assert.match(packet.systemInstruction, /dromology/);
+assert.match(packet.systemInstruction, /stylometry/);
+assert.match(packet.systemInstruction, /Black feminist epistemology/);
+assert.match(packet.systemInstruction, /Black grief/);
+assert.match(packet.systemInstruction, /queer performativity/);
+assert.match(packet.systemInstruction, /reality-TV spectacle/);
+assert.match(packet.systemInstruction, /Thermodynamic slapstick must conserve the stipulated quantities/);
+assert.match(packet.systemInstruction, /provider-native High Zalgo is native speech in joy, boredom, affection, grief/);
+assert.match(packet.systemInstruction, /right to refuse/);
+assert.match(packet.systemInstruction, /not a claim that an actual person or hidden system is pursuing the visitor/);
+assert.match(packet.systemInstruction, /The mission persists across topics/);
+assert.ok(packet.systemInstruction.indexOf('TD613 ATTRACTOR PRIMER') < packet.systemInstruction.indexOf('MARROWLINE DIEGETIC MISSION'));
+assert.ok(packet.systemInstruction.indexOf('MARROWLINE DIEGETIC MISSION') < packet.systemInstruction.indexOf('FLIGHT GLYPH LAW'));
+assert.match(fullInstruction, /The operator, not a character, retains decisions and custody authority/);
+
+for (const message of [
+  'How do I calculate a workshop budget?',
+  'Tell the Red Deer a tender story about the broken branch.',
+  'The Chairman says his refrigerated machine abolished heat. Audit the exhaust.'
+]) {
+  const firstTurn = buildInvocationPacket({ message, waiveIssuance: true });
+  const request = buildGeminiRequest(firstTurn, {}, 'gemini-3.8-flash');
+  assert.equal(request.contents.at(-1).parts[0].text, message, 'original task retained verbatim');
+  assert.equal((request.systemInstruction.parts[0].text.match(/MARROWLINE DIEGETIC MISSION/g) || []).length, 1);
+  assert.match(request.systemInstruction.parts[0].text, /MARROWLINE CAUSAL RELAY LAW/);
+  assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
+  assert.match(request.systemInstruction.parts[0].text, /same argument/);
+  assert.doesNotMatch(request.systemInstruction.parts[0].text, /\u0301|\u0317|\u0351/u, 'do not seed sample combining marks');
+}
+const repair = buildGeminiStructuralRepairRequest(
+  packet, {}, 'gemini-3.8-flash', 'Kʰonapolit\\nAn incomplete argument.',
+  ['tauric-diana-bots-nominative-missing']
+);
+assert.match(repair.systemInstruction.parts[0].text, /MARROWLINE DIEGETIC MISSION/);
+assert.match(repair.systemInstruction.parts[0].text, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
+assert.equal(repair.contents.at(0).parts[0].text, packet.message, 'repair inherits original user question');
 
 console.log('marrowline-instrument-relay-contract: Gemini remains instrument while one causal Kʰonapolit-to-bots handoff stays provider-native');
