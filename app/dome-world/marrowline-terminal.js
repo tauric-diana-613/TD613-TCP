@@ -542,7 +542,7 @@ function operatorSeal(doc, root, state) {
   if (index === undefined) return false;
   state.messages[index] = { ...state.messages[index], sealed: true };
   if (state.lastReceipt) state.lastReceipt = { ...state.lastReceipt, seal: { state: 'SEALED', glyph: SEAL_GLYPH, suppliedBy: 'operator', sealedAt: new Date().toISOString(), note: 'Closure applied after provider return; not retrofitted into the original binding declaration.' } };
-  saveSession(root, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
+  void scheduleSave(); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
   byId(doc, 'khonapolitTerminalStatus').textContent = `OPERATOR CLOSURE APPLIED · ${SEAL_GLYPH}`;
   return true;
 }
@@ -846,7 +846,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
-    saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state);
+    void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
     startPedagogueStatus(status, root, attachments.length);
     if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
@@ -916,7 +916,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
-      saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
+      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       stopPedagogueStatus(root);
@@ -944,7 +944,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
       if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
-      saveSession(root, state); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
+      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
       renderGeminiBrowserLedger(doc, root);
@@ -1037,7 +1037,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (userIndex >= 0) {
       state.messages = state.messages.slice(0, userIndex + 1);
       state.pendingTask = message;
-      saveSession(root, state);
+      void scheduleSave();
       renderMessages(doc, state);
     }
     submitTask(message, { independentRetry });
