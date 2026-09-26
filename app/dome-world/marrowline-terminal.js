@@ -64,13 +64,17 @@ export function classifyMarrowlineClientFailure(error, stage = 'request', httpSt
   };
 }
 
-const PEDAGOGUE_PENDING_STATUS = 'Working…';
+const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
+  'Working…',
+  'Still working…',
+  'Waiting for reply…'
+]);
 
 function stopPedagogueStatus(root = globalThis) {
   const timers = Array.isArray(root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__)
     ? root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__
     : [];
-  for (const timer of timers) root.clearTimeout?.(timer);
+  for (const timer of timers) root.clearInterval?.(timer);
   root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ = [];
 }
 
@@ -78,7 +82,7 @@ function setPedagogueStatus(status, phase, text, title = '') {
   if (!status) return;
   const detail = title || text;
   status.dataset.phase = phase;
-  status.textContent = phase === 'pending' ? PEDAGOGUE_PENDING_STATUS
+  status.textContent = phase === 'pending' ? text
     : phase === 'received' ? 'Reply received'
     : phase === 'prepared' ? 'Ready'
     : phase === 'held' && /^TASK PRESERVED/.test(text) ? 'TASK PRESERVED'
@@ -88,14 +92,22 @@ function setPedagogueStatus(status, phase, text, title = '') {
 }
 
 function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
-  // Time elapsed cannot attest to backend reasoning or receipt progress.
-  // Retain a truthful pending state; route and provenance live in Receipt.
+  // Changing labels show pending browser activity, not invented provider stages.
   stopPedagogueStatus(root);
   const suffix = attachmentCount > 0
     ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
     : '';
-  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_STATUS,
-    'Waiting for the provider reply' + suffix + ' · receipt available after return');
+  let index = 0;
+  const detail = 'Waiting for the provider reply' + suffix + ' · receipt available after return';
+  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+  const advance = () => {
+    if (status?.dataset?.phase !== 'pending') return;
+    index = (index + 1) % PEDAGOGUE_PENDING_SEQUENCE.length;
+    setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+  };
+  const timer = root.setInterval?.(advance, 3200);
+  root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ =
+    timer === undefined || timer === null ? [] : [timer];
 }
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
@@ -267,12 +279,37 @@ function renderRelayStage(doc, { id, label, part, absentText, meta = '' }) {
   return section;
 }
 
+function createReplyCopyControl(doc, entry) {
+  const copy = doc.createElement('button');
+  copy.type = 'button';
+  copy.className = 'marrowline-copy-reply';
+  copy.textContent = '⧉';
+  copy.setAttribute('aria-label', 'Copy this reply');
+  copy.title = 'Copy this reply as plain text';
+  copy.addEventListener('click', async () => {
+    const root = doc.defaultView;
+    // One exact provider return only. No receipt, surrounding turns, DOM
+    // normalization, added headings, or local alteration of combining marks.
+    const text = entry.text != null ? String(entry.text)
+      : asArray(entry.relay?.parts).filter(part => part?.present)
+        .map(part => String(part.text ?? '')).join('\n\n');
+    try {
+      await root.navigator.clipboard.writeText(text);
+      showEphemeralNotice(doc, root, 'Reply copied');
+    } catch {
+      showEphemeralNotice(doc, root, 'Copy failed');
+    }
+  });
+  return copy;
+}
+
 function renderModelMessage(doc, entry) {
   if (!entry.relay) {
     const legacy = { ...entry, role: 'user' };
     const article = renderUserMessage(doc, legacy);
     article.dataset.role = 'model';
     article.querySelector('.message-mark').textContent = 'Kʰ';
+    article.append(createReplyCopyControl(doc, entry));
     return article;
   }
 
@@ -314,6 +351,7 @@ function renderModelMessage(doc, entry) {
     article.append(details);
   }
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
+  article.append(createReplyCopyControl(doc, entry));
   return article;
 }
 
@@ -947,10 +985,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'copyKhonapolitTranscript')?.addEventListener('click', async () => {
     try {
       await root.navigator.clipboard.writeText(transcriptText(state.messages));
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'TRANSCRIPT COPIED AS PLAIN TEXT · relay anatomy and seal provenance preserved';
+      const status = byId(doc, 'khonapolitTerminalStatus');
+      if (status?.dataset.phase !== 'pending') setPedagogueStatus(status, 'notice', 'Copied chat',
+        'Full conversation copied as plain text with route and provenance.');
       showEphemeralNotice(doc, root, 'Copied as plain text');
     } catch {
-      byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+      const status = byId(doc, 'khonapolitTerminalStatus');
+      if (status?.dataset.phase !== 'pending') setPedagogueStatus(status, 'notice', 'Copy failed', 'Clipboard unavailable.');
+      showEphemeralNotice(doc, root, 'Copy failed');
     }
   });
   byId(doc, 'copyKhonapolitReceipt')?.addEventListener('click', async () => {

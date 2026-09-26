@@ -473,9 +473,14 @@
     "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
     "mobileStatusMaxWidth": "min(39vw,170px); compact inline status beside Send; full detail in status title and receipt",
     "statusPedagogueSequence": [
-      "Working…"
+      "Working…",
+      "Still working…",
+      "Waiting for reply…"
     ],
-    "statusPedagogueClaim": "truthful pending state without elapsed-time stage theater; detailed route, provenance and operator closure remain in status title and receipt"
+    "statusPedagogueClaim": "short rotating browser-pending labels show continued activity without claiming provider stages; detailed route, provenance and operator closure remain in status title and receipt",
+    "inChatKinesis": "Listening at the shoreline…; after 60s pending, Crossing into the grove…; reset and clear timer on completion or disposal",
+    "replyCopy": "⧉ at bottom-right of each model turn copies exact single provider-authored text only; composer ⧉ retains full-conversation export",
+    "copyFeedbackCompactStatus": "Copied chat in the compact composer status; Reply copied as a transient notice"
   },
   "desktop": {
     "posture": "conversation-first-single-column",

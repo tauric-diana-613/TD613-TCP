@@ -144,6 +144,10 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         card.append(integrated);
       }
       card.append(details);
+      // This decoration moves the integrated return and its details. Keep the
+      // per-reply ⧉ after both so it remains at the bottom-right of the output.
+      const replyCopy = card.querySelector('.marrowline-copy-reply');
+      if (replyCopy) card.append(replyCopy);
     });
   };
   decorate();

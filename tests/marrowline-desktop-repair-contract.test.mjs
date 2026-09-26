@@ -12,6 +12,7 @@ const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.css', 'utf8');
 const livingChatJs = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
+const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop Marrowline is conversation-first and instruments are on demand', () => {
@@ -180,7 +181,9 @@ test('desktop status stays next to Send; mobile wraps complete route status belo
 });
 
 test('composer status reports a truthful pending state without synthetic stage claims', () => {
-  assert.match(terminalJs, /PEDAGOGUE_PENDING_STATUS = 'Working…'/);
+  assert.match(terminalJs, /PEDAGOGUE_PENDING_SEQUENCE = Object\.freeze/);
+  for (const phrase of ['Working…', 'Still working…', 'Waiting for reply…']) assert.ok(terminalJs.includes(phrase));
+  assert.match(terminalJs, /setInterval\?\.\(advance, 3200\)/);
   assert.doesNotMatch(terminalJs, /RECEIPT NEXT · route \+ provenance stay attached/);
   assert.doesNotMatch(terminalJs, /2600 \* \(index \+ 1\)/, 'elapsed time cannot certify backend progress');
   assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
@@ -207,6 +210,28 @@ test('background recovery observes pagehide and resumes a preserved failure once
   assert.match(terminalJs, /root\.addEventListener\?\.\('online', resumeWhenVisible\)/);
   assert.match(terminalJs, /backgroundResumeSpentTask = message/);
   assert.match(terminalJs, /if \(doc\.visibilityState !== 'hidden'\) prompt\?\.focus/);
+});
+
+test('60-second in-chat waiting copy changes without asserting a provider stage and cancels on completion', () => {
+  assert.match(physicalJs, /const listening = 'Listening at the shoreline…'/);
+  assert.match(physicalJs, /const crossing = 'Crossing into the grove…'/);
+  assert.match(physicalJs, /\}, 60000\)/);
+  assert.match(physicalJs, /if \(status\.dataset\.phase === 'pending' && pendingSince !== null\)/);
+  assert.match(physicalJs, /clearPhaseTimer\(\)/);
+  assert.match(physicalJs, /label\.textContent = listening/);
+  assert.match(physicalJs, /return \(\) => \{\s*clearPhaseTimer\(\)/);
+  assert.deepEqual(release.composer.statusPedagogueSequence, ['Working…', 'Still working…', 'Waiting for reply…']);
+});
+
+test('each model reply owns an accessible copy control; composer copy stays conversation-wide', () => {
+  assert.match(terminalJs, /function createReplyCopyControl\(doc, entry\)/);
+  assert.match(terminalJs, /copy\.setAttribute\('aria-label', 'Copy this reply'\)/);
+  assert.match(terminalJs, /entry\.text != null \? String\(entry\.text\)/);
+  assert.match(terminalJs, /article\.append\(createReplyCopyControl\(doc, entry\)\)/);
+  assert.match(terminalJs, /clipboard\.writeText\(transcriptText\(state\.messages\)\)/);
+  assert.match(css, /#khonapolitMessages \.relay-message \.marrowline-copy-reply/);
+  assert.match(css, /#khonapolitMessages \.message\[data-role="model"\] \.marrowline-copy-reply/);
+  assert.equal(release.composer.replyCopy.includes('single provider-authored text'), true);
 });
 
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
