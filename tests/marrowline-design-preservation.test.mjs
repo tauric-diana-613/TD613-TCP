@@ -466,6 +466,7 @@ test('each response has an independent copy control preserving only that provide
   h.send('Second operator question.'); await h.settled(); await flush();
   const copies = h.doc.querySelectorAll('.relay-message .marrowline-copy-reply');
   assert.equal(copies.length, 2, 'each model response has its own bottom-right copy control');
+  for (const card of h.doc.querySelectorAll('.relay-message')) assert.equal(card.lastElementChild, card.querySelector('.marrowline-copy-reply'), 'copy remains at bottom after living-chat decoration');
   for (const button of copies) {
     assert.equal(button.textContent, '⧉');
     assert.equal(button.getAttribute('aria-label'), 'Copy this reply');
