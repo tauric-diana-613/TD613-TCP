@@ -740,20 +740,30 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     void renderThreadLibrary();
   };
   const switchThread = async threadId => {
-    if (!storeReady || requestInFlight) return;
+    if (!storeReady || requestInFlight) {
+      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
+      return;
+    }
     if (!await scheduleSave()) return;
     const next = await threadLibrary.get(threadId);
     if (next) restoreThread(next);
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const newThread = async () => {
-    if (!storeReady || requestInFlight) return;
+    if (!storeReady || requestInFlight) {
+      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
+      return;
+    }
     if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.create());
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const deleteThread = async threadId => {
-    if (!storeReady || requestInFlight || !root.confirm?.('Delete this conversation from this browser?')) return;
+    if (!storeReady || requestInFlight) {
+      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
+      return;
+    }
+    if (!root.confirm?.('Delete this conversation from this browser?')) return;
     if (!await scheduleSave()) return;
     await threadLibrary.remove(threadId);
     if (activeThread?.id === threadId) {
@@ -773,7 +783,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await renderThreadLibrary();
   };
   const branchFromFirst = async () => {
-    if (!storeReady || requestInFlight || !activeThread) return;
+    if (!storeReady || requestInFlight || !activeThread) {
+      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
+      return;
+    }
     if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.branch(activeThread, 1));
   };
@@ -781,9 +794,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'marrowlineNewThread')?.addEventListener('click', () => void newThread());
   byId(doc, 'marrowlineThreadOpen')?.addEventListener('click', () => {
     const drawer = byId(doc, 'marrowlineThreadDrawer');
-    if (drawer) drawer.open = !drawer.open;
+    if (drawer) {
+      drawer.open = !drawer.open;
+      if (drawer.open) void renderThreadLibrary().catch(() => {});
+      byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', String(drawer.open));
+    }
   });
-  void createMarrowlineThreadLibrary(root).then(async library => {
+  const threadReady = createMarrowlineThreadLibrary(root).then(async library => {
     threadLibrary = library;
     const migrated = await library.migrate();
     let record = migrated || await library.get(library.getActiveId());
@@ -797,10 +814,20 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (input) input.value = queued;
       void submitTask(queued);
     }
+    return true;
   }).catch(error => {
     const status = byId(doc, 'khonapolitTerminalStatus');
     if (status) { status.dataset.phase = 'held'; status.textContent = 'Storage unavailable'; status.title = String(error?.message || error); }
     if (sendControl) sendControl.disabled = true;
+    return false;
+  });
+  root.__TD613_MARROWLINE_THREADS__ = Object.freeze({
+    ready: threadReady,
+    current: () => activeThread,
+    list: async () => threadLibrary ? threadLibrary.all() : [],
+    flush: () => saveChain,
+    switch: switchThread, create: newThread, branch: branchFromFirst,
+    remove: deleteThread, backend: () => threadLibrary?.backend || null
   });
   // A deliberate, single-use browser-local observation; not restored as if an
   // old stored reply were its original HTTP response body.
@@ -880,7 +907,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
-    void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state);
+    const persisted = await scheduleSave();
+    syncRecoveryControls(doc, state); renderMessages(doc, state);
+    if (!persisted) {
+      requestInFlight = false;
+      prompt.value = message;
+      submit.disabled = false;
+      return;
+    }
     startPedagogueStatus(status, root, attachments.length);
     if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
     const requestController = new AbortController();
@@ -1111,8 +1145,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state, scheduleSave));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
     if (!storeReady || requestInFlight) {
-      setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'held', 'Wait for reply',
-        'Finish the current provider return before clearing the conversation.');
+      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
       return;
     }
     backgroundResumeTask = '';
