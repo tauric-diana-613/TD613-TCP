@@ -188,15 +188,16 @@ function installUniversalContextPlus(doc, root) {
   plus.setAttribute('aria-label', 'Add file, add photo, or open Loom');
 
   row.append(promptLabel);
-  // One compact action row: attachment and Send together on the left; the
-  // conversation utilities remain together at the right.
+  // The controls occupy their own column beside the prompt. Utilities sit in
+  // reserved space at the prompt's lower right, without a second action band.
   const actionRow = form.querySelector('.composer-actions');
   const sendButton = byId(doc, 'khonapolitSend');
   if (actionRow && sendButton) {
     const controlStack = doc.createElement('div');
     controlStack.className = 'marrowline-composer-control-stack';
-    actionRow.insertBefore(controlStack, sendButton);
     controlStack.append(plus, sendButton);
+    row.prepend(controlStack);
+    row.append(actionRow);
   } else row.prepend(plus);
 
   const menu = doc.createElement('div');
