@@ -819,3 +819,111 @@
 @media(prefers-reduced-motion:reduce){
  #khonapolitSend::before,#khonapolitSend::after,.marrowline-chat-kinesis .kinesis-orbit *{animation:none!important}
 }
+
+
+/* September 26 coordinated surface: one in-chat kinesis, no second composer
+   status lane. The status element remains live for receipts and observers. */
+#speakingPanel .composer-actions > #khonapolitTerminalStatus{
+  position:absolute!important;width:1px!important;height:1px!important;min-width:0!important;
+  min-height:0!important;max-width:1px!important;max-height:1px!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  clip-path:inset(50%)!important;white-space:nowrap!important;pointer-events:none!important;
+}
+#speakingPanel .marrowline-composer-input-row{display:block!important;min-width:0}
+#speakingPanel .composer-actions{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;
+  align-items:center!important;justify-content:flex-start!important;min-height:48px!important;margin-top:7px!important}
+#speakingPanel .composer-actions > #marrowlineComposerPlus{
+  order:1!important;position:relative;flex:0 0 42px!important;margin:0!important;
+  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend{order:2!important;margin:0!important;
+  flex:0 0 46px!important;width:46px!important;min-width:46px!important;height:46px!important;min-height:46px!important;
+  position:relative!important;isolation:isolate!important;overflow:visible!important;border-radius:50%!important;
+  background:radial-gradient(circle at 31% 19%,#8975c8 0%,#59469e 53%,#32295d 100%)!important;
+  border:1px solid rgba(123,238,239,.7)!important;color:#f0eaff!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.38),inset 0 -4px 9px rgba(19,15,54,.38),
+    0 0 0 4px rgba(80,230,235,.075),0 0 19px rgba(72,230,236,.38),0 0 34px rgba(129,95,234,.18)!important;
+  animation:marrowline-send-aura 4.2s ease-in-out infinite!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend::before{
+  content:"⇧"!important;display:grid!important;place-items:center!important;
+  width:34px!important;height:34px!important;font:750 29px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  -webkit-text-stroke:0!important;letter-spacing:0!important;text-shadow:0 1px 7px rgba(255,255,255,.24)!important;
+  background:linear-gradient(112deg,#e9e7ff 7%,#a9b4d0 32%,#fff 51%,#c7b6f2 74%,#e5e0ff 93%);
+  background-size:230% 100%;background-clip:text;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;color:#e6e0ff!important;
+  transform:translate(-.3px,.8px)!important;animation:marrowline-arrow-shimmer 5.2s ease-in-out infinite!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend:disabled{opacity:.55!important;animation:none!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 0 0 2px rgba(80,230,235,.045)!important}
+#speakingPanel .composer-actions > #khonapolitSend:focus-visible{outline:2px solid #a5faff!important;outline-offset:4px!important}
+#speakingPanel .composer-actions > .marrowline-conversation-utilities{order:3!important;margin-left:auto!important;gap:12px!important}
+@keyframes marrowline-send-aura{0%,100%{box-shadow:inset 0 1px 1px rgba(255,255,255,.38),inset 0 -4px 9px rgba(19,15,54,.38),0 0 0 3px rgba(80,230,235,.07),0 0 14px rgba(72,230,236,.28),0 0 26px rgba(129,95,234,.16)}50%{box-shadow:inset 0 1px 1px rgba(255,255,255,.44),inset 0 -4px 9px rgba(19,15,54,.38),0 0 0 5px rgba(80,230,235,.11),0 0 24px rgba(72,230,236,.47),0 0 38px rgba(129,95,234,.26)}}
+@keyframes marrowline-arrow-shimmer{0%,24%,100%{background-position:0% 50%}65%{background-position:100% 50%}}
+
+/* Reply-local glyph occupies the bottom corner of the SAME output, never a
+   dedicated row. Keep a generous invisible touch surface and native text. */
+#khonapolitMessages .relay-message,#khonapolitMessages .message[data-role="model"]{position:relative!important}
+#khonapolitMessages .relay-message .marrowline-copy-reply,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply{
+  position:absolute!important;right:9px!important;bottom:8px!important;left:auto!important;
+  display:grid!important;place-items:center!important;float:none!important;grid-column:auto!important;
+  margin:0!important;padding:0!important;width:44px!important;height:44px!important;
+  min-width:44px!important;min-height:44px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;color:#bfcfd8!important;
+  font:500 20px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+}
+#khonapolitMessages .relay-message .marrowline-copy-reply:hover,
+#khonapolitMessages .relay-message .marrowline-copy-reply:focus-visible,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:hover,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:focus-visible{
+  background:transparent!important;color:#a5faff!important;outline:2px solid rgba(137,243,239,.62)!important;
+  outline-offset:-4px!important;text-shadow:0 0 11px rgba(129,235,241,.54)!important;
+}
+#khonapolitMessages .relay-message .return-details{padding-right:51px!important}
+#khonapolitMessages .relay-message .marrowline-branch-reply{margin-bottom:12px!important}
+#khonapolitMessages .message[data-role="model"] .message-body{padding-bottom:40px!important}
+
+/* The thread drawer overlays the transcript, never occupies a grid row,
+   and remains readable above the provider-authored text behind it. */
+#speakingPanel{position:relative!important;isolation:isolate;overflow:visible!important}
+#speakingPanel .vessel-head{position:relative;z-index:4}
+#speakingPanel .messages{position:relative;z-index:1}
+#speakingPanel .vessel-form{position:relative;z-index:3}
+#speakingPanel .marrowline-thread-drawer[open]{
+  position:absolute!important;z-index:15!important;top:var(--marrowline-thread-top,110px);
+  left:12px!important;right:12px!important;width:auto!important;margin:0!important;
+  max-height:min(52dvh,390px)!important;overflow:auto!important;
+  background:#19152f!important;border:1px solid rgba(145,233,220,.36)!important;
+  box-shadow:0 18px 55px rgba(0,0,0,.66),inset 0 1px rgba(255,255,255,.035)!important;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+#speakingPanel .marrowline-thread-drawer[open] > summary{position:sticky;top:0;z-index:2;background:#19152f}
+#speakingPanel .marrowline-thread-list{max-height:min(36dvh,300px)}
+#speakingPanel .marrowline-thread-open{word-break:break-word}
+
+/* SHI-format visibility membrane lives only inside the receipt instrument.
+   It is a presentation check, never authentication or issuance. */
+#receiptPanel .marrowline-receipt-membrane:not([hidden]){
+  display:grid;gap:11px;padding:22px 16px;margin:8px 0 18px;border:1px solid rgba(96,220,222,.28);
+  border-radius:18px;background:radial-gradient(circle at 85% 0%,rgba(111,75,191,.26),transparent 65%),linear-gradient(155deg,#181433,#10192c);
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 14px 35px rgba(0,0,0,.20);color:#e7eee9;
+}
+#receiptPanel .marrowline-receipt-membrane[hidden],#receiptPanel #marrowlineReceiptProtected[hidden]{display:none!important}
+#receiptPanel .marrowline-receipt-membrane-glyph{font-size:26px;color:#9ee6e3;text-shadow:0 0 15px rgba(91,224,227,.34)}
+#receiptPanel .marrowline-receipt-membrane strong{font:600 16px/1.4 var(--marrowline-chat-sans,system-ui,sans-serif)}
+#receiptPanel .marrowline-receipt-membrane p,#receiptPanel .marrowline-receipt-membrane small{font:400 12px/1.55 var(--marrowline-chat-sans,system-ui,sans-serif);color:#adbfbd}
+#receiptPanel .marrowline-receipt-membrane label{font:550 11px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);color:#c5d4dc}
+#receiptPanel #marrowlineReceiptShi{width:100%;min-height:44px;padding:10px;border-radius:12px;border:1px solid rgba(121,205,215,.33);
+  background:#100e27;font:400 16px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);color:#f0eefa}
+#receiptPanel #marrowlineReceiptUnlock,#receiptPanel #marrowlineReceiptLock{min-height:42px;padding:9px 14px;border:1px solid rgba(111,228,222,.38);
+  border-radius:12px;background:rgba(44,40,92,.72);color:#def6ef;font:600 12px/1.4 var(--marrowline-chat-sans,system-ui,sans-serif);
+  text-transform:none;letter-spacing:0}
+#receiptPanel #marrowlineReceiptLock{margin-bottom:10px;min-height:32px;background:rgba(25,28,51,.66)}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #khonapolitSend{order:2!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #marrowlineComposerPlus{order:1!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .marrowline-conversation-utilities{order:3!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .prompt-label textarea{min-height:80px!important}
+}
+@media(prefers-reduced-motion:reduce){#speakingPanel .composer-actions > #khonapolitSend,
+  #speakingPanel .composer-actions > #khonapolitSend::before{animation:none!important}}
