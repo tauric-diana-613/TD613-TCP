@@ -111,65 +111,7 @@
 .composer-actions>.marrowline-aia-pocket-control{display:none!important}
 @media(max-width:860px){html:root.marrowline-mobile-shell .composer-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important}html:root.marrowline-mobile-shell .composer-actions .primary{order:1!important;margin-right:auto!important;min-width:0!important}html:root.marrowline-mobile-shell .marrowline-conversation-utilities{order:2;margin-left:auto;gap:10px}html:root.marrowline-mobile-shell .marrowline-utility-action{font-size:19px!important;padding:2px!important}html:root.marrowline-mobile-shell .marrowline-clear-confirmation{width:min(300px,calc(100vw - 32px));padding:17px}html:root.marrowline-mobile-shell .marrowline-composer-input-row{grid-template-columns:40px minmax(0,1fr);gap:7px}html:root.marrowline-mobile-shell .marrowline-composer-plus{width:40px;height:40px;min-width:40px;margin-bottom:3px;font-size:23px}html:root.marrowline-mobile-shell .marrowline-context-menu{width:min(270px,calc(100vw - 20px))}html:root.marrowline-mobile-shell .composer-actions{flex-wrap:wrap!important}html:root.marrowline-mobile-shell .conversation-actions[open]{order:3;flex:1 0 100%;width:100%}html:root.marrowline-mobile-shell .conversation-actions[open]>.conversation-action-menu{position:static;left:auto;bottom:auto;width:100%;margin-top:6px;z-index:auto;box-shadow:none}html:root.marrowline-mobile-shell .starter-prompts{gap:8px!important}html:root.marrowline-mobile-shell .starter-prompts>button:not(.starter-rotate){min-height:42px!important;height:42px!important;padding:0 14px!important;border-radius:14px!important;font-size:13px!important}html:root.marrowline-mobile-shell .starter-prompts .starter-rotate{flex-basis:42px!important;width:42px!important;min-width:42px!important;max-width:42px!important;height:42px!important;min-height:42px!important;max-height:42px!important;border-radius:0!important}}
 
-@media(max-width:860px){
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions{
-    justify-content:flex-start!important;
-    overflow-x:hidden!important;
-  }
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #khonapolitSend{
-    order:1!important;
-    flex:0 0 42px!important;
-    width:42px!important;
-    min-width:42px!important;
-    max-width:42px!important;
-    min-height:40px!important;
-    padding:0!important;
-    margin:0!important;
-    display:inline-grid!important;
-    place-items:center!important;
-    font-size:0!important;
-  }
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #khonapolitSend::before{
-    content:"⇧";
-    display:grid;
-    place-items:center;
-    width:28px;
-    height:28px;
-    font:800 28px/1 var(--marrowline-chat-sans,system-ui,sans-serif);
-    letter-spacing:0;
-    text-align:center;
-    color:#111827!important;
-    -webkit-text-stroke:.55px currentColor;
-    /* Let the lavender shell carry the chroma; ⇧ reads as deep graphite hardware. */
-    text-shadow:
-      0 0 .01px currentColor,
-      0 0 2px rgba(248,250,252,.38),
-      0 0 5px rgba(226,232,240,.12);
-    /* Physical iPhone evidence has the optical position within the Goldilocks band. */
-    transform:translate(-.70px,1.35px);
-    transform-origin:center;
-  }
-  /* Status belongs beside Send, not on its own purple row. Full diagnostic
-     detail remains in the receipt/title; the visible status is deliberately short. */
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
-    order:2!important;
-    flex:0 1 auto!important;
-    width:auto!important;
-    min-width:0!important;
-    max-width:min(39vw,170px)!important;
-    max-height:1.75rem!important;
-    margin:0!important;
-    white-space:nowrap!important;
-    overflow:hidden!important;
-    overflow-wrap:normal!important;
-    text-overflow:ellipsis!important;
-    line-height:1.35!important;
-  }
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities{
-    order:3!important;
-    margin-left:auto!important;
-  }
-}
+
 
 @media (min-width:861px){
   :root{--marrowline-desktop-sans:"Reddit Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
@@ -191,7 +133,7 @@
   .starter-prompts{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px}.starter-prompts button{font-size:11px;font-weight:550;padding:8px 12px;background:#201b35;border:1px solid rgba(255,255,255,.09);border-radius:999px}.starter-prompts .starter-rotate{background:#171c21}
   .vessel-form{padding:10px 14px 12px!important;background:#12101f!important;border-top:1px solid rgba(255,255,255,.07);min-height:0}
   .prompt-label{font-size:9px}.prompt-label textarea{min-height:72px!important;max-height:160px!important;margin-top:4px!important;padding:13px 14px!important;border-radius:16px!important;background:#19162a!important;border:1px solid rgba(255,255,255,.10)!important;font:400 15px/1.5 var(--marrowline-desktop-sans)!important;box-shadow:none!important}
-  .composer-actions{margin-top:8px;justify-content:flex-start!important}.composer-actions .primary{order:1;min-height:40px!important;padding:9px 17px!important;font-size:12px!important}#khonapolitSend{min-width:42px!important;padding:8px 12px!important;font-size:0!important;display:inline-grid!important;place-items:center!important}#khonapolitSend::before{content:"⇧";font:650 22px/1 var(--marrowline-desktop-sans);letter-spacing:0;transform:translateY(-1px)}.conversation-actions{margin-right:auto}.conversation-actions>summary{font-size:11px;padding:8px 4px}.conversation-action-menu{width:205px;padding:6px;border-radius:12px;background:#181522f7;border-color:#5f547f}.conversation-action-menu button{padding:9px 10px!important}
+  .composer-actions{margin-top:8px;justify-content:flex-start!important}.composer-actions .primary{order:1;min-height:40px!important;padding:9px 17px!important;font-size:12px!important}#khonapolitSend{min-width:42px!important;padding:8px 12px!important;font-size:0!important;display:inline-grid!important;place-items:center!important}#khonapolitSend::before{content:"↑";font:650 22px/1 var(--marrowline-desktop-sans);letter-spacing:0;transform:translateY(-1px)}.conversation-actions{margin-right:auto}.conversation-actions>summary{font-size:11px;padding:8px 4px}.conversation-action-menu{width:205px;padding:6px;border-radius:12px;background:#181522f7;border-color:#5f547f}.conversation-action-menu button{padding:9px 10px!important}
   #marrowlinePortableActions:not([hidden]){display:flex!important;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 0!important;padding:6px 0!important;border:0!important;background:transparent!important;box-shadow:none!important}#marrowlinePortableActions:not([hidden]) h3,#marrowlinePortableActions:not([hidden]) p{display:none!important}#marrowlinePortableActions button{min-height:34px;padding:7px 10px;font:550 10px/1.2 var(--marrowline-desktop-sans);text-transform:none;letter-spacing:0;border-radius:999px}
   .vessel-status{font-size:9px!important;line-height:1.45!important;margin-top:5px;color:#91a69b}
   .message{margin-bottom:14px}.message-body{font:400 15px/1.42 var(--marrowline-desktop-sans)!important;padding:14px 16px!important;border-radius:14px!important}.relay-stage{padding:14px 16px 20px!important}.relay-stage-text{font:400 15px/1.38 var(--marrowline-desktop-sans)!important}.return-details{margin-left:16px}
@@ -777,47 +719,59 @@
 
 #khonapolitForm .marrowline-composer-input-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important}
 #khonapolitForm .marrowline-composer-input-row .prompt-label{grid-column:1!important;width:100%!important}
-#khonapolitForm .composer-actions{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-height:48px!important}
-#khonapolitForm .composer-actions .marrowline-composer-plus{order:0!important;flex:0 0 43px!important;margin:0!important;width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important}
-#khonapolitForm .composer-actions #khonapolitSend{order:1!important;margin:0!important;flex:0 0 45px!important;position:relative!important;isolation:isolate;width:45px!important;height:45px!important;min-width:45px!important;max-width:45px!important;min-height:45px!important;padding:0!important;
-  background:linear-gradient(155deg,#7665ba 0%,#6253a9 50%,#44377c 100%)!important;
-  border:1px solid rgba(131,242,230,.81)!important;border-radius:50%!important;color:#f4f0ff!important;
-  box-shadow:0 0 0 1px rgba(116,220,219,.14),0 0 17px rgba(78,227,224,.40),0 0 36px rgba(58,199,211,.22),inset 0 1px rgba(255,255,255,.21)!important;
+/* Approved Marrowline composer control geometry.
+   One vertical + / Send–Stop column rises into the composer; the action row
+   keeps only the lower control's footprint, so no purple band remains below it. */
+#khonapolitForm .composer-actions{
+  display:flex!important;align-items:flex-end!important;justify-content:flex-start!important;
+  gap:9px!important;min-height:45px!important;position:relative!important;
+}
+#khonapolitForm .composer-actions .marrowline-composer-control-stack{
+  order:0!important;display:grid!important;grid-template-rows:43px 45px!important;gap:6px!important;
+  align-self:flex-end!important;flex:0 0 45px!important;width:45px!important;
+  margin-top:-51px!important;margin-bottom:0!important;
+}
+#khonapolitForm .composer-actions .marrowline-composer-plus{
+  order:initial!important;display:grid!important;place-items:center!important;
+  width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important;margin:0!important;
+}
+#khonapolitForm .composer-actions #khonapolitSend{
+  order:initial!important;margin:0!important;position:relative!important;isolation:isolate!important;
+  width:45px!important;height:45px!important;min-width:45px!important;max-width:45px!important;min-height:45px!important;
+  padding:0!important;background:#5d49a7!important;border:2px solid #7ce6ec!important;border-radius:50%!important;
+  color:#eee8f7!important;box-shadow:none!important;
 }
 #khonapolitForm .composer-actions #khonapolitSend::before{
-  position:relative!important;z-index:2!important;content:"⇧"!important;
-  display:grid!important;place-items:center!important;width:30px!important;height:30px!important;
-  font:750 29px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;letter-spacing:0!important;
-  color:#f2edff!important;-webkit-text-fill-color:#f2edff!important;-webkit-text-stroke:.25px #f2edff!important;
-  text-shadow:0 0 8px rgba(238,235,255,.72),0 0 19px rgba(162,218,247,.35)!important;
-  transform:translate(-.35px,.5px)!important;animation:marrowline-arrow-shimmer 4.5s ease-in-out infinite;
+  position:relative!important;z-index:1!important;content:"↑"!important;display:grid!important;place-items:center!important;
+  width:28px!important;height:28px!important;font:500 25px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  letter-spacing:0!important;color:#eee8f7!important;-webkit-text-fill-color:#eee8f7!important;-webkit-text-stroke:0!important;
+  text-shadow:none!important;transform:translateY(-.5px)!important;animation:none!important;
 }
-#khonapolitForm .composer-actions #khonapolitSend::after{
-  content:"";position:absolute;inset:-5px;border-radius:50%;pointer-events:none;
-  box-shadow:0 0 0 1px rgba(86,229,227,.10),0 0 13px rgba(76,224,232,.20);
-  animation:marrowline-send-halo 3.8s ease-in-out infinite;
+#khonapolitForm .composer-actions #khonapolitSend::after{content:none!important;display:none!important}
+#khonapolitForm .composer-actions #khonapolitSend:disabled{opacity:.51!important;box-shadow:none!important}
+#khonapolitForm .composer-actions #khonapolitSend:disabled::after{display:none!important}
+#speakingPanel .composer-actions > #khonapolitSend[data-transmission-state="generating"]::before{
+  content:""!important;box-sizing:border-box!important;display:block!important;width:15px!important;height:15px!important;
+  border:2.4px solid #eee8f7!important;border-radius:3px!important;background:none!important;box-shadow:none!important;
 }
-#khonapolitForm .composer-actions #khonapolitSend:disabled{opacity:.51!important;box-shadow:0 0 0 1px rgba(115,173,171,.15)!important}
-#khonapolitForm .composer-actions #khonapolitSend:disabled::after{animation:none;opacity:.2}
 #khonapolitForm .composer-actions .marrowline-conversation-utilities{order:3!important;display:flex!important;gap:12px!important;margin-left:auto!important}
 #khonapolitForm .composer-actions #khonapolitTerminalStatus{
   position:absolute!important;width:1px!important;height:1px!important;min-width:0!important;max-width:1px!important;
   overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;padding:0!important;
   margin:0!important;border:0!important;pointer-events:none!important;
 }
-@keyframes marrowline-arrow-shimmer{0%,100%{filter:brightness(.96)}42%{filter:brightness(1.27)}55%{filter:brightness(1.08)}}
-@keyframes marrowline-send-halo{0%,100%{opacity:.49;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
 .marrowline-chat-kinesis[data-phase="received"] .kinesis-orbit *,
 .marrowline-chat-kinesis[data-phase="held"] .kinesis-orbit *{animation-play-state:paused!important}
 @media(max-width:860px){
  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-form{padding:8px 11px 8px!important}
  html:root.marrowline-mobile-shell #khonapolitForm .composer-actions{margin-top:7px!important;gap:8px!important}
- html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-composer-plus{width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important}
- html:root.marrowline-mobile-shell #khonapolitForm .composer-actions #khonapolitSend{min-width:45px!important;width:45px!important;height:45px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-composer-control-stack{grid-template-rows:42px 44px!important;gap:6px!important;flex-basis:44px!important;width:44px!important;margin-top:-50px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-composer-plus{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions #khonapolitSend{width:44px!important;height:44px!important;min-width:44px!important;max-width:44px!important;min-height:44px!important}
  html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-conversation-utilities{gap:10px!important}
 }
 @media(prefers-reduced-motion:reduce){
- #khonapolitSend::before,#khonapolitSend::after,.marrowline-chat-kinesis .kinesis-orbit *{animation:none!important}
+ #khonapolitSend::before,.marrowline-chat-kinesis .kinesis-orbit *{animation:none!important}
 }
 
 
@@ -974,8 +928,7 @@
   text-transform:none;letter-spacing:0}
 #receiptPanel #marrowlineReceiptLock{margin-bottom:10px;min-height:32px;background:rgba(25,28,51,.66)}
 @media(max-width:860px){
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #khonapolitSend{order:2!important}
-  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #marrowlineComposerPlus{order:1!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > .marrowline-composer-control-stack{order:1!important}
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .marrowline-conversation-utilities{order:3!important}
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .prompt-label textarea{min-height:80px!important}
 }

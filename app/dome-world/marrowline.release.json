@@ -447,8 +447,8 @@
     "sendLabel": "Send",
     "desktopSendGlyph": "↑",
     "mobileSendGlyph": "↑",
-    "sendGlyphPresentation": "pearl-lavender upward arrow; in-flight 13px outlined square; one circular amethyst/cyan Send/Stop footprint; actual AbortController cancellation",
-    "mobileSendGlyphRendering": "plain pearl-lavender ↑ with native text ink, no background-clip:text rectangle; round halo and 46px circular button; stop state uses outlined square",
+    "sendGlyphPresentation": "compact pearl-lavender ↑; in-flight compact outlined square; flat violet circular Send/Stop with one thin cyan ring; actual AbortController cancellation; no external halo",
+    "mobileSendGlyphRendering": "plain pearl-lavender ↑ with native text ink; flat #5d49a7 circle with a thin cyan ring and no shadow/halo; Stop uses the matching compact outlined square",
     "statusPlacement": "inside-composer-right-of-send-on-desktop-full-width-wrapped-below-actions-on-mobile",
     "welcomeStoryRevision": "ancestral-name-return sentence added under Ash Moon without changing custody or route semantics",
     "utilityRail": [
@@ -497,7 +497,7 @@
       "titlePolicy": "local prompt-first subject title with no API call; existing titles and user renames preserved"
     },
     "stopTransmission": "Send becomes same-size outlined-square Stop while request is active; browser AbortController plus abort-race guard for unresolved response/body promises; preserves task, attachments and prior history; no automatic retry after operator cancel",
-    "mobileComposer": "textarea min-height 56px, compact 4px/3px padding and 1px action gap; plus optical centering; no overlap with dock"
+    "mobileComposer": "vertical + above Send/Stop control stack lifted north by one button-height; the prior lower purple action band is collapsed; no overlap with the dock"
   },
   "desktop": {
     "posture": "conversation-first-single-column",
