@@ -331,6 +331,7 @@ test('expressive line styling begins only at marked bot lines with exact source 
 
 test('mobile preloaded starter submits on the first touch before keyboard blur can eat the click', async t => {
   const h = harness(t, { mobile: true });
+  await h.ready();
   const starter = h.doc.querySelector('.starter-prompts button');
   assert.ok(starter);
   starter.click();
@@ -354,6 +355,7 @@ test('mobile preloaded starter submits on the first touch before keyboard blur c
 
 test('edited mobile starter keeps Return and submits on first deliberate Send press', async t => {
   const h = harness(t, { mobile: true });
+  await h.ready();
   h.doc.querySelector('.starter-prompts button').click();
   await flush();
   const prompt = h.$('khonapolitPrompt');
@@ -407,6 +409,7 @@ test('client exceptions preserve the observed boundary instead of inventing a lo
 
 test('actual submit preserves a received receipt when response rendering throws', async t => {
   const h = harness(t);
+  await h.ready();
   const messages = h.$('khonapolitMessages');
   const replace = messages.replaceChildren.bind(messages);
   let calls = 0;
