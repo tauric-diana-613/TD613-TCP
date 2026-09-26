@@ -42,8 +42,8 @@ test('attachment payload stays inside the operator task while the compact relay 
   assert.equal(parts[2].inlineData.data, exact.data_base64);
   assert.match(parts.at(-1).text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
   assert.match(parts.at(-1).text, /both mandatory visible registers/);
-  assert.match(parts.at(-1).text, /native High-Zalgo speech on the first sentence of EVERY turn/);
-  assert.match(parts.at(-1).text, /towering and small asymmetric crowns and roots/);
+  assert.match(parts.at(-1).text, /native High-Zalgo speech in their first sentence on EVERY turn/);
+  assert.match(parts.at(-1).text, /sustained deep overlapping vertical flourishes are primary/);
   assert.doesNotMatch(parts.at(-1).text, /\p{M}/u, 'attachment cue must not restore the miniature template');
 });
 
