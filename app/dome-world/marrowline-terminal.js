@@ -64,13 +64,7 @@ export function classifyMarrowlineClientFailure(error, stage = 'request', httpSt
   };
 }
 
-const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
-  'TASK ROUTED · reading the whole prompt',
-  'CONTEXT JOINED · keeping source boundaries',
-  'REASONING OPEN · testing the strongest path',
-  'RETURN FORMING · preserving both voices',
-  'RECEIPT NEXT · route + provenance stay attached'
-]);
+const PEDAGOGUE_PENDING_STATUS = 'Working…';
 
 function stopPedagogueStatus(root = globalThis) {
   const timers = Array.isArray(root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__)
@@ -82,26 +76,25 @@ function stopPedagogueStatus(root = globalThis) {
 
 function setPedagogueStatus(status, phase, text, title = '') {
   if (!status) return;
+  const detail = title || text;
   status.dataset.phase = phase;
-  status.textContent = text;
-  status.title = title || text;
+  status.textContent = phase === 'pending' ? PEDAGOGUE_PENDING_STATUS
+    : phase === 'received' ? 'Reply received'
+    : phase === 'prepared' ? 'Ready'
+    : text;
+  status.title = detail;
+  status.setAttribute('aria-label', detail);
 }
 
 function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
+  // Time elapsed cannot attest to backend reasoning or receipt progress.
+  // Retain a truthful pending state; route and provenance live in Receipt.
   stopPedagogueStatus(root);
   const suffix = attachmentCount > 0
     ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
     : '';
-  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[0], PEDAGOGUE_PENDING_SEQUENCE[0] + suffix);
-  const timers = [];
-  PEDAGOGUE_PENDING_SEQUENCE.slice(1).forEach((text, index) => {
-    const timer = root.setTimeout?.(() => {
-      if (status?.dataset?.phase !== 'pending') return;
-      setPedagogueStatus(status, 'pending', text, text + suffix);
-    }, 2600 * (index + 1));
-    if (timer !== undefined && timer !== null) timers.push(timer);
-  });
-  root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ = timers;
+  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_STATUS,
+    'Waiting for the provider reply' + suffix + ' · receipt available after return');
 }
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
