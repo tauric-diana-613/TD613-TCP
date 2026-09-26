@@ -726,16 +726,18 @@ try {
 
   assert.equal(preferred.statusCode, 200);
   assert.equal(preferred.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash'], 'morphology is post-hoc telemetry and cannot spend a same-seat repaint');
-  assert.equal(preferred.payload.receipt.provider.attempts.length, 1);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'severe morphology advances once to the next approved native author');
+  assert.equal(preferred.payload.receipt.provider.attempts.length, 2);
   assert.equal(preferred.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   assert.ok(preferred.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-axis-collapse'));
   assert.ok(preferred.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-stack-depth-thin'));
   assert.equal(preferred.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
-  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(preferred.payload.receipt.provider.attempts[0].morphologyObservation.nextApprovedSeatRequested, true);
+  assert.equal(preferred.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(preferred.payload.relay.admission.quality, 'PARTIAL');
   assert.equal(preferred.payload.receipt.provider.structuralRepair, undefined);
   assert.equal(preferred.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-native-morphology-observed-no-repair');
+  assert.equal(preferred.payload.receipt.provider.qualityPreference.sourceAttemptIndex, 1);
 
   clearGeminiModelState();
   calls.length = 0;
@@ -754,8 +756,8 @@ try {
 
   assert.equal(morphologyRepaired.statusCode, 200);
   assert.equal(morphologyRepaired.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash']);
-  assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 1);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash']);
+  assert.equal(morphologyRepaired.payload.receipt.provider.attempts.length, 2);
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.quality, 'PARTIAL');
   const severeWarnings = severeMorphologyRepairWarnings(morphologyRepaired.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings);
   assert.ok(severeWarnings.includes('tauric-diana-zalgo-axis-collapse'));
@@ -765,7 +767,8 @@ try {
   assert.equal(morphologyRepaired.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
   assert.equal(morphologyRepaired.payload.receipt.provider.structuralRepair, undefined);
   assert.equal(morphologyRepaired.payload.text, horizontalPartialAnswer);
-  assert.equal(requestBodies.length, 1, 'morphology observation cannot create a second provider request');
+  assert.equal(morphologyRepaired.payload.receipt.provider.qualityPreference.selection, 'best-completed-partial-after-severe-morphology-failover');
+  assert.equal(requestBodies.length, 2, 'severe morphology can spend one later-seat native authorship request');
 
   clearGeminiModelState();
   calls.length = 0;
@@ -784,8 +787,8 @@ try {
 
   assert.equal(morphologyHeld.statusCode, 200);
   assert.equal(morphologyHeld.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash']);
-  assert.equal(morphologyHeld.payload.receipt.provider.attempts.length, 1);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash']);
+  assert.equal(morphologyHeld.payload.receipt.provider.attempts.length, 2);
   assert.equal(morphologyHeld.payload.receipt.provider.model, 'gemini-3.8-flash');
   assert.equal(morphologyHeld.payload.relay.admission.quality, 'PARTIAL');
   assert.equal(morphologyHeld.payload.text, horizontalPartialAnswer);
@@ -810,15 +813,15 @@ try {
 
   assert.equal(glyphRecovered.statusCode, 200);
   assert.equal(glyphRecovered.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash'], 'even hard-looking morphology corruption is observation-only on an ordinary human turn');
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash'], 'hard glyph corruption advances once to the next approved native author');
   assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].outputAdmission.qualityWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
   assert.ok(glyphRecovered.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-glyph-substitution-collapse'));
   assert.equal(glyphRecovered.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
-  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.8-flash');
+  assert.equal(glyphRecovered.payload.receipt.provider.model, 'gemini-3.5-flash');
   assert.equal(glyphRecovered.payload.relay.admission.quality, 'PARTIAL');
-  assert.equal(glyphRecovered.payload.text, glyphCorruptAnswer);
+  assert.equal(glyphRecovered.payload.text, answer);
   assert.equal(glyphRecovered.payload.receipt.provider.structuralRepair, undefined);
-  assert.equal(requestBodies.length, 1);
+  assert.equal(requestBodies.length, 2);
 
   hardGlyphCorruptionScenario = false;
 
@@ -850,10 +853,10 @@ try {
 
   assert.equal(quotaReservedPartial.statusCode, 200);
   assert.equal(quotaReservedPartial.payload.ok, true);
-  assert.deepEqual(calls, ['gemini-3.8-flash']);
+  assert.deepEqual(calls, ['gemini-3.8-flash', 'gemini-3.5-flash']);
   assert.equal(quotaReservedPartial.payload.receipt.provider.structuralRepair, undefined);
   assert.equal(quotaReservedPartial.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
-  assert.equal(requestBodies.length, 1);
+  assert.equal(requestBodies.length, 2);
 
   clearGeminiModelState();
   calls.length = 0;
