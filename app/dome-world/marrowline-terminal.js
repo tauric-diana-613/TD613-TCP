@@ -678,7 +678,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (!sendControl) return;
     sendControl.dataset.transmissionState = generating ? 'generating' : 'ready';
     sendControl.type = generating ? 'button' : 'submit';
-    sendControl.textContent = generating ? 'Stop' : 'Send';
+    sendControl.replaceChildren();
     sendControl.setAttribute('aria-label', generating ? 'Stop transmission' : 'Send message');
     sendControl.title = generating ? 'Stop transmission' : 'Send message';
     if (generating) sendControl.disabled = false;
