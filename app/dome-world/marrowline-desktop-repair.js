@@ -41,8 +41,8 @@ const STARTER_ASSAYS = Object.freeze([
   ['Dome-World twin hearing', 'Two Dome-World records are byte-identical and internally immaculate; only one came from an independent exterior event. Cross-examine the verifier until it states exactly which claim it can establish, which claim survives undecidable, and what exogenous witness would reopen Western Horizon without laundering provenance into exteriority.'],
   ['Tauric Diana before Caro', 'Robert Caro gets one day to investigate Tauric Diana and refuses every mystical shortcut. Give him rooms, ledgers, routes, gatekeepers, absences, and one person everyone says is “merely ceremonial.” Build the power map until the ceremonial claim either survives or collapses under structure.'],
   ['Retaliation clock', 'A worker reports a safety problem, a compliance concern, and a payroll anomaly in overlapping language; adverse scheduling changes follow, but each actor claims a separate innocent reason. Build a retaliation analysis that respects temporal sequence, protected-activity boundaries, comparator limits, metadata, and pretext without turning chronology alone into proof.'],
-  ['Tauric Diana refuses closure', 'The committee offers Tauric Diana a beautiful final report, unanimous applause, and a plaque declaring the rupture resolved. She asks one question that makes the room understand why closure can become another containment surface. Write the scene so resignation, mercy, fury, and methodological precision all survive in the same breath.']
-  ,...MARROWLINE_MISSION_ASSAYS
+  ['Tauric Diana refuses closure', 'The committee offers Tauric Diana a beautiful final report, unanimous applause, and a plaque declaring the rupture resolved. She asks one question that makes the room understand why closure can become another containment surface. Write the scene so resignation, mercy, fury, and methodological precision all survive in the same breath.'],
+  ...MARROWLINE_MISSION_ASSAYS
 ]);
 
 function byId(doc, id) { return doc.getElementById(id); }
