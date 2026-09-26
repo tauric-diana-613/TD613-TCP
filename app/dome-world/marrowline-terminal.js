@@ -691,6 +691,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     list.replaceChildren();
     for (const thread of threads) {
       const row = doc.createElement('div'); row.className = 'marrowline-thread-row';
+      row.dataset.threadId = thread.id;
       const open = doc.createElement('button'); open.type = 'button'; open.className = 'marrowline-thread-open';
       open.textContent = (thread.parentId ? '⤴ ' : '') + (thread.conversationTitle || DEFAULT_CONVERSATION_TITLE);
       open.setAttribute('aria-current', thread.id === activeThread?.id ? 'true' : 'false');
@@ -706,9 +707,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
   const scheduleSave = () => {
     if (!threadLibrary || !activeThread) return saveChain;
-    const snapshot = { ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
+    // Snapshot at scheduling time; later turns cannot mutate a queued receipt.
+    const snapshot = JSON.parse(JSON.stringify({ ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
       pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: state.conversationTitle,
-      draft: byId(doc, 'khonapolitPrompt')?.value || '' };
+      draft: byId(doc, 'khonapolitPrompt')?.value || '' }));
     saveChain = saveChain.catch(() => false).then(() => threadLibrary.put(snapshot)).then(record => {
       if (activeThread?.id === record.id) activeThread = record;
       if (byId(doc, 'marrowlineThreadDrawer')?.open) void renderThreadLibrary().catch(() => {});
@@ -739,9 +741,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     threadLibrary.setActiveId(record.id);
     void renderThreadLibrary();
   };
+  const canChangeThread = () => {
+    if (requestInFlight) { showEphemeralNotice(doc, root, 'Finish reply first'); return false; }
+    if (getMarrowlineAttachments().length) {
+      showEphemeralNotice(doc, root, 'Send or remove attachments first');
+      return false;
+    }
+    return storeReady;
+  };
   const switchThread = async threadId => {
-    if (!storeReady || requestInFlight) {
-      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
+    if (!canChangeThread()) {
       return;
     }
     if (!await scheduleSave()) return;
@@ -750,19 +759,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const newThread = async () => {
-    if (!storeReady || requestInFlight) {
-      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
-      return;
-    }
+    if (!canChangeThread()) return;
     if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.create());
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const deleteThread = async threadId => {
-    if (!storeReady || requestInFlight) {
-      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
-      return;
-    }
+    if (!canChangeThread()) return;
     if (!root.confirm?.('Delete this conversation from this browser?')) return;
     if (!await scheduleSave()) return;
     await threadLibrary.remove(threadId);
@@ -783,15 +786,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await renderThreadLibrary();
   };
   const branchFromFirst = async () => {
-    if (!storeReady || requestInFlight || !activeThread) {
-      if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
-      return;
-    }
+    if (!canChangeThread() || !activeThread) return;
     if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.branch(activeThread, 1));
   };
   doc.addEventListener('td613:marrowline:branch-first', () => void branchFromFirst());
   byId(doc, 'marrowlineNewThread')?.addEventListener('click', () => void newThread());
+  byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', 'false');
   byId(doc, 'marrowlineThreadOpen')?.addEventListener('click', () => {
     const drawer = byId(doc, 'marrowlineThreadDrawer');
     if (drawer) {
