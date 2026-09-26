@@ -1123,6 +1123,19 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           ? 'Operator cancelled the browser request; no completed reply admitted. Task and attachments preserved for explicit retry.'
           : 'Request held; task preserved for explicit retry.');
     } finally {
+      // Release the actual UI/request lifecycle before any optional evidence
+      // collection. A slow source-window witness cannot strand Stop in place.
+      stopPedagogueStatus(root);
+      requestInFlight = false;
+      activeRequestController = null;
+      const cancelledByOperator = activeRequestCancelRequested;
+      activeRequestCancelRequested = false;
+      setSendControlState(false);
+      root.clearTimeout(requestDeadline);
+      doc.removeEventListener?.('visibilitychange', observeVisibility);
+      root.removeEventListener?.('pagehide', observePageHide);
+      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
+      if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
       if (witnessThisTurn) {
         // Measure the displayed TEXT of this very turn, not the receipt header
         // or a reconstructed transcript. Pixel geometry needs a separate image.
@@ -1166,17 +1179,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (copyWitness) copyWitness.disabled = false;
         }
       }
-      stopPedagogueStatus(root);
-      requestInFlight = false;
-      activeRequestController = null;
-      const cancelledByOperator = activeRequestCancelRequested;
-      activeRequestCancelRequested = false;
-      setSendControlState(false);
-      root.clearTimeout(requestDeadline);
-      doc.removeEventListener?.('visibilitychange', observeVisibility);
-      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
-      if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
-      root.removeEventListener?.('pagehide', observePageHide);
       if (!cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
