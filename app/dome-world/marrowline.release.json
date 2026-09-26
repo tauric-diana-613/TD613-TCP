@@ -436,10 +436,10 @@
     "portableFailureActions": "not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic",
     "starterCarousel": {
       "basePrompts": 2,
-      "assayPrompts": 32,
+      "assayPrompts": 56,
       "control": "🗘",
       "selectionPolicy": "shuffle-bag-without-replacement-two-at-a-time",
-      "cyclePolicy": "all-32-prompts-must-be-seen-before-any-repeat",
+      "cyclePolicy": "all-56-prompts-must-be-seen-before-any-repeat",
       "seamPolicy": "new-cycle-first-pair-excludes-the-immediately-previous-pair",
       "alignment": "left-rail-preserved",
       "controlGrammar": "compact-42px-glass-prompt-cards-plus-borderless-cyan-radiant-refresh-glyph"
