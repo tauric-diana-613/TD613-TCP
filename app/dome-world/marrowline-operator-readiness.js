@@ -1,1 +1,405 @@
-cat: app/dome-world/marrowline-operator-readiness.js: No such file or directory
+import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
+import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from './marrowline-retry-window.js';
+
+export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';
+export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
+
+const MOBILE_QUERY = '(max-width: 860px)';
+const OPERATOR_HEADER = 'X-TD613-Marrowline-Operator';
+const LIVE_ENDPOINT = '/api/dome-world/marrowline';
+
+function byId(doc, id) { return doc.getElementById(id); }
+function safe(value = '') { return String(value ?? '').trim(); }
+
+function ensureStylesheet(doc = document) {
+  const href = new URL('./marrowline-operator-readiness.css', import.meta.url).href;
+  let link = doc.querySelector('link[data-marrowline-operator-readiness]');
+  if (link) return link;
+  link = doc.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  link.dataset.marrowlineOperatorReadiness = MARROWLINE_OPERATOR_READINESS_VERSION;
+  doc.head.append(link);
+  return link;
+}
+
+function syncVisualViewport(doc = document, root = window) {
+  const viewport = root.visualViewport;
+  const width = Math.max(240, Math.round(viewport?.width || root.innerWidth || 0));
+  const height = Math.max(240, Math.round(viewport?.height || root.innerHeight || 0));
+  const top = Math.max(0, Math.round(viewport?.offsetTop || 0));
+  const left = Math.max(0, Math.round(viewport?.offsetLeft || 0));
+  const style = doc.documentElement.style;
+  // Keyboard-visible state and its rectangle are one atomic observation. Never
+  // let readiness publish data-keyboard-visible=true while leaving a stale
+  // physical-device --marrowline-vv-height from an earlier layout viewport.
+  style.setProperty('--marrowline-vv-width', `${width}px`);
+  style.setProperty('--marrowline-vv-height', `${height}px`);
+  style.setProperty('--marrowline-vh', `${height}px`);
+  style.setProperty('--marrowline-vv-top', `${top}px`);
+  style.setProperty('--marrowline-vv-left', `${left}px`);
+
+  const prompt = byId(doc, 'khonapolitPrompt');
+  const focused = Boolean(prompt && doc.activeElement === prompt);
+  const layoutHeight = Math.max(height, Number(root.innerHeight || height));
+  const keyboardVisible = focused && Boolean(viewport) && viewport.height < layoutHeight - 72;
+  doc.body.dataset.keyboardVisible = String(keyboardVisible);
+  return Object.freeze({ width, height, top, left, keyboardVisible });
+}
+
+export function isMarrowlineComposerSendShortcut(event = {}) {
+  return event.key === 'Enter' && Boolean(event.ctrlKey || event.metaKey)
+    && !event.shiftKey && !event.altKey && !event.isComposing;
+}
+
+function installNativeSend(doc = document) {
+  const form = byId(doc, 'khonapolitForm');
+  const prompt = byId(doc, 'khonapolitPrompt');
+  if (!form || !prompt || prompt.dataset.nativeSendInstalled === 'true') return false;
+  prompt.dataset.nativeSendInstalled = 'true';
+  prompt.addEventListener('keydown', (event) => {
+    // Plain Return belongs to the multiline editor, including iOS's native
+    // Return key. A physical Ctrl/Command+Enter remains an explicit send.
+    if (!isMarrowlineComposerSendShortcut(event)) return;
+    event.preventDefault();
+    const submit = byId(doc, 'khonapolitSend');
+    if (submit?.disabled) return;
+    if (typeof form.requestSubmit === 'function') form.requestSubmit(submit || undefined);
+    else submit?.click();
+  });
+  return true;
+}
+
+function installResponseKinesis(doc = document, root = window) {
+  const status = byId(doc, 'khonapolitTerminalStatus');
+  const actions = doc.querySelector('#khonapolitForm .composer-actions');
+  const send = byId(doc, 'khonapolitSend');
+  const form = byId(doc, 'khonapolitForm');
+  if (!status || !actions || !send || !form) return false;
+  let mote = byId(doc, 'marrowlineResponseKinesis');
+  if (!mote) {
+    mote = doc.createElement('span');
+    mote.id = 'marrowlineResponseKinesis';
+    mote.className = 'marrowline-response-kinesis';
+    mote.hidden = true;
+    mote.setAttribute('aria-hidden', 'true');
+    mote.title = 'Response in flight';
+    actions.insertBefore(mote, send);
+  }
+  const sync = () => {
+    const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
+    mote.hidden = !busy;
+    form.setAttribute('aria-busy', busy ? 'true' : 'false');
+  };
+  const Observer = root.MutationObserver;
+  if (typeof Observer === 'function' && status.dataset.responseKinesisInstalled !== 'true') {
+    status.dataset.responseKinesisInstalled = 'true';
+    const observer = new Observer(sync);
+    observer.observe(status, { childList: true, characterData: true, subtree: true });
+    root.__TD613_MARROWLINE_RESPONSE_KINESIS_OBSERVER__ = observer;
+  }
+  sync();
+  return true;
+}
+
+function installHumanSurfaceVocabulary(doc = document, root = window) {
+  const messages = byId(doc, 'khonapolitMessages');
+  const scrub = () => {
+    doc.querySelectorAll('.route-card strong, .relay-stage-head > span:first-child').forEach((node) => {
+      const before = String(node.textContent || '');
+      const after = before
+        .replace(/Tauric Diana bots\?\s*→\s*High Zalgo\?/gi, 'Tauric Diana bots?')
+        .replace(/High Zalgo\?/gi, 'Tauric Diana bots?')
+        .replace(/\s*·\s*High Zalgo/gi, '');
+      if (after !== before) node.textContent = after;
+    });
+  };
+  scrub();
+  const Observer = root.MutationObserver;
+  if (messages && typeof Observer === 'function' && messages.dataset.humanRelayVocabularyInstalled !== 'true') {
+    messages.dataset.humanRelayVocabularyInstalled = 'true';
+    const observer = new Observer(scrub);
+    observer.observe(messages, { childList: true, subtree: true, characterData: true });
+    root.__TD613_MARROWLINE_HUMAN_VOCABULARY_OBSERVER__ = observer;
+  }
+  return true;
+}
+
+export function boundedFailureMessage(failure = {}) {
+  const typed = marrowlineRetryMessage(failure);
+  if (typed) return typed;
+  const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
+  if (code.includes('missing-gemini-api-key') || code.includes('no-eligible-callable-models')) return 'The connection is not ready. Your message is saved.';
+  if (code.includes('network-request-failed') || code.includes('response-body-failed')) return 'The connection was interrupted. Your message is saved.';
+  if (code.includes('client-response-processing-failed')) return 'The reply could not be shown. Your message is saved.';
+  if (code.includes('timeout') || code.includes('abort') || code.includes('408') || code.includes('504')) return 'The reply took too long. Your message is saved.';
+  return 'The reply could not be completed. Your message is saved; see the receipt for details.';
+}
+
+function installTerminalHoldNotice(doc = document, root = window) {
+  const status = byId(doc, 'khonapolitTerminalStatus');
+  const messages = byId(doc, 'khonapolitMessages');
+  if (!status || !messages || status.dataset.holdNoticeInstalled === 'true') return false;
+  status.dataset.holdNoticeInstalled = 'true';
+  let lastSignature = '';
+  let clock = null;
+  let countdown = null;
+  let refresh = null;
+  const retry = byId(doc, 'retryKhonapolitTask');
+  const send = byId(doc, 'khonapolitSend');
+  const stopClock = () => {
+    if (clock !== null) root.clearInterval?.(clock);
+    clock = null;
+  };
+  const clear = () => {
+    stopClock();
+    byId(doc, 'marrowlineTerminalHold')?.remove();
+    if (retry) retry.disabled = false;
+    if (send && status.dataset.phase !== 'pending') send.disabled = false;
+    lastSignature = '';
+    countdown = null;
+    refresh = null;
+  };
+  const updateClock = () => {
+    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};
+    const window = classifyMarrowlineRetryWindow(failure, Date.now());
+    const cooling = window.remainingSeconds > 0;
+    if (retry) retry.disabled = cooling;
+    if (send && status.dataset.phase !== 'pending') send.disabled = cooling;
+    if (countdown) countdown.textContent = cooling
+      ? `Retry in ${window.remainingSeconds}s`
+      : 'Ready to retry';
+    if (refresh) {
+      refresh.disabled = cooling;
+      refresh.textContent = cooling ? '↻ Retry (paused)' : '↻ Retry message';
+      refresh.title = cooling ? 'The reported short retry delay has not elapsed.' : 'Retry the saved message once.';
+    }
+    if (!cooling) stopClock();
+  };
+  const inspect = () => {
+    const text = safe(status.textContent);
+    const held = /TASK PRESERVED/i.test(text);
+    status.dataset.held = String(held);
+    if (!held) { clear(); return; }
+    const failure = root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {};
+    const window = classifyMarrowlineRetryWindow(failure, Date.now());
+    const explanation = boundedFailureMessage(failure);
+    const signature = `${safe(failure?.error || failure?.status || failure?.diagnostic?.code)}|${explanation}|${window.kind}|${window.retryAt || ''}`;
+    let card = byId(doc, 'marrowlineTerminalHold');
+    if (!card) {
+      card = doc.createElement('section');
+      card.id = 'marrowlineTerminalHold';
+      card.className = 'terminal-hold-card';
+      card.setAttribute('role', 'status');
+      card.setAttribute('aria-live', 'polite');
+      messages.append(card);
+    }
+    if (signature !== lastSignature) {
+      stopClock();
+      card.replaceChildren();
+      const title = doc.createElement('strong');
+      title.textContent = window.kind === 'return-held' ? 'Reply held'
+        : window.kind === 'daily-report' ? 'Daily limit reported'
+        : window.kind === 'rate-window' ? 'Short request limit'
+        : window.kind === 'rate-unknown' ? 'Request limit reported'
+        : window.kind === 'service-busy' ? 'Service unavailable'
+        : 'Reply paused';
+      const badge = doc.createElement('span');
+      badge.className = 'terminal-hold-badge';
+      badge.textContent = window.kind === 'return-held' ? 'HELD' : 'PAUSED';
+      title.append(' ', badge);
+      const body = doc.createElement('p');
+      body.textContent = explanation;
+      card.append(title, body);
+      countdown = null;
+      refresh = doc.createElement('button');
+      refresh.type = 'button';
+      refresh.className = 'marrowline-retry-refresh';
+      refresh.addEventListener('click', () => {
+        if (classifyMarrowlineRetryWindow(root.__TD613_KHONAPOLIT_LAST_FAILURE__ || {}).remainingSeconds > 0) return;
+        retry?.click();
+      });
+      if (window.retryAt !== null) {
+        countdown = doc.createElement('span');
+        countdown.className = 'marrowline-retry-countdown';
+        countdown.setAttribute('aria-live', 'off');
+        card.append(countdown);
+      }
+      card.append(refresh);
+      lastSignature = signature;
+    }
+    updateClock();
+    if (window.remainingSeconds > 0 && clock === null) clock = root.setInterval?.(updateClock, 1000) ?? null;
+    // Keep the reader's position when a notice is appended.
+  };
+  const Observer = root.MutationObserver;
+  if (typeof Observer === 'function') {
+    const observer = new Observer(inspect);
+    observer.observe(status, { childList: true, characterData: true, subtree: true });
+    root.__TD613_MARROWLINE_HOLD_NOTICE_OBSERVER__ = observer;
+  }
+  inspect();
+  return true;
+}
+
+function installReadinessTruth(doc = document, root = window) {
+  const status = byId(doc, 'providerStatus');
+  if (!status || status.dataset.readinessTruthInstalled === 'true') return false;
+  status.dataset.readinessTruthInstalled = 'true';
+  const inspect = () => {
+    const text = safe(status.textContent);
+    if (!/^AI ROUTE READY · 0 eligible route\(s\)/i.test(text)) return;
+    status.textContent = 'AI ROUTE CHECK · credential present · callable-model eligibility is confirmed when you send';
+    const lamp = byId(doc, 'providerLamp');
+    if (lamp) {
+      lamp.dataset.state = 'review';
+      lamp.textContent = 'AI route checks on send';
+    }
+  };
+  const Observer = root.MutationObserver;
+  if (typeof Observer === 'function') {
+    const observer = new Observer(inspect);
+    observer.observe(status, { childList: true, characterData: true, subtree: true });
+    root.__TD613_MARROWLINE_READINESS_OBSERVER__ = observer;
+  }
+  inspect();
+  return true;
+}
+
+function ensureOperatorTokenField(doc = document) {
+  const form = byId(doc, 'marrowlineForm');
+  if (!form) return null;
+  let input = byId(doc, 'marrowlineOperatorToken');
+  if (input) return input;
+  const label = doc.createElement('label');
+  label.className = 'field-label marrowline-operator-field';
+  label.htmlFor = 'marrowlineOperatorToken';
+  label.append(doc.createTextNode('Human operator token (optional)'));
+  input = doc.createElement('input');
+  input.id = 'marrowlineOperatorToken';
+  input.type = 'password';
+  input.autocomplete = 'off';
+  input.spellcheck = false;
+  input.inputMode = 'text';
+  input.placeholder = 'Paste for one operator fire; blank = public ingress probe';
+  input.setAttribute('aria-describedby', 'marrowlineOperatorTokenHelp');
+  const help = doc.createElement('small');
+  help.id = 'marrowlineOperatorTokenHelp';
+  help.className = 'operator-token-help';
+  help.textContent = 'Used only for this request, cleared before the network return, and never written into the receipt. Authorization requires a matching server-side token.';
+  label.append(input, help);
+  const row = form.querySelector('.row');
+  if (row) row.before(label);
+  else form.prepend(label);
+  return input;
+}
+
+function operatorReceipt({ payload = {}, response, endpoint, requested = true } = {}) {
+  const routeHeader = safe(response?.headers?.get?.('x-td613-route'));
+  const trapHeader = safe(response?.headers?.get?.('x-td613-trap'));
+  const authorized = payload?.authorized === true && routeHeader === 'operator-bypass';
+  return Object.freeze({
+    schema: MARROWLINE_OPERATOR_RECEIPT_SCHEMA,
+    status: authorized ? 'OPERATOR_AUTHORIZED' : 'OPERATOR_TOKEN_REJECTED',
+    route: endpoint,
+    sourceStatus: 'SERVER_RESPONSE_OBSERVED',
+    networkResponseObserved: true,
+    operator: Object.freeze({ requested, authorized, tokenPersisted: false, authorizationBasis: authorized ? 'server-side-operator-token-match' : 'not-admitted' }),
+    http: Object.freeze({ status: Number(response?.status || 0), routeHeader: routeHeader || null, trapHeader: trapHeader || null, liveVersion: response?.headers?.get?.('x-td613-marrowline-live') || null }),
+    canonicalPayload: payload,
+    claimCeiling: MARROWLINE_GATE_ASSAY_CLAIM_CEILING,
+    seal: '⟐'
+  });
+}
+
+function installOperatorGate(doc = document, root = window) {
+  const form = byId(doc, 'marrowlineForm');
+  const input = ensureOperatorTokenField(doc);
+  if (!form || !input || form.dataset.operatorGateInstalled === 'true') return false;
+  form.dataset.operatorGateInstalled = 'true';
+  form.addEventListener('submit', async (event) => {
+    const token = String(input.value || '');
+    if (!token) return; // Preserve the station's canonical public live-ingress path.
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const status = byId(doc, 'marrowlineStatus');
+    const receiptNode = byId(doc, 'marrowlineReceipt');
+    const depth = byId(doc, 'marrowlineDepth')?.value || '4';
+    const breadth = byId(doc, 'marrowlineBreadth')?.value || '6';
+    const params = new URLSearchParams({ format: 'json', depth: String(depth), breadth: String(breadth) });
+    const endpoint = `${LIVE_ENDPOINT}?${params.toString()}`;
+    if (status) status.textContent = `CALLING HUMAN-OPERATOR LIVE ROUTE · ${LIVE_ENDPOINT}`;
+    input.value = '';
+    try {
+      const response = await fetch(endpoint, {
+        headers: { Accept: 'application/json', [OPERATOR_HEADER]: token },
+        cache: 'no-store'
+      });
+      const payload = await response.json();
+      const receipt = operatorReceipt({ payload, response, endpoint });
+      if (receiptNode) receiptNode.textContent = JSON.stringify(receipt, null, 2);
+      root.__TD613_MARROWLINE_LAST_RECEIPT__ = receipt;
+      root.__TD613_MARROWLINE_OPERATOR_LAST_RECEIPT__ = receipt;
+      if (status) {
+        status.textContent = receipt.operator.authorized
+          ? `OPERATOR LIVE · AUTHORIZED BY SERVER TOKEN MATCH · HTTP ${response.status} · ${receipt.http.routeHeader || 'operator-bypass'}`
+          : `OPERATOR TOKEN NOT ACCEPTED · PUBLIC ABSORBING ROUTE OBSERVED · HTTP ${response.status}`;
+      }
+      root.dispatchEvent?.(new CustomEvent('td613:marrowline:operator-return', { detail: receipt }));
+    } catch (error) {
+      if (status) status.textContent = `OPERATOR LIVE ROUTE UNAVAILABLE · ${safe(error?.message || error)} · token was cleared locally`;
+    }
+  }, { capture: true });
+  return true;
+}
+
+export function installMarrowlineOperatorReadiness(doc = document, root = window) {
+  ensureStylesheet(doc);
+  const mobile = root.matchMedia?.(MOBILE_QUERY);
+  const sync = () => syncVisualViewport(doc, root);
+  installNativeSend(doc);
+  installResponseKinesis(doc, root);
+  installHumanSurfaceVocabulary(doc, root);
+  installTerminalHoldNotice(doc, root);
+  installReadinessTruth(doc, root);
+  installOperatorGate(doc, root);
+
+  const prompt = byId(doc, 'khonapolitPrompt');
+  const settleKeyboardPosture = () => {
+    root.setTimeout(sync, 0);
+    root.setTimeout(sync, 80);
+    root.setTimeout(sync, 220);
+  };
+  prompt?.addEventListener('focus', settleKeyboardPosture);
+  prompt?.addEventListener('blur', settleKeyboardPosture);
+  root.visualViewport?.addEventListener?.('resize', sync, { passive: true });
+  root.visualViewport?.addEventListener?.('scroll', sync, { passive: true });
+  root.addEventListener?.('resize', sync, { passive: true });
+  root.addEventListener?.('orientationchange', () => root.setTimeout(sync, 80), { passive: true });
+  mobile?.addEventListener?.('change', sync);
+  const viewport = sync();
+
+  const receipt = Object.freeze({
+    schema: MARROWLINE_OPERATOR_READINESS_VERSION,
+    nativeKeyboardSend: 'Ctrl/Command+Enter or explicit Send button',
+    returnInsertsNewline: true,
+    shiftEnterNewline: true,
+    visualViewportBound: Boolean(root.visualViewport),
+    viewport,
+    responseKinesis: 'tiny-dome-art-inspired-in-flight-indicator',
+    humanSurfaceVocabulary: 'tauric-diana-bots-with-internal-zalgo-nomenclature-hidden',
+    failureNotice: 'visible-transport-status-not-covenant-voice',
+    gate: Object.freeze({ publicIngress: true, optionalHumanOperatorToken: true, tokenPersistence: 'none', authorization: 'server-side-token-match-only', adversarialAssay: 'same-endpoint-public-vs-operator-control' }),
+    claimCeiling: 'human-interface-and-transport-readiness-not-provider-availability-entity-identity-authorship-or-legal-authority-proof',
+    seal: '⟐'
+  });
+  root.__TD613_MARROWLINE_OPERATOR_READINESS__ = receipt;
+  root.dispatchEvent?.(new CustomEvent('td613:marrowline:operator-readiness', { detail: receipt }));
+  return receipt;
+}
+
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => installMarrowlineOperatorReadiness(document, window), { once: true });
+  else installMarrowlineOperatorReadiness(document, window);
+}

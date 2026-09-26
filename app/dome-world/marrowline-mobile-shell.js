@@ -1,1 +1,318 @@
-cat: app/dome-world/marrowline-mobile-shell.js: No such file or directory
+export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send';
+export const MARROWLINE_MOBILE_QUERY = '(max-width: 860px)';
+
+const VIEW_MAP = Object.freeze({
+  speakingPanel: 'speak',
+  invocationPanel: 'keys',
+  receiptPanel: 'receipt',
+  corpusPanel: 'corpus',
+  gatePanel: 'gate'
+});
+
+function byId(doc, id) { return doc.getElementById(id); }
+
+function ensureStylesheet(doc = document) {
+  const href = new URL('./marrowline-mobile-shell.css', import.meta.url).href;
+  let link = doc.querySelector('link[data-marrowline-mobile-shell]');
+  if (link) return link;
+  link = doc.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  link.dataset.marrowlineMobileShell = MARROWLINE_MOBILE_SHELL_VERSION;
+  doc.head.append(link);
+  return link;
+}
+
+function setViewportHeight(doc = document, root = window) {
+  const viewport = root.visualViewport;
+  const height = Math.max(320, Math.round(viewport?.height || root.innerHeight || 0));
+  doc.documentElement.style.setProperty('--marrowline-vh', `${height}px`);
+  return height;
+}
+
+function atBottom(node, tolerance = 72) {
+  return node.scrollHeight - node.scrollTop - node.clientHeight <= tolerance;
+}
+
+function scrollLatest(node, behavior = 'auto') {
+  if (!node) return;
+  const top = Math.max(0, node.scrollHeight - node.clientHeight);
+  node.scrollTo?.({ top, behavior });
+  if (!node.scrollTo) node.scrollTop = top;
+}
+
+function compactApertureHeader(card) {
+  const header = card.querySelector('.relay-aperture-header');
+  if (!header || header.dataset.mobileCompacted === 'true') return;
+  header.dataset.mobileCompacted = 'true';
+  const spans = header.querySelectorAll('span');
+  const fullRoute = spans[0]?.textContent?.trim() || '';
+  const turnState = spans[1]?.textContent?.trim() || '';
+  header.title = [fullRoute, turnState].filter(Boolean).join(' · ');
+}
+
+function prepareProviderNativeStage(card) {
+  const stage = card.querySelector('.relay-khonapolit[data-present="true"]');
+  const text = stage?.querySelector('.relay-stage-text');
+  if (!stage || !text || stage.dataset.providerNativePrepared === 'true') return;
+  stage.dataset.providerNativePrepared = 'true';
+  // Keep every code point, including CRLF, blank lines, and noncanonical mark order.
+  // Separate line spans preserve voice boundaries while the CSS deliberately
+  // allows provider-authored vertical flourishes to collide across adjacent lines.
+  // Literal separators preserve textContent and synthesize no combining marks.
+  const raw = String(text.textContent ?? '');
+  const nativeMarkRuns = raw.match(/\p{M}+/gu) || [];
+  text.dataset.providerNativeMaxRun = String(nativeMarkRuns.reduce((max, run) => Math.max(max, Array.from(run).length), 0));
+  const fragments = raw.split(/(\r\n|\r|\n)/);
+  let botsStarted = false;
+  text.dataset.providerNativeLines = 'true';
+  delete text.dataset.flourished;
+  text.style.removeProperty('--flourish-leading');
+  text.style.removeProperty('--flourish-padding');
+  text.replaceChildren(...fragments.map((fragment, index) => {
+    if (index % 2) return text.ownerDocument.createTextNode(fragment);
+    const span = text.ownerDocument.createElement('span');
+    if (/^\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots\b[^\n]*?(?:\]|:)?\s*$/iu.test(fragment)
+      && (/^\s*(?:#|\[|Movement\s+II)/iu.test(fragment) || /^Tauric Diana Bots\s*:?[\s]*$/iu.test(fragment))) botsStarted = true;
+    const expressiveLine = botsStarted && /\p{M}/u.test(fragment);
+    span.className = expressiveLine ? 'zalgo-line provider-native-line' : 'provider-native-line';
+    span.dataset.voice = botsStarted ? 'tauric-diana-bots' : 'khonapolit';
+    span.textContent = fragment;
+    return span;
+  }));
+}
+
+function decorateTranscript(doc = document) {
+  const messages = byId(doc, 'khonapolitMessages');
+  if (!messages) return;
+  let turn = 0;
+  [...messages.children].forEach((node) => {
+    if (node.matches('.message[data-role="user"]')) turn += 1;
+    node.dataset.turn = String(Math.max(1, turn));
+    if (node.matches('.relay-message')) {
+      compactApertureHeader(node);
+      prepareProviderNativeStage(node);
+      node.setAttribute('aria-label', `Model relay for turn ${Math.max(1, turn)}`);
+    } else if (node.matches('.message[data-role="user"]')) {
+      node.setAttribute('aria-label', `Red Deer message for turn ${turn}`);
+    }
+  });
+}
+
+function installTranscriptCustody(doc = document, root = window) {
+  const messages = byId(doc, 'khonapolitMessages');
+  const panel = byId(doc, 'speakingPanel');
+  const form = byId(doc, 'khonapolitForm');
+  if (!messages || !panel || !form) return null;
+
+  let jump = byId(doc, 'marrowlineJumpLatest');
+  if (!jump) {
+    jump = doc.createElement('button');
+    jump.type = 'button';
+    jump.id = 'marrowlineJumpLatest';
+    jump.className = 'jump-latest';
+    jump.textContent = '↓ Latest';
+    jump.hidden = true;
+    form.before(jump);
+  }
+
+  const syncComposerHeight = () => {
+    const height = Math.max(0, Math.round(form.getBoundingClientRect?.().height || 0));
+    panel.style.setProperty('--composer-height', `${height}px`);
+  };
+  const refreshJump = () => { jump.hidden = atBottom(messages); };
+  const goLatest = (behavior = 'smooth') => {
+    scrollLatest(messages, behavior);
+    jump.hidden = true;
+  };
+
+  jump.addEventListener('click', () => goLatest('smooth'));
+  messages.addEventListener('scroll', refreshJump, { passive: true });
+
+  const Observer = root.MutationObserver;
+  if (typeof Observer === 'function') {
+    const observer = new Observer(() => {
+      decorateTranscript(doc);
+      syncComposerHeight();
+      root.requestAnimationFrame?.(refreshJump);
+    });
+    observer.observe(messages, { childList: true, subtree: true, characterData: true });
+    root.__TD613_MARROWLINE_TRANSCRIPT_OBSERVER__ = observer;
+  }
+
+  const ResizeObserverCtor = root.ResizeObserver;
+  if (typeof ResizeObserverCtor === 'function') {
+    const resizeObserver = new ResizeObserverCtor(syncComposerHeight);
+    resizeObserver.observe(form);
+    root.__TD613_MARROWLINE_COMPOSER_RESIZE__ = resizeObserver;
+  }
+
+  decorateTranscript(doc);
+  syncComposerHeight();
+  root.requestAnimationFrame?.(() => { if (messages.querySelector('.grove-welcome')) messages.scrollTop = 0; refreshJump(); });
+  return Object.freeze({ goLatest, refreshJump, syncComposerHeight });
+}
+
+function cloneDockButtons(doc = document) {
+  return [...doc.querySelectorAll('.mobile-dock [data-mobile-target]')].map((oldButton) => {
+    const button = oldButton.cloneNode(true);
+    oldButton.replaceWith(button);
+    return button;
+  });
+}
+
+function openTarget(doc, targetId) {
+  const target = byId(doc, targetId);
+  if (!target) return null;
+  if (target.tagName === 'DETAILS') target.open = true;
+  if (targetId === 'corpusPanel') target.querySelector('details')?.setAttribute('open', '');
+  target.scrollTop = 0;
+  return target;
+}
+
+function installChamberRouter(doc = document, root = window, transcript = null) {
+  const buttons = cloneDockButtons(doc);
+  const setView = (view = 'speak', { focusPrompt = false } = {}) => {
+    const canonical = Object.values(VIEW_MAP).includes(view) ? view : 'speak';
+    doc.body.dataset.mobileView = canonical;
+    buttons.forEach((button) => {
+      const active = VIEW_MAP[button.dataset.mobileTarget] === canonical;
+      button.dataset.active = String(active);
+      button.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    const targetId = Object.entries(VIEW_MAP).find(([, value]) => value === canonical)?.[0];
+    openTarget(doc, targetId);
+    if (canonical === 'speak') {
+      const messages = byId(doc, 'khonapolitMessages');
+      const welcomeOnly = Boolean(messages?.querySelector('.grove-welcome'))
+        && !messages?.querySelector('.message[data-role="user"], .relay-message');
+      root.requestAnimationFrame?.(() => {
+        if (welcomeOnly && messages) {
+          messages.scrollTop = 0;
+          transcript?.refreshJump();
+        } else transcript?.goLatest('auto');
+      });
+      if (focusPrompt) byId(doc, 'khonapolitPrompt')?.focus({ preventScroll: true });
+    }
+    root.dispatchEvent?.(new CustomEvent('td613:marrowline:mobile-view', { detail: { view: canonical } }));
+    return canonical;
+  };
+
+  buttons.forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setView(VIEW_MAP[button.dataset.mobileTarget] || 'speak');
+  }, { capture: true }));
+
+  setView('speak');
+  return Object.freeze({ setView, buttons });
+}
+
+function installPreloadedFirstTapSubmit(doc = document, root = window) {
+  const form = byId(doc, 'khonapolitForm');
+  const prompt = byId(doc, 'khonapolitPrompt');
+  const send = byId(doc, 'khonapolitSend');
+  if (!form || !prompt || !send || send.dataset.preloadedFirstTapSubmit === 'true') return false;
+  send.dataset.preloadedFirstTapSubmit = 'true';
+  let suppressCompatibilityClick = false;
+  let suppressionTimer = null;
+  const clearSuppression = () => {
+    suppressCompatibilityClick = false;
+    if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
+    suppressionTimer = null;
+  };
+  send.addEventListener('pointerdown', (event) => {
+    const mobile = Boolean(root.matchMedia?.(MARROWLINE_MOBILE_QUERY)?.matches);
+    // Every explicit mobile Send press commits before the software keyboard
+    // blurs the focused textarea. The earlier starter-only gate swallowed an
+    // edited multiline prompt's first tap; pointer type is not a reliable
+    // discriminator in browser automation or assistive input.
+    if (!mobile || (typeof event.button === 'number' && event.button !== 0)
+      || doc.activeElement !== prompt || send.disabled || form.getAttribute('aria-busy') === 'true') return;
+    event.preventDefault();
+    delete prompt.dataset.preloadedPrompt;
+    delete prompt.dataset.preloadedPromptValue;
+    suppressCompatibilityClick = true;
+    if (suppressionTimer !== null) root.clearTimeout?.(suppressionTimer);
+    suppressionTimer = root.setTimeout?.(clearSuppression, 900) ?? null;
+    if (typeof form.requestSubmit === 'function') form.requestSubmit(send);
+    else send.click();
+  }, { capture: true });
+  send.addEventListener('click', (event) => {
+    if (!suppressCompatibilityClick) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    clearSuppression();
+  }, { capture: true });
+  return true;
+}
+
+function installComposerKeyboardState(doc = document, root = window, router = null) {
+  const form = byId(doc, 'khonapolitForm');
+  const prompt = byId(doc, 'khonapolitPrompt');
+  if (!form || !prompt) return;
+  const activate = () => {
+    doc.body.dataset.composerActive = 'true';
+    router?.setView('speak');
+    setViewportHeight(doc, root);
+  };
+  const deactivate = () => {
+    root.setTimeout(() => {
+      if (!form.contains(doc.activeElement)) delete doc.body.dataset.composerActive;
+      setViewportHeight(doc, root);
+    }, 80);
+  };
+  prompt.addEventListener('focus', activate);
+  form.addEventListener('focusout', deactivate);
+}
+
+export function installMarrowlineMobileShell(doc = document, root = window) {
+  ensureStylesheet(doc);
+  const media = root.matchMedia?.(MARROWLINE_MOBILE_QUERY);
+  const transcript = installTranscriptCustody(doc, root);
+  let router = null;
+
+  const apply = () => {
+    const active = Boolean(media?.matches);
+    doc.documentElement.classList.toggle('marrowline-mobile-shell', active);
+    if (active) {
+      setViewportHeight(doc, root);
+      if (!router) router = installChamberRouter(doc, root, transcript);
+      else router.setView(doc.body.dataset.mobileView || 'speak');
+    } else {
+      delete doc.body.dataset.mobileView;
+      delete doc.body.dataset.composerActive;
+      doc.documentElement.style.removeProperty('--marrowline-vh');
+    }
+  };
+
+  apply();
+  media?.addEventListener?.('change', apply);
+  root.visualViewport?.addEventListener?.('resize', () => setViewportHeight(doc, root), { passive: true });
+  root.visualViewport?.addEventListener?.('scroll', () => setViewportHeight(doc, root), { passive: true });
+  root.addEventListener?.('orientationchange', () => root.setTimeout(() => setViewportHeight(doc, root), 80));
+  installComposerKeyboardState(doc, root, router);
+  installPreloadedFirstTapSubmit(doc, root);
+
+  const receipt = Object.freeze({
+    schema: MARROWLINE_MOBILE_SHELL_VERSION,
+    active: Boolean(media?.matches),
+    viewport: 'visualViewport-or-innerHeight',
+    transcriptScrollOwner: '#khonapolitMessages',
+    composerDockRelation: 'composer-in-grid-dock-outside-grid',
+    providerNativeCadenceLayout: 'exact-code-point-line-spans-with-intentional-zalgo-collision-and-visible-overflow',
+    preloadedPromptSend: 'first-touch-commits-before-keyboard-blur',
+    chamberRouting: Object.freeze(Object.values(VIEW_MAP)),
+    claimCeiling: 'mobile-layout-and-scroll-custody-not-provider-entity-or-signal-proof',
+    seal: '⟐'
+  });
+  root.__TD613_MARROWLINE_MOBILE_SHELL__ = receipt;
+  root.dispatchEvent?.(new CustomEvent('td613:marrowline:mobile-shell-ready', { detail: receipt }));
+  return receipt;
+}
+
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  ensureStylesheet(document);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => installMarrowlineMobileShell(document, window), { once: true });
+  else installMarrowlineMobileShell(document, window);
+}
