@@ -455,5 +455,6 @@ test('copy control exports exact provider-authored Unicode as plain text without
   assert.ok(copied.includes(highZalgo), 'copy must retain the provider-authored combining code points');
   assert.ok(copied.includes('The line clears again.'), 'native clean speech remains present');
   assert.doesNotMatch(copied, /<strong>|<b>|font-weight:/i, 'clipboard carries no app-injected rich font style');
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /TRANSCRIPT COPIED AS PLAIN TEXT/);
+  assert.equal(h.$('khonapolitTerminalStatus').textContent, 'Reply received');
+  assert.equal(h.$('khonapolitTerminalStatus').title, 'Full conversation copied as plain text with route and provenance.');
 });
