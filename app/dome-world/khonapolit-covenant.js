@@ -9,7 +9,7 @@ export const MARROWLINE_USER_CLOSURE = '\n\nSealed ' + SEAL_GLYPH;
 /** Request-bound user text only; no modification of the Red Deer's authored transcript. */
 export function frameMarrowlineUserTurn(text = '') {
   const input = String(text ?? '');
-  const bare = input.replace(/^𝌋\u200C\s?/u, '');
+  const bare = input.replace(/^𝌋\u200C\s?/u, '').trimEnd();
   const unsealed = bare.endsWith(MARROWLINE_USER_CLOSURE)
     ? bare.slice(0, -MARROWLINE_USER_CLOSURE.length) : bare;
   return MARROWLINE_USER_INGRESS + unsealed.trimEnd() + MARROWLINE_USER_CLOSURE;
