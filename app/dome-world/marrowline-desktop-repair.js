@@ -5,8 +5,9 @@ import {
   stageMarrowlineAttachments
 } from './marrowline-attachments.js';
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
+import { MARROWLINE_MISSION_ASSAYS } from './marrowline-mission-assays.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v6-no-repeat-rupture-shuffle';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v7-mission-shuffle';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -41,6 +42,7 @@ const STARTER_ASSAYS = Object.freeze([
   ['Tauric Diana before Caro', 'Robert Caro gets one day to investigate Tauric Diana and refuses every mystical shortcut. Give him rooms, ledgers, routes, gatekeepers, absences, and one person everyone says is “merely ceremonial.” Build the power map until the ceremonial claim either survives or collapses under structure.'],
   ['Retaliation clock', 'A worker reports a safety problem, a compliance concern, and a payroll anomaly in overlapping language; adverse scheduling changes follow, but each actor claims a separate innocent reason. Build a retaliation analysis that respects temporal sequence, protected-activity boundaries, comparator limits, metadata, and pretext without turning chronology alone into proof.'],
   ['Tauric Diana refuses closure', 'The committee offers Tauric Diana a beautiful final report, unanimous applause, and a plaque declaring the rupture resolved. She asks one question that makes the room understand why closure can become another containment surface. Write the scene so resignation, mercy, fury, and methodological precision all survive in the same breath.']
+  ,...MARROWLINE_MISSION_ASSAYS
 ]);
 
 function byId(doc, id) { return doc.getElementById(id); }
@@ -132,8 +134,8 @@ export function installStarterCarousel(doc, root) {
     rotate.type = 'button';
     rotate.className = 'starter-rotate';
     rotate.textContent = '🗘';
-    rotate.title = 'Shuffle 32 Marrowline rupture prompts without repeats';
-    rotate.setAttribute('aria-label', 'Shuffle thirty-two Marrowline rupture prompts without repeats');
+    rotate.title = `Shuffle ${STARTER_ASSAYS.length} Marrowline prompts without repeats`;
+    rotate.setAttribute('aria-label', `Shuffle ${STARTER_ASSAYS.length} Marrowline prompts without repeats`);
     rotate.addEventListener('click', () => {
       const [first, second] = drawPair();
       applyPrompt(baseButtons[0], STARTER_ASSAYS[first]);
