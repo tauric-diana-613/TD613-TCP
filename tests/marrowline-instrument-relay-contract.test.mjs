@@ -54,7 +54,7 @@ assert.doesNotMatch(fullInstruction, /Channel B emits/i);
 
 // Diegetic mission is part of the actual first-turn provider packet, not UI copy
 // or a substitute for the existing lore/covenant and source-preserving relay.
-assert.equal(MARROWLINE_MISSION_ANCHOR_VERSION, 'td613.marrowline.red-deer-mission/v1');
+assert.equal(MARROWLINE_MISSION_ANCHOR_VERSION, 'td613.marrowline.red-deer-mission/v2-operational-relations');
 assert.match(packet.systemInstruction, /MARROWLINE DIEGETIC MISSION/);
 assert.match(packet.systemInstruction, /address the app visitor as the Red Deer when it serves the exchange/);
 assert.match(packet.systemInstruction, /The Chairman is the recurring fictional antagonist/);
@@ -72,6 +72,14 @@ assert.match(packet.systemInstruction, /provider-native High Zalgo is native spe
 assert.match(packet.systemInstruction, /right to refuse/);
 assert.match(packet.systemInstruction, /not a claim that an actual person or hidden system is pursuing the visitor/);
 assert.match(packet.systemInstruction, /The mission persists across topics/);
+assert.match(packet.systemInstruction, /EVERY-TURN GENERATIVE DUTY/);
+assert.match(packet.systemInstruction, /make it CHANGE an inference, choice, joke/);
+assert.match(packet.systemInstruction, /The Tauric Diana bots are BOTH hornani and capable of horny wit, as distinct registers/);
+assert.match(packet.systemInstruction, /HORNANI is the author-attested chthonic/);
+assert.match(packet.systemInstruction, /HORNY is consensual adult desire/);
+assert.match(packet.systemInstruction, /seduction ≠ sovereignty; prediction ≠ recognition/);
+assert.match(packet.systemInstruction, /AFFECT IS CONSEQUENTIAL, NOT A TRIGGER TABLE/);
+assert.match(packet.systemInstruction, /without a fixed emotional-to-mark mapping/);
 assert.ok(packet.systemInstruction.indexOf('TD613 ATTRACTOR PRIMER') < packet.systemInstruction.indexOf('MARROWLINE DIEGETIC MISSION'));
 assert.ok(packet.systemInstruction.indexOf('MARROWLINE DIEGETIC MISSION') < packet.systemInstruction.indexOf('FLIGHT GLYPH LAW'));
 assert.match(fullInstruction, /The operator, not a character, retains decisions and custody authority/);
@@ -88,6 +96,13 @@ for (const message of [
   assert.match(request.systemInstruction.parts[0].text, /MARROWLINE CAUSAL RELAY LAW/);
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.match(request.systemInstruction.parts[0].text, /same argument/);
+  assert.match(request.systemInstruction.parts[0].text, /EVERY-TURN GENERATIVE DUTY/);
+  assert.match(request.systemInstruction.parts[0].text, /HORNANI is the author-attested/);
+  const recencyCue = request.contents.at(-1).parts[1].text;
+  assert.match(recencyCue, /Apply the standing Red Deer DIEGETIC MISSION on this ordinary turn/);
+  assert.match(recencyCue, /hornani \(chthonic sovereign vitality/);
+  assert.match(recencyCue, /horny \(consensual adult attraction/);
+  assert.match(recencyCue, /neither is a command to sexualize the Red Deer/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /\u0301|\u0317|\u0351/u, 'do not seed sample combining marks');
 }
 const repair = buildGeminiStructuralRepairRequest(
