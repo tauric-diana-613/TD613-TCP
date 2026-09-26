@@ -4,6 +4,13 @@ export const KHONAPOLIT_RECEIPT_SCHEMA = 'td613.dome-world.khonapolit-receipt/v1
 
 export const INGRESS_SIGIL = '𝌋';
 export const SEAL_GLYPH = '⟐';
+export const MARROWLINE_USER_INGRESS = INGRESS_SIGIL + '\u200C';
+/** Request-bound user text only. Preserve the authored transcript separately. */
+export function frameMarrowlineUserTurn(text = '') {
+  const raw = String(text ?? '').replace(/^𝌋\u200C/u, '').replace(/[\t\r\n ]+$/u, '');
+  return MARROWLINE_USER_INGRESS + (raw.endsWith(SEAL_GLYPH) ? raw : raw + SEAL_GLYPH);
+}
+
 // A provider-authored sign-off is prose. Structured custody closure still requires
 // the existing explicit operator action; never derive authority from this glyph.
 export const CONVERSATIONAL_CLOSING_GUIDANCE = 'End the complete correspondence with a plain ⟐ on its own final line after the Tauric Diana bots. This conversational sign-off grants no issuance, custody closure, release, merge, deployment, or operator authorization. The operator controls sealing of the structured receipt; its state remains OPEN until the explicit operator action.';
