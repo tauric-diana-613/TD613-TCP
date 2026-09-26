@@ -640,6 +640,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   // old stored reply were its original HTTP response body.
   let episodeArmed = false;
   let lastEpisodeWitness = null;
+  let backgroundResumeTask = '';
+  let backgroundResumeSpentTask = '';
   root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
   root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure || null;
   const shiInput = byId(doc, 'khonapolitShi');
@@ -657,7 +659,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   waiver?.addEventListener('change', () => refreshKeyState(doc));
 
-  const submitTask = async (messageOverride = '', { independentRetry = false } = {}) => {
+  const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false } = {}) => {
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
@@ -667,9 +669,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const submit = byId(doc, 'khonapolitSend');
     // A fresh human gesture can override an advisory short-window timer, but
     // never double-submit while another request is already in flight.
-    if (status?.dataset?.phase === 'pending') return;
+    if (status?.dataset?.phase === 'pending' && !backgroundResume) return;
     const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
+    if (!retrying && !backgroundResume) backgroundResumeSpentTask = '';
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
     const packet = buildInvocationPacket({ message, history: compactMarrowlineHistory(historyForPacket), mode, shi, waiveIssuance });
     if (!message) { setPedagogueStatus(status, 'held', 'SPEECH REQUIRED · the vessel is empty'); prompt?.focus(); return; }
@@ -708,6 +711,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
+    let hiddenDuringRequest = false;
+    const observeVisibility = () => {
+      if (doc.visibilityState === 'hidden') hiddenDuringRequest = true;
+    };
+    doc.addEventListener?.('visibilitychange', observeVisibility);
     let failurePayload = null;
     let requestStage = 'request';
     let responseStatus = null;
@@ -721,10 +729,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (attachments.length) requestBody.attachments = attachments;
       // Client correlator only; server/provider identifiers remain separate.
       if (witnessRequestId) requestBody.request_id = witnessRequestId;
+      const serializedRequestBody = JSON.stringify(requestBody);
+      // Fetch keepalive is capped near 64 KiB in browsers. Preserve background
+      // delivery for ordinary chat while allowing larger attachment/history
+      // packets to use the normal request path instead of throwing locally.
+      const backgroundKeepaliveEligible = new TextEncoder().encode(serializedRequestBody).byteLength <= 60 * 1024;
       const response = await fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
-        body: JSON.stringify(requestBody)
+        keepalive: backgroundKeepaliveEligible,
+        body: serializedRequestBody
       });
       responseStatus = response.status;
       requestStage = 'response-body';
@@ -779,6 +793,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       state.pendingTask = message;
       state.lastFailure = failurePayload || {
         ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
+        ...(hiddenDuringRequest && (requestStage === 'request' || requestStage === 'response-body')
+          ? { backgroundInterrupted: true } : {}),
         ...(receivedReceipt ? { receipt: receivedReceipt } : {})
       };
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
@@ -839,8 +855,24 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       }
       stopPedagogueStatus(root);
       root.clearTimeout(requestDeadline);
+      doc.removeEventListener?.('visibilitychange', observeVisibility);
       submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
       prompt?.focus({ preventScroll: true });
+      if (state.lastFailure?.backgroundInterrupted === true
+        && !backgroundResume
+        && backgroundResumeSpentTask !== message) {
+        backgroundResumeTask = message;
+        const resumeWhenVisible = () => {
+          if (doc.visibilityState === 'hidden' || backgroundResumeTask !== message) return;
+          doc.removeEventListener?.('visibilitychange', resumeWhenVisible);
+          backgroundResumeTask = '';
+          backgroundResumeSpentTask = message;
+          setPedagogueStatus(status, 'pending', 'CONNECTION RESUMED · restoring the preserved task');
+          root.setTimeout?.(() => submitTask(message, { independentRetry: true, backgroundResume: true }), 0);
+        };
+        doc.addEventListener?.('visibilitychange', resumeWhenVisible);
+        resumeWhenVisible();
+      }
     }
   };
 
@@ -886,6 +918,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
+    backgroundResumeTask = '';
+    backgroundResumeSpentTask = '';
     episodeArmed = false; lastEpisodeWitness = null; root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
     const witnessArm = byId(doc, 'armMarrowlineEpisodeWitness');
     if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Witness next reply'; }
