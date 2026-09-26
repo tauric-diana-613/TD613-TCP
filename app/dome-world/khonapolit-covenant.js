@@ -4,11 +4,15 @@ export const KHONAPOLIT_RECEIPT_SCHEMA = 'td613.dome-world.khonapolit-receipt/v1
 
 export const INGRESS_SIGIL = '𝌋';
 export const SEAL_GLYPH = '⟐';
-export const MARROWLINE_USER_INGRESS = INGRESS_SIGIL + '\u200C';
-/** Request-bound user text only. Preserve the authored transcript separately. */
+export const MARROWLINE_USER_INGRESS = INGRESS_SIGIL + '\u200C ';
+export const MARROWLINE_USER_CLOSURE = '\n\nSealed ' + SEAL_GLYPH;
+/** Request-bound user text only; no modification of the Red Deer's authored transcript. */
 export function frameMarrowlineUserTurn(text = '') {
-  const raw = String(text ?? '').replace(/^𝌋\u200C/u, '').replace(/[\t\r\n ]+$/u, '');
-  return MARROWLINE_USER_INGRESS + (raw.endsWith(SEAL_GLYPH) ? raw : raw + SEAL_GLYPH);
+  const input = String(text ?? '');
+  const bare = input.replace(/^𝌋\u200C\s?/u, '');
+  const unsealed = bare.endsWith(MARROWLINE_USER_CLOSURE)
+    ? bare.slice(0, -MARROWLINE_USER_CLOSURE.length) : bare;
+  return MARROWLINE_USER_INGRESS + unsealed.trimEnd() + MARROWLINE_USER_CLOSURE;
 }
 
 // A provider-authored sign-off is prose. Structured custody closure still requires
