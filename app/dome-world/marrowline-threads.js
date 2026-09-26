@@ -111,7 +111,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
       ...empty(),
       messages: copy(parent.messages.slice(0, 2)),
       lastReceipt: copy(answer.receipt || null),
-      conversationTitle: (parent.conversationTitle || 'The speaking grove') + ' · Branch'
+      conversationTitle: parent.conversationTitle || 'The speaking grove'
     }, { parentId: parent.id, branchOf: responseIndex });
   };
   const migrate = async () => {
