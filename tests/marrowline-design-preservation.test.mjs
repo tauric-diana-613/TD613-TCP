@@ -98,6 +98,36 @@ test('thread titles follow the Red Deer prompt, not incidental bot motifs or dem
   assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
 });
 
+test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
+  const h = harness(t);
+  await h.ready();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
+  assert.equal(h.$('marrowlineReceiptGate').hidden, false);
+  assert.equal(h.$('khonapolitWaive').checked, true);
+  h.$('marrowlineReceiptShi').value = 'not-an-shi';
+  h.$('marrowlineReceiptUnlock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true, 'invalid format cannot open receipt UI');
+  h.$('marrowlineReceiptShi').value = 'TD613-SH-9B07D8B-ABCDEF12';
+  h.$('marrowlineReceiptUnlock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, false, 'valid format opens local presentation only');
+  assert.equal(h.$('khonapolitWaive').checked, true, 'reading a receipt does not issue this conversation');
+  assert.equal(h.calls.length, 0, 'opening receipts consumes no model credits');
+  h.$('marrowlineReceiptLock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
+});
+
+test('app-authored provider branding stays inside Receipts while Red Deer surface preserves human input', async t => {
+  const h = harness(t);
+  await h.ready();
+  assert.doesNotMatch(h.$('speakingPanel').textContent, /Gemini/i);
+  assert.doesNotMatch(h.$('invocationPanel').textContent, /Gemini/i);
+  assert.match(h.$('receiptPanel').textContent, /Gemini/);
+  h.send('A poem about a mother and her child.'); await h.settled(); await flush();
+  assert.match(h.doc.querySelector('.message[data-role="user"] .message-meta').textContent, /Red Deer/);
+  assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text').textContent, 'A poem about a mother and her child.');
+  assert.equal(h.calls.length, 1);
+});
+
 test('one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls', async t => {
   const h = harness(t);
   assert.equal(h.$('copyMarrowlineEpisodeWitness').disabled, true);
