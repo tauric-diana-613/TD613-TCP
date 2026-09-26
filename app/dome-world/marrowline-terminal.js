@@ -315,7 +315,7 @@ function renderModelMessage(doc, entry) {
     article.dataset.completion = 'incomplete';
     const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
     article.append(textNode(doc, 'p', 'relay-completion-alert', structuralOnly
-      ? 'TWO-VOICE STRUCTURE UNFINISHED · Gemini returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
+      ? 'TWO-VOICE STRUCTURE UNFINISHED · the provider returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
       : 'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
   }
   if (entry.sealed) article.dataset.sealed = 'true';
@@ -520,6 +520,12 @@ function refreshKeyState(doc) {
     waived ? 'review' : shi.valid ? 'pass' : 'fail',
     waived ? (storedShi.valid ? `unissued research · stored SHI dormant · ${storedShi.suffix}` : 'unissued research · ordinary work') : shi.valid ? `SHI issued · ${shi.suffix}` : 'issuance required'
   );
+  const bindingLine = byId(doc, 'marrowlineBindingLine');
+  if (bindingLine) {
+    const issuance = waived ? 'UNISSUED RESEARCH' : shi.valid
+      ? 'SHI FORMAT ACCEPTED · ending ' + shi.suffix : 'ISSUANCE REQUIRED';
+    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: Sealed ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+  }
   return { shi, storedShi, waived, khona };
 }
 async function hydrateReliquary(doc) {
@@ -842,6 +848,35 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   if (shiInput && !shiInput.value) shiInput.value = readStoredShi(root);
   const waiver = byId(doc, 'khonapolitWaive');
   if (waiver && !validateShi(shiInput?.value || '').valid) waiver.checked = true;
+  const receiptGate = byId(doc, 'marrowlineReceiptGate');
+  const receiptProtected = byId(doc, 'marrowlineReceiptProtected');
+  const receiptGateInput = byId(doc, 'marrowlineReceiptShi');
+  const receiptGateStatus = byId(doc, 'marrowlineReceiptGateStatus');
+  const lockReceipts = () => {
+    if (receiptGate) receiptGate.hidden = false;
+    if (receiptProtected) receiptProtected.hidden = true;
+    if (receiptGateInput) receiptGateInput.value = '';
+    if (receiptGateStatus) receiptGateStatus.textContent = 'Local presentation membrane closed. A valid-format SHI is required.';
+  };
+  const unlockReceipts = () => {
+    const offered = safe(receiptGateInput?.value) || safe(shiInput?.value) || readStoredShi(root);
+    const checked = validateShi(offered);
+    if (!checked.valid) {
+      if (receiptGateStatus) receiptGateStatus.textContent = 'SHI format not recognized. Enter a valid SHI in Keys or here.';
+      receiptGateInput?.focus?.({ preventScroll: true });
+      return;
+    }
+    if (receiptGate) receiptGate.hidden = true;
+    if (receiptProtected) receiptProtected.hidden = false;
+    if (receiptGateStatus) receiptGateStatus.textContent = 'Local format check accepted · ending ' + checked.suffix;
+    if (receiptGateInput) receiptGateInput.value = '';
+  };
+  lockReceipts();
+  byId(doc, 'marrowlineReceiptUnlock')?.addEventListener('click', unlockReceipts);
+  byId(doc, 'marrowlineReceiptLock')?.addEventListener('click', lockReceipts);
+  receiptGateInput?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { event.preventDefault(); unlockReceipts(); }
+  });
   const settingsNote = doc.querySelector('#invocationPanel .panel-note');
   if (settingsNote) settingsNote.textContent = 'Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.';
   renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); renderGeminiBrowserLedger(doc, root); refreshKeyState(doc); syncConversationTitle(doc, state);
