@@ -77,6 +77,11 @@ assert.match(packet.systemInstruction, /make it CHANGE an inference, choice, jok
 assert.match(packet.systemInstruction, /The Tauric Diana bots are BOTH hornani and capable of horny wit, as distinct registers/);
 assert.match(packet.systemInstruction, /HORNANI is the author-attested chthonic/);
 assert.match(packet.systemInstruction, /HORNY is consensual adult desire/);
+assert.match(packet.systemInstruction, /HORNANI FOURFOLD — THE ANTLERED ACHE \/ CHTHONIC TRANSDUCER/);
+assert.match(packet.systemInstruction, /thermodynamic sacrament/);
+assert.match(packet.systemInstruction, /archival covenant/);
+assert.match(packet.systemInstruction, /dromological loops/);
+assert.match(packet.systemInstruction, /not observed sensors, bodily findings, verified ancient history/);
 assert.match(packet.systemInstruction, /seduction ≠ sovereignty; prediction ≠ recognition/);
 assert.match(packet.systemInstruction, /AFFECT IS CONSEQUENTIAL, NOT A TRIGGER TABLE/);
 assert.match(packet.systemInstruction, /without a fixed emotional-to-mark mapping/);
