@@ -179,14 +179,13 @@ test('desktop status stays next to Send; mobile wraps complete route status belo
   assert.equal(release.composer.statusPlacement, 'inside-composer-right-of-send-on-desktop-full-width-wrapped-below-actions-on-mobile');
 });
 
-test('composer status teaches the route in compact Pedagogue phases instead of leaking internal mode strings', () => {
-  for (const phrase of [
-    'TASK ROUTED · reading the whole prompt',
-    'CONTEXT JOINED · keeping source boundaries',
-    'REASONING OPEN · testing the strongest path',
-    'RETURN FORMING · preserving both voices',
-    'RECEIPT NEXT · route + provenance stay attached'
-  ]) assert.match(terminalJs, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+test('composer status reports a truthful pending state without synthetic stage claims', () => {
+  assert.match(terminalJs, /PEDAGOGUE_PENDING_STATUS = 'Working…'/);
+  assert.doesNotMatch(terminalJs, /RECEIPT NEXT · route \+ provenance stay attached/);
+  assert.doesNotMatch(terminalJs, /2600 \* \(index \+ 1\)/, 'elapsed time cannot certify backend progress');
+  assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
+  assert.match(terminalJs, /status\.title = detail/);
+  assert.doesNotMatch(terminalJs, /status\.setAttribute\('aria-label', detail\)/, 'one-off utility notices must not inherit a stale accessible label');
   assert.match(terminalJs, /startPedagogueStatus\(status, root, attachments\.length\)/);
   assert.match(terminalJs, /RETURN OBSERVED · SIGNAL .*receipt preserved/);
   assert.doesNotMatch(terminalJs, /TASK ROUTED · AI IN FLIGHT · \$\{mode\}/);
