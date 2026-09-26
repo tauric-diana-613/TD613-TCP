@@ -519,3 +519,32 @@ test('legacy model output also receives a reply-only copy action', async t => {
   button.click(); await flush();
   assert.equal(h.clipboard.at(-1), text);
 });
+
+test('SHI-gated Receipts remain a local format membrane and cannot issue the current conversation', async t => {
+  const h = harness(t);
+  await h.ready();
+  const gate = h.$('marrowlineReceiptGate'), protectedReceipt = h.$('marrowlineReceiptProtected');
+  assert.equal(gate.hidden, false);
+  assert.equal(protectedReceipt.hidden, true);
+  assert.equal(h.$('khonapolitWaive').checked, true);
+  h.$('marrowlineReceiptShi').value = 'invalid';
+  h.$('marrowlineReceiptUnlock').click(); await flush();
+  assert.equal(protectedReceipt.hidden, true, 'invalid format stays on the membrane');
+  h.$('marrowlineReceiptShi').value = 'TD613-SH-9B07D8B-B7136D34';
+  h.$('marrowlineReceiptUnlock').click(); await flush();
+  assert.equal(gate.hidden, true);
+  assert.equal(protectedReceipt.hidden, false);
+  assert.equal(h.$('khonapolitWaive').checked, true, 'opening receipts does not issue the conversation');
+  assert.equal(h.calls.length, 0, 'receipt membrane makes no provider calls');
+  h.$('marrowlineReceiptLock').click(); await flush();
+  assert.equal(protectedReceipt.hidden, true);
+  assert.equal(gate.hidden, false);
+});
+
+test('human conversation input remains authored text without hidden provider framing', async t => {
+  const h = harness(t);
+  h.send('Tell me about the grove.'); await h.settled(); await flush();
+  assert.equal(h.calls[0].message, 'Tell me about the grove.');
+  assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent, 'Tell me about the grove.');
+  assert.doesNotMatch(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent || '', /𝌋|Sealed ⟐/);
+});
