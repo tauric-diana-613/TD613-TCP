@@ -89,8 +89,8 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
 }
 
 test('thread titles follow the Red Deer prompt, not incidental bot motifs or demo labels', () => {
-  assert.equal(deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.',
-    'THE SHORELINE HAS TEETH'), 'Lucille Clifton and a mother holding her child');
+  assert.equal(deriveMarrowlineConversationTitle('THE SHORELINE HAS TEETH',
+    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a mother holding her child');
   assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
     'The Ash Moon, within the authored mythology of');
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
