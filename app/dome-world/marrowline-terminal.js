@@ -36,7 +36,7 @@ import {
   summarizeGeminiBrowserLedger
 } from '../gemini-consumption-ledger.js';
 
-export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v11-pedagogue-flight-sequence';
+export const KHONAPOLIT_TERMINAL_RUNTIME = 'td613.dome-world.khonapolit-terminal-runtime/v12-stop-and-custody-stages';
 export const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
 export const KHONAPOLIT_ENDPOINT = '/api/dome-world/khonapolit';
 export const MARROWLINE_PORTABLE_TASK_SCHEMA = 'td613.marrowline.portable-task/v0.1';
@@ -67,11 +67,28 @@ export function classifyMarrowlineClientFailure(error, stage = 'request', httpSt
 }
 
 const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
-  'The signal crosses the veil…',
-  'The grove keeps listening…',
-  'The shoreline keeps watch…'
+  'Listening at the shoreline…',
+  'The shoreline keeps watch…',
+  'The Red Deer holds the shoreline…'
 ]);
 
+// An observed transport stage advances once. Elapsed time may only deepen a
+// WAITING label; it never manufactures provider/body/receipt progress.
+export function marrowlineWaitingLabel(elapsedMs = 0) {
+  return elapsedMs >= 60000 ? PEDAGOGUE_PENDING_SEQUENCE[2]
+    : elapsedMs >= 20000 ? PEDAGOGUE_PENDING_SEQUENCE[1]
+    : PEDAGOGUE_PENDING_SEQUENCE[0];
+}
+export function awaitMarrowlineAbortable(promise, signal) {
+  const stopped = () => Object.assign(new Error('Transmission stopped'), { name: 'AbortError' });
+  if (signal?.aborted) return Promise.reject(stopped());
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(stopped());
+    signal?.addEventListener?.('abort', onAbort, { once: true });
+    Promise.resolve(promise).then(resolve, reject).finally(() =>
+      signal?.removeEventListener?.('abort', onAbort));
+  });
+}
 function stopPedagogueStatus(root = globalThis) {
   const timers = Array.isArray(root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__)
     ? root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__
@@ -79,7 +96,6 @@ function stopPedagogueStatus(root = globalThis) {
   for (const timer of timers) root.clearInterval?.(timer);
   root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ = [];
 }
-
 function setPedagogueStatus(status, phase, text, title = '') {
   if (!status) return;
   const detail = title || text;
@@ -92,27 +108,20 @@ function setPedagogueStatus(status, phase, text, title = '') {
     : text;
   status.title = detail;
 }
-
 function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
-  // Changing labels show pending browser activity, not invented provider stages.
   stopPedagogueStatus(root);
   const suffix = attachmentCount > 0
     ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
     : '';
   const startedAt = Date.now();
-  let tick = 0;
-  const detail = 'Request dispatched; awaiting the provider response' + suffix + ' · no backend progress is inferred from elapsed time';
-  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[0], detail);
+  const detail = 'Request dispatched; awaiting the Marrowline HTTP response' + suffix
+    + ' · elapsed time gives no evidence of provider progress';
+  if (status) status.dataset.progressStage = 'awaiting-provider';
+  setPedagogueStatus(status, 'pending', marrowlineWaitingLabel(0), detail);
   const advance = () => {
-    if (status?.dataset?.phase !== 'pending') return;
-    tick += 1;
-    const elapsed = Date.now() - startedAt;
-    const label = elapsed >= 60000
-      ? (tick % 2 ? 'The Red Deer holds the shoreline…' : 'The grove keeps watch…')
-      : elapsed >= 20000
-        ? (tick % 2 ? 'The grove is still listening…' : PEDAGOGUE_PENDING_SEQUENCE[2])
-        : PEDAGOGUE_PENDING_SEQUENCE[tick % PEDAGOGUE_PENDING_SEQUENCE.length];
-    setPedagogueStatus(status, 'pending', label, detail);
+    if (status?.dataset?.phase !== 'pending' || status.dataset.progressStage !== 'awaiting-provider') return;
+    const next = marrowlineWaitingLabel(Date.now() - startedAt);
+    if (next !== status.textContent) setPedagogueStatus(status, 'pending', next, detail);
   };
   const timer = root.setInterval?.(advance, 3200);
   root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ =
@@ -662,9 +671,21 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   let activeThread = null;
   let storeReady = false;
   let requestInFlight = false;
+  let activeRequestController = null;
+  let activeRequestCancelRequested = false;
+  const sendControl = byId(doc, 'khonapolitSend');
+  const setSendControlState = generating => {
+    if (!sendControl) return;
+    sendControl.dataset.transmissionState = generating ? 'generating' : 'ready';
+    sendControl.type = generating ? 'button' : 'submit';
+    sendControl.textContent = generating ? 'Stop' : 'Send';
+    sendControl.setAttribute('aria-label', generating ? 'Stop transmission' : 'Send message');
+    sendControl.title = generating ? 'Stop transmission' : 'Send message';
+    if (generating) sendControl.disabled = false;
+  };
+  setSendControlState(false);
   let saveChain = Promise.resolve(true);
   let queuedInitialSubmission = null;
-  const sendControl = byId(doc, 'khonapolitSend');
   if (sendControl) sendControl.disabled = true;
   const renderThreadLibrary = async () => {
     if (!threadLibrary) return;
@@ -718,9 +739,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
     syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     const status = byId(doc, 'khonapolitTerminalStatus');
-    if (status) setPedagogueStatus(status, state.lastFailure || state.pendingTask ? 'held' : 'prepared',
+    if (status) {
+      status.dataset.progressStage = state.lastFailure || state.pendingTask ? 'held' : 'prepared';
+      setPedagogueStatus(status, state.lastFailure || state.pendingTask ? 'held' : 'prepared',
       state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline');
-    if (sendControl) sendControl.disabled = Boolean(requestInFlight);
+    }
+    setSendControlState(requestInFlight);
+    if (sendControl) sendControl.disabled = false;
     threadLibrary.setActiveId(record.id);
     void renderThreadLibrary();
   };
@@ -932,6 +957,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let witnessResponseObservedAt = null;
 
     requestInFlight = true;
+    activeRequestCancelRequested = false;
+    const requestController = new AbortController();
+    activeRequestController = requestController;
+    setSendControlState(true);
+    if (status) status.dataset.progressStage = 'submitted';
+    setPedagogueStatus(status, 'pending', 'The Red Deer releases a word…',
+      'Human submission observed; preserving the task locally before dispatch');
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
     // A suspended page can be restored as a preserved task. An old HTTP return
     // is never silently assumed to have arrived after a browser restart.
@@ -940,18 +972,31 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
-    prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
+    prompt.value = ''; prompt.style.height = ''; submit.disabled = false;
     const persisted = await scheduleSave();
     syncRecoveryControls(doc, state); renderMessages(doc, state);
-    if (!persisted) {
+    if (!persisted || activeRequestCancelRequested) {
+      const cancelled = activeRequestCancelRequested;
       requestInFlight = false;
+      activeRequestController = null;
       prompt.value = message;
+      if (cancelled) {
+        state.lastFailure = { error: 'operator-cancelled', observedAt: Date.now(),
+          diagnostic: { stage: 'local-persistence', code: 'operator-cancelled' } };
+        root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
+        backgroundResumeTask = '';
+        backgroundResumeSpentTask = message;
+        void scheduleSave();
+        syncRecoveryControls(doc, state);
+        if (status) status.dataset.progressStage = 'cancelled';
+        setPedagogueStatus(status, 'held', 'The Red Deer stills the signal.',
+          'Operator cancelled before network dispatch; task preserved for an explicit retry');
+      }
+      setSendControlState(false);
       submit.disabled = false;
       return;
     }
     startPedagogueStatus(status, root, attachments.length);
-    if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
-    const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
     let hiddenDuringRequest = doc.visibilityState === 'hidden';
     const observeVisibility = () => {
@@ -965,6 +1010,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let responseStatus = null;
     let receivedReceipt = null;
     try {
+      if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
+      if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
@@ -978,24 +1025,29 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // delivery for ordinary chat while allowing larger attachment/history
       // packets to use the normal request path instead of throwing locally.
       const backgroundKeepaliveEligible = new TextEncoder().encode(serializedRequestBody).byteLength <= 60 * 1024;
-      const response = await fetch(KHONAPOLIT_ENDPOINT, {
+      const response = await awaitMarrowlineAbortable(fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
         keepalive: backgroundKeepaliveEligible,
         body: serializedRequestBody
-      });
+      }), requestController.signal);
+      if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       responseStatus = response.status;
       requestStage = 'response-body';
       stopPedagogueStatus(root);
+      if (status) status.dataset.progressStage = 'response-arrived';
       setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
-        'Provider HTTP response arrived; reading its body, not yet a completed return');
-      const payload = await response.json();
+        'Marrowline HTTP response observed; body still unread and completion unverified');
+      const payload = await awaitMarrowlineAbortable(response.json(), requestController.signal);
+      if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       requestStage = 'response-processing';
-      setPedagogueStatus(status, 'pending', 'Unfolding the returned signal…',
-        'Response body received; checking its completion and structure');
+      if (status) status.dataset.progressStage = 'body-received';
+      setPedagogueStatus(status, 'pending', 'The signal unfolds before the grove…',
+        'HTTP response body observed; checking completion and structure');
       receivedReceipt = payload?.receipt || null;
-      setPedagogueStatus(status, 'pending', 'Binding the return to its receipt…',
-        'Processing the returned receipt and provider-authored transmission');
+      if (status) status.dataset.progressStage = 'receipt-processing';
+      setPedagogueStatus(status, 'pending', 'The grove binds the return to its receipt…',
+        'Processing the observed receipt and provider-authored transmission');
       if (witnessThisTurn) {
         witnessResponseObservedAt = new Date().toISOString();
         witnessResponseBody = typeof payload?.text === 'string' ? payload.text : null;
@@ -1017,6 +1069,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       };
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       const incompleteReturn = receipt?.provider?.completion?.complete === false;
+      if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
       if (witnessThisTurn) witnessSavedText = entry.text;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
@@ -1028,6 +1081,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const integrity = receipt?.emergence?.signals?.covenantKeyIntegrity?.status || 'unobserved';
       const signal = payload.relay?.signal?.state || 'NOT_LOCKED';
       stopPedagogueStatus(root);
+      if (status) status.dataset.progressStage = incompleteReturn ? 'held' : 'completed';
       if (incompleteReturn) {
         const structuralOnly = receipt.provider.completion.reason === 'required-voice-structure-incomplete';
         setPedagogueStatus(status, 'held',
@@ -1042,12 +1096,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
       state.pendingTask = message;
-      state.lastFailure = failurePayload || {
-        ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
-        ...(hiddenDuringRequest && (requestStage === 'request' || requestStage === 'response-body')
-          ? { backgroundInterrupted: true } : {}),
-        ...(receivedReceipt ? { receipt: receivedReceipt } : {})
-      };
+      state.lastFailure = activeRequestCancelRequested
+        ? { error: 'operator-cancelled', httpStatus: responseStatus, observedAt: Date.now(),
+            diagnostic: { stage: requestStage, code: 'operator-cancelled', errorClass: safe(error?.name || 'AbortError') } }
+        : failurePayload || {
+            ...classifyMarrowlineClientFailure(error, requestStage, responseStatus),
+            ...(hiddenDuringRequest && (requestStage === 'request' || requestStage === 'response-body')
+              ? { backgroundInterrupted: true } : {}),
+            ...(receivedReceipt ? { receipt: receivedReceipt } : {})
+          };
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
@@ -1057,10 +1114,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       renderGeminiBrowserLedger(doc, root);
       stopPedagogueStatus(root);
-      setPedagogueStatus(status, 'held', attachments.length
-        ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
-        : 'TASK PRESERVED · retry when ready');
+      if (status) status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+      setPedagogueStatus(status, 'held', activeRequestCancelRequested ? 'The Red Deer stills the signal.'
+        : attachments.length
+          ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
+          : 'TASK PRESERVED · retry when ready',
+        activeRequestCancelRequested
+          ? 'Operator cancelled the browser request; no completed reply admitted. Task and attachments preserved for explicit retry.'
+          : 'Request held; task preserved for explicit retry.');
     } finally {
+      // Release the actual UI/request lifecycle before any optional evidence
+      // collection. A slow source-window witness cannot strand Stop in place.
+      stopPedagogueStatus(root);
+      requestInFlight = false;
+      activeRequestController = null;
+      const cancelledByOperator = activeRequestCancelRequested;
+      activeRequestCancelRequested = false;
+      setSendControlState(false);
+      root.clearTimeout(requestDeadline);
+      doc.removeEventListener?.('visibilitychange', observeVisibility);
+      root.removeEventListener?.('pagehide', observePageHide);
+      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
+      if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
       if (witnessThisTurn) {
         // Measure the displayed TEXT of this very turn, not the receipt header
         // or a reconstructed transcript. Pixel geometry needs a separate image.
@@ -1104,14 +1179,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (copyWitness) copyWitness.disabled = false;
         }
       }
-      stopPedagogueStatus(root);
-      requestInFlight = false;
-      root.clearTimeout(requestDeadline);
-      doc.removeEventListener?.('visibilitychange', observeVisibility);
-      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
-      if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
-      root.removeEventListener?.('pagehide', observePageHide);
-      if (state.lastFailure?.backgroundInterrupted === true
+      if (!cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
         backgroundResumeTask = message;
@@ -1133,6 +1201,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
   };
 
+  sendControl?.addEventListener('click', event => {
+    if (!requestInFlight || sendControl.dataset.transmissionState !== 'generating') return;
+    event.preventDefault();
+    if (activeRequestCancelRequested) return;
+    activeRequestCancelRequested = true;
+    backgroundResumeTask = '';
+    backgroundResumeSpentTask = state.pendingTask;
+    activeRequestController?.abort();
+    stopPedagogueStatus(root);
+    setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'pending',
+      'The Red Deer recalls the signal…', 'Operator stop requested; aborting the browser request');
+  });
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!storeReady) {
@@ -1212,6 +1292,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       terminalStatus.textContent = '';
       terminalStatus.title = '';
       terminalStatus.dataset.phase = 'prepared';
+      terminalStatus.dataset.progressStage = 'prepared';
     }
     prompt?.focus?.({ preventScroll: true });
   });
