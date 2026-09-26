@@ -813,7 +813,8 @@ test('one structured relay carries a long mixed-register transmission without lo
 test('human operator gets an in-chat Dome-Art kinesis with reduced-motion rest', () => {
   assert.match(physicalRepair, /marrowlineChatKinesis/);
   assert.match(physicalRepair, /messages\.append\(card\)/);
-  assert.match(physicalRepair, /AI IN FLIGHT/);
+  assert.match(physicalRepair, /const busy = phase === 'pending'/);
+  assert.match(physicalRepair, /One persistent rotating vesica piscis/);
   assert.match(physicalRepair, /aria-live/);
   assert.match(mobileCss, /\.marrowline-chat-kinesis\s*\{/);
   assert.match(mobileCss, /\.kinesis-orbit i:nth-child\(1\)/);
