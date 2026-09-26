@@ -149,11 +149,11 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
 
 test('Send retains its accessible label and gains moonlit amethyst/cyan radiance with reduced-motion rest', () => {
   assert.match(page, /<button class="primary" id="khonapolitSend" type="submit">Send<\/button>/);
-  assert.match(css, /#speakingPanel \.composer-actions > #khonapolitSend::before/);
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend::before/);
   assert.match(css, /content:"⇧"!important/);
-  assert.match(css, /#59469e/);
-  assert.match(css, /rgba\(80,230,235/);
-  assert.match(css, /@keyframes marrowline-send-aura/);
+  assert.match(css, /#6253a9/);
+  assert.match(css, /rgba\(78,227,224/);
+  assert.match(css, /@keyframes marrowline-send-halo/);
   assert.match(css, /@keyframes marrowline-arrow-shimmer/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.equal(release.composer.mobileSendGlyph, '⇧');
@@ -161,11 +161,11 @@ test('Send retains its accessible label and gains moonlit amethyst/cyan radiance
 
 test('a compact Send/attachment row retains right utilities and one visually presented in-chat progress surface', () => {
   assert.match(js, /actionRow\.insertBefore\(plus, sendButton\)/);
-  assert.match(css, /#speakingPanel \.composer-actions > #marrowlineComposerPlus/);
-  assert.match(css, /#speakingPanel \.composer-actions > #khonapolitSend/);
-  assert.match(css, /#speakingPanel \.composer-actions > #khonapolitTerminalStatus\{/);
+  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-composer-plus/);
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend/);
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitTerminalStatus\{/);
   assert.match(css, /clip-path:inset\(50%\)!important/);
-  assert.match(css, /#speakingPanel \.composer-actions > \.marrowline-conversation-utilities/);
+  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-conversation-utilities/);
   assert.match(physicalJs, /const card = doc\.createElement\('section'\)/);
   assert.match(physicalJs, /label\.textContent = safe\(status\.textContent\)/);
   assert.match(physicalJs, /if \(!card\.isConnected\) messages\.append\(card\)/);
@@ -223,7 +223,7 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(css, /\.marrowline-ephemeral-notice/);
   assert.match(page, /id="khonapolitSend" type="submit">Send<\/button>/);
   assert.match(page, /id="sealLastResponse"[^>]*>Seal latest return ⟐<\/button>/);
-  assert.match(page, /Seal is explicit operator closure/);
+  assert.match(page, /incoming receipt remains OPEN until an explicit Red Deer closure/);
   assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
   assert.equal(release.composer.clearConfirmation, 'center-screen-modal-Clear-conversation-Yes-No-with-backdrop');
   assert.equal(release.composer.operatorVoiceSelection, false);
