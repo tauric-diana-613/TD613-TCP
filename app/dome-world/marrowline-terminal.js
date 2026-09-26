@@ -81,6 +81,7 @@ function setPedagogueStatus(status, phase, text, title = '') {
   status.textContent = phase === 'pending' ? PEDAGOGUE_PENDING_STATUS
     : phase === 'received' ? 'Reply received'
     : phase === 'prepared' ? 'Ready'
+    : phase === 'held' ? 'Retry available'
     : text;
   status.title = detail;
 }
@@ -703,11 +704,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
     const requestController = new AbortController();
     const requestDeadline = root.setTimeout(() => requestController.abort(), KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS);
-    let hiddenDuringRequest = false;
+    let hiddenDuringRequest = doc.visibilityState === 'hidden';
     const observeVisibility = () => {
       if (doc.visibilityState === 'hidden') hiddenDuringRequest = true;
     };
+    const observePageHide = () => { hiddenDuringRequest = true; };
     doc.addEventListener?.('visibilitychange', observeVisibility);
+    root.addEventListener?.('pagehide', observePageHide);
     let failurePayload = null;
     let requestStage = 'request';
     let responseStatus = null;
@@ -849,7 +852,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       root.clearTimeout(requestDeadline);
       doc.removeEventListener?.('visibilitychange', observeVisibility);
       submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
-      prompt?.focus({ preventScroll: true });
+      if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
+      root.removeEventListener?.('pagehide', observePageHide);
       if (state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
@@ -857,12 +861,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         const resumeWhenVisible = () => {
           if (doc.visibilityState === 'hidden' || backgroundResumeTask !== message) return;
           doc.removeEventListener?.('visibilitychange', resumeWhenVisible);
+          root.removeEventListener?.('pageshow', resumeWhenVisible);
+          root.removeEventListener?.('online', resumeWhenVisible);
           backgroundResumeTask = '';
           backgroundResumeSpentTask = message;
-          setPedagogueStatus(status, 'pending', 'CONNECTION RESUMED · restoring the preserved task');
+          setPedagogueStatus(status, 'pending', 'Working…', 'Background connection interrupted · restoring the preserved task once');
           root.setTimeout?.(() => submitTask(message, { independentRetry: true, backgroundResume: true }), 0);
         };
         doc.addEventListener?.('visibilitychange', resumeWhenVisible);
+        root.addEventListener?.('pageshow', resumeWhenVisible);
+        root.addEventListener?.('online', resumeWhenVisible);
         resumeWhenVisible();
       }
     }
