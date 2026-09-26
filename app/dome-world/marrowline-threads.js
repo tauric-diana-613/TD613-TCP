@@ -114,6 +114,18 @@ export async function createMarrowlineThreadLibrary(root = window) {
       conversationTitle: parent.conversationTitle || 'The speaking grove'
     }, { parentId: parent.id, branchOf: responseIndex });
   };
+  const migrateLegacyBranchTitles = async () => {
+    // v1 generated a mechanical " · Branch" suffix. Only remove it when it
+    // exactly matches the current parent's generated title: a manually named
+    // conversation about a branch must retain its authored title.
+    for (const thread of await all()) {
+      if (!thread.parentId || typeof thread.conversationTitle !== 'string') continue;
+      const parent = await get(thread.parentId);
+      if (parent && thread.conversationTitle === parent.conversationTitle + ' · Branch') {
+        await put({ ...thread, conversationTitle: parent.conversationTitle });
+      }
+    }
+  };
   const migrate = async () => {
     let legacy;
     try { legacy = JSON.parse(root.sessionStorage.getItem(LEGACY_KEY) || 'null'); } catch { return null; }
@@ -131,7 +143,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
     return record;
   };
   return Object.freeze({
-    backend: adapter.kind, get, all, put, create, branch, remove, migrate,
+    backend: adapter.kind, get, all, put, create, branch, remove, migrate, migrateLegacyBranchTitles,
     getActiveId: () => { try { return root.localStorage.getItem(ACTIVE_KEY); } catch { return null; } },
     setActiveId: value => { try { if (value) root.localStorage.setItem(ACTIVE_KEY, value); else root.localStorage.removeItem(ACTIVE_KEY); } catch {} },
     close: adapter.close
