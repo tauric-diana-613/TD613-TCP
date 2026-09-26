@@ -8,7 +8,7 @@ import { buildPrompt, quarantineCandidateRows } from '../server/hush-provider-co
 import { parseProviderJson } from '../server/hush-generate-quality.js';
 
 const schema = 'td613.hush-custody-quality-pilot/v0.1';
-const models = ['gemini-3.5-flash', 'gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite'];
+const models = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3-flash-preview'];
 const timeoutMs = 12000;
 const maxOutputTokens = 1536;
 const key = process.env.GEMINI_API_KEY || '';

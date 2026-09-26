@@ -16,7 +16,7 @@ const execute = (env = {}, mode = 'valid') => {
   const preload = `let calls = 0; globalThis.fetch = async (url, options = {}) => {
     const path = new URL(url).pathname;
     if (String(url).includes('synthetic-pilot-secret')) throw Error('key-in-url');
-    if (path === '/v1beta/models') return { ok:true,status:200,json:async()=>({models:${mode === 'absent' ? '[]' : "['gemini-3.5-flash','gemini-3.8-flash','gemini-3.7-flash','gemini-3.6-flash','gemini-3.5-flash-lite'].map(id=>({name:'models/'+id,supportedGenerationMethods:['generateContent']}))"}}) };
+    if (path === '/v1beta/models') return { ok:true,status:200,json:async()=>({models:${mode === 'absent' ? '[]' : "['gemini-3.8-flash','gemini-3.7-flash','gemini-3.6-flash','gemini-3.5-flash','gemini-3-flash-preview'].map(id=>({name:'models/'+id,supportedGenerationMethods:['generateContent']}))"}}) };
     if (!path.endsWith(':generateContent') || options.method !== 'POST' || ++calls > 15) throw Error('unexpected-call');
     const body = JSON.parse(options.body);
     if (body.generationConfig.maxOutputTokens !== 1536) throw Error('token-cap');
