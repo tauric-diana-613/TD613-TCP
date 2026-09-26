@@ -10,7 +10,7 @@ import {
   buildNativeProsodyGuidance,
   parseRelayEnvelope
 } from '../app/dome-world/khonapolit-relay.js';
-import { COVENANT_KEY, buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { COVENANT_KEY, buildInvocationPacket, frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
 import { compactMarrowlineHistory } from '../app/dome-world/marrowline-terminal.js';
 import {
   buildApertureV3InvocationReceipt,
@@ -56,7 +56,7 @@ test('effective request identity distinguishes omitted layers under an unchanged
   assert.deepEqual(serializeGeminiRequest(structuredClone(request), 'gemini-3.8-flash'), original);
   for (const [component, mutate] of [
     ['systemInstruction', r => { r.systemInstruction.parts[0].text += '\nChanged relay addendum.'; }],
-    ['contents', r => { r.contents.at(-1).parts[1].text += '\nChanged current-turn cue.'; }],
+    ['contents', r => { r.contents.at(-1).parts[0].text += '\nChanged sealed user turn.'; }],
     ['contents', r => { r.contents[0].parts[0].text += '\u0337'; }],
     ['contents', r => { r.contents.at(-1).parts.push({ inlineData: { mimeType: 'image/png', data: 'AA==' } }); }],
     ['contents', r => { r.contents.push({ role: 'user', parts: [{ text: 'Terminal continuation repair.' }] }); }],
@@ -120,9 +120,10 @@ test('normal, full-repair and terminal-continuation requests share conversationa
     buildGeminiStructuralRepairRequest(packet, {}, 'gemini-3.8-flash', 'An unheaded argument.', ['khonapolit-nominative-missing', 'tauric-diana-bots-nominative-missing'])
   ];
   for (const request of requests) {
-    const lastInstruction = request.contents.at(-1).parts.map(part => part.text).join('\n');
-    assert.match(lastInstruction, /End the complete correspondence with a plain ⟐ on its own final line/);
-    assert.match(lastInstruction, /state remains OPEN until the explicit operator action/);
+    const instruction = request.systemInstruction.parts.map(part => part.text).join('\n');
+    assert.match(instruction, /End the complete correspondence with a plain ⟐ on its own final line/);
+    assert.match(instruction, /state remains OPEN until the explicit operator action/);
+    assert.equal(request.contents[0].parts[0].text, frameMarrowlineUserTurn(packet.message));
     assert.doesNotMatch(JSON.stringify(request), /Never append it on model authority|Never append a closing lozenge|or closing seal/);
   }
 });
@@ -143,34 +144,35 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(system, /An extended eruption may climb through neighboring lines/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
-    assert.equal(request.contents.at(-1).parts[0].text, packet.message);
-    assert.equal(request.contents.at(-1).parts.length, 2);
-    assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
-    assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
+    assert.equal(request.contents.at(-1).parts[0].text, frameMarrowlineUserTurn(packet.message));
+    assert.equal(request.contents.at(-1).parts.length, 1);
+    assert.match(request.systemInstruction.parts[0].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+    assert.match(request.systemInstruction.parts[0].text, /both mandatory visible registers/);
     // First-movement development and intellectual pressure apply to analytic AND creative tasks.
     // Keep these assertions tied to the effective wire request rather than a retired one-line cue.
-    assert.match(request.contents.at(-1).parts[1].text, /first movement at the scale the operator requests/);
-    assert.match(request.contents.at(-1).parts[1].text, /open-ended scene or inquiry receives sustained development through its consequential turns/);
-    assert.match(request.contents.at(-1).parts[1].text, /explicit requests for brevity retain priority/);
-    assert.match(request.contents.at(-1).parts[1].text, /exact intellectual pressure: locate the particular inference, procedure, contradiction or desire at stake/);
-    assert.match(request.contents.at(-1).parts[1].text, /strongest plausible resistance enough force to make the answer earn its consequence/);
-    assert.match(request.contents.at(-1).parts[1].text, /Creative form carries the same intellectual method as analytic form/);
-    assert.match(request.contents.at(-1).parts[1].text, /Embody the mechanism in action, material details, choices and consequences/);
-    assert.match(request.contents.at(-1).parts[1].text, /requested affects alter what a character permits, refuses, risks or relinquishes/);
-    assert.match(request.contents.at(-1).parts[1].text, /terms, relation and limit intelligible/);
-    assert.match(request.contents.at(-1).parts[1].text, /resemblance alone supplies no derivation/);
-    assert.match(request.contents.at(-1).parts[1].text, /sustained, new choral movement/);
-    assert.match(request.contents.at(-1).parts[1].text, /never substitute a heading and a few decorated words for authored prose/);
-    assert.match(request.contents.at(-1).parts[1].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(request.contents.at(-1).parts[1].text, /varied combinations of native marks within the terminal prose/);
-    assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.contents.at(-1).parts[1].text, /Invent the flourishes alongside fresh prose/);
-    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
-    assert.match(request.contents.at(-1).parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-    assert.match(request.contents.at(-1).parts[1].text, /The bots deserve an extended dramatic conversation/);
-    assert.match(request.contents.at(-1).parts[1].text, /neither licenses omission of the bots nor controls the depth or availability/);
-    assert.doesNotMatch(request.contents.at(-1).parts[1].text, /fixed mark palette|mandatory quota|fixed contour|\bmarks per\b/i);
+    assert.match(request.systemInstruction.parts[0].text, /first movement at the scale the operator requests/);
+    assert.match(request.systemInstruction.parts[0].text, /open-ended scene or inquiry receives sustained development through its consequential turns/);
+    assert.match(request.systemInstruction.parts[0].text, /explicit requests for brevity retain priority/);
+    assert.match(request.systemInstruction.parts[0].text, /exact intellectual pressure: locate the particular inference, procedure, contradiction or desire at stake/);
+    assert.match(request.systemInstruction.parts[0].text, /strongest plausible resistance enough force to make the answer earn its consequence/);
+    assert.match(request.systemInstruction.parts[0].text, /Creative form carries the same intellectual method as analytic form/);
+    assert.match(request.systemInstruction.parts[0].text, /Embody the mechanism in action, material details, choices and consequences/);
+    assert.match(request.systemInstruction.parts[0].text, /requested affects alter what a character permits, refuses, risks or relinquishes/);
+    assert.match(request.systemInstruction.parts[0].text, /terms, relation and limit intelligible/);
+    assert.match(request.systemInstruction.parts[0].text, /resemblance alone supplies no derivation/);
+    assert.match(request.systemInstruction.parts[0].text, /sustained, new choral movement/);
+    assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
+    assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
+    assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+    assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
+    assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
+    assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
+    assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+    assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+    assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
+    assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
+    assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
+    assert.match(request.systemInstruction.parts[0].text, /not a fixed contour/, 'the negative prohibition survives cue relocation');
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
@@ -208,9 +210,9 @@ test('deficient marked history is preserved exactly while the system labels hist
   assert.equal(request.contents[0].role, 'model');
   assert.equal(request.contents[0].parts[0].text, prior);
   assert.equal(countMarks(request.contents[0].parts[0].text), countMarks(prior));
-  assert.equal(request.contents.at(-1).parts[0].text, packet.message);
-  assert.equal(request.contents.at(-1).parts.length, 2);
-  assert.match(request.contents.at(-1).parts[1].text, /CURRENT-TURN RELAY EXECUTION/);
+  assert.equal(request.contents.at(-1).parts[0].text, frameMarrowlineUserTurn(packet.message));
+  assert.equal(request.contents.at(-1).parts.length, 1);
+  assert.match(request.systemInstruction.parts[0].text, /CURRENT-TURN RELAY EXECUTION/);
 });
 
 test('literal newline contract preserves the existing two-line admission bar', () => {
@@ -812,7 +814,8 @@ test('one structured relay carries a long mixed-register transmission without lo
 test('human operator gets an in-chat Dome-Art kinesis with reduced-motion rest', () => {
   assert.match(physicalRepair, /marrowlineChatKinesis/);
   assert.match(physicalRepair, /messages\.append\(card\)/);
-  assert.match(physicalRepair, /AI IN FLIGHT/);
+  assert.match(physicalRepair, /const busy = phase === 'pending'/);
+  assert.match(physicalRepair, /One persistent rotating vesica piscis/);
   assert.match(physicalRepair, /aria-live/);
   assert.match(mobileCss, /\.marrowline-chat-kinesis\s*\{/);
   assert.match(mobileCss, /\.kinesis-orbit i:nth-child\(1\)/);

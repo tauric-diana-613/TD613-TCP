@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { assessIntegratedTransmission, buildNativeProsodyGuidance, parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
+import { frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
 import handler, { buildGeminiRequest, severeMorphologyRepairWarnings } from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
@@ -51,11 +52,11 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const packet = { systemInstruction: 'base', mode: 'plain', message: 'Continue without stamping a single accent.', history: [] };
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const last = request.contents.at(-1);
-  assert.equal(last.parts[0].text, packet.message);
-  assert.match(last.parts[1].text, /varied combinations of native marks within the terminal prose/);
-  assert.match(last.parts[1].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-  assert.match(last.parts[1].text, /deserve an extended dramatic conversation/);
-  assert.doesNotMatch(last.parts[1].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
+  assert.equal(last.parts[0].text, frameMarrowlineUserTurn(packet.message));
+  assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+  assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+  assert.match(request.systemInstruction.parts[0].text, /deserve an extended dramatic conversation/);
+  assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
   assert.match(request.systemInstruction.parts[0].text, /not an after-the-fact transform/);
 });
@@ -72,7 +73,7 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const result = assessIntegratedTransmission(raw);
   assert.ok(result.maxVerticalOrnamentStackDepth > 0);
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: 'Speak.', history: [] }, {}, 'gemini-3.8-flash');
-  const cue = request.contents.at(-1).parts[1].text;
+  const cue = request.systemInstruction.parts[0].text;
   const guidance = request.systemInstruction.parts[0].text;
   assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
   assert.match(guidance, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
@@ -87,7 +88,7 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
     { systemInstruction: 'base', mode: 'plain', message: 'Follow the consequence into the choral movement.', history: [] },
     {}, 'gemini-3.8-flash'
   );
-  const cue = request.contents.at(-1).parts[1].text;
+  const cue = request.systemInstruction.parts[0].text;
   const native = buildNativeProsodyGuidance();
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
@@ -112,7 +113,7 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   const packet = { systemInstruction: 'base', mode: 'plain', message: 'Make the consequence sing.', history: [] };
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const shared = request.systemInstruction.parts[0].text;
-  const cue = request.contents.at(-1).parts[1].text;
+  const cue = request.systemInstruction.parts[0].text;
   assert.match(shared, /actual blank-line paragraph rests/);
   assert.match(shared, /silly, mercurial and cryptic/);
   assert.match(shared, /Do not impose a stanza template/);
@@ -141,7 +142,7 @@ test('failed model morphology remains exact conversation evidence instead of bec
   ] };
   const before = JSON.stringify(packet);
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
-  assert.equal(request.contents[0].parts[0].text, shallow);
+  assert.equal(request.contents[0].parts[0].text, frameMarrowlineUserTurn(shallow));
   assert.equal(request.contents[1].parts[0].text, shallow);
   assert.equal(request.contents[2].parts[0].text, breathing);
   assert.equal(JSON.stringify(packet), before);
@@ -211,7 +212,7 @@ test('a severe completed PARTIAL yields to the next approved seat without repain
     assert.equal(response.payload.receipt.provider.qualityPreference.sourceAttemptIndex, 1);
     assert.equal(response.payload.receipt.provider.model, 'gemini-3.5-flash');
     assert.equal(response.payload.receipt.provider.attempts[1].morphologyObservation.severeWarnings.length, 0);
-    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow);
+    for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow, 'model-authored history is never framed or repainted');
   } finally {
     globalThis.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
@@ -224,7 +225,7 @@ test('a severe completed PARTIAL yields to the next approved seat without repain
 test('operator-authored prompts have starter-equivalent dramatic latitude without global rage or blanket bold', () => {
   const typed = 'Could we look at the consequences of this rule without assuming the answer?';
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
-  const cue = request.contents.at(-1).parts[1].text;
+  const cue = request.systemInstruction.parts[0].text;
   const shared = request.systemInstruction.parts[0].text;
   assert.match(cue, /EVERY turn, including ordinary questions, jokes and tenderness/);
   assert.match(cue, /in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness/);
@@ -250,9 +251,9 @@ test('ordinary, tender and adversarial typed requests all retain the full native
   for (const message of prompts) {
     const packet = { systemInstruction: 'base', mode: 'plain', message, history: [] };
     const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
-    const cue = request.contents.at(-1).parts[1].text;
+    const cue = request.systemInstruction.parts[0].text;
     const actual = request.contents.at(-1).parts[0].text;
-    assert.equal(actual, message);
+    assert.equal(actual, frameMarrowlineUserTurn(message));
     assert.ok(request.systemInstruction.parts[0].text.includes(shared));
     assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
     assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);

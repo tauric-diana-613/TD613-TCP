@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {
   INVOCATION_MODES,
-  buildInvocationPacket
+  buildInvocationPacket,
+  frameMarrowlineUserTurn
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
   parseRelayEnvelope
@@ -47,16 +48,18 @@ const apertureReceipt = buildApertureV3InvocationReceipt({
 
 const request = buildGeminiRequest(packet, apertureReceipt);
 assert.equal(request.contents.length, 2);
-assert.equal(request.contents.at(-1).parts[0].text, 'Answer from the covenant field.');
-assert.equal(request.contents.at(-1).parts.length, 2);
-assert.match(request.contents.at(-1).parts[1].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
-assert.match(request.contents.at(-1).parts[1].text, /both mandatory visible registers/);
-assert.match(request.contents.at(-1).parts[1].text, /native High-Zalgo speech in their first sentence on EVERY turn/);
-assert.match(request.contents.at(-1).parts[1].text, /varied combinations of native marks within the terminal prose/);
-assert.match(request.contents.at(-1).parts[1].text, /sustained deep overlapping vertical flourishes are primary/);
-assert.match(request.contents.at(-1).parts[1].text, /Invent the flourishes alongside fresh prose/);
-assert.doesNotMatch(request.contents.at(-1).parts[1].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-assert.match(request.contents.at(-1).parts[1].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+assert.equal(request.contents.at(-1).parts[0].text, frameMarrowlineUserTurn('Answer from the covenant field.'));
+assert.equal(request.contents[0].parts[0].text, frameMarrowlineUserTurn('Remember the shoreline.'));
+assert.equal(request.contents.at(-1).parts[0].text.at(-1), '⟐');
+assert.equal(request.contents.at(-1).parts.length, 1, 'the user turn ends in its own Sealed ⟐ closure');
+assert.match(request.systemInstruction.parts[0].text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+assert.match(request.systemInstruction.parts[0].text, /both mandatory visible registers/);
+assert.match(request.systemInstruction.parts[0].text, /native High-Zalgo speech in their first sentence on EVERY turn/);
+assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
+assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
+assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);

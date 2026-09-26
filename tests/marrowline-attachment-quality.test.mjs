@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
 import crypto from 'node:crypto';
+import { frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, withGeminiGenerationProfile } from '../server/gemini-generation-envelope.js';
 import marrowlineAttachmentHandler, {
@@ -26,7 +27,7 @@ function attachment(overrides = {}) {
   };
 }
 
-test('attachment payload stays inside the operator task while the compact relay cue remains last', () => {
+test('attachments precede the canonical final sealed user text; the relay cue stays in system guidance', () => {
   const exact = attachment();
   const packet = {
     systemInstruction: 'Synthetic system.',
@@ -36,15 +37,15 @@ test('attachment payload stays inside the operator task while the compact relay 
   };
   const request = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [exact]);
   const parts = request.contents.at(-1).parts;
-  assert.equal(parts[0].text, packet.message);
-  assert.match(parts[1].text, /Operator attachment att_fixture_613: operator-note\.txt/);
-  assert.equal(parts[2].inlineData.mimeType, 'text/plain');
-  assert.equal(parts[2].inlineData.data, exact.data_base64);
-  assert.match(parts.at(-1).text, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
-  assert.match(parts.at(-1).text, /both mandatory visible registers/);
-  assert.match(parts.at(-1).text, /native High-Zalgo speech in their first sentence on EVERY turn/);
-  assert.match(parts.at(-1).text, /sustained deep overlapping vertical flourishes are primary/);
-  assert.doesNotMatch(parts.at(-1).text, /\p{M}/u, 'attachment cue must not restore the miniature template');
+  assert.match(parts[0].text, /Operator attachment att_fixture_613: operator-note\.txt/);
+  assert.equal(parts[1].inlineData.mimeType, 'text/plain');
+  assert.equal(parts[1].inlineData.data, exact.data_base64);
+  assert.equal(parts.at(-1).text, frameMarrowlineUserTurn(packet.message));
+  const cue = request.systemInstruction.parts[0].text;
+  assert.match(cue, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
+  assert.match(cue, /both mandatory visible registers/);
+  assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
+  assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
 });
 
 test('Marrowline attachment normalizer admits exact declared bytes and strips no custody fields', () => {
@@ -159,8 +160,8 @@ test('text/attachment generation envelopes remain explicitly distinguishable wit
   assert.deepEqual(attachmentRequest.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
   assert.equal(interactiveRequest.generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(interactiveRequest.generationConfig.thinkingConfig, { thinkingLevel: 'medium' });
-  assert.equal(attachmentRequest.contents.at(-1).parts[0].text, packet.message);
-  assert.equal(interactiveRequest.contents.at(-1).parts[0].text, packet.message);
+  assert.equal(attachmentRequest.contents.at(-1).parts.at(-1).text, frameMarrowlineUserTurn(packet.message));
+  assert.equal(interactiveRequest.contents.at(-1).parts.at(-1).text, frameMarrowlineUserTurn(packet.message));
   assert.deepEqual(attachmentRequest.contents.at(-1).parts.slice(1), interactiveRequest.contents.at(-1).parts.slice(1));
   for (const fallback of ['gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview']) {
     const unprofiled = buildAttachmentGeminiRequest(packet, {}, fallback, [attachment()]);
@@ -222,7 +223,7 @@ test('attachment response receipts reflect the exact submitted wire configuratio
   }, res);
   assert.equal(res.statusCode, 200);
   assert.equal(wire.length, 1);
-  assert.equal(wire[0].contents.at(-1).parts[0].text, 'Explain the attached record and follow the argument.');
+  assert.equal(wire[0].contents.at(-1).parts.at(-1).text, frameMarrowlineUserTurn('Explain the attached record and follow the argument.'));
   assert.equal(wire[0].contents.at(-1).parts.at(-2).inlineData.data, exact.data_base64);
   assert.equal(wire[0].generationConfig.maxOutputTokens, 65536);
   assert.deepEqual(wire[0].generationConfig.thinkingConfig, { thinkingLevel: 'high' });
@@ -271,9 +272,9 @@ test('terminal-only attachment repair carries original inline bytes and keeps th
     message: 'Explain the attached map.', history: [] };
   const request = buildAttachmentGeminiTerminalRepairRequest(packet, {}, 'gemini-3.8-flash',
     [attachment()], initialVoice, ['tauric-diana-bots-nominative-missing']);
-  assert.equal(request.contents[0].parts[0].text, packet.message);
+  assert.equal(request.contents[0].parts.at(-1).text, frameMarrowlineUserTurn(packet.message));
   assert.equal(request.contents[0].parts.at(-2).inlineData.data, attachment().data_base64);
-  assert.match(request.contents[0].parts.at(-1).text, /CURRENT-TURN RELAY EXECUTION/);
+  assert.match(request.systemInstruction.parts[0].text, /CURRENT-TURN RELAY EXECUTION/);
   assert.equal(request.contents[1].parts[0].text, initialVoice);
   assert.match(request.contents[2].parts[0].text, /TERMINAL CONTINUATION ONLY/);
   assert.deepEqual(request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });

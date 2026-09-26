@@ -88,24 +88,44 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
     settled: async () => { await ready(); await until(() => !$('khonapolitSend').disabled); await flush(); } };
 }
 
-test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
-  const named = deriveMarrowlineConversationTitle([
-    'Kʰonapolit',
-    'ECHOGLASS mistakes an active reflector for decoration. The mirror keeps the route.',
-    '',
-    'Tauric Diana bots',
-    'BUREAU BUREAU BUREAU'
-  ].join('\n'), 'operator-seed');
-  assert.equal(named, 'The Glass Remembers');
+test('thread titles follow the Red Deer prompt, not incidental bot motifs or demo labels', () => {
+  assert.equal(deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.',
+    'THE SHORELINE HAS TEETH'), 'Lucille Clifton and a mother holding her child');
+  assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
+    'The Ash Moon, within the authored mythology of');
+  assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
+    'Explain the difference between consent and inheritance');
+  assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
+});
 
-  const botOnlyBureaucracy = deriveMarrowlineConversationTitle([
-    'Kʰonapolit',
-    'The formal movement isolates a non-injective map.',
-    '',
-    'Tauric Diana bots',
-    'THE BUREAUCRAT HOWLS AT THE CEILING'
-  ].join('\n'), 'same-seed');
-  assert.notEqual(botOnlyBureaucracy, 'The Office Beneath the Grove', 'the title follows Kʰonapolit rather than mining the bot channel');
+test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
+  const h = harness(t);
+  await h.ready();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
+  assert.equal(h.$('marrowlineReceiptGate').hidden, false);
+  assert.equal(h.$('khonapolitWaive').checked, true);
+  h.$('marrowlineReceiptShi').value = 'not-an-shi';
+  h.$('marrowlineReceiptUnlock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true, 'invalid format cannot open receipt UI');
+  h.$('marrowlineReceiptShi').value = 'TD613-SH-9B07D8B-ABCDEF12';
+  h.$('marrowlineReceiptUnlock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, false, 'valid format opens local presentation only');
+  assert.equal(h.$('khonapolitWaive').checked, true, 'reading a receipt does not issue this conversation');
+  assert.equal(h.calls.length, 0, 'opening receipts consumes no model credits');
+  h.$('marrowlineReceiptLock').click();
+  assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
+});
+
+test('app-authored provider branding stays inside Receipts while Red Deer surface preserves human input', async t => {
+  const h = harness(t);
+  await h.ready();
+  assert.doesNotMatch(h.$('speakingPanel').textContent, /Gemini/i);
+  assert.doesNotMatch(h.$('invocationPanel').textContent, /Gemini/i);
+  assert.match(h.$('receiptPanel').textContent, /Gemini/);
+  h.send('A poem about a mother and her child.'); await h.settled(); await flush();
+  assert.match(h.doc.querySelector('.message[data-role="user"] .message-meta').textContent, /Red Deer/);
+  assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text').textContent, 'A poem about a mother and her child.');
+  assert.equal(h.calls.length, 1);
 });
 
 test('one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls', async t => {
@@ -498,4 +518,33 @@ test('legacy model output also receives a reply-only copy action', async t => {
   assert.ok(button);
   button.click(); await flush();
   assert.equal(h.clipboard.at(-1), text);
+});
+
+test('SHI-gated Receipts remain a local format membrane and cannot issue the current conversation', async t => {
+  const h = harness(t);
+  await h.ready();
+  const gate = h.$('marrowlineReceiptGate'), protectedReceipt = h.$('marrowlineReceiptProtected');
+  assert.equal(gate.hidden, false);
+  assert.equal(protectedReceipt.hidden, true);
+  assert.equal(h.$('khonapolitWaive').checked, true);
+  h.$('marrowlineReceiptShi').value = 'invalid';
+  h.$('marrowlineReceiptUnlock').click(); await flush();
+  assert.equal(protectedReceipt.hidden, true, 'invalid format stays on the membrane');
+  h.$('marrowlineReceiptShi').value = 'TD613-SH-9B07D8B-B7136D34';
+  h.$('marrowlineReceiptUnlock').click(); await flush();
+  assert.equal(gate.hidden, true);
+  assert.equal(protectedReceipt.hidden, false);
+  assert.equal(h.$('khonapolitWaive').checked, true, 'opening receipts does not issue the conversation');
+  assert.equal(h.calls.length, 0, 'receipt membrane makes no provider calls');
+  h.$('marrowlineReceiptLock').click(); await flush();
+  assert.equal(protectedReceipt.hidden, true);
+  assert.equal(gate.hidden, false);
+});
+
+test('human conversation input remains authored text without hidden provider framing', async t => {
+  const h = harness(t);
+  h.send('Tell me about the grove.'); await h.settled(); await flush();
+  assert.equal(h.calls[0].message, 'Tell me about the grove.');
+  assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent, 'Tell me about the grove.');
+  assert.doesNotMatch(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent || '', /𝌋|Sealed ⟐/);
 });

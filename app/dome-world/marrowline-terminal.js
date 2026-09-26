@@ -67,9 +67,9 @@ export function classifyMarrowlineClientFailure(error, stage = 'request', httpSt
 }
 
 const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
-  'Working…',
-  'Still working…',
-  'Waiting for reply…'
+  'The signal crosses the veil…',
+  'The grove keeps listening…',
+  'The shoreline keeps watch…'
 ]);
 
 function stopPedagogueStatus(root = globalThis) {
@@ -99,13 +99,20 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
   const suffix = attachmentCount > 0
     ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
     : '';
-  let index = 0;
-  const detail = 'Waiting for the provider reply' + suffix + ' · receipt available after return';
-  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+  const startedAt = Date.now();
+  let tick = 0;
+  const detail = 'Request dispatched; awaiting the provider response' + suffix + ' · no backend progress is inferred from elapsed time';
+  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[0], detail);
   const advance = () => {
     if (status?.dataset?.phase !== 'pending') return;
-    index = (index + 1) % PEDAGOGUE_PENDING_SEQUENCE.length;
-    setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+    tick += 1;
+    const elapsed = Date.now() - startedAt;
+    const label = elapsed >= 60000
+      ? (tick % 2 ? 'The Red Deer holds the shoreline…' : 'The grove keeps watch…')
+      : elapsed >= 20000
+        ? (tick % 2 ? 'The grove is still listening…' : PEDAGOGUE_PENDING_SEQUENCE[2])
+        : PEDAGOGUE_PENDING_SEQUENCE[tick % PEDAGOGUE_PENDING_SEQUENCE.length];
+    setPedagogueStatus(status, 'pending', label, detail);
   };
   const timer = root.setInterval?.(advance, 3200);
   root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ =
@@ -145,18 +152,18 @@ function titleHash(value = '') {
 }
 
 export function deriveMarrowlineConversationTitle(text = '', seed = '') {
-  const value = String(text ?? '');
-  const botsIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots?\b/iu);
-  const formal = botsIndex > 0 ? value.slice(0, botsIndex) : value;
-  const normalized = formal
-    .normalize('NFKD')
-    .replace(/\p{M}+/gu, '')
-    .toLocaleLowerCase('en-US');
-  for (const rule of SPOOKY_TITLE_RULES) {
-    if (rule.pattern.test(normalized)) return rule.title;
-  }
-  const fallbackIndex = titleHash(normalized + '|' + String(seed ?? '')) % SPOOKY_TITLE_FALLBACKS.length;
-  return SPOOKY_TITLE_FALLBACKS[fallbackIndex];
+  // Name by the Red Deer's actual subject, never a random motif in the model's
+  // second voice. This is deterministic, local, and consumes zero provider calls.
+  const authored = String(seed || text || '').replace(/^𝌋\u200c/u, '').replace(/⟐\s*$/u, '')
+    .replace(/^[\s"'“”‘’#*]+/u, '').replace(/\s+/gu, ' ').trim();
+  if (!authored) return DEFAULT_CONVERSATION_TITLE;
+  const subject = authored.replace(/^(?:please\s+)?(?:write\s+(?:me\s+)?|tell\s+me\s+|can\s+you\s+|could\s+you\s+|help\s+me\s+)/iu, '')
+    .replace(/^(?:a\s+|an\s+)?(?:(?:poem|story|scene)\s+(?:about|of)\s+)/iu, '');
+  const first = (subject || authored).split(/(?<=[.!?])\s+|[\n\r]/u)[0].replace(/[\s.,;:!?–—-]+$/u, '').trim();
+  const words = first.split(/\s+/u);
+  const bounded = words.slice(0, 8).join(' ').slice(0, 64).trimEnd();
+  const title = bounded.replace(/[\s.,;:!?–—-]+$/u, '');
+  return title ? title[0].toLocaleUpperCase('en-US') + title.slice(1) : DEFAULT_CONVERSATION_TITLE;
 }
 
 function syncConversationTitle(doc, state = {}) {
@@ -315,7 +322,7 @@ function renderModelMessage(doc, entry) {
     article.dataset.completion = 'incomplete';
     const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
     article.append(textNode(doc, 'p', 'relay-completion-alert', structuralOnly
-      ? 'TWO-VOICE STRUCTURE UNFINISHED · Gemini returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
+      ? 'TWO-VOICE STRUCTURE UNFINISHED · the provider returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
       : 'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
   }
   if (entry.sealed) article.dataset.sealed = 'true';
@@ -392,8 +399,8 @@ function renderMessages(doc, state) {
       && entry.receipt?.provider?.completion?.complete !== false) {
       const button = doc.createElement('button');
       button.type = 'button'; button.className = 'marrowline-branch-reply';
-      button.textContent = 'Branch from here ⤴';
-      button.setAttribute('aria-label', 'Branch from the first Marrowline reply');
+      button.textContent = 'Start new thread from here ⤴';
+      button.setAttribute('aria-label', 'Start a new thread from the first Marrowline reply');
       button.addEventListener('click', () => doc.dispatchEvent(new doc.defaultView.CustomEvent('td613:marrowline:branch-first')));
       element.append(button);
     }
@@ -520,6 +527,12 @@ function refreshKeyState(doc) {
     waived ? 'review' : shi.valid ? 'pass' : 'fail',
     waived ? (storedShi.valid ? `unissued research · stored SHI dormant · ${storedShi.suffix}` : 'unissued research · ordinary work') : shi.valid ? `SHI issued · ${shi.suffix}` : 'issuance required'
   );
+  const bindingLine = byId(doc, 'marrowlineBindingLine');
+  if (bindingLine) {
+    const issuance = waived ? 'UNISSUED RESEARCH' : shi.valid
+      ? 'SHI FORMAT ACCEPTED · ending ' + shi.suffix : 'ISSUANCE REQUIRED';
+    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: Sealed ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+  }
   return { shi, storedShi, waived, khona };
 }
 async function hydrateReliquary(doc) {
@@ -793,12 +806,32 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   doc.addEventListener('td613:marrowline:branch-first', () => void branchFromFirst());
   byId(doc, 'marrowlineNewThread')?.addEventListener('click', () => void newThread());
   byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', 'false');
-  byId(doc, 'marrowlineThreadOpen')?.addEventListener('click', () => {
-    const drawer = byId(doc, 'marrowlineThreadDrawer');
-    if (drawer) {
-      drawer.open = !drawer.open;
-      if (drawer.open) void renderThreadLibrary().catch(() => {});
-      byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', String(drawer.open));
+  const conversationToggle = byId(doc, 'marrowlineThreadOpen');
+  const conversationDrawer = byId(doc, 'marrowlineThreadDrawer');
+  const closeConversationDrawer = () => {
+    if (conversationDrawer) conversationDrawer.open = false;
+    conversationToggle?.setAttribute('aria-expanded', 'false');
+  };
+  conversationToggle?.addEventListener('click', () => {
+    if (!conversationDrawer) return;
+    conversationDrawer.open = !conversationDrawer.open;
+    if (conversationDrawer.open) {
+      const headerHeight = byId(doc, 'speakingPanel')?.querySelector('.vessel-head')?.getBoundingClientRect?.().height;
+      if (Number.isFinite(headerHeight) && headerHeight > 0) conversationDrawer.style.top = `${Math.ceil(headerHeight)}px`;
+      void renderThreadLibrary().catch(() => {});
+    }
+    conversationToggle.setAttribute('aria-expanded', String(conversationDrawer.open));
+  });
+  conversationDrawer?.addEventListener('toggle', () =>
+    conversationToggle?.setAttribute('aria-expanded', String(conversationDrawer.open)));
+  doc.addEventListener('click', event => {
+    if (conversationDrawer?.open && !conversationDrawer.contains(event.target)
+      && !conversationToggle?.contains(event.target)) closeConversationDrawer();
+  });
+  doc.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && conversationDrawer?.open) {
+      closeConversationDrawer();
+      conversationToggle?.focus?.({ preventScroll: true });
     }
   });
   const threadReady = createMarrowlineThreadLibrary(root).then(async library => {
@@ -842,6 +875,35 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   if (shiInput && !shiInput.value) shiInput.value = readStoredShi(root);
   const waiver = byId(doc, 'khonapolitWaive');
   if (waiver && !validateShi(shiInput?.value || '').valid) waiver.checked = true;
+  const receiptGate = byId(doc, 'marrowlineReceiptGate');
+  const receiptProtected = byId(doc, 'marrowlineReceiptProtected');
+  const receiptGateInput = byId(doc, 'marrowlineReceiptShi');
+  const receiptGateStatus = byId(doc, 'marrowlineReceiptGateStatus');
+  const lockReceipts = () => {
+    if (receiptGate) receiptGate.hidden = false;
+    if (receiptProtected) receiptProtected.hidden = true;
+    if (receiptGateInput) receiptGateInput.value = '';
+    if (receiptGateStatus) receiptGateStatus.textContent = 'Local presentation membrane closed. A valid-format SHI is required.';
+  };
+  const unlockReceipts = () => {
+    const offered = safe(receiptGateInput?.value) || safe(shiInput?.value) || readStoredShi(root);
+    const checked = validateShi(offered);
+    if (!checked.valid) {
+      if (receiptGateStatus) receiptGateStatus.textContent = 'SHI format not recognized. Enter a valid SHI in Keys or here.';
+      receiptGateInput?.focus?.({ preventScroll: true });
+      return;
+    }
+    if (receiptGate) receiptGate.hidden = true;
+    if (receiptProtected) receiptProtected.hidden = false;
+    if (receiptGateStatus) receiptGateStatus.textContent = 'Local format check accepted · ending ' + checked.suffix;
+    if (receiptGateInput) receiptGateInput.value = '';
+  };
+  lockReceipts();
+  byId(doc, 'marrowlineReceiptUnlock')?.addEventListener('click', unlockReceipts);
+  byId(doc, 'marrowlineReceiptLock')?.addEventListener('click', lockReceipts);
+  receiptGateInput?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { event.preventDefault(); unlockReceipts(); }
+  });
   const settingsNote = doc.querySelector('#invocationPanel .panel-note');
   if (settingsNote) settingsNote.textContent = 'Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.';
   renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt); renderGeminiBrowserLedger(doc, root); refreshKeyState(doc); syncConversationTitle(doc, state);
@@ -953,9 +1015,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       });
       responseStatus = response.status;
       requestStage = 'response-body';
+      stopPedagogueStatus(root);
+      setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
+        'Provider HTTP response arrived; reading its body, not yet a completed return');
       const payload = await response.json();
       requestStage = 'response-processing';
+      setPedagogueStatus(status, 'pending', 'Unfolding the returned signal…',
+        'Response body received; checking its completion and structure');
       receivedReceipt = payload?.receipt || null;
+      setPedagogueStatus(status, 'pending', 'Binding the return to its receipt…',
+        'Processing the returned receipt and provider-authored transmission');
       if (witnessThisTurn) {
         witnessResponseObservedAt = new Date().toISOString();
         witnessResponseBody = typeof payload?.text === 'string' ? payload.text : null;
@@ -981,7 +1050,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (witnessThisTurn) witnessSavedText = entry.text;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
-        state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
+        state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
