@@ -837,6 +837,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const threadReady = createMarrowlineThreadLibrary(root).then(async library => {
     threadLibrary = library;
     const migrated = await library.migrate();
+    await library.migrateLegacyBranchTitles();
     let record = migrated || await library.get(library.getActiveId());
     if (!record) record = (await library.all())[0] || await library.create();
     storeReady = true;
