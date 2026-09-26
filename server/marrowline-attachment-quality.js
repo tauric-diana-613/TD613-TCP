@@ -132,14 +132,17 @@ function addAttachmentContext(request, packet, attachments) {
   // and a final repair instruction. Put the exact attachments into the original
   // user turn only, preserving the repair instruction as the recency-edge turn.
   const parts = request.contents[Array.isArray(packet.history) ? packet.history.length : 0].parts;
-  const relayCue = parts.length > 1 ? parts.pop() : null;
+  // Attachments belong ahead of the final provider-bound Red Deer text part.
+  // The system-level relay cue is already in systemInstruction, so no extra
+  // user part can appear after the canonical blank-line "Sealed ⟐" closure.
+  const framedUserPart = parts.shift();
   for (const item of attachments) {
     parts.push(
       { text: `\n[Operator attachment ${item.id}: ${item.name}; kind=${item.kind}; mime=${item.mime_type}; bytes=${item.size_bytes}]` },
       { inlineData: { mimeType: item.mime_type, data: item.data_base64 } }
     );
   }
-  if (relayCue) parts.push(relayCue);
+  if (framedUserPart) parts.push(framedUserPart);
   return request;
 }
 
