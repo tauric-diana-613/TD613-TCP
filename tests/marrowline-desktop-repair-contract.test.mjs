@@ -191,6 +191,23 @@ test('composer status reports a truthful pending state without synthetic stage c
   assert.doesNotMatch(terminalJs, /TASK ROUTED · AI IN FLIGHT · \$\{mode\}/);
   assert.match(livingChatJs, /status\.dataset\.phase/);
 });
+test('mobile composer keeps a short status inline beside Send', () => {
+  assert.match(css, /#khonapolitTerminalStatus\{[\s\S]*?order:2!important;[\s\S]*?max-width:min\(39vw,170px\)!important;/);
+  assert.doesNotMatch(css, /order:4!important;\s*flex:1 0 100%!important;/);
+  assert.match(terminalJs, /phase === 'held' \? 'Retry available'/);
+  assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
+});
+
+test('background recovery observes pagehide and resumes a preserved failure once on foreground or network return', () => {
+  assert.match(terminalJs, /keepalive: backgroundKeepaliveEligible/);
+  assert.match(terminalJs, /root\.addEventListener\?\.\('pagehide', observePageHide\)/);
+  assert.match(terminalJs, /root\.removeEventListener\?\.\('pagehide', observePageHide\)/);
+  assert.match(terminalJs, /root\.addEventListener\?\.\('pageshow', resumeWhenVisible\)/);
+  assert.match(terminalJs, /root\.addEventListener\?\.\('online', resumeWhenVisible\)/);
+  assert.match(terminalJs, /backgroundResumeSpentTask = message/);
+  assert.match(terminalJs, /if \(doc\.visibilityState !== 'hidden'\) prompt\?\.focus/);
+});
+
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
   assert.match(js, /legacyActions\.hidden = true/);
   assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
