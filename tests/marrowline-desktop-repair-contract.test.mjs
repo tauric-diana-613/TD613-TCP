@@ -156,7 +156,12 @@ test('Send retains its accessible label and gains moonlit amethyst/cyan radiance
   assert.match(css, /@keyframes marrowline-send-halo/);
   assert.match(css, /@keyframes marrowline-arrow-shimmer/);
   assert.match(css, /prefers-reduced-motion:reduce/);
-  assert.equal(release.composer.mobileSendGlyph, '⇧');
+  assert.equal(release.composer.mobileSendGlyph, '↑');
+  assert.match(css, /\[data-transmission-state="generating"\]::before/);
+  assert.match(css, /content:"↑"!important/);
+  assert.match(css, /background:none!important;background-image:none!important/);
+  assert.match(css, /marrowline-send-circular-breath/);
+  assert.match(css, /marrowline-pearl-shimmer/);
 });
 
 test('a compact Send/attachment row retains right utilities and one visually presented in-chat progress surface', () => {
@@ -174,18 +179,20 @@ test('a compact Send/attachment row retains right utilities and one visually pre
 });
 
 test('honest pending heartbeats and actual return events share a continuous vesica piscis', () => {
-  for (const phrase of ['The signal crosses the veil…','The grove keeps listening…','The Red Deer holds the shoreline…'])
+  for (const phrase of ['Listening at the shoreline…','The shoreline keeps watch…','The Red Deer holds the shoreline…'])
     assert.ok(terminalJs.includes(phrase), phrase);
   assert.match(terminalJs, /Date\.now\(\) - startedAt/);
-  assert.match(terminalJs, /elapsed >= 60000/);
-  assert.match(terminalJs, /Provider HTTP response arrived/);
-  assert.match(terminalJs, /Response body received/);
-  assert.match(terminalJs, /Processing the returned receipt/);
+  assert.match(terminalJs, /elapsedMs >= 60000/);
+  assert.match(terminalJs, /status\.dataset\.progressStage !== 'awaiting-provider'/);
+  assert.match(terminalJs, /activeRequestController\?\.abort\(\)/);
+  assert.match(terminalJs, /Marrowline HTTP response observed/);
+  assert.match(terminalJs, /HTTP response body observed/);
+  assert.match(terminalJs, /Processing the observed receipt/);
   assert.match(physicalJs, /One persistent rotating vesica piscis/);
   assert.match(physicalJs, /clearCompletionTimer\(\)/);
   assert.match(terminalJs, /status\.title = detail/);
   assert.deepEqual(release.composer.statusPedagogueSequence,
-    ['The signal crosses the veil…','The grove keeps listening…','The shoreline keeps watch…']);
+    ['Listening at the shoreline…','The shoreline keeps watch…','The Red Deer holds the shoreline…']);
 });
 
 test('background recovery retains one preserved-task restoration gesture', () => {

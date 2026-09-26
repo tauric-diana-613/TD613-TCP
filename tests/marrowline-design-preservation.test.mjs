@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
 import './marrowline-threads.test.mjs';
-import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
+import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
@@ -20,7 +20,7 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, incomplete = false, backgroundDisconnect = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, incomplete = false, backgroundDisconnect = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], fetchOptions = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
@@ -34,6 +34,8 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     fetchOptions.push(options);
+    if (hangFetch && calls.length === 1) return new Promise(() => {});
+    if (hangBody && calls.length === 1) return { ok: true, status: 200, json: () => new Promise(() => {}) };
     if (backgroundDisconnect && calls.length === 1) {
       Object.defineProperty(doc, 'visibilityState', { configurable: true, value: 'hidden' });
       doc.dispatchEvent(new win.Event('visibilitychange'));
@@ -85,7 +87,8 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
     return win.__TD613_MARROWLINE_THREADS__.current();
   };
   return { doc, win, $, calls, fetchOptions, clipboard, send, ready, saved,
-    settled: async () => { await ready(); await until(() => !$('khonapolitSend').disabled); await flush(); } };
+    settled: async () => { await ready(); await until(() => $('khonapolitSend').dataset.transmissionState === 'ready'
+      && $('khonapolitTerminalStatus').dataset.phase !== 'pending'); await flush(); } };
 }
 
 test('thread titles follow the Red Deer prompt, not incidental bot motifs or demo labels', () => {
@@ -547,4 +550,55 @@ test('human conversation input remains authored text without hidden provider fra
   assert.equal(h.calls[0].message, 'Tell me about the grove.');
   assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent, 'Tell me about the grove.');
   assert.doesNotMatch(h.doc.querySelector('.message[data-role="user"] .message-text')?.textContent || '', /𝌋|Sealed ⟐/);
+});
+
+test('waiting lore is monotonic and elapsed time cannot counterfeit an HTTP phase', () => {
+  assert.deepEqual([marrowlineWaitingLabel(0), marrowlineWaitingLabel(19000),
+    marrowlineWaitingLabel(20000), marrowlineWaitingLabel(59000), marrowlineWaitingLabel(60000),
+    marrowlineWaitingLabel(99000)], [
+    'Listening at the shoreline…', 'Listening at the shoreline…',
+    'The shoreline keeps watch…', 'The shoreline keeps watch…',
+    'The Red Deer holds the shoreline…', 'The Red Deer holds the shoreline…'
+  ]);
+});
+
+test('operator Stop aborts an unresolved fetch, preserves one user turn, and allows explicit retry', async t => {
+  const h = harness(t, { hangFetch: true });
+  const task = 'A task the Red Deer can stop without losing the thread.';
+  await h.ready(); h.send(task);
+  await until(() => h.calls.length === 1 && h.$('khonapolitSend').dataset.transmissionState === 'generating');
+  const control = h.$('khonapolitSend');
+  assert.equal(control.type, 'button');
+  assert.equal(control.getAttribute('aria-label'), 'Stop transmission');
+  assert.equal(control.disabled, false);
+  assert.equal(h.fetchOptions[0].signal.aborted, false);
+  control.click();
+  await h.settled();
+  assert.equal(h.fetchOptions[0].signal.aborted, true);
+  assert.equal(control.type, 'submit');
+  assert.equal(control.dataset.transmissionState, 'ready');
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.progressStage, 'cancelled');
+  assert.equal((await h.saved()).lastFailure.error, 'operator-cancelled');
+  assert.equal((await h.saved()).pendingTask, task);
+  assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1);
+  assert.equal(h.doc.querySelectorAll('.relay-message').length, 0);
+  assert.equal(h.$('khonapolitPrompt').value, task);
+  assert.equal(h.calls.length, 1, 'stop creates no second provider request');
+  h.$('retryKhonapolitTask').click(); await h.settled();
+  assert.equal(h.calls.length, 2, 'only an explicit retry can ask again');
+  assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1);
+  assert.equal(h.doc.querySelectorAll('.relay-message').length, 1);
+});
+
+test('operator Stop also escapes a response body that never resolves', async t => {
+  const h = harness(t, { hangBody: true });
+  await h.ready(); h.send('Preserve the body-stalled task.');
+  await until(() => h.calls.length === 1 &&
+    h.$('khonapolitTerminalStatus').dataset.progressStage === 'response-arrived');
+  h.$('khonapolitSend').click();
+  await h.settled();
+  assert.equal(h.fetchOptions[0].signal.aborted, true);
+  assert.equal((await h.saved()).lastFailure.error, 'operator-cancelled');
+  assert.equal(h.doc.querySelectorAll('.relay-message').length, 0);
+  assert.equal(h.$('khonapolitSend').dataset.transmissionState, 'ready');
 });

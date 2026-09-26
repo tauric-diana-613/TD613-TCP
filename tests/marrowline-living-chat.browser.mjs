@@ -156,11 +156,13 @@ try{
     });
     throw new Error(`Marrowline pending-kinesis witness failed; posture=${posture}, posts=${posts}, diagnostic=${JSON.stringify(diagnostic)}; ${error.message}`);
    }
+   assert.equal(await page.locator('#khonapolitSend').getAttribute('aria-label'),'Stop transmission','in-flight button is an accessible stop, not a disabled decorative Send');
    assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
    assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
    assert.equal(await page.evaluate(() => document.querySelector('#marrowlineChatKinesis .kinesis-copy')?.textContent === document.querySelector('#khonapolitTerminalStatus')?.textContent), true, 'one rotating in-chat indicator mirrors the current truthful progress label');
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.dataset.phase==='received');
    await page.locator('#marrowlineChatKinesis').waitFor({state:'hidden'});
+   assert.equal(await page.locator('#khonapolitSend').getAttribute('aria-label'),'Send message','completed request restores Send');
    if(posture.startsWith('mobile')){
     await page.evaluate(()=>{
      window.visualViewport.height=844;
