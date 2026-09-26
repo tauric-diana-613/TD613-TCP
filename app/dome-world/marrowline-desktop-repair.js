@@ -187,7 +187,13 @@ function installUniversalContextPlus(doc, root) {
   plus.setAttribute('aria-controls', 'marrowlineContextMenu');
   plus.setAttribute('aria-label', 'Add file, add photo, or open Loom');
 
-  row.append(plus, promptLabel);
+  row.append(promptLabel);
+  // One compact action row: attachment and Send together on the left; the
+  // conversation utilities remain together at the right.
+  const actionRow = form.querySelector('.composer-actions');
+  const sendButton = byId(doc, 'khonapolitSend');
+  if (actionRow && sendButton) actionRow.insertBefore(plus, sendButton);
+  else row.prepend(plus);
 
   const menu = doc.createElement('div');
   menu.id = 'marrowlineContextMenu';
