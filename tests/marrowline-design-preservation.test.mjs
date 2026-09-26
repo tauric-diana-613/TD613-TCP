@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
+import './marrowline-threads.test.mjs';
 import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
@@ -77,7 +78,14 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
   installMarrowlinePhysicalDeviceRepair(doc, win);
   const $ = id => doc.getElementById(id);
   const send = (text = highZalgo.trim()) => { $('khonapolitPrompt').value = text; $('khonapolitForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true })); };
-  return { doc, win, $, calls, fetchOptions, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
+  const ready = () => win.__TD613_MARROWLINE_THREADS__.ready;
+  const saved = async () => {
+    await ready();
+    await win.__TD613_MARROWLINE_THREADS__.flush();
+    return win.__TD613_MARROWLINE_THREADS__.current();
+  };
+  return { doc, win, $, calls, fetchOptions, clipboard, send, ready, saved,
+    settled: async () => { await ready(); await until(() => !$('khonapolitSend').disabled); await flush(); } };
 }
 
 test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
@@ -197,7 +205,7 @@ test('provider failure preserves exactly one user task, restores the draft, and 
   assert.equal(h.$('retryKhonapolitTask').hidden, false);
   assert.equal(h.doc.querySelectorAll('.message[data-role="user"]').length, 1);
   assert.equal(h.doc.querySelectorAll('.relay-message').length, 0, 'transport failure is not rendered as an assistant answer');
-  assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
+  assert.equal((await h.saved()).pendingTask, task);
   assert.equal(h.$('marrowlinePortableActions'), null);
   assert.equal(h.$('copyKhonapolitPortable'), null);
   assert.equal(h.$('exportKhonapolitPortable'), null);
@@ -219,7 +227,7 @@ test('incomplete provider reply remains visibly NOT_LOCKED with exact draft and 
   assert.match(h.$('khonapolitTerminalStatus').textContent, /INCOMPLETE RETURN/);
   assert.equal(h.$('khonapolitTerminalStatus').dataset.phase, 'held', 'Pedagogue exposes the established phase attribute, not a fictional held flag');
   assert.equal(h.$('signalStateBadge').dataset.state, 'NOT_LOCKED');
-  assert.equal(JSON.parse(h.win.sessionStorage.getItem(sessionKey)).pendingTask, task);
+  assert.equal((await h.saved()).pendingTask, task);
   assert.equal(h.$('retryKhonapolitTask').hidden, false);
   h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
   assert.equal(h.calls.length, 2, 'operator gesture, not automatic client retry');
