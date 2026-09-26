@@ -204,8 +204,22 @@ function readStoredShi(root = window) {
   try { return root.localStorage.getItem('TD613_FLIGHT_SHI') || root.sessionStorage.getItem('TD613_FLIGHT_SHI') || ''; }
   catch { return ''; }
 }
-// The session packet is retained solely for one-time IndexedDB migration.
-// New conversation writes use the thread library, never this legacy key.
+// Legacy session state can be rendered while durable conversation storage loads.
+// It is never the source of truth after the thread library has initialized.
+function loadSession(root = window) {
+  try {
+    const parsed = JSON.parse(root.sessionStorage.getItem(SESSION_KEY) || '{}');
+    return {
+      messages: Array.isArray(parsed.messages) ? parsed.messages : [],
+      lastReceipt: parsed.lastReceipt || null, pendingTask: safe(parsed.pendingTask),
+      lastFailure: parsed.lastFailure || null,
+      conversationTitle: safe(parsed.conversationTitle) || DEFAULT_CONVERSATION_TITLE
+    };
+  } catch {
+    return { messages: [], lastReceipt: null, pendingTask: '', lastFailure: null,
+      conversationTitle: DEFAULT_CONVERSATION_TITLE };
+  }
+}
 function setLamp(node, state, text) {
   if (!node) return;
   node.dataset.state = state;
@@ -537,12 +551,12 @@ async function probeProvider(doc) {
     setLamp(byId(doc, 'providerLamp'), 'review', 'AI route unavailable');
   }
 }
-function operatorSeal(doc, root, state) {
+function operatorSeal(doc, root, state, persist = () => {}) {
   const index = [...state.messages].map((entry, i) => ({ entry, i })).reverse().find(({ entry }) => entry.role === 'model' && !entry.sealed)?.i;
   if (index === undefined) return false;
   state.messages[index] = { ...state.messages[index], sealed: true };
   if (state.lastReceipt) state.lastReceipt = { ...state.lastReceipt, seal: { state: 'SEALED', glyph: SEAL_GLYPH, suppliedBy: 'operator', sealedAt: new Date().toISOString(), note: 'Closure applied after provider return; not retrofitted into the original binding declaration.' } };
-  void scheduleSave(); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
+  void persist(); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
   byId(doc, 'khonapolitTerminalStatus').textContent = `OPERATOR CLOSURE APPLIED · ${SEAL_GLYPH}`;
   return true;
 }
@@ -660,13 +674,15 @@ async function readMarrowlineSourceWindow(root) {
 export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
-  const state = { messages: [], lastReceipt: null, pendingTask: '', lastFailure: null,
-    conversationTitle: DEFAULT_CONVERSATION_TITLE };
+  const state = loadSession(root);
   let threadLibrary = null;
   let activeThread = null;
   let storeReady = false;
   let requestInFlight = false;
-  let saveChain = Promise.resolve();
+  let saveChain = Promise.resolve(true);
+  let queuedInitialSubmission = null;
+  const sendControl = byId(doc, 'khonapolitSend');
+  if (sendControl) sendControl.disabled = true;
   const renderThreadLibrary = async () => {
     if (!threadLibrary) return;
     const list = byId(doc, 'marrowlineThreadList');
@@ -693,12 +709,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const snapshot = { ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
       pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: state.conversationTitle,
       draft: byId(doc, 'khonapolitPrompt')?.value || '' };
-    saveChain = saveChain.catch(() => {}).then(() => threadLibrary.put(snapshot)).then(record => {
+    saveChain = saveChain.catch(() => false).then(() => threadLibrary.put(snapshot)).then(record => {
       if (activeThread?.id === record.id) activeThread = record;
-      return renderThreadLibrary();
+      if (byId(doc, 'marrowlineThreadDrawer')?.open) void renderThreadLibrary().catch(() => {});
+      return true;
     }).catch(error => {
       const status = byId(doc, 'khonapolitTerminalStatus');
       if (status) { status.dataset.phase = 'held'; status.textContent = 'Save failed'; status.title = String(error?.message || error); }
+      return false;
     });
     return saveChain;
   };
@@ -715,27 +733,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
     syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     const status = byId(doc, 'khonapolitTerminalStatus');
-    if (status) setPedagogueStatus(status, state.lastFailure ? 'held' : 'prepared',
-      state.lastFailure ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline');
+    if (status) setPedagogueStatus(status, state.lastFailure || state.pendingTask ? 'held' : 'prepared',
+      state.lastFailure || state.pendingTask ? 'TASK PRESERVED · retry when ready' : 'READY · ask at the shoreline');
+    if (sendControl) sendControl.disabled = Boolean(requestInFlight);
     threadLibrary.setActiveId(record.id);
     void renderThreadLibrary();
   };
   const switchThread = async threadId => {
     if (!storeReady || requestInFlight) return;
-    await scheduleSave();
+    if (!await scheduleSave()) return;
     const next = await threadLibrary.get(threadId);
     if (next) restoreThread(next);
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const newThread = async () => {
     if (!storeReady || requestInFlight) return;
-    await scheduleSave();
+    if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.create());
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const deleteThread = async threadId => {
     if (!storeReady || requestInFlight || !root.confirm?.('Delete this conversation from this browser?')) return;
-    await scheduleSave();
+    if (!await scheduleSave()) return;
     await threadLibrary.remove(threadId);
     if (activeThread?.id === threadId) {
       const survivors = await threadLibrary.all();
@@ -744,7 +763,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
   const renameThread = async threadId => {
     if (!storeReady || requestInFlight) return;
-    await scheduleSave();
+    if (!await scheduleSave()) return;
     const record = await threadLibrary.get(threadId);
     if (!record) return;
     const name = root.prompt?.('Conversation title', record.conversationTitle)?.trim().slice(0, 100);
@@ -755,7 +774,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   };
   const branchFromFirst = async () => {
     if (!storeReady || requestInFlight || !activeThread) return;
-    await scheduleSave();
+    if (!await scheduleSave()) return;
     restoreThread(await threadLibrary.branch(activeThread, 1));
   };
   doc.addEventListener('td613:marrowline:branch-first', () => void branchFromFirst());
@@ -767,13 +786,21 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   void createMarrowlineThreadLibrary(root).then(async library => {
     threadLibrary = library;
     const migrated = await library.migrate();
-    let record = await library.get(library.getActiveId());
-    if (!record) record = migrated || (await library.all())[0] || await library.create();
+    let record = migrated || await library.get(library.getActiveId());
+    if (!record) record = (await library.all())[0] || await library.create();
     storeReady = true;
     restoreThread(record);
+    if (queuedInitialSubmission !== null) {
+      const queued = queuedInitialSubmission;
+      queuedInitialSubmission = null;
+      const input = byId(doc, 'khonapolitPrompt');
+      if (input) input.value = queued;
+      void submitTask(queued);
+    }
   }).catch(error => {
     const status = byId(doc, 'khonapolitTerminalStatus');
-    if (status) { status.textContent = 'Storage unavailable'; status.title = String(error?.message || error); }
+    if (status) { status.dataset.phase = 'held'; status.textContent = 'Storage unavailable'; status.title = String(error?.message || error); }
+    if (sendControl) sendControl.disabled = true;
   });
   // A deliberate, single-use browser-local observation; not restored as if an
   // old stored reply were its original HTTP response body.
@@ -795,6 +822,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   if (initialStatus && state.lastFailure && state.pendingTask) setPedagogueStatus(initialStatus, 'held', 'TASK PRESERVED · retry when ready');
   else if (initialStatus && !state.messages.length) setPedagogueStatus(initialStatus, 'prepared', 'READY · ask at the shoreline', 'READY · ordinary work starts in unissued research mode · advanced custody remains optional');
   hydrateReliquary(doc); probeProvider(doc); installMobileDock(doc, root); installComposerGrowth(doc);
+  byId(doc, 'khonapolitPrompt')?.addEventListener('input', () => {
+    if (storeReady && !requestInFlight) void scheduleSave();
+  });
+  root.addEventListener?.('pagehide', () => { if (storeReady && !requestInFlight) void scheduleSave(); });
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   waiver?.addEventListener('change', () => refreshKeyState(doc));
 
@@ -841,13 +872,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
 
     requestInFlight = true;
     if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
-    state.pendingTask = '';
+    // A suspended page can be restored as a preserved task. An old HTTP return
+    // is never silently assumed to have arrived after a browser restart.
+    state.pendingTask = message;
     state.lastReceipt = null; state.lastFailure = null;
     root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
-    void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state);
     prompt.value = ''; prompt.style.height = ''; submit.disabled = true;
+    void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state);
     startPedagogueStatus(status, root, attachments.length);
     if (witnessThisTurn) sourceBefore = await readMarrowlineSourceWindow(root);
     const requestController = new AbortController();
@@ -944,9 +977,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
       if (failedRouteReceipt) renderModelRouteReceipt(doc, failedRouteReceipt);
-      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       prompt.value = message;
       prompt.style.height = '';
+      void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); setSignalState(doc, 'NOT_LOCKED');
       renderGeminiBrowserLedger(doc, root);
       stopPedagogueStatus(root);
       setPedagogueStatus(status, 'held', attachments.length
@@ -1025,8 +1058,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
   };
 
-  form.addEventListener('submit', async (event) => { event.preventDefault(); await submitTask(); });
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!storeReady) {
+      // A first tap during asynchronous IndexedDB hydration is deferred rather
+      // than dropped or bound to a temporary empty conversation.
+      queuedInitialSubmission = safe(byId(doc, 'khonapolitPrompt')?.value);
+      return;
+    }
+    await submitTask();
+  });
   const retryLastPrompt = ({ independentRetry = false } = {}) => {
+    if (!storeReady || requestInFlight) return;
     if (byId(doc, 'khonapolitTerminalStatus')?.dataset?.phase === 'pending') return;
     const userIndex = lastUserMessageIndex(state.messages || []);
     const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
@@ -1065,8 +1108,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
     }
   });
-  byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state));
+  byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state, scheduleSave));
   byId(doc, 'clearKhonapolitSession')?.addEventListener('click', () => {
+    if (!storeReady || requestInFlight) {
+      setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'held', 'Wait for reply',
+        'Finish the current provider return before clearing the conversation.');
+      return;
+    }
     backgroundResumeTask = '';
     backgroundResumeSpentTask = '';
     episodeArmed = false; lastEpisodeWitness = null; root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
@@ -1082,6 +1130,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete prompt.dataset.preloadedPrompt;
       delete prompt.dataset.preloadedPromptValue;
     }
+    void scheduleSave();
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
     stopPedagogueStatus(root);
     const terminalStatus = byId(doc, 'khonapolitTerminalStatus');
@@ -1124,7 +1173,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     namespace: CLAIMED_PUA, puaGlyph: CLAIMED_PUA_SCALAR,
     heritageKey: HERITAGE_KEY, canonicalCovenantPhrase: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
     bindingFragment: BINDING_FRAGMENT, bindingSha256: BINDING_SHA256, corpusRootSha256: CORPUS_ROOT_SHA256,
-    corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state),
+    corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state, scheduleSave),
     portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length
   });
   return true;
