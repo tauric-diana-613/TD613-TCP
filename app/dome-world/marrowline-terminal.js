@@ -158,7 +158,7 @@ export function deriveMarrowlineConversationTitle(text = '', seed = '') {
     .replace(/^[\s"'“”‘’#*]+/u, '').replace(/\s+/gu, ' ').trim();
   if (!authored) return DEFAULT_CONVERSATION_TITLE;
   const subject = authored.replace(/^(?:please\s+)?(?:write\s+(?:me\s+)?|tell\s+me\s+|can\s+you\s+|could\s+you\s+|help\s+me\s+)/iu, '')
-    .replace(/^(?:a\s+|an\s+)?(?:poem\s+about\s+|story\s+about\s+|scene\s+about\s+)/iu, '');
+    .replace(/^(?:a\s+|an\s+)?(?:(?:poem|story|scene)\s+(?:about|of)\s+)/iu, '');
   const first = (subject || authored).split(/(?<=[.!?])\s+|[\n\r]/u)[0].replace(/[\s.,;:!?–—-]+$/u, '').trim();
   const words = first.split(/\s+/u);
   const bounded = words.slice(0, 8).join(' ').slice(0, 64).trimEnd();
