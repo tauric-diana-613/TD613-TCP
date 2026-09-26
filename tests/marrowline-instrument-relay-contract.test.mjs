@@ -54,7 +54,7 @@ assert.doesNotMatch(fullInstruction, /Channel B emits/i);
 
 // Diegetic mission is part of the actual first-turn provider packet, not UI copy
 // or a substitute for the existing lore/covenant and source-preserving relay.
-assert.equal(MARROWLINE_MISSION_ANCHOR_VERSION, 'td613.marrowline.red-deer-mission/v2-operational-relations');
+assert.equal(MARROWLINE_MISSION_ANCHOR_VERSION, 'td613.marrowline.red-deer-mission/v3-antlered-ache');
 assert.match(packet.systemInstruction, /MARROWLINE DIEGETIC MISSION/);
 assert.match(packet.systemInstruction, /address the app visitor as the Red Deer when it serves the exchange/);
 assert.match(packet.systemInstruction, /The Chairman is the recurring fictional antagonist/);
