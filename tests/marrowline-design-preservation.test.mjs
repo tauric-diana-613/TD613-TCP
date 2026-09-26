@@ -88,24 +88,14 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
     settled: async () => { await ready(); await until(() => !$('khonapolitSend').disabled); await flush(); } };
 }
 
-test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
-  const named = deriveMarrowlineConversationTitle([
-    'Kʰonapolit',
-    'ECHOGLASS mistakes an active reflector for decoration. The mirror keeps the route.',
-    '',
-    'Tauric Diana bots',
-    'BUREAU BUREAU BUREAU'
-  ].join('\n'), 'operator-seed');
-  assert.equal(named, 'The Glass Remembers');
-
-  const botOnlyBureaucracy = deriveMarrowlineConversationTitle([
-    'Kʰonapolit',
-    'The formal movement isolates a non-injective map.',
-    '',
-    'Tauric Diana bots',
-    'THE BUREAUCRAT HOWLS AT THE CEILING'
-  ].join('\n'), 'same-seed');
-  assert.notEqual(botOnlyBureaucracy, 'The Office Beneath the Grove', 'the title follows Kʰonapolit rather than mining the bot channel');
+test('thread titles follow the Red Deer prompt, not incidental bot motifs or demo labels', () => {
+  assert.equal(deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.',
+    'THE SHORELINE HAS TEETH'), 'Lucille Clifton and a mother holding her child');
+  assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
+    'The Ash Moon, within the authored mythology of');
+  assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
+    'Explain the difference between consent and inheritance');
+  assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
 });
 
 test('one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls', async t => {
