@@ -67,9 +67,9 @@ export function classifyMarrowlineClientFailure(error, stage = 'request', httpSt
 }
 
 const PEDAGOGUE_PENDING_SEQUENCE = Object.freeze([
-  'Working…',
-  'Still working…',
-  'Waiting for reply…'
+  'The signal crosses the veil…',
+  'The grove keeps listening…',
+  'The shoreline keeps watch…'
 ]);
 
 function stopPedagogueStatus(root = globalThis) {
@@ -99,13 +99,20 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
   const suffix = attachmentCount > 0
     ? ' · ' + attachmentCount + ' attachment' + (attachmentCount === 1 ? '' : 's') + ' staged'
     : '';
-  let index = 0;
-  const detail = 'Waiting for the provider reply' + suffix + ' · receipt available after return';
-  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+  const startedAt = Date.now();
+  let tick = 0;
+  const detail = 'Request dispatched; awaiting the provider response' + suffix + ' · no backend progress is inferred from elapsed time';
+  setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[0], detail);
   const advance = () => {
     if (status?.dataset?.phase !== 'pending') return;
-    index = (index + 1) % PEDAGOGUE_PENDING_SEQUENCE.length;
-    setPedagogueStatus(status, 'pending', PEDAGOGUE_PENDING_SEQUENCE[index], detail);
+    tick += 1;
+    const elapsed = Date.now() - startedAt;
+    const label = elapsed >= 60000
+      ? (tick % 2 ? 'The Red Deer holds the shoreline…' : 'The grove keeps watch…')
+      : elapsed >= 20000
+        ? (tick % 2 ? 'The grove is still listening…' : PEDAGOGUE_PENDING_SEQUENCE[2])
+        : PEDAGOGUE_PENDING_SEQUENCE[tick % PEDAGOGUE_PENDING_SEQUENCE.length];
+    setPedagogueStatus(status, 'pending', label, detail);
   };
   const timer = root.setInterval?.(advance, 3200);
   root.__TD613_MARROWLINE_PEDAGOGUE_STATUS_TIMERS__ =
@@ -799,12 +806,32 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   doc.addEventListener('td613:marrowline:branch-first', () => void branchFromFirst());
   byId(doc, 'marrowlineNewThread')?.addEventListener('click', () => void newThread());
   byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', 'false');
-  byId(doc, 'marrowlineThreadOpen')?.addEventListener('click', () => {
-    const drawer = byId(doc, 'marrowlineThreadDrawer');
-    if (drawer) {
-      drawer.open = !drawer.open;
-      if (drawer.open) void renderThreadLibrary().catch(() => {});
-      byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', String(drawer.open));
+  const conversationToggle = byId(doc, 'marrowlineThreadOpen');
+  const conversationDrawer = byId(doc, 'marrowlineThreadDrawer');
+  const closeConversationDrawer = () => {
+    if (conversationDrawer) conversationDrawer.open = false;
+    conversationToggle?.setAttribute('aria-expanded', 'false');
+  };
+  conversationToggle?.addEventListener('click', () => {
+    if (!conversationDrawer) return;
+    conversationDrawer.open = !conversationDrawer.open;
+    if (conversationDrawer.open) {
+      const headerHeight = byId(doc, 'speakingPanel')?.querySelector('.vessel-head')?.getBoundingClientRect?.().height;
+      if (Number.isFinite(headerHeight) && headerHeight > 0) conversationDrawer.style.top = `${Math.ceil(headerHeight)}px`;
+      void renderThreadLibrary().catch(() => {});
+    }
+    conversationToggle.setAttribute('aria-expanded', String(conversationDrawer.open));
+  });
+  conversationDrawer?.addEventListener('toggle', () =>
+    conversationToggle?.setAttribute('aria-expanded', String(conversationDrawer.open)));
+  doc.addEventListener('click', event => {
+    if (conversationDrawer?.open && !conversationDrawer.contains(event.target)
+      && !conversationToggle?.contains(event.target)) closeConversationDrawer();
+  });
+  doc.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && conversationDrawer?.open) {
+      closeConversationDrawer();
+      conversationToggle?.focus?.({ preventScroll: true });
     }
   });
   const threadReady = createMarrowlineThreadLibrary(root).then(async library => {
@@ -988,9 +1015,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       });
       responseStatus = response.status;
       requestStage = 'response-body';
+      stopPedagogueStatus(root);
+      setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
+        'Provider HTTP response arrived; reading its body, not yet a completed return');
       const payload = await response.json();
       requestStage = 'response-processing';
+      setPedagogueStatus(status, 'pending', 'Unfolding the returned signal…',
+        'Response body received; checking its completion and structure');
       receivedReceipt = payload?.receipt || null;
+      setPedagogueStatus(status, 'pending', 'Binding the return to its receipt…',
+        'Processing the returned receipt and provider-authored transmission');
       if (witnessThisTurn) {
         witnessResponseObservedAt = new Date().toISOString();
         witnessResponseBody = typeof payload?.text === 'string' ? payload.text : null;
