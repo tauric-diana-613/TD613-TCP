@@ -83,7 +83,6 @@ function setPedagogueStatus(status, phase, text, title = '') {
     : phase === 'prepared' ? 'Ready'
     : text;
   status.title = detail;
-  status.setAttribute('aria-label', detail);
 }
 
 function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
