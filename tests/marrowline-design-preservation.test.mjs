@@ -455,6 +455,35 @@ test('copy control exports exact provider-authored Unicode as plain text without
   assert.ok(copied.includes(highZalgo), 'copy must retain the provider-authored combining code points');
   assert.ok(copied.includes('The line clears again.'), 'native clean speech remains present');
   assert.doesNotMatch(copied, /<strong>|<b>|font-weight:/i, 'clipboard carries no app-injected rich font style');
-  assert.equal(h.$('khonapolitTerminalStatus').textContent, 'Reply received');
+  assert.equal(h.$('khonapolitTerminalStatus').textContent, 'Copied chat');
   assert.equal(h.$('khonapolitTerminalStatus').title, 'Full conversation copied as plain text with route and provenance.');
+});
+
+
+test('each response has an independent copy control preserving only that provider return byte-for-byte', async t => {
+  const h = harness(t);
+  h.send('First operator question.'); await h.settled(); await flush();
+  h.send('Second operator question.'); await h.settled(); await flush();
+  const copies = h.doc.querySelectorAll('.relay-message .marrowline-copy-reply');
+  assert.equal(copies.length, 2, 'each model response has its own bottom-right copy control');
+  for (const button of copies) {
+    assert.equal(button.textContent, '⧉');
+    assert.equal(button.getAttribute('aria-label'), 'Copy this reply');
+    button.click(); await flush();
+    assert.equal(h.clipboard.at(-1), integratedText, 'copy preserves the exact provider text, including marks');
+    assert.doesNotMatch(h.clipboard.at(-1), /First operator question|Second operator question|SYNTHETIC APERTURE|Inspect this reply/);
+  }
+  h.$('copyKhonapolitTranscript').click(); await flush();
+  assert.match(h.clipboard.at(-1), /First operator question/);
+  assert.match(h.clipboard.at(-1), /Second operator question/);
+  assert.equal(h.doc.querySelectorAll('.marrowline-copy-reply').length, 2, 'copy action must not duplicate buttons');
+});
+
+test('legacy model output also receives a reply-only copy action', async t => {
+  const text = 'Legacy\u0301 response with exact marks.';
+  const h = harness(t, { storedMessages: [{ role: 'model', text }] });
+  const button = h.doc.querySelector('.message[data-role="model"] .marrowline-copy-reply');
+  assert.ok(button);
+  button.click(); await flush();
+  assert.equal(h.clipboard.at(-1), text);
 });
