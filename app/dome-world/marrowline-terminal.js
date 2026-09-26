@@ -121,36 +121,6 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
 const DEFAULT_CONVERSATION_TITLE = 'The speaking grove';
-const SPOOKY_TITLE_RULES = Object.freeze([
-  Object.freeze({ pattern: /\b(?:glass|mirror|reflect|facet|echoglass)\b/u, title: 'The Glass Remembers' }),
-  Object.freeze({ pattern: /\b(?:ash|burn|residue|fire|ember)\b/u, title: 'What the Ash Kept' }),
-  Object.freeze({ pattern: /\b(?:grove|branch|bough|deer|nemorensis)\b/u, title: 'Beyond the Broken Bough' }),
-  Object.freeze({ pattern: /\b(?:shore|shoreline|sea|water|tide|undertow)\b/u, title: 'The Shoreline Has Teeth' }),
-  Object.freeze({ pattern: /\b(?:moon|midnight|night|nocturne)\b/u, title: 'Under the Ash Moon' }),
-  Object.freeze({ pattern: /\b(?:thread|seam|weave|woven|stitch)\b/u, title: 'The Thread That Returned' }),
-  Object.freeze({ pattern: /\b(?:bureau|bureaucrat|bureaucracy|audit|receipt|office|compliance)\b/u, title: 'The Office Beneath the Grove' }),
-  Object.freeze({ pattern: /\b(?:light|shadow|lamp|glow)\b/u, title: 'Where the Light Leaves Ash' }),
-  Object.freeze({ pattern: /\b(?:door|gate|threshold|crossing)\b/u, title: 'The Door Below the Field' }),
-  Object.freeze({ pattern: /\b(?:memory|archive|remember|custody)\b/u, title: 'The Room That Remembers' })
-]);
-const SPOOKY_TITLE_FALLBACKS = Object.freeze([
-  'The Field After Midnight',
-  'A Lamp Under Black Water',
-  'The Quiet Room Has Teeth',
-  'Where the Grove Listens',
-  'The Name Beneath the Floorboards',
-  'The Last Door in the Archive'
-]);
-
-function titleHash(value = '') {
-  let hash = 2166136261;
-  for (const char of String(value)) {
-    hash ^= char.codePointAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
-
 export function deriveMarrowlineConversationTitle(text = '', seed = '') {
   // Name by the Red Deer's actual subject, never a random motif in the model's
   // second voice. This is deterministic, local, and consumes zero provider calls.
