@@ -158,7 +158,7 @@ try{
    }
    assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
    assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
-   assert.match(await page.locator('#marrowlineChatKinesis').textContent(),/Listening at the shoreline/);
+   assert.equal(await page.evaluate(() => document.querySelector('#marrowlineChatKinesis .kinesis-copy')?.textContent === document.querySelector('#khonapolitTerminalStatus')?.textContent), true, 'one rotating in-chat indicator mirrors the current truthful progress label');
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.dataset.phase==='received');
    await page.locator('#marrowlineChatKinesis').waitFor({state:'hidden'});
    if(posture.startsWith('mobile')){
