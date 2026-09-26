@@ -19,9 +19,9 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, incomplete = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, incomplete = false, backgroundDisconnect = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
-  const win = dom.window, doc = win.document, calls = [], clipboard = [];
+  const win = dom.window, doc = win.document, calls = [], fetchOptions = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
   doc.getElementById('marrowlineLivingGeometry')?.remove();
   win.matchMedia = () => ({ matches: mobile, addEventListener() {}, removeEventListener() {} });
@@ -32,6 +32,14 @@ function harness(t, { mobile = false, failure = false, incomplete = false, trans
     if (String(url).includes('/giving/history/release-source.json')) return { ok: true, status: 200, json: async () => ({ source_packet_commit: 'a'.repeat(40) }) };
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
+    fetchOptions.push(options);
+    if (backgroundDisconnect && calls.length === 1) {
+      Object.defineProperty(doc, 'visibilityState', { configurable: true, value: 'hidden' });
+      doc.dispatchEvent(new win.Event('visibilitychange'));
+      Object.defineProperty(doc, 'visibilityState', { configurable: true, value: 'visible' });
+      doc.dispatchEvent(new win.Event('visibilitychange'));
+      throw new TypeError('synthetic mobile background disconnect');
+    }
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const observed = incomplete ? 'Kʰonapolit\nThe claim on' : integratedText;
     const relay = {
@@ -69,7 +77,7 @@ function harness(t, { mobile = false, failure = false, incomplete = false, trans
   installMarrowlinePhysicalDeviceRepair(doc, win);
   const $ = id => doc.getElementById(id);
   const send = (text = highZalgo.trim()) => { $('khonapolitPrompt').value = text; $('khonapolitForm').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true })); };
-  return { doc, win, $, calls, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
+  return { doc, win, $, calls, fetchOptions, clipboard, send, settled: () => until(() => !$('khonapolitSend').disabled) };
 }
 
 test('Kʰonapolit names the chamber from its first formal movement without reading the bot stress field', () => {
@@ -420,6 +428,21 @@ test('actual submit distinguishes unreadable response bodies from connection fai
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__.error, 'response-body-failed');
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__.httpStatus, 200);
   assert.equal(h.$('khonapolitPrompt').value, 'Preserve this draft.');
+});
+
+test('backgrounded mobile request uses keepalive and resumes its preserved task exactly once', async t => {
+  const h = harness(t, { mobile: true, backgroundDisconnect: true });
+  h.send('Keep this one task alive while the app is backgrounded.');
+  await until(() => h.calls.length === 2
+    && !h.$('khonapolitSend').disabled
+    && h.doc.querySelectorAll('#khonapolitMessages article.relay-message').length === 1);
+  assert.equal(h.fetchOptions[0].keepalive, true, 'the original request opts into browser background delivery');
+  assert.equal(h.fetchOptions[1].keepalive, true, 'the single bounded resume keeps the same delivery contract');
+  assert.equal(h.calls.length, 2, 'one observed background disconnect grants exactly one automatic resume');
+  assert.equal(h.calls[0].message, h.calls[1].message, 'the preserved task is resumed byte-for-byte');
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role="user"]').length, 1, 'resume does not duplicate the human turn');
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__, null);
+  assert.equal(h.$('khonapolitPrompt').value, '');
 });
 
 
