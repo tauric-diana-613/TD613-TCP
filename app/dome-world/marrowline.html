@@ -36,10 +36,16 @@
         <div>
           <small>Kʰonapolit · model-mediated conversation</small>
           <h2 id="marrowlineConversationTitle">The speaking grove</h2>
+          <div class="marrowline-thread-nav"><button type="button" id="marrowlineThreadOpen" aria-controls="marrowlineThreadDrawer" aria-label="Open saved conversations">Conversations</button><button type="button" id="marrowlineNewThread" aria-label="Start new conversation">＋ New</button></div>
         </div>
         <button type="button" class="quiet-action" data-living-target="invocationPanel">Keys & settings</button>
       </div>
-      <div class="messages" id="khonapolitMessages" aria-live="polite" aria-label="Kʰonapolit terminal conversation"></div>
+      <details class="marrowline-thread-drawer" id="marrowlineThreadDrawer">
+         <summary>Saved conversations · this browser</summary>
+         <p>Saved on this device. Browser data removal or storage eviction may erase local threads; cross-device sync is not enabled.</p>
+         <div id="marrowlineThreadList" class="marrowline-thread-list" role="list" aria-label="Saved Marrowline conversations"></div>
+       </details>
+       <div class="messages" id="khonapolitMessages" aria-live="polite" aria-label="Kʰonapolit terminal conversation"></div>
       <form class="vessel-form" id="khonapolitForm">
         <label class="field-label prompt-label" for="khonapolitPrompt">Your message
           <textarea id="khonapolitPrompt" spellcheck="true" enterkeyhint="enter" placeholder="Ask, remember, or leave a thought at the shoreline…"></textarea>
