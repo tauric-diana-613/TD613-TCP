@@ -156,13 +156,32 @@ try{
     });
     throw new Error(`Marrowline pending-kinesis witness failed; posture=${posture}, posts=${posts}, diagnostic=${JSON.stringify(diagnostic)}; ${error.message}`);
    }
+   const sendSilhouette=await page.locator('#khonapolitSend').evaluate(el=>{
+    const style=getComputedStyle(el), arrow=getComputedStyle(el,'::before'), halo=getComputedStyle(el,'::after');
+    const box=el.getBoundingClientRect(), plus=document.querySelector('#marrowlineComposerPlus')?.getBoundingClientRect();
+    const textarea=document.querySelector('#khonapolitPrompt')?.getBoundingClientRect();
+    const actions=document.querySelector('#khonapolitForm .composer-actions')?.getBoundingClientRect();
+    return {width:box.width,height:box.height,radius:style.borderRadius,backgroundClip:style.backgroundClip,
+      arrowContent:arrow.content,arrowBackground:arrow.backgroundImage,haloRadius:halo.borderRadius,
+      haloBackground:halo.backgroundImage,haloWidth:parseFloat(halo.width),plusLeft:plus?.left,
+      plusRight:plus?.right,sendLeft:box.left,textareaBottom:textarea?.bottom,actionsTop:actions?.top};
+   });
+   assert.ok(Math.abs(sendSilhouette.width-sendSilhouette.height)<=1,'amethyst Send/Stop has a circular box');
+   assert.equal(sendSilhouette.radius,'50%','the actual button retains a 50% silhouette');
+   assert.equal(sendSilhouette.arrowBackground,'none','the iOS arrow pseudo-element carries no rectangular gradient image');
+   assert.equal(sendSilhouette.haloBackground,'none','the halo is a circular shadow, not a lit square');
+   assert.equal(sendSilhouette.haloRadius,'50%','halo follows the button circle');
+   assert.ok(sendSilhouette.plusRight < sendSilhouette.sendLeft,'centered plus stays distinct and left of Send');
+   assert.ok(sendSilhouette.actionsTop >= sendSilhouette.textareaBottom-3,'compact controls do not overlap the editor');
    assert.equal(await page.locator('#khonapolitSend').getAttribute('aria-label'),'Stop transmission','in-flight button is an accessible stop, not a disabled decorative Send');
+   assert.equal(await page.locator('#khonapolitSend').getAttribute('type'),'button','Stop cannot resubmit the form');
    assert.equal(await page.locator('#khonapolitMessages > #marrowlineChatKinesis').count(),1,'loading kinesis lives inside the actual chat transcript');
    assert.equal(await page.locator('#marrowlineResponseKinesis').count(),0,'superseded floating composer mote is absent');
    assert.equal(await page.evaluate(() => document.querySelector('#marrowlineChatKinesis .kinesis-copy')?.textContent === document.querySelector('#khonapolitTerminalStatus')?.textContent), true, 'one rotating in-chat indicator mirrors the current truthful progress label');
    await page.waitForFunction(()=>document.querySelector('#khonapolitTerminalStatus')?.dataset.phase==='received');
    await page.locator('#marrowlineChatKinesis').waitFor({state:'hidden'});
    assert.equal(await page.locator('#khonapolitSend').getAttribute('aria-label'),'Send message','completed request restores Send');
+   assert.equal(await page.locator('#khonapolitSend').getAttribute('type'),'submit','Send regains form submission after completion');
    if(posture.startsWith('mobile')){
     await page.evaluate(()=>{
      window.visualViewport.height=844;
