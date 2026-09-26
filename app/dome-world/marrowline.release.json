@@ -471,26 +471,30 @@
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
     "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
-    "mobileStatusMaxWidth": "min(39vw,170px); compact inline status beside Send; full detail in status title and receipt",
+    "mobileStatusMaxWidth": "status is a visually-hidden telemetry node; all operator-facing progress uses the single in-chat vesica piscis indicator",
     "statusPedagogueSequence": [
-      "Working…",
-      "Still working…",
-      "Waiting for reply…"
+      "The signal crosses the veil…",
+      "The grove keeps listening…",
+      "The shoreline keeps watch…"
     ],
     "statusPedagogueClaim": "short rotating browser-pending labels show continued activity without claiming provider stages; detailed route, provenance and operator closure remain in status title and receipt",
-    "inChatKinesis": "Listening at the shoreline…; after 60s pending, Crossing into the grove…; reset and clear timer on completion or disposal",
-    "replyCopy": "⧉ at bottom-right of each model turn copies exact single provider-authored text only; composer ⧉ retains full-conversation export",
+    "inChatKinesis": "one persistent rotating vesica piscis reflects source-bound dispatch, received response and receipt processing; time-based pending heartbeats at 20s and 60s claim no provider progress; brief return/hold closure",
+    "replyCopy": "bare ⧉ absolutely positioned at actual bottom-right of each model turn, with invisible 42px touch target; exact provider-authored text only; composer ⧉ retains full-conversation export",
     "copyFeedbackCompactStatus": "Copied chat in the compact composer status; Reply copied as a transient notice",
     "humanChatLabel": "Red Deer; technical operator role and receipt provenance unchanged",
+    "providerBoundUserEnvelope": "𝌋‌ + one space + authored user text + two LF characters + Sealed ⟐; visible chat remains unmodified; same convention for historical user turns and demo prompts",
+    "receiptMembrane": "in-tab browser-local SHI format gate only; not identity authentication, issuance or server access control; explicit receipt closure remains distinct from outgoing conversational seal",
+    "providerBranding": "app-authored Gemini brand visible only inside Receipts; technical provider records remain unredacted",
     "threadLibrary": {
       "schema": "td613.marrowline.local-threads/v1",
       "primaryStorage": "browser IndexedDB; localStorage fallback only when IndexedDB unavailable",
       "migration": "one-time per-tab import of prior sessionStorage conversation; exact records preserved",
-      "branch": "first complete Marrowline answer only; copy first exchange and original receipt; parent remains unchanged",
-      "controls": "Conversations picker; new, rename and individually delete; old conversation selected after reload",
+      "branch": "Start new thread from here ⤴ on first complete answer only; copy first exchange and original receipt; parent remains unchanged; title never receives a forced Branch suffix",
+      "controls": "opaque foreground Conversations picker with dismissal; new, rename and individually delete; old conversation selected after reload",
       "requestBinding": "switch/create/delete/branch blocked while provider request is in flight or attachments are staged",
       "history": "full archive preserved locally; provider request context retains existing bounded recent-history behavior",
-      "scope": "same-browser, same-device; no account or cross-device synchronization"
+      "scope": "same-browser, same-device; no account or cross-device synchronization",
+      "titlePolicy": "local prompt-first subject title with no API call; existing titles and user renames preserved"
     }
   },
   "desktop": {

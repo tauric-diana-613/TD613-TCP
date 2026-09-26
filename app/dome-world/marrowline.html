@@ -76,7 +76,7 @@
             <input id="khonapolitShi" type="text" spellcheck="false" autocomplete="off" placeholder="TD613-SH-9B07D8B-XXXXXXXX" />
           </label>
           <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" checked /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
-          <div class="binding-line">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:entrant-issued · payload conversational · ⟐ held for operator closure</div>
+          <div class="binding-line" id="marrowlineBindingLine">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋‌ ingress · SHI: unissued research · outgoing prompt: Sealed ⟐ · incoming receipt: OPEN until explicit closure</div>
           <p class="issuance-help">Need SHI#? Visit <a href="/safe-harbor/index.html">TD613 Safe Harbor</a>.</p>
         </div>
         <div class="route-card">
@@ -93,6 +93,16 @@
         <i aria-hidden="true">⌄</i>
       </summary>
       <div class="panel-body">
+        <div class="marrowline-receipt-membrane" id="marrowlineReceiptGate" role="group" aria-label="Receipt access membrane">
+          <span class="marrowline-receipt-membrane-glyph" aria-hidden="true">𝌋‌</span>
+          <div><strong>Receipts rest behind the Safe Harbor membrane.</strong><p>Use a saved SHI or enter one here. This local format check does not issue a badge or authenticate identity.</p></div>
+          <label for="marrowlineReceiptShi">Safe Harbor issuance</label>
+          <input id="marrowlineReceiptShi" type="password" spellcheck="false" autocomplete="off" placeholder="TD613-SH-9B07D8B-XXXXXXXX" />
+          <button type="button" id="marrowlineReceiptUnlock">Open Receipts ⟐</button>
+          <small id="marrowlineReceiptGateStatus" role="status" aria-live="polite">A valid-format SHI is required for this browser-local view.</small>
+        </div>
+        <div id="marrowlineReceiptProtected" hidden>
+          <button type="button" id="marrowlineReceiptLock" class="marrowline-receipt-relock">Close membrane ⟐</button>
         <section class="frontier-receipt-summary" aria-label="Gemini route receipt">
           <div class="frontier-receipt-line" id="receiptFrontierTrace">FRONTIER · —</div>
           <div class="gemini-consumption-summary">
@@ -136,7 +146,8 @@
           <button id="copyKhonapolitReceipt" type="button">Copy receipt</button>
           <button class="seal-action" id="sealLastResponse" type="button">Seal latest return ⟐</button>
         </div>
-        <p class="mode-boundary-note">Seal is explicit operator closure. It changes the local receipt from OPEN to SEALED; it does not alter provider authorship or retrofit the original return.</p>
+        <p class="mode-boundary-note">Outgoing user text is framed with 𝌋‌ and a final “Sealed ⟐” at the provider boundary. The incoming receipt remains OPEN until an explicit Red Deer closure; neither glyph grants issuance, authentication, or provenance proof.</p>
+        </div>
       </div>
     </details>
   <section class="reliquary-grid reliquary" id="corpusPanel" aria-label="Stories and source texts">

@@ -721,3 +721,209 @@
 .marrowline-branch-reply{display:block!important;margin:5px 14px 13px!important;padding:8px 11px!important;border:1px solid rgba(140,224,196,.3)!important;border-radius:12px!important;background:rgba(27,28,61,.76)!important;color:#cdebe3!important;font:550 11px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)!important;letter-spacing:0!important;text-transform:none!important}
 #khonapolitMessages .relay-message .marrowline-branch-reply{margin-left:14px!important;margin-right:14px!important}
 @media(max-width:860px){.marrowline-thread-nav button{min-height:30px;font-size:10px}.marrowline-thread-drawer{margin:0 8px}}
+
+/* 2026-09-26 unified mobile composer, elevated threads and receipt membrane. */
+#speakingPanel{position:relative!important;isolation:isolate;overflow:visible!important}
+#speakingPanel .marrowline-thread-drawer[open]{
+  position:absolute!important;inset-inline:10px!important;top:var(--marrowline-thread-top,104px);
+  width:auto!important;z-index:90!important;display:block!important;isolation:isolate;
+  margin:0!important;background:#17132f!important;border:1px solid rgba(131,215,214,.4)!important;
+  box-shadow:0 22px 65px rgba(0,0,0,.75),inset 0 1px rgba(247,236,255,.06)!important;
+  opacity:1!important;backdrop-filter:none!important;
+}
+#speakingPanel .marrowline-thread-drawer[open] > summary{background:#1d1739!important;border-radius:12px 12px 0 0}
+#speakingPanel .marrowline-thread-list{background:#17132f!important;max-height:min(44dvh,360px)!important}
+#speakingPanel .marrowline-thread-row{background:#17132f!important}
+#speakingPanel .marrowline-thread-drawer p{background:#17132f!important}
+#speakingPanel .marrowline-thread-open[aria-current="true"]{background:#3a2b67!important}
+#speakingPanel .marrowline-thread-drawer button:focus-visible{outline:2px solid #7edddc!important;outline-offset:2px}
+
+.marrowline-receipt-membrane{
+  display:grid;gap:11px;max-width:530px;margin:10px auto 20px;padding:23px 20px;
+  border:1px solid rgba(114,218,223,.37);border-radius:19px;
+  background:radial-gradient(circle at 10% 0,rgba(103,77,196,.23),transparent 70%),linear-gradient(160deg,#211b41,#10172a);
+  box-shadow:0 18px 45px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.045);
+  color:#e5e9e6;font:500 13px/1.5 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.marrowline-receipt-membrane[hidden],#marrowlineReceiptProtected[hidden]{display:none!important}
+.marrowline-receipt-membrane-glyph{font-size:24px;color:#9aebdf}
+.marrowline-receipt-membrane strong{font-size:16px;font-weight:600}
+.marrowline-receipt-membrane p{margin:5px 0 0;font-size:12px;color:#b8c9c7}
+.marrowline-receipt-membrane label{font-size:11px;color:#b9d2cb}
+.marrowline-receipt-membrane input{min-width:0;width:100%;padding:12px!important;border:1px solid rgba(132,223,212,.36)!important;border-radius:12px!important;background:#15152f!important;color:#f3efff!important;font-size:14px!important}
+.marrowline-receipt-membrane button{min-height:44px;border:1px solid rgba(130,235,223,.44)!important;border-radius:13px!important;background:linear-gradient(125deg,#4e4489,#2a5d73)!important;color:#f0f1ff!important;text-transform:none!important;letter-spacing:0!important}
+.marrowline-receipt-membrane small{font-size:11px;color:#b7cbc7}
+.marrowline-receipt-relock{display:block;margin:2px 0 12px auto!important;padding:7px 11px!important;border:1px solid rgba(140,224,196,.29)!important;border-radius:12px!important;background:transparent!important;color:#c5ddd5!important;font-size:11px!important}
+
+#khonapolitMessages .relay-message{position:relative!important;padding-bottom:12px!important}
+#khonapolitMessages .relay-message .marrowline-copy-reply,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply{
+  position:absolute!important;right:10px!important;bottom:8px!important;left:auto!important;
+  margin:0!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  display:grid!important;place-items:center!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;padding:0!important;
+  color:#d5e8e4!important;font:500 21px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+}
+#khonapolitMessages .relay-message .marrowline-copy-reply:hover,
+#khonapolitMessages .relay-message .marrowline-copy-reply:focus-visible,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:hover,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:focus-visible{
+  background:transparent!important;color:#8cf0e5!important;outline:2px solid rgba(139,223,220,.48)!important;
+  outline-offset:-5px!important;border-radius:10px!important;
+}
+#khonapolitMessages .relay-message .return-details{padding-right:51px!important}
+#khonapolitMessages .relay-message .marrowline-branch-reply{margin-right:55px!important}
+#khonapolitMessages .message[data-role="model"]{position:relative!important;padding-bottom:36px!important}
+
+#khonapolitForm .marrowline-composer-input-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+#khonapolitForm .marrowline-composer-input-row .prompt-label{grid-column:1!important;width:100%!important}
+#khonapolitForm .composer-actions{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-height:48px!important}
+#khonapolitForm .composer-actions .marrowline-composer-plus{order:0!important;flex:0 0 43px!important;margin:0!important;width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important}
+#khonapolitForm .composer-actions #khonapolitSend{order:1!important;margin:0!important;flex:0 0 45px!important;position:relative!important;isolation:isolate;width:45px!important;height:45px!important;min-width:45px!important;max-width:45px!important;min-height:45px!important;padding:0!important;
+  background:linear-gradient(155deg,#7665ba 0%,#6253a9 50%,#44377c 100%)!important;
+  border:1px solid rgba(131,242,230,.81)!important;border-radius:50%!important;color:#f4f0ff!important;
+  box-shadow:0 0 0 1px rgba(116,220,219,.14),0 0 17px rgba(78,227,224,.40),0 0 36px rgba(58,199,211,.22),inset 0 1px rgba(255,255,255,.21)!important;
+}
+#khonapolitForm .composer-actions #khonapolitSend::before{
+  position:relative!important;z-index:2!important;content:"⇧"!important;
+  display:grid!important;place-items:center!important;width:30px!important;height:30px!important;
+  font:750 29px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;letter-spacing:0!important;
+  color:#f2edff!important;-webkit-text-fill-color:#f2edff!important;-webkit-text-stroke:.25px #f2edff!important;
+  text-shadow:0 0 8px rgba(238,235,255,.72),0 0 19px rgba(162,218,247,.35)!important;
+  transform:translate(-.35px,.5px)!important;animation:marrowline-arrow-shimmer 4.5s ease-in-out infinite;
+}
+#khonapolitForm .composer-actions #khonapolitSend::after{
+  content:"";position:absolute;inset:-5px;border-radius:50%;pointer-events:none;
+  box-shadow:0 0 0 1px rgba(86,229,227,.10),0 0 13px rgba(76,224,232,.20);
+  animation:marrowline-send-halo 3.8s ease-in-out infinite;
+}
+#khonapolitForm .composer-actions #khonapolitSend:disabled{opacity:.51!important;box-shadow:0 0 0 1px rgba(115,173,171,.15)!important}
+#khonapolitForm .composer-actions #khonapolitSend:disabled::after{animation:none;opacity:.2}
+#khonapolitForm .composer-actions .marrowline-conversation-utilities{order:3!important;display:flex!important;gap:12px!important;margin-left:auto!important}
+#khonapolitForm .composer-actions #khonapolitTerminalStatus{
+  position:absolute!important;width:1px!important;height:1px!important;min-width:0!important;max-width:1px!important;
+  overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;padding:0!important;
+  margin:0!important;border:0!important;pointer-events:none!important;
+}
+@keyframes marrowline-arrow-shimmer{0%,100%{filter:brightness(.96)}42%{filter:brightness(1.27)}55%{filter:brightness(1.08)}}
+@keyframes marrowline-send-halo{0%,100%{opacity:.49;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+.marrowline-chat-kinesis[data-phase="received"] .kinesis-orbit *,
+.marrowline-chat-kinesis[data-phase="held"] .kinesis-orbit *{animation-play-state:paused!important}
+@media(max-width:860px){
+ html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-form{padding:8px 11px 8px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions{margin-top:7px!important;gap:8px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-composer-plus{width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions #khonapolitSend{min-width:45px!important;width:45px!important;height:45px!important}
+ html:root.marrowline-mobile-shell #khonapolitForm .composer-actions .marrowline-conversation-utilities{gap:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #khonapolitSend::before,#khonapolitSend::after,.marrowline-chat-kinesis .kinesis-orbit *{animation:none!important}
+}
+
+
+/* September 26 coordinated surface: one in-chat kinesis, no second composer
+   status lane. The status element remains live for receipts and observers. */
+#speakingPanel .composer-actions > #khonapolitTerminalStatus{
+  position:absolute!important;width:1px!important;height:1px!important;min-width:0!important;
+  min-height:0!important;max-width:1px!important;max-height:1px!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  clip-path:inset(50%)!important;white-space:nowrap!important;pointer-events:none!important;
+}
+#speakingPanel .marrowline-composer-input-row{display:block!important;min-width:0}
+#speakingPanel .composer-actions{display:flex!important;flex-wrap:nowrap!important;gap:10px!important;
+  align-items:center!important;justify-content:flex-start!important;min-height:48px!important;margin-top:7px!important}
+#speakingPanel .composer-actions > #marrowlineComposerPlus{
+  order:1!important;position:relative;flex:0 0 42px!important;margin:0!important;
+  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend{order:2!important;margin:0!important;
+  flex:0 0 46px!important;width:46px!important;min-width:46px!important;height:46px!important;min-height:46px!important;
+  position:relative!important;isolation:isolate!important;overflow:visible!important;border-radius:50%!important;
+  background:radial-gradient(circle at 31% 19%,#8975c8 0%,#59469e 53%,#32295d 100%)!important;
+  border:1px solid rgba(123,238,239,.7)!important;color:#f0eaff!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.38),inset 0 -4px 9px rgba(19,15,54,.38),
+    0 0 0 4px rgba(80,230,235,.075),0 0 19px rgba(72,230,236,.38),0 0 34px rgba(129,95,234,.18)!important;
+  animation:marrowline-send-aura 4.2s ease-in-out infinite!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend::before{
+  content:"⇧"!important;display:grid!important;place-items:center!important;
+  width:34px!important;height:34px!important;font:750 29px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  -webkit-text-stroke:0!important;letter-spacing:0!important;text-shadow:0 1px 7px rgba(255,255,255,.24)!important;
+  background:linear-gradient(112deg,#e9e7ff 7%,#a9b4d0 32%,#fff 51%,#c7b6f2 74%,#e5e0ff 93%);
+  background-size:230% 100%;background-clip:text;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;color:#e6e0ff!important;
+  transform:translate(-.3px,.8px)!important;animation:marrowline-arrow-shimmer 5.2s ease-in-out infinite!important;
+}
+#speakingPanel .composer-actions > #khonapolitSend:disabled{opacity:.55!important;animation:none!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 0 0 2px rgba(80,230,235,.045)!important}
+#speakingPanel .composer-actions > #khonapolitSend:focus-visible{outline:2px solid #a5faff!important;outline-offset:4px!important}
+#speakingPanel .composer-actions > .marrowline-conversation-utilities{order:3!important;margin-left:auto!important;gap:12px!important}
+@keyframes marrowline-send-aura{0%,100%{box-shadow:inset 0 1px 1px rgba(255,255,255,.38),inset 0 -4px 9px rgba(19,15,54,.38),0 0 0 3px rgba(80,230,235,.07),0 0 14px rgba(72,230,236,.28),0 0 26px rgba(129,95,234,.16)}50%{box-shadow:inset 0 1px 1px rgba(255,255,255,.44),inset 0 -4px 9px rgba(19,15,54,.38),0 0 0 5px rgba(80,230,235,.11),0 0 24px rgba(72,230,236,.47),0 0 38px rgba(129,95,234,.26)}}
+@keyframes marrowline-arrow-shimmer{0%,24%,100%{background-position:0% 50%}65%{background-position:100% 50%}}
+
+/* Reply-local glyph occupies the bottom corner of the SAME output, never a
+   dedicated row. Keep a generous invisible touch surface and native text. */
+#khonapolitMessages .relay-message,#khonapolitMessages .message[data-role="model"]{position:relative!important}
+#khonapolitMessages .relay-message .marrowline-copy-reply,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply{
+  position:absolute!important;right:9px!important;bottom:8px!important;left:auto!important;
+  display:grid!important;place-items:center!important;float:none!important;grid-column:auto!important;
+  margin:0!important;padding:0!important;width:44px!important;height:44px!important;
+  min-width:44px!important;min-height:44px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;color:#bfcfd8!important;
+  font:500 20px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+}
+#khonapolitMessages .relay-message .marrowline-copy-reply:hover,
+#khonapolitMessages .relay-message .marrowline-copy-reply:focus-visible,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:hover,
+#khonapolitMessages .message[data-role="model"] .marrowline-copy-reply:focus-visible{
+  background:transparent!important;color:#a5faff!important;outline:2px solid rgba(137,243,239,.62)!important;
+  outline-offset:-4px!important;text-shadow:0 0 11px rgba(129,235,241,.54)!important;
+}
+#khonapolitMessages .relay-message .return-details{padding-right:51px!important}
+#khonapolitMessages .relay-message .marrowline-branch-reply{margin-bottom:12px!important}
+#khonapolitMessages .message[data-role="model"] .message-body{padding-bottom:40px!important}
+
+/* The thread drawer overlays the transcript, never occupies a grid row,
+   and remains readable above the provider-authored text behind it. */
+#speakingPanel{position:relative!important;isolation:isolate;overflow:visible!important}
+#speakingPanel .vessel-head{position:relative;z-index:4}
+#speakingPanel .messages{position:relative;z-index:1}
+#speakingPanel .vessel-form{position:relative;z-index:3}
+#speakingPanel .marrowline-thread-drawer[open]{
+  position:absolute!important;z-index:15!important;top:var(--marrowline-thread-top,110px);
+  left:12px!important;right:12px!important;width:auto!important;margin:0!important;
+  max-height:min(52dvh,390px)!important;overflow:auto!important;
+  background:#19152f!important;border:1px solid rgba(145,233,220,.36)!important;
+  box-shadow:0 18px 55px rgba(0,0,0,.66),inset 0 1px rgba(255,255,255,.035)!important;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+#speakingPanel .marrowline-thread-drawer[open] > summary{position:sticky;top:0;z-index:2;background:#19152f}
+#speakingPanel .marrowline-thread-list{max-height:min(36dvh,300px)}
+#speakingPanel .marrowline-thread-open{word-break:break-word}
+
+/* SHI-format visibility membrane lives only inside the receipt instrument.
+   It is a presentation check, never authentication or issuance. */
+#receiptPanel .marrowline-receipt-membrane:not([hidden]){
+  display:grid;gap:11px;padding:22px 16px;margin:8px 0 18px;border:1px solid rgba(96,220,222,.28);
+  border-radius:18px;background:radial-gradient(circle at 85% 0%,rgba(111,75,191,.26),transparent 65%),linear-gradient(155deg,#181433,#10192c);
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 14px 35px rgba(0,0,0,.20);color:#e7eee9;
+}
+#receiptPanel .marrowline-receipt-membrane[hidden],#receiptPanel #marrowlineReceiptProtected[hidden]{display:none!important}
+#receiptPanel .marrowline-receipt-membrane-glyph{font-size:26px;color:#9ee6e3;text-shadow:0 0 15px rgba(91,224,227,.34)}
+#receiptPanel .marrowline-receipt-membrane strong{font:600 16px/1.4 var(--marrowline-chat-sans,system-ui,sans-serif)}
+#receiptPanel .marrowline-receipt-membrane p,#receiptPanel .marrowline-receipt-membrane small{font:400 12px/1.55 var(--marrowline-chat-sans,system-ui,sans-serif);color:#adbfbd}
+#receiptPanel .marrowline-receipt-membrane label{font:550 11px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);color:#c5d4dc}
+#receiptPanel #marrowlineReceiptShi{width:100%;min-height:44px;padding:10px;border-radius:12px;border:1px solid rgba(121,205,215,.33);
+  background:#100e27;font:400 16px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);color:#f0eefa}
+#receiptPanel #marrowlineReceiptUnlock,#receiptPanel #marrowlineReceiptLock{min-height:42px;padding:9px 14px;border:1px solid rgba(111,228,222,.38);
+  border-radius:12px;background:rgba(44,40,92,.72);color:#def6ef;font:600 12px/1.4 var(--marrowline-chat-sans,system-ui,sans-serif);
+  text-transform:none;letter-spacing:0}
+#receiptPanel #marrowlineReceiptLock{margin-bottom:10px;min-height:32px;background:rgba(25,28,51,.66)}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #khonapolitSend{order:2!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions > #marrowlineComposerPlus{order:1!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .marrowline-conversation-utilities{order:3!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .prompt-label textarea{min-height:80px!important}
+}
+@media(prefers-reduced-motion:reduce){#speakingPanel .composer-actions > #khonapolitSend,
+  #speakingPanel .composer-actions > #khonapolitSend::before{animation:none!important}}

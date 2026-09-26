@@ -11,6 +11,7 @@ import {
   KHONAPOLIT_RECEIPT_SCHEMA,
   KHONAPOLIT_TERMINAL_SCHEMA,
   buildInvocationPacket,
+  frameMarrowlineUserTurn,
   classifyEmergence
 } from '../app/dome-world/khonapolit-covenant.js';
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
@@ -490,17 +491,14 @@ function geminiContents(packet = {}) {
   // surface and can recursively reinforce the failure on later turns.
   const history = packet.history.map((entry) => ({
     role: entry.role,
-    parts: [{ text: entry.text }]
+    parts: [{ text: entry.role === 'user' ? frameMarrowlineUserTurn(entry.text) : entry.text }]
   }));
-  // Keep the operator's bytes in their own first part. The adjacent second part
-  // is a small execution cue for Gemini-the-instrument, not a replacement user
-  // message and not a morphology recipe.
+  // The conversational ingress and seal frame the provider-bound user turn.
+  // Original user bytes remain in the visible local transcript and receipt.
+  // The execution cue belongs in systemInstruction, never after the final ⟐.
   return [...history, {
     role: 'user',
-    parts: [
-      { text: packet.message },
-      { text: currentTurnRelayCue() }
-    ]
+    parts: [{ text: frameMarrowlineUserTurn(packet.message) }]
   }];
 }
 
@@ -516,7 +514,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   return {
     systemInstruction: {
-      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
+      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${buildRelaySystemAddendum(apertureReceipt)}\n${currentTurnRelayCue()}` }]
     },
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({

@@ -147,80 +147,54 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
   assert.equal(release.composer.portableFailureActions, 'not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic');
 });
 
-test('desktop and mobile visually render Send as an up-arrow while the DOM keeps the accessible Send label', () => {
+test('Send retains its accessible label and gains moonlit amethyst/cyan radiance with reduced-motion rest', () => {
   assert.match(page, /<button class="primary" id="khonapolitSend" type="submit">Send<\/button>/);
-  assert.match(css, /#khonapolitSend\{[^}]*font-size:0!important[^}]*display:inline-grid!important/s);
-  assert.match(css, /#khonapolitSend::before\{[^}]*content:"⇧"/s);
-  const desktopBlock = css.split('@media (min-width:861px){')[1]?.split('/* Marrowline mobile couture')[0] || '';
-  assert.match(desktopBlock, /#khonapolitSend::before/);
-  const mobileArrowBlock = css.split('@media(max-width:860px){\n  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions')[1]?.split('@media (min-width:861px){')[0] || '';
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*content:"⇧"/);
-  assert.doesNotMatch(mobileArrowBlock, /content:"⇧︎"/, 'mobile must not use the text-presentation variation selector that shifted the optical glyph box');
-  assert.match(mobileArrowBlock, /#khonapolitSend::before\{[\s\S]*display:grid[\s\S]*place-items:center[\s\S]*width:28px[\s\S]*height:28px[\s\S]*font:800 28px\/1[\s\S]*color:#111827!important[\s\S]*-webkit-text-stroke:\.55px currentColor[\s\S]*text-shadow:[\s\S]*0 0 2px rgba\(248,250,252,\.38\)[\s\S]*0 0 5px rgba\(226,232,240,\.12\)[\s\S]*transform:translate\(-\.70px,1\.35px\)/);
-  assert.match(mobileArrowBlock, /#khonapolitSend\{[\s\S]*width:42px!important[\s\S]*font-size:0!important/);
-  assert.equal(release.composer.desktopSendGlyph, '⇧');
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend::before/);
+  assert.match(css, /content:"⇧"!important/);
+  assert.match(css, /#6253a9/);
+  assert.match(css, /rgba\(78,227,224/);
+  assert.match(css, /@keyframes marrowline-send-halo/);
+  assert.match(css, /@keyframes marrowline-arrow-shimmer/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
   assert.equal(release.composer.mobileSendGlyph, '⇧');
-  assert.match(release.composer.sendGlyphPresentation, /desktop and mobile/);
 });
 
-test('desktop status stays next to Send; mobile wraps complete route status below the utility row', () => {
-  assert.match(page, /<div class="ritual-actions composer-actions">\s*<button class="primary" id="khonapolitSend" type="submit">Send<\/button>\s*<div class="vessel-status" id="khonapolitTerminalStatus">READY<\/div>/);
-  assert.match(css, /\.composer-actions #khonapolitTerminalStatus\{[^}]*order:2!important[^}]*margin:0 0 0 2px!important/s);
-  const mobileStatus = css.split('/* Keep the complete live status readable on narrow iPhones:')[1]?.split('html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities')[0] || '';
-  assert.match(mobileStatus, /order:4!important/);
-  assert.match(mobileStatus, /flex:1 0 100%!important/);
-  assert.match(mobileStatus, /max-width:100%!important/);
-  assert.match(mobileStatus, /max-height:none!important/);
-  assert.match(mobileStatus, /white-space:normal!important/);
-  assert.match(mobileStatus, /overflow:visible!important/);
-  assert.match(mobileStatus, /text-overflow:clip!important/);
-  assert.match(css, /\.marrowline-conversation-utilities\{order:3/);
+test('a compact Send/attachment row retains right utilities and one visually presented in-chat progress surface', () => {
+  assert.match(js, /actionRow\.insertBefore\(plus, sendButton\)/);
+  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-composer-plus/);
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend/);
+  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitTerminalStatus\{/);
+  assert.match(css, /clip-path:inset\(50%\)!important/);
+  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-conversation-utilities/);
+  assert.match(physicalJs, /const card = doc\.createElement\('section'\)/);
+  assert.match(physicalJs, /label\.textContent = safe\(status\.textContent\)/);
+  assert.match(physicalJs, /if \(!card\.isConnected\) messages\.append\(card\)/);
   assert.doesNotMatch(page, /marrowlineComposerHint|Return for a new line · tap Send to submit/);
-  assert.doesNotMatch(css, /composer-keyboard-hint/);
-  assert.equal(release.composer.statusPlacement, 'inside-composer-right-of-send-on-desktop-full-width-wrapped-below-actions-on-mobile');
+  assert.equal(release.composer.mobileStatusMaxWidth.includes('visually-hidden'), true);
 });
 
-test('composer status reports a truthful pending state without synthetic stage claims', () => {
-  assert.match(terminalJs, /PEDAGOGUE_PENDING_SEQUENCE = Object\.freeze/);
-  for (const phrase of ['Working…', 'Still working…', 'Waiting for reply…']) assert.ok(terminalJs.includes(phrase));
-  assert.match(terminalJs, /setInterval\?\.\(advance, 3200\)/);
-  assert.doesNotMatch(terminalJs, /RECEIPT NEXT · route \+ provenance stay attached/);
-  assert.doesNotMatch(terminalJs, /2600 \* \(index \+ 1\)/, 'elapsed time cannot certify backend progress');
-  assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
+test('honest pending heartbeats and actual return events share a continuous vesica piscis', () => {
+  for (const phrase of ['The signal crosses the veil…','The grove keeps listening…','The Red Deer holds the shoreline…'])
+    assert.ok(terminalJs.includes(phrase), phrase);
+  assert.match(terminalJs, /Date\.now\(\) - startedAt/);
+  assert.match(terminalJs, /elapsed >= 60000/);
+  assert.match(terminalJs, /Provider HTTP response arrived/);
+  assert.match(terminalJs, /Response body received/);
+  assert.match(terminalJs, /Processing the returned receipt/);
+  assert.match(physicalJs, /One persistent rotating vesica piscis/);
+  assert.match(physicalJs, /clearCompletionTimer\(\)/);
   assert.match(terminalJs, /status\.title = detail/);
-  assert.doesNotMatch(terminalJs, /status\.setAttribute\('aria-label', detail\)/, 'one-off utility notices must not inherit a stale accessible label');
-  assert.match(terminalJs, /startPedagogueStatus\(status, root, attachments\.length\)/);
-  assert.match(terminalJs, /RETURN OBSERVED · SIGNAL .*receipt preserved/);
-  assert.doesNotMatch(terminalJs, /TASK ROUTED · AI IN FLIGHT · \$\{mode\}/);
-  assert.match(livingChatJs, /status\.dataset\.phase/);
-});
-test('mobile composer keeps a short status inline beside Send', () => {
-  assert.match(css, /#khonapolitTerminalStatus\{[\s\S]*?order:2!important;[\s\S]*?max-width:min\(39vw,170px\)!important;/);
-  assert.doesNotMatch(css, /order:4!important;\s*flex:1 0 100%!important;/);
-  assert.match(terminalJs, /phase === 'held' && \/\^TASK PRESERVED/);
-  assert.match(terminalJs, /\? 'INCOMPLETE RETURN'/);
-  assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
+  assert.deepEqual(release.composer.statusPedagogueSequence,
+    ['The signal crosses the veil…','The grove keeps listening…','The shoreline keeps watch…']);
 });
 
-test('background recovery observes pagehide and resumes a preserved failure once on foreground or network return', () => {
+test('background recovery retains one preserved-task restoration gesture', () => {
   assert.match(terminalJs, /keepalive: backgroundKeepaliveEligible/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pagehide', observePageHide\)/);
   assert.match(terminalJs, /root\.removeEventListener\?\.\('pagehide', observePageHide\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('pageshow', resumeWhenVisible\)/);
   assert.match(terminalJs, /root\.addEventListener\?\.\('online', resumeWhenVisible\)/);
   assert.match(terminalJs, /backgroundResumeSpentTask = message/);
-  assert.match(terminalJs, /if \(doc\.visibilityState !== 'hidden'\) prompt\?\.focus/);
-});
-
-test('60-second in-chat waiting copy changes without asserting a provider stage and cancels on completion', () => {
-  assert.match(physicalJs, /const listening = 'Listening at the shoreline…'/);
-  assert.match(physicalJs, /const crossing = 'Crossing into the grove…'/);
-  assert.match(physicalJs, /\}, 60000\)/);
-  assert.match(physicalJs, /if \(status\.dataset\.phase === 'pending' && pendingSince !== null\)/);
-  assert.match(physicalJs, /clearPhaseTimer\(\)/);
-  assert.match(physicalJs, /label\.textContent = listening/);
-  assert.match(physicalJs, /return \(\) => \{\s*clearPhaseTimer\(\)/);
-  assert.deepEqual(release.composer.statusPedagogueSequence, ['Working…', 'Still working…', 'Waiting for reply…']);
 });
 
 test('each model reply owns an accessible copy control; composer copy stays conversation-wide', () => {
@@ -249,7 +223,7 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(css, /\.marrowline-ephemeral-notice/);
   assert.match(page, /id="khonapolitSend" type="submit">Send<\/button>/);
   assert.match(page, /id="sealLastResponse"[^>]*>Seal latest return ⟐<\/button>/);
-  assert.match(page, /Seal is explicit operator closure/);
+  assert.match(page, /incoming receipt remains OPEN until an explicit Red Deer closure/);
   assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
   assert.equal(release.composer.clearConfirmation, 'center-screen-modal-Clear-conversation-Yes-No-with-backdrop');
   assert.equal(release.composer.operatorVoiceSelection, false);

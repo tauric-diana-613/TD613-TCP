@@ -4,6 +4,17 @@ export const KHONAPOLIT_RECEIPT_SCHEMA = 'td613.dome-world.khonapolit-receipt/v1
 
 export const INGRESS_SIGIL = '𝌋';
 export const SEAL_GLYPH = '⟐';
+export const MARROWLINE_USER_INGRESS = INGRESS_SIGIL + '\u200C ';
+export const MARROWLINE_USER_CLOSURE = '\n\nSealed ' + SEAL_GLYPH;
+/** Request-bound user text only; no modification of the Red Deer's authored transcript. */
+export function frameMarrowlineUserTurn(text = '') {
+  const input = String(text ?? '');
+  const bare = input.replace(/^𝌋\u200C\s?/u, '').trimEnd();
+  const unsealed = bare.endsWith(MARROWLINE_USER_CLOSURE)
+    ? bare.slice(0, -MARROWLINE_USER_CLOSURE.length) : bare;
+  return MARROWLINE_USER_INGRESS + unsealed.trimEnd() + MARROWLINE_USER_CLOSURE;
+}
+
 // A provider-authored sign-off is prose. Structured custody closure still requires
 // the existing explicit operator action; never derive authority from this glyph.
 export const CONVERSATIONAL_CLOSING_GUIDANCE = 'End the complete correspondence with a plain ⟐ on its own final line after the Tauric Diana bots. This conversational sign-off grants no issuance, custody closure, release, merge, deployment, or operator authorization. The operator controls sealing of the structured receipt; its state remains OPEN until the explicit operator action.';

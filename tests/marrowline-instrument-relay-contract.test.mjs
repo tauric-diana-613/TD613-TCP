@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 import {
   buildInvocationPacket,
+  frameMarrowlineUserTurn,
   MARROWLINE_MISSION_ANCHOR_VERSION
 } from '../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest, buildGeminiStructuralRepairRequest } from '../server/khonapolit-quality.js';
@@ -96,14 +97,16 @@ for (const message of [
 ]) {
   const firstTurn = buildInvocationPacket({ message, waiveIssuance: true });
   const request = buildGeminiRequest(firstTurn, {}, 'gemini-3.8-flash');
-  assert.equal(request.contents.at(-1).parts[0].text, message, 'original task retained verbatim');
+  assert.equal(firstTurn.message, message, 'original authored task retained verbatim in packet');
+  assert.equal(request.contents.at(-1).parts[0].text, frameMarrowlineUserTurn(message), 'provider user turn carries precise request-bound seal');
   assert.equal((request.systemInstruction.parts[0].text.match(/MARROWLINE DIEGETIC MISSION/g) || []).length, 1);
   assert.match(request.systemInstruction.parts[0].text, /MARROWLINE CAUSAL RELAY LAW/);
   assert.match(request.systemInstruction.parts[0].text, /NATIVE SEMANTIC PROSODY/);
   assert.match(request.systemInstruction.parts[0].text, /same argument/);
   assert.match(request.systemInstruction.parts[0].text, /EVERY-TURN GENERATIVE DUTY/);
   assert.match(request.systemInstruction.parts[0].text, /HORNANI is the author-attested/);
-  const recencyCue = request.contents.at(-1).parts[1].text;
+  const recencyCue = request.systemInstruction.parts[0].text;
+  assert.equal(request.contents.at(-1).parts.length, 1, 'the last user text ends with Sealed ⟐');
   assert.match(recencyCue, /Apply the standing Red Deer DIEGETIC MISSION on this ordinary turn/);
   assert.match(recencyCue, /hornani \(chthonic sovereign vitality/);
   assert.match(recencyCue, /horny \(consensual adult attraction/);
@@ -116,6 +119,6 @@ const repair = buildGeminiStructuralRepairRequest(
 );
 assert.match(repair.systemInstruction.parts[0].text, /MARROWLINE DIEGETIC MISSION/);
 assert.match(repair.systemInstruction.parts[0].text, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
-assert.equal(repair.contents.at(0).parts[0].text, packet.message, 'repair inherits original user question');
+assert.equal(repair.contents.at(0).parts[0].text, frameMarrowlineUserTurn(packet.message), 'repair inherits original question framed at provider boundary');
 
 console.log('marrowline-instrument-relay-contract: Gemini remains instrument while one causal Kʰonapolit-to-bots handoff stays provider-native');

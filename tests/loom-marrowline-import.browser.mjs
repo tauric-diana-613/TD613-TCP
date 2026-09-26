@@ -224,7 +224,7 @@ try {
 
       await page.locator('#khonapolitPrompt').fill(engine === 'webkit' ? 'Continue the governed context without attachments.' : 'Use both attached items as user-supplied context.');
       await activate(page.locator('#khonapolitSend'));
-      await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.textContent.includes('RETURN OBSERVED'));
+      await page.waitForFunction(() => { const status = document.querySelector('#khonapolitTerminalStatus'); return status?.dataset.phase === 'received' && status.title.includes('RETURN OBSERVED'); });
       assert.equal(marrowlineCalls.length, 1, 'one deliberate Marrowline send makes one ordinary request');
       if (engine === 'webkit') {
         assert.equal(marrowlineCalls[0].attachments?.length ?? 0, 0, 'WebKit handoff sends no synthetic file bytes in this heavy witness');
@@ -262,7 +262,13 @@ try {
         await activate(receiptDock);
       }
       await page.locator('#receiptPanel[open]').waitFor();
-      assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal is visible inside the Receipt custody instrument');
+      assert.equal(await page.locator('#sealLastResponse').isVisible(), false, 'receipt custody actions remain behind the SHI-format membrane');
+      const wasWaived = await page.locator('#khonapolitWaive').isChecked();
+      await page.locator('#marrowlineReceiptShi').fill('TD613-SH-9B07D8B-ABCDEF12');
+      await activate(page.locator('#marrowlineReceiptUnlock'));
+      assert.equal(await page.locator('#marrowlineReceiptProtected').isVisible(), true, 'the local format gate reveals Receipts inside the active tab');
+      assert.equal(await page.locator('#sealLastResponse').isVisible(), true, 'operator Seal appears only within unlocked Receipt custody');
+      assert.equal(await page.locator('#khonapolitWaive').isChecked(), wasWaived, 'reading local receipts cannot promote issuance');
       if (posture.startsWith('mobile')) {
         await activate(page.locator('[data-mobile-target="speakingPanel"]'));
       } else {

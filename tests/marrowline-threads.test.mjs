@@ -52,6 +52,7 @@ test('first complete reply branches without mutating parent or inheriting later 
   assert.equal(branch.schema, MARROWLINE_THREADS_SCHEMA);
   assert.equal(branch.parentId, parent.id);
   assert.equal(branch.branchOf, 1);
+  assert.equal(branch.conversationTitle, 'Original', 'branch status is represented by parentId, never forced into the title');
   assert.deepEqual(branch.messages, parent.messages.slice(0, 2));
   assert.equal(branch.messages[1].text, glyph);
   branch.messages.push({ role: 'user', text: 'Independent branch continuation' });
@@ -93,4 +94,15 @@ test('legacy session imports once into a stable ID without discarding exact text
   assert.equal(recovered.id, migrated.id);
   assert.equal((await second.all()).length, 1);
   first.close(); second.close();
+});
+
+test('migration strips only the old generated branch suffix, preserving manually chosen branch subjects', async () => {
+  const archive = await createMarrowlineThreadLibrary(browser());
+  const parent = await archive.create({ conversationTitle: 'What the Ash Kept', messages: [{role:'user',text:'One'}, {role:'model',text:'Two'}] });
+  const generated = await archive.create({ conversationTitle: 'What the Ash Kept · Branch', messages: [], }, { parentId: parent.id, branchOf: 1 });
+  const authored = await archive.create({ conversationTitle: 'Studying a Branch', messages: [] }, { parentId: parent.id, branchOf: 1 });
+  await archive.migrateLegacyBranchTitles();
+  assert.equal((await archive.get(generated.id)).conversationTitle, 'What the Ash Kept');
+  assert.equal((await archive.get(authored.id)).conversationTitle, 'Studying a Branch');
+  archive.close();
 });
