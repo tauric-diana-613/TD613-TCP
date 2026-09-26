@@ -81,7 +81,7 @@ function setPedagogueStatus(status, phase, text, title = '') {
   status.textContent = phase === 'pending' ? PEDAGOGUE_PENDING_STATUS
     : phase === 'received' ? 'Reply received'
     : phase === 'prepared' ? 'Ready'
-    : phase === 'held' ? 'Retry available'
+    : phase === 'held' && /^(?:TASK PRESERVED|INCOMPLETE RETURN|TWO-VOICE STRUCTURE UNFINISHED)/.test(text) ? 'Retry available'
     : text;
   status.title = detail;
 }
