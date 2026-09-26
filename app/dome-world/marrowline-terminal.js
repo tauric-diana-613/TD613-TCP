@@ -145,18 +145,18 @@ function titleHash(value = '') {
 }
 
 export function deriveMarrowlineConversationTitle(text = '', seed = '') {
-  const value = String(text ?? '');
-  const botsIndex = value.search(/(?:^|\n)\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots?\b/iu);
-  const formal = botsIndex > 0 ? value.slice(0, botsIndex) : value;
-  const normalized = formal
-    .normalize('NFKD')
-    .replace(/\p{M}+/gu, '')
-    .toLocaleLowerCase('en-US');
-  for (const rule of SPOOKY_TITLE_RULES) {
-    if (rule.pattern.test(normalized)) return rule.title;
-  }
-  const fallbackIndex = titleHash(normalized + '|' + String(seed ?? '')) % SPOOKY_TITLE_FALLBACKS.length;
-  return SPOOKY_TITLE_FALLBACKS[fallbackIndex];
+  // Name by the Red Deer's actual subject, never a random motif in the model's
+  // second voice. This is deterministic, local, and consumes zero provider calls.
+  const authored = String(seed || text || '').replace(/^𝌋\u200c/u, '').replace(/⟐\s*$/u, '')
+    .replace(/^[\s"'“”‘’#*]+/u, '').replace(/\s+/gu, ' ').trim();
+  if (!authored) return DEFAULT_CONVERSATION_TITLE;
+  const subject = authored.replace(/^(?:please\s+)?(?:write\s+(?:me\s+)?|tell\s+me\s+|can\s+you\s+|could\s+you\s+|help\s+me\s+)/iu, '')
+    .replace(/^(?:a\s+|an\s+)?(?:poem\s+about\s+|story\s+about\s+|scene\s+about\s+)/iu, '');
+  const first = (subject || authored).split(/(?<=[.!?])\s+|[\n\r]/u)[0].replace(/[\s.,;:!?–—-]+$/u, '').trim();
+  const words = first.split(/\s+/u);
+  const bounded = words.slice(0, 8).join(' ').slice(0, 64).trimEnd();
+  const title = bounded.replace(/[\s.,;:!?–—-]+$/u, '');
+  return title ? title[0].toLocaleUpperCase('en-US') + title.slice(1) : DEFAULT_CONVERSATION_TITLE;
 }
 
 function syncConversationTitle(doc, state = {}) {
@@ -392,8 +392,8 @@ function renderMessages(doc, state) {
       && entry.receipt?.provider?.completion?.complete !== false) {
       const button = doc.createElement('button');
       button.type = 'button'; button.className = 'marrowline-branch-reply';
-      button.textContent = 'Branch from here ⤴';
-      button.setAttribute('aria-label', 'Branch from the first Marrowline reply');
+      button.textContent = 'Start new thread from here ⤴';
+      button.setAttribute('aria-label', 'Start a new thread from the first Marrowline reply');
       button.addEventListener('click', () => doc.dispatchEvent(new doc.defaultView.CustomEvent('td613:marrowline:branch-first')));
       element.append(button);
     }
@@ -981,7 +981,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (witnessThisTurn) witnessSavedText = entry.text;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
-        state.conversationTitle = deriveMarrowlineConversationTitle(entryText(entry), firstOperatorTurn?.text || message);
+        state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
