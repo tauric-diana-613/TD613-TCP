@@ -184,7 +184,8 @@ test('composer status reports a truthful pending state without synthetic stage c
   assert.doesNotMatch(terminalJs, /RECEIPT NEXT · route \+ provenance stay attached/);
   assert.doesNotMatch(terminalJs, /2600 \* \(index \+ 1\)/, 'elapsed time cannot certify backend progress');
   assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
-  assert.match(terminalJs, /status\.setAttribute\('aria-label', detail\)/);
+  assert.match(terminalJs, /status\.title = detail/);
+  assert.doesNotMatch(terminalJs, /status\.setAttribute\('aria-label', detail\)/, 'one-off utility notices must not inherit a stale accessible label');
   assert.match(terminalJs, /startPedagogueStatus\(status, root, attachments\.length\)/);
   assert.match(terminalJs, /RETURN OBSERVED · SIGNAL .*receipt preserved/);
   assert.doesNotMatch(terminalJs, /TASK ROUTED · AI IN FLIGHT · \$\{mode\}/);
