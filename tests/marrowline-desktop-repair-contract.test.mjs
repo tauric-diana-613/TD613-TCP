@@ -180,7 +180,9 @@ test('desktop status stays next to Send; mobile wraps complete route status belo
 });
 
 test('composer status reports a truthful pending state without synthetic stage claims', () => {
-  assert.match(terminalJs, /PEDAGOGUE_PENDING_STATUS = 'Working…'/);
+  assert.match(terminalJs, /PEDAGOGUE_PENDING_SEQUENCE = Object\.freeze/);
+  for (const phrase of ['Working…', 'Still working…', 'Waiting for reply…']) assert.ok(terminalJs.includes(phrase));
+  assert.match(terminalJs, /setInterval\?\.\(advance, 3200\)/);
   assert.doesNotMatch(terminalJs, /RECEIPT NEXT · route \+ provenance stay attached/);
   assert.doesNotMatch(terminalJs, /2600 \* \(index \+ 1\)/, 'elapsed time cannot certify backend progress');
   assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
