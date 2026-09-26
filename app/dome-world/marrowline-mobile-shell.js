@@ -94,7 +94,7 @@ function decorateTranscript(doc = document) {
       prepareProviderNativeStage(node);
       node.setAttribute('aria-label', `Model relay for turn ${Math.max(1, turn)}`);
     } else if (node.matches('.message[data-role="user"]')) {
-      node.setAttribute('aria-label', `Operator message for turn ${turn}`);
+      node.setAttribute('aria-label', `Red Deer message for turn ${turn}`);
     }
   });
 }
