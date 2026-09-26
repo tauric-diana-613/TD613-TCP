@@ -194,7 +194,8 @@ test('composer status reports a truthful pending state without synthetic stage c
 test('mobile composer keeps a short status inline beside Send', () => {
   assert.match(css, /#khonapolitTerminalStatus\{[\s\S]*?order:2!important;[\s\S]*?max-width:min\(39vw,170px\)!important;/);
   assert.doesNotMatch(css, /order:4!important;\s*flex:1 0 100%!important;/);
-  assert.match(terminalJs, /phase === 'held' && \/\^\(\?:TASK PRESERVED/);
+  assert.match(terminalJs, /phase === 'held' && \/\^TASK PRESERVED/);
+  assert.match(terminalJs, /\? 'INCOMPLETE RETURN'/);
   assert.match(terminalJs, /phase === 'received' \? 'Reply received'/);
 });
 
