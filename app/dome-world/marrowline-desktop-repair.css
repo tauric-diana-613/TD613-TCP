@@ -149,20 +149,20 @@
     transform:translate(-.70px,1.35px);
     transform-origin:center;
   }
-  /* Keep the complete live status readable on narrow iPhones: actions above,
-     full-width status below, without clipping route/provenance information. */
+  /* Status belongs beside Send, not on its own purple row. Full diagnostic
+     detail remains in the receipt/title; the visible status is deliberately short. */
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .composer-actions #khonapolitTerminalStatus{
-    order:4!important;
-    flex:1 0 100%!important;
-    box-sizing:border-box;
+    order:2!important;
+    flex:0 1 auto!important;
+    width:auto!important;
     min-width:0!important;
-    max-width:100%!important;
-    max-height:none!important;
+    max-width:min(39vw,170px)!important;
+    max-height:1.75rem!important;
     margin:0!important;
-    white-space:normal!important;
-    overflow:visible!important;
-    overflow-wrap:anywhere;
-    text-overflow:clip!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    overflow-wrap:normal!important;
+    text-overflow:ellipsis!important;
     line-height:1.35!important;
   }
   html:root.marrowline-mobile-shell body[data-mobile-view="speak"] .marrowline-conversation-utilities{
