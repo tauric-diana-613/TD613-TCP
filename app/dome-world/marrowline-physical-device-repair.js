@@ -50,11 +50,31 @@ function installInChatKinesis(doc = document, root = window) {
   let card = byId(doc, 'marrowlineChatKinesis');
   if (!card) card = createKinesis(doc);
   let raf = null;
+  let phaseTimer = null;
+  let pendingSince = null;
+  const label = card.querySelector('.kinesis-copy');
+  const listening = 'Listening at the shoreline…';
+  const crossing = 'Crossing into the grove…';
+  const clearPhaseTimer = () => {
+    if (phaseTimer !== null) root.clearTimeout?.(phaseTimer);
+    phaseTimer = null;
+  };
 
   const sync = () => {
     const busy = status.dataset.phase === 'pending' || /AI IN FLIGHT|CALLING .*AI|MODEL .*IN FLIGHT|ROUTING .*MODEL/i.test(safe(status.textContent));
     form.setAttribute('aria-busy', busy ? 'true' : 'false');
     if (busy) {
+      if (pendingSince === null) {
+        pendingSince = Date.now();
+        label.textContent = listening;
+        clearPhaseTimer();
+        phaseTimer = root.setTimeout?.(() => {
+          phaseTimer = null;
+          if (status.dataset.phase === 'pending' && pendingSince !== null) {
+            label.textContent = crossing;
+          }
+        }, 60000) ?? null;
+      }
       if (!card.isConnected) messages.append(card);
       card.hidden = false;
       messages.dataset.forceFollow = 'true';
@@ -64,6 +84,9 @@ function installInChatKinesis(doc = document, root = window) {
         if (form.getAttribute('aria-busy') === 'true') messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
       }) ?? null;
     } else {
+      pendingSince = null;
+      clearPhaseTimer();
+      label.textContent = listening;
       card.hidden = true;
       delete messages.dataset.forceFollow;
     }
@@ -79,6 +102,8 @@ function installInChatKinesis(doc = document, root = window) {
   sync();
 
   return () => {
+    clearPhaseTimer();
+    pendingSince = null;
     observer?.disconnect?.();
     if (root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__ === observer) delete root.__TD613_MARROWLINE_CHAT_KINESIS_OBSERVER__;
     if (raf !== null && typeof root.cancelAnimationFrame === 'function') root.cancelAnimationFrame(raf);
