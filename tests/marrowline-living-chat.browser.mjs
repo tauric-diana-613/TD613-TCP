@@ -64,6 +64,7 @@ try{
    await page.locator('.starter-prompts button').first().waitFor();
    await page.waitForFunction(()=>document.documentElement.classList.contains('marrowline-room-ready'));
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.geometryReady==='true');
+   await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_THREADS__?.current()?.id));
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_OPERATOR_READINESS__));
    await page.waitForFunction(()=>Boolean(window.__TD613_MARROWLINE_PHYSICAL_DEVICE_REPAIR__));
    assert.equal(await page.locator('html').evaluate(el=>el.classList.contains('marrowline-room-ready')),true,'room leaves first-paint veil only after final boot');
@@ -168,6 +169,8 @@ try{
     await page.waitForFunction(()=>document.body.dataset.keyboardVisible==='false');
    }
    assert.equal(posts,1,'blank-workspace task sends once through the explicit Send control');
+   assert.equal(await page.locator('.message-meta span').first().textContent(),'Red Deer','human message is named Red Deer');
+   assert.equal(await page.locator('.marrowline-branch-reply').count(),1,'only the first model response offers a branch');
    assert.equal(await page.locator('#marrowlinePortableActions').count(),0,'ordinary Chat never materializes the retired portable handoff panel after a turn');
    assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
    assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
@@ -228,6 +231,41 @@ try{
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
    assert.deepEqual(errors,[]);
    await page.screenshot({path:path.join(dir,`${posture}-unicode-return.png`)});
+
+   // Branching, switching and reload use the local archive only: no live
+   // provider calls, no overwritten parent turn and no typography rewrite.
+   const parentId=await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().id);
+   await page.locator('.marrowline-branch-reply').click();
+   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.parentId===id,parentId);
+   const branchId=await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().id);
+   assert.notEqual(branchId,parentId);
+   assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),2);
+   assert.equal(await page.locator('.relay-integrated-covenant .relay-stage-text').last().textContent(),text,
+     'branch inherits exact original provider text');
+   await page.locator('#marrowlineThreadOpen').click();
+   await page.locator(`#marrowlineThreadList [data-thread-id="${parentId}"] .marrowline-thread-open`).click();
+   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);
+   assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),3,
+     'original retains later pending user turn');
+   await page.reload({waitUntil:'domcontentloaded'});
+   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);
+   assert.equal(await page.locator('.relay-integrated-covenant .relay-stage-text').last().textContent(),text,
+     'browser reload retains source Unicode');
+   assert.equal((await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.list())).length,2);
+   assert.equal(posts,2,'restoring an archived thread makes no provider request');
+   await page.locator('#marrowlineNewThread').click();
+   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id!==id,parentId);
+   assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),0);
+   await page.locator('#marrowlineThreadOpen').click();
+   await page.locator(`#marrowlineThreadList [data-thread-id="${parentId}"] .marrowline-thread-open`).click();
+   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);
+   await page.evaluate(()=>{window.confirm=()=>true;});
+   await page.locator('#marrowlineThreadOpen').click();
+   await page.locator(`#marrowlineThreadList [data-thread-id="${branchId}"] button[aria-label="Delete conversation"]`).click();
+   await page.waitForFunction(id=>!document.querySelector(`#marrowlineThreadList [data-thread-id="${id}"]`),branchId);
+   assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current()?.id),parentId,
+     'deleting branch preserves original');
+   assert.equal(posts,2,'thread operations consume no provider quota');
    report.checks.push({posture,status:'PASS',first_paint_custody:true,composer_visible:true,native_mobile_send:posture.startsWith('mobile'),keyboard_posture_bounded:posture.startsWith('mobile'),in_chat_kinesis:true,ordinary_unissued_entry:true,one_explicit_post:true,integrated_provider_native_relay:true,exact_unicode:true,route_retrievable:true,portable_chrome_absent:true,human_operator_gate:posture.startsWith('mobile'),public_gate_fire:posture.startsWith('mobile'),visible_transport_hold:posture.startsWith('mobile'),no_horizontal_overflow:true});
   }catch(error){report.failures.push({posture,error:error.stack});await page.screenshot({path:path.join(dir,`${posture}-failure.png`)}).catch(()=>{});}
   finally{await page.close();}
