@@ -57,10 +57,13 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     // service cooldown. Any real 503 retry hint remains in the raw attempt receipt.
     kind = 'service-busy';
   } else if (dailyMetricReported && (all429 || Number(failure?.httpStatus) === 429)) {
-    kind = 'daily-report'; // Provider names a daily metric, but project usage remains unverified.
+    kind = 'daily-report'; // A named daily metric does not prove account usage or balance.
+    // A real provider Retry-After can suggest the next attempt, but does not
+    // establish that a reported daily metric resets when this short clock ends.
+    if (safeHint > 0) { seconds = safeHint; source = 'provider-retry-delay'; }
   } else if (all429 || /shared.rate.limit|rate.limit.held/.test(error) || Number(failure?.httpStatus) === 429) {
     kind = shortMetricReported ? 'rate-window' : 'rate-unknown';
-    if (kind === 'rate-window' && safeHint > 0) {
+    if (safeHint > 0) {
       seconds = safeHint; source = 'provider-retry-delay';
     }
   }
@@ -75,6 +78,7 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     observedDaily: dailyMetricReported, dailyMetricReported, shortMetricReported, freeTierMetricReported,
     entitlementMismatchReported, providerDailyExhaustionVerified: false,
     providerDelayObserved: source === 'provider-retry-delay',
+    shortHintDoesNotProveDailyReset: dailyMetricReported && safeHint > 0,
     // For receipts, not a universal UI clock or permission veto.
     providerHintSeconds: safeHint, publishedDailyResetPolicy: dailyMetricReported
       ? 'midnight America/Los_Angeles; calendar policy, not a verified account reset'
