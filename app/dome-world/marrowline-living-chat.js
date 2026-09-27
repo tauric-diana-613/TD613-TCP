@@ -136,11 +136,17 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       if (card.dataset.livingDecorated === 'true') return;
       card.dataset.livingDecorated = 'true';
 
-      // Two optional draft-producing choices remain. Receipt and technical
-      // provenance live in the archived turn and dedicated Receipt chamber.
-      const actions = doc.createElement('div');
+      // Reply-local options belong in their compact drawer, not in the
+      // model's reading flow. Technical provenance remains in Receipt.
+      const actions = doc.createElement('details');
       actions.className = 'reply-next-actions';
-      actions.setAttribute('aria-label', 'Follow-up prompts');
+      const actionSummary = doc.createElement('summary');
+      actionSummary.textContent = 'More with this reply';
+      actions.append(actionSummary);
+      const choices = doc.createElement('div');
+      choices.className = 'reply-next-choices';
+      choices.setAttribute('role', 'group');
+      choices.setAttribute('aria-label', 'Follow-up options for this reply');
       const replyText = card.querySelector('.relay-khonapolit .relay-stage-text')?.textContent || '';
       for (const [label, instruction] of [
         ['Check the claims', 'Review the reply quoted below. Separate supported claims from assumptions, identify missing evidence, and explain what would verify or change the conclusion.'],
@@ -153,12 +159,21 @@ export function installMarrowlineLivingChat(doc = document, environment = window
           if (input.value.trim()) { input.focus({ preventScroll: true }); return; }
           input.value = buildMarrowlineReplyFollowupDraft(instruction, replyText);
           input.dispatchEvent(new environment.Event('input', { bubbles: true }));
+          actions.open = false;
           input.focus({ preventScroll: true });
         });
-        actions.append(button);
+        choices.append(button);
       }
+      const receiptButton = doc.createElement('button');
+      receiptButton.type = 'button';
+      receiptButton.textContent = 'View receipt';
+      receiptButton.addEventListener('click', () => {
+        actions.open = false;
+        openPanel('receiptPanel');
+      });
+      choices.append(receiptButton);
+      actions.append(choices);
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
-      card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => technical.append(stage));
 
       if (integrated) {
         integrated.classList.add('relay-integrated-covenant');
